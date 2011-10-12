@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2011 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ * Martin Oberhuber (Wind River) - [360085] Fix valgrind problem marker lifecycle
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
@@ -367,6 +368,15 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	@Override
 	protected String getPluginID() {
 		return ValgrindLaunchPlugin.PLUGIN_ID;
+	}
+
+	@Override
+	public boolean finalLaunchCheck(ILaunchConfiguration configuration,
+			String mode, IProgressMonitor monitor) throws CoreException {
+		//Delete our own problem markers
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE); //$NON-NLS-1$
+		return super.finalLaunchCheck(configuration, mode, monitor);
 	}
 
 }

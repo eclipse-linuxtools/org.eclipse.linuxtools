@@ -104,6 +104,25 @@
       </menuContribution>
    </extension>
    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="%command.description.1"
+            id="org.eclipse.linuxtools.valgrind.launch.clearMarkersCommand"
+            name="%command.name.1">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+            <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.valgrind.ui.valgrindview?after=toolbarLocal">
+         <command
+               commandId="org.eclipse.linuxtools.valgrind.launch.clearMarkersCommand"
+               icon="icons/clear_markers.gif"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
          point="org.eclipse.ui.exportWizards">
       <wizard
             class="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindExportWizard"
@@ -122,12 +141,26 @@
             commandId="org.eclipse.linuxtools.valgrind.launch.exportCommand">
       </handler>
    </extension>
+    <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.linuxtools.internal.valgrind.launch.ClearMarkersHandler"
+            commandId="org.eclipse.linuxtools.valgrind.launch.clearMarkersCommand">
+      </handler>
+   </extension>
       <extension
          id="org.eclipse.linuxtools.valgrind.launch.marker"
          name="%marker.name"
          point="org.eclipse.core.resources.markers">
       <super
-            type="org.eclipse.cdt.core.problem">
+            type="org.eclipse.core.resources.problemmarker">
       </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+      <attribute name="externalLocation"/>
    </extension>
 </plugin>
