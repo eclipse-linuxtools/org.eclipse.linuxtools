@@ -16,7 +16,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
+import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.swt.widgets.Display;
@@ -27,6 +30,10 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
 		//set up and launch the oprofile daemon
 		try {
+			// Set current project to allow using the oprofile path that
+			// was chosen for the project 
+			Oprofile.setCurrentProject(getProject());
+			
 			if (!oprofileStatus())
 				return false;
 			

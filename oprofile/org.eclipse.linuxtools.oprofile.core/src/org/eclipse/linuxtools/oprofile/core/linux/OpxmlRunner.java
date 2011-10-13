@@ -29,6 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
@@ -39,6 +40,7 @@ import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.osgi.util.NLS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,6 +57,7 @@ import org.xml.sax.XMLReader;
  */
 public class OpxmlRunner {
 	private OprofileSAXHandler _handler;
+	
 
 	/**
 	 * Returns the current XMLProcessor handling parsing of opxml output.
@@ -189,7 +192,7 @@ public class OpxmlRunner {
 				cmd.add("event:" + args[1]); //$NON-NLS-1$
 			}
 			String [] a = {};
-			p = Runtime.getRuntime().exec(cmd.toArray(a));
+			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(a), Oprofile.getCurrentProject());
 			
 			StringBuilder output = new StringBuilder();
 			StringBuilder errorOutput = new StringBuilder();
@@ -273,8 +276,8 @@ public class OpxmlRunner {
 		String [] ret = null;
 		try {
 			String cmd[] = {"opreport", "-X", "-d"};
-			Process p = Runtime.getRuntime().exec(cmd);		
 			
+			Process p = RuntimeProcessFactory.getFactory().exec(cmd, Oprofile.getCurrentProject());
 			StringBuilder output = new StringBuilder();
 			StringBuilder errorOutput = new StringBuilder();
 			String s = null;

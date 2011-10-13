@@ -13,8 +13,11 @@ package org.eclipse.linuxtools.tools.launch.core.factory;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
@@ -41,6 +44,11 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 
 	private String[] fillPathCommand(String[] cmdarray, String[] envp) throws IOException {
 		cmdarray[0] = whichCommand(cmdarray[0], envp);
+		return cmdarray;
+	}
+	
+	private String[] fillPathSudoCommand(String[] cmdarray, String[] envp) throws IOException {
+		cmdarray[2] = whichCommand(cmdarray[2], envp);
 		return cmdarray;
 	}
 
@@ -97,5 +105,41 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		cmdarray = fillPathCommand(cmdarray, envp);
 
 		return Runtime.getRuntime().exec(cmdarray, envp, dir);
+	}
+	
+	public Process sudoExec(String cmd, IProject project) throws IOException {
+		return sudoExec(cmd, null, null, project);
+	}
+	
+	public Process sudoExec(String cmd, String[] envp, IProject project) throws IOException {
+		return exec(cmd, envp, null, project);
+	}
+	
+	public Process sudoExec(String cmd, String[] envp, File dir, IProject project)
+			throws IOException {
+			return sudoExec(tokenizeCommand(cmd), envp, dir, project);
+		}
+	
+	public Process sudoExec(String[] cmdarray, IProject project) throws IOException {
+		return sudoExec(cmdarray, null, project);
+	}
+	
+	public Process sudoExec(String[] cmdarray, String[] envp, IProject project) throws IOException {
+		return sudoExec(cmdarray, envp, null, project);
+	}
+	
+	public Process sudoExec(String[] cmdarray, String[] envp, File dir, IProject project) throws IOException {
+		List<String> cmdList = Arrays.asList(cmdarray);
+		ArrayList<String> cmdArrayList = new ArrayList<String>(cmdList);
+		cmdArrayList.add(0, "sudo");
+		cmdArrayList.add(1, "-n");
+		
+		String[] cmdArraySudo = new String[cmdArrayList.size()];
+		cmdArrayList.toArray(cmdArraySudo);
+		
+		envp = updateEnvironment(envp, project);
+		cmdArraySudo = fillPathSudoCommand(cmdArraySudo, envp);
+
+		return Runtime.getRuntime().exec(cmdArraySudo, envp, dir);
 	}
 }

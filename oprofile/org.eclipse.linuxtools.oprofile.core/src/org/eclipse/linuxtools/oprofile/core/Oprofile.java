@@ -16,12 +16,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
+import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
 
 /**
@@ -38,9 +40,14 @@ public class Oprofile
 	// Oprofile information
 	private static OpInfo _info;
 	
+	// Project that will be profiled. 
+	public static IProject _currentProject;
+	
 	// Make sure that oprofile is ready to go
 	static {
-		initializeOprofileModule();
+		if(_currentProject != null){
+			initializeOprofileModule();
+		}
 	}
 	
 	/**
@@ -60,7 +67,7 @@ public class Oprofile
 		if (!isKernelModuleLoaded()) {
 			OprofileCorePlugin.showErrorDialog("oprofileInit", null); //$NON-NLS-1$
 //			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
-		} else {
+		}  else {
 			_initializeOprofileCore();
 		}
 	}
@@ -88,13 +95,15 @@ public class Oprofile
 		} 
 	}
 
-	
-	// Initializes static data for oprofile.	
+
+	// Initializes static data for oprofile.
 	private static void _initializeOprofileCore () {
-		_info = OpInfo.getInfo();
-		
-		if (_info == null) {
-			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
+		if (isKernelModuleLoaded()){
+			_info = OpInfo.getInfo();
+			
+			if (_info == null) {
+				throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
+			}
 		}
 	}
 	
@@ -227,5 +236,33 @@ public class Oprofile
 		}
 
 		return image;
+	}
+	
+	// Reloads oprofile modules by calling 'opcontrol --deinit' and 'opcontrol --init'
+	public static void setCurrentProject(IProject project){
+		
+		if(_currentProject == null){
+			_currentProject = project;
+			initializeOprofileModule();		
+		} else {
+			
+			String currentPath = LinuxtoolsPathProperty.getLinuxtoolsPath(_currentProject);
+			String newPath = LinuxtoolsPathProperty.getLinuxtoolsPath(project);
+			
+			if(!currentPath.equals(newPath)){
+				try {
+					OprofileCorePlugin.getDefault().getOpcontrolProvider().deinitModule();
+					_currentProject = project;
+					OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
+				} catch (OpcontrolException e) {
+					OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+				} 
+				_currentProject = project;
+			}
+		}		
+	}
+	
+	public static IProject getCurrentProject(){
+		return _currentProject;
 	}
 }

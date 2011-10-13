@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider.OpInfoRunner;

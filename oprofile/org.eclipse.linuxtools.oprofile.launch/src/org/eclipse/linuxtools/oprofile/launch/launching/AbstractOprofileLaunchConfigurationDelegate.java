@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,8 +42,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
+	
+	protected ILaunchConfiguration config;
+	
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-
+		this.config = config;
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
 		IPath exePath = verifyProgramPath( config );
@@ -147,5 +152,15 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	 */
 	protected boolean oprofileStatus() throws OpcontrolException {
 		return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
+	}
+	
+	protected IProject getProject(){
+		try{
+			IProject project = CDebugUtils.verifyCProject(config).getProject();
+			return project;
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
