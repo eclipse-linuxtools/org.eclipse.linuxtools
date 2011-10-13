@@ -17,6 +17,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
+import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.Localization;
@@ -119,13 +120,14 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	private String getEditorId(File file) {
 		IWorkbench workbench= window.getWorkbench();
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
-		IEditorDescriptor descriptor= editorRegistry.getDefaultEditor(file.getName());
-		if (descriptor != null) {
-			LogManager.logDebug("getEditorId: returnVal-" + descriptor.getId(), this);
-			return descriptor.getId();
-		}
+		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
+		for (IEditorDescriptor d : descriptors)
+			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors")) {
+				LogManager.logDebug("getEditorId: returnVal-" + d.getId(), this);
+				return d.getId();
+			}
 		LogManager.logDebug("getEditorId: returnVal-...SimpleEditor", this);
-		return "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor";
+		return SimpleEditor.ID;
 	}
 	
 	/**

@@ -93,10 +93,11 @@ public class OpenFileAction extends EditorAction {
 	protected String getEditorId(File file) {
 		IWorkbench workbench= window.getWorkbench();
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
-		IEditorDescriptor descriptor= editorRegistry.getDefaultEditor(file.getName());
-		if (descriptor != null && descriptor.getId().startsWith("org.eclipse.linuxtools.systemtap.ui")) {	//TODO: descriptor.getId().startsWith("org.eclipse.linuxtools.systemtap.ui") is a temparary fix until we find out why .txt files are opening with org.eclipse.ui.DefautTextEditor //$NON-NLS-1$
-			return descriptor.getId();
-		}
+		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
+		for (IEditorDescriptor d : descriptors)
+			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors")) {
+				return d.getId();
+			}
 		return SimpleEditor.ID;
 	}
 
