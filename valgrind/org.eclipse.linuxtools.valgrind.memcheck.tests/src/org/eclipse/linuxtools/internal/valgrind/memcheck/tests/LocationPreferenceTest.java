@@ -12,15 +12,13 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 
 
-public class LocationPreferenceTest extends TestCase {
+public class LocationPreferenceTest extends AbstractMemcheckTest {
 
 	private ValgrindCommand command = new ValgrindCommand() {
 		protected void readIntoBuffer(StringBuffer out, Process p) throws IOException {

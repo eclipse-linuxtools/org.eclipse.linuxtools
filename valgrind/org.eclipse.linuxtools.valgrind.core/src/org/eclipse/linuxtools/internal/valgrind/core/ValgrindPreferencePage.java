@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.core;
 
 import java.io.File;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;

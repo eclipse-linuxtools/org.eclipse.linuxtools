@@ -114,9 +114,6 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			// 3.4.0 specific
 			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				assertTrue(cmd.contains("--track-origins=no")); //$NON-NLS-1$
-			}
-			else {
 				assertFalse(cmd.contains("--track-origins")); //$NON-NLS-1$
 			}
 			assertFalse(cmd.contains("--main-stacksize")); //$NON-NLS-1$

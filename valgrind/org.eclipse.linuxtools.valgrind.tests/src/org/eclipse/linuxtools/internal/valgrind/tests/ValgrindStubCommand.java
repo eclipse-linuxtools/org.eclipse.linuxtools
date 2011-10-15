@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 
 public class ValgrindStubCommand extends ValgrindCommand {
 	protected static final String VERSION_FILE = ".version"; //$NON-NLS-1$
@@ -39,11 +41,6 @@ public class ValgrindStubCommand extends ValgrindCommand {
 	@Override
 	public Process getProcess() {
 		return null;
-	}
-	
-	@Override
-	public boolean isEnabled() {
-		return true;
 	}
 
 }

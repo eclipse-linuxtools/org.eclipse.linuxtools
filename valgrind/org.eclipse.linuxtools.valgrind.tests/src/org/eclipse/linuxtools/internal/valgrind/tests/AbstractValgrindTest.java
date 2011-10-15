@@ -38,6 +38,8 @@ import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
@@ -69,14 +71,23 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		// Substitute Valgrind command line interaction
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(getValgrindCommand());
 		
+		// Ensure Valgrind is enabled
+		ValgrindPlugin.getDefault().getPreferenceStore().setValue(ValgrindPreferencePage.VALGRIND_ENABLE, true);
+		
 		super.setUp();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
+		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
 		if (launches.size() > 0) {
-			DebugPlugin.getDefault().getLaunchManager().removeLaunches(launches.toArray(new ILaunch[launches.size()]));
+			lm.removeLaunches(launches.toArray(new ILaunch[launches.size()]));
 			launches.clear();
+		}
+		// Delete the Launch Configurations
+		ILaunchConfiguration[] configs = lm.getLaunchConfigurations();
+		for (ILaunchConfiguration config : configs) {
+			config.delete();
 		}
 		super.tearDown();
 	}
