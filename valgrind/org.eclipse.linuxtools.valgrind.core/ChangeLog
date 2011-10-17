@@ -1,3 +1,9 @@
+2011-10-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #360950
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindPlugin.java (initializeDefaultPreferences): Add
+	future support for Windows.
+
 2011-10-07  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCoreParser.java
