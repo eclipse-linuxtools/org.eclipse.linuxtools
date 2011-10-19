@@ -1,3 +1,7 @@
+2011-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Hide internal package except from other Valgrind plug-ins.
+
 2011-10-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #360950
