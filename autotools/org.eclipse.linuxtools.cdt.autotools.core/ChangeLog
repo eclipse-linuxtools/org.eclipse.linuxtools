@@ -1,3 +1,9 @@
+2011-10-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #361461
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (regenerateMakefiles): Fix autogen.sh
+	case whereby autogen.sh doesn't run or create configure script.
+
 2011-10-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/FlagConfigureOption.java (getParameter): Remote

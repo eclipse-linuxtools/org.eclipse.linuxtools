@@ -517,15 +517,33 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 					// autogen.sh ran configure and we should not run it
 					// ourselves.
 					if (configStatus == null || !configStatus.exists()) {
-						rc = runScript(configurePath, 
-								buildLocation,
-								configArgs, 
-								AutotoolsPlugin.getFormattedString("MakeGenerator.gen.makefile", new String[]{buildDir}), //$NON-NLS-1$
-								errMsg, console, configureEnvs, false);
-						if (rc != IStatus.ERROR) {
-							File makefileFile = buildLocation.append(MAKEFILE).toFile();
-							addMakeTargetsToManager(makefileFile);
-							toolsCfg.setDirty(false);
+						if (!configurePath.toFile().exists()) {
+							// no configure script either...try running autoreconf
+							String[] reconfArgs = new String[1];
+							String reconfCmd = project.getPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL);
+							if (reconfCmd == null)
+								reconfCmd = DEFAULT_AUTORECONF;
+							IPath reconfCmdPath = new Path(reconfCmd);
+							reconfArgs[0] = "-i"; //$NON-NLS-1$
+							rc = runScript(reconfCmdPath,
+									project.getLocation().append(srcDir),
+									reconfArgs,
+									AutotoolsPlugin.getFormattedString("MakeGenerator.autoreconf", new String[]{buildDir}), //$NON-NLS-1$
+									errMsg, console, null, consoleStart);
+							consoleStart = false;
+						}
+						// Check if configure generated and if yes, run it.
+						if (rc != IStatus.ERROR && configurePath.toFile().exists()) {
+							rc = runScript(configurePath, 
+									buildLocation,
+									configArgs, 
+									AutotoolsPlugin.getFormattedString("MakeGenerator.gen.makefile", new String[]{buildDir}), //$NON-NLS-1$
+									errMsg, console, configureEnvs, false);
+							if (rc != IStatus.ERROR) {
+								File makefileFile = buildLocation.append(MAKEFILE).toFile();
+								addMakeTargetsToManager(makefileFile);
+								toolsCfg.setDirty(false);
+							}
 						}
 					} else {
 						File makefileFile = buildLocation.append(MAKEFILE).toFile();
