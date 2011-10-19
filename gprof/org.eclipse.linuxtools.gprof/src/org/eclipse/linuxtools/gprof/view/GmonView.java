@@ -30,6 +30,7 @@ import org.eclipse.linuxtools.gprof.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.gprof.action.SwitchSampleTimeAction;
 import org.eclipse.linuxtools.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.gprof.parser.HistogramDecoder;
+import org.eclipse.linuxtools.gprof.utils.PPC64ElfBinaryObjectWrapper;
 import org.eclipse.linuxtools.gprof.view.fields.SampleProfField;
 import org.eclipse.linuxtools.gprof.view.histogram.CGArc;
 import org.eclipse.linuxtools.gprof.view.histogram.CGCategory;
@@ -203,7 +204,8 @@ public class GmonView extends AbstractSTDataView {
 					"Invalid binary file",
 					binaryPath + " is not a valid binary file.");
 			return null;
-		}
+		} else if (binary.getCPU().equals("ppc64"))
+			binary = new PPC64ElfBinaryObjectWrapper(binary.getBinaryParser(), binary.getPath(), binary.getType());
 
 		GmonDecoder decoder = new GmonDecoder(binary);
 		try {

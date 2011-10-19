@@ -82,7 +82,8 @@ public class GmonDecoder {
 		this.program = program;
 		this.ps = ps;
 		program.getBinaryParser().getFormat();
-		if ("x86_64".equals(program.getCPU())){
+		String cpu = program.getCPU();
+		if ("x86_64".equals(cpu) || "ppc64".equals(cpu)){
 			histo = new HistogramDecoder_64(this);
 			callGraph = new CallGraphDecoder_64(this);
 			_32_bit_platform = false;
