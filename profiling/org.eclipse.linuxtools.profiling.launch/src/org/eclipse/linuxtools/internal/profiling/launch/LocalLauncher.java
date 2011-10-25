@@ -26,14 +26,12 @@ public class LocalLauncher implements IRemoteCommandLauncher {
 		launcher = new CommandLauncher();
 	}
 	
-	public LocalProcess execute(IPath commandPath, String[] args, String[] env,
+	public Process execute(IPath commandPath, String[] args, String[] env,
 			IPath changeToDirectory, IProgressMonitor monitor)
 			throws CoreException {
 		launcher.showCommand(true);
 		Process p = launcher.execute(commandPath, args, env, changeToDirectory, monitor);
-		if (p != null)
-			return new LocalProcess(p);
-		return null;
+		return p;
 	}
 
 	public int waitAndRead(OutputStream output, OutputStream err,

@@ -1,3 +1,11 @@
+2011-10-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteCommandLauncher.java (execute): Change to
+	return Process.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/LocalLauncher.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/profiling/launch/IProcess.java: Removed.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/LocalProcess.java: Ditto.
+	
 2011-10-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java (getLauncher): Add

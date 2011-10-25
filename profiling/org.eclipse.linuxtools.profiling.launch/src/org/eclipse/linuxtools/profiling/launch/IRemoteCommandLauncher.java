@@ -22,7 +22,7 @@ public interface IRemoteCommandLauncher {
 	public final static int COMMAND_CANCELED = 1;
 	public final static int ILLEGAL_COMMAND = -1;
 	
-	public IProcess execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
+	public Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
 	public int waitAndRead(OutputStream output, OutputStream err, IProgressMonitor monitor);
 	public String getErrorMessage();
 	
