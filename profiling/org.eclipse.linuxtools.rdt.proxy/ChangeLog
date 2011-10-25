@@ -1,3 +1,8 @@
+2011-10-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTCommandLauncher.java (execute): Switch
+	to return Process.  Use RemoteProcessAdapter class to wrap the IRemoteProcess.
+	
 2011-10-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Add support for RDT sync'd projects.

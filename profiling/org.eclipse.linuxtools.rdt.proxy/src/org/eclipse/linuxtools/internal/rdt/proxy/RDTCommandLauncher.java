@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.linuxtools.profiling.launch.IProcess;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.rdt.proxy.Activator;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
@@ -30,6 +29,7 @@ import org.eclipse.ptp.remote.core.IRemoteProcess;
 import org.eclipse.ptp.remote.core.IRemoteProcessBuilder;
 import org.eclipse.ptp.remote.core.IRemoteServices;
 import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
+import org.eclipse.ptp.remote.core.RemoteProcessAdapter;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -113,7 +113,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	/**
 	 * @see org.eclipse.cdt.core.IRemoteCommandLauncher#execute(IPath, String[], String[], IPath, IProgressMonitor)
 	 */
-	public IProcess execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException {
+	public Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException {
 		try {
 			// add platform specific arguments (shell invocation)
 			fCommandArgs = constructCommandArray(commandPath.toOSString(), args);
@@ -139,9 +139,9 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 			fErrorMessage = ""; //$NON-NLS-1$
 		} catch (IOException e) {
 			setErrorMessage(e.getMessage());
-			fProcess = null;
+			return null;
 		}
-		return new RDTProcess(fProcess);
+		return new RemoteProcessAdapter(fProcess);
 	}
 
 	/* (non-Javadoc)
