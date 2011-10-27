@@ -76,7 +76,35 @@
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
+        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
+      <repositories>
+        <repository>
+          <id>indigo</id>
+          <layout>p2</layout>
+          <url>${eclipse-site}</url>
+        </repository>
+        <repository>
+          <id>swtbot</id>
+          <layout>p2</layout>
+          <url>${swtbot-site}</url>
+        </repository>
+        <repository>
+          <id>orbit</id>
+          <layout>p2</layout>
+          <url>${orbit-site}</url>
+        </repository>
+        <repository>
+          <id>cdt</id>
+          <layout>p2</layout>
+          <url>${cdt-site}</url>
+        </repository>
+        <repository>
+          <id>maven.eclipse.org</id>
+          <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+        </repository>
+      </repositories>
+  
     </profile>
     <profile>
       <id>platform-juno</id>
@@ -90,7 +118,40 @@
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/nightly/</cdt-site>
+        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
+      <repositories>
+        <repository>
+          <id>juno</id>
+          <layout>p2</layout>
+          <url>${eclipse-site}</url>
+        </repository>
+        <repository>
+          <id>swtbot</id>
+          <layout>p2</layout>
+          <url>${swtbot-site}</url>
+        </repository>
+        <repository>
+          <id>orbit</id>
+          <layout>p2</layout>
+          <url>${orbit-site}</url>
+        </repository>
+        <repository>
+          <id>cdt</id>
+          <layout>p2</layout>
+          <url>${cdt-site}</url>
+        </repository>
+        <repository>
+          <id>cdttest</id>
+          <layout>p2</layout>
+          <url>${cdt-test-site}</url>
+        </repository>
+        <repository>
+          <id>maven.eclipse.org</id>
+          <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+        </repository>
+      </repositories>
+  
     </profile>
   </profiles>
 
@@ -111,33 +172,6 @@
     <module>releng</module>
   </modules>
 
-  <repositories>
-    <repository>
-      <id>indigo</id>
-      <layout>p2</layout>
-      <url>${eclipse-site}</url>
-    </repository>
-    <repository>
-      <id>swtbot</id>
-      <layout>p2</layout>
-      <url>${swtbot-site}</url>
-    </repository>
-    <repository>
-      <id>orbit</id>
-      <layout>p2</layout>
-      <url>${orbit-site}</url>
-    </repository>
-    <repository>
-      <id>cdt</id>
-      <layout>p2</layout>
-      <url>${cdt-site}</url>
-    </repository>
-    <repository>
-      <id>maven.eclipse.org</id>
-      <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
-    </repository>
-  </repositories>
-  
   <build>
     <plugins>
       <plugin>
