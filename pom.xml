@@ -78,6 +78,20 @@
         <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
       </properties>
     </profile>
+    <profile>
+      <id>platform-juno</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>juno</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
+        <platform-version>[3.7,3.8)</platform-version>
+        <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/nightly/</cdt-site>
+      </properties>
+    </profile>
   </profiles>
 
   <modules>
