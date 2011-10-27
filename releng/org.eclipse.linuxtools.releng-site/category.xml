@@ -31,6 +31,9 @@
    <feature url="features/org.eclipse.linuxtools.profiling_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.tools.launch_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tools.launch" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.rpm_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
