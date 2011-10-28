@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Sleepingthreads
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.genericzestdemo;singleton:=true
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.10.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.sleepingthreads.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.callgraph.core,
