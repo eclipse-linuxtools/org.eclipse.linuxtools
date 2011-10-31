@@ -40,26 +40,21 @@ public class STCopyAction extends Action {
 	
 	public void run() {
 		Clipboard cb = new Clipboard(Display.getDefault());
-		ISTDataViewersField[] fields = stViewer.getAllFields();
 		IStructuredSelection selections = (IStructuredSelection)stViewer.getViewer().getSelection();
 		Iterator<?> iterator = selections.iterator();
 		StringBuilder sb = new StringBuilder();
 			
-		for(int i=0;iterator.hasNext();i++){
+		while (iterator.hasNext()) {
 			Object obj = iterator.next();
-			
-			for(int j=0;j<fields.length;j++){
-				if (fields[j].getValue(obj) == null){
-					sb.append("");
-				}
-				else{
-					sb.append(fields[j].getValue(obj));
-					sb.append(" ");
+			boolean needTab = false;
+			for (ISTDataViewersField field: stViewer.getAllFields()){
+				if (needTab) sb.append("\t");
+				needTab = true;
+				if (field.getValue(obj) != null){
+					sb.append(field.getValue(obj));
 				}
 			}
-
 			sb.append("\n");
-	
 		}
 		cb.setContents(new Object[]{sb.toString()}, new Transfer[] {TextTransfer.getInstance()});
 	}
