@@ -1,3 +1,12 @@
+2011-10-31  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #362125
+	
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/CoreMessagesViewer.java (CoreMessagesViewer): Use an
+	ImageRegistry to store the Valgrind error icon.
+	(.getImage): Get error image from image registry.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/ValgrindUIPlugin.java (getImageDescriptor): New method.
+
 2011-10-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #360085
