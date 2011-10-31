@@ -21,11 +21,15 @@ import org.eclipse.cdt.debug.internal.core.sourcelookup.MapEntrySourceContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor;
 import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.linuxtools.binutils.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,6 +38,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorInput;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Editor that lets you select a replacement for the missing source file
@@ -190,7 +195,12 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	private void addSourceMappingToCommon(IPath missingPath, IPath newSourcePath) throws CoreException {
 		AbstractSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
 		addSourceMappingToDirector(missingPath, newSourcePath, director);
-		CDebugCorePlugin.getDefault().savePluginPreferences();
+		try {
+			InstanceScope.INSTANCE.getNode(CDebugCorePlugin.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Failed saving settings for content type " + CDebugCorePlugin.PLUGIN_ID, e);
+			throw new CoreException(status);
+		}
 	}
 	
 	protected void locateFile() {
