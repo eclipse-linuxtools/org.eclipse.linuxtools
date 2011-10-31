@@ -39,6 +39,13 @@
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
           <product>org.eclipse.sdk.ide</product>
+          <dependencies>
+            <dependency>
+              <type>eclipse-feature</type>
+              <artifactId>org.eclipse.cdt.platform</artifactId>
+              <version>8.0.0</version>
+            </dependency>
+          </dependencies>          
         </configuration>
       </plugin>
     </plugins>
