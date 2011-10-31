@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
+import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -137,8 +137,8 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static String getAbsoluteProgramPath(ILaunchConfiguration config) throws CoreException
 	{
-		ICProject cproject = AbstractCLaunchDelegate.getCProject(config);
-		IPath programPath  = AbstractCLaunchDelegate.getProgramPath(config);
+		ICProject cproject =  CDebugUtils.getCProject(config);
+		IPath programPath  = CDebugUtils.getProgramPath(config);
 		if (cproject == null || programPath == null || programPath.isEmpty()) {
 			return null;
 		}
