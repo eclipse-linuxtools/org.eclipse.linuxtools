@@ -5,5 +5,11 @@ Bundle-SymbolicName: org.eclipse.linuxtools.gcov.test
 Bundle-Version: 4.1.1.qualifier
 Bundle-Vendor: %bundleProvider
 Fragment-Host: org.eclipse.linuxtools.gcov
-Require-Bundle: org.junit
+Require-Bundle: org.junit,
+ org.eclipse.swtbot.eclipse.core;bundle-version="2.0.5",
+ org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.5",
+ org.eclipse.swtbot.junit4_x;bundle-version="2.0.5",
+ org.eclipse.swtbot.swt.finder;bundle-version="2.0.5",
+ org.apache.log4j;bundle-version="1.2.13"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.eclipse.linuxtools.gcov.test

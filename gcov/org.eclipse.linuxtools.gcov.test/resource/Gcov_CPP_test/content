@@ -1,0 +1,6 @@
+fact.cpp
+mult.cpp
+main.cpp
+fact.hpp
+mult.hpp
+Makefile

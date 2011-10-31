@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.gcov.test;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,11 +22,8 @@ import java.net.URL;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView;
-import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersCSVExporter;
 import org.osgi.framework.Bundle;
 
 
@@ -37,20 +33,6 @@ import org.osgi.framework.Bundle;
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class STJunitUtils {
-
-	
-	/**
-	 * Test CSV export of the given view
-	 * @param view
-	 * @param dumpFullFileName
-	 * @param refFullFileName
-	 */
-	public static void testCSVExport(AbstractSTDataView view, String dumpFullFileName, String refFullFileName) {
-		STDataViewersCSVExporter exporter = new STDataViewersCSVExporter(view.getSTViewer());
-		exporter.exportTo(dumpFullFileName, new NullProgressMonitor());
-		// compare with ref
-		compareCSVIgnoreEOL(dumpFullFileName, refFullFileName, true);
-	}
 	
 	/**
 	 * Utility method to compare files
@@ -239,29 +221,5 @@ public class STJunitUtils {
 		}
 		String filename = url.getFile();
 		return filename;
-	}
-
-	/**
-	 * Utility method
-	 * @param pluginDirectory: the plugin where to look for directories
-	 * @param regexp: the regexp used for matching directories
-	 * @return the list of directories that belong to the pluginDirectory and 
-	 * ends with the given extensionSuffix
-	 */
-	public static File[] getTestDirs(String pluginDirectory, final String regexp) {
-		// load directories containing tests
-		String filename = getAbsolutePath(pluginDirectory, ".");
-		File dir = new File(filename);
-		File[] testDirs = dir.listFiles(
-			new FileFilter() {
-				public boolean accept(File arg0) {
-					return (arg0.isDirectory() && arg0.getName().matches(regexp));
-				}
-			}
-		);
-
-		// test if there is any directory samples 
-		Assert.assertNotNull("No project files to test",testDirs);
-		return testDirs;
 	}
 }

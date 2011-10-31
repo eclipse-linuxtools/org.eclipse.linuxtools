@@ -1,0 +1,7 @@
+Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
++-;Summary;40;12;12;100.0
+  +-;?;40;12;12;100.0
+    +-;fact.c;19;5;5;100.0
+    | +-;fact;;5;5;100.0
+    +-;mult.c;21;7;7;100.0
+      +-;mult;;7;7;100.0

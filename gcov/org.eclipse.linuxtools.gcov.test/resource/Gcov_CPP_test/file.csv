@@ -1,5 +1,5 @@
 Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
-+-;Summary;2464;57;25;43.86
++-;Summary;2467;60;28;46.67
   +-;basic_ios.h;441;10;0;0.0
   | +-;std::basic_ios<char, std::char_traits<char> >::rdstate() const;;2;0;0.0
   | +-;std::basic_ios<char, std::char_traits<char> >::setstate(std::_Ios_Iostate);;2;0;0.0
@@ -9,26 +9,21 @@ Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
   | +-;std::char_traits<char>::length(char const*);;2;0;0.0
   +-;fact.cpp;27;7;7;100.0
   | +-;F::fact::f(long);;5;5;100.0
-  | +-;F::fact::fact();;0;1;0.0
-  | +-;F::fact::fact();;1;0;0.0
-  | +-;F::fact::~fact();;0;1;0.0
-  | +-;F::fact::~fact();;1;0;0.0
+  | +-;F::fact::fact();;1;1;100.0
+  | +-;F::fact::~fact();;1;1;100.0
   +-;ios_base.h;168;2;0;0.0
   | +-;std::operator|(std::_Ios_Iostate, std::_Ios_Iostate);;2;0;0.0
-  +-;iostream;73;1;1;100.0
-  +-;locale_facets.h;871;5;0;0.0
+  +-;iostream;74;1;1;100.0
+  +-;locale_facets.h;870;5;0;0.0
   | +-;std::ctype<char>::widen(char) const;;5;0;0.0
-  +-;main.cpp;31;9;9;100.0
+  +-;main.cpp;31;12;12;100.0
   | +-;__static_initialization_and_destruction_0(int, int);;2;2;100.0
-  | +-;global constructors keyed to main;;0;0;0.0
-  | +-;main;;8;8;100.0
+  | +-;main;;11;11;100.0
   +-;mult.cpp;28;8;8;100.0
-  | +-;M::mult::mult();;0;1;0.0
-  | +-;M::mult::mult();;1;0;0.0
+  | +-;M::mult::mult();;1;1;100.0
   | +-;M::mult::multiply(long, long);;6;6;100.0
-  | +-;M::mult::~mult();;0;1;0.0
-  | +-;M::mult::~mult();;1;0;0.0
-  +-;ostream;561;13;0;0.0
+  | +-;M::mult::~mult();;1;1;100.0
+  +-;ostream;564;13;0;0.0
     +-;std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&);;2;0;0.0
     +-;std::basic_ostream<char, std::char_traits<char> >& std::flush<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&);;2;0;0.0
     +-;std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*);;5;0;0.0
