@@ -36,6 +36,11 @@ public class STExportToCSVAction extends Action {
 	private STDataViewersCSVExporter exporter;
 	
 	/**
+	 * Job family for Export to CSV background jobs.
+	 */
+	public static final String EXPORT_TO_CSV_JOB_FAMILY = "Export to CSV";
+	
+	/**
 	 * Constructor
 	 * @param stViewer the stViewer to export
 	 */
@@ -62,6 +67,14 @@ public class STExportToCSVAction extends Action {
 						exporter.export(monitor);
 						return Status.OK_STATUS;
 					}
+
+					@Override
+					public boolean belongsTo(Object family) {
+						return EXPORT_TO_CSV_JOB_FAMILY.equals(family);
+					}
+					
+					
+					
 				};
 			exportToCSVJob.setUser(true);
 			exportToCSVJob.schedule();
