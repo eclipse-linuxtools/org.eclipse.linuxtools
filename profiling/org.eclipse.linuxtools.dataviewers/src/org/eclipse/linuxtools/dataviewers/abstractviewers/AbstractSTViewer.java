@@ -150,9 +150,6 @@ public abstract class AbstractSTViewer {
 			createContentProvider();
 		
 		viewer.setContentProvider(cp);
-		
-		STOwnerDrawLabelProvider.setUpOwnerDraw(viewer);
-		
 		viewer.setUseHashlookup(true);
 		
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
