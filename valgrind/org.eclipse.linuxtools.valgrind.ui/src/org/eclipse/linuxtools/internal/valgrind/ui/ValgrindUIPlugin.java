@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
@@ -180,6 +181,17 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns an image descriptor for the image file at the given
+	 * plug-in relative path.
+	 *
+	 * @param path the path
+	 * @return the image descriptor
+	 */
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 
 	protected HashMap<String, IConfigurationElement> getToolMap() {
