@@ -3,13 +3,18 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gcov.test
 Bundle-Version: 4.1.1.qualifier
+Bundle-Activator: org.eclipse.linuxtools.gcov.test.Activator
 Bundle-Vendor: %bundleProvider
-Fragment-Host: org.eclipse.linuxtools.gcov
-Require-Bundle: org.junit,
- org.eclipse.swtbot.eclipse.core;bundle-version="2.0.5",
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
+ org.eclipse.ui;bundle-version="3.7.0",
+ org.eclipse.ui.editors;bundle-version="3.7.0",
+ org.eclipse.core.resources;bundle-version="3.7.100",
+ org.junit,
  org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.5",
  org.eclipse.swtbot.junit4_x;bundle-version="2.0.5",
- org.eclipse.swtbot.swt.finder;bundle-version="2.0.5",
- org.apache.log4j;bundle-version="1.2.13"
+ org.eclipse.ui.workbench;bundle-version="3.7.0",
+ org.eclipse.linuxtools.dataviewers;bundle-version="4.0.0",
+ org.eclipse.linuxtools.dataviewers.annotatedsourceeditor;bundle-version="4.1.0"
+Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.linuxtools.gcov.test
+Bundle-Localization: plugin
