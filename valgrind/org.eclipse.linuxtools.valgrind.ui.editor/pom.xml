@@ -14,11 +14,11 @@
   <parent>
     <artifactId>linuxtools-valgrind-parent</artifactId>
     <groupId>org.eclipse.linuxtools.valgrind</groupId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind.ui.editor</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.9.0</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools Valgrind Editor Plug-in</name>
