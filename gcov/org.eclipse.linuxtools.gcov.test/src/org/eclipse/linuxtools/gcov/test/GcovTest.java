@@ -44,7 +44,6 @@ public abstract class GcovTest {
 		
 		bot.tree().expandNode("Makefile project").select("Empty Project");
 		bot.textWithLabel("Project name:").setText(projectName);
-		bot.table().getTableItem("Linux GCC").click();
 		
 		bot.button("Next >").click();
 		bot.button("Finish").click();

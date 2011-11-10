@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.gcov";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.gcov.core";
 
 	// The shared instance
 	private static Activator plugin;

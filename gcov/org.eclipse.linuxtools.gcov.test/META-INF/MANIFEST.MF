@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.hamcrest,
  org.eclipse.swtbot.eclipse.core,
  org.apache.log4j,
- org.eclipse.swtbot.go
+ org.eclipse.swtbot.go,
+ org.eclipse.linuxtools.gcov.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
