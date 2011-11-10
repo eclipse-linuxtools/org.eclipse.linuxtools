@@ -53,7 +53,6 @@ public class OpenGmonAction implements IEditorLauncher {
 		}
 		String binaryPath = d.getBinaryFile();
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
-		System.out.println(project);
 		GmonView.displayGprofView(binaryPath, file.toOSString(), Integer.toString(instanceNum++), project);
 	}
 

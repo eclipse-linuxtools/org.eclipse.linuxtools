@@ -45,7 +45,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	}
 
 	public String whichCommand(String command, IProject project) throws IOException {
-		System.out.println(whichCommand(command, updateEnvironment(null, project)));
 		return whichCommand(command, updateEnvironment(null, project));
 	}
 
