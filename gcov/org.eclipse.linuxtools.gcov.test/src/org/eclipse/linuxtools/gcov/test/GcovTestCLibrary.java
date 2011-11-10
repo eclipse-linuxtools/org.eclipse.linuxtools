@@ -72,7 +72,7 @@ public class GcovTestCLibrary {
 		public static class OpenGcovSummary {
 			@Test
 			public void test() throws Exception {
-				GcovTest.openGcovSummary(bot, PROJECT_NAME, BIN_NAME);
+				GcovTest.openGcovSummary(bot, PROJECT_NAME, BIN_NAME, true);
 			}
 		}
 		

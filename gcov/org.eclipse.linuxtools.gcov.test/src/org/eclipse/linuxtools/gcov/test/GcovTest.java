@@ -104,7 +104,8 @@ public abstract class GcovTest {
 		return ret;
 	}
 	
-	private static void testGcovSummary(SWTWorkbenchBot bot, String projectName, String filename, String binName) throws Exception {
+	private static void testGcovSummary(SWTWorkbenchBot bot, String projectName, String filename, String binName,
+			boolean testProducedReference) throws Exception {
 		IPath filePath = new Path(filename);
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
 		String binPath = file.getProject().getFile(binName).getLocation().toOSString();
@@ -128,11 +129,11 @@ public abstract class GcovTest {
 		
 		SWTBotView botView = bot.viewByTitle("gcov");
 		botView.toolbarButton("Sort coverage per function").click();
-		dumpCSV(bot, botView, projectName, "function");
+		dumpCSV(bot, botView, projectName, "function", testProducedReference);
 		botView.toolbarButton("Sort coverage per file").click();
-		dumpCSV(bot, botView, projectName, "file");
+		dumpCSV(bot, botView, projectName, "file", testProducedReference);
 		botView.toolbarButton("Sort coverage per folder").click();
-		dumpCSV(bot, botView, projectName, "folder");
+		dumpCSV(bot, botView, projectName, "folder", testProducedReference);
 		botView.close();
 	}
 	
@@ -167,7 +168,8 @@ public abstract class GcovTest {
 		edt.close();
 	}
 	
-	private static void dumpCSV(SWTWorkbenchBot bot, SWTBotView botView, String projectName, String type) {
+	private static void dumpCSV(SWTWorkbenchBot bot, SWTBotView botView, String projectName, String type,
+			boolean testProducedReference) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		botView.toolbarButton("Export to CSV").click();
 		SWTBotShell shell = bot.shell("Export to CSV");
@@ -177,22 +179,26 @@ public abstract class GcovTest {
 		bot.text().setText(s);
 		bot.button("OK").click();
 		bot.waitUntil(new JobsRunning(STExportToCSVAction.EXPORT_TO_CSV_JOB_FAMILY), 3000);
-		String ref = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID, "resource/" + projectName + "/" + type + ".csv");
-		STJunitUtils.compareIgnoreEOL(project.getLocation() + "/" + type + "-dump.csv", ref, false);
+		if (testProducedReference) {
+			String ref = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID, "resource/" + projectName + "/" + type + ".csv");
+			STJunitUtils.compareIgnoreEOL(project.getLocation() + "/" + type + "-dump.csv", ref, false);
+		}	
 	}
 
 	public static void openGcovFileDetails(SWTWorkbenchBot bot, String projectName) throws Exception {
 		openGcovFileDetails(bot, projectName, "a.out");
 	}
 
-	public static void openGcovSummary(SWTWorkbenchBot bot, String projectName) throws Exception {
-		openGcovSummary(bot, projectName, "a.out");
+	public static void openGcovSummary(SWTWorkbenchBot bot, String projectName, boolean testProducedReference)
+			throws Exception {
+		openGcovSummary(bot, projectName, "a.out", testProducedReference);
 	}
 	
-	public static void openGcovSummary(SWTWorkbenchBot bot, String projectName, String binName) throws Exception {
+	public static void openGcovSummary(SWTWorkbenchBot bot, String projectName, String binName,
+			boolean testProducedReference) throws Exception {
 		TreeSet<String> ts = getGcovFiles(bot, projectName);
 		for (String string : ts) {
-			testGcovSummary(bot, projectName, string, binName);
+			testGcovSummary(bot, projectName, string, binName, testProducedReference);
 		}
 	}
 

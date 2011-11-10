@@ -71,7 +71,7 @@ public class GcovTestCPP {
 		public static class OpenGcovSummary {
 			@Test
 			public void test() throws Exception {
-				GcovTest.openGcovSummary(bot, PROJECT_NAME);
+				GcovTest.openGcovSummary(bot, PROJECT_NAME, false);
 			}
 		}
 		
