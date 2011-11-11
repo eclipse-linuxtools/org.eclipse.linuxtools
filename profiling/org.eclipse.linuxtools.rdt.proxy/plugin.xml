@@ -5,14 +5,14 @@
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
             class="org.eclipse.linuxtools.rdt.proxy.RDTProxyManager"
-            nature="org.eclipse.ptp.rdt.core.remoteNature">
+            scheme="rse">
       </manager>
    </extension>
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
             class="org.eclipse.linuxtools.rdt.proxy.RDTProxyManager"
-            nature="org.eclipse.ptp.rdt.sync.core.remoteSyncNature">
+            scheme="rdt">
       </manager>
    </extension>
 
