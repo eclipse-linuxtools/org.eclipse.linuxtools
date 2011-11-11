@@ -1,3 +1,10 @@
+2011-11-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* schema/RemoteProxyManager.exsd: Switch to specify URI scheme instead of project nature.
+	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java: Rewrite to look for
+	project URI scheme rather than using project nature.
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java (SCHEME_ID): New define.
+
 2011-10-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/IRemoteCommandLauncher.java (execute): Change to

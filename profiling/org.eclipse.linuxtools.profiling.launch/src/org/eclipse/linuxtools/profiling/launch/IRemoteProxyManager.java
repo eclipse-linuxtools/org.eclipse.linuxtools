@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 public interface IRemoteProxyManager {
 	String EXTENSION_POINT_ID = "RemoteProxyManager"; //$NON-NLS-1$
 	String MANAGER_NAME = "manager"; //$NON-NLS-1$
-	String NATURE_ID = "nature"; //$NON-NLS-1$ 
+	String SCHEME_ID = "scheme"; //$NON-NLS-1$ 
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException;
 	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException;
 	public String getOS(IProject project) throws CoreException;

@@ -64,10 +64,10 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="nature" type="string" use="required">
+         <attribute name="scheme" type="string" use="required">
             <annotation>
                <documentation>
-                  Nature id this RemoteProxyManager supports.
+                  Connection scheme that this RemoteProxyManager supports.
                </documentation>
             </annotation>
          </attribute>

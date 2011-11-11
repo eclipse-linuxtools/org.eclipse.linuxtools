@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.launch;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +25,8 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 
 public class RemoteProxyManager implements IRemoteProxyManager {
 	
-	public final static String RDT_NATURE = "org.eclipse.ptp.rdt.core.remoteNature"; //$NON-NLS-1$
-	public final static String RDT_SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
-	
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
+	private static final String LocalHost = "LOCALHOST"; //$NON-NLS-1$
 	
 	private static RemoteProxyManager manager;
 	private LocalFileProxy lfp;
@@ -49,19 +48,19 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return lfp;
 	}
 	
-	private IRemoteProxyManager getRemoteManager(String natureID) throws CoreException {
-		IRemoteProxyManager remoteManager = remoteManagers.get(natureID);
+	private IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
+		IRemoteProxyManager remoteManager = remoteManagers.get(schemeId);
 		if (remoteManager == null) {
 			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, IRemoteProxyManager.EXTENSION_POINT_ID);
 			IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
 			for(int i = 0; i < infos.length; i++) {
 				IConfigurationElement configurationElement = infos[i];
 				if (configurationElement.getName().equals(IRemoteProxyManager.MANAGER_NAME)) {
-					if (configurationElement.getAttribute(IRemoteProxyManager.NATURE_ID).equals(natureID)) {
+					if (configurationElement.getAttribute(IRemoteProxyManager.SCHEME_ID).equals(schemeId)) {
 						Object obj = configurationElement.createExecutableExtension(EXT_ATTR_CLASS);
 						if (obj instanceof IRemoteProxyManager) {
 							remoteManager = (IRemoteProxyManager)obj;
-							remoteManagers.put(natureID, remoteManager);
+							remoteManagers.put(schemeId, remoteManager);
 							break;
 						}
 					}
@@ -72,26 +71,35 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	}
 	
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
-		if (project.hasNature(RDT_NATURE))
-			return getRemoteManager(RDT_NATURE).getFileProxy(project);
-		else if (project.hasNature(RDT_SYNC_NATURE))
-			return getRemoteManager(RDT_SYNC_NATURE).getFileProxy(project);
+		URI projectURI = project.getLocationURI();
+		String scheme = projectURI.getScheme();
+		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+		   IRemoteProxyManager manager = getRemoteManager(scheme);
+		   if (manager != null)
+		      return manager.getFileProxy(project);
+		}
 		return getLocalFileProxy();
 	}
 	
 	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
-		if (project.hasNature(RDT_NATURE))
-			return getRemoteManager(RDT_NATURE).getLauncher(project);
-		else if (project.hasNature(RDT_SYNC_NATURE))
-			return getRemoteManager(RDT_SYNC_NATURE).getLauncher(project);
+		URI projectURI = project.getLocationURI();
+		String scheme = projectURI.getScheme();
+		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			if (manager != null)
+		       return manager.getLauncher(project);
+		}
 		return new LocalLauncher();
 	}
 
 	public String getOS(IProject project) throws CoreException {
-		if (project.hasNature(RDT_NATURE))
-			return getRemoteManager(RDT_NATURE).getOS(project);
-		else if (project.hasNature(RDT_SYNC_NATURE))
-			return getRemoteManager(RDT_SYNC_NATURE).getOS(project);
+		URI projectURI = project.getLocationURI();
+		String scheme = projectURI.getScheme();
+		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			if (manager != null)
+			  return manager.getOS(project);
+		}
 		return Platform.getOS();
 	}
 }
