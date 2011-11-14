@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +32,10 @@ import org.eclipse.linuxtools.perf.model.PMSymbol;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.IOConsole;
 
 public class PerfCore {
 	public static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
@@ -296,7 +301,6 @@ public class PerfCore {
         		}
         	}
         	
-        	
 			while (( line = input.readLine()) != null){
 				if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 				//System.out.println("Reading line: " + line);
@@ -367,6 +371,8 @@ public class PerfCore {
 		}
 		
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
+		
+		boolean hasProfileData = invisibleRoot.getChildren().length != 0;
 		
 		if (SourceLineNumbers) {
 			for (TreeParent ev : invisibleRoot.getChildren()) {
@@ -470,26 +476,30 @@ public class PerfCore {
 				}
 			}
 		}
-		
+
+		if (hasProfileData)
+			print.println("Profile data loaded into Perf Profile View.");
+		else
+			print.println("No profile data generated to be displayed.");
 		RefreshView();
     }
     
-    public static void RefreshView() {
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				//Try to switch the active view to Perf.
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PerfPlugin.VIEW_ID);
-					PerfPlugin.getDefault().getProfileView().refreshModel();
-				} catch (NullPointerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();					
-				} catch (PartInitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+    public static void RefreshView()
+    {
+    	Display.getDefault().syncExec(new Runnable() {
+    		public void run() {
+    			//Try to switch the active view to Perf.
+    			try {
+    				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PerfPlugin.VIEW_ID);
+    				PerfPlugin.getDefault().getProfileView().refreshModel();
+    			} catch (NullPointerException e) {
+    				e.printStackTrace();					
+    			} catch (PartInitException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	});
     }
 }
+
 
