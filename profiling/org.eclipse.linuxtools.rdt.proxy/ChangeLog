@@ -1,3 +1,7 @@
+2011-11-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Fix schema specifier for RDT to be remotetools.
+
 2011-11-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Fix to use new RemoteProxyManager scheme specifier.
