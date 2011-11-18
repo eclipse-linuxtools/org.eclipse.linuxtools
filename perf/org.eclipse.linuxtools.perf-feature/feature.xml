@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.perf"
+      label="Perf-feature"
+      version="1.0.0.qualifier">
+
+   <description url="http://www.eclipse.org/linuxtools/">
+      Plugins to bring Perf-based profiling into the workbench.
+   </description>
+
+   <copyright>
+      Copyright 2010 IBM
+   </copyright>
+
+   <license>
+      EPL goes here!
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.cdt.core" version="5.1.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.debug.core"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
+      <import plugin="org.eclipse.linuxtools.profiling.ui"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.linuxtools.perf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
