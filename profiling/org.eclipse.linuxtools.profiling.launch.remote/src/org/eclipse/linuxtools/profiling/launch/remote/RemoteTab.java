@@ -133,7 +133,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
-		while (RSECorePlugin.isInitComplete(RSECorePlugin.INIT_ALL)) {
+		while (!RSECorePlugin.isInitComplete(RSECorePlugin.INIT_ALL)) {
 			try {
 				RSECorePlugin.waitForInitCompletion();
 			} catch (InterruptedException e2) {

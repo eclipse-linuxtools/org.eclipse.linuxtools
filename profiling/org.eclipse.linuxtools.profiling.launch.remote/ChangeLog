@@ -1,3 +1,9 @@
+2011-11-21  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: bug #364420
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteTab.java (createControl): Fix typo
+	for loop waiting for RSE initialization.
+
 2011-08-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/remoteMessages.properties: Add
