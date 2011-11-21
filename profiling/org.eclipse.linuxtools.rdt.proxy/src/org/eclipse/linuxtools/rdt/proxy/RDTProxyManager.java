@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy;
 
-import java.net.URI;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
@@ -19,9 +17,6 @@ import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteProxyManager;
-import org.eclipse.ptp.remote.core.IRemoteConnection;
-import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
 
 public class RDTProxyManager implements IRemoteProxyManager {
 
@@ -39,10 +34,11 @@ public class RDTProxyManager implements IRemoteProxyManager {
 	@Override
 	public String getOS(IProject project) throws CoreException {
 		// TODO Auto-generated method stub
-		URI uri = project.getLocationURI();
-		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
-		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		return connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
+//		URI uri = project.getLocationURI();
+//		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
+//		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+//		return connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
+		return "Linux"; //FIXME: why doesn't getProperty() work?
 	}
 
 }

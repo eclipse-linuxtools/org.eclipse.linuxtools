@@ -1,3 +1,9 @@
+2011-11-21  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java (getOS): Hard-code
+	to "Linux" for the mean-time until we figure out a more consistent way to get
+	a correct result.
+
 2011-11-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Fix schema specifier for RDT to be remotetools.
