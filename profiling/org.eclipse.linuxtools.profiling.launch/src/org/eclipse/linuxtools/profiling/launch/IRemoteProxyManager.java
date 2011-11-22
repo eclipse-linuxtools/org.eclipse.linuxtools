@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.launch;
 
+import java.net.URI;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
@@ -18,6 +20,9 @@ public interface IRemoteProxyManager {
 	String MANAGER_NAME = "manager"; //$NON-NLS-1$
 	String SCHEME_ID = "scheme"; //$NON-NLS-1$ 
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException;
+	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException;
 	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException;
+	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException;
 	public String getOS(IProject project) throws CoreException;
+	public String getOS(URI uri) throws CoreException;
 }

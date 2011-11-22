@@ -69,37 +69,49 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		}
 		return remoteManager;
 	}
-	
-	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
-		URI projectURI = project.getLocationURI();
-		String scheme = projectURI.getScheme();
-		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+
+	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
+		String scheme = uri.getScheme();
+		if (scheme != null && !LocalHost.equals(uri.getHost())) {
 		   IRemoteProxyManager manager = getRemoteManager(scheme);
 		   if (manager != null)
-		      return manager.getFileProxy(project);
+		      return manager.getFileProxy(uri);
 		}
 		return getLocalFileProxy();
 	}
-	
-	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
+
+	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
 		URI projectURI = project.getLocationURI();
-		String scheme = projectURI.getScheme();
-		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+		return getFileProxy(projectURI);
+	}
+
+	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
+		String scheme = uri.getScheme();
+		if (scheme != null && !LocalHost.equals(uri.getHost())) {
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
-		       return manager.getLauncher(project);
+		       return manager.getLauncher(uri);
 		}
 		return new LocalLauncher();
 	}
 
-	public String getOS(IProject project) throws CoreException {
+	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
 		URI projectURI = project.getLocationURI();
-		String scheme = projectURI.getScheme();
-		if (scheme != null && !LocalHost.equals(projectURI.getHost())) {
+		return getLauncher(projectURI);
+	}
+
+	public String getOS(URI uri) throws CoreException {
+		String scheme = uri.getScheme();
+		if (scheme != null && !LocalHost.equals(uri.getHost())) {
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
-			  return manager.getOS(project);
+			  return manager.getOS(uri);
 		}
 		return Platform.getOS();
+	}
+
+	public String getOS(IProject project) throws CoreException {
+		URI projectURI = project.getLocationURI();
+		return getOS(projectURI);
 	}
 }

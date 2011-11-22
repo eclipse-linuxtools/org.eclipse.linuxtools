@@ -48,7 +48,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	protected String fErrorMessage = ""; //$NON-NLS-1$
 
 	private String lineSeparator;
-	private IProject fProject;
+	private URI uri;
 
 	/**
 	 * The number of milliseconds to pause between polling.
@@ -63,7 +63,19 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	public RDTCommandLauncher(IProject project) {
 		fProcess = null;
 		fShowCommand = false;
-		fProject = project;
+		uri = project.getLocationURI();
+		lineSeparator = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/**
+	 * Creates a new launcher Fills in stderr and stdout output to the given
+	 * streams. Streams can be set to <code>null</code>, if output not
+	 * required
+	 */
+	public RDTCommandLauncher(URI uri) {
+		fProcess = null;
+		fShowCommand = false;
+		this.uri = uri;
 		lineSeparator = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -74,6 +86,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	/* (non-Javadoc)
 	 * @see org.eclipse.cdt.core.ICommandLauncher#getErrorMessage()
 	 */
+	@Override
 	public String getErrorMessage() {
 		return fErrorMessage;
 	}
@@ -113,12 +126,12 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	/**
 	 * @see org.eclipse.cdt.core.IRemoteCommandLauncher#execute(IPath, String[], String[], IPath, IProgressMonitor)
 	 */
+	@Override
 	public Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException {
 		try {
 			// add platform specific arguments (shell invocation)
 			fCommandArgs = constructCommandArray(commandPath.toOSString(), args);
 			fShowCommand = true;
-			URI uri = fProject.getLocationURI();
 			IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
 			IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 			IRemoteFileManager fm = services.getFileManager(connection);
@@ -147,6 +160,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	/* (non-Javadoc)
 	 * @see org.eclipse.cdt.core.IRemoteCommandLauncher#waitAndRead(java.io.OutputStream, java.io.OutputStream, org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	public int waitAndRead(OutputStream output, OutputStream err, IProgressMonitor monitor) {
 		if (fShowCommand) {
 			printCommandLine(output);

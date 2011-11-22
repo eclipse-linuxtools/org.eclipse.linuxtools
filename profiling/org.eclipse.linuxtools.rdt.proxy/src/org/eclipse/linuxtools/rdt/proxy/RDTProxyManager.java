@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy;
 
+import java.net.URI;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
@@ -17,12 +19,26 @@ import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteProxyManager;
+import org.eclipse.ptp.remote.core.IRemoteConnection;
+import org.eclipse.ptp.remote.core.IRemoteServices;
+import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
 
 public class RDTProxyManager implements IRemoteProxyManager {
 
 	@Override
+	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
+		return new RDTFileProxy(uri);
+	}
+
+	@Override
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
 		return new RDTFileProxy(project);
+	}
+
+	@Override
+	public IRemoteCommandLauncher getLauncher(URI uri)
+			throws CoreException {
+		return new RDTCommandLauncher(uri);
 	}
 
 	@Override
@@ -32,11 +48,20 @@ public class RDTProxyManager implements IRemoteProxyManager {
 	}
 
 	@Override
+	public String getOS(URI uri) throws CoreException {
+		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
+		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+		String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
+		if (os == null || os.length() == 0)
+			//FIXME: need better way to get this property
+			return "Linux"; //$NON-NLS-1$
+		return os;
+	}
+
+	@Override
 	public String getOS(IProject project) throws CoreException {
-//		URI uri = project.getLocationURI();
-//		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
-//		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		return "Linux"; //FIXME: why doesn't getProperty("os.name") work?
+		URI uri = project.getLocationURI();
+		return getOS(uri);
 	}
 
 }

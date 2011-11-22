@@ -14,15 +14,23 @@ import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
 public class RDTFileProxy implements IRemoteFileProxy {
 
 	private IRemoteFileManager manager;
-	
-	public RDTFileProxy(IProject project) {
-		URI uri = project.getLocationURI();
+
+	private void initialize(URI uri) {
 		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
 		services.initialize();
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 		manager = services.getFileManager(connection);
 	}
-	
+
+	public RDTFileProxy(URI uri) {
+		initialize(uri);
+	}
+
+	public RDTFileProxy(IProject project) {
+		URI uri = project.getLocationURI();
+		initialize(uri);
+	}
+
 	@Override
 	public URI toURI(IPath path) {
 		return manager.toURI(path);
