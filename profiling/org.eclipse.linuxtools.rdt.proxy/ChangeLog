@@ -1,12 +1,9 @@
-2011-11-21  Jeff Johnston  <jjohnstn@redhat.com>
+2011-11-22  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java (getOS): Hard-code
-	to "Linux" for the mean-time until we figure out a more consistent way to get
-	a correct result.
-
-2011-11-15  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* plugin.xml: Fix schema specifier for RDT to be remotetools.
+	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java (getOS): Hard-code to return "Linux" for
+	time-being.  Must fix this later.
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTFileProxy.java (RDTFileProxy): Make sure services
+	are initialized.
 
 2011-11-11  Jeff Johnston  <jjohnstn@redhat.com>
 

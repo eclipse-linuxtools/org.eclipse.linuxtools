@@ -33,12 +33,10 @@ public class RDTProxyManager implements IRemoteProxyManager {
 
 	@Override
 	public String getOS(IProject project) throws CoreException {
-		// TODO Auto-generated method stub
 //		URI uri = project.getLocationURI();
 //		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
 //		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-//		return connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
-		return "Linux"; //FIXME: why doesn't getProperty() work?
+		return "Linux"; //FIXME: why doesn't getProperty("os.name") work?
 	}
 
 }

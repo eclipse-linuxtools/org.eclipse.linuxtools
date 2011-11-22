@@ -18,6 +18,7 @@ public class RDTFileProxy implements IRemoteFileProxy {
 	public RDTFileProxy(IProject project) {
 		URI uri = project.getLocationURI();
 		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
+		services.initialize();
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 		manager = services.getFileManager(connection);
 	}
