@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.perf"
+      id="org.eclipse.linuxtools.perf-feature"
       label="Perf-feature"
-      version="1.0.0.qualifier">
+      version="0.10.0.qualifier">
 
    <description url="http://www.eclipse.org/linuxtools/">
       Plugins to bring Perf-based profiling into the workbench.
