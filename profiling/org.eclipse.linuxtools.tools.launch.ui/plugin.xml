@@ -8,6 +8,11 @@
             class="org.eclipse.linuxtools.tools.launch.ui.properties.LinuxtoolsPathPropertyPage"
             id="org.eclipse.linuxtools.tools.launch.ui.LinuxtoolsPage"
             name="Linux Tools Path">
+         <enabledWhen>
+            <adapt
+                  type="org.eclipse.core.resources.IProject">
+            </adapt>
+         </enabledWhen>
       </page>
    </extension>
 
