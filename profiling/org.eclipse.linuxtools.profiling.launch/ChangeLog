@@ -1,3 +1,11 @@
+2011-12-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java: Add URI
+	apis.
+	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java (getFileProxy): Ditto. 
+	(getLauncher): Ditto.
+	(getOS): Ditto.
+	
 2011-11-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* schema/RemoteProxyManager.exsd: Switch to specify URI scheme instead of project nature.

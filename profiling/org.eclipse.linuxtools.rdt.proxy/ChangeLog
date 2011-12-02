@@ -1,3 +1,19 @@
+2011-12-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	2011-12-02  CoreyAshford  <cjashfor@us.ibm.com>
+	Resolves: bug 364443
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTCommandLauncher.java (RDTCommandLauncher): Add
+	URI parameter. 
+	(getErrorMessage): Add override declaration/
+	(execute): Ditto. 
+	(waitAndRead): Ditto. 
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTFileProxy.java (RDTFileProxy): Add URI
+	parameter. 
+	(initialize): Ditto.
+	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java (getFileProxy): Add API taking URI. 
+	(getLauncher): Ditto.
+	(getOS): Ditto.
+	
 2011-11-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java (getOS): Hard-code to return "Linux" for
