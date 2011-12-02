@@ -32,7 +32,7 @@ public class PMSymbol extends TreeParent {
 		this.percent = pc;
 	}
 	public void addChild(TreeParent child) {
-		//TODO clean this up, this is a bit hacky. TreePercentable should be changed to an interface and the add/remove-child percent methods should be moved to TreeParent 
+		//TODO clean this up, this is a bit improper. TreePercentable should be changed to an interface and the add/remove-child percent methods should be moved to TreeParent
 		float tmp = percent;
 		super.addChild(child);
 		percent = tmp;
