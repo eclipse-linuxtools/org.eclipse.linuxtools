@@ -27,7 +27,10 @@ public class LinuxtoolsPathProperty {
 		ScopedPreferenceStore store = new ScopedPreferenceStore(
 				new ProjectScope(project),
 				Activator.PLUGIN_ID);
-		boolean systemPathSelected = store.getBoolean(LINUXTOOLS_PATH_SYSTEM_NAME);
+
+		//If the value is not stored we use the default that is True
+		boolean systemPathSelected = !store.contains(LINUXTOOLS_PATH_SYSTEM_NAME) ||
+				store.getBoolean(LINUXTOOLS_PATH_SYSTEM_NAME);
 		if (systemPathSelected)
 			return LINUXTOOLS_PATH_DEFAULT;
 
