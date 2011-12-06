@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  org.eclipse.ui;bundle-version="3.4.0",
- org.eclipse.linuxtools.tools.launch.core;bundle-version="0.8.0"
+ org.eclipse.linuxtools.tools.launch.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: oprofile-core.jar
 Bundle-ActivationPolicy: lazy

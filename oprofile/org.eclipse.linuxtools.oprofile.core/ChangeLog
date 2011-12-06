@@ -1,3 +1,27 @@
+2011-12-04  Rafael Teixeira <rafaelmt@linux.vnet.ibm.com>
+
+	* META-INF/MANIFEST.MF:  Add org.eclipse.linuxtools.tools.launch.core
+		to required bundles.
+	* op_error_key: Add error key opcontrolSudo
+	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java: Add currentPath
+		to allow profiling using the Linux Tools path that's set for the
+		current project.
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java:
+		Use RuntimeProcessFactory to get Linux Tools path if it's set for
+		the current project.
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java:
+		Use RuntimeProcessFactory to get Linux Tools path if it's set for
+		the current project.
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties:
+		Add error message for executing Oprofile with a different Linux
+		Tools path without putting opcontrol in the sudoers file.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java:
+		Use RuntimeProcessFactory to get Linux Tools path if it's set for
+		the current project.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/InfoAdapter.java:
+		Use RuntimeProcessFactory to get Linux Tools path if it's set for
+		the current project.
+
 2011-09-28  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/InfoAdapter.java
