@@ -17,7 +17,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
@@ -72,24 +71,26 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
 		float d = getPercentage(item.getData());
 		int percent = (int) (d + 0.5);
 		GC gc = event.gc;
-		Color foreground = gc.getForeground();
-		Color background = gc.getBackground();
-		gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
-		gc.setBackground(display.getSystemColor(SWT.COLOR_YELLOW));
 		int width = (widthcol - 1) * percent / 100;
 		if (width > 0){
-			gc.fillGradientRectangle(event.x, event.y, width, event.height, true);					
-			Rectangle rect = new Rectangle(event.x, event.y, width-1, event.height-1);
-			gc.drawRectangle(rect);
+			Color background = gc.getBackground();
+			int alpha = gc.getAlpha();
+			gc.setAlpha(128);
+			gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+			gc.fillRectangle(event.x, event.y, width, event.height);
+			gc.setBackground(display.getSystemColor(SWT.COLOR_LIST_SELECTION));
+			gc.fillRectangle(event.x, event.y, width, event.height);
+			gc.setAlpha(alpha);
+			gc.setBackground(background);
 		}
-		gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
 		String text = "%";
 		text =  (isSettedNumberFormat()?getNumberFormat().format(d):d) + text;
 		Point size = gc.textExtent(text);					
 		int offset = Math.max(0, (event.height - size.y) / 2);
+		Color foreground = gc.getForeground();
+		gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
 		gc.drawText(text, event.x+2, event.y+offset, true);
 		gc.setForeground(foreground);
-		gc.setBackground(background);
 	}
 	
 	public abstract NumberFormat getNumberFormat();
