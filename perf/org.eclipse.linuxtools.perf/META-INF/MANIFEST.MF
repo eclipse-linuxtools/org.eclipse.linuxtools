@@ -1,9 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Perf
+Bundle-Name: %bundleName
+Bundle-Vendor: %bundleProvider
 Bundle-SymbolicName: org.eclipse.linuxtools.perf; singleton:=true
 Bundle-Version: 0.10.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.perf.PerfPlugin
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core;bundle-version="5.1.2",
  org.eclipse.cdt.debug.core;bundle-version="7.1.0",

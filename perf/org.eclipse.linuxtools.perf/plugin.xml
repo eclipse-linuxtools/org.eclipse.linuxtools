@@ -24,7 +24,7 @@
             class="org.eclipse.linuxtools.perf.launch.PerfLaunchShortcut"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.launch.profileshortcut"
-            label="Profile with Perf!"
+            label="Profile with Perf"
             modes="profile">
          <contextualLaunch>
             <enablement>
