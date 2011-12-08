@@ -10,20 +10,18 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.swtchart.Chart;
 
 public class ChartEditor extends EditorPart {
-	protected ChartControl control;
+	protected Chart control;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -58,15 +56,11 @@ public class ChartEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
-		top.setLayout(new GridLayout());
-		top.setLayoutData(new GridData(GridData.FILL_BOTH));
 		ChartEditorInput input = (ChartEditorInput) getEditorInput();
-		Chart chart = input.getChart();
-		control = new ChartControl(top, chart, input.getView(), SWT.NONE);
+		control = new Chart(parent, SWT.FILL);
 	}
 
-	public ChartControl getControl() {
+	public Chart getControl() {
 		return control;
 	}
 	
