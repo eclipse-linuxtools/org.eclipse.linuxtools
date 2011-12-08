@@ -78,22 +78,23 @@ public class HeapChart extends ChartWithAxesImpl {
 
 	protected String xUnits;
 	protected String yUnits;
+	protected double [] time, dataUseful, dataExtra, dataStacks, dataTotal;
 
 	public HeapChart(MassifSnapshot[] snapshots) {
 		TimeUnit timeUnit = snapshots[0].getUnit();
 		long xScaling = getXScaling(snapshots, timeUnit);
 		long yScaling = getYScaling(snapshots);
 
-		double[] time = new double[snapshots.length];
-		double[] dataUseful = new double[snapshots.length];
-		double[] dataExtra = new double[snapshots.length];
-		double[] dataStacks = null;
+		time = new double[snapshots.length];
+		dataUseful = new double[snapshots.length];
+		dataExtra = new double[snapshots.length];
+		dataStacks = null;
 
 		boolean isStack = isStackProfiled(snapshots);
 		if (isStack) {
 			dataStacks = new double[snapshots.length];
 		}
-		double[] dataTotal = new double[snapshots.length];
+		dataTotal = new double[snapshots.length];
 		for (int i = 0; i < snapshots.length; i++) {
 			time[i] = snapshots[i].getTime() / xScaling;
 			dataUseful[i] = snapshots[i].getHeapBytes() / yScaling;
