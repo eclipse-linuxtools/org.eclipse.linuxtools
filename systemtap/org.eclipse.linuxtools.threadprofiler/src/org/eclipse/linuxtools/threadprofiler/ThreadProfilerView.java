@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.internal.WorkbenchPage;
 
 @SuppressWarnings("restriction")
 public class ThreadProfilerView extends SystemTapView {
@@ -40,8 +38,8 @@ public class ThreadProfilerView extends SystemTapView {
 	private static final int DISK_BUFFER = 2;
 	private static final String HIDE = "Hide";
 	private static final String SHOW = "Show";
-	private static final int START_WIDTH = 350;
-	private static final int START_HEIGHT = 200;
+//	private static final int START_WIDTH = 350;
+//	private static final int START_HEIGHT = 200;
 	private static final int START_X_POS = 30;
 	private static final int MAX_REFRESH_RATE = 100;
 	private long lastRefresh = 0l;
@@ -108,12 +106,15 @@ public class ThreadProfilerView extends SystemTapView {
 		threads.clear();
 		segments = 0;
 
-		IViewReference ref = getSite().getPage().
-			findViewReference("org.eclipse.linuxtools.threadprofiler.threadprofilerview");
-		((WorkbenchPage)getSite().getPage()).getActivePerspective().
-			getPresentation().detachPart(ref);
-		currentView.getViewSite().getShell().setSize(START_WIDTH, START_HEIGHT);
-		currentView.getViewSite().getShell().setData(SHELL_ID_PROPERTY, SHELL_ID_VALUE);
+		//FIXME: these following lines do not work on Juno as they are referencing
+		//an internal class that has changed from Indigo to Juno.  Not sure what
+		//this code is attempting.  For now, commenting out.
+//		IViewReference ref = getSite().getPage().
+//			findViewReference("org.eclipse.linuxtools.threadprofiler.threadprofilerview");
+//		((WorkbenchPage)getSite().getPage()).getActivePerspective().
+//			getPresentation().detachPart(ref);
+//		currentView.getViewSite().getShell().setSize(START_WIDTH, START_HEIGHT);
+//		currentView.getViewSite().getShell().setData(SHELL_ID_PROPERTY, SHELL_ID_VALUE);
 		
 		
 		//Create dataSet for CPU
