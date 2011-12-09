@@ -1,3 +1,7 @@
+2011-12-09  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require junit4 to fix build error.
+
 2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testBuildSourceRPMHelloWorld): Adapt to api changes.
