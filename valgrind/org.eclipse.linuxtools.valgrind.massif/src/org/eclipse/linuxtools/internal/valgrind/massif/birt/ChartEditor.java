@@ -11,23 +11,34 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.swtchart.Chart;
 import org.swtchart.ILineSeries;
 import org.swtchart.ILineSeries.PlotSymbolType;
 import org.swtchart.ISeries.SeriesType;
+import org.swtchart.Range;
 
 public class ChartEditor extends EditorPart {
 	protected Chart control;
@@ -65,7 +76,7 @@ public class ChartEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		ChartEditorInput input = (ChartEditorInput) getEditorInput();
+		final ChartEditorInput input = (ChartEditorInput) getEditorInput();
 		control = new Chart(parent, SWT.FILL);
 
 		Color color = new Color(Display.getDefault(), 255, 128, 128);
@@ -73,32 +84,106 @@ public class ChartEditor extends EditorPart {
 		control.setBackground(color);
 		control.setBackgroundInPlotArea(color);
 
-		// titles
 		control.getTitle().setText("Valgrind Title");
 		control.getAxisSet().getXAxis(0).getTitle().setText(input.getChart().xUnits);
 		control.getAxisSet().getYAxis(0).getTitle().setText(input.getChart().yUnits);
 
-		// series
-		ILineSeries lsUseful = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 1");
-		lsUseful.setYSeries(input.getChart().dataUseful);
+		final HeapChart heapChart = input.getChart();
+
+		// x-axis range
+		double min = Double.MAX_VALUE;
+		double max = 0.0;
+		double [] heapChartTime = heapChart.time;
+		for (int i=0; i < heapChartTime.length; i++){
+			if (min > heapChartTime[i]){
+				min = heapChartTime[i];
+			}
+			if (max < heapChartTime[i]){
+				max = heapChartTime[i];
+			}
+		}
+
+		// data
+		final ILineSeries lsUseful = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 1");
+		lsUseful.setXSeries(heapChart.time);
+		lsUseful.setYSeries(heapChart.dataUseful);
 		lsUseful.setSymbolType(PlotSymbolType.DIAMOND);
 
-		ILineSeries lsExtra = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 2");
-		lsExtra.setYSeries(input.getChart().dataExtra);
+		final ILineSeries lsExtra = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 2");
+		lsExtra.setXSeries(heapChart.time);
+		lsExtra.setYSeries(heapChart.dataExtra);
 		lsExtra.setSymbolType(PlotSymbolType.DIAMOND);
 
-		if (input.getChart().dataStacks != null){
-			ILineSeries lsStack = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 3");
-			lsStack.setYSeries(input.getChart().dataStacks);
+		if (heapChart.dataStacks != null){
+			final ILineSeries lsStack = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 3");
+			lsStack.setXSeries(heapChart.time);
+			lsStack.setYSeries(heapChart.dataStacks);
 			lsStack.setSymbolType(PlotSymbolType.DIAMOND);
 		}
 
-		ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 4");
-		lsTotal.setYSeries(input.getChart().dataTotal);
+		final ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 4");
+		lsTotal.setXSeries(heapChart.time);
+		lsTotal.setYSeries(heapChart.dataTotal);
 		lsTotal.setSymbolType(PlotSymbolType.DIAMOND);
 
 		// adjust axes
 		control.getAxisSet().adjustRange();
+		control.getAxisSet().getXAxis(0).setRange(new Range(min, max + 1.0));
+
+		// listeners
+		control.getPlotArea().addMouseListener(new MouseListener() {
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			public void mouseDown(MouseEvent e) {
+				showView();
+				TableViewer viewer = input.getView().getTableViewer();
+				input.getView().setTopControl(viewer.getControl());				
+
+				Point p = new Point(e.x, e.y);
+//				System.out.println(e.x + " " + e.y);
+
+				int closest = 0;
+				double d1, d2, d3, currMin;
+				double globalMin = Double.MAX_VALUE;
+				for (int i = 0; i < heapChart.time.length; i++){
+					// get distance from click event to data points for the given index
+					d1 = distance(lsUseful.getPixelCoordinates(i), p);
+					d2 = distance(lsExtra.getPixelCoordinates(i), p);
+					d3 = distance(lsTotal.getPixelCoordinates(i), p);
+					// find the closest data point to the click event
+					currMin = Math.min(Math.min(d1, d2), d3);
+					if (currMin < globalMin){
+						closest = i;
+						globalMin = currMin;
+					}
+				}
+
+//				System.out.println(lsUseful.getPixelCoordinates(closest));
+//				System.out.println(lsExtra.getPixelCoordinates(closest));
+//				System.out.println(lsTotal.getPixelCoordinates(closest));
+
+				MassifSnapshot snapshot = (MassifSnapshot) viewer.getElementAt(closest);
+				viewer.setSelection(new StructuredSelection(snapshot));
+
+				if (e.count == 2 && snapshot.isDetailed()) {
+					ChartLocationsDialog dialog = new ChartLocationsDialog(Display.getCurrent().getActiveShell());
+					dialog.setInput(snapshot);
+
+					if (dialog.open() == Window.OK) {
+						dialog.openEditorForResult();
+					}
+				}
+
+			}
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+		});
 
 		/*Display dsp = Display.getCurrent();
 		GC gc = new GC(control);
@@ -114,18 +199,42 @@ public class ChartEditor extends EditorPart {
 	public Chart getControl() {
 		return control;
 	}
-	
+
 	@Override
 	public void setFocus() {
 		if (control != null) {
 			control.setFocus();
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
 		control.dispose();
 	}
+
+
+    /**
+     * Shows the Valgrind view in the active page and gives it focus.
+     */
+    public void showView() {
+            Display.getDefault().syncExec(new Runnable() {
+                    public void run() {
+                            try {
+                                    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                                    activePage.showView(ValgrindUIConstants.VIEW_ID);
+                            } catch (PartInitException e) {
+                                    e.printStackTrace();
+                            }
+                    }
+            });
+    }
+
+    /**
+     * Calculate Euclidean distance between two points (R2).
+     */
+    private double distance (Point p1, Point p2) {
+    	return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
 
 }
