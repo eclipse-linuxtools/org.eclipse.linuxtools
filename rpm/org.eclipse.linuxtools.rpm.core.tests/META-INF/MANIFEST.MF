@@ -8,5 +8,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.rpm.core,
  org.eclipse.core.resources,
- org.junit4
+ org.junit
 Export-Package: org.eclipse.linuxtools.rpm.core.tests
