@@ -72,14 +72,18 @@ public class PerfCore {
 		HashMap<String,ArrayList<String>> events = new HashMap<String,ArrayList<String>>();
 		Process p = null;
 		BufferedReader input = null;
-		BufferedReader error = null;
 		try {
 			// Alternatively can try with -i flag
 			p = Runtime.getRuntime().exec("perf list"); //(char 1 as -t is a custom field seperator						
 			p.waitFor();
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			spitStream(error,"Perf Report (eventsList) STDERR", null);
+			/*
+			 * Old versions of Perf will send events list to stderr instead of stdout
+			 * Checking if stdout is empty then read from stderr
+			 */
+			if ( ! input.ready() )
+				input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
 		} catch( IOException e ) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
