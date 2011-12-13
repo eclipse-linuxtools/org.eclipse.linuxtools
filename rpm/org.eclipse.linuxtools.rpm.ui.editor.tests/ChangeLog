@@ -1,7 +1,3 @@
-2011-12-09  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* META-INF/MANIFEST.MF: Switch import to junit4 to remove build error.
-
 2011-03-29  Andrew Overholt  <overholt@redhat.com>
 
 	* pom.xml: Let Tycho figure out which tests to run.
