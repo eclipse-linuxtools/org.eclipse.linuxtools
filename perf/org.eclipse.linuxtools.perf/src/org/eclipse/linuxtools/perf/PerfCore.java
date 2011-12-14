@@ -178,8 +178,19 @@ public class PerfCore {
 				}
 				if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default))
 					base.add("-m");
+				
+				/*
+				 * danielhb, 12/14/2011 - some systems, like ubuntu and sles, does not have
+				 * the -U option. The binary fails to execute in those systems when this
+				 * option is enabled. 
+				 * I'm disabling it to make the plug-in runnable for them. This
+				 * will probably need to be revisited in the future, probably when this
+				 * flag is implemented by the Perf binary of those systems.
+				 */
+				/*
 				if (config.getAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default))
 					base.add("-U");
+				*/
 				if (perfDataLoc != null) {
 					base.add("-i");
 					base.add(perfDataLoc);
