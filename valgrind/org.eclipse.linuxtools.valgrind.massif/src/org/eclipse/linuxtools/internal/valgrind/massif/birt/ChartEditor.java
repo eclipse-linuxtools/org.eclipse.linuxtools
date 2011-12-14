@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
@@ -21,6 +22,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -35,9 +38,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.swtchart.Chart;
+import org.swtchart.IAxis;
+import org.swtchart.IAxisSet;
 import org.swtchart.ILineSeries;
 import org.swtchart.ILineSeries.PlotSymbolType;
 import org.swtchart.ISeries.SeriesType;
+import org.swtchart.IAxis;
+import org.swtchart.ITitle;
+import org.swtchart.LineStyle;
 import org.swtchart.Range;
 
 public class ChartEditor extends EditorPart {
@@ -77,58 +85,96 @@ public class ChartEditor extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		final ChartEditorInput input = (ChartEditorInput) getEditorInput();
+		final HeapChart heapChart = input.getChart();
 		control = new Chart(parent, SWT.FILL);
 
-		Color color = new Color(Display.getDefault(), 255, 128, 128);
+		final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
+		final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+		final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+		final Color RED = new Color(Display.getDefault(), 255, 0, 0);
+		final Color ORANGE = new Color(Display.getDefault(), 255, 165, 0);
+		final Color GREEN = new Color(Display.getDefault(), 0, 255, 0);
 
-		control.setBackground(color);
-		control.setBackgroundInPlotArea(color);
+		control.setBackground(WHITE);
+		control.setBackgroundInPlotArea(LIGHTYELLOW);
 
-		control.getTitle().setText("Valgrind Title");
-		control.getAxisSet().getXAxis(0).getTitle().setText(input.getChart().xUnits);
-		control.getAxisSet().getYAxis(0).getTitle().setText(input.getChart().yUnits);
+		FontData fd = JFaceResources.getDialogFont().getFontData()[0];
+		fd.setStyle(SWT.BOLD);
 
-		final HeapChart heapChart = input.getChart();
+		Font font = new Font(Display.getDefault(), fd);
+		fd.setHeight(fd.getHeight() + 2);
+		Font titleFont = new Font(Display.getDefault(), fd);
 
-		// x-axis range
-		double min = Double.MAX_VALUE;
-		double max = 0.0;
-		double [] heapChartTime = heapChart.time;
-		for (int i=0; i < heapChartTime.length; i++){
-			if (min > heapChartTime[i]){
-				min = heapChartTime[i];
-			}
-			if (max < heapChartTime[i]){
-				max = heapChartTime[i];
-			}
-		}
+		ITitle title = control.getTitle();
+		title.setFont(titleFont);
+		title.setForeground(BLACK);
+		title.setText(heapChart.title);
+
+		IAxis xAxis = control.getAxisSet().getXAxis(0);
+		xAxis.getGrid().setStyle(LineStyle.NONE);
+		xAxis.getTick().setForeground(BLACK);
+		ITitle xTitle = xAxis.getTitle();
+		xTitle.setFont(font);
+		xTitle.setForeground(BLACK);
+		xTitle.setText(heapChart.xUnits);
+
+		IAxis yAxis = control.getAxisSet().getYAxis(0);
+		yAxis.getGrid().setStyle(LineStyle.SOLID);
+		yAxis.getTick().setForeground(BLACK);
+		ITitle yTitle = yAxis.getTitle();
+		yTitle.setFont(font);
+		yTitle.setText(heapChart.yUnits);
+		yTitle.setForeground(BLACK);
+
+		control.getLegend().setPosition(SWT.BOTTOM);
 
 		// data
-		final ILineSeries lsUseful = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 1");
+		final ILineSeries lsUseful = (ILineSeries) control.getSeriesSet().
+				createSeries(SeriesType.LINE, Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$);
 		lsUseful.setXSeries(heapChart.time);
 		lsUseful.setYSeries(heapChart.dataUseful);
 		lsUseful.setSymbolType(PlotSymbolType.DIAMOND);
+		lsUseful.setSymbolColor(RED);
+		lsUseful.setLineColor(RED);
 
-		final ILineSeries lsExtra = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 2");
+		final ILineSeries lsExtra = (ILineSeries) control.getSeriesSet().
+				createSeries(SeriesType.LINE, Messages.getString("HeapChart.Extra_Heap")); //$NON-NLS-1$);
 		lsExtra.setXSeries(heapChart.time);
 		lsExtra.setYSeries(heapChart.dataExtra);
 		lsExtra.setSymbolType(PlotSymbolType.DIAMOND);
+		lsExtra.setSymbolColor(ORANGE);
+		lsExtra.setLineColor(ORANGE);
 
 		if (heapChart.dataStacks != null){
-			final ILineSeries lsStack = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 3");
+			final ILineSeries lsStack = (ILineSeries) control.getSeriesSet().
+					createSeries(SeriesType.LINE, Messages.getString("HeapChart.Stacks")); //$NON-NLS-1$);
 			lsStack.setXSeries(heapChart.time);
 			lsStack.setYSeries(heapChart.dataStacks);
 			lsStack.setSymbolType(PlotSymbolType.DIAMOND);
+			lsUseful.setSymbolColor(RED);
+			lsUseful.setLineColor(RED);
 		}
 
-		final ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().createSeries(SeriesType.LINE, "line 4");
+		final ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().
+				createSeries(SeriesType.LINE, Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$);
 		lsTotal.setXSeries(heapChart.time);
 		lsTotal.setYSeries(heapChart.dataTotal);
 		lsTotal.setSymbolType(PlotSymbolType.DIAMOND);
+		lsTotal.setSymbolColor(GREEN);
+		lsTotal.setLineColor(GREEN);
 
 		// adjust axes
 		control.getAxisSet().adjustRange();
-		control.getAxisSet().getXAxis(0).setRange(new Range(min, max + 1.0));
+
+		IAxisSet axisSet = control.getAxisSet();
+		Range xRange = axisSet.getXAxis(0).getRange();
+		Range yRange = axisSet.getYAxis(0).getRange();
+
+		double xExtra = 0.05 * (xRange.upper - xRange.lower);
+		double yExtra = 0.05 * (yRange.upper - yRange.lower);
+
+		axisSet.getXAxis(0).setRange(new Range(xRange.lower, xRange.upper + xExtra));
+		axisSet.getYAxis(0).setRange(new Range(yRange.lower, yRange.upper + yExtra));
 
 		// listeners
 		control.getPlotArea().addMouseListener(new MouseListener() {
@@ -143,7 +189,6 @@ public class ChartEditor extends EditorPart {
 				input.getView().setTopControl(viewer.getControl());				
 
 				Point p = new Point(e.x, e.y);
-//				System.out.println(e.x + " " + e.y);
 
 				int closest = 0;
 				double d1, d2, d3, currMin;
@@ -160,10 +205,6 @@ public class ChartEditor extends EditorPart {
 						globalMin = currMin;
 					}
 				}
-
-//				System.out.println(lsUseful.getPixelCoordinates(closest));
-//				System.out.println(lsExtra.getPixelCoordinates(closest));
-//				System.out.println(lsTotal.getPixelCoordinates(closest));
 
 				MassifSnapshot snapshot = (MassifSnapshot) viewer.getElementAt(closest);
 				viewer.setSelection(new StructuredSelection(snapshot));

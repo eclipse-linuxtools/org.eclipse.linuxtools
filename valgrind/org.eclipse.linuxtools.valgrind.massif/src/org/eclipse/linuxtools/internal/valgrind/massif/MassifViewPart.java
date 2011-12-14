@@ -250,8 +250,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				ChartEditorInput currentInput = getChartInput(pid);
 				String path = getChartSavePath(currentInput.getName() + ".svg"); //$NON-NLS-1$
 				if (path != null) {
-					ChartSVG renderer = new ChartSVG(currentInput.getChart(), MassifViewPart.this);
-					renderer.renderSVG(Path.fromOSString(path));
+					/**
+					 * TODO : Implement this
+					 */
+//					ChartSVG renderer = new ChartSVG(currentInput.getChart(), MassifViewPart.this);
+//					renderer.renderSVG(Path.fromOSString(path));
 				}
 			}
 		};
@@ -294,9 +297,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	protected void createChart(MassifSnapshot[] snapshots) {
-		HeapChart chart = new HeapChart(snapshots);
 		String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
-		chart.getTitle().getLabel().getCaption().setValue(title);
+		HeapChart chart = new HeapChart(snapshots, title);
 
 		String name = getInputName(title);
 		ChartEditorInput input = new ChartEditorInput(chart, this, name, pid);
