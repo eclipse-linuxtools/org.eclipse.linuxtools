@@ -44,7 +44,7 @@ public class HeapChart {
 	protected String title;
 	protected String xUnits;
 	protected String yUnits;
-	protected double [] time, dataUseful, dataExtra, dataStacks, dataTotal;
+	public double [] time, dataUseful, dataExtra, dataStacks, dataTotal;
 
 	public HeapChart(MassifSnapshot[] snapshots, String title) {
 		TimeUnit timeUnit = snapshots[0].getUnit();

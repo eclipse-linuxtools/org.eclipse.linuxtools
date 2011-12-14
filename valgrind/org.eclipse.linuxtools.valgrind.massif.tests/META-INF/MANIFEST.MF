@@ -36,5 +36,6 @@ Import-Package: org.eclipse.birt.chart.computation,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
- org.eclipse.ui.texteditor
+ org.eclipse.ui.texteditor,
+ org.swtchart
 Export-Package: org.eclipse.linuxtools.internal.valgrind.massif.tests
