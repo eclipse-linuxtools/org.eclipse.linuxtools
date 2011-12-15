@@ -57,21 +57,21 @@
       <specification
       		annotationType="org.eclipse.linuxtools.valgrind.annotation.error"
             label="%marker.editor.error"
-            icon="icons/valgrind-error.gif"
-            quickFixIcon="icons/valgrind_error.gif"
+            icon="icons/valgrind-error.png"
+            quickFixIcon="icons/valgrind_error.png"
             presentationLayer="6">
       </specification>
             <specification
       		annotationType="org.eclipse.linuxtools.valgrind.annotation.warning"
             label="%marker.editor.warning"
-            icon="icons/valgrind-warning.gif"
-            quickFixIcon="icons/valgrind_warning.gif"
+            icon="icons/valgrind-warning.png"
+            quickFixIcon="icons/valgrind_warning.png"
             presentationLayer="5">
       </specification>
             <specification
       		annotationType="org.eclipse.linuxtools.valgrind.annotation.info"
             label="%marker.editor.info"
-            icon="icons/valgrind-info.gif"
+            icon="icons/valgrind-info.png"
             presentationLayer="4">
       </specification>
          </extension>

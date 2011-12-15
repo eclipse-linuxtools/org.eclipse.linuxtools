@@ -54,8 +54,10 @@ public class CoreMessagesViewer {
 
 	static ImageRegistry imageRegistry = new ImageRegistry();
 
-	public static final String VALGRIND_ERROR = "Valgrind_Errore"; //$NON-NLS-1$
-	public static final String VALGRIND_ERROR_IMAGE = "icons/valgrind-error.gif"; //$NON-NLS-1$
+	public static final String VALGRIND_ERROR = "Valgrind_Error"; //$NON-NLS-1$
+	public static final String VALGRIND_INFO = "Valgrind_Info"; //$NON-NLS-1$
+	public static final String VALGRIND_ERROR_IMAGE = "icons/valgrind-error.png"; //$NON-NLS-1$
+	public static final String VALGRIND_INFO_IMAGE = "icons/valgrind-info.png"; //$NON-NLS-1$
 	public IDoubleClickListener doubleClickListener;
 	public ITreeContentProvider contentProvider;
 	public IAction expandAction;
@@ -68,8 +70,15 @@ public class CoreMessagesViewer {
 		viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		if (imageRegistry.getDescriptor(VALGRIND_ERROR) == null) {
 			ImageDescriptor d = ValgrindUIPlugin.getImageDescriptor(VALGRIND_ERROR_IMAGE);
-			if (d != null)
+			if (d != null) {
 				imageRegistry.put(VALGRIND_ERROR, d);
+			}
+		}
+		if (imageRegistry.getDescriptor(VALGRIND_INFO) == null) {
+			ImageDescriptor d = ValgrindUIPlugin.getImageDescriptor(VALGRIND_INFO_IMAGE);
+			if (d != null) {
+				imageRegistry.put(VALGRIND_INFO, d);
+			}
 		}
 		contentProvider = new ITreeContentProvider() {
 
@@ -116,7 +125,7 @@ public class CoreMessagesViewer {
 					image = imageRegistry.get(VALGRIND_ERROR);
 				}
 				else {
-					image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+					image = imageRegistry.get(VALGRIND_INFO);
 				}
 				return image;
 			}
