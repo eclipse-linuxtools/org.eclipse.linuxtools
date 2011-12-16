@@ -1,3 +1,10 @@
+2011-12-16  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java
+		(static initializer): In some cases we may have no project to set
+		but we may still need to have the oprofile module loaded. In these
+		cases allow loading, if possible.
+
 2011-12-04  Rafael Teixeira <rafaelmt@linux.vnet.ibm.com>
 
 	* META-INF/MANIFEST.MF:  Add org.eclipse.linuxtools.tools.launch.core

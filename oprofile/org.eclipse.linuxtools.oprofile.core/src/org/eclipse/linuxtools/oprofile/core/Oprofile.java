@@ -45,9 +45,7 @@ public class Oprofile
 	
 	// Make sure that oprofile is ready to go
 	static {
-		if(_currentProject != null){
-			initializeOprofileModule();
-		}
+		initializeOprofileModule();
 	}
 	
 	/**
