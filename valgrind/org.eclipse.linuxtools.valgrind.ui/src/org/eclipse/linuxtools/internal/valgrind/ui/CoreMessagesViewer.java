@@ -55,8 +55,14 @@ public class CoreMessagesViewer {
 	static ImageRegistry imageRegistry = new ImageRegistry();
 
 	public static final String VALGRIND_ERROR = "Valgrind_Error"; //$NON-NLS-1$
+	/**
+	 * @since 0.10
+	 */
 	public static final String VALGRIND_INFO = "Valgrind_Info"; //$NON-NLS-1$
 	public static final String VALGRIND_ERROR_IMAGE = "icons/valgrind-error.png"; //$NON-NLS-1$
+	/**
+	 * @since 0.10
+	 */
 	public static final String VALGRIND_INFO_IMAGE = "icons/valgrind-info.png"; //$NON-NLS-1$
 	public IDoubleClickListener doubleClickListener;
 	public ITreeContentProvider contentProvider;
