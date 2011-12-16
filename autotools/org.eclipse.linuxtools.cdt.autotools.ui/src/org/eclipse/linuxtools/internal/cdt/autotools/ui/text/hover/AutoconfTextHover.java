@@ -158,7 +158,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						URI uri = new URI(getLocalAutoconfMacrosDocName(acDocVer));
 						IPath p = URIUtil.toPath(uri);
 						// Try to open the file as local to this plug-in.
-						docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
+						docStream = FileLocator.openStream(AutotoolsUIPlugin.getDefault().getBundle(), p, false);
 					} catch (IOException e) {
 						// Local open failed.  Try normal external location.
 						URI acDoc = new URI(getAutoconfMacrosDocName(acDocVer));
@@ -219,7 +219,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						URI uri = new URI(getLocalAutomakeMacrosDocName(amDocVer));
 						IPath p = URIUtil.toPath(uri);
 						// Try to open the file as local to this plug-in.
-						docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
+						docStream = FileLocator.openStream(AutotoolsUIPlugin.getDefault().getBundle(), p, false);
 					} catch (IOException e) {
 						// Local open failed.  Try normal external location.
 						URI acDoc = new URI(getAutomakeMacrosDocName(amDocVer));
@@ -340,7 +340,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 								NamedNodeMap parms = v.getAttributes();
 								Node parmNode = parms.item(0);
 								String parm = parmNode.getNodeValue();
-								if (prototype.equals(""))
+								if (prototype.toString().equals(""))
 									prototype.append(parm);
 								else
 									prototype.append(", " + parm);
