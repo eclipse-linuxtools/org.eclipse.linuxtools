@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.eclipse.linuxtools.valgrind.launch" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter comment="Pre-1.0 we just bumped the minor (major for &lt; 1.0) version to 10 from 9" id="923795461">
+            <message_arguments>
+                <message_argument value="0.10.0"/>
+                <message_argument value="0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
