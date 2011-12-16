@@ -248,13 +248,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				ChartEditorInput currentInput = getChartInput(pid);
-				String path = getChartSavePath(currentInput.getName() + ".svg"); //$NON-NLS-1$
+				String path = getChartSavePath(currentInput.getName() + ".png"); //$NON-NLS-1$
 				if (path != null) {
-					/**
-					 * TODO : Implement this
-					 */
-//					ChartSVG renderer = new ChartSVG(currentInput.getChart(), MassifViewPart.this);
-//					renderer.renderSVG(Path.fromOSString(path));
+					ChartSVG renderer = new ChartSVG(currentInput.getChart());
+					renderer.renderSVG(Path.fromOSString(path));
 				}
 			}
 		};
@@ -290,7 +287,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		FileDialog dialog = new FileDialog(parent, SWT.SAVE);
 		dialog.setText(Messages.getString("MassifViewPart.Save_chart_dialog_title")); //$NON-NLS-1$
 		dialog.setOverwrite(true);
-		dialog.setFilterExtensions(new String[] { ".svg" }); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[] { ".png" }); //$NON-NLS-1$
 		dialog.setFileName(defaultName);
 
 		return dialog.open();

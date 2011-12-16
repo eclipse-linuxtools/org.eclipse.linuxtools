@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.TimeUnit;
+import org.eclipse.swt.widgets.Composite;
 
 public class HeapChart {
 
@@ -45,6 +46,7 @@ public class HeapChart {
 	protected String xUnits;
 	protected String yUnits;
 	public double [] time, dataUseful, dataExtra, dataStacks, dataTotal;
+	private Composite chartControl;
 
 	public HeapChart(MassifSnapshot[] snapshots, String title) {
 		TimeUnit timeUnit = snapshots[0].getUnit();
@@ -163,6 +165,14 @@ public class HeapChart {
 
 	public static String[] getSecondUnits() {
 		return secondUnits;
+	}
+
+	public void setChartControl(Composite control) {
+		chartControl = control;
+	}
+
+	public Composite getChartControl (){
+		return chartControl;
 	}
 
 }

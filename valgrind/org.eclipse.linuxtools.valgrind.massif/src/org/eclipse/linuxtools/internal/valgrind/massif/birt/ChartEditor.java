@@ -24,10 +24,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -43,7 +39,6 @@ import org.swtchart.IAxisSet;
 import org.swtchart.ILineSeries;
 import org.swtchart.ILineSeries.PlotSymbolType;
 import org.swtchart.ISeries.SeriesType;
-import org.swtchart.IAxis;
 import org.swtchart.ITitle;
 import org.swtchart.LineStyle;
 import org.swtchart.Range;
@@ -87,6 +82,7 @@ public class ChartEditor extends EditorPart {
 		final ChartEditorInput input = (ChartEditorInput) getEditorInput();
 		final HeapChart heapChart = input.getChart();
 		control = new Chart(parent, SWT.FILL);
+		heapChart.setChartControl(control);
 
 		final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
 		final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
@@ -225,15 +221,6 @@ public class ChartEditor extends EditorPart {
 			}
 
 		});
-
-		/*Display dsp = Display.getCurrent();
-		GC gc = new GC(control);
-		Image img = new Image(dsp, 640, 480);
-		gc.copyArea(img, 0, 0);
-		gc.dispose();
-		ImageLoader imageLoader = new ImageLoader();
-		imageLoader.data = new ImageData[] {img.getImageData()};
-		imageLoader.save("/home/rgrunber/Desktop/test.jpg",SWT.IMAGE_JPEG);*/
 
 	}
 

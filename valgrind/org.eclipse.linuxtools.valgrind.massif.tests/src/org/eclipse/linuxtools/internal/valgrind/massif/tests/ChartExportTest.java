@@ -12,12 +12,12 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import java.io.File;
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartSVG;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 
@@ -50,9 +50,9 @@ public class ChartExportTest extends AbstractMassifTest {
 		
 		IEditorInput input = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getEditorInput();
 		if (input instanceof ChartEditorInput) {
-			Chart chart = ((ChartEditorInput) input).getChart();
+			HeapChart chart = ((ChartEditorInput) input).getChart();
 			
-			ChartSVG svg = new ChartSVG(chart, ((ChartEditorInput) input).getView());
+			ChartSVG svg = new ChartSVG(chart);
 			svg.renderSVG(svgPath);
 			
 			File chartFile = svgPath.toFile();

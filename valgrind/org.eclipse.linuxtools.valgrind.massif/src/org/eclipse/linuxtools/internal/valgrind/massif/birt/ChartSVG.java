@@ -11,97 +11,42 @@
  ***********************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
-import org.eclipse.birt.chart.computation.DataPointHints;
-import org.eclipse.birt.chart.device.ICallBackNotifier;
-import org.eclipse.birt.chart.device.IDeviceRenderer;
-import org.eclipse.birt.chart.event.WrappedStructureSource;
-import org.eclipse.birt.chart.exception.ChartException;
-import org.eclipse.birt.chart.factory.GeneratedChartState;
-import org.eclipse.birt.chart.factory.Generator;
-import org.eclipse.birt.chart.factory.RunTimeContext;
-import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.attribute.Bounds;
-import org.eclipse.birt.chart.model.attribute.CallBackValue;
-import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
-import org.eclipse.birt.chart.util.PluginSettings;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
-import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class ChartSVG implements ICallBackNotifier {
+public class ChartSVG {
 
-	protected Chart cm = null;
-	protected GeneratedChartState state = null;
-	protected IDeviceRenderer deviceRenderer = null;
+	protected HeapChart cm = null;
 	
-	private MassifViewPart view;
-
-	public ChartSVG(Chart chart, MassifViewPart view) {
-		this.view = view;
+	public ChartSVG(HeapChart chart) {
 		cm = chart;
 	}
 
 	public void renderSVG(IPath svgPath) {
-		try {
-			RunTimeContext rtc = new RunTimeContext();
-			
-			deviceRenderer = PluginSettings.instance().getDevice("dv.SVG"); //$NON-NLS-1$
-			Generator gr = Generator.instance();
-			Bounds bo = BoundsImpl.create(0, 0, 800, 600);
-			state = gr.build(deviceRenderer.getDisplayServer(), cm, bo, null,
-					rtc, null);
-			deviceRenderer.setProperty(IDeviceRenderer.FILE_IDENTIFIER, svgPath
-					.toOSString());
-			deviceRenderer.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, this);
-
-			gr.render(deviceRenderer, state);
-		} catch (ChartException e) {
-			e.printStackTrace();
-		}
+		Composite comp = cm.getChartControl();
+		Display dsp = Display.getCurrent();
+		GC gc = new GC(comp);
+		Image img = new Image(dsp, comp.getSize().x, comp.getSize().y);
+		gc.copyArea(img, 0, 0);
+		gc.dispose();
+		ImageLoader imageLoader = new ImageLoader();
+		imageLoader.data = new ImageData[] {img.getImageData()};
+		imageLoader.save(svgPath.toOSString(), SWT.IMAGE_PNG);
 	}
 
-	public void callback(Object event, Object source, CallBackValue value) {
-		// give Valgrind view focus
-		showView();
-		MouseEvent mEvent = (MouseEvent) event;
-		
-		DataPointHints point = ((DataPointHints)((WrappedStructureSource)source).getSource());
-		// select the corresponding snapshot in the TableViewer
-		TableViewer viewer = view.getTableViewer();
-		view.setTopControl(viewer.getControl());
-		
-		MassifSnapshot snapshot = (MassifSnapshot) viewer.getElementAt(point.getIndex());
-		
-		switch (mEvent.count) {
-		case 1: // single click
-			viewer.setSelection(new StructuredSelection(snapshot));
-			break;
-		case 2: // double click
-//			if (snapshot.isDetailed()) {
-//				ChartLocationsDialog dialog = new ChartLocationsDialog(getShell());
-//				dialog.setInput(snapshot);
-//				
-//				if (dialog.open() == Window.OK) {
-//					dialog.openEditorForResult();
-//				}				
-//			}
-		}
-	}
-
-	public Chart getDesignTimeModel() {
+	public HeapChart getDesignTimeModel() {
 		return cm;
-	}
-
-	public Chart getRunTimeModel() {
-		return state.getChartModel();
 	}
 
 	public Object peerInstance() {
