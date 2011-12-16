@@ -22,7 +22,7 @@
    </url>
 
    <plugin
-         id="org.eclipse.linuxtools.gcov"
+         id="org.eclipse.linuxtools.gcov.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
