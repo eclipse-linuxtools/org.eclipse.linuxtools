@@ -1,3 +1,9 @@
+2011-12-17 Otavio Pontes <obusatto@br.ibm.com>
+
+	Related to bug #353056
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchPlugin.java:
+	Changing the visibility of getValgrindCommand back to protected
+	
 2011-10-05 Otavio Pontes <obusatto@br.ibm.com>
 
 	Related to bug #353056

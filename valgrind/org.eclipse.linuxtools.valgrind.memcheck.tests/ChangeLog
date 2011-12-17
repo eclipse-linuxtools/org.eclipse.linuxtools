@@ -1,3 +1,10 @@
+2011-12-17 Otavio Pontes <obusatto@br.ibm.com>
+	
+	Related to bug #353056
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/MinVersionTest.java:
+	Improving tests to avoid using getValgrindCommand method from
+	valgrind.launch plugin
+
 2011-10-05 Otavio Pontes <obusatto@br.ibm.com>
 	
 	Related to bug #353056

@@ -148,7 +148,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	/**
 	 * @since 0.10
 	 */
-	public ValgrindCommand getValgrindCommand() {
+	protected ValgrindCommand getValgrindCommand() {
 		if (valgrindCommand == null) {
 			valgrindCommand = new ValgrindCommand();
 		}

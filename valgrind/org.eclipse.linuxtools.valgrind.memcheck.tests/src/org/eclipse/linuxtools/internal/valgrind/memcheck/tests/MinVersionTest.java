@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 public class MinVersionTest extends AbstractMemcheckTest {
-	private ValgrindCommand valgrindSave;
 
 	class ValgrindIncorrectVersion extends ValgrindStubCommand {
 		@Override
@@ -42,7 +41,6 @@ public class MinVersionTest extends AbstractMemcheckTest {
 	}
 
 	private void saveVersion() throws CoreException {
-		valgrindSave = ValgrindLaunchPlugin.getDefault().getValgrindCommand();
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(new ValgrindIncorrectVersion());
 	}
 	
@@ -55,7 +53,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
 	}
 
 	private void restoreVersion() {
-		ValgrindLaunchPlugin.getDefault().setValgrindCommand(valgrindSave);
+		ValgrindLaunchPlugin.getDefault().setValgrindCommand(new ValgrindCommand());
 	}
 		
 	public void testLaunchBadVersion() throws Exception {
