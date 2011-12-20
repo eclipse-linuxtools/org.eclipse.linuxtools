@@ -11,11 +11,14 @@
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindInfo;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
@@ -24,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -75,6 +79,11 @@ public class ValgrindViewPart extends ViewPart {
 
 		// remove tool specific toolbar controls
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+		ToolBar tb = ((ToolBarManager) toolbar).getControl();
+		if (tb == null || tb.isDisposed()) {
+			throw new CoreException(new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, "Toolbar is disposed"));
+		}
+		
 		if (dynamicActions != null) {
 			for (ActionContributionItem item : dynamicActions) {
 				toolbar.remove(item);
@@ -128,6 +137,8 @@ public class ValgrindViewPart extends ViewPart {
 		
 		menu.update(true);		
 		toolbar.update(true);
+		// Update to notify the workbench items have been changed
+		getViewSite().getActionBars().updateActionBars();
 		dynamicViewHolder.layout(true);
 
 		return dynamicView;
@@ -173,6 +184,10 @@ public class ValgrindViewPart extends ViewPart {
 		if (dynamicView != null) {
 			dynamicView.dispose();
 		}
+		
+		// Unset this view in the UI plugin
+		ValgrindUIPlugin.getDefault().setView(null);
+		
 		super.dispose();
 	}
 

@@ -91,6 +91,8 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 				try {
 					activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					activePage.showView(ValgrindUIConstants.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
+					// Bug #366831 Need to show the view otherwise the toolbar is disposed.
+					activePage.showView(ValgrindUIConstants.VIEW_ID);
 
 					// create the view's tool specific controls and populate content description
 					view.createDynamicContent(contentDescription, toolID);
