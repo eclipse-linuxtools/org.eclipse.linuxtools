@@ -1,3 +1,10 @@
+2011-12-21  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java
+		(getUnitMaskType): If the Schema Version of the ophelp XML is
+		greater than 1.0, then the unit mask type will exist as an
+		attribute so we can extract it directly.
+
 2011-12-16  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java

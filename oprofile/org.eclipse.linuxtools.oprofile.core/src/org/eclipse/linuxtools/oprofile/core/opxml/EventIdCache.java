@@ -30,6 +30,9 @@ import org.xml.sax.SAXException;
 public class EventIdCache {
 	
 	private static final String HELP_EVENTS = "help_events"; //$NON-NLS-1$
+	private static final String HEADER = "header"; //$NON-NLS-1$
+	private static final String SCHEMA = "schemaversion"; //$NON-NLS-1$
+	private static final String CATEGORY = "category"; //$NON-NLS-1$
 	private static final String OPHELP = "ophelp"; //$NON-NLS-1$
 	private static final String EVENT = "event"; //$NON-NLS-1$
 	private static final String EVENT_NAME = "event_name"; //$NON-NLS-1$
@@ -100,45 +103,71 @@ public class EventIdCache {
 	}
 	
 	/**
+	 * Get the unit mask type. Schema Version 1.1 and newer of ophelp XML
+	 * will list the unit mask type as an attribute. Older version will not
+	 * so we default to file lookups.
+	 *
 	 * @param name the name of the event
 	 * @return the type of unit mask. This can be either mandatory, exclusive,
 	 * bitmask, or null if none could be found.
 	 */
 	public String getUnitMaskType(String name) {
-		String unitMaskType = null;
-		File file = new File(InfoAdapter.CPUTYPE);
+		if (single.eventRoot == null){
+			readXML();
+			buildCache();
+		}
 
-		try {
-			BufferedReader bi = new BufferedReader(new FileReader(file));
-			String cpuType = bi.readLine();
-			File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS); //$NON-NLS-1$
-			File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS); //$NON-NLS-1$
-			
-			BufferedReader eventReader = new BufferedReader(new FileReader(opArchEvents));
-			String line;
-			while ((line = eventReader.readLine()) != null){
-				// find the line with the event name
-				if (line.contains("name:"+name+" ")){ //$NON-NLS-1$
-					int start = line.indexOf("um:") + 3; //$NON-NLS-1$
-					int end = line.indexOf(" ", start); //$NON-NLS-1$
-					// grab the string that references the unit mask type
-					String um = line.substring(start, end);
-					BufferedReader unitMaskReader = new BufferedReader(new FileReader(opArchUnitMasks));
-					while ((line = unitMaskReader.readLine()) != null){
-						if (line.contains("name:"+um+" ")){ //$NON-NLS-1$
-							start = line.indexOf("type:") + 5; //$NON-NLS-1$
-							end = line.indexOf(" ", start); //$NON-NLS-1$
-							unitMaskType = line.substring(start, end);
-							return unitMaskType;
+		Element header = (Element)single.eventRoot.getElementsByTagName(HEADER).item(0);
+
+		double schemaVersion = 0;
+		if (!single.eventRoot.getAttribute(SCHEMA).equals("")){
+			schemaVersion = Double.parseDouble(single.eventRoot.getAttribute(SCHEMA));
+		}else{
+			schemaVersion = Double.parseDouble(header.getAttribute(SCHEMA));
+		}
+
+		String unitMaskType = null;
+
+		// Schema Version > 1.0 has the unit mask type within the XML
+		if (schemaVersion > 1.0){
+			Element event = getElementWithName(name);
+			Element unitMaskTag = (Element) event.getElementsByTagName(InfoAdapter.UNIT_MASKS).item(0);
+			return unitMaskTag.getAttribute(CATEGORY);
+		}else{
+			File file = new File(InfoAdapter.CPUTYPE);
+
+			try {
+				BufferedReader bi = new BufferedReader(new FileReader(file));
+				String cpuType = bi.readLine();
+				File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS); //$NON-NLS-1$
+				File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS); //$NON-NLS-1$
+
+				BufferedReader eventReader = new BufferedReader(new FileReader(opArchEvents));
+				String line;
+				while ((line = eventReader.readLine()) != null){
+					// find the line with the event name
+					if (line.contains("name:"+name+" ")){ //$NON-NLS-1$
+						int start = line.indexOf("um:") + 3; //$NON-NLS-1$
+						int end = line.indexOf(" ", start); //$NON-NLS-1$
+						// grab the string that references the unit mask type
+						String um = line.substring(start, end);
+						BufferedReader unitMaskReader = new BufferedReader(new FileReader(opArchUnitMasks));
+						while ((line = unitMaskReader.readLine()) != null){
+							if (line.contains("name:"+um+" ")){ //$NON-NLS-1$
+								start = line.indexOf("type:") + 5; //$NON-NLS-1$
+								end = line.indexOf(" ", start); //$NON-NLS-1$
+								unitMaskType = line.substring(start, end);
+								return unitMaskType;
+							}
 						}
 					}
 				}
+				eventReader.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			eventReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return unitMaskType;
 	}

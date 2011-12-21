@@ -311,7 +311,8 @@ public class InfoAdapter extends AbstractDataAdapter{
 			// check if there are any unit masks for this event
 			if (unitMaskTag != null){
 				String defaultVal = unitMaskTag.getAttribute(DEFAULT);
-				// this runs quickly enough that caching may not be necessary
+
+				// Get the unit mask type (compatible with 1.0 and 1.1 ophelp xml schemas)
 				String type = EventIdCache.getInstance().getUnitMaskType(name);
 				
 				Element newUnitMaskTag = newDoc.createElement(UNITMASK);
