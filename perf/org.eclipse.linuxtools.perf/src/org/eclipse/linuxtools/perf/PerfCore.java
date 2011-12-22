@@ -260,7 +260,7 @@ public class PerfCore {
 		boolean OldPerfVersion = false;
 		if (getPerfVersion(environ, workingDir).contains("perf version 0.0.2.PERF")) {
 			OldPerfVersion = true;
-			if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredicatable results."); }
+			if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
 		}
 		
 		
@@ -331,8 +331,8 @@ public class PerfCore {
 						invisibleRoot.addChild(currentEvent);
 						currentCommand = null;
 					} else if (line.contains("Samples:")) { //"samples" was used instead of events in an older version, some incompatibilities may arise.
-						if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredicatable results."); }
-						invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredicatable results."));
+						if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
+						invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results."));
 					}
 				} else {
 					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
