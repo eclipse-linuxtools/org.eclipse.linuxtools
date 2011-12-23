@@ -27,6 +27,10 @@
 			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Using-Cachegrind.html#Analyzing_Cachegrind_Profile_Results" label="Analyzing Cachegrind Profile Results"></topic>
 			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Using-Cachegrind.html#Configuring_a_Cachegrind_Profile_Run" label="Configuring a Cachegrind Profile Run"></topic>
 		</topic>
+		<topic href="Linux_Tools_Project/Valgrind/User_Guide/Using-Helgrind.html" label="Using Helgrind">
+			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Using-Helgrind.html#Analyzing_Helgrind_Profile_Results" label="Analyzing Helgrind Profile Results"></topic>
+			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Using-Helgrind.html#Configuring_a_Helgrind_Profile_Run" label="Configuring a Helgrind Profile Run"></topic>
+		</topic>
 		<topic href="Linux_Tools_Project/Valgrind/User_Guide/Special-Cases.html" label="Special Cases">
 			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Special-Cases.html#Encountering_Errors" label="Encountering Errors"></topic>
 			<topic href="Linux_Tools_Project/Valgrind/User_Guide/Special-Cases.html#Profiling_Child_Processes" label="Profiling Child Processes"></topic>

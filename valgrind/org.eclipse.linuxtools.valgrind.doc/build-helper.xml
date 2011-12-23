@@ -8,16 +8,16 @@
 
 	<path id="wikitext.tasks.classpath">
 		<!-- Replace dir with the dir you have wikitext installed into.-->
-		<fileset dir="/usr/share/eclipse/dropins/mylyn-wikitext/eclipse/plugins">
+		<fileset dir="/home/elliott/Downloads/eclipse-4.2M4/plugins">
 			<include name="org.eclipse.mylyn.wikitext.*core*.jar" />
 		</fileset>
 	</path>
 
-	<taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
 	<taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+	<taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
 
 	<target name="all" description="Generate Eclipse help content for the Linux Tools Valgrind user guide">
-		<mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="Valgrind User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
+		<mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="Valgrind User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*, Infobox">
 
 			<path name="Linux_Tools_Project/Valgrind/User_Guide" title="Valgrind User Guide" generateToc="false" />
 			<stylesheet url="book.css" />
