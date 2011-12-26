@@ -74,21 +74,22 @@ public class PerfCore {
 		BufferedReader input = null;
 		try {
 			// Alternatively can try with -i flag
-			p = Runtime.getRuntime().exec("perf list"); //(char 1 as -t is a custom field seperator						
-			p.waitFor();
-			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			p = Runtime.getRuntime().exec("perf list"); //(char 1 as -t is a custom field seperator
+
 			/*
 			 * Old versions of Perf will send events list to stderr instead of stdout
 			 * Checking if stdout is empty then read from stderr
 			 */
-			if ( ! input.ready() )
-				input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-
+			BufferedReader stdoutIn = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader stderrIn = new BufferedReader(new InputStreamReader(p.getErrorStream()));		
+	
+			while (!stdoutIn.ready() && !stderrIn.ready()) continue;
+			input =  stdoutIn.ready() ? stdoutIn : stderrIn;
+			
 		} catch( IOException e ) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}		
+			
+		}
 		String line;
 		try {
 			while (( line = input.readLine()) != null){
