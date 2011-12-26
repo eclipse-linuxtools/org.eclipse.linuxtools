@@ -98,16 +98,16 @@ public class PerfCore {
 					String cat;
 					if (line.contains(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
 						cat = PerfPlugin.STRINGS_HWBREAKPOINTS;
-						event = line.substring(1,line.indexOf("[", PerfPlugin.MagicPerfListNumber)).trim();
+						event = line.substring(1,line.indexOf("[", 0)).trim();
 					} else if (line.contains(PerfPlugin.STRINGS_RAWHWEvents)) {
 						cat = PerfPlugin.STRINGS_RAWHWEvents;
-						event = line.substring(1,line.indexOf("[", PerfPlugin.MagicPerfListNumber)).trim();
+						event = line.substring(1,line.indexOf("[", 0)).trim();
 					} else {
-						event = line.substring(1,PerfPlugin.MagicPerfListNumber).trim(); //magic number but corresponds with parse-events.c in Perf.
+						event = line.substring(1,line.indexOf("[", 0)).trim();
 						if (event.contains("OR")) {
 							event = event.split("OR")[0]; //filter out the abbreviations.
 						}
-						cat = line.substring(PerfPlugin.MagicPerfListNumber + 1).split("\\]")[0].trim();
+						cat = line.replaceFirst(".*\\[(.+)\\]", "$1").trim();
 					}
 					ArrayList<String> catevs = events.get(cat);
 					if (catevs == null) {

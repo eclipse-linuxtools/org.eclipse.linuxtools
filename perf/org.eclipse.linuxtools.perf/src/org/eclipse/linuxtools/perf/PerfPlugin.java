@@ -65,7 +65,6 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final List ATTR_RawHwEvents_default = null;
 	public static final String ATTR_HwBreakpointEvents = "org.eclipse.linuxtools.perf.attr.HwBreakpointEvents";
 	public static final List ATTR_HwBreakpointEvents_default = null;
-	public static final int MagicPerfListNumber = 45;
 	
 	//Strings
 	public static final String STRINGS_Kernel_Location = "Location of kernel image file (optional): ";
