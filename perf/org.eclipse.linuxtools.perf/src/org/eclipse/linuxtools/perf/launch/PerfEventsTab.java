@@ -300,7 +300,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_SelectedEvents, selectedEvents);
 		
 		//Flag for multiple events
-		if ((_chkDefaultEvent.getSelection() == false) && (selectedEvents.size() > 1)) {
+		if ((_chkDefaultEvent.getSelection() == false) && (selectedEvents.size() >= 1)) {
 			wconfig.setAttribute(PerfPlugin.ATTR_MultipleEvents, true);
 		} else {
 			wconfig.setAttribute(PerfPlugin.ATTR_MultipleEvents, false);
