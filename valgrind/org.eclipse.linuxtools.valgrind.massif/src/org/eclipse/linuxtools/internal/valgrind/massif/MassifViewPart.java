@@ -33,7 +33,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartSVG;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartPNG;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
@@ -250,8 +250,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				ChartEditorInput currentInput = getChartInput(pid);
 				String path = getChartSavePath(currentInput.getName() + ".png"); //$NON-NLS-1$
 				if (path != null) {
-					ChartSVG renderer = new ChartSVG(currentInput.getChart());
-					renderer.renderSVG(Path.fromOSString(path));
+					ChartPNG renderer = new ChartPNG(currentInput.getChart());
+					renderer.renderPNG(Path.fromOSString(path));
 				}
 			}
 		};

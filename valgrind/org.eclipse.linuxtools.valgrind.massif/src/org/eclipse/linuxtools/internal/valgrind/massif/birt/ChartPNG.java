@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.birt;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -25,15 +24,15 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class ChartSVG {
+public class ChartPNG {
 
 	protected HeapChart cm = null;
 	
-	public ChartSVG(HeapChart chart) {
+	public ChartPNG(HeapChart chart) {
 		cm = chart;
 	}
 
-	public void renderSVG(IPath svgPath) {
+	public void renderPNG(IPath pngPath) {
 		Composite comp = cm.getChartControl();
 		Display dsp = Display.getCurrent();
 		GC gc = new GC(comp);
@@ -42,7 +41,7 @@ public class ChartSVG {
 		gc.dispose();
 		ImageLoader imageLoader = new ImageLoader();
 		imageLoader.data = new ImageData[] {img.getImageData()};
-		imageLoader.save(svgPath.toOSString(), SWT.IMAGE_PNG);
+		imageLoader.save(pngPath.toOSString(), SWT.IMAGE_PNG);
 	}
 
 	public HeapChart getDesignTimeModel() {

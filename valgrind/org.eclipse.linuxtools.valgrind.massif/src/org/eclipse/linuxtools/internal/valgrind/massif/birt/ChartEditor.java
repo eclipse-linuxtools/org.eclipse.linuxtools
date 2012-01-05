@@ -90,6 +90,7 @@ public class ChartEditor extends EditorPart {
 		final Color RED = new Color(Display.getDefault(), 255, 0, 0);
 		final Color ORANGE = new Color(Display.getDefault(), 255, 165, 0);
 		final Color GREEN = new Color(Display.getDefault(), 0, 255, 0);
+		final Color DARK_BLUE = new Color(Display.getDefault(), 64, 128, 128);
 
 		control.setBackground(WHITE);
 		control.setBackgroundInPlotArea(LIGHTYELLOW);
@@ -147,8 +148,8 @@ public class ChartEditor extends EditorPart {
 			lsStack.setXSeries(heapChart.time);
 			lsStack.setYSeries(heapChart.dataStacks);
 			lsStack.setSymbolType(PlotSymbolType.DIAMOND);
-			lsUseful.setSymbolColor(RED);
-			lsUseful.setLineColor(RED);
+			lsStack.setSymbolColor(DARK_BLUE);
+			lsStack.setLineColor(DARK_BLUE);
 		}
 
 		final ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().
