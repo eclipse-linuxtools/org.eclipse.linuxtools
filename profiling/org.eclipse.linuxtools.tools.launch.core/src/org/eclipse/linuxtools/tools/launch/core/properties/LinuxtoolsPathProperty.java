@@ -20,6 +20,8 @@ public class LinuxtoolsPathProperty {
 	public static final String LINUXTOOLS_PATH_NAME = Activator.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
 	public static final String LINUXTOOLS_PATH_SYSTEM_NAME = Activator.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
 	public static final String LINUXTOOLS_PATH_DEFAULT = ""; //$NON-NLS-1$
+	public static final boolean LINUXTOOLS_PATH_SYSTEM_DEFAULT = true;
+
 	public static String getLinuxtoolsPath(IProject project) {
 		if (project == null)
 			return null;
@@ -28,9 +30,13 @@ public class LinuxtoolsPathProperty {
 				new ProjectScope(project),
 				Activator.PLUGIN_ID);
 
-		//If the value is not stored we use the default that is True
-		boolean systemPathSelected = !store.contains(LINUXTOOLS_PATH_SYSTEM_NAME) ||
-				store.getBoolean(LINUXTOOLS_PATH_SYSTEM_NAME);
+		//If the value is not stored we use the default
+		boolean systemPathSelected;
+		if (store.contains(LINUXTOOLS_PATH_SYSTEM_NAME))
+			systemPathSelected = store.getBoolean(LINUXTOOLS_PATH_SYSTEM_NAME);
+		else
+			systemPathSelected = LINUXTOOLS_PATH_SYSTEM_DEFAULT;
+
 		if (systemPathSelected)
 			return LINUXTOOLS_PATH_DEFAULT;
 

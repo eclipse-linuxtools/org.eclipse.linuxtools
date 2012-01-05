@@ -45,7 +45,6 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	private static final String LINUXTOOLS_PATH_OPTION = "option"; //$NON-NLS-1$
 	private static final String LINUXTOOLS_PATH_OPTION_NAME = "name"; //$NON-NLS-1$
 	private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
-	private static final boolean LINUXTOOLS_PATH_SYSTEM_DEFAULT = true;
 
 	private static final String[][] DEFAULT_PATHS= {
 				{"Custom", ""},
@@ -87,7 +86,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 		String paths[][] = fillPaths();
 
 		//defaults
-		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_NAME, LINUXTOOLS_PATH_SYSTEM_DEFAULT);
+		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_NAME, LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
 		getPreferenceStore().setDefault(LINUXTOOLS_PATH_COMBO_NAME, paths[0][1]);
 
 		// Add radio buttons
@@ -171,8 +170,8 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	protected void performDefaults() {
 		linuxtoolsPath.loadDefault();
 		linuxtoolsPathCombo.loadDefault();
-		customButton.setSelection(!LINUXTOOLS_PATH_SYSTEM_DEFAULT);
-		systemEnvButton.setSelection(LINUXTOOLS_PATH_SYSTEM_DEFAULT);
+		customButton.setSelection(!LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
+		systemEnvButton.setSelection(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
 		updateOptionsEnable();
 	}
 
