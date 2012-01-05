@@ -244,8 +244,8 @@ public class Oprofile
 			initializeOprofileModule();		
 		} else {
 			
-			String currentPath = LinuxtoolsPathProperty.getLinuxtoolsPath(_currentProject);
-			String newPath = LinuxtoolsPathProperty.getLinuxtoolsPath(project);
+			String currentPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(_currentProject);
+			String newPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
 			
 			if(!currentPath.equals(newPath)){
 				try {

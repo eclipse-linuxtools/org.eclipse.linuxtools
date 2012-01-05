@@ -69,7 +69,6 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 				String name = config.getAttribute(LINUXTOOLS_PATH_OPTION_NAME);
 				list.add(new String[]{name, path});
 			}
-
 		return list.toArray(new String[0][0]);
 	}
 
@@ -86,8 +85,8 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 		String paths[][] = fillPaths();
 
 		//defaults
-		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_NAME, LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
-		getPreferenceStore().setDefault(LINUXTOOLS_PATH_COMBO_NAME, paths[0][1]);
+		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+		getPreferenceStore().setDefault(LINUXTOOLS_PATH_COMBO_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
 
 		// Add radio buttons
 		Composite radios = new Composite(result, SWT.NONE);
@@ -148,7 +147,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 
 		String selected = getPreferenceStore().getString(LINUXTOOLS_PATH_COMBO_NAME);
 		customSelected = selected.equals("");
-		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_NAME, LinuxtoolsPathProperty.LINUXTOOLS_PATH_DEFAULT);
+		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
 		linuxtoolsPath.load();
 
 		Dialog.applyDialogFont(result);
@@ -170,8 +169,8 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	protected void performDefaults() {
 		linuxtoolsPath.loadDefault();
 		linuxtoolsPathCombo.loadDefault();
-		customButton.setSelection(!LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
-		systemEnvButton.setSelection(LinuxtoolsPathProperty.LINUXTOOLS_PATH_SYSTEM_DEFAULT);
+		customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+		systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
 		updateOptionsEnable();
 	}
 

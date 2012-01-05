@@ -16,6 +16,7 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.core"; //$NON-NLS-1$
+	public static final String UI_PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.ui"; //$NON-NLS-1$
 
 	private static BundleContext context;
 

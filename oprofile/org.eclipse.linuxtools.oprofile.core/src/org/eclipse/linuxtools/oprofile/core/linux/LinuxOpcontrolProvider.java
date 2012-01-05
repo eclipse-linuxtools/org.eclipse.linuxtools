@@ -254,7 +254,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		
 		// If no linuxtools' toolchain is defined for this project, use the path for the
 		// link created by the installation script
-		if(project == null || LinuxtoolsPathProperty.getLinuxtoolsPath(project).equals("")){
+		if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			args.add(0, _OPCONTROL_PROGRAM);
 		} else{
 			args.add(0, _OPCONTROL_EXECUTABLE);
@@ -276,7 +276,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		
 		Process p = null;
 		try {
-			if(project == null || LinuxtoolsPathProperty.getLinuxtoolsPath(project).equals("")){
+			if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 				p = Runtime.getRuntime().exec(cmdArray);
 			} else{
 				p = RuntimeProcessFactory.getFactory().sudoExec(cmdArray, project);
@@ -350,7 +350,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			}
 		// If no linuxtools' toolchain is defined for this project and oprofile is not
 		// installed, throw exception
-		} else if(project == null || LinuxtoolsPathProperty.getLinuxtoolsPath(project).equals("")){
+		} else if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus(
 					"opcontrolProvider", null)); //$NON-NLS-1$
 		}

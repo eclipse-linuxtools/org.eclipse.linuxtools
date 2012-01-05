@@ -40,7 +40,7 @@ public abstract class LinuxtoolsProcessFactory {
 			return envp;
 		if (envp == null)
 			envp = new String[0];
-		String ltPath = LinuxtoolsPathProperty.getLinuxtoolsPath(project); 
+		String ltPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
 		String envpPath = getEnvpPath(envp);
 		String systemPath = System.getenv(PATH);
 		StringBuffer newPath = new StringBuffer();

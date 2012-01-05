@@ -1,3 +1,8 @@
+2012-01-05  Otavio Pontes <obusatto@linux.vnet.ibm.com>
+	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java,
+	  src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java:
+	  Adapting to new way of using LinuxtoolsPathProperty class
+
 2011-12-21  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java
