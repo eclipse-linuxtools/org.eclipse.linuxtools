@@ -91,6 +91,7 @@ public class ChartEditor extends EditorPart {
 		final Color ORANGE = new Color(Display.getDefault(), 255, 165, 0);
 		final Color GREEN = new Color(Display.getDefault(), 0, 255, 0);
 		final Color DARK_BLUE = new Color(Display.getDefault(), 64, 128, 128);
+		final int TICK_GAP = 40;
 
 		control.setBackground(WHITE);
 		control.setBackgroundInPlotArea(LIGHTYELLOW);
@@ -118,6 +119,7 @@ public class ChartEditor extends EditorPart {
 		IAxis yAxis = control.getAxisSet().getYAxis(0);
 		yAxis.getGrid().setStyle(LineStyle.SOLID);
 		yAxis.getTick().setForeground(BLACK);
+		yAxis.getTick().setTickMarkStepHint(TICK_GAP);
 		ITitle yTitle = yAxis.getTitle();
 		yTitle.setFont(font);
 		yTitle.setText(heapChart.yUnits);
