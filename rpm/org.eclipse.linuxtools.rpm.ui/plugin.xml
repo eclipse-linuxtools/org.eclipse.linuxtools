@@ -85,10 +85,6 @@
    </extension>
  <extension
        point="org.eclipse.ui.newWizards">
-       <category
-            id="org.eclipse.linuxtools.rpm.ui"
-            name="%category.name.0">
-      </category>
       <wizard
       		project="true"
             category="org.eclipse.linuxtools.rpm.ui.editor"
