@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.eclipse.linuxtools.releng</groupId>
     <artifactId>linuxtools-releng-parent</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
@@ -40,7 +40,7 @@
 
   <name>Eclipse Linux Tools p2 Repository (Incubation)</name>
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
-  <version>0.9.0</version>
+  <version>0.9.1</version>
 
   <profiles>
     <profile>
