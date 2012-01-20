@@ -9,7 +9,8 @@
          <view
                id="org.eclipse.linuxtools.callgraph.callgraphview"
                minimized="false"
-               relationship="stack">
+               relationship="stack"
+               relative="org.eclipse.ui.console.ConsoleView">
          </view>
       </perspectiveExtension>
    </extension>
