@@ -173,13 +173,19 @@ public final class RpmPackageBuildProposalsJob extends Job {
 				in.close();
 				out.close();
 				bkupFile.delete();
-				if (in.getExitValue() != 0){
+				int processExitValue = 0;
+				try {
+					processExitValue = in.getExitValue();
+				} catch (InterruptedException e) {
+					return Status.CANCEL_STATUS;
+				}
+				if (processExitValue != 0){
 					SpecfileLog
 							.log(IStatus.WARNING,
-									in.getExitValue(),
+									processExitValue,
 									NLS.bind(
 											Messages.RpmPackageBuildProposalsJob_NonZeroReturn,
-											in.getExitValue()), null);
+											processExitValue), null);
 				}
 			}
 		} catch (IOException e) {
