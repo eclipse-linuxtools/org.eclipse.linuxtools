@@ -14,11 +14,11 @@
   <parent>
     <artifactId>linuxtools-profiling-parent</artifactId>
     <groupId>org.eclipse.linuxtools.profiling</groupId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.10.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.profiling.launch.remote</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.10.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools Profiling Remote Launch Plug-in</name>
