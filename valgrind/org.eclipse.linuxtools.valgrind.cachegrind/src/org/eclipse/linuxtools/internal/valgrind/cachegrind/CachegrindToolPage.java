@@ -204,10 +204,13 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 	}
 
 	public void initializeFrom(ILaunchConfiguration config) {
-		try {
+		isInitializing = true;
+		
+		try 
+		{
 			cacheButton.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM));
 			branchButton.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_BRANCH_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_BRANCH_SIM));
-			
+
 			i1Button.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1));
 			i1SizeSpinner.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1_SIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1_SIZE));
 			i1AssocSpinner.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1_ASSOC, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1_ASSOC));
@@ -225,9 +228,11 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 			l2AssocSpinner.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_ASSOC, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_ASSOC));
 			l2LineSizeSpinner.setSelection(config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_LSIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_LSIZE));
 			checkL2Enablement();
+			
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+		isInitializing = false;
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
