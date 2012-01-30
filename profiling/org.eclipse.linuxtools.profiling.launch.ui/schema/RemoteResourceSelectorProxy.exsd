@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.linuxtools.profiling.launch.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.linuxtools.profiling.launch.ui" id="RemoteResourceSelectorProxy" name="Remote Resource Selector Proxy"/>
+      </appinfo>
+      <documentation>
+         Use this to identify a Remote Resource Selector Proxy object of type IRemoteResourceSelectorProxy.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="resourceSelectorProxy"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="resourceSelectorProxy">
+      <annotation>
+         <documentation>
+            A class which implements IRemoteResourceSelectorProxy.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Identifier of class which implements IRemoteResourceSelectorProxy interface.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.profiling.launch.ui.IRemoteResourceSelectorProxy"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="scheme" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Connection scheme that this Remote Resource Selector Proxy supports.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="schemeLabel" type="string">
+            <annotation>
+               <documentation>
+                  Label to be shown in the UI for this Resource Selector Proxy.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="isDefault" type="boolean">
+            <annotation>
+               <documentation>
+                  Indicates if this the default scheme to be shown in the selector.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
