@@ -10,6 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.profiling.launch;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -21,11 +23,26 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	private static ProfileLaunchPlugin plugin;
+	private static Shell debugDialogShell;
+
 	
 	/**
 	 * The constructor
 	 */
 	public ProfileLaunchPlugin() {
+	}
+
+	/**
+	 * Convenience method which returns the unique identifier of this plugin.
+	 */
+	public static String getUniqueIdentifier() {
+		if (getDefault() == null) {
+			// If the default instance is not yet initialized,
+			// return a static identifier. This identifier must
+			// match the plugin id defined in plugin.xml
+			return PLUGIN_ID;
+		}
+		return getDefault().getBundle().getSymbolicName();
 	}
 
 	/*
@@ -46,6 +63,10 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
+	public static void setDialogShell(Shell shell) {
+		debugDialogShell = shell;
+	}
+
 	/**
 	 * Returns the shared instance
 	 *
@@ -57,6 +78,35 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 
 	public static Shell getActiveWorkbenchShell() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+	/**
+	 * Logs the specified status with this plug-in's log.
+	 * 
+	 * @param status
+	 *            status to log
+	 */
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+	/**
+	 * Logs an internal error with the specified message.
+	 * 
+	 * @param message
+	 *            the error message to log
+	 */
+	public static void logErrorMessage(String message) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, message, null));
+	}
+
+	/**
+	 * Logs an internal error with the specified throwable
+	 * 
+	 * @param e
+	 *            the exception to be logged
+	 */
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e.getMessage(), e));
 	}
 
 }
