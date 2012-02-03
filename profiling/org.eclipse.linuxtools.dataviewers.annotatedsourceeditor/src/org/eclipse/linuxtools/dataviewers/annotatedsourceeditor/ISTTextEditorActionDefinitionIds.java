@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.annotatedsourceeditor;
 
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
-public interface ISTTextEditorActionDefinitionIds extends
-		ITextEditorActionDefinitionIds {
+public interface ISTTextEditorActionDefinitionIds {
 	
 	String ST_TOGGLE= "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STColumnToggle"; //$NON-NLS-1$
 

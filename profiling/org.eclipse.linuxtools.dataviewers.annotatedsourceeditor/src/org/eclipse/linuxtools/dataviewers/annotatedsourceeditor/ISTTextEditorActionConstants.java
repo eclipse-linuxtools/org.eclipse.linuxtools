@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.annotatedsourceeditor;
 
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 
-public interface ISTTextEditorActionConstants extends
-		ITextEditorActionConstants {
+public interface ISTTextEditorActionConstants {
 
 	String ST_TOGGLE= "ST.Toggle"; //$NON-NLS-1$
 }
