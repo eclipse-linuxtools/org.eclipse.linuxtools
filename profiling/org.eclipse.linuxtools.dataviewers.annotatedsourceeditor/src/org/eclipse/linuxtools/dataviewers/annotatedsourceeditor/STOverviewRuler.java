@@ -309,14 +309,14 @@ public class STOverviewRuler implements IOverviewRuler {
 	 * to <code>false</code>.
 	 * @since 3.0
 	 */
-	private Map fAllowedAnnotationTypes= new HashMap();
+	private Map<Object, Boolean> fAllowedAnnotationTypes= new HashMap<Object, Boolean>();
 	/**
 	 * Map of allowed header annotation types.
 	 * An allowed annotation type maps to <code>true</code>, a disallowed
 	 * to <code>false</code>.
 	 * @since 3.0
 	 */
-	private Map fAllowedHeaderAnnotationTypes= new HashMap();
+	private Map<Object, Boolean> fAllowedHeaderAnnotationTypes= new HashMap<Object, Boolean>();
 	/**
 	 * The cached annotations.
 	 * @since 3.0
@@ -523,14 +523,12 @@ public class STOverviewRuler implements IOverviewRuler {
 					stroke= getStrokeColor(annotationType, style[t] == FilterIterator.TEMPORARY);
 				}
 
-				for (int i= 0; e.hasNext(); i++) {
-
+				while (e.hasNext()) {
 					Annotation a=  e.next();
 					Position p= fModel.getPosition(a);
 
 					if (p == null || !p.overlapsWith(visible.getOffset(), visible.getLength()))
 						continue;
-
 					
 					if (a.getType().compareTo(getAnnotationTypeColoredLines()) == 0){
 						fill= getFPFillColor(a, true);
@@ -633,13 +631,9 @@ public class STOverviewRuler implements IOverviewRuler {
 					stroke= getStrokeColor(annotationType, style[t] == FilterIterator.TEMPORARY);
 				}
 
-				for (int i= 0; e.hasNext(); i++) {
-
+				while (e.hasNext()) {
 					Annotation a= e.next();
-					
-					
 					Position p= fModel.getPosition(a);
-
 					if (p == null)
 						continue;
 					
@@ -979,8 +973,8 @@ public class STOverviewRuler implements IOverviewRuler {
 	 *         otherwise
 	 * @since 3.0
 	 */
-	private boolean contains(Object annotationType, Map allowed, Set configured) {
-		Boolean cached= (Boolean) allowed.get(annotationType);
+	private boolean contains(Object annotationType, Map<Object,Boolean> allowed, Set<Object> configured) {
+		Boolean cached = allowed.get(annotationType);
 		if (cached != null)
 			return cached.booleanValue();
 
@@ -1000,7 +994,7 @@ public class STOverviewRuler implements IOverviewRuler {
 	 *         otherwise
 	 * @since 3.0
 	 */
-	private boolean isCovered(Object annotationType, Set configured) {
+	private boolean isCovered(Object annotationType, Set<Object> configured) {
 		if (fAnnotationAccess instanceof IAnnotationAccessExtension) {
 			IAnnotationAccessExtension extension= (IAnnotationAccessExtension) fAnnotationAccess;
 			Iterator<?> e= configured.iterator();
