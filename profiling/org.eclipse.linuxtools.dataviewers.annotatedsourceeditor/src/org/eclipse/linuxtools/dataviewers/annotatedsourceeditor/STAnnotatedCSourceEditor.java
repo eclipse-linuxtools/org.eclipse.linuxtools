@@ -200,7 +200,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class required) {
 		if (IColumnSupport.class.equals(required)) {

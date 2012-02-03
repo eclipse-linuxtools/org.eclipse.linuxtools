@@ -22,8 +22,8 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.revisions.IRevisionRulerColumn;
 import org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension;
-import org.eclipse.jface.text.revisions.RevisionInformation;
 import org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension.RenderingMode;
+import org.eclipse.jface.text.revisions.RevisionInformation;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationHover;
@@ -83,10 +83,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 	private final static String REVISION_ASK_BEFORE_QUICKDIFF_SWITCH_KEY= AbstractDecoratedTextEditorPreferenceConstants.REVISION_ASK_BEFORE_QUICKDIFF_SWITCH;
 		
 	private IVerticalRulerColumn fDelegate;
-	/**
-	 * The annotation preferences.
-	 */
-	private final MarkerAnnotationPreferences fAnnotationPreferences= EditorsPlugin.getDefault().getMarkerAnnotationPreferences();
 
 	/**
 	 * Preference dispatcher that registers a single listener so we don't have to manage every
@@ -343,6 +339,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
 	private Map<Object, AnnotationPreference> getAnnotationPreferenceMap() {
 		Map<Object, AnnotationPreference> annotationPrefs= new HashMap<Object, AnnotationPreference>();
+		MarkerAnnotationPreferences fAnnotationPreferences= EditorsPlugin.getDefault().getMarkerAnnotationPreferences();
 		Iterator<?> iter= fAnnotationPreferences.getAnnotationPreferences().iterator();
 		while (iter.hasNext()) {
 			AnnotationPreference pref= (AnnotationPreference) iter.next();
