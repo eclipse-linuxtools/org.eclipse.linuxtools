@@ -57,26 +57,32 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		IDocument changelog_doc = getDocument(changelog);
 		String function = formatFunction(functionGuess);
 		boolean multipleEntrySuccess = false;
+		boolean forceNewEntry = false;
 		String functionSpacer = " "; // $NON-NLS-1$
 		if (function.equals(": ")) // $NON-NLS-1$
 			functionSpacer = ""; // $NON-NLS-1$ 
+		
+		/* Fix Bz #366854.  Make sure that forceNewEntry is used only
+		 * once and then cleared even when the ChangeLog is empty to start with.
+		 */
+		if(changelog instanceof ChangeLogEditor) {
+			ChangeLogEditor editor = (ChangeLogEditor)changelog;
+			forceNewEntry = editor.isForceNewLogEntry();
+			editor.setForceNewLogEntry(false);
+		}
+		
 		if (changelog_doc.getLength() > 0) {
 			
 			int offset_start = findChangeLogEntry(changelog_doc, dateLine);
 			int offset_end = dateLine.length();
 			boolean foundFunction = false;
-			boolean forceNewEntry = false;
 			//if the prepare change action determines it requires a new entry, we force
 			//a new entry by changing the offset_start and change the corresponding field
 			//of the editor back to false to prevent subsequent function change log being
 			//written to a new entry again.
-			if(changelog instanceof ChangeLogEditor) {
-				ChangeLogEditor editor = (ChangeLogEditor)changelog;
-				forceNewEntry = editor.isForceNewLogEntry();
-				editor.setForceNewLogEntry(false);
-				if (forceNewEntry)
-					offset_start = -1;
-			}
+			if (forceNewEntry)
+				offset_start = -1;
+			
 			if (offset_start != -1) {
 				int nextChangeEntry = findChangeLogPattern(changelog_doc,
 						offset_start + dateLine.length());
