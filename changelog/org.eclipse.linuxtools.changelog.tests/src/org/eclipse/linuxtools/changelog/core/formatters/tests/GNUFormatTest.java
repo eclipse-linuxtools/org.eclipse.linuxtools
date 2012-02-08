@@ -441,12 +441,13 @@ public class GNUFormatTest {
 	
 	/**
 	 * Test for a changelog entry with items for removed files, new files and modified
-	 * existing files. This test should also catch Eclipse Bz #331244 regressions.
+	 * existing files. This test differs from the previous in that the ChangeLog is
+	 * empty to start with.  This verifies Bz #366854 fix.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void canHaveEntriesWithDefaultTextAndSomeModificationToAnExistingFile() throws Exception {
+	public void canHaveEntriesWithDefaultTextAndSomeModificationToAnExistingFile2() throws Exception {
 		// set date/author line
 		String authorName = "Test Author";
 		String email = "test@example.com";
@@ -456,20 +457,13 @@ public class GNUFormatTest {
 		String changelogPath = "/" + project.getTestProject().getName() + "/test/example";
 		final String changelogFilePath = changelogPath + "/ChangeLog";
 
-		// pre-existing content to merge into
-		String content = "2010-10-05  William Shakespeare  <will@pear.com>\n\n\t" +
-						 "* path/to/file.c: New File.\n\n";
-		
-		// add a ChangeLog file to our test project
-		InputStream newFileInputStream = new ByteArrayInputStream(
-				content.getBytes());
+		// add a new empty ChangeLog file to our test project
+		InputStream newFileInputStream = new ByteArrayInputStream(new byte[0]);
 		IFile changelogFile = project.addFileToProject( "/test/example", "ChangeLog",
 				newFileInputStream);
 		// Open a document and get the IEditorPart
 		changelogEditorPart = openEditor(changelogFile);
 		
-		assertEquals(content, getContent(changelogEditorPart));
-
 		// entry file path (need overlap with changelogPath)
 		final String firstFileEntryRelPath = "eclipse/example/test/NewCoffeeMaker.java";
 		String entryFilePath = changelogPath + "/" + firstFileEntryRelPath;
@@ -509,8 +503,7 @@ public class GNUFormatTest {
 									  secondFileEntryRelPath+ FILE_ENTRY_END_MARKER +
 									  secondDefaultContent + NEW_LINE + TAB + FILE_ENTRY_START_MARKER +
 									  firstFileEntryRelPath + FILE_ENTRY_END_MARKER +
-									  firstDefaultContent + NEW_LINE + NEW_LINE +
-									  content /* orig. content */; 
+									  firstDefaultContent; 
 		
 		assertEquals(expectedResult, actualMergeResult);
 	}

@@ -1,3 +1,8 @@
+2012-02-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves bug #366854.
+	* src/org/eclipse/linuxtools/changelog/core/formatters/tests/GNUFormatTest.java (canHaveEntriesWithDefaultTextAndSomeModificationToAnExistingFile2): New test. 
+	
 2011-01-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/tests/ChangeLogWriterTest.java (testWriteChangeLog): Close
