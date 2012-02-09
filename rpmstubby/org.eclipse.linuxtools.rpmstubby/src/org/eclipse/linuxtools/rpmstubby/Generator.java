@@ -12,8 +12,8 @@
 package org.eclipse.linuxtools.rpmstubby;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.linuxtools.internal.rpmstubby.SpecfilePomWriter;
-import org.eclipse.linuxtools.internal.rpmstubby.SpecfileWriter;
+import org.eclipse.linuxtools.internal.rpmstubby.StubbyGenerator;
+import org.eclipse.linuxtools.internal.rpmstubby.StubbyPomGenerator;
 
 /**
  * Utility API for stubifying spec files for different input types.
@@ -42,10 +42,10 @@ public class Generator {
 	public void generate(IFile file) {
 		switch (type) {
 		case ECLIPSE_FEATURE:
-			new SpecfileWriter().write(file);
+			new StubbyGenerator(file).writeContent();
 			break;
 		case MAVEN_POM:
-			new SpecfilePomWriter().write(file);
+			new StubbyPomGenerator(file).writeContent();
 			break;
 		default:
 			break;

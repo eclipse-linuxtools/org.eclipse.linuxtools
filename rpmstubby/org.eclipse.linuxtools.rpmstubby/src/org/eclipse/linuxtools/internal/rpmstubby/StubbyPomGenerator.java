@@ -10,46 +10,37 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.rpmstubby.model.PomModel;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
  * Generator for RPM specfile from maven pom.xml.
- *
+ * 
  */
-public class StubbyPomGenerator {
+public class StubbyPomGenerator extends AbstractGenerator {
 
 	private PomModel model;
 
 	/**
 	 * Creates the generator by parsing the pom.xml file.
-	 * @param pomFile The pom.xml file to generate specfile for.
+	 * 
+	 * @param pomFile
+	 *            The pom.xml file to generate specfile for.
 	 */
 	public StubbyPomGenerator(IFile pomFile) {
 		parse(pomFile);
+		specfileName = model.getPackageName().toLowerCase() + ".spec";
+		projectName = pomFile.getProject().getName();
 	}
 
 	private void parse(IFile pomFile) {
@@ -74,9 +65,10 @@ public class StubbyPomGenerator {
 
 	/**
 	 * Generates a RPM specfile based on the parsed data from the pom file.
-	 *
+	 * 
 	 * @return The generated specfile.
 	 */
+	@Override
 	public String generateSpecfile() {
 		StringBuilder buffer = new StringBuilder();
 		String packageName = model.getPackageName();
@@ -102,11 +94,15 @@ public class StubbyPomGenerator {
 	}
 
 	private void generateRequires(StringBuilder buffer) {
-		for (Map.Entry<String,String> entry : model.getDependencies().entrySet()) {
-			buffer.append("BuildRequires: mvn("+entry.getKey()+":"+entry.getValue()+")\n");
+		for (Map.Entry<String, String> entry : model.getDependencies()
+				.entrySet()) {
+			buffer.append("BuildRequires: mvn(" + entry.getKey() + ":"
+					+ entry.getValue() + ")\n");
 		}
-		for (Map.Entry<String,String> entry : model.getDependencies().entrySet()) {
-			buffer.append("Requires: mvn("+entry.getKey()+":"+entry.getValue()+")\n");
+		for (Map.Entry<String, String> entry : model.getDependencies()
+				.entrySet()) {
+			buffer.append("Requires: mvn(" + entry.getKey() + ":"
+					+ entry.getValue() + ")\n");
 		}
 	}
 
@@ -130,24 +126,18 @@ public class StubbyPomGenerator {
 		buffer.append("%install\n");
 		buffer.append("# jars\n");
 		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}\n");
-		buffer
-				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}.jar\n\n");
-
+		buffer.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}.jar\n\n");
 
 		buffer.append("# poms\n");
-		buffer
-				.append("install -d -m 755 %{buildroot}%{_mavenpomdir}\n");
+		buffer.append("install -d -m 755 %{buildroot}%{_mavenpomdir}\n");
 		buffer.append("install -pm 644 pom.xml \\\n");
-		buffer
-				.append("    %{buildroot}%{_mavenpomdir}/JPP.%{name}.pom\n\n");
+		buffer.append("    %{buildroot}%{_mavenpomdir}/JPP.%{name}.pom\n\n");
 
 		buffer.append("%add_maven_depmap JPP.%{name}.pom %{name}.jar\n\n");
-		
+
 		buffer.append("# javadoc\n");
-		buffer
-				.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}\n");
-		buffer
-				.append("cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}/\n");
+		buffer.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}\n");
+		buffer.append("cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}/\n");
 		buffer.append("rm -rf target/site/api*\n\n");
 	}
 
@@ -173,56 +163,4 @@ public class StubbyPomGenerator {
 		buffer.append("        install javadoc:javadoc\n\n");
 	}
 
-	/**
-	 * Writes the given contents to a file with the given fileName in the
-	 * specified project.
-	 *
-	 * @param projectName
-	 *            The name of the project to put the file into.
-	 * @throws CoreException
-	 *             Thrown when the project doesn't exist.
-	 */
-	public void writeContent(String projectName) throws CoreException {
-		String fileName = model.getPackageName().toLowerCase() + ".spec";
-		String contents = generateSpecfile();
-		InputStream contentInputStream = new ByteArrayInputStream(contents
-				.getBytes());
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IResource resource = root.findMember(new Path(projectName));
-		if (!resource.exists() || !(resource instanceof IContainer)) {
-			throwCoreException("Project \"" + projectName
-					+ "\" does not exist.");
-		}
-		IContainer container = (IContainer) resource;
-		final IFile file = container.getFile(new Path(fileName));
-		try {
-			InputStream stream = contentInputStream;
-			if (file.exists()) {
-				file.setContents(stream, true, true, null);
-			} else {
-				file.create(stream, true, null);
-			}
-			stream.close();
-		} catch (IOException e) {
-			StubbyLog.logError(e);
-		}
-		StubbyPlugin.getActiveWorkbenchShell().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						IWorkbenchPage page = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage();
-						try {
-							IDE.openEditor(page, file, true);
-						} catch (PartInitException e) {
-							StubbyLog.logError(e);
-						}
-					}
-				});
-	}
-
-	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
-				IStatus.OK, message, null);
-		throw new CoreException(status);
-	}
 }

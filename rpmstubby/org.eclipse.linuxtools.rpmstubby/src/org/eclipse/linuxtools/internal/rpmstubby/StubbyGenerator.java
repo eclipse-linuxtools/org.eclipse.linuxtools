@@ -10,32 +10,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.rpmstubby.model.FeatureModel;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -44,7 +31,7 @@ import org.xml.sax.SAXException;
  * preferences.
  * 
  */
-public class StubbyGenerator {
+public class StubbyGenerator extends AbstractGenerator {
 
 	private FeatureModel model;
 	private IFile featureFile;
@@ -58,6 +45,8 @@ public class StubbyGenerator {
 	public StubbyGenerator(IFile featureFile) {
 		this.featureFile = featureFile;
 		parse(featureFile);
+		specfileName = model.getPackageName().toLowerCase() + ".spec";
+		projectName = featureFile.getProject().getName();
 	}
 
 	private void parse(IFile featureFile) {
@@ -65,7 +54,7 @@ public class StubbyGenerator {
 				.newInstance();
 		IPath featureDir = featureFile.getLocation().removeLastSegments(1);
 		String featurePropertiesFile = featureDir.toOSString()
-				+ "/feature.properties"; 
+				+ "/feature.properties";
 		Properties featureProperties = new Properties();
 		try {
 			featureProperties.load(new FileInputStream(featurePropertiesFile));
@@ -96,12 +85,14 @@ public class StubbyGenerator {
 	 * 
 	 * @return The generated specfile.
 	 */
+	@Override
 	public String generateSpecfile() {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append("%global eclipse_base   %{_libdir}/eclipse\n");
 		buffer.append("%global install_loc    %{_datadir}/eclipse/dropins/"
 				+ model.getSimplePackageName() + "\n\n");
-		buffer.append("Name:           " + model.getPackageName().toLowerCase() + "\n");
+		buffer.append("Name:           " + model.getPackageName().toLowerCase()
+				+ "\n");
 		buffer.append("Version:        " + model.getVersion() + "\n");
 		buffer.append("Release:        1%{?dist}" + "\n");
 		buffer.append("Summary:        " + model.getSummary() + "\n\n");
@@ -139,11 +130,13 @@ public class StubbyGenerator {
 	private void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files\n");
 		buffer.append("%{install_loc}\n");
-		String docsRoot = featureFile.getLocation().removeLastSegments(1).lastSegment();
-		String[] files = featureFile.getLocation().removeLastSegments(1).toFile().list();
-		for (String file :files){
-			if (file.matches("(epl-.*|license)\\.html")){
-				buffer.append("%doc "+docsRoot+"/"+file+"\n");
+		String docsRoot = featureFile.getLocation().removeLastSegments(1)
+				.lastSegment();
+		String[] files = featureFile.getLocation().removeLastSegments(1)
+				.toFile().list();
+		for (String file : files) {
+			if (file.matches("(epl-.*|license)\\.html")) {
+				buffer.append("%doc " + docsRoot + "/" + file + "\n");
 			}
 		}
 		buffer.append("\n");
@@ -179,61 +172,9 @@ public class StubbyGenerator {
 		return "eclipse-" + name;
 	}
 
-	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
-				IStatus.OK, message, null);
-		throw new CoreException(status);
-	}
-
 	private void generateChangelog(StringBuilder buffer) {
 		buffer.append("%changelog\n\n");
 		buffer.append("#FIXME\n");
 	}
 
-	/**
-	 * Writes the given contents to a file with the given fileName in the
-	 * specified project.
-	 * 
-	 * @param projectName
-	 *            The name of the project to put the file into.
-	 * @throws CoreException
-	 *             Thrown when the project doesn't exist.
-	 */
-	public void writeContent(String projectName) throws CoreException {
-		String fileName = model.getPackageName().toLowerCase() + ".spec";
-		String contents = generateSpecfile();
-		InputStream contentInputStream = new ByteArrayInputStream(
-				contents.getBytes());
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IResource resource = root.findMember(new Path(projectName));
-		if (!resource.exists() || !(resource instanceof IContainer)) {
-			throwCoreException("Project \"" + projectName
-					+ "\" does not exist.");
-		}
-		IContainer container = (IContainer) resource;
-		final IFile file = container.getFile(new Path(fileName));
-		try {
-			InputStream stream = contentInputStream;
-			if (file.exists()) {
-				file.setContents(stream, true, true, null);
-			} else {
-				file.create(stream, true, null);
-			}
-			stream.close();
-		} catch (IOException e) {
-			StubbyLog.logError(e);
-		}
-		StubbyPlugin.getActiveWorkbenchShell().getDisplay()
-				.asyncExec(new Runnable() {
-					public void run() {
-						IWorkbenchPage page = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage();
-						try {
-							IDE.openEditor(page, file, true);
-						} catch (PartInitException e) {
-							StubbyLog.logError(e);
-						}
-					}
-				});
-	}
 }
