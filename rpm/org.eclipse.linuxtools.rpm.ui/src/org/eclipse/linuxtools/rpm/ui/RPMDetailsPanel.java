@@ -95,14 +95,21 @@ public class RPMDetailsPanel {
 				GridData.HORIZONTAL_ALIGN_FILL));
 		containerBrowseButton.setEnabled(false);
 
-		Label typeLabel = new Label(specGrid, SWT.NULL);
+		final Composite projectTypeGroup = new Composite(parent, SWT.NONE);
+		layout = new GridLayout();
+		layout.numColumns = 2;
+		projectTypeGroup.setLayout(layout);
+		projectTypeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Label typeLabel = new Label(projectTypeGroup, SWT.NULL);
 		typeLabel.setText(Messages.getString("SRPMImportPage.4")); //$NON-NLS-1$
-		typeLabel.setEnabled(false);
-		typeCombo = new ComboViewer(specGrid, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		typeCombo = new ComboViewer(projectTypeGroup, SWT.READ_ONLY);
+		typeCombo.getCombo().setLayoutData(gridData);
 		typeCombo.setContentProvider(ArrayContentProvider.getInstance());
 		typeCombo.setInput(RPMProjectLayout.values());
 		typeCombo.getCombo().select(0);
-		typeCombo.getCombo().setEnabled(false);
 
 	}
 
