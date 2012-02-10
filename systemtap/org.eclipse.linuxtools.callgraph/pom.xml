@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-systemtap-parent</artifactId>
     <groupId>org.eclipse.linuxtools.systemtap</groupId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.callgraph</artifactId>
