@@ -35,7 +35,6 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
@@ -209,7 +208,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private IInformationControlCreator getInformationControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, new HTMLTextPresenter(false));
+				return new DefaultInformationControl(parent, false);
 			}
 		};
 	}

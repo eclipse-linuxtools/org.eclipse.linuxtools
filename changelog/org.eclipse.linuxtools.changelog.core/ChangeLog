@@ -1,3 +1,9 @@
+2012-02-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #366854.
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Fix code to reset force
+	new entry even if this is the first entry in a ChangeLog.
+
 2011-08-31  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #347703

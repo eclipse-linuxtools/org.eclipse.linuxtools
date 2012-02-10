@@ -25,7 +25,6 @@ import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
@@ -119,7 +118,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, new HTMLTextPresenter(true));
+				return new DefaultInformationControl(parent, false);
 			}
 		};
 	}
