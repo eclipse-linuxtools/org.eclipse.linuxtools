@@ -1,14 +1,3 @@
 instructions.configure=\
 org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//download.eclipse.org/technology/linuxtools/update,type:0,name:Linux Tools,enabled:false); \
 org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//download.eclipse.org/technology/linuxtools/update,type:1,name:Linux Tools,enabled:false); 
-units.0.id=org.eclipse.linuxtools.gprof
-units.0.version=0.8.0
-units.0.touchpoint.id=org.eclipse.equinox.p2.osgi
-units.0.touchpoint.version=1.0.0
-units.0.singleton=true
-units.0.update.id=org.eclipse.linuxtools.gprof
-units.0.update.range=[0.0.0,0.8.0)
-units.0.update.severity=0
-units.0.provides.1.namespace=org.eclipse.equinox.p2.iu
-units.0.provides.1.name=org.eclipse.linuxtools.gprof
-units.0.provides.1.version=0.8.0
