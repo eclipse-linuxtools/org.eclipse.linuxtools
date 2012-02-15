@@ -1,5 +1,8 @@
 update.id=org.eclipse.linuxtools.rpm.ui.editor.feature.group
-update.range=(0,0.4.3.201108301805]
+update.range=(0,$version$)
+provides.99.namespace=org.eclipse.equinox.p2.iu
+provides.99.name=org.eclipse.linuxtools.rpm.ui.editor.feature.group
+provides.99.version=$version$
 instructions.configure=\
 org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//download.eclipse.org/technology/linuxtools/update,type:0,name:Linux Tools,enabled:false); \
 org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//download.eclipse.org/technology/linuxtools/update,type:1,name:Linux Tools,enabled:false); 
