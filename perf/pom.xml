@@ -61,6 +61,7 @@
     <module>org.eclipse.linuxtools.perf</module>
     <module>org.eclipse.linuxtools.perf-feature</module>
     <module>org.eclipse.linuxtools.perf.tests</module>
+    <module>org.eclipse.linuxtools.perf.doc</module>
   </modules>
 
 </project>
