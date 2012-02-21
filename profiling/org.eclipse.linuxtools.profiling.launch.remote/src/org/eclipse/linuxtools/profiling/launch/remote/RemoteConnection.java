@@ -39,13 +39,19 @@ public class RemoteConnection {
 	private IHost rseHost;
 	private IRemoteFileSubSystem fs;
 	private IRemoteCmdSubSystem rcs;
+	private String hostName;
 
 	public RemoteConnection(ILaunchConfiguration config) throws RemoteConnectionException {
 		this.config = config;
 		initialize();
 	}
 
-
+	public RemoteConnection(String hostName) throws RemoteConnectionException {
+		this.config = null;
+		this.hostName = hostName; 
+		initialize();
+	}
+	
 	// To run a remote command we use the RemoteCmdSubSystem, however,
 	// we cannot just call runCommand() on the subsystem as there is
 	// no way for us to tell when the command has completed.  To handle this,
@@ -73,6 +79,20 @@ public class RemoteConnection {
 			// do nothing
 		}
 		
+		@Override
+		public void finish() {
+			super.finish();
+			if (_remoteCmdShell != null && _cmdSubSystem != null && !_remoteCmdShell.isActive()) {
+				try
+				{
+					_cmdSubSystem.removeShell(_remoteCmdShell);
+				}
+				catch (Exception e)
+				{
+				}
+			}
+
+		}
 	}
 	
 	private void initialize() throws RemoteConnectionException {
@@ -82,13 +102,18 @@ public class RemoteConnection {
 			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_interrupted, e2);
 		}
 		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
-		String hostName = null;
-		try {
-			hostName = config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
-		} catch (CoreException e1) {
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed, e1);
+		if (hostName == null) {
+			if (config != null) {
+				try {
+					hostName = config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
+				} catch (CoreException e1) {
+					throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed, e1);
+				}
+			} else {
+				throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
+			}
 		}
-		
+
 		if (hostName == null)
 			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
 		
