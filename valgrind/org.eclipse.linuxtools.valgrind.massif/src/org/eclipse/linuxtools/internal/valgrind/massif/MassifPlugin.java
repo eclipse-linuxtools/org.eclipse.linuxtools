@@ -10,7 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
@@ -74,12 +75,14 @@ public class MassifPlugin extends AbstractUIPlugin {
 	
 	public void openEditorForNode(MassifHeapTreeNode element) {
 		// do source lookup
+		String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
 		if (sourceLocator instanceof ISourceLookupDirector) {
 			Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
-			if (obj != null && obj instanceof IFile) {
+			if (obj != null && obj instanceof IStorage) {
 				try {
-					ProfileUIUtils.openEditorAndSelect(((IFile) obj).getLocation().toOSString(), element.getLine());
+					String fullFilePath = workspaceLocation + ((IStorage) obj).getFullPath().toOSString();
+					ProfileUIUtils.openEditorAndSelect(fullFilePath, element.getLine());
 				} catch (PartInitException e) {
 					e.printStackTrace();
 				} catch (BadLocationException e) {
