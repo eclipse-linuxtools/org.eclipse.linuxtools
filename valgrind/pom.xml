@@ -62,7 +62,6 @@
     <module>org.eclipse.linuxtools.valgrind.cachegrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.core</module>
     <module>org.eclipse.linuxtools.valgrind.doc</module>
-    <module>org.eclipse.linuxtools.valgrind-feature</module>
     <module>org.eclipse.linuxtools.valgrind.helgrind</module>
     <module>org.eclipse.linuxtools.valgrind.helgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.launch</module>
@@ -76,6 +75,7 @@
     <module>org.eclipse.linuxtools.valgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.ui</module>
     <module>org.eclipse.linuxtools.valgrind.ui.editor</module>
+    <module>org.eclipse.linuxtools.valgrind-feature</module>
   </modules>
 
 </project>
