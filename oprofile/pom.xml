@@ -64,7 +64,6 @@
     <module>org.eclipse.linuxtools.oprofile-feature</module>
     <module>org.eclipse.linuxtools.oprofile.launch</module>
     <module>org.eclipse.linuxtools.oprofile.launch.tests</module>
-    <module>org.eclipse.linuxtools.oprofile.test-feature</module>
     <module>org.eclipse.linuxtools.oprofile.tests</module>
     <module>org.eclipse.linuxtools.oprofile.ui</module>
     <module>org.eclipse.linuxtools.oprofile.ui.tests</module>
