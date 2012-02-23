@@ -64,7 +64,6 @@
     <module>org.eclipse.linuxtools.callgraph.launch</module>
     <module>org.eclipse.linuxtools.callgraph.launch.tests</module>
     <module>org.eclipse.linuxtools.callgraph.tests</module>
-    <module>org.eclipse.linuxtools.callgraph.tests-feature</module>
     <module>org.eclipse.linuxtools.systemtap-feature</module>
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog</module>
     <!--
@@ -92,9 +91,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.structures.tests</module>
     -->
     <module>org.eclipse.linuxtools.systemtap.ui.systemtapgui</module>
-    <!--
-    <module>org.eclipse.linuxtools.systemtap.ui.test-feature</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.tests</module>
     <module>org.eclipse.linuxtools.threadprofiler</module>
     <module>org.eclipse.linuxtools.threadprofiler.feature</module>

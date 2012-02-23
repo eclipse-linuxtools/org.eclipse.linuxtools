@@ -64,7 +64,6 @@
     <module>org.eclipse.linuxtools.changelog.javaparser</module>
     <module>org.eclipse.linuxtools.changelog-feature</module>
     <module>org.eclipse.linuxtools.changelog.tests</module>
-    <module>org.eclipse.linuxtools.changelog.tests-feature</module>
     <!--
     <module>org.eclipse.linuxtools.changelog.ui.tests</module>
     -->
