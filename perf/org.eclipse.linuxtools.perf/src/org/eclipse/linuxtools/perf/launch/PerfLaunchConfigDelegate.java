@@ -65,7 +65,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		//Build the commandline string to run perf recording the given project
 		String arguments[] = getProgramArgumentsArray( config ); //Program args from launch config.
 		ArrayList<String> command = new ArrayList<String>( 4 + arguments.length );
-		command.addAll( Arrays.asList( PerfCore.getRecordString(config).split(" ") ) ); //Get the base commandline string (with flags/options based on config)
+		command.addAll(Arrays.asList(PerfCore.getRecordString(config))); //Get the base commandline string (with flags/options based on config)
 		command.add( exePath.toOSString() ); // Add the path to the executable
 		//Compile string
 		command.addAll( Arrays.asList( arguments ) ); 

@@ -13,4 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui;bundle-version="3.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.linuxtools.profiling.tests
+Import-Package: org.eclipse.cdt.launch,
+ org.eclipse.linuxtools.profiling.launch,
+ org.eclipse.linuxtools.profiling.tests

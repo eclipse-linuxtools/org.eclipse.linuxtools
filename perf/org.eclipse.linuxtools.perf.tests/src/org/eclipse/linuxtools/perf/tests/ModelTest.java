@@ -10,13 +10,21 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.perf.tests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.perf.PerfCore;
 import org.eclipse.linuxtools.perf.PerfPlugin;
 import org.eclipse.linuxtools.perf.launch.PerfEventsTab;
+import org.eclipse.linuxtools.perf.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.perf.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.perf.model.PMCommand;
 import org.eclipse.linuxtools.perf.model.PMDso;
@@ -25,30 +33,32 @@ import org.eclipse.linuxtools.perf.model.PMFile;
 import org.eclipse.linuxtools.perf.model.PMSymbol;
 import org.eclipse.linuxtools.perf.model.TreeParent;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class ModelTest extends AbstractTest {
 	protected ILaunchConfiguration config;
-	protected Shell testShell;
-	
+	protected PerfLaunchConfigDelegate delegate;
+	protected ILaunch launch;
+	protected ILaunchConfigurationWorkingCopy wc;
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild(TestPlugin.getDefault().getBundle(), "fibTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
-		testShell = new Shell(Display.getDefault());
-		testShell.setLayout(new GridLayout());
+
+		delegate = new PerfLaunchConfigDelegate();
+		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+		wc = config.getWorkingCopy();
+		setProfileAttributes(wc);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		testShell.dispose();
 		deleteProject(proj);
+		wc.delete();
 		super.tearDown();
 	}
-	
+
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(PerfPlugin.LAUNCHCONF_ID);
@@ -59,84 +69,143 @@ public class ModelTest extends AbstractTest {
 			throws CoreException {
 		PerfEventsTab eventsTab = new PerfEventsTab();
 		PerfOptionsTab optionsTab = new PerfOptionsTab();
+		wc.setAttribute(PerfPlugin.ATTR_SourceLineNumbers, false);
 		eventsTab.setDefaults(wc);
 		optionsTab.setDefaults(wc);
-		wc.setAttribute(PerfPlugin.ATTR_SourceLineNumbers, false);
+	}
+
+	public void testDefaultRun () {
+		try {
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
+		} catch (CoreException e) {
+			fail();
+		}
+	}
+
+	public void testClockEventRun () {
+		try {
+			ArrayList<String> list = new ArrayList<String>();
+			list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
+			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+			wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
+		} catch (CoreException e) {
+			fail();
+		}
+	}
+
+	public void testcheckModelGenericStructure () {
+		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
+		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
+
+		// model class structure, left element contained in right element
+		Class<?> [] klassList = new Class<?> [] {PMSymbol.class, PMFile.class, PMDso.class, PMCommand.class, PMEvent.class};
+		Stack<Class<?>> stack = new Stack<Class<?>> ();
+		stack.addAll(Arrays.asList(klassList));
+
+		checkChildren(invisibleRoot, stack);
+	}
+
+	/**
+	 * @param root some element that will serve as the root
+	 * @param stack a stack of classes
+	 */
+	public void checkChildren (TreeParent root, Stack<Class<?>> stack){
+		if (stack.isEmpty()){
+			return;
+		}else{
+			// children of root must be instances of the top class on the stack
+			Class<?> klass = stack.pop();
+			assertTrue(root.hasChildren());
+			for (TreeParent tp : root.getChildren()){
+				// tp.getClass() instanceof klass
+				assertTrue(klass.isAssignableFrom(tp.getClass()));
+				// each sibling needs its own stack
+				Stack<Class<?>> newStack = new Stack<Class<?>>();
+				newStack.addAll(Arrays.asList(stack.toArray(new Class<?> [] {})));
+				checkChildren(tp, newStack);
+			}
+		}
 	}
 
 	public void testModel_ResolvedOnly() throws CoreException {
 		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
-		
+
 		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
 		assertTrue(invisibleRoot.hasChildren());
 		assertEquals(1, invisibleRoot.getChildren().length);
 		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
+
 		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
 		assertEquals("Default Event", ev.getName());
 		assertTrue(ev.hasChildren());
 		assertEquals(1, ev.getChildren().length);
 		assertTrue(ev.getChildren()[0] instanceof PMCommand);
+
 		PMCommand comm = (PMCommand)ev.getChildren()[0];
 		assertTrue(comm.hasChildren());
-		for (TreeParent x : comm.getChildren()) {
-			assertTrue(x instanceof PMDso);
-		}
-		
 		assertEquals(2, comm.getChildren().length);
+
 		PMDso dso = (PMDso)comm.getChildren()[0];
-		
 		assertTrue(dso.hasChildren());
 		assertEquals(1, dso.getChildren().length);
 		assertTrue(dso.getChildren()[0] instanceof PMFile);
+
 		PMFile file = (PMFile)dso.getChildren()[0];
 		assertTrue(file.hasChildren());
 		assertEquals(2, file.getChildren().length);
 		assertTrue(file.getChildren()[0] instanceof PMSymbol);
+
 		PMSymbol sym = ((PMSymbol)file.getChildren()[0]);
-		assertTrue(sym.getFunctionName().equals("rightfib"));
+		assertTrue(sym.getFunctionName().equals("leftfib"));
 		assertTrue(file.getChildren()[1] instanceof PMSymbol);
 		sym = ((PMSymbol)file.getChildren()[1]);
-		assertTrue(sym.getFunctionName().equals("leftfib"));
+		assertTrue(sym.getFunctionName().equals("rightfib"));
 	}
 	
 	public void testModel_Unresolved() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, false);
 		config = wc.doSave();
-		
+
 		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
-		
+
 		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
 		assertTrue(invisibleRoot.hasChildren());
 		assertEquals(1, invisibleRoot.getChildren().length);
 		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
+
 		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
 		assertEquals("Default Event", ev.getName());
 		assertTrue(ev.hasChildren());
 		assertEquals(1, ev.getChildren().length);
 		assertTrue(ev.getChildren()[0] instanceof PMCommand);
+
 		PMCommand comm = (PMCommand)ev.getChildren()[0];
 		assertTrue(comm.hasChildren());	
 		for (TreeParent x : comm.getChildren()) {
 			assertTrue(x instanceof PMDso);
 		}
-		
-		assertEquals(4, comm.getChildren().length);
-		assertTrue(comm.getChildren()[3].getName().equals("ld-2.10.1.so"));
-		assertTrue(comm.getChildren()[0].getName().equals("80487c2"));
-		PMDso dso = (PMDso)comm.getChildren()[1];
+
+		assertEquals(2, comm.getChildren().length);
+		assertEquals("fib", comm.getChildren()[0].getName());
+		assertEquals("[kernel.kallsyms]", comm.getChildren()[1].getName());
+
+		PMDso dso = (PMDso)comm.getChildren()[0];
 		
 		assertTrue(dso.hasChildren());
 		assertEquals(1, dso.getChildren().length);
 		assertTrue(dso.getChildren()[0] instanceof PMFile);
+
 		PMFile file = (PMFile)dso.getChildren()[0];
 		assertTrue(file.hasChildren());
 		assertEquals(2, file.getChildren().length);
 		assertTrue(file.getChildren()[0] instanceof PMSymbol);
-		PMSymbol sym = ((PMSymbol)file.getChildren()[1]);
+
+		PMSymbol sym = ((PMSymbol)file.getChildren()[0]);
 		assertTrue(sym.getFunctionName().equals("leftfib"));
 		assertTrue(file.getChildren()[1] instanceof PMSymbol);
-		sym = ((PMSymbol)file.getChildren()[0]);
+		sym = ((PMSymbol)file.getChildren()[1]);
 		assertTrue(sym.getFunctionName().equals("rightfib"));
 	}
 	

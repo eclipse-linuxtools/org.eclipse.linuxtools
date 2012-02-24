@@ -14,28 +14,25 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
+import org.eclipse.cdt.core.parser.util.ArrayUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.perf.model.TreeParent;
 import org.eclipse.linuxtools.perf.model.PMCommand;
 import org.eclipse.linuxtools.perf.model.PMDso;
 import org.eclipse.linuxtools.perf.model.PMEvent;
 import org.eclipse.linuxtools.perf.model.PMFile;
 import org.eclipse.linuxtools.perf.model.PMSymbol;
+import org.eclipse.linuxtools.perf.model.TreeParent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.IOConsole;
 
 public class PerfCore {
 	public static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
@@ -74,7 +71,7 @@ public class PerfCore {
 		BufferedReader input = null;
 		try {
 			// Alternatively can try with -i flag
-			p = Runtime.getRuntime().exec("perf list"); //(char 1 as -t is a custom field seperator
+			p = Runtime.getRuntime().exec(new String[] {PerfPlugin.PERF_COMMAND, "list"}); //(char 1 as -t is a custom field seperator
 
 			/*
 			 * Old versions of Perf will send events list to stderr instead of stdout
@@ -128,9 +125,9 @@ public class PerfCore {
 		Process p = null;
 		try {
 			if (workingDir == null) {	
-					p = Runtime.getRuntime().exec("perf --version");				
+					p = Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"});
 			} else {
-				p = Runtime.getRuntime().exec("perf --version", environ, workingDir); //runs with a specific working dir and environment.
+				p = Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, environ, workingDir); //runs with a specific working dir and environment.
 			}			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -142,34 +139,36 @@ public class PerfCore {
 	}
 	
 	//Generates a perf record command string with the options set in the given config. (If null uses default).
-	public static String getRecordString(ILaunchConfiguration config) {
-		String base = "perf record -f";
+	public static String [] getRecordString(ILaunchConfiguration config) {
+		String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record", "-f"};
 		if (config == null) {
 			return base;
 		} else {
-			String s = base;
+			ArrayList<String> newCommand = new ArrayList<String>();
+			newCommand.addAll(Arrays.asList(base));
 			try {
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default))
-					s = s.concat(" -r");
+					newCommand.add("-r");
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default))
-					s = s.concat(" -v");
+					newCommand.add("-v");
 				if (config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default))
-					s = s.concat(" -M");
-				ArrayList<String> selE = (ArrayList<String>) config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
+					newCommand.add("-M");
+				List<String> selE = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
 				if (!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default) 
 														&& selE != null) {					
 					for(String e : selE) {
-						s = s.concat(" -e " + e);
+						newCommand.add("-e");
+						newCommand.add(e);
 					}
 				}
 			} catch (CoreException e) { }			
-			return s;
+			return newCommand.toArray(new String[] {});
 		}
 	}
 
 	public static String[] getReportString(ILaunchConfiguration config, String perfDataLoc) {
-		ArrayList<String> base = new ArrayList<String>(); 
-		base.addAll( Arrays.asList( ("perf report --sort comm,dso,sym -n -t " + (char)1).split(" ") ) );//(char 1 as -t is a custom field seperator)
+		ArrayList<String> base = new ArrayList<String>();
+		base.addAll(Arrays.asList(new String [] {PerfPlugin.PERF_COMMAND, "report", "--sort", "comm,dso,sym", "-n", "-t", "" + (char)1 }));//(char 1 as -t is a custom field seperator)
 		if (config != null) {
 			try {
 				String kernelLoc = config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
@@ -204,9 +203,9 @@ public class PerfCore {
 	public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
 		ArrayList<String> base = new ArrayList<String>();
 		if (OldPerfVersion) {
-			base.addAll( Arrays.asList( new String[]{"perf", "annotate", "-s", symbol, "-l", "-P"} ) );
+			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) );
 		} else {
-			base.addAll( Arrays.asList( new String[]{"perf", "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) );
+			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) );
 		}
 		if (config != null) {
 			try {
@@ -232,7 +231,7 @@ public class PerfCore {
 	public static void Record(String binaryPath) {
 		BufferedReader error = null;
 		try {
-			Process perfRecord = Runtime.getRuntime().exec(getRecordString(null) + " " + binaryPath);
+			Process perfRecord = Runtime.getRuntime().exec(ArrayUtil.addAll(getRecordString(null), new String [] {binaryPath}));
 			error = new BufferedReader(new InputStreamReader(perfRecord.getErrorStream()));
 			perfRecord.waitFor();			
 			spitStream(error,"Perf Record STDERR", null);
@@ -331,6 +330,7 @@ public class PerfCore {
 						//if (PerfPlugin.DEBUG_ON) System.out.println("Event is " + tmp[tmp.length - 1]);
 						invisibleRoot.addChild(currentEvent);
 						currentCommand = null;
+						currentDso = null;
 					} else if (line.contains("Samples:")) { //"samples" was used instead of events in an older version, some incompatibilities may arise.
 						if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
 						invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results."));
@@ -339,10 +339,10 @@ public class PerfCore {
 					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
 					if (items.length != 5) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line + "//length:" + items.length); }; continue; }
 					percent = Float.parseFloat(items[0].substring(0, items[0].length() - 1)); //percent column
-					samples = Double.parseDouble(items[1]); //samples column
-					comm = items[2]; //command column
-					dso = items[3]; //dso column
-					symbol = items[4]; //symbol column 
+					samples = Double.parseDouble(items[1].trim()); //samples column
+					comm = items[2].trim(); //command column
+					dso = items[3].trim(); //dso column
+					symbol = items[4].trim(); //symbol column 
 					kernelFlag = (""+symbol.charAt(1)).equals("k");			
 					
 					//if (PerfPlugin.DEBUG_ON) System.out.println(percent + "//" + samples + "//" + comm + "//" + dso + "//" + kernelFlag + "//" + symbol);
@@ -493,10 +493,13 @@ public class PerfCore {
 			}
 		}
 
-		if (hasProfileData)
-			print.println("Profile data loaded into Perf Profile View.");
-		else
-			print.println("No profile data generated to be displayed.");
+		if (print != null) {
+			if (hasProfileData) {
+				print.println("Profile data loaded into Perf Profile View.");
+			} else {
+				print.println("No profile data generated to be displayed.");
+			}
+		}
 		RefreshView();
     }
     
