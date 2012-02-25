@@ -1,3 +1,9 @@
+2012-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #372557
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): Fix
+	index out of range exception when environment variable is unknown.
+
 2011-12-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsPropertyConstants.java (fACVersions): Add
