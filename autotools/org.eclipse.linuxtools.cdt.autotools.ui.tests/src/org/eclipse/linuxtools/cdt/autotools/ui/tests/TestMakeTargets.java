@@ -10,13 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.tests;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
 import static org.junit.Assert.assertTrue;
-
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import java.io.File;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,19 +21,16 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -133,6 +126,15 @@ public class TestMakeTargets {
 		bot.sleep(3000);
 		SWTBotView consoleView = bot.viewByTitle("Console");
 		consoleView.setFocus();
+		consoleView.show();
+		SWTBotToolbarDropDownButton b = consoleView.toolbarDropDownButton("Display Selected Console");
+		try {
+			org.hamcrest.Matcher<MenuItem> withRegex = withRegex(".*Build.*");
+			b.menuItem(withRegex).click();
+		} catch (Exception e) {
+			// do nothing
+		}
+		b.pressShortcut(KeyStroke.getInstance("ESC"));
 		String output = consoleView.bot().styledText().getText();
 		Pattern p = Pattern.compile(".*make info.*", Pattern.DOTALL);
 		Matcher m = p.matcher(output);
