@@ -1,3 +1,16 @@
+2012-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin_customization.ini: New file.
+	* build.properties: Add plugin_customization.ini file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (beforeClass): Add apply button click.
+	(canSetConfigParm): Comment out logic that attempts to find sub-menu in toolbarDropDownButton.
+	(canBuildWithConfigParm): Add a sleep call.
+	(sleep): Add code to refocus on top-level view.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java (setEnvVar): Comment out logic that attempts
+	to find sub-menu in toolbarDropDownButton.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestMakeTargets.java (canBuildAndAccessInfoTarget): Add try/catch
+	around logic that attempts to find sub-menu in toolbarDropDownButton.
+	
 2011-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Remove src.includes references to remove warnings.

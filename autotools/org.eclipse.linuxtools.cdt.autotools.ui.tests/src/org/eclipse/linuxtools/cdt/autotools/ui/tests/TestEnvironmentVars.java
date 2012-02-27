@@ -31,6 +31,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -166,6 +167,8 @@ public class TestEnvironmentVars {
 		bot.sleep(1000);
 		SWTBotView consoleView = bot.viewByTitle("Console");
 		consoleView.setFocus();
+		SWTBotToolbarDropDownButton b = consoleView.toolbarDropDownButton("Display Selected Console");
+		b.click();
 		String output = consoleView.bot().styledText().getText();
 		Pattern p = Pattern.compile(".*--enable-somevar.*", Pattern.DOTALL);
 		Matcher m = p.matcher(output);

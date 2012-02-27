@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,10 +39,12 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -57,11 +60,15 @@ import org.w3c.dom.NodeList;
 public class SetConfigurationParameter {
 	
 	private static SWTWorkbenchBot	bot;
+	private static SWTBotShell mainShell;
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
+		// slow down tests
+		SWTBotPreferences.PLAYBACK_DELAY = 10;
 		bot = new SWTWorkbenchBot();
+		mainShell = bot.activeShell();
 		// Close the Welcome view if it exists
 		try {
 		bot.viewByTitle("Welcome").close();
@@ -84,6 +91,8 @@ public class SetConfigurationParameter {
 		SWTBotRadio radio = bot.radio("Always open");
 		if (radio != null && !radio.isSelected())
 			radio.click();
+		bot.sleep(1000);
+		bot.button("Apply").click();
 		bot.button("OK").click();
 	}
  
@@ -126,6 +135,7 @@ public class SetConfigurationParameter {
 		// Set the configure parameters to be --enable-jeff via user-defined options
 		SWTBotText text = bot.textWithLabel("Additional command-line options");
 		text.typeText("--enable-jeff");
+		bot.sleep(1000);
 		bot.button("OK").click();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		assertTrue(workspace != null);
@@ -214,11 +224,14 @@ public class SetConfigurationParameter {
 			}
 		}
 		assertTrue(optionFound);
+		bot.sleep(2000);
 		view = bot.viewByTitle("Console");
 		view.setFocus();
-		SWTBotToolbarDropDownButton b = bot.toolbarDropDownButtonWithTooltip("Display Selected Console");
-		org.hamcrest.Matcher<MenuItem> withRegex = withRegex(".*Configure.*");
-		b.menuItem(withRegex).click();
+		view.show();
+		SWTBotToolbarDropDownButton b = view.toolbarDropDownButton("Display Selected Console");
+		b.click();
+//		org.hamcrest.Matcher<MenuItem> withRegex = withRegex(".*Configure.*");
+//		b.menuItem(withRegex).click();
 		b.pressShortcut(KeyStroke.getInstance("ESC"));
 		String output = view.bot().styledText().getText();
 		// Verify we got some help output to the console
@@ -546,6 +559,7 @@ public class SetConfigurationParameter {
 	@AfterClass
 	public static void sleep() {
 		bot.sleep(4000);
+		mainShell.activate();
 	}
 
 }

@@ -1060,7 +1060,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 							cfg);
 				// strip any env-var settings from options
 				// fix for bug #356278
-				if (resolved.charAt(0) != '-')
+				if (resolved.length() > 0 && resolved.charAt(0) != '-')
 					resolved = stripEnvVarsFromOption(resolved, additionalEnvs);
 				configTargets[i] = resolved;
 			} catch (BuildMacroException e) {
