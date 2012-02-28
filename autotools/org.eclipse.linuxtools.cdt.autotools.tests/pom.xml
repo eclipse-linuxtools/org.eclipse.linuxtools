@@ -42,7 +42,7 @@
           <testSuite>org.eclipse.linuxtools.cdt.autotools.tests</testSuite>
           <testClass>org.eclipse.linuxtools.cdt.autotools.tests.AllAutotoolsTests</testClass>
        	  <useUIHarness>true</useUIHarness>
-          <useUIThread>false</useUIThread>
+          <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
         </configuration>
       </plugin>

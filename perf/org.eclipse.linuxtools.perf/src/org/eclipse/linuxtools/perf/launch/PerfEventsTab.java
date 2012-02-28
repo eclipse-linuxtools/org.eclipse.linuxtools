@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.perf.launch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -236,7 +237,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 			refreshDefaultEnabled();
 			
 			//restore custom hw breakpoints
-			ArrayList<String> hwbps = (ArrayList<String>)config.getAttribute(PerfPlugin.ATTR_HwBreakpointEvents, PerfPlugin.ATTR_HwBreakpointEvents_default);
+			List<String> hwbps = config.getAttribute(PerfPlugin.ATTR_HwBreakpointEvents, PerfPlugin.ATTR_HwBreakpointEvents_default);
 			if (hwbps != null) {
 				for (int i = 0; i < _eventTabLists.length; i++) {
 					if (_eventTabItems[i].getText().equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
@@ -250,7 +251,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 			}
 			
 			//restore custom raw hw events
-			ArrayList<String> rawhe = (ArrayList<String>)config.getAttribute(PerfPlugin.ATTR_RawHwEvents, PerfPlugin.ATTR_RawHwEvents_default);
+			List<String> rawhe = config.getAttribute(PerfPlugin.ATTR_RawHwEvents, PerfPlugin.ATTR_RawHwEvents_default);
 			if (rawhe != null) {
 				for (int i = 0; i < _eventTabLists.length; i++) {
 					if (_eventTabItems[i].getText().equals(PerfPlugin.STRINGS_RAWHWEvents)) {
@@ -265,7 +266,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
 			//tick all the boxes that are checked (the events i mean)			
 			//This is a little inefficient, I guess. TODO Check more efficiently?
-			ArrayList<String> selectedEvents = (ArrayList<String>)config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
+			List<String> selectedEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
 			if (selectedEvents != null) {
 				for(String s : selectedEvents) {
 					for (int i = 0; i < _eventTabLists.length; i++) {

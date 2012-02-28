@@ -60,11 +60,11 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String ATTR_MultipleEvents = "org.eclipse.linuxtools.perf.attr.MultipleEvents";
 	public static final boolean ATTR_MultipleEvents_default = true;
 	public static final String ATTR_SelectedEvents = "org.eclipse.linuxtools.perf.attr.SelectedEvents";
-	public static final List ATTR_SelectedEvents_default = null;
+	public static final List<String> ATTR_SelectedEvents_default = null;
 	public static final String ATTR_RawHwEvents = "org.eclipse.linuxtools.perf.attr.RawHwEvents";
-	public static final List ATTR_RawHwEvents_default = null;
+	public static final List<String> ATTR_RawHwEvents_default = null;
 	public static final String ATTR_HwBreakpointEvents = "org.eclipse.linuxtools.perf.attr.HwBreakpointEvents";
-	public static final List ATTR_HwBreakpointEvents_default = null;
+	public static final List<String> ATTR_HwBreakpointEvents_default = null;
 	
 	//Strings
 	public static final String STRINGS_Kernel_Location = "Location of kernel image file (optional): ";
@@ -80,6 +80,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String STRINGS_UnfiledSymbols = "Unfiled Symbols";
 	public static final String STRINGS_MultipleFilesForSymbol = "Symbols conflicting in multiple files";
 	
+	public static final String PERF_COMMAND = "perf";
 	public static final boolean DEBUG_ON = false; //Spew debug messages or not.
 	
 	  
