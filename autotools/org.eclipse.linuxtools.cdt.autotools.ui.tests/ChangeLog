@@ -1,3 +1,9 @@
+2012-02-28  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin_customization.ini: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java (setEnvVarOnCommandLine): Make fake configure
+	file executable.
+	
 2012-02-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin_customization.ini: New file.
