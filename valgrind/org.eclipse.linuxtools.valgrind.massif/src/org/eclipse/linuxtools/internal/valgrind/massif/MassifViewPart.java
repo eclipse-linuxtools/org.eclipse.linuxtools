@@ -33,7 +33,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartSVG;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartPNG;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
@@ -248,10 +248,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				ChartEditorInput currentInput = getChartInput(pid);
-				String path = getChartSavePath(currentInput.getName() + ".svg"); //$NON-NLS-1$
+				String path = getChartSavePath(currentInput.getName() + ".png"); //$NON-NLS-1$
 				if (path != null) {
-					ChartSVG renderer = new ChartSVG(currentInput.getChart(), MassifViewPart.this);
-					renderer.renderSVG(Path.fromOSString(path));
+					ChartPNG renderer = new ChartPNG(currentInput.getChart());
+					renderer.renderPNG(Path.fromOSString(path));
 				}
 			}
 		};
@@ -287,16 +287,15 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		FileDialog dialog = new FileDialog(parent, SWT.SAVE);
 		dialog.setText(Messages.getString("MassifViewPart.Save_chart_dialog_title")); //$NON-NLS-1$
 		dialog.setOverwrite(true);
-		dialog.setFilterExtensions(new String[] { ".svg" }); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[] { ".png" }); //$NON-NLS-1$
 		dialog.setFileName(defaultName);
 
 		return dialog.open();
 	}
 
 	protected void createChart(MassifSnapshot[] snapshots) {
-		HeapChart chart = new HeapChart(snapshots);
 		String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
-		chart.getTitle().getLabel().getCaption().setValue(title);
+		HeapChart chart = new HeapChart(snapshots, title);
 
 		String name = getInputName(title);
 		ChartEditorInput input = new ChartEditorInput(chart, this, name, pid);

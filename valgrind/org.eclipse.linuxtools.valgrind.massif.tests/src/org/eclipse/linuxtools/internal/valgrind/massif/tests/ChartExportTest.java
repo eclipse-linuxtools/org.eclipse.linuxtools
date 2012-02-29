@@ -12,30 +12,30 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import java.io.File;
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartSVG;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartPNG;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 
 public class ChartExportTest extends AbstractMassifTest {
-	private IPath svgPath;
+	private IPath pngPath;
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 		
-		svgPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		assertNotNull(svgPath);
-		svgPath = svgPath.append("alloctest").append("chart.svg"); //$NON-NLS-1$ //$NON-NLS-2$
+		pngPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		assertNotNull(pngPath);
+		pngPath = pngPath.append("alloctest").append("chart.png"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		File chartFile = svgPath.toFile();
+		File chartFile = pngPath.toFile();
 		if (chartFile.exists()) {
 			chartFile.delete();
 		}
@@ -50,12 +50,12 @@ public class ChartExportTest extends AbstractMassifTest {
 		
 		IEditorInput input = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getEditorInput();
 		if (input instanceof ChartEditorInput) {
-			Chart chart = ((ChartEditorInput) input).getChart();
+			HeapChart chart = ((ChartEditorInput) input).getChart();
 			
-			ChartSVG svg = new ChartSVG(chart, ((ChartEditorInput) input).getView());
-			svg.renderSVG(svgPath);
+			ChartPNG png = new ChartPNG(chart);
+			png.renderPNG(pngPath);
 			
-			File chartFile = svgPath.toFile();
+			File chartFile = pngPath.toFile();
 			assertTrue(chartFile.exists());
 			assertTrue(chartFile.length() > 0);
 		} else {

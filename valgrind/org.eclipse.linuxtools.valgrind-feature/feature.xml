@@ -37,12 +37,6 @@
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.device.extension" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.engine" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.engine.extension" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.device.svg" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.core" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.emf.ecore"/>
