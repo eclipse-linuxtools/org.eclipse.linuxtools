@@ -48,7 +48,8 @@
   </licenses>
 
   <properties>
-    <tycho-version>0.14.0</tycho-version>
+    <tycho-version>0.14.1</tycho-version>
+    <tycho-extras-version>0.14.0</tycho-extras-version>
     <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
@@ -192,7 +193,7 @@
       <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
           <artifactId>tycho-source-feature-plugin</artifactId>
-          <version>${tycho-version}</version>
+          <version>${tycho-extras-version}</version>
           <executions>
             <execution>
               <id>source-feature</id>

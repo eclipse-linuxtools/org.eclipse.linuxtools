@@ -204,6 +204,7 @@ public class TestEnvironmentVars {
 		w.append("echo VAR6 is ${some_var6}");
 		w.newLine();
 		w.close();
+		f.setExecutable(true);
 		// Now change the configure script command to be the fake configure script
 		// and set the three envvars on the command itself
 		SWTBotView view = bot.viewByTitle("Project Explorer");

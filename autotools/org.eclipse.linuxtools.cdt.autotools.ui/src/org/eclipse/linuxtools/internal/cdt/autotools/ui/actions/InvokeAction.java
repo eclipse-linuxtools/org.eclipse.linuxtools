@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
@@ -389,29 +388,17 @@ public abstract class InvokeAction extends AbstractTargetAction {
 								
 								String[] newArgumentList;
 								
-						        // Fix for bug #343905
+						        // Fix for bug #343905 and bug #371277
 								// For Windows and Mac, we cannot run a script directly (in this case, the
 								// autotools are scripts).  We need to run "sh -c command args where command
-								// plus args is represented in a single string.
-						        if (Platform.getOS().equals(Platform.OS_WIN32)
-						                || Platform.getOS().equals(Platform.OS_MACOSX)) {
-						            // Neither Mac or Windows support calling scripts directly.
-						            StringBuffer command = new StringBuffer(strippedCommand);
-						            for (String arg : argumentList) {
-						            	command.append(" " + arg);
-						            }
-						            newArgumentList = new String[] { "-c", command.toString() };
-						        } else {
-						        	// Otherwise, we don't need the -c argument and can present the command
-						        	// name and arguments as individual arguments
-						        	if (argumentList == null)
-						        		newArgumentList = new String[1];
-						        	else
-						        		newArgumentList = new String[argumentList.length + 1];
-						        	newArgumentList[0] = strippedCommand;
-						        	if (argumentList != null)
-						        		System.arraycopy(argumentList, 0, newArgumentList, 1, argumentList.length);
-						        }
+								// plus args is represented in a single string.  The same applies for
+								// some Linux shells such as dash.  Using sh -c will work on all Linux
+								// POSIX-compliant shells.
+								StringBuffer command = new StringBuffer(strippedCommand);
+								for (String arg : argumentList) {
+									command.append(" " + arg);
+								}
+								newArgumentList = new String[] { "-c", command.toString() };
 						        
 						        OutputStream stdout = consoleOutStream;
 								OutputStream stderr = consoleOutStream;
