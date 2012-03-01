@@ -92,6 +92,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
+        <sdk-version>3.7</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
         <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
@@ -119,6 +120,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
         <platform-version>[4.2,)</platform-version>
+        <sdk-version>4.2</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/nightly/</cdt-site>
         <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
@@ -229,6 +231,13 @@
 	  <configuration>
 	    <useUIHarness>true</useUIHarness>
 	    <useUIThread>true</useUIThread>
+            <dependencies>
+               <dependency>
+                 <type>p2-installable-unit</type>
+                 <artifactId>org.eclipse.sdk.feature.group</artifactId>
+                 <version>${sdk-version}</version>
+               </dependency>
+            </dependencies>
             <product>org.eclipse.sdk.ide</product>
 	  </configuration>
 	</plugin>

@@ -45,6 +45,11 @@
               <artifactId>org.eclipse.cdt.platform</artifactId>
               <version>8.0.0</version>
             </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>org.eclipse.sdk.feature.group</artifactId>
+              <version>${sdk-version}</version>
+            </dependency>
           </dependencies>          
         </configuration>
       </plugin>
