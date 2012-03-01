@@ -65,12 +65,12 @@ public class HeapChart {
 		}
 		dataTotal = new double[snapshots.length];
 		for (int i = 0; i < snapshots.length; i++) {
-			time[i] = snapshots[i].getTime() / xScaling;
-			dataUseful[i] = snapshots[i].getHeapBytes() / yScaling;
-			dataExtra[i] = snapshots[i].getHeapExtra() / yScaling;
+			time[i] = snapshots[i].getTime() / (double) xScaling;
+			dataUseful[i] = snapshots[i].getHeapBytes() / (double) yScaling;
+			dataExtra[i] = snapshots[i].getHeapExtra() / (double) yScaling;
 			dataTotal[i] = dataUseful[i] + dataExtra[i];
 			if (isStack) {
-				dataStacks[i] = snapshots[i].getStacks() / yScaling;
+				dataStacks[i] = snapshots[i].getStacks() / (double) yScaling;
 			}
 		}
 
