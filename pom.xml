@@ -62,6 +62,22 @@
       <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
     </pluginRepository>
   </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>swtbot</id>
+      <layout>p2</layout>
+      <url>${swtbot-site}</url>
+    </repository>
+    <repository>
+      <id>orbit</id>
+      <layout>p2</layout>
+      <url>${orbit-site}</url>
+    </repository>
+    <repository>
+      <id>maven.eclipse.org</id>
+      <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
   
   <profiles>
     <profile>
@@ -86,23 +102,9 @@
           <url>${eclipse-site}</url>
         </repository>
         <repository>
-          <id>swtbot</id>
-          <layout>p2</layout>
-          <url>${swtbot-site}</url>
-        </repository>
-        <repository>
-          <id>orbit</id>
-          <layout>p2</layout>
-          <url>${orbit-site}</url>
-        </repository>
-        <repository>
           <id>cdt</id>
           <layout>p2</layout>
           <url>${cdt-site}</url>
-        </repository>
-        <repository>
-          <id>maven.eclipse.org</id>
-          <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
         </repository>
       </repositories>
     </profile>
@@ -127,16 +129,6 @@
           <url>${eclipse-site}</url>
         </repository>
         <repository>
-          <id>swtbot</id>
-          <layout>p2</layout>
-          <url>${swtbot-site}</url>
-        </repository>
-        <repository>
-          <id>orbit</id>
-          <layout>p2</layout>
-          <url>${orbit-site}</url>
-        </repository>
-        <repository>
           <id>cdt</id>
           <layout>p2</layout>
           <url>${cdt-site}</url>
@@ -145,10 +137,6 @@
           <id>cdttest</id>
           <layout>p2</layout>
           <url>${cdt-test-site}</url>
-        </repository>
-        <repository>
-          <id>maven.eclipse.org</id>
-          <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
         </repository>
       </repositories>
     </profile>
