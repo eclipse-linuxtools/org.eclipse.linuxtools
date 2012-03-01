@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.charts.actions;
 
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;

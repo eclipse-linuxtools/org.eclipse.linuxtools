@@ -18,7 +18,7 @@ import org.eclipse.birt.chart.exception.ChartException;
 import org.eclipse.birt.chart.factory.GeneratedChartState;
 import org.eclipse.birt.chart.factory.Generator;
 import org.eclipse.birt.chart.factory.RunTimeContext;
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.chart.util.PluginSettings;
@@ -243,7 +243,7 @@ public class SaveChartAction extends Action {
 		GeneratedChartState gcs = null;
 	
 		Bounds boFile = null;
-		bo = chartView.getChartViewer().getBounds();
+//		bo = chartView.getChartViewer().getBounds();
 		//Set the chart size
 		if (bo != null){
 			boFile = BoundsImpl.create(bo.getLeft(), bo.getTop(), bo.getWidth(), bo.getHeight());
@@ -253,7 +253,7 @@ public class SaveChartAction extends Action {
 		}
 			
 		
-		try {
+		/*try {
 			gcs = gr.build( idr.getDisplayServer( ), cm, boFile, null, rtc, null );
 		} catch (ChartException e) {
 			Status s = new Status(
@@ -263,7 +263,7 @@ public class SaveChartAction extends Action {
 					e.getMessage(),
 					e);
 			Activator.getDefault().getLog().log(s);
-		}
+		}*/
 
 		//Specify the file to write to. 
 		idr.setProperty( IDeviceRenderer.FILE_IDENTIFIER, file.getAbsolutePath() );

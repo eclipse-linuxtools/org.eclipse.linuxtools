@@ -11,23 +11,18 @@
 package org.eclipse.linuxtools.dataviewers.charts.view;
 
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.linuxtools.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.SaveXMLAction;
-import org.eclipse.linuxtools.dataviewers.charts.viewer.ChartViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.swtchart.Chart;
 
 
 /**
@@ -47,9 +42,7 @@ public class ChartView extends ViewPart {
 	/** The current secondary id for these views */
 	private static Integer SEC_ID = 0;
 	
-	private Canvas paintCanvas;
-	
-	private ChartViewer chartViewer;
+	private Composite parent;
 	
 	private SaveChartAction saveChartAction;
 	
@@ -98,15 +91,11 @@ public class ChartView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		try {
-			paintCanvas = new Canvas( parent, SWT.NONE );
-			paintCanvas.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-			paintCanvas.setBackground( Display.getDefault( )
-					.getSystemColor( SWT.COLOR_WHITE ) );
-			chartViewer = new ChartViewer( );
-			paintCanvas.addPaintListener( chartViewer );
-			paintCanvas.addControlListener( chartViewer );
-			chartViewer.setViewer( paintCanvas );
-			
+			this.parent = parent;
+//			paintCanvas = new Canvas( parent, SWT.NONE );
+//			paintCanvas.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+//			paintCanvas.setBackground( Display.getDefault( )
+//					.getSystemColor( SWT.COLOR_WHITE ) );
 			
 			createActions(parent);
 			IActionBars actionBars = getViewSite().getActionBars();
@@ -143,8 +132,8 @@ public class ChartView extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
-		if (paintCanvas != null) {
-			paintCanvas.setFocus();
+		if (parent != null) {
+			parent.setFocus();
 		} else {
 			Status s = new Status(
 					Status.ERROR,
@@ -174,9 +163,8 @@ public class ChartView extends ViewPart {
 	 */
 	public void  setChart(Chart chart) {
 		if (chart != null) {
-			chartViewer.renderModel(chart);
+			chart.setParent(parent);
 			saveChartAction.setChart(chart);
-			saveChartAction.setBounds(chartViewer.getBounds());
 			saveXMLAction.setChart(chart);
 			
 		} else {
@@ -189,16 +177,16 @@ public class ChartView extends ViewPart {
 		}
 	}
 	
-	public ChartViewer getChartViewer(){
-		return chartViewer;
-	}
-	
-	public void setChartViewer(ChartViewer cv){
-		chartViewer = cv;
-	}
-	
 	public void dispose( )
 	{
 		super.dispose( );
+	}
+	
+	public Composite getParent() {
+		return parent;
+	}
+
+	public static int getSecId() {
+		return SEC_ID;
 	}
 }

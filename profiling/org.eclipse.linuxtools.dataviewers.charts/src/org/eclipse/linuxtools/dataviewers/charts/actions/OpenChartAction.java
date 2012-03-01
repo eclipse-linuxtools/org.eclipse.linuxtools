@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.dataviewers.charts.actions;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.birt.chart.model.Serializer;
 import org.eclipse.birt.chart.model.impl.SerializerImpl;
 import org.eclipse.birt.core.ui.frameworks.taskwizard.WizardBase;
@@ -59,8 +59,8 @@ public class OpenChartAction extends Action {
 			serializer = SerializerImpl.instance( );
 			if ( chartFile.exists( ) )
 			{
-				chart = serializer.read( new FileInputStream( chartFile ) );
-				chartView.getChartViewer().setBuffer(null);
+//				chart = serializer.read( new FileInputStream( chartFile ) );
+//				chartView.getChartViewer().setBuffer(null);
 				chartView.setChart(chart);
 			}
 		}

@@ -17,10 +17,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.dataviewers.charts,
  org.eclipse.linuxtools.dataviewers.charts.actions,
- org.eclipse.linuxtools.dataviewers.charts.dataengine,
  org.eclipse.linuxtools.dataviewers.charts.dialogs,
  org.eclipse.linuxtools.dataviewers.charts.provider,
- org.eclipse.linuxtools.dataviewers.charts.view,
- org.eclipse.linuxtools.dataviewers.charts.viewer
-Import-Package: com.ibm.icu.util;version="4.0.1"
+ org.eclipse.linuxtools.dataviewers.charts.view
+Import-Package: com.ibm.icu.util;version="4.0.1",
+ org.swtchart
 Bundle-Localization: plugin

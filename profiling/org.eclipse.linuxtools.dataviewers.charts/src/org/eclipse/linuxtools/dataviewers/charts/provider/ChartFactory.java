@@ -10,44 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.charts.provider;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.ChartWithAxes;
-import org.eclipse.birt.chart.model.ChartWithoutAxes;
-import org.eclipse.birt.chart.model.attribute.ActionType;
-import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.ChartDimension;
-import org.eclipse.birt.chart.model.attribute.IntersectionType;
-import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.TickStyle;
-import org.eclipse.birt.chart.model.attribute.TriggerCondition;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
-import org.eclipse.birt.chart.model.attribute.impl.GradientImpl;
-import org.eclipse.birt.chart.model.attribute.impl.TooltipValueImpl;
-import org.eclipse.birt.chart.model.component.Axis;
-import org.eclipse.birt.chart.model.component.Series;
-import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
-import org.eclipse.birt.chart.model.data.NumberDataSet;
-import org.eclipse.birt.chart.model.data.SeriesDefinition;
-import org.eclipse.birt.chart.model.data.TextDataSet;
-import org.eclipse.birt.chart.model.data.Trigger;
-import org.eclipse.birt.chart.model.data.impl.ActionImpl;
-import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
-import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.TriggerImpl;
-import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
-import org.eclipse.birt.chart.model.impl.ChartWithoutAxesImpl;
-import org.eclipse.birt.chart.model.layout.Legend;
-import org.eclipse.birt.chart.model.layout.Plot;
-import org.eclipse.birt.chart.model.type.BarSeries;
-import org.eclipse.birt.chart.model.type.PieSeries;
-import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
-import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
+import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.swtchart.Chart;
 
 /**
  * A utility class that handles the charts creation (pie chart & bar chart)
@@ -65,7 +37,7 @@ public class ChartFactory {
 	 * @param valField the field providing the values for the pie parts.
 	 * @return a new 3D pie chart
 	 */
-	public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
+	/*public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
 	{
 		ChartWithoutAxes cwoaPie = ChartWithoutAxesImpl.create( );
 		cwoaPie.setSeriesThickness( 20 );
@@ -134,7 +106,7 @@ public class ChartFactory {
 	
 	
 		return cwoaPie;
-	}
+	}*/
 		
 	/** 
 	 * Produces a 2D bar chart from the input objects.
@@ -148,7 +120,15 @@ public class ChartFactory {
 	
 	public static final Chart produceBarChart( Object[] objects, final ISTDataViewersField nameField, List<IChartField> valFields, String title,boolean horizontal)
 	{
-		ChartWithAxes cwaBar = ChartWithAxesImpl.create( );
+		ChartView view;
+		try {
+			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
+			return new Chart(view.getParent(), SWT.NONE);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return null;
+		/*ChartWithAxes cwaBar = ChartWithAxesImpl.create( );
 
 		// Plot
 		cwaBar.getBlock( ).setBackground( ColorDefinitionImpl.WHITE( ) );
@@ -231,7 +211,7 @@ public class ChartFactory {
 		xAxisPrimary.getSeriesDefinitions( ).add( sdX );
 		sdX.getSeries( ).add( seCategory );
 
-		return cwaBar;
+		return cwaBar;*/
 	}
 	
 	/**
@@ -242,10 +222,10 @@ public class ChartFactory {
 		return viewer.getAllFields()[0];
 	}
 	
-	public static void setTriggering(Series series){
+/*	public static void setTriggering(Series series){
 		//Mouse over the Serie to Show Tooltips
 		Trigger tr = TriggerImpl.create(TriggerCondition.ONMOUSEOVER_LITERAL, 
 				ActionImpl.create(ActionType.SHOW_TOOLTIP_LITERAL, TooltipValueImpl.create(200, null)));
 		series.getTriggers().add(tr);
-	}
+	}*/
 }

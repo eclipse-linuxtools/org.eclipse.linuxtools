@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.birt.chart.model.Serializer;
 import org.eclipse.birt.chart.model.impl.SerializerImpl;
 import org.eclipse.core.resources.IFile;
@@ -83,9 +83,9 @@ public class SaveXMLAction extends Action
 					}
 
 					serializer = SerializerImpl.instance( );
-					try
-					{
-						serializer.write( cm, new FileOutputStream( file ) );
+//					try
+//					{
+//						serializer.write( cm, new FileOutputStream( file ) );
 						IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
 						if (c != null){
 							try {
@@ -96,11 +96,11 @@ public class SaveXMLAction extends Action
 								}
 						}
 						
-					}
-					catch ( IOException ioe )
+//					}
+					/*catch ( IOException ioe )
 					{
 						ioe.printStackTrace( );
-					}
+					}*/
 				}
 			}
 			catch ( Throwable e )

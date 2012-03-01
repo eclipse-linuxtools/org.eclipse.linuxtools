@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -402,7 +402,8 @@ public class ChartDialog  extends Dialog {
 			return ChartFactory.produceBarChart(objects, labelField, selectedFields, getBarChartTitle(),horizontalBars);
 		}
 		else {
-			return ChartFactory.producePieChart(objects, labelField, selectedFields);
+			return ChartFactory.produceBarChart(objects, labelField, selectedFields, getBarChartTitle(),horizontalBars);
+//			return ChartFactory.producePieChart(objects, labelField, selectedFields);
 		}
 	}
 
