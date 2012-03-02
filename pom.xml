@@ -239,6 +239,7 @@
                </dependency>
             </dependencies>
             <product>org.eclipse.sdk.ide</product>
+	    <argLine>-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</argLine>
 	  </configuration>
 	</plugin>
         <plugin>
