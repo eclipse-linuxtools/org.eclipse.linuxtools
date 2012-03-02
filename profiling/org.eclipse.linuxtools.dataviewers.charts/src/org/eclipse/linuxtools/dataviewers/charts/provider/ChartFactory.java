@@ -16,10 +16,16 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.swtchart.Chart;
+import org.swtchart.IAxis;
+import org.swtchart.IBarSeries;
+import org.swtchart.ITitle;
+import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart & bar chart)
@@ -122,8 +128,52 @@ public class ChartFactory {
 	{
 		ChartView view;
 		try {
+			
+			final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+			final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+			final Color RED = new Color(Display.getDefault(), 255, 0, 0);
+			final Color ORANGE = new Color(Display.getDefault(), 255, 165, 0);
+			final Color GREEN = new Color(Display.getDefault(), 0, 255, 0);
+			final Color GRAD = new Color(Display.getDefault(), 225, 225, 225);
+			
 			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
-			return new Chart(view.getParent(), SWT.NONE);
+			Chart chart = new Chart(view.getParent(), SWT.NONE);
+			
+			chart.setBackground(WHITE);
+			chart.setBackgroundInPlotArea(GRAD);
+			
+			chart.getTitle().setText(title);
+			
+			if (horizontal){
+				chart.setOrientation(SWT.HORIZONTAL);
+			}else{
+				chart.setOrientation(SWT.VERTICAL);
+			}
+			
+			chart.getLegend().setPosition(SWT.RIGHT);
+			
+			String [] textLabels = new String [objects.length];
+			for (int i = 0; i < objects.length; i++) {
+				textLabels[i] = nameField.getValue(objects[i]);
+			}
+			
+			IAxis xAxis = chart.getAxisSet().getXAxis(0);
+			xAxis.getGrid().setStyle(LineStyle.NONE);
+			xAxis.getTick().setForeground(BLACK);
+			ITitle xTitle = xAxis.getTitle();
+			xTitle.setForeground(BLACK);
+			xTitle.setText(nameField.getColumnHeaderText());
+			xAxis.setCategorySeries(textLabels);
+			
+			IAxis yAxis = chart.getAxisSet().getYAxis(0);
+			yAxis.getGrid().setStyle(LineStyle.SOLID);
+			yAxis.getTick().setForeground(BLACK);
+			ITitle yTitle = yAxis.getTitle();
+//			yTitle.setText(heapChart.yUnits);
+			yTitle.setForeground(BLACK);
+			
+			
+			return chart;
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

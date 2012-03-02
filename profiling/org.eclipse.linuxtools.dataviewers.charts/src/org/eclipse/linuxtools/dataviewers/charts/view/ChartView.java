@@ -163,7 +163,6 @@ public class ChartView extends ViewPart {
 	 */
 	public void  setChart(Chart chart) {
 		if (chart != null) {
-			chart.setParent(parent);
 			saveChartAction.setChart(chart);
 			saveXMLAction.setChart(chart);
 			
