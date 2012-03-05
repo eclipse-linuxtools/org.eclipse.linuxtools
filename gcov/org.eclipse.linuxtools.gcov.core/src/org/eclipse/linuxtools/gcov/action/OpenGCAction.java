@@ -99,27 +99,32 @@ public class OpenGCAction implements IEditorLauncher {
 			String line;
 			String  tab[];
 			if (info.exists()) {
-				BufferedReader br = new BufferedReader(new FileReader(info.toString()));
+				BufferedReader br = null;
+				try {
+					br = new BufferedReader(new FileReader(info.toString()));
 
-				while ((line = br.readLine())!= null){
-					tab = line.split("=");
-					String name="", value="";
-					if (tab.length > 1){
-						name=tab[0];
-						value=tab[1].trim();	
-						if (name.equals("Project Name ")){
-							project = ResourcesPlugin.getWorkspace().getRoot().getProject(value);
-						}
-						else if (name.equals("Program Name ")){
-							if(project != null){
-								ifile = project.getFile(value);
-								br.close();
-								if (ifile.exists()) {
-									return ifile.getLocation().toString();
-								}
+					while ((line = br.readLine())!= null){
+						tab = line.split("=");
+						String name="", value="";
+						if (tab.length > 1){
+							name=tab[0];
+							value=tab[1].trim();	
+							if (name.equals("Project Name ")){
+								project = ResourcesPlugin.getWorkspace().getRoot().getProject(value);
 							}
-						}	
+							else if (name.equals("Program Name ")){
+								if(project != null){
+									ifile = project.getFile(value);
+									br.close();
+									if (ifile.exists()) {
+										return ifile.getLocation().toString();
+									}
+								}
+							}	
+						}
 					}
+				} finally {
+					if (br != null) br.close();
 				}
 			}else{
 				IFile c = ResourcesPlugin.getWorkspace().getRoot()

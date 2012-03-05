@@ -188,22 +188,17 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 			if (regExSearch){
 				Matcher matcher = pattern.matcher(text);
 				ok = matcher.find();
-			}
-			else{
-			
-				
+			} else {
 				if (wholeWord){
 					if (caseSensitive)
 						ok = text.equals(findString);
 					else
 						ok = text.equalsIgnoreCase(findString);
-				}
-				else{
-					ok = text.contains(findString);
-					
-					if (ok && caseSensitive){
-						text.indexOf(findString);
-					}
+				} else{
+					if (caseSensitive)
+						ok = text.contains(findString);
+					else 
+						ok = text.toLowerCase().contains(findString.toLowerCase());
 				}
 			}	
 

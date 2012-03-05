@@ -364,9 +364,9 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 	
 	private static class ToolTipSupport extends DefaultToolTip{
 		private STContributedRulerColumn control;
-		class ToolTipArea{
-			int line;
-			ISTAnnotationColumn ac;
+		static class ToolTipArea{
+			final int line;
+			final ISTAnnotationColumn ac;
 			
 			ToolTipArea(int line,ISTAnnotationColumn ac){
 				this.line = line;
@@ -385,9 +385,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 		}
 
 		protected Object getToolTipArea(Event event) {
-
 			int line = control.toDocumentLineNumber(event.y);
-			
 			return new ToolTipArea(line,control.getAnnotationColumn(line));
 		}
 

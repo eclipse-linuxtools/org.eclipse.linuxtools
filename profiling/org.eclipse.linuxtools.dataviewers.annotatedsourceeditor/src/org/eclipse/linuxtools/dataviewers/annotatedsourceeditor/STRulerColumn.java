@@ -129,12 +129,10 @@ public class STRulerColumn implements IVerticalRulerColumn{
 			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
 			if (annotationColumn instanceof ISTAnnotationHyperlink){
 				ISTAnnotationHyperlink ahp = (ISTAnnotationHyperlink)annotationColumn;
-				if (ahp.isAnnotationHyperlink(newLine) && annotationColumn.getAnnotation(newLine).trim() != ""){
+				if (ahp.isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
 					ahp.handleHyperlink(newLine);
 				}
-
-			}
-			else{
+			} else{
 				// see bug 45700
 				if (event.button == 1) {
 					startSelecting();
@@ -775,15 +773,12 @@ public class STRulerColumn implements IVerticalRulerColumn{
 				paintHyperLink(line, y, indentation, lineheight, gc, display);
 
 			}
-		}
-		else{
+		} else{
 			s = annotationColumn.getAnnotation(widgetLine);
-		
-			if (widgetLine + 1 == 1){
-				for(int i=0;i<annotationColumn.getTitle().length();i++)
+			if (widgetLine == 0){
+				for (int i=0;i<annotationColumn.getTitle().length();i++)
 					s = s + " ";
 			}
-
 			int baselineBias= getBaselineBias(gc, widgetLine);
 			gc.drawString(s, indentation, y + baselineBias, true);
 		}

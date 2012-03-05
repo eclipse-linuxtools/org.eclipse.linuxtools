@@ -166,7 +166,7 @@ public class Block implements Serializable{
 		this.blkline.num = numline;
 	}
 
-	class BlkLine implements Serializable{
+	static class BlkLine implements Serializable{
 		/**
 		 * 
 		 */

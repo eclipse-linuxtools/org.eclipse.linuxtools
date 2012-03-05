@@ -371,7 +371,7 @@ public class CovManager implements Serializable {
 	
 	
 
-	private final class ThreadConsumer extends Thread
+	private static final class ThreadConsumer extends Thread
 	{
 		private final Process p;
 		private final List<String> list;

@@ -70,12 +70,12 @@ public class STSymbolManager {
 	 */
 	public final static STSymbolManager sharedInstance = new STSymbolManager();
 
-	private final class AutoDisposeAddr2line {
+	private final static class AutoDisposeAddr2line {
 		private Addr2line addr2line;
 		private long startTime;
 	}
 
-	private final class AutoDisposeCPPFilt {
+	private final static class AutoDisposeCPPFilt {
 		private CPPFilt cppfilt;
 		private long startTime;
 	}
@@ -501,7 +501,7 @@ public class STSymbolManager {
 			try {
 				s = object.getCPU(); // 
 			} catch (Exception _) {}
-			if (s.length() > 0) {
+			if (s != null && s.length() > 0) {
 				return object;
 			}
 		}

@@ -42,37 +42,36 @@ public abstract class AbstractOpenSourceFileAction extends Action{
 		
 		IFileStore fileStore = getFileStore();
 		
-		if (fileStore != null && !fileStore.fetchInfo().isDirectory() && fileStore.fetchInfo().exists()) {
-			long timeStamp = fileStore.fetchInfo().getLastModified();
-			
-			if (timeStamp>ts) {
-				MessageBox msg = new MessageBox(window.getShell(),SWT.ICON_WARNING | SWT.APPLICATION_MODAL | SWT.YES| SWT.NO);
-				msg.setText(fileStore.toString());
-				msg.setMessage("The file "
-						+ fileStore
-						+ " is newer than the analysis result, \n"
-						+ " if you continue opening it the visualization could result inconsistent. \n Do you want to continue?");
-			}
-			
-			try {
-				IWorkbenchPage page = window.getActivePage();
-			    if (page != null) {
-			    	IFileStore fs =  EFS.getStore(fileStore.toURI());
-			    	IEditorInput input = getInput(fs);
-			    	page.openEditor(input,  EDITOR_ID, false);
-			    }
-			} catch (Exception e) {
-			    Status s = new Status(
-			            IStatus.ERROR,
-			            STAnnotatedSourceEditorActivator.getUniqueIdentifier(),
-			            IStatus.ERROR,
-			            "Error when opening annotated source view",
-			            e);
-			    STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
-			}
-		} 
-		else{
-			if (!fileStore.fetchInfo().exists()) {
+		if (fileStore != null && !fileStore.fetchInfo().isDirectory()) {
+			if (fileStore.fetchInfo().exists()) {
+				long timeStamp = fileStore.fetchInfo().getLastModified();
+
+				if (timeStamp>ts) {
+					MessageBox msg = new MessageBox(window.getShell(),SWT.ICON_WARNING | SWT.APPLICATION_MODAL | SWT.YES| SWT.NO);
+					msg.setText(fileStore.toString());
+					msg.setMessage("The file "
+							+ fileStore
+							+ " is newer than the analysis result, \n"
+							+ " if you continue opening it the visualization could result inconsistent. \n Do you want to continue?");
+				}
+
+				try {
+					IWorkbenchPage page = window.getActivePage();
+					if (page != null) {
+						IFileStore fs =  EFS.getStore(fileStore.toURI());
+						IEditorInput input = getInput(fs);
+						page.openEditor(input,  EDITOR_ID, false);
+					}
+				} catch (Exception e) {
+					Status s = new Status(
+							IStatus.ERROR,
+							STAnnotatedSourceEditorActivator.getUniqueIdentifier(),
+							IStatus.ERROR,
+							"Error when opening annotated source view",
+							e);
+					STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
+				}
+			} else{
 				showMessage("The selected file does not exist: " + fileStore,window.getShell());
 			}
 		}

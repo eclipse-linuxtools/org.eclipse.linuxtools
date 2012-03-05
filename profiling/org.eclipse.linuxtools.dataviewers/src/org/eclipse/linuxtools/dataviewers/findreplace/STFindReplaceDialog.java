@@ -517,7 +517,7 @@ class STFindReplaceDialog extends Dialog {
 		if (isIncrementalSearch() && !isRegExSearchAvailableAndChecked())
 			initIncrementalBaseLocation();
 
-		if (fTarget == null || !(fTarget instanceof ISTFindReplaceTarget))
+		if (fTarget == null)
 			return;
 
 		fTarget.useSelectedLines(selectedLines);
@@ -778,8 +778,7 @@ class STFindReplaceDialog extends Dialog {
 	 * @since 3.0
 	 */
 	private ViewerCell findAndSelect(ViewerCell offset, String findString, boolean forwardSearch, boolean caseSensitive, boolean wholeWord, boolean regExSearch,boolean wrapSearch) {
-		if (fTarget instanceof ISTFindReplaceTarget)
-			return ((ISTFindReplaceTarget)fTarget).findAndSelect(offset, findString, forwardSearch, caseSensitive, wholeWord,wrapSearch,regExSearch);
+		if (fTarget != null) return fTarget.findAndSelect(offset, findString, forwardSearch, caseSensitive, wholeWord,wrapSearch,regExSearch);
 		return null;
 	}
 
@@ -1425,11 +1424,8 @@ class STFindReplaceDialog extends Dialog {
 				((IFindReplaceTargetExtension) fTarget).endSession();*/
 
 			fTarget= target;
-			if (fTarget != null)
-				fIsTargetSupportingRegEx= fTarget instanceof ISTFindReplaceTarget;
-
-			
-			if (fTarget instanceof ISTFindReplaceTarget) {
+			if (fTarget != null) {
+				fIsTargetSupportingRegEx= true;
 				//((IFindReplaceTargetExtension) fTarget).beginSession();
 
 				fGlobalInit= true;
