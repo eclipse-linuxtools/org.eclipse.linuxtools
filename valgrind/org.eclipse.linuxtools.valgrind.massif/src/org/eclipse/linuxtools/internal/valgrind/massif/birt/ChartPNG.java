@@ -36,7 +36,7 @@ public class ChartPNG {
 		Composite comp = cm.getChartControl();
 		Display dsp = Display.getCurrent();
 		GC gc = new GC(comp);
-		Image img = new Image(dsp, comp.getSize().x, comp.getSize().y);
+		Image img = new Image(dsp, comp.getSize().x + 1, comp.getSize().y + 1);
 		gc.copyArea(img, 0, 0);
 		gc.dispose();
 		ImageLoader imageLoader = new ImageLoader();
