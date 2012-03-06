@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.internal.gprof.test
+Bundle-SymbolicName: org.eclipse.linuxtools.gprof.test
 Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Fragment-Host: org.eclipse.linuxtools.gprof
