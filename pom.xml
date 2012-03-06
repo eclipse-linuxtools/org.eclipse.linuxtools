@@ -276,7 +276,7 @@
 	<plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration>
-            <excludePackageNames>org.eclipse.linuxtools.internal.*</excludePackageNames>
+            <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*</excludePackageNames>
           </configuration>
         </plugin>
       </plugins>
