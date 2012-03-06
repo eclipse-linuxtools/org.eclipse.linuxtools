@@ -30,7 +30,7 @@ public class GcovTestCLibrary {
 		public static void beforeClass() throws Exception {
 			bot = new SWTWorkbenchBot();
 			bot.perspectiveByLabel("C/C++").activate();
-			bot.shells()[0].activate();
+			//bot.shells()[0].activate();
 			SWTBotMenu menu = bot.menu("Build Automatically");
 			menu.click();
 		}
