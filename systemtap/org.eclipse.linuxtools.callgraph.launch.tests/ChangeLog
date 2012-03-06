@@ -1,3 +1,8 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/AbstractStapTest.java: Remove
+	override of proj variable from parent class.
+
 2011-08-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/tests/ConfigurationTest.java

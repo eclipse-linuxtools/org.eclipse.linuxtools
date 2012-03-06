@@ -41,4 +41,9 @@ public class PatchRangeElement {
 		else
 			return this == o;
 	}
+	
+	@Override
+	public int hashCode() {
+		return ffromLine + ftoLine + (flocalChange ? 47 : 83);
+	}
 }

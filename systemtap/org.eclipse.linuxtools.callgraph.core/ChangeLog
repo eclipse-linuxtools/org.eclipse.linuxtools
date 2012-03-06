@@ -1,3 +1,13 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/ViewFactory.java (getViews): Fix usage
+	of toArray() to pass a new array as parameter.
+	* src/org/eclipse/linuxtools/callgraph/core/XMLParser.java (XMLParser): Remove
+	unexposed counter variable.
+	(setTextMode): Ditto.
+	(parse): Fix code
+	using == for string comparison.
+	 
 2011-08-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/LaunchConfigurationConstants.java:

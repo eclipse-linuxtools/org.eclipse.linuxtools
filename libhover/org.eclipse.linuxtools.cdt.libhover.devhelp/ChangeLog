@@ -1,3 +1,8 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/devhelp/preferences/PreferenceConstants.java: Add
+	final qualifier to constants.
+
 2011-06-02  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* about.html: New file.

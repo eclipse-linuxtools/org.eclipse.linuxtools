@@ -1,3 +1,12 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacro.java (equals): Fix
+	FindBugs error with missing null case.
+	(hashCode): New method to fix FindBugs error.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeEditor.java (AutomakeEditor): Fix
+	constructor to remove static variable. 
+	(static initializer): Fix FindBugs error with static variable usage.
+	
 2012-02-28  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #371277

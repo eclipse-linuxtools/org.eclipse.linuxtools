@@ -34,9 +34,12 @@ public class AutomakeEditor extends MakefileEditor {
 	private static AutomakeEditor fgInstance;
 	private IEditorInput input;
 	
-    public AutomakeEditor() {
+	static {
+		fgInstance = new AutomakeEditor();
+	}
+	
+    private AutomakeEditor() {
     	super();
-    	fgInstance = this;
     }
 
     /**

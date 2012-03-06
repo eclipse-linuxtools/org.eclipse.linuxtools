@@ -36,12 +36,15 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 	
 	// The shared instance
 	private static LibhoverPlugin plugin;
+	
+	static {
+		plugin = new LibhoverPlugin();
+	}
 
 	/**
 	 * The constructor
 	 */
-	public LibhoverPlugin() {
-		plugin = this;
+	private LibhoverPlugin() {
 	}
 
 	/*

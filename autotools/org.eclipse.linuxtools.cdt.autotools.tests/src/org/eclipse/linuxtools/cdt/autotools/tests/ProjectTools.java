@@ -60,11 +60,11 @@ public class ProjectTools {
 		if (!setupComplete) {
         IWorkspaceDescription desc;
         workspace = ResourcesPlugin.getWorkspace();
-        root = workspace.getRoot();
-        monitor = new NullProgressMonitor();
         if(workspace == null) {
         	return false;
         }
+        root = workspace.getRoot();
+        monitor = new NullProgressMonitor();
         if(root == null) {
         	return false;
         }
