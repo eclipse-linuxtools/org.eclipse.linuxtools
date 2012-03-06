@@ -20,10 +20,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.dataviewers.charts,
  org.eclipse.linuxtools.dataviewers.annotatedsourceeditor,
  org.eclipse.cdt.debug.core
-Export-Package: org.eclipse.linuxtools.gcov.model,
- org.eclipse.linuxtools.gcov.parser,
- org.eclipse.linuxtools.gcov.utils,
- org.eclipse.linuxtools.gcov.view
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin

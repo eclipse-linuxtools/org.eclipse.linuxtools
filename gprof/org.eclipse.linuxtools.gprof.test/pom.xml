@@ -34,8 +34,8 @@
             <!-- test mojo matches TestProject be default and treats it as PojoTest -->
             <exclude>**/Test*.class</exclude>
           </excludes>
-          <testSuite>org.eclipse.linuxtools.gprof.test</testSuite>
-          <testClass>org.eclipse.linuxtools.gprof.test.AllGprofTests</testClass>
+          <testSuite>org.eclipse.linuxtools.internal.gprof.test</testSuite>
+          <testClass>org.eclipse.linuxtools.internal.gprof.test.AllGprofTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
