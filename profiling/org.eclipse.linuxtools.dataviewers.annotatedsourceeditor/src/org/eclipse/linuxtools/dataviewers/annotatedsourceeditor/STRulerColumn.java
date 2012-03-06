@@ -155,7 +155,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		public void mouseMove(MouseEvent event) {
 			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
 			if (annotationColumn instanceof ISTAnnotationHyperlink){
-				if (((ISTAnnotationHyperlink)annotationColumn).isAnnotationHyperlink(newLine) && annotationColumn.getAnnotation(newLine).trim() != ""){
+				if (((ISTAnnotationHyperlink)annotationColumn).isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
 					Cursor cursor = new Cursor(event.display,SWT.CURSOR_HAND);
 					fCanvas.setCursor(cursor);
 				}
