@@ -1,3 +1,16 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: New file.
+	* plugin_customization.ini: New file.
+	* .gitignore: Add screenshots directory.
+	* build.properties: Add plugin_customization.ini file.
+	* META-INF/MANIFEST.MF: Make into singleton plug-in.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (beforeClass): Use
+	internal IDE preference store to always open perspective on new project. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java (beforeClass): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestMakeTargets.java (beforeClass): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (beforeClass): Ditto.
+	
 2012-02-28  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin_customization.ini: New file.

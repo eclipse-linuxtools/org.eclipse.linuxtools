@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.tests;
 
-import static org.junit.Assert.assertTrue;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +23,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -32,14 +34,19 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@SuppressWarnings("restriction")
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class TestMakeTargets {
-	
+
+	public final static String PROJECT_SWITCH_PERSP_MODE = "SWITCH_PERSPECTIVE_ON_PROJECT_CREATION"; //$NON-NLS-1$
+	public final static String ALWAYS = "always"; //$NON-NLS-1$
+
 	private static SWTWorkbenchBot	bot;
 
 	@BeforeClass
@@ -68,6 +75,12 @@ public class TestMakeTargets {
 		if (radio != null && !radio.isSelected())
 			radio.click();
 		bot.button("OK").click();
+		
+		// Use an internal preference store to ensure C/C++ perspective is
+		// opened automatically for a new project.
+		IPreferenceStore p = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+		p.setValue(PROJECT_SWITCH_PERSP_MODE, ALWAYS);
+
 		bot.menu("File").menu("New").menu("Project...").click();
 		 
 		shell = bot.shell("New Project");

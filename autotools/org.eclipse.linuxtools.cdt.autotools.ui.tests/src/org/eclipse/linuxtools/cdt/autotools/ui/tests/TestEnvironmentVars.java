@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -32,13 +33,19 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@SuppressWarnings("restriction")
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class TestEnvironmentVars {
+	
+	public final static String PROJECT_SWITCH_PERSP_MODE = "SWITCH_PERSPECTIVE_ON_PROJECT_CREATION"; //$NON-NLS-1$
+	public final static String ALWAYS = "always"; //$NON-NLS-1$
+	
 	private static SWTWorkbenchBot	bot;
 
 	@BeforeClass
@@ -67,6 +74,12 @@ public class TestEnvironmentVars {
 		if (radio != null && !radio.isSelected())
 			radio.click();
 		bot.button("OK").click();
+		
+		// Use an internal preference store to ensure C/C++ perspective is
+		// opened automatically for a new project.
+		IPreferenceStore p = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+		p.setValue(PROJECT_SWITCH_PERSP_MODE, ALWAYS);
+
 		bot.menu("File").menu("New").menu("Project...").click();
 		 
 		shell = bot.shell("New Project");

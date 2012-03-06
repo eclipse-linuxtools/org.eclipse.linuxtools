@@ -10,14 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.tests;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,20 +30,19 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,8 +53,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+@SuppressWarnings({ "restriction", "deprecation" })
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class SetConfigurationParameter {
+	
+	public final static String PROJECT_SWITCH_PERSP_MODE = "SWITCH_PERSPECTIVE_ON_PROJECT_CREATION"; //$NON-NLS-1$
+	public final static String ALWAYS = "always"; //$NON-NLS-1$
 	
 	private static SWTWorkbenchBot	bot;
 	private static SWTBotShell mainShell;
@@ -87,13 +88,19 @@ public class SetConfigurationParameter {
 		bot.button("Apply").click();
 		// Ensure that the C/C++ perspective is chosen automatically
 		// and doesn't require user intervention
-		bot.tree().expandNode("General").select("Perspectives");
-		SWTBotRadio radio = bot.radio("Always open");
-		if (radio != null && !radio.isSelected())
-			radio.click();
-		bot.sleep(1000);
-		bot.button("Apply").click();
+		// Note, the following method using SWTBot does not work
+		// It appears to be a problem with interacting with a RadioGroupFieldEditor
+//		bot.tree().expandNode("General").select("Perspectives");
+//		SWTBotRadio radio = bot.radio("Always open");
+//		if (radio != null && !radio.isSelected())
+//			radio.click();
+//		bot.sleep(1000);
+//		bot.button("Apply").click();
 		bot.button("OK").click();
+		
+		// Use an internal preference store to do the job.
+		IPreferenceStore p = IDEWorkbenchPlugin.getDefault().getPreferenceStore();
+		p.setValue(PROJECT_SWITCH_PERSP_MODE, ALWAYS);
 	}
  
 	@Test
