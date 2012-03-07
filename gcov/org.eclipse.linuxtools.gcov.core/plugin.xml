@@ -26,6 +26,7 @@
             name="Source Not Found">
       </editor>
       <editor
+            default="true"
             extensions="gcda, gcno"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gcov.editor"

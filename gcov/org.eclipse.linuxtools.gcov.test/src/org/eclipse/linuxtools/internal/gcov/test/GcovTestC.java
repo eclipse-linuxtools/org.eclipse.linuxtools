@@ -1,8 +1,10 @@
 package org.eclipse.linuxtools.internal.gcov.test;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +30,27 @@ public class GcovTestC {
 		@BeforeClass
 		public static void beforeClass() throws Exception {
 			bot = new SWTWorkbenchBot();
+			try {
+				bot.viewByTitle("Welcome").close();
+				// hide Subclipse Usage stats popup if present/installed
+				bot.shell("Subclipse Usage").activate();
+				bot.button("Cancel").click();
+			} catch (WidgetNotFoundException e) {
+				// ignore
+			}
+
 			bot.perspectiveByLabel("C/C++").activate();
-			//bot.shells()[0].activate();
-			SWTBotMenu menu = bot.menu("Build Automatically");
-			menu.click();
+			// Turn off automatic building by default
+			bot.menu("Window").menu("Preferences").click();
+			SWTBotShell shell = bot.shell("Preferences");
+			shell.activate();
+			bot.tree().expandNode("General").select("Workspace");
+			SWTBotCheckBox buildAuto = bot.checkBox("Build automatically");
+			if (buildAuto != null && buildAuto.isChecked())
+				buildAuto.click();
+			bot.sleep(1000);
+			bot.button("Apply").click();
+			bot.button("OK").click();
 		}
 
 		@RunWith(SWTBotJunit4ClassRunner.class)
