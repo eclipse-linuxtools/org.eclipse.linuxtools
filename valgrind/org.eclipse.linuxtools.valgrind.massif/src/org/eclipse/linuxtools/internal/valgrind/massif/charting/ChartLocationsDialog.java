@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.internal.valgrind.massif.birt;
+package org.eclipse.linuxtools.internal.valgrind.massif.charting;
 
 import java.util.ArrayList;
 import java.util.List;

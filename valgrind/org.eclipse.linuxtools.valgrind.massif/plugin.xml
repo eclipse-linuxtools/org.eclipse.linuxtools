@@ -20,7 +20,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditor"
+            class="org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartEditor"
             default="false"
             icon="icons/linecharticon.gif"
             id="org.eclipse.linuxtools.valgrind.massif.chartEditor"

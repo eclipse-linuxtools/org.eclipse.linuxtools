@@ -9,7 +9,7 @@
  * Actuate Corporation - initial API and implementation
  * Elliott Baron <ebaron@redhat.com> - Modified implementation
  ***********************************************************************/
-package org.eclipse.linuxtools.internal.valgrind.massif.birt;
+package org.eclipse.linuxtools.internal.valgrind.massif.charting;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
