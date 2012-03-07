@@ -38,7 +38,7 @@ public class AutomakeEditor extends MakefileEditor {
 		fgInstance = new AutomakeEditor();
 	}
 	
-    private AutomakeEditor() {
+    public AutomakeEditor() {
     	super();
     }
 
