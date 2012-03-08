@@ -1,4 +1,11 @@
-<a href="../toc.html">Table of Contents</a> > <a href="reference.html">Reference</a>
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Example SystemTap]</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+<body><a href="../toc.html">Table of Contents</a> &gt; <a href="reference.html">Reference</a>
 
 <h2>
 Example SystemTap Scripts
@@ -7,14 +14,14 @@ Example SystemTap Scripts
 What follows is a few SystemTap Scripts that you may use in SystemTap GUI, taken from and linked to 
 <a href="http://sourceware.org/systemtap/documentation.html">http://sourceware.org/systemtap/documentation.html</a>
 
-<br><br>There is also a
+<br/><br/>There is also a
 <a href="http://sourceware.org/systemtap/examples/demo_script.txt">description of the examples</a>.
 
 <h3>
 top.stp - Prints the top 20 system calls (<a href="http://sourceware.org/systemtap/examples/top.stp">online source</a>)
 </h3>
 
-<code><pre>
+<pre>
 #!/usr/bin/env stap 
 #
 # This script continuously lists the top 20 systemcalls on the system
@@ -41,14 +48,14 @@ probe kernel.function("sys_*") {
 # print top syscalls every 5 seconds
 probe timer.ms(5000) {
 	print_top ()
-</pre></code>
+</pre>
 
 
 <h3>
 prof.stp - Simple profiling (<a href="http://sourceware.org/systemtap/examples/prof.stp">online source</a>)
 </h3>
 
-<code><pre>
+<pre>
 #!/usr/bin/env stap
 
 # This is an example of profiling a specific command or pid.
@@ -72,7 +79,7 @@ probe kernel.function("sys_*").return {
 	now = gettimeofday_us()
 	c = calltime[tid()]
 	if (!c) next
-	ttime[probefunc()] <<< now - c
+	ttime[probefunc()] &lt;%lt;%lt; now - c
 	delete calltime[tid()]
 }
 
@@ -84,14 +91,14 @@ probe end {
 }
 
 global calltime, ttime
-</pre></code>
+</pre>
 
 
 <h3>
 keyhack.stp - Modifying variables in the kernel. (<a href="http://sourceware.org/systemtap/examples/keyhack.stp">online source</a>)
 </h3>
 
-<code><pre>
+<pre>
 #! /usr/bin/env stap
 
 # This is not useful, but it demonstrates that
@@ -107,14 +114,14 @@ probe kernel.function("kbd_event") {
 probe end {
 	printf("\nDONE\n")
 }
-</code></pre>
+</pre>
 
 
 <h3>
 kmalloc.stp - Statistics example. (<a href="http://sourceware.org/systemtap/examples/kmalloc.stp">online source</a>)
 </h3>
 
-<code><pre>
+<pre>
 #! /usr/bin/env stap
 
 # Using statistics to examine kernel memory allocations
@@ -122,7 +129,7 @@ kmalloc.stp - Statistics example. (<a href="http://sourceware.org/systemtap/exam
 global kmalloc
 
 probe kernel.function("__kmalloc") { 
-	kmalloc <<< $size
+	kmalloc &lt;&lt;&lt; $size
 }
 
 # Exit after 10 seconds
@@ -137,14 +144,14 @@ probe end {
 	print("\nAllocations by size in bytes\n")
 	print(@hist_log(kmalloc))
 }
-</code></pre>
+</pre>
 
 
 <h3>
 kmalloc2.stp - Example using arrays of statistics. (<a href="http://sourceware.org/systemtap/examples/kmalloc2.stp">online source</a>)
 </h3>
 
-<code><pre>
+<pre>
 #! /usr/bin/env stap
 
 # Using statistics and maps to examine kernel memory allocations
@@ -152,7 +159,7 @@ kmalloc2.stp - Example using arrays of statistics. (<a href="http://sourceware.o
 global kmalloc
 
 probe kernel.function("__kmalloc") { 
-	kmalloc[execname()] <<< $size
+	kmalloc[execname()] &lt;&lt;&lt; $size
 }
 
 # Exit after 10 seconds
@@ -171,4 +178,6 @@ probe end {
 		printf("-------------------------------------------------------\n\n");
 	}
 }
-</code></pre>
+</pre>
+</body>
+</html>
