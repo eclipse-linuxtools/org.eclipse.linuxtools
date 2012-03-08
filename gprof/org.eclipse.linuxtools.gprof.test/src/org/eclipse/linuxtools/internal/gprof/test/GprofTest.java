@@ -67,7 +67,7 @@ public class GprofTest extends TestCase {
 		} catch (Exception _) {
 		}
 		
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.internal.gprof.test",
+		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test",
 				".*" + GMON_DIRECTORY_SUFFIX);
 		for (File testDir : testDirs) {
 			final File gmonFile = new File(testDir, GMON_OUTPUT_FILE);
