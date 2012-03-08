@@ -10,7 +10,7 @@
       <view
             allowMultiple="true"
             category="org.eclipse.linuxtools.gcov"
-            class="org.eclipse.linuxtools.gcov.view.CovView"
+            class="org.eclipse.linuxtools.internal.gcov.view.CovView"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gcov.view"
             name="%gcov"
@@ -20,16 +20,17 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"
+            class="org.eclipse.linuxtools.internal.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"
             icon="icons/src_file_obj.gif"
             id="org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"
             name="Source Not Found">
       </editor>
       <editor
+            default="true"
             extensions="gcda, gcno"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gcov.editor"
-            launcher="org.eclipse.linuxtools.gcov.action.OpenGCAction"
+            launcher="org.eclipse.linuxtools.internal.gcov.action.OpenGCAction"
             name="%gcovEditor">
       </editor>
    </extension>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="classname" value="org.eclipse.linuxtools.gprof.test.AllGprofTests" />
+	<property name="classname" value="org.eclipse.linuxtools.internal.gprof.test.AllGprofTests" />
 	<property name="plugin-name" value="org.eclipse.linuxtools.gprof.test" />
 
 	<!-- The property ${eclipse-home} should be passed into this script -->

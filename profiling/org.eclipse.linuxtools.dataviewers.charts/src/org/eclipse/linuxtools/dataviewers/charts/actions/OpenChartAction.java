@@ -44,28 +44,22 @@ public class OpenChartAction extends Action {
 	
 	public void run() {
 		String path = dialog.open();
-		
 		if (path == null) {
 			// cancel pressed
 			return;
 		}
 		
-		Serializer serializer = null;
-		final File chartFile = new File( path );
-
+		File chartFile = new File( path );
 		// Reads the chart model
-		try
-		{
-			serializer = SerializerImpl.instance( );
-			if ( chartFile.exists( ) )
-			{
-				chart = serializer.read( new FileInputStream( chartFile ) );
+		try {
+			Serializer serializer = SerializerImpl.instance( );
+			if (chartFile.exists()) {
+				chart = serializer.read(new FileInputStream(chartFile));
 				chartView.getChartViewer().setBuffer(null);
 				chartView.setChart(chart);
 			}
 		}
-		catch ( Exception e )
-		{
+		catch ( Exception e ) {
 			WizardBase.displayException( e );
 		}
 	}

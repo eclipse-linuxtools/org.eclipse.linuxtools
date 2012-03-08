@@ -39,7 +39,6 @@
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
-          <argLine>-Declipse.valgrind.tests.runValgrind=no</argLine>
           <surefire.timeout>1800</surefire.timeout>
           <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
         </configuration>

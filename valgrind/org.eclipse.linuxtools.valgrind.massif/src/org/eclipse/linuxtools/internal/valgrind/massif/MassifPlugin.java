@@ -10,6 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -79,9 +80,14 @@ public class MassifPlugin extends AbstractUIPlugin {
 		ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
 		if (sourceLocator instanceof ISourceLookupDirector) {
 			Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
-			if (obj != null && obj instanceof IStorage) {
+			String fullFilePath;
+			if (obj != null && obj instanceof IStorage){
+				if (obj instanceof IFile) {
+					fullFilePath = ((IFile) obj).getLocation().toOSString();
+				} else {
+					fullFilePath = workspaceLocation + ((IStorage) obj).getFullPath().toOSString();
+				}
 				try {
-					String fullFilePath = workspaceLocation + ((IStorage) obj).getFullPath().toOSString();
 					ProfileUIUtils.openEditorAndSelect(fullFilePath, element.getLine());
 				} catch (PartInitException e) {
 					e.printStackTrace();

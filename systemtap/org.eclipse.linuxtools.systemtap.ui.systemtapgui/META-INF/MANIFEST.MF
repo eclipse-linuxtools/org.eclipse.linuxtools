@@ -12,7 +12,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.help,
- org.eclipse.help.appserver,
  org.eclipse.help.base,
  org.eclipse.help.ui,
  org.eclipse.help.webapp

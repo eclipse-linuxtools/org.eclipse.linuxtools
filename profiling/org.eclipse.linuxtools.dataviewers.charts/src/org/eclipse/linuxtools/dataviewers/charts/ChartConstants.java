@@ -74,7 +74,7 @@ public class ChartConstants {
 		"*.*"
 	};
 	/** The names associated to the files extensions provided by the "save chart as image" file dialog */
-	public static String[] saveAsImageExtNames =
+	public static final String[] saveAsImageExtNames =
 	{
 		"JPEG (*.jpg)",
 		"JPEG (*.jpeg)",

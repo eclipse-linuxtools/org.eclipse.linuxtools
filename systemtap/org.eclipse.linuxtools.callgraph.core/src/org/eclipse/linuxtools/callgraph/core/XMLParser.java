@@ -27,8 +27,6 @@ public class XMLParser {
 	private static final String ATTR_TEXT = "text"; 
 	public static final String noName = "NoName";
 	private boolean textMode;
-	private int counter;
-	
 	XMLParser() {
 		id = 0;
 		currentlyIn = 0;
@@ -41,7 +39,6 @@ public class XMLParser {
 		idList = new ArrayList<Integer>();
 		
 		textMode = false;
-		counter = 0;
 	}
 	
 	/**
@@ -77,7 +74,7 @@ public class XMLParser {
 						currentlyIn = idList.get(idList.size()-1);
 					setTextMode(true);
 
-				} else if (line.substring(line.length()-2, line.length() - 1) == "/>") {
+				} else if (line.substring(line.length()-2, line.length() - 1).equals("/>")) {
 					//This tag opens and closes in one line
 					id++;
 					String[] tokens = line.split(" ");
@@ -110,7 +107,6 @@ public class XMLParser {
 				if (textMode) {
 					HashMap<String,String> map = keyValues.get(currentlyIn);
 					map.put(ATTR_TEXT, line);
-					counter++;
 				}
 				
 				String[] tokens = line.split(" ");
@@ -192,7 +188,6 @@ public class XMLParser {
 		  }
 
 	  public void setTextMode(boolean val) {
-		  counter = 0;
 		  textMode = val;
 	  }
 }

@@ -8,7 +8,7 @@
             filenames="gmon.out, gmon.outDCACHE, gmon.outICACHE, gmon.sum, gmon.sumDCACHE, gmon.sumICACHE, gmon.sum.xyz, gmon.out.000, gmon.out.001, gmon.out.002, gmon.out.003, gmon.out.004, gmon.out.005, gmon.out.006, gmon.out.007, gmon.out.008, gmon.out.009, gmon.out.010, gmon.out.011, gmon.out.012, gmon.out.013, gmon.out.014, gmon.out.015, gmon.out.016"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.editor.single"
-            launcher="org.eclipse.linuxtools.gprof.action.OpenGmonAction"
+            launcher="org.eclipse.linuxtools.internal.gprof.action.OpenGmonAction"
             name="%gprofEditor">
       </editor>
    </extension>
@@ -17,7 +17,7 @@
       <view
             allowMultiple="true"
             category="org.eclipse.linuxtools.gprof"
-            class="org.eclipse.linuxtools.gprof.view.GmonView"
+            class="org.eclipse.linuxtools.internal.gprof.view.GmonView"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.view"
             name="%gprof"

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gcov.test
 Bundle-Version: 4.1.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.gcov.test.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.gcov.test.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,

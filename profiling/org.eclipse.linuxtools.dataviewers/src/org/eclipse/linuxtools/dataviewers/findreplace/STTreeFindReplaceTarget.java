@@ -198,13 +198,11 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 						ok = text.equals(findString);
 					else
 						ok = text.equalsIgnoreCase(findString);
-				}
-				else{
-					ok = text.contains(findString);
-				
-					if (ok && caseSensitive){
-						text.indexOf(findString);
-					}
+				} else{
+					if (caseSensitive)
+						ok = text.contains(findString);
+					else 
+						ok = text.toLowerCase().contains(findString.toLowerCase());
 				}
 			}
 			

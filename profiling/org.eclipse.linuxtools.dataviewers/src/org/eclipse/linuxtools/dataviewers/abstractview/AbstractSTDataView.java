@@ -19,6 +19,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
@@ -40,10 +41,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.preferences.ViewPreferencesAction;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
@@ -77,14 +75,6 @@ public abstract class AbstractSTDataView extends ViewPart {
 	private IAction copyToAction = null;
 	
 	private ISTFindReplaceTarget fTarget = null;
-	
-	
-	/*
-	 * (non-Javadoc) Method declared on IViewPart.
-	 */
-	public void init(IViewSite site, IMemento memento) throws PartInitException {
-		super.init(site, memento);
-	}
 	
 	/**
 	 * Create optional arbitrary Controls, on top of viewer.

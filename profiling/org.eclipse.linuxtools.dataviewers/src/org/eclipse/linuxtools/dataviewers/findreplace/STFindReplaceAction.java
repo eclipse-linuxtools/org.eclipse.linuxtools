@@ -13,12 +13,10 @@ package org.eclipse.linuxtools.dataviewers.findreplace;
 
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
@@ -207,8 +205,6 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 	private ISTFindReplaceTarget fTarget;
 	/** The part to use if the action is created with a part. */
 	private IWorkbenchPart fWorkbenchPart;
-	/** The workbench window */
-	private IWorkbenchWindow fWorkbenchWindow;
 	/**
 	 * The shell to use if the action is created with a shell.
 	 */
@@ -311,9 +307,6 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 	 */
 	public void update() {
 		if(fShell == null){
-			if (fWorkbenchPart == null && fWorkbenchWindow != null)
-				fWorkbenchPart= fWorkbenchWindow.getPartService().getActivePart();
-
 			if (fWorkbenchPart != null)
 				fTarget= (ISTFindReplaceTarget) fWorkbenchPart.getAdapter(ISTFindReplaceTarget.class);
 			else

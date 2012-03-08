@@ -1,4 +1,5 @@
 bin
 @dot
+screenshots
 javaCompiler...args
 build.xml

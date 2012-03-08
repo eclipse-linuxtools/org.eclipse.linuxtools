@@ -87,7 +87,7 @@ public class TypedefInfo implements Serializable {
 			// <char,char> we will replace _Tp with char in the transformed type.
 			for (int i = 0; i < args.length; ++i) {
 				if (!args[i].equals(templateArgs[i])) {
-					transformedName.replaceAll(templates[j], args[i]);
+					transformedName = transformedName.replaceAll(templates[j], args[i]);
 					++j;
 				}
 			}

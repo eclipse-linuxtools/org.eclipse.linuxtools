@@ -12,8 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import java.util.Arrays;
 
-import org.eclipse.birt.chart.computation.DataPointHints;
-import org.eclipse.birt.chart.event.WrappedStructureSource;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -27,20 +25,23 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartControl;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditor;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartLocationsDialog;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
+import org.eclipse.linuxtools.internal.valgrind.massif.birt.Messages;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.swtchart.Chart;
+import org.swtchart.ILineSeries;
 
 public class ChartTests extends AbstractMassifTest {
 	@Override
@@ -96,19 +97,16 @@ public class ChartTests extends AbstractMassifTest {
 
 		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (part instanceof ChartEditor) {
-			ChartControl control = ((ChartEditor) part).getControl();
-			Event event = new Event();
-			event.button = 1;
-			event.count = 1;
-			event.widget = control;
-			MouseEvent mEvent = new MouseEvent(event);
-			DataPointHints source = new DataPointHints(null, null, null, null, null, null, null, null, null, 4, null, 0, null);
-			control.callback(mEvent, new WrappedStructureSource(source), null);
+			Chart control = ((ChartEditor) part).getControl();
+			ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().getSeries(Messages.getString("HeapChart.Total_Heap"));
+			Point p1 = lsTotal.getPixelCoordinates(4);
 
-			TableViewer viewer = ((MassifViewPart) view.getDynamicView()).getTableViewer();
-			MassifSnapshot[] snapshots = (MassifSnapshot[]) viewer.getInput();
-			MassifSnapshot snapshot = (MassifSnapshot) ((StructuredSelection) viewer.getSelection()).getFirstElement();
-			assertEquals(4, Arrays.asList(snapshots).indexOf(snapshot));
+			HeapChart heapChart = ((ChartEditorInput) ((ChartEditor)part).getEditorInput()).getChart();
+			int x = control.getAxisSet().getXAxis(0).getPixelCoordinate(heapChart.time[4]);
+			int y = control.getAxisSet().getYAxis(0).getPixelCoordinate(heapChart.dataTotal[4]);
+
+			assertEquals(x, p1.x);
+			assertEquals(y, p1.y);
 		} else {
 			fail();
 		}

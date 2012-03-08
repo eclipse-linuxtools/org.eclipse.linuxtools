@@ -339,9 +339,7 @@ public class STDataViewersCSVExporter {
 		initPrintStream(filePath);
 		
 		// get the viewer's parameters
-		if (monitor != null) {
-			monitor.subTask("collecting viewer's parameters...");
-		}
+		monitor.subTask("collecting viewer's parameters...");
 		collectViewerParameters();
 		
 		// start dumping to csv file
@@ -363,12 +361,10 @@ public class STDataViewersCSVExporter {
 							work += treeContentProvider.getChildren(element).length;
 						}
 					}
-					if (monitor != null) {
-						monitor.beginTask(
-								"Exporting to CSV (file: "+ getFilePath()+")",
-								work);
-						monitor.subTask("exporting tree data...");
-					}
+					monitor.beginTask(
+							"Exporting to CSV (file: "+ getFilePath()+")",
+							work);
+					monitor.subTask("exporting tree data...");
 					
 					// monitoring stuff
 					int tempWork = 0;
@@ -388,23 +384,19 @@ public class STDataViewersCSVExporter {
 								true);
 						
 						// monitoring
-						if (monitor != null) {
-							tempWork++;
-							if (tempWork >= workFloor) {
-								if (monitor.isCanceled()){
-									ps.close();
-									return;
-								}
-								monitor.worked(tempWork);
-								tempWork = 0;
+						tempWork++;
+						if (tempWork >= workFloor) {
+							if (monitor.isCanceled()){
+								ps.close();
+								return;
 							}
+							monitor.worked(tempWork);
+							tempWork = 0;
 						}
 					}
 					
 					//monitoring
-					if (monitor != null && tempWork > 0) {
-						monitor.worked(tempWork);
-					}
+					monitor.worked(tempWork);
 				}
 				
 			} else if (contentProvider instanceof IStructuredContentProvider) {
@@ -416,12 +408,10 @@ public class STDataViewersCSVExporter {
 				if (topElements != null) {
 					
 					// monitoring
-					if (monitor != null) {
-						monitor.beginTask(
-								"Exporting to CSV (file: "+ getFilePath()+")",
-								topElements.length);
-						monitor.subTask("exporting table data...");
-					}
+					monitor.beginTask(
+							"Exporting to CSV (file: "+ getFilePath()+")",
+							topElements.length);
+					monitor.subTask("exporting table data...");
 					
 					// monitoring stuff
 					int tempWork = 0;
@@ -440,23 +430,19 @@ public class STDataViewersCSVExporter {
 						}
 						
 						// monitoring
-						if (monitor != null) {
-							tempWork++;
-							if (tempWork >= workFloor) {
-								if (monitor.isCanceled()){
-									ps.close();
-									return;
-								}
-								monitor.worked(tempWork);
-								tempWork = 0;
+						tempWork++;
+						if (tempWork >= workFloor) {
+							if (monitor.isCanceled()){
+								ps.close();
+								return;
 							}
+							monitor.worked(tempWork);
+							tempWork = 0;
 						}
 					}
 					
 					//monitoring
-					if (monitor != null && tempWork > 0) {
-						monitor.worked(tempWork);
-					}
+					monitor.worked(tempWork);
 				}
 			}
 		}
@@ -472,8 +458,7 @@ public class STDataViewersCSVExporter {
 			try {
 				c.refreshLocal(1, new NullProgressMonitor());
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				STDataViewersActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
 		
@@ -754,16 +739,15 @@ public class STDataViewersCSVExporter {
 		}
 	}
 	
-	private class CSVDataComparator extends STDataViewersComparator {
+	private static class CSVDataComparator extends STDataViewersComparator {
 		
-		private Map<Item, ISTDataViewersField> fieldsMap;
+		private final Map<Item, ISTDataViewersField> fieldsMap;
 		
 		public CSVDataComparator(
 				STDataViewersComparator other,
 				Map<Item, ISTDataViewersField> fieldsMap) {
 			super(other);
-			this.fieldsMap =
-				fieldsMap;
+			this.fieldsMap = fieldsMap;
 		}
 		
 		protected ISTDataViewersField getField(Item column) {

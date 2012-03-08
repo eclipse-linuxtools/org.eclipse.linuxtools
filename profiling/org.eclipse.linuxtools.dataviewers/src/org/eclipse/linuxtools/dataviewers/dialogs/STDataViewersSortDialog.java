@@ -114,9 +114,7 @@ public class STDataViewersSortDialog extends TrayDialog {
         for (int i = 0; i < priorityCombos.length; i++) {
             final int index = i;
             Label numberLabel = new Label(prioritiesArea, SWT.NULL);
-            numberLabel
-                    .setText(NLS
-                            .bind(STDataViewersMessages.sortDialog_columnLabel, new Integer(i + 1))); 
+            numberLabel.setText(NLS.bind(STDataViewersMessages.sortDialog_columnLabel, i + 1));
 
             priorityCombos[i] = new Combo(prioritiesArea, SWT.READ_ONLY);
             priorityCombos[i].setLayoutData(new GridData(

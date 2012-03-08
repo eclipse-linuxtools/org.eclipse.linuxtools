@@ -28,6 +28,11 @@ public class CachegrindDescription {
 		return obj instanceof CachegrindDescription && name.equals(((CachegrindDescription) obj).getName());
 	}
 	
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
 	public String getName() {
 		return name;
 	}

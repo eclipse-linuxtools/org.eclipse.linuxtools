@@ -109,4 +109,12 @@ public class PatchFile {
 				return false;
 		return true;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = resource.hashCode();
+		for(int i=0; i<this.countRanges();i++)
+			hash += pranges.get(i).hashCode();
+		return hash;
+	}
 }

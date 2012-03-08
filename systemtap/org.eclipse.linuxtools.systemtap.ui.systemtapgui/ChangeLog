@@ -1,3 +1,8 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove reference to help.appserver which doesn't
+	exist in Juno.
+
 2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* aboutImage.gif: Removed.

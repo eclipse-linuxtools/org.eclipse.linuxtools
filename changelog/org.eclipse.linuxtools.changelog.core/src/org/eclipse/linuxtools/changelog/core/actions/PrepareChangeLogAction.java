@@ -237,8 +237,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 						ancestorStorage = ancestorState.getStorage(monitor);
 						p.setStorage(ancestorStorage);
 					}
-					else 
+					else {
 						ancestorStorage = null;
+						return;
+					}
 
 					try {
 						// We compare using a standard differencer to get ranges

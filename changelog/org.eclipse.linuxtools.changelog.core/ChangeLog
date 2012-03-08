@@ -1,3 +1,12 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java (hashCode): New Method to fix
+	FindBugs error.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java (hashCode): Ditto. 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (getChangedLines): Remove
+	potential NPE discovered by FindBugs. 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java (loadClipboard): Ditto.
+	 
 2012-02-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #366854.

@@ -184,8 +184,10 @@ public class PrepareCommitAction extends ChangeLogAction {
 						IStorage ancestorStorage;
 						if (ancestorState != null)
 							ancestorStorage = ancestorState.getStorage(monitor);
-						else 
+						else {
 							ancestorStorage = null;
+							return;
+						}
 
 						try {
 							LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);

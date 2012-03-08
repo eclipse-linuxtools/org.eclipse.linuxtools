@@ -112,7 +112,7 @@ public class ViewFactory {
 	 * @return
 	 */
 	public static SystemTapView[] getViews() {
-		return (SystemTapView[]) views.toArray();
+		return views.toArray(new SystemTapView[views.size()]);
 	}
 	
 }

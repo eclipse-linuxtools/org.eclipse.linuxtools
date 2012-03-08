@@ -1,3 +1,14 @@
+2012-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/libhover/LibhoverPlugin.java (static initializer): 
+	(LibhoverPlugin): Fix singleton setting to be valid.
+	* src/org/eclipse/linuxtools/cdt/libhover/TypedefInfo.java (getTransformedType): Fix
+	code to assign result of String replaceAll method to the original string.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java: Add final qualifier
+	to constant string.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/preferences/PreferenceConstants.java: Add
+	final qualifier to constants.
+	 
 2011-03-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (HelpResourceDescriptor.getHelpResources): 

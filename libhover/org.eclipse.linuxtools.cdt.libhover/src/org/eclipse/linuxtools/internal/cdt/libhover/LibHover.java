@@ -80,7 +80,7 @@ import org.eclipse.linuxtools.internal.cdt.libhover.preferences.PreferenceConsta
 
 public class LibHover implements ICHelpProvider {
 	
-	public static String LIBHOVER_DOC_EXTENSION = LibhoverPlugin.PLUGIN_ID + ".library"; //$NON-NLS-1$
+	public final static String LIBHOVER_DOC_EXTENSION = LibhoverPlugin.PLUGIN_ID + ".library"; //$NON-NLS-1$
 
     // see comment in initialize()
     // private static String defaultSearchPath = null;

@@ -45,7 +45,8 @@ public class ChartView extends ViewPart {
 	public static final String VIEW_ID = "org.eclipse.linuxtools.dataviewers.charts.view";
 	
 	/** The current secondary id for these views */
-	private static Integer SEC_ID = 0;
+	private static int SEC_ID = 0;
+	private static final Object lock = new Object();
 	
 	private Canvas paintCanvas;
 	
@@ -70,7 +71,7 @@ public class ChartView extends ViewPart {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				try {
-					synchronized(SEC_ID) {
+					synchronized(lock) {
 						ChartView view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(VIEW_ID, ""+(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
 						view.setChart(chart);
 						

@@ -1289,7 +1289,7 @@ public class STOverviewRuler implements IOverviewRuler {
 			if (annotationTypeLabel != null) {
 				if (overview.length() > 0)
 					overview += "\n"; //$NON-NLS-1$
-				overview += STJFaceTextMessages.getFormattedString("OverviewRulerHeader.toolTipTextEntry", new Object[] {annotationTypeLabel, new Integer(count)}); //$NON-NLS-1$
+				overview += STJFaceTextMessages.getFormattedString("OverviewRulerHeader.toolTipTextEntry", new Object[] {annotationTypeLabel, count}); //$NON-NLS-1$
 			}
 		}
 		if (overview.length() > 0)

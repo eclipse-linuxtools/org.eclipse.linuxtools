@@ -25,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	JavaParserTest.class,
 	CParserTest.class,
 	// A small test for the fixture
-	TestChangeLogTestProject.class,
+	TestChangeLogTestProject.class
 	}
 )
 

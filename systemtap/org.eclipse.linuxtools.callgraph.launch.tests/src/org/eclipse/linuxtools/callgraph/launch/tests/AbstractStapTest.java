@@ -26,8 +26,7 @@ import org.eclipse.linuxtools.callgraph.launch.SystemTapOptionsTab;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractStapTest extends AbstractTest {
-	protected ICProject proj;
-	
+
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(PluginConstants.CONFIGURATION_TYPE_ID);
