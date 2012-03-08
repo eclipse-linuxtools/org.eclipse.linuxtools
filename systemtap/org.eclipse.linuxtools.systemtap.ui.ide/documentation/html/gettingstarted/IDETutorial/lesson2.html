@@ -1,4 +1,11 @@
-<a href="../../toc.html">Table of Contents</a> > <a href="../gettingStarted.html">Getting Started</a> > <a href="../IDETutorial.html">IDE Tutorial</a>
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>IDE Tutorial, Lesson Two: Writing Your First Script</title>
+		<link type="text/css" rel="stylesheet" href="../../../../book.css"/>
+	</head>
+<body><a href="../../toc.html">Table of Contents</a> &gt; <a href="../gettingStarted.html">Getting Started</a> &gt; <a href="../IDETutorial.html">IDE Tutorial</a>
 
 <h2>
 IDE Tutorial, Lesson Two: Writing Your First Script
@@ -6,12 +13,12 @@ IDE Tutorial, Lesson Two: Writing Your First Script
 
 In this tutorial we will guide you through the process of writing your first Systemtap script. It is 
 strongly recommended that you review the <a href="http://sourceware.org/systemtap/tutorial/">
-Systemtap website's tutorial</a> for up-to-date information on the latest version of Systemtap.<br><br>
+Systemtap website's tutorial</a> for up-to-date information on the latest version of Systemtap.<br/><br/>
 
-Start by selecting <u>F</u>ile-><u>N</u>ew. Specify a file name of your choosing, but be sure that it
-ends with an .stp extension. Click ok. Your blank script should be present in the editor pane.<br><br>
+Start by selecting <u>F</u>ile-&gt;<u>N</u>ew. Specify a file name of your choosing, but be sure that it
+ends with an .stp extension. Click ok. Your blank script should be present in the editor pane.<br/><br/>
 
-<img src="images/newfile.png"><br><br>
+<img src="images/newfile.png"/><br/><br/>
 
 <pre>Now type/copy the following:
 
@@ -50,21 +57,23 @@ probe syscall.read
 }
 </code></pre>
 
-Now insert the following line into the syscall.read probe:<br>
+Now insert the following line into the syscall.read probe:<br/>
 
 <pre><code>read += count</code></pre>
 
-You may remove the comment (/* ... */) if you wish.<br><br>
+You may remove the comment (/* ... */) if you wish.<br/><br/>
 
 This will count the number of bytes read and written each second and print it out. The begin probe executes
 first, by getting the time of day. The read and write probes increment each time the function is called. The
 timer probe prints the information every second. If you typed the script in manually you may have noticed 
-that the editor provides code completion for probe aliasi. If you did not, type "syscall.". You'll see a 
-box come up that you may use to select an item to complete your probe alias.<br><br>
+that the editor provides code completion for probe alias. If you did not, type "syscall.". You'll see a
+box come up that you may use to select an item to complete your probe alias.<br/><br/>
 
-In <a href="lesson3.html">Lesson 3</a> you will learn how to run Systemtap scripts in the IDE Perspective.<br><br>
+In <a href="lesson3.html">Lesson 3</a> you will learn how to run Systemtap scripts in the IDE Perspective.<br/><br/>
 
-<a href="../IDETutorial.html>Back to Tutorial Contents</a>  
+<a href="../IDETutorial.html">Back to Tutorial Contents</a>
+</body>
+</html>
 
 
 

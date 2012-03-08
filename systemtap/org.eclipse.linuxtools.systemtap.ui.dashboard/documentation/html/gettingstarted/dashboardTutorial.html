@@ -1,4 +1,11 @@
-<a href="../toc.html">Table of Contents</a> > <a href="gettingStarted.html">Getting Started</a>
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Table of Contents</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+<body><a href="../toc.html">Table of Contents</a> &gt; <a href="gettingStarted.html">Getting Started</a>
 
 <h2>
 Dashboard Tutorial
@@ -6,44 +13,44 @@ Dashboard Tutorial
 
 The Dashboard Perspective is the most advanced part of SystemTap GUI. It is designed to allow users to browse 
 and run prebuilt <a href="../concepts/modules.html">modules</a> in order to see multiple graphs updating in
-sequence.<br><br>
+sequence.<br/><br/>
 
 For this tutorial we'll use one of the prebuilt modules to illustrate the user how the Dashboard perspective 
 is used. Each module is part of a <a href="../concepts/modules.html#families">module family</a>, a collection of related
-modules. To start, switch to the Dashboard perspective. On the left you should see a browser titled "Modules".<br><br>
+modules. To start, switch to the Dashboard perspective. On the left you should see a browser titled "Modules".<br/><br/>
 
-<img src="images/moduleBrowser.png"><br><br>
+<img src="images/moduleBrowser.png"/><br/><br/>
 
 The <a href="../concepts/modulesBrowser.html">Module Browser</a> contains a list of modules available to run. Notice that there is another tab, "Active Modules", in the same pane. The 
 <a href="../concepts/activeModulesBrowser.html">Active Modules Browser</a> allows you to browse the modules you currently have running. At this point, however, it
 will be empty; there are no modules currently running. Open the module family "Hard Disk" by clicking the arrow
-next to it's name. This will display each module associated in the "Hard Disk" module family.<br><br>
+next to it's name. This will display each module associated in the "Hard Disk" module family.<br/><br/>
 
 We are going to be running the Disk Access module. This can be accomplished two ways. You may select it and
-<b><u>R</u>un-><u>R</u>un Script</b>. You can alternatively click the <b>Run Script</b> button in the Toolbar. SystemTap GUI will request the details of the Remote Server(ip address, username, password), 
-enter the details to proceed. You should see a display similar to the following:<br><br>
+<b><u>R</u>un-&gt;<u>R</u>un Script</b>. You can alternatively click the <b>Run Script</b> button in the Toolbar. SystemTap GUI will request the details of the Remote Server(ip address, username, password),
+enter the details to proceed. You should see a display similar to the following:<br/><br/>
 
-<img src="images/runningDashboard.png"><br><br>
+<img src="images/runningDashboard.png"/><br/><br/>
 
 The Dashboard shows three graphs, each obtaining data from one script, each analyzing different components of disk access - bytes read, 
-bytes written, and a multi-line graph illustrating both.<br><br>
+bytes written, and a multi-line graph illustrating both.<br/><br/>
 
-<img src="images/smallGraph.png"><br><br>
+<img src="images/smallGraph.png"/><br/><br/>
 
 Each graph comes with graph-specific options:
 <ul>
-<li><img src="images/expandButton.png"> - <b>Expand Graph</b> - This option opens a set of graph-unique options:
+<li><img src="images/expandButton.png"/> - <b>Expand Graph</b> - This option opens a set of graph-unique options:
 <ul>
 <li><b>Zoom</b> - This option allows the user to increase and decrease the no of x-axis ticks.</li>
 </ul>
 </li>
-<li><img src="images/rightleft.png"> - <b>Close Zoom bar</b> - This hides the zoom bar.
-<li><img src="images/closeButton.png"> - <b>Close Graph</b> - This removes the graph from the viewer pane.</li>
+<li><img src="images/rightleft.png"/> - <b>Close Zoom bar</b> - This hides the zoom bar.</li>
+<li><img src="images/closeButton.png"/> - <b>Close Graph</b> - This removes the graph from the viewer pane.</li>
 </ul>
 
-Take a moment to interact with these options to familiarize yourself with them.<br><br>
+Take a moment to interact with these options to familiarize yourself with them.<br/><br/>
 
-<img src="images/graphExpanded.png"><br><br>
+<img src="images/graphExpanded.png"/><br/><br/>
 
 <h3>
 Multiple Module Execution
@@ -53,14 +60,18 @@ SystemTap GUI supports the execution of more than one module at one time. The cu
 not to be halted and the currently open graphs do not need to be closed, though they may be if desired. To 
 execute another module, simply select and run it as described above. If you were to
 run  a module in the Memory module family for example, a new tab will be opened titled 'Memory' in addition to the 
-current tab for 'Hard Disk'.<br><br>
+current tab for 'Hard Disk'.<br/><br/>
 
 Up to 8 graphs may be open in each tab at any given time. Drag and drop support is included for the graph types, permitting
 re-arrangement for ideal analysis. In addition, <b>Pausing</b> is also implemented in SystemTap GUI. You may pause 
-any module by selecting <b><u>R</u>un-><u>P</u>ause Module</b>, or by selecting <b>Pause</b> from the toolbar. Know that this method of
+any module by selecting <b><u>R</u>un-&gt;<u>P</u>ause Module</b>, or by selecting <b>Pause</b> from the toolbar. Know that this method of
 pausing is an illusion; the graph data is simply not updated while the script continues to run. This inability
 to truly pause is inherent in SystemTap itself. You can also stop the script using the above methods. This
 will halt the running script of that module and remove the graphs entirely from the view pane. It will not affect
 graphs or scripts associated with any other modules. If at any time you are unsure of which modules are 
 currently active you can check this by navigating to the <a href="../concepts/activeModulesBrowser.html">Active 
-Modules Browser.</a><br><br>
+Modules Browser.</a><br/><br/>
+</body>
+</html>
+
+

@@ -1,12 +1,19 @@
-<a href="../toc.html">Table of Contents</a> > <a href="reference.html">Reference</a>
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Regex Reference Page</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+<body><a href="../toc.html">Table of Contents</a> &gt; <a href="reference.html">Reference</a>
 
 <h2>
 Regex Reference Page
 </h2>
 
-Regular expressions are used in SystemTap GUI to define how the GUI interprets information that it recieves 
+Regular expressions are used in SystemTap GUI to define how the GUI interprets information that it receives
 from the script file. If the user wishes to change the regular expression during runtime they may do so by
-selecting <b><u>E</u>dit->Modify <u>P</u>arsing Expression</b>.<br><br>
+selecting <b><u>E</u>dit-&gt;Modify <u>P</u>arsing Expression</b>.<br/><br/>
 
 Basic regex (taken from <a href="http://java.sun.com/j2se/1.5.0/docs/api/">http://java.sun.com/j2se/1.5.0/docs/api/</a> ) -
 
@@ -17,9 +24,9 @@ Construct 	Matches
 Characters
 x 	The character x
 \\ 	The backslash character
-\0n 	The character with octal value 0n (0 <= n <= 7)
-\0nn 	The character with octal value 0nn (0 <= n <= 7)
-\0mnn 	The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7)
+\0n 	The character with octal value 0n (0 &lt;= n &lt;= 7)
+\0nn 	The character with octal value 0nn (0 &lt;= n &lt;= 7)
+\0mnn 	The character with octal value 0mnn (0 &lt;= m &lt;= 3, 0 &lt;= n &lt;= 7)
 \xhh 	The character with hexadecimal value 0xhh
 \uhhhh 	The character with hexadecimal value 0xhhhh
 \t 	The tab character ('\u0009')
@@ -35,9 +42,9 @@ Character classes
 [^abc] 	Any character except a, b, or c (negation)
 [a-zA-Z] 	a through z or A through Z, inclusive (range)
 [a-d[m-p]] 	a through d, or m through p: [a-dm-p] (union)
-[a-z&&[def]] 	d, e, or f (intersection)
-[a-z&&[^bc]] 	a through z, except for b and c: [ad-z] (subtraction)
-[a-z&&[^m-p]] 	a through z, and not m through p: [a-lq-z](subtraction)
+[a-z&amp;&amp;[def]] 	d, e, or f (intersection)
+[a-z&amp;&amp;[^bc]] 	a through z, except for b and c: [ad-z] (subtraction)
+[a-z&amp;&amp;[^m-p]] 	a through z, and not m through p: [a-lq-z](subtraction)
  
 Predefined character classes
 . 	Any character (may or may not match line terminators)
@@ -55,7 +62,7 @@ POSIX character classes (US-ASCII only)
 \p{Alpha} 	An alphabetic character:[\p{Lower}\p{Upper}]
 \p{Digit} 	A decimal digit: [0-9]
 \p{Alnum} 	An alphanumeric character:[\p{Alpha}\p{Digit}]
-\p{Punct} 	Punctuation: One of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+\p{Punct} 	Punctuation: One of !"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~
 \p{Graph} 	A visible character: [\p{Alnum}\p{Punct}]
 \p{Print} 	A printable character: [\p{Graph}\x20]
 \p{Blank} 	A space or a tab: [ \t]
@@ -74,7 +81,7 @@ Classes for Unicode blocks and categories
 \p{Lu} 	An uppercase letter (simple category)
 \p{Sc} 	A currency symbol
 \P{InGreek} 	Any character except one in the Greek block (negation)
-[\p{L}&&[^\p{Lu}]]  	Any letter except an uppercase letter (subtraction)
+[\p{L}&amp;&amp;[^\p{Lu}]]  	Any letter except an uppercase letter (subtraction)
  
 Boundary matchers
 ^ 	The beginning of a line
@@ -129,16 +136,18 @@ Special constructs (non-capturing)
 (?idmsux-idmsux:X)   	X, as a non-capturing group with the given flags on - off
 (?=X) 	X, via zero-width positive lookahead
 (?!X) 	X, via zero-width negative lookahead
-(?<=X) 	X, via zero-width positive lookbehind
-(?<!X) 	X, via zero-width negative lookbehind
-(?>X) 	X, as an independent, non-capturing group                                                                    
+(?&lt;=X) 	X, via zero-width positive lookbehind
+(?&lt;!X) 	X, via zero-width negative lookbehind
+(?&gt;X) 	X, as an independent, non-capturing group
 Match a position that is not a word boundary.
 </pre>
 
-<br>Information regarding regular expressions can be found all over the Internet. A few examples have been listed
-below:<br><br>
+<br/>Information regarding regular expressions can be found all over the Internet. A few examples have been listed
+below:<br/><br/>
 
 <ul>
 <li><a href="http://www.javascriptkit.com/javatutors/redev.shtml">http://www.javascriptkit.com/javatutors/redev.shtml</a></li>
 <li><a href="http://www.zytrax.com/tech/web/regex.htm">http://www.zytrax.com/tech/web/regex.htm</a></li>
 </ul>
+</body>
+</html>

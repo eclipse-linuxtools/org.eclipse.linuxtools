@@ -1,13 +1,22 @@
-<a href="../toc.html">Table of Contents</a> > <a href="gettingStarted.html">Getting Started</a>
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Graphing Tutorial</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+<body>
+
+<a href="../toc.html">Table of Contents</a> &gt; <a href="gettingStarted.html">Getting Started</a>
 
 <h2>
 Graphing Tutorial
 </h2>
 
-In order to graph SystemTap scripts you must have a script open in the IDE Perspective, and the <b><u>R</u>un->Run 
+In order to graph SystemTap scripts you must have a script open in the IDE Perspective, and the <b><u>R</u>un-&gt;Run
 w/ Chart</b> option must be used. If you are unfamiliar with how to load or write a SystemTap script, please 
 review the IDE Tutorial in the SystemTap IDE User's Guide. Please use the following script for this example by
-copying and pasting it into a new file (any name is fine that ends in a .stp extension):<br><br>
+copying and pasting it into a new file (any name is fine that ends in a .stp extension):<br/><br/>
 
 <pre>
 global read, write, start
@@ -30,14 +39,14 @@ probe timer.ms(1000) {
 }
 </pre>
 
-Now select <b><u>R</u>un->Run w/ <u>C</u>hart</b>. This feature will prompt the user for the number of columns for the chart, in addition to 
+Now select <b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>. This feature will prompt the user for the number of columns for the chart, in addition to
 their titles and regular expressions. The regular expressions are used to parse the console output for 
 the script and determine the values of each column at a certain sample point. The combined regular
-expression is shown at the bottom of the dialogue box. You should see the following:<br><br>
+expression is shown at the bottom of the dialogue box. You should see the following:<br/><br/>
 
-<br><img src="images/chartbox1.png"><br><br></li>
+<br/><img src="images/chartbox1.png"/><br/><br/>
 
-For this example enter the following:<br>
+For this example enter the following:<br/>
 
 <pre>	Columns: 3
 
@@ -45,7 +54,7 @@ For this example enter the following:<br>
 	Time		\d+		.*			\D+
 	Read		\d+		.*			\D+
 	Write		\d+		.*			\D+
-</pre><br>
+</pre><br/>
 
 The title fields simply display the associated string in the column's header. After clicking OK the 
 script will prompt you for details regarding the Remote Server. Provide the ip address of the remote server
@@ -55,24 +64,24 @@ You have the option of saving your password as well, however be warned this is c
 convenience runs at a risk. The username is also used to transfer the file to the remote system using SCP. If the 
 same machine is used as both the server and the client enter 'localhost' for the Host field. 
 When the script is executed the application will switch into the Graphing perspective. A Data View chart is 
-populated with live data, in addition to the output in the console. <br><br>
-You should see a screen similar to the following:<br><br>
+populated with live data, in addition to the output in the console. <br/><br/>
+You should see a screen similar to the following:<br/><br/>
 
-<img src="images/graphics.png"><br><br>
+<img src="images/graphics.png"/><br/><br/>
 
 You will see that the data table poplulates from live data parsed from the console. Now we'll make a 
 graph to briefly illustrate the Graphing perspective. Click the Create Graph button next to bring up the
-Select Chart dialogue.<br><br>
+Select Chart dialogue.<br/><br/>
 
-<img src="images/GraphWizard.png"><br><br>
+<img src="images/GraphWizard.png"/><br/><br/>
 
 Select line graph. You will be prompted to select a column of the X series and Y 
-series; select "Time" and "Write" respectively. After you click ok you should see the line graph as follows:<br><br>
+series; select "Time" and "Write" respectively. After you click ok you should see the line graph as follows:<br/><br/>
 
-<img src="images/graph.png"><br><br>
+<img src="images/graph.png"/><br/><br/>
 
 Note that the multiple series graphs (Multi-Line, Multi-Bar, and Multi-Scatter) will request two Y series, Y1 
 and Y2. In the case of our example, these would be "Read" and "Write". Each series will be assigned a different
-color value for the purposes of differentiation and will be plotted both in respect to the specified X series.<br><br>
-
-
+color value for the purposes of differentiation and will be plotted both in respect to the specified X series.<br/><br/>
+</body>
+</html>
