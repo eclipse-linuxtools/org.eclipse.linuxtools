@@ -49,7 +49,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 //	protected Button _checkSeparateThread;
 //	protected Button _checkSeparateCpu;
 
-	protected static LaunchOptions _options = null;
+	protected LaunchOptions _options = null;
 
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$

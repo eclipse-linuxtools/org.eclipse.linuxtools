@@ -35,7 +35,7 @@ public class AutoScrollHelper {
 	
 	public static void scrollDown(StapGraph graph) {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_LEVEL) {
-			if (graph.getTopLevel() + StapGraph.levelBuffer < 
+			if (graph.getTopLevel() + graph.levelBuffer < 
 					graph.getLowestLevelOfNodesAdded()) {
 				int newLevel = graph.getTopLevel() + 1;
 				if (graph.levels.get(newLevel).get(0) == null)

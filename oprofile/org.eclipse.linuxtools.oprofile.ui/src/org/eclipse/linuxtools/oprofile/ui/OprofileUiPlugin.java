@@ -61,7 +61,6 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public OprofileUiPlugin() {
-		plugin = this;
 	}
 
 	/**
@@ -69,6 +68,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		plugin = this;
 	}
 
 	/**

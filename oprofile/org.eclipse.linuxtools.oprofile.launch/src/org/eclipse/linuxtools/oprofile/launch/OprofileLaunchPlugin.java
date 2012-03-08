@@ -65,11 +65,11 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public OprofileLaunchPlugin() {
-		plugin = this;
 	}
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		plugin = this;
 	}
 
 	public void stop(BundleContext context) throws Exception {

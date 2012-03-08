@@ -71,8 +71,8 @@ public class StapGraph extends Graph {
 	private int topLevelToDraw;
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
-	public static int levelBuffer = 30;
-	private static int maxNodes = 150;
+	public int levelBuffer = 30;
+	private int maxNodes = 150;
 	private Projectionist proj;
 
 
@@ -1704,11 +1704,6 @@ public class StapGraph extends Graph {
 		}
 		
 		return levels.get(level); 
-	}
-
-	
-	public void setTreeViewer(TreeViewer treeview) {
-		StapGraph.treeViewer = treeview;
 	}
 
 
