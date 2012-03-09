@@ -15,9 +15,9 @@ import java.io.File;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartPNG;
-import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
+import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartEditorInput;
+import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartPNG;
+import org.eclipse.linuxtools.internal.valgrind.massif.charting.HeapChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 
@@ -44,7 +44,7 @@ public class ChartExportTest extends AbstractMassifTest {
 		super.tearDown();
 	}
 	
-	public void testChartExportSVG() throws Exception {
+	public void testChartExportPNG() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 		

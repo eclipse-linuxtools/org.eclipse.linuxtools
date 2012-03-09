@@ -34,7 +34,7 @@ public class GprofAggregatorTest extends TestCase {
 
 	public static Test suite() {
 		TestSuite ats = new TestSuite("Test Aggregation");
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.internal.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
+		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
 		for (File testDir : testDirs) {
 			final String dirName = testDir.getName();
 			ats.addTest(
@@ -49,9 +49,9 @@ public class GprofAggregatorTest extends TestCase {
 	}
 
 	public static void testAggregation(String dir) throws Exception {
-		File directory = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.internal.gprof.test", dir));
-		File gmonPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.internal.gprof.test", dir+File.separator+GMON_OUTPUT_FILE));
-		File binaryPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.internal.gprof.test", dir+File.separator+GMON_BINARY_FILE));
+		File directory = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir));
+		File gmonPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir+File.separator+GMON_OUTPUT_FILE));
+		File binaryPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir+File.separator+GMON_BINARY_FILE));
 
 		String gmon = gmonPath.toString();
 		String binary = binaryPath.toString();

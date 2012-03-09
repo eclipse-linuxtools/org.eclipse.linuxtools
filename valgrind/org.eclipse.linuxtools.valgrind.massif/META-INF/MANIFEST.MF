@@ -29,4 +29,4 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.ui,
  org.swtchart
 Export-Package: org.eclipse.linuxtools.internal.valgrind.massif,
- org.eclipse.linuxtools.internal.valgrind.massif.birt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets"
+ org.eclipse.linuxtools.internal.valgrind.massif.charting;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets"

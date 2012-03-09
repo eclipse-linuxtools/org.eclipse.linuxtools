@@ -12,10 +12,6 @@ package org.eclipse.linuxtools.internal.gprof.test;
 
 import java.io.File;
 
-import org.eclipse.linuxtools.gprof.Activator;
-import org.eclipse.linuxtools.internal.gprof.utils.GprofProgramChecker;
-
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -25,14 +21,12 @@ public class GprofBinaryTest extends TestCase {
 
 	private static final String GMON_DIRECTORY_SUFFIX = "_gprof_input";
 	private static final String GMON_BINARY_FILE = "a.out"; 
-	private static final String GMON_OUTPUT_FILE = "gmon.out"; 
-
 	public GprofBinaryTest() {
 	}
 
 	public static Test suite() {
 		TestSuite ats = new TestSuite("Test Binary Consistency");
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.internal.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
+		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
 		for (File testDir : testDirs) {
 			final String dirName = testDir.getName();
 			ats.addTest(
@@ -55,6 +49,7 @@ public class GprofBinaryTest extends TestCase {
 	}
 
 	public static void testValidBinary(String relativeBinaryPath) throws Exception {
+		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID , relativeBinaryPath);
 		//Assert.assertEquals(true, GprofProgramChecker.isGProfCompatible(binary));
 		// enhance coverage: testing cache
@@ -64,6 +59,7 @@ public class GprofBinaryTest extends TestCase {
 	}
 
 	public static void testInvalidBinary(String relativeGmonPath) throws Exception {
+		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID , relativeGmonPath);
 		//Assert.assertEquals(false, GprofProgramChecker.isGProfCompatible(binary));
 	}

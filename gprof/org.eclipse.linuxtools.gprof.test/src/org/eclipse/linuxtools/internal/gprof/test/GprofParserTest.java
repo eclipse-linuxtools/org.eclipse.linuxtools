@@ -32,7 +32,7 @@ public class GprofParserTest extends TestCase{
 	
 	public static Test suite() {
 		TestSuite ats = new TestSuite("Test gmon Parser");
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.internal.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
+		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
 		for (File testDir : testDirs) {
 			final File logFile = new File(testDir, GMON_OUTPUT_FILE);
 			final File binaryFile = new File(testDir, GMON_BINARY_FILE);

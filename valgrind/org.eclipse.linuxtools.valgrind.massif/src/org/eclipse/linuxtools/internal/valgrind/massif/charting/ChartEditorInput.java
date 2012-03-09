@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.valgrind.massif.birt;
+package org.eclipse.linuxtools.internal.valgrind.massif.charting;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin;
