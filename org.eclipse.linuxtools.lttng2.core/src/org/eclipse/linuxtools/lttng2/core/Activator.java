@@ -12,17 +12,18 @@
 
 package org.eclipse.linuxtools.lttng2.core;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+
 /**
  * <b><u>Activator</u></b>
  * <p>
  * The activator class controls the plug-in life cycle
  */
-public class Activator implements BundleActivator {
+public class Activator extends Plugin {
 
     // ------------------------------------------------------------------------
-    // Constants
+    // Attributes
     // ------------------------------------------------------------------------
 
     /**
@@ -30,43 +31,56 @@ public class Activator implements BundleActivator {
      */
     public static final String PLUGIN_ID = "org.eclipse.linuxtools.lttng2.core"; //$NON-NLS-1$
 
+    /**
+     * The shared instance
+     * */
+    private static Activator plugin;
+    
     // ------------------------------------------------------------------------
-    // Variables
+    // Constructors
     // ------------------------------------------------------------------------
 
     /**
-     * The bundle context
+     * The constructor
      */
-    private static BundleContext context;
-
-    // ------------------------------------------------------------------------
-    // Getters
-    // ------------------------------------------------------------------------
-
-    static BundleContext getContext() {
-        return context;
+    public Activator() {
     }
 
     // ------------------------------------------------------------------------
-    // Operations
+    // Accessors
+    // ------------------------------------------------------------------------
+
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
+
+    // ------------------------------------------------------------------------
+    // Operators
     // ------------------------------------------------------------------------
 
     /*
      * (non-Javadoc)
-     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+     * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
      */
     @Override
-    public void start(BundleContext bundleContext) throws Exception {
-        Activator.context = bundleContext;
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
     }
 
     /*
      * (non-Javadoc)
-     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
      */
     @Override
-    public void stop(BundleContext bundleContext) throws Exception {
-        Activator.context = null;
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
     }
 
 }
