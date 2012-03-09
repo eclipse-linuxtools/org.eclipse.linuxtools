@@ -1,0 +1,1040 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>SystemTapGUI User Guide - SystemTap IDE</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">SystemTap IDE</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="SystemTapGUI User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="SystemTap-Graphing.html" title="SystemTap Graphing">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTapGUI User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">SystemTap Graphing</td>
+			</tr>
+		</table><hr/>
+		<h1 id="SystemTap_IDE">SystemTap IDE</h1>
+		<h2 id="Getting_Started">Getting Started</h2>
+		<h3 id="IDE_Tutorial">IDE Tutorial</h3>
+		<h4 id="Lesson_1:_Getting_Started">Lesson 1: Getting Started</h4>
+		<p>In this tutorial we will orient you with IDE Perspective and its functions. At this point we assume
+			that you are able to run Systemtap GUI and are unfamiliar with how to procede. If you cannot yet start
+			the application, please refer to our 
+			<a href="User-Guide.html#Installation">Installation help page</a>
+
+			<b>NOTE:</b> If this is the first time opening the IDE Perspective it will take a while to load as it has to 
+			parse the tapsets.
+		</p>
+		<p>The IDE Perspective's purpose is to allow the user to create, view, and edit Systemtap scripts. There are
+			other editors built in (plain text and the C editor), however, they ultimately exist to facilitate the 
+			writing of Systemtap scripts.</p>
+		<p>In this lesson we will open a new Systemtap script file to familiarize ourselves with the IDE Perspective.
+			Start by opening the <u>F</u>ile menu and selecting <u>O</u>pen. A dialogue box will pop up and request the 
+			location of the file you want to open. We've included a folder called "examples" right in the tar ball. You 
+			may chose any of them to use; in this tutorial we will open top.stp. Go ahead and open the file.</p>
+		<p>
+			<img border="0" src="images/Editor.png"/>
+		</p>
+		<p>You'll see the file is loaded into the editor pane of Systemtap GUI. You'll also noticed different colored
+			text. Systemtap GUI supports syntax highlighting for the ease of the writer. Feel free to edit the file.</p>
+		<p>At this point proceed to 
+			<a href="SystemTap-IDE.html#Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script </a> if you wish to learn how to write your 
+			own script file or 
+			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a> if you wish to run this one.
+		</p>
+		<h4 id="Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script</h4>
+		<p>In this tutorial we will guide you through the process of writing your first Systemtap script. It is strongly recommended that you review the 
+			<b>Systemtap website's tutorial</b> - 
+			<a href="http://sourceware.org/systemtap/tutorial">http://sourceware.org/systemtap/tutorial</a> for up-to-date information on the latest version of Systemtap.  
+		</p>
+		<p>Start by selecting <u>F</u>ile-&gt;<u>N</u>ew. Specify a file name of your choosing, but be sure that it ends with an .stp extension. Click ok. Your blank script should be present in the editor pane. </p>
+		<p>
+			<img border="0" src="images/Newfile.png"/> 
+		</p>
+		<p>Now type/copy the following: </p>
+		<pre> 
+	global read, write, start
+
+	probe begin {
+		start = gettimeofday_s()
+	}
+	probe syscall.write {
+		write += count
+	}
+
+	probe timer.ms(1000) {
+		printf("%d\t%d\t%d\n", (gettimeofday_s()-start), read, write)
+		read=0
+		write=0
+	}
+</pre>
+		<p> </p>
+		<p>Now to demonstrate the functionality of the Probe Alias browser we will have you complete the read probe yourself. Start by opening the syscall folder in the Probe Alias browser. If you do not have any content in the browser you are experiencing a problem with Systemtap installation and should refer to our 
+			<a href="User-Guide.html#Installation">Installation help page</a>. Ensure your cursor is located at the end of the file. Now scroll down and double click the read probe alias. Systemtap GUI will insert the skeleton probe at the point at which your cursor is at, and should look similar to the following: 
+		</p>
+		<pre>probe syscall.read
+{
+	/*
+	 * available variables on this probe:
+	 * argstr, buf_uaddr, count, fd, name
+	 */
+
+}
+</pre>
+		<p> </p>
+		<p>Now insert the following line into the syscall.read probe: </p>
+		<pre>read += count
+</pre>
+		<p> 
+			You may remove the comment (/* ... */) if you wish. </p>
+		<p>This will count the number of bytes read and written each second and print it out. The begin probe executes first, by getting the time of day. The read and write probes increment each time the function is called. The timer probe prints the information every second. If you typed the script in manually you may have noticed that the editor provides code completion for probe alias. If you did not, type "syscall.". You'll see a box come up that you may use to select an item to complete your probe alias. </p>
+		<p>In 
+			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3</a> you will learn how to run Systemtap scripts in the IDE Perspective. 
+		</p>
+		<h4 id="Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script</h4>
+		<p>In this lesson we will cover running your script. You may use either the example script you opened in Lesson 1 or the script you wrote in Lesson two. Select <u>R</u>un-&gt;<u>R</u>un. Enter the remote server details. You should receive output in the console similar to the following, which shows the reads and write per second.  </p>
+		<p>
+			<img border="0" src="images/IDEOutput.png"/>
+		</p>
+		<p>Now we will demonstrate running Systemtap scripts with graphs. In order to run the chart example you'll need to use the code provided in 
+			<a href="SystemTap-IDE.html#Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script </a>;. To do this select 
+			<b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>. This feature will prompt the user for the number of columns for the chart, in addition to their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box. 
+		</p>
+		<p>
+			<img border="0" src="images/Chartbox1.png"/>
+		</p>
+		<p>For this example enter the following: </p>
+		<pre>	Columns: 3
+
+	TITLE	REGULAR EXPRESSION	DELIMITER
+	Time		\d+		.*			\D+
+	Read		\d+		.*			\D+
+	Write		\d+		.*			\D+
+
+</pre>
+		<p>The title fields simply display the associated string in the column's header. After clicking OK the script will prompt you for details regarding the Remote Server. Provide the ip address of the remote server that is running the systemtapgui Server or the Data Management Daemon. The port is by default 22462. Enter a username and password.This will give the application permissions to run your script on the remote machine. You have the option of saving your password as well, however be warned this is currently NOT encrypted so this convenience runs at a risk. The username is also used to transfer the file to the remote system using SCP. If the same machine is used as both the server and the client enter 'localhost' for the Host field. When the script is executed the application will switch into the Graphing perspective. A Data View chart is populated with live data, in addition to the output in the console.  You should see a screen similar to the following: </p>
+		<p>
+			<img border="0" src="images/IDEGraphics.png"/>
+		</p>
+		<p>You will see that the data table poplulates from live data parsed from the console. Now we'll make a graph to briefly illustrate the Graphing perspective. Click the Create Graph button next to bring up the Select Chart dialogue.Select line graph. You will be prompted to select a column of the X series and Y series; select "Time" and "Write" respectively. After you click ok you should see the line graph as follows: </p>
+		<p>
+			<img border="0" src="images/IDEGraph.png"/>
+		</p>
+		<p>Note that the multiple series graphs (Multi-Line, Multi-Bar, and Multi-Scatter) will request two Y series, Y1 and Y2. In the case of our example, these would be "Read" and "Write". Each series will be assigned a different color value for the purposes of differentiation and will be plotted both in respect to the specified X series.</p>
+		<p>Those are the basics behind running a script in Systemtap GUI. </p>
+		<h2 id="Concepts">Concepts</h2>
+		<h3 id="SystemTap_Perspectives">SystemTap Perspectives</h3>
+		<p>SystemTap has three perspectives, each with its own purpose.</p>
+		<ul>
+			<li>
+				<img border="0" src="images/Ide.png"/> 
+				<b>IDE Perspective</b> - This is the primary perspective for SystemTap script writers. It contains the 
+				<a href="SystemTap-IDE.html#Function_Browser">Function Browser </a>, 
+				<a href="SystemTap-IDE.html#Kernel_Browser">Kernel Browser </a>, 
+				<a href="SystemTap-IDE.html#Probe_Alias_Browser">Probe Alias Browser </a>, and 
+				<a href="SystemTap-IDE.html#Views_and_Editors">Views and Editors </a>. The IDE Perspective contains the features necessary execute SystemTap scripts and the syntax highlighting and code
+			</li>
+		</ul>
+		<p>completion features that facilitate efficient development of scripts.</p>
+		<ul>
+			<li>
+				<img border="0" src="images/Graphing.png"/> 
+				<b>Graphing Perspective</b> - This perspective is invoked when the user calls the Run /w Chart option. It defaults to showing a data table containing the script results and is capable of producing six different chart types: Line Graph, Multi-Line Graph, Bar Graph, Multi-Bar Graph, Scatter Graph, and Multi-Scatter Graph.
+			</li>
+			<li>
+				<img border="0" src="images/Dash.png"/>
+				<b>Dashboard Perspective</b> - This perspective is capable of storing meta-data related to each graph such as filters, aggregates, and display options in addition to showing a "dashboard" interface with multiple graphs updating simultaneously. 
+			</li>
+		</ul>
+		<h3 id="STP_Editor">STP Editor</h3>
+		<p>This editor is the most commonly used; it is used for the authoring and editing of Systemtap scripts. It is invoked when the user starts a new file or opens a file with the .stp extension. It provides syntax highlighting, code completion, and run support.</p>
+		<p>
+			<img border="0" src="images/Editor.png"/>
+		</p>
+		<p>See also: 
+			<a href="SystemTap-IDE.html#Menus">Menus </a>,
+
+			<a href="SystemTap-IDE.html#Example_SystemTap_Scripts">Example SystemTap Scripts </a>, 
+			<a href="SystemTap-IDE.html#Toolbars">Toolbars </a>
+		</p>
+		<h3 id="Function_Browser">Function Browser</h3>
+		<p>The Funtion Browser lists all of the functions that are defined in the tapset library.  Functions are grouped by the file that they are defined.  Each listed function has an icon that corresponds to its return type.</p>
+		<ul>
+			<li>
+				<img border="0" src="images/Var_str.gif"/> String
+			</li>
+			<li>
+				<img border="0" src="images/Var_long.gif"/> Long
+			</li>
+			<li>
+				<img border="0" src="images/Var_void.gif"/> Void
+			</li>
+		</ul>
+		<p>If you double click on any function a call to that function will be added to the active editor at the current cursor location.  Also if you right click on a function and click "View Definition" the tapset file where the function is defined will be opened.</p>
+		<p>
+			<img border="0" src="images/Function.png"/>
+		</p>
+		<h3 id="Kernel_Browser">Kernel Browser</h3>
+		<p>The Kernel Source Browser is used to display the kernel tree.  This provides you with a quick way to locate places to add probes.  Any file in the Kernel Source tree can be opened by double clicking on it.  This will open up the selected file in the Editor view.  You can then double click on the ruler next to any line that you wish to probe.  If SystemTap can probe that line a probe point will be inserted at the end of the script you were most recently working on.  If the line can't be probed, an error message will be displayed. </p>
+		<p>
+			<img border="0" src="images/KernelSource.png"/>
+		</p>
+		<h3 id="Probe_Alias_Browser">Probe Alias Browser</h3>
+		<p>The Probe Alias Browser lists all of the probe aliases that are defined in the tapset library. Probes are grouped based on their type. In addition to the list of probes, each probe lists all of the variables that it has access to. Each variable is listed with an icon that represents its type. Types are as follows: </p>
+		<ul>
+			<li>
+				<img border="0" src="images/Var_str.gif"/> String 
+			</li>
+			<li>
+				<img border="0" src="images/Var_long.gif"/> Long 
+			</li>
+			<li>
+				<img border="0" src="images/Var_unk.gif"/> Unknown
+			</li>
+		</ul>
+		<p>If you double click on any probe alias, probe point will be added to the end of the active editor. Also if you right click on a probe and click "View Definition" the tapset file where the probe is defined will be opened. </p>
+		<p>
+			<img border="0" src="images/ProbeAlias.png"/>
+		</p>
+		<h2 id="Tasks">Tasks</h2>
+		<h3 id="Creating_SystemTap_Scripts">Creating SystemTap Scripts</h3>
+		<p>Create a SystemTap script by selecting 
+			<b><u>F</u>ile-&gt;<u>N</u>ew</b> in the IDE Perspective. You'll be prompted to enter a name for the file; 
+			<i>make sure that you use a .stp extension or else SystemTap GUI will not recognize the file as a SystemTap script and certain editor and run features will not be active.</i>
+		</p>
+		<p>Your new file will be open and ready for coding in the Editor pane.</p>
+		<p>A 
+			<a href="SystemTap-IDE.html#IDE_Tutorial">IDE Tutorial </a> is also provided in the help pages for a step by step demo.
+		</p>
+		<p>For advanced SystemTap langauge help please see the SystemTap Development User's Guide and the documentation available at the SystemTap website's documentation page -  
+			<a href="http://sourceware.org/systemtap/documentation.html">http://sourceware.org/systemtap/documentation.html</a>
+		</p>
+		<h3 id="Using_the_STP_Editor">Using the STP Editor</h3>
+		<p>The STP Editor is used for the authoring and editing of Systemtap scripts. It is invoked when the user starts a new file or opens a file with the .stp extension. Using the editor is as easy as setting the focus to the editor pane and typing.</p>
+		<p>
+			<img border="0" src="images/Editor.png"/>
+		</p>
+		<p>There are certain features within the editor you may want to take advantage of:</p>
+		<ul>
+			<li>Syntax Highlighting - Certain code items are colored in .stp and .c files based on a set of rules and </li>
+		</ul>
+		<p>colors. You can turn this on or off and change the colors in 
+			<b><u>W</u>indow-&gt;<u>P</u>references</b>.
+		</p>
+		<ul>
+			<li>Code Assist - SystemTap GUI will attempt to finish your probe alias names based on what you have already</li>
+		</ul>
+		<p>typed. You can then select the appropriate probe alias or continue typing to filter the list down even more.
+			You can turn this feature on and off or set the speed on it in 
+			<b><u>W</u>indow-&gt;<u>P</u>references</b>.
+		</p>
+		<ul>
+			<li>Run Support - See the 
+				<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a>
+			</li>
+		</ul>
+		<p>help page on a walk through use of the Run command. The Run command allows scripts to be executed directly
+			through SystemTap GUI.</p>
+		<p>See also: 
+			<a href="SystemTap-IDE.html#Menus">Menus </a>, 
+
+			<a href="SystemTap-IDE.html#Toolbars">Toolbars </a>, 
+			<a href="SystemTap-IDE.html#Example_SystemTap_Scripts">Example SystemTap Scripts </a>
+		</p>
+		<h3 id="Viewing_Data_Charts">Viewing Data Charts</h3>
+		<p>Viewing data charts from a SystemTap script is accomplished by running that script with the 
+			<b><u>R</u>un-&gt;<u>R</u>un w/ Chart</b> option. This is covered in the 
+			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a>. After running a script with the chart option, the user is taken into the Graphing Perspective and the Data Table is loaded by default. The data table immediately begins populating as it recieves input back through the console from the running SystemTap script.
+		</p>
+		<p>
+			<img border="0" src="images/IDEGraphics.png"/>
+		</p>
+		<h2 id="Reference">Reference</h2>
+		<h3 id="Views_and_Editors">Views and Editors</h3>
+		<p>This section details the views and editor in relation to the IDE Perspective.</p>
+		<h4 id="Views">Views</h4>
+		<p>The IDE Perspective consists of 5 views and and two editors.</p>
+		<ul>
+			<li>
+				<b>Probe Alias Browser</b> - A list of all probe aliases currently available in your version of Systemtap. Covered in detail 
+				<a href="SystemTap-IDE.html#Probe_Alias_Browser">here </a>.
+			</li>
+			<li>
+				<b>Function Browser</b> - A list of functions currently supported in your version of Systemtap. Covered in detail 
+				<a href="SystemTap-IDE.html#Function_Browser">here </a>.
+			</li>
+			<li>
+				<b>Kernel Source Browser</b> - Used to display the kernel tree. Covered in detail 
+				<a href="SystemTap-IDE.html#Kernel_Browser">here </a>.
+			</li>
+			<li>
+				<b>Console</b> - The console view is where all of the output from the running script is shown. If more then one script is running at the same time you are able to switch between which console is currently displayed by clicking on the "Display Selected Console" button. The script can halt execution here if the user selects the 
+				<b>Stop</b> button. The user also has the option of saving the console output to a file, which can be done by clicking the 
+				<b>Save log output</b> button at the top of the console.
+				<img border="0" src="images/IDEConsole.png"/>
+			</li>
+			<li>
+				<b>Error Log</b> - If the script you tried to run contained errors, this view will become active and display the errors. You can double click on the eror message to jump to the line in the file where the error occured. 
+				<img border="0" src="images/ErrorLog.png"/>
+			</li>
+		</ul>
+		<h4 id="Editors">Editors</h4>
+		<p>Three editors are available in Systemtap GUI.</p>
+		<ul>
+			<li>
+				<b>STP Editor</b> - This editor is the most commonly used; it is used for the authoring and editing of Systemtap scripts. It is invoked when the user starts a new file or opens a file with the .stp extension. It provides syntax highlighting, code completion, and run support.
+			</li>
+			<li>
+				<b>C Editor</b> - This editor is available for the read only viewing of kernel source. It is invoked when the user opens a file of extension .c. Syntax highlighting is supported in this mode.
+			</li>
+			<li>
+				<b>Plain Text Editor</b> - A plain text editor is also implemented for the user should they need it.
+			</li>
+		</ul>
+		<h3 id="Menus">Menus</h3>
+		<p>What follows is a comprehension list of the menu options available within the IDE Perspective of Systemtap GUI.</p>
+		<h4 id="File">File</h4>
+		<ul>
+			<li>
+				<b><u>N</u>ew File</b> - This option will bring up a dialog to create a new file. You may specify any location. Files ending in a .stp or .c extension will have syntax highlighting and code completion features as appropriate. (Shortcut: Crtl+L)
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Newbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>O</u>pen File</b> - This option will bring up a dialog to select a file to open.  Once a file is selected it will open in the editor window. (Shortcut: Crtl+O)
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Openbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>C</u>lose</b> - This option closes the file in the editor pane that currently has the focus. (Shortcut: Crtl+F4)
+			</li>
+			<li>
+				<b>C<u>l</u>ose All</b> - This option closes all files in the editor pane. (Shortcut: Shift+Crtl+F4)
+			</li>
+			<li>
+				<b><u>S</u>ave</b> - This option saves the file that currently has the focus. (Shortcut: Crtl+S)
+			</li>
+			<li>
+				<b>Save <u>A</u>s</b> - This option prompts the user for a new location and file name and saves the file that currently has the focus under that new name and location.
+			</li>
+			<li>
+				<b>Sav<u>e</u> All</b> - This option saves all files currently open in the editor pane. (Shortcut: Shift+Crtl+S)
+			</li>
+			<li>
+				<b>Rever<u>t</u></b> - This option discards changes to the file currently under the focus replaces it with the last saved version.
+			</li>
+			<li>
+				<b><u>P</u>rint</b> - This option prints the file in the editor pane currently holding the focus. (Shortcut: Crtl+P)
+			</li>
+			<li>
+				<b><u>E</u>xport Script</b> - This option prompts the user to enter metadata associated with the Systemtap script to be exported and used in the Dashboard perspective. See the 
+				<a href="SystemTap-Dashboard.html#Creating_Modules">Creating Modules guide</a> for instructions.
+			</li>
+			<li>
+				<b><u>I</u>mport Tapset</b> - This option allows you to include additional tapset directories when you run a script. (Shortcut: Crtl+I)
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Importbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>E<u>x</u>it</b> - Exits Systemtap GUI.
+			</li>
+		</ul>
+		<h4 id="Edit">Edit</h4>
+		<ul>
+			<li>
+				<b><u>U</u>ndo</b> - Undos the previous editor related action.  (Shortcut: Crtl+Z)
+			</li>
+			<li>
+				<b><u>R</u>edo</b> - Redos the previous editor related action removed by Undo.  (Shortcut: Crtl+Y)
+			</li>
+			<li>
+				<b>Cu<u>t</u></b> - Removes the selected text from the editor pane and places it in the clipboard.  (Shortcut: Shift+Delete, Ctrl+X)
+			</li>
+			<li>
+				<b><u>C</u>opy</b> - Copies the selected text from the editor pane and places it in the clipboard.  (Shortcut: Ctrl+Insert, Crtl+C)
+			</li>
+			<li>
+				<b><u>P</u>aste</b> - Copies the text from the clipboard to the location of the focus in the editor pane.  (Shortcut: Shift+Insert, Crtl+V)
+			</li>
+			<li>
+				<b>Select <u>A</u>ll</b> - Selects all text within the file in the editor that the focus is currently in.  (Shortcut: Crtl+A)
+			</li>
+			<li>
+				<b><u>F</u>ind/Replace</b> - Opens the Find/Replace dialogue in which users may specify a text string to find and/or replace, with options to search forwards or backwards, the entire document or just the selected lines, and whether or not they want the following options:
+				<ul>
+					<li>Case sensitive</li>
+					<li>Wrap Search</li>
+					<li>Whole Word</li>
+					<li>Incremental</li>
+					<li>Regular expressions</li>
+				</ul>
+			</li>
+		</ul>
+		<p>(Shortcut: Crtl+F)
+
+			<img border="0" src="images/Findbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>Find <u>N</u>ext</b> - Finds the next instance of the search string in the direction indicated in the Find/Replace dialogue box. (Shortcut: Crtl+K)
+			</li>
+			<li>
+				<b>Find Pre<u>v</u>ious</b> - Finds the previous instance of the search string in the direction indicated in the Find/Replace dialogue box. (Shortcut: Shift+Crtl+K)
+			</li>
+			<li>
+				<b><u>I</u>ncremental Find Next</b> - Finds the next occurrence of the text and updates the selection after each character typed. To use Incremental Find:
+				<ul>
+					<li>In the text (or Java) editor, press Ctrl+J or select Edit &gt; Incremental Find Next from the menu bar.</li>
+					<li>The workbench status line displays "Incremental Find:". The editor is now in the Incremental Find mode.</li>
+					<li>As you type, the editor finds the next occurrence of the text and updates the selection after each character typed.</li>
+					<li>Navigate to the next or previous match by pressing Arrow Down or Arrow Up.</li>
+					<li>Undo the last action within the Incremental Find mode by pressing Backspace.</li>
+					<li>You can leave the Incremental Find mode by pressing Esc</li>
+				</ul>
+			</li>
+			<li>
+				<b>Incre<u>m</u>ental Find Previous</b> - Operates as illustrated in above bullet but in the reverse. (Shortcut: Shift+Crtl+J)
+			</li>
+			<li>
+				<b>Select <u>A</u>ll</b> - Selects all the text in the file that currently has the focus. (Shortcut: Ctrl+A)
+			</li>
+			<li>
+				<b><u>W</u>ord Completion</b> - Completes the string being typed by using the last example typed by the user. (Shortcut: Alt+/)
+			</li>
+		</ul>
+		<h4 id="Navigate">Navigate</h4>
+		<ul>
+			<li>
+				<b><u>F</u>orward</b> - Navigates to the next file in sequence as they were opened in the editor pane. (Shortcut: Alt+Right)
+			</li>
+			<li>
+				<b><u>B</u>ack</b> - Navigates to the previous file in sequence as they were opened in the editor pane. (Shortcut: Alt+Left)
+			</li>
+			<li>
+				<b>Last Edit Lo<u>c</u>ation</b> - Moves the focus to the file containing the last known edit. (Shortcut: Crtl+Q)
+			</li>
+			<li>
+				<b><u>G</u>oto Line...</b> - Moves the focus to the specified line number, with the range of line numbers listed in the dialogue box. (Shortcut: Ctrl+L)
+				<img border="0" src="images/Gotobox1.png"/>
+			</li>
+		</ul>
+		<h4 id="Run">Run</h4>
+		<ul>
+			<li>
+				<b><u>R</u>un</b> - Available when a Systemtap script is loaded into the editor, this feature runs the script. You will be prompted to enter details of the remote machine running the systemtapgui server.ShortCut(Ctrl+F5)
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Consolebox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>R</u>un w/Chart</b> - Available when a Systemtap script is loaded into the editor, this feature will prompt the user for the number of columns for the chart, in addition to their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box. The user has the option to use Command Line Options as well. When you click OK you will be prompted to enter the details of the remote machine running the systemtapgui server. When the script is executed the application will switch into the Graphing perspective. A Data View chart is populated with live data, in addition to the output in the console. More information regarding the Graphing perspective is available here.
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Chartbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>S</u>top</b> - This option terminates the script thread associated with whichever script currently has the focus. (Shortcut: Ctrl+F9)
+			</li>
+		</ul>
+		<h4 id="Window">Window</h4>
+		<ul>
+			<li>
+				<b>Open in <u>N</u>ew Window</b> - This option opens a new instance of SystemTap GUI.
+			</li>
+			<li>
+				<b><u>O</u>pen Perspective</b> - This submenu lists each of the available perspectives to open:
+				<ul>
+					<li>IDE Perspective</li>
+					<li>Graphing Perspective</li>
+					<li>Dashboard Perspective</li>
+				</ul>
+			</li>
+			<li>
+				<b>Show <u>V</u>iews</b> - This submenus lists each of the available views to open:
+				<ul>
+					<li>Console</li>
+					<li>Error Log</li>
+					<li>Functions</li>
+					<li>Kernel Source</li>
+					<li>Probe Alias</li>
+					<li>Other - Lists all views in the application.</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Viewbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>P</u>references</b> - Due to the breath of this topic it is covered in another section. Please see 
+				<a href="SystemTap-IDE.html#Preferences">Preferences </a>.
+			</li>
+		</ul>
+		<h3 id="Toolbars">Toolbars</h3>
+		<p>SystemTap GUI currently has two toolbars built in; an Action Bar for file and execution operations and a Perspective Selector to jump to different perspectives.</p>
+		<h4 id="Action_Bar">Action Bar</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/New_wiz.gif"/> 
+				<b>New File</b> - This button will bring up a dialog to create a new file.  When you click ok the file will be opened in the editor window.
+			</li>
+			<li>
+				<img border="0" src="images/Open_wiz.gif"/> 
+				<b>Open File</b> - This button will bring up a dialog to select a file to open.  Once a file is selected it will open in the editor window.
+			</li>
+			<li>
+				<img border="0" src="images/Import_wiz.gif"/> 
+				<b>Import Tapset</b> - This button allows you to include additional tapset directories when you run a script.
+			</li>
+			<li>
+				<img border="0" src="images/Run_exc.gif"/> 
+				<b>Run Script</b> - This will compile the open script and start running it.  All output will be sent to the console.  If there is an error in the script the error will be reported in the ErrorLog.
+			</li>
+			<li>
+				<img border="0" src="images/Run_chart.gif"/> 
+				<b>Run Script w/Chart</b> - This button is also like the standard Run Script button but will bring up a charting dialog box.  Once the formatting expressions have been entered it will change the current perspective to the graphing perspective.
+			</li>
+			<li>
+				<img border="0" src="images/Stop_obj.gif"/> 
+				<b>Stop Script</b> - This button will stop the currently active script from running.
+			</li>
+		</ul>
+		<h4 id="Perspective_Selector">Perspective Selector</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/Ide.png"/> 
+				<b>IDE Perspective</b> - This button brings you into the IDE Perspective, useful for writing and executing scripts.
+			</li>
+			<li>
+				<img border="0" src="images/Graphing.png"/> 
+				<b>Graphing Perspective</b> - This button brings you into the Graphing Perspective, useful for graphing scripts.
+			</li>
+		</ul>
+		<h3 id="Preferences">Preferences</h3>
+		<p>This section details each of the options listed under 
+			<b><u>W</u>indow-&gt;<u>P</u>references</b>. The Preferences dialog is the dialog used to set user preferences. The Preferences dialog pages can be searched using the filter function. To filter by matching the page title, simply type the name of the page you are seeking and the available pages will be presented below. The filter also searches on keywords such as appearance and java.
+		</p>
+		<ul>
+			<li>
+				<b>Logging</b> 
+				<ul>
+					<li>
+						<b>Enable logging</b> - This option turns on and off the ability to log data from the console.
+					</li>
+					<li>
+						<b>Logging level</b> - This dropdown box allows you to select one of our levels of logging.
+						<ul>
+							<li>Debug - A very large quantity of debug information, difficult to identify what you are looking for but extremely exhaustive.</li>
+							<li>Info - Displays most information regarding program execution; the default level.</li>
+							<li>Critical - Lists only critical errors duration execution.</li>
+							<li>Fatal - Lists only fatal errors during execution.</li>
+						</ul>
+					</li>
+					<li>
+						<i>Log to</i>' - Specifies where you wish the logging to be written:
+						<ul>
+							<li>Console - Writes the debug information directly to the console.</li>
+							<li>File - Write the debug information to a file.</li>
+						</ul>
+					</li>
+					<li>
+						<b>File</b> - The location of the file that logging sends the debug information to.
+					</li>
+				</ul>
+			</li>
+			<li>
+				<b>SystemTap</b> - This section contains options relevent to SystemTap itself.
+				<ul>
+					<li>
+						<b>Remember window state</b> - Preserves the state of the window on exitting SystemTap GUI.
+					</li>
+					<li>
+						<b>Dashboard Preferences</b> - Preferences relate to the Dashboard Perspective.
+						<ul>
+							<li>Additional Modules - Provides for the addition of more modules to the Dashboard. Modules are files containing a SystemTap script and associated metadata.</li>
+						</ul>
+					</li>
+					<li>
+						<b>Environment Variables</b> - Allows the user to set specific values to the following environment variables
+						<ul>
+							<li>LD_LIBRARY_PATH</li>
+							<li>PATH</li>
+							<li>SYSTEMTAP_TAPSET</li>
+							<li>SYSTEMTAP_RUNTIME</li>
+						</ul>
+					</li>
+					<li>
+						<b>Graphing</b> - Preferences related to the Graphing Perspective.
+						<ul>
+							<li>
+								<b><u>R</u>efresh Delay (ms)</b> - Milliseconds in between re-painting the graph.
+							</li>
+							<li>
+								<b>Data Table</b> - Preferences related to the data table.
+								<ul>
+									<li><u>J</u>ump to the newest entry - Determines whether the scroll bar maintains its location at the newest entry.</li>
+									<li><u>A</u>uto resize columns - Determines whether columns automatically resize to the width of the contents or whether they remain placed when moved.</li>
+									<li><u>M</u>ax data items - Maximum number of entries that the table shows, though the table itself may have more not visible.</li>
+								</ul>
+							</li>
+							<li>
+								<b>Graph</b> - Preferences related to graphs.
+								<ul>
+									<li><u>S</u>how grid lines - Turns on and off painting of the grid lines.</li>
+									<li><u>V</u>iewable data items - Number of maximum samples plotted at any time.</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b>IDE</b> - Preferences when loading the IDE Perspective.
+						<ul>
+							<li>
+								<b>Use stored tapset trees</b> - Loads the stored tapset trees on initialization.
+							</li>
+							<li>
+								<b>Editor</b> - Preferences related to the editor.
+								<ul>
+									<li><u>E</u>ditor Background Color - Sets the color painted in the background of the editor pane.</li>
+									<li>Show Line <u>N</u>umbers - Option to turn on and off line numbers in the editor pane.</li>
+									<li>Code Assist
+										<ul>
+											<li><u>U</u>se Code Assist - Turns on and off the option to use Code Assist, which is a method that predicts what you are typing based on existing probe alias and opens a window that allows you to scroll down and select and/or continue typing for refined results.</li>
+											<li>How Code Assist adds code - Method used in Code Assist.
+												<ul>
+													<li><u>I</u>nsert - Inserts the selected text directly into the cursor point.</li>
+													<li><u>O</u>verwrite - Overwrites as you type.</li>
+												</ul>
+											</li>
+											<li>Activation <u>D</u>elay (requires restart) - Delay in milliseconds before the code assist routines attempts to run.</li>
+											<li>Activation <u>T</u>rigger - This is the key that actives Code Assist. For SystemTap GUI it is set to the divider between tapset and probe alias.</li>
+										</ul>
+									</li>
+									<li>Syntax Coloring - These options assign color values to identified types within the .stp and .c editors.
+										<ul>
+											<li>STP editor
+												<ul>
+													<li><u>D</u>efault Color - Color of normal code.</li>
+													<li><u>K</u>eyword Color - Color of keywords.</li>
+													<li><u>E</u>mbedded C Color - Color of embedded C code.</li>
+													<li><u>E</u>mbedded Color - Color of embedded code.</li>
+													<li><u>C</u>omment Color - Color of comments.</li>
+													<li><u>T</u>ype Color - Color of items identified as types.</li>
+													<li><u>S</u>tring Color - Color of strings.</li>
+												</ul>
+											</li>
+											<li>C editor
+												<ul>
+													<li><u>D</u>efault Color - Color of normal code.</li>
+													<li><u>K</u>eyword Color - Color of keywords.</li>
+													<li><u>P</u>reprocessor Color - Color of preprocessor code.</li>
+													<li><u>C</u>omment Color - Color of comments.</li>
+													<li><u>T</u>ype Color - Color of items identified as types.</li>
+													<li><u>S</u>tring Color - Color of strings.</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li>Typeing - No options available at this time.</li>
+								</ul>
+							</li>
+							<li>
+								<b>Path</b>
+								<ul>
+									<li><u>K</u>ernel Source Directory - Location of the directory that the kernel source code is pulled from.</li>
+									<li>Stap - No options available at this time.
+										<ul>
+											<li>Tapsets - Preferences related to tapsets.
+												<ul>
+													<li><u>A</u>dditional Tapsets - Allows you to specify additional tapsets scripts to be added in with every script.</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b>Remote Server</b> - Details regarding the remote machine running the systemtapgui Server
+						<ul>
+							<li>
+								<b>Host Name</b> - IP address of the remote machine
+							</li>
+							<li>
+								<b>Port</b> - Port used for communication. Default is 22462.
+							</li>
+							<li>
+								<b>User Name</b> - User name that has sufficient permissions to transfer and run the script on the remote machine. 
+							</li>
+							<li>
+								<b>Password</b> - Password for the above user. 
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3 id="Frequently_Asked_Questions">Frequently Asked Questions</h3>
+		<p>This section details frequently asked questions relating to the IDE Perspective.</p>
+		<p>
+			<b>Where can I find information regarding the Systemtap scripting language?</b>
+		</p>
+		<p>A: The best place to look for up to date information regarding Systemtap itself is its homepage - 
+			<a href="http://sourceware.org/systemtap/documentation.html">http://sourceware.org/systemtap/documentation.html</a>
+		</p>
+		<p>
+			<b>How do I run a script once I've written it?</b>
+		</p>
+		<p>A: There are different options as far as running your Systemtap script. Please visit the 
+			<a href="SystemTap-IDE.html#Menus">Menus </a> to learn more about the four ways of running Systemtap scripts.
+		</p>
+		<p>
+			<b>Why does the application seem to hang when switching to the IDE Perspective?</b>
+		</p>
+		<p>A: If this is the first time you are trying to open the IDE perspective, or have recently gotten a new version of SystemTap this is expected.  In order to generate a full list of all of the available probes, and functions the GUI has to run the stap command.  If there are tapsets that do not run correctly using the 'stap -up2' comamnd this takes a long time.  In order to build as complete a list as possible it will use a binary filtering algorithm to figure out which tapset function is broken and generate data for all of the others.</p>
+		<h3 id="Example_SystemTap_Scripts">Example SystemTap Scripts</h3>
+		<p>What follows is a few SystemTap Scripts that you may use in SystemTap GUI, taken from and linked to 
+
+			<a href="http://sourceware.org/systemtap/documentation.html">http://sourceware.org/systemtap/documentation.html</a>
+		</p>
+		<p>There is also a description of the examples - 
+			<a href="http://sourceware.org/systemtap/examples/demo_script.txt">http://sourceware.org/systemtap/examples/demo_script.txt</a>
+		</p>
+		<h4 id="top.stp_-_Prints_the_top_20_system_calls_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Ftop.stp.29">top.stp - Prints the top 20 system calls (http://sourceware.org/systemtap/examples/top.stp)</h4>
+		<pre>
+#!/usr/bin/env stap 
+#
+# This script continuously lists the top 20 systemcalls on the system
+#
+
+global syscalls
+
+function print_top () {
+	cnt=0
+	log ("SYSCALL\t\t\t\tCOUNT")
+	foreach ([name] in syscalls-) {
+		printf("%-20s\t\t%5d\n",name, syscalls[name])
+		if (cnt++ = 20)
+			break
+	}
+	printf("--------------------------------------\n")
+	delete syscalls
+}
+
+probe kernel.function("sys_*") {
+	syscalls[probefunc()]++
+}
+
+# print top syscalls every 5 seconds
+probe timer.ms(5000) {
+	print_top ()
+</pre>
+		<h4 id="prof.stp_-_Simple_profiling_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fprof.stp.29">prof.stp - Simple profiling (http://sourceware.org/systemtap/examples/prof.stp)</h4>
+		<pre>
+#!/usr/bin/env stap
+
+# This is an example of profiling a specific command or pid.
+# It works by recording the time when a system call is entered
+# exited. 
+
+# Usage: prof.stp -c "top -n5"
+# Will start up "top" and after 5 iterations, will exit.
+#
+# Usage: prof.stp -x 3323
+# Will profile pid 3323 until it ^c is hit.
+#
+
+probe kernel.function("sys_*") {
+	if (target() = tid())
+		calltime[tid()] = gettimeofday_us()
+}
+
+probe kernel.function("sys_*").return {
+	if (target() != tid())  next
+	now = gettimeofday_us()
+	c = calltime[tid()]
+	if (!c) next
+	ttime[probefunc()] &lt;&lt;&lt; now - c
+	delete calltime[tid()]
+}
+
+probe end {
+	printf("\n")
+	foreach (x in ttime)
+		printf("%-20s\tcalls:%6d\tavg time (ms):%5d\ttotal(ms):%7d\n", 
+			x, @count(ttime[x]), @avg(ttime[x]), @sum(ttime[x]))
+}
+
+global calltime, ttime
+</pre>
+		<h4 id="keyhack.stp_-_Modifying_variables_in_the_kernel._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkeyhack.stp.29">keyhack.stp - Modifying variables in the kernel. (http://sourceware.org/systemtap/examples/keyhack.stp)</h4>
+		<pre>
+#! /usr/bin/env stap
+
+# This is not useful, but it demonstrates that
+# Systemtap can modify variables in a running kernel.
+
+# Usage: ./keyhack.stp -g
+
+probe kernel.function("kbd_event") {
+	# Changes 'm' to 'b' .
+	if ($event_code = 50) $event_code = 48
+}
+
+probe end {
+	printf("\nDONE\n")
+}
+</pre>
+		<h4 id="kmalloc.stp_-_Statistics_example._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc.stp.29">kmalloc.stp - Statistics example. (http://sourceware.org/systemtap/examples/kmalloc.stp)</h4>
+		<pre>
+#! /usr/bin/env stap
+
+# Using statistics to examine kernel memory allocations
+
+global kmalloc
+
+probe kernel.function("__kmalloc") { 
+	kmalloc &lt;&lt;&lt; $size
+}
+
+# Exit after 10 seconds
+probe timer.ms(10000) { exit () }
+
+probe end {
+	printf("Count:   %d allocations\n", @count(kmalloc))
+	printf("Sum:     %d Kbytes\n", @sum(kmalloc)/1000)
+	printf("Average: %d bytes\n", @avg(kmalloc))
+	printf("Min:     %d bytes\n", @min(kmalloc))
+	printf("Max:     %d bytes\n", @max(kmalloc))	
+	print("\nAllocations by size in bytes\n")
+	print(@hist_log(kmalloc))
+}
+</pre>
+		<h4 id="kmalloc2.stp_-_Example_using_arrays_of_statistics._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc2.stp.29">kmalloc2.stp - Example using arrays of statistics. (http://sourceware.org/systemtap/examples/kmalloc2.stp)</h4>
+		<pre>
+#! /usr/bin/env stap
+
+# Using statistics and maps to examine kernel memory allocations
+
+global kmalloc
+
+probe kernel.function("__kmalloc") { 
+	kmalloc[execname()] &lt;&lt;&lt; $size
+}
+
+# Exit after 10 seconds
+probe timer.ms(10000) { exit () }
+
+probe end {
+	foreach ([name] in kmalloc) {
+		printf("Allocations for %s\n", name)
+		printf("Count:   %d allocations\n", @count(kmalloc[name]))
+		printf("Sum:     %d Kbytes\n", @sum(kmalloc[name])/1000)
+		printf("Average: %d bytes\n", @avg(kmalloc[name]))
+		printf("Min:     %d bytes\n", @min(kmalloc[name]))
+		printf("Max:     %d bytes\n", @max(kmalloc[name]))	
+		print("\nAllocations by size in bytes\n")
+		print(@hist_log(kmalloc[name]))
+		printf("-------------------------------------------------------\n\n");
+	}
+}
+</pre>
+		<h3 id="Guide_to_Regular_Expressions">Guide to Regular Expressions</h3>
+		<p>Regular expressions are used in SystemTap GUI to define how the GUI interprets information that it recieves 
+			from the script file. If the user wishes to change the regular expression during runtime they may do so by
+			selecting 
+			<b><u>E</u>dit-&gt;Modify <u>P</u>arsing Expression</b>.
+		</p>
+		<p>Basic regex (taken from "
+			<a href="http://java.sun.com/j2se/1.5.0/docs/api/">http://java.sun.com/j2se/1.5.0/docs/api/</a> ) -
+		</p>
+		<pre> Summary of regular-expression constructs
+
+Construct 	Matches
+ 
+Characters
+x 	The character x
+\\ 	The backslash character
+\0n 	The character with octal value 0n (0 &lt;= n &lt;= 7)
+\0nn 	The character with octal value 0nn (0 &lt;= n &lt;= 7)
+\0mnn 	The character with octal value 0mnn (0 &lt;= m &lt;= 3, 0 &lt;= n &lt;= 7)
+\xhh 	The character with hexadecimal value 0xhh
+\uhhhh 	The character with hexadecimal value 0xhhhh
+\t 	The tab character ('\u0009')
+\n 	The newline (line feed) character ('\u000A')
+\r 	The carriage-return character ('\u000D')
+\f 	The form-feed character ('\u000C')
+\a 	The alert (bell) character ('\u0007')
+\e 	The escape character ('\u001B')
+\cx 	The control character corresponding to x
+ 
+Character classes
+[abc] 	a, b, or c (simple class)
+[^abc] 	Any character except a, b, or c (negation)
+[a-zA-Z] 	a through z or A through Z, inclusive (range)
+[a-d[m-p]] 	a through d, or m through p: [a-dm-p] (union)
+[a-z&amp;&amp;[def]] 	d, e, or f (intersection)
+[a-z&amp;&amp;[^bc]] 	a through z, except for b and c: [ad-z] (subtraction)
+[a-z&amp;&amp;[^m-p]] 	a through z, and not m through p: [a-lq-z](subtraction)
+ 
+Predefined character classes
+. 	Any character (may or may not match line terminators)
+\d 	A digit: [0-9]
+\D 	A non-digit: [^0-9]
+\s 	A whitespace character: [ \t\n\x0B\f\r]
+\S 	A non-whitespace character: [^\s]
+\w 	A word character: [a-zA-Z_0-9]
+\W 	A non-word character: [^\w]
+ 
+POSIX character classes (US-ASCII only)
+\p{Lower} 	A lower-case alphabetic character: [a-z]
+\p{Upper} 	An upper-case alphabetic character:[A-Z]
+\p{ASCII} 	All ASCII:[\x00-\x7F]
+\p{Alpha} 	An alphabetic character:[\p{Lower}\p{Upper}]
+\p{Digit} 	A decimal digit: [0-9]
+\p{Alnum} 	An alphanumeric character:[\p{Alpha}\p{Digit}]
+\p{Punct} 	Punctuation: One of !"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~
+\p{Graph} 	A visible character: [\p{Alnum}\p{Punct}]
+\p{Print} 	A printable character: [\p{Graph}\x20]
+\p{Blank} 	A space or a tab: [ \t]
+\p{Cntrl} 	A control character: [\x00-\x1F\x7F]
+\p{XDigit} 	A hexadecimal digit: [0-9a-fA-F]
+\p{Space} 	A whitespace character: [ \t\n\x0B\f\r]
+ 
+java.lang.Character classes (simple java character type)
+\p{javaLowerCase} 	Equivalent to java.lang.Character.isLowerCase()
+\p{javaUpperCase} 	Equivalent to java.lang.Character.isUpperCase()
+\p{javaWhitespace} 	Equivalent to java.lang.Character.isWhitespace()
+\p{javaMirrored} 	Equivalent to java.lang.Character.isMirrored()
+ 
+Classes for Unicode blocks and categories
+\p{InGreek} 	A character in the Greek block (simple block)
+\p{Lu} 	An uppercase letter (simple category)
+\p{Sc} 	A currency symbol
+\P{InGreek} 	Any character except one in the Greek block (negation)
+[\p{L}&amp;&amp;[^\p{Lu}]]  	Any letter except an uppercase letter (subtraction)
+ 
+Boundary matchers
+^ 	The beginning of a line
+$ 	The end of a line
+\b 	A word boundary
+\B 	A non-word boundary
+\A 	The beginning of the input
+\G 	The end of the previous match
+\Z 	The end of the input but for the final terminator, if any
+\z 	The end of the input
+ 
+Greedy quantifiers
+X? 	X, once or not at all
+X* 	X, zero or more times
+X+ 	X, one or more times
+X{n} 	X, exactly n times
+X{n,} 	X, at least n times
+X{n,m} 	X, at least n but not more than m times
+ 
+Reluctant quantifiers
+X?? 	X, once or not at all
+X*? 	X, zero or more times
+X+? 	X, one or more times
+X{n}? 	X, exactly n times
+X{n,}? 	X, at least n times
+X{n,m}? 	X, at least n but not more than m times
+ 
+Possessive quantifiers
+X?+ 	X, once or not at all
+X*+ 	X, zero or more times
+X++ 	X, one or more times
+X{n}+ 	X, exactly n times
+X{n,}+ 	X, at least n times
+X{n,m}+ 	X, at least n but not more than m times
+ 
+Logical operators
+XY 	X followed by Y
+X|Y 	Either X or Y
+(X) 	X, as a capturing group
+ 
+Back references
+\n 	Whatever the nth capturing group matched
+ 
+Quotation
+\ 	Nothing, but quotes the following character
+\Q 	Nothing, but quotes all characters until \E
+\E 	Nothing, but ends quoting started by \Q
+ 
+Special constructs (non-capturing)
+(?:X) 	X, as a non-capturing group
+(?idmsux-idmsux)  	Nothing, but turns match flags on - off
+(?idmsux-idmsux:X)   	X, as a non-capturing group with the given flags on - off
+(?=X) 	X, via zero-width positive lookahead
+(?!X) 	X, via zero-width negative lookahead
+(?&lt;=X) 	X, via zero-width positive lookbehind
+(?&lt;!X) 	X, via zero-width negative lookbehind
+(?&gt;X) 	X, as an independent, non-capturing group                                                                    
+Match a position that is not a word boundary.
+</pre>
+		<p>Information regarding regular expressions can be found all over the Internet. A few examples have been listed
+			below:</p>
+		<ul>
+			<li>
+				<a href="http://www.javascriptkit.com/javatutors/redev.shtml">http://www.javascriptkit.com/javatutors/redev.shtml</a>
+			</li>
+			<li>
+				<a href="http://www.zytrax.com/tech/web/regex.htm">http://www.zytrax.com/tech/web/regex.htm</a>
+			</li>
+		</ul><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="SystemTapGUI User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="SystemTapGUI User Guide">
+						<img alt="SystemTapGUI User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="SystemTap-Graphing.html" title="SystemTap Graphing">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTapGUI User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">SystemTap Graphing</td>
+			</tr>
+		</table>
+	</body>
+</html>
