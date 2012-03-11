@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.ui;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
@@ -35,6 +37,7 @@ import org.eclipse.ui.PlatformUI;
 public class SRPMImportOperation implements IRunnableWithProgress {
 	private IProject project;
 	private File sourceRPM;
+	private URL remoteSRPM;
 	private RPMProjectLayout projectLayout;
 
 	// Progressmonitor
@@ -52,8 +55,19 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 		this.project = project;
 		this.sourceRPM = sourceRPM;
 		this.projectLayout = rpmProjectLayout;
-		
 	}
+	
+	/**
+	 * @param project The project to import to.
+	 * @param sourceRPM The remote SRPM file.
+	 * @param rpmProjectLayout The desired project layout of the project.
+	 */
+	public SRPMImportOperation(IProject project, URL sourceRPM, RPMProjectLayout rpmProjectLayout) {
+		this.remoteSRPM = sourceRPM;
+		this.project = project;
+		this.projectLayout = rpmProjectLayout;
+	}
+	
 
 	/**
 	 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
@@ -63,7 +77,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	public void run(IProgressMonitor progressMonitor)
 		throws InvocationTargetException {
 		// Total number of work steps needed
-		int totalWork = 2;
+		int totalWork = 3;
 
 		monitor = progressMonitor;
 		rpm_errorTable = new ArrayList<Exception>();
@@ -76,13 +90,22 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 			RPMProject rpmProject = new RPMProject(project, projectLayout);
 			monitor.worked(1);
 			monitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
-			rpmProject.importSourceRPM(sourceRPM);
+			if (sourceRPM != null) {
+				rpmProject.importSourceRPM(sourceRPM);
+				monitor.worked(2);
+			} else if (remoteSRPM != null) {
+				SubProgressMonitor submonitor = new SubProgressMonitor(monitor, 1);
+				rpmProject.importSourceRPM(remoteSRPM, submonitor);
+				monitor.worked(2);
+			} else {
+				throw new IllegalStateException();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			rpm_errorTable.add(e);
 			return;
 		}
-		monitor.worked(1);
+		monitor.worked(2);
 	}
 
 

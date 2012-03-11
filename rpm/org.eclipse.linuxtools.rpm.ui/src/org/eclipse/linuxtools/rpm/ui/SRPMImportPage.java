@@ -12,23 +12,18 @@ package org.eclipse.linuxtools.rpm.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
-import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -72,39 +67,6 @@ public class SRPMImportPage extends WizardPage {
 		setPageComplete(false);
 		setDescription(Messages
 				.getString("SRPMImportPage.Select_project_to_import")); //$NON-NLS-1$
-	}
-
-	private File getSelectedSRPM() {
-		String srpmName = sourceSRPM.getText();
-		if (srpmName == null || srpmName.equals("")) { //$NON-NLS-1$
-			return null;
-		}
-		if (srpmName.startsWith("http://")) { //$NON-NLS-1$
-			try {
-				URL url = new URL(srpmName);
-				URLConnection content = url.openConnection();
-				File tempFile = new File(
-						System.getProperty("java.io.tmpdir"), srpmName.substring(srpmName.lastIndexOf('/') + 1)); //$NON-NLS-1$
-				if (tempFile.exists()) {
-					tempFile.delete();
-				}
-				final FileDownloadJob downloadJob = new FileDownloadJob(
-						tempFile, content);
-				getContainer().run(false, true, new IRunnableWithProgress() {
-
-					public void run(IProgressMonitor monitor)
-							throws InvocationTargetException,
-							InterruptedException {
-						downloadJob.run(monitor);
-
-					}
-				});
-				return tempFile;
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-		return new File(sourceSRPM.getText());
 	}
 
 	public void createControl(Composite parent) {
@@ -250,8 +212,16 @@ public class SRPMImportPage extends WizardPage {
 		IProject detailedProject = getNewProject();
 		SRPMImportOperation srpmImportOp = null;
 		try {
-			srpmImportOp = new SRPMImportOperation(detailedProject,
-					getSelectedSRPM(), detailsPanel.getSelectedLayout());
+			String srpmName = sourceSRPM.getText();
+			if (srpmName.startsWith("http://")) { //$NON-NLS-1$
+				URL sourceRPMURL = new URL(srpmName);
+				srpmImportOp = new SRPMImportOperation(detailedProject,
+						sourceRPMURL, detailsPanel.getSelectedLayout());
+			} else {
+				File sourceRPMFile = new File(srpmName);
+				srpmImportOp = new SRPMImportOperation(detailedProject,
+						sourceRPMFile, detailsPanel.getSelectedLayout());
+			}
 			getContainer().run(true, true, srpmImportOp);
 		} catch (Exception e) {
 			setErrorMessage(e.toString());
