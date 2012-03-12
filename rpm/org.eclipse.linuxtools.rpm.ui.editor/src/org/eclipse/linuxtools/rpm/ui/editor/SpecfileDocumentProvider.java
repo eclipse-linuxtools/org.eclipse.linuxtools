@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.ide.FileStoreEditorInput;

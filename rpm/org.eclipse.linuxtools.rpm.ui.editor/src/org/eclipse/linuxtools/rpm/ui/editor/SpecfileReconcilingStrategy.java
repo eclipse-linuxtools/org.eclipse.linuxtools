@@ -18,7 +18,7 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
-import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.IDocumentProvider;

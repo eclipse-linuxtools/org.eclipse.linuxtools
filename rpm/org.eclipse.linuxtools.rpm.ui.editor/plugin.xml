@@ -35,7 +35,7 @@
             extensions="spec"
             icon="icons/rpm.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.forms.SpecfileFormEditor"
             id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
       </editor>
    </extension>
@@ -53,25 +53,25 @@
   <hyperlinkDetector
     id="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector"
     targetId="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget"
-    class="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector"
+    class="org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector"
     name="URLHyperlinkWithMacroDetector">
   </hyperlinkDetector>
   <hyperlinkDetector
     id="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector"
     targetId="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget"
-    class="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector"
+    class="org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector"
     name="SpecfileElementHyperlinkDetector">
   </hyperlinkDetector>
   <hyperlinkDetector
     id="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector"
     targetId="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget"
-    class="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector"
+    class="org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.MailHyperlinkDetector"
     name="MailHyperlinkDetector">
   </hyperlinkDetector>
   <hyperlinkDetector
     id="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector"
     targetId="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget"
-    class="org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector"
+    class="org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector"
     name="SourcesFileHyperlinkDetector">
   </hyperlinkDetector>
 </extension>
@@ -102,14 +102,14 @@
    <extension
          point="org.eclipse.linuxtools.changelog.core.parserContribution">
       <parser
-            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogParser"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogParser"
             editor="SpecfileEditor"
             name="SpecfileChangelogParser"/>
    </extension>
    <extension
          point="org.eclipse.linuxtools.changelog.core.formatterContribution">
       <formatter
-            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogFormatter"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogFormatter"
             id="org.eclipse.linuxtools.rpm.ui.editor.actions.specfilechangelogformatter"
             inFile="true"
             name="SpecfileChangelogFormatter">
@@ -145,39 +145,39 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MainPreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.MainPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             name="%page.name"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
             name="%page.name.0"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
             name="%page.name.1"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
             name="%page.name.2"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
             name="%page.name.3"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.TaskTagsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
             name="%page.name.4"/>
    </extension>
 
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceInitializer"/>
+      <initializer class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceInitializer"/>
    </extension>
    
    <extension
@@ -237,13 +237,13 @@
    </extension>
    <extension point="org.eclipse.ui.handlers">
     	<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
          	commandId="rpmEditor.toggleComment.command" />
    		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
          	commandId="rpmEditor.organizePatches.command" />
    		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
          	commandId="rpmEditor.showOutline.command" />
    </extension>
    <!-- Key bindings -->
@@ -289,18 +289,18 @@
 	  <viewer
 		id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
 		extensions="spec"
-		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecMergeViewerCreator">
+		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecMergeViewerCreator">
 	  </viewer>
    </extension>
    <extension point="org.eclipse.compare.structureMergeViewers">
 	  <viewer
 		id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureMergeViewer"
 		extensions="spec"
-		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
+		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
 	  </viewer>
    </extension>
    <extension point ="org.eclipse.compare.structureCreators">
  		<structureCreator id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureCreator" 
-		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
+		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
    </extension>
 </plugin>

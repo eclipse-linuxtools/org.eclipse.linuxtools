@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
 
 /**
  * This class is used to retrieve and manage the RPM macro 

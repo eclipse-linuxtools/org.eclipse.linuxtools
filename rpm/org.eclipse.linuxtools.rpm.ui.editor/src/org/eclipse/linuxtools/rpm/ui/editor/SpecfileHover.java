@@ -25,10 +25,10 @@ import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
-import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 

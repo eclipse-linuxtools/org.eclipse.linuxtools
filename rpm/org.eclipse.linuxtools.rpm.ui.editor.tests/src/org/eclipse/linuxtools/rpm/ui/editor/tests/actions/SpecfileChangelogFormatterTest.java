@@ -16,8 +16,8 @@ import java.text.MessageFormat;
 import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogFormatter;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogFormatter;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;

@@ -35,11 +35,11 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileChangelogScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
