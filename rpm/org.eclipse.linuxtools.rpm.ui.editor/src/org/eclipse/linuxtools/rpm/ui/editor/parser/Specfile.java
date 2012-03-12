@@ -26,18 +26,18 @@ import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 
 public class Specfile {
 
-	SpecfilePreamble preamble;
+	private SpecfilePreamble preamble;
 	
-	SpecfilePackageContainer packages;
+	private SpecfilePackageContainer packages;
 
-	List<SpecfileSection> sections;
-	List<SpecfileSection> complexSections;
+	private List<SpecfileSection> sections;
+	private List<SpecfileSection> complexSections;
 
-	Map<String, SpecfileDefine> defines;
+	private Map<String, SpecfileDefine> defines;
 
-	Map<Integer, SpecfileSource> sources;
+	private Map<Integer, SpecfileSource> sources;
 
-	Map<Integer, SpecfileSource> patches;
+	private Map<Integer, SpecfileSource> patches;
 	
 	private List<SpecfileTag> buildRequires;
 	
