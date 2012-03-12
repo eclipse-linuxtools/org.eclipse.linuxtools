@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.rpm.ui.propertypage;
+package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 /*******************************************************************************
  * Copyright (c) 20011 Red Hat, Inc.

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.propertypage;
+package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -21,16 +21,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-public class ProvidesPage extends AbstractRPMPropertyPage {
+public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
-	private static final String RPM_QL = Messages
-			.getString("ProvidesPage.Provides"); //$NON-NLS-1$
+	private static final String RPM_QI = Messages
+			.getString("SpecFileHeaderPage.info"); //$NON-NLS-1$
 
-	private static final int QL_FIELD_WIDTH = 80;
+	private static final int QI_FIELD_WIDTH = 80;
 
-	private static final int QL_FIELD_HEIGHT = 40;
+	private static final int QI_FIELD_HEIGHT = 40;
 
-	private Text rpm_qlText;
+	private Text rpm_qiText;
 
 	@Override
 	protected void addFields(Composite parent) {
@@ -39,23 +39,22 @@ public class ProvidesPage extends AbstractRPMPropertyPage {
 		// RPM labels and text fields setup
 
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-		rpmDescriptionLabel.setText(RPM_QL);
-		rpm_qlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
+		rpmDescriptionLabel.setText(RPM_QI);
+		rpm_qiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
 				| SWT.V_SCROLL | SWT.WRAP);
-		GridData gdQL = new GridData();
-		gdQL.widthHint = convertWidthInCharsToPixels(QL_FIELD_WIDTH);
-		gdQL.heightHint = convertWidthInCharsToPixels(QL_FIELD_HEIGHT);
-		rpm_qlText.setLayoutData(gdQL);
+		GridData gdQI = new GridData();
+		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
+		gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
+		rpm_qiText.setLayoutData(gdQI);
 
-		// Populate RPM text fields
+		// Populate RPM text field
 		try {
-			String rpm_ql = RPMQuery.getProvides((IFile) getElement());
-			rpm_qlText.setText(rpm_ql);
+			String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
+			rpm_qiText.setText(rpm_qi);
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
 					StatusManager.LOG | StatusManager.SHOW);
 		}
-
 	}
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.propertypage;
+package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -21,16 +21,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
+public class ChangelogPage extends AbstractRPMPropertyPage {
 
-	private static final String RPM_QI = Messages
-			.getString("SpecFileHeaderPage.info"); //$NON-NLS-1$
+	private static final String RPM_CHANGELOG_ENTRIES = Messages
+			.getString("ChangelogPage.entries"); //$NON-NLS-1$
 
-	private static final int QI_FIELD_WIDTH = 80;
+	private static final int CL_ENTRIES_FIELD_WIDTH = 80;
 
-	private static final int QI_FIELD_HEIGHT = 40;
+	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
 
-	private Text rpm_qiText;
+	private Text rpm_ChangelogEntriesText;
 
 	@Override
 	protected void addFields(Composite parent) {
@@ -38,23 +38,26 @@ public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
 		// RPM labels and text fields setup
 
-		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-		rpmDescriptionLabel.setText(RPM_QI);
-		rpm_qiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
-				| SWT.V_SCROLL | SWT.WRAP);
-		GridData gdQI = new GridData();
-		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
-		gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
-		rpm_qiText.setLayoutData(gdQI);
+		Label rpmChangelogEntriesLabel = new Label(composite, SWT.NONE);
+		rpmChangelogEntriesLabel.setText(RPM_CHANGELOG_ENTRIES);
+		rpm_ChangelogEntriesText = new Text(composite, SWT.MULTI | SWT.BORDER
+				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
+		GridData gdEntries = new GridData();
+		gdEntries.widthHint = convertWidthInCharsToPixels(CL_ENTRIES_FIELD_WIDTH);
+		gdEntries.heightHint = convertWidthInCharsToPixels(CL_ENTRIES_FIELD_HEIGHT);
+		rpm_ChangelogEntriesText.setLayoutData(gdEntries);
 
-		// Populate RPM text field
 		try {
-			String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
-			rpm_qiText.setText(rpm_qi);
+			String rpm_ChangelogEntries = RPMQuery
+					.getChangelog((IFile) getElement());
+			rpm_ChangelogEntriesText.setText(rpm_ChangelogEntries);
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
 					StatusManager.LOG | StatusManager.SHOW);
 		}
+
 	}
+
+
 
 }
