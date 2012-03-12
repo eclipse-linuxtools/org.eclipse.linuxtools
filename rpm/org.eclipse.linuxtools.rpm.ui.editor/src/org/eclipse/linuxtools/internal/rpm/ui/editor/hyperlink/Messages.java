@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;
 import org.eclipse.osgi.util.NLS;
 
 public final class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.hyperlink.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.messages"; //$NON-NLS-1$
 	public static String SourcesFileDownloadHyperlink_0;
 	public static String SourcesFileDownloadHyperlink_1;
 	public static String SourcesFileDownloadHyperlink_2;
