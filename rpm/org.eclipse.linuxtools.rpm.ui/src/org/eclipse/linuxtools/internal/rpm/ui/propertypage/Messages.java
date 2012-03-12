@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 @SuppressWarnings("javadoc")
 public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.propertypage.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.ui.propertypage.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
 			.getBundle(BUNDLE_NAME);
