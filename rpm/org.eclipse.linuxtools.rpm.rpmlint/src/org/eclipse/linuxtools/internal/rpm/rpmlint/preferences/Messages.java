@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.rpmlint.preferences.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.rpmlint.preferences.messages"; //$NON-NLS-1$
 	public static String RpmlintPreferencePage_0;
 	public static String RpmlintPreferencePage_1;
 	public static String RpmlintPreferencePage_2;

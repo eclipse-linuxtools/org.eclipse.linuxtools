@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.rpmlint.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.rpmlint.messages"; //$NON-NLS-1$
 	public static String RpmlintLog_0;
 	static {
 		// initialize resource bundle
