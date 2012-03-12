@@ -2,7 +2,6 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -44,13 +43,13 @@ public class SessionManager {
 	public Element root;
 	public String absfilePath;
 	
-	public SessionManager(String filePath) throws FileNotFoundException{
+	public SessionManager(String filePath) {
 		this(new File(filePath));
 		absfilePath = filePath;
 		write();
 	}
 	
-	public SessionManager(File file) throws FileNotFoundException{
+	public SessionManager(File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {

@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.oprofile.core.linux;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -172,6 +173,20 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 	}
 	
+	/**
+	 * Delete the session with the specified name for the specified event
+	 * @param sessionName The name of the session to delete
+	 * @param eventName The name of the event containing the session
+	 * @throws OpcontrolException
+	 */
+	public void deleteSession (String sessionName, String eventName) throws OpcontrolException {
+		File file = new File (SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + eventName + sessionName);
+		file.delete();
+		SessionManager sessMan = new SessionManager(SessionManager.SESSION_LOCATION);
+		sessMan.removeSession(sessionName, eventName);
+		sessMan.write();
+	}
+
 	/**
 	 * Give setup aruments
 	 * @param args	list of parameters for daemon

@@ -1,12 +1,10 @@
 package org.eclipse.linuxtools.oprofile.ui.view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
+import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
+import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 
@@ -30,18 +28,18 @@ public class OprofileViewDeleteSessionAction extends Action {
 		OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 	}
 
+	/**
+	 * Delete the session with the specified name for the specified event
+	 * @param sessionName The name of the session to delete
+	 * @param eventName The name of the event containing the session
+	 */
 	private void deleteSession(UiModelSession sess) {
 		String sessionName = sess.getLabelText();
 		String eventName = sess.getParent().getLabelText();
-		File file = new File (SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + eventName + sessionName);
-		file.delete();
 		try {
-			SessionManager sessMan = new SessionManager(SessionManager.SESSION_LOCATION);
-			sessMan.removeSession(sessionName, eventName);
-			sessMan.write();
-		} catch (FileNotFoundException e) {
-			// intentionally left blank
-			// the file will be created if it does not exist
+			OprofileCorePlugin.getDefault().getOpcontrolProvider().deleteSession(sessionName, eventName);
+		} catch (OpcontrolException e) {
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
 		}
 	}
 }
