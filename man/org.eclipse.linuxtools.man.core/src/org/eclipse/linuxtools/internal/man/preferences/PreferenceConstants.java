@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man.preferences;
+package org.eclipse.linuxtools.internal.man.preferences;
 
 /**
  * Constant definitions for plug-in preferences

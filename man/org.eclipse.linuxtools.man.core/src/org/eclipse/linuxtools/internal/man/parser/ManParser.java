@@ -8,15 +8,15 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man.parser;
+package org.eclipse.linuxtools.internal.man.parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.eclipse.linuxtools.man.Activator;
-import org.eclipse.linuxtools.man.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.internal.man.Activator;
+import org.eclipse.linuxtools.internal.man.preferences.PreferenceConstants;
 
 /**
  * Parser for the man executable output.

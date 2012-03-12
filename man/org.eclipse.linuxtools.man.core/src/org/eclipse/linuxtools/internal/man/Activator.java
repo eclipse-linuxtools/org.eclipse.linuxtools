@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man;
+package org.eclipse.linuxtools.internal.man;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man.parser;
+package org.eclipse.linuxtools.internal.man.parser;
 
 import java.util.ArrayList;
 import java.util.List;

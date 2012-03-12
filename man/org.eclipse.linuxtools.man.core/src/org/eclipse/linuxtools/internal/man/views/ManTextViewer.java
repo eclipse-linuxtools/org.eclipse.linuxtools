@@ -8,11 +8,11 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man.views;
+package org.eclipse.linuxtools.internal.man.views;
 
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.linuxtools.man.parser.ManDocument;
+import org.eclipse.linuxtools.internal.man.parser.ManDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.widgets.Composite;

@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.man.views;
 
-import org.eclipse.linuxtools.man.parser.ManDocument;
+import org.eclipse.linuxtools.internal.man.parser.ManDocument;
+import org.eclipse.linuxtools.internal.man.views.ManTextViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;

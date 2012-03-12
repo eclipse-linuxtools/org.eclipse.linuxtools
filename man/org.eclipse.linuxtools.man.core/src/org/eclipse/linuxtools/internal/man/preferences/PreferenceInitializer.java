@@ -8,11 +8,11 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.man.preferences;
+package org.eclipse.linuxtools.internal.man.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.man.Activator;
+import org.eclipse.linuxtools.internal.man.Activator;
 
 /**
  * Class used to initialize default preference values.
