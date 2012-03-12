@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>SystemTapGUI User Guide - SystemTap Dashboard</title>
+		<title>SystemTap GUI User Guide - SystemTap Dashboard</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
@@ -322,6 +322,51 @@
 				<a href="SystemTap-IDE.html#Preferences">Preferences </a>
 			</li>
 		</ul>
+		<h3 id="Toolbars_2">Toolbars</h3>
+		<p>SystemTap GUI currently has two toolbars built in; an Action Bar for file and execution operations and a Perspective Selector to jump to different perspectives.</p>
+		<h4 id="Action_Bar_2">Action Bar</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/Import_wiz.gif"/> 
+				<b>Import Dashboard Module Location</b> - This option brings up a dialogue box prompting the user for a module file which is then loaded into the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Start_script.gif"/> 
+				<b>Run</b> - This option runs the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Pause_script.gif"/> 
+				<b>Pause</b> - This option pauses the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>. Know that this method of pausing is an illusion; the graph data is simply not updated while the script continues to run. This inability to truly pause is inherent in SystemTap itself.
+			</li>
+			<li>
+				<img border="0" src="images/Stop_obj.gif"/> 
+				<b>Stop</b> - This option stops the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Mod_obj.gif"/> 
+				<b>Create a New Dashboard module</b> - This option creates a new module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+		</ul>
+		<h4 id="Perspective_Selector_2">Perspective Selector</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/Ide.png"/> 
+				<b>IDE Perspective</b> - This launches the IDE Perspective, useful for writing and executing scripts.
+			</li>
+			<li>
+				<img border="0" src="images/Graphing.png"/> 
+				<b>Graphing Perspective</b> - This launches the Graphing Perspective, useful for graphing scripts.
+			</li>
+			<li>
+				<img border="0" src="images/Dash.png"/> 
+				<b>Dashboard Perspective</b> - This launches the Dashboard Perspective, useful for multiple graphing.
+			</li>
+		</ul>
 		<p><p class="copyright">&#169; Copyright Red Hat, Inc. 2009
 			<br/>
 &#169;			 Copyright Phil Muldoon &lt;pkmuldoon@picobot.org&gt; 2006.
@@ -336,8 +381,8 @@
 					</a>
 				</td>
 				<td style="width: 60%" align="center">
-					<a href="User-Guide.html" title="SystemTapGUI User Guide">
-						<img alt="SystemTapGUI User Guide" border="0" src="../../../images/home.gif"/>
+					<a href="User-Guide.html" title="SystemTap GUI User Guide">
+						<img alt="SystemTap GUI User Guide" border="0" src="../../../images/home.gif"/>
 					</a>
 				</td>
 				<td style="width: 20%" align="right">

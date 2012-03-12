@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<toc topic="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTapGUI User Guide">
-	<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTapGUI User Guide">
+<toc topic="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTap GUI User Guide">
+	<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTap GUI User Guide">
 		<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="Overview">
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#SystemTap_GUI.27s_Plugin_Design" label="SystemTap GUI's Plugin Design"></topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Systemtap" label="Systemtap"></topic>
@@ -131,6 +131,10 @@
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#File_3" label="File"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Run_3" label="Run"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Window_3" label="Window"></topic>
+				</topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Toolbars_2" label="Toolbars">
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Action_Bar_2" label="Action Bar"></topic>
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Perspective_Selector_2" label="Perspective Selector"></topic>
 				</topic>
 			</topic>
 		</topic>
