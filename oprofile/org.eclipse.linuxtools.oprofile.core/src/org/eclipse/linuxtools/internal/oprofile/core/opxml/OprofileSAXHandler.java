@@ -8,21 +8,21 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.OpInfoProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventsProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.OpInfoProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProcessor;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * The SAX handler class that is used to parse the output of opxml.
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class OprofileSAXHandler extends DefaultHandler {
 	// The only allowed instance of this class

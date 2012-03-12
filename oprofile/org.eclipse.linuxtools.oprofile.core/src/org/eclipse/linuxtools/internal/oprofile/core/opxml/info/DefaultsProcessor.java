@@ -8,17 +8,17 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.info;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.util.HashMap;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
-import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 
 /**
  * XML handler class for opxml's "defaults".
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class DefaultsProcessor extends XMLProcessor {
 	// XML tags reconize by this processor (public)
@@ -36,7 +36,7 @@ public class DefaultsProcessor extends XMLProcessor {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(OpInfoProcessor.DEFAULTS_TAG)) {

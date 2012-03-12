@@ -9,13 +9,13 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com> 
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.checkevent;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent;
 
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 
 /**
  * XML handler class for opxml's "check-events".
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class CheckEventsProcessor extends XMLProcessor {
 	public static final int INVALID_UNKNOWN = 0;	//unexpected error

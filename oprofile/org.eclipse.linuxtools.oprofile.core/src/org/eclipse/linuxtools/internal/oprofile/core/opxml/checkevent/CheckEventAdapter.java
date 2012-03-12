@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.oprofile.core.opxml.checkevent;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent;
 
 import java.io.File;
 import java.util.TreeSet;
@@ -7,9 +7,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.linuxtools.oprofile.core.opxml.AbstractDataAdapter;
-import org.eclipse.linuxtools.oprofile.core.opxml.EventIdCache;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.EventIdCache;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

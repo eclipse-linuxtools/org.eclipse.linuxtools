@@ -17,10 +17,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.DefaultsProcessor;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider.OpInfoRunner;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.DefaultsProcessor;
 
 
 /**

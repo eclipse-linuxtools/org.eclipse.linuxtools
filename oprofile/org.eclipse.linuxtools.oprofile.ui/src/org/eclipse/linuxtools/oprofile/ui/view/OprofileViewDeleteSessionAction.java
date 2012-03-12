@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 

@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.oprofile.core.opxml;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,8 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

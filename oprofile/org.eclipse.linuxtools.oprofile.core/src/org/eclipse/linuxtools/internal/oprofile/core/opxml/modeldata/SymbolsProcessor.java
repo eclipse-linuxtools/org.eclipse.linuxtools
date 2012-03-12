@@ -8,13 +8,13 @@
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.modeldata;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
-import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.Attributes;
 
 /**

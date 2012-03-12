@@ -9,12 +9,12 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com> - change samples to model-data
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 /**
  * A class of constants for communications with the opxml wrapper
  * program.
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler
  */
 public class OpxmlConstants {
 	/**

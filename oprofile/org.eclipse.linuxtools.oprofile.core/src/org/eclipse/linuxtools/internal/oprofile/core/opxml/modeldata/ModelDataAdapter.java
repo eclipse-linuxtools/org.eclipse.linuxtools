@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.oprofile.core.opxml.modeldata;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.linuxtools.oprofile.core.opxml.AbstractDataAdapter;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

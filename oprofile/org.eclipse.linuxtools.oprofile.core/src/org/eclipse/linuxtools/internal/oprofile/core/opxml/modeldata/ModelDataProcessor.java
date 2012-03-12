@@ -10,11 +10,11 @@
  *    Kent Sebastian <ksebasti@redhat.com> - 
  *******************************************************************************/ 
 
-package org.eclipse.linuxtools.oprofile.core.opxml.modeldata;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.Attributes;
 
 

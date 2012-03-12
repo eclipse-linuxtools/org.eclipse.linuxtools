@@ -9,20 +9,20 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.info;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
-import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.Attributes;
 
 
 /**
  * XML handler class for opxml's "event-list".
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class EventListProcessor extends XMLProcessor {
 	// The current event being constructed

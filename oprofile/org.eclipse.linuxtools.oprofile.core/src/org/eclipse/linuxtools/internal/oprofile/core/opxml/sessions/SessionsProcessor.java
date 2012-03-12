@@ -8,19 +8,19 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.sessions;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.Attributes;
 
 
 /**
  * A processor for sessions.
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class SessionsProcessor extends XMLProcessor {
 	public static class SessionInfo {
@@ -49,7 +49,7 @@ public class SessionsProcessor extends XMLProcessor {
 	private ArrayList<OpModelSession> _sessionList;
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor#startElement(java.lang.String, org.xml.sax.Attributes, java.lang.Object)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#startElement(java.lang.String, org.xml.sax.Attributes, java.lang.Object)
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SESSION_TAG)) {
@@ -65,7 +65,7 @@ public class SessionsProcessor extends XMLProcessor {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(SESSION_TAG)) {

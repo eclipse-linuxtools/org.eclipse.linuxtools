@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.oprofile.core.opxml;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

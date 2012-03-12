@@ -22,13 +22,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 

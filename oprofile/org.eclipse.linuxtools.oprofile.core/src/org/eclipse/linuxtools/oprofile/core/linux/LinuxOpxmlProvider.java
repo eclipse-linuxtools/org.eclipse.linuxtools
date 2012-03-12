@@ -16,13 +16,13 @@ import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlConstants;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataProcessor;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProcessor;
 import org.eclipse.linuxtools.oprofile.core.IOpxmlProvider;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.opxml.OpxmlConstants;
-import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
 
 /**
  * A class which implements the IOpxmlProvider interface for running opxml.

@@ -10,13 +10,13 @@
  *      - Note: the original SamplesProcessor class was removed, this is a new 
  *        implementation 
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml.modeldata;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
-import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 
 
 /**

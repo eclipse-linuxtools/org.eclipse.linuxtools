@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.oprofile.core.opxml.sessions;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions;
 
 import java.io.File;
 import java.io.FileInputStream;

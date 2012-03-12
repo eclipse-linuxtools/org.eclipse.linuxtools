@@ -8,7 +8,7 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.core.opxml;
+package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import org.xml.sax.Attributes;
 
@@ -16,7 +16,7 @@ import org.xml.sax.Attributes;
  * A class which (minimally) parses XML documents. This class provides only basic
  * support for collecting information from XML documents. It is intended to be subclassed,
  * providing only common functionality for all parser classes.
- * @see org.eclipse.linuxtools.oprofile.core.opxml.OpxmlRunner
+ * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class XMLProcessor {
 	// The characters in the current tag
