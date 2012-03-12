@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Reference" link_to="toc.xml#reference"> 
-	<topic label="Menus" href="documentation/html/reference/menus.html" /> 
-	<topic label="Toolbars" href="documentation/html/reference/toolbars.html" /> 
-	<topic label="Preferences" href="documentation/html/reference/preferences.html" /> 
-	<topic label="Frequently Asked Questions"  href="documentation/html/reference/frequentlyAskedQuestions.html" /> 
-</toc>

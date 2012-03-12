@@ -36,17 +36,6 @@
 	</extension>
 	
 	<extension
-		point="org.eclipse.help.toc">
-		<toc
-			file="toc.xml"
-			primary="true"/>
-		<toc file="documentation/tocconcepts.xml"/>
-		<toc file="documentation/tocgettingstarted.xml"/>
-		<toc file="documentation/tocreference.xml"/>
-		<toc file="documentation/toctasks.xml"/>
-	</extension>
-	
-	<extension
 		point="org.eclipse.ui.editors">
 		<editor
         class="org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor"

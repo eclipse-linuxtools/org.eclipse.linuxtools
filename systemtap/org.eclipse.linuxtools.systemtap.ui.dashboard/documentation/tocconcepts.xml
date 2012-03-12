@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Concepts" link_to="toc.xml#concepts"> 
-	<topic label="Modules"  href="documentation/html/concepts/modules.html" /> 
-	<topic label="Module Browser"  href="documentation/html/concepts/modulesBrowser.html" /> 
-	<topic label="Active Modules Browser"  href="documentation/html/concepts/activeModulesBrowser.html" /> 
-</toc>
