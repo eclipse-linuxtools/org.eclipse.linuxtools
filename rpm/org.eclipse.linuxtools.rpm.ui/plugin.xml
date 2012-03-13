@@ -53,31 +53,31 @@
 	<extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.SpecFileHeaderPage"
             id="rg.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
             name="%page.name.0"
             nameFilter="*.rpm">
       </page>
       <page
-            class="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.ChangelogPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
             name="%page.name.1"
             nameFilter="*.rpm">
       </page>
       <page
-            class="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.TargetPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
             name="%page.name.2"
             nameFilter="*.rpm">
       </page>
       <page
-            class="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.InstallScriptsPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
             name="%page.name.3"
             nameFilter="*.rpm">
       </page>
       <page
-            class="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
+            class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.ProvidesPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
             name="%page.name.4"
             nameFilter="*.rpm">

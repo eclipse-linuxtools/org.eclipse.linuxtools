@@ -10,13 +10,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="3.8.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.linuxtools.oprofile.core,
+Import-Package: org.eclipse.linuxtools.internal.oprofile.core.opxml,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.info,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions,
+ org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.daemon,
  org.eclipse.linuxtools.oprofile.core.model,
- org.eclipse.linuxtools.oprofile.core.opxml,
- org.eclipse.linuxtools.oprofile.core.opxml.checkevent,
- org.eclipse.linuxtools.oprofile.core.opxml.info,
- org.eclipse.linuxtools.oprofile.core.opxml.modeldata,
- org.eclipse.linuxtools.oprofile.core.opxml.sessions,
  org.eclipse.linuxtools.oprofile.tests
 Bundle-Localization: plugin

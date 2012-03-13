@@ -34,6 +34,8 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -51,7 +53,12 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Launching Perf.");
+		// check if Perf exists in $PATH
+		if (! PerfCore.checkPerfInPath()) 
+		{
+			IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
+			throw new CoreException(status);
+		}
 		
 		//Find the binary path
 		IPath exePath = CDebugUtils.verifyProgramPath( config );

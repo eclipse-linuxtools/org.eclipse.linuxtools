@@ -13,7 +13,10 @@ package org.eclipse.linuxtools.rpm.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
@@ -21,9 +24,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
 
@@ -100,6 +105,34 @@ public class RPMProject {
 		// Set the project nature
 		RPMProjectNature.addRPMNature(project, null);
 
+	}
+	
+	/**
+	 * Import a remote SRPM into this RPM project, by downloading the file
+	 * and calling {@link RPMProject#importSourceRPM(File)}.
+	 * 
+	 * @param remoteFile URI to the remote SRPM file.
+	 * @param monitor The progress monitor.
+	 * @throws CoreException Thrown if the import failed.
+	 */
+	public void importSourceRPM(URL remoteFile, IProgressMonitor monitor) throws CoreException {
+		URLConnection content;
+		try {
+			content = remoteFile.openConnection();
+		} catch (IOException e) {
+			Status status = new Status(IStatus.ERROR, RPMCorePlugin.ID,
+					e.getMessage(), e);
+			throw new CoreException(status);
+		}
+		File tempFile = new File(
+				System.getProperty("java.io.tmpdir"), remoteFile.toString().substring(remoteFile.toString().lastIndexOf('/') + 1)); //$NON-NLS-1$
+		if (tempFile.exists()) {
+			tempFile.delete();
+		}
+		final FileDownloadJob downloadJob = new FileDownloadJob(tempFile,
+				content);
+		downloadJob.run(monitor);
+		importSourceRPM(tempFile);
 	}
 
 	public int buildAll(OutputStream outStream) throws CoreException {

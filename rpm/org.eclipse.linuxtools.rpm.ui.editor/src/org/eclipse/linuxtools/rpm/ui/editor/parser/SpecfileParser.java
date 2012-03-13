@@ -23,16 +23,16 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource.SourceType;
-import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
 

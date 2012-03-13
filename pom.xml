@@ -50,7 +50,7 @@
   <properties>
     <tycho-version>0.14.1</tycho-version>
     <tycho-extras-version>0.14.0</tycho-extras-version>
-    <platform-version-name>indigo</platform-version-name>
+    <platform-version-name>juno</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20120123151124/repository</orbit-site>

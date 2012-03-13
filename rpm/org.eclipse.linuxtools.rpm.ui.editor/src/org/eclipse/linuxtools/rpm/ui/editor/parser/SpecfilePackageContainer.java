@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 
 public class SpecfilePackageContainer extends SpecfileElement {
 	List<SpecfilePackage> packages;
