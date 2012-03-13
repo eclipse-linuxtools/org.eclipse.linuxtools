@@ -18,11 +18,11 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +38,9 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 		String testText = "Source0: test.zip\n";
 		newFile(testText);
 
-		IEditorPart openEditor = IDE
-				.openEditor(Activator.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage(), testFile,
-						"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), testFile,
+				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();

@@ -17,9 +17,9 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogFormatter;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		newFile("%changelog");
-		editor = IDE.openEditor(Activator.getDefault().getWorkbench()
+		editor = IDE.openEditor(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage(), testFile,
 				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		formatter = new SpecfileChangelogFormatter();
