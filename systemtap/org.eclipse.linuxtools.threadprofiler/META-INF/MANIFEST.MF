@@ -7,12 +7,12 @@ Bundle-Activator: org.eclipse.linuxtools.threadprofiler.ThreadProfilerPlugin
 Require-Bundle: org.eclipse.ui, 
  org.eclipse.core.runtime,
  org.eclipse.cdt.core,
- org.eclipse.linuxtools.callgraph.launch,
- org.eclipse.linuxtools.callgraph.core,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.swt
-Import-Package: org.eclipse.ui
+Import-Package: org.eclipse.linuxtools.internal.callgraph.core,
+ org.eclipse.linuxtools.internal.callgraph.launch,
+ org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

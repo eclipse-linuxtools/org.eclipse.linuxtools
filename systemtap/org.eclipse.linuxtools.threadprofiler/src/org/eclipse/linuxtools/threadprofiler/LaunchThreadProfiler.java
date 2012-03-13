@@ -2,7 +2,7 @@ package org.eclipse.linuxtools.threadprofiler;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchShortcut;
 
 public class LaunchThreadProfiler extends SystemTapLaunchShortcut{
 

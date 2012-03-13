@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="classname" value="org.eclipse.linuxtools.callgraph.launch.tests.AllTests" />
-	<property name="plugin-name" value="org.eclipse.linuxtools.callgraph.launch.tests" />
+	<property name="classname" value="org.eclipse.linuxtools.internal.callgraph.launch.tests.AllTests" />
+	<property name="plugin-name" value="org.eclipse.linuxtools.internal.callgraph.launch.tests" />
 
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 

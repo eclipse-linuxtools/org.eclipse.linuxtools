@@ -8,8 +8,8 @@ import java.util.Deque;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.callgraph.core.Helper;
-import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
+import org.eclipse.linuxtools.internal.callgraph.core.Helper;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 
 public class SleepingThreadsParser extends SystemTapParser {
 	protected String contents;

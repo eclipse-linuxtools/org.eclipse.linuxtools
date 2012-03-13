@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.callgraph.tests;
 
-import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -21,7 +21,7 @@ public class AllTests {
 	public static Test suite() {
 		SystemTapUIErrorMessages.setActive(false);
 		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.callgraph.tests");
+				"Test for org.eclipse.linuxtools.internal.callgraph.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(StapGraphParserTest.class);
 		suite.addTestSuite(SystemTapGraphViewTest.class);

@@ -7,12 +7,13 @@ Bundle-Activator: org.eclipse.linuxtools.callgraph.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.draw2d,
- org.eclipse.linuxtools.callgraph;bundle-version="0.0.1",
  org.junit,
  org.eclipse.zest.core;bundle-version="1.2.0",
  org.eclipse.zest.layouts;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.cdt.core.model,
- org.eclipse.linuxtools.callgraph.core
+ org.eclipse.linuxtools.internal.callgraph,
+ org.eclipse.linuxtools.internal.callgraph.core,
+ org.eclipse.linuxtools.internal.callgraph.graphlisteners
 Bundle-Vendor: Eclipse
