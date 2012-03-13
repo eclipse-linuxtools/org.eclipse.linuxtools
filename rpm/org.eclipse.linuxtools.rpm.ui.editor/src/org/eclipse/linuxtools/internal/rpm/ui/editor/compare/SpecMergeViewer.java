@@ -15,11 +15,11 @@ import org.eclipse.compare.contentmergeviewer.TextMergeViewer;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileConfiguration;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfilePartitioner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileConfiguration;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePartitioner;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Composite;
 

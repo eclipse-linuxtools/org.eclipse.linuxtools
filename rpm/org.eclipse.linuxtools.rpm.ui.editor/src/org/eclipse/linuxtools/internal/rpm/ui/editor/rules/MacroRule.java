@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.rules;
 
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.SingleLineRule;
-import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
 
 /**
  * A rule for matching %{...} sections in spec file.

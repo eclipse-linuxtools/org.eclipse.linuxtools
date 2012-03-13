@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChange
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public final class RpmPackageBuildProposalsJob extends Job {
@@ -74,7 +75,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	 * Run the Job if it's needed according with the configuration set in the
 	 * preference page.
 	 */
-	protected static void update() {
+	public static void update() {
 		boolean runJob = false;
 		// Today's date
 		Date today = new Date();
@@ -202,9 +203,9 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	/**
 	 * Enable and disable the property change listener.
 	 * 
-	 * @param activated
+	 * @param activated Flag indicating whether the listener to be enabled or disabled.
 	 */
-	protected static void setPropertyChangeListener(boolean activated) {
+	public static void setPropertyChangeListener(boolean activated) {
 		if (activated) {
 			PREFERENCES.addPreferenceChangeListener(PROPERTY_LISTENER);
 		} else {

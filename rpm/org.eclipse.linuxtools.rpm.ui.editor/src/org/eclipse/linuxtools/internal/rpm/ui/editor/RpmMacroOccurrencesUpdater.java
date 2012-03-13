@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,10 +25,12 @@ import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 
-class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
+public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 												   
 	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation"; //$NON-NLS-1$
 

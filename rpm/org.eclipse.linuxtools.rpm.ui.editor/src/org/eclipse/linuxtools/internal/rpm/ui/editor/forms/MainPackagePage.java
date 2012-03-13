@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.forms;
 
-import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;

@@ -12,18 +12,18 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.scanners;
 
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.BUILD_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CHANGELOG_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CLEAN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.FILES_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.INSTALL_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTTRANS_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTUN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POST_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREP_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRETRANS_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREUN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRE_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.BUILD_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.CHANGELOG_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.CLEAN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.FILES_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.INSTALL_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POSTTRANS_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POSTUN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POST_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PREP_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRETRANS_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PREUN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRE_SECTION;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.CommentRule;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.SectionRule;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 
 public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 

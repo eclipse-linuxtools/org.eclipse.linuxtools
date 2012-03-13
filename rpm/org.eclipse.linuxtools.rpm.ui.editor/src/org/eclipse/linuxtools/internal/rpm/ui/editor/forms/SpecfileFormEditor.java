@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.internal.rpm.ui.editor.forms;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.swt.widgets.Display;

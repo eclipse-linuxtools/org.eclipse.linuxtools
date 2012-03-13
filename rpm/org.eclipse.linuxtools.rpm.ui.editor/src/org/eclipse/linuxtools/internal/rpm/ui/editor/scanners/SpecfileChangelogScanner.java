@@ -20,12 +20,12 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileColorConstants;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.detectors.KeywordWordDetector;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.AuthorEmailRule;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.VersionReleaseRule;
-import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
-import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.swt.SWT;
 /**
  * This class is used specifically of the syntax coloring of the %changelog

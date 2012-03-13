@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 
 public class SpecfileSource extends SpecfileElement {
 	int number;

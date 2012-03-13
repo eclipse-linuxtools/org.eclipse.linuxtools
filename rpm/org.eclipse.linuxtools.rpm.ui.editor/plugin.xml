@@ -95,7 +95,7 @@
          point="org.eclipse.ui.editors.documentProviders">
       <provider
       		extensions="spec"
-            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileDocumentProvider"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileDocumentProvider"
             id="org.eclipse.linuxtools.rpm.ui.editor.specfileDocumentProvider">
       </provider>
    </extension>

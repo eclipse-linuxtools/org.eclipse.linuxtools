@@ -22,9 +22,9 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
