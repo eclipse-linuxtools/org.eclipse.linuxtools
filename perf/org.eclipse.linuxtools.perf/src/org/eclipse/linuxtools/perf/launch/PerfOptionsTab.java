@@ -17,11 +17,15 @@ package org.eclipse.linuxtools.perf.launch;
 import java.io.File;
 import java.text.MessageFormat;
 
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.linuxtools.perf.PerfCore;
 import org.eclipse.linuxtools.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -50,6 +54,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Button _chkMultiplexEvents;
 	protected Button _chkModuleSymbols;
 	protected Button _chkHideUnresolvedSymbols;
+	protected Exception ex;
 	
 	/**
 	 * @see ILaunchConfigurationTab#getImage()
@@ -74,6 +79,13 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		return isValid(); // probably not best practice but for this case the two are the same.
 	}*/
 	public boolean isValid(ILaunchConfiguration config) {
+		setErrorMessage(null);
+
+		if (ex != null) {
+			setErrorMessage(ex.getLocalizedMessage());
+			return false;
+		}
+		
 		if (_txtKernel_Location != null) {
 			String filename = _txtKernel_Location.getText();
 			if (filename.length() > 0) {
@@ -233,8 +245,16 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
+		
 		//if (PerfPlugin.DEBUG_ON) System.out.println("Initializing optionsTab from previous config.");
 		try {
+			
+			if (! PerfCore.checkPerfInPath()) 
+			{
+				IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
+				ex =  new CoreException(status);
+			}
+			
 			_txtKernel_Location.setText(config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default));
 			_chkRecord_Realtime.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default));
 			_chkRecord_Verbose.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default));
