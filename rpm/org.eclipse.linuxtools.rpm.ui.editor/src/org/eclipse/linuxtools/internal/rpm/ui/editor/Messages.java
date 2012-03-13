@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 import org.eclipse.osgi.util.NLS;
 
 public final class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.ui.editor.messages"; //$NON-NLS-1$
 	public static String RpmMacroProposalsList_0;
 	public static String RpmPackageBuildProposalsJob_0;
 	public static String RpmPackageBuildProposalsJob_1;
