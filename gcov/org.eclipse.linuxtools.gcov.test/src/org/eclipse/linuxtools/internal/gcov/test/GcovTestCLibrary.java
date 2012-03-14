@@ -4,6 +4,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class GcovTestCLibrary {
 		@BeforeClass
 		public static void beforeClass() throws Exception {
 			bot = new SWTWorkbenchBot();
+			bot.captureScreenshot(PROJECT_NAME + ".beforeClass.1.jpg");
 			try {
 				bot.viewByTitle("Welcome").close();
 				// hide Subclipse Usage stats popup if present/installed
@@ -41,8 +43,15 @@ public class GcovTestCLibrary {
 			}
 
 			bot.perspectiveByLabel("C/C++").activate();
+			bot.sleep(1000);
+			if (bot.getFinder().activeShell() == null) {
+				bot.shells()[0].activate();
+				bot.sleep(1000);
+			}
+			bot.captureScreenshot(PROJECT_NAME + ".beforeClass.2.jpg");
 			// Turn off automatic building by default
-			bot.menu("Window").menu("Preferences").click();
+			SWTBotMenu windowsMenu = bot.menu("Window");
+			windowsMenu.menu("Preferences").click();
 			SWTBotShell shell = bot.shell("Preferences");
 			shell.activate();
 			bot.tree().expandNode("General").select("Workspace");
