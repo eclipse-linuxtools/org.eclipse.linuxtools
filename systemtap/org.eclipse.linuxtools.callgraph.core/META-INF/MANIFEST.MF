@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.core;singleton:=true
 Bundle-Version: 0.10.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.callgraph.core.CallgraphCorePlugin
+Bundle-Activator: org.eclipse.linuxtools.callgraph.core.CallgraphCorePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.linuxtools.internal.callgraph.core
+Export-Package: org.eclipse.linuxtools.callgraph.core
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,

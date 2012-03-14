@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.internal.callgraph.core.ISystemTapParser"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.callgraph.core.ISystemTapParser"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -120,6 +120,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
+
       </documentation>
    </annotation>
 

@@ -17,9 +17,9 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
-import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
+import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate;
 
 public class ConfigurationTest extends TestCase{
 	

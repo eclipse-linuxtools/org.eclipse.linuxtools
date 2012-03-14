@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.callgraph.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.internal.callgraph.core.SystemTapTextView;
-import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
+import org.eclipse.linuxtools.callgraph.core.SystemTapTextView;
+import org.eclipse.linuxtools.callgraph.core.ViewFactory;
 
 public class SystemTapGraphViewTest extends TestCase {
 	private SystemTapTextView stapView = new SystemTapTextView();

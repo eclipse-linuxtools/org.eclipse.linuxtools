@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.internal.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.callgraph.StapGraphParser;
 
 public class StapGraphParserTest extends TestCase {
 	

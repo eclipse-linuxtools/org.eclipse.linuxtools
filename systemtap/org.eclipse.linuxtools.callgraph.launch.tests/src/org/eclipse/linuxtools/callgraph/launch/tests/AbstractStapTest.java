@@ -20,9 +20,9 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
-import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapOptionsTab;
+import org.eclipse.linuxtools.callgraph.launch.SystemTapOptionsTab;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractStapTest extends AbstractTest {

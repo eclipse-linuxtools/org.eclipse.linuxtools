@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph;singleton:=true
 Bundle-Version: 0.10.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.callgraph.CallgraphPlugin
+Bundle-Activator: org.eclipse.linuxtools.callgraph.CallgraphPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.draw2d,
@@ -11,11 +11,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.zest.core;bundle-version="1.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.linuxtools.internal.callgraph,
- org.eclipse.linuxtools.internal.callgraph.graphlisteners
+Export-Package: org.eclipse.linuxtools.callgraph,
+ org.eclipse.linuxtools.callgraph.graphlisteners
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text,
- org.eclipse.linuxtools.internal.callgraph.core,
+ org.eclipse.linuxtools.callgraph.core,
  org.eclipse.ui.texteditor
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin

@@ -9,7 +9,7 @@
                point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.internal.callgraph.core.SystemTapTextView"
+            class="org.eclipse.linuxtools.callgraph.core.SystemTapTextView"
             id="org.eclipse.linuxtools.callgraph.core.staptextview"
             name="%view.name"
             restorable="true"
@@ -23,7 +23,7 @@
        name="%systemtapsleepingthreadparser"
        point="org.eclipse.linuxtools.callgraph.core.parser">
     <parser
-          class="org.eclipse.linuxtools.internal.callgraph.core.SystemTapTextParser"
+          class="org.eclipse.linuxtools.callgraph.core.SystemTapTextParser"
           realtime="true">
     </parser>
  </extension>

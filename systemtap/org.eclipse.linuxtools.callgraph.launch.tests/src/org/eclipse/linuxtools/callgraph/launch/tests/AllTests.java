@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -22,7 +22,7 @@ public class AllTests {
 		SystemTapUIErrorMessages.setActive(false);
 		
 		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.internal.callgraph.launch.tests");
+				"Test for org.eclipse.linuxtools.callgraph.launch.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SystemTapCommandTest.class);
 		suite.addTestSuite(ConfigurationTest.class);
