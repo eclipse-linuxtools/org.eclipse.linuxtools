@@ -30,6 +30,7 @@ public class GcovTestC {
 		@BeforeClass
 		public static void beforeClass() throws Exception {
 			bot = new SWTWorkbenchBot();
+			bot.captureScreenshot(PROJECT_NAME + ".beforeClass.1.jpg");
 			try {
 				bot.viewByTitle("Welcome").close();
 				// hide Subclipse Usage stats popup if present/installed
@@ -40,6 +41,7 @@ public class GcovTestC {
 			}
 
 			bot.perspectiveByLabel("C/C++").activate();
+			bot.captureScreenshot(PROJECT_NAME + ".beforeClass.2.jpg");
 			// Turn off automatic building by default
 			bot.menu("Window").menu("Preferences").click();
 			SWTBotShell shell = bot.shell("Preferences");
