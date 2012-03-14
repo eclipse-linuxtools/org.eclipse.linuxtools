@@ -42,10 +42,13 @@ public class GcovTestC {
 			}
 
 			bot.perspectiveByLabel("C/C++").activate();
-			bot.sleep(1000);
-			if (bot.getFinder().activeShell() == null) {
-				bot.shells()[0].activate();
-				bot.sleep(1000);
+			bot.sleep(500);
+			for (SWTBotShell sh : bot.shells()) {
+				if (sh.getText().startsWith("C/C++")) {
+					sh.activate();
+					bot.sleep(500);
+					break;
+				}
 			}
 			bot.captureScreenshot(PROJECT_NAME + ".beforeClass.2.jpg");
 			// Turn off automatic building by default
