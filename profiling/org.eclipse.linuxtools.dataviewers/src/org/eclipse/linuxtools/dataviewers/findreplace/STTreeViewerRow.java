@@ -20,10 +20,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * This is a copy of TreeViewerRow is the Tree implementation of ViewerRow.
@@ -31,159 +29,157 @@ import org.eclipse.swt.widgets.Widget;
  * TreeViewerRow can't be used
  * 
  */
-public class STTreeViewerRow extends ViewerRow {
-	private TreeItem item;
+public class STTreeViewerRow extends STViewerRow<TreeItem> {
 	
 	/**
 	 * Create a new instance of the receiver.
 	 * @param item
 	 */
 	public STTreeViewerRow(TreeItem item) {
-		this.item = item;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ViewerRow#getBounds(int)
-	 */
-	public Rectangle getBounds(int columnIndex) {
-		return item.getBounds(columnIndex);
+		super(item);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getBounds()
 	 */
+	@Override
 	public Rectangle getBounds() {
-		return item.getBounds();
+		return getItem().getBounds();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.ViewerRow#getBounds(int)
+	 */
+	@Override
+	public Rectangle getBounds(int columnIndex) {
+		return getItem().getBounds(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getColumnCount()
 	 */
+	@Override
 	public int getColumnCount() {
-		return item.getParent().getColumnCount();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ViewerRow#getItem()
-	 */
-	public Widget getItem() {
-		return item;
+		return getItem().getParent().getColumnCount();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getBackground(int)
 	 */
+	@Override
 	public Color getBackground(int columnIndex) {
-		return item.getBackground(columnIndex);
+		return getItem().getBackground(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getFont(int)
 	 */
+	@Override
 	public Font getFont(int columnIndex) {
-		return item.getFont(columnIndex);
+		return getItem().getFont(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getForeground(int)
 	 */
+	@Override
 	public Color getForeground(int columnIndex) {
-		return item.getForeground(columnIndex);
+		return getItem().getForeground(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getImage(int)
 	 */
+	@Override
 	public Image getImage(int columnIndex) {
-		return item.getImage(columnIndex);
+		return getItem().getImage(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getText(int)
 	 */
+	@Override
 	public String getText(int columnIndex) {
-		return item.getText(columnIndex);
+		return getItem().getText(columnIndex);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#setBackground(int, org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setBackground(int columnIndex, Color color) {
-		item.setBackground(columnIndex, color);
+		getItem().setBackground(columnIndex, color);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#setFont(int, org.eclipse.swt.graphics.Font)
 	 */
+	@Override
 	public void setFont(int columnIndex, Font font) {
-		item.setFont(columnIndex, font);
+		getItem().setFont(columnIndex, font);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#setForeground(int, org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setForeground(int columnIndex, Color color) {
-		item.setForeground(columnIndex, color);
+		getItem().setForeground(columnIndex, color);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#setImage(int, org.eclipse.swt.graphics.Image)
 	 */
+	@Override
 	public void setImage(int columnIndex, Image image) {
-		Image oldImage = item.getImage(columnIndex);
+		Image oldImage = getItem().getImage(columnIndex);
 		if (image != oldImage) {
-			item.setImage(columnIndex, image);
+			getItem().setImage(columnIndex, image);
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#setText(int, java.lang.String)
 	 */
+	@Override
 	public void setText(int columnIndex, String text) {
-		item.setText(columnIndex, text == null ? "" : text); //$NON-NLS-1$
+		getItem().setText(columnIndex, text == null ? "" : text); //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerRow#getControl()
 	 */
-	public Control getControl() {
-		return item.getParent();
-	}
-
-	
-	public ViewerRow getNeighbor(int direction, boolean sameLevel) {
-		if( direction == ViewerRow.ABOVE ) {
-			return getRowAbove(sameLevel);
-		} else if( direction == ViewerRow.BELOW ) {
-			return getRowBelow(sameLevel);
-		} else {
-			throw new IllegalArgumentException("Illegal value of direction argument."); //$NON-NLS-1$
-		}
+	@Override
+	public Tree getControl() {
+		return getItem().getParent();
 	}
 	
-	private ViewerRow getRowBelow(boolean sameLevel) {
-		Tree tree = item.getParent();
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.STViewerRow#getRowBelow(boolean)
+	 */
+	@Override
+	protected ViewerRow getRowBelow(boolean sameLevel) {
+		Tree tree = getItem().getParent();
 		
 		// This means we have top-level item
-		if( item.getParentItem() == null ) {
-			if( sameLevel || ! item.getExpanded() ) {
-				int index = tree.indexOf(item) + 1;
-				
+		if( getItem().getParentItem() == null ) {
+			if( sameLevel || ! getItem().getExpanded() ) {
+				int index = tree.indexOf(getItem()) + 1;
 				if( index < tree.getItemCount() ) {
 					return new STTreeViewerRow(tree.getItem(index));
 				}
-			} else if( item.getExpanded() && item.getItemCount() > 0 ) {
-				return new STTreeViewerRow(item.getItem(0));
+			} else if( getItem().getExpanded() && getItem().getItemCount() > 0 ) {
+				return new STTreeViewerRow(getItem().getItem(0));
 			}
 		} else {
-			if( sameLevel || ! item.getExpanded() ) {
-				TreeItem parentItem = item.getParentItem();
+			if( sameLevel || ! getItem().getExpanded() ) {
+				TreeItem parentItem = getItem().getParentItem();
 				
-				int nextIndex = parentItem.indexOf(item) + 1;
+				int nextIndex = parentItem.indexOf(getItem()) + 1;
 				int totalIndex = parentItem.getItemCount();
 				
 				TreeItem itemAfter;
-				
 				// This would mean that it was the last item
 				if( nextIndex == totalIndex ) {
 					itemAfter = findNextItem( parentItem );
@@ -194,37 +190,37 @@ public class STTreeViewerRow extends ViewerRow {
 				if( itemAfter != null ) {
 					return new STTreeViewerRow(itemAfter);
 				}
-				
-			} else if( item.getExpanded() && item.getItemCount() > 0 ) {
-				return new STTreeViewerRow(item.getItem(0));
+			} else if( getItem().getExpanded() && getItem().getItemCount() > 0 ) {
+				return new STTreeViewerRow(getItem().getItem(0));
 			}
 		}
-
 		return null;
 	}
 	
-	private ViewerRow getRowAbove(boolean sameLevel) {
-		Tree tree = item.getParent();
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.STViewerRow#getRowAbove(boolean)
+	 */
+	@Override
+	protected ViewerRow getRowAbove(boolean sameLevel) {
+		Tree tree = getItem().getParent();
 		
 		// This means we have top-level item
-		if( item.getParentItem() == null ) {
-			int index = tree.indexOf(item) - 1;
+		if( getItem().getParentItem() == null ) {
+			int index = tree.indexOf(getItem()) - 1;
 			TreeItem nextTopItem = null;
-			
-			if( index >= 0 ) {
+			if (index >= 0) {
 				nextTopItem = tree.getItem(index);
 			}
-			
-			if( nextTopItem != null ) {
-				if( sameLevel ) {
+			if (nextTopItem != null) {
+				if (sameLevel) {
 					return new STTreeViewerRow(nextTopItem);
 				}
-				
 				return new STTreeViewerRow(findLastVisibleItem(nextTopItem));
 			}
 		} else {
-			TreeItem parentItem = item.getParentItem();
-			int previousIndex = parentItem.indexOf(item) - 1;
+			TreeItem parentItem = getItem().getParentItem();
+			int previousIndex = parentItem.indexOf(getItem()) - 1;
 			
 			TreeItem itemBefore;
 			if( previousIndex >= 0 ) {
@@ -236,22 +232,18 @@ public class STTreeViewerRow extends ViewerRow {
 			} else {
 				itemBefore = parentItem;
 			}
-			
 			if( itemBefore != null ) {
 				return new STTreeViewerRow(itemBefore);
 			}
 		}
-		
 		return null;
 	}
 
 	private TreeItem findLastVisibleItem(TreeItem parentItem) {
 		TreeItem rv = parentItem;
-		
 		while( rv.getExpanded() && rv.getItemCount() > 0 ) {
 			rv = rv.getItem(rv.getItemCount()-1);
 		}
-		
 		return rv;
 	}
 		
@@ -288,8 +280,13 @@ public class STTreeViewerRow extends ViewerRow {
 		return rv;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.ViewerRow#getTreePath()
+	 */
+	@Override
 	public TreePath getTreePath() {
-		TreeItem tItem = item;
+		TreeItem tItem = getItem();
 		LinkedList<Object> segments = new LinkedList<Object>();
 		while (tItem != null) {
 			Object segment = tItem.getData();
@@ -297,19 +294,15 @@ public class STTreeViewerRow extends ViewerRow {
 			segments.addFirst(segment);
 			tItem = tItem.getParentItem();
 		}
-		
 		return new TreePath(segments.toArray());
 	}
-	
-	void setItem(TreeItem item) {
-		this.item = item;
-	}
 	 		
-	public Object clone() {
-		return new STTreeViewerRow(item);
-	}
-	
-	public Object getElement() {
-		return item.getData();
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.ViewerRow#clone()
+	 */
+	@Override
+	public STTreeViewerRow clone() {
+		return new STTreeViewerRow(getItem());
 	}
 }
