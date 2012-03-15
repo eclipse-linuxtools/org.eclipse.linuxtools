@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.oprofile.core.linux;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,13 +23,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
@@ -172,6 +173,20 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 	}
 	
+	/**
+	 * Delete the session with the specified name for the specified event
+	 * @param sessionName The name of the session to delete
+	 * @param eventName The name of the event containing the session
+	 * @throws OpcontrolException
+	 */
+	public void deleteSession (String sessionName, String eventName) throws OpcontrolException {
+		File file = new File (SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + eventName + sessionName);
+		file.delete();
+		SessionManager sessMan = new SessionManager(SessionManager.SESSION_LOCATION);
+		sessMan.removeSession(sessionName, eventName);
+		sessMan.write();
+	}
+
 	/**
 	 * Give setup aruments
 	 * @param args	list of parameters for daemon

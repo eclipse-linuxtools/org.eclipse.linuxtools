@@ -19,14 +19,14 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.compare;bundle-version="3.4.0",
  org.eclipse.linuxtools.rpm.core
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.rpm.ui.editor,
- org.eclipse.linuxtools.rpm.ui.editor.actions,
- org.eclipse.linuxtools.rpm.ui.editor.hyperlink,
+Export-Package: org.eclipse.linuxtools.internal.rpm.ui.editor;x-internal:=true,
+ org.eclipse.linuxtools.internal.rpm.ui.editor.actions;x-internal:=true,
+ org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;x-internal:=true,
+ org.eclipse.linuxtools.internal.rpm.ui.editor.preferences;x-internal:=true,
+ org.eclipse.linuxtools.internal.rpm.ui.editor.scanners;x-internal:=true,
+ org.eclipse.linuxtools.rpm.ui.editor,
  org.eclipse.linuxtools.rpm.ui.editor.markers,
- org.eclipse.linuxtools.rpm.ui.editor.outline,
  org.eclipse.linuxtools.rpm.ui.editor.parser,
- org.eclipse.linuxtools.rpm.ui.editor.preferences,
- org.eclipse.linuxtools.rpm.ui.editor.scanners,
  org.eclipse.linuxtools.rpm.ui.editor.wizards
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %provider

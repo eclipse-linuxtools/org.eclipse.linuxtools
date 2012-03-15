@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.rpmlint;singleton:=true
 Bundle-Version: 0.4.3.qualifier
-Bundle-Activator: org.eclipse.linuxtools.rpm.rpmlint.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.rpm.rpmlint.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -17,10 +17,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.rpm.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.linuxtools.rpm.rpmlint,
- org.eclipse.linuxtools.rpm.rpmlint.actions,
- org.eclipse.linuxtools.rpm.rpmlint.builder,
- org.eclipse.linuxtools.rpm.rpmlint.parser,
- org.eclipse.linuxtools.rpm.rpmlint.preferences,
- org.eclipse.linuxtools.rpm.rpmlint.resolutions
 Bundle-Vendor: %provider

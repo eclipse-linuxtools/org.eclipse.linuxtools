@@ -23,6 +23,8 @@ import java.util.List;
 import org.eclipse.cdt.core.parser.util.ArrayUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.perf.model.PMCommand;
 import org.eclipse.linuxtools.perf.model.PMDso;
@@ -67,6 +69,8 @@ public class PerfCore {
 	}
 	public static HashMap<String,ArrayList<String>> loadEventList() {
 		HashMap<String,ArrayList<String>> events = new HashMap<String,ArrayList<String>>();
+		if (!PerfCore.checkPerfInPath())
+			return events;
 		Process p = null;
 		BufferedReader input = null;
 		try {
@@ -130,12 +134,24 @@ public class PerfCore {
 				p = Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, environ, workingDir); //runs with a specific working dir and environment.
 			}			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//p.waitFor();
 		BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		return spitStream(input, "Perf --version STDOUT", null);
+	}
+	
+	public static boolean checkPerfInPath()
+	{
+		try 
+		{
+			Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"});			
+		} 
+		catch (IOException e) 
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	//Generates a perf record command string with the options set in the given config. (If null uses default).

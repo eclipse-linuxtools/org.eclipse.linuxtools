@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>SystemTap GUI User Guide - SystemTap Graphing</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">SystemTap Graphing</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SystemTap-IDE.html" title="SystemTap IDE">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="SystemTap-Dashboard.html" title="SystemTap Dashboard">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTap IDE</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">SystemTap Dashboard</td>
+			</tr>
+		</table><hr/>
+		<h1 id="SystemTap_Graphing">SystemTap Graphing</h1>
+		<h2 id="Getting_Started_2">Getting Started</h2>
+		<h3 id="Introduction">Introduction</h3>
+		<p>The Graphing Perspective in the SystemTap GUI is a perspective that is active once a user runs a script with the chart option (
+			<b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>). From this point a 
+			<a href="SystemTap-Graphing.html#DataTable">DataTable </a> is populated with live data as it is parsed from the Console. From the information in the DataTable you can generate the following graphs:
+		</p>
+		<ul>
+			<li>
+				<a href="SystemTap-Graphing.html#Bar_Graph">Bar Graph </a>
+			</li>
+			<li>
+				<a href="SystemTap-Graphing.html#Multi-Bar_Graph">Multi-Bar Graph </a>
+			</li>
+			<li>
+				<a href="SystemTap-Graphing.html#Line_Graph">Line Graph </a>
+			</li>
+			<li>
+				<a href="SystemTap-Graphing.html#Multi-Line_Graph">Multi-Line Graph </a>
+			</li>
+			<li>
+				<a href="SystemTap-Graphing.html#Scatter_Graph">Scatter Graph </a>
+			</li>
+			<li>
+				<a href="SystemTap-Graphing.html#Multi-Scatter_Graph">Multi-Scatter Graph </a>
+			</li>
+		</ul>
+		<p>These graph types can be used instantiated by using the Graph Wizard once the DataTable is populated. The Graphing Perspective can support multiple graphs from one DataTable. Each are updated and can be viewed by navigating through the tabs shown at the top of each graph.</p>
+		<p>If you have not already, you will want to review the 
+			<a href="SystemTap-Graphing.html#Graphing_Tutorial">Graphing Tutorial </a>
+		</p>
+		<h3 id="Graphing_Tutorial">Graphing Tutorial</h3>
+		<p>In order to graph SystemTap scripts you must have a script open in the IDE Perspective, and the 
+			<b><u>R</u>un-&gt;Run w/ Chart</b> option must be used. If you are unfamiliar with how to load or write a SystemTap script, please review the IDE Tutorial in the SystemTap IDE User's Guide. Please use the following script for this example by copying and pasting it into a new file (any name is fine that ends in a .stp extension): 
+		</p>
+		<pre>global read, write, start
+
+probe begin {
+   start = gettimeofday_s()
+}
+probe syscall.write {
+   write += count
+}
+
+probe syscall.read {
+   read += count
+}
+
+probe timer.ms(1000) {
+   printf("%d\t%d\t%d\n", (gettimeofday_s()-start), read, write)
+   read=0
+   write=0
+}
+</pre>
+		<p> </p>
+		<p>Now select 
+			<b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>. This feature will prompt the user for the number of columns for the chart, in addition to their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box. You should see the following:
+		</p>
+		<p>
+			<img border="0" src="images/Chartbox1.png"/> 
+		</p>
+		<p>For this example enter the following: </p>
+		<pre>	Columns: 3
+
+	TITLE	REGULAR EXPRESSION	DELIMITER
+	Time		\d+		.*			\D+
+	Read		\d+		.*			\D+
+	Write		\d+		.*			\D+
+</pre>
+		<p> 
+			The title fields simply display the associated string in the column's header. After clicking OK the script will prompt you for details regarding the Remote Server. Provide the ip address of the remote server that is running the systemtapgui Server or the Data Management Daemon. The port is by default 22462. Enter a username and password.This will give the application permissions to run your script on the remote machine. You have the option of saving your password as well, however be warned this is currently NOT encrypted so this convenience runs at a risk. The username is also used to transfer the file to the remote system using SCP. If the same machine is used as both the server and the client enter 'localhost' for the Host field. When the script is executed the application will switch into the Graphing perspective. A Data View chart is populated with live data, in addition to the output in the console.  You should see a screen similar to the following:</p>
+		<p>
+			<img border="0" src="images/IDEGraphics.png"/> 
+		</p>
+		<p>You will see that the data table poplulates from live data parsed from the console. Now we'll make a graph to briefly illustrate the Graphing perspective. Click the Create Graph button next to bring up the Select Chart dialogue. </p>
+		<p>
+			<img border="0" src="images/GraphWizard.png"/>
+		</p>
+		<p>Select line graph. You will be prompted to select a column of the X series and Y series; select "Time" and "Write" respectively. After you click ok you should see the line graph as follows: </p>
+		<p>
+			<img border="0" src="images/IDEGraph.png"/> 
+		</p>
+		<p>Note that the multiple series graphs (Multi-Line, Multi-Bar, and Multi-Scatter) will request two Y series, Y1 and Y2. In the case of our example, these would be "Read" and "Write". Each series will be assigned a different color value for the purposes of differentiation and will be plotted both in respect to the specified X series.</p>
+		<h2 id="Concepts_2">Concepts</h2>
+		<h3 id="DataTable">DataTable</h3>
+		<p>The DataTable is the default view the user sees when running a script with the chart option. It intitially starts empty and populates as it recieves information parsed from the console originally from the script. The DataTable is a visualization of the data structure that every other graph type spawns from.
+
+			<img border="0" src="images/GraphingPerspective.png"/> 
+		</p>
+		<p>The columns of the DataTable can be resized at will by dragging the seperation lines between column headers. In addition, the information in the data table can be 
+			<a href="SystemTap-Graphing.html#Importing_a_Data_Set">saved and loaded </a> without having to re-run the script. Furthermore, the user can populate the DataTable without having to run a script if a script's output has been saved into a file, see 
+			<a href="SystemTap-Graphing.html#Opening_Script_Output">Opening Script Output </a>.Right clicking the DataTable provides a menu with the following options: 
+		</p>
+		<ul>
+			<li>
+				<b>Format as...</b> - Depending on which column the user right clicked, his allows the user to format that column's data as one of the following: 
+				<ul>
+					<li>Unformated - No formating is applied. </li>
+					<li>String </li>
+					<li>Date </li>
+					<li>Double </li>
+					<li>Hex </li>
+					<li>Octal </li>
+					<li>Binary   </li>
+				</ul>
+			</li>
+			<li>
+				<b>Add Filter...</b> - Adds a 
+				<a href="SystemTap-Graphing.html#Filters">filter </a> to the DataTable. 
+			</li>
+			<li>
+				<b>Remove Filter...</b> - Removes a 
+				<a href="SystemTap-Graphing.html#Filters">filter </a> from the DataTable. 
+			</li>
+			<li>
+				<b>Manually Resize</b> - Allows the user to resize column width without bouncing back to the minimum based on the largest value.
+			</li>
+		</ul>
+		<h3 id="DataGraph_Types">DataGraph Types</h3>
+		<p>Currently there are six graph types built into SystemTap GUI.</p>
+		<p>These graph types can be used instantiated by using the Graph Wizard once the DataTable is populated. The Graphing Perspective can support multiple graphs from one DataTable. Each are updated and can be viewed by navigating through the tabs shown at the top of each graph.</p>
+		<h4 id="Bar_Graph">Bar Graph</h4>
+		<p>The Bar Graph typically uses bars to show frequencies or values. </p>
+		<p>Creating a Bar Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis. </p>
+		<p>
+			<img border="0" src="images/Bar.png"/>
+		</p>
+		<h4 id="Multi-Bar_Graph">Multi-Bar Graph</h4>
+		<p>The Multi-Bar Graph is useful for illustrating compounding series data against a fixed interval, such as time. </p>
+		<p>Creating a Multi-Bar Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
+		<p>
+			<img border="0" src="images/Multibar.png"/>
+		</p>
+		<h4 id="Line_Graph">Line Graph</h4>
+		<p>The Line Graph is traditionally ideal for horozontally depicting non-cumulative data over, say, time.</p>
+		<p>Creating a Line Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
+
+			<img border="0" src="images/Line.png"/>
+		</p>
+		<h4 id="Multi-Line_Graph">Multi-Line Graph</h4>
+		<p>A Multi-Line Graph is useful for contrasting multiple series of data on a fixed interval, such as time.</p>
+		<p>Creating a Multi-Line Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
+		<p>
+			<img border="0" src="images/Multiline.png"/>
+		</p>
+		<h4 id="Scatter_Graph">Scatter Graph</h4>
+		<p>A Scatter Graph uses Cartesian coordinates to show the relation of two or more quantitative variables.</p>
+		<p>Creating a Scatter Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.</p>
+		<p>
+			<img border="0" src="images/Scatter.png"/>
+		</p>
+		<h4 id="Multi-Scatter_Graph">Multi-Scatter Graph</h4>
+		<p>The Multi-Scatter Graph is useful for comparing two sets of series data with multiple Y values on the same X value.</p>
+		<p>Creating a Multi-Scatter Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
+		<p>
+			<img border="0" src="images/Multiscatter.png"/>
+		</p>
+		<h3 id="Filters">Filters</h3>
+		<p>Filters are screens that you can set on your DataTable to limit the quantity of samples you wish to work with. Filters are very often used in restricting the sheer amount of information available to make data tables and graphs more substantial to people.</p>
+		<p>The following options exist to work with Filters in the DataTable:</p>
+		<ul>
+			<li>
+				<b>Add Filter...</b> - Adds a Filter to the DataTable.
+			</li>
+			<li>
+				<b>Remove Filter...</b> - Removes a Filter from the DataTable. 
+			</li>
+		</ul>
+		<p>When you select 
+			<b>Add Filter</b> you see the following dialogue box:
+		</p>
+		<p>
+			<img border="0" src="images/Filters.png"/>
+		</p>
+		<p>What follows is a breakdown of each Filter type:</p>
+		<ul>
+			<li>
+				<b>Match Filter</b> - This filter removes everything from the data set where the selected column's 
+			</li>
+		</ul>
+		<p>value does not match the chosen value.</p>
+		<p>
+			<img border="0" src="images/Match.png"/>
+			Result:
+
+			<img border="0" src="images/Match2.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>Range Filter</b> - This filter removes everything from the data set that is not included in the 
+			</li>
+		</ul>
+		<p>selected range of values.</p>
+		<p>
+			<img border="0" src="images/Range.png"/>
+		</p>
+		<p>Result:</p>
+		<p>
+			<img border="0" src="images/Range2.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>Sort Filter</b> - This filter will sort the data set based on the selected column. No data will be
+			</li>
+		</ul>
+		<p>removed.</p>
+		<p>
+			<img border="0" src="images/Sort.png"/>
+			Result:
+
+			<img border="0" src="images/Sort2.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>Unique Filter</b> - This filter will remove all merge all entries in that data set that share a common
+			</li>
+		</ul>
+		<p>value in the selected column. Data for the removed rows will be aggregated together based on the chosen
+			aggregation method.
+
+			<img border="0" src="images/Unique.png"/>
+		</p>
+		<ul>
+			<li>
+				<ul>
+					<li>
+						<b>Average Aggregate</b> - This aggregate will return the average of all the items consolidated.
+					</li>
+					<li>
+						<b>Count Aggregate</b> - This aggregate will return the number of items consolidated.
+					</li>
+					<li>
+						<b>Max Aggregate</b> - This aggregate will return the maximum value of all the items consolidated.
+					</li>
+					<li>
+						<b>Min Aggregate</b> - This aggregate will return the minimum value of all the items consolidated.
+					</li>
+					<li>
+						<b>Sum Aggregate</b> - This aggregate will return the sum of all the items consolidated.
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3 id="Graph_Interaction">Graph Interaction</h3>
+		<p>Each of the 
+			<a href="SystemTap-Graphing.html#DataGraph_Types">Graph Types </a> have similar options that can be used in the Graphical
+			Perspective:
+		</p>
+		<ul>
+			<li>
+				<b>Zoom Bar</b> - This enables the user to zoom in and out on the current graph by sliding the bar up and down. The current magnification is shown at the top of the bar. Magnification can range from as high as .0625x to as low as 4x the dimensions of the original graph.&lt;
+				<img border="0" src="images/Zoom.png"/>
+			</li>
+			<li>
+				<b>Title</b> - This option turns on and off the title specified in the graph creation wizard.
+			</li>
+			<li>
+				<b>Legend</b> - This option turns on and off the legend, particularly useful in the graph types that show multiple series.
+			</li>
+			<li>
+				<b>Grid Lines</b> - This option permits the user to turn and off the grid lines.
+			</li>
+			<li>
+				<b>Normalization</b> - The option to normalize occurs only in multi-series graphs. By default, series graphs are rendered using normalization which scales them to visuals easily comparable to one another. The user has the option to view the normalization scale by clicking the data in the graph. The user also has the option of disabling normalization by deselecting it.
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/GraphExpanded.png"/>
+		</p>
+		<h2 id="Tasks_2">Tasks</h2>
+		<p>This section of the Graphing User Guild is intended to provide help pages for common tasks that the user may wish to perform in the Graphics Perspective.</p>
+		<h3 id="Importing.2FExporting_Data_Sets">Importing/Exporting Data Sets</h3>
+		<p>From time to time the user may want to preserve the script results for continued work at a later date/time or to share findings with others. The Importing and Exporting options provide an easy way to do this.</p>
+		<h4 id="Importing_a_Data_Set">Importing a Data Set</h4>
+		<p>In order to import a Data Set the user must first have one either from running a script or from another user. To import the Data Set select 
+			<b><u>F</u>ile-&gt;<u>I</u>mport Data Set</b>. The user will be prompted with an Open File dialogue box. Navigate to the Data Set file you wish to open and select it. Keep in mind Data Set files can have any extension type, though the user may want to use .set for consistency.
+
+			<img border="0" src="images/Import.png"/>
+		</p>
+		<h4 id="Exporting_a_Data_Set">Exporting a Data Set</h4>
+		<p>In order to export a Data Set the user must first have a populated DataTable from a previously running script. To export the Data Set select 
+			<b><u>F</u>ile-&gt;<u>E</u>xport Data Set</b>. The user will be prompted with an New File dialogue box. Navigate to the location you wish to export the Data Set to and save it. Keep in mind Data Set files can have any extension type, though the user may want to use .set for consistency.
+
+			<img border="0" src="images/Export.png"/>
+		</p>
+		<h3 id="Generating_Graphs">Generating Graphs</h3>
+		<p>In order to graph SystemTap scripts you must have a script open in the IDE Perspective, and the 
+			<b><u>R</u>un-&gt;Run w/ Chart</b> option must be used. If you are unfamiliar with how to load or write a SystemTap script, please review the IDE Tutorial in the SystemTap IDE User's Guide.
+		</p>
+		<p>A 
+			<a href="SystemTap-Graphing.html#Graphing_Tutorial">Graphing Tutorial </a> has been written to guide the user through the execution and charting of a provided script. Any script can be used however that provides consistent data along with a regular expression (regex). For instructions on using regex see our 
+			<a href="SystemTap-IDE.html#Guide_to_Regular_Expressions">Guide to Regular Expressions </a>.
+		</p>
+		<h3 id="Opening_Script_Output">Opening Script Output</h3>
+		<p>This option allows the user to open a text file containing the output of a SystemTap script, and to parse it as it would real time data from a running script.  Select 
+			<b><u>F</u>ile-&gt;<u>O</u>pen Script Output</b>. Navigate to the file you wish to open and select it. The DataTable will populate with the data, at which point you can graph the results.
+		</p>
+		<h3 id="Saving_a_Graph_Image">Saving a Graph Image</h3>
+		<p>The Graphics Perspective provides a unique feature to users that allows them to save their graphs in a standard image format. In order to do this use the menu option 
+			<b><u>F</u>ile-&gt;Save <u>G</u>raph Image</b>. This opens a dialogue box where the user can navigate to the location they desire to save the image file.
+		</p>
+		<p>
+			<img border="0" src="images/Saveoutput.png"/>
+		</p>
+		<h2 id="Reference_2">Reference</h2>
+		<p>This section of the Graphing User Guild is intended to provide the following resources should you have any
+			very specific questions regarding the Graphing Perspective in general or one of the options associated with 
+			it. It also contains example scripts and FAQs.</p>
+		<h3 id="Frequently_Asked_Questions_2">Frequently Asked Questions</h3>
+		<p>This section details frequently asked questions relating to the Graphing Perspective.</p>
+		<p>
+			<b>Can I make more than one graph at one time? Do they update concurrently?</b>
+		</p>
+		<p>A: Yes and yes. Start another graph the same way you started the first one, by clicking the Graph Wizard button.</p>
+		<p>
+			<b>Can I increase the rate at which SystemTap GUI update the graph?</b>
+		</p>
+		<p>A: Yes. By default it is set to once per second, but you can increase this in the 
+			<a href="SystemTap-IDE.html#Preferences">Preferences </a>
+		</p>
+		<p>
+			<b>Is there any way to save or export the graph images?</b>
+		</p>
+		<p>A: Yes. Use 
+			<b><u>F</u>ile-&gt;Save <u>G</u>raph Image</b> to save the graph.
+		</p>
+		<p>
+			<b>What if I want to preserve this data for manipulation later?</b>
+		</p>
+		<p>A: You can do this by using 
+			<b><u>F</u>ile-&gt;<u>E</u>xport Data Set</b>. This will save your data set for further
+			work.
+		</p>
+		<h3 id="Menus_2">Menus</h3>
+		<p>What follows is a comprehension list of the menu options available within the Systemtap GUI Graphing Perspective.</p>
+		<h4 id="File_2">File</h4>
+		<ul>
+			<li>
+				<b><u>O</u>pen Script Output</b> - This option opens the specified file and reads the contents into the DataTable for use in the Graphing Perspective.
+				<img border="0" src="images/Openbox1.png"/>
+			</li>
+			<li>
+				<b>Save <u>G</u>raph Image</b> - This option saves the graph in the specified file extension format.
+				<img border="0" src="images/Saveoutput.png"/>
+			</li>
+			<li>
+				<b><u>I</u>mport Data Set</b> - This option allows you to load a previously saved set of data obtained from running a SystemTap script. You can proceed from this point as if you had just ran a script and populated the DataTable.
+				<img border="0" src="images/Import.png"/>
+			</li>
+			<li>
+				<b><u>E</u>xport Data Set</b> - This option allows you to save a current data set after you've ran a script in the intention of having someone else look at the user's script results through the tool or for further work done by the user. (Shortcut: Ctrl+X)
+				<img border="0" src="images/Export.png"/>
+			</li>
+			<li>
+				<b><u>P</u>rint</b> - This option prints the graph currently holding the focus. (Shortcut: Crtl+P)
+			</li>
+			<li>
+				<b>E<u>x</u>it</b> - Exits Systemtap GUI.
+			</li>
+		</ul>
+		<h4 id="Run_2">Run</h4>
+		<ul>
+			<li>
+				<b><u>S</u>top</b> - This option terminates the script thread associated with whichever script currently has the focus. (Shortcut: Ctrl+F9)
+			</li>
+		</ul>
+		<h4 id="Window_2">Window</h4>
+		<ul>
+			<li>
+				<b>Open in <u>N</u>ew Window</b> - This option opens a new instance of SystemTap GUI.
+			</li>
+			<li>
+				<b><u>O</u>pen Perspective</b> - This submenu lists each of the available perspectives to open:
+				<ul>
+					<li>IDE Perspective</li>
+					<li>Graphing Perspective</li>
+				</ul>
+			</li>
+			<li>
+				<b>Show <u>V</u>iews</b> - This submenus lists each of the available views to open:
+				<ul>
+					<li>Console</li>
+					<li>Error Log</li>
+					<li>Functions</li>
+					<li>Kernel Source</li>
+					<li>Probe Alias</li>
+					<li>Other - Lists all views in the application.
+						<img border="0" src="images/Viewbox1.png"/>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<b><u>P</u>references</b> - Due to the breath of this topic it is covered in another section. Please see 
+				<a href="SystemTap-IDE.html#Preferences">Preferences </a>.
+				<img border="0" src="images/Preferencesbox1.png"/>
+			</li>
+		</ul><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SystemTap-IDE.html" title="SystemTap IDE">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="SystemTap GUI User Guide">
+						<img alt="SystemTap GUI User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="SystemTap-Dashboard.html" title="SystemTap Dashboard">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTap IDE</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">SystemTap Dashboard</td>
+			</tr>
+		</table>
+	</body>
+</html>

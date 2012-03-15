@@ -81,6 +81,7 @@
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
             class="org.eclipse.linuxtools.perf.launch.PerfLaunchConfigurationTabGroup"
+            description="%launchConfigurationTabGroup.description.0"
             id="org.eclipse.linuxtools.perf.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.perf.launch.profile">
       </launchConfigurationTabGroup>

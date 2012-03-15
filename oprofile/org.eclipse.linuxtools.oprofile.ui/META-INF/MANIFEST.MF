@@ -29,7 +29,7 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
  org.eclipse.jface.text.source,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions,
  org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.model,
- org.eclipse.linuxtools.oprofile.core.opxml.sessions,
  org.eclipse.linuxtools.profiling.ui

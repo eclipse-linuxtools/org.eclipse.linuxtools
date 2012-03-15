@@ -13,9 +13,10 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.junit.Before;
 
 public abstract class AScannerTest extends FileTestCase {
@@ -34,9 +35,8 @@ public abstract class AScannerTest extends FileTestCase {
 		super.setUp();
 		newFile(getContents());
 		testProject.refresh();
-		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(Activator
-				.getDefault().getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage(), testFile,
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), testFile,
 				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();

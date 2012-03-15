@@ -3,13 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.man.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.man.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.man.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.linuxtools.man, 
-  org.eclipse.linuxtools.man.views, 
-  org.eclipse.linuxtools.man.parser
+Export-Package: org.eclipse.linuxtools.man.parser,
+ org.eclipse.linuxtools.man.views
 Bundle-Vendor: %Bundle-Vendor

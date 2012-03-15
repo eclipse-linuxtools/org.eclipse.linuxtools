@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>SystemTap GUI User Guide - SystemTap Dashboard</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">SystemTap Dashboard</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SystemTap-Graphing.html" title="SystemTap Graphing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTap Graphing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="SystemTap_Dashboard">SystemTap Dashboard</h1>
+		<p>Welcome to SystemTap GUI help pages. Here you will find wide selection of help pages covering the Dashboard Perspective of SystemTap GUI.</p>
+		<h2 id="Dashboard_Tutorial">Dashboard Tutorial</h2>
+		<p>The Dashboard Perspective is the most advanced part of SystemTap GUI. It is designed to allow users to browse and run prebuilt 
+			<a href="SystemTap-Dashboard.html#Modules">Modules </a> in order to see multiple graphs updating in sequence.
+		</p>
+		<p>For this tutorial we'll use one of the prebuilt modules to illustrate  how the Dashboard perspective is used. Each module is part of a module family, a collection of related modules. To start, switch to the Dashboard perspective. On the left you should see a browser titled "Modules".</p>
+		<p>
+			<img border="0" src="images/ModuleBrowser.png"/>
+		</p>
+		<p>The 
+			<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a> contains a list of modules available to run. Notice that there is another tab, "Active Modules", in the same pane. The 
+			<a href="SystemTap-Dashboard.html#Active_Modules_Browser">Active Modules Browser </a> allows you to browse the modules you currently have running. At this point, however, it will be empty; there are no modules currently running. Open the module family "Hard Disk" by clicking the arrow next to it's name. This will display each module associated in the "Hard Disk" module family.
+			We are going to be running the Disk Access module. This can be accomplished two ways. You may select it and 
+			<b><u>R</u>un-&gt;<u>R</u>un Script</b>. You can alternatively click the 
+			<b>Run Script</b> button in the Toolbar. SystemTap GUI will request the details of the Remote Server(ip address, username, password), enter the details to proceed. You should see a display similar to the following:
+		</p>
+		<p>
+			<img border="0" src="images/RunningDashboard.png"/>
+		</p>
+		<p>The Dashboard shows three graphs, each obtaining data from one script, each analyzing different components of disk access - bytes read, bytes written, and a multi-line graph illustrating both.</p>
+		<p>
+			<img border="0" src="images/SmallGraph.png"/>
+		</p>
+		<p>Each graph comes with graph-specific options:</p>
+		<ul>
+			<li>
+				<img border="0" src="images/ExpandButton.png"/> - 
+				<b>Expand Graph</b> - This option opens a set of graph-unique options:
+				<ul>
+					<li>
+						<b>Zoom</b> - This option allows the user to increase and decrease the no of x-axis ticks.
+					</li>
+				</ul>
+			</li>
+			<li>
+				<img border="0" src="images/Rightleft.png"/> - 
+				<b>Close Zoom bar</b> - This hides the zoom bar.
+			</li>
+			<li>
+				<img border="0" src="images/CloseButton.png"/> - 
+				<b>Close Graph</b> - This removes the graph from the viewer pane.
+			</li>
+		</ul>
+		<p>Take a moment to interact with these options to familiarize yourself with them.</p>
+		<p>
+			<img border="0" src="images/GraphExpanded.png"/>
+		</p>
+		<h4 id="Multiple_Module_Execution">Multiple Module Execution</h4>
+		<p>SystemTap GUI supports the execution of more than one module at one time. The currently running script does not not to be halted and the currently open graphs do not need to be closed, though they may be if desired. To execute another module, simply select and run it as described above. If you were to run  a module in the Memory module family for example, a new tab will be opened titled 'Memory' in addition to the current tab for 'Hard Disk'.</p>
+		<p>Up to 8 graphs may be open in each tab at any given time. Drag and drop support is included for the graph types, permitting re-arrangement for ideal analysis. In addition, 
+			<b>Pausing</b> is also implemented in SystemTap GUI. You may pause any module by selecting 
+			<b><u>R</u>un-&gt;<u>P</u>ause Module</b>, or by selecting 
+			<b>Pause</b> from the toolbar. Know that this method of pausing is an illusion; the graph data is simply not updated while the script continues to run. This inability to truly pause is inherent in SystemTap itself. You can also stop the script using the above methods. This will halt the running script of that module and remove the graphs entirely from the view pane. It will not affect graphs or scripts associated with any other modules. If at any time you are unsure of which modules are currently active you can check this by navigating to the 
+			<a href="SystemTap-Dashboard.html#Active_Modules_Browser">Active Modules Browser </a>
+		</p>
+		<h2 id="Concepts_3">Concepts</h2>
+		<p>This section of the Dashboard User Guide details conceptual topics of the application; the major components, what they do, and how how you interact with them.</p>
+		<h3 id="Modules">Modules</h3>
+		<p>A module is a package used in the Dashboard perspective, containing a SystemTap script and associated metadata.</p>
+		<h4 id="Module_Families">Module Families</h4>
+		<p>Modules are grouped in "module families", groups of modules that are related. One example is the Hard Disk module family which contains the module Disk Access:</p>
+		<p>
+			<img border="0" src="images/ModuleBrowser.png"/>
+		</p>
+		<h4 id="Multiple_Graphs">Multiple Graphs</h4>
+		<p>Often, as in the case of the Disk Access module, modules will spawn multiple graphs on execution.</p>
+		<p>
+			<img border="0" src="images/RunningDashboard.png"/>
+		</p>
+		<p>There are a number of different module families constructed for different analysis sets.</p>
+		<h3 id="Modules_Browser">Modules Browser</h3>
+		<p>The Modules Browser displays all the modules available to run, categorized by module families. Modules in each family can be viewed by expanding the appropriate module family name.</p>
+		<p>
+			<img border="0" src="images/ModuleBrowser.png"/>
+		</p>
+		<p>From the Modules Browser the following options are available on right-clicking a module:</p>
+		<ul>
+			<li>
+				<b>View Script</b> - Opens the module's SystemTap script in the IDE Perspective.
+			</li>
+		</ul>
+		<p>To view the currently active modules, switch to the 
+			<a href="SystemTap-Dashboard.html#Active_Modules_Browser">Active Modules Browser </a>.
+		</p>
+		<h3 id="Active_Modules_Browser">Active Modules Browser</h3>
+		<p>The Active Modules Browser displays each module currently active.</p>
+		<p>
+			<img border="0" src="images/ActiveModules.png"/>
+		</p>
+		<p>The following right click options exist for the graphs embedded in each of the active modules:</p>
+		<ul>
+			<li>
+				<b>Stop Graph</b> - Stops the graph from updating.
+			</li>
+			<li>
+				<b>Activate Graph</b> - Instructs a formerly stopped graph to continue updating.
+			</li>
+		</ul>
+		<p>To view all modules available, switch to the 
+			<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a>.
+		</p>
+		<h2 id="Tasks_3">Tasks</h2>
+		<p>This section of the Dashboard User Guild is intended to provide help pages for common tasks that the user may wish to perform in the Dashboard Perspective.</p>
+		<h3 id="Creating_Modules">Creating Modules</h3>
+		<p>SystemTap GUI allows for the creation of custom modules. In order to do this the user must have a script that returns data in a consistent pattern along with providing a regular expression to interpret it; the same requirements as any script run in the Graphics Perspective. Creating a module can be done in two ways</p>
+		<h4 id="Export_Script">Export Script</h4>
+		<p>Using the 
+			<b><u>E</u>xport Script</b> 
+			option in the 
+			<b><u>F</u>ile</b> menu of the IDE Perspective. This will create a module from a script that is currently open in the IDE. The module will consist of the script and metadata information stored as a '.dash' file on the local system(where SystemTapGUI is running).The user is first prompted
+			for regular expression details (just like in the Graphing perspective) after which a 
+			dialog box similar to the following shows up:
+		</p>
+		<p>
+			<img border="0" src="images/ExportScript.png"/>
+		</p>
+		<p>The dialogue box has the following properties:</p>
+		<ul>
+			<li>
+				<b>Display</b> - This is the name of the module. This is the text that will show up under the specified
+			</li>
+		</ul>
+		<p>module family.</p>
+		<ul>
+			<li>
+				<b>Category</b> - This field requires the name of the module family the module should be placed in.
+			</li>
+			<li>
+				<b>Graphs</b> - This box allows you to added one or more predefine graph types to spawn each time the
+			</li>
+		</ul>
+		<p>module is ran.</p>
+		<p>When you click ok your module will be added into the Module Browser in the Dashboard Perspective.</p>
+		<p>
+			<img border="0" src="images/AddedModule.png"/>
+		</p>
+		<h4 id="Create_Module">Create Module</h4>
+		<p>Using the 
+			<b><u>C</u>reate Module</b> 
+			option in the dashboard or IDE toolbar. This will create a module from an example script that available on the remote System, Users will have to specify the location of the examples directory and the path to the script.The module will consist of only the metadata information stored as a '.dash' file on the local system(where SystemTapGUI is running). The script will not be packaged with the module, the location specified will be used to run the script directly on the remote system. The user would have to first enter the script details, 
+			and then follow the same set of steps as in the previous option.
+		</p>
+		<p>
+			<img border="0" src="images/Script_details.gif"/>
+		</p>
+		<h4 id="Tips">Tips</h4>
+		<p>Make sure your script works fine with the regular expression and the graphs are as desired using the IDE/Graphing perspectives before creating a dashboard module using the script.</p>
+		<h4 id="Constraints">Constraints</h4>
+		<p>The script should adhere to the below constraints to add it to the dashboard:</p>
+		<ul>
+			<li> The script should regularly output rows/tables of data that will confirm to the same regular expression, i.e, you cannot have two sets of output in the same script</li>
+			<li> The script should not have exit() statements</li>
+			<li> Since the dashboard supports dynamic graphs the script should output data periodically</li>
+			<li> Users should remember that the dashboard currently does not support any processing of the output data.</li>
+		</ul>
+		<h3 id="Importing_Modules">Importing Modules</h3>
+		<p>The Dashboard Perspective allows for the import of modules by using the option '''<u>F</u>ile-&gt;<u>I</u>mport
+			Module Location'''. Simply navigate to and select the module file you wish to import, and SystemTap GUI will 
+			add the module to the 
+			<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a> in the Dashboard Perspective.
+		</p>
+		<p>
+			<img border="0" src="images/ImportDialogue.png"/>
+		</p>
+		<h3 id="Running_Modules">Running Modules</h3>
+		<p>The 
+			<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a> contains a list of modules available to run.
+		</p>
+		<p>Running modules in the Dashboard Perspective can be accomplished in three different ways. You may select it and 
+			<b><u>R</u>un-&gt;<u>R</u>un Script</b>. You can alternatively click the 
+			<b>Run Script</b> button in the Toolbar. SystemTap GUI will request the details of the remote system(IPAddress,username,password).Enter these details and make sure that the username has sufficient access to execute SystemTap scripts You should see a display similar to the following, graphs differing based on what module you chose to run and Module Browser differences based off of your current module include list:
+		</p>
+		<p>
+			<img border="0" src="images/RunningDashboard.png"/>
+		</p>
+		<h4 id="Multiple_Module_Execution_2">Multiple Module Execution</h4>
+		<p>SystemTap GUI supports the execution of more than one module at one time. The currently running script does not not to be halted and the currently open graphs do not need to be closed, though they may be if desired. To execute another module, simply select and run it using  one of the two methods described above. </p>
+		<p>Up to 8 graphs may be open at one given time in any given tab. Stopping the script will halt the running script of that module and remove the graphs entirely from the view pane. It will not affect graphs or scripts associated with any other modules. If at any time you are unsure of which modules are currently active you can check this by navigating to the 
+			<a href="SystemTap-Dashboard.html#Active_Modules_Browser">Active Modules Browser </a>
+		</p>
+		<h3 id="Graph_Interaction_2">Graph Interaction</h3>
+		<p>The graphical options used in the Dashboard perspective:</p>
+		<ul>
+			<li>
+				<img border="0" src="images/Zoom.png"/>
+				<b>Zoom Bar</b> - This enables the user to zoom in and out on the current graph by sliding the bar to the left and right. The current magnification is shown at the top of the bar. Zooming would increase the no of x-axis ticks therefore allowing the user to see more(or less) data at a point in time.
+			</li>
+			<li>
+				<img border="0" src="images/ExpandButton.png"/> - 
+				<b>Show Zoom bar</b> - This displays the zoom bar.
+			</li>
+			<li>
+				<img border="0" src="images/Rightleft.png"/> - 
+				<b>Close Zoom bar</b> - This hides the zoom bar.
+			</li>
+			<li>
+				<img border="0" src="images/CloseButton.png"/> - 
+				<b>Close Graph</b> - This removes the graph from the viewer pane.
+			</li>
+		</ul>
+		<h2 id="Reference_3">Reference</h2>
+		<p>This section of the Dashboard User Guild is intended to provide the following resources should you have any
+			very specific questions regarding the Dashboard Perspective in general or one of the options associated with 
+			it. It also contains example scripts and FAQs.</p>
+		<h3 id="Frequently_Asked_Questions_3">Frequently Asked Questions</h3>
+		<p>This section details frequently asked questions relating to the Dashboard Perspective.</p>
+		<p>
+			<b>Can more than one module be open at any given time?</b>
+		</p>
+		<p>A: SystemTap GUI supports the execution of more than one module at one time. The currently running script does not
+			not to be halted and the currently open graphs do not need to be closed, though they may be if desired. To 
+			execute another module, simply select and run it as described previously . If you were to
+			run the Page Faults module in the Memory module family for example, an additional tab will be created for 
+			the Memory module family</p>
+		<p>
+			<b>How many graphs may be opened at one time?</b>
+		</p>
+		<p>A: Currently, 8 in each tab(i.e, 8 per module family). You may close graphs to make more room by using the closebox. 
+			<img border="0" src="images/CloseButton.png"/>
+		</p>
+		<p>
+			<b>Is there an option to pause specific graphs?</b>
+		</p>
+		<p>A: No. You can pause or stop a specific module, which will in turn pause or stop the specific graphs associated
+			with it, but you cannot pause or stop just one graph unless that module produces just one graph or you close all
+			but that graph.</p>
+		<h3 id="Menus_3">Menus</h3>
+		<p>What follows is a comprehension list of the menu options available within the Systemtap GUI Dashboard Perspective.</p>
+		<h4 id="File_3">File</h4>
+		<ul>
+			<li>
+				<b><u>I</u>mport Module Location</b> - This option allows brings up a dialogue box prompting the user with the location of a module file which is then loaded into the 
+				<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a>.
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/ImportDialogue.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>E<u>x</u>it</b> - Exits Systemtap GUI.
+			</li>
+		</ul>
+		<h4 id="Run_3">Run</h4>
+		<ul>
+			<li>
+				<b><u>R</u>un</b> - This option runs the selected module in the 
+				<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a>.
+			</li>
+			<li>
+				<b><u>P</u>ause</b> - This option pauses the selected module in the 
+				<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a>. Know that this method of pausing is an illusion; the graph data is simply not updated while the script continues to run. This inability to truly pause is inherent in SystemTap itself.
+			</li>
+			<li>
+				<b><u>S</u>top</b> - This option stops the selected module in the 
+				<a href="SystemTap-Dashboard.html#Modules_Browser">Modules Browser </a>.
+			</li>
+		</ul>
+		<h4 id="Window_3">Window</h4>
+		<ul>
+			<li>
+				<b>Open in <u>N</u>ew Window</b> - This option opens a new instance of SystemTap GUI.
+			</li>
+			<li>
+				<b><u>O</u>pen Perspective</b> - This submenu lists each of the available perspectives to open:
+				<ul>
+					<li>IDE Perspective</li>
+					<li>Graphing Perspective</li>
+					<li>Dashboard Perspective</li>
+				</ul>
+			</li>
+			<li>
+				<b>Show <u>V</u>iews</b> - This submenus lists each of the available views to open:
+				<ul>
+					<li>Console</li>
+					<li>Error Log</li>
+					<li>Functions</li>
+					<li>Kernel Source</li>
+					<li>Probe Alias</li>
+					<li>Other - Lists all views in the application.</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+			<img border="0" src="images/Viewbox1.png"/>
+		</p>
+		<ul>
+			<li>
+				<b><u>P</u>references</b> - Due to the breath of this topic it is covered in another section. Please see 
+				<a href="SystemTap-IDE.html#Preferences">Preferences </a>
+			</li>
+		</ul>
+		<h3 id="Toolbars_2">Toolbars</h3>
+		<p>SystemTap GUI currently has two toolbars built in; an Action Bar for file and execution operations and a Perspective Selector to jump to different perspectives.</p>
+		<h4 id="Action_Bar_2">Action Bar</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/Import_wiz.gif"/> 
+				<b>Import Dashboard Module Location</b> - This option brings up a dialogue box prompting the user for a module file which is then loaded into the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Start_script.gif"/> 
+				<b>Run</b> - This option runs the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Pause_script.gif"/> 
+				<b>Pause</b> - This option pauses the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>. Know that this method of pausing is an illusion; the graph data is simply not updated while the script continues to run. This inability to truly pause is inherent in SystemTap itself.
+			</li>
+			<li>
+				<img border="0" src="images/Stop_obj.gif"/> 
+				<b>Stop</b> - This option stops the selected module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+			<li>
+				<img border="0" src="images/Mod_obj.gif"/> 
+				<b>Create a New Dashboard module</b> - This option creates a new module in the 
+				<a href="http://wiki.eclipse.org/Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html" title="Linux_Tools_Project/Systemtap/User_Guide/dashboard/modulesBrowser.html">Modules Browser </a>.
+			</li>
+		</ul>
+		<h4 id="Perspective_Selector_2">Perspective Selector</h4>
+		<ul>
+			<li>
+				<img border="0" src="images/Ide.png"/> 
+				<b>IDE Perspective</b> - This launches the IDE Perspective, useful for writing and executing scripts.
+			</li>
+			<li>
+				<img border="0" src="images/Graphing.png"/> 
+				<b>Graphing Perspective</b> - This launches the Graphing Perspective, useful for graphing scripts.
+			</li>
+			<li>
+				<img border="0" src="images/Dash.png"/> 
+				<b>Dashboard Perspective</b> - This launches the Dashboard Perspective, useful for multiple graphing.
+			</li>
+		</ul>
+		<p><p class="copyright">&#169; Copyright Red Hat, Inc. 2009
+			<br/>
+&#169;			 Copyright Phil Muldoon &lt;pkmuldoon@picobot.org&gt; 2006.
+			<br/>
+			This documentation is licensed under the Eclipse Public License v. 1.0.</p>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SystemTap-Graphing.html" title="SystemTap Graphing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="SystemTap GUI User Guide">
+						<img alt="SystemTap GUI User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">SystemTap Graphing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

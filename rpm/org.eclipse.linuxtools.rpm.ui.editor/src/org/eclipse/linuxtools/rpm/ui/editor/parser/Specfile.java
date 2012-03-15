@@ -21,23 +21,23 @@ import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
-import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 
 public class Specfile {
 
-	SpecfilePreamble preamble;
+	private SpecfilePreamble preamble;
 	
-	SpecfilePackageContainer packages;
+	private SpecfilePackageContainer packages;
 
-	List<SpecfileSection> sections;
-	List<SpecfileSection> complexSections;
+	private List<SpecfileSection> sections;
+	private List<SpecfileSection> complexSections;
 
-	Map<String, SpecfileDefine> defines;
+	private Map<String, SpecfileDefine> defines;
 
-	Map<Integer, SpecfileSource> sources;
+	private Map<Integer, SpecfileSource> sources;
 
-	Map<Integer, SpecfileSource> patches;
+	private Map<Integer, SpecfileSource> patches;
 	
 	private List<SpecfileTag> buildRequires;
 	

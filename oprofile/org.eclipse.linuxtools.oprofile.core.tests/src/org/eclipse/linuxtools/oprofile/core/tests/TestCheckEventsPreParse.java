@@ -16,8 +16,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventAdapter;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;

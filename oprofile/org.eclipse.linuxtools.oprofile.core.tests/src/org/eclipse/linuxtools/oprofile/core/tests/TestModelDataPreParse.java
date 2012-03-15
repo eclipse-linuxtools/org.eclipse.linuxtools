@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataAdapter;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

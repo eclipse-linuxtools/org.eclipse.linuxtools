@@ -17,15 +17,15 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SpecfileElementHyperlink;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlink;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.junit.Test;
 
@@ -39,17 +39,16 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 		SpecfileElementHyperlinkDetector elementDetector = new SpecfileElementHyperlinkDetector();
 		elementDetector.setSpecfile(specfile);
 
-		IEditorPart openEditor = IDE
-				.openEditor(Activator.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage(), testFile,
-						"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), testFile,
+				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
 		// test source element
 		IRegion region = new Region(74, 0);
-		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		IHyperlink[] returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		SpecfileElementHyperlink element = (SpecfileElementHyperlink) returned[0];
 		assertTrue(element.getSource() instanceof SpecfileSource);
 		SpecfileSource source = (SpecfileSource) element.getSource();
@@ -58,8 +57,8 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 
 		// test patch element
 		region = new Region(83, 0);
-		returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		element = (SpecfileElementHyperlink) returned[0];
 		assertTrue(element.getSource() instanceof SpecfileSource);
 		source = (SpecfileSource) element.getSource();
@@ -68,20 +67,21 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 
 		// test define
 		region = new Region(89, 0);
-		returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		element = (SpecfileElementHyperlink) returned[0];
 		assertTrue(element.getSource() instanceof SpecfileDefine);
 		SpecfileDefine define = (SpecfileDefine) element.getSource();
 		assertEquals(define.getName(), "smth");
 		assertEquals(define.getStringValue(), "other");
 	}
-	
+
 	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
 		SpecfileElementHyperlinkDetector elementDetector = new SpecfileElementHyperlinkDetector();
 		elementDetector.setSpecfile(specfile);
-		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null, false);
+		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null,
+				false);
 		assertNull(returned);
 	}
 }

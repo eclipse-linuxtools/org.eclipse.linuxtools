@@ -37,10 +37,11 @@ public class BufferedProcessInputStream extends BufferedInputStream {
 	/**
 	 * Getter method for the exit value of the process associated with this 
 	 * BufferedProcessInputStream.
+	 * @throws InterruptedException If the process got interrupted.
 	 * @return The exit value of the process.
-	 * @throws IllegalThreadStateException Process has not yet completed.
 	 */
-	public int getExitValue() throws IllegalThreadStateException{
+	public int getExitValue() throws InterruptedException {
+		process.waitFor();
 		return process.exitValue();
 	}
 }

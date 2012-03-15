@@ -29,14 +29,6 @@
 	</extension>
 
 	<extension
-		point="org.eclipse.help.toc">
-		<toc
-			file="toc.xml"
-			primary="true"/>
-		<toc file="documentation/tocgettingstarted.xml"/>
-	</extension>
-
-	<extension
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.systemTap.name"

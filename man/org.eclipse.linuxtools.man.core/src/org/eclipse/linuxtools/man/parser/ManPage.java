@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.man.parser;
 
+import org.eclipse.linuxtools.internal.man.parser.ManParser;
+
 /**
  * Man page bean to ease fetching html-preformatted different parts of a man
  * page.

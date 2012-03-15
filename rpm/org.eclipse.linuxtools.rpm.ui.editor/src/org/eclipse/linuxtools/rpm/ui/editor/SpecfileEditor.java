@@ -21,9 +21,14 @@ import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmMacroOccurrencesUpdater;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileConfiguration;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileDocumentProvider;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.swt.widgets.Composite;
@@ -201,7 +206,7 @@ public class SpecfileEditor extends TextEditor {
 		fOccurrencesUpdater = new RpmMacroOccurrencesUpdater(this);
 	}
 
-	protected void setSpecfile(Specfile specfile) {
+	public void setSpecfile(Specfile specfile) {
 		this.specfile = specfile;
 		if (fOccurrencesUpdater != null) {
 			Shell shell = getSite().getShell();

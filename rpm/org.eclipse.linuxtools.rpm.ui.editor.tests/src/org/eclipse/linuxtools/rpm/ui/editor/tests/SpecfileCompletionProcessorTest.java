@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileCompletionProcessor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileCompletionProcessor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;

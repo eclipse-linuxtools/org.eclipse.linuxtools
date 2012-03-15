@@ -61,11 +61,10 @@
     <module>org.eclipse.linuxtools.rpm.core.tests</module>
     <module>org.eclipse.linuxtools.rpm-feature</module>
     <module>org.eclipse.linuxtools.rpm.rpmlint</module>
-    <module>org.eclipse.linuxtools.rpm.speceditor.rcp</module>
+    <!--module>org.eclipse.linuxtools.rpm.speceditor.rcp</module-->
     <module>org.eclipse.linuxtools.rpm.ui</module>
     <module>org.eclipse.linuxtools.rpm.ui.editor</module>
     <module>org.eclipse.linuxtools.rpm.ui.editor.doc</module>
-    <module>org.eclipse.linuxtools.rpm.ui.editor-feature</module>
     <module>org.eclipse.linuxtools.rpm.ui.editor.tests</module>
   </modules>
 

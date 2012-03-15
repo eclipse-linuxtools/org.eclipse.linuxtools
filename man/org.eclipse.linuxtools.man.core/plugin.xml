@@ -18,7 +18,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.eclipse.linuxtools.man.preferences.ManPathPage"
+            class="org.eclipse.linuxtools.internal.man.preferences.ManPathPage"
             id="org.eclipse.linuxtools.man.preferences.ManPathPage"
             name="%page.name">
       </page>
@@ -26,7 +26,7 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="org.eclipse.linuxtools.man.preferences.PreferenceInitializer">
+            class="org.eclipse.linuxtools.internal.man.preferences.PreferenceInitializer">
       </initializer>
    </extension>
 </plugin>

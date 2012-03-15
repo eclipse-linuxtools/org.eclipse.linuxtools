@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests.actions;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogParser;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogParser;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -81,5 +81,13 @@ public interface IOpcontrolProvider {
 	 */
 	public void saveSession(String name) throws OpcontrolException;
 
+	/**
+	 * Delete the session with the specified name for the specified event
+	 * @param sessionName The name of the session to delete
+	 * @param eventName The name of the event containing the session
+	 * @throws OpcontrolException
+	 */
+	public void deleteSession (String sessionName, String sessionEvent) throws OpcontrolException;
+
 	public boolean status() throws OpcontrolException;
 }
