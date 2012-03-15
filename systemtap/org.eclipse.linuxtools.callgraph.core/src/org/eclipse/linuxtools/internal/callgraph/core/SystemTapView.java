@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.callgraph.core;
+package org.eclipse.linuxtools.internal.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.File;

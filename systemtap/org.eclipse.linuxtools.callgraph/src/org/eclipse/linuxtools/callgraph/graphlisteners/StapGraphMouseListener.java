@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapNode;
-import org.eclipse.linuxtools.callgraph.core.FileFinderOpener;
+import org.eclipse.linuxtools.internal.callgraph.core.FileFinderOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;

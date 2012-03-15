@@ -22,7 +22,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.callgraph.core.PluginConstants;
+import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

@@ -14,7 +14,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import org.eclipse.draw2d.Label;
-import org.eclipse.linuxtools.callgraph.core.MP;
+import org.eclipse.linuxtools.internal.callgraph.core.MP;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;

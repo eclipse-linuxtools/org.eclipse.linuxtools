@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.callgraph.launch.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.callgraph.core.SystemTapErrorHandler;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
 
 public class SystemTapErrorHandlerTest extends TestCase {
 

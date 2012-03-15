@@ -23,8 +23,8 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
+import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 
 public class SystemTapCommandLineTest extends TestCase {
 	File tmpfile = new File("");

@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.callgraph.launch.tests;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.linuxtools.callgraph.core.PluginConstants;
-import org.eclipse.linuxtools.callgraph.core.SystemTapCommandGenerator;
+import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapCommandGenerator;
 
 import junit.framework.TestCase;
 

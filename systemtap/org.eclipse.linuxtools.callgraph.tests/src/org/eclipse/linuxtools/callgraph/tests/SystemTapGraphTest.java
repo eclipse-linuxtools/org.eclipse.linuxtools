@@ -21,8 +21,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
-import org.eclipse.linuxtools.callgraph.core.StapUIJob;
-import org.eclipse.linuxtools.callgraph.core.ViewFactory;
+import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
+import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
 
 public class SystemTapGraphTest extends TestCase {	
 	
