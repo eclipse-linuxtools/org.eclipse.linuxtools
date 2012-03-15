@@ -158,7 +158,6 @@
     <module>rpmstubby</module>
     <module>systemtap</module>
     <module>valgrind</module>
-    <module>perf</module>
     <module>releng</module>
   </modules>
 
