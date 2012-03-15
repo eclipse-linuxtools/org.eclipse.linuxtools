@@ -159,19 +159,7 @@ public class CovView extends AbstractSTDataView {
 						binary, sf, 0);
 			}
 		} catch (Exception _) {
-			final String message = "An error has occured when parsing "
-				+ "the coverage data files :\n" + _.getMessage();
-			Status status = new Status(Status.ERROR, Activator.PLUGIN_ID,
-					IStatus.ERROR, message, _);
-
-			Activator.getDefault().getLog().log(status);
-			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					Shell s = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-					MessageDialog.openError(s, "Gcov Parsing Error", message);
-				}
-			});
-			return;
+			reportError(_);
 		}
 	}
 	
@@ -193,7 +181,13 @@ public class CovView extends AbstractSTDataView {
 			CovView cvrgeView = displayCovResults(cvrgeMnger);
 			return cvrgeView;
 		} catch (Exception _) {
-			final String message = "An error has occured when parsing "
+			reportError(_);
+		}
+		return null;
+	}
+	
+	private static void reportError(Exception _) {
+		final String message = "An error has occured when parsing "
 				+ "the coverage data files :\n" + _.getMessage();
 			Status status = new Status(Status.ERROR, Activator.PLUGIN_ID,
 					IStatus.ERROR, message, _);
@@ -205,8 +199,6 @@ public class CovView extends AbstractSTDataView {
 					MessageDialog.openError(s, "Gcov Parsing Error", message);
 				}
 			});
-		}
-		return null;
 	}
 	
 	/**

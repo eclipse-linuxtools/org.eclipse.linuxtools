@@ -40,29 +40,21 @@ import org.eclipse.swt.widgets.TableItem;
  *
  */
 public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer implements ISTFindReplaceTarget{
-	private TableViewer _viewer;
+	private final TableViewer _viewer;
 	private STFindReplaceAction action;
 	private boolean scope;
 	private STTableViewerRow fRow;
 	
 	public STTableFindReplaceTarget(Composite parent) {
-		super(parent, SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION);
-		_viewer = getViewer();
-	
-		addSelectionListener();
+		this(parent, true);
 	}
 	
-	
 	public STTableFindReplaceTarget(Composite parent,boolean init) {
-		super(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
-		_viewer = getViewer();
-		addSelectionListener();
+		this(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
 	}
 	
 	public STTableFindReplaceTarget(Composite parent, int style) {
-		super(parent,style,true);
-		_viewer = getViewer();
-		addSelectionListener();
+		this(parent,style,true);
 	}
 	
 	public STTableFindReplaceTarget(Composite parent, int style,boolean init) {
@@ -71,73 +63,79 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 		addSelectionListener();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#canPerformFind()
+	 */
+	@Override
 	public boolean canPerformFind() {
-		if (_viewer != null && _viewer.getInput() != null)
-			return true;
-		return false;
+		return (_viewer != null && _viewer.getInput() != null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#findAndSelect(org.eclipse.jface.viewers.ViewerCell, java.lang.String, boolean, boolean, boolean, boolean, boolean)
+	 */
+	@Override
 	public ViewerCell findAndSelect(ViewerCell widgetOffset, String findString,
 			boolean searchForward, boolean caseSensitive, boolean wholeWord,boolean wrapSearch,boolean regExSearch) {
 		return findAndSelect(widgetOffset,findString,searchForward,searchForward,caseSensitive, wholeWord,wrapSearch,regExSearch); 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelection(org.eclipse.jface.viewers.ViewerCell)
+	 */
+	@Override
 	public ViewerCell getSelection(ViewerCell index) {
 		if (index == null){
-			if (fRow != null)
-				return fRow.getCell(0);
-			else{
+			if (fRow == null) {
 				fRow = new STTableViewerRow(_viewer.getTable().getItem(0));
-				return fRow.getCell(0);
 			}
+			return fRow.getCell(0);
 		}
-
 		return index;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelectionText(org.eclipse.jface.viewers.ViewerCell)
+	 */
+	@Override
 	public String getSelectionText(ViewerCell index) {
 		if (index == null){
-			if (fRow != null)
-				return fRow.getCell(0).getText();
-			else{
+			if (fRow == null) {
 				fRow = new STTableViewerRow(_viewer.getTable().getItem(0));
-				return fRow.getCell(0).getText();
 			}
+			return fRow.getCell(0).getText();
 		}
 		return index.getText();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#isEditable()
+	 */
+	@Override
 	public Boolean isEditable() {
 		return false;
 	}
 	
 	private ViewerCell findAndSelect(ViewerCell cell, String findString,
 			boolean searchForward, boolean direction,boolean caseSensitive, boolean wholeWord,boolean wrapSearch,boolean regExSearch) {
-		
 		if (cell == null) return null;
-		
-		int dirCell = ViewerCell.RIGHT;
-		
-		if (!searchForward)
-			dirCell = ViewerCell.LEFT;
+		int dirCell = searchForward?ViewerCell.RIGHT:ViewerCell.LEFT;
 		
 		Table table = _viewer.getTable();
 		
 
 		if (!scope || table.isSelected(table.indexOf((TableItem)cell.getItem()))){
 			ViewerCell cellFound = searchInRow(cell.getViewerRow(),cell.getColumnIndex(),findString,searchForward,caseSensitive,wholeWord,dirCell,regExSearch);
-		
-			if( cellFound != null) return cellFound;
+			if (cellFound != null) return cellFound;
 		}
 
 		dirCell = ViewerCell.RIGHT;
-		
-		int dirRow = 0;
-		if (searchForward)
-			dirRow = ViewerRow.BELOW;
-		else
-			dirRow = ViewerRow.ABOVE;
-			
+		int dirRow = searchForward?ViewerRow.BELOW:ViewerRow.ABOVE;
 		ViewerRow row = cell.getViewerRow();
 		
 		if (table.getSelectionCount() == 0){
@@ -147,8 +145,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 				if (cell != null)
 					return cell;
 			}
-		}
-		else{
+		} else {
 			while (row.getNeighbor(dirRow, true) != null){
 				row = row.getNeighbor(dirRow, true);
 				if (!scope || table.isSelected(table.indexOf((TableItem)row.getItem()))){
@@ -158,9 +155,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 				}
 			}
 		}
-	
 		return null;
-		
 	}
 	
 	private ViewerCell searchInRow(ViewerRow row,int index,String findString,boolean searchForward,boolean caseSensitive, boolean wholeWord,int dirCell,boolean regExSearch){
@@ -168,22 +163,20 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 		if (regExSearch){
 			 pattern = Pattern.compile(findString);
 		}
-		
 		ISTDataViewersField[] fields = getAllFields();
-		
 		ViewerCell cell = row.getCell(index);
 
-		do{
-			String text = "";
+		do {
+			String text;
+			boolean ok;
 			
 			ISTDataViewersField field = fields[cell.getColumnIndex()];
 			if (field.getSpecialDrawer(cell.getElement()) != null){
 				ISpecialDrawerListener hfield = (ISpecialDrawerListener)field;
 				text = hfield.getValue(cell.getElement()).trim();
-			}
-			else	
+			} else {
 				text = cell.getText().trim();
-			boolean ok = false;
+			}
 			
 			if (regExSearch){
 				Matcher matcher = pattern.matcher(text);
@@ -194,7 +187,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 						ok = text.equals(findString);
 					else
 						ok = text.equalsIgnoreCase(findString);
-				} else{
+				} else {
 					if (caseSensitive)
 						ok = text.contains(findString);
 					else 
@@ -209,13 +202,10 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 					Table table = tv.getTable();
 					table.deselect(table.indexOf((TableItem)row.getItem()));
 				}
-					
 				return cell;
-				
 			}
 			cell = cell.getNeighbor(dirCell, true);
-		}
-		while(cell != null);
+		} while(cell != null);
 		
 		return null;
 	}
@@ -235,48 +225,58 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 		});
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTableViewer#createTable(org.eclipse.swt.widgets.Composite, int)
+	 */
+	@Override
 	protected Table createTable(Composite parent, int style) {
-		Table table = new Table(parent, style);
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
+		Table table = super.createTable(parent, style);
 		table.addPaintListener(new PaintListener(){
-
 			@Override
 			public void paintControl(PaintEvent e) {
 				if (action != null) action.setEnabled(canPerformFind());
-				
 			}
-			
 		});
-		
 		return table;
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#setFindAction(org.eclipse.linuxtools.dataviewers.findreplace.STFindReplaceAction)
+	 */
+	@Override
 	public void setFindAction(STFindReplaceAction action){
 		this.action = action;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getFirstCell(org.eclipse.jface.viewers.ViewerCell, int)
+	 */
+	@Override
 	public ViewerCell getFirstCell(ViewerCell start,int direction)
 	{
 		ViewerRow row = null;
-		
 		if (direction == ViewerRow.ABOVE){
 			if (scope && _viewer.getTable().getSelectionCount() > 0)
 				row = new STTableViewerRow(_viewer.getTable().getSelection()[0]);
 			else
 				row = new STTableViewerRow(_viewer.getTable().getItem(0));
-		}
-		else{
+		} else{
 			if (scope && _viewer.getTable().getSelectionCount() > 0)
 				row = new STTableViewerRow(_viewer.getTable().getSelection()[_viewer.getTable().getSelection().length -1]);
 			else
 				row = new STTableViewerRow(_viewer.getTable().getItem(_viewer.getTable().getItemCount()-1));
 		}
-		
 		return row.getCell(0);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#useSelectedLines(boolean)
+	 */
+	@Override
 	public void useSelectedLines(boolean use){
 		this.scope = use;
 	}

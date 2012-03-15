@@ -33,7 +33,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -66,6 +65,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		/*
 		 * @see IViewportListener#viewportChanged(int)
 		 */
+		@Override
 		public void viewportChanged(int verticalPosition) {
 			if (fCachedRedrawState && verticalPosition != fScrollPos)
 				redraw();
@@ -74,18 +74,16 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		/*
 		 * @see ITextListener#textChanged(TextEvent)
 		 */
+		@Override
 		public void textChanged(TextEvent event) {
-
 			fCachedRedrawState= event.getViewerRedrawState();
 			if (!fCachedRedrawState)
 				return;
-
 			if (updateNumberOfDigits()) {
 				computeIndentations();
 				layout(event.getViewerRedrawState());
 				return;
 			}
-
 			boolean viewerCompletelyShown= isViewerCompletelyShown();
 			if (viewerCompletelyShown || fSensitiveToTextChanges || event.getDocumentEvent() == null)
 				postRedraw();
@@ -112,6 +110,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		/*
 		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseUp(MouseEvent event) {
 			// see bug 45700
 			if (event.button == 1) {
@@ -123,26 +122,24 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		/*
 		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseDown(MouseEvent event) {
 			fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
-			
 			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
 			if (annotationColumn instanceof ISTAnnotationHyperlink){
 				ISTAnnotationHyperlink ahp = (ISTAnnotationHyperlink)annotationColumn;
 				if (ahp.isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
 					ahp.handleHyperlink(newLine);
 				}
-			} else{
-				// see bug 45700
-				if (event.button == 1) {
-					startSelecting();
-				}
+			} else if (event.button == 1) { // see bug 45700
+				startSelecting();
 			}
 		}
 
 		/*
 		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseDoubleClick(MouseEvent event) {
 			fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
 			stopSelecting();
@@ -152,17 +149,17 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		/*
 		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 		 */
+		@Override
 		public void mouseMove(MouseEvent event) {
 			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
 			if (annotationColumn instanceof ISTAnnotationHyperlink){
+				Cursor cursor;
 				if (((ISTAnnotationHyperlink)annotationColumn).isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
-					Cursor cursor = new Cursor(event.display,SWT.CURSOR_HAND);
-					fCanvas.setCursor(cursor);
+					cursor = event.display.getSystemCursor(SWT.CURSOR_HAND);
+				} else {
+					cursor = event.display.getSystemCursor(SWT.CURSOR_ARROW);
 				}
-				else{
-					Cursor cursor = new Cursor(event.display,SWT.CURSOR_ARROW);
-					fCanvas.setCursor(cursor);
-				}
+				fCanvas.setCursor(cursor);
 			}
 			if (fIsListeningForMove && !autoScroll(event)) {
 				expandSelection(newLine);
@@ -176,16 +173,13 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		 */
 		private void startSelecting() {
 			try {
-
 				// select line
 				IDocument document= fCachedTextViewer.getDocument();
 				fStartLineNumber= fParentRuler.getLineOfLastMouseButtonActivity();
 				fStartLine= document.getLineInformation(fStartLineNumber);
 				fCachedTextViewer.setSelectedRange(fStartLine.getOffset(), fStartLine.getLength());
-
 				// prepare for drag selection
 				fIsListeningForMove= true;
-
 			} catch (BadLocationException x) {
 			}
 		}
@@ -207,18 +201,14 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		 */
 		private void expandSelection(int lineNumber) {
 			try {
-
 				IDocument document= fCachedTextViewer.getDocument();
 				IRegion lineInfo= document.getLineInformation(lineNumber);
-
 				int start= Math.min(fStartLine.getOffset(), lineInfo.getOffset());
 				int end= Math.max(fStartLine.getOffset() + fStartLine.getLength(), lineInfo.getOffset() + lineInfo.getLength());
-
 				if (lineNumber < fStartLineNumber)
 					fCachedTextViewer.setSelectedRange(end, start - end);
 				else
 					fCachedTextViewer.setSelectedRange(start, end - start);
-
 			} catch (BadLocationException x) {
 			}
 		}
@@ -238,17 +228,14 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		 */
 		private boolean autoScroll(MouseEvent event) {
 			Rectangle area= fCanvas.getClientArea();
-
 			if (event.y > area.height) {
 				autoScroll(SWT.DOWN);
 				return true;
 			}
-
 			if (event.y < 0) {
 				autoScroll(SWT.UP);
 				return true;
 			}
-	
 			stopAutoScroll();
 			return false;
 		}
@@ -346,7 +333,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 * Redraw runnable lock
 	 * @since 3.0
 	 */
-	private Object fRunnableLock= new Object();
+	private final Object fRunnableLock= new Object();
 	/**
 	 * Redraw runnable state
 	 * @since 3.0
@@ -356,7 +343,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 * Redraw runnable
 	 * @since 3.0
 	 */
-	private Runnable fRunnable= new Runnable() {
+	private final Runnable fRunnable= new Runnable() {
 		public void run() {
 			synchronized (fRunnableLock) {
 				fIsRunnablePosted= false;
@@ -367,7 +354,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/* @since 3.2 */
 	private MouseHandler fMouseHandler;
 
-	private ISTAnnotationColumn annotationColumn;
+	private final ISTAnnotationColumn annotationColumn;
 	
 	/**
 	 * Constructs a new vertical ruler column.
@@ -378,9 +365,6 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	
 	public ISTAnnotationColumn getSTAnnotationColumn(){
 		return annotationColumn;
-	}
-	
-	public STRulerColumn() {
 	}
 
 	/**
@@ -471,12 +455,10 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	protected int computeNumberOfDigits() {
 		IDocument document= fCachedTextViewer.getDocument();
 		int lines= document == null ? 0 : document.getNumberOfLines();
-		int digits = 0;
-		if (annotationColumn.getTitle() != null && annotationColumn.getTitle().length() >0){
-			digits= annotationColumn.getTitle().length() + 3;
+		int digits = 3;
+		if (annotationColumn.getTitle() != null){
+			digits += annotationColumn.getTitle().length();
 		}
-		else
-			digits = 3;
 		
 		while (lines > Math.pow(10, digits) -1) {
 			++digits;
@@ -514,25 +496,19 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	protected void computeIndentations() {
 		if (fCanvas == null || fCanvas.isDisposed())
 			return;
-
 		GC gc= new GC(fCanvas);
 		try {
-
 			gc.setFont(fCanvas.getFont());
-
 			fIndentation= new int[fCachedNumberOfDigits + 3];
-
 			char[] nines= new char[fCachedNumberOfDigits + 2];
 			Arrays.fill(nines, '9');
 			String nineString= new String(nines);
 			Point p= gc.stringExtent(nineString);
 			fIndentation[0]= p.x;
-
 			for (int i= 1; i <= fCachedNumberOfDigits; i++) {
 				p= gc.stringExtent(nineString.substring(0, i));
 				fIndentation[i]= fIndentation[0] - p.x;
 			}
-
 		} finally {
 			gc.dispose();
 		}
@@ -541,23 +517,21 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/*
 	 * @see IVerticalRulerColumn#createControl(CompositeRuler, Composite)
 	 */
+	@Override
 	public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
-
 		fParentRuler= parentRuler;
 		fCachedTextViewer= parentRuler.getTextViewer();
 		fCachedTextWidget= fCachedTextViewer.getTextWidget();
-
+		
 		fCanvas= new Canvas(parentControl, SWT.BORDER);
 		fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
 		fCanvas.setForeground(fForeground);
-		
 		fCanvas.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent event) {
 				if (fCachedTextViewer != null)
 					doubleBufferPaint(event.gc);
 			}
 		});
-
 		fCanvas.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				handleDispose();
@@ -571,10 +545,8 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		fCanvas.addMouseMoveListener(fMouseHandler);
 
 		if (fCachedTextViewer != null) {
-
 			fCachedTextViewer.addViewportListener(fInternalListener);
 			fCachedTextViewer.addTextListener(fInternalListener);
-
 			if (fFont == null) {
 				if (fCachedTextWidget != null && !fCachedTextWidget.isDisposed())
 					fFont= fCachedTextWidget.getFont();
@@ -593,7 +565,6 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 * Disposes the column's resources.
 	 */
 	protected void handleDispose() {
-
 		if (fCachedTextViewer != null) {
 			fCachedTextViewer.removeViewportListener(fInternalListener);
 			fCachedTextViewer.removeTextListener(fInternalListener);
@@ -611,9 +582,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 * @param dest the GC to draw into
 	 */
 	private void doubleBufferPaint(GC dest) {
-
 		Point size= fCanvas.getSize();
-
 		if (size.x <= 0 || size.y <= 0)
 			return;
 
@@ -641,28 +610,6 @@ public class STRulerColumn implements IVerticalRulerColumn{
 				return;
 			fScrollPos= fCachedTextWidget.getTopPixel();
 			doPaint(gc, visibleLines);
-			fCachedTextWidget.addMouseTrackListener(new MouseTrackListener(){
-
-				@Override
-				public void mouseEnter(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void mouseExit(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void mouseHover(MouseEvent e) {
-					
-					
-				}
-				
-			});
-		
 		} finally {
 			gc.dispose();
 		}
@@ -764,22 +711,20 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 */
 	protected void paintLine(int line, int y, int lineheight, GC gc, Display display) {
 		int widgetLine= JFaceTextUtil.modelLineToWidgetLine(fParentRuler.getTextViewer(), line);
-		String s = "";
 		int indentation= fCachedNumberOfDigits; 
 		
 		if (annotationColumn instanceof ISTAnnotationHyperlink){
 			ISTAnnotationHyperlink ah = (ISTAnnotationHyperlink)annotationColumn;
 			if (ah.isAnnotationHyperlink(widgetLine)){
 				paintHyperLink(line, y, indentation, lineheight, gc, display);
-
 			}
-		} else{
-			s = annotationColumn.getAnnotation(widgetLine);
+		} else {
+			int baselineBias= getBaselineBias(gc, widgetLine);
+			String s = annotationColumn.getAnnotation(widgetLine);
 			if (widgetLine == 0){
 				for (int i=0;i<annotationColumn.getTitle().length();i++)
-					s = s + " ";
+					s += " ";
 			}
-			int baselineBias= getBaselineBias(gc, widgetLine);
 			gc.drawString(s, indentation, y + baselineBias, true);
 		}
 	}
@@ -806,13 +751,12 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/*
 	 * @see IVerticalRulerColumn#redraw()
 	 */
+	@Override
 	public void redraw() {
-
 		if (fRelayoutRequired) {
 			layout(true);
 			return;
 		}
-
 		if (fCachedTextViewer != null && fCanvas != null && !fCanvas.isDisposed()) {
 			GC gc= new GC(fCanvas);
 			doubleBufferPaint(gc);
@@ -823,12 +767,14 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/*
 	 * @see IVerticalRulerColumn#setModel(IAnnotationModel)
 	 */
+	@Override
 	public void setModel(IAnnotationModel model) {
 	}
 
 	/*
 	 * @see IVerticalRulerColumn#setFont(Font)
 	 */
+	@Override
 	public void setFont(Font font) {
 		fFont= font;
 		if (fCanvas != null && !fCanvas.isDisposed()) {
@@ -848,22 +794,21 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		return fParentRuler;
 	}
 	
-	protected void paintHyperLink(int line, int y, int x,int lineheight, GC gc, Display display) {
+	protected void paintHyperLink(int line, int y, int x, int lineheight, GC gc, Display display) {
 		String str = annotationColumn.getAnnotation(line);
 		final TextStyle styledString = new TextStyle(gc.getFont(),null,null);
 		styledString.foreground = display.getSystemColor(SWT.COLOR_BLUE);
 		styledString.underline = true;
 		TextLayout tl = new TextLayout(display);
 		tl.setText(str);
-	
 		tl.setStyle(styledString, 0, str.length());
-		y = y + lineheight/2 - gc.stringExtent(str).y/2; 
+		y += lineheight/2 - gc.stringExtent(str).y/2; 
 		tl.draw(gc, x, y);
-		if (line + 1 == 1){
+		if (line == 0){
 			int baselineBias= getBaselineBias(gc, line);
 			String s = "";
-			for(int i=0;i<annotationColumn.getTitle().length();i++)
-				s = s + " ";
+			for (int i=0;i<annotationColumn.getTitle().length();i++)
+				s += " ";
 			gc.drawString(s, x + tl.getWidth() + 8, y + baselineBias, true);
 		}
 	}

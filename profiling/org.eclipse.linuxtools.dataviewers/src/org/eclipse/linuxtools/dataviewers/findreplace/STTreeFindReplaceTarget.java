@@ -44,28 +44,22 @@ import org.eclipse.swt.widgets.TreeItem;
  *
  */
 public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer implements ISTFindReplaceTarget{
-	private TreeViewer _viewer;
+	private final TreeViewer _viewer;
 	private STFindReplaceAction action;
 	private boolean scope;
 	private List<TreeItem> fSelections;
 	private STTreeViewerRow fRow;
 	
 	public STTreeFindReplaceTarget(Composite parent) {
-		super(parent, SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION);
-		_viewer = getViewer();
-		addSelectionListener();
+		this(parent, true);
 	}
 	
 	public STTreeFindReplaceTarget(Composite parent,boolean init) {
-		super(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
-		_viewer = getViewer();
-		addSelectionListener();
+		this(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
 	}
 	
 	public STTreeFindReplaceTarget(Composite parent, int style) {
-		super(parent,style,true);
-		_viewer = getViewer();
-		addSelectionListener();
+		this(parent,style,true);
 	}
 	
 	public STTreeFindReplaceTarget(Composite parent, int style,boolean init) {
@@ -73,73 +67,77 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 		_viewer = getViewer();
 		addSelectionListener();
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#canPerformFind()
+	 */
+	@Override
 	public boolean canPerformFind() {
-		if (_viewer != null && _viewer.getInput() != null)
-			return true;
-		return false;
+		return (_viewer != null && _viewer.getInput() != null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#findAndSelect(org.eclipse.jface.viewers.ViewerCell, java.lang.String, boolean, boolean, boolean, boolean, boolean)
+	 */
+	@Override
 	public ViewerCell findAndSelect(ViewerCell widgetOffset, String findString,
 			boolean searchForward, boolean caseSensitive, boolean wholeWord,boolean wrapSearch,boolean regExSearch) {
 		return findAndSelect(widgetOffset,findString,searchForward,searchForward,caseSensitive, wholeWord,wrapSearch,regExSearch); 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelection(org.eclipse.jface.viewers.ViewerCell)
+	 */
+	@Override
 	public ViewerCell getSelection(ViewerCell index) {
 		if (index == null){
-			if (fRow != null)
-				return fRow.getCell(0);
-			else{
+			if (fRow == null) {
 				fRow = new STTreeViewerRow(_viewer.getTree().getItem(0));
-				return fRow.getCell(0);
 			}
+			return fRow.getCell(0);
 		}
-
 		return index;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelectionText(org.eclipse.jface.viewers.ViewerCell)
+	 */
+	@Override
 	public String getSelectionText(ViewerCell index) {
 		if (index == null){
-			if (fRow != null)
-				return fRow.getCell(0).getText();
-			else{
+			if (fRow == null) {
 				fRow = new STTreeViewerRow(_viewer.getTree().getItem(0));
-				return fRow.getCell(0).getText();
 			}
+			return fRow.getCell(0).getText();
 		}
 		return index.getText();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#isEditable()
+	 */
+	@Override
 	public Boolean isEditable() {
 		return false;
 	}
 	
 	private ViewerCell findAndSelect(ViewerCell cell, String findString,
 			boolean searchForward, boolean direction,boolean caseSensitive, boolean wholeWord,boolean wrapSearch,boolean regExSearch) {
-		
 		if (cell == null) return null;
-		
-		
-		int dirCell = ViewerCell.RIGHT;
-		
-		if (!searchForward)
-			dirCell = ViewerCell.LEFT;
+		int dirCell = searchForward?ViewerCell.RIGHT:ViewerCell.LEFT;
 			
 		if (!scope || fSelections.indexOf(cell.getViewerRow().getItem()) != -1){
 			ViewerCell cellFound = searchInRow(cell.getViewerRow(),cell.getColumnIndex(),findString,searchForward,caseSensitive,wholeWord,dirCell,regExSearch);
-		
-			if( cellFound != null) return cellFound;
+			if (cellFound != null) return cellFound;
 		}
 	
 		dirCell = ViewerCell.RIGHT;
-		
-		int dirRow = 0;
-		if (searchForward)
-			dirRow = ViewerRow.BELOW;
-		else
-			dirRow = ViewerRow.ABOVE;
-			
+		int dirRow = searchForward?ViewerRow.BELOW:ViewerRow.ABOVE;
 		ViewerRow row = cell.getViewerRow();
 		
 		if (fSelections == null){
@@ -149,8 +147,7 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 				if (cell != null)
 					return cell;
 			}
-		}
-		else{
+		} else {
 			while (row.getNeighbor(dirRow, false) != null){
 				row = row.getNeighbor(dirRow, false);
 				if (!scope || fSelections.indexOf(cell.getViewerRow().getItem()) != -1){
@@ -160,9 +157,7 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 				}
 			}
 		}
-	
 		return null;
-		
 	}
 	
 	private ViewerCell searchInRow(ViewerRow row,int index,String findString,boolean searchForward,boolean caseSensitive, boolean wholeWord,int dirCell,boolean regExSearch){
@@ -170,35 +165,31 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 		if (regExSearch){
 			 pattern = Pattern.compile(findString);
 		}
-		
 		ISTDataViewersField[] fields = getAllFields();
-		
 		ViewerCell cell = row.getCell(index);
 
-		do{
-			String text = "";
+		do {
+			String text;
+			boolean ok;
 			
 			ISTDataViewersField field = fields[cell.getColumnIndex()];
 			if (field.getSpecialDrawer(cell.getElement()) != null){
 				ISpecialDrawerListener hfield = (ISpecialDrawerListener)field;
 				text = hfield.getValue(cell.getElement()).trim();
-			}
-			else	
+			} else {
 				text = cell.getText().trim();
-			
-			boolean ok = false;
+			}
 			
 			if (regExSearch){
 				Matcher matcher = pattern.matcher(text);
 				ok = matcher.find();
-			}
-			else{
+			} else {
 				if (wholeWord){
 					if (caseSensitive)
 						ok = text.equals(findString);
 					else
 						ok = text.equalsIgnoreCase(findString);
-				} else{
+				} else {
 					if (caseSensitive)
 						ok = text.contains(findString);
 					else 
@@ -208,41 +199,46 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 			
 			if (ok){
 				_viewer.reveal(cell.getElement());
-				
 				if (fSelections != null && fSelections.indexOf(row.getItem()) != -1)
 					_viewer.getTree().deselectAll();
-					
 				return cell;
-				
 			}
 			cell = cell.getNeighbor(dirCell, true);
-		}
-		while(cell != null);
+		} while(cell != null);
 		
 		return null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#setFindAction(org.eclipse.linuxtools.dataviewers.findreplace.STFindReplaceAction)
+	 */
+	@Override
 	public void setFindAction(STFindReplaceAction action){
 		this.action = action;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer#createTree(org.eclipse.swt.widgets.Composite, int)
+	 */
+	@Override
 	protected Tree createTree(Composite parent, int style) {
-		Tree tree = new Tree(parent, style);
-		tree.setLinesVisible(true);
-		tree.setHeaderVisible(true);
+		Tree tree = super.createTree(parent, style);
 		tree.addPaintListener(new PaintListener(){
-
 			@Override
 			public void paintControl(PaintEvent e) {
 				if (action != null) action.setEnabled(canPerformFind());
-				
 			}
-			
 		});
-	
 		return tree;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getFirstCell(org.eclipse.jface.viewers.ViewerCell, int)
+	 */
+	@Override
 	public ViewerCell getFirstCell(ViewerCell start,int direction)
 	{
 		if (direction == ViewerRow.ABOVE){
@@ -251,7 +247,6 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 				row = new STTreeViewerRow(_viewer.getTree().getSelection()[0]);
 			else
 				row = new STTreeViewerRow(_viewer.getTree().getItem(0));
-			
 			return row.getCell(0);
 		}
 		
@@ -260,7 +255,6 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 			return row.getCell(0);
 		}
 		
-			
 		ViewerRow row = start.getViewerRow();
 		while (row.getNeighbor(direction, true) != null)
 			row = row.getNeighbor(direction, true);
@@ -268,6 +262,11 @@ public abstract class STTreeFindReplaceTarget extends AbstractSTTreeViewer imple
 		return row.getCell(0);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#useSelectedLines(boolean)
+	 */
+	@Override
 	public void useSelectedLines(boolean use){
 		this.scope = use;
 	}
