@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.callgraph.launch;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 
 public class ConfigurationOptionsSetter {
 

@@ -15,7 +15,7 @@ Export-Package: org.eclipse.linuxtools.callgraph,
  org.eclipse.linuxtools.callgraph.graphlisteners
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text,
- org.eclipse.linuxtools.callgraph.core,
+ org.eclipse.linuxtools.internal.callgraph.core,
  org.eclipse.ui.texteditor
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin

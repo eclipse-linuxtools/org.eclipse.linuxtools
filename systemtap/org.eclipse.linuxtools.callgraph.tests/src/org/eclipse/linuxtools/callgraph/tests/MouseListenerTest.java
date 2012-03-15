@@ -17,9 +17,9 @@ import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
-import org.eclipse.linuxtools.callgraph.core.StapUIJob;
-import org.eclipse.linuxtools.callgraph.core.ViewFactory;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
+import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
 import org.eclipse.zest.core.widgets.GraphItem;
 
 public class MouseListenerTest extends TestCase {

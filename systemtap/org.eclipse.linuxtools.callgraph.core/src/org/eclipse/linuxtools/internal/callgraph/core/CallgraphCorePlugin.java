@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.callgraph.core;
+package org.eclipse.linuxtools.internal.callgraph.core;
 
 import java.io.IOException;
 import java.net.URL;

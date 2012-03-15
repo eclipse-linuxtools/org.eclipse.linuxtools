@@ -9,7 +9,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.callgraph.core.SystemTapView;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.threadprofiler.graphs.GraphModel;
 import org.eclipse.linuxtools.threadprofiler.graphs.MultiGraph;
 import org.eclipse.linuxtools.threadprofiler.graphs.ThreadGraph;
