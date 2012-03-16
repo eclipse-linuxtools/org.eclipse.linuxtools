@@ -13,7 +13,7 @@
  *          CheckedTreeSelectionDialog#createSelectionButtons(Composite) fails to 
  *          align the selection buttons to the right
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.launch;
+package org.eclipse.linuxtools.internal.callgraph.launch;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
