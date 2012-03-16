@@ -8,10 +8,10 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.graphlisteners;
+package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
-import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.StapGraph;
+import org.eclipse.linuxtools.internal.callgraph.CallgraphView;
+import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;

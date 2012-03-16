@@ -22,7 +22,7 @@
             point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.callgraph.CallgraphView"
+            class="org.eclipse.linuxtools.internal.callgraph.CallgraphView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.callgraph.callgraphview"
             name="%view.name"
@@ -39,14 +39,14 @@
             label="Systemtap Marker Action Set"
             visible="true">
          <action
-               class="org.eclipse.linuxtools.callgraph.actions.InsertMarkerAction"
+               class="org.eclipse.linuxtools.internal.callgraph.actions.InsertMarkerAction"
                definitionId="org.eclipse.linuxtools.callgraph.command3"
                id="org.eclipse.linuxtools.callgraph.actions.StapAction"
                label="Insert stap marker function"
                tooltip="Insert systemtap marker">
          </action>
          <action
-               class="org.eclipse.linuxtools.callgraph.actions.RemoveMarkerAction"
+               class="org.eclipse.linuxtools.internal.callgraph.actions.RemoveMarkerAction"
                definitionId="org.eclipse.linuxtools.callgraph.command4"
                id="org.eclipse.linuxtools.callgraph.actions.StapRemoveAction"
                label="Remove stap marker function"
@@ -88,7 +88,7 @@
           name="%extension.name.0"
           point="org.eclipse.linuxtools.callgraph.core.parser">
        <parser
-             class="org.eclipse.linuxtools.callgraph.StapGraphParser"
+             class="org.eclipse.linuxtools.internal.callgraph.StapGraphParser"
              realtime="true">
        </parser>
     </extension>

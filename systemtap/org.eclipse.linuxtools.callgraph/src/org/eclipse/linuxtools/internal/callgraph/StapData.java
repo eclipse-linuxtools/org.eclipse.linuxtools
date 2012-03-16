@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph;
+package org.eclipse.linuxtools.internal.callgraph;
 
 import java.util.ArrayList;
 import java.util.List;

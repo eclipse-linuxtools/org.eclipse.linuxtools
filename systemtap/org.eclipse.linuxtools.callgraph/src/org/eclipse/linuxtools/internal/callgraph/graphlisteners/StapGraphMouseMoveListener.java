@@ -9,9 +9,9 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.callgraph.graphlisteners;
+package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
-import org.eclipse.linuxtools.callgraph.StapGraph;
+import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 

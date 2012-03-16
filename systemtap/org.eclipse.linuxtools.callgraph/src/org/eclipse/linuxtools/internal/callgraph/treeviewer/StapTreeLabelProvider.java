@@ -8,12 +8,12 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.treeviewer;
+package org.eclipse.linuxtools.internal.callgraph.treeviewer;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.linuxtools.callgraph.CallGraphConstants;
-import org.eclipse.linuxtools.callgraph.StapData;
+import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
+import org.eclipse.linuxtools.internal.callgraph.StapData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 

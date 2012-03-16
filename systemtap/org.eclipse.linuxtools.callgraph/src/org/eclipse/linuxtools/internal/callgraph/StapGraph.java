@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph;
+package org.eclipse.linuxtools.internal.callgraph;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -26,15 +26,15 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.callgraph.graphlisteners.Projectionist;
-import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphKeyListener;
-import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
-import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseWheelListener;
-import org.eclipse.linuxtools.callgraph.treeviewer.StapTreeContentProvider;
-import org.eclipse.linuxtools.callgraph.treeviewer.StapTreeDoubleClickListener;
-import org.eclipse.linuxtools.callgraph.treeviewer.StapTreeLabelProvider;
-import org.eclipse.linuxtools.callgraph.treeviewer.StapTreeListener;
 import org.eclipse.linuxtools.internal.callgraph.core.MP;
+import org.eclipse.linuxtools.internal.callgraph.graphlisteners.Projectionist;
+import org.eclipse.linuxtools.internal.callgraph.graphlisteners.StapGraphKeyListener;
+import org.eclipse.linuxtools.internal.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.internal.callgraph.graphlisteners.StapGraphMouseWheelListener;
+import org.eclipse.linuxtools.internal.callgraph.treeviewer.StapTreeContentProvider;
+import org.eclipse.linuxtools.internal.callgraph.treeviewer.StapTreeDoubleClickListener;
+import org.eclipse.linuxtools.internal.callgraph.treeviewer.StapTreeLabelProvider;
+import org.eclipse.linuxtools.internal.callgraph.treeviewer.StapTreeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
