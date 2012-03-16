@@ -1,3 +1,12 @@
+2012-03-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves bug: #342896
+	* natives/linux/scripts/install-consolehelper.sh: New file.
+	* natives/linux/scripts/org.eclipse.linuxtools.oprofile.policy: New file.
+	* natives/linux/scripts/uninstall-consolehelper.sh: New file.
+	* natives/linux/scripts/install.sh: Rewrite for PolicyKit support.
+	* natives/linux/scripts/uninstall.sh: Ditto.
+	
 2012-01-05  Otavio Pontes <obusatto@linux.vnet.ibm.com>
 	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java,
 	  src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java:
