@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Calgraph Graphing Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.tests;singleton:=true
-Bundle-Version: 0.10.0.qualifier
+Bundle-Version: 0.11.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.callgraph.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -14,5 +14,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.cdt.core.model,
- org.eclipse.linuxtools.callgraph.core
+ org.eclipse.linuxtools.internal.callgraph.core
 Bundle-Vendor: Eclipse

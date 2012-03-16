@@ -2,7 +2,7 @@ package org.eclipse.linuxtools.sleepingthreads.launch;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchShortcut;
 
 public class LaunchSleepingThreads extends SystemTapLaunchShortcut {
 	

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

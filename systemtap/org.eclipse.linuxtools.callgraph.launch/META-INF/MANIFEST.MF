@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.launch;singleton:=true
-Bundle-Version: 0.10.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.callgraph.launch.CallgraphLaunchPlugin
+Bundle-Version: 0.11.0.qualifier
+Bundle-Activator: org.eclipse.linuxtools.internal.callgraph.launch.CallgraphLaunchPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.ui,
@@ -20,12 +20,12 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jface.text,
- org.eclipse.linuxtools.callgraph.core,
+ org.eclipse.linuxtools.internal.callgraph.core,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.ui.model,
  org.eclipse.ui.views.navigator
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.callgraph.launch
+Export-Package: org.eclipse.linuxtools.internal.callgraph.launch
 Bundle-Vendor: %Bundle-Vendor

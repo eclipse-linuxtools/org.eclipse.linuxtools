@@ -61,11 +61,22 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * <code>Comparator</code> implementation used to sort template proposals
 	 * @author Van Assche Alphonse
 	 */
-	private static final class ProposalComparator implements Comparator<TemplateProposal>, Serializable {
+	private static final class TemplateProposalComparator implements Comparator<TemplateProposal>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		public int compare(TemplateProposal t1, TemplateProposal t2) {
 			return (t2.getRelevance() - t1.getRelevance());
+		}
+	}
+
+	/**
+	 * Comparator implementation for a generic proposal
+	 * @author Sami Wagiaalla
+	 */
+	private static final class ProposalComparator implements Comparator<ICompletionProposal>{
+
+		public int compare(ICompletionProposal a, ICompletionProposal b){
+			return a.getDisplayString().compareToIgnoreCase(b.getDisplayString());
 		}
 	}
 
@@ -89,7 +100,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	private final SpecfileEditor editor;
 	
-	private static final Comparator<TemplateProposal> PROPOSAL_COMPARATOR = new ProposalComparator();
+	private static final Comparator<ICompletionProposal> PROPOSAL_COMPARATOR = new ProposalComparator();
+	private static final Comparator<TemplateProposal> TEMPLATE_PROPOSAL_COMPARATOR = new TemplateProposalComparator();
 
 	/**
 	 * Default constructor
@@ -158,6 +170,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				SpecfileLog.logError(e);
 			}
 		}
+
 		return result
 				.toArray(new ICompletionProposal[result.size()]);
 	}
@@ -203,7 +216,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 						Activator.getDefault().getImage(TEMPLATE_ICON), relevance));
 			}
 		}
-		Collections.sort(matches, PROPOSAL_COMPARATOR);
+		Collections.sort(matches, TEMPLATE_PROPOSAL_COMPARATOR);
 		return matches;
 	}
 
@@ -333,6 +346,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 						null, item[1]));
 			}
 		}
+
+		Collections.sort(proposals, PROPOSAL_COMPARATOR);
 		return proposals;
 	}
 	
