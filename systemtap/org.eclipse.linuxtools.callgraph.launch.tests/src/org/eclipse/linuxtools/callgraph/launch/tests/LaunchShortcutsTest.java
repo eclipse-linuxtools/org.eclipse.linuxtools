@@ -11,8 +11,8 @@
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
 import org.osgi.framework.Bundle;
 
 

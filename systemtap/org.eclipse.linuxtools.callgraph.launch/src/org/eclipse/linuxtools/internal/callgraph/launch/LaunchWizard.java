@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.callgraph.launch;
+package org.eclipse.linuxtools.internal.callgraph.launch;
 
 
 import org.eclipse.core.resources.IResource;

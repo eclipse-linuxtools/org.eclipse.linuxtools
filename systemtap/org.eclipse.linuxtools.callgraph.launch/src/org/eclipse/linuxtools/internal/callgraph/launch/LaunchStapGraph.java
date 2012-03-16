@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.callgraph.launch;
+package org.eclipse.linuxtools.internal.callgraph.launch;
 
 import java.io.BufferedReader;
 import java.io.File;

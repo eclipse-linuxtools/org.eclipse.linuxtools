@@ -12,7 +12,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate"
+            delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch"
             modes="profile"
             name="%launchConfigurationType.name.0"
@@ -27,7 +27,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
+            class="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
             description="%launchConfigurationTabGroup.description.0"
             id="org.eclipse.linuxtools.callgraph.launch.systemtapTabGroup"
             type="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch">
@@ -38,7 +38,7 @@
 	<extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph"
+            class="org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph"
             id="org.eclipse.linuxtools.systemtap.quicklaunchStapGraph1"
             icon="icons/bar_graph.png"
             label="%launch.name"
