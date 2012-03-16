@@ -9,12 +9,14 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.callgraph.actions;
+package org.eclipse.linuxtools.internal.callgraph.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -31,14 +33,20 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * 
  * @see IWorkbenchWindowActionDelegate
  */
-public class RemoveMarkerAction implements IWorkbenchWindowActionDelegate {
+public class InsertMarkerAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
-	private String stapCommentMarker = "//STAPSTAPSTAP"; //$NON-NLS-1$
+	private static final String SYSTEMTAP_MARKER_INSERTED = 
+		"//SYSTEMTAP marker function - this code should appear //STAPSTAPSTAP\n" +//$NON-NLS-1$
+		"//once at the top of your program //STAPSTAPSTAP\n" //$NON-NLS-1$
+			+ "void ___STAP_MARKER___(const char*); //STAPSTAPSTAP\n " //$NON-NLS-1$
+			+ "void ___STAP_MARKER___(const char* i) { //STAPSTAPSTAP\n" //$NON-NLS-1$
+			+ "return; //STAPSTAPSTAP\n" //$NON-NLS-1$
+			+ "} //STAPSTAPSTAP\n"; //$NON-NLS-1$
 
 	/**
 	 * The constructor.
 	 */
-	public RemoveMarkerAction() {
+	public InsertMarkerAction() {
 	}
 
 	/**
@@ -56,39 +64,29 @@ public class RemoveMarkerAction implements IWorkbenchWindowActionDelegate {
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());
 
-		for (int i = 0; i < doc.getNumberOfLines(); i++) {
-			try {
-				int start = doc.getLineOffset(i);
-				int length = doc.getLineLength(i);
-				if (doc.get(start, length).contains(stapCommentMarker)) {
-					doc.replace(start, length, ""); //$NON-NLS-1$
-				}
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
+		StyledText st = (StyledText) editor.getAdapter(Control.class);
+
+		try {
+			int offset = st.getCaretOffset();
+			doc.replace(offset, 0, "if (true) { //STAPSTAPSTAP\n" + //$NON-NLS-1$
+				"\tchar* stapMarker = new char[20]; //STAPSTAPSTAP\n" + //$NON-NLS-1$
+				"\tsprintf(stapMarker, \"\"); //STAPSTAPSTAP\n" + //$NON-NLS-1$
+				// "\tprintf(\"%s\\n\", stapMarker); //STAPSTAPSTAP\n"
+				// +
+				"\t___STAP_MARKER___(stapMarker); //STAPSTAPSTAP\n\t} //STAPSTAPSTAP\n"); //$NON-NLS-1$
+			st.setCaretOffset(offset + 68);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
 		}
-		
-		//TODO: Figure out why I need to do this 3 times to remove all STAPSTAPSTAP...
-		for (int i = 0; i < doc.getNumberOfLines(); i++) {
+		// TODO: if this is too slow, fix
+		if (!doc.get().contains(SYSTEMTAP_MARKER_INSERTED)) {
 			try {
-				int start = doc.getLineOffset(i);
-				int length = doc.getLineLength(i);
-				if (doc.get(start, length).contains(stapCommentMarker)) {
-					doc.replace(start, length, ""); //$NON-NLS-1$
-				}
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		for (int i = 0; i < doc.getNumberOfLines(); i++) {
-			try {
-				int start = doc.getLineOffset(i);
-				int length = doc.getLineLength(i);
-				if (doc.get(start, length).contains(stapCommentMarker)) { //$NON-NLS-1$
-					doc.replace(start, length, ""); //$NON-NLS-1$
-				}
-			} catch (BadLocationException e) {
+				int offset;
+				offset = doc.getLineOffset(0);
+				String output = SYSTEMTAP_MARKER_INSERTED;
+
+				doc.replace(offset, 0, output);
+			} catch (org.eclipse.jface.text.BadLocationException e) {
 				e.printStackTrace();
 			}
 		}

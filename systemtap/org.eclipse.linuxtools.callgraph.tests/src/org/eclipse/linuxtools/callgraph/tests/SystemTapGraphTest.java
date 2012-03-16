@@ -18,9 +18,9 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.linuxtools.callgraph.CallGraphConstants;
-import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
+import org.eclipse.linuxtools.internal.callgraph.CallgraphView;
+import org.eclipse.linuxtools.internal.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
 import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
 

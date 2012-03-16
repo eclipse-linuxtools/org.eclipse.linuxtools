@@ -8,15 +8,15 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.treeviewer;
+package org.eclipse.linuxtools.internal.callgraph.treeviewer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.callgraph.StapData;
-import org.eclipse.linuxtools.callgraph.StapGraph;
+import org.eclipse.linuxtools.internal.callgraph.StapData;
+import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 
 public class StapTreeContentProvider implements ITreeContentProvider{
 

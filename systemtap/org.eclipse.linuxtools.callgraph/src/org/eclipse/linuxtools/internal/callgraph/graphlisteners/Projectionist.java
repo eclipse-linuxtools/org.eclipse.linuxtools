@@ -8,13 +8,13 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.graphlisteners;
+package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.callgraph.StapGraph;
+import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 import org.eclipse.swt.widgets.Display;
 
 /**

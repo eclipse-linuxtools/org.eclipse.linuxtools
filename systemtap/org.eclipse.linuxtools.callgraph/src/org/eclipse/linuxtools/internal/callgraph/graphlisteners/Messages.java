@@ -1,9 +1,9 @@
-package org.eclipse.linuxtools.callgraph.graphlisteners;
+package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.callgraph.graphlisteners.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.callgraph.graphlisteners.messages"; //$NON-NLS-1$
 	public static String StapGraphMouseMoveListener_0;
 	public static String StapGraphMouseMoveListener_1;
 	public static String StapGraphMouseMoveListener_2;

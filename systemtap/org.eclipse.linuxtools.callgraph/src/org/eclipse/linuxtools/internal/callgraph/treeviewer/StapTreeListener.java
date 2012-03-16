@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.callgraph.treeviewer;
+package org.eclipse.linuxtools.internal.callgraph.treeviewer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeViewerListener;
 import org.eclipse.jface.viewers.TreeExpansionEvent;
-import org.eclipse.linuxtools.callgraph.StapData;
+import org.eclipse.linuxtools.internal.callgraph.StapData;
 import org.eclipse.swt.widgets.ScrollBar;
 
 public class StapTreeListener implements ITreeViewerListener{
