@@ -31,7 +31,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 			+ "\n" + "Patch0: first.patch" + "\n" + "Source2: ant.jar" + "\n"
 			+ "Source3: main.tar.gz";
 
-	private static final String BUILD_REQUIRES =  "BuildRequires: a";
+	private static final String BUILD_REQUIRES =  "BuildRequires: p";
 	
 	private SpecfileEditor initEditor(String contents) throws Exception {
 		newFile(contents);
@@ -82,6 +82,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 
 	@Test
 	public void testBRCompletionOrder() throws Exception {
+		setPackageList(new String[]{"package3", "package2", "package4", "package1"});
 		SpecfileEditor editor = initEditor(BUILD_REQUIRES);
 		testProject.refresh();
 		editor.doRevertToSaved();
