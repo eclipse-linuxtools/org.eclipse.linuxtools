@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileCompletionProcessor;
@@ -30,11 +31,14 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 			+ "\n" + "Patch0: first.patch" + "\n" + "Source2: ant.jar" + "\n"
 			+ "Source3: main.tar.gz";
 
+	private static final String BUILD_REQUIRES =  "BuildRequires: a";
+	
 	private SpecfileEditor initEditor(String contents) throws Exception {
 		newFile(contents);
 		IEditorPart openEditor = IDE.openEditor(Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
 				testFile);
+
 		return (SpecfileEditor) openEditor;
 	}
 
@@ -76,4 +80,29 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 		computeCompletionProposals(THREE_SOURCE_SEPARATED, 3);
 	}
 
+	@Test
+	public void testBRCompletionOrder() throws Exception {
+		SpecfileEditor editor = initEditor(BUILD_REQUIRES);
+		testProject.refresh();
+		editor.doRevertToSaved();
+
+		editor.getSpecfileSourceViewer().setSelectedRange(BUILD_REQUIRES.length(), 0);
+		SpecfileCompletionProcessor processor = new SpecfileCompletionProcessor(
+				editor);
+		
+		ICompletionProposal[] proposals = processor.computeCompletionProposals(
+				editor.getSpecfileSourceViewer(), BUILD_REQUIRES.length());
+		
+		assertTrue("Cannot perform test; not enough proposals", proposals.length > 1);
+
+		ICompletionProposal previous = proposals[0];
+		
+		for (int i = 1; i < proposals.length; i++){
+			ICompletionProposal current = proposals[i];
+			assertTrue("Proposals are not in alphabetical order",
+						previous.getDisplayString().compareToIgnoreCase (current.getDisplayString()) < 0);
+			previous = current;
+		}
+
+	}
 }

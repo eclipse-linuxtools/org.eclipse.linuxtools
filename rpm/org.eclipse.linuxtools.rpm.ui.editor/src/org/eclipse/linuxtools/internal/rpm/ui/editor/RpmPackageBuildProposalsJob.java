@@ -21,6 +21,8 @@ import java.util.Date;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -35,6 +37,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	private RpmPackageBuildProposalsJob(String name) {
 		super(name);
+		this.addJobChangeListener(updateFinishedListener);
 	}
 
 	private static final String JOB_NAME = Messages.RpmPackageBuildProposalsJob_0;
@@ -43,6 +46,42 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	private static final IEclipsePreferences PREFERENCES = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 
+	private Object updatingLock = false;
+	private boolean updating = false;
+
+	private IJobChangeListener updateFinishedListener = new IJobChangeListener(){
+		public void sleeping(IJobChangeEvent event) {}
+		public void scheduled(IJobChangeEvent event) {}
+		public void running(IJobChangeEvent event) {}
+		public void awake(IJobChangeEvent event) {}
+		public void aboutToRun(IJobChangeEvent event) {}
+		
+		public void done(IJobChangeEvent event) {
+			synchronized (updatingLock) {
+				updating = false;
+				updatingLock.notifyAll();
+			}
+		}
+	};
+	
+	/**
+	 * If the updates thread has not finished updating this function blocks
+	 * the current thread until that job is done.
+	 */
+	public static void waitForUpdates (){
+		if (job != null){
+			try {
+
+				synchronized (job.updatingLock){
+					if (job.updating){
+						job.updatingLock.wait();						
+					}
+				}
+
+			} catch (InterruptedException e) {}
+		}
+	}
+	
 	protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
 		public void preferenceChange(PreferenceChangeEvent event) {
 			if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
@@ -105,12 +144,12 @@ public final class RpmPackageBuildProposalsJob extends Job {
 			if (runJob) {
 				if (job == null) {
 					job = new RpmPackageBuildProposalsJob(JOB_NAME);
-					job.schedule();
+					job.lockAndSchedule();
 					PREFERENCES.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 							.getTime());
 				} else {
 					job.cancel();
-					job.schedule();
+					job.lockAndSchedule();
 					PREFERENCES.putLong(
 							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 									.getTime());
@@ -122,6 +161,19 @@ public final class RpmPackageBuildProposalsJob extends Job {
 				job = null;
 			}
 		}
+	}
+
+	
+	/**
+	 * Puts the object in the updating state so that any objets
+	 * requesting information will be made to wait until the update
+	 * is complete.
+	 */
+	private void lockAndSchedule() {
+		synchronized(this.updatingLock){
+			this.updating = true;
+		}
+		this.schedule();
 	}
 
 	/**
