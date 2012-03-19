@@ -1,1 +1,0 @@
-SUBDIRS=$(libName) include exampleProgram

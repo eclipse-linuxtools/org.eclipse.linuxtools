@@ -120,11 +120,6 @@
 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.cdt\.autotools.*/*">
-		</activityPatternBinding>
- 		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.changelog.*/*">
 		</activityPatternBinding>
 		

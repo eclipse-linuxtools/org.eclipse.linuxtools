@@ -4,9 +4,6 @@
    <description url="http://download.eclipse.org/technology/linuxtools/updates-nightly">
       Nightly builds of Linux Tools project.
    </description>
-   <feature url="features/org.eclipse.linuxtools.cdt.autotools_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.autotools" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -62,9 +59,6 @@
       <category name="Linux Tools"/>
    </feature>
    <!-- Source features -->
-    <feature url="features/org.eclipse.linuxtools.cdt.autotools.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.autotools.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
