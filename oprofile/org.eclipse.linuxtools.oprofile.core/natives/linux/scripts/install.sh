@@ -29,30 +29,23 @@ if [ $RET -ne 0 ]; then
  exit 1
 fi
 
-# need consolehelper and consolehelper-gtk to run opcontrol as
+# need pkexec to run opcontrol as
 # root from within eclipse
-if [ ! -x /usr/bin/consolehelper ]; then
-  echo >&2 "Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead."
-  exit 1
-fi
-# consolehelper-gtk is required for consolehelper to pop up the
-# GUI dialog and ask for the root password.
-if [ ! -x /usr/bin/consolehelper-gtk ]; then
-  echo >&2 "Error: /usr/bin/consolehelper-gtk does not exist."
-  echo >&2 "On RHEL/Fedora you can install it by: yum install usermode-gtk."
+if [ ! -x /usr/bin/pkexec ]; then
+  echo >&2 "Error: /usr/bin/pkexec does not exist."
+  echo >&2 "On RHEL/Fedora you can install it by: yum install polkit."
   exit 1
 fi
 
 ### install ###
 
-#create the sym link to consolehelper
-test -L ./opcontrol || { rm -f ./opcontrol && ln -s /usr/bin/consolehelper opcontrol ; }
-if [ $? -ne 0 ]; then
-  echo >&2 "Error: cannot create opcontrol wrapper in `pwd`"
-  exit 1
-fi
+test -f /usr/share/polkit-1/actions/org.eclipse.linuxtools.oprofile.policy || install -D -m 644 org.eclipse.linuxtools.oprofile.policy /usr/share/polkit-1/actions/org.eclipse.linuxtools.oprofile.policy
 
-test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
-test -f /etc/pam.d/opcontrol || install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
+test -L ./opcontrol || rm -f ./opcontrol
+test -f ./opcontrol || rm -f ./opcontrol
+
+echo '#!/bin/sh' > opcontrol || exit 1
+echo 'exec pkexec /usr/bin/opcontrol ${1+"$@"}' >> opcontrol
+chmod +x ./opcontrol
 
 echo Eclipse-OProfile plugin install successful.

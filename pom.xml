@@ -145,7 +145,6 @@
   </profiles>
 
   <modules>
-    <module>autotools</module>
     <module>changelog</module>
     <module>gcov</module>
     <module>gprof</module>

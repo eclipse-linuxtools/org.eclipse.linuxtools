@@ -15,8 +15,6 @@ if [ $(basename $(pwd)) != scripts ]; then
   exit 1
 fi
 
-rm -f /etc/security/console.apps/opcontrol
-rm -f /etc/pam.d/opcontrol
-rm -f ./opcontrol
+rm -f /usr/share/polkit-1/actions/org.eclipse.linuxtools.oprofile.policy
 
 echo Eclipse-OProfile plugin uninstall successful.
