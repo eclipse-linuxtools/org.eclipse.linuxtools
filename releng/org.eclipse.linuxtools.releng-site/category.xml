@@ -13,7 +13,7 @@
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.ctf_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.ctf_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf" version="0.0.0" os="linux">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
@@ -74,7 +74,7 @@
    <feature url="features/org.eclipse.linuxtools.changelog.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.ctf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf.source" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.ctf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf.source" version="0.0.0" os="linux">
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.dataviewers.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.dataviewers.feature.source" version="0.0.0">
