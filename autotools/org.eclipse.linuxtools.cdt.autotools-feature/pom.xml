@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.eclipse.linuxtools.cdt.autotools</groupId>
     <artifactId>linuxtools-cdt-autotools-parent</artifactId>
-    <version>0.10.0-SNAPSHOT</version>
+    <version>0.10.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.cdt.autotools</artifactId>
