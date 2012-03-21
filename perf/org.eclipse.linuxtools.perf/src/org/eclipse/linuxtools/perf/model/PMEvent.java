@@ -16,13 +16,5 @@ public class PMEvent extends TreeParent {
 		super(name);
 		// Don't think theres anything else to do in here.
 	}
-
-	public PMCommand getCommand(String name) {
-		TreeParent tmp = getChild(name);
-		if ((tmp != null) && (tmp instanceof PMCommand)) {
-			return (PMCommand) tmp;
-		}
-		return null;
-	}
 	
 }

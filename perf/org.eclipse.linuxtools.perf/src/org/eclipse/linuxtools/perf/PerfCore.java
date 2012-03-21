@@ -23,8 +23,6 @@ import java.util.List;
 import org.eclipse.cdt.core.parser.util.ArrayUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.perf.model.PMCommand;
 import org.eclipse.linuxtools.perf.model.PMDso;
@@ -309,7 +307,7 @@ public class PerfCore {
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 		
 		line = null;
-		Double samples;
+		double samples;
 		String comm,dso,symbol;
 		boolean kernelFlag;
 		PMEvent currentEvent = null;
@@ -354,7 +352,7 @@ public class PerfCore {
 				} else {
 					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
 					if (items.length != 5) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line + "//length:" + items.length); }; continue; }
-					percent = Float.parseFloat(items[0].substring(0, items[0].length() - 1)); //percent column
+					percent = Float.parseFloat(items[0]); //percent column
 					samples = Double.parseDouble(items[1].trim()); //samples column
 					comm = items[2].trim(); //command column
 					dso = items[3].trim(); //dso column
@@ -363,14 +361,14 @@ public class PerfCore {
 					
 					//if (PerfPlugin.DEBUG_ON) System.out.println(percent + "//" + samples + "//" + comm + "//" + dso + "//" + kernelFlag + "//" + symbol);
 					if ((currentCommand == null) || (!currentCommand.getName().equals(comm))) {
-						currentCommand = currentEvent.getCommand(comm);
+						currentCommand = (PMCommand) currentEvent.getChild(comm);
 						if(currentCommand == null) {
 							currentCommand = new PMCommand(comm);
 							currentEvent.addChild(currentCommand);
 						}
 					}
 					if ((currentDso == null) || (!currentDso.getName().equals(dso))) {
-						currentDso = currentCommand.getDso(dso);
+						currentDso = (PMDso) currentCommand.getChild(dso);
 						if (currentDso == null) {
 							currentDso = new PMDso(dso,kernelFlag);
 							currentCommand.addChild(currentDso);
@@ -474,7 +472,7 @@ public class PerfCore {
 										//process the line.
 										items = line.trim().split(" +");
 										if (items.length != 2) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line); }; continue; }
-										percent = Float.parseFloat(items[0].substring(0, items[0].length() - 1));
+										percent = Float.parseFloat(items[0]);
 										lineRef = items[1];
 										items = lineRef.split(":");
 										if (currentDso == null) { 
@@ -486,7 +484,7 @@ public class PerfCore {
 												//Symbol currently in unfiled symbols (from Perf Report), move it into it proper area.
 												currentSym.getParent().removeChild(currentSym);
 												currentDso.getFile(items[0]).addChild(currentSym);
-											} else if (!currentSym.getFile().getPath().equals(items[0])) {
+											} else if (!((PMFile)currentSym.getParent()).getPath().equals(items[0])) {
 												//if (PerfPlugin.DEBUG_ON) System.err.println("Multiple paths found for this symbol.");
 												currentSym.markConflict();
 												currentSym.getParent().removeChild(currentSym);

@@ -10,23 +10,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.perf.model;
 
-public class PMCommand extends TreePercentable {
+public class PMCommand extends TreeParent {
 
 	public PMCommand(String name) {
-		super(name);
+		super(name, 0);
 	}
-	public PMDso getDso(String name) {
-		TreeParent tmp = getChild(name);
-		if ((tmp != null) && (tmp instanceof PMDso)) {
-			return (PMDso)tmp;
-		}
-		return null;
-	}
+
 	public String toString() {
 		String prefix = "";
-		if (percent != -1)
-			prefix = percent + "% in ";
-		return prefix + name;
+		if (getPercent() != -1)
+			prefix = getPercent() + "% in ";
+		return prefix + getName();
 	}	
 
 }

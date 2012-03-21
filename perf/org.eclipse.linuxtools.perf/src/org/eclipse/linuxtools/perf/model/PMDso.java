@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.perf.model;
 
 import org.eclipse.linuxtools.perf.model.PMFile;
 
-public class PMDso extends TreePercentable {
+public class PMDso extends TreeParent {
 	private String path = null;
 	private boolean kernel = false; //Is this DSO a kernel dso?
 	
@@ -21,9 +21,10 @@ public class PMDso extends TreePercentable {
 	}
 	
 	public PMDso(String dsoName, boolean kernel) {
-		super(dsoName);
+		super(dsoName, 0);
 		this.kernel = kernel;
 	}
+
 	public PMFile getFile(String fileName) {
 		//check if exists else make a new one.
 		PMFile tmp = (PMFile)getChild(fileName);
@@ -41,22 +42,16 @@ public class PMDso extends TreePercentable {
 	}
 	public String toString() {
 		String prefix = "";
-		if (percent != -1)
-			prefix += percent + "% in ";
+		if (getPercent() != -1)
+			prefix += getPercent() + "% in ";
 		if (kernel == true)
 			prefix += "[k] ";
 		if (path != null) {
-			return prefix + name + " (at " + path + ")";
+			return prefix + getName() + " (at " + path + ")";
 		}
-		return prefix + name;
+		return prefix + getName();
 	}
 	public String getPath() {
 		return path;
-	}
-	
-	public PMCommand getCommand() {
-		if (!(super.getParent() instanceof PMCommand))
-			return null;
-		return (PMCommand)super.getParent();
 	}
 }

@@ -10,30 +10,22 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.perf.model;
 
-public class PMFile extends TreePercentable {
+public class PMFile extends TreeParent {
 	protected String path;
 	
 	public PMFile(String fileName) {
-		super(fileName);
+		super(fileName, 0);
 		path = fileName;
 	}
 
-	/*public void setPath(String filePath) {
-		this.path = filePath;
-	}*/
 	public String getPath() {
 		return this.path;
 	}
 	
 	public String toString() {
 		String prefix = "";
-		if (percent != -1)
-			prefix = percent + "% in ";
+		if (getPercent() != -1)
+			prefix = getPercent() + "% in ";
 		return prefix + path;
-	}
-	public PMDso getDso() {
-		if (!(super.getParent() instanceof PMDso))
-			return null;
-		return (PMDso)super.getParent();
 	}
 }

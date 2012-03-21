@@ -15,8 +15,9 @@ import org.eclipse.linuxtools.perf.model.PMLineRef;
 public class PMSymbol extends TreeParent {
 	private Double samples;
 	private boolean pathConflictFound = false;
+
 	public String getFunctionName() {
-		String tmpName = name;
+		String tmpName = getName();
 		if (tmpName.startsWith("[")) { // filer out the "[.] "
 			tmpName = tmpName.substring(4);
 		}
@@ -26,17 +27,12 @@ public class PMSymbol extends TreeParent {
 		}
 		return tmpName;
 	}
-	public PMSymbol(String symbolName, Double samples2, float pc) {
-		super(symbolName);
-		this.samples = samples2;
-		this.percent = pc;
+
+	public PMSymbol(String symbolName, double samples, float pc) {
+		super(symbolName, pc);
+		this.samples = samples;
 	}
-	public void addChild(TreeParent child) {
-		//TODO clean this up, this is a bit improper. TreePercentable should be changed to an interface and the add/remove-child percent methods should be moved to TreeParent
-		float tmp = percent;
-		super.addChild(child);
-		percent = tmp;
-	}
+
 	public void addPercent(Integer lineNum, Float percent) {  //Adds percent to a lineref within this symbol.
 		PMLineRef current = (PMLineRef)getChild(lineNum.toString());
 		if (current == null) {
@@ -46,18 +42,15 @@ public class PMSymbol extends TreeParent {
 			current.addPercent(percent);
 		}
 	}
+
 	public String toString() {
-		return percent + "% in " + name + " (" + samples + " samples)" + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
+		return getPercent() + "% in " + getName() + " (" + samples + " samples)" + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
 	}
-	public PMFile getFile() {
-		if (!(super.getParent() instanceof PMFile))
-			return null;
-		return (PMFile)super.getParent();
-	}
-	
+
 	public void markConflict() {
 		pathConflictFound = true;
 	}
+
 	public boolean conflicted() {
 		return pathConflictFound;
 	}

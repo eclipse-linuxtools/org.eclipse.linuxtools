@@ -46,7 +46,8 @@ public class PerfDoubleClickAction extends Action {
 			PMLineRef tmp = (PMLineRef)obj;
 //			showMessage(tmp.getParent().getName().toString());
 			try {
-				ProfileUIUtils.openEditorAndSelect(tmp.getSymbol().getFile().getPath(), Integer.parseInt(tmp.getName()));
+				PMFile file = (PMFile) tmp.getParent().getParent();
+				ProfileUIUtils.openEditorAndSelect(file.getPath(), Integer.parseInt(tmp.getName()));
 			} catch (PartInitException e) {
 				e.printStackTrace();
 			} catch (BadLocationException e) {
@@ -64,20 +65,22 @@ public class PerfDoubleClickAction extends Action {
 			}
 		} else if (obj instanceof PMSymbol) {
 			PMSymbol tmpsym = (PMSymbol)obj;
-			if (tmpsym.getFile().getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) 
+			PMFile tmpfile = (PMFile)tmpsym.getParent();
+			PMDso tmpdso = (PMDso)tmpfile.getParent();
+			if (tmpfile.getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) 
 				return; //Don't try to do anything if we don't know where or what the symbol is.
-			String binaryPath = tmpsym.getFile().getDso().getPath();
+			String binaryPath = tmpdso.getPath();
 			ICProject project;
 			try {
 				project = ProfileUIUtils.findCProjectWithAbsolutePath(binaryPath);
-				HashMap<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, tmpsym.getFunctionName(), -1, tmpsym.getFile().getPath(), true);
+				HashMap<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, tmpsym.getFunctionName(), -1, tmpfile.getPath(), true);
 				boolean bFound = false;
 				for (String loc : map.keySet()) {
 					ProfileUIUtils.openEditorAndSelect(loc, map.get(loc)[0], map.get(loc)[1]);
 					bFound = true;
 				}
 				if (!bFound) {
-					ProfileUIUtils.openEditorAndSelect(tmpsym.getFile().getPath(), 1);
+					ProfileUIUtils.openEditorAndSelect(tmpfile.getPath(), 1);
 				}
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block

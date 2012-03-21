@@ -12,24 +12,17 @@ package org.eclipse.linuxtools.perf.model;
 
 public class PMLineRef extends TreeParent {
 	protected int ln;
-	protected float pc;
+
 	public PMLineRef(int lineNum, float percent) {
-		super(""+lineNum);
+		super(""+lineNum, percent);
 		ln = lineNum;
-		pc = percent;
 	}
+
 	public void addPercent(Float addpc) {
-		pc += addpc;
+		setPercent(getPercent() + addpc);
 	}
-	public float getPercent() {
-		return pc;
-	}
-	public PMSymbol getSymbol() {
-		if (!(super.getParent() instanceof PMSymbol))
-			return null;
-		return (PMSymbol)super.getParent();
-	}
+
 	public String toString() {
-		return pc + "% on line " + ln;
+		return getPercent() + "% on line " + ln;
 	}
 }

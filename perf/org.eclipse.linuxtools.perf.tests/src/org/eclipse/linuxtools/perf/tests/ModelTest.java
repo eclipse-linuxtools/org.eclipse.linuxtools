@@ -103,14 +103,43 @@ public class ModelTest extends AbstractTest {
 		Stack<Class<?>> stack = new Stack<Class<?>> ();
 		stack.addAll(Arrays.asList(klassList));
 
-		checkChildren(invisibleRoot, stack);
+		checkChildrenStructure(invisibleRoot, stack);
+	}
+
+	public void testPercentages () {
+		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
+		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
+
+		checkChildrenPercentages (invisibleRoot, invisibleRoot.getPercent());
+	}
+
+	/**
+	 * @param root some element that will serve as the root
+	 * @param sum the expected sum of the percentages of this root's
+	 * immediate children
+	 */
+	public void checkChildrenPercentages (TreeParent root, float sum) {
+		float actualSum = 0;
+		// If a root has no children we're done
+		if (root.getChildren().length != 0) {
+			for (TreeParent child : root.getChildren()) {
+				actualSum += child.getPercent();
+				checkChildrenPercentages(child, child.getPercent());
+			}
+			// some top-level elements have an undefined percentage but
+			// their children have defined percentages
+			// eg. the invisible root, and PMCommand
+			if (actualSum != 100 && sum != -1){
+				assertEquals(sum, actualSum);
+			}
+		}
 	}
 
 	/**
 	 * @param root some element that will serve as the root
 	 * @param stack a stack of classes
 	 */
-	public void checkChildren (TreeParent root, Stack<Class<?>> stack){
+	public void checkChildrenStructure (TreeParent root, Stack<Class<?>> stack){
 		if (stack.isEmpty()){
 			return;
 		}else{
@@ -123,7 +152,7 @@ public class ModelTest extends AbstractTest {
 				// each sibling needs its own stack
 				Stack<Class<?>> newStack = new Stack<Class<?>>();
 				newStack.addAll(Arrays.asList(stack.toArray(new Class<?> [] {})));
-				checkChildren(tp, newStack);
+				checkChildrenStructure(tp, newStack);
 			}
 		}
 	}
