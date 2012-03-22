@@ -61,6 +61,19 @@ public class LinuxtoolsPathProperty {
 		return instance;
 	}
 
+	/*
+	 * This function will return the selected Linuxtools Path in the
+	 * 'Linux Tools Path' project properties page.
+	 * If there is a default path setted by the extension point it should be
+	 * selected as the default by the tools.launch.ui classes. This function
+	 * will not care about it.
+	 *
+	 * * If the tools.launch.ui is not installed this function should always
+	 * return "".
+	 * * If the option 'Use the System env PATH' this function should return ""
+	 * * If the option 'Prepend string to path' is selected this function
+	 * should return the value of the selected path.
+	 */
 	public String getLinuxtoolsPath(IProject project) {
 		if (project == null)
 			return null;
@@ -77,10 +90,13 @@ public class LinuxtoolsPathProperty {
 			systemPathSelected = getLinuxtoolsPathSystemDefault();
 
 		if (systemPathSelected)
-			return getLinuxtoolsPathDefault();
+			return "";
 
-		String path = store.getString(LINUXTOOLS_PATH_NAME);
-		if (path == null || path.equals(""))
+		String path = null;
+		if (store.contains(LINUXTOOLS_PATH_NAME))
+			path = store.getString(LINUXTOOLS_PATH_NAME);
+
+		if (path == null)
 			return getLinuxtoolsPathDefault();
 		return path;
 	}

@@ -118,10 +118,10 @@
         </property>
       </activation>
       <properties>
-        <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
+        <eclipse-site>http://download.eclipse.org/releases/staging</eclipse-site>
         <platform-version>[4.2,)</platform-version>
         <sdk-version>4.2</sdk-version>
-        <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/nightly/</cdt-site>
+        <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/milestones/M6</cdt-site>
         <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
       <repositories>
