@@ -1,4 +1,4 @@
-Hierarchy;Name (location);Time;Calls;Time/Call;%Time
+Hierarchy;Name (location);Time;Calls;Time/Call;% Time
 +-;Summary;30.000ms;;;100.0
   +-;func_001;0ns;1;0ns;0.0
   +-;func_002;0ns;1;0ns;0.0

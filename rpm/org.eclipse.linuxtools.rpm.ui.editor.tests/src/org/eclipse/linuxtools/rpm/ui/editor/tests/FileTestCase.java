@@ -12,7 +12,10 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import static org.junit.Assert.fail;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -22,6 +25,8 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
@@ -97,4 +102,35 @@ public abstract class FileTestCase {
 		specfile = parser.parse(testDocument);
 	}
 
+	/**
+	 * Set the potential rpm package list to the given list. Useful for
+	 * testing package proposals.
+	 * @param packages 
+	 */
+	protected void setPackageList(String[] packages) {
+		Activator
+				.getDefault()
+				.getPreferenceStore()
+				.setValue(PreferenceConstants.P_RPM_LIST_FILEPATH,
+						"/tmp/pkglist1");
+		Activator
+				.getDefault()
+				.getPreferenceStore()
+				.setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,
+						false);
+
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(
+					"/tmp/pkglist1"));
+			
+			for (int i =0; i < packages.length; i++){
+				out.write(packages[i] + "\n");
+			}
+
+			out.close();
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+		Activator.packagesList = null;
+	}
 }

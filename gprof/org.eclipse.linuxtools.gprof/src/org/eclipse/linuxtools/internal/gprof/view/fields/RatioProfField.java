@@ -35,6 +35,7 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
 	 * @param obj
 	 * @return the percentage value to display, as a float
 	 */
+	@Override
 	public float getPercentage(Object obj) {
 		TreeElement e = (TreeElement) obj;
 		int SamplesSum = e.getRoot().getSamples();
@@ -46,6 +47,7 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public int compare(Object obj1, Object obj2) {
 		TreeElement e1 = (TreeElement) obj1;
 		TreeElement e2 = (TreeElement) obj2;
@@ -58,14 +60,16 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
 	 */
+	@Override
 	public String getColumnHeaderText() {
-		return "%Time";
+		return "% Time";
 	}
 
 	/* 
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField#getNumberFormat()
 	 */
+	@Override
 	public NumberFormat getNumberFormat() {
 		return nf;
 	}
@@ -74,10 +78,16 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField#isSettedNumberFormat()
 	 */
+	@Override
 	public boolean isSettedNumberFormat() {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.charts.provider.IChartField#getNumber(java.lang.Object)
+	 */
+	@Override
 	public Number getNumber(Object obj) {
 		float f = getPercentage(obj);
 		return new Float(f);

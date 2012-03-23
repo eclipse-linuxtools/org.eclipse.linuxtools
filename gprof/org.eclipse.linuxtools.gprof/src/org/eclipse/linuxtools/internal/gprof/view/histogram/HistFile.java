@@ -65,11 +65,22 @@ public class HistFile extends AbstractTreeElement {
 		HistFunction hf = getChild(s);
 		hf.addCallGraphNode(node);
 	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
+	 */
+	@Override
+	public boolean hasChildren() {
+		return !children.isEmpty();
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
 	 */
+	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return this.children;
 	}
@@ -78,6 +89,7 @@ public class HistFile extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
 	 */
+	@Override
 	public String getName() {
 		Path f = new Path(sourcePath);
 		return f.lastSegment();
@@ -87,6 +99,7 @@ public class HistFile extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourceLine()
 	 */
+	@Override
 	public int getSourceLine() {
 		return 0;
 	}
@@ -95,6 +108,7 @@ public class HistFile extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourcePath()
 	 */
+	@Override
 	public String getSourcePath() {
 		return this.sourcePath;
 	}
@@ -104,6 +118,7 @@ public class HistFile extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
 	 */
+	@Override
 	public int getCalls() {
 		return -1;
 	}

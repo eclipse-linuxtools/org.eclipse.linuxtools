@@ -44,7 +44,7 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 	/**
 	 * The constructor
 	 */
-	private LibhoverPlugin() {
+	public LibhoverPlugin() {
 	}
 
 	/*

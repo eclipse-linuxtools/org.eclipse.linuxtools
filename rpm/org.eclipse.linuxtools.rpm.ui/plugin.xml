@@ -20,7 +20,7 @@
       <wizard
             name="%wizard.name.0"
             icon="icons/rpm.gif"
-            class="org.eclipse.linuxtools.rpm.ui.RPMExportWizard"
+            class="org.eclipse.linuxtools.internal.rpm.ui.RPMExportWizard"
             category="org.eclipse.linuxtools.rpm.ui"
             id="org.eclipse.linuxtools.rpm.ui.RPMExportWizard">
          <description>
@@ -39,7 +39,7 @@
       <wizard
             name="%wizard.name.1"
             icon="icons/rpm.gif"
-            class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard" 
+            class="org.eclipse.linuxtools.internal.rpm.ui.SRPMImportWizard" 
             category="org.eclipse.linuxtools.rpm.ui"
             id="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard">
          <description>
@@ -88,7 +88,7 @@
       <wizard
       		project="true"
             category="org.eclipse.linuxtools.rpm.ui.editor"
-            class="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
+            class="org.eclipse.linuxtools.internal.rpm.ui.RPMNewProject"
             icon="icons/rpm.gif"
             id="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
             name="%wizard.name.2">
@@ -105,7 +105,7 @@
   <extension
          point="org.eclipse.ui.console.consolePatternMatchListeners">
        <consolePatternMatchListener
-            class="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"
+            class="org.eclipse.linuxtools.internal.rpm.ui.ErrorLineMatcher"
             id="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"
             regex=".*(error):\W(line)\W\d{1,}:.*">
          <enablement>

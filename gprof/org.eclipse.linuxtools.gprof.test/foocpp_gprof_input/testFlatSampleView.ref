@@ -1,4 +1,4 @@
-Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
+Hierarchy;Name (location);Samples;Calls;Time/Call;% Time
 +-;Summary;3;;;100.0
   +-;A::foocpp::func_a(int) (foox.cpp:60);1;;;33.333332
   | +-;0x8048b84;1;;;33.333332
