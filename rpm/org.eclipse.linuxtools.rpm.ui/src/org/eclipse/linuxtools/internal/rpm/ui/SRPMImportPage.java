@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
+import org.eclipse.linuxtools.rpm.ui.SRPMImportOperation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;

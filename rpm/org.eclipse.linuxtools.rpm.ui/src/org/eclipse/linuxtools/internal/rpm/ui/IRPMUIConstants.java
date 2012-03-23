@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 public interface IRPMUIConstants {
 

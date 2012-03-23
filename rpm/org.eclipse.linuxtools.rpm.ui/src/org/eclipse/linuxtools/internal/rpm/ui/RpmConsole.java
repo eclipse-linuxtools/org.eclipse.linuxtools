@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.linuxtools.rpm.core.RPMProject;

@@ -8,17 +8,17 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.internal.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
-import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

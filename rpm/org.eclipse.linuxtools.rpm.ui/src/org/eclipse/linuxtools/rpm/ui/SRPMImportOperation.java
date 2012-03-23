@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.linuxtools.internal.rpm.ui.Messages;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.ui.PlatformUI;

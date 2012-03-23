@@ -8,15 +8,15 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui;
+package org.eclipse.linuxtools.internal.rpm.ui;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.internal.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
