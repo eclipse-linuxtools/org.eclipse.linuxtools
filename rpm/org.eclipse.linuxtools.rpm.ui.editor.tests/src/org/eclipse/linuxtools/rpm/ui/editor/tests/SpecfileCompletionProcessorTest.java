@@ -51,6 +51,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 		SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
 				editor);
 		assertNotNull(complProcessor);
+		editor.getSpecfileSourceViewer().setSelectedRange(0, 0);
 		ICompletionProposal[] proposals = complProcessor
 				.computeCompletionProposals(editor.getSpecfileSourceViewer(), 0);
 		int sourceComplCount = 0;
