@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.perf.model;
 
 public class PMFile extends TreeParent {
-	protected String path;
+	private String path;
 	
 	public PMFile(String fileName) {
 		super(fileName, 0);

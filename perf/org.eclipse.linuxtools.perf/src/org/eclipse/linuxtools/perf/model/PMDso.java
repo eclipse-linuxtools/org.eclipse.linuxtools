@@ -27,14 +27,13 @@ public class PMDso extends TreeParent {
 
 	public PMFile getFile(String fileName) {
 		//check if exists else make a new one.
-		PMFile tmp = (PMFile)getChild(fileName);
+		PMFile tmp = (PMFile) getChild(fileName);
 		if (tmp != null) {
-			return tmp;
 		} else {
 			tmp = new PMFile(fileName);
 			addChild(tmp);
-			return tmp;
-		} 
+		}
+		return tmp;
 	}
 
 	public void setPath(String filePath) {

@@ -14,7 +14,6 @@ public class PMEvent extends TreeParent {
 
 	public PMEvent(String name) {
 		super(name);
-		// Don't think theres anything else to do in here.
 	}
-	
+
 }
