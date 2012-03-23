@@ -63,6 +63,7 @@ public class RpmPackageProposalsList {
 	}
 
 	public List<String[]> getProposals(String prefix) {
+		this.waitForUpdates();
 		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
 		List<String[]> proposalsList = new ArrayList<String[]>(list.size());
@@ -165,6 +166,14 @@ public class RpmPackageProposalsList {
 			formatedInfoString += "<b>SRPM: </b>%{SOURCERPM}<br>"; //$NON-NLS-1$
 		return formatedInfoString;
 
+	}
+
+	/**
+	 * If the rpm package proposals list is being updated
+	 * block this thread
+	 */
+	private void waitForUpdates() {
+		RpmPackageBuildProposalsJob.waitForUpdates();
 	}
 
 }
