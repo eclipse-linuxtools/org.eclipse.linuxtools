@@ -35,6 +35,40 @@
           <publishArtifacts>true</publishArtifacts>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+	<executions>
+          <execution>
+            <id>default-archive-repository</id>
+            <phase>install</phase>
+            <goals>
+              <goal>archive-repository</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-promotion</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <!-- copy scripts to build directory and execute -->
+                <copy file="p2.xsl" todir="${project.build.directory}"/>
+                <copy file="promoter.xml" todir="${project.build.directory}"/>
+                <ant antfile="${project.build.directory}/promoter.xml"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
