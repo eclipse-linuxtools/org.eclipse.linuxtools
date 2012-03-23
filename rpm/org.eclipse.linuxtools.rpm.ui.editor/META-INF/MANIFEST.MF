@@ -25,3 +25,4 @@ Export-Package: org.eclipse.linuxtools.rpm.ui.editor,
  org.eclipse.linuxtools.rpm.ui.editor.wizards
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %provider
+Import-Package: org.eclipse.linuxtools.rpm.ui.editor.parser

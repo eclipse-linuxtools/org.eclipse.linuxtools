@@ -9,8 +9,10 @@
  *    Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor.parser;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.parser;
 
-public class SpecfilePreamble extends SpecfileElement {
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+
+public class SpecfileMacro extends SpecfileElement {
 
 }

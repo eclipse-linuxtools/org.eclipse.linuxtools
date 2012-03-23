@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.junit.Test;
 

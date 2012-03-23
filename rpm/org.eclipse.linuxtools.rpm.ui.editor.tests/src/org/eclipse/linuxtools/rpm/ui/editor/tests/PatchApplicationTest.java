@@ -16,9 +16,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfilePatchMacro;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePatchMacro;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.junit.Test;
 
 public class PatchApplicationTest extends FileTestCase {

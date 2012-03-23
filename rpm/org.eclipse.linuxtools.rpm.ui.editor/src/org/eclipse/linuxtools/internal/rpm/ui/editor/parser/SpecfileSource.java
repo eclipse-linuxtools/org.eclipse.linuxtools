@@ -9,7 +9,7 @@
  *    Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor.parser;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.parser;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -19,6 +19,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 
 public class SpecfileSource extends SpecfileElement {
 	int number;

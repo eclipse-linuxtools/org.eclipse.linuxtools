@@ -14,11 +14,11 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfilePreamble;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackageContainer;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePreamble;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 import org.eclipse.swt.graphics.Image;
 

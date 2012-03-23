@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor.parser;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.parser;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

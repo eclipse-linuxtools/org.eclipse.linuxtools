@@ -23,6 +23,10 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SourceComparator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfilePreamble;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
 
 public class Specfile {
 

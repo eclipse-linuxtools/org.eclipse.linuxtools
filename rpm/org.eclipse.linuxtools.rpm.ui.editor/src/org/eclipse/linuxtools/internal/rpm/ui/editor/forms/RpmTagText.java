@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.forms;
 
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag.TagType;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag.TagType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Collection;
 
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.junit.Test;
 
 public class LinePositionTest extends FileTestCase {

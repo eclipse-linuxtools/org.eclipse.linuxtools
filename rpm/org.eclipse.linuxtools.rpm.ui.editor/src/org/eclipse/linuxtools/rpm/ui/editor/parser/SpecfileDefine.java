@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
+
 public class SpecfileDefine extends SpecfileTag {
 
 	public SpecfileDefine(String name, int value, Specfile specfile, SpecfilePackage parent) {

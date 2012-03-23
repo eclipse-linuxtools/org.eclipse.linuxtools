@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
+
 public class SpecfilePackage extends SpecfileSection {
 	private String description;
 	private List<SpecfileSection> sections;

@@ -12,6 +12,21 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.BUILD_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.CHANGELOG_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.CLEAN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.DESCRIPTION_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.FILES_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.INSTALL_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PACKAGE_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POSTTRANS_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POSTUN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.POST_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PREP_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRETRANS_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PREUN_SECTION;
+import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRE_SECTION;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
@@ -27,12 +42,15 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.Messages;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileParseException;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfilePatchMacro;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource.SourceType;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource.SourceType;
-
-import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
 
