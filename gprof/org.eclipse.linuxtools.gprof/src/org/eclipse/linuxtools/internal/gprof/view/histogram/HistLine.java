@@ -39,11 +39,21 @@ public class HistLine extends AbstractTreeElement {
 	void addBucket(Bucket b) {
 		this.children.add(new HistBucket(this,b));
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
+	 */
+	@Override
+	public boolean hasChildren() {
+		return !children.isEmpty();
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
 	 */
+	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return this.children;
 	}
@@ -52,6 +62,7 @@ public class HistLine extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
 	 */
+	@Override
 	public int getCalls() {
 		return -1;
 	}
@@ -60,6 +71,7 @@ public class HistLine extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
 	 */
+	@Override
 	public String getName() {
 		String functionName = getParent().getName();
 		return functionName + " (" + getParent().getParent().getName() + ":" + this.line + ")";
@@ -69,6 +81,7 @@ public class HistLine extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSamples()
 	 */
+	@Override
 	public int getSamples() {
 		int ret = 0;
 		for (HistBucket b : children) {
@@ -82,6 +95,7 @@ public class HistLine extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourceLine()
 	 */
+	@Override
 	public int getSourceLine() {
 		return this.line;
 	}
@@ -90,6 +104,7 @@ public class HistLine extends AbstractTreeElement {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourcePath()
 	 */
+	@Override
 	public String getSourcePath() {
 		return getParent().getParent().getSourcePath();
 	}
