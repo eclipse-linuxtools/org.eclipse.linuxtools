@@ -1,4 +1,4 @@
-Hierarchy;Name (location);Time;Calls;Time/Call;%Time
+Hierarchy;Name (location);Time;Calls;Time/Call;% Time
 +-;Summary;30.000ms;;;100.0
   +-;A::foocpp::foocpp();0ns;2;0ns;0.0
   +-;A::foocpp::func_a(int);10.000ms;2;5.000ms;33.333332

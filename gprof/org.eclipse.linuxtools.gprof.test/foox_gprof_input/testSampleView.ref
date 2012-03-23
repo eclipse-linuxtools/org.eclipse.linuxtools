@@ -1,4 +1,4 @@
-Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
+Hierarchy;Name (location);Samples;Calls;Time/Call;% Time
 +-;Summary;9;;;100.0
   +-;foox.c;9;;;100.0
     +-;func_a;5;2;25.000ms;55.555557

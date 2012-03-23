@@ -1,4 +1,4 @@
-Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
+Hierarchy;Name (location);Samples;Calls;Time/Call;% Time
 +-;Summary;3;;;100.0
   +-;bigtest.c;3;;;100.0
     +-;func_001;0;1;0ns;0.0
