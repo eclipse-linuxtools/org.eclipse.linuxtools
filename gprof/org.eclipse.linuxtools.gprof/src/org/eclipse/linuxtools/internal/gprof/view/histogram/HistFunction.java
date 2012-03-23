@@ -84,16 +84,6 @@ public class HistFunction extends AbstractTreeElement {
 		}
 		this.calls = node.getCalls();
 	}
-	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
-	 */
-	@Override
-	public boolean hasChildren() {
-		return !children.isEmpty();
-	}
 
 	/*
 	 * (non-Javadoc)

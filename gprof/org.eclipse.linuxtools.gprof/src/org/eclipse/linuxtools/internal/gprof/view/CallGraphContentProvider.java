@@ -42,6 +42,7 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof HistRoot) {
 			HistRoot root = (HistRoot) parentElement;
@@ -85,6 +86,7 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
 	 */
+	@Override
 	public Object getParent(Object element) {
 		TreeElement cge = (TreeElement) element;
 		if (cge instanceof HistFunction) {
@@ -97,15 +99,31 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
-	public boolean hasChildren(Object element) {
-		TreeElement cge = (TreeElement) element;
-		return cge.hasChildren();
+	@Override
+	public boolean hasChildren(Object parentElement) {
+		if (parentElement instanceof HistRoot) {
+			HistRoot root = (HistRoot) parentElement;
+			LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
+			return !ret.isEmpty();
+		}
+		if (parentElement instanceof HistFunction) {
+			HistFunction function = (HistFunction) parentElement;
+			CGCategory parents  = function.getParentsFunctions();
+			CGCategory children = function.getChildrenFunctions();
+			return (parents != null || children != null);
+		}
+		if (parentElement instanceof CGCategory) {
+			CGCategory cat = (CGCategory) parentElement;
+			return !cat.getChildren().isEmpty();
+		}
+		return false;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement == null) return new Object[0];
 		GmonDecoder obj = (GmonDecoder) inputElement;
@@ -117,6 +135,7 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 
@@ -124,9 +143,8 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 	
-	
-
 }

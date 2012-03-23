@@ -39,6 +39,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		AbstractTreeElement elem = (AbstractTreeElement) parentElement;
 		LinkedList<? extends TreeElement> list = elem.getChildren();
@@ -49,6 +50,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
 	 */
+	@Override
 	public Object getParent(Object element) {
 		AbstractTreeElement elem = (AbstractTreeElement) element;
 		return elem.getParent();
@@ -58,15 +60,17 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
+	@Override
 	public boolean hasChildren(Object element) {
 		AbstractTreeElement elem = (AbstractTreeElement) element;
-		return elem.hasChildren();
+		return elem.hasChildren() && !elem.getChildren().isEmpty();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement == null) return new Object[0];
 		GmonDecoder obj = (GmonDecoder) inputElement;
@@ -80,6 +84,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 
@@ -87,6 +92,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 

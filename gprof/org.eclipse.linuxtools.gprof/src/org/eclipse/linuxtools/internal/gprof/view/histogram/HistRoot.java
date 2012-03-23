@@ -73,15 +73,6 @@ public class HistRoot extends AbstractTreeElement {
 		HistFile hf = getChild(path);
 		hf.addCallGraphNode(node);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
-	 */
-	@Override
-	public boolean hasChildren() {
-		return !children.isEmpty();
-	}
 
 	/*
 	 * (non-Javadoc)

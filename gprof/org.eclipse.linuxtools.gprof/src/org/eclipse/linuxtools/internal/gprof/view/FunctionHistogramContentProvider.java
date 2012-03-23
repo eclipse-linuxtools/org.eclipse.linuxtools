@@ -32,6 +32,10 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 	FunctionHistogramContentProvider() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.internal.gprof.view.FileHistogramContentProvider#getChildren(java.lang.Object)
+	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof HistRoot) {
@@ -40,6 +44,20 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 			return ret.toArray();
 		}
 		return super.getChildren(parentElement);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.internal.gprof.view.FileHistogramContentProvider#hasChildren(java.lang.Object)
+	 */
+	@Override
+	public boolean hasChildren(Object element) {
+		if (element instanceof HistRoot) {
+			HistRoot root = (HistRoot) element;
+			LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
+			return !ret.isEmpty();
+		}
+		return super.hasChildren(element);
 	}
 
 	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
@@ -52,6 +70,10 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 		return ret;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.internal.gprof.view.FileHistogramContentProvider#getParent(java.lang.Object)
+	 */
 	@Override
 	public Object getParent(Object element) {
 		Object o = super.getParent(element);

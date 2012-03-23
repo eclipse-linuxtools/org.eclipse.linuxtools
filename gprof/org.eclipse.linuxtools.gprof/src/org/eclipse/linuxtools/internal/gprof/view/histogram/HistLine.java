@@ -39,15 +39,6 @@ public class HistLine extends AbstractTreeElement {
 	void addBucket(Bucket b) {
 		this.children.add(new HistBucket(this,b));
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
-	 */
-	@Override
-	public boolean hasChildren() {
-		return !children.isEmpty();
-	}
 
 	/*
 	 * (non-Javadoc)
