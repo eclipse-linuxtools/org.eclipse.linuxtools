@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.linuxtools.changelog.core.parserContribution">
       <parser
-            class="org.eclipse.linuxtools.changelog.parsers.java.JavaParser"
+            class="org.eclipse.linuxtools.internal.changelog.parsers.java.JavaParser"
             editor="CompilationUnitEditor"
             name="Java Parser">
       </parser>

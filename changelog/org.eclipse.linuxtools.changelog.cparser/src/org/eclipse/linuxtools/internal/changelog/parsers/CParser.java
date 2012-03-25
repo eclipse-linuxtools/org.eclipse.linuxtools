@@ -8,7 +8,7 @@
  * Contributors:
  *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation, fixes. 
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.parsers;
+package org.eclipse.linuxtools.internal.changelog.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;

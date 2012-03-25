@@ -10,7 +10,7 @@
  *    Kyu Lee <klee@redhat.com>                - bug fixes and improvement 
  *    Remy Chi Jian Suen <remy.suen@gmail.com> - support static blocks (#179549)
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.parsers.java;
+package org.eclipse.linuxtools.internal.changelog.parsers.java;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;

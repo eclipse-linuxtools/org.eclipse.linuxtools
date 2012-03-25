@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.linuxtools.changelog.core.parserContribution">
       <parser
-            class="org.eclipse.linuxtools.changelog.parsers.CParser"
+            class="org.eclipse.linuxtools.internal.changelog.parsers.CParser"
             editor="CEditor"
             name="C Parser">
       </parser>
