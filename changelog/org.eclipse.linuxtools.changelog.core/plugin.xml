@@ -62,13 +62,13 @@
         	<action
             	definitionId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
 				label="%clEntry"
-				class="org.eclipse.linuxtools.changelog.core.actions.InsertChangeLogKeyHandler"
+				class="org.eclipse.linuxtools.internal.changelog.core.actions.InsertChangeLogKeyHandler"
 				tooltip="%clEntry"
 				menubarPath="edit/"
 				id="org.eclipse.linuxtools.changelog.core.actions.KeyAction">
  			</action>
          <action
-               class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
+               class="org.eclipse.linuxtools.internal.changelog.core.actions.PrepareChangelogKeyHandler"
                definitionId="org.eclipse.linuxtools.changelog.core.preparechangelog"
                id="org.eclipse.linuxtools.changelog.core.action.prepChangeLog"
                label="%prepCl"
@@ -113,7 +113,7 @@
             </enablement>
          </action>
          <action
-               class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
+               class="org.eclipse.linuxtools.internal.changelog.core.actions.PrepareChangelogKeyHandler"
                definitionId="org.eclipse.linuxtools.changelog.core.preparechangelog2"
                id="org.eclipse.linuxtools.changelog.core.action.prepChangeLogInEditor"
                label="Prepare ChangeLog In Editor">
@@ -124,7 +124,7 @@
 	<extension point = "org.eclipse.ui.preferencePages">
 		<page 
 			id="org.eclipse.linuxtools.changelog.core.Page1"
-			class="org.eclipse.linuxtools.changelog.core.ChangeLogPreferencesPage"
+			class="org.eclipse.linuxtools.internal.changelog.core.ChangeLogPreferencesPage"
 			name="%prefTitle">
        	</page>
 	</extension>
@@ -134,7 +134,7 @@
         point="org.eclipse.linuxtools.changelog.core.formatterContribution">
         <formatter
               inFile="false"
-              class="org.eclipse.linuxtools.changelog.core.formatters.GNUFormat"
+              class="org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat"
               id="org.eclipse.linuxtools.changelog.GNUFormat"
               name="%gnuFormatter">
               <fileName name="ChangeLog" />  
@@ -144,7 +144,7 @@
           id="org.eclipse.linuxtools.changelog.core.editor"
           point="org.eclipse.ui.editors">
        <editor
-             class="org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor"
+             class="org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor"
              contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
              default="true"
              filenames="ChangeLog"
@@ -155,7 +155,7 @@
     <extension
           point="org.eclipse.linuxtools.changelog.core.editorContribution">
        <editor
-             class="org.eclipse.linuxtools.changelog.core.editors.GNUEditorConfiguration"
+             class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUEditorConfiguration"
              id="org.eclipse.linuxtools.changelog.core.gnueditor"
              name="%gnuEditorConfig"/>
     </extension>
@@ -170,7 +170,7 @@
     <extension
           point="org.eclipse.ui.navigator.navigatorContent">
        <actionProvider
-             class="org.eclipse.linuxtools.changelog.core.ui.ChangeLogActionProvider"
+             class="org.eclipse.linuxtools.internal.changelog.core.ui.ChangeLogActionProvider"
              id="org.eclipse.linuxtools.changelog.core.ui.ChangeLogActioniProvider">
           <enablement>
              <adapt type="org.eclipse.core.resources.mapping.ResourceMapping"/>
@@ -221,29 +221,29 @@
     <extension
           point="org.eclipse.ui.handlers">
        <handler
-             class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
+             class="org.eclipse.linuxtools.internal.changelog.core.actions.PrepareChangelogKeyHandler"
              commandId="org.eclipse.linuxtools.changelog.core.preparechangelog"/>
        <handler
-             class="org.eclipse.linuxtools.changelog.core.actions.InsertChangeLogKeyHandler"
+             class="org.eclipse.linuxtools.internal.changelog.core.actions.InsertChangeLogKeyHandler"
              commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"/>
        <handler
-             class="org.eclipse.linuxtools.changelog.core.actions.PrepareCommitHandler"
+             class="org.eclipse.linuxtools.internal.changelog.core.actions.PrepareCommitHandler"
              commandId="org.eclipse.linuxtools.changelog.core.prepareCommit"/>
        <handler
-             class="org.eclipse.linuxtools.changelog.core.actions.FormatChangeLogAction"
+             class="org.eclipse.linuxtools.internal.changelog.core.actions.FormatChangeLogAction"
              commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog"/>
     </extension>
     <extension
           id="org.eclipse.linuxtools.changelog.documentSetup"
           point="org.eclipse.core.filebuffers.documentSetup">
        <participant
-             class="org.eclipse.linuxtools.changelog.core.editors.ChangeLogDocumentSetupParticipant"
+             class="org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogDocumentSetupParticipant"
              fileNames="ChangeLog">
        </participant>
     </extension>
     <extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="org.eclipse.linuxtools.changelog.core.ChangelogPreferenceInitializer" />
+			class="org.eclipse.linuxtools.internal.changelog.core.ChangelogPreferenceInitializer" />
 	</extension>
 	
 	<extension 
@@ -260,7 +260,7 @@
   <hyperlinkDetector
     id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
     targetId="org.eclipse.changelog.editor.target"
-    class="org.eclipse.linuxtools.changelog.core.editors.GNUHyperlinkDetector"
+    class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUHyperlinkDetector"
     name="Changelog Detector">
   </hyperlinkDetector>
 </extension>

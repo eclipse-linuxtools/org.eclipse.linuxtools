@@ -23,7 +23,6 @@ import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
-import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
@@ -34,6 +33,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
@@ -78,7 +78,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
     protected Specfile getParsedSpecfile() {
         if (changelog == null)
-            changelog = ChangelogPlugin.getDefault().getWorkbench()
+            changelog = PlatformUI.getWorkbench()
                     .getActiveWorkbenchWindow().getActivePage()
                     .getActiveEditor();
         if (changelog instanceof SpecfileEditor) {

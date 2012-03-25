@@ -16,9 +16,9 @@ import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.changelog.core.formatters.GNUFormat;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
+import org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat;
 
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;

@@ -9,7 +9,6 @@ package org.eclipse.linuxtools.changelog.tests.helpers;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
@@ -28,7 +27,7 @@ public class EditorHelper {
 	 *         or null if opening fails.
 	 */
 	public static IEditorPart openEditor(IFile diskresource) {
-		IWorkbench ws = ChangelogPlugin.getDefault().getWorkbench();
+		IWorkbench ws = PlatformUI.getWorkbench();
 		try {
 			return org.eclipse.ui.ide.IDE.openEditor(ws
 					.getActiveWorkbenchWindow().getActivePage(), diskresource,

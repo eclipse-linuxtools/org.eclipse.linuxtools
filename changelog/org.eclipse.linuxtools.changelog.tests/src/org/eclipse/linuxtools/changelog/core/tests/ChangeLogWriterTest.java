@@ -18,15 +18,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.linuxtools.changelog.core.ChangeLogWriter;
-import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.ui.IEditorPart;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.eclipse.linuxtools.changelog.core.formatters.GNUFormat;
+import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
+import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
+import org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat;
 
 /**
  * @author Severin Gehwolf <sgehwolf@redhat.com>
@@ -169,7 +169,7 @@ public class ChangeLogWriterTest {
 	 * 
 	 * </code>
 	 * 
-	 * Test for method {@link org.eclipse.linuxtools.changelog.core.ChangeLogWriter#writeChangeLog()}
+	 * Test for method {@link org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter#writeChangeLog()}
 	 */
 	@Test
 	public void testWriteChangeLog() throws Exception {
