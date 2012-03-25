@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.rpm.ui;
 
 public interface IRPMUIConstants {
 
-	public static final String LINE_SEP = System.getProperty("line.separator"); //$NON-NLS-1$
-	
 	public enum BuildType { NONE, ALL, BINARY, SOURCE}
 	
 }

@@ -13,11 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -108,27 +104,4 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("rpmui", path); //$NON-NLS-1$
 	}
 	
-	public void log(Throwable e) {
-		log(new Status(IStatus.ERROR, ID, IStatus.ERROR, "Error", e)); //$NON-NLS-1$
-	}
-
-	public void log(IStatus status) {
-		getLog().log(status);
-	}
-	
-	public void logErrorMessage(String message) {
-		log(new Status(IStatus.ERROR, ID, 1, message, null));
-	}
-	
-	public static Shell getActiveWorkbenchShell() {
-		 IWorkbenchWindow window= getActiveWorkbenchWindow();
-		 if (window != null) {
-		 	return window.getShell();
-		 }
-		 return null;
-	}
-	
-	public static IWorkbenchWindow getActiveWorkbenchWindow() {
-		return getDefault().getWorkbench().getActiveWorkbenchWindow();
-	}
 }
