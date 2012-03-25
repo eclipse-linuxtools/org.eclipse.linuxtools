@@ -1,7 +1,5 @@
-package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
-
 /*******************************************************************************
- * Copyright (c) 20011 Red Hat, Inc.
+ * Copyright (c) 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +8,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
+package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
