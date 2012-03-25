@@ -16,9 +16,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileCompletionProcessor;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.junit.Test;
 
@@ -35,9 +35,8 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 	
 	private SpecfileEditor initEditor(String contents) throws Exception {
 		newFile(contents);
-		IEditorPart openEditor = IDE.openEditor(Activator.getDefault()
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
-				testFile);
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), testFile);
 
 		return (SpecfileEditor) openEditor;
 	}
