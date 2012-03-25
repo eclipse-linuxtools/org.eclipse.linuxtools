@@ -8,10 +8,11 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core;
+package org.eclipse.linuxtools.internal.rpm.core;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 
 /**
  * Configuration for the flat rpm project layout.

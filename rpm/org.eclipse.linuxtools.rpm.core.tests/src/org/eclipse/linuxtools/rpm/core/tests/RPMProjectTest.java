@@ -30,9 +30,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
-import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -104,7 +104,7 @@ public class RPMProjectTest {
 		assertNotNull(specFile);
 
 		// Make sure the RPM nature was added
-		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
+		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 
 		// Clean up
 		testProject.delete(true, false, monitor);

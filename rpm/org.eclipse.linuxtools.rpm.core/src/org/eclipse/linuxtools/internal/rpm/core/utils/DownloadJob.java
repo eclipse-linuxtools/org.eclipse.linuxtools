@@ -8,39 +8,55 @@
  * Contributors:
  *      Alexander Kurtakov (Red Hat) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.utils;
+package org.eclipse.linuxtools.internal.rpm.core.utils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
+import org.eclipse.linuxtools.internal.rpm.core.RPMCorePlugin;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Eclipse job to ease downloading remote files.
  *
  */
-public class FileDownloadJob extends Job {
-	private File file;
+public class DownloadJob extends Job {
+	private IFile file;
 	private URLConnection content;
+	private boolean fileOverride;
 
 	/**
 	 * Creates the download job.
 	 * @param file The file to store the remote content.
 	 * @param content The URLConnection to the remote file.
+	 * @param override Flag to override file if it exists.
 	 */
-	public FileDownloadJob(File file, URLConnection content) {
+	public DownloadJob(IFile file, URLConnection content, boolean override) {
 		super(NLS.bind(Messages.DownloadJob_0, file.getName()));
 		this.file = file;
 		this.content = content;
+		this.fileOverride = override;
+	}
+
+	/**
+	 * Creates the download job.
+	 * @param file The file to store the remote content.
+	 * @param content URLConnection to the remote file.
+	 */
+	public DownloadJob(IFile file, URLConnection content) {
+		this(file, content, false);
 	}
 
 	@Override
@@ -49,11 +65,14 @@ public class FileDownloadJob extends Job {
 				NLS.bind(Messages.DownloadJob_0,
 						file.getName()), content.getContentLength());
 		try {
-			FileOutputStream fos = new FileOutputStream(file);
+			File tempFile = File.createTempFile(file.getName(), ""); //$NON-NLS-1$
+			FileOutputStream fos = new FileOutputStream(tempFile);
 			InputStream is = new BufferedInputStream(content.getInputStream());
 			int b;
+			boolean canceled = false;
 			while ((b = is.read()) != -1) {
 				if (monitor.isCanceled()) {
+					canceled = true;
 					break;
 				}
 				fos.write(b);
@@ -61,8 +80,21 @@ public class FileDownloadJob extends Job {
 			}
 			is.close();
 			fos.close();
+			if (!canceled) {
+				if (fileOverride) {
+					file.setContents(new FileInputStream(tempFile), true,
+							false, monitor);
+				} else {
+					file.create(new FileInputStream(tempFile), true, monitor);
+
+				}
+			}
+			tempFile.delete();
+		} catch (CoreException e) {
+			RPMCorePlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			return Status.CANCEL_STATUS;
 		} catch (IOException e) {
-			RPMCorePlugin.getDefault().getLog().log(new Status(IStatus.ERROR, RPMCorePlugin.ID, e.getMessage(), e));
+			RPMCorePlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();

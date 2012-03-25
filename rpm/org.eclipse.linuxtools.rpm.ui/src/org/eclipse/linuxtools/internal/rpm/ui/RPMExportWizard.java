@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -70,7 +70,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 				IResource resource = (IResource) selection.getFirstElement();
 				IProject parentProject = resource.getProject();
 				try {
-					if (parentProject.hasNature(RPMProjectNature.RPM_NATURE_ID)) {
+					if (parentProject.hasNature(IRPMConstants.RPM_NATURE_ID)) {
 						project = parentProject;
 					}
 				} catch (CoreException e) {
@@ -80,7 +80,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 		} else if (selection.getFirstElement() instanceof IProject) {
 			IProject tempProject = (IProject) selection.getFirstElement();
 			try {
-				if (tempProject.hasNature(RPMProjectNature.RPM_NATURE_ID)) {
+				if (tempProject.hasNature(IRPMConstants.RPM_NATURE_ID)) {
 					project = tempProject;
 				}
 			} catch (CoreException e) {

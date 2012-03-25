@@ -28,9 +28,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
-import org.eclipse.linuxtools.rpm.core.utils.RPM;
-import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
+import org.eclipse.linuxtools.internal.rpm.core.FlatBuildConfiguration;
+import org.eclipse.linuxtools.internal.rpm.core.Messages;
+import org.eclipse.linuxtools.internal.rpm.core.RPMBuildConfiguration;
+import org.eclipse.linuxtools.internal.rpm.core.SpecfileVisitor;
+import org.eclipse.linuxtools.internal.rpm.core.utils.FileDownloadJob;
+import org.eclipse.linuxtools.internal.rpm.core.utils.RPM;
+import org.eclipse.linuxtools.internal.rpm.core.utils.RPMBuild;
 
 /**
  * Basic RPM projects operations handler.
@@ -120,7 +124,7 @@ public class RPMProject {
 		try {
 			content = remoteFile.openConnection();
 		} catch (IOException e) {
-			Status status = new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e);
 			throw new CoreException(status);
 		}

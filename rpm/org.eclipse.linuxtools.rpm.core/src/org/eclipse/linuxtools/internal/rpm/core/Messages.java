@@ -8,14 +8,14 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core;
+package org.eclipse.linuxtools.internal.rpm.core;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("javadoc")
 public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.core.rpm_strings"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.core.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.utils;
+package org.eclipse.linuxtools.internal.rpm.core.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
 /**
  * A utility class for executing rpmbuild commands.
@@ -45,7 +45,7 @@ public class RPMBuild {
 	 *            the RPM configuration to use
 	 */
 	public RPMBuild(IProjectConfiguration config) {
-		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = {
 				rpmBuildCmd,
@@ -80,7 +80,7 @@ public class RPMBuild {
 			Utils.runCommand(outStream,
 					command.toArray(new String[command.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e));
 		}
 	}
@@ -105,7 +105,7 @@ public class RPMBuild {
 			return Utils.runCommand(outStream,
 					command.toArray(new String[command.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e));
 		}
 	}
@@ -128,7 +128,7 @@ public class RPMBuild {
 			return Utils.runCommand(outStream, command
 									.toArray(new String[command.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e));
 		}
 	}
@@ -151,7 +151,7 @@ public class RPMBuild {
 			return Utils.runCommand(outStream, command
 									.toArray(new String[command.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e));
 		}
 	}

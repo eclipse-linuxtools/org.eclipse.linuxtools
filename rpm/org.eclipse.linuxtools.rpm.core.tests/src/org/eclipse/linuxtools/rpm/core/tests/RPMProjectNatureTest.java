@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class RPMProjectNatureTest {
 		testProject.create(monitor);
 		testProject.open(monitor);
 		RPMProjectNature.addRPMNature(testProject, monitor);
-		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
+		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 		testProject.delete(true, false, monitor);
 	}
 

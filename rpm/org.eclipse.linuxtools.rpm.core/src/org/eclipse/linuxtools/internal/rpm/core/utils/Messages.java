@@ -8,7 +8,7 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.utils;
+package org.eclipse.linuxtools.internal.rpm.core.utils;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -16,7 +16,7 @@ import org.eclipse.osgi.util.NLS;
  * Messages for this package.
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.core.utils.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rpm.core.utils.messages"; //$NON-NLS-1$
 	/** Download + name  message	 */
 	public static String DownloadJob_0;
 	static {

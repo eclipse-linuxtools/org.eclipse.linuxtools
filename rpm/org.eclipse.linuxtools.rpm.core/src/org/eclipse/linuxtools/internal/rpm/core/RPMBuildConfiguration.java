@@ -8,13 +8,15 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core;
+package org.eclipse.linuxtools.internal.rpm.core;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 
 public class RPMBuildConfiguration implements IProjectConfiguration {
 	
@@ -43,7 +45,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	 * </ul>
 	 */
     private void initialize() throws CoreException {
-		String pluginID = RPMCorePlugin.ID;
+		String pluginID = IRPMConstants.RPM_CORE_ID;
         
 		String sourcesPath = 
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER));

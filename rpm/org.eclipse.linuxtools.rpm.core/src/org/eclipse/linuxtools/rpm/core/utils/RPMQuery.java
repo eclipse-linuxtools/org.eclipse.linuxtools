@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 
 /**
  * Utility class for executing queries on existing binary and source RPMs
@@ -90,7 +89,7 @@ public class RPMQuery {
 
 	private static String query(IFile rpmFile, String... args)
 			throws CoreException {
-		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
 		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
 		List<String> command = new ArrayList<String>();
 		command.add(rpmCmd);
@@ -100,7 +99,7 @@ public class RPMQuery {
 			return Utils.runCommandToString(command.toArray(new String[command
 					.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
 					e.getMessage(), e));
 		}
 	}

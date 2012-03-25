@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
+import org.eclipse.linuxtools.internal.rpm.core.Messages;
+
 
 public interface IRPMConstants {
 
@@ -100,5 +102,15 @@ public interface IRPMConstants {
 	 * Contains the plug-ins default error message.
 	 */
 	public static final String ERROR = Messages.getString("RPMCore.Error_1"); //$NON-NLS-1$
+
+	/**
+	 * The ID of the org.eclipse.linuxtools.rpm.core bundle.
+	 */
+	public static final String RPM_CORE_ID = "org.eclipse.linuxtools.rpm.core"; //$NON-NLS-1$
+
+	/**
+	 * The unique nature ID associated with the RPM project nature.
+	 */
+	public static final String RPM_NATURE_ID = RPM_CORE_ID + ".rpmnature"; //$NON-NLS-1$
 	
 }

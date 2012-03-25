@@ -61,7 +61,7 @@ public class RPMProjectCreator {
 			if (!Platform.getLocation().equals(projectPath))
 				description.setLocation(projectPath);
 			description
-					.setNatureIds(new String[] { RPMProjectNature.RPM_NATURE_ID });
+					.setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
 			project.create(description, monitor);
 			monitor.worked(10);
 			project.open(monitor);

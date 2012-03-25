@@ -8,10 +8,11 @@
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core;
+package org.eclipse.linuxtools.internal.rpm.core;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 
 /**
  * Initialize preferences.

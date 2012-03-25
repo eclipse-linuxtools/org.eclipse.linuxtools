@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.swt.SWT;
@@ -53,7 +52,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 		setDescription(Messages
 				.getString("RPMExportPage.Select_project_export")); //$NON-NLS-1$
 		try {
-			if (rpmProject.getPersistentProperty(new QualifiedName(RPMCorePlugin.ID, IRPMConstants.SOURCES_FOLDER)) != null){
+			if (rpmProject.getPersistentProperty(new QualifiedName(IRPMConstants.RPM_CORE_ID, IRPMConstants.SOURCES_FOLDER)) != null){
 				this.rpmProject = new RPMProject(rpmProject, RPMProjectLayout.RPMBUILD);
 			} else {
 				this.rpmProject = new RPMProject(rpmProject, RPMProjectLayout.FLAT);

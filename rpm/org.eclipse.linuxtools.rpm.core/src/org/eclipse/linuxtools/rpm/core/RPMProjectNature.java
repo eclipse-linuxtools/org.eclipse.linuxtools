@@ -26,11 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public class RPMProjectNature implements IProjectNature {
 
-	/**
-	 * The unique nature ID associated with the RPM project nature.
-	 */
-	public static final String RPM_NATURE_ID = RPMCorePlugin.ID + ".rpmnature"; //$NON-NLS-1$
-	
 	IProject project;
 	
 	public RPMProjectNature() {
@@ -48,7 +43,7 @@ public class RPMProjectNature implements IProjectNature {
 	 * @throws CoreException if adding the RPM project nature fails
 	 */
 	public static void addRPMNature(IProject project, IProgressMonitor mon) throws CoreException {
-		addNature(project, RPM_NATURE_ID, mon);
+		addNature(project, IRPMConstants.RPM_NATURE_ID, mon);
 	}
 
 	/**
@@ -59,7 +54,7 @@ public class RPMProjectNature implements IProjectNature {
 	 * @throws CoreException if removing the RPM project nature fails
 	 */
 	public static void removeRPMNature(IProject project, IProgressMonitor mon) throws CoreException {
-		removeNature(project, RPM_NATURE_ID, mon);
+		removeNature(project, IRPMConstants.RPM_NATURE_ID, mon);
 	}
 	
 	/**

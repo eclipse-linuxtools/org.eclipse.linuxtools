@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core;
+package org.eclipse.linuxtools.internal.rpm.core;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -18,9 +18,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class RPMCorePlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static RPMCorePlugin plugin;
-	
-	public static final String ID = "org.eclipse.linuxtools.rpm.core"; //$NON-NLS-1$
-	
 	
 	/**
 	 * The constructor.
