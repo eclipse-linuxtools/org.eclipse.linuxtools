@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.internal.changelog.core.editors;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Hyperlink that opens up editor for a file.
@@ -52,7 +52,7 @@ public class FileHyperlink implements IHyperlink {
 	 * Opens the hyperlink in new editor window.
 	 */
 	public void open() {
-		IWorkbench ws = getWorkbench();
+		IWorkbench ws = PlatformUI.getWorkbench();
 
 		try {
 
@@ -64,9 +64,4 @@ public class FileHyperlink implements IHyperlink {
 		}
 
 	}
-
-	private IWorkbench getWorkbench() {
-		return ChangelogPlugin.getDefault().getWorkbench();
-	}
-
 }

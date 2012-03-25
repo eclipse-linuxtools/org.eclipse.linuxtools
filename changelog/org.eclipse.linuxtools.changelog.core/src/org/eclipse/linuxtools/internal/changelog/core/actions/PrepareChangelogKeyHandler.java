@@ -38,6 +38,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * 
@@ -58,7 +59,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		
 		// try getting currently selected project
 		try {
-			IWorkbenchPage ref = getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			IWorkbenchPage ref = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			IWorkbenchPart part = ref.getActivePart();
 			if (part instanceof IEditorPart) {
 				// If we are in an editor, check if the file being edited is an IResource
@@ -169,7 +170,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 	 * Returns active shell.
 	 */
 	protected Shell getActiveWorkbenchShell() {
-		IWorkbenchWindow window = getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
 			return window.getShell();
 		}

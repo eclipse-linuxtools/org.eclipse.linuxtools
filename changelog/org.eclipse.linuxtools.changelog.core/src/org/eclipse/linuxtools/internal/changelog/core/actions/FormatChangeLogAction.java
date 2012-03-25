@@ -17,9 +17,9 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 
 
@@ -37,16 +37,14 @@ public class FormatChangeLogAction extends Action implements IHandler {
 		super("Format ChangeLog");
 		//editor = te;
 		try {
-			editor = (ChangeLogEditor)getWorkbench().getActiveWorkbenchWindow()
+			editor = (ChangeLogEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().getActiveEditor();
 		} catch (Exception e) {
 			// no editor is active now so do nothing
 		return;
 		}
 	}
-	protected IWorkbench getWorkbench() {
-		return ChangelogPlugin.getDefault().getWorkbench();
-	}
+	
 	@Override
 	public void run() {
 

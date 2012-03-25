@@ -49,6 +49,7 @@ import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 
@@ -73,7 +74,7 @@ public class PrepareCommitAction extends ChangeLogAction {
 			}
 		};
 
-		ProgressMonitorDialog pd = new ProgressMonitorDialog(getWorkbench()
+		ProgressMonitorDialog pd = new ProgressMonitorDialog(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getShell());
 
 		try {
@@ -127,7 +128,7 @@ public class PrepareCommitAction extends ChangeLogAction {
 		IEditorPart currentEditor;
 		
 		try {
-			currentEditor = getWorkbench().getActiveWorkbenchWindow()
+			currentEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().getActiveEditor();
 		} catch (Exception e) {
 			// no editor is active now so do nothing
@@ -252,7 +253,7 @@ public class PrepareCommitAction extends ChangeLogAction {
 	private void populateClipboardBuffer(String input) {
 		
 		TextTransfer plainTextTransfer = TextTransfer.getInstance();
-		Clipboard clipboard = new Clipboard(getWorkbench().getDisplay());		
+		Clipboard clipboard = new Clipboard(PlatformUI.getWorkbench().getDisplay());		
 		clipboard.setContents(
 			new String[]{input}, 
 			new Transfer[]{plainTextTransfer});	

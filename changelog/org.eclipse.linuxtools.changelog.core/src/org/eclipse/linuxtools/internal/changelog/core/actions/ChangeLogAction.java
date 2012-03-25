@@ -44,6 +44,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
@@ -82,16 +83,12 @@ public abstract class ChangeLogAction extends Action {
 				new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, msg, e));
 	}
 
-	protected IWorkbench getWorkbench() {
-		return ChangelogPlugin.getDefault().getWorkbench();
-	}
-
 	protected IWorkspaceRoot getWorkspaceRoot() {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 
 	protected IEditorPart openEditor(IFile diskresource) {
-		IWorkbench ws = getWorkbench();
+		IWorkbench ws = PlatformUI.getWorkbench();
 
 		try {
 			return org.eclipse.ui.ide.IDE.openEditor(ws
@@ -112,7 +109,7 @@ public abstract class ChangeLogAction extends Action {
 
 	protected IFile createChangeLog(IPath changelog) {
 		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
-		IWorkbench ws = getWorkbench();
+		IWorkbench ws = PlatformUI.getWorkbench();
 
 		final IFile changelog_File = myWorkspaceRoot.getFile(changelog);
 		final InputStream initialContents = new ByteArrayInputStream(
@@ -160,7 +157,7 @@ public abstract class ChangeLogAction extends Action {
 	}
 
 	protected IEditorPart askChangeLogLocation(String editorLoc) {
-		IWorkbench ws = getWorkbench();
+		IWorkbench ws = PlatformUI.getWorkbench();
 		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
 
 		IResource given_resource = myWorkspaceRoot.findMember(editorLoc);

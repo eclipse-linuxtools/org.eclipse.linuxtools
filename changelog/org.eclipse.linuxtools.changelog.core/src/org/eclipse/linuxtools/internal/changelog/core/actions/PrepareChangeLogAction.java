@@ -63,6 +63,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.editors.text.StorageDocumentProvider;
 import org.eclipse.ui.part.FileEditorInput;
@@ -153,7 +154,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			}
 		};
 
-		ProgressMonitorDialog pd = new ProgressMonitorDialog(getWorkbench()
+		ProgressMonitorDialog pd = new ProgressMonitorDialog(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getShell());
 
 		try {
