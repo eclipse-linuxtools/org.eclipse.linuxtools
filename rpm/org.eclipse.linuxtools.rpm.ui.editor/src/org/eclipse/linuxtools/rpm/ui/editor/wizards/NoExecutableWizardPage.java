@@ -9,11 +9,10 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.rpm.ui.editor.wizards;
+package org.eclipse.linuxtools.rpm.ui.editor.wizards;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.rpm.ui.editor.wizards.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
