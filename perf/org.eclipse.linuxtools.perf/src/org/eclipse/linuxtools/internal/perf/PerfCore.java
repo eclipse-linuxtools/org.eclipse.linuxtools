@@ -288,11 +288,11 @@ public class PerfCore {
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 		
 		try {
-			// Alternatively can try with -i flag
 			if (workingDir == null) {
 				p = Runtime.getRuntime().exec(getReportString(config, perfDataLoc));				
 			} else {
-				p = Runtime.getRuntime().exec(getReportString(config, perfDataLoc), environ, workingDir); //runs with a specific working dir and environment.
+				String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA;
+				p = Runtime.getRuntime().exec(getReportString(config, perfDefaultDataLoc));
 			}			
 			//p.waitFor();
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -422,12 +422,14 @@ public class PerfCore {
 							
 							currentSym = (PMSymbol)s;
 							try {
-								final String[] annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, OldPerfVersion);
+								String[] annotateCmd;
 								if (workingDir == null) {
-									p = Runtime.getRuntime().exec(annotateCmd);
+									annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, OldPerfVersion);
 								} else {
-									p = Runtime.getRuntime().exec(annotateCmd, environ, workingDir);
+									String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA;
+									annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDefaultDataLoc, OldPerfVersion);
 								}
+								p = Runtime.getRuntime().exec(annotateCmd);
 								//p.waitFor(); // actually, readLine() in the while later automatically 'waits' when theres nothing left to read but not terminated yet but if we wait in rare occurances perf never exits as the buffer fills up apparently
 								input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 								error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
