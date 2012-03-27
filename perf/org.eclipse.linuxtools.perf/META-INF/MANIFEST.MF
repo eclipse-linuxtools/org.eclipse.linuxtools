@@ -4,7 +4,7 @@ Bundle-Name: %bundleName
 Bundle-Vendor: %bundleProvider
 Bundle-SymbolicName: org.eclipse.linuxtools.perf; singleton:=true
 Bundle-Version: 0.11.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.perf.PerfPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.perf.PerfPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core;bundle-version="5.1.2",
@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.profiling.ui;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.perf,
- org.eclipse.linuxtools.perf.launch,
- org.eclipse.linuxtools.perf.model,
- org.eclipse.linuxtools.perf.ui
+Eclipse-BundleShape: dir
+Export-Package: org.eclipse.linuxtools.internal.perf,
+ org.eclipse.linuxtools.internal.perf.launch,
+ org.eclipse.linuxtools.internal.perf.model,
+ org.eclipse.linuxtools.internal.perf.ui

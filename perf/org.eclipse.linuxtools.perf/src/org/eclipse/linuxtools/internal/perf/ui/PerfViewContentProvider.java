@@ -8,13 +8,13 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.ui;
+package org.eclipse.linuxtools.internal.perf.ui;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.perf.PerfPlugin;
-import org.eclipse.linuxtools.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.ui.IViewSite;
 
 public class PerfViewContentProvider implements IStructuredContentProvider, 

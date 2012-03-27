@@ -8,7 +8,7 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.tests;
+package org.eclipse.linuxtools.internal.perf.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,17 +21,17 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.linuxtools.perf.PerfCore;
-import org.eclipse.linuxtools.perf.PerfPlugin;
-import org.eclipse.linuxtools.perf.launch.PerfEventsTab;
-import org.eclipse.linuxtools.perf.launch.PerfLaunchConfigDelegate;
-import org.eclipse.linuxtools.perf.launch.PerfOptionsTab;
-import org.eclipse.linuxtools.perf.model.PMCommand;
-import org.eclipse.linuxtools.perf.model.PMDso;
-import org.eclipse.linuxtools.perf.model.PMEvent;
-import org.eclipse.linuxtools.perf.model.PMFile;
-import org.eclipse.linuxtools.perf.model.PMSymbol;
-import org.eclipse.linuxtools.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.PerfCore;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
+import org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate;
+import org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab;
+import org.eclipse.linuxtools.internal.perf.model.PMCommand;
+import org.eclipse.linuxtools.internal.perf.model.PMDso;
+import org.eclipse.linuxtools.internal.perf.model.PMEvent;
+import org.eclipse.linuxtools.internal.perf.model.PMFile;
+import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 
 public class ModelTest extends AbstractTest {

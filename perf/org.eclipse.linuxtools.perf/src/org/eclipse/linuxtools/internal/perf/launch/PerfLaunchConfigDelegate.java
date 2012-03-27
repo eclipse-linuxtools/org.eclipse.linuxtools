@@ -17,7 +17,7 @@
  *        from code written by QNX Software Systems and others for the CDT
  *        LocalCDILaunchDelegate class.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.launch;
+package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -39,8 +39,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.linuxtools.perf.PerfCore;
-import org.eclipse.linuxtools.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.PerfCore;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 
 public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
@@ -134,7 +134,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				//Possibly should pass this (the console reference) on to PerfCore.Report if theres anything we ever want to spit out to user.
 			}
 			
-			//(Only for testing this line..) PerfCore.Report(config, null, null, null, "/home/thavidu/dev/eclipse-oprof2-workspace/org.eclipse.linuxtools.perf.tests/resources/perf.data");
+			//(Only for testing this line..) PerfCore.Report(config, null, null, null, "/home/thavidu/dev/eclipse-oprof2-workspace/org.eclipse.linuxtools.internal.perf.tests/resources/perf.data");
 			PerfCore.Report(config, getEnvironment(config), wd, monitor, null, print);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

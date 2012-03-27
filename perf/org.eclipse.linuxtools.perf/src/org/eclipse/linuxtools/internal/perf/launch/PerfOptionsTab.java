@@ -12,7 +12,7 @@
  *    Thavidu Ranatunga (IBM) - derived from
  *       org.eclipse.linuxtools.oprofile.launch.configuration.OprofileSetupTab
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.launch;
+package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -25,8 +25,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.perf.PerfCore;
-import org.eclipse.linuxtools.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.PerfCore;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

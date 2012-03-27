@@ -8,7 +8,7 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/ 
-package org.eclipse.linuxtools.perf.ui;
+package org.eclipse.linuxtools.internal.perf.ui;
 
 import java.util.HashMap;
 
@@ -19,11 +19,11 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.perf.PerfPlugin;
-import org.eclipse.linuxtools.perf.model.PMDso;
-import org.eclipse.linuxtools.perf.model.PMFile;
-import org.eclipse.linuxtools.perf.model.PMLineRef;
-import org.eclipse.linuxtools.perf.model.PMSymbol;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.model.PMDso;
+import org.eclipse.linuxtools.internal.perf.model.PMFile;
+import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
+import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.ui.PartInitException;
 

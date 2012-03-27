@@ -8,7 +8,7 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.tests;
+package org.eclipse.linuxtools.internal.perf.tests;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

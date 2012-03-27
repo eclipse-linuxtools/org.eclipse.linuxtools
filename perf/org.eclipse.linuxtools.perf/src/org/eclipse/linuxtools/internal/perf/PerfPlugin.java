@@ -12,13 +12,13 @@
  *    Thavidu Ranatunga (IBM) - Derived and modified code from
  *        org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin
  *******************************************************************************/ 
-package org.eclipse.linuxtools.perf;
+package org.eclipse.linuxtools.internal.perf;
 
 import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.perf.model.TreeParent;
-import org.eclipse.linuxtools.perf.ui.PerfProfileView;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -37,33 +37,33 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String LAUNCHCONF_ID = "org.eclipse.linuxtools.perf.launch.profile";
 	
 	//Perf Options tab attribs.
-	public static final String ATTR_Kernel_Location = "org.eclipse.linuxtools.perf.attr.Kernel.Location";
+	public static final String ATTR_Kernel_Location = "org.eclipse.linuxtools.internal.perf.attr.Kernel.Location";
 	public static final String ATTR_Kernel_Location_default = "";
-	public static final String ATTR_Record_Realtime = "org.eclipse.linuxtools.perf.attr.Record.Realtime";
+	public static final String ATTR_Record_Realtime = "org.eclipse.linuxtools.internal.perf.attr.Record.Realtime";
 	public static final boolean ATTR_Record_Realtime_default = false;
-	public static final String ATTR_Record_Verbose = "org.eclipse.linuxtools.perf.attr.Record.Verbose";
+	public static final String ATTR_Record_Verbose = "org.eclipse.linuxtools.internal.perf.attr.Record.Verbose";
 	public static final boolean ATTR_Record_Verbose_default = false;
-	public static final String ATTR_SourceLineNumbers = "org.eclipse.linuxtools.perf.attr.SourceLineNumbers";
+	public static final String ATTR_SourceLineNumbers = "org.eclipse.linuxtools.internal.perf.attr.SourceLineNumbers";
 	public static final boolean ATTR_SourceLineNumbers_default = true;
-	public static final String ATTR_Kernel_SourceLineNumbers = "org.eclipse.linuxtools.perf.attr.Kernel.SourceLineNumbers";
+	public static final String ATTR_Kernel_SourceLineNumbers = "org.eclipse.linuxtools.internal.perf.attr.Kernel.SourceLineNumbers";
 	public static final boolean ATTR_Kernel_SourceLineNumbers_default = false;
-	public static final String ATTR_Multiplex = "org.eclipse.linuxtools.perf.attr.Multiplex";
+	public static final String ATTR_Multiplex = "org.eclipse.linuxtools.internal.perf.attr.Multiplex";
 	public static final boolean ATTR_Multiplex_default = false;
-	public static final String ATTR_ModuleSymbols = "org.eclipse.linuxtools.perf.attr.ModuleSymbols";
+	public static final String ATTR_ModuleSymbols = "org.eclipse.linuxtools.internal.perf.attr.ModuleSymbols";
 	public static final boolean ATTR_ModuleSymbols_default = false;
-	public static final String ATTR_HideUnresolvedSymbols = "org.eclipse.linuxtools.perf.attr.HideUnresolvedSymbols";
+	public static final String ATTR_HideUnresolvedSymbols = "org.eclipse.linuxtools.internal.perf.attr.HideUnresolvedSymbols";
 	public static final boolean ATTR_HideUnresolvedSymbols_default = true;
 	
 	//Perf Events tab attribs.
-	public static final String ATTR_DefaultEvent = "org.eclipse.linuxtools.perf.attr.DefaultEvent";
+	public static final String ATTR_DefaultEvent = "org.eclipse.linuxtools.internal.perf.attr.DefaultEvent";
 	public static final boolean ATTR_DefaultEvent_default = true;
-	public static final String ATTR_MultipleEvents = "org.eclipse.linuxtools.perf.attr.MultipleEvents";
+	public static final String ATTR_MultipleEvents = "org.eclipse.linuxtools.internal.perf.attr.MultipleEvents";
 	public static final boolean ATTR_MultipleEvents_default = true;
-	public static final String ATTR_SelectedEvents = "org.eclipse.linuxtools.perf.attr.SelectedEvents";
+	public static final String ATTR_SelectedEvents = "org.eclipse.linuxtools.internal.perf.attr.SelectedEvents";
 	public static final List<String> ATTR_SelectedEvents_default = null;
-	public static final String ATTR_RawHwEvents = "org.eclipse.linuxtools.perf.attr.RawHwEvents";
+	public static final String ATTR_RawHwEvents = "org.eclipse.linuxtools.internal.perf.attr.RawHwEvents";
 	public static final List<String> ATTR_RawHwEvents_default = null;
-	public static final String ATTR_HwBreakpointEvents = "org.eclipse.linuxtools.perf.attr.HwBreakpointEvents";
+	public static final String ATTR_HwBreakpointEvents = "org.eclipse.linuxtools.internal.perf.attr.HwBreakpointEvents";
 	public static final List<String> ATTR_HwBreakpointEvents_default = null;
 	
 	//Strings

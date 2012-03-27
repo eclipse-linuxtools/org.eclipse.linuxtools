@@ -10,7 +10,7 @@
  *    Thavidu Ranatunga (IBM) - derived and modified from
  *        org.eclipse.linuxtools.oprofile.launch.configuration.OprofileEventConfigTab
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.launch;
+package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +21,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.perf.PerfCore;
-import org.eclipse.linuxtools.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.PerfCore;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

@@ -8,21 +8,12 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.model;
+package org.eclipse.linuxtools.internal.perf.model;
 
-public class PMLineRef extends TreeParent {
-	protected int ln;
+public class PMEvent extends TreeParent {
 
-	public PMLineRef(int lineNum, float percent) {
-		super(""+lineNum, percent);
-		ln = lineNum;
+	public PMEvent(String name) {
+		super(name);
 	}
 
-	public void addPercent(Float addpc) {
-		setPercent(getPercent() + addpc);
-	}
-
-	public String toString() {
-		return getPercent() + "% on line " + ln;
-	}
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.model;
+package org.eclipse.linuxtools.internal.perf.model;
 
 public class PMFile extends TreeParent {
 	private String path;

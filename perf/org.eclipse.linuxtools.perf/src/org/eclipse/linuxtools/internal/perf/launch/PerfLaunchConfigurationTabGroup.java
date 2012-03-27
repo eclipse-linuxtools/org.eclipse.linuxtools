@@ -11,7 +11,7 @@
  *    Thavidu Ranatunga (IBM) - derived from
  *        org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup
  *******************************************************************************/ 
-package org.eclipse.linuxtools.perf.launch;
+package org.eclipse.linuxtools.internal.perf.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;

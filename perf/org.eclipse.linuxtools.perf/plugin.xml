@@ -8,7 +8,7 @@
             name="Perf Profile View"
             icon="icons/file.gif"
             category="org.eclipse.linuxtools.profiling.ui"
-            class="org.eclipse.linuxtools.perf.ui.PerfProfileView"
+            class="org.eclipse.linuxtools.internal.perf.ui.PerfProfileView"
             id="org.eclipse.linuxtools.perf.ui.ProfileView">
       </view>
    </extension>
@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="org.eclipse.linuxtools.perf.launch.PerfLaunchShortcut"
+            class="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.launch.profileshortcut"
             label="Profile with Perf"
@@ -68,7 +68,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.linuxtools.perf.launch.PerfLaunchConfigDelegate"
+            delegate="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate"
             id="org.eclipse.linuxtools.perf.launch.profile"
             modes="profile"
             name="Profile with Perf"
@@ -80,7 +80,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.linuxtools.perf.launch.PerfLaunchConfigurationTabGroup"
+            class="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigurationTabGroup"
             description="%launchConfigurationTabGroup.description.0"
             id="org.eclipse.linuxtools.perf.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.perf.launch.profile">

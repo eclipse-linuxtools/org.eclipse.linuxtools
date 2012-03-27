@@ -11,13 +11,13 @@
  *    Thavidu Ranatunga (IBM) - derived from
  *        org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchShortcut
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.launch;
+package org.eclipse.linuxtools.internal.perf.launch;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.linuxtools.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class PerfLaunchShortcut extends ProfileLaunchShortcut {

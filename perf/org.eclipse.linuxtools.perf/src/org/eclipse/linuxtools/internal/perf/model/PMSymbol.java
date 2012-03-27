@@ -8,9 +8,9 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.model;
+package org.eclipse.linuxtools.internal.perf.model;
 
-import org.eclipse.linuxtools.perf.model.PMLineRef;
+import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
 
 public class PMSymbol extends TreeParent {
 	private Double samples;

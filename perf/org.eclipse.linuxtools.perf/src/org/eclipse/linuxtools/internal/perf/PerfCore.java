@@ -8,7 +8,7 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf;
+package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,12 +24,12 @@ import org.eclipse.cdt.core.parser.util.ArrayUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.perf.model.PMCommand;
-import org.eclipse.linuxtools.perf.model.PMDso;
-import org.eclipse.linuxtools.perf.model.PMEvent;
-import org.eclipse.linuxtools.perf.model.PMFile;
-import org.eclipse.linuxtools.perf.model.PMSymbol;
-import org.eclipse.linuxtools.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.model.PMCommand;
+import org.eclipse.linuxtools.internal.perf.model.PMDso;
+import org.eclipse.linuxtools.internal.perf.model.PMEvent;
+import org.eclipse.linuxtools.internal.perf.model.PMFile;
+import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

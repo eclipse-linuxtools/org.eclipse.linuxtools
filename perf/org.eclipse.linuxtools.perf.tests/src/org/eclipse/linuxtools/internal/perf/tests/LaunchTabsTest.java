@@ -8,12 +8,12 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.tests;
+package org.eclipse.linuxtools.internal.perf.tests;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.perf.PerfPlugin;
-import org.eclipse.linuxtools.perf.launch.PerfEventsTab;
-import org.eclipse.linuxtools.perf.launch.PerfOptionsTab;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
+import org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;

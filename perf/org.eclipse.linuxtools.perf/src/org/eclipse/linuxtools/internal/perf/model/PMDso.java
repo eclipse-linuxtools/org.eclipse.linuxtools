@@ -8,9 +8,9 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.model;
+package org.eclipse.linuxtools.internal.perf.model;
 
-import org.eclipse.linuxtools.perf.model.PMFile;
+import org.eclipse.linuxtools.internal.perf.model.PMFile;
 
 public class PMDso extends TreeParent {
 	private String path = null;

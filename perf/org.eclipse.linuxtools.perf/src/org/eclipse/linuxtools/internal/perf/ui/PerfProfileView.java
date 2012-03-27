@@ -8,26 +8,26 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/ 
-package org.eclipse.linuxtools.perf.ui;
+package org.eclipse.linuxtools.internal.perf.ui;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.model.*;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 
-import org.eclipse.linuxtools.perf.model.*;
 
 public class PerfProfileView extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "org.eclipse.linuxtools.perf.views.ProfileView";
+	public static final String ID = "org.eclipse.linuxtools.internal.perf.views.ProfileView";
 
 	private TreeViewer viewer;
 	private DrillDownAdapter drillDownAdapter;
@@ -56,7 +56,7 @@ public class PerfProfileView extends ViewPart {
 		viewer.setInput(getViewSite());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.perf.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer");
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();

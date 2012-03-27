@@ -8,16 +8,16 @@
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.perf.ui;
+package org.eclipse.linuxtools.internal.perf.ui;
 
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.linuxtools.perf.PerfPlugin;
-import org.eclipse.linuxtools.perf.model.PMDso;
-import org.eclipse.linuxtools.perf.model.PMEvent;
-import org.eclipse.linuxtools.perf.model.PMFile;
-import org.eclipse.linuxtools.perf.model.PMLineRef;
-import org.eclipse.linuxtools.perf.model.PMSymbol;
-import org.eclipse.linuxtools.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.model.PMDso;
+import org.eclipse.linuxtools.internal.perf.model.PMEvent;
+import org.eclipse.linuxtools.internal.perf.model.PMFile;
+import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
+import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
