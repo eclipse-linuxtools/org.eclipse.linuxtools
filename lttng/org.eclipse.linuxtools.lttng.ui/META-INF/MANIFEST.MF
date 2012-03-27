@@ -34,7 +34,6 @@ Export-Package: org.eclipse.linuxtools.internal.lttng.ui;x-friends:="org.eclipse
  org.eclipse.linuxtools.internal.lttng.ui.tracecontrol.wizards;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.common;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
- org.eclipse.linuxtools.internal.lttng.ui.views.control;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.controlflow;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.controlflow.evProcessor;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.controlflow.model;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
@@ -51,3 +50,4 @@ Export-Package: org.eclipse.linuxtools.internal.lttng.ui;x-friends:="org.eclipse
  org.eclipse.linuxtools.internal.lttng.ui.views.statistics.evProcessor;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.statistics.model;x-friends:="org.eclipse.linuxtools.lttng.ui.tests",
  org.eclipse.linuxtools.internal.lttng.ui.views.timeframe;x-friends:="org.eclipse.linuxtools.lttng.ui.tests"
+

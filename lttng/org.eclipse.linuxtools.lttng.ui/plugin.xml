@@ -21,15 +21,6 @@
       <view
             allowMultiple="false"
             category="org.eclipse.linuxtools.lttng.ui.views.category"
-            class="org.eclipse.linuxtools.internal.lttng.ui.views.control.ControlView"
-            icon="icons/eview16/control_view.gif"
-            id="org.eclipse.linuxtools.lttng.ui.views.control"
-            name="%control.view.name"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.eclipse.linuxtools.lttng.ui.views.category"
             class="org.eclipse.linuxtools.internal.lttng.ui.views.timeframe.TimeFrameView"
             icon="icons/eview16/time_frame_view.gif"
             id="org.eclipse.linuxtools.lttng.ui.views.timeframe"

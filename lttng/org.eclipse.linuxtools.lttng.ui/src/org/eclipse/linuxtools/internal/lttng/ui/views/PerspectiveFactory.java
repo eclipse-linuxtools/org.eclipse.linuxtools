@@ -37,6 +37,7 @@ public class PerspectiveFactory implements IPerspectiveFactory {
     private static final String RESOURCES_VIEW_ID = ResourcesView.ID;
     private static final String STATISTICS_VIEW_ID = StatisticsView.ID;
     private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
+    
 
     // Standard Eclipse views
     private static final String PROJECT_VIEW_ID = IPageLayout.ID_PROJECT_EXPLORER;
