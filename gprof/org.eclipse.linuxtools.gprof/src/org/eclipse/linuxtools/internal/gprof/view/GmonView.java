@@ -53,6 +53,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GmonView extends AbstractSTDataView {
 
+	public static final String ID = "org.eclipse.linuxtools.gprof.view";
+	
 	/** WHITE color */
 	public static final Color WHITE = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WHITE);
 	/** GREEN1 color : for children category */
@@ -196,7 +198,7 @@ public class GmonView extends AbstractSTDataView {
 	 * @param gmonPath
 	 * @param instanceName
 	 */
-	public static GmonView displayGprofView(String binaryPath, String gmonPath, String instanceName, IProject project){
+	public static GmonView displayGprofView(String binaryPath, String gmonPath, IProject project){
 		IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryPath));
 		if (binary == null) {
 			MessageDialog.openError(
@@ -220,24 +222,24 @@ public class GmonView extends AbstractSTDataView {
 			);
 			Activator.getDefault().getLog().log(status);
 		}
-		return displayGprofView(decoder, gmonPath, instanceName);
+		return displayGprofView(decoder, gmonPath);
 	}
 
 	/**
 	 * Display gmon results in the GProf View.
 	 * NOTE: this method has to be called from within the UI thread.
 	 * @param decoder
-	 * @param gmonPath
-	 * @param instanceName
+	 * @param secondary_id_usually_path_to_gmon_file
 	 */
-	public static GmonView displayGprofView(GmonDecoder decoder, String gmonPath, String instanceName){
+	public static GmonView displayGprofView(GmonDecoder decoder, String secondary_id_usually_path_to_gmon_file) {
 		GmonView gmonview = null;
 		try{
 			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			IWorkbenchPage page = window.getActivePage();
-			if (instanceName != null)
-				gmonview = (GmonView) page.showView("org.eclipse.linuxtools.gprof.view",instanceName, IWorkbenchPage.VIEW_ACTIVATE);
-			else gmonview = (GmonView) page.showView("org.eclipse.linuxtools.gprof.view");
+			if (secondary_id_usually_path_to_gmon_file != null) {
+				secondary_id_usually_path_to_gmon_file = secondary_id_usually_path_to_gmon_file.replace('.', '_');
+			}
+			gmonview = (GmonView) page.showView(ID,secondary_id_usually_path_to_gmon_file, IWorkbenchPage.VIEW_ACTIVATE);
 			if (decoder.getHistogramDecoder().getProf_rate() == 0){
 				gmonview.switchSampleTime.setToolTipText("Unable to display time, because profiling rate is null");
 				gmonview.switchSampleTime.setEnabled(false);

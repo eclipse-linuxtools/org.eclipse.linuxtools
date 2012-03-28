@@ -209,7 +209,7 @@ public class GprofTest extends TestCase {
 	public static void testView(File gmonFile, GmonDecoder gd,
 			File refFile, File dumpFile,
 			ITreeContentProvider contentProvider, boolean timeMode) throws Exception {
-		GmonView view = GmonView.displayGprofView(gd, gmonFile.getAbsolutePath(), null);
+		GmonView view = GmonView.displayGprofView(gd, gmonFile.getAbsolutePath());
 		SwitchContentProviderAction action = new SwitchContentProviderAction("testAction",
 				"icons/ch_callees.png" /*to avoid error*/, view.getSTViewer().getViewer(),
 				contentProvider);
