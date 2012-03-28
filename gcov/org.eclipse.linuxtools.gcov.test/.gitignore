@@ -4,3 +4,4 @@ javaCompiler...args
 build.xml
 target
 screenshots
+*.jpg
