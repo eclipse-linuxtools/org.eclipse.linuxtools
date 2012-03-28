@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileEditor extends TextEditor {
@@ -160,7 +162,7 @@ public class SpecfileEditor extends TextEditor {
 		return viewer;
 	}
 	
-	public SpecfileContentOutlinePage getOutlinePage() {
+	public ContentOutlinePage getOutlinePage() {
 		if (outlinePage == null) {
 			outlinePage = new SpecfileContentOutlinePage(this);
 			if (getEditorInput() != null)
@@ -184,7 +186,7 @@ public class SpecfileEditor extends TextEditor {
 		setDocumentProvider(getSpecfileDocumentProvider());
 	}
 
-	public static SpecfileDocumentProvider getSpecfileDocumentProvider() {
+	public static TextFileDocumentProvider getSpecfileDocumentProvider() {
 		if (fDocumentProvider == null)
 			fDocumentProvider = new SpecfileDocumentProvider();
 		return fDocumentProvider;

@@ -35,7 +35,7 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 	IDocumentProvider documentProvider;
 
 	public SpecfileReconcilingStrategy(SpecfileEditor editor) {
-		outline= editor.getOutlinePage();
+		outline= (SpecfileContentOutlinePage) editor.getOutlinePage();
 		this.editor = editor;
 		documentProvider = editor.getDocumentProvider();
 		sFoldingStructureProvider= new SpecfileFoldingStructureProvider(editor);
