@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.markers.SpecfileMarkerHandler;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class SpecfileTaskHandler extends SpecfileMarkerHandler{
@@ -59,7 +58,7 @@ public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	}
 
 	@Override
-	protected String getMarkerID() {
+	String getMarkerID() {
 		return SPECFILE_TASK_MARKER_ID;
 	}
 
