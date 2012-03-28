@@ -25,7 +25,7 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.quickassist.IQuickFixableAnnotation;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParseException;
 import org.eclipse.ui.IEditorInput;

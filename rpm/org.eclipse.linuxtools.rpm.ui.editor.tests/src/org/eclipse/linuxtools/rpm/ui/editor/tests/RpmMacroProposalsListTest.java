@@ -15,8 +15,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmMacroProposalsList;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmMacroProposalsList;
 
 public class RpmMacroProposalsListTest extends TestCase {
 

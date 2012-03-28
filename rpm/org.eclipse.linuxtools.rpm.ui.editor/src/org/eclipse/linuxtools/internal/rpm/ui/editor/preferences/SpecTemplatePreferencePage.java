@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.internal.rpm.ui.editor.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
 import org.osgi.service.prefs.BackingStoreException;
 

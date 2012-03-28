@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChange
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.osgi.util.NLS;
 
 public final class RpmPackageBuildProposalsJob extends Job {

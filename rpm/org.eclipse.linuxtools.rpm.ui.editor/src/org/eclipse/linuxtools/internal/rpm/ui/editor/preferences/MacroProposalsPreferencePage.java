@@ -22,7 +22,7 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;

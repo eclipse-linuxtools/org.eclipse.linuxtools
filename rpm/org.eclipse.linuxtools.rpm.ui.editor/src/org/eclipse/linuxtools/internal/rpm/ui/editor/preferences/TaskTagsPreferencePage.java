@@ -14,7 +14,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;

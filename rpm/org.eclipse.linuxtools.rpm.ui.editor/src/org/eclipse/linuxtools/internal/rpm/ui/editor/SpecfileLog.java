@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 
 /**
  * The logger of convenience for the Specfile Plug-In.

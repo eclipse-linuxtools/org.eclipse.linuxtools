@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui.editor; singleton:=true
 Bundle-Version: 0.4.3.qualifier
-Bundle-Activator: org.eclipse.linuxtools.rpm.ui.editor.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.rpm.ui.editor.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

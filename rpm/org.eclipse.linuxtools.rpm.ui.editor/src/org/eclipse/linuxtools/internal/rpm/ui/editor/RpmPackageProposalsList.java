@@ -28,7 +28,6 @@ import java.util.List;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 
 /**
  * This class is used to retrieve and manage the RPM package proposals.

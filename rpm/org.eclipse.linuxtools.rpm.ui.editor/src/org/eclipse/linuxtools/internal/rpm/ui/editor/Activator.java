@@ -10,7 +10,7 @@
  *    Alphonse Van Assche
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,10 +24,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmPackageBuildProposalsJob;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmPackageProposalsList;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
 import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;

@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 
 /**
  * Class used to initialize default preference values.

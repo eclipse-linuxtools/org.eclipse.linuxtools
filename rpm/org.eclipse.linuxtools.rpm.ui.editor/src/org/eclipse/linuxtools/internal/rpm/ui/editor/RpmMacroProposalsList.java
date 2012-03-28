@@ -9,7 +9,7 @@
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.io.BufferedReader;
 import java.io.File;

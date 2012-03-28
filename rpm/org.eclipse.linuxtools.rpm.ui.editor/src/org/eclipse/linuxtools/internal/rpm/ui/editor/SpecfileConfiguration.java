@@ -40,7 +40,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileChangelogS
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;

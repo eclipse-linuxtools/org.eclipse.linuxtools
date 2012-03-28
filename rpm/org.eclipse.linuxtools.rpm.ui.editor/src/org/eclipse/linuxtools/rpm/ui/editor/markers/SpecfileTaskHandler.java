@@ -17,8 +17,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class SpecfileTaskHandler extends SpecfileMarkerHandler{
