@@ -5,17 +5,8 @@ Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui.editor.tests
 Bundle-Version: 0.4.3.qualifier
 Fragment-Host: org.eclipse.linuxtools.rpm.ui.editor;bundle-version="0.4.3"
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jface.text,
- org.eclipse.core.resources,
- org.eclipse.osgi,
- org.eclipse.ui.workbench,
- org.eclipse.ui.ide,
- org.eclipse.core.runtime,
- org.eclipse.linuxtools.rpm.ui.editor,
- org.eclipse.jface,
- org.eclipse.ui.editors,
- org.junit;bundle-version="4.8.1",
- org.eclipse.linuxtools.rpm.core
+Require-Bundle: 
+ org.junit;bundle-version="4.8.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %provider
