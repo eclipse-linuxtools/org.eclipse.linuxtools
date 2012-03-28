@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Linuxtools Changelog Tests
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.tests
 Bundle-Version: 2.7.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.changelog.core.tests.TestsPluginActivator
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -38,5 +37,3 @@ Import-Package: org.eclipse.cdt.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.part,
  org.eclipse.ui.texteditor
-Export-Package: org.eclipse.linuxtools.changelog.tests.fixtures;x-friends:="org.eclipse.linuxtools.changelog.ui.tests",
- org.eclipse.linuxtools.changelog.tests.helpers;x-friends:="org.eclipse.linuxtools.changelog.ui.tests"
