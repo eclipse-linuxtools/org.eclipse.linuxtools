@@ -8,7 +8,7 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor.markers;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.markers;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -19,15 +19,15 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 
 public abstract class SpecfileMarkerHandler {
 
-	IDocument document;
-	IFile file;
+	protected IDocument document;
+	protected IFile file;
 
 	public SpecfileMarkerHandler(IFile file, IDocument document) {
 		this.file = file;
 		this.document = document;
 	}
 
-	abstract String getMarkerID();
+	abstract protected String getMarkerID();
 
 	protected Integer getCharOffset(int lineNumber, int columnNumber) {
 		try {

@@ -26,6 +26,7 @@ import org.eclipse.jface.text.quickassist.IQuickFixableAnnotation;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.markers.SpecfileMarkerHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParseException;
 import org.eclipse.ui.IEditorInput;
@@ -164,7 +165,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	}
 	
 	@Override
-	String getMarkerID() {
+	protected String getMarkerID() {
 		return SPECFILE_ERROR_MARKER_ID;
 	}
 	
