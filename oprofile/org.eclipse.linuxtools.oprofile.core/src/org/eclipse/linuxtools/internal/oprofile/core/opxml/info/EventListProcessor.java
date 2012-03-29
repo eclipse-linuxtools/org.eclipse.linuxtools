@@ -13,10 +13,10 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.xml.sax.Attributes;
 
 
@@ -48,14 +48,14 @@ public class EventListProcessor extends XMLProcessor {
 		private OpUnitMask.MaskInfo _info;
 		
 		/**
-		 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#reset()
+		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 		 */
 		public void reset(Object callData) {
 			_info = new OpUnitMask.MaskInfo();
 		}
 		
 		/**
-		 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 		 */
 		public void endElement(String name, Object callData) {
 			if (name.equals(_VALUE_TAG)) {
@@ -106,7 +106,7 @@ public class EventListProcessor extends XMLProcessor {
 		}
 		
 		/**
-		 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#reset()
+		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 		 */
 		public void reset(Object callData) {
 			_unitMask = new OpUnitMask();
@@ -114,7 +114,7 @@ public class EventListProcessor extends XMLProcessor {
 		}
 		
 		/**
-		 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#startElement(String, Attributes)
+		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 		 */
 		public void startElement(String name, Attributes attrs, Object callData) {
 			if (name.equals(_MASK_TAG)) {
@@ -126,7 +126,7 @@ public class EventListProcessor extends XMLProcessor {
 		}
 		
 		/**
-		 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 		 */
 		public void endElement(String name, Object callData) {
 			if (name.equals(_MASK_TYPE_TAG)) {
@@ -185,7 +185,7 @@ public class EventListProcessor extends XMLProcessor {
 	}
 	
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#startElement(String, Attributes)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(_EVENT_TAG)) {
@@ -203,7 +203,7 @@ public class EventListProcessor extends XMLProcessor {
 	}
 	
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(_EVENT_TAG)) {

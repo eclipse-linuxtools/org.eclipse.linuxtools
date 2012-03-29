@@ -12,9 +12,9 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
 import org.xml.sax.Attributes;
 
 /**
@@ -47,7 +47,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	}
 
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#startElement(String, Attributes)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
@@ -61,7 +61,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	}
 	
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {

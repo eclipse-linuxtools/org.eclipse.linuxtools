@@ -12,14 +12,14 @@ package org.eclipse.linuxtools.oprofile.ui.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.tests.TestPlugin;
 import org.eclipse.linuxtools.oprofile.tests.TestingOpModelRoot;
-import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
-import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
-import org.eclipse.linuxtools.oprofile.ui.model.UiModelSample;
-import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
-import org.eclipse.linuxtools.oprofile.ui.model.UiModelSymbol;
+import org.eclipse.linuxtools.internal.oprofile.ui.model.IUiModelElement;
+import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelRoot;
+import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSample;
+import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSession;
+import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSymbol;
 
 public class TestUiDataModel extends TestCase {
 

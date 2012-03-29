@@ -7,7 +7,7 @@ Bundle-Vendor: %bundleProvider
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.eclipse.linuxtools.internal.oprofile.core.opxml,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata,
- org.eclipse.linuxtools.oprofile.core.model
+ org.eclipse.linuxtools.internal.oprofile.core.model
 Export-Package: org.eclipse.linuxtools.oprofile.tests
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.core;singleton:=true
 Bundle-Version: 0.3.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  org.eclipse.ui;bundle-version="3.4.0",
@@ -11,15 +11,15 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: oprofile-core.jar
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.internal.oprofile.core.opxml,
+Export-Package: org.eclipse.linuxtools.internal.oprofile.core,
+ org.eclipse.linuxtools.internal.oprofile.core.daemon,
+ org.eclipse.linuxtools.internal.oprofile.core.linux,
+ org.eclipse.linuxtools.internal.oprofile.core.model,
+ org.eclipse.linuxtools.internal.oprofile.core.opxml,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.info,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata,
- org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions,
- org.eclipse.linuxtools.oprofile.core,
- org.eclipse.linuxtools.oprofile.core.daemon,
- org.eclipse.linuxtools.oprofile.core.linux,
- org.eclipse.linuxtools.oprofile.core.model
+ org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions
 Bundle-Localization: plugin
 Eclipse-BundleShape: dir
 Import-Package: org.eclipse.core.resources

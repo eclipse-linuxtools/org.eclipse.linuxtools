@@ -12,9 +12,9 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
 import org.xml.sax.Attributes;
 
 

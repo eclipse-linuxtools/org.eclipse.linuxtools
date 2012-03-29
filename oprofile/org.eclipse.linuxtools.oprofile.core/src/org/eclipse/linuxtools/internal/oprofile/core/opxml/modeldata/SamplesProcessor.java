@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
 
 
 /**
@@ -41,7 +41,7 @@ public class SamplesProcessor extends XMLProcessor {
 	}
 
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(COUNT_TAG)) {

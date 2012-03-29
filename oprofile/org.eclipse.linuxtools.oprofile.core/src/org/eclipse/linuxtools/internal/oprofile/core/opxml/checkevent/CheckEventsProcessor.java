@@ -33,14 +33,14 @@ public class CheckEventsProcessor extends XMLProcessor {
 	private int _result;
 
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#reset()
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 	 */
 	public void reset(Object callData) {
 		_result = INVALID_UNKNOWN;
 	}
 	
 	/**
-	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#endElement(String)
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(_RESULT_TAG)) {

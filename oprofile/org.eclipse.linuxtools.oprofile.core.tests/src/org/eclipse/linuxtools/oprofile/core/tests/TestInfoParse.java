@@ -18,10 +18,10 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpInfo;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 

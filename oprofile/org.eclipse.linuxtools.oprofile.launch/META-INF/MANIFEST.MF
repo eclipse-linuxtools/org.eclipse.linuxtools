@@ -7,7 +7,7 @@ Bundle-Vendor: %bundleProvider
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  org.eclipse.ui;bundle-version="3.4.0"
-Bundle-Activator: org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: org.eclipse.cdt.core.model,
@@ -19,12 +19,12 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.core,
  org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
- org.eclipse.linuxtools.oprofile.core,
- org.eclipse.linuxtools.oprofile.core.daemon,
- org.eclipse.linuxtools.oprofile.ui,
- org.eclipse.linuxtools.oprofile.ui.view,
+ org.eclipse.linuxtools.internal.oprofile.core,
+ org.eclipse.linuxtools.internal.oprofile.core.daemon,
+ org.eclipse.linuxtools.internal.oprofile.ui,
+ org.eclipse.linuxtools.internal.oprofile.ui.view,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.ui
-Export-Package: org.eclipse.linuxtools.oprofile.launch,
- org.eclipse.linuxtools.oprofile.launch.configuration,
- org.eclipse.linuxtools.oprofile.launch.launching
+Export-Package: org.eclipse.linuxtools.internal.oprofile.launch,
+ org.eclipse.linuxtools.internal.oprofile.launch.configuration,
+ org.eclipse.linuxtools.internal.oprofile.launch.launching

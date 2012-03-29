@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.linuxtools.oprofile.ui.viewgroup"
-            class="org.eclipse.linuxtools.oprofile.ui.view.OprofileView"
+            class="org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView"
             icon="icons/oprofile_view.png"
             id="org.eclipse.linuxtools.oprofile.ui.OProfileView"
             name="%view.name"

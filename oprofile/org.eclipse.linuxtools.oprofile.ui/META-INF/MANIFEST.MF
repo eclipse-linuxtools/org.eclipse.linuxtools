@@ -8,10 +8,10 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  org.eclipse.ui;bundle-version="3.4.0",
  org.eclipse.ui.editors;bundle-version="3.4.0"
-Bundle-Activator: org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.oprofile.ui;
+Export-Package: org.eclipse.linuxtools.internal.oprofile.ui;
   uses:="org.eclipse.jface.resource,
    org.eclipse.ui,
    org.eclipse.linuxtools.oprofile.ui.sample,
@@ -22,14 +22,14 @@ Export-Package: org.eclipse.linuxtools.oprofile.ui;
    org.eclipse.swt.graphics,
    org.osgi.framework,
    org.eclipse.swt.widgets",
- org.eclipse.linuxtools.oprofile.ui.model,
- org.eclipse.linuxtools.oprofile.ui.view
+ org.eclipse.linuxtools.internal.oprofile.ui.model,
+ org.eclipse.linuxtools.internal.oprofile.ui.view
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.core.resources,
  org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
  org.eclipse.jface.text.source,
+ org.eclipse.linuxtools.internal.oprofile.core,
+ org.eclipse.linuxtools.internal.oprofile.core.model,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions,
- org.eclipse.linuxtools.oprofile.core,
- org.eclipse.linuxtools.oprofile.core.model,
  org.eclipse.linuxtools.profiling.ui

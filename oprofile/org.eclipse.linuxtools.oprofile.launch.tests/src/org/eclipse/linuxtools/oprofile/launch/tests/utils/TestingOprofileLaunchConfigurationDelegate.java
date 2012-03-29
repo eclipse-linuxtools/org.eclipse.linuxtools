@@ -13,10 +13,10 @@
 package org.eclipse.linuxtools.oprofile.launch.tests.utils;
 
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
-import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
-import org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
+import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
+import org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchConfigurationDelegate;
 
 /**
  * Helper delegate class

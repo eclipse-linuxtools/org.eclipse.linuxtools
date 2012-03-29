@@ -18,11 +18,11 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataProcessor;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 

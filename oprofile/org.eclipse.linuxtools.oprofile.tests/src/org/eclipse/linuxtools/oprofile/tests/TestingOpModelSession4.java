@@ -10,9 +10,9 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.tests;
 
-import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 
 /*
  * A faked OpModelSession object where there is no image. 

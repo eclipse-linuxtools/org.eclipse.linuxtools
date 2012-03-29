@@ -12,9 +12,9 @@ package org.eclipse.linuxtools.oprofile.core.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.oprofile.tests.TestingOpModelRoot;
 
 public class TestDataModel extends TestCase {
