@@ -9,7 +9,7 @@
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor.wizards;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -34,6 +34,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.wizards.Messages;
+import org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
