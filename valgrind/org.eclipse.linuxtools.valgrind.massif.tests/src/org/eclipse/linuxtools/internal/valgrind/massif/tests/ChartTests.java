@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import java.util.Arrays;
-
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -20,7 +18,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
@@ -33,9 +30,7 @@ import org.eclipse.linuxtools.internal.valgrind.massif.charting.Messages;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;

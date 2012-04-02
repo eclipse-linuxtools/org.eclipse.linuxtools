@@ -24,4 +24,3 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.internal.valgrind.memcheck

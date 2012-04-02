@@ -13,12 +13,13 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 import org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 
 	@Override
 	public Bundle getBundle() {
-		return MemcheckTestsPlugin.getDefault().getBundle();
+		return FrameworkUtil.getBundle(AbstractMemcheckTest.class);
 	}
 	
 	public String getToolID() {

@@ -24,5 +24,3 @@ Import-Package: org.eclipse.cdt.core.dom.ast,
  org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui
-Export-Package: org.eclipse.linuxtools.internal.valgrind.cachegrind,
- org.eclipse.linuxtools.internal.valgrind.cachegrind.model

@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import java.io.File;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;

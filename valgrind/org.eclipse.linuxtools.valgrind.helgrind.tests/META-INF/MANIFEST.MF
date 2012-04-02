@@ -3,32 +3,21 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.helgrind.tests
 Bundle-Version: 0.11.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.helgrind.tests.HelgrindTestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.junit;bundle-version="4.7.0",
- org.eclipse.ui.ide.application,
+Require-Bundle: org.junit;bundle-version="4.7.0",
  org.eclipse.cdt.managedbuilder.gnu.ui
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Fragment-Host: org.eclipse.linuxtools.valgrind.helgrind
 Import-Package: org.eclipse.cdt.core.model,
- org.eclipse.cdt.ui,
  org.eclipse.core.resources,
- org.eclipse.debug.core,
  org.eclipse.debug.core.model,
- org.eclipse.debug.ui,
  org.eclipse.jface.text,
  org.eclipse.linuxtools.internal.valgrind.core,
- org.eclipse.linuxtools.internal.valgrind.helgrind,
  org.eclipse.linuxtools.internal.valgrind.launch,
  org.eclipse.linuxtools.internal.valgrind.tests,
  org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.valgrind.core,
- org.eclipse.linuxtools.valgrind.launch,
- org.eclipse.linuxtools.valgrind.ui,
- org.eclipse.ui,
  org.eclipse.ui.texteditor
-Export-Package: org.eclipse.linuxtools.internal.valgrind.helgrind.tests

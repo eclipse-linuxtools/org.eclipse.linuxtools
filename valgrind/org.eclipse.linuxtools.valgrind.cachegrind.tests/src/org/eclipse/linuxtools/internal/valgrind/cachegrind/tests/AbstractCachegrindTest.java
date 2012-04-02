@@ -16,12 +16,13 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunct
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 public abstract class AbstractCachegrindTest extends AbstractValgrindTest {
 
 	@Override
 	protected Bundle getBundle() {
-		return CachegrindTestsPlugin.getDefault().getBundle();
+		return FrameworkUtil.getBundle(AbstractCachegrindTest.class);
 	}
 
 	@Override

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
-import java.io.File;
-
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -27,9 +25,7 @@ import org.eclipse.linuxtools.internal.valgrind.ui.CoreMessagesViewer;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
