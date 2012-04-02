@@ -33,6 +33,7 @@ import org.eclipse.linuxtools.internal.perf.model.PMFile;
 import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.osgi.framework.FrameworkUtil;
 
 public class ModelTest extends AbstractTest {
 	protected ILaunchConfiguration config;
@@ -43,7 +44,7 @@ public class ModelTest extends AbstractTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild(TestPlugin.getDefault().getBundle(), "fibTest"); //$NON-NLS-1$
+		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
 
 		delegate = new PerfLaunchConfigDelegate();

@@ -21,7 +21,3 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
-Export-Package: org.eclipse.linuxtools.internal.perf,
- org.eclipse.linuxtools.internal.perf.launch,
- org.eclipse.linuxtools.internal.perf.model,
- org.eclipse.linuxtools.internal.perf.ui

@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.osgi.framework.FrameworkUtil;
 
 public class LaunchTabsTest extends AbstractTest {
 	protected ILaunchConfiguration config;
@@ -32,7 +33,7 @@ public class LaunchTabsTest extends AbstractTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild(TestPlugin.getDefault().getBundle(), "fibTest"); //$NON-NLS-1$
+		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
