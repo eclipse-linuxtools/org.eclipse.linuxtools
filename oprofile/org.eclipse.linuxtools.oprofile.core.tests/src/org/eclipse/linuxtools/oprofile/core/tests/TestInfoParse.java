@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
+import org.osgi.framework.FrameworkUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -52,7 +53,7 @@ public class TestInfoParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 		
 		info_0ctr = new OpInfo();
@@ -62,7 +63,7 @@ public class TestInfoParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML_0CTR), null)).getFile();
+		filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML_0CTR), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	

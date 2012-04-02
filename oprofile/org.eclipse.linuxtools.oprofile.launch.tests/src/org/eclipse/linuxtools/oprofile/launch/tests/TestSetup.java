@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.framework.FrameworkUtil;
 
 public class TestSetup extends AbstractTest {
 	protected ILaunchConfiguration config;
@@ -34,7 +35,7 @@ public class TestSetup extends AbstractTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild(LaunchTestsPlugin.getDefault().getBundle(), "primeTest"); //$NON-NLS-1$
+		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "primeTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());

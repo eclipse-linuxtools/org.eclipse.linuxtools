@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataAdapter;
+import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,7 +45,7 @@ public class TestModelDataPreParse extends TestCase {
 	public void setUp (){
 		String absFilePath;
 		Path filePath = new Path(REL_PATH_TO_MODEL_DATA_RAW);
-		URL fileURL = FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), filePath, null);
+		URL fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		
 		try {
 			absFilePath = FileLocator.toFileURL(fileURL).getFile();
@@ -62,7 +63,7 @@ public class TestModelDataPreParse extends TestCase {
 		Element actualRoot = (Element) actualDocument.getElementsByTagName(ModelDataAdapter.MODEL_DATA).item(0);
 		
 		filePath = new Path(REL_PATH_TO_MODEL_DATA_EXPECTED);
-		fileURL = FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), filePath, null);
+		fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		Element expectedRoot = null;
 		
 		try {

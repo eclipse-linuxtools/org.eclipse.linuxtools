@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventsProcessor;
+import org.osgi.framework.FrameworkUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -57,7 +58,7 @@ public class TestCheckEventsParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(fileToParse), null)).getFile();
+		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(fileToParse), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	

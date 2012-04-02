@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
+import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,7 +45,7 @@ public class TestInfoPreParse extends TestCase {
 		String absFilePath = null;
 		
 		Path filePath = new Path(REL_PATH_TO_INFO_PRE_PARSE_RAW);
-		URL fileURL = FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), filePath, null);
+		URL fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		try {
 			absFilePath = FileLocator.toFileURL(fileURL).getFile();
 			file = new File (absFilePath);
@@ -57,7 +58,7 @@ public class TestInfoPreParse extends TestCase {
 		Element actualRoot = (Element) actualDocument.getElementsByTagName(InfoAdapter.INFO).item(0);
 		
 		filePath = new Path(REL_PATH_TO_INFO_PRE_PARSE_EXEPECTED);
-		fileURL = FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), filePath, null);
+		fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		Element expectedRoot = null;
 		try {
 			absFilePath = FileLocator.toFileURL(fileURL).getFile();

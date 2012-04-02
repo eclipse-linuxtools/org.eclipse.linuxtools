@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
+import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -115,7 +116,7 @@ public class TestCheckEventsPreParse extends TestCase {
 		Element actualRoot = (Element) actualDocument.getElementsByTagName(CheckEventAdapter.CHECK_EVENTS).item(0);
 		
 		Path filePath = new Path(path);
-		URL fileURL = FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), filePath, null);
+		URL fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		Element expectedRoot = null;
 		try {
 			String absFilePath = FileLocator.toFileURL(fileURL).getFile();

@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.oprofile.launch.tests;
 
 import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -31,6 +32,7 @@ import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.framework.FrameworkUtil;
 
 public class TestLaunchingExternalProject extends AbstractTest {
 	
@@ -49,8 +51,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 		if (!tempExternalProjectPath.exists()) {
 			tempExternalProjectPath.mkdir();
 		}
-		externalProject = createExternalProjectAndBuild(LaunchTestsPlugin
-				.getDefault().getBundle(),
+		externalProject = createExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
 				PROJECT_NAME, EXTERNAL_PROJECT_PATH); //$NON-NLS-1$
 		config = createConfiguration(externalProject);
 		testShell = new Shell(Display.getDefault());

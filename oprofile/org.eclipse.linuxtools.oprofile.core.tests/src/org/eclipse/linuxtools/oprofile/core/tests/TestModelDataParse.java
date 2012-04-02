@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataProcessor;
+import org.osgi.framework.FrameworkUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -55,7 +56,7 @@ public class TestModelDataParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 
 		//2nd test image
@@ -67,7 +68,7 @@ public class TestModelDataParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML_MULTI_IMAGE), null)).getFile();
+		filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML_MULTI_IMAGE), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	

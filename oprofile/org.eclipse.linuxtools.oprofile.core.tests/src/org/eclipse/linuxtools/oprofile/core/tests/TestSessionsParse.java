@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProcessor;
+import org.osgi.framework.FrameworkUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -58,7 +59,7 @@ public class TestSessionsParse extends TestCase {
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
 		
-		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	
