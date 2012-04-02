@@ -7,33 +7,34 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.parsers.tests;
 
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
+import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.linuxtools.changelog.tests.fixtures.CStringStorage;
 import org.eclipse.linuxtools.changelog.tests.fixtures.CStringStorageInput;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
-import org.eclipse.linuxtools.internal.changelog.parsers.CParser;
+import org.eclipse.linuxtools.internal.changelog.core.ChangeLogExtensionManager;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * CParser test suite.
@@ -44,7 +45,7 @@ public class CParserTest {
 	// A unique string to mark the place of current selection in source code
 	private static final String OFFSET_MARKER = "<# selection #>";
 	// The parser under test
-	private CParser cParser;
+	private IParserChangeLogContrib cParser;
 	// A faked project
 	private ChangeLogTestProject project;
 	// The IEditorPart corresponding to the ChangeLog file
@@ -52,7 +53,7 @@ public class CParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		cParser = new CParser();
+		cParser = ChangeLogExtensionManager.getExtensionManager().getParserContributor("CEditor");
 		project = new ChangeLogTestProject("c-parser-test-project");
 	}
 

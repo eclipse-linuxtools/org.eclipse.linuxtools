@@ -39,6 +39,18 @@
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
+          <dependencies>
+            <dependency>
+              <artifactId>org.eclipse.linuxtools.changelog.parsers.java</artifactId>
+              <version>0.0.0</version>
+              <type>p2-installable-unit</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.linuxtools.changelog.cparser</artifactId>
+              <version>0.0.0</version>
+              <type>p2-installable-unit</type>
+            </dependency>
+          </dependencies>
         </configuration>
       </plugin>
     </plugins>

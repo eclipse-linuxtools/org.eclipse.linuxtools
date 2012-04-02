@@ -8,4 +8,4 @@ Require-Bundle: org.eclipse.jdt.core;bundle-version="3.3.0",
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.6.3"
-Export-Package: org.eclipse.linuxtools.internal.changelog.parsers.java;x-friends:="org.eclipse.linuxtools.changelog.tests"
+

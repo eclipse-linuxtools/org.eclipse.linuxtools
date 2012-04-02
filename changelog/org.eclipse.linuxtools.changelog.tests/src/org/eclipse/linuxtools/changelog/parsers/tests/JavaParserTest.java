@@ -7,30 +7,31 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.parsers.tests;
 
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
+import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
-import org.eclipse.linuxtools.internal.changelog.parsers.java.JavaParser;
+import org.eclipse.linuxtools.internal.changelog.core.ChangeLogExtensionManager;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JavaParser test suite.
@@ -41,7 +42,7 @@ public class JavaParserTest {
 	// A unique string to mark the place of current selection in source code
 	private static final String OFFSET_MARKER = "<# selection #>";
 	// The parser under test
-	private JavaParser javaParser;
+	private IParserChangeLogContrib javaParser;
 	// A faked project
 	private ChangeLogTestProject project;
 	// The IEditorPart corresponding to the ChangeLog file
@@ -49,7 +50,7 @@ public class JavaParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		javaParser = new JavaParser();
+		javaParser = ChangeLogExtensionManager.getExtensionManager().getParserContributor("CompilationUnitEditor");;
 		project = new ChangeLogTestProject("java-parser-test-project");
 		// make it a Java project
 		project.addJavaNature();
@@ -223,7 +224,7 @@ public class JavaParserTest {
 		
 		final String actualFunctionName = javaParser.parseCurrentFunction(javaSourceEditorPart);
 		
-		assertEquals(JavaParser.STATIC_INITIALIZER_NAME, actualFunctionName);
+		assertEquals("static initializer", actualFunctionName);
 	}
 	
 	/**
@@ -277,7 +278,7 @@ public class JavaParserTest {
 		
 		final String actualFunctionName = javaParser.parseCurrentFunction(javaSourceEditorPart);
 		
-		assertEquals(JavaParser.STATIC_INITIALIZER_NAME, actualFunctionName);
+		assertEquals("static initializer", actualFunctionName);
 	}
 	
 	/**

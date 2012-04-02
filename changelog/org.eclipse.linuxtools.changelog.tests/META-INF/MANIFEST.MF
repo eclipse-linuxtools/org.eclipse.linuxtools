@@ -4,36 +4,17 @@ Bundle-Name: Eclipse Linuxtools Changelog Tests
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.tests
 Bundle-Version: 2.7.0.qualifier
 Bundle-Vendor: Eclipse.org
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: 
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
  org.junit4;bundle-version="4.8.1"
+Fragment-Host: org.eclipse.linuxtools.changelog.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5,
  JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.cdt.core,
  org.eclipse.cdt.core.model,
- org.eclipse.cdt.core.settings.model,
- org.eclipse.cdt.core.templateengine,
- org.eclipse.cdt.core.templateengine.process,
- org.eclipse.cdt.managedbuilder.core,
- org.eclipse.cdt.managedbuilder.templateengine,
- org.eclipse.compare,
- org.eclipse.compare.structuremergeviewer,
- org.eclipse.core.resources,
  org.eclipse.jdt.core,
- org.eclipse.jdt.launching,
- org.eclipse.jface.text,
  org.eclipse.linuxtools.changelog.core,
- org.eclipse.linuxtools.internal.changelog.core,
- org.eclipse.linuxtools.internal.changelog.core.actions,
- org.eclipse.linuxtools.internal.changelog.core.editors,
- org.eclipse.linuxtools.internal.changelog.core.formatters,
- org.eclipse.linuxtools.internal.changelog.core.ui,
- org.eclipse.linuxtools.internal.changelog.parsers,
- org.eclipse.linuxtools.internal.changelog.parsers.java,
- org.eclipse.team.ui.synchronize,
- org.eclipse.ui,
- org.eclipse.ui.editors.text,
  org.eclipse.ui.ide,
- org.eclipse.ui.part,
  org.eclipse.ui.texteditor
