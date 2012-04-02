@@ -14,6 +14,7 @@ import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 
 
@@ -63,7 +64,7 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 
 	@Override
 	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
+		return FrameworkUtil.getBundle(this.getClass());
 	}
 
 }

@@ -36,7 +36,7 @@ public class SystemTapTabTest extends TestCase{
 		try {
 			configuration = shortCut.outsideGetLaunchConfigType().
 			newInstance(null, (DebugPlugin.getDefault().getLaunchManager()).
-					generateUniqueLaunchConfigurationNameFrom("invalid"));
+					generateLaunchConfigurationName("invalid"));
 			ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
 			stp.setDefaults(wc);
 			stp.performApply(wc);
