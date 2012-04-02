@@ -10,9 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.core;
 
-import java.io.IOException;
-
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
