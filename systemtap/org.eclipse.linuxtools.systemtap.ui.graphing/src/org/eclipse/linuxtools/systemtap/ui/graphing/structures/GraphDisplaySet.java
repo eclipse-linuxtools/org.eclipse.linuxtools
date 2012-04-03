@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.systemtap.ui.graphing.internal.GraphingPlugin;
-import org.eclipse.linuxtools.systemtap.ui.graphing.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget.ChartCanvas;

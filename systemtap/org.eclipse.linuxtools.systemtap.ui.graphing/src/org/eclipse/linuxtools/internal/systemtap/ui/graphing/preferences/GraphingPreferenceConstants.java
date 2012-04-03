@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphing.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
 
 public class GraphingPreferenceConstants {
 

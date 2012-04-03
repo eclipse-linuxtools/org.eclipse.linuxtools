@@ -27,13 +27,13 @@
 		<page
 			name="%preference.graphing.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.graphing"
-			class="org.eclipse.linuxtools.systemtap.ui.graphing.preferences.GraphingPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 	</extension>
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtap.ui.graphing.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.PreferenceInitializer"/>
 	</extension>
 
 	<extension
@@ -88,7 +88,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.SaveGraphImage"
 				icon="icons/actions/save_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/save.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.SaveGraphImageAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.SaveGraphImageAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.SaveGraphImage"
 				style="push"
 				state="false"/>
@@ -98,7 +98,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ExportDataSet"
 				icon="icons/actions/export_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/export.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ExportDataSetAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.ExportDataSetAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ExportDataSet"
 				style="push"
 				state="false"/>
@@ -108,7 +108,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ImportDataSet"
 				icon="icons/actions/import_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/import.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ImportDataSetAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.ImportDataSetAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ImportDataSet"
 				style="push"
 				state="false"/>
@@ -118,7 +118,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.OpenScriptOutput"
 				icon="icons/actions/open_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/new.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.OpenScriptOutputAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.OpenScriptOutputAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.OpenScriptOutput"
 				style="push"
 				state="false"/>

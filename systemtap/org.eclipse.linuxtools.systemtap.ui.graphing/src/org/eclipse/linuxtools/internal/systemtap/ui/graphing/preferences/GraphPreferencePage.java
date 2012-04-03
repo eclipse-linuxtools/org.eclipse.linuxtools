@@ -9,13 +9,13 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphing.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.linuxtools.systemtap.ui.graphing.internal.GraphingPlugin;
-import org.eclipse.linuxtools.systemtap.ui.graphing.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.ui.IWorkbench;
@@ -23,33 +23,46 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 
-public class DataTablePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public DataTablePreferencePage() {
+public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+	public GraphPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start DataTablePreferencePage:", this);
-		//setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
+		LogManager.logDebug("Start GraphPreferencePage:", this);
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("DataTablePreferencePage.GraphDisplayPreferences"));
-		LogManager.logDebug("End DataTablePreferencePage:", this);
+		//setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
+		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences"));
+		LogManager.logDebug("End GraphPreferencePage:", this);
 	}
 	
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this);
 
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, 
-				Localization.getString("DataTablePreferencePage.JumpNewestEntry"),
-				getFieldEditorParent()));
-		
-		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_AUTO_RESIZE, 
-				Localization.getString("DataTablePreferencePage.AutoResizeColumns"),
+				GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES, 
+				Localization.getString("GraphPreferencePage.ShowGridLines"),
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS,
-				Localization.getString("DataTablePreferencePage.MaxDataItems"),
+				Localization.getString("GraphPreferencePage.MaxDataItems"),
+				getFieldEditorParent()));
+
+		addField(
+				new IntegerFieldEditor(
+				GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
+				Localization.getString("GraphPreferencePage.ViewableDataItems"),
+				getFieldEditorParent()));
+
+		addField(
+				new IntegerFieldEditor(
+				GraphingAPIPreferenceConstants.P_X_SERIES_TICKS,
+				Localization.getString("GraphPreferencePage.XSeriesTicks"),
+				getFieldEditorParent()));
+
+		addField(
+				new IntegerFieldEditor(
+				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
+				Localization.getString("GraphPreferencePage.YSeriesTicks"),
 				getFieldEditorParent()));
 		
 		LogManager.logDebug("End createFieldEditors:", this);
