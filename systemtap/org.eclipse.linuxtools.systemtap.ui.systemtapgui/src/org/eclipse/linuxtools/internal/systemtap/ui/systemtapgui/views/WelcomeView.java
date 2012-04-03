@@ -9,11 +9,11 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.systemtapgui.views;
+package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -83,5 +83,5 @@ public class WelcomeView extends ViewPart {
 		super.dispose();
 	}
 	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.systemtapgui.views.WelcomeView";
+	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views.WelcomeView";
 }

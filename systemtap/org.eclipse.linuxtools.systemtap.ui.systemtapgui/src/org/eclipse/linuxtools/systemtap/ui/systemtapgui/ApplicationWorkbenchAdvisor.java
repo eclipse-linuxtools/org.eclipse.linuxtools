@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;

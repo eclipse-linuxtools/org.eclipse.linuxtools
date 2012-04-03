@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin;
 
 
 

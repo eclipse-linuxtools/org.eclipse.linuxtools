@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views.WelcomeView;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.views.WelcomeView;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 

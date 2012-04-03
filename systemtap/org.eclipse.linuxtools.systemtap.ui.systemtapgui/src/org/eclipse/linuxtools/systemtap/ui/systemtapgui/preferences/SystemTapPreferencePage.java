@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 

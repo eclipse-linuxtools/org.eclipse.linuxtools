@@ -14,8 +14,8 @@ package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.*;
+import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
