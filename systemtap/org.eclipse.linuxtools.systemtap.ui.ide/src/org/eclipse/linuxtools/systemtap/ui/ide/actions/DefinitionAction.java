@@ -16,8 +16,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.ui.IEditorPart;
@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
  * for the entity that the user selected is opened in an <code>STPEditor</code> in the current window.
  * @author Ryan Morse
  * @see org.eclipse.jface.action.Action
- * @see org.eclipse.linuxtools.systemtap.ui.ide.views.TapsetBrowserView
+ * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.TapsetBrowserView
  */
 public class DefinitionAction extends Action implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
 	private IStructuredSelection selection = null;

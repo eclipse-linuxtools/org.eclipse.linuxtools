@@ -15,10 +15,10 @@ import java.io.File;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
-import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
-import org.eclipse.linuxtools.systemtap.ui.ide.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;

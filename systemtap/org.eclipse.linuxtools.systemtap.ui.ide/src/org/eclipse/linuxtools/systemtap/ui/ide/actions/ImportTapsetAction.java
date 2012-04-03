@@ -20,10 +20,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
-import org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 import org.eclipse.ui.IViewPart;
@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * widget's method, usually an OK box), the path the user selected is added to the list stored
  * in preferences that contains tapset locations, and the tapset browsers are told to refresh.
  * @author Ryan Morse
- * @see org.eclipse.linuxtools.systemtap.ui.ide.views.TapsetBrowserView
+ * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.TapsetBrowserView
  */
 public class ImportTapsetAction extends Action implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow fWindow;

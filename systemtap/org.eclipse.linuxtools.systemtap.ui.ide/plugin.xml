@@ -15,21 +15,21 @@
 		<view
         allowMultiple="true"
         category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"
         icon="icons/views/func_obj.gif"
         id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
         name="%view.function.name"/>
 		<view
         allowMultiple="true"
         category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"
         icon="icons/views/kernel_obj.gif"
         id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
         name="%view.kernel.name"/>
 		<view
         allowMultiple="true"
         category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
         icon="icons/views/probe_obj.gif"
         id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
         name="%view.probe.name"/>
@@ -38,7 +38,7 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-        class="org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor"
+        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
         contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
         default="true"
         extensions="stp"
@@ -55,7 +55,7 @@
 		<editor
 			name="%editor.c.name"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.editors.c.CEditor"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.editors.c.CEditor"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"
 			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
 			icon="icons/views/page_obj.gif"
 			default="false"
@@ -67,42 +67,42 @@
 		<page
 			name="%preference.ide.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 		<page
 			name="%preference.editor.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.editor"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.EditorPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EditorPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<page
 			name="%preference.codeAssist.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.codeassist"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.CodeAssistPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.CodeAssistPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.conditionalFilter.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.conditionalfilters"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.ConditionalFilterPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.ConditionalFilterPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.syntaxColor.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.syntaxcoloring"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.typeing.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.typeing"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TypeingPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.TypeingPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.path.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.PathPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<page
 			name="%preference.stap.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.stap"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.StapPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.StapPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<!--page
 			name="%preference.stapOptions.name"
@@ -112,13 +112,13 @@
 		<page
 			name="%preference.tapsets.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TapsetsPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.TapsetsPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.stap"/>
 	</extension>
 
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PreferenceInitializer"/>
 	</extension>
 
 	<extension

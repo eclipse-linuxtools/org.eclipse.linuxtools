@@ -9,18 +9,20 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
+import org.eclipse.swt.graphics.RGB;
 
 /**
- * A simple class that contains information about the current session of the IDE, such as
- * the path to the tapset libraries, the active SystemTap Script Editor, and if the user
- * chooses, the user's account password.
+ * This interface defines the constant colors that are used for syntax highlighting inside
+ * <code>CEditor</code>
  * @author Ryan Morse
  */
-public class IDESessionSettings {
-	public static String tapsetLocation = "";
-	public static STPEditor activeSTPEditor = null;
-	public static String password = null;
+public interface ICColorConstants {
+	RGB COMMENT= new RGB(0, 128, 0);
+	RGB PREPROCESSOR = new RGB(180,56,231);
+	RGB KEYWORD= new RGB(127, 0, 85);
+	RGB TYPE= new RGB(0, 0, 128);
+	RGB STRING= new RGB(0, 0, 255);
+	RGB DEFAULT= new RGB(0, 0, 0);
 }

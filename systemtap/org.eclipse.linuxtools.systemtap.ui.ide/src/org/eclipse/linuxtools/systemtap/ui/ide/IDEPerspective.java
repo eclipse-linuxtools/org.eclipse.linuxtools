@@ -11,10 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
-import org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
