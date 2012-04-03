@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.systemtap.ui.editor.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;

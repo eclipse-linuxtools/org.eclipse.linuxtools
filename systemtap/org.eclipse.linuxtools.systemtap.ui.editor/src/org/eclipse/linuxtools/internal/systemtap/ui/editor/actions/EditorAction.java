@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.editor.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.editor.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;

@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
 import java.io.File;
 
-import org.eclipse.linuxtools.systemtap.ui.editor.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 

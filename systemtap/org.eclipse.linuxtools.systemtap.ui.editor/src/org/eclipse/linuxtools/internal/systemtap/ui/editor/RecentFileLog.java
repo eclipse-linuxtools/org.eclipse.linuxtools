@@ -9,7 +9,7 @@
  *     Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.editor.internal;
+package org.eclipse.linuxtools.internal.systemtap.ui.editor;
 
 import java.io.File;
 import java.io.IOException;

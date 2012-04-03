@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
 import java.io.File;
 
-import org.eclipse.linuxtools.systemtap.ui.editor.internal.RecentFileLog;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.RecentFileLog;
 
 
 
