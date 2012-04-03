@@ -4,12 +4,8 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: %bundleProvider
-Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.GraphingAPINonUIPlugin
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.ui.structures
 Bundle-ActivationPolicy: lazy
-Import-Package: junit.framework,
- org.eclipse.linuxtools.systemtap.ui.consolelog.structures
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: junit.framework
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Fragment-Host: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui
