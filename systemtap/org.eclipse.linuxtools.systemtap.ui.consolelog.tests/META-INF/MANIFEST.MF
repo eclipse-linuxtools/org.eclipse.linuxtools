@@ -4,12 +4,8 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.consolelog.tests
 Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: %bundleProvider
-Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.consolelog.tests.ConsoleLogPlugin
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Import-Package: junit.framework,
- org.eclipse.linuxtools.systemtap.ui.consolelog,
- org.eclipse.linuxtools.systemtap.ui.consolelog.structures,
- org.eclipse.linuxtools.systemtap.ui.structures.runnable,
- org.eclipse.ui.console
+Import-Package: junit.framework
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Fragment-Host: org.eclipse.linuxtools.systemtap.ui.consolelog
