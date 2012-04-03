@@ -50,7 +50,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.RunScriptChartAction"
 				icon="icons/actions/run_chart.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.RunScriptChartAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions.RunScriptChartAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphicalrun.commands.RunScriptChart"
 				style="push"
 				state="false"/>
@@ -66,7 +66,7 @@
 				icon="icons/actions/regEx.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.ext"
 				menubarPath="edit/edit.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.ModifyParsingAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions.ModifyParsingAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphicalrun.commands.ModifyParsing"
 				style="push"
 				state="false"/>
