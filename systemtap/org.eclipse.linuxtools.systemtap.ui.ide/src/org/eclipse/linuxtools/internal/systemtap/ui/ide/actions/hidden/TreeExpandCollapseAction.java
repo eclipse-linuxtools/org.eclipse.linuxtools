@@ -37,16 +37,14 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 public class TreeExpandCollapseAction extends Action  implements ISelectionListener,IWorkbenchAction {
 	private final IWorkbenchWindow fWindow;
 	private IStructuredSelection selection;
-	@SuppressWarnings("unchecked")
-	private final Class cl;
+	private final Class<?> cl;
 	
 	/**
 	 * The default constructor. Takes a <code>Class</code> representing the viewer that it is to expand
 	 * or collapse, as there is only one in the workbench at a time.
 	 * @param cls	<code>Class</code> of the viewer to expand/collapse
 	 */
-	@SuppressWarnings("unchecked")
-	public TreeExpandCollapseAction(Class cls) {
+	public TreeExpandCollapseAction(Class<?> cls) {
 		super();
 		LogManager.logDebug("Start TreeExpandCollapseAction: cls-" + cls, this);
 		fWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();

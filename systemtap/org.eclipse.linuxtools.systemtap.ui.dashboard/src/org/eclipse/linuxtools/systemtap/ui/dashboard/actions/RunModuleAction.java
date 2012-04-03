@@ -296,7 +296,6 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * is pressed.
 	 * @param listener The class interested in knowing when scripts are run
 	 */
-	@SuppressWarnings("unchecked")
 	public static void addActionListener(IActionListener listener) {
 		listeners.add(listener);
 	}
@@ -315,7 +314,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 */
 	private static void fireActionEvent() {
 		for(int i=0; i<listeners.size(); i++)
-			((IActionListener)listeners.get(i)).handleActionEvent();
+			listeners.get(i).handleActionEvent();
 	}
 	
 	/**
@@ -409,8 +408,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	}
 	
 	private IViewPart view;
-	@SuppressWarnings("unchecked")
-	private static ArrayList listeners = new ArrayList();
+	private static ArrayList<IActionListener> listeners = new ArrayList<IActionListener>();
 	private String fileName = null;
 	protected IWorkbenchWindow fWindow = null;
 	private IAction act;

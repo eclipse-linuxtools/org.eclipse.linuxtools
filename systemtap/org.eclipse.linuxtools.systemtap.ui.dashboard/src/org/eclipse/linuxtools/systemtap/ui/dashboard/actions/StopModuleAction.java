@@ -190,7 +190,6 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * is pressed.
 	 * @param listener The class interested in knowing when scripts are stopped
 	 */
-	@SuppressWarnings("unchecked")
 	public static void addActionListener(IActionListener listener) {
 		listeners.add(listener);
 	}
@@ -209,7 +208,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 */
 	private static void fireActionEvent() {
 		for(int i=0; i<listeners.size(); i++)
-			((IActionListener)listeners.get(i)).handleActionEvent();
+			listeners.get(i).handleActionEvent();
 	}
 	
 	/**
@@ -266,6 +265,5 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	
 	private IViewPart view;
 	private IAction act;
-	@SuppressWarnings("unchecked")
-	private static ArrayList listeners = new ArrayList();
+	private static ArrayList<IActionListener> listeners = new ArrayList<IActionListener>();
 }

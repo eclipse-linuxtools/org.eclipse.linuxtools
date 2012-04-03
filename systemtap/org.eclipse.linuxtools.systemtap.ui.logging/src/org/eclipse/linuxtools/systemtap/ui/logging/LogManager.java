@@ -127,9 +127,8 @@ public class LogManager implements IPropertyChangeListener {
 	 * @param o Object that requested that the message be logged.
 	 * @return A string comprising both the original message and an identifier for the Object.
 	 */
-	@SuppressWarnings("unchecked")
 	private String stamp(String input, Object o) {
-		Class cs = o.getClass();
+		Class<?> cs = o.getClass();
 		String className = cs.getName();
 		return "[" + className + "@" + Integer.toHexString(o.hashCode()) + "] " + input ;
 	}
