@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.structures.ui;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.linuxtools.systemtap.ui.structures.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;

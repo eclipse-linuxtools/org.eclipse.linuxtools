@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.structures.validators;
 
 import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.linuxtools.systemtap.ui.structures.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 
 
 

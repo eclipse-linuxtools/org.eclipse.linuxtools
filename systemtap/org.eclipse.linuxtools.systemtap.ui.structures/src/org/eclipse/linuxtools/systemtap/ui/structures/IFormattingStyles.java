@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 
 public interface IFormattingStyles {
 	public static final int UNFORMATED	= 0;

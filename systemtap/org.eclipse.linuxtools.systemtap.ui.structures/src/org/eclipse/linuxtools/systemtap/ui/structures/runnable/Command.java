@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
-import org.eclipse.linuxtools.systemtap.ui.structures.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
 
 
