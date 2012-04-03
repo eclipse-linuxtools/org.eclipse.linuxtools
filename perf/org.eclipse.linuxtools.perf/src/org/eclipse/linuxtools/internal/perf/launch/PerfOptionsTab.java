@@ -17,7 +17,6 @@ package org.eclipse.linuxtools.internal.perf.launch;
 import java.io.File;
 import java.text.MessageFormat;
 
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
