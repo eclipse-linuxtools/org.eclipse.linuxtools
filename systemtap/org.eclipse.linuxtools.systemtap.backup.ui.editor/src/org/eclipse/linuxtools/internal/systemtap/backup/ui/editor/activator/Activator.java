@@ -10,7 +10,7 @@
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API. 
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.backup.ui.editor.activator;
+package org.eclipse.linuxtools.internal.systemtap.backup.ui.editor.activator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.backup.ui.editor.activator";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.internal.systemtap.backup.ui.editor.activator";
 
 	// The shared instance
 	public static Activator plugin;

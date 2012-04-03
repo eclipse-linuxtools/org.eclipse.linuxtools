@@ -10,7 +10,7 @@
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API and implementation. 
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.backup.ui.editor;
+package org.eclipse.linuxtools.internal.systemtap.backup.ui.editor;
 
 import java.util.ArrayList;
 import org.eclipse.core.runtime.IProgressMonitor;

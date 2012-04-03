@@ -8,7 +8,7 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.backup.ui.editor;
+package org.eclipse.linuxtools.internal.systemtap.backup.ui.editor;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;

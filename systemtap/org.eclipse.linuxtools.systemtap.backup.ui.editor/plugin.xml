@@ -9,7 +9,7 @@
             extensions="stp"
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.linuxtools.systemtap.backup.ui.editor.SystemtapEditor"
+            class="org.eclipse.linuxtools.internal.systemtap.backup.ui.editor.SystemtapEditor"
             id="org.eclipse.linuxtools.systemtap.backup.ui.editor.SystemtapEditor">
       </editor>
    </extension>

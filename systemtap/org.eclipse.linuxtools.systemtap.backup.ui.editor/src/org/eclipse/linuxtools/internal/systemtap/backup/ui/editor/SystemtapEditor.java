@@ -10,7 +10,7 @@
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API. 
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.backup.ui.editor;
+package org.eclipse.linuxtools.internal.systemtap.backup.ui.editor;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
-import org.eclipse.linuxtools.systemtap.backup.ui.editor.activator.Activator;
+import org.eclipse.linuxtools.internal.systemtap.backup.ui.editor.activator.Activator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ContentAssistAction;
@@ -100,7 +100,7 @@ public class SystemtapEditor extends TextEditor {
 	
 	@Override
 	protected void createActions() {
-		Action action = new ContentAssistAction(ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.backup.ui.editor.strings"), "ContentAssistProposal.", this); 
+		Action action = new ContentAssistAction(ResourceBundle.getBundle("org.eclipse.linuxtools.internal.systemtap.backup.ui.editor.strings"), "ContentAssistProposal.", this); 
 		String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
 		action.setActionDefinitionId(id);
 		setAction("ContentAssistProposal", action); 
