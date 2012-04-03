@@ -198,8 +198,7 @@ public class ScpExec implements Runnable {
 	 * Returns the list of everything that is listening the the InputStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList getInputStreamListeners() {
+	public ArrayList<IGobblerListener> getInputStreamListeners() {
 		if(null != inputGobbler)
 			return inputListeners;
 		else
@@ -210,8 +209,7 @@ public class ScpExec implements Runnable {
 	 * Returns the list of everything that is listening the the ErrorStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList getErrorStreamListeners() {
+	public ArrayList<IGobblerListener> getErrorStreamListeners() {
 		if(null != errorGobbler)
 			return errorListeners;
 		else
