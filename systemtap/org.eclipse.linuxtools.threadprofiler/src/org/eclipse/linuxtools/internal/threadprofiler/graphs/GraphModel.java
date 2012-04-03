@@ -1,12 +1,12 @@
-package org.eclipse.linuxtools.threadprofiler.graphs;
+package org.eclipse.linuxtools.internal.threadprofiler.graphs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.linuxtools.threadprofiler.internal.CircularPointBuffer;
-import org.eclipse.linuxtools.threadprofiler.internal.DataPoint;
-import org.eclipse.linuxtools.threadprofiler.internal.GraphColorScheme;
-import org.eclipse.linuxtools.threadprofiler.internal.GraphCoordinateSystem;
+import org.eclipse.linuxtools.internal.threadprofiler.CircularPointBuffer;
+import org.eclipse.linuxtools.internal.threadprofiler.DataPoint;
+import org.eclipse.linuxtools.internal.threadprofiler.GraphColorScheme;
+import org.eclipse.linuxtools.internal.threadprofiler.GraphCoordinateSystem;
 import org.eclipse.swt.graphics.GC;
 
 public abstract class GraphModel {

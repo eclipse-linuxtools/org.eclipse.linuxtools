@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler;
+package org.eclipse.linuxtools.internal.threadprofiler;
 
 import java.io.BufferedReader;
 import java.io.IOException;

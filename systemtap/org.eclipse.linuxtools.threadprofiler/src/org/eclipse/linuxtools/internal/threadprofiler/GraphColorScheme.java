@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler.internal;
+package org.eclipse.linuxtools.internal.threadprofiler;
 
 import java.util.Arrays;
 import java.util.Iterator;

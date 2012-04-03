@@ -56,7 +56,7 @@ index 8deb632..cac1b2d 100644
 --- a/src/org/eclipse/linuxtools/threadprofiler/DataPoint.java
 +++ b/src/org/eclipse/linuxtools/threadprofiler/DataPoint.java
 @@ -1,10 +1,22 @@
- package org.eclipse.linuxtools.threadprofiler;
+ package org.eclipse.linuxtools.internal.threadprofiler;
  
  public class DataPoint {
 +	
@@ -83,7 +83,7 @@ index 9cc6ec7..f6c5dec 100644
 --- a/src/org/eclipse/linuxtools/threadprofiler/ThreadGraph.java
 +++ b/src/org/eclipse/linuxtools/threadprofiler/ThreadGraph.java
 @@ -1,21 +1,74 @@
- package org.eclipse.linuxtools.threadprofiler;
+ package org.eclipse.linuxtools.internal.threadprofiler;
  
 -public class ThreadGraph {
 -	
@@ -91,7 +91,7 @@ index 9cc6ec7..f6c5dec 100644
 -	private final int tid;
 +import java.util.Iterator;
 +
-+import org.eclipse.linuxtools.threadprofiler.graphs.GraphModel;
++import org.eclipse.linuxtools.internal.threadprofiler.graphs.GraphModel;
 +import org.eclipse.swt.graphics.GC;
 +import org.eclipse.swt.widgets.Composite;
 +
@@ -201,7 +201,7 @@ index 2dbaaf7..40b7460 100644
 --- a/src/org/eclipse/linuxtools/threadprofiler/ThreadProfilerView.java
 +++ b/src/org/eclipse/linuxtools/threadprofiler/ThreadProfilerView.java
 @@ -1,265 +1,297 @@
--package org.eclipse.linuxtools.threadprofiler;
+-package org.eclipse.linuxtools.internal.threadprofiler;
 -
 -import java.util.ArrayList;
 -
@@ -209,8 +209,8 @@ index 2dbaaf7..40b7460 100644
 -import org.eclipse.core.runtime.IStatus;
 -import org.eclipse.core.runtime.Status;
 -import org.eclipse.linuxtools.callgraph.core.SystemTapView;
--import org.eclipse.linuxtools.threadprofiler.graphs.GraphModel;
--import org.eclipse.linuxtools.threadprofiler.graphs.MultiGraph;
+-import org.eclipse.linuxtools.internal.threadprofiler.graphs.GraphModel;
+-import org.eclipse.linuxtools.internal.threadprofiler.graphs.MultiGraph;
 -import org.eclipse.swt.SWT;
 -import org.eclipse.swt.custom.ScrolledComposite;
 -import org.eclipse.swt.events.MouseEvent;
@@ -363,7 +363,7 @@ index 2dbaaf7..40b7460 100644
 -
 -	@Override
 -	public void setViewID() {
--		viewID = "org.eclipse.linuxtools.threadprofiler.ThreadProfilerView";
+-		viewID = "org.eclipse.linuxtools.internal.threadprofiler.ThreadProfilerView";
 -	}
 -
 -	@Override
@@ -465,7 +465,7 @@ index 2dbaaf7..40b7460 100644
 -	}
 -
 -
-+package org.eclipse.linuxtools.threadprofiler;
++package org.eclipse.linuxtools.internal.threadprofiler;
 +
 +import java.util.ArrayList;
 +
@@ -474,8 +474,8 @@ index 2dbaaf7..40b7460 100644
 +import org.eclipse.core.runtime.IStatus;
 +import org.eclipse.core.runtime.Status;
 +import org.eclipse.linuxtools.callgraph.core.SystemTapView;
-+import org.eclipse.linuxtools.threadprofiler.graphs.GraphModel;
-+import org.eclipse.linuxtools.threadprofiler.graphs.MultiGraph;
++import org.eclipse.linuxtools.internal.threadprofiler.graphs.GraphModel;
++import org.eclipse.linuxtools.internal.threadprofiler.graphs.MultiGraph;
 +import org.eclipse.swt.SWT;
 +import org.eclipse.swt.custom.ScrolledComposite;
 +import org.eclipse.swt.events.MouseEvent;
@@ -634,7 +634,7 @@ index 2dbaaf7..40b7460 100644
 +
 +	@Override
 +	public void setViewID() {
-+		viewID = "org.eclipse.linuxtools.threadprofiler.ThreadProfilerView";
++		viewID = "org.eclipse.linuxtools.internal.threadprofiler.ThreadProfilerView";
 +	}
 +
 +	@Override
@@ -768,15 +768,15 @@ index 5bf0531..1b07e18 100644
 --- a/src/org/eclipse/linuxtools/threadprofiler/graphs/GraphModel.java
 +++ b/src/org/eclipse/linuxtools/threadprofiler/graphs/GraphModel.java
 @@ -1,226 +1,229 @@
--package org.eclipse.linuxtools.threadprofiler.graphs;
+-package org.eclipse.linuxtools.internal.threadprofiler.graphs;
 -
 -import java.util.ArrayList;
 -import java.util.Iterator;
 -
--import org.eclipse.linuxtools.threadprofiler.CircularPointBuffer;
--import org.eclipse.linuxtools.threadprofiler.CoordinateSystem;
--import org.eclipse.linuxtools.threadprofiler.DataPoint;
--import org.eclipse.linuxtools.threadprofiler.GraphAxis;
+-import org.eclipse.linuxtools.internal.threadprofiler.CircularPointBuffer;
+-import org.eclipse.linuxtools.internal.threadprofiler.CoordinateSystem;
+-import org.eclipse.linuxtools.internal.threadprofiler.DataPoint;
+-import org.eclipse.linuxtools.internal.threadprofiler.GraphAxis;
 -import org.eclipse.swt.graphics.Color;
 -import org.eclipse.swt.graphics.GC;
 -import org.eclipse.swt.widgets.Canvas;
@@ -994,15 +994,15 @@ index 5bf0531..1b07e18 100644
 -	}
 -
 -}
-+package org.eclipse.linuxtools.threadprofiler.graphs;
++package org.eclipse.linuxtools.internal.threadprofiler.graphs;
 +
 +import java.util.ArrayList;
 +import java.util.Iterator;
 +
-+import org.eclipse.linuxtools.threadprofiler.CircularPointBuffer;
-+import org.eclipse.linuxtools.threadprofiler.CoordinateSystem;
-+import org.eclipse.linuxtools.threadprofiler.DataPoint;
-+import org.eclipse.linuxtools.threadprofiler.GraphAxis;
++import org.eclipse.linuxtools.internal.threadprofiler.CircularPointBuffer;
++import org.eclipse.linuxtools.internal.threadprofiler.CoordinateSystem;
++import org.eclipse.linuxtools.internal.threadprofiler.DataPoint;
++import org.eclipse.linuxtools.internal.threadprofiler.GraphAxis;
 +import org.eclipse.swt.graphics.Color;
 +import org.eclipse.swt.graphics.GC;
 +import org.eclipse.swt.widgets.Canvas;

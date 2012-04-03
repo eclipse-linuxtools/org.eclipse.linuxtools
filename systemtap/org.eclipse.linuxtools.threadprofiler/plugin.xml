@@ -5,7 +5,7 @@
 	<extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="org.eclipse.linuxtools.threadprofiler.LaunchThreadProfiler"
+            class="org.eclipse.linuxtools.internal.threadprofiler.LaunchThreadProfiler"
             id="org.eclipse.linuxtools.systemtap.quicklaunchThreadProfiler"
             label="Thread Profiler"
             modes="profile">
@@ -57,7 +57,7 @@
             point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.threadprofiler.ThreadProfilerView"
+            class="org.eclipse.linuxtools.internal.threadprofiler.ThreadProfilerView"
             id="org.eclipse.linuxtools.threadprofiler.threadprofilerview"
             name="Thread Profiler View"
             restorable="true">
@@ -69,7 +69,7 @@
           name="GraphParser"
           point="org.eclipse.linuxtools.callgraph.core.parser">
        <parser
-             class="org.eclipse.linuxtools.threadprofiler.ThreadProfilerParser"
+             class="org.eclipse.linuxtools.internal.threadprofiler.ThreadProfilerParser"
              realtime="true">
        </parser>
     </extension>

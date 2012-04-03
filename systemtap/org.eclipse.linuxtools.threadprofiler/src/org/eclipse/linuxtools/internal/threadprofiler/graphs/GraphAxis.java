@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler.graphs;
+package org.eclipse.linuxtools.internal.threadprofiler.graphs;
 
 public class GraphAxis {
 	

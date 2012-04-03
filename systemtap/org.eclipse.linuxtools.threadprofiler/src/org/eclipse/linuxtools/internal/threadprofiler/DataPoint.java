@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler.internal;
+package org.eclipse.linuxtools.internal.threadprofiler;
 
 public class DataPoint {
 	public static final int DATA_POINT = 0;

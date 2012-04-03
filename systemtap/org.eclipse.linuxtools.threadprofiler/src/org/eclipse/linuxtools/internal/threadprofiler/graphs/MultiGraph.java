@@ -1,10 +1,10 @@
-package org.eclipse.linuxtools.threadprofiler.graphs;
+package org.eclipse.linuxtools.internal.threadprofiler.graphs;
 
 import java.util.Iterator;
 
-import org.eclipse.linuxtools.threadprofiler.internal.CircularPointBuffer;
-import org.eclipse.linuxtools.threadprofiler.internal.DataPoint;
-import org.eclipse.linuxtools.threadprofiler.internal.GraphPointBuffer;
+import org.eclipse.linuxtools.internal.threadprofiler.CircularPointBuffer;
+import org.eclipse.linuxtools.internal.threadprofiler.DataPoint;
+import org.eclipse.linuxtools.internal.threadprofiler.GraphPointBuffer;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 

@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler;
+package org.eclipse.linuxtools.internal.threadprofiler;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;

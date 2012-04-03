@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.threadprofiler;
+package org.eclipse.linuxtools.internal.threadprofiler;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,9 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
-import org.eclipse.linuxtools.threadprofiler.graphs.GraphModel;
-import org.eclipse.linuxtools.threadprofiler.graphs.MultiGraph;
-import org.eclipse.linuxtools.threadprofiler.graphs.ThreadGraph;
-import org.eclipse.linuxtools.threadprofiler.internal.DataPoint;
+import org.eclipse.linuxtools.internal.threadprofiler.graphs.GraphModel;
+import org.eclipse.linuxtools.internal.threadprofiler.graphs.MultiGraph;
+import org.eclipse.linuxtools.internal.threadprofiler.graphs.ThreadGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
