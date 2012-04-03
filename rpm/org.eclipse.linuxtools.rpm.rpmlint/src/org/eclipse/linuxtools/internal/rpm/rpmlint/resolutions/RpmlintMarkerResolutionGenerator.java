@@ -35,10 +35,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
             return true;
 		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
 			return true;
-		}  else if (rpmlintErrorId.equals(NoBuildrootTag.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(NoCleaningOfBuildroot.ID)){
-			return true;
 		} else if (rpmlintErrorId.equals(NoBuildSection.ID)){
 			return true;
 		} else if (rpmlintErrorId.equals(MacroInChangelog.ID)){
@@ -52,8 +48,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 		} else if (rpmlintErrorId.equals(NoPrepSection.ID)){
 			return true;
 		} else if (rpmlintErrorId.equals(NoInstallSection.ID)){
-			return true;
-		} else if (rpmlintErrorId.equals(NoCleanSection.ID)){
 			return true;
 		}
 
@@ -70,10 +64,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 			resolutions.add(new SetupNotQuiet());
 		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
 			resolutions.add(new PatchNotApplied());
-		} else if (rpmlintErrorId.equals(NoBuildrootTag.ID)) {
-			resolutions.add(new NoBuildrootTag());
-		} else if (rpmlintErrorId.equals(NoCleaningOfBuildroot.ID)){
-			resolutions.add(new NoCleaningOfBuildroot());
 		} else if (rpmlintErrorId.equals(NoBuildSection.ID)){
 			resolutions.add(new NoBuildSection());
 		} else if (rpmlintErrorId.equals(MacroInChangelog.ID)){
@@ -88,8 +78,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 			resolutions.add(new NoPrepSection());
 		} else if (rpmlintErrorId.equals(NoInstallSection.ID)){
 			resolutions.add(new NoInstallSection());
-		} else if (rpmlintErrorId.equals(NoCleanSection.ID)){
-			resolutions.add(new NoCleanSection());
 		}
 
 		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
