@@ -12,13 +12,13 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter;
 
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.AverageAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.CountAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.IDataAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MaxAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MinAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.SumAggregate;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 
 
 

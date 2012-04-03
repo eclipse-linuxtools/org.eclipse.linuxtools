@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IFilteredDataSet;
@@ -21,7 +22,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.Filt
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.datadisplay.DataGrid;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 

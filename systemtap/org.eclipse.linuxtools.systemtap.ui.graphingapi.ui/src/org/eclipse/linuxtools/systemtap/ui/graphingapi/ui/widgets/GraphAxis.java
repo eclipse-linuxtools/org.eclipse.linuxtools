@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets;
 
 import java.text.DecimalFormat;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.AGraph;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;

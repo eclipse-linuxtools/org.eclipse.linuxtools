@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
 
 
 

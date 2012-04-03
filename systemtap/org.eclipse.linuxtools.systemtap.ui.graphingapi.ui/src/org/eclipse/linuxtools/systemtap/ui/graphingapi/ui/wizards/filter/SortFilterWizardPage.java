@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;

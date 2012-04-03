@@ -1,10 +1,10 @@
-package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal;
+package org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Localization {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.localization";
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.localization";
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

@@ -47,10 +47,10 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.BlockAdapter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 
 /**

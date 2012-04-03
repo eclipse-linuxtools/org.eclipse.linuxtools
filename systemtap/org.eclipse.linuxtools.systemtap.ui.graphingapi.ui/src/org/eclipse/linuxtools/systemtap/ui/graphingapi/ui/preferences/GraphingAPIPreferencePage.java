@@ -12,8 +12,8 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 

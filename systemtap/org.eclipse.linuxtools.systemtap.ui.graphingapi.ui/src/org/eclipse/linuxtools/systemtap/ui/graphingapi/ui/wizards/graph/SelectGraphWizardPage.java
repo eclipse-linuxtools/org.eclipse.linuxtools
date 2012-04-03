@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;

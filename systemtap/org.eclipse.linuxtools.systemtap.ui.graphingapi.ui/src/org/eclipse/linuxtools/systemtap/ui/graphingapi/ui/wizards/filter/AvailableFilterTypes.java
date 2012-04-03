@@ -11,12 +11,12 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.UniqueFilter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.ui.IMemento;
 
 

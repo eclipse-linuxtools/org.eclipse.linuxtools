@@ -16,10 +16,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.PatternSyntaxException;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowParser;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;

@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph;
 
 import java.util.LinkedList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.BlockAdapter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.ScrollAdapter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IBlockDataSet;
@@ -27,8 +29,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.MeterChartBuild
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.PieChart;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.swt.graphics.Image;
 

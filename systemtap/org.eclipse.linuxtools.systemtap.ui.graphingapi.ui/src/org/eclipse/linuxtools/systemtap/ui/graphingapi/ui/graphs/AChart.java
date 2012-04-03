@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs;
 
 import java.util.LinkedList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.IGraphColorConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphCanvas;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphLabel;
