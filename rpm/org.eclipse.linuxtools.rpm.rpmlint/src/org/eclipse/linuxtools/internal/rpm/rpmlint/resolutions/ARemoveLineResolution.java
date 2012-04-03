@@ -16,8 +16,14 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 
+/**
+ * Defines the common functionallity for resolution which fix is to remove a line.
+ */
 abstract public class ARemoveLineResolution extends ARpmlintResolution {
 	
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
+	 */
 	public void run(IMarker marker) {
 	
 		SpecfileEditor editor = getEditor(marker); 

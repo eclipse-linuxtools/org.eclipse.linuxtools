@@ -17,16 +17,24 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 
+/**
+ * Generator for the rpmlint marker resolutions.
+ *
+ */
 public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
-	// rpmlint error id atribut name
+	/**
+	 * Rpmlint error id atribute name.
+	 */
 	public static final String RPMLINT_ERROR_ID = "rpmlintErrorId"; //$NON-NLS-1$
 	
-	// rpmlint refered  text
+	/**
+	 * Rpmlint refered  text
+	 */
 	public static final String RPMLINT_REFFERED_CONTENT = "rpmlintrefferedContent"; //$NON-NLS-1$
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.IMarkerResolutionGenerator2#hasResolutions(org.eclipse.core.resources.IMarker)
 	 */
 	public boolean hasResolutions(IMarker marker) {
@@ -54,7 +62,7 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.IMarkerResolutionGenerator#getResolutions(org.eclipse.core.resources.IMarker)
 	 */
 	public IMarkerResolution[] getResolutions(IMarker marker) {

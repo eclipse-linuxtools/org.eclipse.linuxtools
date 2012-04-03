@@ -15,22 +15,42 @@ import java.util.List;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
+/**
+ * Resolution for the "no-%prep-section".
+ * Resolves by adding an empty %prep section.
+ *
+ */
 public class NoPrepSection extends AInsertLineResolution{
+	/**
+	 * The rpmlint ID of the warning.
+	 */
 	public static final String ID = "no-%prep-section"; //$NON-NLS-1$
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
+	 */
 	public String getDescription() {
 		return Messages.NoPrepSection_0;
 	}
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
+	 */
 	public String getLabel() {
 		return ID;
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineToInsert()
+	 */
 	@Override
 	public String getLineToInsert() {
 		return "%prep\n\n"; //$NON-NLS-1$
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineNumberForInsert(org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor)
+	 */
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		List<SpecfileSection> sections = editor.getSpecfile().getSections();

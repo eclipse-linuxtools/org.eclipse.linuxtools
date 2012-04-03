@@ -15,22 +15,42 @@ import java.util.List;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
+/**
+ * Resolution for the "no-%install-section" warning.
+ * Resolves by adding and empty %install section.
+ *
+ */
 public class NoInstallSection extends AInsertLineResolution {
+	/**
+	 * The string ID of the rpmlint warning.
+	 */
 	public static final String ID = "no-%install-section"; //$NON-NLS-1$
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
+	 */
 	public String getDescription() {
 		return Messages.NoInstallSection_0;
 	}
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
+	 */
 	public String getLabel() {
 		return ID;
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineToInsert()
+	 */
 	@Override
 	public String getLineToInsert() {
 		return "%install\n\n"; //$NON-NLS-1$
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineNumberForInsert(org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor)
+	 */
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		List<SpecfileSection> sections = editor.getSpecfile().getSections();

@@ -16,6 +16,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 
+/**
+ * Defines the common functionallity for resolution which fix is to replace text in a line.
+ */
 abstract public class AReplaceTextResolution extends ARpmlintResolution {
 	
 	/**
@@ -33,6 +36,9 @@ abstract public class AReplaceTextResolution extends ARpmlintResolution {
 	 */
 	abstract public String getReplaceString();
 	
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
+	 */
 	public void run(IMarker marker) {
 	
 		SpecfileEditor editor = getEditor(marker); 

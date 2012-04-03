@@ -10,33 +10,35 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
 
+/**
+ * Resolution for "macro-in-%changelog" warning. 
+ * The resolution is to escape the macro.
+ *
+ */
 public class MacroInChangelog extends AReplaceTextResolution {
 
+	/**
+	 * The string ID of the rpmlint warning.
+	 */
 	public static final String ID = "macro-in-%changelog"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getOriginalString()
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AReplaceTextResolution#getOriginalString()
 	 */
 	@Override
 	public String getOriginalString() {
 		return "%"; //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getReplaceString()
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AReplaceTextResolution#getReplaceString()
 	 */
 	@Override
 	public String getReplaceString() {
 		return "%%"; //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
@@ -44,9 +46,7 @@ public class MacroInChangelog extends AReplaceTextResolution {
 				+ Messages.MacroInChangelog_1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
 	 */
 	public String getLabel() {

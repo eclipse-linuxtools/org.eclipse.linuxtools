@@ -10,21 +10,25 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
 
+/**
+ * Resolution for the "rpm-buildroot-usage" rpmlint warning.
+ * Resolves by removing the offending line.
+ *
+ */
 public class RpmBuildrootUsage extends ARemoveLineResolution{
+	/**
+	 * The rpmlint ID of the warning.
+	 */
 	public static final String ID = "rpm-buildroot-usage"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.RpmBuildrootUsage_0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
 	 */
 	public String getLabel() {

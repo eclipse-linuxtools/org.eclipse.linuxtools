@@ -21,21 +21,36 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
  *
  */
 public class NoBuildSection extends AInsertLineResolution {
+	/**
+	 * The string ID of the rpmlint warning.
+	 */
 	public static final String ID = "no-%build-section"; //$NON-NLS-1$
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
+	 */
 	public String getDescription() {
 		return Messages.NoBuildSection_0;
 	}
 
+	/**
+	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
+	 */
 	public String getLabel() {
 		return ID;
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineToInsert()
+	 */
 	@Override
 	public String getLineToInsert() {
 		return "%build\n\n"; //$NON-NLS-1$
 	}
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineNumberForInsert(org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor)
+	 */
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		List<SpecfileSection> sections = editor.getSpecfile().getSections();
