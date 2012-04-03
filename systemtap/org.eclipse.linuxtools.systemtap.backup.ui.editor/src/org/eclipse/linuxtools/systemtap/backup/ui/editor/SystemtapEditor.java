@@ -62,6 +62,7 @@ public class SystemtapEditor extends TextEditor {
 		setDocumentProvider(new STPDocumentProvider());
 	}
 
+	@Override
 	public void createPartControl(Composite parent)
 	{
 	    super.createPartControl(parent);
@@ -72,6 +73,7 @@ public class SystemtapEditor extends TextEditor {
 	    stpAnnotationModel = viewer.getProjectionAnnotationModel();
 	}
 	
+	@Override
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
 		
 		ISourceViewer viewer = new ProjectionViewer(parent, ruler,
@@ -96,6 +98,7 @@ public class SystemtapEditor extends TextEditor {
 		stpOldAnnotations = updatedAnnotations;
 	}
 	
+	@Override
 	protected void createActions() {
 		Action action = new ContentAssistAction(ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.backup.ui.editor.strings"), "ContentAssistProposal.", this); 
 		String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
@@ -109,11 +112,13 @@ public class SystemtapEditor extends TextEditor {
 		return this.getSourceViewer();
 	}
 	
+	@Override
 	public void dispose() {
 		colorManager.dispose();
 		super.dispose();
 	}
 
+	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 
 		super.editorContextMenuAboutToShow(menu);

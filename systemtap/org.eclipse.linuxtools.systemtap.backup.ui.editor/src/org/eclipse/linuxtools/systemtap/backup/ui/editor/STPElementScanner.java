@@ -62,6 +62,7 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
 		// Build keyword scanner
 		WordRule keywordsRule = new WordRule(new IWordDetector() {
 
+			@Override
 			public boolean isWordStart(char c) {
 				// probe kernel.function("schedule") is a valid name in
 				// Systemtap, but we do not want to highlight the function
@@ -73,6 +74,7 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
 				return Character.isJavaIdentifierStart(c);
 			}
 
+			@Override
 			public boolean isWordPart(char c) {
 				// Set isWordStart for . rule.
 				if (c == '.') {
@@ -100,7 +102,8 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
                 new SingleLineRule("'", "'", stringToken, '\\'),
         		keywordsRule,
                 new WhitespaceRule(new IWhitespaceDetector() {
-                   public boolean isWhitespace(char c) {
+                   @Override
+				public boolean isWhitespace(char c) {
                       return Character.isWhitespace(c);
                    }
                 }),

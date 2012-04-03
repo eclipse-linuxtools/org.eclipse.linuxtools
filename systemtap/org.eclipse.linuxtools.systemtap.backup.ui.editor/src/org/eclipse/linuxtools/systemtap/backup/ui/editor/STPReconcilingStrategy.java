@@ -66,13 +66,15 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
     /**
      * Sets the current (ie working) document.
      */
-    public void setDocument(IDocument document) {
+    @Override
+	public void setDocument(IDocument document) {
     	this.currentDocument = document;
     }
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.IRegion)
 	 */
+	@Override
 	public void reconcile(IRegion partition) {		
 		// Just rebuild the whole document
         initialReconcile();
@@ -81,6 +83,7 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.reconciler.DirtyRegion, org.eclipse.jface.text.IRegion)
 	 */
+	@Override
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		//Just rebuild the whole document
         initialReconcile();		
@@ -89,6 +92,7 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#initialReconcile()
 	 */
+	@Override
 	public void initialReconcile() {
         endOfDocumentPostion = currentDocument.getLength();
         try {
@@ -102,6 +106,7 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#setProgressMonitor(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	public void setProgressMonitor(IProgressMonitor monitor) {
 		
 	}
@@ -123,7 +128,8 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
         
         // Paint the folding annotations in the background.
         Display.getDefault().asyncExec(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
             	currentEditor.updateFoldingStructure(documentPositionList);
             }
         });
