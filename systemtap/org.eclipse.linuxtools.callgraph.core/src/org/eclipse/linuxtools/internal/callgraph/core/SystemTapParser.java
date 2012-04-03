@@ -206,8 +206,7 @@ public abstract class SystemTapParser extends Job {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void printMap(Map blah) {
+	public void printMap(Map<?, ?> blah) {
 		int amt = 0;
 		for (Object a : blah.keySet()) {
 			amt++;

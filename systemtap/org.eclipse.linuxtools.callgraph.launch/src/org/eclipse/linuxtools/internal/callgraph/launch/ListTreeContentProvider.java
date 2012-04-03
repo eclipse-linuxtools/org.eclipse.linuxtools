@@ -96,11 +96,10 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof List) {
-			for (Object element : (List) inputElement)
+			for (Object element : (List<?>) inputElement)
 				if (element instanceof ICContainer)
 					try {
 						ICElement[] array = ((ICContainer) element).getChildren();
@@ -133,12 +132,11 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	public Object[] findElements(Object inputElement) {
 		ArrayList<Object> output = new ArrayList<Object>();
 
 		if (inputElement instanceof List) {
-			for (Object element : (List) inputElement) {
+			for (Object element : (List<?>) inputElement) {
 				Object[] list = (getChildren(element));
 				for (Object o : list) {
 					output.add(o);

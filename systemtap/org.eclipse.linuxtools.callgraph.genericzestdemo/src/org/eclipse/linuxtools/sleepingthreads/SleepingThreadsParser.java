@@ -58,7 +58,7 @@ public class SleepingThreadsParser extends SystemTapParser {
 					}
 					else 
 						item.setParent(current.peekFirst());
-					((ArrayList) data).add(item);
+					((ArrayList<XMLData>) data).add(item);
 					current.offerFirst(serial);
 					serial++;
 					
@@ -75,7 +75,7 @@ public class SleepingThreadsParser extends SystemTapParser {
 					item.setIsNode(false);
 					item.setParent(current.peekFirst());
 					item.setText(line);
-					((ArrayList) data).add(item);
+					((ArrayList<XMLData>) data).add(item);
 				}
 			}
 			view.update();
