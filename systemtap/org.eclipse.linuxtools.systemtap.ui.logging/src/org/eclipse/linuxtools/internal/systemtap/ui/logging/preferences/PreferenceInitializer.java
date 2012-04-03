@@ -9,12 +9,12 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.logging.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.logging.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LoggingPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LoggingPlugin;
 
 
 

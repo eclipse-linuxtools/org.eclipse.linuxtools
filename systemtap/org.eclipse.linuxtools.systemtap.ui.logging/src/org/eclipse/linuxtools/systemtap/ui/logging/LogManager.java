@@ -21,10 +21,10 @@ import java.util.LinkedList;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LogDaemon;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LogEntry;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LoggingPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LogDaemon;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LogEntry;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LoggingPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.preferences.PreferenceConstants;
 
 
 

@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.logging.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.logging.preferences;
 
 /**
  * Constant definitions for plug-in preferences

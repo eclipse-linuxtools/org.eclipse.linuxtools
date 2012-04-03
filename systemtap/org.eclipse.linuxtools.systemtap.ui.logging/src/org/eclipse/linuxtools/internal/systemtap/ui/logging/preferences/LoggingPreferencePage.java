@@ -9,15 +9,15 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.logging.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.logging.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LoggingPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LoggingPlugin;
 import org.eclipse.linuxtools.systemtap.ui.structures.ui.ComboFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;

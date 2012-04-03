@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.logging.internal;
+package org.eclipse.linuxtools.internal.systemtap.ui.logging;
 
 /**
  * This class represents a single log entry.

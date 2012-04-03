@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.logging.internal;
+package org.eclipse.linuxtools.internal.systemtap.ui.logging;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.logging.LogEntry;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.logging.internal.LogEntry;
 
 
 
