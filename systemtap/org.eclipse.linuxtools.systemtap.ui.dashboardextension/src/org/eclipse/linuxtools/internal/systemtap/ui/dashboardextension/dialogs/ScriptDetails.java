@@ -9,7 +9,7 @@
  *     IBM Corporation - Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboardextension.dialogs;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs;
 
 
 

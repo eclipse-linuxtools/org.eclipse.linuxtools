@@ -43,7 +43,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.ExportScript"
 				icon="icons/actions/export_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/export.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.ExportScriptAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions.ExportScriptAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.ExportScript"
 				style="push"
 				state="false"/>
@@ -60,7 +60,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.CreateModuleAction"
 				icon="icons/actions/mod_obj.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/export.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.CreateModuleAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions.CreateModuleAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"
 				style="push"
 				state="true"/>
@@ -76,7 +76,7 @@
 			objectClass="org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ModuleTreeNode">
 			<action
 				label="%action.viewScript.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.ViewScriptAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions.ViewScriptAction"
 				icon="icons/actions/file_obj.gif"
 				menubarPath="file.ext"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.ViewScriptAction"

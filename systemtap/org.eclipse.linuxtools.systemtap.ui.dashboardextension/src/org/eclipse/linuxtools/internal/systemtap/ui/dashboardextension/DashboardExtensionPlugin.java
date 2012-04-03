@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboardextension.internal;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension;
 
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.plugin.*;

@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboardextension.dialogs;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs;
 
 import java.text.MessageFormat;
 
@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
@@ -38,7 +39,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter.SelectF
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.SelectGraphWizard;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboardextension.internal.Localization;
 
 /**
  * This class handles creating a dialog that the user is able to select

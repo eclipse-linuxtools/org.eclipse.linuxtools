@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +30,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ScriptDetails;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
@@ -44,8 +46,6 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardMetaDat
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModuleFileFilter;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
-import org.eclipse.linuxtools.systemtap.ui.dashboardextension.dialogs.ScriptDetails;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 

@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import org.eclipse.linuxtools.systemtap.ui.ide.actions.TempFileAction;
  * version as well as the original.
  * @author Ryan Morse
  */
-public class ViewScriptAction extends Action implements IViewActionDelegate {
+public class DeleteScriptAction extends Action implements IViewActionDelegate {
 	/**
 	 * This method sets what item the user has selected to view.
 	 */
