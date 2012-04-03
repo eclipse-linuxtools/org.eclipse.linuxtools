@@ -195,9 +195,7 @@ public abstract class SystemTapParser extends Job {
 	}
 	
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
-		int amt = 0;
 		for (int a : blah.keySet()) {
-			amt++;
 			MP.print(a + " ::> "); //$NON-NLS-1$
 			for (int c : blah.get(a)) {
 				System.out.print(c + " "); //$NON-NLS-1$
@@ -207,9 +205,7 @@ public abstract class SystemTapParser extends Job {
 	}
 
 	public void printMap(Map<?, ?> blah) {
-		int amt = 0;
 		for (Object a : blah.keySet()) {
-			amt++;
 			MP.println(a + " ::> " + blah.get(a)); //$NON-NLS-1$
 		}
 	}
