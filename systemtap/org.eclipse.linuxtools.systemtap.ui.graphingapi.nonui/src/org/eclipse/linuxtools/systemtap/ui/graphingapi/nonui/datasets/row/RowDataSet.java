@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IHistoricalDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.internal.Localization;
 
 
 
