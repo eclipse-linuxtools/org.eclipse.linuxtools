@@ -9,8 +9,7 @@ Require-Bundle:
  org.eclipse.jdt.ui,
  org.junit4;bundle-version="4.8.1"
 Fragment-Host: org.eclipse.linuxtools.changelog.core
-Bundle-RequiredExecutionEnvironment: J2SE-1.5,
- JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.cdt.core,
  org.eclipse.cdt.core.model,
