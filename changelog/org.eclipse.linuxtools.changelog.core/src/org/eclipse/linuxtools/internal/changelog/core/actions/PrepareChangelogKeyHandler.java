@@ -17,8 +17,6 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,7 +24,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.internal.changelog.core.Messages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
@@ -39,6 +36,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * 
@@ -59,8 +57,8 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		
 		// try getting currently selected project
 		try {
-			IWorkbenchPage ref = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			IWorkbenchPart part = ref.getActivePart();
+			IWorkbenchPage ref = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+			IWorkbenchPart part = HandlerUtil.getActivePart(event);
 			if (part instanceof IEditorPart) {
 				// If we are in an editor, check if the file being edited is an IResource
 				// that belongs to a project in the workspace
@@ -130,23 +128,15 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		} 
 
 		final IStructuredSelection result = tempResult;
-		try {
-			Action exampleAction;
-			exampleAction = new PrepareChangeLogAction() {
-				@Override
-				public void run() {
-					setSelection(result);
-					doRun();
-				}
-			};
+		Action exampleAction = new PrepareChangeLogAction() {
+			@Override
+			public void run() {
+				setSelection(result);
+				doRun();
+			}
+		};
 
-			exampleAction.run();
-
-		} catch (Exception e) {
-			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-							e.getMessage(), e));
-		}
+		exampleAction.run();
 
 		return null;
 	}

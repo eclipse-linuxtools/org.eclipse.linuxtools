@@ -24,7 +24,7 @@ import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 
 /**
@@ -101,8 +101,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		try {
-			currentEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActiveEditor();
+			currentEditor = HandlerUtil.getActiveEditor(event);
 		} catch (Exception e) {
 			// no editor is active now so do nothing
 			return null;
