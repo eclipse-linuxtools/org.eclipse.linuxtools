@@ -11,9 +11,8 @@
 
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
@@ -32,23 +31,16 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-/**
- * 
- * @author klee
- *
- */
-public class PrepareChangelogKeyHandler implements IHandler, IWorkbenchWindowActionDelegate {
+public class PrepareChangelogKeyHandler extends AbstractHandler {
 	
 	public Object execute(ExecutionEvent event) {
 
 		IStructuredSelection tempResult = null;
 		
 		// try getting currently selected project
-		try {
 			IWorkbenchPage ref = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
 			IWorkbenchPart part = HandlerUtil.getActivePart(event);
 			if (part instanceof IEditorPart) {
@@ -108,9 +100,6 @@ public class PrepareChangelogKeyHandler implements IHandler, IWorkbenchWindowAct
 					}
 				}
 			}
-		} catch (Exception e) {
-			tempResult = null;
-		}
 
 		// If we can't find the project directly, let the user know.
 		if (tempResult == null) {
@@ -133,16 +122,6 @@ public class PrepareChangelogKeyHandler implements IHandler, IWorkbenchWindowAct
 		return null;
 	}
 
-	public void addHandlerListener(IHandlerListener handlerListener) {
-
-	}
-
-	public void dispose() {
-	}
-	
-	public void init(IWorkbenchWindow window) {
-	}
-
 	/**
 	 * Returns active shell.
 	 */
@@ -153,25 +132,4 @@ public class PrepareChangelogKeyHandler implements IHandler, IWorkbenchWindowAct
 		}
 		return null;
 	}
-
-	public void run(IAction action) {
-		execute(null);
-	}
-
-	public void selectionChanged(IAction action, ISelection selection) {
-
-	}
-
-	public boolean isEnabled() {
-		return true;
-	}
-
-	public boolean isHandled() {
-		return true;
-	}
-
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-
-	}
-	
 }

@@ -10,26 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.action.IAction;
 
-/**
- * 
- * @author klee
- *
- */
-public class PrepareCommitHandler  implements IHandler {
-
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-	}
-
-	public void dispose() {
-		// TODO Auto-generated method stub
-	}
+public class PrepareCommitHandler  extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 	
@@ -44,21 +30,6 @@ public class PrepareCommitHandler  implements IHandler {
 		exampleAction.run();
 		
 		return null;
-	}
-
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
