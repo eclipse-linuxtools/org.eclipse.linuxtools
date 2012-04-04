@@ -10,7 +10,14 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.tools.launch.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.internal.valgrind.core;x-friends:="org.eclipse.linuxtools.valgrind.launch,org.eclipse.linuxtools.valgrind.tests,org.eclipse.linuxtools.valgrind.ui",
+Export-Package: org.eclipse.linuxtools.internal.valgrind.core;
+  x-friends:="org.eclipse.linuxtools.valgrind.launch,
+   org.eclipse.linuxtools.valgrind.tests,
+   org.eclipse.linuxtools.valgrind.ui,
+   org.eclipse.linuxtools.valgrind.cachegrind.tests,
+   org.eclipse.linuxtools.valgrind.helgrind.tests,
+   org.eclipse.linuxtools.valgrind.massif.tests,
+   org.eclipse.linuxtools.valgrind.memcheck.tests",
  org.eclipse.linuxtools.valgrind.core
 Import-Package: org.eclipse.cdt.utils,
  org.eclipse.cdt.utils.pty,
