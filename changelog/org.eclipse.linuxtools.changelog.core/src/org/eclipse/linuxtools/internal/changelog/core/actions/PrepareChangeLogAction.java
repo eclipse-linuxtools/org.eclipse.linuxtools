@@ -106,10 +106,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 	}
 
-	public PrepareChangeLogAction(String name) {
-		super(name);
-	}
-
 	private IStructuredSelection selected;
 
 	public PrepareChangeLogAction() {

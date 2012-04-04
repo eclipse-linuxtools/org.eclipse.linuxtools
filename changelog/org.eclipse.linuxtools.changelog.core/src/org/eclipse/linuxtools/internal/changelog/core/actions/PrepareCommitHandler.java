@@ -14,7 +14,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 
 /**
  * 
@@ -33,8 +33,7 @@ public class PrepareCommitHandler  implements IHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 	
-		Action exampleAction;
-		exampleAction = new PrepareCommitAction() {
+		IAction exampleAction = new PrepareCommitAction() {
 			@Override
 			public void run() {
 				//setSelection(new StructuredSelection(rm));

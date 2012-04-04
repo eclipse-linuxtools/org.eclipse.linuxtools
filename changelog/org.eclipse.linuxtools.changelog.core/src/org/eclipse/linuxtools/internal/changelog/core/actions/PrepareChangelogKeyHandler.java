@@ -12,12 +12,10 @@
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -43,15 +41,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * @author klee
  *
  */
-public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHandler, IWorkbenchWindowActionDelegate {
+public class PrepareChangelogKeyHandler implements IHandler, IWorkbenchWindowActionDelegate {
 	
-	private IWorkbenchWindow window;
-	
-	public PrepareChangelogKeyHandler() {
-		super();
-	}
-	
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 
 		IStructuredSelection tempResult = null;
 		
@@ -128,7 +120,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		} 
 
 		final IStructuredSelection result = tempResult;
-		Action exampleAction = new PrepareChangeLogAction() {
+		IAction exampleAction = new PrepareChangeLogAction() {
 			@Override
 			public void run() {
 				setSelection(result);
@@ -149,13 +141,8 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 	}
 	
 	public void init(IWorkbenchWindow window) {
-		this.window = window;
 	}
 
-	protected IWorkbenchWindow getWorkbenchWindow() {
-		return window;
-	}
-	
 	/**
 	 * Returns active shell.
 	 */
@@ -168,24 +155,17 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 	}
 
 	public void run(IAction action) {
-
-		try {
-			execute(null);
-		} catch (ExecutionException e) {
-			reportErr(Messages.getString("PrepareChangeLog.ErrExecuteFailed"), e); // $NON-NLS-1$
-		}
+		execute(null);
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
 
 	}
 
-	@Override
 	public boolean isEnabled() {
 		return true;
 	}
 
-	@Override
 	public boolean isHandled() {
 		return true;
 	}

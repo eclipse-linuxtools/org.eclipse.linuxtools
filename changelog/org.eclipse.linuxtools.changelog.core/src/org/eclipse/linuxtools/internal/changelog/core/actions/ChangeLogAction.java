@@ -73,11 +73,6 @@ public abstract class ChangeLogAction extends Action {
 		extensionManager = ChangeLogExtensionManager.getExtensionManager();
 	}
 
-	public ChangeLogAction(String name) {
-		super(name);
-		extensionManager = ChangeLogExtensionManager.getExtensionManager();
-	}
-
 	protected void reportErr(String msg, Exception e) {
 		ChangelogPlugin.getDefault().getLog().log(
 				new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, msg, e));
@@ -99,12 +94,6 @@ public abstract class ChangeLogAction extends Action {
 
 			return null;
 		}
-	}
-
-	protected String returnQualifedEditor(Class<?> ClassName) {
-		return ClassName.toString().substring(
-				ClassName.getPackage().toString().length() - 1,
-				ClassName.toString().length());
 	}
 
 	protected IFile createChangeLog(IPath changelog) {
@@ -289,24 +278,20 @@ public abstract class ChangeLogAction extends Action {
 		IEditorInput cc = null;
 		String WorkspaceRoot;
 
-		try {
-			IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
-			WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
+		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
+		WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
 
-			if (currentEditor instanceof MultiPageEditorPart) {
-				Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
-				if (ed instanceof IEditorPart) 
-					cc = ((IEditorPart) ed).getEditorInput();
-				if (cc instanceof FileEditorInput)
-					return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
-						((FileEditorInput) cc).getFile().getFullPath().toOSString();
-			}
-			
-			cc = currentEditor.getEditorInput();
-			
-		} catch(Exception e) {
-			return "";
+		if (currentEditor instanceof MultiPageEditorPart) {
+			Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
+			if (ed instanceof IEditorPart) 
+				cc = ((IEditorPart) ed).getEditorInput();
+			if (cc instanceof FileEditorInput)
+				return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
+					((FileEditorInput) cc).getFile().getFullPath().toOSString();
 		}
+		
+		cc = currentEditor.getEditorInput();
+			
 
 		if (cc == null)
 			return "";

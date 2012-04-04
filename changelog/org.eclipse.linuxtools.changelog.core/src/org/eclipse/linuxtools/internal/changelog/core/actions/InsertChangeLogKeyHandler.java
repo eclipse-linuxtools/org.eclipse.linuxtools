@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.runtime.CoreException;
@@ -35,11 +34,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	private IEditorPart currentEditor;
 
-	public InsertChangeLogKeyHandler() {
-		super();
-	}
-
-	String getEditorName() {
+	private String getEditorName() {
 		if (currentEditor != null)
 			return returnQualifedEditor(currentEditor.getClass());
 		else
@@ -47,12 +42,19 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	}
 
-	String getEntryFilePath() {
+	private String getEntryFilePath() {
 		if (currentEditor != null)
 			return getDocumentLocation(currentEditor, false);
 		else
 			return "";
 	}
+	
+	private String returnQualifedEditor(Class<?> ClassName) {
+		return ClassName.toString().substring(
+				ClassName.getPackage().toString().length() - 1,
+				ClassName.toString().length());
+	}
+
 
 	IEditorPart getChangelog() {
 
@@ -98,14 +100,9 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	}
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 
-		try {
-			currentEditor = HandlerUtil.getActiveEditor(event);
-		} catch (Exception e) {
-			// no editor is active now so do nothing
-			return null;
-		}
+		currentEditor = HandlerUtil.getActiveEditor(event);
 
 		// make sure an editor is selected.
 		if (currentEditor == null) {
@@ -189,11 +186,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	public void run(IAction action) {
 
-		try {
 			execute(null);
-		} catch (ExecutionException e) {
-			reportErr("Executing insert changelog failed", e);
-		}
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
