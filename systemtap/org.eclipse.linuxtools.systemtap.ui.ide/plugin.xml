@@ -17,21 +17,21 @@
         category="org.eclipse.linuxtools.systemtap.ui"
         class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"
         icon="icons/views/func_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"
         name="%view.function.name"/>
 		<view
         allowMultiple="true"
         category="org.eclipse.linuxtools.systemtap.ui"
         class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"
         icon="icons/views/kernel_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"
         name="%view.kernel.name"/>
 		<view
         allowMultiple="true"
         category="org.eclipse.linuxtools.systemtap.ui"
         class="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
         icon="icons/views/probe_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
         name="%view.probe.name"/>
 	</extension>
 	
@@ -43,7 +43,7 @@
         default="true"
         extensions="stp"
         icon="icons/views/page_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor"
+        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
         name="%editor.stp.name"/>
 		<editor
 			name="%editor.simple.name"
@@ -54,7 +54,7 @@
 			default="true"/>
 		<editor
 			name="%editor.c.name"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.editors.c.CEditor"
+			id="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"
 			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
 			icon="icons/views/page_obj.gif"
@@ -274,20 +274,20 @@
                                 ratio="1.00f"
                                 relative="org.eclipse.ui.navigator.ProjectExplorer"
                                 relationship="left"
-                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
+                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
                         <view
                                 ratio="0.33f"
-                                relative="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+                                relative="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
                                 relationship="right"
-                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"/>
+                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"/>
                         <view
                                 ratio="0.33f"
-                                relative="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+                                relative="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
                                 relationship="left"
-                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"/>
+                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"/>
                        
          </perspectiveExtension>
 	</extension>
