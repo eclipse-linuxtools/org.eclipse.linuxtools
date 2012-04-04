@@ -118,12 +118,7 @@ public class ChangeLogEditor extends TextEditor {
 	 */
 	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
-
 		super.editorContextMenuAboutToShow(menu);
-		addAction(menu, ITextEditorActionConstants.GROUP_EDIT,
-				ITextEditorActionConstants.SHIFT_RIGHT);
-		addAction(menu, ITextEditorActionConstants.GROUP_EDIT,
-				ITextEditorActionConstants.SHIFT_LEFT);
 		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT, fcla);
 
 	}
