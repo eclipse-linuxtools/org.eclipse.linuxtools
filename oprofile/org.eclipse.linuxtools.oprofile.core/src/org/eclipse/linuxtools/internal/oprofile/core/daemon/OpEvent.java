@@ -17,24 +17,24 @@ package org.eclipse.linuxtools.internal.oprofile.core.daemon;
  */
 public class OpEvent {
 	// The Oprofile event name, i.e., "CPU_CLK_UNHALTED"
-	private String _name;
+	private String name;
 	
 	 //  A description of the event
-	private String _description;
+	private String description;
 
 	// Unit masks for this event type
-	private OpUnitMask _unitMask;
+	private OpUnitMask unitMask;
 	
 	// Minimum count
-	private int _minCount;
+	private int minCount;
 	
 	/**
 	 * Sets the unit mask for this event.
 	 * Only called from XML parsers.
 	 * @param mask the new unit mask
 	 */
-	public void _setUnitMask(OpUnitMask mask) {
-		_unitMask = mask;
+	public void setUnitMask(OpUnitMask mask) {
+		unitMask = mask;
 	}
 
 	/**
@@ -42,8 +42,8 @@ public class OpEvent {
 	 * Only called from XML parsers.
 	 * @param text the name
 	 */
-	public void _setText(String text) {
-		_name = text;
+	public void setText(String text) {
+		name = text;
 	}
 
 	/**
@@ -51,8 +51,8 @@ public class OpEvent {
 	 * Only called from XML parsers.
 	 * @param text the description
 	 */
-	public void _setTextDescription(String text) {
-		_description = text;
+	public void setTextDescription(String text) {
+		description = text;
 	}
 
 	/**
@@ -60,8 +60,8 @@ public class OpEvent {
 	 * Only called from XML parsers.
 	 * @param min the minimum count
 	 */
-	public void _setMinCount(int min) {
-		_minCount = min;
+	public void setMinCount(int min) {
+		minCount = min;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class OpEvent {
 	 * @return the unit mask
 	 */
 	public OpUnitMask getUnitMask() {		
-		return _unitMask;
+		return unitMask;
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class OpEvent {
 	 * @return the name
 	 */
 	public String getText() {
-		return _name;
+		return name;
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class OpEvent {
 	 * @return the description
 	 */
 	public String getTextDescription() {
-		return _description;
+		return description;
 	}
 	
 	/**
@@ -93,6 +93,6 @@ public class OpEvent {
 	 * @return the minimum count
 	 */
 	public int getMinCount() {
-		return _minCount;
+		return minCount;
 	}
 }
