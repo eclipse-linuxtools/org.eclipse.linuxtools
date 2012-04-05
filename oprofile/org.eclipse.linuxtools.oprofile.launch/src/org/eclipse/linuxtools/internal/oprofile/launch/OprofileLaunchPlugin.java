@@ -27,13 +27,13 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileLaunchPlugin plugin;
 	//shared cache instance for configuration
-	private static EventConfigCache _eventConfigCache = null;
+	private static EventConfigCache eventConfigCache = null;
 
-	private static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.launch"; //$NON-NLS-1$
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.launch"; //$NON-NLS-1$
 
 	// The launch type ID for profiling
-	public static final String ID_LAUNCH_PROFILE = ID_PLUGIN + ".oprofile"; //$NON-NLS-1$
-	public static final String ID_LAUNCH_PROFILE_MANUAL = ID_PLUGIN + ".oprofile.manual"; //$NON-NLS-1$
+	public static final String ID_LAUNCH_PROFILE = PLUGIN_ID + ".oprofile"; //$NON-NLS-1$
+	public static final String ID_LAUNCH_PROFILE_MANUAL = PLUGIN_ID + ".oprofile.manual"; //$NON-NLS-1$
 
 
 	/* Launch Configuration attributes */
@@ -86,11 +86,11 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	}
 	
 	public static String getUniqueIdentifier() {
-		return ID_PLUGIN;
+		return PLUGIN_ID;
 	}
 	
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(ID_PLUGIN, path);
+		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
@@ -106,10 +106,10 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	}	
 
 	public static EventConfigCache getCache() {
-		if (_eventConfigCache == null) {
-			_eventConfigCache = new EventConfigCache();
+		if (eventConfigCache == null) {
+			eventConfigCache = new EventConfigCache();
 		}
 		
-		return _eventConfigCache;
+		return eventConfigCache;
 	}
 }
