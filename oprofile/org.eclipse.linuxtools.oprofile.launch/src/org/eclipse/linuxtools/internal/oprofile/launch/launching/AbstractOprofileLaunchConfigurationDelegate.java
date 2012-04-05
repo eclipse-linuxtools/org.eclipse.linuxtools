@@ -49,7 +49,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		this.config = config;
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
-		IPath exePath = verifyProgramPath( config );
+		IPath exePath = CDebugUtils.verifyProgramPath( config );
 		options.setBinaryImage(exePath.toOSString());
 
 		//if daemonEvents null or zero size, the default event will be used
