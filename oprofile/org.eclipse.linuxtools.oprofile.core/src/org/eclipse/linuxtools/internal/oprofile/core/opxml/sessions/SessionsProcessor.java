@@ -77,7 +77,7 @@ public class SessionsProcessor extends XMLProcessor {
 			// save current event into call data
 			OpModelSession[] s = new OpModelSession[_sessionList.size()];
 			_sessionList.toArray(s);
-			_currentEvent._setSessions(s);
+			_currentEvent.setSessions(s);
 			SessionInfo info = (SessionInfo) callData;
 			info.list.add(_currentEvent);
 			_currentEvent = null;
