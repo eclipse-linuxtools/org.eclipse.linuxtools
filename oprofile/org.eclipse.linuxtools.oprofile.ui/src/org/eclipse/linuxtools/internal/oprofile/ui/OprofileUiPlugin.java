@@ -32,10 +32,10 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileUiPlugin plugin;
 
-	private OprofileView _oprofileview = null;
+	private OprofileView oprofileview = null;
 	
-	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
-	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
+	public static final String ID_OPROFILE_VIEW = PLUGIN_ID + ".OProfileView"; //$NON-NLS-1$
 
 	private static final String ICON_PATH = "icons/"; //$NON-NLS-1$
 	public static final String SESSION_ICON = ICON_PATH + "session.gif"; //$NON-NLS-1$
@@ -102,16 +102,16 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(ID_PLUGIN, path);
+		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
 	
 	public OprofileView getOprofileView() {
-		return _oprofileview;
+		return oprofileview;
 	}
 
-	public void setOprofileView(OprofileView _oprofileview) {
-		this._oprofileview = _oprofileview;
+	public void setOprofileView(OprofileView oprofileview) {
+		this.oprofileview = oprofileview;
 	}
 
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
