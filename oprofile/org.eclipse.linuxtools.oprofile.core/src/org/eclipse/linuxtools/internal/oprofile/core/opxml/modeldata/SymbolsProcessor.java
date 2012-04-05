@@ -51,9 +51,9 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol._setName(valid_string(attrs.getValue(ATTR_NAME)));
-			_symbol._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			_symbol._setFilePath(valid_string(attrs.getValue(ATTR_FILE)));
+			_symbol.setName(valid_string(attrs.getValue(ATTR_NAME)));
+			_symbol.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+			_symbol.setFilePath(valid_string(attrs.getValue(ATTR_FILE)));
 			_symbol.setLine(Integer.parseInt(attrs.getValue(ATTR_LINE)));
 		} else if (name.equals(SAMPLE_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
@@ -65,7 +65,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol._setSamples(_samplesProcessor.getSamples());
+			_symbol.setSamples(_samplesProcessor.getSamples());
 			_symbols.add(_symbol);
 			_symbol = new OpModelSymbol();
 		} else if (name.equals(SYMBOLS_TAG)) {

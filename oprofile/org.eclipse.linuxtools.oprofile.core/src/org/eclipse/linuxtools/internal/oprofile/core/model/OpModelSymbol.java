@@ -18,74 +18,74 @@ package org.eclipse.linuxtools.internal.oprofile.core.model;
  *  complete debug info.
  */
 public class OpModelSymbol {
-	private String _name;
-	private String _file;
-	private int _line;
-	private int _count;
-	private OpModelSample[] _samples;
-	private String _printTabs = ""; 	//for nice output //$NON-NLS-1$
+	private String name;
+	private String file;
+	private int line;
+	private int count;
+	private OpModelSample[] samples;
+	private String printTabs = ""; 	//for nice output //$NON-NLS-1$
 	
 	public OpModelSymbol() {
-		_name = ""; //$NON-NLS-1$
-		_file = ""; //$NON-NLS-1$
-		_count = 0;
-		_samples = null;
+		name = ""; //$NON-NLS-1$
+		file = ""; //$NON-NLS-1$
+		count = 0;
+		samples = null;
 	}
 	
-	public void _setName(String _name) {
-		this._name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void _setFilePath(String _file) {
-		this._file = _file;
+	public void setFilePath(String file) {
+		this.file = file;
 	}
 
-	public void setLine(int _line){
-		this._line = _line;
+	public void setLine(int line){
+		this.line = line;
 	}
 
-	public void _setCount(int _count) {
-		this._count = _count;
+	public void setCount(int count) {
+		this.count = count;
 	}
 
-	public void _setSamples(OpModelSample[] _samples) {
-		this._samples = _samples;
+	public void setSamples(OpModelSample[] samples) {
+		this.samples = samples;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public String getFilePath() {
-		return _file;
+		return file;
 	}
 
 	public int getLine(){
-		return _line;
+		return line;
 	}
 
 	public int getCount() {
-		return _count;
+		return count;
 	}
 
 	public OpModelSample[] getSamples() {
-		return _samples;
+		return samples;
 	}
 
 	public String toString(String tabs) {
-		_printTabs = tabs;
+		printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + ", File: " + _file + ", Count: " + _count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		if (_samples != null) {
-			for (int i = 0; i < _samples.length; i++) {
-				s += _printTabs + "Sample: "; //$NON-NLS-1$
-				s += _samples[i].toString();
+		String s = name + ", File: " + file + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (samples != null) {
+			for (int i = 0; i < samples.length; i++) {
+				s += printTabs + "Sample: "; //$NON-NLS-1$
+				s += samples[i].toString();
 			}
 		}
 		return s;
