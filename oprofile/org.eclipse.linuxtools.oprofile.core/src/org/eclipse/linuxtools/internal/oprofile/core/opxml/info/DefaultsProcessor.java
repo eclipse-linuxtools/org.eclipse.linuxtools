@@ -26,13 +26,13 @@ public class DefaultsProcessor extends XMLProcessor {
 	public static final String LOCK_FILE = "lock-file"; //$NON-NLS-1$
 	public static final String LOG_FILE = "log-file"; //$NON-NLS-1$
 	public static final String DUMP_STATUS = "dump-status"; //$NON-NLS-1$
-	protected HashMap<String,String> _map = new HashMap<String,String>();
+	protected HashMap<String,String> map = new HashMap<String,String>();
 
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 	 */
 	public void reset(Object callData) {
-		_map.clear();
+		map.clear();
 	}
 
 	/* (non-Javadoc)
@@ -41,10 +41,10 @@ public class DefaultsProcessor extends XMLProcessor {
 	public void endElement(String name, Object callData) {
 		if (name.equals(OpInfoProcessor.DEFAULTS_TAG)) {
 			OpInfo info = (OpInfo) callData;
-			info.setDefaults(_map);
+			info.setDefaults(map);
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		} else {
-			_map.put(name, characters);
+			map.put(name, characters);
 		}
 	}
 }

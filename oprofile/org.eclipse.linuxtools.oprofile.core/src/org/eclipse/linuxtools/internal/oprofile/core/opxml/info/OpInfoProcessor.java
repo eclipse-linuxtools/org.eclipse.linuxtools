@@ -23,8 +23,8 @@ import org.xml.sax.Attributes;
  */
 public class OpInfoProcessor extends XMLProcessor {
 	// Other XMLProcessors used by this processor
-	private DefaultsProcessor _defaultsProc;
-	private EventListProcessor _eventListProc;
+	private DefaultsProcessor defaultsProc;
+	private EventListProcessor eventListProc;
 	
 	// XML tags processed by this processor
 	public static final String NUM_COUNTERS_TAG = "num-counters"; //$NON-NLS-1$
@@ -34,8 +34,8 @@ public class OpInfoProcessor extends XMLProcessor {
 	public static final String TIMER_MODE = "timer-mode";  //$NON-NLS-1$
 
 	public OpInfoProcessor() {
-		_defaultsProc = new DefaultsProcessor();
-		_eventListProc = new EventListProcessor();
+		defaultsProc = new DefaultsProcessor();
+		eventListProc = new EventListProcessor();
 	}
 	
 	/* (non-Javadoc)
@@ -43,10 +43,10 @@ public class OpInfoProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(DEFAULTS_TAG)) {
-			OprofileSAXHandler.getInstance(callData).push(_defaultsProc);
+			OprofileSAXHandler.getInstance(callData).push(defaultsProc);
 		} else if (name.equals(EVENT_LIST_TAG)) {
-			OprofileSAXHandler.getInstance(callData).push(_eventListProc);
-			_eventListProc.startElement(name, attrs, callData);
+			OprofileSAXHandler.getInstance(callData).push(eventListProc);
+			eventListProc.startElement(name, attrs, callData);
 		} else {
 			super.startElement(name, attrs, callData);
 		}
@@ -74,7 +74,7 @@ public class OpInfoProcessor extends XMLProcessor {
 			info.setNrCounters(numCounters);
 		} else if (name.equals(EVENT_LIST_TAG)) {
 			OpInfo info = (OpInfo) callData;
-			info.setEvents(_eventListProc.getCounterNum(), _eventListProc.getEvents());
+			info.setEvents(eventListProc.getCounterNum(), eventListProc.getEvents());
 		}
 	}
 }
