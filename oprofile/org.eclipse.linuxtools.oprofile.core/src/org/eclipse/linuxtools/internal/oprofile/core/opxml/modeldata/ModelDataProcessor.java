@@ -55,15 +55,15 @@ public class ModelDataProcessor extends XMLProcessor {
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
 			if (img_seen == 0) {
-				_image._setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
-				_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+				_image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
+				_image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 			}
 
 			img_seen++;
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
 		} else if (name.equals(DEPENDENT_TAG)) {
-			_image._setDepCount(Integer.parseInt(attrs.getValue(ATTR_DEPCOUNT)));
+			_image.setDepCount(Integer.parseInt(attrs.getValue(ATTR_DEPCOUNT)));
 			OprofileSAXHandler.getInstance(callData).push(_dependentProcessor);
 		} else {
 			super.startElement(name, attrs, callData);
@@ -75,16 +75,16 @@ public class ModelDataProcessor extends XMLProcessor {
 			if (img_seen > 1) {
 				//should only ever be one image, otherwise oprofile was run
 				// outside of eclipse and the ui would not handle it properly
-				_image._setCount(OpModelImage.IMAGE_PARSE_ERROR);
-				_image._setDepCount(0);
-				_image._setDependents(null);
-				_image._setSymbols(null);
-				_image._setName(""); //$NON-NLS-1$				
+				_image.setCount(OpModelImage.IMAGE_PARSE_ERROR);
+				_image.setDepCount(0);
+				_image.setDependents(null);
+				_image.setSymbols(null);
+				_image.setName(""); //$NON-NLS-1$				
 			}
 		} else if (name.equals(SYMBOLS_TAG)){
-			_image._setSymbols(_symbolsProcessor.getSymbols());
+			_image.setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)){
-			_image._setDependents(_dependentProcessor.getImages());
+			_image.setDependents(_dependentProcessor.getImages());
 		} else {
 			super.endElement(name, callData);
 		}
