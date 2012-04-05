@@ -41,7 +41,7 @@ public class DefaultsProcessor extends XMLProcessor {
 	public void endElement(String name, Object callData) {
 		if (name.equals(OpInfoProcessor.DEFAULTS_TAG)) {
 			OpInfo info = (OpInfo) callData;
-			info._setDefaults(_map);
+			info.setDefaults(_map);
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		} else {
 			_map.put(name, _characters);

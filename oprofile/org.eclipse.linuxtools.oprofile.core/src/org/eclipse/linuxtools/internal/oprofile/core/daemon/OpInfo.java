@@ -58,19 +58,19 @@ public class OpInfo {
 	}
 	
 	// The number of counters supported by this configuration
-	private int _nrCounters;
+	private int nrCounters;
 	
 	// A HashMap of Oprofile defaults
-	private HashMap<String,String> _defaults;
+	private HashMap<String,String> defaults;
 	
 	// The permanent list of events indexed by counter
-	private OpEvent[][] _eventList;
+	private OpEvent[][] eventList;
 	
 	// The CPU frequency of this CPU in MHz
-	private double _cpuSpeed;
+	private double cpuSpeed;
 	
 	// Whether or not oprofile is running in timer mode
-	private boolean _timerMode;
+	private boolean timerMode;
 	
 	/**
 	 * Return all of Oprofile's generic information.
@@ -101,11 +101,11 @@ public class OpInfo {
 	 * Only called from XML parsers.
 	 * @param ctrs the number of counters
 	 */
-	public void _setNrCounters(int ctrs) {
-		_nrCounters = ctrs;
+	public void setNrCounters(int ctrs) {
+		nrCounters = ctrs;
 		
 		// Allocate room for event lists for the counters
-		_eventList = new OpEvent[_nrCounters][];
+		eventList = new OpEvent[nrCounters][];
 	}
 
 	/**
@@ -113,8 +113,8 @@ public class OpInfo {
 	 * Only called from the XML parsers.
 	 * @param freq the frequency
 	 */
-	public void _setCPUSpeed(double freq) {
-		_cpuSpeed = freq;
+	public void setCPUSpeed(double freq) {
+		cpuSpeed = freq;
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class OpInfo {
 	 * Only called from XML parsers.
 	 * @param map the <code>HashMap</code> containing the defaults
 	 */
-	public void _setDefaults(HashMap<String,String> map) {
-		_defaults = map;
+	public void setDefaults(HashMap<String,String> map) {
+		defaults = map;
 	}
 
 	/**
@@ -133,10 +133,10 @@ public class OpInfo {
 	 * @param counterNum the counter with the events
 	 * @param events an array of OpEvent events belonging to this counter
 	 */
-	public void _setEvents(int counterNum, OpEvent[] events) {
-		if (counterNum < _eventList.length) {
-			_eventList[counterNum] = events;
-			Arrays.sort(_eventList[counterNum], new SortEventComparator());
+	public void setEvents(int counterNum, OpEvent[] events) {
+		if (counterNum < eventList.length) {
+			eventList[counterNum] = events;
+			Arrays.sort(eventList[counterNum], new SortEventComparator());
 		}
 	}
 	
@@ -145,8 +145,8 @@ public class OpInfo {
 	 * Only called from XML parsers.
 	 * @param timerMode true if oprofile is in timer mode, false if not
 	 */
-	public void _setTimerMode(boolean timerMode) {
-		_timerMode = timerMode;
+	public void setTimerMode(boolean timerMode) {
+		this.timerMode = timerMode;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class OpInfo {
 	 * @return the number of counters
 	 */
 	public int getNrCounters() {
-		return _nrCounters;
+		return nrCounters;
 	}
 		
 	/**
@@ -162,7 +162,7 @@ public class OpInfo {
 	 * @return the speed
 	 */
 	public double getCPUSpeed() {
-		return _cpuSpeed;
+		return cpuSpeed;
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class OpInfo {
 	 * @return the requested default or <code>null</code> if not known
 	 */
 	public String getDefault(String what) {
-		return (String) _defaults.get(what);
+		return (String) defaults.get(what);
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class OpInfo {
 	 * @return an array of valid events
 	 */ 
 	public OpEvent[] getEvents(int num) {
-		if (num >= 0 && num < _eventList.length)
-			return _eventList[num];
+		if (num >= 0 && num < eventList.length)
+			return eventList[num];
 		
 		return new OpEvent[0];
 	}
@@ -193,7 +193,7 @@ public class OpInfo {
 	 * @return a boolean, true if in timer mode, false if not
 	 */
 	public boolean getTimerMode() {
-		return _timerMode;
+		return timerMode;
 	}
 	
 	/**
@@ -206,7 +206,7 @@ public class OpInfo {
 		for (int counter = 0; counter < getNrCounters(); ++counter) {
 			int idx = Arrays.binarySearch(getEvents(counter), name, new SearchEventComparator());
 			if (idx >= 0)
-				return _eventList[counter][idx];
+				return eventList[counter][idx];
 		}
 		
 		return null;

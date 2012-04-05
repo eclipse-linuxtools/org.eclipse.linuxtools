@@ -59,11 +59,11 @@ public class OpInfoProcessor extends XMLProcessor {
 		if (name.equals(CPU_FREQUENCY_TAG)) {
 			double speed = Double.parseDouble(_characters);
 			OpInfo info = (OpInfo) callData;
-			info._setCPUSpeed(speed);
+			info.setCPUSpeed(speed);
 		} else if (name.equals(TIMER_MODE)) {
 			boolean timerMode = Boolean.parseBoolean(_characters);
 			OpInfo info = (OpInfo) callData;
-			info._setTimerMode(timerMode);
+			info.setTimerMode(timerMode);
 		} else if (name.equals(NUM_COUNTERS_TAG)) {
 			int numCounters = 0;
 			try {
@@ -71,10 +71,10 @@ public class OpInfoProcessor extends XMLProcessor {
 			} catch (NumberFormatException nfe) {
 			}
 			OpInfo info = (OpInfo) callData;
-			info._setNrCounters(numCounters);
+			info.setNrCounters(numCounters);
 		} else if (name.equals(EVENT_LIST_TAG)) {
 			OpInfo info = (OpInfo) callData;
-			info._setEvents(_eventListProc.getCounterNum(), _eventListProc.getEvents());
+			info.setEvents(_eventListProc.getCounterNum(), _eventListProc.getEvents());
 		}
 	}
 }
