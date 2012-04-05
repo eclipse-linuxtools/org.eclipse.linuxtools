@@ -37,7 +37,7 @@ public class OprofileCorePlugin extends Plugin {
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
-	private IOpxmlProvider _opxmlProvider;
+	private IOpxmlProvider opxmlProvider;
 
 	public static final String DEBUG_PRINT_PREFIX = "DEBUG: "; //$NON-NLS-1$
 	
@@ -83,8 +83,8 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		_opxmlProvider = new LinuxOpxmlProvider();
-		return _opxmlProvider;
+		opxmlProvider = new LinuxOpxmlProvider();
+		return opxmlProvider;
 	}
 	
 	/**
