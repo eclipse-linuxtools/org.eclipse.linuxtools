@@ -56,24 +56,24 @@ import org.eclipse.ui.part.ViewPart;
  *   ui model parsing in a separate thread.
  */
 public class OprofileView extends ViewPart {
-	private TreeViewer _viewer;
+	private TreeViewer viewer;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_createTreeViewer(parent);
-		_createActionMenu();
+		createTreeViewer(parent);
+		createActionMenu();
 
 		OprofileUiPlugin.getDefault().setOprofileView(this);
 	}
 	
-	private void _createTreeViewer(Composite parent) {
-		_viewer = new TreeViewer(parent, SWT.SINGLE);
-		_viewer.setContentProvider(new OprofileViewContentProvider());
-		_viewer.setLabelProvider(new OprofileViewLabelProvider());
-		_viewer.addDoubleClickListener(new OprofileViewDoubleClickListener());
+	private void createTreeViewer(Composite parent) {
+		viewer = new TreeViewer(parent, SWT.SINGLE);
+		viewer.setContentProvider(new OprofileViewContentProvider());
+		viewer.setLabelProvider(new OprofileViewLabelProvider());
+		viewer.addDoubleClickListener(new OprofileViewDoubleClickListener());
 	}
 
-	private void _createActionMenu() {
+	private void createActionMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
 		
 		manager.add(new OprofileViewLogReaderAction());
@@ -83,7 +83,7 @@ public class OprofileView extends ViewPart {
 	}
 	
 	private TreeViewer getTreeViewer() {
-		return _viewer;
+		return viewer;
 	}
 	
 	/**
@@ -104,7 +104,6 @@ public class OprofileView extends ViewPart {
 
 				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
 				dataModelRoot.refreshModel();
-//				System.out.println(dataModelRoot);	//debugging
 				monitor.worked(1);
 
 				final UiModelRoot UiRoot = UiModelRoot.getDefault();

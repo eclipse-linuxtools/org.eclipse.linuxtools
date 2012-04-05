@@ -69,38 +69,38 @@ public class OprofileViewLogReaderAction extends Action {
  * A Runnable to read oprofiled's logfile 
  */
 class LogReader implements Runnable, IRunnableWithProgress {
-	private static long _lastModified = -1;
-	private static String _contents = null;
+	private static long lastModified = -1;
+	private static String contents = null;
 
 	public void run() {
 		File logFile = new File(Oprofile.getLogFile());
 		long modified = logFile.lastModified();
 		
 		//only reread it if it has been modified since the last run
-		if (modified != _lastModified) {
-			_lastModified = modified;
-			_contents = "";
+		if (modified != lastModified) {
+			lastModified = modified;
+			contents = "";
 			
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(logFile));
 				String line;
 				while ((line = reader.readLine()) != null) {
-					_contents += line + "\n"; //$NON-NLS-1$
+					contents += line + "\n"; //$NON-NLS-1$
 				}
 				reader.close();
 			} catch (FileNotFoundException e) {
 				// The file doesn't exist or was erased. Try again next time.
-				_contents = OprofileUiMessages.getString("oprofiled.logreader.error.fileNotFound"); //$NON-NLS-1$
+				contents = OprofileUiMessages.getString("oprofiled.logreader.error.fileNotFound"); //$NON-NLS-1$
 			} catch (IOException e) {
 				// Error reading log. Try again next time.
-				_lastModified = 0;
-				_contents = OprofileUiMessages.getString("oprofiled.logreader.error.io"); //$NON-NLS-1$
+				lastModified = 0;
+				contents = OprofileUiMessages.getString("oprofiled.logreader.error.io"); //$NON-NLS-1$
 			}
 		}
 	}
 	
 	public String getLogContents() {
-		return _contents;
+		return contents;
 	}
 
 
