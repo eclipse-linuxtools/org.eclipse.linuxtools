@@ -19,13 +19,13 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.IAbstractTextEditorHelpContextIds;
 import org.eclipse.ui.texteditor.ITextEditorExtension2;
 import org.eclipse.ui.texteditor.IUpdate;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 import org.eclipse.ui.texteditor.ResourceAction;
 
 /**
@@ -227,7 +227,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 		super(fgBundleForConstructedKeys, prefix);
 		Assert.isLegal(workbenchPart != null);
 		setHelpContextId(IAbstractTextEditorHelpContextIds.FIND_ACTION);
-		setActionDefinitionId(IWorkbenchActionDefinitionIds.FIND_REPLACE);
+		setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
 		fWorkbenchPart= workbenchPart;
 		update();
 	}
@@ -254,7 +254,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 		super(fgBundleForConstructedKeys, prefix);
 		Assert.isLegal(target != null && shell != null);
 		setHelpContextId(IAbstractTextEditorHelpContextIds.FIND_ACTION);
-		setActionDefinitionId(IWorkbenchActionDefinitionIds.FIND_REPLACE);
+		setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
 		fTarget= target;
 		fShell= shell;
  		update();
