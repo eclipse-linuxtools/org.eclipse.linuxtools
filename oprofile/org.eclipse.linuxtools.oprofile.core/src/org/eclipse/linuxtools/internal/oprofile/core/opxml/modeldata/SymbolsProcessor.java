@@ -33,17 +33,17 @@ public class SymbolsProcessor extends XMLProcessor {
 	private static final String ATTR_LINE = "line";	 //$NON-NLS-1$
 	
 	//the current symbol being constructed
-	private OpModelSymbol _symbol;
+	private OpModelSymbol symbol;
 	//all the symbols in this <symbols> tag, to be returned to the calling ModelDataProcessor
-	private ArrayList<OpModelSymbol> _symbols;
+	private ArrayList<OpModelSymbol> symbols;
 	
 	//the processor used for individual samples
-	private SamplesProcessor _samplesProcessor = new SamplesProcessor();
+	private SamplesProcessor samplesProcessor = new SamplesProcessor();
 	
 	
 	public void reset(Object callData) {
-		_symbol = new OpModelSymbol();
-		_symbols = new ArrayList<OpModelSymbol>();
+		symbol = new OpModelSymbol();
+		symbols = new ArrayList<OpModelSymbol>();
 	}
 
 	/**
@@ -51,12 +51,12 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol.setName(valid_string(attrs.getValue(ATTR_NAME)));
-			_symbol.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			_symbol.setFilePath(valid_string(attrs.getValue(ATTR_FILE)));
-			_symbol.setLine(Integer.parseInt(attrs.getValue(ATTR_LINE)));
+			symbol.setName(valid_string(attrs.getValue(ATTR_NAME)));
+			symbol.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+			symbol.setFilePath(valid_string(attrs.getValue(ATTR_FILE)));
+			symbol.setLine(Integer.parseInt(attrs.getValue(ATTR_LINE)));
 		} else if (name.equals(SAMPLE_TAG)) {
-			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
+			OprofileSAXHandler.getInstance(callData).push(samplesProcessor);
 		}
 	}
 	
@@ -65,9 +65,9 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol.setSamples(_samplesProcessor.getSamples());
-			_symbols.add(_symbol);
-			_symbol = new OpModelSymbol();
+			symbol.setSamples(samplesProcessor.getSamples());
+			symbols.add(symbol);
+			symbol = new OpModelSymbol();
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(SYMBOLS_TAG);
 		}
@@ -75,8 +75,8 @@ public class SymbolsProcessor extends XMLProcessor {
 	
 	//return all parsed samples
 	public OpModelSymbol[] getSymbols() {
-		OpModelSymbol [] symbols = new OpModelSymbol[_symbols.size()];
-		_symbols.toArray(symbols);
-		return symbols;
+		OpModelSymbol [] s = new OpModelSymbol[symbols.size()];
+		symbols.toArray(s);
+		return s;
 	}
 }
