@@ -126,7 +126,7 @@ public class TestSetup extends AbstractTest {
 		protected int getNumberOfCounters() { return 1; }
 		@Override
 		protected boolean checkEventSetupValidity(int counter, String name, int maskValue) { return true; }
-		public Button getDefaultCheck() { return _defaultEventCheck; }
+		public Button getDefaultCheck() { return defaultEventCheck; }
 	}
 	
 	public void testEventConfigTab() throws CoreException {

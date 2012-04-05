@@ -64,9 +64,9 @@ import org.eclipse.swt.widgets.Text;
  * Thic class represents the event configuration tab of the launcher dialog.
  */
 public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
-	protected Button _defaultEventCheck;
-	protected OprofileCounter[] _counters = OprofileCounter.getCounters(null);
-	protected CounterSubTab[] _counterSubTabs;
+	protected Button defaultEventCheck;
+	protected OprofileCounter[] counters = OprofileCounter.getCounters(null);
+	protected CounterSubTab[] counterSubTabs;
 
 	/**
 	 * Essentially the constructor for this tab; creates the 'default event'
@@ -85,12 +85,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			createVerticalSpacer(top, 1);
 	
 			//default event checkbox
-			_defaultEventCheck = new Button(top, SWT.CHECK);
-			_defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
-			_defaultEventCheck.setLayoutData(new GridData());
-			_defaultEventCheck.addSelectionListener(new SelectionAdapter() {
+			defaultEventCheck = new Button(top, SWT.CHECK);
+			defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
+			defaultEventCheck.setLayoutData(new GridData());
+			defaultEventCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
-					_handleEnabledToggle();
+					handleEnabledToggle();
 				}
 			});
 	
@@ -99,7 +99,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			//tabs for each of the counters
 			OprofileCounter[] counters = OprofileCounter.getCounters(null);
 			TabItem[] counterTabs = new TabItem[counters.length];
-			_counterSubTabs = new CounterSubTab[counters.length];
+			counterSubTabs = new CounterSubTab[counters.length];
 			
 			TabFolder tabFolder = new TabFolder(top, SWT.NONE);
 			tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -108,7 +108,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			for (int i = 0; i < counters.length; i++) {
 				Composite c = new Composite(tabFolder, SWT.NONE);
 				CounterSubTab currentTab = new CounterSubTab(c, counters[i]);
-				_counterSubTabs[i] = currentTab;
+				counterSubTabs[i] = currentTab;
 				
 				counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
 				counterTabs[i].setControl(c);
@@ -123,16 +123,16 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration config) {
 		if (!getTimerMode()) {
 			try {
-				for (int i = 0; i < _counters.length; i++) {
-					_counters[i].loadConfiguration(config);
+				for (int i = 0; i < counters.length; i++) {
+					counters[i].loadConfiguration(config);
 				}
 				
-				for (CounterSubTab tab : _counterSubTabs) {
+				for (CounterSubTab tab : counterSubTabs) {
 					tab.initializeTab(config);
 				}
 	
 				boolean enabledState = config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
-				_defaultEventCheck.setSelection(enabledState);
+				defaultEventCheck.setSelection(enabledState);
 				setEnabledState(!enabledState);
 	
 				updateLaunchConfigurationDialog();
@@ -201,9 +201,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		if (getTimerMode()) {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 		} else {
-			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, _defaultEventCheck.getSelection());
+			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, defaultEventCheck.getSelection());
 			
-			for (CounterSubTab cst : _counterSubTabs) {
+			for (CounterSubTab cst : counterSubTabs) {
 				cst.performApply(config);
 			}
 		}
@@ -221,9 +221,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		boolean useDefault = true;
 
 		// When instantiated, the OprofileCounter will set defaults.
-		for (int i = 0; i < _counters.length; i++) {
-			_counters[i].saveConfiguration(config);
-			if (_counters[i].getEnabled()) {
+		for (int i = 0; i < counters.length; i++) {
+			counters[i].saveConfiguration(config);
+			if (counters[i].getEnabled()) {
 				useDefault = false;
 			}
 		}
@@ -255,8 +255,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * Handles the toggling of the default event check box. Not meant to be called
 	 * directly.
 	 */
-	private void _handleEnabledToggle() {
-		setEnabledState(!_defaultEventCheck.getSelection());
+	private void handleEnabledToggle() {
+		setEnabledState(!defaultEventCheck.getSelection());
 		updateLaunchConfigurationDialog();
 	}
 	
@@ -265,7 +265,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @param state true for enabled, false for disabled
 	 */
 	private void setEnabledState(boolean state) {
-		for (CounterSubTab cst : _counterSubTabs) {
+		for (CounterSubTab cst : counterSubTabs) {
 			cst.setEnabledState(state);
 		}
 	}
@@ -308,8 +308,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * updateLaunchConfigurationDialog() when a widget changes state).
 	 */ 
 	protected class CounterSubTab {
-		private Button _enabledCheck;
-		private Button _profileKernelCheck;
+		private Button enabledCheck;
+		private Button profileKernelCheck;
 		private Button _profileUserCheck;
 		private Label _countTextLabel;
 		private Text _countText;
@@ -403,17 +403,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		private void createTopCell(Composite parent) {
 			//checkbox
-			_enabledCheck = new Button(parent, SWT.CHECK);
-			_enabledCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.enabled.button.text")); //$NON-NLS-1$
-			_enabledCheck.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-			_enabledCheck.addSelectionListener(new SelectionAdapter() {
+			enabledCheck = new Button(parent, SWT.CHECK);
+			enabledCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.enabled.button.text")); //$NON-NLS-1$
+			enabledCheck.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+			enabledCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
-					_counter.setEnabled(_enabledCheck.getSelection());
+					_counter.setEnabled(enabledCheck.getSelection());
 					_setEnabledState(_counter.getEnabled());
 					updateLaunchConfigurationDialog();
 				}
 			});
-			_enabledCheck.setEnabled(false);
+			enabledCheck.setEnabled(false);
 			
 			//label for textbox
 			_eventDescLabel = new Label(parent, SWT.NONE);
@@ -470,9 +470,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		private void createRightCell(Composite parent) {
 			//profile kernel checkbox
-			_profileKernelCheck = new Button(parent, SWT.CHECK);
-			_profileKernelCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileKernel.check.text")); //$NON-NLS-1$
-			_profileKernelCheck.addSelectionListener(new SelectionAdapter() {
+			profileKernelCheck = new Button(parent, SWT.CHECK);
+			profileKernelCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileKernel.check.text")); //$NON-NLS-1$
+			profileKernelCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					_handleProfileKernelToggle();
 				}
@@ -523,7 +523,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			}
 
 			boolean enabled = _counter.getEnabled();
-			_enabledCheck.setSelection(enabled);
+			enabledCheck.setSelection(enabled);
 
 			if (_counter.getEvent() == null) {
 				// Default to first in list
@@ -531,7 +531,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			}
 
 			//load default states
-			_profileKernelCheck.setSelection(_counter.getProfileKernel());
+			profileKernelCheck.setSelection(_counter.getProfileKernel());
 			_profileUserCheck.setSelection(_counter.getProfileUser());
 			_countText.setText(Integer.toString(_counter.getCount()));
 			_eventDescText.setText(_counter.getEvent().getTextDescription());
@@ -557,7 +557,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param state true to enable to the counter's state, false to disable all
 		 */
 		public void setEnabledState(boolean state) {
-			_enabledCheck.setEnabled(state);
+			enabledCheck.setEnabled(state);
 			
 			if (state) {
 				_setEnabledState(_counter.getEnabled());
@@ -572,7 +572,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param state true to enable all widgets, false to disable all widgets
 		 */
 		private void _setEnabledState(boolean state) {
-			_profileKernelCheck.setEnabled(state);
+			profileKernelCheck.setEnabled(state);
 			_profileUserCheck.setEnabled(state);
 			_countText.setEnabled(state);
 			_eventDescText.setEnabled(state);
@@ -615,7 +615,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * Handles the toggling of the "profile kernel" button.
 		 */
 		private void _handleProfileKernelToggle() {
-			_counter.setProfileKernel(_profileKernelCheck.getSelection());
+			_counter.setProfileKernel(profileKernelCheck.getSelection());
 			updateLaunchConfigurationDialog();
 		}
 		
