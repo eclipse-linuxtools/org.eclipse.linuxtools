@@ -127,7 +127,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 				Messages.getString("LaunchWizard.Text1") +  //$NON-NLS-1$
 				Messages.getString("LaunchWizard.Text2") +  //$NON-NLS-1$
 				Messages.getString("LaunchWizard.Text3"),   //$NON-NLS-1$
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
+				getLaunchManager().generateLaunchConfigurationName(
 						Messages.getString("LaunchWizard.NamePrefix")), null);  //$NON-NLS-1$
 		id.open();
 		

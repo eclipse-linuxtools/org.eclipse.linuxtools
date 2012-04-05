@@ -372,9 +372,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 						.newInstance(
 								null,
 								getLaunchManager()
-										.generateUniqueLaunchConfigurationNameFrom(
-												Messages
-														.getString("SystemTapLaunchShortcut.Invalid"))); //$NON-NLS-1$
+										.generateLaunchConfigurationName(
+												Messages.getString("SystemTapLaunchShortcut.Invalid"))); //$NON-NLS-1$
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -392,8 +391,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		ILaunchConfigurationWorkingCopy wc = null;
 		try {
 			ILaunchConfigurationType configType = getLaunchConfigType();
-			wc = configType.newInstance(null,getLaunchManager()
-							.generateUniqueLaunchConfigurationNameFrom(name));
+			wc = configType.newInstance(null, getLaunchManager()
+					.generateLaunchConfigurationName(name));
 
 			setDefaultProfileAttributes(wc);
 
@@ -421,8 +420,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			try {
 				String projectName = bin.getResource().getProjectRelativePath().toString();
 				ILaunchConfigurationType configType = getLaunchConfigType();
-				wc = configType.newInstance(null,getLaunchManager()
-						.generateUniqueLaunchConfigurationNameFrom(name + " - " + bin.getElementName())); //$NON-NLS-1$
+				wc = configType.newInstance(
+						null,
+						getLaunchManager().generateLaunchConfigurationName(
+								name + " - " + bin.getElementName())); //$NON-NLS-1$
 
 				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,projectName);
 				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
@@ -437,8 +438,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		} else {
 
 			try {
-				wc = getLaunchConfigType().newInstance(null,
-								getLaunchManager().generateUniqueLaunchConfigurationNameFrom(name)); //$NON-NLS-1$
+				wc = getLaunchConfigType().newInstance(
+						null,
+						getLaunchManager()
+								.generateLaunchConfigurationName(name)); //$NON-NLS-1$
 				setDefaultProfileAttributes(wc);
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -725,8 +728,9 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public ILaunchConfiguration getNewConfiguration() throws CoreException {
 		ILaunchConfigurationType configType = getLaunchConfigType();
-		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
+		ILaunchConfigurationWorkingCopy wc = configType.newInstance(
+				null,
+				getLaunchManager().generateLaunchConfigurationName(
 						"TestingConfiguration")); //$NON-NLS-1$
 
 		return wc.doSave();
