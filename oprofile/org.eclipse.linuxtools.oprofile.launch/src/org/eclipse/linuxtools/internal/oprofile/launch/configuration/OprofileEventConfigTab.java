@@ -409,7 +409,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			enabledCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					counter.setEnabled(enabledCheck.getSelection());
-					_setEnabledState(counter.getEnabled());
+					internalSetEnabledState(counter.getEnabled());
 					updateLaunchConfigurationDialog();
 				}
 			});
@@ -459,7 +459,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			
 			eventList.addSelectionChangedListener(new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent sce) {
-					_handleEventListSelectionChange();
+					handleEventListSelectionChange();
 				}
 			});
 		}
@@ -474,7 +474,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			profileKernelCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileKernel.check.text")); //$NON-NLS-1$
 			profileKernelCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
-					_handleProfileKernelToggle();
+					handleProfileKernelToggle();
 				}
 			});
 			
@@ -483,7 +483,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			profileUserCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileUser.check.text")); //$NON-NLS-1$
 			profileUserCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
-					_handleProfileUserToggle();
+					handleProfileUserToggle();
 				}
 			});
 			
@@ -494,7 +494,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			countText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			countText.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent me) {
-					_handleCountTextModify();
+					handleCountTextModify();
 				}
 			});
 
@@ -560,9 +560,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			enabledCheck.setEnabled(state);
 			
 			if (state) {
-				_setEnabledState(counter.getEnabled());
+				internalSetEnabledState(counter.getEnabled());
 			} else {
-				_setEnabledState(false);
+				internalSetEnabledState(false);
 			}
 		}
 		
@@ -571,7 +571,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * Not meant to be called directly.
 		 * @param state true to enable all widgets, false to disable all widgets
 		 */
-		private void _setEnabledState(boolean state) {
+		private void internalSetEnabledState(boolean state) {
 			profileKernelCheck.setEnabled(state);
 			profileUserCheck.setEnabled(state);
 			countText.setEnabled(state);
@@ -584,7 +584,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * Handling method for the event list. Gets the selection from the listviewer 
 		 * and updates the UnitMask and event description text box. 
 		 */
-		private void _handleEventListSelectionChange() {
+		private void handleEventListSelectionChange() {
 			int index = eventList.getList().getSelectionIndex();
 			if (index != -1){
 				OpEvent event = (OpEvent) eventList.getElementAt(index);
@@ -606,7 +606,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		/**
 		 * Handles the toggling of the "profile user" button.
 		 */
-		private void _handleProfileUserToggle() {
+		private void handleProfileUserToggle() {
 			counter.setProfileUser(profileUserCheck.getSelection());
 			updateLaunchConfigurationDialog();
 		}
@@ -614,7 +614,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		/**
 		 * Handles the toggling of the "profile kernel" button.
 		 */
-		private void _handleProfileKernelToggle() {
+		private void handleProfileKernelToggle() {
 			counter.setProfileKernel(profileKernelCheck.getSelection());
 			updateLaunchConfigurationDialog();
 		}
@@ -622,7 +622,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		/**
 		 * Handles text modify events in the count text widget.
 		 */
-		private void _handleCountTextModify() {
+		private void handleCountTextModify() {
 			String errorMessage = null;
 			try {
 
@@ -672,10 +672,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * This class displays event unit masks via check boxes and appropriate labels.
 		 */
 		protected class UnitMaskViewer {
-			private Label _unitMaskLabel;
-			private Composite _top;
-			private Composite _maskListComp;
-			private Button[] _unitMaskButtons;
+			private Label unitMaskLabel;
+			private Composite top;
+			private Composite maskListComp;
+			private Button[] unitMaskButtons;
 
 			/**
 			 * Constructor, creates the widget.
@@ -683,10 +683,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 */
 			public UnitMaskViewer(Composite parent) {
 				//"Unit Mask:" label
-				_unitMaskLabel = new Label(parent, SWT.NONE);
-				_unitMaskLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-				_unitMaskLabel.setText(OprofileLaunchMessages.getString("unitmaskViewer.label.text")); //$NON-NLS-1$
-				_unitMaskLabel.setVisible(true);
+				unitMaskLabel = new Label(parent, SWT.NONE);
+				unitMaskLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+				unitMaskLabel.setText(OprofileLaunchMessages.getString("unitmaskViewer.label.text")); //$NON-NLS-1$
+				unitMaskLabel.setVisible(true);
 
 				//composite to contain the button widgets
 				Composite top = new Composite(parent, SWT.NONE);
@@ -695,10 +695,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				layout.marginHeight = 0;
 				layout.marginWidth = 0;
 				top.setLayout(layout);
-				_top = top;
+				this.top = top;
 				
-				_maskListComp = null;
-				_unitMaskButtons = null;
+				maskListComp = null;
+				unitMaskButtons = null;
 			}
 
 			/**
@@ -706,7 +706,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 * @param maskButton the button object
 			 * @param index the button's mask index (used in OpUnitMask for a proper mask value) 
 			 */
-			private void _handleToggle(Button maskButton, int index) {
+			private void handleToggle(Button maskButton, int index) {
 				OpUnitMask mask = counter.getUnitMask();
 				if (mask != null) {
 					if (maskButton.getSelection()) {
@@ -729,14 +729,14 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				OpUnitMask mask = oe.getUnitMask();
 				int totalMasks = mask.getNumMasks();
 				
-				if (_maskListComp != null) {
-					_maskListComp.dispose();
+				if (maskListComp != null) {
+					maskListComp.dispose();
 				}
 				
-				Composite newMaskComp = new Composite(_top, SWT.NONE);
+				Composite newMaskComp = new Composite(top, SWT.NONE);
 				newMaskComp.setLayout(new GridLayout());
 				newMaskComp.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
-				_maskListComp = newMaskComp;
+				maskListComp = newMaskComp;
 
 				//creates these buttons with the default masks
 				mask.setDefaultMaskValue();
@@ -772,7 +772,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 						maskButton.setSelection(selected);
 						maskButton.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent se) {
-								_handleToggle((Button)se.getSource(), maskButtonIndex);
+								handleToggle((Button)se.getSource(), maskButtonIndex);
 							}
 						});
 						
@@ -780,8 +780,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 					}
 				}
 				
-				_unitMaskButtons = new Button[maskButtons.size()];
-				maskButtons.toArray(_unitMaskButtons);
+				unitMaskButtons = new Button[maskButtons.size()];
+				maskButtons.toArray(unitMaskButtons);
 				
 				resizeScrollContainer();
 			}
@@ -791,8 +791,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 * @param enabled whether this viewer should be enabled
 			 */
 			public void setEnabled(boolean enabled) {
-				if (_unitMaskButtons != null) {
-					for (Button b : _unitMaskButtons) {
+				if (unitMaskButtons != null) {
+					for (Button b : unitMaskButtons) {
 						b.setEnabled(enabled);
 					}
 				}
