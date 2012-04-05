@@ -20,13 +20,13 @@ import org.eclipse.swt.graphics.Image;
  *  has profiled. Must have children sessions.
  */
 public class UiModelEvent implements IUiModelElement {
-	private IUiModelElement _parent = null;		//parent node -- necessary?
-	private OpModelEvent _event;				//the node in the data model
-	private UiModelSession _sessions[];			//this node's children
+	private IUiModelElement parent = null;		//parent node -- necessary?
+	private OpModelEvent event;				//the node in the data model
+	private UiModelSession sessions[];			//this node's children
 	
 	public UiModelEvent(OpModelEvent event) {
 		if (event != null) {
-			_event = event;
+			this.event = event;
 			refreshModel();
 		}
 	}
@@ -35,17 +35,17 @@ public class UiModelEvent implements IUiModelElement {
 	 * Create the ui sessions from the data model.
 	 */
 	private void refreshModel() {
-		OpModelSession dataModelSessions[] = _event.getSessions();
-		_sessions = new UiModelSession[dataModelSessions.length];
+		OpModelSession dataModelSessions[] = event.getSessions();
+		sessions = new UiModelSession[dataModelSessions.length];
 		
 		for (int i = 0; i < dataModelSessions.length; i++) {
-			_sessions[i] = new UiModelSession(this, dataModelSessions[i]);
+			sessions[i] = new UiModelSession(this, dataModelSessions[i]);
 		}
 	}
 
 	@Override
 	public String toString() {
-		return (_event == null ? "" : _event.getName()); //$NON-NLS-1$
+		return (event == null ? "" : event.getName()); //$NON-NLS-1$
 	}
 
 	/** IUiModelElement functions **/
@@ -54,15 +54,15 @@ public class UiModelEvent implements IUiModelElement {
 	}
 	
 	public IUiModelElement[] getChildren() {
-		return _sessions;
+		return sessions;
 	}
 
 	public boolean hasChildren() {
-		return (_sessions == null || _sessions.length == 0 ? false : true);
+		return (sessions == null || sessions.length == 0 ? false : true);
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {

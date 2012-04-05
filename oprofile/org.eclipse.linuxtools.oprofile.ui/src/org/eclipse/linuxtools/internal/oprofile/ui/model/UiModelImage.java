@@ -23,43 +23,43 @@ import org.eclipse.swt.graphics.Image;
  * sake they are children of the parent session in the tree.
  */
 public class UiModelImage implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element, may be UiModelSession or UiModelDependent
-	private OpModelImage _image;			//the node in the data model
-	private UiModelSymbol _symbols[];		//this node's child (symbols)
-	private int _totalCount;				//total number of samples 
-	private int _depCount;					//number of samples from dependent images
+	private IUiModelElement parent;		//parent element, may be UiModelSession or UiModelDependent
+	private OpModelImage image;			//the node in the data model
+	private UiModelSymbol symbols[];		//this node's child (symbols)
+	private int totalCount;				//total number of samples 
+	private int depCount;					//number of samples from dependent images
 
 	public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
-		_parent = parent;
-		_image = image;
-		_symbols = null;
-		_totalCount = totalCount;
-		_depCount = depCount;
+		this.parent = parent;
+		this.image = image;
+		this.symbols = null;
+		this.totalCount = totalCount;
+		this.depCount = depCount;
 		refreshModel();
 	}
 
 	private void refreshModel() {
-		OpModelSymbol[] dataModelSymbols = _image.getSymbols();
+		OpModelSymbol[] dataModelSymbols = image.getSymbols();
 		
 		//dependent images may not have symbols
 		if (dataModelSymbols != null) {
-			_symbols = new UiModelSymbol[dataModelSymbols.length];
+			symbols = new UiModelSymbol[dataModelSymbols.length];
 	
 			for (int i = 0; i < dataModelSymbols.length; i++) {
-				_symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], _totalCount);
+				symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], totalCount);
 			}
 		}
 	}
 	
 	@Override
 	public String toString() {
-		if (_image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
+		if (image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
 			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
 		} else {
-			double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
+			double countPercentage = (double)(image.getCount() - depCount) / (double)totalCount;
 			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 			
-			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
@@ -71,11 +71,11 @@ public class UiModelImage implements IUiModelElement {
 	public IUiModelElement[] getChildren() {
 		IUiModelElement children[] = null;
 		
-		if (_symbols != null) {
-			children = new IUiModelElement[_symbols.length];
+		if (symbols != null) {
+			children = new IUiModelElement[symbols.length];
 			
-			for (int i = 0; i < _symbols.length; i++) {
-				children[i] = _symbols[i];
+			for (int i = 0; i < symbols.length; i++) {
+				children[i] = symbols[i];
 			}
 		}
 		
@@ -83,11 +83,11 @@ public class UiModelImage implements IUiModelElement {
 	}
 
 	public boolean hasChildren() {
-		return (_symbols == null || _symbols.length == 0 ? false : true);
+		return (symbols == null || symbols.length == 0 ? false : true);
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {
