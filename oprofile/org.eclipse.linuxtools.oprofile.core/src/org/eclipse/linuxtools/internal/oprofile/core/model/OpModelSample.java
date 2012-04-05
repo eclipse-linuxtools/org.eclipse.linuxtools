@@ -16,41 +16,41 @@ package org.eclipse.linuxtools.internal.oprofile.core.model;
  * Represents an OProfile sample.
  */
 public class OpModelSample {
-	private int _count;
-	private int _line;
-	private String _file;
+	private int count;
+	private int line;
+	private String file;
 
 	public OpModelSample() {
-		_count = 0;
-		_line = 0;
+		count = 0;
+		line = 0;
 	}
 	
-	public void _setCount(int _count) {
-		this._count = _count;
+	public void setCount(int count) {
+		this.count = count;
 	}
 
-	public void _setLine(int _line) {
-		this._line = _line;
+	public void setLine(int line) {
+		this.line = line;
 	}
 
-	public void _setFilePath(String _file) {
-		this._file = _file;
+	public void setFilePath(String file) {
+		this.file = file;
 	}
 
 	public int getCount() {
-		return _count;
+		return count;
 	}
 
 	public int getLine() {
-		return _line;
+		return line;
 	}
 	public String getFilePath() {
-		return _file;
+		return file;
 	}
 
 	@Override
 	public String toString() {
-		String s = "Line #: " + _line + ", Count: " + _count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String s = "Line #: " + line + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return s;
 	}
 }

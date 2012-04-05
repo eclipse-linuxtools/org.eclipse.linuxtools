@@ -25,30 +25,27 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 
 public class OpModelRoot {
 	//single instance
-	private static OpModelRoot _modelRoot = new OpModelRoot();
+	private static OpModelRoot modelRoot = new OpModelRoot();
 
-	private OpModelEvent[] _events;
-//	private String _printTabs = "\t";		//for nice output
+	private OpModelEvent[] events;
 
 	protected OpModelRoot() {
-//		refreshModel();
-		_events = null;
-//		_modelRoot = this;
+		events = null;
 	}
 
 	public static OpModelRoot getDefault() {
-		return _modelRoot;
+		return modelRoot;
 	}
 
 	public void refreshModel() {
 		//TODO-performance/interactivity: some persistence for events/sessions
 		// that dont change from run to run (non default sessions) 
 		
-		_events = getNewEvents();
-		if (_events != null) {
-			for (int i = 0; i < _events.length; i++) {
-				if (_events[i] != null)
-					_events[i].refreshModel();
+		events = getNewEvents();
+		if (events != null) {
+			for (int i = 0; i < events.length; i++) {
+				if (events[i] != null)
+					events[i].refreshModel();
 			}
 		}
 	}
@@ -59,17 +56,17 @@ public class OpModelRoot {
 	}
 	
 	public OpModelEvent[] getEvents() {
-		return _events;
+		return events;
 	}
 	
 	@Override
 	public String toString() {
 		String s = ""; //$NON-NLS-1$
-		if (_events != null) {
-			for (int i = 0; i < _events.length; i++) {
-				if (_events[i] != null) {
+		if (events != null) {
+			for (int i = 0; i < events.length; i++) {
+				if (events[i] != null) {
 					s += "Event: "; //$NON-NLS-1$
-					s += _events[i].toString("\t"); //$NON-NLS-1$
+					s += events[i].toString("\t"); //$NON-NLS-1$
 				}
 			}
 		}
