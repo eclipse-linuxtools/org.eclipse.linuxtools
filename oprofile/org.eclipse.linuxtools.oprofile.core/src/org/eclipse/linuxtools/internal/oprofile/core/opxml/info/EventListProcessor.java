@@ -84,24 +84,24 @@ public class EventListProcessor extends XMLProcessor {
 		private ArrayList<OpUnitMask.MaskInfo> masks;
 		
 		// The unit mask being constructed
-		private OpUnitMask _unitMask;
+		private OpUnitMask unitMask;
 		
 		// An XML processor for each individual mask value.
-		private MaskProcessor _maskProcessor;
+		private MaskProcessor maskProcessor;
 		
 		// XML elements recognized by this processor
-		private static final String _MASK_TYPE_TAG = "type"; //$NON-NLS-1$
-		private static final String _MASK_DEFAULT_TAG = "default"; //$NON-NLS-1$
-		private static final String _MASK_TYPE_BITMASK = "bitmask"; //$NON-NLS-1$
-		private static final String _MASK_TYPE_MANDATORY = "mandatory"; //$NON-NLS-1$
-		private static final String _MASK_TYPE_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
+		private static final String MASK_TYPE_TAG = "type"; //$NON-NLS-1$
+		private static final String MASK_DEFAULT_TAG = "default"; //$NON-NLS-1$
+		private static final String MASK_TYPE_BITMASK = "bitmask"; //$NON-NLS-1$
+		private static final String MASK_TYPE_MANDATORY = "mandatory"; //$NON-NLS-1$
+		private static final String MASK_TYPE_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
 		
 		/**
 		 * Constructor for UnitMaskProcessor. Initializes internal state.
 		 */
 		public UnitMaskProcessor() {
 			super();
-			_maskProcessor = new MaskProcessor();
+			maskProcessor = new MaskProcessor();
 			masks = new ArrayList<OpUnitMask.MaskInfo>();
 		}
 		
@@ -109,7 +109,7 @@ public class EventListProcessor extends XMLProcessor {
 		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 		 */
 		public void reset(Object callData) {
-			_unitMask = new OpUnitMask();
+			unitMask = new OpUnitMask();
 			masks.clear();
 		}
 		
@@ -119,7 +119,7 @@ public class EventListProcessor extends XMLProcessor {
 		public void startElement(String name, Attributes attrs, Object callData) {
 			if (name.equals(MASK_TAG)) {
 				// Tell SAX handler to use the mask processor
-				OprofileSAXHandler.getInstance(callData).push(_maskProcessor);
+				OprofileSAXHandler.getInstance(callData).push(maskProcessor);
 			} else {
 				super.startElement(name, attrs, callData);
 			}
@@ -129,20 +129,20 @@ public class EventListProcessor extends XMLProcessor {
 		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 		 */
 		public void endElement(String name, Object callData) {
-			if (name.equals(_MASK_TYPE_TAG)) {
+			if (name.equals(MASK_TYPE_TAG)) {
 				// Set the mask type
-				_unitMask.setType(_getTypeFromString(characters));
-			} else if (name.equals(_MASK_DEFAULT_TAG)) {
+				unitMask.setType(getTypeFromString(characters));
+			} else if (name.equals(MASK_DEFAULT_TAG)) {
 				// Set the default mask
-				_unitMask.setDefault(Integer.parseInt(characters));
+				unitMask.setDefault(Integer.parseInt(characters));
 			} else if (name.equals(MASK_TAG)) {
 				// Add this mask description to the list of all masks
-				masks.add(_maskProcessor.getResult());
+				masks.add(maskProcessor.getResult());
 			} else if (name.equals(UNIT_MASK_TAG)) {
 				// All done. Add the known masks to the unit mask
 				OpUnitMask.MaskInfo[] descs = new OpUnitMask.MaskInfo[masks.size()];
 				masks.toArray(descs);
-				_unitMask.setMaskDescriptions(descs);
+				unitMask.setMaskDescriptions(descs);
 				
 				// Pop this processor and pass _UNIT_MASK_TAG to previoius processor
 				OprofileSAXHandler.getInstance(callData).pop(UNIT_MASK_TAG);
@@ -154,16 +154,16 @@ public class EventListProcessor extends XMLProcessor {
 		 * @return the unit mask
 		 */
 		public OpUnitMask getResult() {
-			return _unitMask;
+			return unitMask;
 		}
 		
 		// Converts a string representing a mask type into an integer
-		private int _getTypeFromString(String string) {
-			if (string.equals(_MASK_TYPE_MANDATORY)) {
+		private int getTypeFromString(String string) {
+			if (string.equals(MASK_TYPE_MANDATORY)) {
 				return OpUnitMask.MANDATORY;
-			} else if (string.equals(_MASK_TYPE_BITMASK)) {
+			} else if (string.equals(MASK_TYPE_BITMASK)) {
 				return OpUnitMask.BITMASK;
-			} else if (string.equals(_MASK_TYPE_EXCLUSIVE)) {
+			} else if (string.equals(MASK_TYPE_EXCLUSIVE)) {
 				return OpUnitMask.EXCLUSIVE;
 			}
 
