@@ -26,46 +26,46 @@ import org.xml.sax.Attributes;
  */
 public class EventListProcessor extends XMLProcessor {
 	// The current event being constructed
-	private OpEvent _currentEvent;
-	private int _counter;
-	private ArrayList<OpEvent> _currentEventList;
+	private OpEvent currentEvent;
+	private int counter;
+	private ArrayList<OpEvent> currentEventList;
 	
 	// An XML processor for reading the unit mask information for an event
-	private UnitMaskProcessor _umProcessor;
+	private UnitMaskProcessor umProcessor;
 	
 	// XML elements recognized by this processor
-	private static final String _EVENT_TAG = "event"; //$NON-NLS-1$
-	private static final String _UNIT_MASK_TAG = "unit-mask"; //$NON-NLS-1$
-	private static final String _NAME_TAG = "name"; //$NON-NLS-1$
-	private static final String _VALUE_TAG = "value"; //$NON-NLS-1$
-	private static final String _DESCRIPTION_TAG = "description"; //$NON-NLS-1$
-	private static final String _MASK_TAG = "mask"; //$NON-NLS-1$
-	private static final String _MINIMUM_COUNT_TAG = "minimum"; //$NON-NLS-1$
-	private static final String _ATTR_EVENT_LIST_COUNTER = "counter"; //$NON-NLS-1$
+	private static final String EVENT_TAG = "event"; //$NON-NLS-1$
+	private static final String UNIT_MASK_TAG = "unit-mask"; //$NON-NLS-1$
+	private static final String NAME_TAG = "name"; //$NON-NLS-1$
+	private static final String VALUE_TAG = "value"; //$NON-NLS-1$
+	private static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
+	private static final String MASK_TAG = "mask"; //$NON-NLS-1$
+	private static final String MINIMUM_COUNT_TAG = "minimum"; //$NON-NLS-1$
+	private static final String ATTR_EVENT_LIST_COUNTER = "counter"; //$NON-NLS-1$
 	
 	// This is a special processor which is used to deal with a single mask value
 	private class MaskProcessor extends XMLProcessor {
-		private OpUnitMask.MaskInfo _info;
+		private OpUnitMask.MaskInfo info;
 		
 		/**
 		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 		 */
 		public void reset(Object callData) {
-			_info = new OpUnitMask.MaskInfo();
+			info = new OpUnitMask.MaskInfo();
 		}
 		
 		/**
 		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 		 */
 		public void endElement(String name, Object callData) {
-			if (name.equals(_VALUE_TAG)) {
+			if (name.equals(VALUE_TAG)) {
 				// Set mask's value
-				_info.value = Integer.parseInt(characters);
-			} else if (name.equals(_DESCRIPTION_TAG)) {
-				_info.description = characters;
-			} else if (name.equals(_MASK_TAG)) {
+				info.value = Integer.parseInt(characters);
+			} else if (name.equals(DESCRIPTION_TAG)) {
+				info.description = characters;
+			} else if (name.equals(MASK_TAG)) {
 				// Pop and pass mask tag to previous processor (UnitMaskProcessor)
-				OprofileSAXHandler.getInstance(callData).pop(_MASK_TAG);
+				OprofileSAXHandler.getInstance(callData).pop(MASK_TAG);
 			}
 		}
 
@@ -74,14 +74,14 @@ public class EventListProcessor extends XMLProcessor {
 		 * @return the mask information
 		 */
 		public OpUnitMask.MaskInfo getResult() {
-			return _info;
+			return info;
 		}
 	}
 	
 	// This is a special processor to handle unit mask information
 	private class UnitMaskProcessor extends XMLProcessor {
 		// An ArrayList to hold all the valid masks for a unit mask.
-		private ArrayList<OpUnitMask.MaskInfo> _masks;
+		private ArrayList<OpUnitMask.MaskInfo> masks;
 		
 		// The unit mask being constructed
 		private OpUnitMask _unitMask;
@@ -102,7 +102,7 @@ public class EventListProcessor extends XMLProcessor {
 		public UnitMaskProcessor() {
 			super();
 			_maskProcessor = new MaskProcessor();
-			_masks = new ArrayList<OpUnitMask.MaskInfo>();
+			masks = new ArrayList<OpUnitMask.MaskInfo>();
 		}
 		
 		/**
@@ -110,14 +110,14 @@ public class EventListProcessor extends XMLProcessor {
 		 */
 		public void reset(Object callData) {
 			_unitMask = new OpUnitMask();
-			_masks.clear();
+			masks.clear();
 		}
 		
 		/**
 		 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 		 */
 		public void startElement(String name, Attributes attrs, Object callData) {
-			if (name.equals(_MASK_TAG)) {
+			if (name.equals(MASK_TAG)) {
 				// Tell SAX handler to use the mask processor
 				OprofileSAXHandler.getInstance(callData).push(_maskProcessor);
 			} else {
@@ -135,17 +135,17 @@ public class EventListProcessor extends XMLProcessor {
 			} else if (name.equals(_MASK_DEFAULT_TAG)) {
 				// Set the default mask
 				_unitMask.setDefault(Integer.parseInt(characters));
-			} else if (name.equals(_MASK_TAG)) {
+			} else if (name.equals(MASK_TAG)) {
 				// Add this mask description to the list of all masks
-				_masks.add(_maskProcessor.getResult());
-			} else if (name.equals(_UNIT_MASK_TAG)) {
+				masks.add(_maskProcessor.getResult());
+			} else if (name.equals(UNIT_MASK_TAG)) {
 				// All done. Add the known masks to the unit mask
-				OpUnitMask.MaskInfo[] descs = new OpUnitMask.MaskInfo[_masks.size()];
-				_masks.toArray(descs);
+				OpUnitMask.MaskInfo[] descs = new OpUnitMask.MaskInfo[masks.size()];
+				masks.toArray(descs);
 				_unitMask.setMaskDescriptions(descs);
 				
 				// Pop this processor and pass _UNIT_MASK_TAG to previoius processor
-				OprofileSAXHandler.getInstance(callData).pop(_UNIT_MASK_TAG);
+				OprofileSAXHandler.getInstance(callData).pop(UNIT_MASK_TAG);
 			}
 		}
 				
@@ -176,27 +176,27 @@ public class EventListProcessor extends XMLProcessor {
 	 */
 	public EventListProcessor() {
 		super();
-		_umProcessor = new UnitMaskProcessor();
+		umProcessor = new UnitMaskProcessor();
 	}
 	
 	@Override
 	public void reset(Object callData) {
-		_currentEventList = new ArrayList<OpEvent>();
+		currentEventList = new ArrayList<OpEvent>();
 	}
 	
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
-		if (name.equals(_EVENT_TAG)) {
+		if (name.equals(EVENT_TAG)) {
 			// new event
-			_currentEvent = new OpEvent();
-		} else if (name.equals(_UNIT_MASK_TAG)) {
+			currentEvent = new OpEvent();
+		} else if (name.equals(UNIT_MASK_TAG)) {
 			// Tell the SAX handler to use the unit mask processor
-			OprofileSAXHandler.getInstance(callData).push(_umProcessor);
+			OprofileSAXHandler.getInstance(callData).push(umProcessor);
 		} else if (name.equals(OpInfoProcessor.EVENT_LIST_TAG)) {
 			// Our start tag: grab the counter number from the attributes
-			_counter = Integer.parseInt(attrs.getValue(_ATTR_EVENT_LIST_COUNTER));
+			counter = Integer.parseInt(attrs.getValue(ATTR_EVENT_LIST_COUNTER));
 		} else {
 			super.startElement(name, attrs, callData);
 		}
@@ -206,33 +206,33 @@ public class EventListProcessor extends XMLProcessor {
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
-		if (name.equals(_EVENT_TAG)) {
+		if (name.equals(EVENT_TAG)) {
 			// Finished constructing an event. Add it to the list.
-			_currentEventList.add(_currentEvent);
-		} else if (name.equals(_UNIT_MASK_TAG)) {
+			currentEventList.add(currentEvent);
+		} else if (name.equals(UNIT_MASK_TAG)) {
 			// Set the event's unit mask
-			_currentEvent.setUnitMask(_umProcessor.getResult());
-		} else if (name.equals(_NAME_TAG)) {
+			currentEvent.setUnitMask(umProcessor.getResult());
+		} else if (name.equals(NAME_TAG)) {
 			// Set event's name
-			_currentEvent.setText(characters);
-		} else if (name.equals(_DESCRIPTION_TAG)) {
+			currentEvent.setText(characters);
+		} else if (name.equals(DESCRIPTION_TAG)) {
 			// Set event's description
-			_currentEvent.setTextDescription(characters);
-		} else if (name.equals(_MINIMUM_COUNT_TAG)) {
+			currentEvent.setTextDescription(characters);
+		} else if (name.equals(MINIMUM_COUNT_TAG)) {
 			// Set event's minimum count
-			_currentEvent.setMinCount(Integer.parseInt(characters));
+			currentEvent.setMinCount(Integer.parseInt(characters));
 		} else if (name.equals(OpInfoProcessor.EVENT_LIST_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		}
 	}
 	
 	public int getCounterNum() {
-		return _counter;
+		return counter;
 	}
 	
 	public OpEvent[] getEvents() {
-		OpEvent[] events = new OpEvent[_currentEventList.size()];
-		_currentEventList.toArray(events);
+		OpEvent[] events = new OpEvent[currentEventList.size()];
+		currentEventList.toArray(events);
 		return events;
 	}
 }
