@@ -156,12 +156,12 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 	 * A custom dialog box to control the oprofile daemon.
 	 */
 	private class OprofiledControlDialog extends MessageDialog {
-		private Button _startDaemonButton;
-		private Button _stopDaemonButton;
-		private Button _refreshViewButton;
-		private Button _resetSessionButton;
-		private Button _saveSessionButton;
-		private List _feedbackList;
+		private Button startDaemonButton;
+		private Button stopDaemonButton;
+		private Button refreshViewButton;
+		private Button resetSessionButton;
+		private Button saveSessionButton;
+		private List feedbackList;
 		
 		public OprofiledControlDialog () {
 			super(new Shell(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()), OprofileLaunchMessages.getString("oprofiledcontroldialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
@@ -179,7 +179,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			area.setLayout(layout);
 			area.setLayoutData(gd);
 			
-			Button startDaemonButton = new Button(area, SWT.PUSH);
+			startDaemonButton = new Button(area, SWT.PUSH);
 			startDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			startDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.startdaemon")); //$NON-NLS-1$
 			startDaemonButton.addSelectionListener(new SelectionListener() {
@@ -188,11 +188,11 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				public void widgetSelected(SelectionEvent e) {
 					try {
 						oprofileStartCollection();
-						_startDaemonButton.setEnabled(false);
-						_stopDaemonButton.setEnabled(true);
-						_refreshViewButton.setEnabled(true);
-						_resetSessionButton.setEnabled(true);
-						_saveSessionButton.setEnabled(true);
+						startDaemonButton.setEnabled(false);
+						stopDaemonButton.setEnabled(true);
+						refreshViewButton.setEnabled(true);
+						resetSessionButton.setEnabled(true);
+						saveSessionButton.setEnabled(true);
 					} catch (OpcontrolException oe) {
 						//disable buttons, notify user of error
 						disableAllButtons();
@@ -200,9 +200,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					}
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.startdaemon")); //$NON-NLS-1$
 				}});
-			_startDaemonButton = startDaemonButton;
 			
-			Button stopDaemonButton = new Button(area, SWT.PUSH);
+			stopDaemonButton = new Button(area, SWT.PUSH);
 			stopDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			stopDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.stopdaemon")); //$NON-NLS-1$
 			stopDaemonButton.setEnabled(false);		//disabled at start
@@ -212,8 +211,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				public void widgetSelected(SelectionEvent e) {
 					try {
 						oprofileShutdown();
-						_startDaemonButton.setEnabled(true);
-						_stopDaemonButton.setEnabled(false);
+						startDaemonButton.setEnabled(true);
+						stopDaemonButton.setEnabled(false);
 					} catch (OpcontrolException oe) {
 						//disable buttons, notify user of error
 						disableAllButtons();
@@ -221,9 +220,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					}
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.stopdaemon")); //$NON-NLS-1$
 				}});
-			_stopDaemonButton = stopDaemonButton;
 			
-			Button saveSessionButton = new Button(area, SWT.PUSH);
+			saveSessionButton = new Button(area, SWT.PUSH);
 			saveSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			saveSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.savesession")); //$NON-NLS-1$
 			saveSessionButton.setEnabled(false);		//disabled at start
@@ -235,9 +233,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					OprofileViewSaveDefaultSessionAction hack = new OprofileViewSaveDefaultSessionAction();
 					hack.run();
 				}});
-			_saveSessionButton = saveSessionButton;
 			
-			Button resetSessionButton = new Button(area, SWT.PUSH);
+			resetSessionButton = new Button(area, SWT.PUSH);
 			resetSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			resetSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.resetsession")); //$NON-NLS-1$
 			resetSessionButton.setEnabled(false);		//disabled at start
@@ -255,9 +252,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					refreshOprofileView();	//without refresh can lead to inconsistencies for save session
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.reset")); //$NON-NLS-1$
 				}});
-			_resetSessionButton = resetSessionButton;
 			
-			Button refreshViewButton = new Button(area, SWT.PUSH);
+			refreshViewButton = new Button(area, SWT.PUSH);
 			refreshViewButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			refreshViewButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.refreshview")); //$NON-NLS-1$
 			refreshViewButton.setEnabled(false);		//disabled at start
@@ -274,30 +270,29 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					refreshOprofileView();
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.refreshed")); //$NON-NLS-1$
 				}});
-			_refreshViewButton = refreshViewButton;
 			
 
 			List feedback = new List(area, SWT.READ_ONLY | SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
 			feedback.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 			feedback.add(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.init")); //$NON-NLS-1$
-			_feedbackList = feedback;
+			feedbackList = feedback;
 			
 	        return area;
 	    }
 		
 		//helper function
 		private void disableAllButtons() {
-			_startDaemonButton.setEnabled(false);
-			_stopDaemonButton.setEnabled(false);
-			_refreshViewButton.setEnabled(false);
-			_resetSessionButton.setEnabled(false);
-			_saveSessionButton.setEnabled(false);
+			startDaemonButton.setEnabled(false);
+			stopDaemonButton.setEnabled(false);
+			refreshViewButton.setEnabled(false);
+			resetSessionButton.setEnabled(false);
+			saveSessionButton.setEnabled(false);
 		}
 		
 		//a little hack to get the list to auto scroll to the newly added item
 		private void addToFeedbackList(String s) {
-			_feedbackList.add(s,0);
-			_feedbackList.setTopIndex(0);
+			feedbackList.add(s,0);
+			feedbackList.setTopIndex(0);
 		}
 	}
 
