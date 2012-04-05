@@ -18,19 +18,19 @@ package org.eclipse.linuxtools.internal.oprofile.core.daemon;
  */
 public class OprofileDaemonOptions {
 	// Kernel image file
-	private String _kernelImageFile;
+	private String kernelImageFile;
 	
 	// Enable verbose logging?
-	private boolean _verboseLogging;
+	private boolean verboseLogging;
 	
 	// How to separate profiles (mask)
-	private int _separateProfiles;
+	private int separateProfiles;
 	
 	// the image to profile
-	private String _binaryImage;
+	private String binaryImage;
 	
 	//how many calls down to profile
-	private int _callgraphDepth;
+	private int callgraphDepth;
 	
 	/**
 	 * Sample separation options. Determines how oprofiled will group
@@ -51,12 +51,11 @@ public class OprofileDaemonOptions {
 	
 	public OprofileDaemonOptions() {
 		//defaults
-//		_kernelImageFile = Oprofile.getKernelImageFile();
-		_kernelImageFile = ""; //$NON-NLS-1$
-		_verboseLogging = false;
-		_separateProfiles = SEPARATE_NONE;	
-		_binaryImage = ""; //$NON-NLS-1$
-		_callgraphDepth = 0;
+		kernelImageFile = ""; //$NON-NLS-1$
+		verboseLogging = false;
+		separateProfiles = SEPARATE_NONE;	
+		binaryImage = ""; //$NON-NLS-1$
+		callgraphDepth = 0;
 	}
 	
 	/**
@@ -64,7 +63,7 @@ public class OprofileDaemonOptions {
 	 * @return the kernel image file
 	 */
 	public String getKernelImageFile() {
-		return _kernelImageFile;
+		return kernelImageFile;
 	}
 	
 	/**
@@ -72,7 +71,7 @@ public class OprofileDaemonOptions {
 	 * @param image the kernel image
 	 */
 	public void setKernelImageFile(String image) {
-		_kernelImageFile = image;
+		kernelImageFile = image;
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class OprofileDaemonOptions {
 	 * @return whether verbose logging is enabled
 	 */
 	public boolean getVerboseLogging() {
-		return _verboseLogging;
+		return verboseLogging;
 	}
 	
 	/**
@@ -88,7 +87,7 @@ public class OprofileDaemonOptions {
 	 * @param logging whether to enable verbose logging
 	 */
 	public void setVerboseLogging(boolean logging) {
-		_verboseLogging = logging;
+		verboseLogging = logging;
 	}
 
 	/**
@@ -96,7 +95,7 @@ public class OprofileDaemonOptions {
 	 * @return mask of options
 	 */
 	public int getSeparateProfilesMask() {
-		return _separateProfiles;
+		return separateProfiles;
 	}
 	
 	/**
@@ -104,7 +103,7 @@ public class OprofileDaemonOptions {
 	 * @param mask the new separation mask
 	 */
 	public void setSeparateProfilesMask(int mask) {
-		_separateProfiles = mask;
+		separateProfiles = mask;
 	}
 
 	/**
@@ -112,15 +111,15 @@ public class OprofileDaemonOptions {
 	 * @return full path to the binary
 	 */
 	public String getBinaryImage() {
-		return _binaryImage;
+		return binaryImage;
 	}
 
 	/**
 	 * Sets the path of the binary image to profile.
-	 * @param _image full path to the binary
+	 * @param image full path to the binary
 	 */
-	public void setBinaryImage(String _image) {
-		this._binaryImage = _image;
+	public void setBinaryImage(String image) {
+		this.binaryImage = image;
 	}
 
 	/**
@@ -128,7 +127,7 @@ public class OprofileDaemonOptions {
 	 * @return integer amount of calls down to profile
 	 */
 	public int getCallgraphDepth() {
-		return _callgraphDepth;
+		return callgraphDepth;
 	}
 
 	/**
@@ -136,6 +135,6 @@ public class OprofileDaemonOptions {
 	 * @param depth integer amount of calls down to profile
 	 */
 	public void setCallgraphDepth(int depth) {
-		this._callgraphDepth = depth;
+		this.callgraphDepth = depth;
 	}
 }
