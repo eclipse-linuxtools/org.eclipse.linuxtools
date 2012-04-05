@@ -19,16 +19,14 @@ import org.eclipse.swt.graphics.Image;
  *  via a single point of access.
  */
 public class UiModelRoot implements IUiModelElement {
-	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
-	private UiModelEvent[] _events;							//this node's children
-	private UiModelError _rootError;
+	private static UiModelRoot uiModelRoot = new UiModelRoot();	//singleton
+	private UiModelEvent[] events;							//this node's children
+	private UiModelError rootError;
 
 	/** constructor, private for singleton use **/
 	protected UiModelRoot() {
-//		refreshModel();
-		_events = null;
-		_rootError = null;
-//		_uiModelRoot = this;
+		events = null;
+		rootError = null;
 	}
 	
 	/**
@@ -36,7 +34,7 @@ public class UiModelRoot implements IUiModelElement {
 	 * @return the ui model root object
 	 */
 	public static UiModelRoot getDefault() {
-		return _uiModelRoot;
+		return uiModelRoot;
 	}
 
 	/**
@@ -47,15 +45,15 @@ public class UiModelRoot implements IUiModelElement {
 	public void refreshModel() {
 		OpModelEvent dataModelEvents[] = getModelDataEvents();
 		
-		_rootError = null;
-		_events = null;
+		rootError = null;
+		events = null;
 
 		if (dataModelEvents == null || dataModelEvents.length == 0) {
-			_rootError = UiModelError.NO_SAMPLES_ERROR;
+			rootError = UiModelError.NO_SAMPLES_ERROR;
 		} else {
-			_events = new UiModelEvent[dataModelEvents.length];
+			events = new UiModelEvent[dataModelEvents.length];
 			for (int i = 0; i < dataModelEvents.length; i++) {
-				_events[i] = new UiModelEvent(dataModelEvents[i]);
+				events[i] = new UiModelEvent(dataModelEvents[i]);
 			}
 		}
 	}
@@ -71,10 +69,10 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	public IUiModelElement[] getChildren() {
-		if (_events != null)
-			return _events;
+		if (events != null)
+			return events;
 		else
-			return new IUiModelElement[] { _rootError };
+			return new IUiModelElement[] { rootError };
 	}
 
 	public boolean hasChildren() {
