@@ -97,13 +97,13 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 		// type:bitmask unit mask support
 		String unitMaskType = EventIdCache.getInstance().getUnitMaskType(eventName);
 		if (unitMaskType.equals("bitmask")){ //$NON-NLS-1$
-			int tmp_val = Integer.parseInt(unitMask);
+			int tmpVal = Integer.parseInt(unitMask);
 			int count = 0;
-			while (tmp_val != 0){
-				if (tmp_val % 2 != 0 && ! bitMaskSet.contains((int)Math.pow(2, count))){
+			while (tmpVal != 0){
+				if (tmpVal % 2 != 0 && ! bitMaskSet.contains((int)Math.pow(2, count))){
 					return false;
 				}
-				tmp_val = tmp_val / 2;
+				tmpVal = tmpVal / 2;
 				count ++;
 			}
 			return true;
