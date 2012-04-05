@@ -310,17 +310,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	protected class CounterSubTab {
 		private Button enabledCheck;
 		private Button profileKernelCheck;
-		private Button _profileUserCheck;
-		private Label _countTextLabel;
-		private Text _countText;
-		private Label _eventDescLabel;
-		private Text _eventDescText;
-		private UnitMaskViewer _unitMaskViewer;
-		private ListViewer _eventList;
-		private OprofileCounter _counter;
+		private Button profileUserCheck;
+		private Label countTextLabel;
+		private Text countText;
+		private Label eventDescLabel;
+		private Text eventDescText;
+		private UnitMaskViewer unitMaskViewer;
+		private ListViewer eventList;
+		private OprofileCounter counter;
 		
-		private ScrolledComposite _scrolledTop;
-		private Composite _tabTopContainer;
+		private ScrolledComposite scrolledTop;
+		private Composite tabTopContainer;
 
 		/**
 		 * Constructor for a subtab. Creates the layout and widgets for its content.
@@ -328,7 +328,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param counter the associated OprofileCounter object
 		 */
 		public CounterSubTab(Composite parent, OprofileCounter counter) {
-			_counter = counter;
+			this.counter = counter;
 
 			parent.setLayout(new GridLayout());
 
@@ -393,8 +393,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			data.heightHint = eventConfigComp.getSize().x;
 			eventListComp.setLayoutData(data);
 			
-			_scrolledTop = scrolledContainer;
-			_tabTopContainer = tabTopContainer;
+			scrolledTop = scrolledContainer;
+			this.tabTopContainer = tabTopContainer;
 		}
 		
 		/**
@@ -408,21 +408,21 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			enabledCheck.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 			enabledCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
-					_counter.setEnabled(enabledCheck.getSelection());
-					_setEnabledState(_counter.getEnabled());
+					counter.setEnabled(enabledCheck.getSelection());
+					_setEnabledState(counter.getEnabled());
 					updateLaunchConfigurationDialog();
 				}
 			});
 			enabledCheck.setEnabled(false);
 			
 			//label for textbox
-			_eventDescLabel = new Label(parent, SWT.NONE);
-			_eventDescLabel.setText(OprofileLaunchMessages.getString("tab.event.eventDescription.label.text")); //$NON-NLS-1$
-			_eventDescLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+			eventDescLabel = new Label(parent, SWT.NONE);
+			eventDescLabel.setText(OprofileLaunchMessages.getString("tab.event.eventDescription.label.text")); //$NON-NLS-1$
+			eventDescLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
 			//textbox
-			_eventDescText = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
-			_eventDescText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			eventDescText = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+			eventDescText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		}
 
 		/**
@@ -430,10 +430,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param parent composite these widgets will be created in
 		 */
 		private void createLeftCell(Composite parent) {
-			_eventList = new ListViewer(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
-			_eventList.getList().setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
+			eventList = new ListViewer(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+			eventList.getList().setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
 
-			_eventList.setLabelProvider(new ILabelProvider(){
+			eventList.setLabelProvider(new ILabelProvider(){
 				public String getText(Object element) {
 					OpEvent e = (OpEvent) element;
 					return e.getText();
@@ -445,7 +445,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				public void removeListener(ILabelProviderListener listener) { }
 			});
 			
-			_eventList.setContentProvider(new IStructuredContentProvider() {
+			eventList.setContentProvider(new IStructuredContentProvider() {
 				public Object[] getElements(Object inputElement) {
 					OprofileCounter ctr = (OprofileCounter) inputElement;
 					return (OpEvent[]) ctr.getValidEvents();
@@ -455,9 +455,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			});
 
 			//adds the events to the list from the counter
-			_eventList.setInput(_counter);
+			eventList.setInput(counter);
 			
-			_eventList.addSelectionChangedListener(new ISelectionChangedListener() {
+			eventList.addSelectionChangedListener(new ISelectionChangedListener() {
 				public void selectionChanged(SelectionChangedEvent sce) {
 					_handleEventListSelectionChange();
 				}
@@ -479,20 +479,20 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			});
 			
 			//profile user checkbox -- should this ever be disabled?
-			_profileUserCheck = new Button(parent, SWT.CHECK);
-			_profileUserCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileUser.check.text")); //$NON-NLS-1$
-			_profileUserCheck.addSelectionListener(new SelectionAdapter() {
+			profileUserCheck = new Button(parent, SWT.CHECK);
+			profileUserCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileUser.check.text")); //$NON-NLS-1$
+			profileUserCheck.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					_handleProfileUserToggle();
 				}
 			});
 			
 			//event count label/text 
-			_countTextLabel = new Label(parent, SWT.NONE);
-			_countTextLabel.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.count.label.text")); //$NON-NLS-1$
-			_countText = new Text(parent, SWT.SINGLE | SWT.BORDER);
-			_countText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			_countText.addModifyListener(new ModifyListener() {
+			countTextLabel = new Label(parent, SWT.NONE);
+			countTextLabel.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.count.label.text")); //$NON-NLS-1$
+			countText = new Text(parent, SWT.SINGLE | SWT.BORDER);
+			countText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			countText.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent me) {
 					_handleCountTextModify();
 				}
@@ -506,7 +506,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			unitMaskComp.setLayout(layout);
 			unitMaskComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
-			_unitMaskViewer = new UnitMaskViewer(unitMaskComp);
+			unitMaskViewer = new UnitMaskViewer(unitMaskComp);
 		}
 		
 		/**
@@ -519,24 +519,24 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			setEnabledState(false);
 			
 			if (config != null) {
-				_counter.loadConfiguration(config);
+				counter.loadConfiguration(config);
 			}
 
-			boolean enabled = _counter.getEnabled();
+			boolean enabled = counter.getEnabled();
 			enabledCheck.setSelection(enabled);
 
-			if (_counter.getEvent() == null) {
+			if (counter.getEvent() == null) {
 				// Default to first in list
-				_counter.setEvent(_counter.getValidEvents()[0]);
+				counter.setEvent(counter.getValidEvents()[0]);
 			}
 
 			//load default states
-			profileKernelCheck.setSelection(_counter.getProfileKernel());
-			_profileUserCheck.setSelection(_counter.getProfileUser());
-			_countText.setText(Integer.toString(_counter.getCount()));
-			_eventDescText.setText(_counter.getEvent().getTextDescription());
-			_unitMaskViewer.displayEvent(_counter.getEvent());
-			_eventList.setSelection(new StructuredSelection(_counter.getEvent()));
+			profileKernelCheck.setSelection(counter.getProfileKernel());
+			profileUserCheck.setSelection(counter.getProfileUser());
+			countText.setText(Integer.toString(counter.getCount()));
+			eventDescText.setText(counter.getEvent().getTextDescription());
+			unitMaskViewer.displayEvent(counter.getEvent());
+			eventList.setSelection(new StructuredSelection(counter.getEvent()));
 		}
 		
 		/**
@@ -544,7 +544,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param config launch config to apply to
 		 */
 		public void performApply(ILaunchConfigurationWorkingCopy config) {
-			_counter.saveConfiguration(config);
+			counter.saveConfiguration(config);
 			try {
 				config.doSave();
 			} catch (CoreException e) {
@@ -560,7 +560,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			enabledCheck.setEnabled(state);
 			
 			if (state) {
-				_setEnabledState(_counter.getEnabled());
+				_setEnabledState(counter.getEnabled());
 			} else {
 				_setEnabledState(false);
 			}
@@ -573,11 +573,11 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		private void _setEnabledState(boolean state) {
 			profileKernelCheck.setEnabled(state);
-			_profileUserCheck.setEnabled(state);
-			_countText.setEnabled(state);
-			_eventDescText.setEnabled(state);
-			_unitMaskViewer.setEnabled(state);
-			_eventList.getList().setEnabled(state);
+			profileUserCheck.setEnabled(state);
+			countText.setEnabled(state);
+			eventDescText.setEnabled(state);
+			unitMaskViewer.setEnabled(state);
+			eventList.getList().setEnabled(state);
 		}
 
 		/**
@@ -585,17 +585,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * and updates the UnitMask and event description text box. 
 		 */
 		private void _handleEventListSelectionChange() {
-			int index = _eventList.getList().getSelectionIndex();
+			int index = eventList.getList().getSelectionIndex();
 			if (index != -1){
-				OpEvent event = (OpEvent) _eventList.getElementAt(index);
-				_counter.setEvent(event);
-				_eventDescText.setText(event.getTextDescription());
-				_unitMaskViewer.displayEvent(event);
+				OpEvent event = (OpEvent) eventList.getElementAt(index);
+				counter.setEvent(event);
+				eventDescText.setText(event.getTextDescription());
+				unitMaskViewer.displayEvent(event);
 				
 				// Check the min count to update the error message (events can have
 				// different minimum reset counts)
-				int min = _counter.getEvent().getMinCount();
-				if (_counter.getCount() < min) {
+				int min = counter.getEvent().getMinCount();
+				if (counter.getCount() < min) {
 					setErrorMessage(getMinCountErrorMessage(min));
 				}
 			}
@@ -607,7 +607,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * Handles the toggling of the "profile user" button.
 		 */
 		private void _handleProfileUserToggle() {
-			_counter.setProfileUser(_profileUserCheck.getSelection());
+			counter.setProfileUser(profileUserCheck.getSelection());
 			updateLaunchConfigurationDialog();
 		}
 
@@ -615,7 +615,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * Handles the toggling of the "profile kernel" button.
 		 */
 		private void _handleProfileKernelToggle() {
-			_counter.setProfileKernel(profileKernelCheck.getSelection());
+			counter.setProfileKernel(profileKernelCheck.getSelection());
 			updateLaunchConfigurationDialog();
 		}
 		
@@ -628,17 +628,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 
 				// This seems counter-intuitive, but we must save the count
 				// so that isValid knows this launch config is invalid
-				int count = Integer.parseInt(_countText.getText());
-				_counter.setCount(count);
+				int count = Integer.parseInt(countText.getText());
+				counter.setCount(count);
 
 				// Check minimum count
-				int min = _counter.getEvent().getMinCount();
+				int min = counter.getEvent().getMinCount();
 				if (count < min) {
 					errorMessage = getMinCountErrorMessage(min);
 				}
 			} catch (NumberFormatException e) {
 				errorMessage = OprofileLaunchMessages.getString("tab.event.counterSettings.count.invalid"); //$NON-NLS-1$
-				_counter.setCount(OprofileDaemonEvent.COUNT_INVALID);
+				counter.setCount(OprofileDaemonEvent.COUNT_INVALID);
 			} finally {
 				setErrorMessage(errorMessage);
 				updateLaunchConfigurationDialog();
@@ -664,7 +664,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * dialog in general.
 		 */
 		private void resizeScrollContainer() {
-			_scrolledTop.setMinSize(_tabTopContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			scrolledTop.setMinSize(tabTopContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
 		
 		
@@ -707,7 +707,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 * @param index the button's mask index (used in OpUnitMask for a proper mask value) 
 			 */
 			private void _handleToggle(Button maskButton, int index) {
-				OpUnitMask mask = _counter.getUnitMask();
+				OpUnitMask mask = counter.getUnitMask();
 				if (mask != null) {
 					if (maskButton.getSelection()) {
 						mask.setMaskFromIndex(index);
