@@ -31,13 +31,13 @@ public class SamplesProcessor extends XMLProcessor {
 	private static final String FILE_TAG = "file";  //$NON-NLS-1$
 	
 	//the current sample being constructed
-	private OpModelSample _sample;
+	private OpModelSample sample;
 	//a list of all samples (for this symbol)
-	private ArrayList<OpModelSample> _sampleList;
+	private ArrayList<OpModelSample> sampleList;
 
 	public void reset(Object callData) {
-		_sample = new OpModelSample();
-		_sampleList = new ArrayList<OpModelSample>();
+		sample = new OpModelSample();
+		sampleList = new ArrayList<OpModelSample>();
 	}
 
 	/**
@@ -45,22 +45,22 @@ public class SamplesProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(COUNT_TAG)) {
-			_sample.setCount(Integer.parseInt(characters));
+			sample.setCount(Integer.parseInt(characters));
 		} else if (name.equals(LINE_TAG)) {
-			_sample.setLine(Integer.parseInt(characters));
+			sample.setLine(Integer.parseInt(characters));
 		} else if (name.equals(FILE_TAG)) {
-			_sample.setFilePath(characters);
+			sample.setFilePath(characters);
 		} else if (name.equals(SAMPLE_TAG)) {
-			_sampleList.add(_sample);
-			_sample = new OpModelSample();
+			sampleList.add(sample);
+			sample = new OpModelSample();
 		} else if (name.equals(SYMBOL_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(SYMBOL_TAG);
 		}
 	}
 	
 	public OpModelSample[] getSamples() {
-		OpModelSample[] samples = new OpModelSample[_sampleList.size()];
-		_sampleList.toArray(samples);
+		OpModelSample[] samples = new OpModelSample[sampleList.size()];
+		sampleList.toArray(samples);
 		return samples;
 	}
 }

@@ -32,22 +32,22 @@ public class DependentProcessor extends XMLProcessor {
 	private static final String ATTR_COUNT = "count"; //$NON-NLS-1$
 
 	//the current image being constructed
-	private OpModelImage _image;
+	private OpModelImage image;
 	//a list of all the dependent images
-	private ArrayList<OpModelImage> _imageList;
+	private ArrayList<OpModelImage> imageList;
 
 	//processor used for symbols of an image
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
 
 	public void reset(Object callData) {
-		_image = new OpModelImage();
-		_imageList = new ArrayList<OpModelImage>();
+		image = new OpModelImage();
+		imageList = new ArrayList<OpModelImage>();
 	}
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			_image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
-			_image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+			image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
+			image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
 		}
@@ -57,18 +57,18 @@ public class DependentProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			_imageList.add(_image);
-			_image = new OpModelImage();
+			imageList.add(image);
+			image = new OpModelImage();
 		} else if (name.equals(SYMBOLS_TAG)) {
-			_image.setSymbols(_symbolsProcessor.getSymbols());
+			image.setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(DEPENDENT_TAG);
 		}
 	}
 	
 	public OpModelImage[] getImages() {
-		OpModelImage[] images = new OpModelImage[_imageList.size()];
-		_imageList.toArray(images);
+		OpModelImage[] images = new OpModelImage[imageList.size()];
+		imageList.toArray(images);
 		return images;
 	}
 

@@ -24,8 +24,8 @@ import org.xml.sax.Attributes;
 public class ModelDataProcessor extends XMLProcessor {
 	//The resulting image compiled by the processor to be used by the caller.
 	public static class CallData {
-		public OpModelImage image;
-		public CallData(OpModelImage im) { image = im; }
+		public OpModelImage opModelImage;
+		public CallData(OpModelImage im) { opModelImage = im; }
 	}
 
 	//XML tags parsed by this processor
@@ -39,8 +39,8 @@ public class ModelDataProcessor extends XMLProcessor {
 	private static final String ATTR_DEPCOUNT = "count"; //$NON-NLS-1$
 	
 	//the current image being constructed
-	private OpModelImage _image;
-	private int img_seen;	//for ensuring image singleton-ness
+	private OpModelImage image;
+	private int imgSeen;	//for ensuring image singleton-ness
 
 	//processors used for symbols and dependent images
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
@@ -48,22 +48,22 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	
 	public void reset(Object callData) {
-		_image = ((CallData) callData).image;
-		img_seen = 0;
+		image = ((CallData) callData).opModelImage;
+		imgSeen = 0;
 	}
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			if (img_seen == 0) {
-				_image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
-				_image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+			if (imgSeen == 0) {
+				image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
+				image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 			}
 
-			img_seen++;
+			imgSeen++;
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
 		} else if (name.equals(DEPENDENT_TAG)) {
-			_image.setDepCount(Integer.parseInt(attrs.getValue(ATTR_DEPCOUNT)));
+			image.setDepCount(Integer.parseInt(attrs.getValue(ATTR_DEPCOUNT)));
 			OprofileSAXHandler.getInstance(callData).push(_dependentProcessor);
 		} else {
 			super.startElement(name, attrs, callData);
@@ -72,19 +72,19 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	public void endElement(String name, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			if (img_seen > 1) {
+			if (imgSeen > 1) {
 				//should only ever be one image, otherwise oprofile was run
 				// outside of eclipse and the ui would not handle it properly
-				_image.setCount(OpModelImage.IMAGE_PARSE_ERROR);
-				_image.setDepCount(0);
-				_image.setDependents(null);
-				_image.setSymbols(null);
-				_image.setName(""); //$NON-NLS-1$				
+				image.setCount(OpModelImage.IMAGE_PARSE_ERROR);
+				image.setDepCount(0);
+				image.setDependents(null);
+				image.setSymbols(null);
+				image.setName(""); //$NON-NLS-1$				
 			}
 		} else if (name.equals(SYMBOLS_TAG)){
-			_image.setSymbols(_symbolsProcessor.getSymbols());
+			image.setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)){
-			_image.setDependents(_dependentProcessor.getImages());
+			image.setDependents(_dependentProcessor.getImages());
 		} else {
 			super.endElement(name, callData);
 		}
