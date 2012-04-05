@@ -44,7 +44,7 @@ public class DefaultsProcessor extends XMLProcessor {
 			info.setDefaults(_map);
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		} else {
-			_map.put(name, _characters);
+			_map.put(name, characters);
 		}
 	}
 }

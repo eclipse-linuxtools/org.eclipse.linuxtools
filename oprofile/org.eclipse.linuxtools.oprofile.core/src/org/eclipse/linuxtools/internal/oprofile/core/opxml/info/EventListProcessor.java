@@ -60,9 +60,9 @@ public class EventListProcessor extends XMLProcessor {
 		public void endElement(String name, Object callData) {
 			if (name.equals(_VALUE_TAG)) {
 				// Set mask's value
-				_info.value = Integer.parseInt(_characters);
+				_info.value = Integer.parseInt(characters);
 			} else if (name.equals(_DESCRIPTION_TAG)) {
-				_info.description = _characters;
+				_info.description = characters;
 			} else if (name.equals(_MASK_TAG)) {
 				// Pop and pass mask tag to previous processor (UnitMaskProcessor)
 				OprofileSAXHandler.getInstance(callData).pop(_MASK_TAG);
@@ -131,10 +131,10 @@ public class EventListProcessor extends XMLProcessor {
 		public void endElement(String name, Object callData) {
 			if (name.equals(_MASK_TYPE_TAG)) {
 				// Set the mask type
-				_unitMask.setType(_getTypeFromString(_characters));
+				_unitMask.setType(_getTypeFromString(characters));
 			} else if (name.equals(_MASK_DEFAULT_TAG)) {
 				// Set the default mask
-				_unitMask.setDefault(Integer.parseInt(_characters));
+				_unitMask.setDefault(Integer.parseInt(characters));
 			} else if (name.equals(_MASK_TAG)) {
 				// Add this mask description to the list of all masks
 				_masks.add(_maskProcessor.getResult());
@@ -214,13 +214,13 @@ public class EventListProcessor extends XMLProcessor {
 			_currentEvent.setUnitMask(_umProcessor.getResult());
 		} else if (name.equals(_NAME_TAG)) {
 			// Set event's name
-			_currentEvent.setText(_characters);
+			_currentEvent.setText(characters);
 		} else if (name.equals(_DESCRIPTION_TAG)) {
 			// Set event's description
-			_currentEvent.setTextDescription(_characters);
+			_currentEvent.setTextDescription(characters);
 		} else if (name.equals(_MINIMUM_COUNT_TAG)) {
 			// Set event's minimum count
-			_currentEvent.setMinCount(Integer.parseInt(_characters));
+			_currentEvent.setMinCount(Integer.parseInt(characters));
 		} else if (name.equals(OpInfoProcessor.EVENT_LIST_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		}

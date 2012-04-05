@@ -44,11 +44,11 @@ public class CheckEventsProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(_RESULT_TAG)) {
-			if (_characters.equals(_EVENT_OK)) {
+			if (characters.equals(_EVENT_OK)) {
 				_result = EVENT_OK;
-			} else if (_characters.equals(_INVALID_UMASK)) {
+			} else if (characters.equals(_INVALID_UMASK)) {
 				_result = INVALID_UMASK;
-			} else if (_characters.equals(_INVALID_COUNTER)) {
+			} else if (characters.equals(_INVALID_COUNTER)) {
 				_result = INVALID_COUNTER;
 			}
 		} else if (name.equals(_CHECK_EVENTS_TAG)) {

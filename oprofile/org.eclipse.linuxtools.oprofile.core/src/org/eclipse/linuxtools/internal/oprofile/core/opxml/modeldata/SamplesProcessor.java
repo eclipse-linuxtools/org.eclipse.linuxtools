@@ -45,11 +45,11 @@ public class SamplesProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(COUNT_TAG)) {
-			_sample.setCount(Integer.parseInt(_characters));
+			_sample.setCount(Integer.parseInt(characters));
 		} else if (name.equals(LINE_TAG)) {
-			_sample.setLine(Integer.parseInt(_characters));
+			_sample.setLine(Integer.parseInt(characters));
 		} else if (name.equals(FILE_TAG)) {
-			_sample.setFilePath(_characters);
+			_sample.setFilePath(characters);
 		} else if (name.equals(SAMPLE_TAG)) {
 			_sampleList.add(_sample);
 			_sample = new OpModelSample();

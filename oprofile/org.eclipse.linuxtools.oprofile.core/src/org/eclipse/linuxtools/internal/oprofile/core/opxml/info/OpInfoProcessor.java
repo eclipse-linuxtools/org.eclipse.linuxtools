@@ -57,17 +57,17 @@ public class OpInfoProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(CPU_FREQUENCY_TAG)) {
-			double speed = Double.parseDouble(_characters);
+			double speed = Double.parseDouble(characters);
 			OpInfo info = (OpInfo) callData;
 			info.setCPUSpeed(speed);
 		} else if (name.equals(TIMER_MODE)) {
-			boolean timerMode = Boolean.parseBoolean(_characters);
+			boolean timerMode = Boolean.parseBoolean(characters);
 			OpInfo info = (OpInfo) callData;
 			info.setTimerMode(timerMode);
 		} else if (name.equals(NUM_COUNTERS_TAG)) {
 			int numCounters = 0;
 			try {
-				numCounters = Integer.parseInt(_characters);
+				numCounters = Integer.parseInt(characters);
 			} catch (NumberFormatException nfe) {
 			}
 			OpInfo info = (OpInfo) callData;

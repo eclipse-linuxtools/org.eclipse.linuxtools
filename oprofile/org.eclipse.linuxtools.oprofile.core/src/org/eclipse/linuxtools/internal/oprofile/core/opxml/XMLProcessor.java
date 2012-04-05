@@ -20,7 +20,7 @@ import org.xml.sax.Attributes;
  */
 public class XMLProcessor {
 	// The characters in the current tag
-	protected String _characters;
+	protected String characters;
 	
 	/**
 	 * This method is called whenever the SAXHandler is about to invoke the
@@ -40,7 +40,7 @@ public class XMLProcessor {
 	 * @param callData call data for the processor (usually the result is stored here)
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
-		_characters = new String();
+		characters = new String();
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class XMLProcessor {
 	 * @param callData call data for the processor (usually the result is stored here)
 	 */
 	public void characters(String chars, Object callData) {
-		_characters = chars;
+		characters = chars;
 	}
 	
 	/**
