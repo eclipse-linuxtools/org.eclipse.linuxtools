@@ -10,74 +10,30 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 
 
-public class FormatChangeLogAction extends Action implements IHandler {
+public class FormatChangeLogAction extends AbstractHandler {
 
-
-	ChangeLogEditor editor = null;
-
-	public FormatChangeLogAction(ChangeLogEditor te) {
-		super("Format ChangeLog");
-		editor = te;
-	}
-
-	public FormatChangeLogAction() {
-		super("Format ChangeLog");
-		//editor = te;
-		try {
-			editor = (ChangeLogEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActiveEditor();
-		} catch (Exception e) {
-			// no editor is active now so do nothing
-		return;
-		}
-	}
-	
-	@Override
-	public void run() {
-
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		ChangeLogEditor editor = (ChangeLogEditor) HandlerUtil.getActiveEditor(event);
 		if (editor == null)
-			return;
+			return null;
 
 		SourceViewer srcViewer = (SourceViewer)editor.getMySourceViewer();
 		if (srcViewer != null) {
 			srcViewer.doOperation(ISourceViewer.FORMAT);
 
 		}
-
-	}
-
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// TODO Auto-generated method stub
-		run();
 		
 		return null;
-	}
-
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

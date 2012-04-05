@@ -19,16 +19,13 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
 import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.internal.changelog.core.Messages;
-import org.eclipse.linuxtools.internal.changelog.core.actions.FormatChangeLogAction;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 
 
 /**
@@ -38,14 +35,10 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  */
 public class ChangeLogEditor extends TextEditor {
 
-	FormatChangeLogAction fcla;
-
 	protected boolean forceNewLogEntry;
 	
 	public ChangeLogEditor() {
 		super();
-
-		fcla = new FormatChangeLogAction(this);
 
 		SourceViewerConfiguration config = getConfig();
 
@@ -113,16 +106,6 @@ public class ChangeLogEditor extends TextEditor {
 		return this.getSourceViewer();
 	}
 	
-	/**
-	 * Specifies context menu.
-	 */
-	@Override
-	protected void editorContextMenuAboutToShow(IMenuManager menu) {
-		super.editorContextMenuAboutToShow(menu);
-		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT, fcla);
-
-	}
-
 	public boolean isForceNewLogEntry() {
 		return forceNewLogEntry;
 	}

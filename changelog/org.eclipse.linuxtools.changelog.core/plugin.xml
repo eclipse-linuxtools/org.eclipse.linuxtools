@@ -202,5 +202,18 @@
     name="Changelog Detector">
   </hyperlinkDetector>
 </extension>
-	
+<extension point="org.eclipse.ui.menus">
+  <menuContribution locationURI="popup:#TextEditorContext?endof=group.edit">
+        <command commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog">
+        	<visibleWhen
+               checkEnabled="false">
+               <and>
+   					<with variable="activeEditorId">
+     				<equals value="org.eclipse.linuxtools.changelog.core.editor6"/>
+   					</with>
+   				</and>
+        	</visibleWhen>
+        </command>
+  </menuContribution>
+</extension>
 </plugin>
