@@ -222,8 +222,9 @@ public class InfoAdapter extends AbstractDataAdapter{
 	private int getCPUFrequency() {
 		File file = new File(CPUINFO);
 		int val = 0;
+		BufferedReader bi = null;
 		try {
-			BufferedReader bi = new BufferedReader(new FileReader(file));
+			bi = new BufferedReader(new FileReader(file));
 			String line;
 
 			while ((line = bi.readLine()) != null) {
@@ -256,6 +257,13 @@ public class InfoAdapter extends AbstractDataAdapter{
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (null != bi) {
+				try {
+					bi.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 
 		return val;

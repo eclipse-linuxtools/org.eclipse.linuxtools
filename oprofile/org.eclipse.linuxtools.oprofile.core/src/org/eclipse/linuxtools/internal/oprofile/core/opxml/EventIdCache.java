@@ -135,9 +135,9 @@ public class EventIdCache {
 			return unitMaskTag.getAttribute(CATEGORY);
 		}else{
 			File file = new File(InfoAdapter.CPUTYPE);
-
+			BufferedReader bi = null;
 			try {
-				BufferedReader bi = new BufferedReader(new FileReader(file));
+				bi = new BufferedReader(new FileReader(file));
 				String cpuType = bi.readLine();
 				File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS); //$NON-NLS-1$
 				File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS); //$NON-NLS-1$
@@ -151,13 +151,21 @@ public class EventIdCache {
 						int end = line.indexOf(" ", start); //$NON-NLS-1$
 						// grab the string that references the unit mask type
 						String um = line.substring(start, end);
-						BufferedReader unitMaskReader = new BufferedReader(new FileReader(opArchUnitMasks));
-						while ((line = unitMaskReader.readLine()) != null){
-							if (line.contains("name:"+um+" ")){ //$NON-NLS-1$
-								start = line.indexOf("type:") + 5; //$NON-NLS-1$
-								end = line.indexOf(" ", start); //$NON-NLS-1$
-								unitMaskType = line.substring(start, end);
-								return unitMaskType;
+						BufferedReader unitMaskReader = null;
+						try {
+							unitMaskReader = new BufferedReader(new FileReader(
+									opArchUnitMasks));
+							while ((line = unitMaskReader.readLine()) != null) {
+								if (line.contains("name:" + um + " ")) { //$NON-NLS-1$
+									start = line.indexOf("type:") + 5; //$NON-NLS-1$
+									end = line.indexOf(" ", start); //$NON-NLS-1$
+									unitMaskType = line.substring(start, end);
+									return unitMaskType;
+								}
+							}
+						} finally {
+							if (unitMaskReader != null) {
+								unitMaskReader.close();
 							}
 						}
 					}
@@ -167,6 +175,13 @@ public class EventIdCache {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				if (bi != null) {
+					try {
+						bi.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 		return unitMaskType;

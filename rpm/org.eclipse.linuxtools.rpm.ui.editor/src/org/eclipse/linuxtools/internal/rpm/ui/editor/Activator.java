@@ -153,11 +153,18 @@ public class Activator extends AbstractUIPlugin {
 						File groupsFile = new File(file, "GROUPS"); //$NON-NLS-1$
 						if (groupsFile.exists()) {
 
-							LineNumberReader reader = new LineNumberReader(
-									new FileReader(groupsFile));
-							String line;
-							while ((line = reader.readLine()) != null) {
-								rpmGroups.add(line);
+							LineNumberReader reader = null;
+							try {
+								reader = new LineNumberReader(new FileReader(
+										groupsFile));
+								String line;
+								while ((line = reader.readLine()) != null) {
+									rpmGroups.add(line);
+								}
+							} finally {
+								if (reader != null) {
+									reader.close();
+								}
 							}
 							break;
 						}

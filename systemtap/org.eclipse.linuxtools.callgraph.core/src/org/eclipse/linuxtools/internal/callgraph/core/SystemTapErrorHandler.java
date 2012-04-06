@@ -55,8 +55,9 @@ public class SystemTapErrorHandler {
 
         // READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
         File file = new File(PluginConstants.getPluginLocation() + FILE_PROP);
+        BufferedReader buff = null;
         try {
-            BufferedReader buff = new BufferedReader(new FileReader(file));
+			buff = new BufferedReader(new FileReader(file));
             String line;
 
             for (String message : errorsList) {
@@ -90,6 +91,13 @@ public class SystemTapErrorHandler {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (buff != null) {
+        		try {
+					buff.close();
+				} catch (IOException e) {
+				}
+        	}
         }
 
     }

@@ -43,9 +43,10 @@ public class RpmPackageProposalsList {
 	private void setPackagesList() {
 		String rpmpkgsFile = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+		BufferedReader reader = null;
 		try {
 			if (Utils.fileExist(rpmpkgsFile)) {
-				BufferedReader reader = new BufferedReader(
+				reader = new BufferedReader(
 						new InputStreamReader(new FileInputStream(rpmpkgsFile)));
 				String line = reader.readLine();
 				while (line != null) {
@@ -58,7 +59,14 @@ public class RpmPackageProposalsList {
 		} catch (IOException e) {
 			RpmPackageBuildProposalsJob.update();
 			SpecfileLog.logError(e);
-		}
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+ 		}
 	}
 
 	public List<String[]> getProposals(String prefix) {

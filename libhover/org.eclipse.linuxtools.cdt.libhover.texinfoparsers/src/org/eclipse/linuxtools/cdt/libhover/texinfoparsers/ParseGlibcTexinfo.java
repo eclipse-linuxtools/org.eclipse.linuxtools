@@ -718,9 +718,10 @@ public class ParseGlibcTexinfo {
 		Matcher mm = p.matcher(line);
 		if (mm.find()) {
 			String il;
+			BufferedReader is = null;
 			try {
 				String fileName = (srcdir.endsWith("/") ? srcdir : srcdir + "/") + mm.replaceAll("examples/$1");
-				BufferedReader is = new BufferedReader(new FileReader(fileName));
+				is = new BufferedReader(new FileReader(fileName));
 				while (null != (il = is.readLine())) {
 					// C Help does not ignore "<" or ">" inside a <pre> or <samp> tag
 					// so we have to prepare for two levels of indirection.  The
@@ -738,6 +739,13 @@ public class ParseGlibcTexinfo {
 				}
 			} catch (IOException e) {
 				System.out.println("IOException reading example file");
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 		return Synopsis;

@@ -83,8 +83,9 @@ public class RpmMacroProposalsList {
 	 */
 	private void addMacroToMap(String filename) {
 		String line = EMPTY_STRING;
+		BufferedReader reader = null;
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
+			reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(filename)));
 			line = reader.readLine();
 			String key = EMPTY_STRING, value = EMPTY_STRING;
@@ -128,6 +129,13 @@ public class RpmMacroProposalsList {
 			}
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 

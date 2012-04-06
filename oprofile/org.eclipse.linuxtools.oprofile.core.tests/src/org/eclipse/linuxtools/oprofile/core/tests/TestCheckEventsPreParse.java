@@ -54,13 +54,15 @@ public class TestCheckEventsPreParse extends TestCase {
 		}
 		File cpuFile = new File(InfoAdapter.CPUTYPE);
 
+		BufferedReader bi = null;
+		BufferedReader eventReader = null;
 		try {
-			BufferedReader bi = new BufferedReader(new FileReader(cpuFile));
+			bi = new BufferedReader(new FileReader(cpuFile));
 			String cpuType = bi.readLine();
 			File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS);
 			File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS);
 			
-			BufferedReader eventReader = new BufferedReader(new FileReader(opArchEvents));
+			eventReader = new BufferedReader(new FileReader(opArchEvents));
 			String line;
 			while ((line = eventReader.readLine()) != null){
 				// find the first event and use it
@@ -73,15 +75,25 @@ public class TestCheckEventsPreParse extends TestCase {
 					end = line.indexOf(" ", start);
 					String um = line.substring(start, end);
 					
-					BufferedReader unitMaskReader = new BufferedReader(new FileReader(opArchUnitMasks));
-					while ((line = unitMaskReader.readLine()) != null){
-						if (line.contains("name:"+um+" ")){
-							start = line.indexOf("default:") + 8;
-							String unitMaskDef = line.substring(start);
-							// convert from hex. to dec.
-							unitMaskDef = unitMaskDef.replaceFirst("0x", "");
-							umask = String.valueOf(Integer.parseInt(unitMaskDef, 16));
-							break;
+					BufferedReader unitMaskReader = null;
+					try {
+						unitMaskReader = new BufferedReader(new FileReader(
+								opArchUnitMasks));
+						while ((line = unitMaskReader.readLine()) != null) {
+							if (line.contains("name:" + um + " ")) {
+								start = line.indexOf("default:") + 8;
+								String unitMaskDef = line.substring(start);
+								// convert from hex. to dec.
+								unitMaskDef = unitMaskDef
+										.replaceFirst("0x", "");
+								umask = String.valueOf(Integer.parseInt(
+										unitMaskDef, 16));
+								break;
+							}
+						}
+					} finally {
+						if (unitMaskReader != null) {
+							unitMaskReader.close();
 						}
 					}
 					break;
@@ -91,6 +103,19 @@ public class TestCheckEventsPreParse extends TestCase {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (bi != null) {
+				try {
+					bi.close();
+				} catch (IOException e) {
+				}
+			}
+			if (eventReader != null) {
+				try {
+					eventReader.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 	

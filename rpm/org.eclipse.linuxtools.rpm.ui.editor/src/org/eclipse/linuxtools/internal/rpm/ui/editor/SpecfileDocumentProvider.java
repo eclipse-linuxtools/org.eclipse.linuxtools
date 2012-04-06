@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 
@@ -75,9 +76,10 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 				return true;
 			URI uri = fei.getURI();
 			File f = URIUtil.toFile(uri);
+			BufferedReader input = null;
 			try {
 				if (originalLength != 0) {
-					BufferedReader input = new BufferedReader(new FileReader(f));
+					input = new BufferedReader(new FileReader(f));
 					boolean finished = false;
 					char[] buffer = new char[100];
 					int curoffset = 0;
@@ -96,6 +98,13 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 				return false;
 			} catch (Exception e) {
 				return true;
+			} finally {
+				if (input != null) {
+					try {
+						input.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 		return super.canSaveDocument(element);

@@ -87,7 +87,13 @@ public class PerfCore {
 			
 		} catch( IOException e ) {
 			e.printStackTrace();
-			
+		} finally {
+			if (null != input) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 		String line;
 		try {
