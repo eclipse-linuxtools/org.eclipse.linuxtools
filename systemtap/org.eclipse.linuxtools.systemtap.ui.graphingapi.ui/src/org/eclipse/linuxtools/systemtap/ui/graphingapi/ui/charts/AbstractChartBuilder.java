@@ -13,14 +13,18 @@
  */
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 
-
-
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
+import org.eclipse.swt.widgets.Display;
+
+import org.swtchart.Chart;
+import org.swtchart.ITitle;
+
 /**
  * Provides the common members and the framework to build one chart.
  * 
@@ -28,126 +32,149 @@ import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
  */
 public abstract class AbstractChartBuilder extends Canvas implements IUpdateListener{
 
-    /**
-     * Font name for all titles, labels, and values.
-     */
-    protected final static String FONT_NAME = "MS Sans Serif";
+	/**
+	 * Font name for all titles, labels, and values.
+	 */
+	protected final static String FONT_NAME = "MS Sans Serif";
 
-    /**
-     * Provides data for chart.
-     */
-    protected IAdapter adapter = null;
-    protected int xseries;
-    protected int[] yseries;
+	/**
+	 * Provides data for chart.
+	 */
+	protected IAdapter adapter = null;
+	protected int xseries;
+	protected int[] yseries;
 
-    /**
-     * Chart instance.
-     */
-    protected Chart chart = null;
+	protected static final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
+	protected static final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+	protected static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
 
-    /**
-     * Chart title.
-     */
-    protected String title = null;
+	/**
+	 * Chart instance.
+	 */
+	protected Chart chart = null;
 
-    /**
-     * Constructs one chart builder and associate it to one data set.
-     * 
-     * @param dataSet
-     *            data set
-     */
-    
-    public AbstractChartBuilder(IAdapter adapter, Composite parent, int style) {
-    	super(parent, style);
-		// TODO Auto-generated constructor stub
-    	this.adapter = adapter;
+	/**
+	 * Chart title.
+	 */
+	protected String title = null;
+
+	private class  Painter implements PaintListener {
+		/**
+		 * The SWT paint callback
+		 */
+		public void paintControl(PaintEvent pe)
+		{
+			if (chart == null)
+				return;
+            Composite co = (Composite) pe.getSource();
+			chart.setSize(co.getSize());
+		}
 	}
 
 	/**
-     * Builds one chart.
-     */
-    public void build() {
-        createChart();
-        buildPlot();
-        buildLegend();
-        buildTitle();
-        buildXAxis();
-        buildYAxis();
-        buildXSeries();
-        buildYSeries();
-        updateDataSet();
-    }
+	 * Constructs one chart builder and associate it to one data set.
+	 * 
+	 * @param dataSet
+	 *            data set
+	 */
 
-    /**
-     * Creates chart instance.
-     */
-    protected abstract void createChart();
+	public AbstractChartBuilder(IAdapter adapter, Composite parent, int style, String title) {
+		super(parent, style);
+		this.adapter = adapter;
+		this.addPaintListener(new Painter());
+		this.title = title;
+	}
 
-    /**
-     * Builds plot.
-     */
-    protected void buildPlot() {
+	/**
+	 * Builds one chart.
+	 */
+	public void build() {
+		createChart();
+		buildPlot();
+		buildLegend();
+		buildTitle();
+		buildXAxis();
+		buildYAxis();
+		buildXSeries();
+		buildYSeries();
+		updateDataSet();
+	}
 
-    }
+	/**
+	 * Creates chart instance.
+	 */
+	protected void createChart() {
+		this.chart = new Chart(this, getStyle());
+	}
 
-    /**
-     * Builds X axis.
-     */
-    protected void buildXAxis() {
+	/**
+	 * Builds plot.
+	 */
+	protected void buildPlot() {
+		this.chart.setBackground(WHITE);
+		this.chart.setBackgroundInPlotArea(LIGHTYELLOW);
+	}
 
-    }
+	/**
+	 * Builds X axis.
+	 */
+	protected void buildXAxis() {
 
-    /**
-     * Builds Y axis.
-     */
-    protected void buildYAxis() {
+	}
 
-    }
+	/**
+	 * Builds Y axis.
+	 */
+	protected void buildYAxis() {
 
-    /**
-     * Builds X series.
-     */
-    protected void buildXSeries() {
+	}
 
-    }
+	/**
+	 * Builds X series.
+	 */
+	protected void buildXSeries() {
 
-    /**
-     * Builds Y series.
-     */
-    protected void buildYSeries() {
+	}
 
-    }
+	/**
+	 * Builds Y series.
+	 */
+	protected void buildYSeries() {
 
-    /**
-     * Builds legend.
-     * 
-     */
-    protected void buildLegend() {
+	}
 
-    }
+	/**
+	 * Builds legend.
+	 * 
+	 */
+	protected void buildLegend() {
 
-    /**
-     * Builds the chart title.
-     */
-    protected void buildTitle() {
-    }
+	}
 
-    /**
-     * Returns the chart instance.
-     * 
-     * @return the chart instance
-     */
-    public Chart getChart() {
-        return chart;
-    }
-    
-    public void updateDataSet()
-    {
-    	
-    }
+	/**
+	 * Builds the chart title.
+	 */
+	protected void buildTitle() {
+		ITitle ctitle = chart.getTitle();
+		ctitle.setForeground(BLACK);
+		ctitle.setText(this.title);
+	}
+
+	/**
+	 * Returns the chart instance.
+	 * 
+	 * @return the chart instance
+	 */
+	public Chart getChart() {
+		return chart;
+	}
+
+	public void updateDataSet() {
+
+	}
 
 	public void setScale(double scale) {
-		
+
 	}
 
 }

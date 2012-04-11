@@ -41,8 +41,8 @@ public abstract class DialChartBuilder extends AbstractChartBuilder {
      *            data for chart
      */
     
-    public DialChartBuilder(IAdapter adapter, Composite parent, int style) {
-    	 super(adapter, parent, style);
+    public DialChartBuilder(IAdapter adapter, Composite parent, int style, String title) {
+    	 super(adapter, parent, style, title);
 	}
 
 	/*
@@ -51,7 +51,7 @@ public abstract class DialChartBuilder extends AbstractChartBuilder {
      * @see com.ibm.examples.chart.widget.chart.AbstractChartBuilder#createChart()
      */
     protected void createChart() {
-        chart = DialChartImpl.create();
+        //chart = DialChartImpl.create();
     }
     
     public void updateDataSet()

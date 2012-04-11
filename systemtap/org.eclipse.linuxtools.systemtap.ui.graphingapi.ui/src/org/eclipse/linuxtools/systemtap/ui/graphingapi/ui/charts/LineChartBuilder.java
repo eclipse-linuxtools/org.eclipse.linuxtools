@@ -89,8 +89,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
     public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-    super(adapter, parent, style);
-    this.title = title;
+    super(adapter, parent, style, title);
     this.parent = parent;
     
     try {
@@ -196,7 +195,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
      */
     protected void buildXAxis() {
     	//labels = adapter.getLabels();
-        xAxis = ((ChartWithAxes) chart).getPrimaryBaseAxes()[0];
+/*        xAxis = ((ChartWithAxes) chart).getPrimaryBaseAxes()[0];
         xAxis.getTitle().setVisible(true);
         xAxis.getTitle().getCaption().setValue(labels[0]);
         xAxis.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
@@ -204,7 +203,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
         xAxis.getOrigin().setType(IntersectionType.VALUE_LITERAL);
         xAxis.getTitle().getCaption().getFont().setSize(8);
         xAxis.getLabel().getCaption().getFont().setSize(6);
-    }
+  */  }
 
     /*
      * (non-Javadoc)
@@ -212,7 +211,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
      * @see com.ibm.examples.chart.widget.chart.AbstractChartBuilder#buildYAxis()
      */
     protected void buildYAxis() {
-        yAxis = ((ChartWithAxes) chart).getPrimaryOrthogonalAxis(xAxis);
+   /*     yAxis = ((ChartWithAxes) chart).getPrimaryOrthogonalAxis(xAxis);
 
         yAxis.getMajorGrid().getLineAttributes().setVisible(true);
        // yAxis.getMajorGrid().getLineAttributes().setColor(ColorDefinitionImpl
@@ -227,7 +226,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
         yAxis.getTitle().getCaption().getFont().setSize(8);
         yAxis.getLabel().getCaption().getFont().setSize(6);
         //yAxis.getScale().setStep(1.0);
-       
+     */  
     }
 
     /*
@@ -261,7 +260,7 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
         SeriesDefinition sdX = SeriesDefinitionImpl.create();
         sdX.getSeriesPalette().update(1);
        
-        xAxis.getSeriesDefinitions().add(sdX);
+      //  xAxis.getSeriesDefinitions().add(sdX);
        
         sdX.getSeries().add(seCategory);
        }
@@ -321,12 +320,12 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
             sdY[i-1] = SeriesDefinitionImpl.create();
             sdY[i-1].getSeriesPalette().update(0-i-2);
       
-             yAxis.getSeriesDefinitions().add(sdY[i-1]);
+        //     yAxis.getSeriesDefinitions().add(sdY[i-1]);
              sdY[i-1].getSeries().add(ls1[i-1]);
           }
         
-        yAxis.getScale().setStep(max/2);
-        yAxis.getScale().setMax(NumberDataElementImpl.create(max));
+//        yAxis.getScale().setStep(max/2);
+  //      yAxis.getScale().setMax(NumberDataElementImpl.create(max));
         
    }catch (Exception e)
    {
@@ -374,8 +373,8 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
        ((Series) sdY.getSeries().get(0)).setDataSet(orthoValuesDataSet1[i-1]);
 
        }
-               yAxis.getScale().setStep(max/5);
-        yAxis.getScale().setMax(NumberDataElementImpl.create(max));
+    //           yAxis.getScale().setStep(max/5);
+      //  yAxis.getScale().setMax(NumberDataElementImpl.create(max));
     	}catch(Exception e)
     	{
     //		e.printStackTrace();

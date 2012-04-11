@@ -67,8 +67,7 @@ public class MeterChartBuilder extends AbstractChartWithoutAxisBuilder {
  //   private boolean bFirstPaint = true;
     
     public MeterChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-    super(adapter, parent, style);
-    this.title = title;
+    super(adapter, parent, style, title);
     this.parent = parent;
     
     try {

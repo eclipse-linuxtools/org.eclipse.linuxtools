@@ -80,9 +80,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
  //   private boolean bFirstPaint = true;
     
     public ScatterChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-    super(adapter, parent, style);
-    this.title = title;
-    this.parent = parent;
+    super(adapter, parent, style,title);
     try {
         // INITIALIZE THE SWT RENDERING DEVICE
         //PluginSettings ps = PluginSettings.instance();
@@ -185,7 +183,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
      */
     protected void buildXAxis() {
     	//labels = adapter.getLabels();
-        xAxis = ((ChartWithAxes) chart).getPrimaryBaseAxes()[0];
+ /*       xAxis = ((ChartWithAxes) chart).getPrimaryBaseAxes()[0];
         xAxis.getTitle().setVisible(true);
         xAxis.getTitle().getCaption().setValue(labels[0]);
         xAxis.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
@@ -193,7 +191,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
         xAxis.getOrigin().setType(IntersectionType.VALUE_LITERAL);
         xAxis.getTitle().getCaption().getFont().setSize(8); 
         xAxis.getLabel().getCaption().getFont().setSize(6);
-    }
+   */ }
 
     /*
      * (non-Javadoc)
@@ -201,12 +199,12 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
      * @see com.ibm.examples.chart.widget.chart.AbstractChartBuilder#buildYAxis()
      */
     protected void buildYAxis() {
-        yAxis = ((ChartWithAxes) chart).getPrimaryOrthogonalAxis(xAxis);
+     /*   yAxis = ((ChartWithAxes) chart).getPrimaryOrthogonalAxis(xAxis);
 
         yAxis.getMajorGrid().getLineAttributes().setVisible(true);
-       // yAxis.getMajorGrid().getLineAttributes().setColor(ColorDefinitionImpl
+       */// yAxis.getMajorGrid().getLineAttributes().setColor(ColorDefinitionImpl
          //       .GREY());
-        yAxis.getMajorGrid().getLineAttributes()
+/*        yAxis.getMajorGrid().getLineAttributes()
                 .setStyle(LineStyle.DASHED_LITERAL);
         yAxis.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
 
@@ -215,7 +213,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
         yAxis.getLabel().getCaption().getFont().setSize(6);
         //yAxis.getScale().setStep(1.0);
         yAxis.getTitle().getCaption().getFont().setSize(8);
-    }
+  */  }
 
     /*
      * (non-Javadoc)
@@ -248,7 +246,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
         SeriesDefinition sdX = SeriesDefinitionImpl.create();
         sdX.getSeriesPalette().update(1);
        
-        xAxis.getSeriesDefinitions().add(sdX);
+    //    xAxis.getSeriesDefinitions().add(sdX);
        
         sdX.getSeries().add(seCategory);
        }
@@ -297,13 +295,13 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
             sdY[i-1] = SeriesDefinitionImpl.create();
             sdY[i-1].getSeriesPalette().update(0-i-2);
       
-             yAxis.getSeriesDefinitions().add(sdY[i-1]);
+      //       yAxis.getSeriesDefinitions().add(sdY[i-1]);
              sdY[i-1].getSeries().add(ss1[i-1]);
           }
         System.out.println("not bin updatedataset:" + max);
-        yAxis.getScale().setStep(max/2);
+       /* yAxis.getScale().setStep(max/2);
         yAxis.getScale().setMax(NumberDataElementImpl.create(max));
-        
+        */
    }catch (Exception e)
    {
 	//   e.printStackTrace();
@@ -351,8 +349,8 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
        ((Series) sdY.getSeries().get(0)).setDataSet(orthoValuesDataSet1[i-1]);
 
        }
-               yAxis.getScale().setStep(max/5);
-        yAxis.getScale().setMax(NumberDataElementImpl.create(max));
+        //       yAxis.getScale().setStep(max/5);
+        //yAxis.getScale().setMax(NumberDataElementImpl.create(max));
     	}catch(Exception e)
     	{
     //		e.printStackTrace();

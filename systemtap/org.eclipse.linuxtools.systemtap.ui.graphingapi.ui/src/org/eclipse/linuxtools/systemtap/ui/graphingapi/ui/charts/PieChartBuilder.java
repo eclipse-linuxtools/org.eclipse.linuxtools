@@ -59,9 +59,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
    // private boolean bFirstPaint = true;
     
     public PieChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-    super(adapter, parent, style);
-    this.title = title;
-    this.parent = parent;
+    super(adapter, parent, style, title);
     
     try {
         PlatformConfig pf = new PlatformConfig();

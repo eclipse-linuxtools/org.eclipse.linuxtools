@@ -42,8 +42,8 @@ public abstract class AbstractChartWithoutAxisBuilder extends AbstractChartBuild
      *            data for chart
      */
     
-    public AbstractChartWithoutAxisBuilder(IAdapter adapter, Composite parent, int style) {
-    	 super(adapter, parent, style);
+    public AbstractChartWithoutAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
+    	 super(adapter, parent, style, title);
 	}
 
 	/*
@@ -52,7 +52,7 @@ public abstract class AbstractChartWithoutAxisBuilder extends AbstractChartBuild
      * @see com.ibm.examples.chart.widget.chart.AbstractChartBuilder#createChart()
      */
     protected void createChart() {
-        chart = ChartWithoutAxesImpl.create();
+    //    chart = ChartWithoutAxesImpl.create();
     }
     
     public void updateDataSet()
