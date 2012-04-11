@@ -122,7 +122,8 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
 		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
 		for (IEditorDescriptor d : descriptors)
-			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors")) {
+			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") ||
+				d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) {
 				LogManager.logDebug("getEditorId: returnVal-" + d.getId(), this);
 				return d.getId();
 			}
