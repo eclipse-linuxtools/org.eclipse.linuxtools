@@ -21,6 +21,16 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.BlockAdapt
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 
+import org.swtchart.IAxis;
+import org.swtchart.IBarSeries;
+import org.swtchart.ILineSeries;
+
+import org.swtchart.ILineSeries.PlotSymbolType;
+
+import org.swtchart.ISeries.SeriesType;
+
+import org.swtchart.Range;
+
 /**
  * Builds bar chart.
  * 
@@ -32,7 +42,6 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
     protected AbstractChartBuilder builder = null;
 
 	private boolean fullUpdate;
-	private String labels[];
 	protected int xSeriesTicks;
 	protected static int ySeriesTicks;
 	protected static int maxItems;
@@ -58,15 +67,6 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		viewableItems = store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.ibm.examples.chart.widget.AbstractChartBuilder#buildLegend()
-     */
-    protected void buildLegend() {
-    	createLegend();
-    }
-    
 	public void handleUpdateEvent() {
 		try{
 			updateDataSet();
@@ -92,18 +92,41 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		});
 	}
 
-	protected void createLegend() {
-		labels = adapter.getLabels();
-		String[] labels2 = new String[labels.length-1];
-
-		for(int i=0; i<labels2.length; i++) {
-			labels2[i] = labels[i+1];
-		}
-
-	}
-
 	public void setScale(double scale) {
 		xSeriesTicks = (int) (((Integer)xSeriesTicks).doubleValue() * scale);
 		handleUpdateEvent();
+	}
+
+	/**
+	 * Builds X series.
+	 */
+	protected void buildXSeries() {
+		Object data[][] = adapter.getData();
+		if (data == null || data.length == 0)
+			return;
+
+		double[] valx = new double[data.length];
+		double[][] valy = new double[data[0].length-1][data.length];
+
+
+		for (int i = 0; i < data.length; i++)
+			for (int j = 0; j < data[i].length; j++) {
+				if (j == 0)
+					valx[i] = getDoubleValue(data[i][j]);
+				else
+					valy[j-1][i] = getDoubleValue(data[i][j]);
+			}
+
+		for (int i = 0; i < valy.length; i++) {
+			final IBarSeries series = (IBarSeries) chart.getSeriesSet().
+				createSeries(SeriesType.BAR, adapter.getLabels()[i+1]); //$NON-NLS-1$);
+			series.setXSeries(valx);
+			series.setYSeries(valy[i]);
+		}
+
+		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
+		yAxis.setRange(new Range(adapter.getYMin().doubleValue(), adapter.getYMax().doubleValue()));
+		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
+		xAxis.setRange(new Range(adapter.getXMin().doubleValue(), adapter.getXMax().doubleValue()));
 	}
 }

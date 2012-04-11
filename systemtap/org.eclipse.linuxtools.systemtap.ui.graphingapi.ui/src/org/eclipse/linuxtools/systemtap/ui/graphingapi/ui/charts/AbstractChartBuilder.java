@@ -16,6 +16,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
@@ -47,6 +48,7 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	protected static final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
 	protected static final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
 	protected static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+	protected static final Color RED = new Color(Display.getDefault(), 255, 0, 0);
 
 	/**
 	 * Chart instance.
@@ -148,7 +150,7 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	 * 
 	 */
 	protected void buildLegend() {
-
+		chart.getLegend().setPosition(SWT.RIGHT);
 	}
 
 	/**
@@ -177,4 +179,11 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 
 	}
 
+	protected double getDoubleValue(Object o) {
+		if (o instanceof Integer)
+			return ((Integer)o).intValue();
+		if (o instanceof Double)
+			return ((Double)o).doubleValue();
+		return new Double(o.toString()).doubleValue();
+	}
 }
