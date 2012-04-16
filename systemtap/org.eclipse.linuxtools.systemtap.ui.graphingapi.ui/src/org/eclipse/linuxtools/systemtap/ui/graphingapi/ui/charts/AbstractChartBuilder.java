@@ -45,7 +45,6 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	protected int xseries;
 	protected int[] yseries;
 
-	protected static final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
 	protected static final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
 	protected static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
 	protected static final Color RED = new Color(Display.getDefault(), 255, 0, 0);
@@ -114,7 +113,7 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	 */
 	protected void buildPlot() {
 		this.chart.setBackground(WHITE);
-		this.chart.setBackgroundInPlotArea(LIGHTYELLOW);
+		this.chart.setBackgroundInPlotArea(WHITE);
 	}
 
 	/**
