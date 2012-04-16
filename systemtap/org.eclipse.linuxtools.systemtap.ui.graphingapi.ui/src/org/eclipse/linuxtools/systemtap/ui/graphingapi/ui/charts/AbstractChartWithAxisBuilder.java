@@ -21,21 +21,6 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     protected String xTitle = null;
 
     /**
-     * Title of Y axis.
-     */
-    protected String yTitle = null;
-
-    /**
-     * X axis.
-     */
-    //protected Axis xAxis = null;
-
-    /**
-     * Y axis.
-     */
-    //protected Axis yAxis = null;
-
-    /**
      * Constructor.
      * 
      * @param dataSet
