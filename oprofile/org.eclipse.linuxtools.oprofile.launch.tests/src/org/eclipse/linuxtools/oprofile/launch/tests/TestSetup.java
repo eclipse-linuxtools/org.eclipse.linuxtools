@@ -63,9 +63,9 @@ public class TestSetup extends AbstractTest {
 
 	//getter functions for otherwise unaccessible member variables 
 	private class OprofileTestingSetupTab extends OprofileSetupTab {
-		protected Button getKernelCheck() { return _checkSeparateKernel; }
-		protected Button getLibraryCheck() { return _checkSeparateLibrary; }
-		protected Text getTextKernelImage() { return _kernelImageFileText; }
+		protected Button getKernelCheck() { return checkSeparateKernel; }
+		protected Button getLibraryCheck() { return checkSeparateLibrary; }
+		protected Text getTextKernelImage() { return kernelImageFileText; }
 	}
 	
 	public void testSetupTab() throws CoreException {
@@ -126,7 +126,7 @@ public class TestSetup extends AbstractTest {
 		protected int getNumberOfCounters() { return 1; }
 		@Override
 		protected boolean checkEventSetupValidity(int counter, String name, int maskValue) { return true; }
-		public Button getDefaultCheck() { return _defaultEventCheck; }
+		public Button getDefaultCheck() { return defaultEventCheck; }
 	}
 	
 	public void testEventConfigTab() throws CoreException {

@@ -23,64 +23,64 @@ import org.eclipse.swt.graphics.Image;
  *  displayed as children of the session in the view.
  */
 public class UiModelSession implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element
-	private OpModelSession _session;		//the node in the data model
-	private UiModelImage _image;			//this node's child
-	private UiModelDependent _dependent;	//dependent images of the OpModelImage
+	private IUiModelElement parent;		//parent element
+	private OpModelSession session;		//the node in the data model
+	private UiModelImage image;			//this node's child
+	private UiModelDependent dependent;	//dependent images of the OpModelImage
 
 	//OProfile's default session name
 	private static final String DEFAULT_SESSION_NAME = "current"; //$NON-NLS-1$
 	
 	public UiModelSession(IUiModelElement parent, OpModelSession session) {
-		_parent = parent;
-		_session = session;
-		_image = null;
-		_dependent = null;
+		this.parent = parent;
+		this.session = session;
+		this.image = null;
+		this.dependent = null;
 		refreshModel();
 	}
 	
 	private void refreshModel() {
-		OpModelImage dataModelImage = _session.getImage();
+		OpModelImage dataModelImage = session.getImage();
 		if (dataModelImage != null) {
-			_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
+			image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
 			
 			if (dataModelImage.hasDependents()) {
-				_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
+				dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
 			}
 		}
 	}
 
 	@Override
 	public String toString() {
-		return _session.getName();
+		return session.getName();
 	}
 	
 	public boolean isDefaultSession() {
-		return _session.getName().equalsIgnoreCase(DEFAULT_SESSION_NAME);
+		return session.getName().equalsIgnoreCase(DEFAULT_SESSION_NAME);
 	}
 
 	/** IUiModelElement functions **/
 	public String getLabelText() {
-		if (_session.getName().equals(DEFAULT_SESSION_NAME)){
+		if (session.getName().equals(DEFAULT_SESSION_NAME)){
 			return OprofileUiMessages.getString("UiModelSession_current"); //$NON-NLS-1$
 		}
 		return toString();
 	}
 
 	public IUiModelElement[] getChildren() {
-		if (_dependent != null) {
-			return new IUiModelElement[] {_image, _dependent};
+		if (dependent != null) {
+			return new IUiModelElement[] {image, dependent};
 		} else {
-			return new IUiModelElement[] {_image};
+			return new IUiModelElement[] {image};
 		}
 	}
 
 	public boolean hasChildren() {
-		return (_image != null);
+		return (image != null);
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {

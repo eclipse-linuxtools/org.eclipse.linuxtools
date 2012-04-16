@@ -26,10 +26,10 @@ import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
  */
 public class LaunchOptions {
 	// The launch options for the daemon
-	private OprofileDaemonOptions _options;
+	private OprofileDaemonOptions options;
 
 	public LaunchOptions() {
-		_options = new OprofileDaemonOptions();
+		options = new OprofileDaemonOptions();
 	}
 	
 	/**
@@ -39,9 +39,9 @@ public class LaunchOptions {
 	 */
 	public boolean isValid() {
 		// The only point of contention is whether the specified vmlinux *file* exists.
-		String fn = _options.getKernelImageFile();
+		String fn = options.getKernelImageFile();
 		if (fn != null && fn.length() > 0) {
-			File file = new File(_options.getKernelImageFile());
+			File file = new File(options.getKernelImageFile());
 			return (file.exists() && file.isFile());
 		}
 		
@@ -54,8 +54,8 @@ public class LaunchOptions {
 	 * @param config	the launch configuration
 	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, _options.getKernelImageFile());
-		config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, _options.getSeparateProfilesMask());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, options.getKernelImageFile());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, options.getSeparateProfilesMask());
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public class LaunchOptions {
 	 */
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
-			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
-			_options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
+			options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
+			options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
 		} catch (CoreException e) {
 		}
 	}
@@ -76,7 +76,7 @@ public class LaunchOptions {
 	 * @return the OprofileDaemonOption
 	 */
 	public OprofileDaemonOptions getOprofileDaemonOptions() {
-		return _options;
+		return options;
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class LaunchOptions {
 	 * @return the kernel image file
 	 */
 	public String getKernelImageFile() {
-		return _options.getKernelImageFile();
+		return options.getKernelImageFile();
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class LaunchOptions {
 	 * @param image	the kernel image file
 	 */
 	public void setKernelImageFile(String image) {
-		_options.setKernelImageFile(image);
+		options.setKernelImageFile(image);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class LaunchOptions {
 	 * @return whether and how to separate samples for each distinct application
 	 */
 	public int getSeparateSamples() {
-		return _options.getSeparateProfilesMask();
+		return options.getSeparateProfilesMask();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class LaunchOptions {
 	 * @param how	one of SEPARATE_{NONE, LIBRARY, KERNEL, THREAD, CPU}
 	 */
 	public void setSeparateSamples(int how) {
-		_options.setSeparateProfilesMask(how);
+		options.setSeparateProfilesMask(how);
 	}
 	
 	/**
@@ -116,14 +116,14 @@ public class LaunchOptions {
 	 * @return the full path to the binary being profile
 	 */
 	public String getBinaryImage() {
-		return _options.getBinaryImage();
+		return options.getBinaryImage();
 	}
 
 	/**
 	 * Sets the binary to profile in this launch.
-	 * @param _image string of the full path to the binary
+	 * @param image string of the full path to the binary
 	 */
-	public void setBinaryImage(String _image) {
-		_options.setBinaryImage(_image);
+	public void setBinaryImage(String image) {
+		options.setBinaryImage(image);
 	}
 }

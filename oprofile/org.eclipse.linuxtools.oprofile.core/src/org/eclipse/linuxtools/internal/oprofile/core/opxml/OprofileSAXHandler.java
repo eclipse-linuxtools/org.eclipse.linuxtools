@@ -26,18 +26,18 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class OprofileSAXHandler extends DefaultHandler {
 	// The only allowed instance of this class
-	private static OprofileSAXHandler _instance = null;
+	private static OprofileSAXHandler instance = null;
 	
 	// A Map of all the XML processors for opxml
-	private static HashMap<String,Class<?>> _processors = new HashMap<String,Class<?>>();
+	private static HashMap<String,Class<?>> processors = new HashMap<String,Class<?>>();
 	
 	// The current processor being used to parse the document
-	private XMLProcessor _processor = null;
-	private Object _callData;
+	private XMLProcessor processor = null;
+	private Object callData;
 	
 	/* A stack of XML processors. This allows processors to invoke sub-processors
 	   for handling nested tags more efficiently. */
-	private Stack<XMLProcessor> _processorStack = new Stack<XMLProcessor>();
+	private Stack<XMLProcessor> processorStack = new Stack<XMLProcessor>();
 	
 	// Introduced for fix of Eclipse BZ#343025
 	// As per SAX spec, SAX parsers are allowed to split character data into as many chunks as
@@ -57,7 +57,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	}
 	
 	// The list of all "root" XML tags and their handler classes 
-	private static final ProcessorItem[] _handlerList = {
+	private static final ProcessorItem[] handlerList = {
 		new ProcessorItem(OpxmlConstants.INFO_TAG, OpInfoProcessor.class),
 		new ProcessorItem(OpxmlConstants.CHECKEVENTS_TAG, CheckEventsProcessor.class),
 		new ProcessorItem(OpxmlConstants.MODELDATA_TAG, ModelDataProcessor.class),
@@ -69,18 +69,18 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @return a handler instance
 	 */
 	public static OprofileSAXHandler getInstance(Object callData) {
-		if (_instance == null) {
-			_instance = new OprofileSAXHandler();
+		if (instance == null) {
+			instance = new OprofileSAXHandler();
 			
 			// Initialize processor map
-			for (int i = 0; i < _handlerList.length; ++i) {
-				_processors.put(_handlerList[i].tagName, _handlerList[i].handlerClass);
+			for (int i = 0; i < handlerList.length; ++i) {
+				processors.put(handlerList[i].tagName, handlerList[i].handlerClass);
 			}
 		}
 		
 		// Set calldata into handler
-		_instance.setCallData (callData);
-		return _instance;
+		instance.setCallData (callData);
+		return instance;
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 */
 	public void setCallData(Object callData)
 	{
-		_callData = callData;
+		this.callData = callData;
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	public static XMLProcessor getProcessor(String type) {
 		XMLProcessor processor = null;
 		
-		Class<?> handlerClass = (Class<?>) _processors.get(type);
+		Class<?> handlerClass = (Class<?>) processors.get(type);
 		if (handlerClass != null) {
 			try {
 				processor = (XMLProcessor) handlerClass.newInstance();
@@ -117,7 +117,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 */
 	public void startDocument() {
 		// Reset processor
-		_processor = null;
+		processor = null;
 	}
 	
 	/**
@@ -130,16 +130,16 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @see org.xml.sax.ContentHandler#startElement(String, String, String, Attributes)
 	 */
 	public void startElement(String uri, String lName, String qName, Attributes attrs) {
-		if (_processor == null) {
+		if (processor == null) {
 			// Get processor for this event type
-			_processor = getProcessor(qName);
-			_processor.reset(_callData);
+			processor = getProcessor(qName);
+			processor.reset(callData);
 		}
 		
 		// If we already have a processor, so let it deal with this new element.
 		// Allow the processor to deal with it's own tag as well: this way it can
 		// grab attributes from it.
-		_processor.startElement(qName, attrs, _callData);
+		processor.startElement(qName, attrs, callData);
 		
 		// Clean up the characters buffer 
 		charactersBuffer = new StringBuffer();
@@ -150,8 +150,8 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 */
 	public void endElement(String uri, String name, String qName) {
 		// Set the accumulated characters
-		_processor.characters(charactersBuffer.toString(), _callData);
-		_processor.endElement(qName, _callData);
+		processor.characters(charactersBuffer.toString(), callData);
+		processor.endElement(qName, callData);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	public void characters(char ch[], int start, int length) {
 		// Ignore characters which are only whitespace
 		String str = new String(ch, start, length).trim();
-		if (str.length() > 0 && _processor != null)
+		if (str.length() > 0 && processor != null)
 			 // Append the character to the buffer.
 			 charactersBuffer.append(str);
 	}
@@ -170,7 +170,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @return the XMLProcessor
 	 */
 	public XMLProcessor getProcessor() {
-		return _processor;
+		return processor;
 	}
 	
 	/**
@@ -179,9 +179,9 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @param proc the processor to continue parsing the document
 	 */
 	public void push(XMLProcessor proc) {
-		_processorStack.add(_processor);
-		_processor = proc;
-		_processor.reset(_callData);
+		processorStack.add(processor);
+		processor = proc;
+		processor.reset(callData);
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @param tag the XML tag to pass to the parent processor
 	 */
 	public void pop(String tag) {
-		_processor = (XMLProcessor) _processorStack.pop();
-		_processor.endElement(tag, _callData);
+		processor = (XMLProcessor) processorStack.pop();
+		processor.endElement(tag, callData);
 	}
 }

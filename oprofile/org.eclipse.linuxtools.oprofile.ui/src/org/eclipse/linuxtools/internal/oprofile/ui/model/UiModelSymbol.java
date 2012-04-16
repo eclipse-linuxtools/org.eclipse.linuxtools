@@ -24,57 +24,56 @@ import org.eclipse.swt.graphics.Image;
  *  image's source code. May or may not have child samples.
  */
 public class UiModelSymbol implements IUiModelElement {
-	private IUiModelElement _parent;	//parent element
-	private OpModelSymbol _symbol;		//the node in the data model
-	private UiModelSample _samples[];	//this node's children
-	private int _totalCount;			//total count of samples for the parent session
+	private IUiModelElement parent;	//parent element
+	private OpModelSymbol symbol;		//the node in the data model
+	private UiModelSample samples[];	//this node's children
+	private int totalCount;			//total count of samples for the parent session
 	
 	public UiModelSymbol(IUiModelElement parent, OpModelSymbol symbol, int totalCount) {
-		_parent = parent;
-		_symbol = symbol;
-		_samples = null;
-		_totalCount = totalCount;
+		this.parent = parent;
+		this.symbol = symbol;
+		this.samples = null;
+		this.totalCount = totalCount;
 		refreshModel();
 	}	
 	
 	private void refreshModel() {
 		ArrayList<UiModelSample> sampleList = new ArrayList<UiModelSample>();
-		OpModelSample dataModelSamples []= _symbol.getSamples();
+		OpModelSample dataModelSamples []= symbol.getSamples();
 		
 		for (int i = 0; i < dataModelSamples.length; i++) {
 			//dont display samples with line number of 0, meaning no line number
 			// was correlated, more likely that no source file exists
 			if (dataModelSamples[i].getLine() != 0) {
-				sampleList.add(new UiModelSample(this, dataModelSamples[i], _totalCount));
+				sampleList.add(new UiModelSample(this, dataModelSamples[i], totalCount));
 			}
 		}
 		
-		_samples = new UiModelSample[sampleList.size()];
-		sampleList.toArray(_samples);
+		samples = new UiModelSample[sampleList.size()];
+		sampleList.toArray(samples);
 	}
 	
 	@Override
 	public String toString() {
-		double countPercentage = (double)_symbol.getCount() / (double)_totalCount;
+		double countPercentage = (double)symbol.getCount() / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 		
 		//a hack to get `basename` type functionality
-		String fileName = (new File(_symbol.getFilePath())).getName();
-//		String fileName = _symbol.getFile();
+		String fileName = (new File(symbol.getFilePath())).getName();
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 	
 	public String getFileName() {
-		return _symbol.getFilePath();
+		return symbol.getFilePath();
 	}
 	
 	public String getFunctionName(){
-		return _symbol.getName();
+		return symbol.getName();
 	}
 
 	public int getLineNumber(){
-		return _symbol.getLine();
+		return symbol.getLine();
 	}
 
 	/** IUiModelElement functions **/
@@ -83,15 +82,15 @@ public class UiModelSymbol implements IUiModelElement {
 	}
 
 	public IUiModelElement[] getChildren() {
-		return _samples;
+		return samples;
 	}
 
 	public boolean hasChildren() {
-		return (_samples == null || _samples.length == 0 ? false : true);
+		return (samples == null || samples.length == 0 ? false : true);
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {

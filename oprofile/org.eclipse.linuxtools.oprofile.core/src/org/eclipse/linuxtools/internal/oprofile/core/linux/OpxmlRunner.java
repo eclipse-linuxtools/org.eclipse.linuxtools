@@ -56,7 +56,7 @@ import org.xml.sax.XMLReader;
  * BFD and the oprofile plugins. 
  */
 public class OpxmlRunner {
-	private OprofileSAXHandler _handler;
+	private OprofileSAXHandler handler;
 	
 
 	/**
@@ -64,7 +64,7 @@ public class OpxmlRunner {
 	 * @return the processor
 	 */
 	public XMLProcessor getProcessor() {
-		return _handler.getProcessor();
+		return handler.getProcessor();
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class OpxmlRunner {
 	 */
 	public boolean run(String[] args, Object callData) {
 		XMLReader reader = null;
-		_handler = OprofileSAXHandler.getInstance(callData);
+		handler = OprofileSAXHandler.getInstance(callData);
 		
 		// Create XMLReader
         SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -88,8 +88,8 @@ public class OpxmlRunner {
 		}
 		
 		// Set content/error handlers
-		reader.setContentHandler(_handler);
-		reader.setErrorHandler(_handler);
+		reader.setContentHandler(handler);
+		reader.setErrorHandler(handler);
 		
 		// Check for timer support
 		InfoAdapter.checkTimerSupport();

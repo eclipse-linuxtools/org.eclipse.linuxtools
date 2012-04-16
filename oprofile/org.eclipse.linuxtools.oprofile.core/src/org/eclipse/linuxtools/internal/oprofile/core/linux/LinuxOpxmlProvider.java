@@ -38,8 +38,8 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		private boolean b;
 		final private OpInfo info;
 		
-		public OpInfoRunner(OpInfo _info) {
-			info = _info;
+		public OpInfoRunner(OpInfo info) {
+			this.info = info;
 		}
 		
 		public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

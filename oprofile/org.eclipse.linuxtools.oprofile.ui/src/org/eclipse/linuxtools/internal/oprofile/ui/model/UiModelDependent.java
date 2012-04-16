@@ -16,32 +16,32 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelDependent implements IUiModelElement {
-	private IUiModelElement _parent;
-	private OpModelImage _dataModelDependents[];
-	private UiModelImage _dependents[];
-	private int _totalCount;
-	private int _depCount;
+	private IUiModelElement parent;
+	private OpModelImage dataModelDependents[];
+	private UiModelImage dependents[];
+	private int totalCount;
+	private int depCount;
 	
 	public UiModelDependent(IUiModelElement parent, OpModelImage dependents[], int totalCount, int depCount) {
-		_parent = parent;
-		_dataModelDependents = dependents;
-		_dependents = null;
-		_totalCount = totalCount;
-		_depCount = depCount;
+		this.parent = parent;
+		this.dataModelDependents = dependents;
+		this.dependents = null;
+		this.totalCount = totalCount;
+		this.depCount = depCount;
 		refreshModel();
 	}
 
 	private void refreshModel() {
-		_dependents = new UiModelImage[_dataModelDependents.length];
+		dependents = new UiModelImage[dataModelDependents.length];
 		
-		for (int i = 0; i < _dataModelDependents.length; i++) {
-			_dependents[i] = new UiModelImage(this, _dataModelDependents[i], _totalCount, 0);
+		for (int i = 0; i < dataModelDependents.length; i++) {
+			dependents[i] = new UiModelImage(this, dataModelDependents[i], totalCount, 0);
 		}
 	}
 	
 	@Override
 	public String toString() {
-		double countPercentage = (double)_depCount / (double)_totalCount;
+		double countPercentage = (double)depCount / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
 		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
@@ -53,7 +53,7 @@ public class UiModelDependent implements IUiModelElement {
 	}
 
 	public IUiModelElement[] getChildren() {
-		return _dependents;
+		return dependents;
 	}
 
 	public boolean hasChildren() {
@@ -61,7 +61,7 @@ public class UiModelDependent implements IUiModelElement {
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {

@@ -27,8 +27,8 @@ public class TestingOpModelRoot extends OpModelRoot {
 	protected OpModelEvent[] getNewEvents() {
 		//fake running opxml and simply return hand-made events
 		OpModelEvent[] e = {new OpModelEvent(NAME_E1), new OpModelEvent(NAME_E2), null};
-		e[0]._setSessions(new TestingOpModelSession[] {new TestingOpModelSession(e[0], NAME_E1_S1)});
-		e[1]._setSessions(new OpModelSession[] {
+		e[0].setSessions(new TestingOpModelSession[] {new TestingOpModelSession(e[0], NAME_E1_S1)});
+		e[1].setSessions(new OpModelSession[] {
 				new TestingOpModelSession(e[1], NAME_E2_S1),
 				new TestingOpModelSession2(e[1], NAME_E2_S2),
 				new TestingOpModelSession3(e[1], NAME_E2_S3),

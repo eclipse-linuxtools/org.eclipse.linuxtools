@@ -16,49 +16,49 @@ package org.eclipse.linuxtools.internal.oprofile.core.model;
  * A class which represents the event collected in a given session.
  */
 public class OpModelEvent {
-	private String _eventName;
-	private OpModelSession[] _sessions;
-	private String _printTabs = "";		//for nice output  //$NON-NLS-1$
+	private String eventName;
+	private OpModelSession[] sessions;
+	private String printTabs = "";		//for nice output  //$NON-NLS-1$
 	
 	public OpModelEvent(String name) {
-		_eventName = name;
+		eventName = name;
 	}
 
 	public OpModelSession[] getSessions() {
-		return _sessions;
+		return sessions;
 	}
 
-	public void _setSessions(OpModelSession[] sessions) {
-		_sessions = sessions;
+	public void setSessions(OpModelSession[] sessions) {
+		this.sessions = sessions;
 	}
 
 	public String getName() {
-		return _eventName;
+		return eventName;
 	}
 
 	//populate all sessions
 	public void refreshModel() {
-		if (_sessions != null) {
-			for (int i = 0; i < _sessions.length; i++) {
-				_sessions[i].refreshModel();
+		if (sessions != null) {
+			for (int i = 0; i < sessions.length; i++) {
+				sessions[i].refreshModel();
 			}
 		}
 	}
 	
 	public String toString(String tabs) {
-		_printTabs = tabs;
+		printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _eventName + "\n"; //$NON-NLS-1$
-		if (_sessions != null) {
-			for (int i = 0; i < _sessions.length; i++) {
-				s += _printTabs + "Session: "; //$NON-NLS-1$
-				s += _sessions[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+		String s = eventName + "\n"; //$NON-NLS-1$
+		if (sessions != null) {
+			for (int i = 0; i < sessions.length; i++) {
+				s += printTabs + "Session: "; //$NON-NLS-1$
+				s += sessions[i].toString(printTabs + "\t"); //$NON-NLS-1$
 			}
 		}
 		return s;

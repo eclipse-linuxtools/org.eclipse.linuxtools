@@ -37,81 +37,69 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
  * A class which encapsulates running opcontrol.
  */
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
-	private static final String _OPCONTROL_EXECUTABLE = "opcontrol";
+	private static final String OPCONTROL_EXECUTABLE = "opcontrol";
 	
 	// Location of opcontrol security wrapper
-	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/" + _OPCONTROL_EXECUTABLE; //$NON-NLS-1$
+	private static final String OPCONTROL_REL_PATH = "natives/linux/scripts/" + OPCONTROL_EXECUTABLE; //$NON-NLS-1$
 	
-	private final String _OPCONTROL_PROGRAM;
+	private final String opcontrolProgram;
 
 	// Initialize the Oprofile kernel module and oprofilefs
-	private static final String _OPD_INIT_MODULE = "--init"; //$NON-NLS-1$
+	private static final String OPD_INIT_MODULE = "--init"; //$NON-NLS-1$
 	
 	// Setup daemon collection arguments
-	private static final String _OPD_SETUP = "--setup"; //$NON-NLS-1$
-	private static final String _OPD_HELP = "--help"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_LIBRARY = "library"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_KERNEL = "kernel"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_THREAD = "thread"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_CPU = "cpu"; //$NON-NLS-1$
+	private static final String OPD_SETUP = "--setup"; //$NON-NLS-1$
+	private static final String OPD_HELP = "--help"; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_LIBRARY = "library"; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_KERNEL = "kernel"; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_THREAD = "thread"; //$NON-NLS-1$
+	private static final String OPD_SETUP_SEPARATE_CPU = "cpu"; //$NON-NLS-1$
 
-	private static final String _OPD_SETUP_EVENT = "--event="; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_DEFAULT = "default"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT = "--event="; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_DEFAULT = "default"; //$NON-NLS-1$
 
-	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
+	private static final String OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
 
-	private static final String _OPD_CALLGRAPH_DEPTH = "--callgraph="; //$NON-NLS-1$
+	private static final String OPD_CALLGRAPH_DEPTH = "--callgraph="; //$NON-NLS-1$
 
 	// Kernel image file options
-	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
-	private static final String _OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
-	
-	// Logging verbosity
-//	private static final String _OPD_VERBOSE_LOGGING = "--verbose="; //$NON-NSL-1$
-//	private static final String _OPD_VERBOSE_ALL = "all"; //$NON-NLS-1$
-//	private static final String _OPD_VERBOSE_SFILE = "sfile"; //$NON-NLS-1$
-//	private static final String _OPD_VERBOSE_ARCS = "arcs"; //$NON-NLS-1$
-//	private static final String _OPD_VERBOSE_SAMPLES = "samples"; //$NON-NLS-1$
-//	private static final String _OPD_VERBOSE_MODULE = "module"; //$NON-NLS-1$
-//	private static final String _OPD_VERBOSE_MISC = "misc"; //$NON-NLS-1$
+	private static final String OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
+	private static final String OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
 	
 	// Start the daemon process without starting data collection
-	private static final String _OPD_START_DAEMON = "--start-daemon"; //$NON-NLS-1$
+	private static final String OPD_START_DAEMON = "--start-daemon"; //$NON-NLS-1$
 	
 	// Start collecting profiling data
-	private static final String _OPD_START_COLLECTION = "--start"; //$NON-NLS-1$
+	private static final String OPD_START_COLLECTION = "--start"; //$NON-NLS-1$
 	
 	// Flush the collected profiling data to disk
-	private static final String _OPD_DUMP = "--dump"; //$NON-NLS-1$
+	private static final String OPD_DUMP = "--dump"; //$NON-NLS-1$
 	
 	// Stop data collection
-	private static final String _OPD_STOP_COLLECTION = "--stop"; //$NON-NLS-1$
+	private static final String OPD_STOP_COLLECTION = "--stop"; //$NON-NLS-1$
 	
 	// Stop data collection and stop daemon
-	private static final String _OPD_SHUTDOWN = "--shutdown"; //$NON-NLS-1$
+	private static final String OPD_SHUTDOWN = "--shutdown"; //$NON-NLS-1$
 	
 	// Clear out data from current session
-	private static final String _OPD_RESET = "--reset"; //$NON-NLS-1$
-	
-	// Save data from the current session
-//	private static final String _OPD_SAVE_SESSION = "--save="; //$NON-NLS-1$
+	private static final String OPD_RESET = "--reset"; //$NON-NLS-1$
 	
 	// Unload the oprofile kernel module and oprofilefs
-	private static final String _OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$
+	private static final String OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$
 	
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
-	private String _verbosity = ""; //$NON-NLS-1$
+	private String verbosity = ""; //$NON-NLS-1$
 	
 	
 	public LinuxOpcontrolProvider() throws OpcontrolException {
-		_OPCONTROL_PROGRAM = _findOpcontrol();
+		opcontrolProgram = findOpcontrol();
 	}
 
 	/**
@@ -119,7 +107,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void deinitModule() throws OpcontrolException {
-		_runOpcontrol(_OPD_DEINIT_MODULE);
+		runOpcontrol(OPD_DEINIT_MODULE);
 	}
 	
 	/**
@@ -127,7 +115,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void dumpSamples() throws OpcontrolException {
-		_runOpcontrol(_OPD_DUMP);
+		runOpcontrol(OPD_DUMP);
 	}
 	
 	/**
@@ -135,7 +123,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void initModule() throws OpcontrolException {
-		_runOpcontrol(_OPD_INIT_MODULE);
+		runOpcontrol(OPD_INIT_MODULE);
 	}
 	
 	/**
@@ -143,7 +131,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void reset() throws OpcontrolException {
-		_runOpcontrol(_OPD_RESET);
+		runOpcontrol(OPD_RESET);
 	}
 	
 	/**
@@ -195,18 +183,18 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	public void setupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) throws OpcontrolException {
 		// Convert options & events to arguments for opcontrol
 		ArrayList<String> args = new ArrayList<String>();
-		args.add(_OPD_SETUP);
-		_optionsToArguments(args, options);
+		args.add(OPD_SETUP);
+		optionsToArguments(args, options);
 		if (!Oprofile.getTimerMode()) {
 			if (events == null || events.length == 0) {
-				args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
+				args.add(OPD_SETUP_EVENT + OPD_SETUP_EVENT_DEFAULT);
 			} else {
 				for (int i = 0; i < events.length; ++i) {
-					_eventToArguments(args, events[i]);
+					eventToArguments(args, events[i]);
 				}
 			}
 		}
-		_runOpcontrol(args);
+		runOpcontrol(args);
 	}
 	
 	/**
@@ -214,7 +202,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void shutdownDaemon() throws OpcontrolException {
-		_runOpcontrol(_OPD_SHUTDOWN);
+		runOpcontrol(OPD_SHUTDOWN);
 	}
 	
 	/**
@@ -222,7 +210,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void startCollection() throws OpcontrolException {
-		_runOpcontrol(_OPD_START_COLLECTION);
+		runOpcontrol(OPD_START_COLLECTION);
 	}
 	
 	/**
@@ -230,7 +218,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void startDaemon() throws OpcontrolException {
-		_runOpcontrol(_OPD_START_DAEMON);
+		runOpcontrol(OPD_START_DAEMON);
 	}
 	
 	/**
@@ -238,7 +226,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void stopCollection() throws OpcontrolException {
-		_runOpcontrol(_OPD_STOP_COLLECTION);
+		runOpcontrol(OPD_STOP_COLLECTION);
 	}
 
 	/**
@@ -246,14 +234,14 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public boolean status() throws OpcontrolException {
-		return _runOpcontrol(_OPD_HELP);
+		return runOpcontrol(OPD_HELP);
 	}
 	
 	// Convenience function
-	private boolean _runOpcontrol(String cmd) throws OpcontrolException {
+	private boolean runOpcontrol(String cmd) throws OpcontrolException {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(cmd);
-		return _runOpcontrol(list);
+		return runOpcontrol(list);
 	}
 	
 	// Will add opcontrol program to beginning of args
@@ -263,22 +251,22 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * this appears to currently be the only way we can tell if user correctly
 	 * entered the password
 	 */
-	private boolean _runOpcontrol(ArrayList<String> args) throws OpcontrolException {	
+	private boolean runOpcontrol(ArrayList<String> args) throws OpcontrolException {	
 		IProject project = Oprofile.getCurrentProject();
 		
 		
 		// If no linuxtools' toolchain is defined for this project, use the path for the
 		// link created by the installation script
 		if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
-			args.add(0, _OPCONTROL_PROGRAM);
+			args.add(0, opcontrolProgram);
 		} else{
-			args.add(0, _OPCONTROL_EXECUTABLE);
+			args.add(0, OPCONTROL_EXECUTABLE);
 		}
 
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
-		if (_verbosity.length() > 0 && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
-			args.add(_verbosity);
+		if (verbosity.length() > 0 && (cmd.equals (OPD_START_COLLECTION) || cmd.equals(OPD_START_DAEMON))) {
+			args.add(verbosity);
 		}
 		
 		String[] cmdArray = new String[args.size()];
@@ -353,10 +341,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
 	}
 	
-	private static String _findOpcontrol() throws OpcontrolException {
+	private static String findOpcontrol() throws OpcontrolException {
 		IProject project = Oprofile.getCurrentProject();		
 		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin
-				.getId()), new Path(_OPCONTROL_REL_PATH), null);
+				.getId()), new Path(OPCONTROL_REL_PATH), null);
 
 		if (url != null) {
 			try {
@@ -374,55 +362,55 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	}      
 
 	// Convert the event into arguments for opcontrol
-	private void _eventToArguments(ArrayList<String> args, OprofileDaemonEvent event) {
+	private void eventToArguments(ArrayList<String> args, OprofileDaemonEvent event) {
 		// Event spec: "EVENT:count:mask:profileKernel:profileUser"
-		String spec = new String(_OPD_SETUP_EVENT);
+		String spec = new String(OPD_SETUP_EVENT);
 		spec += event.getEvent().getText();
-		spec += _OPD_SETUP_EVENT_SEPARATOR;
+		spec += OPD_SETUP_EVENT_SEPARATOR;
 		spec += event.getResetCount();
-		spec += _OPD_SETUP_EVENT_SEPARATOR;
+		spec += OPD_SETUP_EVENT_SEPARATOR;
 		spec += event.getEvent().getUnitMask().getMaskValue();
-		spec += _OPD_SETUP_EVENT_SEPARATOR;
-		spec += (event.getProfileKernel() ? _OPD_SETUP_EVENT_TRUE : _OPD_SETUP_EVENT_FALSE);
-		spec += _OPD_SETUP_EVENT_SEPARATOR;
-		spec += (event.getProfileUser() ? _OPD_SETUP_EVENT_TRUE : _OPD_SETUP_EVENT_FALSE);
+		spec += OPD_SETUP_EVENT_SEPARATOR;
+		spec += (event.getProfileKernel() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE);
+		spec += OPD_SETUP_EVENT_SEPARATOR;
+		spec += (event.getProfileUser() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE);
 		args.add(spec);
 	}
 	
 	// Convert the options into arguments for opcontrol
-	private void _optionsToArguments(ArrayList<String> args, OprofileDaemonOptions options) {
+	private void optionsToArguments(ArrayList<String> args, OprofileDaemonOptions options) {
 		// Add separate flags
 		int mask = options.getSeparateProfilesMask();
 
-		String separate = new String(_OPD_SETUP_SEPARATE);
+		String separate = new String(OPD_SETUP_SEPARATE);
 		
 		if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
-			separate += _OPD_SETUP_SEPARATE_NONE;
+			separate += OPD_SETUP_SEPARATE_NONE;
 		} else {
 			//note that opcontrol will nicely ignore the trailing comma
 			if ((mask & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
-				separate += _OPD_SETUP_SEPARATE_LIBRARY + _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += OPD_SETUP_SEPARATE_LIBRARY + OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
-				separate += _OPD_SETUP_SEPARATE_KERNEL + _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += OPD_SETUP_SEPARATE_KERNEL + OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_THREAD) != 0)
-				separate += _OPD_SETUP_SEPARATE_THREAD + _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += OPD_SETUP_SEPARATE_THREAD + OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_CPU) != 0)
-				separate += _OPD_SETUP_SEPARATE_CPU + _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += OPD_SETUP_SEPARATE_CPU + OPD_SETUP_SEPARATE_SEPARATOR;
 		}
 		args.add(separate);
 		
 		// Add kernel image
 		if (options.getKernelImageFile() == null || options.getKernelImageFile().length() == 0) {
-			args.add(_OPD_KERNEL_NONE);
+			args.add(OPD_KERNEL_NONE);
 		} else {
-			args.add(_OPD_KERNEL_FILE + options.getKernelImageFile());
+			args.add(OPD_KERNEL_FILE + options.getKernelImageFile());
 		}
 
 		//image filter -- always non-null
-		args.add(_OPD_SETUP_IMAGE + options.getBinaryImage());
+		args.add(OPD_SETUP_IMAGE + options.getBinaryImage());
 		
 		//callgraph depth
-		args.add(_OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
+		args.add(OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}
 
 }

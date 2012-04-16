@@ -59,33 +59,33 @@ public class OpUnitMask {
 
 
 	// The current value of this unitmask
-	private int _mask;
+	private int mask;
 
 	// The default mask provided by the oprofile library
-	private int _defaultMask;
+	private int defaultMask;
 
 	// The type of this unitmask
-	private int _maskType;
+	private int maskType;
 
 	// Descriptions of the bits of this mask
-	private String[] _maskOptionDescriptions = new String[0];
+	private String[] maskOptionDescriptions = new String[0];
 
 	// mask values -- now bit masks have distinct values (eg: an all of the
 	// above)
-	private int[] _maskOptionValues;
+	private int[] maskOptionValues;
 
 	/**
 	 * Set the descriptions and values for this unitmask's mask options.
 	 * Only used from the XML parsers.
 	 * @param masks a list of all the mask options
 	 */
-	public void _setMaskDescriptions(MaskInfo[] masks) {
-		_maskOptionDescriptions = new String[masks.length];
-		_maskOptionValues = new int[masks.length];
+	public void setMaskDescriptions(MaskInfo[] masks) {
+		maskOptionDescriptions = new String[masks.length];
+		maskOptionValues = new int[masks.length];
 
 		for (int i = 0; i < masks.length; ++i) {
-			_maskOptionDescriptions[i] = masks[i].description;
-			_maskOptionValues[i] = masks[i].value;
+			maskOptionDescriptions[i] = masks[i].description;
+			maskOptionValues[i] = masks[i].value;
 		}
 	}
 
@@ -95,8 +95,8 @@ public class OpUnitMask {
 	 * Only used from the XML parsers.
 	 * @param theDefault the default value
 	 */
-	public void _setDefault(int theDefault) {
-		_defaultMask = theDefault;
+	public void setDefault(int theDefault) {
+		defaultMask = theDefault;
 		setDefaultMaskValue();	
 	}
 	
@@ -105,8 +105,8 @@ public class OpUnitMask {
 	 * Only used from the XML parsers.
 	 * @param type the type
 	 */
-	public void _setType(int type) {
-		_maskType = type;
+	public void setType(int type) {
+		maskType = type;
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class OpUnitMask {
 	 * @return the integer value
 	 */
 	public int getMaskValue() {
-		return _mask;
+		return mask;
 	}
 
 	/**
@@ -127,14 +127,14 @@ public class OpUnitMask {
 	public boolean isMaskSetFromIndex(int index) {
 		boolean result = false;
 
-		if (index >= 0 && index < _maskOptionValues.length) {
-			switch (_maskType) {
+		if (index >= 0 && index < maskOptionValues.length) {
+			switch (maskType) {
 			case EXCLUSIVE:
-				result = (_mask == _maskOptionValues[index]);
+				result = (mask == maskOptionValues[index]);
 				break;
 
 			case BITMASK:
-				result = ((_mask & _maskOptionValues[index]) != 0);
+				result = ((mask & maskOptionValues[index]) != 0);
 				break;
 
 			default:
@@ -152,9 +152,9 @@ public class OpUnitMask {
 	 */
 	public void setMaskValue(int newValue) {
 		if (newValue == SET_DEFAULT_MASK) {
-			_mask = _defaultMask;
+			mask = defaultMask;
 		} else {
-			_mask = newValue;
+			mask = newValue;
 		}
 	}
 	
@@ -164,11 +164,11 @@ public class OpUnitMask {
 	 */
 	public void setMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (index >= 0 && index < _maskOptionValues.length) {
-			if (_maskType == BITMASK)
-				_mask |= _maskOptionValues[index];
-			else if (_maskType == EXCLUSIVE) {
-				_mask = _maskOptionValues[index];
+		if (index >= 0 && index < maskOptionValues.length) {
+			if (maskType == BITMASK)
+				mask |= maskOptionValues[index];
+			else if (maskType == EXCLUSIVE) {
+				mask = maskOptionValues[index];
 			}
 		}
 	}
@@ -180,16 +180,16 @@ public class OpUnitMask {
 	 */
 	public int getMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (_maskType == BITMASK) {
-			if (index >= 0 && index < _maskOptionValues.length) {
-				return _maskOptionValues[index];
+		if (maskType == BITMASK) {
+			if (index >= 0 && index < maskOptionValues.length) {
+				return maskOptionValues[index];
 			}
-		} else if (_maskType == EXCLUSIVE) {
-			if (index >= 0 && index < _maskOptionValues.length) {
-				return _maskOptionValues[index];
+		} else if (maskType == EXCLUSIVE) {
+			if (index >= 0 && index < maskOptionValues.length) {
+				return maskOptionValues[index];
 			}
-		} else if (_maskType == MANDATORY) {
-			return _defaultMask;
+		} else if (maskType == MANDATORY) {
+			return defaultMask;
 		}
 
 		//type invalid or unknown, or out of bounds
@@ -201,8 +201,8 @@ public class OpUnitMask {
 	 * @param index the index of the mask option to set
 	 */
 	public void unSetMaskFromIndex(int index) {
-		if (index >= 0 && index < _maskOptionValues.length && _maskType == BITMASK) {
-			_mask = _mask & ~_maskOptionValues[index];
+		if (index >= 0 && index < maskOptionValues.length && maskType == BITMASK) {
+			mask = mask & ~maskOptionValues[index];
 		}
 	}
 
@@ -210,7 +210,7 @@ public class OpUnitMask {
 	 * Sets the current unitmask value to the default mask value.
 	 */
 	public void setDefaultMaskValue() {
-		_mask = _defaultMask;
+		mask = defaultMask;
 	}
 
 	/**
@@ -219,8 +219,8 @@ public class OpUnitMask {
 	 * @return the description
 	 */
 	public String getText(int num) {
-		if (num >= 0 && num < _maskOptionDescriptions.length)
-			return _maskOptionDescriptions[num];
+		if (num >= 0 && num < maskOptionDescriptions.length)
+			return maskOptionDescriptions[num];
 
 		return null;
 	}
@@ -230,7 +230,7 @@ public class OpUnitMask {
 	 * @return the number of mask options
 	 */
 	public int getNumMasks() {
-		return _maskOptionDescriptions.length;
+		return maskOptionDescriptions.length;
 	}
 
 	/**
@@ -239,6 +239,6 @@ public class OpUnitMask {
 	 *         <code>MANDATORY</code>
 	 */
 	public int getType() {
-		return _maskType;
+		return maskType;
 	}
 }

@@ -23,37 +23,37 @@ public class CheckEventsProcessor extends XMLProcessor {
 	public static final int INVALID_UMASK = 3;		//invalid unit mask value
 	public static final int INVALID_COUNTER = 4;	//invalid event for given counter number
 
-	private static final String _RESULT_TAG = "result"; //$NON-NLS-1$
-	private static final String _CHECK_EVENTS_TAG ="check-events"; //$NON-NLS-1$
+	private static final String RESULT_TAG = "result"; //$NON-NLS-1$
+	private static final String CHECK_EVENTS_TAG ="check-events"; //$NON-NLS-1$
 
-	private static final String _EVENT_OK = "ok"; //$NON-NLS-1$
-	private static final String _INVALID_UMASK = "invalid-um"; //$NON-NLS-1$
-	private static final String _INVALID_COUNTER = "invalid-counter"; //$NON-NLS-1$
+	private static final String EVENT_OK_STR = "ok"; //$NON-NLS-1$
+	private static final String INVALID_UMASK_STR = "invalid-um"; //$NON-NLS-1$
+	private static final String INVALID_COUNTER_STR = "invalid-counter"; //$NON-NLS-1$
 
-	private int _result;
+	private int result;
 
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
 	 */
 	public void reset(Object callData) {
-		_result = INVALID_UNKNOWN;
+		result = INVALID_UNKNOWN;
 	}
 	
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
 	public void endElement(String name, Object callData) {
-		if (name.equals(_RESULT_TAG)) {
-			if (_characters.equals(_EVENT_OK)) {
-				_result = EVENT_OK;
-			} else if (_characters.equals(_INVALID_UMASK)) {
-				_result = INVALID_UMASK;
-			} else if (_characters.equals(_INVALID_COUNTER)) {
-				_result = INVALID_COUNTER;
+		if (name.equals(RESULT_TAG)) {
+			if (characters.equals(EVENT_OK_STR)) {
+				result = EVENT_OK;
+			} else if (characters.equals(INVALID_UMASK_STR)) {
+				result = INVALID_UMASK;
+			} else if (characters.equals(INVALID_COUNTER_STR)) {
+				result = INVALID_COUNTER;
 			}
-		} else if (name.equals(_CHECK_EVENTS_TAG)) {
-			int[] result = (int[]) callData;
-			result[0] = _result;
+		} else if (name.equals(CHECK_EVENTS_TAG)) {
+			int[] r = (int[]) callData;
+			r[0] = result;
 		}
 	}
 }

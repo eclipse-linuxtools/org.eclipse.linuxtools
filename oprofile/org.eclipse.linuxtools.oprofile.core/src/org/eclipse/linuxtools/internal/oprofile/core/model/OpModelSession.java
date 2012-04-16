@@ -21,63 +21,63 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 public class OpModelSession {
 	private static final String DEFAULT_SESSION_STRING = "current"; //$NON-NLS-1$
 
-	private OpModelEvent _parentEvent;
-	private OpModelImage _image;
-	private String _name;
-	private String _printTabs = "";		//for nice output //$NON-NLS-1$
+	private OpModelEvent parentEvent;
+	private OpModelImage image;
+	private String name;
+	private String printTabs = "";		//for nice output //$NON-NLS-1$
 
 	public OpModelSession(OpModelEvent event, String name) {
-		_parentEvent = event;
-		_name = name;
-		_image = null;
+		parentEvent = event;
+		this.name = name;
+		image = null;
 	}
 	
 	public OpModelImage getImage() {
-		return _image;
+		return image;
 	}
 
 	public OpModelEvent getEvent() {
-		return _parentEvent;
+		return parentEvent;
 	}
 	
 	public String getName() {
-		return _name;
+		return name;
 	}
 	
 	public int getCount() {
-		if (_image == null) {
+		if (image == null) {
 			return 0;
 		} else {
-			return _image.getCount();
+			return image.getCount();
 		}
 	}
 	
 	public boolean isDefaultSession() {
-		return _name.equals(DEFAULT_SESSION_STRING); 
+		return name.equals(DEFAULT_SESSION_STRING); 
 	}
 	
 	public void refreshModel() {
 		//populate this session with samples
-		_image = getNewImage();
+		image = getNewImage();
 	}
 	
 	protected OpModelImage getNewImage() {
-		return Oprofile.getModelData(_parentEvent.getName(), _name);
+		return Oprofile.getModelData(parentEvent.getName(), name);
 	}
 
 	public String toString(String tabs) {
-		_printTabs = tabs;
+		printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + "\n"; //$NON-NLS-1$
-		if (_image != null) {
-			s += _printTabs + "Image: "; //$NON-NLS-1$
-			s += _image.toString(_printTabs + "\t"); //$NON-NLS-1$
+		String s = name + "\n"; //$NON-NLS-1$
+		if (image != null) {
+			s += printTabs + "Image: "; //$NON-NLS-1$
+			s += image.toString(printTabs + "\t"); //$NON-NLS-1$
 		}
 		return s;
 		

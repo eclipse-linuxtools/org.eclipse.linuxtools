@@ -20,119 +20,119 @@ public class OpModelImage {
 	public static final int IMAGE_PARSE_ERROR = -1;
 	
 	//The count of all samples from this image
-	private int _count;
+	private int count;
 	
 	//the count for all dependent images -- needed?
-	private int _depcount;
+	private int depcount;
 	
 	//The name of this image (the full path, where applicable)
-	private String _name;
+	private String name;
 	
 	//The symbols profiled in this image
-	private OpModelSymbol[] _symbols;
+	private OpModelSymbol[] symbols;
 	
 	//Any dependent images on this image (usually shared libs, kernel modules)
-	private OpModelImage[] _dependents;
+	private OpModelImage[] dependents;
 	
-	private String _printTabs = "";		//for nice output //$NON-NLS-1$
+	private String printTabs = "";		//for nice output //$NON-NLS-1$
 	
 	public OpModelImage() {
-		_name = ""; //$NON-NLS-1$
-		_count = 0;
-		_depcount = 0;
-		_symbols = null;
-		_dependents = null;
+		name = ""; //$NON-NLS-1$
+		count = 0;
+		depcount = 0;
+		symbols = null;
+		dependents = null;
 	}
 	
 	public int getCount() {
-		return _count;
+		return count;
 	}
 	
 	public int getDepCount() {
-		return _depcount;
+		return depcount;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public OpModelSymbol[] getSymbols() {
-		return _symbols;
+		return symbols;
 	}
 
 	public OpModelImage[] getDependents() {
-		return _dependents;
+		return dependents;
 	}
 
 	public boolean hasDependents() {
-		return (_dependents == null || _dependents.length == 0 ? false : true);
+		return (dependents == null || dependents.length == 0 ? false : true);
 	}
 	
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
-	 * @param _count
+	 * @param count
 	 */
-	public void _setCount(int _count) {
-		this._count = _count;
+	public void setCount(int count) {
+		this.count = count;
 	}
 	
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
-	 * @param _depcount
+	 * @param depcount
 	 */
-	public void _setDepCount(int _depcount) {
-		this._depcount = _depcount;
+	public void setDepCount(int depcount) {
+		this.depcount = depcount;
 	}
 
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
-	 * @param _name
+	 * @param name
 	 */
-	public void _setName(String _name) {
-		this._name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
-	 * @param _symbols
+	 * @param symbols
 	 */
-	public void _setSymbols(OpModelSymbol[] _symbols) {
-		this._symbols = _symbols;
+	public void setSymbols(OpModelSymbol[] symbols) {
+		this.symbols = symbols;
 	}
 
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
-	 * @param _dependents
+	 * @param dependents
 	 */
-	public void _setDependents(OpModelImage[] _dependents) {
-		this._dependents = _dependents;
+	public void setDependents(OpModelImage[] dependents) {
+		this.dependents = dependents;
 	}
 
 	public String toString(String tabs) {
-		_printTabs = tabs;
+		printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + ", Count: " + _count + (_depcount !=0 ? ", Dependent Count: " + _depcount + "\n" : "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		if (_symbols != null) {
-			for (int i = 0; i < _symbols.length; i++) {
-				s += _printTabs + "Symbols: "; //$NON-NLS-1$
-				s += _symbols[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+		String s = name + ", Count: " + count + (depcount !=0 ? ", Dependent Count: " + depcount + "\n" : "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		if (symbols != null) {
+			for (int i = 0; i < symbols.length; i++) {
+				s += printTabs + "Symbols: "; //$NON-NLS-1$
+				s += symbols[i].toString(printTabs + "\t"); //$NON-NLS-1$
 			}
 		}
-		if (_dependents != null) {
-			for (int i = 0; i < _dependents.length; i++) {
-				s += _printTabs + "Dependent Image: "; //$NON-NLS-1$
-				s += _dependents[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+		if (dependents != null) {
+			for (int i = 0; i < dependents.length; i++) {
+				s += printTabs + "Dependent Image: "; //$NON-NLS-1$
+				s += dependents[i].toString(printTabs + "\t"); //$NON-NLS-1$
 			}			
 		}
 		return s;

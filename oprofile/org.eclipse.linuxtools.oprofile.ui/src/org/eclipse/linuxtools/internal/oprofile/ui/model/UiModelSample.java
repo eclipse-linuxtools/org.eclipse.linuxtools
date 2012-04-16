@@ -16,34 +16,34 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelSample implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element
-	private OpModelSample _sample;			//the node in the data model
-	private int _totalCount;				//total sample count for the parent session
+	private IUiModelElement parent;		//parent element
+	private OpModelSample sample;			//the node in the data model
+	private int totalCount;				//total sample count for the parent session
 	
 	public UiModelSample(IUiModelElement parent, OpModelSample sample, int totalCount) {
-		_parent = parent;
-		_sample = sample;
-		_totalCount = totalCount;
+		this.parent = parent;
+		this.sample = sample;
+		this.totalCount = totalCount;
 	}
 	
 	@Override
 	public String toString() {
-		double countPercentage = (double)_sample.getCount() / (double)_totalCount;
+		double countPercentage = (double)sample.getCount() / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 		
-		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(_sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public int getLine() {
-		return _sample.getLine();
+		return sample.getLine();
 	}
 	
 	public String getFile(){
-		return _sample.getFilePath();
+		return sample.getFilePath();
 	}
 
 	public double getCountPercentage() {
-		return (double)_sample.getCount() / (double)_totalCount;
+		return (double)sample.getCount() / (double)totalCount;
 	}
 	
 	/** IUiModelElement functions **/
@@ -60,7 +60,7 @@ public class UiModelSample implements IUiModelElement {
 	}
 
 	public IUiModelElement getParent() {
-		return _parent;
+		return parent;
 	}
 
 	public Image getLabelImage() {

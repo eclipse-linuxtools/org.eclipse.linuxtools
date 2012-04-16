@@ -32,16 +32,16 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
 public class Oprofile
 {
 	// Ugh. Need to know whether the module is loaded without running oprofile commands...
-	private static final String[] _OPROFILE_CPU_TYPE_FILES = {
+	private static final String[] OPROFILE_CPU_TYPE_FILES = {
 		"/dev/oprofile/cpu_type", //$NON-NLS-1$
 		"/proc/sys/dev/oprofile/cpu_type"  //$NON-NLS-1$
 	};
 	
 	// Oprofile information
-	private static OpInfo _info;
+	private static OpInfo info;
 	
 	// Project that will be profiled. 
-	public static IProject _currentProject;
+	public static IProject currentProject;
 	
 	// Make sure that oprofile is ready to go
 	static {
@@ -59,14 +59,14 @@ public class Oprofile
 	static private void initializeOprofileModule() {
 		// Check if kernel module is loaded, if not, try to load it
 		if (!isKernelModuleLoaded())
-			_initializeOprofile();
+			initializeOprofile();
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
 			OprofileCorePlugin.showErrorDialog("oprofileInit", null); //$NON-NLS-1$
 //			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
 		}  else {
-			_initializeOprofileCore();
+			initializeOprofileCore();
 		}
 	}
 	
@@ -75,8 +75,8 @@ public class Oprofile
 	// succesfully call into the oprofile wrapper library without causing it to print out
 	// a lot of warnings).
 	private static boolean isKernelModuleLoaded() {
-		for (int i = 0; i < _OPROFILE_CPU_TYPE_FILES.length; ++i) {
-			File f = new File(_OPROFILE_CPU_TYPE_FILES[i]);
+		for (int i = 0; i < OPROFILE_CPU_TYPE_FILES.length; ++i) {
+			File f = new File(OPROFILE_CPU_TYPE_FILES[i]);
 			if (f.exists())
 				return true;
 		}
@@ -85,7 +85,7 @@ public class Oprofile
 	}
 	
 	// initialize oprofile module by calling `opcontrol --init`
-	private static void _initializeOprofile() {
+	private static void initializeOprofile() {
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 		} catch (OpcontrolException e) {
@@ -95,11 +95,11 @@ public class Oprofile
 
 
 	// Initializes static data for oprofile.
-	private static void _initializeOprofileCore () {
+	private static void initializeOprofileCore () {
 		if (isKernelModuleLoaded()){
-			_info = OpInfo.getInfo();
+			info = OpInfo.getInfo();
 			
-			if (_info == null) {
+			if (info == null) {
 				throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
 			}
 		}
@@ -114,7 +114,7 @@ public class Oprofile
 		if (!isKernelModuleLoaded()){
 			return 0;
 		}
-		return _info.getNrCounters();
+		return info.getNrCounters();
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public class Oprofile
 	 * @return the cpu speed in MHz
 	 */
 	public static double getCpuFrequency() {
-		return _info.getCPUSpeed();
+		return info.getCPUSpeed();
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class Oprofile
 	 * @return the event or <code>null</code> if not found
 	 */
 	public static OpEvent findEvent(String name) {
-		return _info.findEvent(name);
+		return info.findEvent(name);
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class Oprofile
 	 * @return an array of all valid events -- NEVER RETURNS NULL!
 	 */
 	public static OpEvent[] getEvents(int num) {
-		return _info.getEvents(num);
+		return info.getEvents(num);
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class Oprofile
 	 * @return the default samples directory
 	 */
 	public static String getDefaultSamplesDirectory() {
-		return _info.getDefault(OpInfo.DEFAULT_SAMPLE_DIR);
+		return info.getDefault(OpInfo.DEFAULT_SAMPLE_DIR);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class Oprofile
 	 * @return the log file (absolute pathname)
 	 */
 	public static String getLogFile() {
-		return _info.getDefault(OpInfo.DEFAULT_LOG_FILE);
+		return info.getDefault(OpInfo.DEFAULT_LOG_FILE);
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class Oprofile
 		if (! isKernelModuleLoaded()){
 			return true;
 		}
-		return _info.getTimerMode();
+		return info.getTimerMode();
 	}
 	
 	/**
@@ -239,28 +239,28 @@ public class Oprofile
 	// Reloads oprofile modules by calling 'opcontrol --deinit' and 'opcontrol --init'
 	public static void setCurrentProject(IProject project){
 		
-		if(_currentProject == null){
-			_currentProject = project;
+		if(currentProject == null){
+			currentProject = project;
 			initializeOprofileModule();		
 		} else {
 			
-			String currentPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(_currentProject);
+			String currentPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(currentProject);
 			String newPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
 			
 			if(!currentPath.equals(newPath)){
 				try {
 					OprofileCorePlugin.getDefault().getOpcontrolProvider().deinitModule();
-					_currentProject = project;
+					currentProject = project;
 					OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 				} catch (OpcontrolException e) {
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
 				} 
-				_currentProject = project;
+				currentProject = project;
 			}
 		}		
 	}
 	
 	public static IProject getCurrentProject(){
-		return _currentProject;
+		return currentProject;
 	}
 }
