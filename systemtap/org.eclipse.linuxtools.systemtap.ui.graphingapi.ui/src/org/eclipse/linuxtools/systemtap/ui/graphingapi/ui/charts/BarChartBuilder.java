@@ -118,10 +118,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 			series.setYSeries(valy[i]);
 		}
 
-		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
-		yAxis.setRange(new Range(adapter.getYMin().doubleValue(), adapter.getYMax().doubleValue()));
-		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
-		xAxis.setRange(new Range(adapter.getXMin().doubleValue(), adapter.getXMax().doubleValue()));
+		chart.getAxisSet().adjustRange();
 		chart.redraw();
 	}
 
