@@ -14,7 +14,10 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.BlockAdapter;
@@ -23,12 +26,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
 
 import org.swtchart.IAxis;
 import org.swtchart.IBarSeries;
-import org.swtchart.ILineSeries;
-
-import org.swtchart.ILineSeries.PlotSymbolType;
-
 import org.swtchart.ISeries.SeriesType;
-
 import org.swtchart.Range;
 
 /**
@@ -46,6 +44,19 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 	protected static int ySeriesTicks;
 	protected static int maxItems;
 	protected static int viewableItems;
+
+	private static final Color[] BAR_COLORS = {
+												new Color(Display.getDefault(), 255, 0, 0),
+												new Color(Display.getDefault(), 0, 255, 0),
+												new Color(Display.getDefault(), 0, 0, 255),
+												new Color(Display.getDefault(), 255, 255, 0),
+												new Color(Display.getDefault(), 255, 0, 255),
+												new Color(Display.getDefault(), 0, 255, 255),
+												new Color(Display.getDefault(), 0, 0, 0),
+												new Color(Display.getDefault(), 64, 128, 128),
+												new Color(Display.getDefault(), 255, 165, 0),
+												new Color(Display.getDefault(), 128, 128, 128),
+												};
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.barchartbuilder";
 
     public BarChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
@@ -122,6 +133,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 				createSeries(SeriesType.BAR, adapter.getLabels()[i+1]); //$NON-NLS-1$);
 			series.setXSeries(valx);
 			series.setYSeries(valy[i]);
+			series.setBarColor(BAR_COLORS[i % BAR_COLORS.length]);
 		}
 
 		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
