@@ -78,31 +78,6 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		viewableItems = store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS);
     }
 
-	public void handleUpdateEvent() {
-		try{
-			updateDataSet();
-			repaint();
-		}catch(Exception e)
-		{
-			//	e.printStackTrace();
-		}
-	}
-
-	public synchronized void repaint() {
-		getDisplay().syncExec(new Runnable() {
-			boolean stop = false;
-			public void run() {
-				if(stop)
-					return;
-				try {
-					redraw();
-				} catch (Exception e) {
-					stop = true;
-				}
-            }
-		});
-	}
-
 	public void setScale(double scale) {
 		xSeriesTicks = (int) (((Integer)xSeriesTicks).doubleValue() * scale);
 		handleUpdateEvent();
@@ -140,5 +115,9 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		yAxis.setRange(new Range(adapter.getYMin().doubleValue(), adapter.getYMax().doubleValue()));
 		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
 		xAxis.setRange(new Range(adapter.getXMin().doubleValue(), adapter.getXMax().doubleValue()));
+	}
+
+	public void updateDataSet() {
+		super.updateDataSet();
 	}
 }

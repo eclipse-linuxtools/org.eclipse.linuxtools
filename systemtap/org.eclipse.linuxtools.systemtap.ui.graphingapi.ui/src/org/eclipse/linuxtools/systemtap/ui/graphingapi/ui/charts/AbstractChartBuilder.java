@@ -13,11 +13,9 @@
  */
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
@@ -31,7 +29,7 @@ import org.swtchart.ITitle;
  * 
  * @author Qi Liang
  */
-public abstract class AbstractChartBuilder extends Canvas implements IUpdateListener{
+public abstract class AbstractChartBuilder extends Composite implements IUpdateListener{
 
 	/**
 	 * Font name for all titles, labels, and values.
@@ -59,19 +57,6 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	 */
 	protected String title = null;
 
-	private class  Painter implements PaintListener {
-		/**
-		 * The SWT paint callback
-		 */
-		public void paintControl(PaintEvent pe)
-		{
-			if (chart == null)
-				return;
-            Composite co = (Composite) pe.getSource();
-			chart.setSize(co.getSize());
-		}
-	}
-
 	/**
 	 * Constructs one chart builder and associate it to one data set.
 	 * 
@@ -82,8 +67,8 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	public AbstractChartBuilder(IAdapter adapter, Composite parent, int style, String title) {
 		super(parent, style);
 		this.adapter = adapter;
-		this.addPaintListener(new Painter());
 		this.title = title;
+		this.setLayout(new FillLayout());
 	}
 
 	/**
@@ -175,7 +160,6 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 	}
 
 	public void setScale(double scale) {
-
 	}
 
 	protected double getDoubleValue(Object o) {
@@ -185,4 +169,29 @@ public abstract class AbstractChartBuilder extends Canvas implements IUpdateList
 			return ((Double)o).doubleValue();
 		return new Double(o.toString()).doubleValue();
 	}
+
+	public void handleUpdateEvent() {
+		try{
+			repaint();
+		}catch(Exception e)
+		{
+			//e.printStackTrace();
+		}
+	}
+
+	protected synchronized void repaint() {
+		getDisplay().syncExec(new Runnable() {
+			boolean stop = false;
+			public void run() {
+				if(stop)
+					return;
+				try {
+					updateDataSet();
+				} catch (Exception e) {
+					stop = true;
+				}
+            }
+		});
+	}
+
 }

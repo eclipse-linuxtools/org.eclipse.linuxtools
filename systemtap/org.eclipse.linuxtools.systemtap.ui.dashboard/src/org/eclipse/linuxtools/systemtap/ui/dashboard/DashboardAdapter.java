@@ -63,7 +63,7 @@ public class DashboardAdapter {
 	 * @param ds The data used to populate the graph.
 	 */
 	public DashboardAdapter(DashboardComposite parent, GraphData gd, IDataSet ds, String moduleName) {
-		folder = new CTabFolder(parent.deadComposite, SWT.NONE);
+		folder = new CTabFolder(parent.deadComposite, SWT.ALL);
 		FormLayout layout = new FormLayout();
 		layout.marginHeight = 0; layout.marginWidth = 0;
 		parent.deadComposite.setLayout(layout);
