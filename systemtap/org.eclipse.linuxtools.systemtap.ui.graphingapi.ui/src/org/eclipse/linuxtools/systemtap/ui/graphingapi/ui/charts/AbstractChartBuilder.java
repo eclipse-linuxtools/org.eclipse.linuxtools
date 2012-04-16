@@ -47,6 +47,18 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	protected static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
 	protected static final Color RED = new Color(Display.getDefault(), 255, 0, 0);
 
+	protected static final Color[] COLORS = {
+												new Color(Display.getDefault(), 255, 0, 0),
+												new Color(Display.getDefault(), 0, 255, 0),
+												new Color(Display.getDefault(), 0, 0, 255),
+												new Color(Display.getDefault(), 255, 255, 0),
+												new Color(Display.getDefault(), 255, 0, 255),
+												new Color(Display.getDefault(), 0, 255, 255),
+												new Color(Display.getDefault(), 0, 0, 0),
+												new Color(Display.getDefault(), 64, 128, 128),
+												new Color(Display.getDefault(), 255, 165, 0),
+												new Color(Display.getDefault(), 128, 128, 128),
+												};
 	/**
 	 * Chart instance.
 	 */

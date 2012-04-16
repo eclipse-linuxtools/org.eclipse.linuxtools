@@ -46,18 +46,6 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 	protected static int maxItems;
 	protected static int viewableItems;
 
-	private static final Color[] BAR_COLORS = {
-												new Color(Display.getDefault(), 255, 0, 0),
-												new Color(Display.getDefault(), 0, 255, 0),
-												new Color(Display.getDefault(), 0, 0, 255),
-												new Color(Display.getDefault(), 255, 255, 0),
-												new Color(Display.getDefault(), 255, 0, 255),
-												new Color(Display.getDefault(), 0, 255, 255),
-												new Color(Display.getDefault(), 0, 0, 0),
-												new Color(Display.getDefault(), 64, 128, 128),
-												new Color(Display.getDefault(), 255, 165, 0),
-												new Color(Display.getDefault(), 128, 128, 128),
-												};
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.barchartbuilder";
 
     public BarChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
@@ -84,42 +72,11 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		handleUpdateEvent();
 	}
 
-	/**
-	 * Builds X series.
-	 */
-	protected void buildXSeries() {
-		Object data[][] = adapter.getData();
-		if (data == null || data.length == 0)
-			return;
-
-		double[] valx = new double[data.length];
-		double[][] valy = new double[data[0].length-1][data.length];
-
-
-		for (int i = 0; i < data.length; i++)
-			for (int j = 0; j < data[i].length; j++) {
-				if (j == 0)
-					valx[i] = getDoubleValue(data[i][j]);
-				else
-					valy[j-1][i] = getDoubleValue(data[i][j]);
-			}
-
-		ISeries allSeries[] = chart.getSeriesSet().getSeries();
-		for (int i = 0; i < valy.length; i++) {
-			ISeries series;
-			if (i >= allSeries.length) {
-				series = chart.getSeriesSet().
-					createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);
-				((IBarSeries)series).setBarColor(BAR_COLORS[i % BAR_COLORS.length]);
-			} else {
-				series = chart.getSeriesSet().getSeries()[i];
-			}
-			series.setXSeries(valx);
-			series.setYSeries(valy[i]);
-		}
-
-		chart.getAxisSet().adjustRange();
-		chart.redraw();
+	protected ISeries createChartISeries(int i) {
+		IBarSeries series = (IBarSeries)chart.getSeriesSet().
+			createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);
+		series.setBarColor(COLORS[i % COLORS.length]);
+		return series;
 	}
 
 	public void updateDataSet() {
