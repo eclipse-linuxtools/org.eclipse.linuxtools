@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
 
 import org.swtchart.IAxis;
 import org.swtchart.IBarSeries;
+import org.swtchart.ISeries;
 import org.swtchart.ISeries.SeriesType;
 import org.swtchart.Range;
 
@@ -103,21 +104,28 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 					valy[j-1][i] = getDoubleValue(data[i][j]);
 			}
 
+		ISeries allSeries[] = chart.getSeriesSet().getSeries();
 		for (int i = 0; i < valy.length; i++) {
-			final IBarSeries series = (IBarSeries) chart.getSeriesSet().
-				createSeries(SeriesType.BAR, adapter.getLabels()[i+1]); //$NON-NLS-1$);
+			ISeries series;
+			if (i >= allSeries.length) {
+				series = chart.getSeriesSet().
+					createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);
+				((IBarSeries)series).setBarColor(BAR_COLORS[i % BAR_COLORS.length]);
+			} else {
+				series = chart.getSeriesSet().getSeries()[i];
+			}
 			series.setXSeries(valx);
 			series.setYSeries(valy[i]);
-			series.setBarColor(BAR_COLORS[i % BAR_COLORS.length]);
 		}
 
 		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
 		yAxis.setRange(new Range(adapter.getYMin().doubleValue(), adapter.getYMax().doubleValue()));
 		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
 		xAxis.setRange(new Range(adapter.getXMin().doubleValue(), adapter.getXMax().doubleValue()));
+		chart.redraw();
 	}
 
 	public void updateDataSet() {
-		super.updateDataSet();
+		buildXSeries();
 	}
 }
