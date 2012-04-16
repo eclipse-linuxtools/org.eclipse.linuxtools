@@ -35,6 +35,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	 * Builds X axis.
 	 */
 	protected void buildXAxis() {
+		super.buildXAxis();
 		String labels[] = adapter.getLabels();
 		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
 		xAxis.getGrid().setStyle(LineStyle.NONE);
