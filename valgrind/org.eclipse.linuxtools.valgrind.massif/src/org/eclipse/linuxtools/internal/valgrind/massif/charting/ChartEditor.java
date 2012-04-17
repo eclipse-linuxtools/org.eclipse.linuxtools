@@ -206,7 +206,7 @@ public class ChartEditor extends EditorPart {
 				}
 
 				MassifSnapshot snapshot = (MassifSnapshot) viewer.getElementAt(closest);
-				viewer.setSelection(new StructuredSelection(snapshot));
+				viewer.setSelection(new StructuredSelection(snapshot), true);
 
 				if (e.count == 2 && snapshot.isDetailed()) {
 					ChartLocationsDialog dialog = new ChartLocationsDialog(Display.getCurrent().getActiveShell());
