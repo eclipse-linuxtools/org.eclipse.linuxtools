@@ -69,9 +69,10 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		if (data == null || data.length == 0)
 			return;
 
-		int start = 0, len = Math.min(this.maxItems, data.length);
-		if (this.maxItems < data.length) {
-			start = data.length - this.maxItems;
+		int totalMaxItems = (int)Math.round(this.maxItems * scale);
+		int start = 0, len = Math.min(totalMaxItems, data.length);
+		if (totalMaxItems < data.length) {
+			start = data.length - totalMaxItems;
 		}
 
 		double[] valx = new double[len];

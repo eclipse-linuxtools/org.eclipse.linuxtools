@@ -45,10 +45,6 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 		super.createChart();
     }
 
-	public void setScale(double scale) {
-		handleUpdateEvent();
-	}
-
 	public void updateDataSet() {
 		buildXSeries();
 	}

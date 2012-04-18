@@ -43,10 +43,6 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		super.createChart();
     }
 
-	public void setScale(double scale) {
-		handleUpdateEvent();
-	}
-
 	protected ISeries createChartISeries(int i) {
 		IBarSeries series = (IBarSeries)chart.getSeriesSet().
 			createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);

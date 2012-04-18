@@ -41,6 +41,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 */
 	protected final static String FONT_NAME = "MS Sans Serif";
 	protected int maxItems;
+	protected double scale = 1.0;
 
 	/**
 	 * Provides data for chart.
@@ -181,6 +182,8 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	}
 
 	public void setScale(double scale) {
+		this.scale = scale;
+		handleUpdateEvent();
 	}
 
 	protected double getDoubleValue(Object o) {
@@ -200,7 +203,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 		}
 	}
 
-	protected synchronized void repaint() {
+	protected void repaint() {
 		getDisplay().syncExec(new Runnable() {
 			boolean stop = false;
 			public void run() {
