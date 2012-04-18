@@ -69,19 +69,23 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		if (data == null || data.length == 0)
 			return;
 
-		double[] valx = new double[data.length];
-		double[][] valy = new double[data[0].length-1][data.length];
+		int start = 0, len = Math.min(this.maxItems, data.length);
+		if (this.maxItems < data.length) {
+			start = data.length - this.maxItems;
+		}
 
-
-		for (int i = 0; i < data.length; i++)
-			for (int j = 0; j < data[i].length; j++) {
-				if (j == 0)
-					valx[i] = getDoubleValue(data[i][j]);
-				else
-					valy[j-1][i] = getDoubleValue(data[i][j]);
-			}
+		double[] valx = new double[len];
+		double[][] valy = new double[data[0].length-1][len];
 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
+		for (int i = 0; i < valx.length; i++)
+			for (int j = 0; j < data[start + i].length; j++) {
+				if (j == 0)
+					valx[i] = getDoubleValue(data[start + i][j]);
+				else
+					valy[j-1][i] = getDoubleValue(data[start + i][j]);
+			}
+
 		for (int i = 0; i < valy.length; i++) {
 			ISeries series;
 			if (i >= allSeries.length) {

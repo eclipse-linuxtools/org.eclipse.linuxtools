@@ -13,6 +13,11 @@
  */
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
@@ -35,6 +40,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 * Font name for all titles, labels, and values.
 	 */
 	protected final static String FONT_NAME = "MS Sans Serif";
+	protected int maxItems;
 
 	/**
 	 * Provides data for chart.
@@ -103,6 +109,9 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 */
 	protected void createChart() {
 		this.chart = new Chart(this, getStyle());
+		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
+		maxItems = Math.min(store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
+									store.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS));
 	}
 
 	/**
