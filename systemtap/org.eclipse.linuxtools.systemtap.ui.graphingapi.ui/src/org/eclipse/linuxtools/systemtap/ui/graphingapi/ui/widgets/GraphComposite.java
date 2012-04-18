@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget.ChartCanvas;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.swt.SWT;
@@ -199,9 +198,6 @@ public class GraphComposite extends Composite {
 	public void dispose() {
 		scaleListener = null;
 
-		if(null != canvas) canvas.dispose();
-		canvas = null;
-		
 		if(null != zoomScale) zoomScale.dispose();
 		zoomScale = null;
 		
@@ -236,7 +232,6 @@ public class GraphComposite extends Composite {
 	};
 	
 	private boolean sidebarVisible = true;
-	private ChartCanvas canvas;
 	private AbstractChartBuilder builder;
 	private Scale zoomScale;
 	public double scale;
