@@ -54,7 +54,6 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class GraphDisplaySet {
-	@SuppressWarnings("unchecked")
 	public GraphDisplaySet(Composite parent, IDataSet data) {
 		LogManager.logDebug("Start GraphSelectorView:", this);
 		LogManager.logInfo("Initializing", this);
@@ -75,7 +74,7 @@ public class GraphDisplaySet {
 		
 		builders = new ArrayList<AbstractChartBuilder>();
 	//	graphs = new ArrayList();
-		tabListeners = new ArrayList();
+		tabListeners = new ArrayList<ITabListener>();
 		LogManager.logDebug("End GraphSelectorView:", this);
 	}
 	
@@ -202,7 +201,6 @@ public class GraphDisplaySet {
 	 */
 	public class ButtonClickListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent event) {}
-		@SuppressWarnings("unchecked")
 		public void widgetSelected(SelectionEvent event) {
 			CTabFolder folder = (CTabFolder)event.getSource();
 
@@ -241,7 +239,6 @@ public class GraphDisplaySet {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
@@ -252,17 +249,17 @@ public class GraphDisplaySet {
 	
 	private void fireTabCloseEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabClosed();
+			(tabListeners.get(i)).tabClosed();
 	}
 	
 	private void fireTabOpenEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabOpened();
+			(tabListeners.get(i)).tabOpened();
 	}
 	
 	private void fireTabChangedEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabChanged();
+			(tabListeners.get(i)).tabChanged();
 	}
 
 	private int lastSelectedTab;
@@ -270,8 +267,7 @@ public class GraphDisplaySet {
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
-	@SuppressWarnings("unchecked")
-	private ArrayList tabListeners;
+	private ArrayList<ITabListener> tabListeners;
 	
 //	private ArrayList graphs;
 	private ArrayList<AbstractChartBuilder> builders;
