@@ -12,11 +12,14 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
@@ -29,6 +32,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.cdt.libhover.devhelp.DevHelpPlugin;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.PreferenceConstants;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class DevHelpTopic implements ITopic {
@@ -36,10 +41,13 @@ public class DevHelpTopic implements ITopic {
 	private String name;
 	private XPath xpath;
 	private String label;
+	private List<ITopic> subTopics;
 
 	DevHelpTopic(String name) {
 		this.name = name;
 		xpath = XPathFactory.newInstance().newXPath();
+		subTopics = new ArrayList<ITopic>();
+		label = name;
 		init();
 	}
 
@@ -69,10 +77,18 @@ public class DevHelpTopic implements ITopic {
 
 				DocumentBuilder docbuilder = docfactory.newDocumentBuilder();
 				Document docroot = docbuilder.parse(devhelpLocation.toFile());
-				
+
+				// set label
 				label = xpathEval("/book/@title", docroot);
 				if (label.equals("")) {
 					label = name;
+				}
+
+				// set subtopics
+				NodeList nodes = xpathEvalNodes("/book/chapters/sub", docroot);
+				for (int i = 0; i < nodes.getLength(); i++) {
+					Node node = nodes.item(i);
+					subTopics.add(new SimpleTopic(name, node));
 				}
 			} catch (ParserConfigurationException e) {
 				e.printStackTrace();
@@ -81,16 +97,24 @@ public class DevHelpTopic implements ITopic {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			label = name;
 		}
-
 	}
 
 	private String xpathEval(String path, Document docroot) {
 		String result = "";
 		try {
 			result = xpath.evaluate(path, docroot);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	private NodeList xpathEvalNodes(String path, Document docroot) {
+		NodeList result = null;
+		try {
+			result = (NodeList) xpath.evaluate(path, docroot,
+					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +128,7 @@ public class DevHelpTopic implements ITopic {
 
 	@Override
 	public IUAElement[] getChildren() {
-		return new IUAElement[0];
+		return getSubtopics();
 	}
 
 	@Override
@@ -120,6 +144,6 @@ public class DevHelpTopic implements ITopic {
 
 	@Override
 	public ITopic[] getSubtopics() {
-		return null;
+		return subTopics.toArray(new ITopic[subTopics.size()]);
 	}
 }
