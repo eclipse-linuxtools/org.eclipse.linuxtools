@@ -128,12 +128,15 @@ public class LibHoverPreferencePage
 		};
 		k.setUser(true);
 		k.addJobChangeListener(new IJobChangeListener() {
+			@Override
 			public void aboutToRun(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void awake(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void done(IJobChangeEvent event) {
 				Display.getDefault().syncExec(new Runnable() {
 					@Override
@@ -146,12 +149,15 @@ public class LibHoverPreferencePage
 					}
 				});
 			}
+			@Override
 			public void running(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void scheduled(IJobChangeEvent event) {
 				// TODO Auto-generated method stub	
 			}
+			@Override
 			public void sleeping(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
@@ -159,17 +165,20 @@ public class LibHoverPreferencePage
 		k.schedule();
 	}
     
+	@Override
 	protected void contributeButtons(Composite parent) {
 		((GridLayout) parent.getLayout()).numColumns++;
 		generateButton = new Button(parent, SWT.NONE);
 		generateButton.setFont(parent.getFont());
 		generateButton.setText(LibHoverMessages.getString(GENERATE));
 		generateButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				regenerate();
 			}
 		});
 		generateButton.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent event) {
 				generateButton = null;
 			}
@@ -190,6 +199,7 @@ public class LibHoverPreferencePage
 	 * of preferences. Each field editor knows how to save and
 	 * restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 		addField(
 				new LabelFieldEditor(
@@ -213,6 +223,7 @@ public class LibHoverPreferencePage
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 	

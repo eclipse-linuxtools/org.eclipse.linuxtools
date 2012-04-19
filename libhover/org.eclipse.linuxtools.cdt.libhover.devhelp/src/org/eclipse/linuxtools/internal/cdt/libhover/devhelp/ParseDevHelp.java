@@ -81,6 +81,7 @@ public class ParseDevHelp {
 				this.funcName = this.funcName.replaceAll("\\(\\)", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
+		@Override
 		public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos) {
 			if (t == HTML.Tag.A) {
 				String name = (String)(a.getAttribute(HTML.Attribute.NAME));
@@ -139,7 +140,8 @@ public class ParseDevHelp {
 			}
 		}
 		
-	    public void handleEndTag(HTML.Tag t, int pos) {
+	    @Override
+		public void handleEndTag(HTML.Tag t, int pos) {
 	    	if (begin) {
 	    		if (t == HTML.Tag.DIV) {
 	    			--divCounter;
@@ -175,7 +177,8 @@ public class ParseDevHelp {
 	    	}
 	    }
 
-	    public void handleText(char[] data, int pos) {
+	    @Override
+		public void handleText(char[] data, int pos) {
 	    	if (begin) {
 	    		if (returnType) {
 	    			returnValue = ""; //$NON-NLS-1$
@@ -286,12 +289,14 @@ public class ParseDevHelp {
 	    	return funcName;
 	    }
 	    
-	    public String toString() {
+	    @Override
+		public String toString() {
 	    	return "funcName: <" + funcName + "> returnType: <" + returnValue +
 	    	"> prototype: <" + prototype + "> description: " + description;
 	    }
 
-	    public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, int pos) {
+	    @Override
+		public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, int pos) {
 	    	
 	    }
 
@@ -392,7 +397,8 @@ public class ParseDevHelp {
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				builder.setEntityResolver(new EntityResolver()
 		        {
-		            public InputSource resolveEntity(String publicId, String systemId)
+		            @Override
+					public InputSource resolveEntity(String publicId, String systemId)
 		                throws SAXException, IOException
 		            {
 		                return new InputSource(new StringReader("")); //$NON-NLS-1$

@@ -72,36 +72,39 @@ public class DevHelpTocProvider extends AbstractTocProvider {
 	
 	@Override
 	public ITocContribution[] getTocContributions(String locale) {
-		// TODO Auto-generated method stub
         ITocContribution contribution = new ITocContribution() {
-            public String getId() {
+            @Override
+			public String getId() {
                // a way to identify our book
                return "org.eclipse.linuxtools.cdt.libhover.devhelp.toc"; //$NON-NLS-1$
             }
-            public String getCategoryId() {
+            @Override
+			public String getCategoryId() {
                // our book does not belong to any category of books
                return null;
             }
-            public boolean isPrimary() {
+            @Override
+			public boolean isPrimary() {
                // this is a primary, top-level contribution (a book)
                return true;
             }
-            public IToc getToc() {
+            @Override
+			public IToc getToc() {
             	return new IToc() {
-            		public String getLabel() {
+            		@Override
+					public String getLabel() {
             			return "Devhelp Documents"; //$NON-NLS-1$
             		}
-            		public String getHref() {
+            		@Override
+					public String getHref() {
             			return null;
             		}
             		@Override
             		public boolean isEnabled(IEvaluationContext context) {
-            			// TODO Auto-generated method stub
             			return true;
             		}
             		@Override
             		public IUAElement[] getChildren() {
-            			// TODO Auto-generated method stub
             			return getTopics();
             		}
             		@Override
@@ -140,20 +143,22 @@ public class DevHelpTocProvider extends AbstractTocProvider {
             		}
             	};
             }
-            public String getLocale() {
+            @Override
+			public String getLocale() {
             	// this provider only provides content for the en_US locale
             	return "en_US"; //$NON-NLS-1$
             }
-            public String[] getExtraDocuments() {
+            @Override
+			public String[] getExtraDocuments() {
             	// there are no extra documents associated with this book
             	return new String[0];
             }
-            public String getLinkTo() {
+            @Override
+			public String getLinkTo() {
             	return "../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#devhelpdocs";
             }
             @Override
             public String getContributorId() {
-            	// TODO Auto-generated method stub
             	return "org.eclipse.linuxtools.cdt.libhover.devhelp"; //$NON-NLS-1$
             }
         };
