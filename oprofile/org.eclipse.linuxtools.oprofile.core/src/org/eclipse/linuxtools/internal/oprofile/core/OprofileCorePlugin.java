@@ -80,9 +80,8 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Returns the OpxmlProvider registered with the plugin or throws an exception
 	 * @return the OpxmlProvider
-	 * @throws OpxmlException
 	 */
-	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
+	public IOpxmlProvider getOpxmlProvider() {
 		opxmlProvider = new LinuxOpxmlProvider();
 		return opxmlProvider;
 	}

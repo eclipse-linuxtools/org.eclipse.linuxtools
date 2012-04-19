@@ -87,8 +87,6 @@ public class OpInfo {
 				info = null;
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
-		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 		}
 		
 		return info;

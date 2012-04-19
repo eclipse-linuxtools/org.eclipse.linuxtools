@@ -184,9 +184,6 @@ public class Oprofile
 			opxml.run(null);
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
-		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
-			return null;
 		}
 		
 		return (validResult[0] == CheckEventsProcessor.EVENT_OK);
@@ -208,8 +205,6 @@ public class Oprofile
 			sessionList.toArray(events);
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
-		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 		}
 		return events;
 	}
@@ -228,9 +223,6 @@ public class Oprofile
 			opxml.run(null);
 		} catch (InvocationTargetException e) { 
 		} catch (InterruptedException e) { 
-		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
-			return null;
 		}
 
 		return image;
