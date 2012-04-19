@@ -155,7 +155,7 @@ public class DevHelpTocProvider extends AbstractTocProvider {
             }
             @Override
 			public String getLinkTo() {
-            	return "../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#devhelpdocs";
+            	return "";
             }
             @Override
             public String getContributorId() {
