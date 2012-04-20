@@ -41,6 +41,7 @@ public class OpInfoProcessor extends XMLProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#startElement(java.lang.String, org.xml.sax.Attributes, java.lang.Object)
 	 */
+	@Override
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(DEFAULTS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(defaultsProc);
@@ -55,6 +56,7 @@ public class OpInfoProcessor extends XMLProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
 	 */
+	@Override
 	public void endElement(String name, Object callData) {
 		if (name.equals(CPU_FREQUENCY_TAG)) {
 			double speed = Double.parseDouble(characters);

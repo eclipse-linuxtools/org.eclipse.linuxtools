@@ -89,6 +89,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
 			defaultEventCheck.setLayoutData(new GridData());
 			defaultEventCheck.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent se) {
 					handleEnabledToggle();
 				}
@@ -145,6 +146,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * @see ILaunchConfigurationTab#isValid(ILaunchConfiguration)
 	 */
+	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		if (getTimerMode()) {
 			return true;		//no options to check for validity
@@ -407,6 +409,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			enabledCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.enabled.button.text")); //$NON-NLS-1$
 			enabledCheck.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 			enabledCheck.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent se) {
 					counter.setEnabled(enabledCheck.getSelection());
 					internalSetEnabledState(counter.getEnabled());
@@ -448,7 +451,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			eventList.setContentProvider(new IStructuredContentProvider() {
 				public Object[] getElements(Object inputElement) {
 					OprofileCounter ctr = (OprofileCounter) inputElement;
-					return (OpEvent[]) ctr.getValidEvents();
+					return ctr.getValidEvents();
 				}
 				public void dispose() { }
 				public void inputChanged(Viewer arg0, Object arg1, Object arg2) { }
@@ -473,6 +476,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			profileKernelCheck = new Button(parent, SWT.CHECK);
 			profileKernelCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileKernel.check.text")); //$NON-NLS-1$
 			profileKernelCheck.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent se) {
 					handleProfileKernelToggle();
 				}
@@ -482,6 +486,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			profileUserCheck = new Button(parent, SWT.CHECK);
 			profileUserCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileUser.check.text")); //$NON-NLS-1$
 			profileUserCheck.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent se) {
 					handleProfileUserToggle();
 				}
@@ -771,6 +776,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 						maskButton.setText(mask.getText(i));
 						maskButton.setSelection(selected);
 						maskButton.addSelectionListener(new SelectionAdapter() {
+							@Override
 							public void widgetSelected(SelectionEvent se) {
 								handleToggle((Button)se.getSource(), maskButtonIndex);
 							}

@@ -100,7 +100,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	public static XMLProcessor getProcessor(String type) {
 		XMLProcessor processor = null;
 		
-		Class<?> handlerClass = (Class<?>) processors.get(type);
+		Class<?> handlerClass = processors.get(type);
 		if (handlerClass != null) {
 			try {
 				processor = (XMLProcessor) handlerClass.newInstance();
@@ -115,6 +115,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
+	@Override
 	public void startDocument() {
 		// Reset processor
 		processor = null;
@@ -123,12 +124,14 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
+	@Override
 	public void endDocument() {
 	}
 	
 	/**
 	 * @see org.xml.sax.ContentHandler#startElement(String, String, String, Attributes)
 	 */
+	@Override
 	public void startElement(String uri, String lName, String qName, Attributes attrs) {
 		if (processor == null) {
 			// Get processor for this event type
@@ -148,6 +151,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.ContentHandler#endElement(String, String, String)
 	 */
+	@Override
 	public void endElement(String uri, String name, String qName) {
 		// Set the accumulated characters
 		processor.characters(charactersBuffer.toString(), callData);
@@ -157,6 +161,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
 	 */
+	@Override
 	public void characters(char ch[], int start, int length) {
 		// Ignore characters which are only whitespace
 		String str = new String(ch, start, length).trim();
@@ -191,7 +196,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * @param tag the XML tag to pass to the parent processor
 	 */
 	public void pop(String tag) {
-		processor = (XMLProcessor) processorStack.pop();
+		processor = processorStack.pop();
 		processor.endElement(tag, callData);
 	}
 }

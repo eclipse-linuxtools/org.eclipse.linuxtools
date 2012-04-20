@@ -55,6 +55,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		boolean b = options.isValid();
 		// System.out.println("SetupTab isValid = " + b);
@@ -147,6 +148,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		Button button = createPushButton(p, OprofileLaunchMessages.getString("tab.global.kernelImage.browse.button.text"), null); //$NON-NLS-1$
 		final Shell shell = top.getShell();
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent sev) {
 				showFileDialog(shell);
 			}
@@ -176,6 +178,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		final Button b = new Button(parent, SWT.CHECK);
 		b.setText(label);
 		b.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent se) {
 				handleCheckSelected(b);
 			}

@@ -18,7 +18,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.internal.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.internal.oprofile.core.linux.LinuxOpxmlProvider.OpInfoRunner;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.DefaultsProcessor;
 
@@ -171,7 +170,7 @@ public class OpInfo {
 	 * @return the requested default or <code>null</code> if not known
 	 */
 	public String getDefault(String what) {
-		return (String) defaults.get(what);
+		return defaults.get(what);
 	}
 
 	/**

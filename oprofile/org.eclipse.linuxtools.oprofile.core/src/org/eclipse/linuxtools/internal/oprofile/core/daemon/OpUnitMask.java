@@ -33,7 +33,7 @@ public class OpUnitMask {
 		 * A description of the mask.
 		 */
 		public String description;
-	};
+	}
 	
 	public static final int SET_DEFAULT_MASK = -1;
 

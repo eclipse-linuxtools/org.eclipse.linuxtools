@@ -17,7 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
@@ -99,7 +99,7 @@ public class OpControlErrorHandler {
 		}
 		
 		// We have something to log
-		OprofileCorePlugin.log(Status.ERROR, NLS.bind(
+		OprofileCorePlugin.log(IStatus.ERROR, NLS.bind(
 				OprofileProperties.getString(type), "opcontrol", fullErr)); //$NON-NLS-1$
 		
 		if (error != null) {

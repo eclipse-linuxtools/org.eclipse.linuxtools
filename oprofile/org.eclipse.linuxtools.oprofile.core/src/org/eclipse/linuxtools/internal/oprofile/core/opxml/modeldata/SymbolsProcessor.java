@@ -41,6 +41,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	private SamplesProcessor samplesProcessor = new SamplesProcessor();
 	
 	
+	@Override
 	public void reset(Object callData) {
 		symbol = new OpModelSymbol();
 		symbols = new ArrayList<OpModelSymbol>();
@@ -49,6 +50,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
 	 */
+	@Override
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
 			symbol.setName(valid_string(attrs.getValue(ATTR_NAME)));
@@ -63,6 +65,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
+	@Override
 	public void endElement(String name, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
 			symbol.setSamples(samplesProcessor.getSamples());

@@ -51,6 +51,7 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * This method is called upon plug-in activation
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -58,6 +59,7 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
@@ -171,7 +173,7 @@ public class OprofileCorePlugin extends Plugin {
 	 * @param msg
 	 */
 	public static void log(int severity, String msg) {
-	      plugin.getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, null));
+	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, null));
 	}
 	
 	/**
@@ -182,7 +184,7 @@ public class OprofileCorePlugin extends Plugin {
 	 * @param cause
 	 */
 	public static void log(int severity, String msg, Throwable cause) {
-	      plugin.getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, cause));
+	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, cause));
 	}
 	
 	/**

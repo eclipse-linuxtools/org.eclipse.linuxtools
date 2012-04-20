@@ -45,6 +45,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	
 	protected ILaunchConfiguration config;
 	
+	@Override
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		this.config = config;
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
@@ -84,7 +85,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			ArrayList<String> command = new ArrayList<String>( 1 + arguments.length );
 			command.add( exePath.toOSString() );
 			command.addAll( Arrays.asList( arguments ) );
-			String[] commandArray = (String[])command.toArray( new String[command.size()] );
+			String[] commandArray = command.toArray( new String[command.size()] );
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			Process process;
 			process = execute( commandArray, getEnvironment( config ), wd, usePty );
