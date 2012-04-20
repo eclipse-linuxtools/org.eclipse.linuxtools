@@ -11,7 +11,9 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
@@ -116,7 +118,10 @@ public class LibHoverPreferencePage
 					out.writeObject(hover);
 					out.close();
 					monitor.done();
-				} catch(Exception e) {
+				} catch(FileNotFoundException e) {
+					monitor.done();
+					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+				} catch(IOException e) {
 					monitor.done();
 					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 				}
