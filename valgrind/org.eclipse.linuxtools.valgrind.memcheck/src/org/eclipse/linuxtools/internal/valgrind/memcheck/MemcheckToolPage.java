@@ -237,6 +237,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		newButton.setText(Messages.getString("MemcheckToolPage.New")); //$NON-NLS-1$
 		newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		newButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleIgnoreNewButtonPressed();
 				updateLaunchConfigurationDialog();
@@ -247,6 +248,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		removeButton.setText(Messages.getString("MemcheckToolPage.Remove")); //$NON-NLS-1$
 		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleIgnoreRemoveButtonPressed();
 				updateLaunchConfigurationDialog();

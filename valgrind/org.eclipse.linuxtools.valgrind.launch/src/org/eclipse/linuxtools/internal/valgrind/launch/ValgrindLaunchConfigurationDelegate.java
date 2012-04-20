@@ -84,6 +84,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected String launchStr;
 	protected Version valgrindVersion; // null if not used
 
+	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
 		if (m == null) {
@@ -141,7 +142,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			cmdLine.addAll(Arrays.asList(opts));
 			cmdLine.add(exePath.toOSString());
 			cmdLine.addAll(Arrays.asList(arguments));
-			String[] commandArray = (String[]) cmdLine.toArray(new String[cmdLine.size()]);
+			String[] commandArray = cmdLine.toArray(new String[cmdLine.size()]);
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			monitor.worked(1);
 			
@@ -217,7 +218,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return messages.toArray(new IValgrindMessage[messages.size()]);
 	}
 	
-	protected void createMarkers(IValgrindMessage[] messages) throws CoreException, IOException {
+	protected void createMarkers(IValgrindMessage[] messages) throws CoreException {
 		// find the topmost stack frame within the workspace to annotate with marker
 		// traverse nested errors as well
 		Stack<IValgrindMessage> messageStack = new Stack<IValgrindMessage>();
@@ -294,7 +295,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return result;
 	}
 
-	protected void setOutputPath(ILaunchConfiguration config, IPath outputPath) throws CoreException, IOException {
+	protected void setOutputPath(ILaunchConfiguration config, IPath outputPath) throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, outputPath.toPortableString());
 		wc.doSave();
@@ -320,7 +321,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return config.getName() + " [" + getPlugin().getToolName(toolID) + "] " + process.getLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	protected String[] getValgrindArgumentsArray(ILaunchConfiguration config) throws CoreException, IOException {
+	protected String[] getValgrindArgumentsArray(ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		opts.add(CommandLineConstants.OPT_TOOL + EQUALS + getPlugin().getToolName(toolID));
 		opts.add(CommandLineConstants.OPT_QUIET); // suppress uninteresting output

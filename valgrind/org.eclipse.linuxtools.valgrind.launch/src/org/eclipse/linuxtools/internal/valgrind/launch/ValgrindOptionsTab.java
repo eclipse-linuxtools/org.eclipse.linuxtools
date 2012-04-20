@@ -54,6 +54,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 import org.osgi.framework.Version;
 
@@ -378,6 +379,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		
 		Button workspaceBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Workspace"), null);  //$NON-NLS-1$
 		workspaceBrowseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 				dialog.setTitle(Messages.getString("ValgrindOptionsTab.Select_a_Resource"));  //$NON-NLS-1$
@@ -395,6 +397,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		});
 		Button fileBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.File_System"), null); //$NON-NLS-1$
 		fileBrowseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String filePath = null;
 				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
@@ -484,7 +487,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public Image getImage() {
-		return ValgrindLaunchPlugin.imageDescriptorFromPlugin(ValgrindLaunchPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage(); //$NON-NLS-1$
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindLaunchPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage(); //$NON-NLS-1$
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {

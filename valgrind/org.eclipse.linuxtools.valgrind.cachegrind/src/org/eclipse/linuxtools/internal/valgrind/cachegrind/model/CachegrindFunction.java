@@ -62,7 +62,7 @@ public class CachegrindFunction implements ICachegrindElement {
 							for (int i = 0; i < dom.size(); i++) {
 								ICElement e = dom.get(i);
 								if (e instanceof IStructure && e.getElementName().equals(structureName)) {
-									element = (IStructure) e;
+									element = e;
 								}
 							}
 						}

@@ -20,6 +20,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class ValgrindLaunchShortcut extends ProfileLaunchShortcut {
 
 
+	@Override
 	protected void setDefaultProfileAttributes(
 			ILaunchConfigurationWorkingCopy wc) throws CoreException {
 		ValgrindOptionsTab tab = new ValgrindOptionsTab();
@@ -32,6 +33,7 @@ public class ValgrindLaunchShortcut extends ProfileLaunchShortcut {
 	 * Method getValgrindLaunchConfigType.
 	 * @return ILaunchConfigurationType
 	 */
+	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
 	}

@@ -29,6 +29,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -188,7 +189,7 @@ public class CoreMessagesViewer {
 				}
 				else {
 					if (viewer.getExpandedState(element)) {
-						viewer.collapseToLevel(element, TreeViewer.ALL_LEVELS);
+						viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
 					}
 					else {
 						viewer.expandToLevel(element, 1);

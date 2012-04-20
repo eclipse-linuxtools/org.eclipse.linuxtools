@@ -103,7 +103,7 @@ public class ValgrindCoreParser {
 		}
 	}
 
-	protected IValgrindMessage getMessage(IValgrindMessage message, String line) throws IOException {
+	protected IValgrindMessage getMessage(IValgrindMessage message, String line) {
 		if (line.startsWith(AT) || line.startsWith(BY)) {
 			Object[] parsed = ValgrindParserUtils.parseFilename(line);
 			String filename = (String) parsed[0];
