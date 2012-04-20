@@ -69,8 +69,7 @@ public class DevHelpToc implements IToc {
 				}
 
 			});
-			for (int i = 0; i < files.length; ++i) {
-				IFileStore file = files[i];
+			for (IFileStore file: files) {
 				String name = file.fetchInfo().getName();
 				ITopic topic = new DevHelpTopic(name);
 				topics.add(topic);

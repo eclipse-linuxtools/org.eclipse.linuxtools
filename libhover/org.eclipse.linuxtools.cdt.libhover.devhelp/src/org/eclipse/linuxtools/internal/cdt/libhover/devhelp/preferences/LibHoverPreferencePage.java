@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -100,8 +99,7 @@ public class LibHoverPreferencePage
 				LibHoverInfo hover = p.parse(monitor);
 				// Update the devhelp library info if it is on library list
 				Collection<LibHoverLibrary> libs = LibHover.getLibraries();
-				for (Iterator<LibHoverLibrary> i = libs.iterator(); i.hasNext();) {
-					LibHoverLibrary l = i.next();
+				for (LibHoverLibrary l : libs) {
 					if (l.getName().equals("devhelp")) { //$NON-NLS-1$
 						l.setHoverinfo(hover);
 						break;
