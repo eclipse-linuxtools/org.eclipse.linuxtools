@@ -28,7 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
@@ -220,7 +220,7 @@ public class OpxmlRunner {
 				}
 				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
 				OprofileCorePlugin
-						.log(Status.ERROR,
+						.log(IStatus.ERROR,
 								NLS.bind(
 										OprofileProperties
 												.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
@@ -304,7 +304,7 @@ public class OpxmlRunner {
 				}
 				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
 					OprofileCorePlugin
-							.log(Status.ERROR,
+							.log(IStatus.ERROR,
 									NLS.bind(
 											OprofileProperties
 													.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$

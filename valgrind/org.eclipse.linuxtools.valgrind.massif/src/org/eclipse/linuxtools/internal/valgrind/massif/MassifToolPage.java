@@ -249,6 +249,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		newButton.setText(Messages.getString("MassifToolPage.New")); //$NON-NLS-1$
 		newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		newButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleAllocNewButtonPressed();
 				updateLaunchConfigurationDialog();
@@ -259,6 +260,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		removeButton.setText(Messages.getString("MassifToolPage.Remove")); //$NON-NLS-1$
 		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleAllocRemoveButtonPressed();
 				updateLaunchConfigurationDialog();
@@ -282,6 +284,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		newButton.setText(Messages.getString("MassifToolPage.New")); //$NON-NLS-1$
 		newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		newButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleIgnoreNewButtonPressed();
 				updateLaunchConfigurationDialog();
@@ -292,6 +295,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		removeButton.setText(Messages.getString("MassifToolPage.Remove")); //$NON-NLS-1$
 		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleIgnoreRemoveButtonPressed();
 				updateLaunchConfigurationDialog();

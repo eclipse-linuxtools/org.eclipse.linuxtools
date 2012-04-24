@@ -30,6 +30,10 @@ public class DevHelpContentProducer implements IHelpContentProducer {
 	@Override
 	public InputStream getInputStream(String pluginID, String href,
 			Locale locale) {
+		// Eclipse help system adds parameters to the href but this breaks our path creation so we just strip them.
+		if (href.contains("?")) {
+			href = href.substring(0, href.indexOf('?'));
+		}
 		IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
 		IPath devhelpLocation = new Path(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY)).append(href);
 		IFileSystem fs = EFS.getLocalFileSystem();
@@ -38,7 +42,7 @@ public class DevHelpContentProducer implements IHelpContentProducer {
 		try {
 			stream = localLocation.openInputStream(EFS.NONE, new NullProgressMonitor());
 		} catch (CoreException e) {
-			// do nothing and return null
+			e.printStackTrace();
 		}
 		return stream;
 	}

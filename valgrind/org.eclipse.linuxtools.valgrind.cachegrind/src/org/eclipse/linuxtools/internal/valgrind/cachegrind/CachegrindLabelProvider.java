@@ -28,6 +28,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CachegrindLabelProvider extends CellLabelProvider {
 
@@ -41,7 +42,7 @@ public class CachegrindLabelProvider extends CellLabelProvider {
 
 	protected DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
 
-	protected static final Image FUNC_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
+	protected static final Image FUNC_IMG = AbstractUIPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
 
 	@Override
 	public void update(ViewerCell cell) {

@@ -112,6 +112,7 @@ public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_CACHESIZE, cacheSizeSpinner.getSelection());
 	}
 
+	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		setErrorMessage(null);
 		

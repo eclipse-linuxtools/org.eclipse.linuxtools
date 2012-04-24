@@ -129,6 +129,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	private Button OKButton;
 	private boolean testMode = false;
 	protected String secondaryID = ""; //$NON-NLS-1$
+	private final String [] escapableChars = new String []  {"(", ")", " "}; //$NON-NLS-1$
 
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -239,6 +240,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			if (!invalid(binaryPath))
 				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,binaryPath);
 
+			outputPath = escapeSpecialCharacters(outputPath);
 			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,outputPath);
 			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments);
 			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT,generatedScript);
@@ -934,6 +936,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			 
 			ILaunchConfigurationWorkingCopy wc = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
+			binaryPath = escapeSpecialCharacters(binaryPath);
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
 			finishLaunch(name, mode, wc);
@@ -971,5 +974,20 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public String setSecondaryViewID() {
 		return ""; //$NON-NLS-1$
+	}
+
+	/**
+	 * Escapes special characters in the target string
+	 *
+	 * @param script the script to be executed by the shell.
+	 * @return the formatted string that will be executed.
+	 */
+	protected String escapeSpecialCharacters(String str) {
+		// Modify script to catch escapable characters.
+		String res = str;
+		for (int i = 0; i < escapableChars.length; i++) {
+			res = res.replace(escapableChars[i], "\\" + escapableChars[i]); //$NON-NLS-1$
+		}
+		return res;
 	}
 }

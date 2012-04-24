@@ -30,7 +30,7 @@ public class SessionsProcessor extends XMLProcessor {
 		public SessionInfo(ArrayList<OpModelEvent> list){
 			this.list = list;
 		}
-	};
+	}
 	
 	// XML tags recognized by this processor
 	public static final String SESSION_TAG = "session"; //$NON-NLS-1$
@@ -51,6 +51,7 @@ public class SessionsProcessor extends XMLProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#startElement(java.lang.String, org.xml.sax.Attributes, java.lang.Object)
 	 */
+	@Override
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SESSION_TAG)) {
 			String sessionName = valid_string(attrs.getValue(SESSION_NAME_ATTR));
@@ -67,6 +68,7 @@ public class SessionsProcessor extends XMLProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
 	 */
+	@Override
 	public void endElement(String name, Object callData) {
 		if (name.equals(SESSION_TAG)) {
 			// Got end of session -- save in session list

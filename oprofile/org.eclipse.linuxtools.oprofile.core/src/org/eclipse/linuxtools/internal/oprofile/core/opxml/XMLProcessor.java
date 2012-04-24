@@ -28,7 +28,7 @@ public class XMLProcessor {
 	 * @param callData call data for the processor (usually the result is stored here)
 	 */
 	public void reset(Object callData) {
-	};
+	}
 	
 	/**
 	 * This method is called whenever a new tag is seen in the document. By default,

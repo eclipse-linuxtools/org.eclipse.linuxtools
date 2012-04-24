@@ -16,6 +16,7 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ChartEditorInput implements IEditorInput {
 	
@@ -36,7 +37,7 @@ public class ChartEditorInput implements IEditorInput {
 	}
 
 	public ImageDescriptor getImageDescriptor() {
-		return MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif"); //$NON-NLS-1$
+		return AbstractUIPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif"); //$NON-NLS-1$
 	}
 
 	public String getName() {		

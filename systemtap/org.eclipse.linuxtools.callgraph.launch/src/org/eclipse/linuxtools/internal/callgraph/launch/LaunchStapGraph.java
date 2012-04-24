@@ -76,6 +76,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			if (wc == null)
 				wc = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
+			binaryPath = escapeSpecialCharacters(binaryPath);
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
 			

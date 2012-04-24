@@ -64,6 +64,7 @@ public abstract class AbstractDataAdapter {
 		return inp;
 	}
 	
+	@Override
 	public String toString (){
 		String ret = null;
 		Source source = new DOMSource(getDocument());

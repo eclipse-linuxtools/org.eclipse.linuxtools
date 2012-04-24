@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -28,7 +29,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotType;
@@ -57,6 +57,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
@@ -145,7 +146,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 					treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
 							.getRoot()), true);
 					treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
-							TreeViewer.ALL_LEVELS);
+							AbstractTreeViewer.ALL_LEVELS);
 				}
 			}
 		});
@@ -239,7 +240,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		};
 		chartAction.setId(CHART_ACTION);
-		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(
+		chartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
 				MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
 		chartAction.setToolTipText(Messages
 				.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
@@ -256,7 +257,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		};
 		saveChartAction.setId(SAVE_CHART_ACTION);
-		saveChartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(
+		saveChartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
 				MassifPlugin.PLUGIN_ID, "icons/chart-save.png")); //$NON-NLS-1$
 		saveChartAction.setToolTipText(Messages.getString("MassifViewPart.Save_Chart")); //$NON-NLS-1$
 		
@@ -274,7 +275,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		};
 		treeAction.setId(TREE_ACTION);
-		treeAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(
+		treeAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
 				MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
 		treeAction.setToolTipText(Messages
 				.getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
@@ -425,7 +426,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 					break;
 				case PEAK:
 				case DETAILED:
-					image = MassifPlugin
+					image = AbstractUIPlugin
 					.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
 							"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
 				}

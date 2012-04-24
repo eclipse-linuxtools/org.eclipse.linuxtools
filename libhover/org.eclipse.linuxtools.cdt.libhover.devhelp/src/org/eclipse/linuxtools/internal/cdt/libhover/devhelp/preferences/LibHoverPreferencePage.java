@@ -11,10 +11,11 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -98,8 +99,7 @@ public class LibHoverPreferencePage
 				LibHoverInfo hover = p.parse(monitor);
 				// Update the devhelp library info if it is on library list
 				Collection<LibHoverLibrary> libs = LibHover.getLibraries();
-				for (Iterator<LibHoverLibrary> i = libs.iterator(); i.hasNext();) {
-					LibHoverLibrary l = i.next();
+				for (LibHoverLibrary l : libs) {
 					if (l.getName().equals("devhelp")) { //$NON-NLS-1$
 						l.setHoverinfo(hover);
 						break;
@@ -116,7 +116,10 @@ public class LibHoverPreferencePage
 					out.writeObject(hover);
 					out.close();
 					monitor.done();
-				} catch(Exception e) {
+				} catch(FileNotFoundException e) {
+					monitor.done();
+					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+				} catch(IOException e) {
 					monitor.done();
 					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 				}
@@ -128,12 +131,15 @@ public class LibHoverPreferencePage
 		};
 		k.setUser(true);
 		k.addJobChangeListener(new IJobChangeListener() {
+			@Override
 			public void aboutToRun(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void awake(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void done(IJobChangeEvent event) {
 				Display.getDefault().syncExec(new Runnable() {
 					@Override
@@ -146,12 +152,15 @@ public class LibHoverPreferencePage
 					}
 				});
 			}
+			@Override
 			public void running(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
+			@Override
 			public void scheduled(IJobChangeEvent event) {
 				// TODO Auto-generated method stub	
 			}
+			@Override
 			public void sleeping(IJobChangeEvent event) {
 				// TODO Auto-generated method stub
 			}
@@ -159,17 +168,20 @@ public class LibHoverPreferencePage
 		k.schedule();
 	}
     
+	@Override
 	protected void contributeButtons(Composite parent) {
 		((GridLayout) parent.getLayout()).numColumns++;
 		generateButton = new Button(parent, SWT.NONE);
 		generateButton.setFont(parent.getFont());
 		generateButton.setText(LibHoverMessages.getString(GENERATE));
 		generateButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				regenerate();
 			}
 		});
 		generateButton.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent event) {
 				generateButton = null;
 			}
@@ -190,6 +202,7 @@ public class LibHoverPreferencePage
 	 * of preferences. Each field editor knows how to save and
 	 * restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 		addField(
 				new LabelFieldEditor(
@@ -213,6 +226,7 @@ public class LibHoverPreferencePage
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 	

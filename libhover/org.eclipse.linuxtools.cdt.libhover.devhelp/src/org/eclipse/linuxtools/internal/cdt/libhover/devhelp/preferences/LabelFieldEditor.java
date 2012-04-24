@@ -14,6 +14,7 @@ class LabelFieldEditor extends FieldEditor {
 		createControl(parent);
 	}
 
+	@Override
 	protected void adjustForNumColumns( int numColumns ) {
         GridData gd = new GridData();
         gd.horizontalSpan = numColumns;
@@ -24,16 +25,21 @@ class LabelFieldEditor extends FieldEditor {
         getLabelControl(parent).setLayoutData(gd);
 	}
 
+	@Override
 	protected void doFillIntoGrid( Composite parent, int numColumns ) {
 		getLabelControl(parent);
 	}
 
+	@Override
 	public int getNumberOfControls() {	return 1; }
 	/**
 	 * The label field editor is only used to present a text label on a preference page.
 	 */
+	@Override
 	protected void doLoad() {}
+	@Override
 	protected void doLoadDefault() {}
+	@Override
 	protected void doStore() {}
 }
 

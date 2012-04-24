@@ -39,11 +39,13 @@ public class DependentProcessor extends XMLProcessor {
 	//processor used for symbols of an image
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
 
+	@Override
 	public void reset(Object callData) {
 		image = new OpModelImage();
 		imageList = new ArrayList<OpModelImage>();
 	}
 
+	@Override
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
 			image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
@@ -55,6 +57,7 @@ public class DependentProcessor extends XMLProcessor {
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
 	 */
+	@Override
 	public void endElement(String name, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
 			imageList.add(image);

@@ -39,6 +39,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This is a sample new wizard. Its role is to create a new file 
@@ -68,11 +69,12 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
 	 * Adding the page to the wizard.
 	 */
 
+	@Override
 	public void addPages() {
 		page = new WizardNewFileCreationPage("newSuppressionPage", selection); //$NON-NLS-1$
 		page.setTitle(Messages.getString("NewSuppressionWizard.NewWizard_title")); //$NON-NLS-1$
 		page.setDescription(Messages.getString("NewSuppressionWizard.NewWizard_description")); //$NON-NLS-1$
-		page.setImageDescriptor(ValgrindEditorPlugin.imageDescriptorFromPlugin(ValgrindEditorPlugin.PLUGIN_ID, "icons/newsupp_wiz.png")); //$NON-NLS-1$
+		page.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindEditorPlugin.PLUGIN_ID, "icons/newsupp_wiz.png")); //$NON-NLS-1$
 		page.setFileExtension(EXT_SUPP);
 		addPage(page);
 	}
@@ -82,6 +84,7 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
 	 * the wizard. We will create an operation and run it
 	 * using wizard as execution context.
 	 */
+	@Override
 	public boolean performFinish() {
 		final String containerName = page.getContainerFullPath().toOSString();
 		final String fileName = page.getFileName();

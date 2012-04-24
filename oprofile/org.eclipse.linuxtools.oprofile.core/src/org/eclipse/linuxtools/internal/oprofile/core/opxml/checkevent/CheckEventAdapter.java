@@ -60,6 +60,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 		}
 	}
 
+	@Override
 	public void process() {
 		setReturnCode();
 		createXML();
