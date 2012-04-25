@@ -11,8 +11,25 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui;
 
-public interface IRPMUIConstants {
+/**
+ * The different types of builds.
+ */
 
-	public enum BuildType { NONE, ALL, BINARY, SOURCE}
-	
+public enum BuildType {
+	/**
+	 * Default.
+	 */
+	NONE, 
+	/**
+	 * Everything - rpmbuild -ba.
+	 */
+	ALL, 
+	/**
+	 * Binary - rpmbuild -bb.
+	 */
+	BINARY, 
+	/**
+	 * Source RPM - rpmbuild -bs.
+	 */
+	SOURCE
 }
