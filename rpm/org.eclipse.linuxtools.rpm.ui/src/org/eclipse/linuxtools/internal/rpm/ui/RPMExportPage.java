@@ -44,6 +44,11 @@ public class RPMExportPage extends WizardPage implements Listener {
 	// The currently selected RPM project
 	private RPMProject rpmProject;
 
+	/**
+	 * Creates the page for the given project.
+	 * 
+	 * @param rpmProject The project we would export.
+	 */
 	public RPMExportPage(IProject rpmProject) {
 		super(
 				Messages.getString("RPMExportPage.Export_SRPM"), //$NON-NLS-1$
@@ -62,10 +67,19 @@ public class RPMExportPage extends WizardPage implements Listener {
 		setPageComplete(true);
 	}
 
+	/**
+	 * Returns the selected project.
+	 * 
+	 * @return The selected project.
+	 */
 	public RPMProject getSelectedRPMProject() {
 		return rpmProject;
 	}
 
+	/**
+	 * Retursn what needs to be exported.
+	 * @return The export type.
+	 */
 	public BuildType getExportType() {
 		BuildType exportType = BuildType.NONE;
 		if (exportBinary.getSelection() && exportSource.getSelection()) {
