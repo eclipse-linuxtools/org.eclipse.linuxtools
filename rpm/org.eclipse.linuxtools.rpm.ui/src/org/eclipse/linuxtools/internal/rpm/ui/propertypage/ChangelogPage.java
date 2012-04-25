@@ -21,6 +21,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * Property page showing the changelog as fetched from the RPM header.
+ *
+ */
 public class ChangelogPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_CHANGELOG_ENTRIES = Messages

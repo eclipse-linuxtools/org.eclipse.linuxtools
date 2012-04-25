@@ -20,6 +20,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * Property page displaying the target (aka build arch and friends) as fetched from the RPM headers.
+ *
+ */
 public class TargetPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_ARCH = Messages

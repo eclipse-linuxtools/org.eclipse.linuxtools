@@ -21,6 +21,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * Property page displaying install scripts as fetched by RPM headers.
+ *
+ */
 public class InstallScriptsPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_PRE_INSTALL = Messages

@@ -21,6 +21,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * Property page displaying provides as fetched by RPM headers.
+ *
+ */
 public class ProvidesPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_QL = Messages

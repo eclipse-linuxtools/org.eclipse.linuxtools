@@ -21,6 +21,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * Property page displaying the generic info fetched from the RPM headers.
+ *
+ */
 public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_QI = Messages
