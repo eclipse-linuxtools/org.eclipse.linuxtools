@@ -50,16 +50,6 @@ public class TargetPage extends AbstractRPMPropertyPage {
 
 	private static final int TIME_FIELD_WIDTH = 35;
 
-	private Label rpm_archText;
-
-	private Label rpm_platformText;
-
-	private Label rpm_osText;
-
-	private Label rpm_hostText;
-
-	private Label rpm_timeText;
-
 	@Override
 	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
@@ -68,35 +58,35 @@ public class TargetPage extends AbstractRPMPropertyPage {
 
 		Label rpmArchLabel = new Label(composite, SWT.NONE);
 		rpmArchLabel.setText(RPM_ARCH);
-		rpm_archText = new Label(composite, SWT.HORIZONTAL);
+		Label rpm_archText = new Label(composite, SWT.HORIZONTAL);
 		GridData gdArch = new GridData();
 		gdArch.widthHint = convertWidthInCharsToPixels(ARCH_FIELD_WIDTH);
 		rpm_archText.setLayoutData(gdArch);
 
 		Label rpmPlatformLabel = new Label(composite, SWT.NONE);
 		rpmPlatformLabel.setText(RPM_PLATFORM);
-		rpm_platformText = new Label(composite, SWT.HORIZONTAL);
+		Label rpm_platformText = new Label(composite, SWT.HORIZONTAL);
 		GridData gdPlatform = new GridData();
 		gdPlatform.widthHint = convertWidthInCharsToPixels(PLATFORM_FIELD_WIDTH);
 		rpm_platformText.setLayoutData(gdPlatform);
 
 		Label rpmOSLabel = new Label(composite, SWT.NONE);
 		rpmOSLabel.setText(RPM_OS);
-		rpm_osText = new Label(composite, SWT.HORIZONTAL);
+		Label rpm_osText = new Label(composite, SWT.HORIZONTAL);
 		GridData gdOS = new GridData();
 		gdOS.widthHint = convertWidthInCharsToPixels(OS_FIELD_WIDTH);
 		rpm_osText.setLayoutData(gdOS);
 
 		Label rpmHostLabel = new Label(composite, SWT.NONE);
 		rpmHostLabel.setText(RPM_HOST);
-		rpm_hostText = new Label(composite, SWT.HORIZONTAL);
+		Label rpm_hostText = new Label(composite, SWT.HORIZONTAL);
 		GridData gdHost = new GridData();
 		gdHost.widthHint = convertWidthInCharsToPixels(HOST_FIELD_WIDTH);
 		rpm_hostText.setLayoutData(gdHost);
 
 		Label rpmTimeLabel = new Label(composite, SWT.NONE);
 		rpmTimeLabel.setText(RPM_TIME);
-		rpm_timeText = new Label(composite, SWT.HORIZONTAL);
+		Label rpm_timeText = new Label(composite, SWT.HORIZONTAL);
 		GridData gdTime = new GridData();
 		gdTime.widthHint = convertWidthInCharsToPixels(TIME_FIELD_WIDTH);
 		rpm_timeText.setLayoutData(gdTime);

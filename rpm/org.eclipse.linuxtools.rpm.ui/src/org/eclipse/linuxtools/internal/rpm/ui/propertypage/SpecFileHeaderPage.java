@@ -34,8 +34,6 @@ public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
 	private static final int QI_FIELD_HEIGHT = 40;
 
-	private Text rpm_qiText;
-
 	@Override
 	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
@@ -44,7 +42,7 @@ public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
 		rpmDescriptionLabel.setText(RPM_QI);
-		rpm_qiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
+		Text rpm_qiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
 				| SWT.V_SCROLL | SWT.WRAP);
 		GridData gdQI = new GridData();
 		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);

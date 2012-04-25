@@ -34,8 +34,6 @@ public class ChangelogPage extends AbstractRPMPropertyPage {
 
 	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
 
-	private Text rpm_ChangelogEntriesText;
-
 	@Override
 	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
@@ -44,7 +42,7 @@ public class ChangelogPage extends AbstractRPMPropertyPage {
 
 		Label rpmChangelogEntriesLabel = new Label(composite, SWT.NONE);
 		rpmChangelogEntriesLabel.setText(RPM_CHANGELOG_ENTRIES);
-		rpm_ChangelogEntriesText = new Text(composite, SWT.MULTI | SWT.BORDER
+		Text rpm_ChangelogEntriesText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		GridData gdEntries = new GridData();
 		gdEntries.widthHint = convertWidthInCharsToPixels(CL_ENTRIES_FIELD_WIDTH);

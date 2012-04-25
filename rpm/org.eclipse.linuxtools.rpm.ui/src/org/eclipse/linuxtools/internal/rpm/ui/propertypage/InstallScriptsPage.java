@@ -43,55 +43,38 @@ public class InstallScriptsPage extends AbstractRPMPropertyPage {
 
 	private static final int SCRIPT_ENTRIES_FIELD_HEIGHT = 20;
 
-	private Text rpm_PreInstallText;
-
-	private Text rpm_PostInstallText;
-
-	private Text rpm_PreUnInstallText;
-
-	private Text rpm_PostUnInstallText;
-
 	@Override
 	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
 
 		// RPM labels and text fields setup
+		GridData gd = new GridData();
+		gd.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
+		gd.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
 
 		Label rpmPreInstallLabel = new Label(composite, SWT.NONE);
 		rpmPreInstallLabel.setText(RPM_PRE_INSTALL);
-		rpm_PreInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
+		Text rpm_PreInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdPreInst = new GridData();
-		gdPreInst.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
-		gdPreInst.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
-		rpm_PreInstallText.setLayoutData(gdPreInst);
+		rpm_PreInstallText.setLayoutData(gd);
 
 		Label rpmPostInstallLabel = new Label(composite, SWT.NONE);
 		rpmPostInstallLabel.setText(RPM_POST_INSTALL);
-		rpm_PostInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
+		Text rpm_PostInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdPostInst = new GridData();
-		gdPostInst.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
-		gdPostInst.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
-		rpm_PostInstallText.setLayoutData(gdPostInst);
+		rpm_PostInstallText.setLayoutData(gd);
 
 		Label rpmPreUnInstallLabel = new Label(composite, SWT.NONE);
 		rpmPreUnInstallLabel.setText(RPM_PRE_UNINSTALL);
-		rpm_PreUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
+		Text rpm_PreUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdPreUnInst = new GridData();
-		gdPreUnInst.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
-		gdPreUnInst.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
-		rpm_PreUnInstallText.setLayoutData(gdPreUnInst);
+		rpm_PreUnInstallText.setLayoutData(gd);
 
 		Label rpmPostUnInstallLabel = new Label(composite, SWT.NONE);
 		rpmPostUnInstallLabel.setText(RPM_POST_UNINSTALL);
-		rpm_PostUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
+		Text rpm_PostUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdPostUnInst = new GridData();
-		gdPostUnInst.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
-		gdPostUnInst.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
-		rpm_PostUnInstallText.setLayoutData(gdPostUnInst);
+		rpm_PostUnInstallText.setLayoutData(gd);
 
 		// Populate RPM text fields
 		try {

@@ -34,8 +34,6 @@ public class ProvidesPage extends AbstractRPMPropertyPage {
 
 	private static final int QL_FIELD_HEIGHT = 40;
 
-	private Text rpm_qlText;
-
 	@Override
 	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
@@ -44,7 +42,7 @@ public class ProvidesPage extends AbstractRPMPropertyPage {
 
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
 		rpmDescriptionLabel.setText(RPM_QL);
-		rpm_qlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
+		Text rpm_qlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
 				| SWT.V_SCROLL | SWT.WRAP);
 		GridData gdQL = new GridData();
 		gdQL.widthHint = convertWidthInCharsToPixels(QL_FIELD_WIDTH);
