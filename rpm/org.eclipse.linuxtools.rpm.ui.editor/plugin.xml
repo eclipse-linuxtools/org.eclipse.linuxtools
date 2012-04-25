@@ -179,6 +179,14 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceInitializer"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+         <type
+             name="org.eclipse.linuxtools.rpm.ui.editor.highlightannotation"
+             super="org.eclipse.ui.workbench.texteditor.info">
+             <!--markerSeverity="0"-->
+         </type>
+   </extension>
    
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
