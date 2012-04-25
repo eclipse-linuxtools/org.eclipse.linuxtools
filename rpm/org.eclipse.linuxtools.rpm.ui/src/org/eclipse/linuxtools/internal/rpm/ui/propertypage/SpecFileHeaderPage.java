@@ -35,8 +35,7 @@ public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 	private static final int QI_FIELD_HEIGHT = 40;
 
 	@Override
-	protected void addFields(Composite parent) {
-		Composite composite = createDefaultComposite(parent);
+	protected void addFields(Composite composite) {
 
 		// RPM labels and text fields setup
 

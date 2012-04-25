@@ -31,28 +31,18 @@ public abstract class AbstractRPMPropertyPage extends PropertyPage {
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		composite.setLayout(layout);
-		GridData data = new GridData(GridData.FILL);
-		data.grabExcessHorizontalSpace = true;
-		composite.setLayoutData(data);
-
-		addFields(composite);
-		return composite;
-	}
-	
-	protected Composite createDefaultComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		composite.setLayout(layout);
 
 		GridData data = new GridData();
+		data.grabExcessHorizontalSpace = true;
 		data.verticalAlignment = GridData.FILL;
 		data.horizontalAlignment = GridData.FILL;
 		composite.setLayoutData(data);
 
+		addFields(composite);
 		return composite;
 	}
 	

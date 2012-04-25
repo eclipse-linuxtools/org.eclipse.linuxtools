@@ -44,8 +44,7 @@ public class InstallScriptsPage extends AbstractRPMPropertyPage {
 	private static final int SCRIPT_ENTRIES_FIELD_HEIGHT = 20;
 
 	@Override
-	protected void addFields(Composite parent) {
-		Composite composite = createDefaultComposite(parent);
+	protected void addFields(Composite composite) {
 
 		// RPM labels and text fields setup
 		GridData gd = new GridData();

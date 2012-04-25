@@ -35,8 +35,7 @@ public class ChangelogPage extends AbstractRPMPropertyPage {
 	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
 
 	@Override
-	protected void addFields(Composite parent) {
-		Composite composite = createDefaultComposite(parent);
+	protected void addFields(Composite composite) {
 
 		// RPM labels and text fields setup
 

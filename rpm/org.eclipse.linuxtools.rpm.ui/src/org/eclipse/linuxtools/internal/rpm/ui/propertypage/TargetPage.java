@@ -51,9 +51,7 @@ public class TargetPage extends AbstractRPMPropertyPage {
 	private static final int TIME_FIELD_WIDTH = 35;
 
 	@Override
-	protected void addFields(Composite parent) {
-		Composite composite = createDefaultComposite(parent);
-
+	protected void addFields(Composite composite) {
 		// RPM labels and text fields setup
 
 		Label rpmArchLabel = new Label(composite, SWT.NONE);
