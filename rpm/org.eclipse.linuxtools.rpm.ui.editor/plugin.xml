@@ -209,7 +209,7 @@
       </category>
       <wizard
             category="org.eclipse.linuxtools.rpm.ui.editor"
-            class="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.wizards.SpecfileNewWizard"
             icon="icons/rpm.gif"
             id="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
             name="%wizard.name">
