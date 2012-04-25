@@ -26,8 +26,6 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	
-	public static final String ID = "org.eclipse.linuxtools.rpm.ui"; //$NON-NLS-1$
-	
 	/**
 	 * The constructor.
 	 */

@@ -22,6 +22,7 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Job for handling rpm exports.
@@ -111,7 +112,7 @@ public class RPMExportOperation extends Job {
 							.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 					returnCode = rpmProject.buildAll(out);
 				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
 				}
 				break;
@@ -122,7 +123,7 @@ public class RPMExportOperation extends Job {
 				try {
 					returnCode = rpmProject.buildBinaryRPM(out);
 				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
 				}
 				break;
@@ -133,7 +134,7 @@ public class RPMExportOperation extends Job {
 				try {
 					returnCode = rpmProject.buildSourceRPM(out);
 				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
 				}
 				break;
@@ -141,7 +142,7 @@ public class RPMExportOperation extends Job {
 			if (returnCode != 0){
 				result = new Status(
 						IStatus.WARNING,
-						RPMUIPlugin.ID,
+						FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 						NLS.bind(
 								Messages.getString("RPMExportOperation.BadExitCode"), returnCode), null); //$NON-NLS-1$
 			}
