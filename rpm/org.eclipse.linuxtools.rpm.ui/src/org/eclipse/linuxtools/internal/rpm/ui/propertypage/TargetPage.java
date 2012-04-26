@@ -21,73 +21,41 @@ import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
- * Property page displaying the target (aka build arch and friends) as fetched from the RPM headers.
- *
+ * Property page displaying the target (aka build arch and friends) as fetched
+ * from the RPM headers.
+ * 
  */
 public class TargetPage extends AbstractRPMPropertyPage {
-
-	private static final String RPM_ARCH = Messages
-			.getString("TargetPage.Architecture"); //$NON-NLS-1$
-
-	private static final String RPM_PLATFORM = Messages
-			.getString("TargetPage.Platform"); //$NON-NLS-1$
-
-	private static final String RPM_OS = Messages.getString("TargetPage.OS"); //$NON-NLS-1$
-
-	private static final String RPM_HOST = Messages
-			.getString("TargetPage.BuildHost"); //$NON-NLS-1$
-
-	private static final String RPM_TIME = Messages
-			.getString("TargetPage.BuildTime"); //$NON-NLS-1$
-
-	private static final int ARCH_FIELD_WIDTH = 8;
-
-	private static final int PLATFORM_FIELD_WIDTH = 20;
-
-	private static final int OS_FIELD_WIDTH = 10;
-
-	private static final int HOST_FIELD_WIDTH = 40;
-
-	private static final int TIME_FIELD_WIDTH = 35;
 
 	@Override
 	protected void addFields(Composite composite) {
 		// RPM labels and text fields setup
+		GridData gd = new GridData(SWT.FILL, SWT.NONE, true, false);
 
 		Label rpmArchLabel = new Label(composite, SWT.NONE);
-		rpmArchLabel.setText(RPM_ARCH);
-		Label rpm_archText = new Label(composite, SWT.HORIZONTAL);
-		GridData gdArch = new GridData();
-		gdArch.widthHint = convertWidthInCharsToPixels(ARCH_FIELD_WIDTH);
-		rpm_archText.setLayoutData(gdArch);
+		rpmArchLabel.setText(Messages.getString("TargetPage.Architecture")); //$NON-NLS-1$
+		Label rpm_archText = new Label(composite, SWT.NONE);
+		rpm_archText.setLayoutData(gd);
 
 		Label rpmPlatformLabel = new Label(composite, SWT.NONE);
-		rpmPlatformLabel.setText(RPM_PLATFORM);
-		Label rpm_platformText = new Label(composite, SWT.HORIZONTAL);
-		GridData gdPlatform = new GridData();
-		gdPlatform.widthHint = convertWidthInCharsToPixels(PLATFORM_FIELD_WIDTH);
-		rpm_platformText.setLayoutData(gdPlatform);
+		rpmPlatformLabel.setText(Messages.getString("TargetPage.Platform")); //$NON-NLS-1$
+		Label rpm_platformText = new Label(composite, SWT.NONE);
+		rpm_platformText.setLayoutData(gd);
 
 		Label rpmOSLabel = new Label(composite, SWT.NONE);
-		rpmOSLabel.setText(RPM_OS);
-		Label rpm_osText = new Label(composite, SWT.HORIZONTAL);
-		GridData gdOS = new GridData();
-		gdOS.widthHint = convertWidthInCharsToPixels(OS_FIELD_WIDTH);
-		rpm_osText.setLayoutData(gdOS);
+		rpmOSLabel.setText(Messages.getString("TargetPage.OS")); //$NON-NLS-1$
+		Label rpm_osText = new Label(composite, SWT.NONE);
+		rpm_osText.setLayoutData(gd);
 
 		Label rpmHostLabel = new Label(composite, SWT.NONE);
-		rpmHostLabel.setText(RPM_HOST);
-		Label rpm_hostText = new Label(composite, SWT.HORIZONTAL);
-		GridData gdHost = new GridData();
-		gdHost.widthHint = convertWidthInCharsToPixels(HOST_FIELD_WIDTH);
-		rpm_hostText.setLayoutData(gdHost);
+		rpmHostLabel.setText(Messages.getString("TargetPage.BuildHost")); //$NON-NLS-1$
+		Label rpm_hostText = new Label(composite, SWT.NONE);
+		rpm_hostText.setLayoutData(gd);
 
 		Label rpmTimeLabel = new Label(composite, SWT.NONE);
-		rpmTimeLabel.setText(RPM_TIME);
-		Label rpm_timeText = new Label(composite, SWT.HORIZONTAL);
-		GridData gdTime = new GridData();
-		gdTime.widthHint = convertWidthInCharsToPixels(TIME_FIELD_WIDTH);
-		rpm_timeText.setLayoutData(gdTime);
+		rpmTimeLabel.setText(Messages.getString("TargetPage.BuildTime")); //$NON-NLS-1$
+		Label rpm_timeText = new Label(composite, SWT.NONE);
+		rpm_timeText.setLayoutData(gd);
 
 		// Populate RPM text fields
 		try {
