@@ -28,13 +28,6 @@ public class RPMProjectNature implements IProjectNature {
 
 	IProject project;
 	
-	public RPMProjectNature() {
-	}
-	
-	public RPMProjectNature(IProject project) {
-		this.project = project;
-	}
-	
 	/**
 	 * Adds the RPM project nature to a given workspace project.
 	 * @param project the project
