@@ -10,6 +10,11 @@
  ************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -18,7 +23,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
+
+
 
 /**
  * Utility class to ease creation of RPM projects.
@@ -37,7 +48,7 @@ public class RPMProjectCreator {
 	public RPMProjectCreator(RPMProjectLayout layout) {
 		this.layout = layout;
 	}
-	
+
 	/**
 	 * Creates the utility class with the default(RPMBuild) layout.
 	 */
@@ -58,22 +69,38 @@ public class RPMProjectCreator {
 			IProject project = root.getProject(projectName);
 			IProjectDescription description = ResourcesPlugin.getWorkspace()
 					.newProjectDescription(project.getName());
+			String parsedIPathString = null;
 			if (!Platform.getLocation().equals(projectPath))
-				description.setLocation(projectPath);
-			description
-					.setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
+					parsedIPathString = projectPath.toString().replaceFirst(":/", "://"); //$NON-NLS-1$ //$NON-NLS-2$
+					try {
+						description.setLocationURI(new URI(parsedIPathString));
+					} catch (URISyntaxException e) {
+						throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
+								e.getMessage(), e));
+					}
+
+
+			description.setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
 			project.create(description, monitor);
+
 			monitor.worked(10);
 			project.open(monitor);
-			if (layout.equals(RPMProjectLayout.RPMBUILD)) {
-				createDirs(monitor, project);
+			if (projectPath.toString().indexOf(':')!=-1) {
+				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
+					createDirsRemote(monitor, project, parsedIPathString);
+				}
+			} else {
+				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
+					createDirs(monitor, project);
+				}
 			}
 			latest=project;
+
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Returns the latest project created.
 	 * @return The last created project.
@@ -84,16 +111,54 @@ public class RPMProjectCreator {
 
 	private void createDirs(IProgressMonitor monitor, IProject project)
 			throws CoreException {
+
 		project.getFolder(IRPMConstants.SPECS_FOLDER).create(true, true,
 				monitor);
 		project.getFolder(IRPMConstants.SOURCES_FOLDER).create(true, true,
 				monitor);
 		IFolder buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
+
 		buildFolder.create(true, true, monitor);
 		buildFolder.setHidden(true);
 		project.getFolder(IRPMConstants.RPMS_FOLDER)
-				.create(true, true, monitor);
+		.create(true, true, monitor);
 		project.getFolder(IRPMConstants.SRPMS_FOLDER).create(true, true,
 				monitor);
 	}
+
+	private void createDirsRemote(IProgressMonitor monitor, IProject project, String parsedIPathString)
+			throws CoreException {
+		IRemoteFileProxy proxy = null;
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(new URI(parsedIPathString));
+		} catch (URISyntaxException e) {
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
+					e.getMessage(), e));
+		}
+
+		IFileStore iFileStoreSpecs = proxy.getResource(IRPMConstants.SPECS_FOLDER);
+		iFileStoreSpecs.mkdir(EFS.NONE, monitor);
+		project.getFolder(IRPMConstants.SPECS_FOLDER).create(true, true, monitor);
+
+		IFileStore iFileStoreSources = proxy.getResource(IRPMConstants.SOURCES_FOLDER);
+		iFileStoreSources.mkdir(EFS.NONE, monitor);
+		project.getFolder(IRPMConstants.SOURCES_FOLDER).create(true, true, monitor);
+
+		IFileStore iFileStoreBuild = proxy.getResource(IRPMConstants.BUILD_FOLDER);
+		iFileStoreBuild.mkdir(EFS.NONE, monitor);
+		IFolder buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
+		buildFolder.create(true, true, monitor);
+		buildFolder.setHidden(true);
+
+		IFileStore iFileStoreRPMs = proxy.getResource(IRPMConstants.RPMS_FOLDER);
+		iFileStoreRPMs.mkdir(EFS.NONE, monitor);
+		project.getFolder(IRPMConstants.RPMS_FOLDER).create(true, true, monitor);
+
+		IFileStore iFileStoreSRPMs = proxy.getResource(IRPMConstants.SRPMS_FOLDER);
+		iFileStoreSRPMs.mkdir(EFS.NONE, monitor);
+		project.getFolder(IRPMConstants.SRPMS_FOLDER).create(true, true, monitor);
+
+
+	}
+
 }

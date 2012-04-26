@@ -29,7 +29,10 @@ public class RpmlintPreVisitor implements IResourceVisitor {
 						.getFileExtension())) {
 			// we previsiting resource to be able to run rpmlint command
 			// only once. That improve drasticaly the perfs.
-			paths.add(resource.getLocation().toOSString());
+			if (resource.getLocation()==null) {
+				paths.add(resource.getLocationURI().toString());
+			} 
+			else paths.add(resource.getLocation().toOSString());
 		}
 		return true;	
 	}
