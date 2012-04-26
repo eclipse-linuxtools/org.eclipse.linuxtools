@@ -23,54 +23,40 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * Property page displaying install scripts as fetched by RPM headers.
- *
+ * 
  */
 public class InstallScriptsPage extends AbstractRPMPropertyPage {
-
-	private static final String RPM_PRE_INSTALL = Messages
-			.getString("InstallScriptsPage.PreinstallScript"); //$NON-NLS-1$
-
-	private static final String RPM_POST_INSTALL = Messages
-			.getString("InstallScriptsPage.PostinstallScript"); //$NON-NLS-1$
-
-	private static final String RPM_PRE_UNINSTALL = Messages
-			.getString("InstallScriptsPage.PreuninstallScript"); //$NON-NLS-1$
-
-	private static final String RPM_POST_UNINSTALL = Messages
-			.getString("InstallScriptsPage.PostuninstallScript"); //$NON-NLS-1$
-
-	private static final int SCRIPT_ENTRIES_FIELD_WIDTH = 80;
-
-	private static final int SCRIPT_ENTRIES_FIELD_HEIGHT = 20;
 
 	@Override
 	protected void addFields(Composite composite) {
 
 		// RPM labels and text fields setup
-		GridData gd = new GridData();
-		gd.widthHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_WIDTH);
-		gd.heightHint = convertWidthInCharsToPixels(SCRIPT_ENTRIES_FIELD_HEIGHT);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 
 		Label rpmPreInstallLabel = new Label(composite, SWT.NONE);
-		rpmPreInstallLabel.setText(RPM_PRE_INSTALL);
+		rpmPreInstallLabel.setText(Messages
+				.getString("InstallScriptsPage.PreinstallScript")); //$NON-NLS-1$
 		Text rpm_PreInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		rpm_PreInstallText.setLayoutData(gd);
 
 		Label rpmPostInstallLabel = new Label(composite, SWT.NONE);
-		rpmPostInstallLabel.setText(RPM_POST_INSTALL);
+		rpmPostInstallLabel.setText(Messages
+				.getString("InstallScriptsPage.PostinstallScript")); //$NON-NLS-1$
 		Text rpm_PostInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		rpm_PostInstallText.setLayoutData(gd);
 
 		Label rpmPreUnInstallLabel = new Label(composite, SWT.NONE);
-		rpmPreUnInstallLabel.setText(RPM_PRE_UNINSTALL);
+		rpmPreUnInstallLabel.setText(Messages
+				.getString("InstallScriptsPage.PreuninstallScript")); //$NON-NLS-1$
 		Text rpm_PreUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		rpm_PreUnInstallText.setLayoutData(gd);
 
 		Label rpmPostUnInstallLabel = new Label(composite, SWT.NONE);
-		rpmPostUnInstallLabel.setText(RPM_POST_UNINSTALL);
+		rpmPostUnInstallLabel.setText(Messages
+				.getString("InstallScriptsPage.PostuninstallScript")); //$NON-NLS-1$
 		Text rpm_PostUnInstallText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		rpm_PostUnInstallText.setLayoutData(gd);

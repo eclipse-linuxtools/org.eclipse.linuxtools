@@ -27,9 +27,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public class ProvidesPage extends AbstractRPMPropertyPage {
 
-	private static final String RPM_QL = Messages
-			.getString("ProvidesPage.Provides"); //$NON-NLS-1$
-
 	private static final int QL_FIELD_WIDTH = 80;
 
 	private static final int QL_FIELD_HEIGHT = 40;
@@ -39,7 +36,8 @@ public class ProvidesPage extends AbstractRPMPropertyPage {
 		// RPM labels and text fields setup
 
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-		rpmDescriptionLabel.setText(RPM_QL);
+		rpmDescriptionLabel.setText(Messages
+				.getString("ProvidesPage.Provides")); //$NON-NLS-1$
 		Text rpm_qlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
 				| SWT.V_SCROLL | SWT.WRAP);
 		GridData gdQL = new GridData();

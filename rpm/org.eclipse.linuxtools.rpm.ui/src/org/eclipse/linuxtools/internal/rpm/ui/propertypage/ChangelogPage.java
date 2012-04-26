@@ -27,9 +27,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public class ChangelogPage extends AbstractRPMPropertyPage {
 
-	private static final String RPM_CHANGELOG_ENTRIES = Messages
-			.getString("ChangelogPage.entries"); //$NON-NLS-1$
-
 	private static final int CL_ENTRIES_FIELD_WIDTH = 80;
 
 	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
@@ -40,7 +37,8 @@ public class ChangelogPage extends AbstractRPMPropertyPage {
 		// RPM labels and text fields setup
 
 		Label rpmChangelogEntriesLabel = new Label(composite, SWT.NONE);
-		rpmChangelogEntriesLabel.setText(RPM_CHANGELOG_ENTRIES);
+		rpmChangelogEntriesLabel.setText(Messages
+				.getString("ChangelogPage.entries")); //$NON-NLS-1$
 		Text rpm_ChangelogEntriesText = new Text(composite, SWT.MULTI | SWT.BORDER
 				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		GridData gdEntries = new GridData();
