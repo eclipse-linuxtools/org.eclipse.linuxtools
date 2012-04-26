@@ -70,14 +70,16 @@ public class RPMProjectCreator {
 			IProjectDescription description = ResourcesPlugin.getWorkspace()
 					.newProjectDescription(project.getName());
 			String parsedIPathString = null;
-			if (!Platform.getLocation().equals(projectPath))
-					parsedIPathString = projectPath.toString().replaceFirst(":/", "://"); //$NON-NLS-1$ //$NON-NLS-2$
-					try {
-						description.setLocationURI(new URI(parsedIPathString));
-					} catch (URISyntaxException e) {
-						throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-								e.getMessage(), e));
-					}
+			if (!Platform.getLocation().equals(projectPath)) {
+				parsedIPathString = projectPath.toString().replaceFirst(
+						":/", "://"); //$NON-NLS-1$ //$NON-NLS-2$
+				try {
+					description.setLocationURI(new URI(parsedIPathString));
+				} catch (URISyntaxException e) {
+					throw new CoreException(new Status(IStatus.ERROR,
+							IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+				}
+			}
 
 
 			description.setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
