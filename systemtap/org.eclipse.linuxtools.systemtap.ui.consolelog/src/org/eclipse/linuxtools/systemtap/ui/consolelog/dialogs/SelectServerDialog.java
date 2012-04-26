@@ -23,16 +23,18 @@ public class SelectServerDialog extends Dialog {
 	private Button rememberButton;
 	private Button connectButton;
 	private Button cancelButton;
+	private boolean result;
 	
 	public SelectServerDialog(Shell parent) {
 		super(parent);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void open() {
+	public boolean open() {
 		if (ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)) {
-			return;
+			return true;
 		}
+		result = false;
 		
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -110,9 +112,8 @@ public class SelectServerDialog extends Dialog {
 		cancelButton.setText("Cancel");
 		cancelButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
-				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.CANCELLED, true);
+				result = false;
 				shell.dispose();
-				
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
@@ -132,7 +133,7 @@ public class SelectServerDialog extends Dialog {
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.REMEMBER_SERVER, rememberButton.getSelection());
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.SCP_PASSWORD, passwordText.getText());
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.SCP_USER, userText.getText());
-				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.CANCELLED, false);
+				result = true;
 
 				shell.close();
 			}
@@ -141,10 +142,12 @@ public class SelectServerDialog extends Dialog {
 
 		shell.pack();
 		shell.open();
+
 		Display display = parent.getDisplay();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) display.sleep();
 		}
-		
+
+		return result;
 	}
 }

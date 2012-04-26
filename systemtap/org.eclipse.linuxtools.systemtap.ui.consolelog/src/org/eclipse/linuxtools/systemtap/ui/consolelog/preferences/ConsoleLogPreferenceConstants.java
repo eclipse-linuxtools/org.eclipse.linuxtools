@@ -21,5 +21,4 @@ public class ConsoleLogPreferenceConstants {
 	public static final String SCP_USER = "scpuser";
 	public static final String SCP_PASSWORD = "scppassword";
 	public static final String REMEMBER_SCPUSER = "rememberscpuser";
-	public static final String CANCELLED = "cancel";
 }

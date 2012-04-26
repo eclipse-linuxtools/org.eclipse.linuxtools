@@ -83,11 +83,10 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	public void run() {
 		LogManager.logDebug("Start run:", this);
 		continueRun = true;
-		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true)
-        	
-        {
-			new SelectServerDialog(fWindow.getShell()).open();
-		}
+		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+			new SelectServerDialog(fWindow.getShell()).open() == false)
+			return;
+
 		if(isValid()) {
 			 try{
 				 
@@ -260,23 +259,17 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	
 	protected boolean createClientSession()
 	{
-		
-	if (!ClientSession.isConnected())
-		{
-				new SelectServerDialog(fWindow.getShell()).open();
-		}
-		if((ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.CANCELLED))!=true)
-		{
-		subscription = new Subscription(fileName,isGuru());
-	/*	if (ClientSession.isConnected())		
-		{
-		console = ScriptConsole.getInstance(fileName, subscription);
-        console.run();
-		}*/
+		if (!ClientSession.isConnected() && new SelectServerDialog(fWindow.getShell()).open()) {
+			subscription = new Subscription(fileName,isGuru());
+			/*	if (ClientSession.isConnected())
+				{
+				console = ScriptConsole.getInstance(fileName, subscription);
+				console.run();
+				}*/
 		}		
 		return true;
 	}
-	
+
 	/**
 	 * Produces a <code>String[]</code> from the <code>ArrayList</code> passed in with stap inserted
 	 * as the first entry, and the filename as the last entry. Used to convert the arguments generated

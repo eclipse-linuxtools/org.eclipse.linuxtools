@@ -68,11 +68,9 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 	public void run() {
 		LogManager.logDebug("Start run:", this);
 		continueRun = true;
-    	if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true)
-        	
-        {
-			new SelectServerDialog(fWindow.getShell()).open();
-		}
+		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+			new SelectServerDialog(fWindow.getShell()).open() == false)
+			return;
 	
 		if(isValid()) {
 			 try{
