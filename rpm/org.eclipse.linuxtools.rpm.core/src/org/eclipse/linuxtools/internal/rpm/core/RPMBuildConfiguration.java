@@ -18,6 +18,10 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 
+/**
+ * Stores and determines the configuration to be used by rpmbuild.
+ *
+ */
 public class RPMBuildConfiguration implements IProjectConfiguration {
 	
 	private IProject project;
@@ -28,6 +32,11 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
     private IFolder sourcesFolder;
     private IFolder buildFolder;
 	
+	/**
+	 * Creates the configuration for the given project.
+	 * @param project The project to examine.
+	 * @throws CoreException If an exception occurs.
+	 */
 	public RPMBuildConfiguration(IProject project) throws CoreException {
 		this.project = project;
 		initialize();

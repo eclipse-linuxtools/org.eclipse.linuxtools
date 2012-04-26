@@ -16,6 +16,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 
+/**
+ * Visitor keeping a list of spec files only.
+ *
+ */
 public class SpecfileVisitor implements IResourceVisitor {
 
 	private ArrayList<IResource> paths = new ArrayList<IResource>();
@@ -29,6 +33,11 @@ public class SpecfileVisitor implements IResourceVisitor {
 		return true;
 	}
 
+	/**
+	 * Returns a list of all spec files found.
+	 * 
+	 * @return The found spec files.
+	 */
 	public ArrayList<IResource> getSpecFiles() {
 		return paths;
 	}

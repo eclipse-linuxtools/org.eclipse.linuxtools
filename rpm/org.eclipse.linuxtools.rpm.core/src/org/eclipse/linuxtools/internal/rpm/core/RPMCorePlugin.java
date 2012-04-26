@@ -29,6 +29,7 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
+	 * @return The bundle.
 	 */
 	public static RPMCorePlugin getDefault() {
 		return plugin;
