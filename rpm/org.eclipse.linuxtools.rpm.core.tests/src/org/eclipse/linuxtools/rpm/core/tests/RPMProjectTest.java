@@ -134,6 +134,7 @@ public class RPMProjectTest {
 		rpmProject.importSourceRPM(foo);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		rpmProject.buildPrep(bos);
+		
 
 		// Make sure we got everything in the build directory
 		IContainer builddir = rpmProject.getConfiguration().getBuildFolder();

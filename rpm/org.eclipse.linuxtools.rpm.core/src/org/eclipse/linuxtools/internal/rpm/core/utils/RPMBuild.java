@@ -87,15 +87,15 @@ public class RPMBuild {
 					rpmBuildCmd,
 					"-v", //$NON-NLS-1$
 					DEFINE, "_sourcedir " //$NON-NLS-1$
-					+ config.getBuildFolder().getLocation().toOSString() + "/" + IRPMConstants.SOURCES_FOLDER, //$NON-NLS-1$
+					+ config.getSourcesFolder().getLocation().toOSString(), 
 					DEFINE, "_srcrpmdir " + //$NON-NLS-1$
-					config.getBuildFolder().getLocation().toOSString() + "/" + IRPMConstants.SRPMS_FOLDER, //$NON-NLS-1$
+					config.getSrpmsFolder().getLocation().toOSString() , 
 					DEFINE, "_builddir " + //$NON-NLS-1$
 					config.getBuildFolder().getLocation().toOSString(),
 					DEFINE, "_rpmdir " + //$NON-NLS-1$
-					config.getBuildFolder().getLocation().toOSString() + "/" + IRPMConstants.RPMS_FOLDER, //$NON-NLS-1$
+					config.getRpmsFolder().getLocation().toOSString(),
 					DEFINE, "_specdir " + //$NON-NLS-1$
-					config.getBuildFolder().getLocation().toOSString() + "/" + IRPMConstants.SPECS_FOLDER}; //$NON-NLS-1$
+					config.getSpecsFolder().getLocation().toOSString() }; 
 			this.macroDefines = tmpMacroDefines;
 		}
 	}
