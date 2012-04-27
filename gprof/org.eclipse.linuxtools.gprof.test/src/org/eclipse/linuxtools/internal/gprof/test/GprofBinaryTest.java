@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.gprof.test;
 
 import java.io.File;
 
+import org.osgi.framework.FrameworkUtil;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -50,7 +52,7 @@ public class GprofBinaryTest extends TestCase {
 
 	public static void testValidBinary(String relativeBinaryPath) throws Exception {
 		@SuppressWarnings("unused")
-		String binary = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID , relativeBinaryPath);
+		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeBinaryPath);
 		//Assert.assertEquals(true, GprofProgramChecker.isGProfCompatible(binary));
 		// enhance coverage: testing cache
 //		new File(binary).setLastModified(System.currentTimeMillis());
@@ -60,7 +62,7 @@ public class GprofBinaryTest extends TestCase {
 
 	public static void testInvalidBinary(String relativeGmonPath) throws Exception {
 		@SuppressWarnings("unused")
-		String binary = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID , relativeGmonPath);
+		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeGmonPath);
 		//Assert.assertEquals(false, GprofProgramChecker.isGProfCompatible(binary));
 	}
 }

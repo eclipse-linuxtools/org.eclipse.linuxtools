@@ -30,6 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.hamcrest.Matcher;
+import org.osgi.framework.FrameworkUtil;
 
 public abstract class GcovTest {
 
@@ -56,13 +57,13 @@ public abstract class GcovTest {
 		treeBot.setFocus();
 		treeBot = treeBot.select(projectName);
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		InputStream is = FileLocator.openStream(Activator.getDefault().getBundle(), new Path("resource/" + projectName + "/content"), false);
+		InputStream is = FileLocator.openStream(FrameworkUtil.getBundle(GcovTest.class), new Path("resource/" + projectName + "/content"), false);
 		LineNumberReader lnr = new LineNumberReader(new InputStreamReader(is));
 		String filename;
 		while (null != (filename = lnr.readLine())) {
 			final ProgressMonitor pm = new ProgressMonitor();
 			final IFile ifile = project.getFile(filename);
-			InputStream fis = FileLocator.openStream(Activator.getDefault().getBundle(), new Path("resource/" + projectName + "/" + filename), false);
+			InputStream fis = FileLocator.openStream(FrameworkUtil.getBundle(GcovTest.class), new Path("resource/" + projectName + "/" + filename), false);
 			ifile.create(fis, true, pm);
 			bot.waitUntil(new DefaultCondition() {
 
@@ -187,7 +188,7 @@ public abstract class GcovTest {
 		bot.button("OK").click();
 		bot.waitUntil(new JobsRunning(STExportToCSVAction.EXPORT_TO_CSV_JOB_FAMILY), 3000);
 		if (testProducedReference) {
-			String ref = STJunitUtils.getAbsolutePath(Activator.PLUGIN_ID, "resource/" + projectName + "/" + type + ".csv");
+			String ref = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GcovTest.class).getSymbolicName(), "resource/" + projectName + "/" + type + ".csv");
 			STJunitUtils.compareIgnoreEOL(project.getLocation() + "/" + type + "-dump.csv", ref, false);
 		}	
 	}

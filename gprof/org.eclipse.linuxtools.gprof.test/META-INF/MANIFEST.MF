@@ -4,7 +4,6 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gprof.test
 Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: %bundleProvider
-Bundle-Activator: org.eclipse.linuxtools.internal.gprof.test.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.linuxtools.gprof;bundle-version="4.0.0",
@@ -16,5 +15,4 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.core.resources,
  org.eclipse.ui
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.internal.gprof.test;x-internal:=true
 Bundle-ActivationPolicy: lazy
