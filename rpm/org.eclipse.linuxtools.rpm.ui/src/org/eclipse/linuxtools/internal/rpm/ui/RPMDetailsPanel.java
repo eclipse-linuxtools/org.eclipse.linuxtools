@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -109,7 +110,7 @@ public class RPMDetailsPanel {
 		typeCombo.getCombo().setLayoutData(gridData);
 		typeCombo.setContentProvider(ArrayContentProvider.getInstance());
 		typeCombo.setInput(RPMProjectLayout.values());
-		typeCombo.getCombo().select(0);
+		typeCombo.setSelection(new StructuredSelection(RPMProjectLayout.RPMBUILD));
 
 	}
 
@@ -119,13 +120,8 @@ public class RPMDetailsPanel {
 	 * @return The selected project layout.
 	 */
 	public RPMProjectLayout getSelectedLayout() {
-		if (defaultSettings.getSelection()) {
-			return RPMProjectLayout.RPMBUILD;
-		} else {
-			return RPMProjectLayout.valueOf(typeCombo.getCombo().getItem(
-					typeCombo.getCombo().getSelectionIndex()));
-		}
-
+		return RPMProjectLayout.valueOf(typeCombo.getCombo().getItem(
+				typeCombo.getCombo().getSelectionIndex()));
 	}
 
 	/**
