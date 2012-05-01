@@ -30,6 +30,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
@@ -73,6 +74,53 @@ public class RPMProjectTest {
 		// Instantiate an RPMProject
 		RPMProject rpmProject = new RPMProject(testProject,
 				RPMProjectLayout.RPMBUILD);
+
+		// Find the test SRPM and install it
+		URL url = FileLocator.find(FrameworkUtil
+				.getBundle(RPMProjectTest.class), new Path(
+				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+						"helloworld-2-2.src.rpm"), null);
+		if (url == null) {
+			fail("Unable to find resource" + file_sep + "srpms" + file_sep
+					+ "helloworld-2-2.src.rpm");
+		}
+		File foo = new File(FileLocator.toFileURL(url).getPath());
+		rpmProject.importSourceRPM(foo);
+
+		// Make sure the original SRPM got copied into the workspace
+		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
+				.getFile(new Path("helloworld-2-2.src.rpm"));
+		assertTrue(srpm.exists());
+
+		// Make sure everything got installed properly
+		IFile spec = rpmProject.getConfiguration().getSpecsFolder()
+				.getFile(new Path("helloworld.spec"));
+		assertTrue(spec.exists());
+		IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
+				.getFile(new Path("helloworld-2.tar.bz2"));
+		assertTrue(sourceBall.exists());
+
+		// Make sure we got the spec file
+		IResource specFile = rpmProject.getSpecFile();
+		assertNotNull(specFile);
+
+		// Make sure the RPM nature was added
+		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
+
+		// Clean up
+		testProject.delete(true, false, monitor);
+	}
+	
+	@Test
+	public void testImportHelloWorldFlat() throws Exception {
+		// Create a project for the test
+		IProject testProject = root.getProject("testHelloWorld");
+		testProject.create(monitor);
+		testProject.open(monitor);
+
+		// Instantiate an RPMProject
+		RPMProject rpmProject = new RPMProject(testProject,
+				RPMProjectLayout.FLAT);
 
 		// Find the test SRPM and install it
 		URL url = FileLocator.find(FrameworkUtil
@@ -176,4 +224,29 @@ public class RPMProjectTest {
 
 		testProject.delete(true, false, null);
 	}
+	
+	@Test
+	public void testGetSourcesFolder() throws Exception {
+        
+        // Create a project for the test
+        IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
+        testProject.create(monitor);
+        testProject.open(monitor);
+        // Instantiate an RPMProject
+        RPMProject rpmProject = new RPMProject(testProject,
+                        RPMProjectLayout.RPMBUILD);
+        IProjectConfiguration config = rpmProject.getConfiguration();
+        String folder = config.getSourcesFolder().getLocation().toOSString();
+       
+        boolean srcFolderPath = true;
+       
+        int sourceFolder = folder.indexOf("SOURCES");
+       
+        if (sourceFolder==-1) {
+                srcFolderPath=false;
+        }
+                       
+        assertTrue(srcFolderPath);
+
+}
 }
