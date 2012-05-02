@@ -91,7 +91,7 @@
                <configuration>
                  <inputFile>${project.build.directory}/org.eclipse.linuxtools.releng-site.zip</inputFile>
                </configuration>
-               <phase>package</phase>
+               <phase>install</phase>
                <goals>
                  <goal>pack</goal>
                </goals>
@@ -102,7 +102,7 @@
                  <inputFile>${project.build.directory}/packed/org.eclipse.linuxtools.releng-site.zip</inputFile>
                  <signerInputDirectory>/home/data/httpd/download-staging.priv/technology/linuxtools</signerInputDirectory>
                </configuration>
-               <phase>package</phase>
+               <phase>install</phase>
                <goals>
                  <goal>sign</goal>
                </goals>
@@ -112,7 +112,7 @@
                <configuration>
                  <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
                </configuration>
-               <phase>package</phase>
+               <phase>install</phase>
                <goals>
                  <goal>pack</goal>
                </goals>
@@ -122,7 +122,7 @@
                <configuration>
                  <inputFile>${project.build.directory}/packed/site_assembly.zip</inputFile>
                </configuration>
-               <phase>package</phase>
+               <phase>install</phase>
                <goals>
                  <goal>fixCheckSums</goal>
                </goals>
