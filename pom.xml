@@ -123,7 +123,7 @@
         <sdk-version>4.2</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/milestones/M6</cdt-site>
         <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
-        <tcf-site>http://download.eclipse.org/tools/tcf/builds/juno/nightly/</tcf-site>
+        <tcf-site>http://download.eclipse.org/tcf/builds/juno/milestones/</tcf-site>
       </properties>
       <repositories>
         <repository>
