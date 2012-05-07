@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.linuxtools.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
-import org.eclipse.linuxtools.dataviewers.charts.actions.SaveXMLAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;
@@ -45,8 +44,6 @@ public class ChartView extends ViewPart {
 	private Composite parent;
 	
 	private SaveChartAction saveChartAction;
-	
-	private SaveXMLAction saveXMLAction;
 	
 	
 	
@@ -115,14 +112,10 @@ public class ChartView extends ViewPart {
 	
 	protected void createActions(Composite parent) {
 		saveChartAction = new SaveChartAction(getViewSite().getShell(),this);
-		saveXMLAction = new SaveXMLAction(parent);
-		//openChartAction = new OpenChartAction(getViewSite().getShell(),this);
 	}
 
 	protected void initToolBar(IToolBarManager manager) {
 		manager.add(saveChartAction);
-		manager.add(saveXMLAction);
-		//manager.add(openChartAction);
 		manager.update(true);
 	}
 
@@ -164,7 +157,6 @@ public class ChartView extends ViewPart {
 	public void  setChart(Chart chart) {
 		if (chart != null) {
 			saveChartAction.setChart(chart);
-			saveXMLAction.setChart(chart);
 			
 		} else {
 			saveChartAction.setEnabled(false);

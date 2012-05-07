@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
+import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -44,9 +45,48 @@ public class ChartFactory {
 	 * @param valField the field providing the values for the pie parts.
 	 * @return a new 3D pie chart
 	 */
-	/*public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
+	public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
 	{
-		ChartWithoutAxes cwoaPie = ChartWithoutAxesImpl.create( );
+
+		ChartView view;
+		try {
+
+			final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+			final Color GRAD = new Color(Display.getDefault(), 225, 225, 225);
+
+			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
+			PieChart chart = new PieChart(view.getParent(), SWT.NONE);
+
+			chart.setBackground(WHITE);
+			chart.setBackgroundInPlotArea(GRAD);
+
+			chart.getLegend().setPosition(SWT.RIGHT);
+
+			String [] textLabels = new String [objects.length];
+			for (int i = 0; i < objects.length; i++) {
+				textLabels[i] = nameField.getValue(objects[i]);
+			}
+
+			// data
+			for (IChartField field : valFields) {
+				double [] doubleValues = new double [objects.length];
+
+				for (int i = 0; i < objects.length; i++) {
+					Number num = field.getNumber(objects[i]);
+					double longVal = num.doubleValue();
+					doubleValues[i] = longVal;
+				}
+				chart.addPieChartSeries(textLabels, doubleValues);
+			}
+
+			chart.getAxisSet().adjustRange();
+
+			return chart;
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return null;
+		/*ChartWithoutAxes cwoaPie = ChartWithoutAxesImpl.create( );
 		cwoaPie.setSeriesThickness( 20 );
 		cwoaPie.setGridColumnCount( valFields.size());
 		cwoaPie.getBlock( ).setBackground( ColorDefinitionImpl.WHITE( ) );
@@ -112,8 +152,8 @@ public class ChartFactory {
 		}
 	
 	
-		return cwoaPie;
-	}*/
+		return cwoaPie;*/
+	}
 		
 	/** 
 	 * Produces a 2D bar chart from the input objects.
@@ -173,8 +213,6 @@ public class ChartFactory {
 			yAxis.getTick().setForeground(BLACK);
 			yAxis.getTitle().setVisible(false);
 
-			double max = -1D;
-
 			// data
 			for (IChartField field : valFields) {
 				final IBarSeries bs = (IBarSeries) chart.getSeriesSet().
@@ -185,7 +223,6 @@ public class ChartFactory {
 				for (int i = 0; i < objects.length; i++) {
 					Number num = field.getNumber(objects[i]);
 					double longVal = num.doubleValue();
-					max = longVal > max ? longVal : max;
 					doubleValues[i] = longVal;
 				}
 
