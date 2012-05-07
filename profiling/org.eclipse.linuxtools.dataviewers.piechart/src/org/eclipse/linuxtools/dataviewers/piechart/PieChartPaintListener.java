@@ -27,7 +27,7 @@ public class PieChartPaintListener implements PaintListener {
 
 	public void paintControl(PaintEvent e) {
 		int nelemSeries = 0;
-		int sumTotal = 0;
+		double sumTotal = 0;
 		double[] percentage = null;
 		double[] angle	= null;				 
     	int sweepAngle=0;
@@ -40,7 +40,7 @@ public class PieChartPaintListener implements PaintListener {
 		for(int i = 0; i < nelemSeries; i++){
 			sumTotal += series[i];			
 		}
-		float factor = 100 / sumTotal;
+		double factor = 100 / sumTotal;
 		for(int i=0; i < nelemSeries; i++) {
 	        percentage[i]= series[i] * factor;
 		    angle[i]  = (float) (percentage[i] * 3.6) ;
