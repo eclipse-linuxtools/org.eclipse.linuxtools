@@ -25,7 +25,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBu
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AreaChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.BarChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.LineChartBuilder;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.MeterChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.PieChart;
@@ -41,7 +40,6 @@ public final class GraphFactory {
 			Localization.getString("GraphFactory.BarGraph"),
 			Localization.getString("GraphFactory.AreaGraph"),
 			Localization.getString("GraphFactory.PieChart"),
-		//	Localization.getString("GraphFactory.MeterChart")
 	};
 
 	private static final String[] graphDescriptions = new String[] {
@@ -50,7 +48,6 @@ public final class GraphFactory {
 		Localization.getString("GraphFactory.BarDescription"),
 		Localization.getString("GraphFactory.AreaDescription"),
 		Localization.getString("GraphFactory.PieDescription"),
-		//Localization.getString("GraphFactory.MeterDescription")
 	};
 
 	private static final Image[] graphImages = new Image[] {
@@ -59,7 +56,6 @@ public final class GraphFactory {
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/BarGraph.gif").createImage(),
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/AreaChart.gif").createImage(),
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage(),
-		//GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/MeterChart.gif").createImage()
 	};
 
 	private static final String[] graphIDs = new String[] {
@@ -68,7 +64,6 @@ public final class GraphFactory {
 		BarChartBuilder.ID,
 		AreaChartBuilder.ID,
 		PieChartBuilder.ID,
-		//MeterChartBuilder.ID
 	};
 
 	public static String[] getAvailableGraphs(IDataSet data) {
@@ -79,12 +74,11 @@ public final class GraphFactory {
 			ids.add(AreaChartBuilder.ID);
 			ids.add(BarChartBuilder.ID);
 			ids.add(PieChartBuilder.ID);
-		//	ids.add(MeterChartBuilder.ID);
 		}
 		if(data instanceof IBlockDataSet) {
 			if(!ids.contains(BarChartBuilder.ID))
 				ids.add(BarChartBuilder.ID);
-			    ids.add(PieChartBuilder.ID);
+			ids.add(PieChartBuilder.ID);
 		}
 		
 		String[] id = new String[0];
@@ -147,40 +141,27 @@ public final class GraphFactory {
 				builder = new ScatterChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				break;
 			case 1:
-		//		g = new LineGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				builder = new LineChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				break;
 			case 2:
 			if(!(data instanceof IBlockDataSet) || (null != gd.key))
-					//g = new BarGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				{
 					builder = new BarChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				
 				}
 				else
-					//g = new BarGraph(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
 				{
 				builder = new BarChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
 				
 				}
 				break;
 			case 3:
-				//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
 						builder = new AreaChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 						break;
 			case 4:
-		//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
-				//builder = new PieChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
 				builder = new PieChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				
 				break;
-			case 5:
-				//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
-						//builder = new PieChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
-						builder = new MeterChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
-						
-						break;
-			
 		}
 		return builder;
 	}

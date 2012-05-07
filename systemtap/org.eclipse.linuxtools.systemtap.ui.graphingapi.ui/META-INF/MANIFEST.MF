@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;visibility
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
- org.eclipse.birt.chart.engine;bundle-version="2.5.0",
- org.swtchart;bundle-version="0.7.0"
+ org.swtchart,
+ org.eclipse.linuxtools.dataviewers.piechart
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -88,6 +88,9 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 		this.adapter = adapter;
 		this.title = title;
 		this.setLayout(new FillLayout());
+		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
+		maxItems = Math.min(store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
+									store.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS));
 	}
 
 	/**
@@ -110,9 +113,6 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 */
 	protected void createChart() {
 		this.chart = new Chart(this, getStyle());
-		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		maxItems = Math.min(store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
-									store.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS));
 	}
 
 	/**
