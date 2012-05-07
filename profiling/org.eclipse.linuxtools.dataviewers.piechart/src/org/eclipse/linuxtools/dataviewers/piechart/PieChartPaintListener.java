@@ -26,7 +26,19 @@ public class PieChartPaintListener implements PaintListener {
 	}
 
 	public void paintControl(PaintEvent e) {
-		double[] series = this.getPieSeriesArray();
+		GC gc = e.gc;
+		Rectangle bounds = gc.getClipping();
+		double[][] series = this.getPieSeriesArray();
+		int width = (bounds.width - bounds.x)/ series.length;
+		int x = bounds.x;
+
+		for (double s[] : series) {
+			drawPieChart(e, s, new Rectangle(x, bounds.y, width, bounds.height));
+			x += width;
+		}
+	}
+
+	private void drawPieChart(PaintEvent e, double series[], Rectangle bounds) {
 		int nelemSeries = series.length;
 		double sumTotal = 0;
 
@@ -35,12 +47,11 @@ public class PieChartPaintListener implements PaintListener {
 		}
 
 		GC gc = e.gc;
-		Rectangle bounds = gc.getClipping();		
 		gc.setLineWidth(1);
 		
 		int pieWidth = Math.min(bounds.width, bounds.height)/2;
 		if (sumTotal == 0)
-			gc.drawOval(bounds.width/3,bounds.height/4,pieWidth,pieWidth);
+			gc.drawOval(bounds.x + bounds.width/4,bounds.y + bounds.height/4,pieWidth,pieWidth);
 		else {
 			double factor = 100 / sumTotal;
 			int sweepAngle=0;
@@ -55,24 +66,28 @@ public class PieChartPaintListener implements PaintListener {
 					double angle = series[i] * factor * 3.6;
 					sweepAngle = (int) Math.round(angle);
 				}
-				gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-				gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				gc.fillArc(bounds.x + bounds.width/4, bounds.y + bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				gc.drawArc(bounds.x + bounds.width/4, bounds.y + bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
 				incrementAngle +=sweepAngle;
 				initialAngle += (-sweepAngle);
 			}
 		}
 	}
 
-	private double[] getPieSeriesArray() {
+	private double[][] getPieSeriesArray() {
 		ISeries series[] = this.chart.getSeriesSet().getSeries();
-		double result[] = new double[series.length];
+		if (series == null || series.length == 0)
+			return new double[0][0];
+		double result[][] = new double[series[0].getXSeries().length][series.length];
 
 		for (int i=0; i<result.length; i++) {
-			double d[] = series[i].getXSeries();
-			if (d != null && d.length > 0)
-				result[i] = d[0];
-			else
-				result[i] = 0;
+			for (int j=0; j<result[i].length; j++) {
+				double d[] = series[j].getXSeries();
+				if (d != null && d.length > 0)
+					result[i][j] = d[i];
+				else
+					result[i][j] = 0;
+			}
 		}
 
 		return result;

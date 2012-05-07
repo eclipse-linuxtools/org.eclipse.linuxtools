@@ -37,14 +37,37 @@ public class PieChart extends Chart {
 			super.addPaintListener(listener);
 	}	
 
+	/*
+	 * Add data to this Pie Chart. A single pie Chart will be drawn with the data provided.
+	 */
 	public void addPieChartSeries(String labels[], double val[]) {
 		for (ISeries s : this.getSeriesSet().getSeries())
 			this.getSeriesSet().deleteSeries(s.getId());
+		double newVal[][] = new double[val.length][1];
+		for (int i = 0; i< val.length; i++)
+			newVal[i][0] = val[i];
+		addPieChartSeries(labels, newVal);
+	}
+
+	/*
+	 * Add data to this Pie Chart. We'll build one pie chart for each value in the array provided.
+	 * The val matrix must have an array of an array of values.
+	 * Ex.
+	 * labels = {'a', 'b'}
+	 * val = {{1,2,3}, {4,5,6}}
+	 * This will create 3 pie charts. For the first one, 'a' will be 1 and 'b' will be 4. For the second chart
+	 * 'a' will be 2 and 'b' will be 5. For the third 'a' will be 3 and 'b' will be 6.
+	 */
+	public void addPieChartSeries(String labels[], double val[][]) {
+		for (ISeries s : this.getSeriesSet().getSeries())
+			this.getSeriesSet().deleteSeries(s.getId());
+
 		int size = Math.min(labels.length, val.length);
 		for (int i=0; i<size; i++) {
 			IBarSeries s = (IBarSeries)this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
-			double d[] = new double [1];
-			d[0] = val[i];
+			double d[] = new double [val[i].length];
+			for (int j=0; j<val[i].length; j++)
+				d[j] = val[i][j];
 			s.setXSeries(d);
 			s.setBarColor(new Color(this.getDisplay(), IColorsConstants.COLORS[i]));
 		}
