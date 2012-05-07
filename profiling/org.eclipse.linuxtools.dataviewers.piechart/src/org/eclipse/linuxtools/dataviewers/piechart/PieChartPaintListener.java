@@ -28,45 +28,35 @@ public class PieChartPaintListener implements PaintListener {
 	public void paintControl(PaintEvent e) {
 		int nelemSeries = 0;
 		double sumTotal = 0;
-		double[] percentage = null;
-		double[] angle	= null;				 
     	int sweepAngle=0;
 		int incrementAngle=0;
 		int initialAngle=90;	
 		double[] series = this.getPieSeriesArray();
 		nelemSeries = series.length;
-		percentage = new double[nelemSeries];
-		angle = new double[nelemSeries];
 		for(int i = 0; i < nelemSeries; i++){
 			sumTotal += series[i];			
 		}
+
 		double factor = 100 / sumTotal;
-		for(int i=0; i < nelemSeries; i++) {
-	        percentage[i]= series[i] * factor;
-		    angle[i]  = (float) (percentage[i] * 3.6) ;
-		    	
-		}		
+
 		GC gc = e.gc;
 		Rectangle bounds = gc.getClipping();		
-		Color[] colors = new Color[nelemSeries];
 		int pieWidth = Math.min(bounds.width, bounds.height)/2;
 		gc.setLineWidth(1);
 		
 		for (int i=0; i < nelemSeries; i++) {
-			colors[i] = new Color(e.display, IColorsConstants.COLORS[i]);	
-			
-			sweepAngle = (int) Math.round(angle[i]);
-		    gc.setBackground(colors[i]);
-		     
-		     if (i==(nelemSeries-1)){
-		    	 sweepAngle = 360 - incrementAngle;
-		    	gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-		    	gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));			    	
-		     }
-		   gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-		   gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
- 		   incrementAngle +=sweepAngle;
-		   initialAngle += (-sweepAngle);
+			gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
+
+			if (i==(nelemSeries-1))
+				sweepAngle = 360 - incrementAngle;
+			else {
+				double angle = series[i] * factor * 3.6;
+				sweepAngle = (int) Math.round(angle);
+			}
+			gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+			gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+			incrementAngle +=sweepAngle;
+			initialAngle += (-sweepAngle);
 		}
 	}
 
