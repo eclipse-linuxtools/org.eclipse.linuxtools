@@ -50,8 +50,10 @@ public class PieChartPaintListener implements PaintListener {
 		gc.setLineWidth(1);
 		
 		int pieWidth = Math.min(bounds.width, bounds.height)/2;
+		int pieX = bounds.x + (bounds.width - pieWidth)/2;
+		int pieY = bounds.y + (bounds.height - pieWidth)/2;
 		if (sumTotal == 0)
-			gc.drawOval(bounds.x + bounds.width/4,bounds.y + bounds.height/4,pieWidth,pieWidth);
+			gc.drawOval(pieX, pieY,pieWidth,pieWidth);
 		else {
 			double factor = 100 / sumTotal;
 			int sweepAngle=0;
@@ -66,8 +68,8 @@ public class PieChartPaintListener implements PaintListener {
 					double angle = series[i] * factor * 3.6;
 					sweepAngle = (int) Math.round(angle);
 				}
-				gc.fillArc(bounds.x + bounds.width/4, bounds.y + bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-				gc.drawArc(bounds.x + bounds.width/4, bounds.y + bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				gc.fillArc(pieX, pieY, pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				gc.drawArc(pieX, pieY, pieWidth,pieWidth,initialAngle,(-sweepAngle));
 				incrementAngle +=sweepAngle;
 				initialAngle += (-sweepAngle);
 			}
