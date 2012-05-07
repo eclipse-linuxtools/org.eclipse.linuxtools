@@ -55,4 +55,8 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 		((PieChart)this.chart).addPieChartSeries(labels, values);
 		chart.redraw();
 	}
+
+	public void updateDataSet() {
+		buildXSeries();
+	}
 }
