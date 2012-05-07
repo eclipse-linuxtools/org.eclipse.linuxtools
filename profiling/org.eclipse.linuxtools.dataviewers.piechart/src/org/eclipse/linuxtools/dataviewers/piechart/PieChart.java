@@ -38,6 +38,8 @@ public class PieChart extends Chart {
 	}	
 
 	public void addPieChartSeries(String labels[], double val[]) {
+		for (ISeries s : this.getSeriesSet().getSeries())
+			this.getSeriesSet().deleteSeries(s.getId());
 		int size = Math.min(labels.length, val.length);
 		for (int i=0; i<size; i++) {
 			IBarSeries s = (IBarSeries)this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
