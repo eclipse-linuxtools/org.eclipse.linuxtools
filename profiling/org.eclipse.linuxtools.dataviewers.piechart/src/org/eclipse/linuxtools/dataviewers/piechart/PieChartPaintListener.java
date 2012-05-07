@@ -26,37 +26,40 @@ public class PieChartPaintListener implements PaintListener {
 	}
 
 	public void paintControl(PaintEvent e) {
-		int nelemSeries = 0;
-		double sumTotal = 0;
-    	int sweepAngle=0;
-		int incrementAngle=0;
-		int initialAngle=90;	
 		double[] series = this.getPieSeriesArray();
-		nelemSeries = series.length;
-		for(int i = 0; i < nelemSeries; i++){
-			sumTotal += series[i];			
-		}
+		int nelemSeries = series.length;
+		double sumTotal = 0;
 
-		double factor = 100 / sumTotal;
+		for(int i = 0; i < nelemSeries; i++){
+			sumTotal += series[i];
+		}
 
 		GC gc = e.gc;
 		Rectangle bounds = gc.getClipping();		
-		int pieWidth = Math.min(bounds.width, bounds.height)/2;
 		gc.setLineWidth(1);
 		
-		for (int i=0; i < nelemSeries; i++) {
-			gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
+		int pieWidth = Math.min(bounds.width, bounds.height)/2;
+		if (sumTotal == 0)
+			gc.drawOval(bounds.width/3,bounds.height/4,pieWidth,pieWidth);
+		else {
+			double factor = 100 / sumTotal;
+			int sweepAngle=0;
+			int incrementAngle=0;
+			int initialAngle=90;
+			for (int i=0; i < nelemSeries; i++) {
+				gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
 
-			if (i==(nelemSeries-1))
-				sweepAngle = 360 - incrementAngle;
-			else {
-				double angle = series[i] * factor * 3.6;
-				sweepAngle = (int) Math.round(angle);
+				if (i==(nelemSeries-1))
+					sweepAngle = 360 - incrementAngle;
+				else {
+					double angle = series[i] * factor * 3.6;
+					sweepAngle = (int) Math.round(angle);
+				}
+				gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
+				incrementAngle +=sweepAngle;
+				initialAngle += (-sweepAngle);
 			}
-			gc.fillArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-			gc.drawArc(bounds.width/3,bounds.height/4,pieWidth,pieWidth,initialAngle,(-sweepAngle));
-			incrementAngle +=sweepAngle;
-			initialAngle += (-sweepAngle);
 		}
 	}
 
