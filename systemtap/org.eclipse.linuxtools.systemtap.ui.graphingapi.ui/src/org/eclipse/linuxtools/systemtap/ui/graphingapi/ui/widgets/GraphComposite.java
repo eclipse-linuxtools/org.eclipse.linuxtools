@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartWithoutAxisBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,8 +29,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-
-
 
 /**
  * A Composite type to contain a Graph object.
@@ -105,6 +104,10 @@ public class GraphComposite extends Composite {
 		//builder.setForeground(this.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		//this.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		zoomScale.addSelectionListener(scaleListener);
+
+		//The scale zoom scrool doesn't make sense for charts without axis
+		if (builder instanceof AbstractChartWithoutAxisBuilder)
+			this.configure(false);
 	}
 
 	/**
