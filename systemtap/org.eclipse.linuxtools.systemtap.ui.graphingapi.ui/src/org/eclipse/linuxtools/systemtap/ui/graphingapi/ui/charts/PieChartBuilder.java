@@ -34,7 +34,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 
 	protected void buildXSeries() {
 		Object data[][] = adapter.getData();
-		if (data == null || data.length == 0)
+		if (data == null || data.length == 0 || data[0].length == 0)
 			return;
 
 		int start = 0, len = Math.min(this.maxItems, data.length);
@@ -42,14 +42,15 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 			start = data.length - this.maxItems;
 		}
 
-		double[] values = new double[len];
+		double[][] values = new double[len][data[0].length-1];
 		String[] labels = new String[len];
 
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < labels.length; i++) {
 			if (data[i].length < 2)
 				return;
-			values[i] = getDoubleValue(data[start + i][1]);
 			labels[i] = data[start + i][0].toString();
+			for (int j = 1; j < data[start + i].length; j++)
+				values[i][j-1] = getDoubleValue(data[start + i][j]);
 		}
 
 		((PieChart)this.chart).addPieChartSeries(labels, values);
