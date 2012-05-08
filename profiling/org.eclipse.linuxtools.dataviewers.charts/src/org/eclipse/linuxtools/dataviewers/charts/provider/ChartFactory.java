@@ -10,44 +10,24 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.charts.provider;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.ChartWithAxes;
-import org.eclipse.birt.chart.model.ChartWithoutAxes;
-import org.eclipse.birt.chart.model.attribute.ActionType;
-import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.ChartDimension;
-import org.eclipse.birt.chart.model.attribute.IntersectionType;
-import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.TickStyle;
-import org.eclipse.birt.chart.model.attribute.TriggerCondition;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
-import org.eclipse.birt.chart.model.attribute.impl.GradientImpl;
-import org.eclipse.birt.chart.model.attribute.impl.TooltipValueImpl;
-import org.eclipse.birt.chart.model.component.Axis;
-import org.eclipse.birt.chart.model.component.Series;
-import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
-import org.eclipse.birt.chart.model.data.NumberDataSet;
-import org.eclipse.birt.chart.model.data.SeriesDefinition;
-import org.eclipse.birt.chart.model.data.TextDataSet;
-import org.eclipse.birt.chart.model.data.Trigger;
-import org.eclipse.birt.chart.model.data.impl.ActionImpl;
-import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
-import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.TriggerImpl;
-import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
-import org.eclipse.birt.chart.model.impl.ChartWithoutAxesImpl;
-import org.eclipse.birt.chart.model.layout.Legend;
-import org.eclipse.birt.chart.model.layout.Plot;
-import org.eclipse.birt.chart.model.type.BarSeries;
-import org.eclipse.birt.chart.model.type.PieSeries;
-import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
-import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
+import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
+import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.swtchart.Chart;
+import org.swtchart.IAxis;
+import org.swtchart.IBarSeries;
+import org.swtchart.ISeries.SeriesType;
+import org.swtchart.ITitle;
+import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart & bar chart)
@@ -67,7 +47,58 @@ public class ChartFactory {
 	 */
 	public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
 	{
-		ChartWithoutAxes cwoaPie = ChartWithoutAxesImpl.create( );
+
+		ChartView view;
+		try {
+
+			final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+			final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+			final Color GRAD = new Color(Display.getDefault(), 225, 225, 225);
+
+			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
+			PieChart chart = new PieChart(view.getParent(), SWT.NONE);
+
+			chart.setBackground(WHITE);
+			chart.setBackgroundInPlotArea(GRAD);
+
+			chart.getTitle().setText(nameField.getColumnHeaderText());
+			chart.getTitle().setForeground(BLACK);
+
+			chart.getLegend().setPosition(SWT.RIGHT);
+
+			String [] valueLabels = new String [objects.length];
+			for (int i = 0; i < objects.length; i++) {
+				valueLabels[i] = nameField.getValue(objects[i]);
+			}
+
+			/*String [] pieChartNames = new String [valFields.size()];
+			for (int i = 0; i < valFields.size(); i++) {
+				pieChartNames[i] = valFields.get(i).getColumnHeaderText();
+			}*/
+
+			// pie chart data is grouped by columns
+			// row size is the number of pie charts
+			// column size is the number of data per pie chart
+			double [][] doubleValues = new double [objects.length][valFields.size()];
+
+			// data
+			for (int i = 0; i < valFields.size(); i++) {
+				for (int j = 0; j < objects.length; j++) {
+					Number num = valFields.get(i).getNumber(objects[j]);
+					double longVal = num.doubleValue();
+					doubleValues[j][i] = longVal + 1;
+				}
+			}
+
+			chart.addPieChartSeries(valueLabels, doubleValues);
+			chart.getAxisSet().adjustRange();
+
+			return chart;
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return null;
+		/*ChartWithoutAxes cwoaPie = ChartWithoutAxesImpl.create( );
 		cwoaPie.setSeriesThickness( 20 );
 		cwoaPie.setGridColumnCount( valFields.size());
 		cwoaPie.getBlock( ).setBackground( ColorDefinitionImpl.WHITE( ) );
@@ -133,7 +164,7 @@ public class ChartFactory {
 		}
 	
 	
-		return cwoaPie;
+		return cwoaPie;*/
 	}
 		
 	/** 
@@ -148,7 +179,76 @@ public class ChartFactory {
 	
 	public static final Chart produceBarChart( Object[] objects, final ISTDataViewersField nameField, List<IChartField> valFields, String title,boolean horizontal)
 	{
-		ChartWithAxes cwaBar = ChartWithAxesImpl.create( );
+		ChartView view;
+		try {
+			
+			final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+			final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+			final Color GRAD = new Color(Display.getDefault(), 225, 225, 225);
+			
+			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
+			Chart chart = new Chart(view.getParent(), SWT.NONE);
+
+			chart.setBackground(WHITE);
+			chart.setBackgroundInPlotArea(GRAD);
+
+			chart.getTitle().setText(title);
+			chart.getTitle().setForeground(BLACK);
+
+			// this is correct (refers to orientation of x-axis, not bars)
+			if (horizontal){
+				chart.setOrientation(SWT.VERTICAL);
+			}else{
+				chart.setOrientation(SWT.HORIZONTAL);
+			}
+
+			chart.getLegend().setPosition(SWT.RIGHT);
+			
+			String [] textLabels = new String [objects.length];
+			for (int i = 0; i < objects.length; i++) {
+				textLabels[i] = nameField.getValue(objects[i]);
+			}
+			
+			// x-axis
+			IAxis xAxis = chart.getAxisSet().getXAxis(0);
+			xAxis.getGrid().setStyle(LineStyle.NONE);
+			xAxis.getTick().setForeground(BLACK);
+			ITitle xTitle = xAxis.getTitle();
+			xTitle.setForeground(BLACK);
+			xTitle.setText(nameField.getColumnHeaderText());
+			xAxis.setCategorySeries(textLabels);
+			xAxis.enableCategory(true);
+
+			// y-axis
+			IAxis yAxis = chart.getAxisSet().getYAxis(0);
+			yAxis.getGrid().setStyle(LineStyle.NONE);
+			yAxis.getTick().setForeground(BLACK);
+			yAxis.getTitle().setVisible(false);
+
+			// data
+			for (IChartField field : valFields) {
+				final IBarSeries bs = (IBarSeries) chart.getSeriesSet().
+						createSeries(SeriesType.BAR, field.getColumnHeaderText());
+				bs.setBarColor(new Color(Display.getDefault(), getRC(), getRC(), getRC()));
+				double [] doubleValues = new double [objects.length];
+
+				for (int i = 0; i < objects.length; i++) {
+					Number num = field.getNumber(objects[i]);
+					double longVal = num.doubleValue();
+					doubleValues[i] = longVal;
+				}
+
+				bs.setYSeries(doubleValues);
+			}
+
+			chart.getAxisSet().adjustRange();
+
+			return chart;
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return null;
+		/*ChartWithAxes cwaBar = ChartWithAxesImpl.create( );
 
 		// Plot
 		cwaBar.getBlock( ).setBackground( ColorDefinitionImpl.WHITE( ) );
@@ -231,7 +331,11 @@ public class ChartFactory {
 		xAxisPrimary.getSeriesDefinitions( ).add( sdX );
 		sdX.getSeries( ).add( seCategory );
 
-		return cwaBar;
+		return cwaBar;*/
+	}
+
+	private static int getRC () {
+		return (int) (Math.random() * 255);
 	}
 	
 	/**
@@ -242,10 +346,10 @@ public class ChartFactory {
 		return viewer.getAllFields()[0];
 	}
 	
-	public static void setTriggering(Series series){
+/*	public static void setTriggering(Series series){
 		//Mouse over the Serie to Show Tooltips
 		Trigger tr = TriggerImpl.create(TriggerCondition.ONMOUSEOVER_LITERAL, 
 				ActionImpl.create(ActionType.SHOW_TOOLTIP_LITERAL, TooltipValueImpl.create(200, null)));
 		series.getTriggers().add(tr);
-	}
+	}*/
 }
