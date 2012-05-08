@@ -154,9 +154,9 @@ public class SaveChartAction extends Action {
 	public void restoreState() {
 		try {
 			IDialogSettings settings = 
-				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			if (settings == null) {
-				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 				return;
 			}
 
@@ -180,9 +180,9 @@ public class SaveChartAction extends Action {
 	public void saveState() {
 		try {
 			IDialogSettings settings = 
-				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			if (settings == null) {
-				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			}
 
 			settings.put(ChartConstants.TAG_IMG_FILE_NAME, dialog.getFileName());

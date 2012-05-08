@@ -75,9 +75,9 @@ public class ChartDialog  extends Dialog {
 	public void restoreState() {
 		try {
 			IDialogSettings settings = 
-				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			if (settings == null) {
-				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 				return;
 			}
 			
@@ -103,9 +103,9 @@ public class ChartDialog  extends Dialog {
 	public void saveState() {
 		try {
 			IDialogSettings settings = 
-				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			if (settings == null) {
-				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			}
 			
 			for (int i=0; i<columnButtons.size(); i++) {
