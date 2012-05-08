@@ -63,6 +63,7 @@
     <module>org.eclipse.linuxtools.tools.launch-feature</module>
     <module>org.eclipse.linuxtools.binutils</module>
     <module>org.eclipse.linuxtools.dataviewers</module>
+    <module>org.eclipse.linuxtools.dataviewers.piechart</module>
     <module>org.eclipse.linuxtools.dataviewers.charts</module>
     <module>org.eclipse.linuxtools.dataviewers.annotatedsourceeditor</module>
     <module>org.eclipse.linuxtools.dataviewers-feature</module>

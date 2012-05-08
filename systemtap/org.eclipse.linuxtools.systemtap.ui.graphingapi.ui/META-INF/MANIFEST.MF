@@ -7,7 +7,6 @@ Bundle-Activator: org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Gr
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Export-Package: 
- org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.datadisplay,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs,
@@ -21,6 +20,7 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;visibility
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
- org.eclipse.birt.chart.engine;bundle-version="2.5.0"
+ org.swtchart,
+ org.eclipse.linuxtools.dataviewers.piechart
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

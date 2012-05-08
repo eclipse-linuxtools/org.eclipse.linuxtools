@@ -20,7 +20,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget.ChartCanvas;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.datadisplay.DataGrid;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
@@ -55,7 +54,6 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class GraphDisplaySet {
-	@SuppressWarnings("unchecked")
 	public GraphDisplaySet(Composite parent, IDataSet data) {
 		LogManager.logDebug("Start GraphSelectorView:", this);
 		LogManager.logInfo("Initializing", this);
@@ -74,9 +72,9 @@ public class GraphDisplaySet {
 	//	}
 		createPartControl(parent);
 		
-		builders = new ArrayList();
+		builders = new ArrayList<AbstractChartBuilder>();
 	//	graphs = new ArrayList();
-		tabListeners = new ArrayList();
+		tabListeners = new ArrayList<ITabListener>();
 		LogManager.logDebug("End GraphSelectorView:", this);
 	}
 	
@@ -126,7 +124,7 @@ public class GraphDisplaySet {
 			public void close(CTabFolderEvent e) {
 				int selected = folder.indexOf((CTabItem)e.item)-2;
 				if(null != updater)
-					updater.removeUpdateListener((AbstractChartBuilder)builders.get(selected));
+					updater.removeUpdateListener(builders.get(selected));
 				builders.remove(selected);
 				fireTabCloseEvent();
 			}
@@ -165,10 +163,10 @@ public class GraphDisplaySet {
 	 * Finds the graph that is open in the current tab
 	 * @return The graph that is currently visible on the screen
 	 */
-	public ChartCanvas getActiveGraph() {
+	public AbstractChartBuilder getActiveGraph() {
 		if(0 == builders.size() || folder.getSelectionIndex() < 2)
 			return null;
-		return (ChartCanvas)builders.get(folder.getSelectionIndex()-2);
+		return builders.get(folder.getSelectionIndex()-2);
 	}
 	
 	public void setFocus() {}
@@ -203,7 +201,6 @@ public class GraphDisplaySet {
 	 */
 	public class ButtonClickListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent event) {}
-		@SuppressWarnings("unchecked")
 		public void widgetSelected(SelectionEvent event) {
 			CTabFolder folder = (CTabFolder)event.getSource();
 
@@ -242,7 +239,6 @@ public class GraphDisplaySet {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
@@ -253,17 +249,17 @@ public class GraphDisplaySet {
 	
 	private void fireTabCloseEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabClosed();
+			(tabListeners.get(i)).tabClosed();
 	}
 	
 	private void fireTabOpenEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabOpened();
+			(tabListeners.get(i)).tabOpened();
 	}
 	
 	private void fireTabChangedEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabChanged();
+			(tabListeners.get(i)).tabChanged();
 	}
 
 	private int lastSelectedTab;
@@ -271,10 +267,8 @@ public class GraphDisplaySet {
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
-	@SuppressWarnings("unchecked")
-	private ArrayList tabListeners;
+	private ArrayList<ITabListener> tabListeners;
 	
 //	private ArrayList graphs;
-	@SuppressWarnings("unchecked")
-	private ArrayList builders;
+	private ArrayList<AbstractChartBuilder> builders;
 }
