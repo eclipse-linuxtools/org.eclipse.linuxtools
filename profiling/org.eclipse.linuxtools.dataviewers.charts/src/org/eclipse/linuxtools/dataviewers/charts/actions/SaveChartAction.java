@@ -23,7 +23,6 @@ import org.eclipse.linuxtools.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.dataviewers.charts.ChartConstants;
 import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;

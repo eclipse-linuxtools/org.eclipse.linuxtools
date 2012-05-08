@@ -52,6 +52,7 @@ public class ChartFactory {
 		try {
 
 			final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
+			final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
 			final Color GRAD = new Color(Display.getDefault(), 225, 225, 225);
 
 			view = (ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ChartView.VIEW_ID, ""+(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
@@ -60,25 +61,36 @@ public class ChartFactory {
 			chart.setBackground(WHITE);
 			chart.setBackgroundInPlotArea(GRAD);
 
+			chart.getTitle().setText(nameField.getColumnHeaderText());
+			chart.getTitle().setForeground(BLACK);
+
 			chart.getLegend().setPosition(SWT.RIGHT);
 
-			String [] textLabels = new String [objects.length];
+			String [] valueLabels = new String [objects.length];
 			for (int i = 0; i < objects.length; i++) {
-				textLabels[i] = nameField.getValue(objects[i]);
+				valueLabels[i] = nameField.getValue(objects[i]);
 			}
+
+			/*String [] pieChartNames = new String [valFields.size()];
+			for (int i = 0; i < valFields.size(); i++) {
+				pieChartNames[i] = valFields.get(i).getColumnHeaderText();
+			}*/
+
+			// pie chart data is grouped by columns
+			// row size is the number of pie charts
+			// column size is the number of data per pie chart
+			double [][] doubleValues = new double [objects.length][valFields.size()];
 
 			// data
-			for (IChartField field : valFields) {
-				double [] doubleValues = new double [objects.length];
-
-				for (int i = 0; i < objects.length; i++) {
-					Number num = field.getNumber(objects[i]);
+			for (int i = 0; i < valFields.size(); i++) {
+				for (int j = 0; j < objects.length; j++) {
+					Number num = valFields.get(i).getNumber(objects[j]);
 					double longVal = num.doubleValue();
-					doubleValues[i] = longVal;
+					doubleValues[j][i] = longVal + 1;
 				}
-				chart.addPieChartSeries(textLabels, doubleValues);
 			}
 
+			chart.addPieChartSeries(valueLabels, doubleValues);
 			chart.getAxisSet().adjustRange();
 
 			return chart;

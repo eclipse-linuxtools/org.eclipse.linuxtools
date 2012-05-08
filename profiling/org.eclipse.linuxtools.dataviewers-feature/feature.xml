@@ -33,12 +33,9 @@
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.linuxtools.dataviewers" version="4.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.core" version="2.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.ui" version="2.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.data" version="2.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.data.aggregation" version="2.5.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.4.2" match="greaterOrEqual"/>
       <import plugin="com.ibm.icu"/>
+      <import plugin="org.swtchart"/>
    </requires>
 
    <plugin
@@ -57,6 +54,13 @@
 
    <plugin
          id="org.eclipse.linuxtools.dataviewers.charts"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.dataviewers.piechart"
          download-size="0"
          install-size="0"
          version="0.0.0"
