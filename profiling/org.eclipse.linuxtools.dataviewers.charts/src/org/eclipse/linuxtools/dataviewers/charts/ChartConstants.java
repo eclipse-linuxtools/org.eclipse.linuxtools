@@ -27,7 +27,7 @@ package org.eclipse.linuxtools.dataviewers.charts;
 public class ChartConstants {
 	
 	/** The section name of the viewer's dialog settings where the chart dialog save its state */
-	public static final String TAG_SECTION_BIRTCHARTS_STATE = "birtcharts_section";
+	public static final String TAG_SECTION_CHARTS_STATE = "charts_section";
 	/** The key used by the column buttons to save their state. For example the button i will use the key <code>TAG_COLUMN_BUTTON_+i</code> */
 	public static final String TAG_COLUMN_BUTTON_ = "COLUMN_BUTTON_";
 	/** The key used by the bar graph button to save its state */
@@ -43,7 +43,7 @@ public class ChartConstants {
 	public static final boolean DEFAULT_VERTICAL_BARS_BUTTON = false;
 	
 	/** The section name of the "save chart as image" action dialog settings */
-	public static final String TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE = "birtcharts_saveasimg_section";
+	public static final String TAG_SECTION_CHARTS_SAVEACTION_STATE = "charts_saveasimg_section";
 	/** The key used by the file dialog to save its file name */
 	public static final String TAG_IMG_FILE_NAME = "IMG_FILE_NAME";
 	/** The key used by the file dialog to save its filter path */

@@ -87,14 +87,7 @@ public class PerfCore {
 			
 		} catch( IOException e ) {
 			e.printStackTrace();
-		} finally {
-			if (null != input) {
-				try {
-					input.close();
-				} catch (IOException e) {
-				}
-			}
-		}
+		} 
 		String line;
 		try {
 			while (( line = input.readLine()) != null){
@@ -125,6 +118,13 @@ public class PerfCore {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (null != input) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 		return events;
 	}

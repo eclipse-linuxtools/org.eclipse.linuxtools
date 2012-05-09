@@ -13,19 +13,9 @@ package org.eclipse.linuxtools.dataviewers.charts.actions;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.birt.chart.device.IDeviceRenderer;
-import org.eclipse.birt.chart.exception.ChartException;
-import org.eclipse.birt.chart.factory.GeneratedChartState;
-import org.eclipse.birt.chart.factory.Generator;
-import org.eclipse.birt.chart.factory.RunTimeContext;
-import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.attribute.Bounds;
-import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
-import org.eclipse.birt.chart.util.PluginSettings;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -33,10 +23,15 @@ import org.eclipse.linuxtools.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.dataviewers.charts.ChartConstants;
 import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-
-import com.ibm.icu.util.ULocale;
+import org.eclipse.ui.progress.UIJob;
+import org.swtchart.Chart;
 
 /**
  * An action to save a chart as an image (jpeg, gif, png)
@@ -47,9 +42,6 @@ public class SaveChartAction extends Action {
 	private FileDialog dialog;
 	private Shell shell;
 	private Chart cm;
-	private IDeviceRenderer idr;
-	private Bounds bo;
-	private ChartView chartView;
 	
 	/**
 	 * Constructor
@@ -58,7 +50,6 @@ public class SaveChartAction extends Action {
 	 */
 	public SaveChartAction(Shell shell,ChartView cview) {
 		super("Save chart as...", Activator.getImageDescriptor("icons/save_chart.gif"));
-		this.chartView = cview;
 		this.setEnabled(false);
 		this.shell = shell;
 		this.dialog = new FileDialog(shell, SWT.SAVE);
@@ -97,10 +88,6 @@ public class SaveChartAction extends Action {
 		}
 	}
 	
-	public void setBounds(Bounds bo){
-		this.bo = bo;
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.action.Action#run()
@@ -110,40 +97,6 @@ public class SaveChartAction extends Action {
 		if (path == null) {
 			// cancel pressed
 			return;
-		}
-
-		String ext = "";
-		
-
-		int dotIdx = path.lastIndexOf(".");
-		if (dotIdx > 0) ext = path.substring(dotIdx);
-		
-		try {
-			if (ext.equals(ChartConstants.EXT_GIF)) {
-				idr = PluginSettings.instance().getDevice("dv.GIF");
-			}
-			else if (ext.equals(ChartConstants.EXT_JPEG)) {
-				idr = PluginSettings.instance().getDevice("dv.JPEG");
-			}
-			else if (ext.equals(ChartConstants.EXT_JPG)) {
-				idr = PluginSettings.instance().getDevice("dv.JPG");
-			}
-			else if (ext.equals(ChartConstants.EXT_PNG)) {
-				idr = PluginSettings.instance().getDevice("dv.PNG");
-			}
-			else {
-				path += ChartConstants.EXT_JPEG;
-				idr = PluginSettings.instance().getDevice("dv.JPG");
-			}
-		
-		} catch (ChartException e) {
-			Status s = new Status(
-					Status.ERROR,
-					Activator.PLUGIN_ID,
-					Status.ERROR,
-					e.getMessage(),
-					e);
-			Activator.getDefault().getLog().log(s);
 		}
 
 		final File file = new File(path);
@@ -157,23 +110,34 @@ public class SaveChartAction extends Action {
 			}
 		}
 
-		Job saveAsImage = new Job("Save chart as "+file.getName()) {
+		final String ext = dialog.getFilterNames()[dialog.getFilterIndex()];
+
+		UIJob saveAsImage = new UIJob("Save chart as "+file.getName()) {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				int extention;
+				if (ext.contains("PNG")){
+					extention = SWT.IMAGE_PNG;
+				}else if (ext.contains("JPG") || ext.contains("JPEG")) {
+					extention = SWT.IMAGE_JPEG;
+				}else{
+					extention = SWT.IMAGE_PNG;
+				}
+
 				try {
 					monitor.beginTask("Saving chart as "+file.getName()+"...", IProgressMonitor.UNKNOWN);
 					file.createNewFile();
-					generateImageFile(file);
+					generateImageFile(file, extention);
 					return Status.OK_STATUS;
 				} catch (IOException e) {
 					return new Status(
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							"Error saving chart to \"" 
-							+ file.getAbsolutePath()
-							+ "\":"
-							+ e.getMessage(),
-							e);
+									+ file.getAbsolutePath()
+									+ "\":"
+									+ e.getMessage(),
+									e);
 				}
 			}
 		};
@@ -190,9 +154,9 @@ public class SaveChartAction extends Action {
 	public void restoreState() {
 		try {
 			IDialogSettings settings = 
-				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			if (settings == null) {
-				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 				return;
 			}
 
@@ -216,9 +180,9 @@ public class SaveChartAction extends Action {
 	public void saveState() {
 		try {
 			IDialogSettings settings = 
-				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				Activator.getDefault().getDialogSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			if (settings == null) {
-				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_SAVEACTION_STATE);
+				settings = Activator.getDefault().getDialogSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_SAVEACTION_STATE);
 			}
 
 			settings.put(ChartConstants.TAG_IMG_FILE_NAME, dialog.getFileName());
@@ -235,52 +199,15 @@ public class SaveChartAction extends Action {
 		}
 	}
 	
-	protected void generateImageFile(File file){
-		RunTimeContext rtc = new RunTimeContext( );
-		rtc.setULocale( ULocale.getDefault( ) );
-
-		final Generator gr = Generator.instance( );
-		GeneratedChartState gcs = null;
-	
-		Bounds boFile = null;
-		bo = chartView.getChartViewer().getBounds();
-		//Set the chart size
-		if (bo != null){
-			boFile = BoundsImpl.create(bo.getLeft(), bo.getTop(), bo.getWidth(), bo.getHeight());
-		}
-		else{
-			boFile = BoundsImpl.create(0, 0, 800, 600);
-		}
-			
-		
-		try {
-			gcs = gr.build( idr.getDisplayServer( ), cm, boFile, null, rtc, null );
-		} catch (ChartException e) {
-			Status s = new Status(
-					Status.ERROR,
-					Activator.PLUGIN_ID,
-					Status.ERROR,
-					e.getMessage(),
-					e);
-			Activator.getDefault().getLog().log(s);
-		}
-
-		//Specify the file to write to. 
-		idr.setProperty( IDeviceRenderer.FILE_IDENTIFIER, file.getAbsolutePath() );
-
-		//generate the chart
-		try {
-			gr.render( idr, gcs );
-		} catch (ChartException e) {
-			Status s = new Status(
-					Status.ERROR,
-					Activator.PLUGIN_ID,
-					Status.ERROR,
-					e.getMessage(),
-					e);
-			Activator.getDefault().getLog().log(s);
-		}
+	protected void generateImageFile(File file, int extention){
+		Display dsp = Display.getCurrent();
+		GC gc = new GC(cm);
+		Image img = new Image(dsp, cm.getSize().x, cm.getSize().y);
+		gc.copyArea(img, 0, 0);
+		gc.dispose();
+		ImageLoader imageLoader = new ImageLoader();
+		imageLoader.data = new ImageData[] {img.getImageData()};
+		imageLoader.save(file.getAbsolutePath(), extention);
 	}
-	
 	
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.birt.chart.model.Chart;
+import org.swtchart.Chart;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -75,9 +75,9 @@ public class ChartDialog  extends Dialog {
 	public void restoreState() {
 		try {
 			IDialogSettings settings = 
-				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			if (settings == null) {
-				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 				return;
 			}
 			
@@ -103,9 +103,9 @@ public class ChartDialog  extends Dialog {
 	public void saveState() {
 		try {
 			IDialogSettings settings = 
-				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			if (settings == null) {
-				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_BIRTCHARTS_STATE);
+				settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
 			}
 			
 			for (int i=0; i<columnButtons.size(); i++) {
