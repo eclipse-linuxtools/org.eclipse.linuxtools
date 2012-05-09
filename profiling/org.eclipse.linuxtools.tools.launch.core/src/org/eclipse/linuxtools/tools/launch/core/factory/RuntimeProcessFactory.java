@@ -12,23 +12,15 @@
 package org.eclipse.linuxtools.tools.launch.core.factory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
-import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /*
  * Create process using Runtime.getRuntime().exec and prepends the
@@ -40,9 +32,6 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	private static RuntimeProcessFactory instance = null;
 	private static final String WHICH_CMD = "which"; //$NON-NLS-1$
-	
-	private IRemoteFileProxy proxy;
-	
 
 	private String[] tokenizeCommand(String command) {
 		StringTokenizer tokenizer = new StringTokenizer(command);
@@ -53,37 +42,31 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		return cmdarray;
 	}
 
-	private String[] fillPathCommand(String[] cmdarray, IProject project) throws IOException {
-		cmdarray[0] = whichCommand(cmdarray[0], project);
+	private String[] fillPathCommand(String[] cmdarray, String[] envp) throws IOException {
+		cmdarray[0] = whichCommand(cmdarray[0], envp);
 		return cmdarray;
 	}
 	
-	private String[] fillPathSudoCommand(String[] cmdarray, IProject project) throws IOException {
-		cmdarray[1] = whichCommand(cmdarray[1], project);
+	private String[] fillPathSudoCommand(String[] cmdarray, String[] envp) throws IOException {
+		cmdarray[2] = whichCommand(cmdarray[2], envp);
 		return cmdarray;
 	}
 
 	public String whichCommand(String command, IProject project) throws IOException {
-		
-		String[] envp = updateEnvironment(null, project);
-		
+		return whichCommand(command, updateEnvironment(null, project));
+	}
+
+	public String whichCommand(String command, String[] envp) throws IOException {
+		Process p = Runtime.getRuntime().exec(new String[] {WHICH_CMD, command}, envp);
 		try {
-			proxy = RemoteProxyManager.getInstance().getFileProxy(project);
-			URI whichUri = URI.create(WHICH_CMD);
-			IPath whichPath = new Path(proxy.toPath(whichUri));
-			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
-			envp = updateEnvironment(envp, project);
-			Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
-			if (pProxy != null){
-				BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
-				if(error.readLine() != null){
-					throw new IOException(error.readLine());
-				}
-				BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
-				String readLine = reader.readLine();
-				command = readLine;
+			if (p.waitFor() == 0) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				command = reader.readLine();
+			} else {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+				throw new IOException(reader.readLine());
 			}
-		} catch (CoreException e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return command;
@@ -111,44 +94,17 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		return exec(cmd, envp, null, project);
 	}
 
-	public Process exec(String cmd, String[] envp, IFileStore dir, IProject project)
+	public Process exec(String cmd, String[] envp, File dir, IProject project)
 		throws IOException {
 		return exec(tokenizeCommand(cmd), envp, dir, project);
 	}
 
-	public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project)
+	public Process exec(String cmdarray[], String[] envp, File dir, IProject project)
 		throws IOException {
-			
-		String command = cmdarray[0];
-		URI uri = URI.create(command);
+		envp = updateEnvironment(envp, project);
+		cmdarray = fillPathCommand(cmdarray, envp);
 
-		Process p = null;
-		try {
-			cmdarray = fillPathCommand(cmdarray, project);
-			
-			IPath path = new Path(proxy.toPath(uri));
-			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
-			envp = updateEnvironment(envp, project);
-			
-			IPath changeToDir;
-			if (dir == null){
-				changeToDir = null;
-			} else{ 
-				changeToDir = new Path(proxy.toPath(dir.toURI()));
-			}
-			
-			List<String> cmdlist = new ArrayList<String>(Arrays.asList(cmdarray));
-			cmdlist.remove(0);
-			cmdlist.toArray(cmdarray);
-			cmdarray = cmdlist.toArray(new String[0]);
-
-			p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return p;
+		return Runtime.getRuntime().exec(cmdarray, envp, dir);
 	}
 	
 	public Process sudoExec(String cmd, IProject project) throws IOException {
@@ -159,7 +115,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		return exec(cmd, envp, null, project);
 	}
 	
-	public Process sudoExec(String cmd, String[] envp, IFileStore dir, IProject project)
+	public Process sudoExec(String cmd, String[] envp, File dir, IProject project)
 			throws IOException {
 			return sudoExec(tokenizeCommand(cmd), envp, dir, project);
 		}
@@ -172,43 +128,18 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		return sudoExec(cmdarray, envp, null, project);
 	}
 	
-	public Process sudoExec(String[] cmdarray, String[] envp, IFileStore dir, IProject project) throws IOException {
-		URI uri = URI.create("sudo");
-		
+	public Process sudoExec(String[] cmdarray, String[] envp, File dir, IProject project) throws IOException {
 		List<String> cmdList = Arrays.asList(cmdarray);
 		ArrayList<String> cmdArrayList = new ArrayList<String>(cmdList);
-		cmdArrayList.add(0, "-n");
+		cmdArrayList.add(0, "sudo");
+		cmdArrayList.add(1, "-n");
 		
 		String[] cmdArraySudo = new String[cmdArrayList.size()];
 		cmdArrayList.toArray(cmdArraySudo);
 		
-		Process p = null;
-		try {
-			cmdArraySudo = fillPathSudoCommand(cmdArraySudo, project);
-			
-			IPath path = new Path(proxy.toPath(uri));
-			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
-			envp = updateEnvironment(envp, project);
-			
-			IPath changeToDir;
-			if (dir == null){
-				changeToDir = null;
-			} else{ 
-				changeToDir = new Path(proxy.toPath(dir.toURI()));
-			}
-			
-			List<String> cmdlist = new ArrayList<String>(Arrays.asList(cmdArraySudo));
-			cmdlist.remove(0);
-			cmdlist.toArray(cmdArraySudo);
-			cmdArraySudo = cmdlist.toArray(new String[0]);
+		envp = updateEnvironment(envp, project);
+		cmdArraySudo = fillPathSudoCommand(cmdArraySudo, envp);
 
-			p = launcher.execute(path, cmdArraySudo, envp, changeToDir , new NullProgressMonitor());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return p;
-
+		return Runtime.getRuntime().exec(cmdArraySudo, envp, dir);
 	}
 }
