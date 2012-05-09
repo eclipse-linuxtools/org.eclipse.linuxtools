@@ -66,25 +66,26 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	public String whichCommand(String command, IProject project) throws IOException {
 		
 		String[] envp = updateEnvironment(null, project);
-		
-		try {
-			proxy = RemoteProxyManager.getInstance().getFileProxy(project);
-			URI whichUri = URI.create(WHICH_CMD);
-			IPath whichPath = new Path(proxy.toPath(whichUri));
-			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
-			envp = updateEnvironment(envp, project);
-			Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
-			if (pProxy != null){
-				BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
-				if(error.readLine() != null){
-					throw new IOException(error.readLine());
+		if (project != null) {
+			try {
+				proxy = RemoteProxyManager.getInstance().getFileProxy(project);
+				URI whichUri = URI.create(WHICH_CMD);
+				IPath whichPath = new Path(proxy.toPath(whichUri));
+				IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
+				envp = updateEnvironment(envp, project);
+				Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
+				if (pProxy != null){
+					BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
+					if(error.readLine() != null){
+						throw new IOException(error.readLine());
+					}
+					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
+					String readLine = reader.readLine();
+					command = readLine;
 				}
-				BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
-				String readLine = reader.readLine();
-				command = readLine;
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 		return command;
 	}
