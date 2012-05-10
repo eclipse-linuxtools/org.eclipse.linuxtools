@@ -23,7 +23,6 @@ import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventsProcessor;
-import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
 
 /**
@@ -39,9 +38,6 @@ public class Oprofile
 	
 	// Oprofile information
 	private static OpInfo info;
-	
-	// Project that will be profiled. 
-	public static IProject currentProject;
 	
 	// Make sure that oprofile is ready to go
 	static {
@@ -228,31 +224,32 @@ public class Oprofile
 		return image;
 	}
 	
-	// Reloads oprofile modules by calling 'opcontrol --deinit' and 'opcontrol --init'
-	public static void setCurrentProject(IProject project){
-		
-		if(currentProject == null){
-			currentProject = project;
-			initializeOprofileModule();		
-		} else {
-			
-			String currentPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(currentProject);
-			String newPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
-			
-			if(!currentPath.equals(newPath)){
-				try {
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().deinitModule();
-					currentProject = project;
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
-				} catch (OpcontrolException e) {
-					OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
-				} 
-				currentProject = project;
+	public static void updateInfo(){
+		try {
+			if (!OprofileCorePlugin.getDefault().getOpcontrolProvider().status()){
+				OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 			}
-		}		
+			info = OpInfo.getInfo();
+		} catch (OpcontrolException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
-	public static IProject getCurrentProject(){
-		return currentProject;
+	// Oprofile class has a static initializer and the code inside it needs to know which project
+	// is being profiled in order to get the path for the Linux Tools' binaries set for that project.
+	// For this reason the project property has to be set outside the Oprofile class
+	public static class OprofileProject {
+		private static IProject project;
+
+		// Reloads oprofile modules by calling 'opcontrol --deinit' and
+		// 'opcontrol --init'
+		public static void setProject(IProject project) {
+			OprofileProject.project = project;
+
+		}
+		public static IProject getProject() {
+			return project;
+		}
 	}
 }

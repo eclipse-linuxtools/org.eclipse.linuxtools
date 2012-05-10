@@ -48,7 +48,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
 		// Set current project to allow using the oprofile path that
 		// was chosen for the project
-		Oprofile.setCurrentProject(getProject());
+		Oprofile.OprofileProject.setProject(getProject());
 //		//set up the oprofile daemon
 //		try {
 //			//kill the daemon (it shouldn't be running already, but to be safe)

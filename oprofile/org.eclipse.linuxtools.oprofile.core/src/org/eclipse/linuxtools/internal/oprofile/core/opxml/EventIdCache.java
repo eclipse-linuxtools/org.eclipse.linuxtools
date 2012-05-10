@@ -91,7 +91,8 @@ public class EventIdCache {
 	 */
 	private void readXML() {
 		try {
-			Process p = RuntimeProcessFactory.getFactory().exec(OPHELP + " " + "-X", Oprofile.getCurrentProject());
+			Process p = RuntimeProcessFactory.getFactory().exec(OPHELP + " " + "-X", Oprofile.OprofileProject.getProject());
+
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder;
 			try {

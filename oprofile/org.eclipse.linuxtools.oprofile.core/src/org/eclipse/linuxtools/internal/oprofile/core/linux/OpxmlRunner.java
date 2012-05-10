@@ -192,7 +192,7 @@ public class OpxmlRunner {
 				cmd.add("event:" + args[1]); //$NON-NLS-1$
 			}
 			String [] a = {};
-			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(a), Oprofile.getCurrentProject());
+			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(a), Oprofile.OprofileProject.getProject());
 			
 			StringBuilder output = new StringBuilder();
 			StringBuilder errorOutput = new StringBuilder();
@@ -277,7 +277,7 @@ public class OpxmlRunner {
 		try {
 			String cmd[] = {"opreport", "-X", "-d"};
 			
-			Process p = RuntimeProcessFactory.getFactory().exec(cmd, Oprofile.getCurrentProject());
+			Process p = RuntimeProcessFactory.getFactory().exec(cmd, Oprofile.OprofileProject.getProject());
 			StringBuilder output = new StringBuilder();
 			StringBuilder errorOutput = new StringBuilder();
 			String s = null;

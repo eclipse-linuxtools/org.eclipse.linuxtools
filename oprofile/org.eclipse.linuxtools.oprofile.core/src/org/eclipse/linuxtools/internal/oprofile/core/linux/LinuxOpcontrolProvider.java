@@ -252,7 +252,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * entered the password
 	 */
 	private boolean runOpcontrol(ArrayList<String> args) throws OpcontrolException {	
-		IProject project = Oprofile.getCurrentProject();
+		IProject project = Oprofile.OprofileProject.getProject();
 		
 		
 		// If no linuxtools' toolchain is defined for this project, use the path for the
@@ -342,7 +342,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	}
 	
 	private static String findOpcontrol() throws OpcontrolException {
-		IProject project = Oprofile.getCurrentProject();		
+		IProject project = Oprofile.OprofileProject.getProject();
 		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin
 				.getId()), new Path(OPCONTROL_REL_PATH), null);
 
