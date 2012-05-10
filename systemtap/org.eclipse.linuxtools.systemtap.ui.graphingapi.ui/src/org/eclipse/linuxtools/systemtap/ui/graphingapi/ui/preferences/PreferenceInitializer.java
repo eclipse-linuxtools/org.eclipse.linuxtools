@@ -21,7 +21,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
 
-		store.setDefault(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES, true);
+		store.setDefault(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, true);
+		store.setDefault(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
 		store.setDefault(GraphingAPIPreferenceConstants.P_AUTO_RESIZE, true);
 		store.setDefault(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
 		store.setDefault(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);

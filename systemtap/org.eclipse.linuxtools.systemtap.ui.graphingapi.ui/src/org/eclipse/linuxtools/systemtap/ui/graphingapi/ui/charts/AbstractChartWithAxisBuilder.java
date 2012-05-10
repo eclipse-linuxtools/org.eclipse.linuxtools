@@ -36,8 +36,8 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
     	 super(adapter, parent, style, title);
 		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		xLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES);
-		yLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES);
+		xLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
+		yLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES);
 	}
 
 	/**

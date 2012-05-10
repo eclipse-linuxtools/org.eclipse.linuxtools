@@ -26,18 +26,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		//graphing
 		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
 		
-/*		These are set in graphingapi.ui.  They shouldn't be reset here
-
-		IPreferenceStore store2 = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		//graphing.graph
-		store2.setDefault(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES, true);
-		store2.setDefault(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
-		
-		//graphing.datatable
-		store2.setDefault(GraphingAPIPreferenceConstants.P_AUTO_RESIZE, true);
-		store2.setDefault(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
-		store2.setDefault(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS, 250);
-*/		
 		LogManager.logDebug("End initializeDefaultPreferences:", this);
 	}
 }

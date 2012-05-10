@@ -17,7 +17,8 @@ public class GraphingAPIPreferenceConstants {
 	public static final String P_AUTO_RESIZE = "AutoResizeColumns";
 
 	//graphing.graph
-	public static final String P_SHOW_GRID_LINES = "ShowGridLines";
+	public static final String P_SHOW_X_GRID_LINES = "ShowXGridLines";
+	public static final String P_SHOW_Y_GRID_LINES = "ShowYGridLines";
 	public static final String P_MAX_DATA_ITEMS = "MaxDataItems";
 	public static final String P_VIEWABLE_DATA_ITEMS = "ViewableDataItems";
 	public static final String P_X_SERIES_TICKS = "XSeriesTicks";

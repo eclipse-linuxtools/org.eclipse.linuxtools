@@ -201,8 +201,13 @@ public abstract class AGraph extends AChart implements IGraph {
 					if(GraphAxis.VERTICAL == a.getType())
 						a.setTickCount(ySeriesTicks);
 				}
-			} else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES))
-				showGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES);
+			} else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES)) {
+				showXGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
+				showGrid = showXGrid || showYGrid;
+			} else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES)) {
+				showYGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
+				showGrid = showXGrid || showYGrid;
+			}
 
 			repaint();
 		}
@@ -228,6 +233,7 @@ public abstract class AGraph extends AChart implements IGraph {
 	protected LinkedList<GraphAxis> axes;
 	
 	private IAdapter adapter;
+	private boolean showYGrid, showXGrid;
 	
 	protected static int xSeriesTicks;
 	protected static int ySeriesTicks;
