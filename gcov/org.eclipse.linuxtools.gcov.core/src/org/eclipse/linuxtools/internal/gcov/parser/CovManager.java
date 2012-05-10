@@ -250,6 +250,7 @@ public class CovManager implements Serializable {
 	// transform String path to stream
 	private DataInput OpenTraceFileStream(String filePath, String extension, Map<File, File> sourcePath) throws FileNotFoundException{
 		File f = new File(filePath).getAbsoluteFile();
+		String filename = f.getName();
 		if (f.isFile() && f.canRead()) {
 			FileInputStream fis = new FileInputStream(f);
 			InputStream inputStream = new BufferedInputStream(fis);
@@ -277,7 +278,7 @@ public class CovManager implements Serializable {
 			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 			FileDialog fg = new FileDialog(shell, SWT.OPEN);
 			fg.setFilterExtensions(new String[] {"*" + extension, "*.*", "*"});
-			fg.setFileName(f.getName());
+			fg.setFileName(filename);
 			String s = fg.open();
 			if (s == null) return null;
 			else {
