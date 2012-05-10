@@ -279,6 +279,7 @@ public class CovManager implements Serializable {
 			FileDialog fg = new FileDialog(shell, SWT.OPEN);
 			fg.setFilterExtensions(new String[] {"*" + extension, "*.*", "*"});
 			fg.setFileName(filename);
+			fg.setText(filePath + " not found. Please enter location of " + filename);
 			String s = fg.open();
 			if (s == null) return null;
 			else {
