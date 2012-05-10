@@ -54,7 +54,6 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	 * Builds Y axis.
 	 */
 	protected void buildYAxis() {
-		String labels[] = adapter.getLabels();
 		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
 		yAxis.getTitle().setText("");
 		yAxis.getGrid().setStyle(LineStyle.SOLID);
