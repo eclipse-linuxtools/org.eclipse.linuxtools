@@ -33,7 +33,6 @@
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
-          <argLine>-Dorg.eclipse.linuxtools.oprofile.launch.tests.runOprofile=no</argLine>
           <testSuite>org.eclipse.linuxtools.oprofile.launch.tests</testSuite>
           <testClass>org.eclipse.linuxtools.oprofile.launch.tests.AllLaunchTests</testClass>
         </configuration>
