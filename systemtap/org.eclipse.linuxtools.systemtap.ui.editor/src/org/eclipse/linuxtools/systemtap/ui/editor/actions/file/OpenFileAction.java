@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
 import java.io.File;
-import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;

@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.dashboard.actions;
 
 import java.io.File;
-import java.text.MessageFormat;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
