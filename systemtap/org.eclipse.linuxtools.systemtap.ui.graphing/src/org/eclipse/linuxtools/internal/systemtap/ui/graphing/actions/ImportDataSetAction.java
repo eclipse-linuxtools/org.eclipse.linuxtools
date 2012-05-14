@@ -131,6 +131,7 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 			id = br.readLine();
 			
 			String line = br.readLine();
+			br.close();
 			labels = line.split(", ");
 		} catch(FileNotFoundException fnfe) {
 			LogManager.logCritical("FileNotFoundException ImportDataSetAction.readLabels:" + fnfe.getMessage(), this);

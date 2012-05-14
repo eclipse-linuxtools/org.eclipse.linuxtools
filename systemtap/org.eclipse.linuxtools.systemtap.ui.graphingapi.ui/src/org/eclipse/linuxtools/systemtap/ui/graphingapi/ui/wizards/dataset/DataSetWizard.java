@@ -110,9 +110,11 @@ public class DataSetWizard extends Wizard implements INewWizard {
 		XMLMemento data = null;
 		try {
 			FileReader reader = new FileReader(metaFile);
-			if(!reader.ready())
+			if(!reader.ready()) {
+				reader.close();
 				return null;
-	
+			}
+				
 			data = XMLMemento.createReadRoot(reader, IDataSetParser.XMLDataSetSettings);
 			IMemento[] children = data.getChildren(IDataSetParser.XMLFile);
 			

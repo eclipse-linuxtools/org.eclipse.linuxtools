@@ -247,6 +247,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 				}
 				prev = curr;
 			}
+			fr.close();
 			if(imbedded)
 				return true;
 		} catch (FileNotFoundException fnfe) {

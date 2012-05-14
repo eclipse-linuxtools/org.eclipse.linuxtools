@@ -84,8 +84,10 @@ public class DashboardMetaData {
 		try {
 			module = new DashboardModule();
 			FileReader reader = new FileReader(metaFile);
-			if(!reader.ready())
+			if(!reader.ready()) {
+				reader.close();
 				return false;
+			}
 
 			XMLMemento data = XMLMemento.createReadRoot(reader, XMLDashboardItem);
 

@@ -88,6 +88,7 @@ public class RowDataSet implements IHistoricalDataSet {
 				entry.putRow(0, line.split(", "));
 				append(entry);
 			}
+			br.close();
 			return true;
 		} catch(FileNotFoundException fnfe) {
 		} catch(IOException ioe) {
@@ -121,6 +122,7 @@ public class RowDataSet implements IHistoricalDataSet {
 					line += dataRow[j].toString() + ", ";
 				ps.print(line + "\n");
 			}
+			ps.close();
 			return true;
 		} catch(FileNotFoundException e) {
 		} catch(IOException e) {}

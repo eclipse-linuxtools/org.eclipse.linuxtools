@@ -50,8 +50,10 @@ public class SelectRowParsingWizardPage extends ParsingWizardPage {
 		try {
 			FileReader reader = new FileReader(wizard.metaFile);
 
-			if(!reader.ready())
+			if(!reader.ready()) {
+				reader.close();
 				return false;
+			}
 
 			XMLMemento data = XMLMemento.createReadRoot(reader, IDataSetParser.XMLDataSetSettings);
 

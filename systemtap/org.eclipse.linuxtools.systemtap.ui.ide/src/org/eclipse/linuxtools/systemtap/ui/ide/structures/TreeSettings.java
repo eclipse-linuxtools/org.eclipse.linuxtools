@@ -90,8 +90,10 @@ public final class TreeSettings {
 		try {
 			FileReader reader = new FileReader(settingsFile);
 
-			if(!reader.ready())
+			if(!reader.ready()) {
+				reader.close();
 				return false;
+			}
 
 			XMLMemento data = XMLMemento.createReadRoot(reader, "TreeSettings");
 

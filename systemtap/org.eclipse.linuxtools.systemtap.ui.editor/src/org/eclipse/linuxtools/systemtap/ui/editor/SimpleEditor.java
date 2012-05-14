@@ -121,6 +121,7 @@ public class SimpleEditor extends TextEditor {
 			PrintStream ps = new PrintStream(fos);
 			
 			ps.print(s);
+			ps.close();
 		} catch(FileNotFoundException fnfe) {}
 		
 		setInput(inputFile);

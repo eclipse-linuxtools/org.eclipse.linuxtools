@@ -61,6 +61,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 				} else
 					entry.add(line.split(", "));
 			}
+			br.close();
 			return true;
 		} catch(FileNotFoundException fnfe) {
 		} catch(IOException ioe) {
@@ -98,6 +99,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 				b.append("\n");
 			}
 			ps.print(b.toString());
+			ps.close();
 			return true;
 		} catch(FileNotFoundException e) {
 		} catch(IOException e) {}
