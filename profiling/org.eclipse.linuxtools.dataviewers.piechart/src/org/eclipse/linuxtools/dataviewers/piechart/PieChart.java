@@ -23,17 +23,20 @@ public class PieChart extends Chart {
 	
 	public PieChart(Composite parent, int style) {
 		super(parent, style);
+		Control plotArea = null;
 		for (Control child : getChildren()) {
-			if (child.getClass().getName().equals("org.swtchart.internal.axis.AxisTitle") ||
-				child.getClass().getName().equals("org.swtchart.internal.PlotArea")) {
+			if (child.getClass().getName().equals("org.swtchart.internal.axis.AxisTitle")) //$NON-NLS-1$
 				child.setVisible(false); //Don't show original Plot Area and axis
+			else if (child.getClass().getName().equals("org.swtchart.internal.PlotArea")) { //$NON-NLS-1$
+				child.setVisible(false); //Don't show original Plot Area and axis
+				plotArea = child;
 			}
 		}
-		this.addPaintListener(new PieChartPaintListener(this));
+		this.addPaintListener(new PieChartPaintListener(this, plotArea));
 	}
 
 	public void addPaintListener(PaintListener listener)  {
-		if (!listener.getClass().getName().startsWith("org.swtchart.internal.axis"))
+		if (!listener.getClass().getName().startsWith("org.swtchart.internal.axis")) //$NON-NLS-1$
 			super.addPaintListener(listener);
 	}	
 
