@@ -34,7 +34,7 @@ public class LinuxtoolsPathProperty {
 	private void fillLinuxtoolsPath(String path) {
 		if (path == null)
 			return;
-		if (!path.equals("")) {
+		if (!path.equals("")) { //$NON-NLS-1$
 			linuxtoolsPathSystemDefault = false;
 			linuxtoolsPathDefault = path;
 		}
@@ -90,7 +90,7 @@ public class LinuxtoolsPathProperty {
 			systemPathSelected = getLinuxtoolsPathSystemDefault();
 
 		if (systemPathSelected)
-			return "";
+			return ""; //$NON-NLS-1$
 
 		String path = null;
 		if (store.contains(LINUXTOOLS_PATH_NAME))

@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.tools.launch.ui;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".messages";
+	private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".messages"; //$NON-NLS-1$
 	public static String LINUXTOOLS_PATH;
 	public static String LINUXTOOLS_PATH_COMBO;
 	public static String LINUXTOOLS_PATH_TOOLTIP;

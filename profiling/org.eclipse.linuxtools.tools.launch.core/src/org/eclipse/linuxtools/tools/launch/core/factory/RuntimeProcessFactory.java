@@ -131,8 +131,8 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	public Process sudoExec(String[] cmdarray, String[] envp, File dir, IProject project) throws IOException {
 		List<String> cmdList = Arrays.asList(cmdarray);
 		ArrayList<String> cmdArrayList = new ArrayList<String>(cmdList);
-		cmdArrayList.add(0, "sudo");
-		cmdArrayList.add(1, "-n");
+		cmdArrayList.add(0, "sudo"); //$NON-NLS-1$
+		cmdArrayList.add(1, "-n"); //$NON-NLS-1$
 		
 		String[] cmdArraySudo = new String[cmdArrayList.size()];
 		cmdArrayList.toArray(cmdArraySudo);

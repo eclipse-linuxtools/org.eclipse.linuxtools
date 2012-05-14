@@ -47,7 +47,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
 
 	private static final String[][] DEFAULT_PATHS= {
-				{"Custom", ""},
+				{"Custom", ""}, //$NON-NLS-1$  //$NON-NLS-2$
 	};
 	private StringFieldEditor linuxtoolsPath;
 	private ComboFieldEditor linuxtoolsPathCombo;
@@ -128,7 +128,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 		linuxtoolsPathCombo.setPropertyChangeListener(new IPropertyChangeListener (){
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				customSelected = event.getNewValue().toString().equals("");
+				customSelected = event.getNewValue().toString().equals(""); //$NON-NLS-1$
 				if (!customSelected)
 					linuxtoolsPath.setStringValue(event.getNewValue().toString());
 				updateOptionsEnable();
@@ -146,7 +146,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 		linuxtoolsPath.getTextControl(result).setToolTipText(Messages.LINUXTOOLS_PATH_TOOLTIP);
 
 		String selected = getPreferenceStore().getString(LINUXTOOLS_PATH_COMBO_NAME);
-		customSelected = selected.equals("");
+		customSelected = selected.equals(""); //$NON-NLS-1$
 		getPreferenceStore().setDefault(LinuxtoolsPathProperty.LINUXTOOLS_PATH_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
 		linuxtoolsPath.load();
 
