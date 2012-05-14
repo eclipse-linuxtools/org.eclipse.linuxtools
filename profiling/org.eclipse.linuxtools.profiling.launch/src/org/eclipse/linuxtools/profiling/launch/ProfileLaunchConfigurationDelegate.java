@@ -145,9 +145,6 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 				}
 			}
 		} catch (IOException e) {
-			if (process != null) {
-				process.destroy();
-			}
 			return null;
 		}
 		return process;

@@ -101,10 +101,7 @@ public class KernelBrowserView extends BrowserView {
 		String[] excluded = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
 		
 		kst.buildKernelTree(kernelSource, excluded);
-		if(null != kst)
-			super.viewer.setInput(kst.getTree());
-		else
-			super.viewer.setInput(new TreeNode("", false));
+		super.viewer.setInput(kst.getTree());
 
 		kst.dispose();
 		LogManager.logDebug("End refresh:", this);
