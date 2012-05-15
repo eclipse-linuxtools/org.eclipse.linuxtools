@@ -31,8 +31,13 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 	
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_GRID_LINES, 
-				Localization.getString("GraphPreferencePage.ShowGridLines"),
+				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, 
+				Localization.getString("GraphPreferencePage.ShowXGridLines"),
+				getFieldEditorParent()));
+
+		addField(new BooleanFieldEditor(
+				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, 
+				Localization.getString("GraphPreferencePage.ShowYGridLines"),
 				getFieldEditorParent()));
 
 		addField(

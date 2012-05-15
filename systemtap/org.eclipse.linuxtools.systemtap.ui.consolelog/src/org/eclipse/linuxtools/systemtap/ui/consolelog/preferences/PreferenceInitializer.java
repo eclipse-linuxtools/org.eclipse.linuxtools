@@ -31,7 +31,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(ConsoleLogPreferenceConstants.SCP_USER, "guest");
 		store.setDefault(ConsoleLogPreferenceConstants.SCP_PASSWORD, "welcome");
 		store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SCPUSER, false);
-		store.setDefault(ConsoleLogPreferenceConstants.CANCELLED, false);
 		
 	
 		}

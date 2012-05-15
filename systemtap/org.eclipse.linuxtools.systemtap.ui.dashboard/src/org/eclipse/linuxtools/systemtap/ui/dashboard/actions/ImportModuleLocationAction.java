@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.dashboard.actions;
 
 import java.io.File;
-import java.text.MessageFormat;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -77,8 +76,8 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 			
 			IViewPart ivp = fWindow.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
 			((DashboardModuleBrowserView)ivp).refresh();
-		} else if (file != null) {
-			String msg = MessageFormat.format(Localization.getString("ImportModuleLocationAction.FileIsNull"), (Object[])new String[]{file.getName()});
+		} else {
+			String msg = Localization.getString("ImportModuleLocationAction.FileIsNull");
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ImportModuleLocationAction.Problem"), msg);
 		}
 		LogManager.logDebug("End run:", this);

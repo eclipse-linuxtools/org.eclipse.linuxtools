@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
 import java.io.File;
-import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -66,8 +65,8 @@ public class OpenFileAction extends EditorAction {
 				RecentFileLog.updateRecentFiles(file);
 				successful = true;
 			} catch (PartInitException e) {}
-		} else if (file != null) {
-			String msg = MessageFormat.format(Localization.getString("OpenFileAction.FileIsNull"), (Object [])(new String[] {file.getName()}));
+		} else {
+			String msg = Localization.getString("OpenFileAction.FileIsNull");
 			MessageDialog.openWarning(window.getShell(), Localization.getString("OpenFileAction.Problem"), msg);
 		}
 	}

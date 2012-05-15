@@ -16,17 +16,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.tmf.ui.TmfUiPlugin;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomTxtEvent;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomTxtTrace;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomTxtTraceDefinition;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomXmlEvent;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomXmlTrace;
 import org.eclipse.linuxtools.internal.tmf.ui.parsers.custom.CustomXmlTraceDefinition;
+import org.eclipse.linuxtools.tmf.core.TmfCommonConstants;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfTrace;
 import org.eclipse.linuxtools.tmf.ui.editors.TmfEventsEditor;
@@ -44,11 +49,6 @@ public class TmfTraceElement extends TmfProjectModelElement implements IActionFi
     // ------------------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------------------
-
-    // Property keys
-    public static final QualifiedName TRACEBUNDLE = new QualifiedName("org.eclipse.linuxtools.tmf", "tracetype.bundle"); //$NON-NLS-1$//$NON-NLS-2$
-    public static final QualifiedName TRACETYPE = new QualifiedName("org.eclipse.linuxtools.tmf", "tracetype.id"); //$NON-NLS-1$//$NON-NLS-2$
-    public static final QualifiedName TRACEICON = new QualifiedName("org.eclipse.linuxtools.tmf", "tracetype.icon"); //$NON-NLS-1$//$NON-NLS-2$
 
     // Other attributes
     public static final String BUNDLE = "bundle"; //$NON-NLS-1$
@@ -78,7 +78,7 @@ public class TmfTraceElement extends TmfProjectModelElement implements IActionFi
         sfTypeDescriptor.setCategory(sfInfoCategory);
         sfIsLinkedDescriptor.setCategory(sfInfoCategory);
     }
-
+    
     // ------------------------------------------------------------------------
     // Attributes
     // ------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class TmfTraceElement extends TmfProjectModelElement implements IActionFi
 
     public void refreshTraceType() {
         try {
-            fTraceTypeId = getResource().getPersistentProperty(TRACETYPE);
+            fTraceTypeId = getResource().getPersistentProperty(TmfCommonConstants.TRACETYPE);
         } catch (CoreException e) {
             e.printStackTrace();
         }
@@ -145,6 +145,10 @@ public class TmfTraceElement extends TmfProjectModelElement implements IActionFi
 
     public ITmfTrace<?> instantiateTrace() {
         try {
+
+            // make sure that supplementary folder exists
+            refreshSupplementaryFolder();
+
             if (fTraceTypeId != null) {
                 if (fTraceTypeId.startsWith(CustomTxtTrace.class.getCanonicalName())) {
                     for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
@@ -212,6 +216,166 @@ public class TmfTraceElement extends TmfProjectModelElement implements IActionFi
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the <code>TmfTraceElement</code> located under the <code>TmfTracesFolder</code>.
+     * 
+     * @return <code>this</code> if this element is under the <code>TmfTracesFolder</code> 
+     *         else the corresponding <code>TmfTraceElement</code> if this element is under 
+     *         <code>TmfExperimentElement</code>.
+     */
+    public TmfTraceElement getElementUnderTraceFolder() {
+
+        // If trace is under an experiment, return original trace from the traces folder
+        if (getParent() instanceof TmfExperimentElement) {
+            for (TmfTraceElement aTrace : getProject().getTracesFolder().getTraces()) {
+                if (aTrace.getName().equals(getName())) {
+                    return aTrace;
+                }
+            }
+        }
+        return this;
+    }
+    
+    /**
+     * Deletes the trace specific supplementary folder.
+     */
+    public void deleteSupplementaryFolder() {
+        IFolder supplFolder = getTraceSupplementaryFolder(fResource.getName());
+        if (supplFolder.exists()) {
+            try {
+                supplFolder.delete(true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error deleting supplementary folder " + supplFolder, e)); //$NON-NLS-1$
+            }
+        }
+    }
+
+    /**
+     * Renames the trace specific supplementary folder according to the new trace name.
+     * 
+     * @param newTraceName The new trace name 
+     */
+    public void renameSupplementaryFolder(String newTraceName) {
+        IFolder oldSupplFolder = getTraceSupplementaryFolder(fResource.getName());
+        IFolder newSupplFolder =  getTraceSupplementaryFolder(newTraceName);
+
+        // Rename supplementary folder
+        if (oldSupplFolder.exists()) {
+            try {
+                oldSupplFolder.move(newSupplFolder.getFullPath(), true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error renaming supplementary folder " + oldSupplFolder, e)); //$NON-NLS-1$
+            }
+        }
+    }
+
+    /**
+     * Copies the trace specific supplementary folder to the new trace name.
+     * 
+     * @param newTraceName The new trace name 
+     */
+    public void copySupplementaryFolder(String newTraceName) {
+        IFolder oldSupplFolder = getTraceSupplementaryFolder(fResource.getName());
+        IFolder newSupplFolder = getTraceSupplementaryFolder(newTraceName);
+
+        // copy supplementary folder
+        if (oldSupplFolder.exists()) {
+            try {
+                oldSupplFolder.copy(newSupplFolder.getFullPath(), true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error renaming supplementary folder " + oldSupplFolder, e)); //$NON-NLS-1$
+            }
+        }
+    }
+
+    /**
+     * Copies the trace specific supplementary folder a new folder.
+     * 
+     * @param destination The destination folder to copy to. 
+     */
+    public void copySupplementaryFolder(IFolder destination) {
+        IFolder oldSupplFolder = getTraceSupplementaryFolder(fResource.getName());
+
+        // copy supplementary folder
+        if (oldSupplFolder.exists()) {
+            try {
+                oldSupplFolder.copy(destination.getFullPath(), true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error renaming supplementary folder " + oldSupplFolder, e)); //$NON-NLS-1$
+            }
+        }
+    }
+
+    
+    /**
+     * Refreshes the trace specific supplementary folder information. It creates the folder if not exists.
+     * It sets the persistence property of the trace resource  
+     */
+    public void refreshSupplementaryFolder() {
+        createSupplementaryDirectory();
+    }
+
+    /**
+     * Checks if supplementary resource exist or not.
+     *  
+     * @return <code>true</code> if one or more files are under the trace supplementary folder
+     */
+    public boolean hasSupplementaryResources() {
+        IResource[] resources = getSupplementaryResources();
+        return (resources.length > 0);
+    }
+    
+    /**
+     * Returns the supplementary resources under the trace supplementary folder.
+     *  
+     * @return array of resources under the trace supplementary folder.
+     */
+    public IResource[] getSupplementaryResources() {
+        IFolder supplFolder = getTraceSupplementaryFolder(fResource.getName());
+        if (supplFolder.exists()) {
+            try {
+                return supplFolder.members();
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error deleting supplementary folder " + supplFolder, e)); //$NON-NLS-1$
+            }
+        }
+        return new IResource[0];
+    }
+
+    /**
+     * Deletes the given resources.  
+     * 
+     * @param resources array of resources to delete.
+     */
+    public void deleteSupplementaryResources(IResource[] resources) {
+        
+        for (int i = 0; i < resources.length; i++) {
+            try {
+                resources[i].delete(true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error deleting supplementary resource " + resources[i], e)); //$NON-NLS-1$
+            }
+        }
+    }
+
+    private void createSupplementaryDirectory() {
+        IFolder supplFolder = getTraceSupplementaryFolder(fResource.getName());
+        if (!supplFolder.exists()) {
+            try {
+                supplFolder.create(true, true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error creating resource supplementary file " + supplFolder, e)); //$NON-NLS-1$
+            }
+        }
+
+        try {
+            fResource.setPersistentProperty(TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER, supplFolder.getLocationURI().getPath());
+        } catch (CoreException e) {
+            TmfUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, TmfUiPlugin.PLUGIN_ID, "Error setting persistant property " + TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER, e)); //$NON-NLS-1$
+        }
+        
     }
 
     // ------------------------------------------------------------------------

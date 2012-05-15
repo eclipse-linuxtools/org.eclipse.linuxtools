@@ -32,7 +32,6 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider {
 	private IPath fPath;
 	private IWorkbenchWindow fMainWindow;
 	public boolean temp = false;
-	private static int tempcount = 0;
 
 	public PathEditorInput(IPath path) {
 		if (path == null) {
@@ -47,7 +46,6 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider {
 
 	public PathEditorInput() throws IOException	{
 		temp = true;
-		tempcount++;
 		File file = File.createTempFile(Localization.getString("PathEditorInput.Untitled") , ".stp"); //$NON-NLS-1$ //$NON-NLS-2$
 		fPath = new Path(file.getAbsolutePath());
 	}

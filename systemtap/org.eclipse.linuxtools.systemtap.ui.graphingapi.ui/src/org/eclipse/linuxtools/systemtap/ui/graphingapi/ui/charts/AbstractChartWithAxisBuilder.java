@@ -1,8 +1,12 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts;
 
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferenceStore;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters.IAdapter;
+
+import org.eclipse.swt.widgets.Composite;
 
 import org.swtchart.IAxis;
 import org.swtchart.ISeries;
@@ -20,6 +24,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
      * Title of X axis.
      */
     protected String xTitle = null;
+	protected boolean xLineGrid, yLineGrid;
 
     /**
      * Constructor.
@@ -30,6 +35,9 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     
     public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
     	 super(adapter, parent, style, title);
+		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
+		xLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
+		yLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES);
 	}
 
 	/**
@@ -39,7 +47,10 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		super.buildXAxis();
 		String labels[] = adapter.getLabels();
 		IAxis xAxis = this.chart.getAxisSet().getXAxis(0);
-		xAxis.getGrid().setStyle(LineStyle.NONE);
+		if (xLineGrid)
+			xAxis.getGrid().setStyle(LineStyle.SOLID);
+		else
+			xAxis.getGrid().setStyle(LineStyle.NONE);
 		xAxis.getTick().setForeground(BLACK);
 		ITitle xTitle = xAxis.getTitle();
 		xTitle.setForeground(BLACK);
@@ -54,10 +65,12 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	 * Builds Y axis.
 	 */
 	protected void buildYAxis() {
-		String labels[] = adapter.getLabels();
 		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
 		yAxis.getTitle().setText("");
-		yAxis.getGrid().setStyle(LineStyle.SOLID);
+		if (yLineGrid)
+			yAxis.getGrid().setStyle(LineStyle.SOLID);
+		else
+			yAxis.getGrid().setStyle(LineStyle.NONE);
 		yAxis.getTick().setForeground(BLACK);
 	}
 

@@ -15,19 +15,28 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
+
 import org.swtchart.ISeries;
 
 public class PieChartPaintListener implements PaintListener {
 
 	private PieChart chart;
+	private Control plotArea;
+	private static final int X_GAP = 10;
 
-	public PieChartPaintListener(PieChart chart) {
+	public PieChartPaintListener(PieChart chart, Control plotArea) {
 		this.chart = chart;
+		this.plotArea = plotArea;
 	}
 
 	public void paintControl(PaintEvent e) {
 		GC gc = e.gc;
-		Rectangle bounds = gc.getClipping();
+		Rectangle bounds;
+		if (plotArea == null)
+			bounds = gc.getClipping();
+		else
+			bounds = plotArea.getBounds();
 		double[][] series = this.getPieSeriesArray();
 		int width = (bounds.width - bounds.x)/ series.length;
 		int x = bounds.x;
@@ -49,7 +58,7 @@ public class PieChartPaintListener implements PaintListener {
 		GC gc = e.gc;
 		gc.setLineWidth(1);
 		
-		int pieWidth = Math.min(bounds.width, bounds.height)/2;
+		int pieWidth = Math.min(bounds.width - X_GAP, bounds.height);
 		int pieX = bounds.x + (bounds.width - pieWidth)/2;
 		int pieY = bounds.y + (bounds.height - pieWidth)/2;
 		if (sumTotal == 0)

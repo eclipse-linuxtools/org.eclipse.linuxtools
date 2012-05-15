@@ -149,6 +149,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 			while(null != (line=br.readLine())) {
 				sb.append(line);
 			}
+			br.close();
 		} catch(FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
 			LogManager.logCritical("FileNotFoundException ImportDataSetAction.readData:" + fnfe.getMessage(), this);

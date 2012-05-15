@@ -73,6 +73,7 @@ public class LoggingStreamDaemon implements IGobblerListener {
 			StringBuilder builder = new StringBuilder();
 			while(-1 != (count = reader.read(buffer))) 
 				builder.append(buffer, 0, count);
+			reader.close();
 			return builder.toString();
 		} catch(IOException ioe) {}
 		return null;

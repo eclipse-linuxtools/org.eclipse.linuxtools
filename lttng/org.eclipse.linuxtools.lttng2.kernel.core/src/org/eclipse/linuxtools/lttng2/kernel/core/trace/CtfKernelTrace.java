@@ -16,7 +16,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.lttng2.kernel.core.stateprovider.CtfKernelStateInput;
+import org.eclipse.linuxtools.tmf.core.TmfCommonConstants;
 import org.eclipse.linuxtools.tmf.core.ctfadaptor.CtfTmfTrace;
 import org.eclipse.linuxtools.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.linuxtools.tmf.core.statesystem.HistoryBuilder;
@@ -34,6 +37,11 @@ import org.eclipse.linuxtools.tmf.core.statesystem.backend.historytree.ThreadedH
  */
 public class CtfKernelTrace extends CtfTmfTrace {
 
+    /**
+     * The file name of the History Tree
+     */
+    public final static String HISTORY_TREE_FILE_NAME = "stateHistory.ht"; //$NON-NLS-1$
+    
     /** Size of the blocking queue to use when building a state history */
     private final static int QUEUE_SIZE = 10000;
 
@@ -53,8 +61,17 @@ public class CtfKernelTrace extends CtfTmfTrace {
     @Override
     protected void buildStateSystem() throws TmfTraceException {
         /* Set up the path to the history tree file we'll use */
-        final String htPath = this.getPath() + ".ht"; //$NON-NLS-1$
-        final File htFile = new File(htPath);
+        IResource resource = getResource();
+        String supplDirectory = null; 
+
+        try {
+            // get the directory where the history file will be stored.
+            supplDirectory = resource.getPersistentProperty(TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER);
+        } catch (CoreException e) {
+            throw new TmfTraceException(e.getMessage());
+        }
+
+        final File htFile = new File(supplDirectory + File.separator + HISTORY_TREE_FILE_NAME);
 
         IStateHistoryBackend htBackend;
         IStateChangeInput htInput;
@@ -95,10 +112,5 @@ public class CtfKernelTrace extends CtfTmfTrace {
 
         this.ss = builder.getStateSystemQuerier();
         builder.run(); /* Start the construction of the history */
-
-        //FIXME We will have to call close() once we are notified that the
-        //construction is done. Until this is implemented, we will just
-        //block here.
-        builder.close();
     }
 }

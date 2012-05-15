@@ -176,11 +176,10 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 		fileName = module.script.getAbsolutePath();
 		String tmpfileName = fileName;
 		String serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true)
+		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+			new SelectServerDialog(fWindow.getShell()).open() == false)
+			return;
         	
-        {
-			new SelectServerDialog(fWindow.getShell()).open();
-		}
 	  if (module.location.equalsIgnoreCase("local")) {
 		 try{
 				ScpClient scpclient = new ScpClient();
@@ -390,23 +389,16 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	
 	protected boolean createClientSession()
 	{
-		
-		if (!ClientSession.isConnected())
-		{
-				new SelectServerDialog(fWindow.getShell()).open();
+		if (!ClientSession.isConnected() && new SelectServerDialog(fWindow.getShell()).open()) {
+			subscription = new Subscription(fileName,false);
+			if (ClientSession.isConnected()) {
+				//	console = ScriptConsole.getInstance(fileName, subscription);
+				//   console.run();
+			}
 		}
-		if((ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.CANCELLED))!=true)
-		{
-		subscription = new Subscription(fileName,false);
-		if (ClientSession.isConnected())		
-		{
-	//	console = ScriptConsole.getInstance(fileName, subscription);
-     //   console.run();
-		}
-		}		
 		return true;
 	}
-	
+
 	private IViewPart view;
 	private static ArrayList<IActionListener> listeners = new ArrayList<IActionListener>();
 	private String fileName = null;

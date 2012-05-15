@@ -24,7 +24,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.KernelSou
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -102,10 +101,7 @@ public class KernelBrowserView extends BrowserView {
 		String[] excluded = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
 		
 		kst.buildKernelTree(kernelSource, excluded);
-		if(null != kst)
-			super.viewer.setInput(kst.getTree());
-		else
-			super.viewer.setInput(new TreeNode("", false));
+		super.viewer.setInput(kst.getTree());
 
 		kst.dispose();
 		LogManager.logDebug("End refresh:", this);

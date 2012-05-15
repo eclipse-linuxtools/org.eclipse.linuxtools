@@ -30,8 +30,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.tmf.core.TmfCommonConstants;
 import org.eclipse.linuxtools.tmf.ui.project.model.ITmfProjectModelElement;
-import org.eclipse.linuxtools.tmf.ui.project.model.TmfExperimentElement;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfExperimentFolder;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfTraceElement;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfTraceFolder;
@@ -99,14 +99,7 @@ public class RenameTraceHandler extends AbstractHandler {
             return null;
 
         // If trace is under an experiment, use the original trace from the traces folder
-        if (fTrace.getParent() instanceof TmfExperimentElement) {
-            for (TmfTraceElement trace : fTrace.getProject().getTracesFolder().getTraces()) {
-                if (trace.getName().equals(fTrace.getName())) {
-                    fTrace = trace;
-                    break;
-                }
-            }
-        }
+        fTrace = fTrace.getElementUnderTraceFolder();
 
         // Fire the Rename Trace dialog
         Shell shell = window.getShell();
@@ -169,16 +162,16 @@ public class RenameTraceHandler extends AbstractHandler {
             IResource resource = trace.getResource();
             IPath location = resource.getLocation();
             // Get the trace properties for this resource
-            String traceBundle = resource.getPersistentProperty(TmfTraceElement.TRACEBUNDLE);
-            String traceTypeId = resource.getPersistentProperty(TmfTraceElement.TRACETYPE);
-            String traceIcon = resource.getPersistentProperty(TmfTraceElement.TRACEICON);
+            String traceBundle = resource.getPersistentProperty(TmfCommonConstants.TRACEBUNDLE);
+            String traceTypeId = resource.getPersistentProperty(TmfCommonConstants.TRACETYPE);
+            String traceIcon = resource.getPersistentProperty(TmfCommonConstants.TRACEICON);
             if (resource instanceof IFolder) {
                 IFolder folder = ((IFolder) experiment.getResource()).getFolder(trace.getName());
                 if (ResourcesPlugin.getWorkspace().validateLinkLocation(folder, location).isOK()) {
                     folder.createLink(location, IResource.REPLACE, null);
-                    folder.setPersistentProperty(TmfTraceElement.TRACEBUNDLE, traceBundle);
-                    folder.setPersistentProperty(TmfTraceElement.TRACETYPE, traceTypeId);
-                    folder.setPersistentProperty(TmfTraceElement.TRACEICON, traceIcon);
+                    folder.setPersistentProperty(TmfCommonConstants.TRACEBUNDLE, traceBundle);
+                    folder.setPersistentProperty(TmfCommonConstants.TRACETYPE, traceTypeId);
+                    folder.setPersistentProperty(TmfCommonConstants.TRACEICON, traceIcon);
                 }
                 else {
                     System.out.println("Invalid Trace Location"); //$NON-NLS-1$
@@ -188,9 +181,9 @@ public class RenameTraceHandler extends AbstractHandler {
                 IFile file = ((IFolder) experiment.getResource()).getFile(trace.getName());
                 if (ResourcesPlugin.getWorkspace().validateLinkLocation(file, location).isOK()) {
                     file.createLink(location, IResource.REPLACE, null);
-                    file.setPersistentProperty(TmfTraceElement.TRACEBUNDLE, traceBundle);
-                    file.setPersistentProperty(TmfTraceElement.TRACETYPE, traceTypeId);
-                    file.setPersistentProperty(TmfTraceElement.TRACEICON, traceIcon);
+                    file.setPersistentProperty(TmfCommonConstants.TRACEBUNDLE, traceBundle);
+                    file.setPersistentProperty(TmfCommonConstants.TRACETYPE, traceTypeId);
+                    file.setPersistentProperty(TmfCommonConstants.TRACEICON, traceIcon);
                 }
                 else {
                     System.out.println("Invalid Trace Location"); //$NON-NLS-1$
