@@ -45,7 +45,7 @@ public class ChartFactory {
 	 * @param valField the field providing the values for the pie parts.
 	 * @return a new pie chart
 	 */
-	public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields)
+	public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField, List<IChartField> valFields, String title)
 	{
 
 		ChartView view;
@@ -61,7 +61,7 @@ public class ChartFactory {
 			chart.setBackground(WHITE);
 			chart.setBackgroundInPlotArea(GRAD);
 
-			chart.getTitle().setText(nameField.getColumnHeaderText());
+			chart.getTitle().setText(title);
 			chart.getTitle().setForeground(BLACK);
 
 			chart.getLegend().setPosition(SWT.RIGHT);

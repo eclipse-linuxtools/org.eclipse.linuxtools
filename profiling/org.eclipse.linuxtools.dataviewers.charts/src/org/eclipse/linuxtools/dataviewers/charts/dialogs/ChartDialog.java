@@ -402,7 +402,7 @@ public class ChartDialog  extends Dialog {
 			return ChartFactory.produceBarChart(objects, labelField, selectedFields, getBarChartTitle(),horizontalBars);
 		}
 		else {
-			return ChartFactory.producePieChart(objects, labelField, selectedFields);
+			return ChartFactory.producePieChart(objects, labelField, selectedFields, getPieChartTitle());
 		}
 	}
 
@@ -423,5 +423,9 @@ public class ChartDialog  extends Dialog {
 	
 	protected String getBarChartTitle(){
 		return "Bar Chart";
+	}
+
+	protected String getPieChartTitle(){
+		return "Pie Chart";
 	}
 }
