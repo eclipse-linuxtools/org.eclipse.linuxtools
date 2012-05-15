@@ -4,8 +4,12 @@ import java.net.URI;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.rdt.proxy.Activator;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteFileManager;
 import org.eclipse.ptp.remote.core.IRemoteServices;
@@ -15,18 +19,22 @@ public class RDTFileProxy implements IRemoteFileProxy {
 
 	private IRemoteFileManager manager;
 
-	private void initialize(URI uri) {
+	private void initialize(URI uri) throws CoreException {
 		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
 		services.initialize();
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		manager = services.getFileManager(connection);
+		if (connection != null)
+			manager = services.getFileManager(connection);
+		else
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					Activator.getResourceString("Connection.error"))); //$NON-NLS-1$
 	}
 
-	public RDTFileProxy(URI uri) {
+	public RDTFileProxy(URI uri) throws CoreException {
 		initialize(uri);
 	}
 
-	public RDTFileProxy(IProject project) {
+	public RDTFileProxy(IProject project) throws CoreException {
 		URI uri = project.getLocationURI();
 		initialize(uri);
 	}
