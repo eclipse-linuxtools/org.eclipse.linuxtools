@@ -19,8 +19,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
+import org.eclipse.linuxtools.internal.profiling.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 
 public class RemoteProxyManager implements IRemoteProxyManager {
@@ -73,9 +75,12 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
 		if (scheme != null && !LocalHost.equals(uri.getHost())) {
-		   IRemoteProxyManager manager = getRemoteManager(scheme);
-		   if (manager != null)
-		      return manager.getFileProxy(uri);
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			if (manager != null)
+				return manager.getFileProxy(uri);
+			else
+				throw new CoreException(new Status(Status.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
+							Status.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
 		}
 		return getLocalFileProxy();
 	}

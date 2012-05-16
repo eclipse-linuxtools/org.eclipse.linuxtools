@@ -13,13 +13,21 @@ package org.eclipse.linuxtools.internal.profiling.launch;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class Messages {
+import org.eclipse.osgi.util.NLS;
+
+public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.profiling.launch.messages"; //$NON-NLS-1$
+	public static String RemoteProxyManager_unrecognized_scheme;
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
 			.getBundle(BUNDLE_NAME);
 
 	private Messages() {
+	}
+
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
 	public static String getString(String key) {
