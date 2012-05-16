@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.rdt.proxy;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.Status;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -100,5 +102,13 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	public static void log(int severity, String msg) {
+		log(severity, msg, null);
+	}
+
+	public static void log(int severity, String msg, Exception e) {
+		getDefault().getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, e));
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.rdt.proxy.Activator;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
@@ -144,10 +145,19 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 			
 			for (int i = 0; i < env.length; ++i) {
 				String s = env[i];
-				String[] tokens = s.split("=", 2);
-				envMap.put(tokens[0], tokens[1]);
+				String[] tokens = s.split("=", 2); //$NON-NLS-1$
+				switch (tokens.length) {
+					case 1:
+						envMap.put(tokens[0], null);
+						break;
+					case 2:
+						envMap.put(tokens[0], tokens[1]);
+						break;
+					default:
+						Activator.log(Status.WARNING, Messages.RDTCommandLauncher_malformed_env_var_string + s);
+				}
 			}
-			
+
 			fProcess = builder.start();
 			fErrorMessage = ""; //$NON-NLS-1$
 		} catch (IOException e) {
