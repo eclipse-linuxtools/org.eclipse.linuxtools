@@ -39,7 +39,6 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-
 /**
  * A utility class for executing rpmbuild commands.
  * 
@@ -48,105 +47,113 @@ public class RPMBuild {
 
 	private static final String DEFINE = "--define"; //$NON-NLS-1$
 
-	private String[] macroDefines;
+	private List<String> macroDefines = new ArrayList<String>();
 
 	private String rpmBuildCmd;
 
 	private String buildFolder;
-	
+
 	/**
 	 * Constructs a new object.
 	 * 
-	 * @param config the RPM configuration to use
+	 * @param config
+	 *            the RPM configuration to use
 	 */
 	public RPMBuild(IProjectConfiguration config) {
-		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE
+				.getNode(IRPMConstants.RPM_CORE_ID);
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
-		if (config.getSourcesFolder().getLocation()==null) {
+		if (config.getSourcesFolder().getLocation() == null) {
 			buildFolder = config.getBuildFolder().getLocationURI().toString();
-			String fullRemoteDirectory = config.getSourcesFolder().getLocationURI().toString();
+			String fullRemoteDirectory = config.getSourcesFolder()
+					.getLocationURI().toString();
 			String host = config.getSourcesFolder().getLocationURI().getHost();
-			int startIndex = fullRemoteDirectory.indexOf(host)+host.length();
+			int startIndex = fullRemoteDirectory.indexOf(host) + host.length();
 			String remoteDirectory = fullRemoteDirectory.substring(startIndex);
 			String[] tmpMacroDefines = {
-					//					rpmBuildCmd,
+					// rpmBuildCmd,
 					"-v", //$NON-NLS-1$
-					DEFINE, "_sourcedir " + //$NON-NLS-1$
-					remoteDirectory + "/" + IRPMConstants.SOURCES_FOLDER, //$NON-NLS-1$
+					DEFINE,
+					"_sourcedir " + //$NON-NLS-1$
+							remoteDirectory
+							+ "/" + IRPMConstants.SOURCES_FOLDER, //$NON-NLS-1$
 					DEFINE, "_srcrpmdir " + //$NON-NLS-1$
-					remoteDirectory + "/" + IRPMConstants.SRPMS_FOLDER, //$NON-NLS-1$
+							remoteDirectory + "/" + IRPMConstants.SRPMS_FOLDER, //$NON-NLS-1$
 					DEFINE, "_builddir " + //$NON-NLS-1$
-					remoteDirectory + "/" + IRPMConstants.BUILD_FOLDER, //$NON-NLS-1$
+							remoteDirectory + "/" + IRPMConstants.BUILD_FOLDER, //$NON-NLS-1$
 					DEFINE, "_rpmdir " + //$NON-NLS-1$
-					remoteDirectory + "/" + IRPMConstants.RPMS_FOLDER, //$NON-NLS-1$
+							remoteDirectory + "/" + IRPMConstants.RPMS_FOLDER, //$NON-NLS-1$
 					DEFINE, "_specdir " + //$NON-NLS-1$
-					remoteDirectory + "/" + IRPMConstants.SPECS_FOLDER, }; //$NON-NLS-1$
-			this.macroDefines = tmpMacroDefines;
+							remoteDirectory + "/" + IRPMConstants.SPECS_FOLDER, }; //$NON-NLS-1$
+			macroDefines.addAll(Arrays.asList(tmpMacroDefines));
 		} else {
-			String[] tmpMacroDefines = {
-					rpmBuildCmd,
-					"-v", //$NON-NLS-1$
-					DEFINE, "_sourcedir " //$NON-NLS-1$
-					+ config.getSourcesFolder().getLocation().toOSString(), 
-					DEFINE, "_srcrpmdir " + //$NON-NLS-1$
-					config.getSrpmsFolder().getLocation().toOSString() , 
-					DEFINE, "_builddir " + //$NON-NLS-1$
-					config.getBuildFolder().getLocation().toOSString(),
-					DEFINE, "_rpmdir " + //$NON-NLS-1$
-					config.getRpmsFolder().getLocation().toOSString(),
-					DEFINE, "_specdir " + //$NON-NLS-1$
-					config.getSpecsFolder().getLocation().toOSString() }; 
-			this.macroDefines = tmpMacroDefines;
+			String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
+			macroDefines.addAll(Arrays.asList(tmpMacroDefines));
+			macroDefines.addAll(config.getConfigDefines());
 		}
 	}
 
 	/**
 	 * Prepares the sources for a given spec file.
 	 * 
-	 * @param specFile the spec file
-	 * @param outStream The stream to write the output to.
-	 * @throws CoreException If the operation fails.
+	 * @param specFile
+	 *            the spec file
+	 * @param outStream
+	 *            The stream to write the output to.
+	 * @throws CoreException
+	 *             If the operation fails.
 	 */
-	public void buildPrep(IResource specFile, OutputStream outStream) throws CoreException {
+	public void buildPrep(IResource specFile, OutputStream outStream)
+			throws CoreException {
 		build(specFile, outStream, "-bp"); //$NON-NLS-1$
 	}
-
 
 	/**
 	 * Builds a binary RPM for a given spec file.
 	 * 
-	 * @param specFile the spec file
-	 * @param outStream The stream to write the output to.
+	 * @param specFile
+	 *            the spec file
+	 * @param outStream
+	 *            The stream to write the output to.
 	 * @return The return code of the build job.
-	 * @throws CoreException if the operation fails
+	 * @throws CoreException
+	 *             if the operation fails
 	 */
-	public int buildBinary(IResource specFile, OutputStream outStream) throws CoreException {
+	public IStatus buildBinary(IResource specFile, OutputStream outStream)
+			throws CoreException {
 		return build(specFile, outStream, "-bb"); //$NON-NLS-1$
 	}
 
 	/**
 	 * Builds both a binary and source RPM for a given spec file.
 	 * 
-	 * @param specFile the spec file
-	 * @param outStream The stream to write the output to.
+	 * @param specFile
+	 *            the spec file
+	 * @param outStream
+	 *            The stream to write the output to.
 	 * @return The return code of the build job.
-	 * @throws CoreException if the operation fails
+	 * @throws CoreException
+	 *             if the operation fails
 	 */
-	public int buildAll(IResource specFile, OutputStream outStream) throws CoreException {
+	public IStatus buildAll(IResource specFile, OutputStream outStream)
+			throws CoreException {
 		return build(specFile, outStream, "-ba"); //$NON-NLS-1$
 	}
-
 
 	/**
 	 * Builds a source RPM for a given spec file.
 	 * 
-	 * @param specFile the spec file
-	 * @param outStream The stream to write the output to.
+	 * @param specFile
+	 *            the spec file
+	 * @param outStream
+	 *            The stream to write the output to.
 	 * @return The return code of the build job.
-	 * @throws CoreException if the operation fails
+	 * @throws CoreException
+	 *             if the operation fails
 	 */
 
-	public int buildSource(IResource specFile, OutputStream outStream) throws CoreException {
+	public IStatus buildSource(IResource specFile, OutputStream outStream)
+			throws CoreException {
 		return build(specFile, outStream, "-bs"); //$NON-NLS-1$
 	}
 
@@ -154,72 +161,84 @@ public class RPMBuild {
 	 * 
 	 * Operations for actually running rpmbuild binary
 	 * 
-	 * @param specFile The specfile used by rpmbuild
-	 * @param outStream The stream to write the output to.
-	 * @param buildParameter rpmbuild parameters
+	 * @param specFile
+	 *            The specfile used by rpmbuild
+	 * @param outStream
+	 *            The stream to write the output to.
+	 * @param buildParameter
+	 *            rpmbuild parameters
 	 * @return The return code of the build job.
-	 * @throws CoreException if the operation fails
+	 * @throws CoreException
+	 *             if the operation fails
 	 * @since 0.4
 	 */
-	public int build(IResource specFile, OutputStream outStream, String buildParameter) throws CoreException {
+	public IStatus build(IResource specFile, OutputStream outStream,
+			String buildParameter) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		IRemoteProxyManager rmtProxyMgr;
 		IRemoteCommandLauncher rmtCmdLauncher = null;
-		command.addAll(Arrays.asList(macroDefines));
+		command.addAll(macroDefines);
 		command.add(buildParameter);
 		String remoteSpec = ""; //$NON-NLS-1$
-		if (specFile.getLocation()==null) {
+		if (specFile.getLocation() == null) {
 			rmtProxyMgr = RemoteProxyManager.getInstance();
 			try {
 				rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(buildFolder));
 			} catch (URISyntaxException e1) {
-				throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-						e1.getMessage(), e1));
+				throw new CoreException(new Status(IStatus.ERROR,
+						IRPMConstants.RPM_CORE_ID, e1.getMessage(), e1));
 
 			}
 			String host = specFile.getLocationURI().getHost();
-			int startIndex = buildFolder.indexOf(host)+host.length();
-			remoteSpec = specFile.getLocationURI().toString().substring(startIndex);
+			int startIndex = buildFolder.indexOf(host) + host.length();
+			remoteSpec = specFile.getLocationURI().toString()
+					.substring(startIndex);
 			command.add(remoteSpec);
 			String empty[] = new String[0];
-			Process pProxy = rmtCmdLauncher.execute(Path.fromOSString(rpmBuildCmd), command.toArray(new String[command.size()]), empty, null, new NullProgressMonitor());
+			Process pProxy = rmtCmdLauncher.execute(
+					Path.fromOSString(rpmBuildCmd),
+					command.toArray(new String[command.size()]), empty, null,
+					new NullProgressMonitor());
 			MessageConsole console = new MessageConsole("rpmbuild", null); //$NON-NLS-1$
 			console.activate();
-			ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });
+			ConsolePlugin.getDefault().getConsoleManager()
+					.addConsoles(new IConsole[] { console });
 			MessageConsoleStream stream = console.newMessageStream();
 
-			if (pProxy != null){
-				BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
+			if (pProxy != null) {
+				BufferedReader error = new BufferedReader(
+						new InputStreamReader(pProxy.getErrorStream()));
 				String err;
 				try {
 					err = error.readLine();
-					while(err != null){
+					while (err != null) {
 						stream.println(err);
 						err = error.readLine();
 					}
 					error.close();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(pProxy.getInputStream()));
 					String readLine = reader.readLine();
-					while (readLine!=null) {
+					while (readLine != null) {
 						stream.println(readLine);
-						readLine=reader.readLine();
+						readLine = reader.readLine();
 					}
 					reader.close();
 				} catch (IOException e) {
-					throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-							e.getMessage(), e));
-				} 
+					throw new CoreException(new Status(IStatus.ERROR,
+							IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+				}
 			}
-			return Status.OK_STATUS.getCode();
+			return Status.OK_STATUS;
 
-		} else{
+		} else {
 			command.add(specFile.getLocation().toString());
 			try {
-				return Utils.runCommand(outStream, command
-						.toArray(new String[command.size()]));
+				return Utils.runCommand(outStream,
+						command.toArray(new String[command.size()]));
 			} catch (IOException e) {
-				throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-						e.getMessage(), e));
+				throw new CoreException(new Status(IStatus.ERROR,
+						IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 			}
 		}
 	}

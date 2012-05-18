@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -91,7 +90,7 @@ public class RPMExportOperation extends Job {
 	private class BuildThread extends Thread {
 		BuildType exportType;
 		RPMProject rpmProject;
-		Status result = null;
+		IStatus result = null;
 
 		public BuildThread(BuildType exportType, RPMProject rpmProject) {
 			this.exportType = exportType;
@@ -104,13 +103,12 @@ public class RPMExportOperation extends Job {
 			IOConsoleOutputStream out = myConsole.newOutputStream();
 			myConsole.clearConsole();
 			myConsole.activate();
-			int returnCode = 0;
 			switch (exportType) {
 			case ALL:
 				try {
 					monitor.setTaskName(Messages
 							.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-					returnCode = rpmProject.buildAll(out);
+					result = rpmProject.buildAll(out);
 				} catch (CoreException e) {
 					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
@@ -121,7 +119,7 @@ public class RPMExportOperation extends Job {
 				monitor.setTaskName(Messages
 						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 				try {
-					returnCode = rpmProject.buildBinaryRPM(out);
+					result = rpmProject.buildBinaryRPM(out);
 				} catch (CoreException e) {
 					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
@@ -132,23 +130,17 @@ public class RPMExportOperation extends Job {
 				monitor.setTaskName(Messages
 						.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 				try {
-					returnCode = rpmProject.buildSourceRPM(out);
+					result = rpmProject.buildSourceRPM(out);
 				} catch (CoreException e) {
 					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
 							e.getMessage(), e);
 				}
 				break;
 			}
-			if (returnCode != 0){
-				result = new Status(
-						IStatus.WARNING,
-						FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						NLS.bind(
-								Messages.getString("RPMExportOperation.BadExitCode"), returnCode), null); //$NON-NLS-1$
-			}
+			
 		}
 		
-		public Status getResult(){
+		public IStatus getResult(){
 			return result;
 		}
 	}

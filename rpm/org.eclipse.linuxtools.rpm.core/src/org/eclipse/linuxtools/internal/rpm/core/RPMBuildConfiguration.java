@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -31,6 +34,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
     private IFolder specsFolder;
     private IFolder sourcesFolder;
     private IFolder buildFolder;
+    private List<String> configDefines = new ArrayList<String>();
 	
 	/**
 	 * Creates the configuration for the given project.
@@ -138,6 +142,21 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 				specsFolder.create(false, true, null);
 			}
         }
+        configDefines.add(DEFINE);
+		configDefines
+				.add("_sourcedir " + sourcesFolder.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_srcrpmdir " + srpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_builddir " + buildFolder.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_rpmdir " + rpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_specdir " + specsFolder.getLocation().toOSString()); //$NON-NLS-1$
     }
 	
 	/* (non-Javadoc)
@@ -173,6 +192,10 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	 */
 	public IFolder getSrpmsFolder() {
 		return srpmsFolder;
+	}
+
+	public List<String> getConfigDefines() {
+		return configDefines;
 	}
 
 }

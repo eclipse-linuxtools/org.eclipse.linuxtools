@@ -151,6 +151,14 @@ public class Specfile {
 		}
 		return "0"; //$NON-NLS-1$
 	}
+	
+	public String getBuildArch() {
+		SpecfileDefine define = getDefine(RpmTags.BUILD_ARCH.toLowerCase());
+		if (define != null){
+			return define.getStringValue();
+		}
+		return "0"; //$NON-NLS-1$
+	}
 
 	public String getVersion() {
 		SpecfileDefine define = getDefine(RpmTags.VERSION.toLowerCase());

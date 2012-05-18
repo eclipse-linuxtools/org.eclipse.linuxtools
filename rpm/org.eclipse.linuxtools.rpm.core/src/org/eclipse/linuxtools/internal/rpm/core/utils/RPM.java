@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.rpm.core.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -31,8 +30,7 @@ import org.eclipse.linuxtools.rpm.core.utils.Utils;
  */
 public class RPM {
 
-	private static final String DEFINE = "--define"; //$NON-NLS-1$
-	private String[] macroDefines;
+	private List<String> macroDefines;
 	private String rpmCmd;
 
 	/**
@@ -42,42 +40,36 @@ public class RPM {
 	 *            the RPM configuration to use
 	 */
 	public RPM(IProjectConfiguration config) {
-		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE
+				.getNode(IRPMConstants.RPM_CORE_ID);
 		rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-		String[] tmpMacroDefines = {
-				rpmCmd,
-				"-v", //$NON-NLS-1$
-				DEFINE, "_sourcedir " //$NON-NLS-1$
-						+ config.getSourcesFolder().getLocation().toOSString(),
-				DEFINE, "_srcrpmdir " + //$NON-NLS-1$
-						config.getSrpmsFolder().getLocation().toOSString(),
-				DEFINE, "_builddir " + //$NON-NLS-1$
-						config.getBuildFolder().getLocation().toOSString(),
-				DEFINE, "_rpmdir " + //$NON-NLS-1$
-						config.getRpmsFolder().getLocation().toOSString(),
-				DEFINE, "_specdir " + //$NON-NLS-1$
-						config.getSpecsFolder().getLocation().toOSString() };
-		this.macroDefines = tmpMacroDefines;
+		macroDefines = new ArrayList<String>();
+
+		macroDefines.add(rpmCmd);
+		macroDefines.add("-v"); //$NON-NLS-1$
+		macroDefines.addAll(config.getConfigDefines());
 	}
 
 	/**
 	 * Installs a given source RPM
 	 * 
-	 * @param sourceRPM The src.rpm file to install.
+	 * @param sourceRPM
+	 *            The src.rpm file to install.
 	 * @return The output of the install command.
-	 * @throws CoreException If something fails.
+	 * @throws CoreException
+	 *             If something fails.
 	 */
 	public String install(IFile sourceRPM) throws CoreException {
 		List<String> command = new ArrayList<String>();
-		command.addAll(Arrays.asList(macroDefines));
+		command.addAll(macroDefines);
 		command.add("-i"); //$NON-NLS-1$
 		command.add(sourceRPM.getLocation().toOSString());
 		try {
-			return Utils.runCommandToString(command
-					.toArray(new String[command.size()]));
+			return Utils.runCommandToString(command.toArray(new String[command
+					.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-					e.getMessage(), e));
+			throw new CoreException(new Status(IStatus.ERROR,
+					IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 		}
 	}
 }

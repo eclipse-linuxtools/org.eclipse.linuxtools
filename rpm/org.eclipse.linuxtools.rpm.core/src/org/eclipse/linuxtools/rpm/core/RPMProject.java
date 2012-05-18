@@ -139,9 +139,9 @@ public class RPMProject {
 		importSourceRPM(tempFile);
 	}
 
-	public int buildAll(OutputStream outStream) throws CoreException {
+	public IStatus buildAll(OutputStream outStream) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		int result = rpmbuild.buildAll(getSpecFile(), outStream);
+		IStatus result = rpmbuild.buildAll(getSpecFile(), outStream);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
@@ -152,9 +152,9 @@ public class RPMProject {
 		return result;
 	}
 
-	public int buildBinaryRPM(OutputStream out) throws CoreException {
+	public IStatus buildBinaryRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		int result = rpmbuild.buildBinary(getSpecFile(), out);
+		IStatus result = rpmbuild.buildBinary(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
@@ -163,9 +163,9 @@ public class RPMProject {
 		return result;
 	}
 
-	public int buildSourceRPM(OutputStream out) throws CoreException {
+	public IStatus buildSourceRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		int result = rpmbuild.buildSource(getSpecFile(), out);
+		IStatus result = rpmbuild.buildSource(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
