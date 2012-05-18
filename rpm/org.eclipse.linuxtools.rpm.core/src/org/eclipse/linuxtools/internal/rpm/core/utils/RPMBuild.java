@@ -119,7 +119,7 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public int buildBinary(IResource specFile, OutputStream outStream)
+	public IStatus buildBinary(IResource specFile, OutputStream outStream)
 			throws CoreException {
 		return build(specFile, outStream, "-bb"); //$NON-NLS-1$
 	}
@@ -135,7 +135,7 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public int buildAll(IResource specFile, OutputStream outStream)
+	public IStatus buildAll(IResource specFile, OutputStream outStream)
 			throws CoreException {
 		return build(specFile, outStream, "-ba"); //$NON-NLS-1$
 	}
@@ -152,7 +152,7 @@ public class RPMBuild {
 	 *             if the operation fails
 	 */
 
-	public int buildSource(IResource specFile, OutputStream outStream)
+	public IStatus buildSource(IResource specFile, OutputStream outStream)
 			throws CoreException {
 		return build(specFile, outStream, "-bs"); //$NON-NLS-1$
 	}
@@ -172,7 +172,7 @@ public class RPMBuild {
 	 *             if the operation fails
 	 * @since 0.4
 	 */
-	public int build(IResource specFile, OutputStream outStream,
+	public IStatus build(IResource specFile, OutputStream outStream,
 			String buildParameter) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		IRemoteProxyManager rmtProxyMgr;
@@ -229,7 +229,7 @@ public class RPMBuild {
 							IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 				}
 			}
-			return Status.OK_STATUS.getCode();
+			return Status.OK_STATUS;
 
 		} else {
 			command.add(specFile.getLocation().toString());

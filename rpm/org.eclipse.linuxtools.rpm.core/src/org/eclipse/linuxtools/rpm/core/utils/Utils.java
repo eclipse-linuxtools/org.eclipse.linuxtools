@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Utilities for calling system executables.
@@ -60,7 +62,7 @@ public class Utils {
 	 * @return int The return value of the command.
 	 * @throws IOException If an IOException occurs.
 	 */
-	public static int runCommand(final OutputStream outStream,
+	public static IStatus runCommand(final OutputStream outStream,
 			String... command) throws IOException {
 		ProcessBuilder pBuilder = new ProcessBuilder(command);
 		pBuilder = pBuilder.redirectErrorStream(true);
@@ -95,7 +97,17 @@ public class Utils {
 			child.destroy();
 			readinJob.cancel();
 		}
-		return child.exitValue();
+		IStatus result;
+		if (child.exitValue() != 0){
+			result = new Status(
+					IStatus.ERROR,
+					FrameworkUtil.getBundle(Utils.class).getSymbolicName(),
+					NLS.bind(
+							Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()), null); 
+		} else{
+			result = Status.OK_STATUS;
+		}
+		return result;
 	}
 
 	/**
