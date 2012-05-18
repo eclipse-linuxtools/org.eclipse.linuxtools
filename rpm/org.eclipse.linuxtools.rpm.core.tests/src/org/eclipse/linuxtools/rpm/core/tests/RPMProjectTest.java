@@ -108,7 +108,7 @@ public class RPMProjectTest {
 		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 
 		// Clean up
-		testProject.delete(true, false, monitor);
+		testProject.delete(true, true, monitor);
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class RPMProjectTest {
 		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 
 		// Clean up
-		testProject.delete(true, false, monitor);
+		testProject.delete(true, true, monitor);
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class RPMProjectTest {
 		assertTrue(helloworldFolder.exists());
 
 		// Clean up
-		testProject.delete(true, false, monitor);
+		testProject.delete(true, true, monitor);
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class RPMProjectTest {
 				.getFile(new Path("helloworld-2-2.src.rpm"));
 		assertTrue(foo2.exists());
 
-		testProject.delete(true, false, null);
+		testProject.delete(true, true, null);
 	}
 	
 	@Test
@@ -247,6 +247,7 @@ public class RPMProjectTest {
         }
                        
         assertTrue(srcFolderPath);
+        testProject.delete(true, true, null);
 
 }
 }
