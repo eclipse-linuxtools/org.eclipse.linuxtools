@@ -10,24 +10,45 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 
 /**
  * Configuration for the flat rpm project layout.
- *
+ * 
  */
 public class FlatBuildConfiguration implements IProjectConfiguration {
 
 	private IProject project;
-	
+	private List<String> configDefines = new ArrayList<String>();
+
 	/**
 	 * Creates the configuration for the given project.
-	 * @param project The project whose configuration is represented.
+	 * 
+	 * @param project
+	 *            The project whose configuration is represented.
 	 */
 	public FlatBuildConfiguration(IProject project) {
 		this.project = project;
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_sourcedir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_srcrpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_builddir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_rpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		configDefines.add(DEFINE);
+		configDefines
+				.add("_specdir " + project.getLocation().toOSString()); //$NON-NLS-1$
 	}
 
 	public IContainer getBuildFolder() {
@@ -48,6 +69,10 @@ public class FlatBuildConfiguration implements IProjectConfiguration {
 
 	public IContainer getSrpmsFolder() {
 		return project;
+	}
+
+	public List<String> getConfigDefines() {
+		return configDefines;
 	}
 
 }
