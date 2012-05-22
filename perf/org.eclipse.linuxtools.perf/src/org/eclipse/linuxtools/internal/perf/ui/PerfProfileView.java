@@ -20,8 +20,10 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -44,6 +46,10 @@ public class PerfProfileView extends ViewPart {
 	private Action doubleClickAction;
 	
 	class NameSorter extends ViewerSorter {
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			return (((TreeParent) e1).getPercent() <= ((TreeParent) e2)
+					.getPercent()) ? -1 : 1;
+		}
 	}
 
 	/**
