@@ -69,6 +69,7 @@
     <module>org.eclipse.linuxtools.dataviewers-feature</module>
     <module>org.eclipse.linuxtools.profiling-feature</module>
     <module>org.eclipse.linuxtools.profiling.launch</module>
+    <module>org.eclipse.linuxtools.profiling.launch.ui</module>
     <module>org.eclipse.linuxtools.profiling.launch.remote</module>
     <module>org.eclipse.linuxtools.profiling.remote-feature</module>
     <module>org.eclipse.linuxtools.profiling.tests</module>

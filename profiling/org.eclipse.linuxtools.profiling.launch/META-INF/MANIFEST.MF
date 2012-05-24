@@ -7,7 +7,8 @@ Bundle-Activator: org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunch
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.cdt.core,
- org.eclipse.core.filesystem;bundle-version="1.3.100"
+ org.eclipse.core.filesystem;bundle-version="1.3.100",
+ org.eclipse.linuxtools.profiling.launch.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.eclipse.cdt.core.model,

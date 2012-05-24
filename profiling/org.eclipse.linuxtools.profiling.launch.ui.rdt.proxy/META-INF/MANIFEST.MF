@@ -1,14 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Resource Selector Proxy for RDT
+Bundle-Name: %bundleName
+Bundle-Vendor: %bundleVendor
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.9.2.qualifier
 Bundle-Activator: org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy.Activator
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ptp.remote.core;bundle-version="5.0.0",
  org.eclipse.ptp.remote.ui;bundle-version="5.0.0",
- org.eclipse.linuxtools.profiling.launch.ui;bundle-version="1.0.0"
+ org.eclipse.linuxtools.profiling.launch.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy
