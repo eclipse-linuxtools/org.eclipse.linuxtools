@@ -141,7 +141,7 @@ public class CParser implements IParserChangeLogContrib {
 				return "";
 			InputStream stream = ancestorStorage.getContents();
 			byte buffer[] = new byte[100];
-			String data = new String("");
+			String data = "";
 			int read = 0;
 			try {
 				do {
