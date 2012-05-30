@@ -11,10 +11,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.ssh.proxy;
 
+import java.io.InputStream;
+import java.io.IOException;
 import java.net.URI;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.ssh.proxy.SSHCommandLauncher;
 import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
@@ -47,8 +50,23 @@ public class SSHProxyManager implements IRemoteProxyManager {
 
 	@Override
 	public String getOS(URI uri) throws CoreException {
-		//FIXME: need better way to get this property
-		return "Linux"; //$NON-NLS-1$
+		SSHCommandLauncher cmdLauncher = new SSHCommandLauncher(uri);
+		Process p = cmdLauncher.execute(new Path("/bin/uname"), new String[] {"-s"}, new String[0], null, null); //$NON-NLS-1$ //$NON-NLS-2$
+		String os = ""; //$NON-NLS-1$
+		try {
+			InputStream in = p.getInputStream();
+			int exit = p.waitFor();
+			if (exit == 0) {
+				byte bytes[] = new byte[15];
+				int len;
+				while ((len = in.read(bytes)) != -1)
+					os = os + new String(bytes, 0, len);
+				os = os.substring(0, os.indexOf("\n")); //$NON-NLS-1$
+			}
+		} catch (InterruptedException e) {
+		} catch (IOException e2) {
+		}
+		return os;
 	}
 
 	@Override
