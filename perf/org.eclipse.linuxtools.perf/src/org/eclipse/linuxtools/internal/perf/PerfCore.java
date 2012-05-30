@@ -322,29 +322,13 @@ public class PerfCore {
 		PMFile currentFile = null;
 		PMSymbol currentSym = null;
         try {
-        	//Set up the event parent depending on whats selected.
-        	if (config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)) {
-        		currentEvent = new PMEvent("Default Event");
-        		invisibleRoot.addChild(currentEvent);
-        	} else if (!config.getAttribute(PerfPlugin.ATTR_MultipleEvents, PerfPlugin.ATTR_MultipleEvents_default)) {
-        		ArrayList<String> selE = (ArrayList<String>) config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
-        		if (selE != null) {
-        			currentEvent = new PMEvent(selE.get(0));
-        		} else {
-        			// this should never happen.
-        			currentEvent = new PMEvent("Error please fix profiling events chosen in launch config");
-        		}
-        	}
-        	
 			while (( line = input.readLine()) != null){
 				if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 				//System.out.println("Reading line: " + line);
 				if ((line.startsWith("#"))) {
 					//if (PerfPlugin.DEBUG_ON) System.out.println("Reading line: " + line);
 					// # is comment line, but if we're in multi-event mode then we need to scan for event name.
-					if (line.contains("Events:") 
-							&& config.getAttribute(PerfPlugin.ATTR_MultipleEvents, PerfPlugin.ATTR_MultipleEvents_default)
-							&& !config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)) {
+					if (line.contains("Events:")) {
 						String[] tmp = line.trim().split(" ");
 						currentEvent = new PMEvent(tmp[tmp.length - 1]);
 						//if (PerfPlugin.DEBUG_ON) System.out.println("Event is " + tmp[tmp.length - 1]);
@@ -386,9 +370,6 @@ public class PerfCore {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		spitStream(error,"Perf Report STDERR", print);

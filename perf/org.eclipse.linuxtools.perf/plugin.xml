@@ -94,5 +94,15 @@
             id="org.eclipse.linuxtools.perf.launch.perfImage">
       </launchConfigurationTypeImage>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="true"
+            filenames="perf.data, perf.data.old"
+            id="org.eclipse.linuxtools.perf.editor"
+            launcher="org.eclipse.linuxtools.internal.perf.launch.PerfOpenData"
+            name="Perf Viewer">
+      </editor>
+   </extension>
 
 </plugin>

@@ -167,7 +167,7 @@ public class ModelTest extends AbstractTest {
 		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
 
 		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
-		assertEquals("Default Event", ev.getName());
+		assertEquals("cycles", ev.getName());
 		assertTrue(ev.hasChildren());
 		assertEquals(1, ev.getChildren().length);
 		assertTrue(ev.getChildren()[0] instanceof PMCommand);
@@ -206,7 +206,7 @@ public class ModelTest extends AbstractTest {
 		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
 
 		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
-		assertEquals("Default Event", ev.getName());
+		assertEquals("cycles", ev.getName());
 		assertTrue(ev.hasChildren());
 		assertEquals(1, ev.getChildren().length);
 		assertTrue(ev.getChildren()[0] instanceof PMCommand);
