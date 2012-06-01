@@ -13,48 +13,37 @@ package org.eclipse.linuxtools.internal.perf.ui;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
-import org.eclipse.ui.IViewSite;
 
-public class PerfViewContentProvider implements IStructuredContentProvider, 
-ITreeContentProvider {
-	private TreeParent invisibleRoot;
-	private IViewSite viewSite;
-	public PerfViewContentProvider(IViewSite vs) {
-		viewSite = vs; 
-	}
+public class PerfViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 	
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 	}
+
 	public void dispose() {
 	}
+
 	public Object[] getElements(Object parent) {
-		if (parent.equals(viewSite)) {
-			if (invisibleRoot==null) initialize();
-			return getChildren(invisibleRoot);
-		}
 		return getChildren(parent);
 	}
+
 	public Object getParent(Object child) {
 		if (child instanceof TreeParent) {
-			return ((TreeParent)child).getParent();
+			return ((TreeParent) child).getParent();
 		}
 		return null;
 	}
-	public Object [] getChildren(Object parent) {
+
+	public Object[] getChildren(Object parent) {
 		if (parent instanceof TreeParent) {
-			return ((TreeParent)parent).getChildren();
+			return ((TreeParent) parent).getChildren();
 		}
 		return new Object[0];
 	}
+
 	public boolean hasChildren(Object parent) {
 		if (parent instanceof TreeParent)
-			return ((TreeParent)parent).hasChildren();
+			return ((TreeParent) parent).hasChildren();
 		return false;
-	}
-
-	private void initialize() {
-		invisibleRoot = PerfPlugin.getDefault().getModelRoot();			
 	}
 }

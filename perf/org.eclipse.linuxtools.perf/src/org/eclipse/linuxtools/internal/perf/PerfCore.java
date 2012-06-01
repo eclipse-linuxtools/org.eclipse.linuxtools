@@ -324,14 +324,11 @@ public class PerfCore {
         try {
 			while (( line = input.readLine()) != null){
 				if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
-				//System.out.println("Reading line: " + line);
+				// line containing report information
 				if ((line.startsWith("#"))) {
-					//if (PerfPlugin.DEBUG_ON) System.out.println("Reading line: " + line);
-					// # is comment line, but if we're in multi-event mode then we need to scan for event name.
 					if (line.contains("Events:")) {
 						String[] tmp = line.trim().split(" ");
 						currentEvent = new PMEvent(tmp[tmp.length - 1]);
-						//if (PerfPlugin.DEBUG_ON) System.out.println("Event is " + tmp[tmp.length - 1]);
 						invisibleRoot.addChild(currentEvent);
 						currentCommand = null;
 						currentDso = null;
@@ -339,6 +336,7 @@ public class PerfCore {
 						if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
 						invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results."));
 					}
+				// contains profiled information
 				} else {
 					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
 					if (items.length != 5) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line + "//length:" + items.length); }; continue; }
@@ -348,8 +346,8 @@ public class PerfCore {
 					dso = items[3].trim(); //dso column
 					symbol = items[4].trim(); //symbol column 
 					kernelFlag = (""+symbol.charAt(1)).equals("k");			
-					
-					//if (PerfPlugin.DEBUG_ON) System.out.println(percent + "//" + samples + "//" + comm + "//" + dso + "//" + kernelFlag + "//" + symbol);
+
+					// initialize current command if it doesn't exist
 					if ((currentCommand == null) || (!currentCommand.getName().equals(comm))) {
 						currentCommand = (PMCommand) currentEvent.getChild(comm);
 						if(currentCommand == null) {
@@ -357,6 +355,8 @@ public class PerfCore {
 							currentEvent.addChild(currentCommand);
 						}
 					}
+
+					// initialize current dso if it doesn't exist
 					if ((currentDso == null) || (!currentDso.getName().equals(dso))) {
 						currentDso = (PMDso) currentCommand.getChild(dso);
 						if (currentDso == null) {
@@ -364,7 +364,15 @@ public class PerfCore {
 							currentCommand.addChild(currentDso);
 						}
 					}
-					currentFile = currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols); // Store in unfiled for now, will re-organize during perf-annotate if the source code is available. hehe pun intended -unfiled literally ;)
+
+					/*
+					 *  Initialize the current file, and symbol
+					 *
+					 *  We won't know the name of the file containing the symbol
+					 *  until we run 'perf annotate' to resolve it, so for now we
+					 *  attach all symbols as children of 'Unfiled Symbols'.
+					 */
+					currentFile = currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols);
 					currentSym = new PMSymbol(symbol, samples, percent);
 					currentFile.addChild(currentSym);
 				}
@@ -377,28 +385,23 @@ public class PerfCore {
 		boolean SourceLineNumbers = PerfPlugin.ATTR_SourceLineNumbers_default;
 		boolean Kernel_SourceLineNumbers = PerfPlugin.ATTR_Kernel_SourceLineNumbers_default;
 		try {
-			//Check if the user has selected the option to skip the following block, or part of it.
+			// Check if resolving source file/line numbers is selected
 			SourceLineNumbers = config.getAttribute(PerfPlugin.ATTR_SourceLineNumbers, PerfPlugin.ATTR_SourceLineNumbers_default);
 			Kernel_SourceLineNumbers = config.getAttribute(PerfPlugin.ATTR_Kernel_SourceLineNumbers, PerfPlugin.ATTR_Kernel_SourceLineNumbers_default);
-			//if (!SourceLineNumbers && PerfPlugin.DEBUG_ON) System.out.println("Skipping source lines");
-			//if (!Kernel_SourceLineNumbers && PerfPlugin.DEBUG_ON) System.out.println("Skipping kernel source lines");
 		} catch (CoreException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			SourceLineNumbers = false;
 		}
 		
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 		
 		boolean hasProfileData = invisibleRoot.getChildren().length != 0;
-		
+
 		if (SourceLineNumbers) {
 			for (TreeParent ev : invisibleRoot.getChildren()) {
 				if (!(ev instanceof PMEvent)) continue;
-				currentEvent = (PMEvent)ev;
-				for (TreeParent c : currentEvent.getChildren()) {
-					if (!(c instanceof PMCommand)) continue;
-					currentCommand = (PMCommand)c;
-					for (TreeParent d : currentCommand.getChildren()) {
+				for (TreeParent cmd : ev.getChildren()) {
+					if (!(cmd instanceof PMCommand)) continue;
+					for (TreeParent d : cmd.getChildren()) {
 						if (!(d instanceof PMDso)) continue;					
 						currentDso = (PMDso)d;
 						if ((!Kernel_SourceLineNumbers) && currentDso.isKernelDso()) continue;
@@ -408,7 +411,6 @@ public class PerfCore {
 							if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 							
 							currentSym = (PMSymbol)s;
-							try {
 								String[] annotateCmd;
 								if (workingDir == null) {
 									annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, OldPerfVersion);
@@ -416,18 +418,13 @@ public class PerfCore {
 									String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA;
 									annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDefaultDataLoc, OldPerfVersion);
 								}
+
+							try {
 								p = Runtime.getRuntime().exec(annotateCmd);
-								//p.waitFor(); // actually, readLine() in the while later automatically 'waits' when theres nothing left to read but not terminated yet but if we wait in rare occurances perf never exits as the buffer fills up apparently
 								input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 								error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-								//spitStream(input,"Perf Annotate INPUT");
-								//spitStream(error,"Perf Annotate STDERR"); Leaving this on, with waitFor commented out hangs because the input buffer is never read so its still waiting for it to free up. Moved to end.
-								
-								
-							} catch( IOException e ) {
+							} catch (IOException e) {
 								e.printStackTrace();
-							/*} catch (InterruptedException e) {
-								e.printStackTrace();*/
 							}
 							
 							if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
@@ -441,7 +438,6 @@ public class PerfCore {
 										grabBlock = true;
 										dsoName = line.replace("Sorted summary for file ","");
 										blockStarted = false;
-										//if (PerfPlugin.DEBUG_ON) System.out.println("Grabbing " + dsoName);
 										if ((workingDir != null) && (dsoName.startsWith("./"))) {
 											if (workingDir.getAbsolutePath().endsWith("/")) {
 												dsoName = workingDir.getAbsolutePath() + dsoName.substring(2); // path already ends with '/', so trim './' 
@@ -469,24 +465,24 @@ public class PerfCore {
 											break; 
 										} else {
 											currentSym.addPercent(Integer.parseInt(items[1]), percent);
+											// Symbol currently in 'Unfiled Symbols' but we now know the actual parent
 											if (currentSym.getParent().getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) {
-												//Symbol currently in unfiled symbols (from Perf Report), move it into it proper area.
 												currentSym.getParent().removeChild(currentSym);
 												currentDso.getFile(items[0]).addChild(currentSym);
+											// Symbol has 2 (or more) parents
 											} else if (!((PMFile)currentSym.getParent()).getPath().equals(items[0])) {
-												//if (PerfPlugin.DEBUG_ON) System.err.println("Multiple paths found for this symbol.");
 												currentSym.markConflict();
 												currentSym.getParent().removeChild(currentSym);
 												currentDso.getFile(PerfPlugin.STRINGS_MultipleFilesForSymbol).addChild(currentSym);
 											}
 										}
-										//if (PerfPlugin.DEBUG_ON) System.out.println("pc: " + percent + " lr:" + lineRef);									
 									}
 								}
 							} catch (IOException e) {
 								e.printStackTrace();
 							}				
 						}
+
 						if (currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols).getChildren().length == 0) {
 							currentDso.removeChild(currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols));
 						}
@@ -523,5 +519,3 @@ public class PerfCore {
     	});
     }
 }
-
-

@@ -65,11 +65,10 @@ public class PerfProfileView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		drillDownAdapter = new DrillDownAdapter(viewer);
-		viewer.setContentProvider(new PerfViewContentProvider(this.getViewSite()));
+		viewer.setContentProvider(new PerfViewContentProvider());
 		
 		viewer.setLabelProvider(new PerfViewLabelProvider());
 		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
 
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer");
@@ -81,6 +80,7 @@ public class PerfProfileView extends ViewPart {
 	}
 	
 	public void refreshModel() {
+		viewer.setInput(PerfPlugin.getDefault().getModelRoot());
 		viewer.refresh();
 	}
 
