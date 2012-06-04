@@ -11,19 +11,18 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -35,10 +34,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
-
-
-
-import java.io.File;
 
 /**
  * This <code>Action</code> is raised by <code>KernelBrowserView</code> whenever the user selects
@@ -104,9 +99,8 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 * @param file	The <code>File</code> to create an input for.
 	 * @return	A <code>PathEditorInput</code> that represents the requested file.
 	 */
-	private IEditorInput createEditorInput(File file) {
-		IPath location= new Path(file.getAbsolutePath());
-		PathEditorInput input= new PathEditorInput(location, window);
+	private IEditorInput createEditorInput(IFileStore fs) {
+		FileStoreEditorInput input= new FileStoreEditorInput(fs);
 		LogManager.logDebug("createEditorInput: returnVal-" + input, this);
 		return input;
 	}
@@ -117,18 +111,10 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 * @param file The file to get the ID for.
 	 * @return	The ID for the editor that handles the requested file type.
 	 */
-	private String getEditorId(File file) {
+	private String getEditorId(IFileStore fs) {
 		IWorkbench workbench= window.getWorkbench();
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
-		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
-		for (IEditorDescriptor d : descriptors)
-			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") ||
-				d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) {
-				LogManager.logDebug("getEditorId: returnVal-" + d.getId(), this);
-				return d.getId();
-			}
-		LogManager.logDebug("getEditorId: returnVal-...SimpleEditor", this);
-		return SimpleEditor.ID;
+		return editorRegistry.getDefaultEditor(fs.getName()).getId();
 	}
 	
 	/**
@@ -154,10 +140,10 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 			TreeNode t = (TreeNode)o;
 			if(t.isClickable()) {
 				
-				File file = (File)t.getData();
-				if (file != null) {
-					IEditorInput input= createEditorInput(file);
-					String editorId= getEditorId(file);
+				IFileStore fs = (IFileStore)t.getData();
+				if (fs != null) {
+					IEditorInput input= createEditorInput(fs);
+					String editorId= getEditorId(fs);
 					try {
 						IEditorPart editor = wb.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 						if(editor instanceof STPEditor)

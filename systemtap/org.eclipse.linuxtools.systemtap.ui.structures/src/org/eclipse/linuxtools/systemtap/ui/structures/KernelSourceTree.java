@@ -11,7 +11,15 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
-import java.io.File;
+import java.net.URI;
+
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 public class KernelSourceTree {
 	public TreeNode getTree() {
@@ -27,10 +35,15 @@ public class KernelSourceTree {
 	public void buildKernelTree(String direct, String[] excluded) {
 		this.excluded = excluded;
 		try {
-			File f = new File(direct);
-			
-			kernelTree = new TreeNode(f, f.getName(), false);
-			addLevel(kernelTree);
+			URI locationURI = new URI(direct);
+			IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(locationURI);
+			IFileStore fs = proxy.getResource(locationURI.getPath());
+			if (fs == null)
+				kernelTree = null;
+			else {
+				kernelTree = new TreeNode(fs, fs.getName(), false);
+				addLevel(kernelTree);
+			}
 		} catch(Exception e) {
 			kernelTree = null;
 		}
@@ -44,28 +57,40 @@ public class KernelSourceTree {
 	private void addLevel(TreeNode top) {
 		boolean add;
 		TreeNode current;
-		File f = (File)top.getData();
-		
-		File[] fs = f.listFiles(new CCodeFileFilter());
-		for(int i=0; i<fs.length; i++) {
-			add = true;
-			for(int j=0; j<excluded.length; j++) {
-				if(fs[i].isDirectory() && fs[i].getName().equals(excluded[j].substring(0, excluded[j].length()-1)))
-					add = false;
-			}
-			if(add) {
-				current = new TreeNode(fs[i], fs[i].getName(), !fs[i].isDirectory());
-				top.add(current);
-				if(fs[i].isDirectory()) {
-					addLevel(top.getChildAt(top.getChildCount()-1));
-					if(0 == current.getChildCount())
-						top.remove(top.getChildCount()-1);
+		IFileStore fs = (IFileStore)top.getData();
+		IFileStore[] fsList = null;
+		try {
+			fsList = fs.childStores(EFS.NONE, new NullProgressMonitor());
+			CCodeFileFilter filter = new CCodeFileFilter();
+			for (IFileStore fsChildren : fsList) {
+				add = true;
+				boolean isDir = fsChildren.fetchInfo().isDirectory();
+				if (!filter.accept(fsChildren.getName(), isDir))
+					continue;
+
+				for(int j=0; j<excluded.length; j++) {
+					if(fsChildren.getName().equals(excluded[j].substring(0, excluded[j].length()-1)) && isDir) {
+						add = false;
+						break;
+					}
+				}
+				if(add) {
+					current = new TreeNode(fsChildren, fsChildren.getName(), !isDir);
+					top.add(current);
+					if(isDir) {
+						addLevel(top.getChildAt(top.getChildCount()-1));
+						if(0 == current.getChildCount())
+							top.remove(top.getChildCount()-1);
+					}
 				}
 			}
+			top.sortLevel();
+		} catch (CoreException e) {
+			//Nothing to do
+			e.printStackTrace();
 		}
-		top.sortLevel();
 	}
-	
+
 	public void dispose() {
 		kernelTree = null;
 	}

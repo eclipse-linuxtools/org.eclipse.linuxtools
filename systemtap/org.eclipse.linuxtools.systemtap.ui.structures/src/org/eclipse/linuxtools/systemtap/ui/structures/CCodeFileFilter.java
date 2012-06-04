@@ -26,11 +26,16 @@ public class CCodeFileFilter implements FileFilter {
 	public boolean accept(File f) {
 		if(null == f)
 			return false;
-		return f.isDirectory() ||
-				f.getName().toLowerCase().endsWith(".c") ||
-				f.getName().toLowerCase().endsWith(".h");
+		return accept(f.getName(), f.isDirectory());
 	}
 	
+	public boolean accept(String name, boolean isDir) {
+		String lower = name.toLowerCase();
+		return isDir ||
+				lower.endsWith(".c") || //$NON-NLS-1$
+				lower.endsWith(".h"); //$NON-NLS-1$
+	}
+
 	public String getDescription() {
 		return ".c, .h files";
 	}
