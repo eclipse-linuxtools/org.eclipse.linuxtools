@@ -8,4 +8,13 @@
             scheme="ssh">
       </manager>
    </extension>
+   <extension
+         point="org.eclipse.core.filesystem.filesystems">
+      <filesystem
+            scheme="ssh">
+         <run
+               class="org.eclipse.linuxtools.ssh.proxy.SSHFileSystem">
+         </run>
+      </filesystem>
+   </extension>
 </plugin>

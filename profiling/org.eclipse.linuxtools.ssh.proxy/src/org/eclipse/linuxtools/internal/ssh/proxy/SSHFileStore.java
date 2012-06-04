@@ -214,7 +214,10 @@ public class SSHFileStore extends FileStore {
 
 	@Override
 	public String getName() {
-		return path.lastSegment();
+		String name = path.lastSegment();
+		if (name == null)
+			name = ""; //$NON-NLS-1$
+		return name;
 	}
 
 	@Override
