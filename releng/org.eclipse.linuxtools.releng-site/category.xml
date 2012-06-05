@@ -124,6 +124,12 @@
    <feature url="features/org.eclipse.linuxtools.lttng.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng.source" version="0.0.0" os="linux">
       <category name="Linux Tools Sources"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.lttng2.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.source" version="0.0.0" os="linux">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.lttng2.kernel.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.kernel.source" version="0.0.0" os="linux">
+      <category name="Linux Tools Sources"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.gcov.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
