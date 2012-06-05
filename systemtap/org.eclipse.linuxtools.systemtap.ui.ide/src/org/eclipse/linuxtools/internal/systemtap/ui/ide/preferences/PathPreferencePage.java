@@ -27,7 +27,6 @@ public class PathPreferencePage extends FieldEditorPreferencePage implements IWo
 		super(GRID);
 		LogManager.logDebug("Start PathPreferencePage:", this);
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription("Important directories");
 		LogManager.logDebug("End PathPreferencePage:", this);
 	}
 	
