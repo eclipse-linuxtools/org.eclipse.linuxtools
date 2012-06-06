@@ -28,10 +28,8 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.KernelSou
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
-import org.eclipse.swt.SWT;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -52,15 +50,11 @@ public class KernelBrowserView extends BrowserView {
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 			String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
 			if(null == kernelSource || kernelSource.length() < 1) {
-				LogManager.logInfo("Kernel Source Directory not found, querying", this); //$NON-NLS-1$
-
-				DirectoryDialog dialog= new DirectoryDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
-				dialog.setText(Localization.getString("KernelBrowserView.WhereKernelSource")); //$NON-NLS-1$
-				kernelSource = dialog.open();
-
-				if(null == kernelSource)
-					kernelSource = ""; //$NON-NLS-1$
-				p.setValue(IDEPreferenceConstants.P_KERNEL_SOURCE, kernelSource);
+				LogManager.logInfo("Kernel Source Directory not found", this); //$NON-NLS-1$
+				TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
+				t.add(new TreeNode("", Localization.getString("KernelBrowserView.NoKernelSourceFound"), false)); //$NON-NLS-1$ //$NON-NLS-2$
+				viewer.setInput(t);
+				return Status.OK_STATUS;
 			}
 
 			monitor.beginTask(Localization.getString("KernelBrowserView.ReadingKernelSourceTree"), 100); //$NON-NLS-1$
