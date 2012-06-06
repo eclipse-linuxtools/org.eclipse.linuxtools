@@ -13,8 +13,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import java.io.File;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -28,8 +32,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.PlatformUI;
-
-
+import org.eclipse.ui.progress.UIJob;
 
 /**
  * The Kernel Source Browser module for the SystemTap GUI. This browser provides a list of kernel source
@@ -40,39 +43,77 @@ import org.eclipse.ui.PlatformUI;
 
 @SuppressWarnings("deprecation")
 public class KernelBrowserView extends BrowserView {
+	private class KernelRefreshJob extends UIJob {
+		public KernelRefreshJob() {
+			super(Localization.getString("KernelBrowserView.RefreshingKernelSource")); //$NON-NLS-1$
+		}
+
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
+			String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
+			if(null == kernelSource || kernelSource.length() < 1) {
+				LogManager.logInfo("Kernel Source Directory not found, querying", this); //$NON-NLS-1$
+
+				DirectoryDialog dialog= new DirectoryDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
+				dialog.setText(Localization.getString("KernelBrowserView.WhereKernelSource")); //$NON-NLS-1$
+				kernelSource = dialog.open();
+
+				if(null == kernelSource)
+					kernelSource = ""; //$NON-NLS-1$
+				p.setValue(IDEPreferenceConstants.P_KERNEL_SOURCE, kernelSource);
+			}
+
+			monitor.beginTask(Localization.getString("KernelBrowserView.ReadingKernelSourceTree"), 100); //$NON-NLS-1$
+			KernelSourceTree kst = new KernelSourceTree();
+			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
+			kst.buildKernelTree(kernelSource, excluded);
+			viewer.setInput(kst.getTree());
+			kst.dispose();
+			monitor.done();
+			return Status.OK_STATUS;
+		}
+	}
+
+	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
+	private KernelRefreshJob refreshJob = new KernelRefreshJob();
+	private KernelSourceAction doubleClickAction;
+	private IDoubleClickListener dblClickListener;
+
 	public KernelBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		refreshJob.setUser(true);
+		refreshJob.setPriority(Job.SHORT);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
 
 		refresh();
 		makeActions();
-		LogManager.logDebug("End createPartControl", this);
+		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 
 	/**
 	 * Wires up all of the actions for this browser, such as double and right click handlers.
 	 */
 	public void makeActions() {
-		LogManager.logDebug("Start makeActions:", this);
+		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
 		dblClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				LogManager.logDebug("Start doubleClick: event-" + event, this);
+				LogManager.logDebug("Start doubleClick: event-" + event, this); //$NON-NLS-1$
 				doubleClickAction.run();
-				LogManager.logDebug("End doubleClick:", this);
+				LogManager.logDebug("End doubleClick:", this); //$NON-NLS-1$
 			}
 		};
 		viewer.addDoubleClickListener(dblClickListener);
 		IDEPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(propertyChangeListener);
-		LogManager.logDebug("End makeActions:", this);
+		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -81,30 +122,10 @@ public class KernelBrowserView extends BrowserView {
 	 * that the application update the kernel source information.
 	 */
 	public void refresh() {
-		LogManager.logDebug("Start refresh:", this);
-		KernelSourceTree kst = new KernelSourceTree();
+		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
 		
-		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-		String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
-		if(null == kernelSource || kernelSource.length() < 1) {
-			LogManager.logInfo("Kernel Source Directory not found, querying", this);
-			
-			DirectoryDialog dialog= new DirectoryDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
-			dialog.setText(Localization.getString("KernelBrowserView.WhereKernelSource"));
-			kernelSource = dialog.open();
-
-			if(null == kernelSource)
-				kernelSource = "";
-			p.setValue(IDEPreferenceConstants.P_KERNEL_SOURCE, kernelSource);
-		}
-		
-		String[] excluded = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
-		
-		kst.buildKernelTree(kernelSource, excluded);
-		super.viewer.setInput(kst.getTree());
-
-		kst.dispose();
-		LogManager.logDebug("End refresh:", this);
+		refreshJob.schedule();
+		LogManager.logDebug("End refresh:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -113,16 +134,16 @@ public class KernelBrowserView extends BrowserView {
 	 */
 	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			LogManager.logDebug("Start propertyChange: event-" + event, this);
+			LogManager.logDebug("Start propertyChange: event-" + event, this); //$NON-NLS-1$
 			if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE)) {
 				refresh();
 			}
-			LogManager.logDebug("End propertyChange:", this);
+			LogManager.logDebug("End propertyChange:", this); //$NON-NLS-1$
 		}
 	};
 	
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 		IDEPlugin.getDefault().getPluginPreferences().removePropertyChangeListener(propertyChangeListener);
 		if(null != viewer)
@@ -132,8 +153,4 @@ public class KernelBrowserView extends BrowserView {
 			doubleClickAction.dispose();
 		doubleClickAction = null;
 	}
-	
-	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView";
-	private KernelSourceAction doubleClickAction;
-	private IDoubleClickListener dblClickListener;
 }
