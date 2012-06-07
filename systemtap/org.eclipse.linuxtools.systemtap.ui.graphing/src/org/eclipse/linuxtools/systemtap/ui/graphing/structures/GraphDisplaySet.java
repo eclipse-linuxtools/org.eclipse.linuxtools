@@ -55,8 +55,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GraphDisplaySet {
 	public GraphDisplaySet(Composite parent, IDataSet data) {
-		LogManager.logDebug("Start GraphSelectorView:", this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start GraphSelectorView:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		IPreferenceStore p = GraphingPlugin.getDefault().getPreferenceStore();
 		int delay = p.getInt(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY);
 
@@ -75,7 +75,7 @@ public class GraphDisplaySet {
 		builders = new ArrayList<AbstractChartBuilder>();
 	//	graphs = new ArrayList();
 		tabListeners = new ArrayList<ITabListener>();
-		LogManager.logDebug("End GraphSelectorView:", this);
+		LogManager.logDebug("End GraphSelectorView:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class GraphDisplaySet {
 	 * @param parent The composite that will contain all the elements from this dialog
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 
 		parent.setLayout(new FormLayout());
 		FormData data1 = new FormData();
@@ -152,7 +152,7 @@ public class GraphDisplaySet {
 		folder.setSelection(item);
 		lastSelectedTab = 1;
 
-		LogManager.logDebug("End createPartControl", this);
+		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 	
 	public IDataSet getDataSet() {
@@ -176,8 +176,8 @@ public class GraphDisplaySet {
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 
 		if(null != updater)
 			updater.dispose();
@@ -191,7 +191,7 @@ public class GraphDisplaySet {
 		}
 		listener = null;
 		
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
 	/**

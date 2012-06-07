@@ -24,14 +24,14 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class GraphingPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public GraphingPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start GraphingPreferencePage:", this);
+		LogManager.logDebug("Start GraphingPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphingPreferencePage.GraphDisplayPreferences"));
-		LogManager.logDebug("End GraphingPreferencePage:", this);
+		LogManager.logDebug("End GraphingPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 
 		addField(
 				new IntegerFieldEditor(
@@ -39,19 +39,19 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 				Localization.getString("GraphingPreferencePage.RefreshDelay"),
 				getFieldEditorParent()));
 		
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logDebug("Start init:", this);
-		LogManager.logInfo("Initializing", this);
-		LogManager.logDebug("End init:", this);
+		LogManager.logDebug("Start init:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
+		LogManager.logDebug("End init:", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 }

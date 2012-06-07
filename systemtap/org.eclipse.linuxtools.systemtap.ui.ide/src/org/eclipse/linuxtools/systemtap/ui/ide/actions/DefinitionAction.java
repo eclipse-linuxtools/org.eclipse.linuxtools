@@ -44,7 +44,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 
 	public DefinitionAction() {
 		super();
-		LogManager.logInfo("initialized", this);
+		LogManager.logInfo("initialized", this); //$NON-NLS-1$
 	}
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
@@ -56,7 +56,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	 * then opens a new <code>STPEditor</code> for that file. 
 	 */
 	public void run(IAction action) {
-		LogManager.logDebug("Start run: action-" + action, this);
+		LogManager.logDebug("Start run: action-" + action, this); //$NON-NLS-1$
 		if(!isEnabled())
 			return;
 		Object o = selection.getFirstElement();
@@ -80,10 +80,10 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 
 			editor.jumpToLocation(++line, 0);
 		} catch (PartInitException e) {
-			LogManager.logCritical("Exception run: " + e.getMessage(), this);
+			LogManager.logCritical("Exception run: " + e.getMessage(), this); //$NON-NLS-1$
 			e.printStackTrace();
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		if(selection instanceof IStructuredSelection) {
-			LogManager.logDebug("this.selection changed: oldValue: "+ this.selection + " newValue: " + selection, this);
+			LogManager.logDebug("this.selection changed: oldValue: "+ this.selection + " newValue: " + selection, this); //$NON-NLS-1$ //$NON-NLS-2$
 			this.selection = (IStructuredSelection)selection;
 			Object o = this.selection.getFirstElement();
 			if(o instanceof TreeDefinitionNode)
@@ -147,7 +147,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	}
 
 	public void dispose() {
-		LogManager.logInfo("disposing", this);
+		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbenchWindow window) {}

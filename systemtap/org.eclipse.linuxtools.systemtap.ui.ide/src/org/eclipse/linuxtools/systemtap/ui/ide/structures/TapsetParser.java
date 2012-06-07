@@ -197,7 +197,7 @@ public class TapsetParser implements Runnable {
 			try {
 				Thread.sleep(100);
 			} catch(InterruptedException e) {
-				LogManager.logCritical("InterruptedException runStap: " + e.getMessage(), this);
+				LogManager.logCritical("InterruptedException runStap: " + e.getMessage(), this); //$NON-NLS-1$
 			}
 		}
 		
@@ -559,7 +559,7 @@ public class TapsetParser implements Runnable {
 	 * @param probeSet The group of probes that the String s corresponds to
 	 */
 	private boolean parsePass2Probes(String s, TreeNode probeSet) {
-		LogManager.logDebug("Start parseLevel2Probes: probeSet-" + probeSet, this);
+		LogManager.logDebug("Start parseLevel2Probes: probeSet-" + probeSet, this); //$NON-NLS-1$
 		TreeNode tree = new TreeNode("", false);
 		TreeNode probe = null;
 		String[] probeLines = null;
@@ -648,7 +648,7 @@ public class TapsetParser implements Runnable {
 					return true;
 			}
 		} catch(Exception e) {
-			LogManager.logCritical("Exception probesMatch: " + e.getMessage() + "\n" + one + "\n" + two, this);
+			LogManager.logCritical("Exception probesMatch: " + e.getMessage() + "\n" + one + "\n" + two, this); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return false;
 	}

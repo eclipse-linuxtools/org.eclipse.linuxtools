@@ -41,7 +41,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 public class DashboardGraphsBrowserView extends GraphsView {
 	public DashboardGraphsBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class DashboardGraphsBrowserView extends GraphsView {
 	 * this method is run.
 	 */
 	public void dispose() {
-		LogManager.logInfo("disposing", this);
+		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer=null;
 	}

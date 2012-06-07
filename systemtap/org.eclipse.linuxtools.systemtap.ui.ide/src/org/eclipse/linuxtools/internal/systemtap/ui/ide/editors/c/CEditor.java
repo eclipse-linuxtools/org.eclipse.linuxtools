@@ -95,7 +95,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		 */
 		public void mouseDoubleClick(MouseEvent e) 
 		{
-			LogManager.logDebug("Start mouseDoubleClick: e-" + e, this);
+			LogManager.logDebug("Start mouseDoubleClick: e-" + e, this); //$NON-NLS-1$
 			getSite().getShell().setCursor(new Cursor(getSite().getShell().getDisplay(), SWT.CURSOR_WAIT));
 			int lineno = getVerticalRuler().getLineOfLastMouseButtonActivity();
 
@@ -149,13 +149,13 @@ public class CEditor extends AbstractDecoratedTextEditor {
 					}
 				}
 			} catch (Exception excp) {
-				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this);
+				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this); //$NON-NLS-1$
 			}
 			if(die) {
-				LogManager.logInfo("Initializing", MessageDialog.class);
+				LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
 				MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-						Localization.getString("CEditor.ProbeInsertFailed"),Localization.getString("CEditor.CanNotProbeLine"));
-				LogManager.logInfo("Disposing", MessageDialog.class);
+						Localization.getString("CEditor.ProbeInsertFailed"),Localization.getString("CEditor.CanNotProbeLine")); //$NON-NLS-1$ //$NON-NLS-2$
+				LogManager.logInfo("Disposing", MessageDialog.class); //$NON-NLS-1$
 			} else {
 				IEditorInput in = getEditorInput();
 				if(in instanceof PathEditorInput) {
@@ -192,7 +192,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 				}
 			}
 			getSite().getShell().setCursor(null);	//Return the cursor to normal
-			LogManager.logDebug("End mouseDoubleClick:", this);
+			LogManager.logDebug("End mouseDoubleClick:", this); //$NON-NLS-1$
 		}
 
 		public void mouseDown(MouseEvent e) {
@@ -207,10 +207,10 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 */
 	public CEditor() {
 		super();
-		LogManager.logDebug("Start CEditor:", this);
+		LogManager.logDebug("Start CEditor:", this); //$NON-NLS-1$
 		internal_init();
 		IDEPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(cColorPropertyChangeListener);
-		LogManager.logDebug("End CEditor:", this);
+		LogManager.logDebug("End CEditor:", this); //$NON-NLS-1$
 	}
 	/**
 	 * Part of the initialization routine. Creates the <code>ColorManager</code> used by this editor,
@@ -223,26 +223,26 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#setSourceViewerConfiguration(org.eclipse.jface.text.source.SourceViewerConfiguration)
 	 */
 	protected void internal_init() {
-		LogManager.logDebug("Start internal_init:", this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start internal_init:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		configureInsertMode(SMART_INSERT, false);
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new CConfiguration(colorManager));
 		setDocumentProvider(new CDocumentProvider());
-		LogManager.logDebug("End internal_init", this);
+		LogManager.logDebug("End internal_init", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		IDEPlugin.getDefault().getPluginPreferences().removePropertyChangeListener(cColorPropertyChangeListener);
 		colorManager.dispose();
 		super.dispose();
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
 	protected CompositeRuler createCompositeRuler() {
-		LogManager.logDebug("Start createCompositeRuler:", this);
+		LogManager.logDebug("Start createCompositeRuler:", this); //$NON-NLS-1$
 		CompositeRuler ruler = new CompositeRuler();
 		AnnotationRulerColumn column = new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
 		ruler.addDecorator(0, column);
@@ -252,21 +252,21 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		else if (isPrefQuickDiffAlwaysOn())
 			ruler.addDecorator(1, createLineNumberRulerColumn());
 
-		LogManager.logDebug("End createCompositeRuler: returnVal-" + ruler, this);
+		LogManager.logDebug("End createCompositeRuler: returnVal-" + ruler, this); //$NON-NLS-1$
 		return ruler;
 	}
 
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
 		IVerticalRuler ruler = this.getVerticalRuler();
 		Control control = ruler.getControl();
 		try {
 			control.addMouseListener(handler);
 		} catch(Exception e) {
-			LogManager.logCritical("Exception createPartControl: " + e.getMessage(), this);
+			LogManager.logCritical("Exception createPartControl: " + e.getMessage(), this); //$NON-NLS-1$
 		}
-		LogManager.logDebug("End createPartControl:", this);
+		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -277,10 +277,10 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 */
 	private void notifyColorPrefsChanged()
 	{
-		LogManager.logDebug("Start notifyColorPrefsChanged:", this);
+		LogManager.logDebug("Start notifyColorPrefsChanged:", this); //$NON-NLS-1$
 		SourceViewerConfiguration svc = getSourceViewerConfiguration();
 		if(!(svc instanceof CConfiguration)) {
-			LogManager.logDebug("End notifyColorPrefsChanged:", this);
+			LogManager.logDebug("End notifyColorPrefsChanged:", this); //$NON-NLS-1$
 			return;
 		}
 		CConfiguration config = (CConfiguration)svc;
@@ -292,7 +292,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		viewer.configure(svc);
 		viewer.invalidateTextPresentation();
 		viewer.refresh();
-		LogManager.logDebug("End notifyColorPrefsChanged:", this);
+		LogManager.logDebug("End notifyColorPrefsChanged:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -302,7 +302,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 */
 	private final IPropertyChangeListener cColorPropertyChangeListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			LogManager.logDebug("Start propertyChange: event-" + event, this);
+			LogManager.logDebug("Start propertyChange: event-" + event, this); //$NON-NLS-1$
 			if(event.getProperty().equals(IDEPreferenceConstants.P_C_COMMENT_COLOR) ||
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_DEFAULT_COLOR) ||
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_KEYWORD_COLOR) ||
@@ -311,7 +311,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_TYPE_COLOR)) {
 				notifyColorPrefsChanged();
 			}
-			LogManager.logDebug("End propertyChange: event-" + event, this);
+			LogManager.logDebug("End propertyChange: event-" + event, this); //$NON-NLS-1$
 		}
 	};
 }

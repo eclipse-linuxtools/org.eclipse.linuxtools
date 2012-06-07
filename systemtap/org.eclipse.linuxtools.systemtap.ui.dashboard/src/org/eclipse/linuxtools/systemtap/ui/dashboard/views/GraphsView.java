@@ -38,7 +38,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 public abstract class GraphsView extends ViewPart {
 	public GraphsView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public abstract class GraphsView extends ViewPart {
 	 * contains the TreeNode and handles how to display each entry.
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		parent.getShell().setCursor(new Cursor(parent.getShell().getDisplay(), SWT.CURSOR_WAIT));
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(new ViewContentProvider());
@@ -108,7 +108,7 @@ public abstract class GraphsView extends ViewPart {
 
 		generateGraphsTree();
 		makeActions();
-		LogManager.logDebug("End createPartControl:", this);
+		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -142,7 +142,7 @@ public abstract class GraphsView extends ViewPart {
 	 * this method is run.
 	 */
 	public void dispose() {
-		LogManager.logInfo("disposing", this);
+		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}

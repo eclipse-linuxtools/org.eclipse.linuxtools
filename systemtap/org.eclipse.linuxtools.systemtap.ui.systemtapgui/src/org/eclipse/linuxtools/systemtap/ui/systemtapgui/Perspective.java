@@ -27,8 +27,8 @@ public class Perspective implements IPerspectiveFactory {
 	 * @param layout The IPageLayout object to set options on.
 	 */
 	public void createInitialLayout(IPageLayout layout) {
-		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
 		
@@ -38,7 +38,7 @@ public class Perspective implements IPerspectiveFactory {
 
 		layout.addPerspectiveShortcut(ID);
 		
-		LogManager.logDebug("End createInitialLayout:", this);
+		LogManager.logDebug("End createInitialLayout:", this); //$NON-NLS-1$
 
 	}
 }

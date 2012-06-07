@@ -58,7 +58,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 	 * @param browser	browser that fires this action
 	 */
 	public FunctionBrowserAction(IWorkbenchWindow window, FunctionBrowserView browser) {
-		LogManager.logInfo("initialized", this);
+		LogManager.logInfo("initialized", this); //$NON-NLS-1$
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
@@ -74,7 +74,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 		selection = null;
 		expandAction.dispose();
 		expandAction = null;
-		LogManager.logInfo("disposed", this);
+		LogManager.logInfo("disposed", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -83,11 +83,11 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
-			LogManager.logDebug("Changing selection", this);
+			LogManager.logDebug("Changing selection", this); //$NON-NLS-1$
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
 		} else {
-			LogManager.logDebug("Disabling, selection not IStructuredSelection", this);
+			LogManager.logDebug("Disabling, selection not IStructuredSelection", this); //$NON-NLS-1$
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
@@ -101,7 +101,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 	 * (creating a new editor if there is not one currently open).
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchPage page = window.getActivePage();
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
@@ -134,12 +134,12 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 						
 					}
 				} catch (PartInitException e) {
-					LogManager.logCritical("PartInitException run: " + e.getMessage(), this);
+					LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
 				}
 			} else {
 				expandAction.run();
 			}
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 }

@@ -26,15 +26,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public GraphPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start GraphPreferencePage:", this);
+		LogManager.logDebug("Start GraphPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		//setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences"));
-		LogManager.logDebug("End GraphPreferencePage:", this);
+		LogManager.logDebug("End GraphPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 
 		addField(new BooleanFieldEditor(
 				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES,
@@ -70,20 +70,20 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 				Localization.getString("GraphPreferencePage.YSeriesTicks"),
 				getFieldEditorParent()));
 		
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logDebug("Start init:", this);
-		LogManager.logInfo("Initializing", this);
-		LogManager.logDebug("End init:", this);
+		LogManager.logDebug("Start init:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
+		LogManager.logDebug("End init:", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 }
 

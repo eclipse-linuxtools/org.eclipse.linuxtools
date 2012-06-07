@@ -48,12 +48,12 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		fWindow= null;
 	}
 
 	public void init(IWorkbenchWindow window) {
-		LogManager.logInfo("Initializing fWindow: " + window, this);
+		LogManager.logInfo("Initializing fWindow: " + window, this); //$NON-NLS-1$
 		fWindow= window;
 	}
 
@@ -73,10 +73,10 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 		dialog.setText("Import Tapsets"); //$NON-NLS-1$
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
-			LogManager.logDebug("queryFile: returnVal-" + path, this);
+			LogManager.logDebug("queryFile: returnVal-" + path, this); //$NON-NLS-1$
 			return new File(path);
 		}
-		LogManager.logDebug("queryFile: returnVal-null", this);
+		LogManager.logDebug("queryFile: returnVal-null", this); //$NON-NLS-1$
 		return null;
 	}
 
@@ -86,7 +86,7 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 	 * and the tapset browsers refreshed.
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		File file= queryFile();
 		if (file != null) {
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
@@ -99,6 +99,6 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 			ivp = fWindow.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProbeAliasBrowserView.ID);
 			((ProbeAliasBrowserView)ivp).refresh();
 		} 
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 }

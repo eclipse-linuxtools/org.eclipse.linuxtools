@@ -22,27 +22,27 @@ import org.eclipse.ui.IWorkbench;
 public class IDEPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public IDEPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start IDEPreferencePage:", this);
+		LogManager.logDebug("Start IDEPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription("Preferences when loading the IDE perspective");
-		LogManager.logDebug("End IDEPreferencePage:", this);
+		LogManager.logDebug("End IDEPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new BooleanFieldEditor(
 				IDEPreferenceConstants.P_STORED_TREE, 
 				Localization.getString("IDEPreferencePage.UseStoredTapsetTree"),
 				getFieldEditorParent()));
-				LogManager.logDebug("End createFieldEditors:", this);
+				LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

@@ -31,7 +31,7 @@ public class DashboardPerspective implements IPerspectiveFactory {
 	public static String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective";
 	
 	public void createInitialLayout(IPageLayout layout) {
-		LogManager.logDebug("Start createInitialLayout:", this);
+		LogManager.logDebug("Start createInitialLayout:", this); //$NON-NLS-1$
 
 		//Don't display the editor
 		String editorArea = layout.getEditorArea();
@@ -69,6 +69,6 @@ public class DashboardPerspective implements IPerspectiveFactory {
 		//Add a link to the perspective in the MainMenu.  Window->Open Perspective
 		layout.addPerspectiveShortcut(ID);
 
-		LogManager.logDebug("End createInitialLayout:", this);
+		LogManager.logDebug("End createInitialLayout:", this); //$NON-NLS-1$
 	}
 }

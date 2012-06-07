@@ -28,30 +28,30 @@ public class SystemTapPreferencePage extends FieldEditorPreferencePage implement
 	 */
 	public SystemTapPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start SystemTapPreferencePage:", this);
+		LogManager.logDebug("Start SystemTapPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(SystemTapGUIPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("SystemTapPreferencePage.GUIPreferencesDescription"));
-		LogManager.logDebug("End SystemTapPreferencePage:", this);
+		LogManager.logDebug("End SystemTapPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Sets up the field editors for optional change by the user.
 	 */
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_WINDOW_STATE, 
 				Localization.getString("SystemTapPreferencePage.RememberWindowState"),
 				getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

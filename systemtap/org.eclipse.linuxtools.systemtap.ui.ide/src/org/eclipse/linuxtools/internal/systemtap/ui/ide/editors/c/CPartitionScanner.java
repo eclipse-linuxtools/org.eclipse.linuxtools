@@ -32,11 +32,11 @@ public class CPartitionScanner extends RuleBasedPartitionScanner {
 	public final static String C_COMMENT = "__stp_comment";
 	
 	public CPartitionScanner() {
-		LogManager.logDebug("Start CPartitionScanner:", this);
+		LogManager.logDebug("Start CPartitionScanner:", this); //$NON-NLS-1$
 		IToken stpComment = new Token(C_COMMENT);
 		IPredicateRule[] rules = new IPredicateRule[1];
 		rules[0] = new MultiLineRule("/*", "*/", stpComment);
 		setPredicateRules(rules);
-		LogManager.logDebug("End CPartitionScanner:", this);
+		LogManager.logDebug("End CPartitionScanner:", this); //$NON-NLS-1$
 	}
 }

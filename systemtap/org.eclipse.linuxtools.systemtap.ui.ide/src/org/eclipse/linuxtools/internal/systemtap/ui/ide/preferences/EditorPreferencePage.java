@@ -22,14 +22,14 @@ import org.eclipse.ui.IWorkbench;
 public class EditorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public EditorPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start EditorPreferencePage:", this);
+		LogManager.logDebug("Start EditorPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("EditorPreferencePage.EditorPreferenceDescription"));
-		LogManager.logDebug("End EditorPreferencePage:", this);
+		LogManager.logDebug("End EditorPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new ColorFieldEditor(
 				IDEPreferenceConstants.P_EDITOR_BACKGROUND, 
 				Localization.getString("EditorPreferencePage.BackgroundColor"), getFieldEditorParent()));
@@ -38,15 +38,15 @@ public class EditorPreferencePage extends FieldEditorPreferencePage implements I
 				IDEPreferenceConstants.P_SHOW_LINE_NUMBERS,
 				Localization.getString("EditorPreferencePage.ShowLineNumbers"),
 				getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

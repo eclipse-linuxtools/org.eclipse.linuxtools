@@ -60,8 +60,8 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 * @param browser	The <code>KernelBrowserView</code> that fires this action.
 	 */
 	public KernelSourceAction(IWorkbenchWindow window, KernelBrowserView browser) {
-		LogManager.logDebug("Start KernelSourceAction: window-" + window + ", browser-" + browser, this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start KernelSourceAction: window-" + window + ", browser-" + browser, this); //$NON-NLS-1$ //$NON-NLS-2$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
@@ -70,7 +70,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 		window.getSelectionService().addSelectionListener(this);
 		viewer = browser;
 		expandAction = new TreeExpandCollapseAction(KernelBrowserView.class);
-		LogManager.logDebug("End KernelSourceAction:", this);
+		LogManager.logDebug("End KernelSourceAction:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -79,18 +79,18 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
-			LogManager.logDebug("Changing selection", this);
+			LogManager.logDebug("Changing selection", this); //$NON-NLS-1$
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
 		} else {
-			LogManager.logDebug("Disabling, selection not IStructuredSelection", this);
+			LogManager.logDebug("Disabling, selection not IStructuredSelection", this); //$NON-NLS-1$
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		window.getSelectionService().removeSelectionListener(this);
 	}
 
@@ -101,7 +101,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 */
 	private IEditorInput createEditorInput(IFileStore fs) {
 		FileStoreEditorInput input= new FileStoreEditorInput(fs);
-		LogManager.logDebug("createEditorInput: returnVal-" + input, this);
+		LogManager.logDebug("createEditorInput: returnVal-" + input, this); //$NON-NLS-1$
 		return input;
 	}
 	
@@ -131,7 +131,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 * @see TreeExpandCollapseAction
 	 */
 	public void run() {
-		LogManager.logDebug("Start run", this);
+		LogManager.logDebug("Start run", this); //$NON-NLS-1$
 		IWorkbench wb = PlatformUI.getWorkbench();
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
@@ -149,9 +149,9 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 						if(editor instanceof STPEditor)
 							IDESessionSettings.activeSTPEditor = (STPEditor)editor;
 						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, editorId);
-						LogManager.logDebug("Editor opened", this);
+						LogManager.logDebug("Editor opened", this); //$NON-NLS-1$
 					} catch (PartInitException e) {
-						LogManager.logCritical("PartInitException run: " + e.getMessage(), this);
+						LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
 					}
 					
 				}
@@ -162,6 +162,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 				expandAction.run();
 			}
 		}
-		LogManager.logDebug("End run", this);
+		LogManager.logDebug("End run", this); //$NON-NLS-1$
 	}
 }

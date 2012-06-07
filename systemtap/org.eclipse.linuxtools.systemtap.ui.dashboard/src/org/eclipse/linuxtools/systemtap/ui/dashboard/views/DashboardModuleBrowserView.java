@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModuleL
 public class DashboardModuleBrowserView extends ModuleView {
 	public DashboardModuleBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class DashboardModuleBrowserView extends ModuleView {
 	 * this method is run.
 	 */
 	public void dispose() {
-		LogManager.logInfo("disposing", this);
+		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		viewer.removeDoubleClickListener(dblClickListener);
 		super.dispose();
 	}

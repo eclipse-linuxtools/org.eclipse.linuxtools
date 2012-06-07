@@ -33,8 +33,8 @@ public class IDEPerspective implements IPerspectiveFactory {
 	public static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective";
 
 	public void createInitialLayout(IPageLayout layout) {
-		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(true);
 
@@ -64,6 +64,6 @@ public class IDEPerspective implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
 
 		layout.addPerspectiveShortcut(ID);
-		LogManager.logDebug("End createInitialLayout:", this);
+		LogManager.logDebug("End createInitialLayout:", this); //$NON-NLS-1$
 	}
 }

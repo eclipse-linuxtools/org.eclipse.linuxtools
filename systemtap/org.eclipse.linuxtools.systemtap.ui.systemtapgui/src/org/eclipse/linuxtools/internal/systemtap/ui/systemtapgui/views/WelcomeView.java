@@ -30,7 +30,7 @@ import org.eclipse.ui.part.ViewPart;
 public class WelcomeView extends ViewPart {
 	public WelcomeView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class WelcomeView extends ViewPart {
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 	

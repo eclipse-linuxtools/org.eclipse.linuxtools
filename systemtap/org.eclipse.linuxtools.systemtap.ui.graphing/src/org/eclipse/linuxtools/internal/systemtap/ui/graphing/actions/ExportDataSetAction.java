@@ -38,10 +38,10 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExportDataSetAction extends Action implements IWorkbenchWindowActionDelegate {
 	public void init(IWorkbenchWindow window) {
-		LogManager.logDebug("Start ExportDataSetAction.init", this);
-		LogManager.logInfo("Initialize ExportDataSetAction", this);
+		LogManager.logDebug("Start ExportDataSetAction.init", this); //$NON-NLS-1$
+		LogManager.logInfo("Initialize ExportDataSetAction", this); //$NON-NLS-1$
 		fWindow = window;
-		LogManager.logDebug("End ExportDataSetAction.init", this);
+		LogManager.logDebug("End ExportDataSetAction.init", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @param act The action that fired this method.
 	 */
 	public void run(IAction act) {
-		LogManager.logDebug("Start ExportDataSetAction.run", this);
+		LogManager.logDebug("Start ExportDataSetAction.run", this); //$NON-NLS-1$
 		File f = null;
 		IDataSet data = getDataSet();
 
@@ -59,7 +59,7 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 
 		if(f != null && data != null)
 			data.writeToFile(f);
-		LogManager.logDebug("End ExportDataSetAction.run", this);
+		LogManager.logDebug("End ExportDataSetAction.run", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -68,13 +68,13 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @return The IDataSet in tha active display set.
 	 */
 	public IDataSet getDataSet() {
-		LogManager.logDebug("Start ExportDataSetAction.getDataSet", this);
+		LogManager.logDebug("Start ExportDataSetAction.getDataSet", this); //$NON-NLS-1$
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(GraphSelectorView.ID);
 		IDataSet data = null;
 		GraphDisplaySet gds = ((GraphSelectorView)ivp).getActiveDisplaySet();
 		if(null != gds)
 			data = gds.getDataSet();
-		LogManager.logDebug("End ExportDataSetAction.getDataSet", this);
+		LogManager.logDebug("End ExportDataSetAction.getDataSet", this); //$NON-NLS-1$
 		return data;
 	}
 	
@@ -84,7 +84,7 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @return The File selected to save the image to.
 	 */
 	public File getFile() {
-		LogManager.logDebug("Start ExportDataSetAction.getFile", this);
+		LogManager.logDebug("Start ExportDataSetAction.getFile", this); //$NON-NLS-1$
 		String path = null;
 		FileDialog dialog= new FileDialog(fWindow.getShell(), SWT.SAVE);
 		dialog.setText(Localization.getString("ExportDataSetAction.NewFile"));
@@ -94,7 +94,7 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 		if(null == path)
 			return null;
 
-		LogManager.logDebug("End ExportDataSetAction.getFile", this);
+		LogManager.logDebug("End ExportDataSetAction.getFile", this); //$NON-NLS-1$
 		return new File(path);
 	}
 	
@@ -136,11 +136,11 @@ public class ExportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start ExportDataSetAction.dispose", this);
-		LogManager.logInfo("Dispose ExportDataSetAction", this);
+		LogManager.logDebug("Start ExportDataSetAction.dispose", this); //$NON-NLS-1$
+		LogManager.logInfo("Dispose ExportDataSetAction", this); //$NON-NLS-1$
 		fWindow = null;
 		action = null;
-		LogManager.logDebug("End ExportDataSetAction.dispose", this);
+		LogManager.logDebug("End ExportDataSetAction.dispose", this); //$NON-NLS-1$
 	}
 	
 	private IWorkbenchWindow fWindow;

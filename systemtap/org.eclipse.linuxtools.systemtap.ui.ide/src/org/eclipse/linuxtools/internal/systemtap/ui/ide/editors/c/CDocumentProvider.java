@@ -32,7 +32,7 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
  */
 public class CDocumentProvider extends SimpleDocumentProvider {
 	protected void setupDocument(IDocument document) {
-		LogManager.logDebug("Start setupDocument: document-" + document, this);
+		LogManager.logDebug("Start setupDocument: document-" + document, this); //$NON-NLS-1$
 		if (document != null) {
 			IDocumentPartitioner partitioner =
 				new FastPartitioner(
@@ -41,11 +41,11 @@ public class CDocumentProvider extends SimpleDocumentProvider {
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);
 		}
-		LogManager.logDebug("End setupDocument:", this);
+		LogManager.logDebug("End setupDocument:", this); //$NON-NLS-1$
 	}
 
 	protected IAnnotationModel createAnnotationModel(Object element) throws CoreException {
-		LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this);
+		LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this); //$NON-NLS-1$
 		return new AnnotationModel();
 	}
 }

@@ -45,7 +45,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 public class ActiveModuleBrowserView extends ModuleView {
 	public ActiveModuleBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	protected void generateModuleTree() {
@@ -201,7 +201,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 * this method is run.
 	 */
 	public void dispose() {
-		LogManager.logInfo("disposing", this);
+		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}

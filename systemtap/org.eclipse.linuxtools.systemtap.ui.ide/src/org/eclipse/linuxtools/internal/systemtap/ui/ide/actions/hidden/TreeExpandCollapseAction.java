@@ -46,11 +46,11 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 	 */
 	public TreeExpandCollapseAction(Class<?> cls) {
 		super();
-		LogManager.logDebug("Start TreeExpandCollapseAction: cls-" + cls, this);
+		LogManager.logDebug("Start TreeExpandCollapseAction: cls-" + cls, this); //$NON-NLS-1$
 		fWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		fWindow.getSelectionService().addSelectionListener(this);
 		cl = cls;
-		LogManager.logDebug("End TreeExpandCollapseAction:", this);
+		LogManager.logDebug("End TreeExpandCollapseAction:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 	 * the current selection.
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		LogManager.logDebug("Start selectionChanged: part-" + part + ", incoming-" + incoming, this);
+		LogManager.logDebug("Start selectionChanged: part-" + part + ", incoming-" + incoming, this); //$NON-NLS-1$ //$NON-NLS-2$
 		if (incoming instanceof IStructuredSelection) {
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
@@ -66,13 +66,13 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
-		LogManager.logDebug("End selectionChanged:", this);
+		LogManager.logDebug("End selectionChanged:", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
 		fWindow.getSelectionService().removeSelectionListener(this);
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 	 * the level of the current selection.
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		if(!(cl.equals(FunctionBrowserView.class) || cl.equals(ProbeAliasBrowserView.class) || cl.equals(KernelBrowserView.class))) {
-			LogManager.logDebug("End run:", this);
+			LogManager.logDebug("End run:", this); //$NON-NLS-1$
 			return;
 		}
 		IViewReference[] references = fWindow.getActivePage().getViewReferences();
@@ -98,11 +98,11 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 			}
 		}
 		if(!found) {
-			LogManager.logDebug("End run:", this);
+			LogManager.logDebug("End run:", this); //$NON-NLS-1$
 			return;
 		}
 		if(part == null) {
-			LogManager.logDebug("End run:", this);
+			LogManager.logDebug("End run:", this); //$NON-NLS-1$
 			return;
 		}
 		BrowserView viewer = (BrowserView) part;
@@ -111,7 +111,7 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 		Object o = selection.getFirstElement();
 
 		if(o == null) {
-			LogManager.logDebug("End run:", this);
+			LogManager.logDebug("End run:", this); //$NON-NLS-1$
 			return;
 		}
 
@@ -129,6 +129,6 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 			//System.out.println("Attempting to collapse at node " + o.toString());
 			viewer.getViewer().collapseToLevel(o,1);	
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 }

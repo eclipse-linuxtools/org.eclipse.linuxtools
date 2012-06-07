@@ -34,40 +34,40 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 public class ProbeAliasBrowserView extends BrowserView {
 	public ProbeAliasBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
 		TapsetLibrary.init();
 		TapsetLibrary.addListener(new ViewUpdater());
 		refresh();
 		makeActions();
-		LogManager.logDebug("End createPartControl:", this);
+		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Refreshes the list of probe aliases in the viewer.
 	 */
 	public void refresh() {
-		LogManager.logDebug("Start refresh:", this);
+		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
 		super.viewer.setInput(TapsetLibrary.getProbes());
-		LogManager.logDebug("End refresh:", this);
+		LogManager.logDebug("End refresh:", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Wires up all of the actions for this browser, such as double and right click handlers.
 	 */
 	private void makeActions() {
-		LogManager.logDebug("Start makeActions:", this);
+		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new ProbeAliasAction(getSite().getWorkbenchWindow(), this);
 		dblClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				LogManager.logDebug("doubleClick fired", this);
+				LogManager.logDebug("doubleClick fired", this); //$NON-NLS-1$
 				doubleClickAction.run();
 			}
 		};
@@ -79,11 +79,11 @@ public class ProbeAliasBrowserView extends BrowserView {
 		Menu menu = manager.createContextMenu(control);
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(manager, viewer);
-		LogManager.logDebug("End makeActions:", this);
+		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 		if(null != doubleClickAction)
 			doubleClickAction.dispose();

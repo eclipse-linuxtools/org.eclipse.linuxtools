@@ -25,26 +25,26 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ConditionalFilterPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public ConditionalFilterPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start ConditionalFilterPreferencePage:", this);
+		LogManager.logDebug("Start ConditionalFilterPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("ConditionalFilterPreferencePage.ConditiionalFilterSelector"));
-		LogManager.logDebug("End ConditionalFilterPreferencePage:", this);
+		LogManager.logDebug("End ConditionalFilterPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		
 		addField(new ListEditor(IDEPreferenceConstants.P_CONDITIONAL_FILTERS,
 				Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

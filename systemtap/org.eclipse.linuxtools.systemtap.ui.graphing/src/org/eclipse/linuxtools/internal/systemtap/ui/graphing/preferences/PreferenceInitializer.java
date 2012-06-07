@@ -20,12 +20,12 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this);
+		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = GraphingPlugin.getDefault().getPreferenceStore();
 
 		//graphing
 		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
 		
-		LogManager.logDebug("End initializeDefaultPreferences:", this);
+		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }

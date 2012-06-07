@@ -35,30 +35,30 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 public class FunctionBrowserView extends BrowserView {
 	public FunctionBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
 		TapsetLibrary.init();
 		TapsetLibrary.addListener(new ViewUpdater());
 		refresh();
 		makeActions();
-		LogManager.logDebug("End createPartControl:", this);
+		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
 
 	/**
 	 * Refreshes the list of functions in the viewer.
 	 */
 	public void refresh() {
-		LogManager.logDebug("Start refresh:", this);
+		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
 		functions = TapsetLibrary.getFunctions();
 		addLocalFunctions(localFunctions);
-		LogManager.logDebug("End refresh:", this);
+		LogManager.logDebug("End refresh:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class FunctionBrowserView extends BrowserView {
 	 * @param localFunctionTree A tree of the local functions.
 	 */
 	public void addLocalFunctions(TreeNode localFunctionTree) {
-		LogManager.logDebug("Start addLocalFunctions: localFunctionTree-" + localFunctionTree, this);
+		LogManager.logDebug("Start addLocalFunctions: localFunctionTree-" + localFunctionTree, this); //$NON-NLS-1$
 		
 		if(functions.getChildCount() > 0) {
 			TreeNode localFuncs = functions.getChildAt(0);
@@ -81,20 +81,20 @@ public class FunctionBrowserView extends BrowserView {
 			}
 		}
 		viewer.setInput(functions);
-		LogManager.logDebug("End addLocalFunctions:", this);
+		LogManager.logDebug("End addLocalFunctions:", this); //$NON-NLS-1$
 	}
 
 	/**
 	 * Wires up all of the actions for this browser, such as double and right click handlers.
 	 */
 	private void makeActions() {
-		LogManager.logDebug("Start makeActions:", this);
+		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new FunctionBrowserAction(getSite().getWorkbenchWindow(), this);
 		dblClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				LogManager.logDebug("Start doubleClick: event-" + event, this);
+				LogManager.logDebug("Start doubleClick: event-" + event, this); //$NON-NLS-1$
 				doubleClickAction.run();
-				LogManager.logDebug("End doubleClick:", this);
+				LogManager.logDebug("End doubleClick:", this); //$NON-NLS-1$
 			}
 		};
 		viewer.addDoubleClickListener(dblClickListener);
@@ -106,11 +106,11 @@ public class FunctionBrowserView extends BrowserView {
 		Menu menu = manager.createContextMenu(control);
 		control.setMenu(menu);
 		getSite().registerContextMenu(manager, viewer);
-		LogManager.logDebug("End makeActions:", this);
+		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 		if(null != doubleClickAction)
 			doubleClickAction.dispose();
@@ -127,7 +127,7 @@ public class FunctionBrowserView extends BrowserView {
 		if(null != menu)
 			menu.dispose();
 		menu = null;
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
 	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView";

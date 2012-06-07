@@ -43,7 +43,7 @@ public class STPDocumentProvider extends SimpleDocumentProvider {
 	}*/
 	
 	 protected void setupDocument(IDocument document) {
-         LogManager.logDebug("Start setupDocument: document-" + document, this);
+         LogManager.logDebug("Start setupDocument: document-" + document, this); //$NON-NLS-1$
          if (document != null) {
                  IDocumentPartitioner partitioner =
                          new FastPartitioner(
@@ -53,14 +53,14 @@ public class STPDocumentProvider extends SimpleDocumentProvider {
                  partitioner.connect(document);
                  document.setDocumentPartitioner(partitioner);
          }
-         LogManager.logDebug("End setupDocument:", this);
+         LogManager.logDebug("End setupDocument:", this); //$NON-NLS-1$
  }
 
  /**
   * Instantiates and returns a new AnnotationModel object.
   */
  protected IAnnotationModel createAnnotationModel(Object element) throws CoreException {
-         LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this);
+         LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this); //$NON-NLS-1$
          return new AnnotationModel();
  }
 

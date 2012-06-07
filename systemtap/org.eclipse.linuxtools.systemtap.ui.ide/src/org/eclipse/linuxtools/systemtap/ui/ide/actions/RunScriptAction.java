@@ -62,12 +62,12 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		fWindow= null;
 	}
 
 	public void init(IWorkbenchWindow window) {
-		LogManager.logInfo("Initializing fWindow: "+ window, this);
+		LogManager.logInfo("Initializing fWindow: "+ window, this); //$NON-NLS-1$
 		fWindow= window;
 	}
 
@@ -81,7 +81,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Finally, it gets an instance of <code>ScriptConsole</code> to run the script.
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
 		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
@@ -107,7 +107,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
             }
 		}
 		
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -140,9 +140,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	private boolean isValidFile(IEditorPart ed) {
 		if(null == ed) {
 			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null);
-			LogManager.logInfo("Initializing", MessageDialog.class);
+			LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Problem"), msg);
-			LogManager.logInfo("Disposing", MessageDialog.class);
+			LogManager.logInfo("Disposing", MessageDialog.class); //$NON-NLS-1$
 			return false;
 		}
 		
@@ -251,9 +251,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 			if(imbedded)
 				return true;
 		} catch (FileNotFoundException fnfe) {
-			LogManager.logCritical("FileNotFoundException run: " + fnfe.getMessage(), this);
+			LogManager.logCritical("FileNotFoundException run: " + fnfe.getMessage(), this); //$NON-NLS-1$
 		} catch (IOException ie) {
-			LogManager.logCritical("IOException run: " + ie.getMessage(), this);
+			LogManager.logCritical("IOException run: " + ie.getMessage(), this); //$NON-NLS-1$
 		}
 		return false;
 	}

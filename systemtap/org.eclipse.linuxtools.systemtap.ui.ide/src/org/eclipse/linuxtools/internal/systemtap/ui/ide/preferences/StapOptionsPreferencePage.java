@@ -22,14 +22,14 @@ import org.eclipse.ui.IWorkbench;
 public class StapOptionsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public StapOptionsPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start StapOptionsPreferencePage:", this);
+		LogManager.logDebug("Start StapOptionsPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("StapOptionsPreferencePage.StapOptions"));
-		LogManager.logDebug("End StapOptionsPreferencePage:", this);
+		LogManager.logDebug("End StapOptionsPreferencePage:", this); //$NON-NLS-1$
 	}
 
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		for(int i=0; i<IDEPreferenceConstants.P_STAP.length; i++) {
 			addField(
 					new BooleanFieldEditor(
@@ -46,15 +46,15 @@ public class StapOptionsPreferencePage extends FieldEditorPreferencePage impleme
 				addField(sfe);
 			}
 		}
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

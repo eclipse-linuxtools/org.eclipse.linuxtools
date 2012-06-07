@@ -39,20 +39,20 @@ import org.eclipse.swt.widgets.Label;
 public class StapSettingsDialog extends Dialog {
 	public StapSettingsDialog(Shell parentShell) {
 		super(parentShell);
-		LogManager.logDebug("Start/End StapSettingsDialog: parentShell-" + parentShell, this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start/End StapSettingsDialog: parentShell-" + parentShell, this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		LogManager.logDebug("Start configureShell: shell-" + shell, this);
+		LogManager.logDebug("Start configureShell: shell-" + shell, this); //$NON-NLS-1$
 		shell.setText(Localization.getString("StapSettingsDialog.StapOptions"));
 		shell.setSize(new org.eclipse.swt.graphics.Point(640,170 + ((1+checkBox.length)>>1) + 50*((1+text.length)>>1)));
-		LogManager.logDebug("End configureShell:", this);
+		LogManager.logDebug("End configureShell:", this); //$NON-NLS-1$
 	}
 
 	protected Control createDialogArea(Composite parent) {
-		LogManager.logDebug("Start createDialogArea: parent-" + parent, this);
+		LogManager.logDebug("Start createDialogArea: parent-" + parent, this); //$NON-NLS-1$
 		Composite comp = (Composite) super.createDialogArea(parent);
 		
 		//Check boxes
@@ -118,12 +118,12 @@ public class StapSettingsDialog extends Dialog {
 			}
 		}
 		
-		LogManager.logDebug("End createDialogArea: returnVal-" + comp, this);
+		LogManager.logDebug("End createDialogArea: returnVal-" + comp, this); //$NON-NLS-1$
 		return comp;
 	}
   
 	protected void buttonPressed(int buttonID) {
-		LogManager.logDebug("Start buttonPressed: buttonID-" + buttonID, this);
+		LogManager.logDebug("Start buttonPressed: buttonID-" + buttonID, this); //$NON-NLS-1$
 		if(0 == buttonID) {	//OK
 			cmdOpts = new boolean[checkBox.length];
 			cmdOptVals = new String[text.length];
@@ -136,21 +136,21 @@ public class StapSettingsDialog extends Dialog {
 		}
 		
 		super.buttonPressed(buttonID);
-		LogManager.logDebug("End buttonPressed:", this);
+		LogManager.logDebug("End buttonPressed:", this); //$NON-NLS-1$
 	}
 	
 	public boolean[] getStapOpts() {
-		LogManager.logDebug("Start/End getStapOpts: returnVal-" + cmdOpts, this);
+		LogManager.logDebug("Start/End getStapOpts: returnVal-" + cmdOpts, this); //$NON-NLS-1$
 		return cmdOpts;
 	}
 	
 	public String[] getStapOptVals() {
-		LogManager.logDebug("Start/End getStapOptVals: returnVal-" + cmdOptVals, this);
+		LogManager.logDebug("Start/End getStapOptVals: returnVal-" + cmdOptVals, this); //$NON-NLS-1$
 		return cmdOptVals;
 	}
 	
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		cmdOpts = null;
 		cmdOptVals = null;
 		cmpChkBoxes.dispose();

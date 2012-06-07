@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 public class RunScriptOptionsAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
 	public RunScriptOptionsAction() {
 		super();
-		LogManager.logDebug("initialized", this);
+		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
 	
 	/**

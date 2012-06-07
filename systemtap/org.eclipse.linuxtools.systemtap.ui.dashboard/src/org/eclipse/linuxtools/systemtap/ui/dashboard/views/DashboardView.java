@@ -55,12 +55,12 @@ public class DashboardView extends ViewPart {
 
 	public DashboardView() {
 	super();
-	LogManager.logDebug("Start DashboardView:", this);
-	LogManager.logInfo("Initializing", this);
+	LogManager.logDebug("Start DashboardView:", this); //$NON-NLS-1$
+	LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	composites = new ArrayList<DashboardComposite>();
 	tabListeners = new ArrayList<ITabListener>();
 	moduleNames = new ArrayList<String>();
-	LogManager.logDebug("End DashboardView:", this);
+	LogManager.logDebug("End DashboardView:", this); //$NON-NLS-1$
 
 }
 
@@ -104,7 +104,7 @@ public class DashboardView extends ViewPart {
 	}*/
 	
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 	     //bar.pack();
 		FormData data2 = new FormData();
 		data2.left = new FormAttachment(0, 0);
@@ -198,7 +198,7 @@ public class DashboardView extends ViewPart {
          scriptFolder.setMaximizeVisible(true);
          scriptFolder.setSelectionForeground(display.getSystemColor(SWT.COLOR_BLACK));
          
-		LogManager.logDebug("End createPartControl", this);
+		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 
 
@@ -318,8 +318,8 @@ public class DashboardView extends ViewPart {
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 
 		if(null != scriptFolder)
@@ -332,7 +332,7 @@ public class DashboardView extends ViewPart {
 		if(null != tabListeners)
 			tabListeners.removeAll(tabListeners);
 		tabListeners = null;
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 		
 	}
 	

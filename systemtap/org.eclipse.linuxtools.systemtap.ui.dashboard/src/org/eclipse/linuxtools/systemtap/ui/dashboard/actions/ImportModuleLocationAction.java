@@ -43,12 +43,12 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$ //$NON-NLS-1$
 		fWindow= null;
 	}
 
 	public void init(IWorkbenchWindow window) {
-		LogManager.logInfo("Initializing fWindow: " + window, this);
+		LogManager.logInfo("Initializing fWindow: " + window, this); //$NON-NLS-1$
 		fWindow= window;
 	}
 
@@ -66,7 +66,7 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 	 * just added.
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		File file= queryFolder();
 		if (file != null) {
 			IPreferenceStore p = DashboardPlugin.getDefault().getPreferenceStore();
@@ -80,7 +80,7 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 			String msg = Localization.getString("ImportModuleLocationAction.FileIsNull");
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ImportModuleLocationAction.Problem"), msg);
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -93,10 +93,10 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 		dialog.setText(Localization.getString("ImportModuleLocationAction.ImportDashboardModules"));
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
-			LogManager.logDebug("queryFile: returnVal-" + path, this);
+			LogManager.logDebug("queryFile: returnVal-" + path, this); //$NON-NLS-1$
 			return new File(path);
 		}
-		LogManager.logDebug("queryFile: returnVal-null", this);
+		LogManager.logDebug("queryFile: returnVal-null", this); //$NON-NLS-1$
 		return null;
 	}
 }

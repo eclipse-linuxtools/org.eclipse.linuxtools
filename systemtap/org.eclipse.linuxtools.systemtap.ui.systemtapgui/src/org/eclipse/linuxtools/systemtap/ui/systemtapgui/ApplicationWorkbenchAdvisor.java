@@ -43,12 +43,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	 * @param configurer The IWorkbenchConfigurer object to initialize.
 	 */
 	public void initialize(IWorkbenchConfigurer configurer) {
-		LogManager.logDebug("Start initialize: configurer-" + configurer, this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start initialize: configurer-" + configurer, this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(
 				SystemTapGUIPlugin.getDefault().getPreferenceStore()
 				.getBoolean(PreferenceConstants.P_WINDOW_STATE));
-		LogManager.logDebug("End initialize:", this);
+		LogManager.logDebug("End initialize:", this); //$NON-NLS-1$
 	}
 }

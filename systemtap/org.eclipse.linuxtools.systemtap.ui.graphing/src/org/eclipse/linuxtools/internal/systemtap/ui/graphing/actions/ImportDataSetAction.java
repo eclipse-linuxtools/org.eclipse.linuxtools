@@ -46,10 +46,10 @@ import org.eclipse.ui.WorkbenchException;
  */
 public class ImportDataSetAction extends Action implements IWorkbenchWindowActionDelegate {
 	public void init(IWorkbenchWindow window) {
-		LogManager.logDebug("Start ImportDataSetAction.init", this);
-		LogManager.logDebug("Initializing", this);
+		LogManager.logDebug("Start ImportDataSetAction.init", this); //$NON-NLS-1$
+		LogManager.logDebug("Initializing", this); //$NON-NLS-1$
 		fWindow = window;
-		LogManager.logDebug("End ImportDataSetAction.init", this);
+		LogManager.logDebug("End ImportDataSetAction.init", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @param act The action that fired this method.
 	 */
 	public void run(IAction act) {
-		LogManager.logDebug("Start ImportDataSetAction.run", this);
+		LogManager.logDebug("Start ImportDataSetAction.run", this); //$NON-NLS-1$
 		//Get the file
 		FileDialog dialog= new FileDialog(fWindow.getShell(), SWT.OPEN);
 		dialog.setText(Localization.getString("ImportDataSetAction.OpenDataSetFile"));
@@ -89,9 +89,9 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 			IViewPart ivp = p.findView(GraphSelectorView.ID);
 			((GraphSelectorView)ivp).createScriptSet(fileName, dataSet);
 		} catch(WorkbenchException we) {
-			LogManager.logCritical("WorkbenchException ImportDataSetAction.run:" + we.getMessage(), this);
+			LogManager.logCritical("WorkbenchException ImportDataSetAction.run:" + we.getMessage(), this); //$NON-NLS-1$
 		}
-		LogManager.logDebug("End ImportDataSetAction.run", this);
+		LogManager.logDebug("End ImportDataSetAction.run", this); //$NON-NLS-1$
 	}
 
 	public void selectionChanged(IAction a, ISelection s) {}
@@ -102,7 +102,7 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @return The newly created DataSet containing the data from the file.
 	 */
 	private IDataSet readFile(File f) {
-		LogManager.logDebug("Start ImportDataSetAction.readFile", this);
+		LogManager.logDebug("Start ImportDataSetAction.readFile", this); //$NON-NLS-1$
 		IDataSet data;
 
 		readHeader(f);
@@ -112,7 +112,7 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 		data = DataSetFactory.createFilteredDataSet(id, labels);
 		data.readFromFile(f);
 		
-		LogManager.logDebug("End ImportDataSetAction.readFile", this);
+		LogManager.logDebug("End ImportDataSetAction.readFile", this); //$NON-NLS-1$
 		return data;
 	}
 	
@@ -122,7 +122,7 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 	 * @return An array of all of the labels found in the file
 	 */
 	private void readHeader(File f) {
-		LogManager.logDebug("Start ImportDataSetAction.readLabels", this);
+		LogManager.logDebug("Start ImportDataSetAction.readLabels", this); //$NON-NLS-1$
 
 		try {
 			FileReader fr = new FileReader(f);
@@ -134,25 +134,25 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 			br.close();
 			labels = line.split(", ");
 		} catch(FileNotFoundException fnfe) {
-			LogManager.logCritical("FileNotFoundException ImportDataSetAction.readLabels:" + fnfe.getMessage(), this);
+			LogManager.logCritical("FileNotFoundException ImportDataSetAction.readLabels:" + fnfe.getMessage(), this); //$NON-NLS-1$
 		} catch(IOException ioe) {
-			LogManager.logCritical("IOException ImportDataSetAction.readLabels:" + ioe.getMessage(), this);
+			LogManager.logCritical("IOException ImportDataSetAction.readLabels:" + ioe.getMessage(), this); //$NON-NLS-1$
 		}
 
-		LogManager.logDebug("End ImportDataSetAction.readLabels", this);
+		LogManager.logDebug("End ImportDataSetAction.readLabels", this); //$NON-NLS-1$
 	}
 	
 	private void displayError(String message) {
-		LogManager.logInfo("Initializing", MessageDialog.class);
+		LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
 		MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ImportDataSetAction.Problem"), message);
-		LogManager.logInfo("Disposing", MessageDialog.class);
+		LogManager.logInfo("Disposing", MessageDialog.class); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logDebug("Start ImportDataSetAction.dispose", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start ImportDataSetAction.dispose", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		fWindow = null;
-		LogManager.logDebug("End ImportDataSetAction.dispose", this);
+		LogManager.logDebug("End ImportDataSetAction.dispose", this); //$NON-NLS-1$
 	}
 	
 	private IWorkbenchWindow fWindow;

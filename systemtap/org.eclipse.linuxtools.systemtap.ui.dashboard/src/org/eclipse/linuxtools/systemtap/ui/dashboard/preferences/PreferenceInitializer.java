@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this);
+		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = DashboardPlugin.getDefault().getPreferenceStore();
 
 		//dashboard
@@ -28,6 +28,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(DashboardPreferenceConstants.P_DASHBOARD_UPDATE_DELAY, 1000);
 		store.setDefault(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR, "/usr/local/share/doc/systemtap/examples");
 
-		LogManager.logDebug("End initializeDefaultPreferences:", this);
+		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }

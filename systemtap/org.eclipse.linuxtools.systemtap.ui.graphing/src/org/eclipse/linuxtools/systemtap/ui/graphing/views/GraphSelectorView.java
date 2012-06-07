@@ -43,11 +43,11 @@ import org.eclipse.ui.part.ViewPart;
 public class GraphSelectorView extends ViewPart {
 	public GraphSelectorView() {
 		super();
-		LogManager.logDebug("Start GraphSelectorView:", this);
-		LogManager.logInfo("Initializing", this);
+		LogManager.logDebug("Start GraphSelectorView:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		displaySets = new ArrayList<GraphDisplaySet>();
 		tabListeners = new ArrayList<ITabListener>();
-		LogManager.logDebug("End GraphSelectorView:", this);
+		LogManager.logDebug("End GraphSelectorView:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class GraphSelectorView extends ViewPart {
 	 * @param parent The composite that will contain all the elements from this dialog
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this);
+		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 
 		FormData data2 = new FormData();
 		data2.left = new FormAttachment(0, 0);
@@ -119,7 +119,7 @@ public class GraphSelectorView extends ViewPart {
 			}
 		});
 
-		LogManager.logDebug("End createPartControl", this);
+		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -164,8 +164,8 @@ public class GraphSelectorView extends ViewPart {
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 
 		if(null != scriptFolder)
@@ -174,7 +174,7 @@ public class GraphSelectorView extends ViewPart {
 		if(null != tabListeners)
 			tabListeners.removeAll(tabListeners);
 		tabListeners = null;
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
 	private CTabFolder scriptFolder;

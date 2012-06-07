@@ -26,15 +26,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class DataTablePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public DataTablePreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start DataTablePreferencePage:", this);
+		LogManager.logDebug("Start DataTablePreferencePage:", this); //$NON-NLS-1$
 		//setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("DataTablePreferencePage.GraphDisplayPreferences"));
-		LogManager.logDebug("End DataTablePreferencePage:", this);
+		LogManager.logDebug("End DataTablePreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 
 		addField(new BooleanFieldEditor(
 				GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, 
@@ -52,20 +52,20 @@ public class DataTablePreferencePage extends FieldEditorPreferencePage implement
 				Localization.getString("DataTablePreferencePage.MaxDataItems"),
 				getFieldEditorParent()));
 		
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logDebug("Start init:", this);
-		LogManager.logInfo("Initializing", this);
-		LogManager.logDebug("End init:", this);
+		LogManager.logDebug("Start init:", this); //$NON-NLS-1$
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
+		LogManager.logDebug("End init:", this); //$NON-NLS-1$
 	}
 	
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this);
-		LogManager.logInfo("Disposing", this);
+		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
-		LogManager.logDebug("End dispose:", this);
+		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 }
 

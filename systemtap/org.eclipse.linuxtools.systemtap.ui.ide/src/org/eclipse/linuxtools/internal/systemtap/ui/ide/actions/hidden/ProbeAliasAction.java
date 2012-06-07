@@ -52,7 +52,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 	 * @param view	browser that fires this action
 	 */
 	public ProbeAliasAction(IWorkbenchWindow window, ProbeAliasBrowserView view) {
-		LogManager.logInfo("initialized", this);
+		LogManager.logInfo("initialized", this); //$NON-NLS-1$
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
@@ -68,11 +68,11 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
-			LogManager.logDebug("Changing selection", this);
+			LogManager.logDebug("Changing selection", this); //$NON-NLS-1$
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
 		} else {
-			LogManager.logDebug("Disabling, selection not IStructuredSelection", this);
+			LogManager.logDebug("Disabling, selection not IStructuredSelection", this); //$NON-NLS-1$
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
@@ -80,7 +80,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 
 	public void dispose() {
 		window.getSelectionService().removeSelectionListener(this);
-		LogManager.logInfo("disposed", this);
+		LogManager.logInfo("disposed", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 	 * item that the user clicked on. 
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchPage page = window.getActivePage();
 		IEditorPart editor = page.getActiveEditor();
 		if(null == editor) {
@@ -129,6 +129,6 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 				stpeditor.insertText(s.toString());
 			}
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 }

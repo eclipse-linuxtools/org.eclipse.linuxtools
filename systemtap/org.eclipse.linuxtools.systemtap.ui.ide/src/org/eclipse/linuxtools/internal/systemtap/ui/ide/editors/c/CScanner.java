@@ -43,10 +43,10 @@ public class CScanner extends RuleBasedScanner {
 	private static String[] fgConstants= { "NULL" }; 
 	private ColorManager manager;
 	public CScanner(ColorManager manager) {
-		LogManager.logDebug("Start CScanner: manager-" + manager, this);
+		LogManager.logDebug("Start CScanner: manager-" + manager, this); //$NON-NLS-1$
 		this.manager = manager;
 		initializeScanner();
-		LogManager.logDebug("End CScanner:", this);
+		LogManager.logDebug("End CScanner:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class CScanner extends RuleBasedScanner {
 	 */
 	public void initializeScanner()
 	{
-		LogManager.logDebug("Start initializeScanner:", this);
+		LogManager.logDebug("Start initializeScanner:", this); //$NON-NLS-1$
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();
 		RGB cKeyword, cType, cString, cComment, cDefault, cPreprocessor;
 		
@@ -105,6 +105,6 @@ public class CScanner extends RuleBasedScanner {
 		rules.toArray(result);
 		setRules(result);
 
-		LogManager.logDebug("End initializeScanner:", this);
+		LogManager.logDebug("End initializeScanner:", this); //$NON-NLS-1$
 	}
 }

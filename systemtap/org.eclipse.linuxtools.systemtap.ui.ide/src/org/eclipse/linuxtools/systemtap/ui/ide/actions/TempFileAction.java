@@ -30,7 +30,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class TempFileAction extends Action {
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 		IWorkbenchWindow main = null;
 		for(int i = 0; i < windows.length; i++) {
@@ -44,11 +44,11 @@ public class TempFileAction extends Action {
 			PathEditorInput p = new PathEditorInput();
 			main.getActivePage().openEditor(p, STPEditor.ID);
 		} catch (PartInitException e) {
-			LogManager.logDebug("PartInitException run: " + e.getMessage(), this);
+			LogManager.logDebug("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
 		} catch(IOException e) {
-			LogManager.logCritical("IOException run: " + e.getMessage(), this);
+			LogManager.logCritical("IOException run: " + e.getMessage(), this); //$NON-NLS-1$
 		}
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 	
 }

@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.RGB;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this);
+		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();
 
 		//ide
@@ -89,6 +89,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_TYPE_COLOR, ICColorConstants.TYPE);
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_STRING_COLOR, ICColorConstants.STRING);
 
-		LogManager.logDebug("End initializeDefaultPreferences:", this);
+		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }

@@ -49,11 +49,11 @@ import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
 public class RunScriptChartAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
 	public RunScriptChartAction() {
 		super();
-		LogManager.logDebug("initialized", this);
+		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logDebug("disposed", this);
+		LogManager.logDebug("disposed", this); //$NON-NLS-1$
 		super.dispose();
 	}
 
@@ -66,7 +66,7 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 	 * Graphing Perspective.
 	 */
 	public void run() {
-		LogManager.logDebug("Start run:", this);
+		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
 		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
@@ -104,7 +104,7 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 			}
 		}
 		
-		LogManager.logDebug("End run:", this);
+		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 	
 	/**

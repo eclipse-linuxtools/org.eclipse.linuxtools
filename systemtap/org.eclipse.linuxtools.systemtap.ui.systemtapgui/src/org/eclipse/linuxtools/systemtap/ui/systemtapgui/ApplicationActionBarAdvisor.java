@@ -37,7 +37,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	public ApplicationActionBarAdvisor(IActionBarConfigurer actionBarConfigurer) {
 		super(actionBarConfigurer);
-		LogManager.logDebug("Start/End ApplicationActionBarAdvisor: actionBarConfigurer-" + actionBarConfigurer, this);
+		LogManager.logDebug("Start/End ApplicationActionBarAdvisor: actionBarConfigurer-" + actionBarConfigurer, this); //$NON-NLS-1$
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @param cbManager the ICoolBarManager object that recieves the actions.
 	 */
 	protected void fillCoolBar(ICoolBarManager cbManager) {
-		LogManager.logDebug("Start fillCollBar: cbManager-" + cbManager, this);
+		LogManager.logDebug("Start fillCollBar: cbManager-" + cbManager, this); //$NON-NLS-1$
 		cbManager.add(new GroupMarker("group.file"));
 		{
 			// File Group
@@ -86,7 +86,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		cbManager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 		
 		cbManager.add(new GroupMarker(IWorkbenchActionConstants.GROUP_EDITOR));
-		LogManager.logDebug("End fillCoolBar:", this);
+		LogManager.logDebug("End fillCoolBar:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @param menubar the IMenuManager object to populate
 	 */
 	protected void fillMenuBar(IMenuManager menubar) {
-		LogManager.logDebug("Start fillMenuBar: menubar-" + menubar, this);
+		LogManager.logDebug("Start fillMenuBar: menubar-" + menubar, this); //$NON-NLS-1$
 		menubar.add(createFakeFileMenu());
 		menubar.add(createFakeHelpMenu());
 		menubar.add(createFileMenu());
@@ -105,7 +105,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menubar.add(createWindowMenu());
 		menubar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 		menubar.add(createHelpMenu());
-		LogManager.logDebug("End fillMenuBar:", this);
+		LogManager.logDebug("End fillMenuBar:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -114,11 +114,11 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createFakeFileMenu() {
-		LogManager.logDebug("Start createFakeFileMenu:", this);
+		LogManager.logDebug("Start createFakeFileMenu:", this); //$NON-NLS-1$
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.File"), IWorkbenchActionConstants.M_FILE);
 		menu.setVisible(false);
 
-		LogManager.logDebug("End createFakeFileMenu:", this);
+		LogManager.logDebug("End createFakeFileMenu:", this); //$NON-NLS-1$
 		return menu;
 	}
 	
@@ -128,11 +128,11 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createFakeHelpMenu() {
-		LogManager.logDebug("Start createFakeHelpMenu:", this);
+		LogManager.logDebug("Start createFakeHelpMenu:", this); //$NON-NLS-1$
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Help"), IWorkbenchActionConstants.M_HELP);
 		menu.setVisible(false);
 
-		LogManager.logDebug("End createFakeHelpMenu:", this);
+		LogManager.logDebug("End createFakeHelpMenu:", this); //$NON-NLS-1$
 		return menu;
 	}
 	
@@ -142,7 +142,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createFileMenu() {
-		LogManager.logDebug("Start createFileMenu:", this);
+		LogManager.logDebug("Start createFileMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.File"), IWorkbenchActionConstants.M_FILE + "2");
 		//menu.remove("org.eclipse.ui.edit.text.openExternalFile");
@@ -159,7 +159,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.FILE_END));
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		LogManager.logDebug("End createFileMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createFileMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 
@@ -169,7 +169,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createEditMenu() {
-		LogManager.logDebug("Start createEditMenu:", this);
+		LogManager.logDebug("Start createEditMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Edit"), IWorkbenchActionConstants.M_EDIT);
 		menu.add(new Separator(IWorkbenchActionConstants.EDIT_START));
@@ -180,7 +180,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.EDIT_END));
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		LogManager.logDebug("End createEditMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createEditMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 	
@@ -190,7 +190,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createNavigateMenu() {
-		LogManager.logDebug("Start createNavigateMenu:", this);
+		LogManager.logDebug("Start createNavigateMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Navigate"), IWorkbenchActionConstants.M_NAVIGATE);
 		menu.add(new Separator(IWorkbenchActionConstants.NAV_START));
@@ -199,7 +199,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.NAV_END));
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		LogManager.logDebug("End createNavigateMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createNavigateMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 	
@@ -209,7 +209,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createBuildMenu() {
-		LogManager.logDebug("Start createBuildMenu:", this);
+		LogManager.logDebug("Start createBuildMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Run"), IWorkbenchActionConstants.M_LAUNCH);
 		menu.add(new Separator(IWorkbenchActionConstants.WB_START));
@@ -219,7 +219,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.WB_END));
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		LogManager.logDebug("End createBuildMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createBuildMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 	
@@ -229,7 +229,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createWindowMenu() {
-		LogManager.logDebug("Start createWindowMenu:", this);
+		LogManager.logDebug("Start createWindowMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Window"), IWorkbenchActionConstants.M_WINDOW);
 		menu.add(new Separator(IWorkbenchActionConstants.PROJ_START));
@@ -250,7 +250,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		menu.add(getAction(ActionFactory.PREFERENCES.getId()));
 
-		LogManager.logDebug("End createWindowMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createWindowMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 
@@ -260,7 +260,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @return the MenuManager object created
 	 */
 	private MenuManager createHelpMenu() {
-		LogManager.logDebug("Start createHelpMenu:", this);
+		LogManager.logDebug("Start createHelpMenu:", this); //$NON-NLS-1$
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.Help"), IWorkbenchActionConstants.M_HELP + "2");
 		menu.add(new Separator(IWorkbenchActionConstants.HELP_START));
@@ -270,7 +270,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menu.add(new Separator(IWorkbenchActionConstants.HELP_END));
 		menu.add(getAction(ActionFactory.ABOUT.getId()));
 
-		LogManager.logDebug("End createHelpMenu: returnVal-" + menu, this);
+		LogManager.logDebug("End createHelpMenu: returnVal-" + menu, this); //$NON-NLS-1$
 		return menu;
 	}
 
@@ -280,7 +280,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @param window the IWorkbenchWindow object to assign 
 	 */
 	protected void makeActions(IWorkbenchWindow window) {
-		LogManager.logDebug("Start makeActions: window-" + window, this);
+		LogManager.logDebug("Start makeActions: window-" + window, this); //$NON-NLS-1$
 		//registerAsGlobal(ActionFactory.SAVE.create(window));
 		//registerAsGlobal(ActionFactory.SAVE_AS.create(window));
 		//registerAsGlobal(ActionFactory.SAVE_ALL.create(window));
@@ -311,7 +311,7 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		views = ContributionItemFactory.VIEWS_SHORTLIST.create(window);
 		perspectives = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create(window);
 
-		LogManager.logDebug("End makeActions:", this);
+		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -320,10 +320,10 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * @param action the action to register
 	 */
 	private void registerAsGlobal(IAction action) {
-		LogManager.logDebug("Start registerAsGlobal: action-" + action, this);
+		LogManager.logDebug("Start registerAsGlobal: action-" + action, this); //$NON-NLS-1$
 		getActionBarConfigurer().registerGlobalAction(action);
 		register(action);
-		LogManager.logDebug("End registerAsGlobal:", this);
+		LogManager.logDebug("End registerAsGlobal:", this); //$NON-NLS-1$
 	}
 	
 	private IContributionItem views, perspectives;

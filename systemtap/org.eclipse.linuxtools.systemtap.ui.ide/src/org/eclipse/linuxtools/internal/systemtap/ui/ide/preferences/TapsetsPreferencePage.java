@@ -22,10 +22,10 @@ import org.eclipse.ui.IWorkbench;
 public class TapsetsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public TapsetsPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start TapsetsPreferencePage:", this);
+		LogManager.logDebug("Start TapsetsPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("TapsetsPreferencePage.AdditionalTapsetsCategory"));
-		LogManager.logDebug("End TapsetsPreferencePage:", this);
+		LogManager.logDebug("End TapsetsPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -35,18 +35,18 @@ public class TapsetsPreferencePage extends FieldEditorPreferencePage implements 
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this);
+		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new PathEditor(IDEPreferenceConstants.P_TAPSETS,
 				Localization.getString("TapsetsPreferencePage.AdditionalTapsets"), Localization.getString("TapsetsPreferencePage.TapsetDirectory"), getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this);
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this);
+		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this);
+		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 	}
 }

@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this);
+		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = SystemTapGUIPlugin.getDefault().getPreferenceStore();
 
 		//gui
