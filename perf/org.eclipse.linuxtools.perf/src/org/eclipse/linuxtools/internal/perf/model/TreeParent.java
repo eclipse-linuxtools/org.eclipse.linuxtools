@@ -91,8 +91,7 @@ public class TreeParent {
 	}
 
 	public void recalculatePercentage() {
-		if (getPercent() != -1 && (this instanceof PMDso || this instanceof PMFile
-				|| this instanceof PMCommand)){
+		if (getPercent() != -1 && (this instanceof PMDso || this instanceof PMFile)){
 			percent = 0;
 			// Re-sum its children percentages
 			for (TreeParent c : getChildren()) {

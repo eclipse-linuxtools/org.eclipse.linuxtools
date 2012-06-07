@@ -50,8 +50,6 @@ public class PerfCore {
 		if (!str.trim().equals("")) {
 			if (print != null) {
 				print.println(blockTitle + ": \n" +str + "\n END OF " + blockTitle);
-			} else {
-				System.out.println(blockTitle + ": \n" +str + "\n END OF " + blockTitle);
 			}
 		}
 		return str;
@@ -339,7 +337,9 @@ public class PerfCore {
 				// contains profiled information
 				} else {
 					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
-					if (items.length != 5) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line + "//length:" + items.length); }; continue; }
+					if (items.length != 5) {
+						continue;
+					}
 					percent = Float.parseFloat(items[0]); //percent column
 					samples = Double.parseDouble(items[1].trim()); //samples column
 					comm = items[2].trim(); //command column
@@ -456,7 +456,9 @@ public class PerfCore {
 									} else if (grabBlock && blockStarted) {
 										//process the line.
 										items = line.trim().split(" +");
-										if (items.length != 2) { if (!line.trim().equals("")) { System.err.println("Err INVALID: " + line); }; continue; }
+										if (items.length != 2) {
+											continue;
+										}
 										percent = Float.parseFloat(items[0]);
 										lineRef = items[1];
 										items = lineRef.split(":");

@@ -13,7 +13,12 @@ package org.eclipse.linuxtools.internal.perf.model;
 public class PMCommand extends TreeParent {
 
 	public PMCommand(String name) {
-		super(name, 0);
+		super(name, 100);
+		/*
+		 *  The underlying report truncates percentages in some cases
+		 *  so taking a sum will not always give 100, but we know that
+		 *  the only command that could have run is the binary we specified.
+		 */
 	}
 
 	public String toString() {
