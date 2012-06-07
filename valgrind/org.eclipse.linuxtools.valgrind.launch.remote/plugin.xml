@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemoteLaunchDelegate"
+            delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
             modes="profile"
             name="%launchConfigurationType.name"
@@ -16,7 +16,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemoteLaunchTabGroup"
+            class="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchConfigurationTabGroup"
             description="%launchConfigurationTabGroup.description"
             id="org.eclipse.linuxtools.valgrind.launch.remote.tabGroup"
             type="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType">
