@@ -17,8 +17,9 @@ import java.net.URISyntaxException;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
@@ -37,7 +38,7 @@ public class KernelSourceTree {
 		try {
 			URI locationURI = new URI(direct);
 			IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(locationURI);
-			this.buildKernelTree(locationURI, excluded, proxy);
+			this.buildKernelTree(locationURI, excluded, proxy, null);
 		} catch (URISyntaxException e) {
 			kernelTree = null;
 		} catch (CoreException e) {
@@ -51,15 +52,16 @@ public class KernelSourceTree {
 	 * @param direct The file to include into the tree.
 	 * @param excluded The string array to store as excluded.
 	 * @param proxy The proxy to be used to get the remote files
+	 * @param monitor a progress monitor for this operation. Can be null.
 	 */
-	public void buildKernelTree(URI locationURI, String[] excluded, IRemoteFileProxy proxy) {
+	public void buildKernelTree(URI locationURI, String[] excluded, IRemoteFileProxy proxy, IProgressMonitor monitor) {
 		this.excluded = excluded;
 		IFileStore fs = proxy.getResource(locationURI.getPath());
 		if (fs == null)
 			kernelTree = null;
 		else {
 			kernelTree = new TreeNode(fs, fs.getName(), false);
-			addLevel(kernelTree);
+			addLevel(kernelTree, monitor);
 		}
 	}
 
@@ -68,13 +70,15 @@ public class KernelSourceTree {
 	 *
 	 * @param top The top of the tree to add a level to.
 	 */
-	private void addLevel(TreeNode top) {
+	private void addLevel(TreeNode top, IProgressMonitor monitor) {
 		boolean add;
 		TreeNode current;
 		IFileStore fs = (IFileStore)top.getData();
 		IFileStore[] fsList = null;
 		try {
 			fsList = fs.childStores(EFS.NONE, new NullProgressMonitor());
+			if (monitor != null)
+				monitor.beginTask(Localization.getString("ReadingKernelSourceTree"), 100); //$NON-NLS-1$
 			CCodeFileFilter filter = new CCodeFileFilter();
 			for (IFileStore fsChildren : fsList) {
 				add = true;
@@ -92,11 +96,13 @@ public class KernelSourceTree {
 					current = new TreeNode(fsChildren, fsChildren.getName(), !isDir);
 					top.add(current);
 					if(isDir) {
-						addLevel(top.getChildAt(top.getChildCount()-1));
+						addLevel(top.getChildAt(top.getChildCount()-1), null);
 						if(0 == current.getChildCount())
 							top.remove(top.getChildCount()-1);
 					}
 				}
+				if (monitor != null)
+					monitor.worked(1);
 			}
 			top.sortLevel();
 		} catch (CoreException e) {

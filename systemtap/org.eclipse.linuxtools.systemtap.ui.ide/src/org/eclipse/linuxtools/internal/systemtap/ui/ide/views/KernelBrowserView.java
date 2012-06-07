@@ -67,12 +67,11 @@ public class KernelBrowserView extends BrowserView {
 		}
 
 		public IStatus run(IProgressMonitor monitor) {
-			monitor.beginTask(Localization.getString("KernelBrowserView.ReadingKernelSourceTree"), 100); //$NON-NLS-1$
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 			KernelSourceTree kst = new KernelSourceTree();
 			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
 			if (remote)
-				kst.buildKernelTree(kernelLocationURI, excluded, proxy);
+				kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
 			else
 				kst.buildKernelTree(kernelSource, excluded);
 			if (monitor.isCanceled())
