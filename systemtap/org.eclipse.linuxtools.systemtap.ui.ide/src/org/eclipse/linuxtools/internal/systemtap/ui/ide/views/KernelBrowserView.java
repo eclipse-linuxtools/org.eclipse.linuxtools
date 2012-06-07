@@ -214,7 +214,9 @@ public class KernelBrowserView extends BrowserView {
 	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
 			LogManager.logDebug("Start propertyChange: event-" + event, this); //$NON-NLS-1$
-			if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE)) {
+			if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
+				event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
+				event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
 				refresh();
 			}
 			LogManager.logDebug("End propertyChange:", this); //$NON-NLS-1$
