@@ -12,10 +12,13 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.Status;
@@ -26,6 +29,9 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.KernelSourceAction;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
@@ -49,6 +55,7 @@ public class KernelBrowserView extends BrowserView {
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 			String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
+			String localOrRemote = p.getString(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE);
 			if(null == kernelSource || kernelSource.length() < 1) {
 				LogManager.logInfo("Kernel Source Directory not found", this); //$NON-NLS-1$
 				TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
@@ -60,6 +67,8 @@ public class KernelBrowserView extends BrowserView {
 			monitor.beginTask(Localization.getString("KernelBrowserView.ReadingKernelSourceTree"), 100); //$NON-NLS-1$
 			KernelSourceTree kst = new KernelSourceTree();
 			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
+			if (localOrRemote.equals(PathPreferencePage.REMOTE))
+				kernelSource = createUri(kernelSource);
 			kst.buildKernelTree(kernelSource, excluded);
 			viewer.setInput(kst.getTree());
 			kst.dispose();
@@ -79,7 +88,7 @@ public class KernelBrowserView extends BrowserView {
 		refreshJob.setPriority(Job.SHORT);
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
@@ -146,5 +155,18 @@ public class KernelBrowserView extends BrowserView {
 		if(null != doubleClickAction)
 			doubleClickAction.dispose();
 		doubleClickAction = null;
+	}
+
+	private String createUri(String path) {
+		Preferences p = ConsoleLogPlugin.getDefault().getPluginPreferences();
+		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
+		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
+		try {
+			URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
+			return uri.toString();
+		} catch (URISyntaxException uri) {
+			//fallback
+			return "ssh://" + user + "@" + host + "/" + path; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 	}
 }
