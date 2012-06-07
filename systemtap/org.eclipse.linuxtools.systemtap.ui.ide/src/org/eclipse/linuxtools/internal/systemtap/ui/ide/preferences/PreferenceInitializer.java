@@ -41,6 +41,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				".bzr/" + File.pathSeparator +
 				"debian/" + File.pathSeparator +
 				".git/");
+		store.setDefault(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE, PathPreferencePage.LOCAL);
 
 		//ide.stap.tapsets
 		store.setDefault(IDEPreferenceConstants.P_TAPSETS, "");
