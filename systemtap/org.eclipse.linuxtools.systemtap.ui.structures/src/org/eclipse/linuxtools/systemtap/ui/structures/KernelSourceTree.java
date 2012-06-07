@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -28,30 +29,43 @@ public class KernelSourceTree {
 
 	/**
 	 * Builds the kernel tree from file parameter direct and stores the excluded string array.
-	 * 
+	 *
 	 * @param direct The file to include into the tree.
 	 * @param excluded The string array to store as excluded.
 	 */
 	public void buildKernelTree(String direct, String[] excluded) {
-		this.excluded = excluded;
 		try {
 			URI locationURI = new URI(direct);
 			IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(locationURI);
-			IFileStore fs = proxy.getResource(locationURI.getPath());
-			if (fs == null)
-				kernelTree = null;
-			else {
-				kernelTree = new TreeNode(fs, fs.getName(), false);
-				addLevel(kernelTree);
-			}
-		} catch(Exception e) {
+			this.buildKernelTree(locationURI, excluded, proxy);
+		} catch (URISyntaxException e) {
+			kernelTree = null;
+		} catch (CoreException e) {
 			kernelTree = null;
 		}
 	}
-	
+
+	/**
+	 * Builds the kernel tree from file parameter direct and stores the excluded string array.
+	 *
+	 * @param direct The file to include into the tree.
+	 * @param excluded The string array to store as excluded.
+	 * @param proxy The proxy to be used to get the remote files
+	 */
+	public void buildKernelTree(URI locationURI, String[] excluded, IRemoteFileProxy proxy) {
+		this.excluded = excluded;
+		IFileStore fs = proxy.getResource(locationURI.getPath());
+		if (fs == null)
+			kernelTree = null;
+		else {
+			kernelTree = new TreeNode(fs, fs.getName(), false);
+			addLevel(kernelTree);
+		}
+	}
+
 	/**
 	 * Adds a level to the kernel source tree.
-	 * 
+	 *
 	 * @param top The top of the tree to add a level to.
 	 */
 	private void addLevel(TreeNode top) {
@@ -94,7 +108,7 @@ public class KernelSourceTree {
 	public void dispose() {
 		kernelTree = null;
 	}
-	
+
 	private TreeNode kernelTree;
 	private String[] excluded;
 }

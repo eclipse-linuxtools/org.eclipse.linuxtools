@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.consolelog,
  org.eclipse.linuxtools.systemtap.ui.structures,
- org.eclipse.core.resources;bundle-version="3.4.1"
+ org.eclipse.core.resources;bundle-version="3.4.1",
+ org.eclipse.linuxtools.profiling.launch;bundle-version="0.11.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.filesystem,
  org.eclipse.linuxtools.systemtap.ui.graphing,
