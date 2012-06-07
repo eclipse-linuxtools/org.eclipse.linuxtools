@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.eclipse.linuxtools.ssh.proxy.Activator;
@@ -31,7 +32,7 @@ public class SSHBase {
 	private JSch jsch;
 	private Session session;
 	private ChannelSftp channelSftp;
-	private String password;
+	private static HashMap<String, String> passwords = new HashMap<String, String>();
 
 	public SSHBase(URI uri) {
 		this.uri = uri;
@@ -50,6 +51,7 @@ public class SSHBase {
 			config.put("StrictHostKeyChecking", "no");  //$NON-NLS-1$,  //$NON-NLS-2$
 			session.setConfig(config);
 
+			String password = passwords.get(uri.getAuthority());
 			if (password != null) {
 				session.setPassword(password);
 				try {
@@ -67,6 +69,7 @@ public class SSHBase {
 			} catch (JSchException e) {
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionFailed + e.getMessage()));
 			}
+			passwords.put(uri.getAuthority(), password);
 		}
 		return session;
 	}
