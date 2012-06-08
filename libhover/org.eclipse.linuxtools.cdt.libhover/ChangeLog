@@ -1,3 +1,10 @@
+2012-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Bump up version.
+	* META-INF/MANIFEST.MF: Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMatchingFunctions): Add
+	check for function names starting with "0" and ignore them for creating list.
+
 2012-03-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/libhover/LibhoverPlugin.java (LibhoverPlugin): Make public.
