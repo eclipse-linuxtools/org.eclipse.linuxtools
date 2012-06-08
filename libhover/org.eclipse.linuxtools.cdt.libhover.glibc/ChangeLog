@@ -1,3 +1,12 @@
+2012-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* data/glibc-2.14.libhover: New file.
+	* data/glibc-2.14.xml: New file.
+	* build.properties: Add new files and remove glibc-2.7-2.libhover.
+	* META-INF/MANIFEST.MF: Update version.
+	* plugin.xml: Update to use new libhover file.
+	* pom.xml: Update version.
+	
 2011-03-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: Change documentation anchor to be moreclibdocs.

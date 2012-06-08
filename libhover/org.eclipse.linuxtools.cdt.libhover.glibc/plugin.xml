@@ -7,7 +7,7 @@
          point="org.eclipse.linuxtools.cdt.libhover.library">
       <library
             docs="http://www.gnu.org/software/libc/manual/html_node/index.html"
-            location="./data/glibc-2.7-2.libhover"
+            location="./data/glibc-2.14.libhover"
             name="glibc library"
             type="C">
       </library>
