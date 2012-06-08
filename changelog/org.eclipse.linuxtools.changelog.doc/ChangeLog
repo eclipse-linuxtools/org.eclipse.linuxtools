@@ -1,3 +1,8 @@
+2012-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Bump up version to 2.7.1.
+	* META-INF/MANIFEST.MF: Ditto.
+
 2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Add book.css.
