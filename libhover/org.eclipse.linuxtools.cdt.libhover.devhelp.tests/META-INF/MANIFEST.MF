@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.libhover.devhelp.tests
-Bundle-Version: 0.7.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
