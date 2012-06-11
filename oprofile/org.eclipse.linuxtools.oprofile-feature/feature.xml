@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.oprofile.feature"
       label="%featureName"
-      version="0.3.1.qualifier"
+      version="1.0.0.qualifier"
       provider-name="%provider"
       os="linux">
 
