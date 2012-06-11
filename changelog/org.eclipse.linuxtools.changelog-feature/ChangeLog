@@ -1,3 +1,8 @@
+2012-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Bump up version to 2.8.0.
+	* feature.xml: Ditto.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Bump up version to 2.7.0 for 0.7 release.

@@ -637,7 +637,15 @@ public class LibHover implements ICHelpProvider {
 			for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
 				Map.Entry<String, FunctionInfo> e = (Map.Entry<String, FunctionInfo>)i.next();
 				FunctionInfo x = e.getValue();
-				if (x.getName().startsWith(prefix)) {
+				String name = x.getName();
+				// Look for names that start with prefix, but ignore names that
+				// start with "0" which is used to import text data that cannot
+				// be omitted from the binary version of the document (e.g. invariant
+				// sections of a GFDL licensed document).  This data is given a
+				// function name that starts with the character "0" which is not
+				// valid for the start of a C/C++ function name.  As such, it should
+				// never be offered as a choice for an empty prefix.
+				if (name.startsWith(prefix) && !name.startsWith("0")) { //$NON-NLS-1$
 					FunctionSummary f = new FunctionSummary();
 					f.ReturnType = x.getReturnType();
 					f.Prototype = x.getPrototype();
