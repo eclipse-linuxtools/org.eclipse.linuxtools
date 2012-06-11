@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ChangeLog Documentation (Incubation)
+Bundle-Name: ChangeLog Documentation
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.doc;singleton:=true
 Bundle-Version: 2.7.1.qualifier
 Bundle-Vendor: %providerName
