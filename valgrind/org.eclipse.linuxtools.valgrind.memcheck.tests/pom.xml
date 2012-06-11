@@ -18,7 +18,7 @@
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind.memcheck.tests</artifactId>
-  <version>0.11.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <name>Linux Tools Memcheck Core Tests Plug-in</name>
