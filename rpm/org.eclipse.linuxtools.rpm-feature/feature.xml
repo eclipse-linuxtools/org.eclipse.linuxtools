@@ -12,7 +12,7 @@
 <feature
       id="org.eclipse.linuxtools.rpm"
       label="%featureName"
-      version="0.4.3.qualifier"
+      version="1.0.0.qualifier"
       provider-name="%provider">
 
    <description url="http://www.eclipse.org/linuxtools/projectPages/specfile/">
