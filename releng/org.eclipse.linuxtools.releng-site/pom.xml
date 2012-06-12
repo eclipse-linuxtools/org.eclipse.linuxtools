@@ -72,7 +72,7 @@
     </plugins>
   </build>
 
-  <name>Eclipse Linux Tools p2 Repository (Incubation)</name>
+  <name>Eclipse Linux Tools p2 Repository</name>
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
   <version>0.11.0-SNAPSHOT</version>
 
