@@ -22,8 +22,13 @@
 	$> export ANT_HOME=/shared/common/apache-ant-1.8.2/
 	-->
 
+<<<<<<< HEAD
 	<property name="downloads.project.root" value="/technology/linuxtools" />
 	<property name="repo.name" value="updates-nightly" />
+=======
+	<property name="downloads.project.root" value="/linuxtools" />
+	<property name="repo.name" value="update-1.0" />
+>>>>>>> 64fcaeb... Remove technology reference as Linux Tools has been moved.
 	<property name="build.root" value="${project.build.directory}" />
 	<antversion property="antversion" />
 

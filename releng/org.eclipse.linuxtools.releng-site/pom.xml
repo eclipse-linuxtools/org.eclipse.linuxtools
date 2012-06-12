@@ -100,7 +100,7 @@
                <id>sign</id>
                <configuration>
                  <inputFile>${project.build.directory}/packed/org.eclipse.linuxtools.releng-site.zip</inputFile>
-                 <signerInputDirectory>/home/data/httpd/download-staging.priv/technology/linuxtools</signerInputDirectory>
+                 <signerInputDirectory>/home/data/httpd/download-staging.priv/linuxtools</signerInputDirectory>
                </configuration>
                <phase>install</phase>
                <goals>
@@ -142,12 +142,20 @@
                    <tasks>
                      <delete includeemptydirs="false">
                        <fileset
+<<<<<<< HEAD
                          dir="/home/data/httpd/download.eclipse.org/technology/linuxtools/updates-nightly">
+=======
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-juno">
+>>>>>>> 64fcaeb... Remove technology reference as Linux Tools has been moved.
                          <include name="**" />
                        </fileset>
                      </delete>
                      <copy includeemptydirs="false"
+<<<<<<< HEAD
                        todir="/home/data/httpd/download.eclipse.org/technology/linuxtools/updates-nightly">
+=======
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-juno">
+>>>>>>> 64fcaeb... Remove technology reference as Linux Tools has been moved.
                        <fileset dir="target/checksumFix">
                          <include name="**" />
                        </fileset>
