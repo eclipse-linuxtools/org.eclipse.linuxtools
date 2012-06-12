@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
@@ -40,6 +44,7 @@ public class ModelTest extends AbstractTest {
 	protected PerfLaunchConfigDelegate delegate;
 	protected ILaunch launch;
 	protected ILaunchConfigurationWorkingCopy wc;
+	protected Stack<Class<?>> stack;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -51,6 +56,11 @@ public class ModelTest extends AbstractTest {
 		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 		wc = config.getWorkingCopy();
 		setProfileAttributes(wc);
+
+		Class<?>[] klassList = new Class<?>[] { PMSymbol.class, PMFile.class,
+				PMDso.class, PMCommand.class, PMEvent.class };
+		stack = new Stack<Class<?>>();
+		stack.addAll(Arrays.asList(klassList));
 	}
 
 	@Override
@@ -95,23 +105,114 @@ public class ModelTest extends AbstractTest {
 		}
 	}
 
-	public void testcheckModelGenericStructure () {
-		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
-		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
-
-		// model class structure, left element contained in right element
-		Class<?> [] klassList = new Class<?> [] {PMSymbol.class, PMFile.class, PMDso.class, PMCommand.class, PMEvent.class};
-		Stack<Class<?>> stack = new Stack<Class<?>> ();
-		stack.addAll(Arrays.asList(klassList));
+	public void testModelDefaultGenericStructure() {
+		TreeParent invisibleRoot = buildModel(
+				"resources/defaultevent-data/perf.data",
+				"resources/defaultevent-data/perf.data.txt",
+				"resources/defaultevent-data/perf.data.err.log");
 
 		checkChildrenStructure(invisibleRoot, stack);
 	}
 
-	public void testPercentages () {
-		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
-		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
+	public void testModelMultiEventGenericStructure() {
+		TreeParent invisibleRoot = buildModel(
+				"resources/multievent-data/perf.data",
+				"resources/multievent-data/perf.data.txt",
+				"resources/multievent-data/perf.data.err.log");
 
-		checkChildrenPercentages (invisibleRoot, invisibleRoot.getPercent());
+		checkChildrenStructure(invisibleRoot, stack);
+	}
+
+	public void testPercentages() {
+		TreeParent invisibleRoot = buildModel(
+				"resources/defaultevent-data/perf.data",
+				"resources/defaultevent-data/perf.data.txt",
+				"resources/defaultevent-data/perf.data.err.log");
+
+		checkChildrenPercentages(invisibleRoot, invisibleRoot.getPercent());
+	}
+
+	public void testParserMultiEvent() {
+		TreeParent invisibleRoot = buildModel(
+				"resources/multievent-data/perf.data",
+				"resources/multievent-data/perf.data.txt",
+				"resources/multievent-data/perf.data.err.log");
+
+		assertEquals(invisibleRoot.getChildren().length, 5);
+
+		String cur = null;
+
+		for (TreeParent event : invisibleRoot.getChildren()) {
+
+			cur = event.getName();
+
+			// Assert specific properties extracted by the parser.
+			if ("cpu-clock".equals(cur)) {
+				assertTrue(event.hasChildren());
+				assertEquals(event.getChildren().length, 1);
+
+				TreeParent cmd = event.getChildren()[0];
+				assertEquals(cmd.getChildren().length, 1);
+
+				String[] cmdLabels = { "hellotest" };
+				checkCommadLabels(cmdLabels, cmd);
+			} else if ("task-clock".equals(cur)) {
+				assertTrue(event.hasChildren());
+				assertEquals(event.getChildren().length, 1);
+
+				TreeParent cmd = event.getChildren()[0];
+				assertEquals(cmd.getChildren().length, 1);
+
+				String[] cmdLabels = { "hellotest" };
+				checkCommadLabels(cmdLabels, cmd);
+			} else if ("page-faults".equals(cur)) {
+				assertTrue(event.hasChildren());
+				assertEquals(event.getChildren().length, 1);
+
+				TreeParent cmd = event.getChildren()[0];
+				assertEquals(cmd.getChildren().length, 3);
+
+				String[] cmdLabels = { "ld-2.14.90.so", "[kernel.kallsyms]",
+						"libc-2.14.90.so" };
+				checkCommadLabels(cmdLabels, cmd);
+			} else if ("minor-faults".equals(cur)) {
+				assertTrue(event.hasChildren());
+				assertEquals(event.getChildren().length, 1);
+
+				TreeParent cmd = event.getChildren()[0];
+				assertEquals(cmd.getChildren().length, 3);
+
+				String[] cmdLabels = { "ld-2.14.90.so", "[kernel.kallsyms]",
+						"libc-2.14.90.so" };
+				checkCommadLabels(cmdLabels, cmd);
+			} else if ("major-faults".equals(cur)) {
+				assertTrue(!event.hasChildren());
+			}
+
+		}
+	}
+
+	public void testParserDefaultEvent() {
+		TreeParent invisibleRoot = buildModel(
+				"resources/defaultevent-data/perf.data",
+				"resources/defaultevent-data/perf.data.txt",
+				"resources/defaultevent-data/perf.data.err.log");
+
+		// Assert specific properties extracted by the parser.
+		assertEquals(invisibleRoot.getChildren().length, 1);
+
+		TreeParent event = invisibleRoot.getChildren()[0];
+		assertEquals(event.getName(), "cycles");
+		assertTrue(event.hasChildren());
+		assertEquals(event.getChildren().length, 1);
+
+		TreeParent cmd = event.getChildren()[0];
+		assertTrue(cmd.hasChildren());
+		assertEquals(cmd.getChildren().length, 4);
+
+		String[] cmdLabels = { "hellotest", "[kernel.kallsyms]",
+				"ld-2.14.90.so", "perf" };
+		checkCommadLabels(cmdLabels, cmd);
 	}
 
 	/**
@@ -131,7 +232,7 @@ public class ModelTest extends AbstractTest {
 			// their children have defined percentages
 			// eg. the invisible root, and PMCommand
 			if (actualSum != 100 && sum != -1){
-				assertEquals(sum, actualSum);
+				assertTrue(actualSum/sum <= 1.0 && actualSum/sum >= 0.99);
 			}
 		}
 	}
@@ -146,7 +247,6 @@ public class ModelTest extends AbstractTest {
 		}else{
 			// children of root must be instances of the top class on the stack
 			Class<?> klass = stack.pop();
-			assertTrue(root.hasChildren());
 			for (TreeParent tp : root.getChildren()){
 				// tp.getClass() instanceof klass
 				assertTrue(klass.isAssignableFrom(tp.getClass()));
@@ -158,88 +258,44 @@ public class ModelTest extends AbstractTest {
 		}
 	}
 
-	public void testModel_ResolvedOnly() throws CoreException {
-		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
+	/**
+	 * Build model based on perf data file report.
+	 * @param perfDataLoc location of perf data file
+	 * @param perfTextDataLoc location of perf data text file
+	 * @param perfErrorDataLoc location of error log file
+	 * @return tree model based on perf data report.
+	 */
+	public TreeParent buildModel(String perfDataLoc, String perfTextDataLoc,
+			String perfErrorDataLoc) {
+		TreeParent invisibleRoot = new TreeParent("");
+		BufferedReader input = null;
+		BufferedReader error = null;
 
-		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
-		assertTrue(invisibleRoot.hasChildren());
-		assertEquals(1, invisibleRoot.getChildren().length);
-		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
-
-		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
-		assertEquals("cycles", ev.getName());
-		assertTrue(ev.hasChildren());
-		assertEquals(1, ev.getChildren().length);
-		assertTrue(ev.getChildren()[0] instanceof PMCommand);
-
-		PMCommand comm = (PMCommand)ev.getChildren()[0];
-		assertTrue(comm.hasChildren());
-		assertEquals(2, comm.getChildren().length);
-
-		PMDso dso = (PMDso)comm.getChildren()[0];
-		assertTrue(dso.hasChildren());
-		assertEquals(1, dso.getChildren().length);
-		assertTrue(dso.getChildren()[0] instanceof PMFile);
-
-		PMFile file = (PMFile)dso.getChildren()[0];
-		assertTrue(file.hasChildren());
-		assertEquals(2, file.getChildren().length);
-		assertTrue(file.getChildren()[0] instanceof PMSymbol);
-
-		PMSymbol sym = ((PMSymbol)file.getChildren()[0]);
-		assertTrue(sym.getFunctionName().equals("leftfib"));
-		assertTrue(file.getChildren()[1] instanceof PMSymbol);
-		sym = ((PMSymbol)file.getChildren()[1]);
-		assertTrue(sym.getFunctionName().equals("rightfib"));
-	}
-	
-	public void testModel_Unresolved() throws CoreException {
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, false);
-		config = wc.doSave();
-
-		PerfCore.Report(config, null, null, null, "resources/perf.data",null);
-
-		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();
-		assertTrue(invisibleRoot.hasChildren());
-		assertEquals(1, invisibleRoot.getChildren().length);
-		assertTrue(invisibleRoot.getChildren()[0] instanceof PMEvent);
-
-		PMEvent ev = (PMEvent)invisibleRoot.getChildren()[0];
-		assertEquals("cycles", ev.getName());
-		assertTrue(ev.hasChildren());
-		assertEquals(1, ev.getChildren().length);
-		assertTrue(ev.getChildren()[0] instanceof PMCommand);
-
-		PMCommand comm = (PMCommand)ev.getChildren()[0];
-		assertTrue(comm.hasChildren());	
-		for (TreeParent x : comm.getChildren()) {
-			assertTrue(x instanceof PMDso);
+		try {
+			input = new BufferedReader(new FileReader(perfTextDataLoc));
+			error = new BufferedReader(new FileReader(perfErrorDataLoc));
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail();
 		}
 
-		assertEquals(2, comm.getChildren().length);
-		assertEquals("fib", comm.getChildren()[0].getName());
-		assertEquals("[kernel.kallsyms]", comm.getChildren()[1].getName());
-
-		PMDso dso = (PMDso)comm.getChildren()[0];
-		
-		assertTrue(dso.hasChildren());
-		assertEquals(1, dso.getChildren().length);
-		assertTrue(dso.getChildren()[0] instanceof PMFile);
-
-		PMFile file = (PMFile)dso.getChildren()[0];
-		assertTrue(file.hasChildren());
-		assertEquals(2, file.getChildren().length);
-		assertTrue(file.getChildren()[0] instanceof PMSymbol);
-
-		PMSymbol sym = ((PMSymbol)file.getChildren()[0]);
-		assertTrue(sym.getFunctionName().equals("leftfib"));
-		assertTrue(file.getChildren()[1] instanceof PMSymbol);
-		sym = ((PMSymbol)file.getChildren()[1]);
-		assertTrue(sym.getFunctionName().equals("rightfib"));
+		PerfCore.parseReport(config, null, null, perfDataLoc, null,
+				invisibleRoot, false, input, error);
+		return invisibleRoot;
 	}
-	
-	public void checkModel(boolean LoadUnresolved) {
-		
+
+	/**
+	 * Check whether the command labels in model rooted at cmd exist in
+	 * list of labels cmdLabels.
+	 * @param cmdLabels list of command labels
+	 * @param cmd root of tree model
+	 */
+	public void checkCommadLabels(String[] cmdLabels, TreeParent cmd) {
+		List<String> cmdList = new ArrayList<String>(Arrays.asList(cmdLabels));
+
+		for (TreeParent dso : cmd.getChildren()) {
+			assertTrue(cmdList.get(0).equals(dso.getName()));
+			cmdList.remove(0);
+		}
 	}
 }

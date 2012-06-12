@@ -1,0 +1,27 @@
+# ========
+# captured on: Fri Jun  8 11:08:34 2012
+# hostname : voip-10-15-18-77.yyz.redhat.com
+# os release : 3.3.7-1.fc16.x86_64
+# perf version : 3.3.7-1.fc16.x86_64
+# arch : x86_64
+# nrcpus online : 4
+# nrcpus avail : 4
+# cpudesc : Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz
+# cpuid : GenuineIntel,6,42,7
+# total memory : 8161284 kB
+# cmdline : /usr/bin/perf record -f /home/cabernal/runtime-EclipseApplication/hellotest/Debug/hellotest 
+# event : name = cycles, type = 0, config = 0x0, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 155, 156, 157, 158 }
+# HEADER_CPU_TOPOLOGY info available, use -I to display
+# HEADER_NUMA_TOPOLOGY info available, use -I to display
+# ========
+#
+# Events: 898  cycles
+#
+# OverheadSamplesCommandShared ObjectSymbol
+99.01883hellotesthellotest        [.] fib_rec
+0.861hellotest[kernel.kallsyms][k] cmpxchg_double_slab
+0.111hellotestld-2.14.90.so    [.] do_lookup_x
+0.021hellotestperf             [.] parse_events
+0.0012hellotest[kernel.kallsyms][k] native_write_msr_safe
+
+

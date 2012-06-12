@@ -1,0 +1,58 @@
+# ========
+# captured on: Thu Jun  7 11:35:15 2012
+# hostname : voip-10-15-18-77.yyz.redhat.com
+# os release : 3.3.7-1.fc16.x86_64
+# perf version : 3.3.7-1.fc16.x86_64
+# arch : x86_64
+# nrcpus online : 4
+# nrcpus avail : 4
+# cpudesc : Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz
+# cpuid : GenuineIntel,6,42,7
+# total memory : 8161284 kB
+# cmdline : /usr/bin/perf record -f -e cpu-clock -e task-clock -e page-faults -e minor-faults -e major-faults /home/cabernal/runtime-EclipseApplication/hellotest/Debug/hellotest 
+# event : name = cpu-clock, type = 1, config = 0x0, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 129, 130, 131, 132 }
+# event : name = task-clock, type = 1, config = 0x1, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 133, 134, 135, 136 }
+# event : name = page-faults, type = 1, config = 0x2, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 137, 138, 139, 140 }
+# event : name = minor-faults, type = 1, config = 0x5, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 141, 142, 143, 144 }
+# event : name = major-faults, type = 1, config = 0x6, config1 = 0x0, config2 = 0x0, excl_usr = 0, excl_kern = 0, id = { 145, 146, 147, 148 }
+# HEADER_CPU_TOPOLOGY info available, use -I to display
+# HEADER_NUMA_TOPOLOGY info available, use -I to display
+# ========
+#
+# Events: 917  cpu-clock
+#
+# OverheadSamplesCommandShared ObjectSymbol
+100.00917hellotesthellotest[.] fib_rec
+
+
+# Events: 917  task-clock
+#
+# OverheadSamplesCommandShared ObjectSymbol
+100.00917hellotesthellotest[.] fib_rec
+
+
+# Events: 6  page-faults
+#
+# OverheadSamplesCommandShared ObjectSymbol
+93.681hellotestld-2.14.90.so    [.] process_envvars
+4.741hellotestld-2.14.90.so    [.] _start
+0.792hellotest[kernel.kallsyms][k] __clear_user
+0.401hellotestlibc-2.14.90.so  [.] __strchr_sse2
+0.401hellotest[kernel.kallsyms][k] copy_user_generic_string
+
+
+# Events: 6  minor-faults
+#
+# OverheadSamplesCommandShared ObjectSymbol
+95.321hellotestld-2.14.90.so    [.] memcmp
+3.581hellotestld-2.14.90.so    [.] _start
+0.552hellotest[kernel.kallsyms][k] __clear_user
+0.281hellotestlibc-2.14.90.so  [.] __strchr_sse2
+0.281hellotest[kernel.kallsyms][k] copy_user_generic_string
+
+
+# Events: 0  major-faults
+#
+# OverheadSamplesCommandShared ObjectSymbol
+
+

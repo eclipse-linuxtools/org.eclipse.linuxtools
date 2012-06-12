@@ -284,13 +284,10 @@ public class PerfCore {
 		
 		BufferedReader input = null;
 		BufferedReader error = null;
-		String line = null;
 		Process p = null;
-		String items[];
-		float percent;
-		
+
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
-		
+
 		try {
 			if (workingDir == null) {
 				p = Runtime.getRuntime().exec(getReportString(config, perfDataLoc));				
@@ -308,9 +305,34 @@ public class PerfCore {
 			e.printStackTrace();*/
 		}
 		
-		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
+		PerfCore.parseReport(config, workingDir, monitor, perfDataLoc, print,
+				invisibleRoot, OldPerfVersion, input, error);
 		
-		line = null;
+		RefreshView();
+    }
+
+	/**
+	 * Parse and build a tree model from the report of a perf data file
+	 * @param config launch configuration
+	 * @param workingDir working directory configuration
+	 * @param monitor  monitor
+	 * @param perfDataLoc location of perf data file
+	 * @param print print stream
+	 * @param invisibleRoot  root of the model
+	 * @param OldPerfVersion boolean old perf version flag
+	 * @param input input stream from perf data file report
+	 * @param error output stream to where all standard error is written to
+	 */
+	public static void parseReport(ILaunchConfiguration config,
+			File workingDir, IProgressMonitor monitor, String perfDataLoc,
+			PrintStream print, TreeParent invisibleRoot,
+			boolean OldPerfVersion, BufferedReader input, BufferedReader error) {
+		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
+		String line = null;
+		String items[];
+		float percent;
+
+		Process p = null;
 		double samples;
 		String comm,dso,symbol;
 		boolean kernelFlag;
@@ -319,7 +341,7 @@ public class PerfCore {
 		PMDso currentDso = null;
 		PMFile currentFile = null;
 		PMSymbol currentSym = null;
-        try {
+		try {
 			while (( line = input.readLine()) != null){
 				if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
 				// line containing report information
@@ -391,9 +413,9 @@ public class PerfCore {
 		} catch (CoreException e2) {
 			SourceLineNumbers = false;
 		}
-		
+
 		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
-		
+
 		boolean hasProfileData = invisibleRoot.getChildren().length != 0;
 
 		if (SourceLineNumbers) {
@@ -407,9 +429,10 @@ public class PerfCore {
 						if ((!Kernel_SourceLineNumbers) && currentDso.isKernelDso()) continue;
 						for (TreeParent s : currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols).getChildren()) {
 							if (!(s instanceof PMSymbol)) continue;
-							
-							if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
-							
+
+						if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
+
+
 							currentSym = (PMSymbol)s;
 								String[] annotateCmd;
 								if (workingDir == null) {
@@ -427,62 +450,8 @@ public class PerfCore {
 								e.printStackTrace();
 							}
 							
-							if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
-							
-							boolean grabBlock = false;
-							boolean blockStarted = false;
-							String dsoName,lineRef;
-					        try {
-								while (( line = input.readLine()) != null){
-									if (line.startsWith("Sorted summary for file")) {
-										grabBlock = true;
-										dsoName = line.replace("Sorted summary for file ","");
-										blockStarted = false;
-										if ((workingDir != null) && (dsoName.startsWith("./"))) {
-											if (workingDir.getAbsolutePath().endsWith("/")) {
-												dsoName = workingDir.getAbsolutePath() + dsoName.substring(2); // path already ends with '/', so trim './' 
-											} else {
-												dsoName = workingDir.getAbsolutePath() + dsoName.substring(1); // path doesn't have '/', so trim just the '.'
-											}
-										}
-										currentDso.setPath(dsoName);
-									} else if (line.startsWith("---")) {
-										if (blockStarted) {
-											blockStarted = false;
-											grabBlock = false;
-										} else {
-											blockStarted = true;
-										}
-									} else if (grabBlock && blockStarted) {
-										//process the line.
-										items = line.trim().split(" +");
-										if (items.length != 2) {
-											continue;
-										}
-										percent = Float.parseFloat(items[0]);
-										lineRef = items[1];
-										items = lineRef.split(":");
-										if (currentDso == null) { 
-											//if (PerfPlugin.DEBUG_ON) System.err.println("Parsed line ref without being in valid block, shouldn't happen.");
-											break; 
-										} else {
-											currentSym.addPercent(Integer.parseInt(items[1]), percent);
-											// Symbol currently in 'Unfiled Symbols' but we now know the actual parent
-											if (currentSym.getParent().getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) {
-												currentSym.getParent().removeChild(currentSym);
-												currentDso.getFile(items[0]).addChild(currentSym);
-											// Symbol has 2 (or more) parents
-											} else if (!((PMFile)currentSym.getParent()).getPath().equals(items[0])) {
-												currentSym.markConflict();
-												currentSym.getParent().removeChild(currentSym);
-												currentDso.getFile(PerfPlugin.STRINGS_MultipleFilesForSymbol).addChild(currentSym);
-											}
-										}
-									}
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-							}				
+							PerfCore.parseAnnotation(monitor, input,
+									workingDir, currentDso, currentSym);
 						}
 
 						if (currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols).getChildren().length == 0) {
@@ -501,9 +470,81 @@ public class PerfCore {
 				print.println("No profile data generated to be displayed.");
 			}
 		}
-		RefreshView();
-    }
-    
+	}
+
+	/**
+	 * Parse annotation file for a dso given a symbol
+	 * @param monitor monitor
+	 * @param input annotation file input stream
+	 * @param workingDir working directory configuration
+	 * @param currentDso dso
+	 * @param currentSym symbol
+	 */
+	public static void parseAnnotation(IProgressMonitor monitor,
+			BufferedReader input, File workingDir, PMDso currentDso,
+			PMSymbol currentSym) {
+		if (monitor != null && monitor.isCanceled()) { RefreshView(); return; }
+
+		boolean grabBlock = false;
+		boolean blockStarted = false;
+		String dsoName,lineRef;
+		String line = null;
+		String items[];
+		float percent;
+
+		try {
+			while (( line = input.readLine()) != null){
+				if (line.startsWith("Sorted summary for file")) {
+					grabBlock = true;
+					dsoName = line.replace("Sorted summary for file ","");
+					blockStarted = false;
+					if ((workingDir != null) && (dsoName.startsWith("./"))) {
+						if (workingDir.getAbsolutePath().endsWith("/")) {
+							dsoName = workingDir.getAbsolutePath() + dsoName.substring(2); // path already ends with '/', so trim './'
+						} else {
+							dsoName = workingDir.getAbsolutePath() + dsoName.substring(1); // path doesn't have '/', so trim just the '.'
+						}
+					}
+					currentDso.setPath(dsoName);
+				} else if (line.startsWith("---")) {
+					if (blockStarted) {
+						blockStarted = false;
+						grabBlock = false;
+					} else {
+						blockStarted = true;
+					}
+				} else if (grabBlock && blockStarted) {
+					//process the line.
+					items = line.trim().split(" +");
+					if (items.length != 2) {
+						continue;
+					}
+					percent = Float.parseFloat(items[0]);
+					lineRef = items[1];
+					items = lineRef.split(":");
+					if (currentDso == null) {
+						//if (PerfPlugin.DEBUG_ON) System.err.println("Parsed line ref without being in valid block, shouldn't happen.");
+						break;
+					} else {
+						currentSym.addPercent(Integer.parseInt(items[1]), percent);
+						// Symbol currently in 'Unfiled Symbols' but we now know the actual parent
+						if (currentSym.getParent().getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) {
+							currentSym.getParent().removeChild(currentSym);
+							currentDso.getFile(items[0]).addChild(currentSym);
+						// Symbol has 2 (or more) parents
+						} else if (!((PMFile)currentSym.getParent()).getPath().equals(items[0])) {
+							currentSym.markConflict();
+							currentSym.getParent().removeChild(currentSym);
+							currentDso.getFile(PerfPlugin.STRINGS_MultipleFilesForSymbol).addChild(currentSym);
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
     public static void RefreshView()
     {
     	Display.getDefault().syncExec(new Runnable() {
