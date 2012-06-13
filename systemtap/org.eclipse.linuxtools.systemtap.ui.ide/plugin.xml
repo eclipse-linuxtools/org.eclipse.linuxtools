@@ -270,25 +270,6 @@
 		<perspectiveExtension
            targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
            <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
-                        <view
-                                ratio="1.00f"
-                                relative="org.eclipse.ui.navigator.ProjectExplorer"
-                                relationship="left"
-                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
-                        <view
-                                ratio="0.33f"
-                                relative="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
-                                relationship="right"
-                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"/>
-                        <view
-                                ratio="0.33f"
-                                relative="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
-                                relationship="left"
-                                id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"/>
-                       
          </perspectiveExtension>
 	</extension>
 </plugin>
