@@ -48,8 +48,8 @@
   </licenses>
 
   <properties>
-    <tycho-version>0.14.1</tycho-version>
-    <tycho-extras-version>0.14.0</tycho-extras-version>
+    <tycho-version>0.15.0</tycho-version>
+    <tycho-extras-version>0.15.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
