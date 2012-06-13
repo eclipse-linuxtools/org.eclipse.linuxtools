@@ -16,12 +16,14 @@ import java.net.URI;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 
 import org.eclipse.linuxtools.ssh.proxy.Activator;
 
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSchException;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -78,11 +80,9 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 			channel.connect();
 			fProcess = new SSHProcess(channel);
 			return fProcess;
-		} catch (Exception e) {
-			errorMessage = e.getMessage();
-			e.printStackTrace();
+		} catch (JSchException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHCommandLauncher_execution_problem + e.getMessage()));
 		}
-		return null;
 	}
 
 	@Override
