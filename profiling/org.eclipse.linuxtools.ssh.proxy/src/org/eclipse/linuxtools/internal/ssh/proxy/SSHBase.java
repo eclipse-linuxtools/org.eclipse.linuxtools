@@ -19,6 +19,8 @@ import org.eclipse.linuxtools.ssh.proxy.Activator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import com.jcraft.jsch.ChannelExec;
@@ -75,7 +77,10 @@ public class SSHBase {
 	}
 
 	private String askPassword() throws CoreException {
-		SSHPasswordDialog d = new SSHPasswordDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+		IWorkbenchWindow w = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (w == null)
+			return "";
+		SSHPasswordDialog d = new SSHPasswordDialog(w.getShell());
 		if (d.open() == SSHPasswordDialog.OK)
 			return d.getPassword();
 		else
