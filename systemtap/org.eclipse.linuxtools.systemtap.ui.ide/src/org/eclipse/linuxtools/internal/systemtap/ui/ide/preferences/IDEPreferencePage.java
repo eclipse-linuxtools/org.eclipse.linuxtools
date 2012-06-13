@@ -31,10 +31,14 @@ public class IDEPreferencePage extends FieldEditorPreferencePage implements IWor
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new BooleanFieldEditor(
-				IDEPreferenceConstants.P_STORED_TREE, 
-				Localization.getString("IDEPreferencePage.UseStoredTapsetTree"),
+				IDEPreferenceConstants.P_STORED_TREE,
+				Localization.getString("IDEPreferencePage.UseStoredTapsetTree"), //$NON-NLS-1$
 				getFieldEditorParent()));
-				LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
+		addField(new BooleanFieldEditor(
+				IDEPreferenceConstants.P_REMOTE_PROBES,
+				Localization.getString("IDEPreferencePage.RemoteProbes"), //$NON-NLS-1$
+				getFieldEditorParent()));
+		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {

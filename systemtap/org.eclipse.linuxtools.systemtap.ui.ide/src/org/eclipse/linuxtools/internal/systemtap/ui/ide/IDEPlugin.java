@@ -11,13 +11,18 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
 
 /**
  * The main plugin class to be used in the IDE. This class contains lifecycle controls
@@ -25,7 +30,12 @@ import org.osgi.framework.BundleContext;
  * @see org.eclipse.ui.plugin.AbstractUIPlugin
  * @author Ryan Morse
  */
+@SuppressWarnings("deprecation")
 public class IDEPlugin extends AbstractUIPlugin {
+	private IWorkbenchListener workbenchListener;
+	private static IDEPlugin plugin;
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.ide";
+
 	public IDEPlugin() {
 		plugin = this;
 	}
@@ -72,10 +82,21 @@ public class IDEPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-	
-	private IWorkbenchListener workbenchListener;
-	private static IDEPlugin plugin;
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.ide";
 
+	/**
+	 * Create an uri to be used to connect to the remote machine
+	 */
+	public URI createRemoteUri(String path) {
+		Preferences p = ConsoleLogPlugin.getDefault().getPluginPreferences();
+		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
+		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
+		if (path == null)
+			path = "";
+		try {
+			URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
+			return uri;
+		} catch (URISyntaxException uri) {
+			return null;
+		}
+	}
 }

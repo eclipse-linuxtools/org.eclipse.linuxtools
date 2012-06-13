@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 public class IDEPreferenceConstants {
 	//ide
 	public static final String P_STORED_TREE = "UseStoredTreePreference"; //$NON-NLS-1$
+	public static final String P_REMOTE_PROBES = "RemoteProbes"; //$NON-NLS-1$
 	
 	//ide.path
 	public static final String P_KERNEL_SOURCE = "KernelSourcePreference"; //$NON-NLS-1$

@@ -162,7 +162,7 @@ public class KernelBrowserView extends BrowserView {
 		if (remote) {
 			boolean error = false;
 			try {
-				kernelLocationURI = createUri(kernelSource);
+				kernelLocationURI = IDEPlugin.getDefault().createRemoteUri(kernelSource);
 				if (kernelLocationURI == null)
 					error = true;
 				else {
@@ -232,17 +232,5 @@ public class KernelBrowserView extends BrowserView {
 		if(null != doubleClickAction)
 			doubleClickAction.dispose();
 		doubleClickAction = null;
-	}
-
-	private URI createUri(String path) {
-		Preferences p = ConsoleLogPlugin.getDefault().getPluginPreferences();
-		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
-		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
-		try {
-			URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
-			return uri;
-		} catch (URISyntaxException uri) {
-			return null;
-		}
 	}
 }

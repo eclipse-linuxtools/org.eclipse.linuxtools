@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
@@ -197,8 +199,12 @@ public class TapsetParser implements Runnable {
 		StringOutputStream str = new StringOutputStream();
 		StringOutputStream strErr = new StringOutputStream();
 		try {
-			URI locationURI = new URI(Path.ROOT.toOSString());
-			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(locationURI);
+			URI uri;
+			if(IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES))
+				uri = IDEPlugin.getDefault().createRemoteUri(null);
+			else
+				uri = new URI(Path.ROOT.toOSString());
+			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(uri);
 			launcher.execute(new Path("stap"), args, null, null, null); //$NON-NLS-1$
 			launcher.waitAndRead(str, strErr, new NullProgressMonitor());
 		} catch (URISyntaxException e) {

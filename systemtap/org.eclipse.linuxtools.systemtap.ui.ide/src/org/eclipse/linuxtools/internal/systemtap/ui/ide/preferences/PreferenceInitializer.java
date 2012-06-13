@@ -29,6 +29,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 		//ide
 		store.setDefault(IDEPreferenceConstants.P_STORED_TREE, true);
+		store.setDefault(IDEPreferenceConstants.P_REMOTE_PROBES, false);
 		
 		//ide.path
 //		store.setDefault(PreferenceConstants.P_DEFAULT_TAPSET, "/usr/share/systemtap/tapset");
