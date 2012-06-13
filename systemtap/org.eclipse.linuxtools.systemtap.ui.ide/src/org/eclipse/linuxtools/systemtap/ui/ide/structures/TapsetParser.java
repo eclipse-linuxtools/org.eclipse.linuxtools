@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006,2012 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,20 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.structures;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
+import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
-
-
 
 /**
  * Runs stap -vp1 & stap -up2 in order to get all of the probes/functions
@@ -163,7 +168,7 @@ public class TapsetParser implements Runnable {
 	 * @param level integer representing what point to stop stap at (1,2,3,4,5)
 	 */
 	protected String runStap(String[] options, String probe, int level) {
-		String[] script = null;
+		String[] args = null;
 		
 		int size = 4;	//start at 4 for stap, -pX, -e, script
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0)
@@ -171,41 +176,38 @@ public class TapsetParser implements Runnable {
 		if(null != options && options.length > 0 && options[0].trim().length() > 0)
 			size += options.length;
 		
-		script = new String[size];
-		script[0] = "stap";
-		script[1] = "-p" + level;
-		script[size-2] = "-e";
-		script[size-1] = probe;
+		args = new String[size];
+		args[0] = ""; //$NON-NLS-1$
+		args[1] = "-p" + level; //$NON-NLS-1$
+		args[size-2] = "-e"; //$NON-NLS-1$
+		args[size-1] = probe;
 		
 		//Add extra tapset directories
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
 			for(int i=0; i<tapsets.length; i++) {
-				script[2+(i<<1)] = "-I";
-				script[3+(i<<1)] = tapsets[i];
+				args[2+(i<<1)] = "-I"; //$NON-NLS-1$
+				args[3+(i<<1)] = tapsets[i];
 			}
 		}
 		if(null != options && options.length > 0 && options[0].trim().length() > 0) {
 			for(int i=0; i<options.length; i++)
-				script[script.length-options.length-2+i] = options[i];
+				args[args.length-options.length-2+i] = options[i];
+		}
+
+		StringOutputStream str = new StringOutputStream();
+		StringOutputStream strErr = new StringOutputStream();
+		try {
+			URI locationURI = new URI(Path.ROOT.toOSString());
+			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(locationURI);
+			launcher.execute(new Path("stap"), args, null, null, null); //$NON-NLS-1$
+			launcher.waitAndRead(str, strErr, new NullProgressMonitor());
+		} catch (URISyntaxException e) {
+			LogManager.logCritical("URISyntaxException runStap: " + e.getMessage(), this); //$NON-NLS-1$
+		} catch (CoreException e) {
+			LogManager.logCritical("CoreException runStap: " + e.getMessage(), this); //$NON-NLS-1$
 		}
 		
-		LoggedCommand cmd = new LoggedCommand(script, null, null, 0);
-		cmd.start();
-		
-		//Block to prevent errors.
-		while(cmd.isRunning()) {
-			try {
-				Thread.sleep(100);
-			} catch(InterruptedException e) {
-				LogManager.logCritical("InterruptedException runStap: " + e.getMessage(), this); //$NON-NLS-1$
-			}
-		}
-		
-		cmd.stop();	//While stop was already called we do this to ensure things are shutdown before proceding
-		String s = cmd.getOutput();
-		cmd.dispose();
-		
-		return s;
+		return str.toString();
 	}
 	
 	/**
