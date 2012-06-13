@@ -52,7 +52,7 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 		cmd.append(" "); //$NON-NLS-1$
 		if (args != null)
 			for (String s : args) {
-				cmd.append(s);
+				cmd.append("\"" + s + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 				cmd.append(" "); //$NON-NLS-1$
 			}
 
