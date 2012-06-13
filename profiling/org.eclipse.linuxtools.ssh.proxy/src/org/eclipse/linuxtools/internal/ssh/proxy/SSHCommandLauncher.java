@@ -50,27 +50,29 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 
 		cmd.append(commandPath.toString());
 		cmd.append(" "); //$NON-NLS-1$
-		for (String s : args) {
-			cmd.append(s);
-			cmd.append(" "); //$NON-NLS-1$
-		}
+		if (args != null)
+			for (String s : args) {
+				cmd.append(s);
+				cmd.append(" "); //$NON-NLS-1$
+			}
 
 		try{
 			ChannelExec channel = createChannelExec();
 
-			for (String s : env) {
-				String[] tokens = s.split("=", 2); //$NON-NLS-1$
-				switch (tokens.length) {
-					case 1:
-						channel.setEnv(tokens[0], null);
-						break;
-					case 2:
-						channel.setEnv(tokens[0], tokens[1]);
-						break;
-					default:
-						Activator.log(Status.WARNING, Messages.SSHCommandLauncher_malformed_env_var_string + s);
+			if (env != null)
+				for (String s : env) {
+					String[] tokens = s.split("=", 2); //$NON-NLS-1$
+					switch (tokens.length) {
+						case 1:
+							channel.setEnv(tokens[0], null);
+							break;
+						case 2:
+							channel.setEnv(tokens[0], tokens[1]);
+							break;
+						default:
+							Activator.log(Status.WARNING, Messages.SSHCommandLauncher_malformed_env_var_string + s);
 					}
-			}
+				}
 
 			channel.setCommand(cmd.toString());
 			channel.connect();
