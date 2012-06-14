@@ -142,20 +142,12 @@
                    <tasks>
                      <delete includeemptydirs="false">
                        <fileset
-<<<<<<< HEAD
-                         dir="/home/data/httpd/download.eclipse.org/technology/linuxtools/updates-nightly">
-=======
-                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-juno">
->>>>>>> 64fcaeb... Remove technology reference as Linux Tools has been moved.
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
                          <include name="**" />
                        </fileset>
                      </delete>
                      <copy includeemptydirs="false"
-<<<<<<< HEAD
-                       todir="/home/data/httpd/download.eclipse.org/technology/linuxtools/updates-nightly">
-=======
-                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-juno">
->>>>>>> 64fcaeb... Remove technology reference as Linux Tools has been moved.
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
                        <fileset dir="target/checksumFix">
                          <include name="**" />
                        </fileset>
