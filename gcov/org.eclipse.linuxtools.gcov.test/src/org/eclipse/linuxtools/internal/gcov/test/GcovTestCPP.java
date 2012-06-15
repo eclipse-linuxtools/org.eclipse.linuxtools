@@ -9,16 +9,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	org.eclipse.linuxtools.internal.gcov.test.GcovTestCPP.CreateProject.class,
-	org.eclipse.linuxtools.internal.gcov.test.GcovTestCPP.PopulateProject.class,
-	org.eclipse.linuxtools.internal.gcov.test.GcovTestCPP.CompileProject.class,
-	org.eclipse.linuxtools.internal.gcov.test.GcovTestCPP.OpenGcovFileDetails.class,
-	org.eclipse.linuxtools.internal.gcov.test.GcovTestCPP.OpenGcovSummary.class
-})
+@RunWith(SWTBotJunit4ClassRunner.class)
 public class GcovTestCPP {
 
 
@@ -65,45 +57,28 @@ public class GcovTestCPP {
 			bot.button("OK").click();
 		}
 
-		@RunWith(SWTBotJunit4ClassRunner.class)
-		public static class CreateProject {
 			@Test
-			public void test() {
+			public void createProject() {
 				GcovTest.createProject(bot, PROJECT_NAME, PROJECT_TYPE);
 			}
-		}
 
-		@RunWith(SWTBotJunit4ClassRunner.class)
-		public static class PopulateProject {
 			@Test
-			public void test() throws Exception {
+			public void populateProject() throws Exception {
 				GcovTest.populateProject(bot, PROJECT_NAME);
 			}
-		}
 
-		@RunWith(SWTBotJunit4ClassRunner.class)
-		public static class CompileProject {
 			@Test
-			public void test() throws Exception {
+			public void cmpileProject() throws Exception {
 				GcovTest.compileProject(bot, PROJECT_NAME);
 			}
-		}
-
 		
-		@RunWith(SWTBotJunit4ClassRunner.class)
-		public static class OpenGcovFileDetails {
 			@Test
-			public void test() throws Exception {
+			public void openGcovFileDetails() throws Exception {
 				GcovTest.openGcovFileDetails(bot, PROJECT_NAME);
 			}
-		}
 		
-		@RunWith(SWTBotJunit4ClassRunner.class)
-		public static class OpenGcovSummary {
 			@Test
-			public void test() throws Exception {
+			public void openGcovSummary() throws Exception {
 				GcovTest.openGcovSummary(bot, PROJECT_NAME, false);
 			}
-		}
-		
 }
