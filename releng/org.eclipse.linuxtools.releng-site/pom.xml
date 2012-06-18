@@ -46,6 +46,9 @@
             <goals>
               <goal>archive-repository</goal>
             </goals>
+            <configuration>
+              <finalName>${project.artifactId}</finalName>
+            </configuration>
           </execution>
         </executions>
       </plugin>
