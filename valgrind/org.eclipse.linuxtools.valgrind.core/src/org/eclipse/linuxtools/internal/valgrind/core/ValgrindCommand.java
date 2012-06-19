@@ -76,13 +76,16 @@ public class ValgrindCommand {
 
 	protected void readIntoBuffer(StringBuffer out, Process p) throws IOException {
 		boolean success;
-		InputStream in;
+		InputStream in, err, input;
 		try {
+			//We need to get the inputs before calling waitFor
+			input = p.getInputStream();
+			err =  p.getErrorStream();
 			if (success = (p.waitFor() == 0)) {
-				in = p.getInputStream();
+				in = input;
 			}
 			else {
-				in = p.getErrorStream();
+				in = err;
 			}
 			int ch;
 			while ((ch = in.read()) != -1) {
