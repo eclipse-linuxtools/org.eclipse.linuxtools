@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.linuxtools.profiling.snapshot.launch"
+         name="Profile As Snapshot"
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.linuxtools.profiling.snapshot.launch.SnapshotLaunchShortcut"
+            id="org.eclipse.linuxtools.profiling.snapshot"
+            label="Profile As Snapshot"
+            modes="profile">
+
+            <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <or>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.IBinary">
+                        </instanceof>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.ICProject">
+                        </instanceof>
+                        <test
+                              property="org.eclipse.cdt.launch.isExecutable">
+                        </test>
+                        <test
+                              property="org.eclipse.cdt.launch.isCProject">
+                        </test>
+                        <and>
+                           <instanceof
+                                 value="org.eclipse.ui.IFileEditorInput">
+                           </instanceof>
+                           <adapt
+                                 type="org.eclipse.core.resources.IResource">
+                              <adapt
+                                    type="org.eclipse.cdt.core.model.ICElement">
+                              </adapt>
+                           </adapt>
+                        </and>
+                     </or>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+
+</plugin>

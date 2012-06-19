@@ -104,5 +104,13 @@
             name="Perf Viewer">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+      <provider
+            id="org.eclipse.linuxtools.perf.provider"
+            shortcut="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut"
+            type="snapshot">
+      </provider>
+   </extension>
 
 </plugin>

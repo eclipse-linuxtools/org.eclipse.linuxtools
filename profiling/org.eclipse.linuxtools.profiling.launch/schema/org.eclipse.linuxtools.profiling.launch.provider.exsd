@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.linuxtools.profiling.launch" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.linuxtools.profiling.launch" id="launchProvider" name="Launch Provider"/>
+      </appinfo>
+      <documentation>
+         This extension point allows various launch shortcuts that use the &lt;code&gt;ProfileLaunchShortcut&lt;/code&gt; the ability to contribute its launcher(s) to a general set of profiling types.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="provider"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="provider">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for this provider.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="type" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The type of profiling provided.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="shortcut" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A Class that extends &lt;code&gt;ProfileLaunchShortcut&lt;/code&gt; and that will provide a launch for profiling.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;extension
+ point=&quot;org.eclipse.linuxtools.profiling.launch.launchProvider&quot;&gt;
+     &lt;provider
+         id=&quot;org.eclipse.linuxtools.perf.provider&quot;
+            shortcut=&quot;org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut&quot;
+            type=&quot;snapshot&quot;&gt;
+  &lt;/provider&gt;
+&lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         Plug-ins that want to extend this extension point must make use of : &lt;samp&gt;org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut&lt;/samp&gt;
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2012 Red Hat, Inc.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+Contributors:
+ Roland Grunberg &lt;rgrunber@redhat.com&gt; - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>
