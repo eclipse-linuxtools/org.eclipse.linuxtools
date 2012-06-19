@@ -11,6 +11,14 @@
             class="org.eclipse.linuxtools.internal.perf.ui.PerfProfileView"
             id="org.eclipse.linuxtools.perf.ui.ProfileView">
       </view>
+      <view
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.perf.ui.PerfProfileView"
+            icon="icons/file.gif"
+            id="org.eclipse.linuxtools.perf.ui.RemoteProfileView"
+            name="Remote Perf Profile View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
@@ -76,6 +84,15 @@
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
       </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigDelegate"
+            id="org.eclipse.linuxtools.perf.remote.launch.profile"
+            modes="profile"
+            name="Profile with Remote Perf"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -85,6 +102,12 @@
             id="org.eclipse.linuxtools.perf.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.perf.launch.profile">
       </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigurationTabGroup"
+            description="%launchConfigurationTabGroup.description.1"
+            id="org.eclipse.linuxtools.perf.remote.launch.launchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.perf.remote.launch.profile">
+      </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -92,6 +115,11 @@
             configTypeID="org.eclipse.linuxtools.perf.launch.profile"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.launch.perfImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.perf.remote.launch.profile"
+            icon="icons/symbol.gif"
+            id="org.eclipse.linuxtools.perf.remote.launch.perfImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension
@@ -103,14 +131,5 @@
             launcher="org.eclipse.linuxtools.internal.perf.launch.PerfOpenData"
             name="Perf Viewer">
       </editor>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
-      <provider
-            id="org.eclipse.linuxtools.perf.provider"
-            shortcut="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut"
-            type="snapshot">
-      </provider>
-   </extension>
-
+   </extension>   
 </plugin>

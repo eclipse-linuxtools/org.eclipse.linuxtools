@@ -22,6 +22,9 @@ package org.eclipse.linuxtools.internal.perf.launch;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+
+import org.eclipse.ui.console.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,6 +34,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -38,10 +42,6 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.IOConsole;
 
 public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
 
@@ -76,7 +76,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		command.add( exePath.toOSString() ); // Add the path to the executable
 		//Compile string
 		command.addAll( Arrays.asList( arguments ) ); 
-		String[] commandArray = command.toArray( new String[command.size()] );
+		String[] commandArray = (String[])command.toArray( new String[command.size()] );
 		boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 		
 		Process process;
@@ -135,7 +135,8 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			}
 			
 			//(Only for testing this line..) PerfCore.Report(config, null, null, null, "/home/thavidu/dev/eclipse-oprof2-workspace/org.eclipse.linuxtools.internal.perf.tests/resources/perf.data");
-			PerfCore.Report(config, getEnvironment(config), wd, monitor, null, print);
+			IPath workingDir = Path.fromOSString(wd.toURI().getPath());
+			PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
