@@ -74,7 +74,8 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		if (scheme != null && !LocalHost.equals(uri.getHost())) {
+		String host = uri.getHost();
+		if (scheme != null && host != null && !LocalHost.equals(host)) {
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 				return manager.getFileProxy(uri);
@@ -92,7 +93,8 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		if (scheme != null && !LocalHost.equals(uri.getHost())) {
+		String host = uri.getHost();
+		if (scheme != null && host != null && !LocalHost.equals(host)) {
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 		       return manager.getLauncher(uri);
@@ -107,7 +109,8 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public String getOS(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		if (scheme != null && !LocalHost.equals(uri.getHost())) {
+		String host = uri.getHost();
+		if (scheme != null && host != null && !LocalHost.equals(host)) {
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 			  return manager.getOS(uri);
