@@ -38,6 +38,9 @@ public class Oprofile
 	
 	// Oprofile information
 	private static OpInfo info;
+
+	@Deprecated
+	public static IProject currentProject;
 	
 	// Make sure that oprofile is ready to go
 	static {
@@ -224,6 +227,9 @@ public class Oprofile
 		return image;
 	}
 	
+	/**
+	 * @since 1.1
+	 */
 	public static void updateInfo(){
 		try {
 			if (!OprofileCorePlugin.getDefault().getOpcontrolProvider().status()){
@@ -239,6 +245,9 @@ public class Oprofile
 	// Oprofile class has a static initializer and the code inside it needs to know which project
 	// is being profiled in order to get the path for the Linux Tools' binaries set for that project.
 	// For this reason the project property has to be set outside the Oprofile class
+	/**
+	 * @since 1.1
+	 */
 	public static class OprofileProject {
 		private static IProject project;
 
@@ -252,4 +261,25 @@ public class Oprofile
 			return project;
 		}
 	}
+
+	/**
+	 * @deprecated
+	 *
+	 * Use {@link OprofileProject#getProject()} instead.
+	 */
+	@Deprecated
+	public static IProject getCurrentProject() {
+		return currentProject;
+	}
+
+	/**
+	 * @deprecated
+	 *
+	 * Use {@link OprofileProject#setProject(IProject)} instead.
+	 */
+	@Deprecated
+	public static void setCurrentProject(IProject project) {
+		currentProject = project;
+	}
+
 }
