@@ -75,7 +75,10 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	}
 
 	/**
-	 * Get a profiling launch shortcut that provides the specified type of profiling.
+	 * Get a profiling launch shortcut that provides the specified type of profiling. This
+	 * looks through extensions of the extension point
+	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code> that have a
+	 * specific type attribute.
 	 *
 	 * @param type A profiling type (eg. memory, snapshot, timing, etc.)
 	 * @return a profiling launch shortcut that implements <code>ProfileLaunchShortcut</code>
