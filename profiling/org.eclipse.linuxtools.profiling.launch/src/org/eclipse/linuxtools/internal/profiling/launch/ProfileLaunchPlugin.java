@@ -34,6 +34,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Convenience method which returns the unique identifier of this plugin.
+	 * @since 1.1
 	 */
 	public static String getUniqueIdentifier() {
 		if (getDefault() == null) {
@@ -63,6 +64,9 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
+	/**
+	 * @since 1.1
+	 */
 	public static void setDialogShell(Shell shell) {
 		debugDialogShell = shell;
 	}
@@ -85,6 +89,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	 * 
 	 * @param status
 	 *            status to log
+	 * @since 1.1
 	 */
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
@@ -94,6 +99,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	 * 
 	 * @param message
 	 *            the error message to log
+	 * @since 1.1
 	 */
 	public static void logErrorMessage(String message) {
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, message, null));
@@ -104,6 +110,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	 * 
 	 * @param e
 	 *            the exception to be logged
+	 * @since 1.1
 	 */
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e.getMessage(), e));

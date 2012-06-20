@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.SubMonitor;
  * launch delegates.
  *
  * @author Corey Ashford
+ * @since 1.1
  *
  */
 public class RemoteConnection {

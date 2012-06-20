@@ -13,6 +13,9 @@ package org.eclipse.linuxtools.profiling.launch;
 
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * @since 1.1
+ */
 public class RemoteMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.profiling.launch.remoteMessages"; //$NON-NLS-1$
 	public static String RemoteConnection_failed;
