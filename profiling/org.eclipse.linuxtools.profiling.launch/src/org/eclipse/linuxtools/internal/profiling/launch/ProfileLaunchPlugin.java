@@ -23,7 +23,6 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	private static ProfileLaunchPlugin plugin;
-	private static Shell debugDialogShell;
 
 	
 	/**
@@ -62,13 +61,6 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-	}
-
-	/**
-	 * @since 1.1
-	 */
-	public static void setDialogShell(Shell shell) {
-		debugDialogShell = shell;
 	}
 
 	/**
