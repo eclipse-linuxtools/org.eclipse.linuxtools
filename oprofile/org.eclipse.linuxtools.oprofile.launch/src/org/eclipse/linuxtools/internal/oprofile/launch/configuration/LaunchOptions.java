@@ -12,13 +12,15 @@
 
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
-import java.io.File;
-
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /**
  * This class wraps OProfile's global launch options for the
@@ -38,11 +40,17 @@ public class LaunchOptions {
 	 * @return whether the options are valid
 	 */
 	public boolean isValid() {
+		IRemoteFileProxy proxy = null;
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		// The only point of contention is whether the specified vmlinux *file* exists.
 		String fn = options.getKernelImageFile();
 		if (fn != null && fn.length() > 0) {
-			File file = new File(options.getKernelImageFile());
-			return (file.exists() && file.isFile());
+			IFileStore fileStore = proxy.getResource(options.getKernelImageFile());
+			return (fileStore.fetchInfo().exists() && !fileStore.fetchInfo().isDirectory());
 		}
 		
 		return true;

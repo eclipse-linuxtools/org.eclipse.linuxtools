@@ -10,6 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.oprofile.core;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 
@@ -90,4 +91,10 @@ public interface IOpcontrolProvider {
 	public void deleteSession (String sessionName, String sessionEvent) throws OpcontrolException;
 
 	public boolean status() throws OpcontrolException;
+
+	/**
+	 * @since 1.1
+	 */
+	public boolean hasPermissions(IProject project) throws OpcontrolException;
+
 }

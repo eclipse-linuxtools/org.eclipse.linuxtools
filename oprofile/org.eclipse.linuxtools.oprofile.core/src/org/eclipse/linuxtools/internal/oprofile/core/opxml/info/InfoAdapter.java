@@ -11,25 +11,30 @@
 package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
+import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.EventIdCache;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * This class takes the XML that is output from 'ophelp -X' for and uses that
@@ -85,6 +90,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	private Document newDoc; // the document we intend to build
 	private Element oldRoot; // the root of the document with data from ophelp
 	private Element newRoot; // the root of the document we intent to build
+	private static IRemoteFileProxy proxy;
 	
 	private static boolean hasTimerSupport;
 
@@ -99,14 +105,16 @@ public class InfoAdapter extends AbstractDataAdapter{
 				createDOM(is);
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public InfoAdapter(File resourceFile) {
+	public InfoAdapter(IFileStore resourceFile) {
+		InputStream inputStream = null;
 		try {
-			FileInputStream fileInpStr = new FileInputStream(resourceFile);
-			createDOM(fileInpStr);
-		} catch (FileNotFoundException e) {
+			inputStream = resourceFile.openInputStream(EFS.NONE, new NullProgressMonitor());
+			createDOM(inputStream);
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
@@ -131,8 +139,10 @@ public class InfoAdapter extends AbstractDataAdapter{
 				newDoc = builder.newDocument();
 				newRoot = newDoc.createElement(INFO);
 				newDoc.appendChild(newRoot);	
-			} catch (IOException e) {
-			} catch (SAXException e) {
+			} catch (Exception e) {
+				e.printStackTrace();
+				OpcontrolException opcontrolException = new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", null)); //$NON-NLS-1$
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider",opcontrolException);
 			}
 		} catch (ParserConfigurationException e1) {
 			e1.printStackTrace();
@@ -205,10 +215,13 @@ public class InfoAdapter extends AbstractDataAdapter{
 	 * Set whether the cpu supports timer mode
 	 */
 	public static void checkTimerSupport() {
-		File file = new File(CPUTYPE);
 
 		try {
-			BufferedReader bi = new BufferedReader(new FileReader(file));
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+			IFileStore fileStore = proxy.getResource(CPUTYPE);
+			if(fileStore.fetchInfo().exists()){
+				InputStream is = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
+				BufferedReader bi = new BufferedReader(new InputStreamReader(is));
 			String cpuType = bi.readLine();
 			bi.close();
 			if (cpuType.equals(TIMER)) {
@@ -216,10 +229,14 @@ public class InfoAdapter extends AbstractDataAdapter{
 			} else {
 				hasTimerSupport = false;
 			}
+
+			}
 		} catch (FileNotFoundException e) {
 			hasTimerSupport = true;
 		} catch (IOException e) {
 			hasTimerSupport = true;
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
@@ -230,13 +247,16 @@ public class InfoAdapter extends AbstractDataAdapter{
 	 * @return the system's cpu frequency
 	 */
 	private int getCPUFrequency() {
-		File file = new File(CPUINFO);
+
 		int val = 0;
 		BufferedReader bi = null;
 		try {
-			bi = new BufferedReader(new FileReader(file));
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+			IFileStore fileStore = proxy.getResource(CPUINFO);
+			if(fileStore.fetchInfo().exists()){
+				InputStream is = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
+				bi = new BufferedReader(new InputStreamReader(is));
 			String line;
-
 			while ((line = bi.readLine()) != null) {
 				int index = line.indexOf(':');
 				if (index != -1) {
@@ -263,9 +283,12 @@ public class InfoAdapter extends AbstractDataAdapter{
 				}
 			}
 			bi.close();
+			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
 			if (null != bi) {
@@ -289,10 +312,15 @@ public class InfoAdapter extends AbstractDataAdapter{
 		 * hard-coded in a list. This method may not be entirely correct,
 		 * although much simpler.
 		 */
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		final int MAXCPUS = Integer.MAX_VALUE;
 		for (int i = 0; i < MAXCPUS; i++){
-			File file = new File (DEV_OPROFILE + i);
-			if (!file.exists()){
+			IFileStore fileStore = proxy.getResource(DEV_OPROFILE + i);
+			if(!fileStore.fetchInfo().exists()){
 				return i;
 			}
 		}

@@ -17,13 +17,16 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.linuxtools.internal.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.internal.oprofile.core.linux.LinuxOpxmlProvider;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
@@ -121,7 +124,32 @@ public class OprofileCorePlugin extends Plugin {
 //
 //		return _opcontrol;
 		
-		return new LinuxOpcontrolProvider();
+		IOpcontrolProvider opcontrolProvider = null;
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extPoint = registry.getExtensionPoint("org.eclipse.linuxtools.oprofile.core.OpcontrolProvider"); //$NON-NLS-1$
+		if (extPoint != null) {
+			IExtension[] extensions = extPoint.getExtensions();
+			for (IExtension extension : extensions) {
+				IConfigurationElement[] configElements = extension.getConfigurationElements();
+				if (configElements.length != 0) {
+					try {
+						String scheme = configElements[0].getAttribute("scheme");
+						if(Oprofile.OprofileProject.getProject().getLocationURI().getScheme().equals(scheme)){
+							opcontrolProvider = (IOpcontrolProvider) configElements[0].createExecutableExtension("class");//$NON-NLS-1$
+						}
+					} catch (CoreException ce) {
+						ce.printStackTrace();
+					}
+				}
+			}
+		}
+		// If there was a problem finding opcontrol, throw an exception
+		if(opcontrolProvider == null) {
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
+		}
+
+		return opcontrolProvider;
 	}
 	
 	public static IStatus createErrorStatus(String errorClassString, Exception e) {

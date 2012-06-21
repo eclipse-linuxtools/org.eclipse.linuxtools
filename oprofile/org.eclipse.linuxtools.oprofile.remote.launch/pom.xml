@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>linuxtools-oprofile-parent</artifactId>
+    <groupId>org.eclipse.linuxtools.oprofile</groupId>
+    <version>0.11.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.eclipse.linuxtools.oprofile.launch.remote</artifactId>
+  <version>0.3.1-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
+
+  <name>Linux Tools OProfile Remote Launch Plug-in</name>
+
+ <build>
+     <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
+     <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

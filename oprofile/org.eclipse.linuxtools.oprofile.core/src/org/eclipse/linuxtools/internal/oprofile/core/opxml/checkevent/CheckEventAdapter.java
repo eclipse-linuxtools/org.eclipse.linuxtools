@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent;
 
-import java.io.File;
 import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.EventIdCache;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -133,8 +137,14 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 		 * hard-coded in a list. This method may not be entirely correct,
 		 * although much simpler.
 		 */
-		File file = new File(InfoAdapter.DEV_OPROFILE + cpuCounter);
-		if (! file.exists()){
+		IRemoteFileProxy proxy = null;
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		IFileStore fileStore = proxy.getResource(InfoAdapter.DEV_OPROFILE + cpuCounter);
+		if (! fileStore.fetchInfo().exists()){
 			return false;
 		}
 		return true;

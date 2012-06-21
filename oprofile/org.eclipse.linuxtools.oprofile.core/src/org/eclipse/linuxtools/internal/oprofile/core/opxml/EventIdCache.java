@@ -11,18 +11,24 @@
 package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,13 +58,28 @@ public class EventIdCache {
 	// name - the name of the event
 	// Element - the DOM node
 	private HashMap<String, Element> nameMap;
-	private static EventIdCache single;
+
+	// Map containing the caches for remote machines
+	private static HashMap<String, EventIdCache> cacheMap;
 	
 	public static EventIdCache getInstance(){
-		if (single == null){
-			single = new EventIdCache ();
+
+		if(cacheMap == null){
+			cacheMap = new HashMap<String, EventIdCache>();
 		}
-		return single;
+
+		IProject project = Oprofile.OprofileProject.getProject();
+		if(project != null){
+			EventIdCache eventIdCache = cacheMap.get(project.getLocationURI().getHost());
+			if(eventIdCache == null){
+					eventIdCache = new EventIdCache();
+					cacheMap.put(project.getLocationURI().getHost(), eventIdCache);
+		}
+			return eventIdCache;
+		} else{
+			return null;
+		}
+
 	}
 	
 	/**
@@ -66,30 +87,33 @@ public class EventIdCache {
 	 * @return the DOM Element corresponding to the event tag
 	 */
 	public Element getElementWithName (String name) {
-		if (single.nameMap == null){
-			readXML();
-			buildCache();
+		IProject project = Oprofile.OprofileProject.getProject();
+		EventIdCache eventIdCache = cacheMap.get(project.getLocationURI().getHost());
+		if (eventIdCache.nameMap == null){
+			readXML(eventIdCache);
+			buildCache(eventIdCache);
 		}
-		return single.nameMap.get(name) != null ? (Element)single.nameMap.get(name) : null;
+		return eventIdCache.nameMap.get(name) != null ? (Element)eventIdCache.nameMap.get(name) : null;
+
 	}
 
 	/**
 	 * Build the cache
 	 */
-	private void buildCache() {
-		single.nameMap = new HashMap<String, Element> ();
-		NodeList eventList = single.eventRoot.getElementsByTagName(EVENT);
+	private void buildCache(EventIdCache eventId) {
+		eventId.nameMap = new HashMap<String, Element> ();
+		NodeList eventList = eventId.eventRoot.getElementsByTagName(EVENT);
 		for (int i = 0; i < eventList.getLength(); i++){
 			Element elem = (Element) eventList.item(i);
 			String eventName = elem.getAttribute(EVENT_NAME);
-			single.nameMap.put(eventName, elem);
+			eventId.nameMap.put(eventName, elem);
 		}
 	}
 
 	/**
 	 * Read the XML from ophelp
 	 */
-	private void readXML() {
+	private void readXML(EventIdCache eventId) {
 		try {
 			Process p = RuntimeProcessFactory.getFactory().exec(OPHELP + " " + "-X", Oprofile.OprofileProject.getProject());
 
@@ -98,9 +122,9 @@ public class EventIdCache {
 			try {
 				builder = factory.newDocumentBuilder();
 				try {
-					single.eventDoc = builder.parse(p.getInputStream());
-					Element elem = (Element) single.eventDoc.getElementsByTagName(HELP_EVENTS).item(0);
-					single.eventRoot = elem;
+					eventId.eventDoc = builder.parse(p.getInputStream());
+					Element elem = (Element) eventId.eventDoc.getElementsByTagName(HELP_EVENTS).item(0);
+					eventId.eventRoot = elem;
 				} catch (IOException e) {
 				} catch (SAXException e) {
 				}
@@ -123,21 +147,31 @@ public class EventIdCache {
 	 * bitmask, or null if none could be found.
 	 */
 	public String getUnitMaskType(String name) {
-		if (single.eventRoot == null){
-			readXML();
-			buildCache();
+		IProject project = Oprofile.OprofileProject.getProject();
+		EventIdCache eventIdCache = cacheMap.get(project.getLocationURI().getHost());
+
+		if (eventIdCache.eventRoot == null){
+			readXML(eventIdCache);
+			buildCache(eventIdCache);
 		}
 
-		Element header = (Element)single.eventRoot.getElementsByTagName(HEADER).item(0);
+		Element header = (Element)eventIdCache.eventRoot.getElementsByTagName(HEADER).item(0);
 
 		double schemaVersion = 0;
-		if (!single.eventRoot.getAttribute(SCHEMA).equals("")){
-			schemaVersion = Double.parseDouble(single.eventRoot.getAttribute(SCHEMA));
+
+		if (!eventIdCache.eventRoot.getAttribute(SCHEMA).equals("")){
+			schemaVersion = Double.parseDouble(eventIdCache.eventRoot.getAttribute(SCHEMA));
 		}else{
 			schemaVersion = Double.parseDouble(header.getAttribute(SCHEMA));
 		}
 
 		String unitMaskType = null;
+		IRemoteFileProxy proxy = null;
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 
 		// Schema Version > 1.0 has the unit mask type within the XML
 		if (schemaVersion > 1.0){
@@ -145,15 +179,17 @@ public class EventIdCache {
 			Element unitMaskTag = (Element) event.getElementsByTagName(InfoAdapter.UNIT_MASKS).item(0);
 			return unitMaskTag.getAttribute(CATEGORY);
 		}else{
-			File file = new File(InfoAdapter.CPUTYPE);
+			IFileStore fileStore = proxy.getResource(InfoAdapter.CPUTYPE);
 			BufferedReader bi = null;
 			try {
-				bi = new BufferedReader(new FileReader(file));
+				InputStream fileInputStream = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
+				bi = new BufferedReader(new InputStreamReader(fileInputStream));
 				String cpuType = bi.readLine();
-				File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS); //$NON-NLS-1$
-				File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS); //$NON-NLS-1$
+				IFileStore opArchEvents = proxy.getResource(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS); //$NON-NLS-1$
+				IFileStore opArchUnitMasks = proxy.getResource(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS); //$NON-NLS-1$
 
-				BufferedReader eventReader = new BufferedReader(new FileReader(opArchEvents));
+				InputStream inputStreamEvents = opArchEvents.openInputStream(EFS.NONE, new NullProgressMonitor());
+				BufferedReader eventReader = new BufferedReader(new InputStreamReader(inputStreamEvents));
 				String line;
 				while ((line = eventReader.readLine()) != null){
 					// find the line with the event name
@@ -164,8 +200,8 @@ public class EventIdCache {
 						String um = line.substring(start, end);
 						BufferedReader unitMaskReader = null;
 						try {
-							unitMaskReader = new BufferedReader(new FileReader(
-									opArchUnitMasks));
+							InputStream inputStreamMasks = opArchUnitMasks.openInputStream(EFS.NONE, new NullProgressMonitor());
+							unitMaskReader = new BufferedReader(new InputStreamReader(inputStreamMasks));
 							while ((line = unitMaskReader.readLine()) != null) {
 								if (line.contains("name:" + um + " ")) { //$NON-NLS-1$
 									start = line.indexOf("type:") + 5; //$NON-NLS-1$
@@ -182,9 +218,9 @@ public class EventIdCache {
 					}
 				}
 				eventReader.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (CoreException e) {
 				e.printStackTrace();
 			} finally {
 				if (bi != null) {

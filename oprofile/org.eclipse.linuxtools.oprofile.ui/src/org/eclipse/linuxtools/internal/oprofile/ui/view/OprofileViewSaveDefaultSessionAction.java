@@ -11,9 +11,10 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
-import java.io.File;
 import java.text.MessageFormat;
 
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -28,12 +29,16 @@ import org.eclipse.linuxtools.internal.oprofile.ui.model.IUiModelElement;
 import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelError;
 import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSession;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /**
  * Menu item to save the default session. Moved from a double-click in the view
  * on the default session for consistency (since non-default sessions can't be saved). 
  */
 public class OprofileViewSaveDefaultSessionAction extends Action {
+	private IRemoteFileProxy proxy;
+
 	public OprofileViewSaveDefaultSessionAction() {
 		super(OprofileUiMessages.getString("view.actions.savedefaultsession.label")); //$NON-NLS-1$
 	}
@@ -113,8 +118,15 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			}
 			
 			// Must not already exist (opcontrol doesn't allow it)
-			File file = new File(Oprofile.getDefaultSamplesDirectory(), newText);
-			if (file.exists()) {
+
+			try {
+				proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+
+			IFileStore fileStore = proxy.getResource(Oprofile.getDefaultSamplesDirectory() + newText);
+			if (fileStore.fetchInfo().exists()) {
 				String format = OprofileUiMessages.getString("savedialog.validator.exists"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);

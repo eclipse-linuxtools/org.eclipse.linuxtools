@@ -24,6 +24,9 @@ package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -37,6 +40,8 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
+import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
@@ -44,6 +49,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
+import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -55,6 +61,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -64,9 +71,12 @@ import org.eclipse.swt.widgets.Text;
  * Thic class represents the event configuration tab of the launcher dialog.
  */
 public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
+	private static final String EMPTY_STRING = "";
 	protected Button defaultEventCheck;
-	protected OprofileCounter[] counters = OprofileCounter.getCounters(null);
+	protected OprofileCounter[] counters = null;
 	protected CounterSubTab[] counterSubTabs;
+	private Boolean hasPermissions = null;
+	private Composite top;
 
 	/**
 	 * Essentially the constructor for this tab; creates the 'default event'
@@ -74,31 +84,25 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @param parent the parent composite
 	 */
 	public void createControl(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
-		setControl(top);
-		top.setLayout(new GridLayout());
+		Composite top;
 
-		if (getTimerMode()) {
-			Label timerModeLabel = new Label(top, SWT.LEFT);
-			timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
+		if(parent.getChildren().length > 0){
+			top = (Composite) parent.getChildren()[0];
 		} else {
-			createVerticalSpacer(top, 1);
-	
-			//default event checkbox
-			defaultEventCheck = new Button(top, SWT.CHECK);
-			defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
-			defaultEventCheck.setLayoutData(new GridData());
-			defaultEventCheck.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent se) {
-					handleEnabledToggle();
+			top = new Composite(parent, SWT.NONE);
+			setControl(top);
+			top.setLayout(new GridLayout());
 				}
-			});
 	
-			createVerticalSpacer(top, 1);
-	
+		this.top = top;
+	}
+	/**
+	 * @since 1.1
+	 * @param top
+	 */
+	private void createCounterTabs(Composite top){
 			//tabs for each of the counters
-			OprofileCounter[] counters = OprofileCounter.getCounters(null);
+		counters = OprofileCounter.getCounters(null);
 			TabItem[] counterTabs = new TabItem[counters.length];
 			counterSubTabs = new CounterSubTab[counters.length];
 			
@@ -115,6 +119,38 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				counterTabs[i].setControl(c);
 				counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
 			}
+		getTabFolderComposite();
+	}
+
+	/**
+	 * Disposes all widgets and creates the timer mode Event tab
+	 * @since 1.1
+	 * @param top
+	 */
+	private void createTimerModeTab(Composite top){
+		Control[] children = top.getChildren();
+		for (Control control : children) {
+			control.dispose();
+		}
+		counterSubTabs = null;
+		defaultEventCheck = null;
+
+		Label timerModeLabel = new Label(top, SWT.LEFT);
+		timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 1.1
+	 */
+	private Composite getTabFolderComposite(){
+		if(counterSubTabs[0] == null){
+			return null;
+		} else {
+			Composite c = counterSubTabs[0].getTabTopContainer();
+			while(c != null && !(c instanceof TabFolder)){
+				c = c.getParent();
+			}
+			return c.getParent();
 		}
 	}
 
@@ -122,8 +158,66 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration config) {
-		if (!getTimerMode()) {
+		this.hasPermissions = null;
+
+		IProject previousProject = Oprofile.OprofileProject.getProject();
+		IProject project = getProject(config);
+		Oprofile.OprofileProject.setProject(project);
+
 			try {
+			if(!hasPermissions(project)){
+				OpcontrolException e = new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolSudo", null));
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+				createTimerModeTab(top);
+				return;
+			}
+		} catch (OpcontrolException e){
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
+			createTimerModeTab(top);
+			return;
+		}
+		Oprofile.updateInfo();
+
+		String previousHost = null;
+		if(previousProject != null){
+			if(previousProject.getLocationURI() != null){
+				previousHost = previousProject.getLocationURI().getHost();
+			}
+		}
+
+		String host = project.getLocationURI().getHost();
+
+		// Create the counter tabs if host has changed or if they haven't been created yet
+		if(previousProject == null || previousHost != host || counters == null){
+			Control[] children = top.getChildren();
+
+			for (Control control : children) {
+				control.dispose();
+			}
+
+			if (getTimerMode()) {
+				Label timerModeLabel = new Label(top, SWT.LEFT);
+				timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
+			} else {
+				createVerticalSpacer(top, 1);
+
+				//default event checkbox
+				defaultEventCheck = new Button(top, SWT.CHECK);
+				defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
+				defaultEventCheck.setLayoutData(new GridData());
+				defaultEventCheck.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent se) {
+						handleEnabledToggle();
+					}
+				});
+				createVerticalSpacer(top, 1);
+				createCounterTabs(top);
+			}
+
+		}
+
+		if(!getTimerMode()){
 				for (int i = 0; i < counters.length; i++) {
 					counters[i].loadConfiguration(config);
 				}
@@ -131,12 +225,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				for (CounterSubTab tab : counterSubTabs) {
 					tab.initializeTab(config);
 				}
-	
+			try{
 				boolean enabledState = config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 				defaultEventCheck.setSelection(enabledState);
 				setEnabledState(!enabledState);
-	
-				updateLaunchConfigurationDialog();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -148,6 +240,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
+		IProject project = getProject(config);
+		Oprofile.OprofileProject.setProject(project);
+
+		try{
+			if(!hasPermissions(project)){
+					return false;
+			}
+		} catch(OpcontrolException e){
+			return false;
+		}
+
 		if (getTimerMode()) {
 			return true;		//no options to check for validity
 		} else {
@@ -200,17 +303,23 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
+		IProject project = getProject(config);
+		try{
+			if(!hasPermissions(project)){
+				return;
+			}
 		if (getTimerMode()) {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 		} else {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, defaultEventCheck.getSelection());
-			
 			for (CounterSubTab cst : counterSubTabs) {
 				cst.performApply(config);
 			}
 		}
-		try {
 			config.doSave();
+		} catch(OpcontrolException e){
+			return;
+
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -221,6 +330,20 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		boolean useDefault = true;
+
+		IProject project = getProject(config);
+		Oprofile.OprofileProject.setProject(project);
+		if(project != null && !LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+			try{
+				if(!hasPermissions(project)){
+					return;
+				}
+			} catch(OpcontrolException e){
+				return;
+			}
+		}
+
+		counters = OprofileCounter.getCounters(config);
 
 		// When instantiated, the OprofileCounter will set defaults.
 		for (int i = 0; i < counters.length; i++) {
@@ -304,6 +427,42 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	}
 	
 	/**
+	 * Checks if user has permission to run remote opcontrol as root. Uses a local cache variable
+	 * to avoid running costly calls repeatedly during creation of the view
+	 * @param project
+	 * @return
+	 * @throws OpcontrolException
+	 * @since 1.1
+	 */
+	protected boolean hasPermissions(IProject project) throws OpcontrolException{
+		if (this.hasPermissions == null){
+			IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
+			this.hasPermissions = provider.hasPermissions(project);
+		}
+		return this.hasPermissions;
+	}
+
+	/**
+	 *
+	 * @param config
+	 * @return
+	 * @since 1.1
+	 */
+	protected IProject getProject(ILaunchConfiguration config){
+		String name = null;
+		try {
+			name = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
+		} catch (CoreException e) {
+			return null;
+		}
+		if (name == null) {
+			return null;
+		}
+
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+	}
+
+	/**
 	 * A sub-tab of the OprofileEventConfigTab launch configuration tab. 
 	 * Essentially, it is a frontend to an OprofileCounter. This is an 
 	 * inner class because it requires methods from the parent tab (such as
@@ -322,7 +481,16 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		private OprofileCounter counter;
 		
 		private ScrolledComposite scrolledTop;
-		private Composite tabTopContainer;
+		protected Composite tabTopContainer;
+
+
+		public Composite getTabTopContainer() {
+			return tabTopContainer;
+		}
+
+		public void setTabTopContainer(Composite tabTopContainer) {
+			this.tabTopContainer = tabTopContainer;
+		}
 
 		/**
 		 * Constructor for a subtab. Creates the layout and widgets for its content.

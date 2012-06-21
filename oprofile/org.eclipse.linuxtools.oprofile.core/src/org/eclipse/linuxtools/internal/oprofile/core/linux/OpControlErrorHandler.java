@@ -11,16 +11,22 @@
 package org.eclipse.linuxtools.internal.oprofile.core.linux;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -47,6 +53,7 @@ public class OpControlErrorHandler {
 	public OpcontrolException handleError (String stdout, String stderr) {
 		String type = "";
 		String fullErr = "";
+		IRemoteFileProxy proxy = null;
 		
 		// Figure out which stream has the error
 		// If both have errors, then stderr takes priority
@@ -65,8 +72,12 @@ public class OpControlErrorHandler {
 		
 		// Read in the errors
 		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+			IFileStore fileStore = proxy.getResource(errorFilePath);
+			InputStream is = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
+
 			String line = "";
-			BufferedReader buff = new BufferedReader(new FileReader(new File(errorFilePath)));
+			BufferedReader buff = new BufferedReader(new InputStreamReader(is));
 			
 			// Populate the mapping
 			while ((line = buff.readLine()) != null){
@@ -76,9 +87,9 @@ public class OpControlErrorHandler {
 			
 			buff.close();
 			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		

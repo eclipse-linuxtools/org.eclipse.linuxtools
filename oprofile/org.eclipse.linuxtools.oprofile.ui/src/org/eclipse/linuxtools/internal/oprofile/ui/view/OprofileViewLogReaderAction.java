@@ -12,13 +12,17 @@
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,6 +30,8 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -71,23 +77,28 @@ public class OprofileViewLogReaderAction extends Action {
 class LogReader implements Runnable, IRunnableWithProgress {
 	private static long lastModified = -1;
 	private static String contents = null;
+	private IRemoteFileProxy proxy;
 
 	public void run() {
-		File logFile = new File(Oprofile.getLogFile());
-		long modified = logFile.lastModified();
+			try {
+				proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+				IFileStore fileStore = proxy.getResource(Oprofile.getLogFile());
+				if(fileStore.fetchInfo().exists()){
+					long modified = fileStore.fetchInfo().getLastModified();
 		
 		//only reread it if it has been modified since the last run
 		if (modified != lastModified) {
 			lastModified = modified;
 			contents = "";
-			
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(logFile));
+					}
+					InputStream is = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
+					BufferedReader bi = new BufferedReader(new InputStreamReader(is));
 				String line;
-				while ((line = reader.readLine()) != null) {
+					while ((line = bi.readLine()) != null){
 					contents += line + "\n"; //$NON-NLS-1$
 				}
-				reader.close();
+					bi.close();
+				}
 			} catch (FileNotFoundException e) {
 				// The file doesn't exist or was erased. Try again next time.
 				contents = OprofileUiMessages.getString("oprofiled.logreader.error.fileNotFound"); //$NON-NLS-1$
@@ -95,7 +106,8 @@ class LogReader implements Runnable, IRunnableWithProgress {
 				// Error reading log. Try again next time.
 				lastModified = 0;
 				contents = OprofileUiMessages.getString("oprofiled.logreader.error.io"); //$NON-NLS-1$
-			}
+			} catch (CoreException e) {
+				e.printStackTrace();
 		}
 	}
 	

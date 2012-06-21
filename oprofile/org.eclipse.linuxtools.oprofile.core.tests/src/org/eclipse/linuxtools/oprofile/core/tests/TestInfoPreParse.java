@@ -1,9 +1,8 @@
 package org.eclipse.linuxtools.oprofile.core.tests;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -13,7 +12,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.osgi.framework.FrameworkUtil;
@@ -41,18 +44,18 @@ public class TestInfoPreParse extends TestCase {
 	
 	@Override
 	protected void setUp() {
-		File file = null;
+		IFileStore fileStore = null;
 		String absFilePath = null;
 		
 		Path filePath = new Path(REL_PATH_TO_INFO_PRE_PARSE_RAW);
 		URL fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		try {
 			absFilePath = FileLocator.toFileURL(fileURL).getFile();
-			file = new File (absFilePath);
+			fileStore = EFS.getLocalFileSystem().getStore(new Path(absFilePath));
 		} catch (IOException e) {
 			fail("Failed to convert the resource file's path.");
 		}
-		InfoAdapter ia = new InfoAdapter(file);
+		InfoAdapter ia = new InfoAdapter(fileStore);
 		ia.process();
 		Document actualDocument = ia.getDocument();
 		Element actualRoot = (Element) actualDocument.getElementsByTagName(InfoAdapter.INFO).item(0);
@@ -62,8 +65,8 @@ public class TestInfoPreParse extends TestCase {
 		Element expectedRoot = null;
 		try {
 			absFilePath = FileLocator.toFileURL(fileURL).getFile();
-			file = new File (absFilePath);
-			FileInputStream inp = new FileInputStream(file);
+			fileStore = EFS.getLocalFileSystem().getStore(new Path(absFilePath));
+			InputStream inp = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder;
 			builder = factory.newDocumentBuilder();
@@ -78,6 +81,8 @@ public class TestInfoPreParse extends TestCase {
 			fail("Failed to parse the XML.");
 		} catch (ParserConfigurationException e) {
 			fail("Failed to create a document builder.");
+		} catch (CoreException e) {
+			fail("Failed to open output stream");
 		}
 		
 		rootList = new Element [] {expectedRoot, actualRoot};

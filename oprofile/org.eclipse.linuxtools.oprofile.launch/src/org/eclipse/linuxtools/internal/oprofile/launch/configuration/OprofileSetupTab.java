@@ -11,16 +11,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
-import java.io.File;
 import java.text.MessageFormat;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -50,6 +53,8 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 //	protected Button _checkSeparateCpu;
 
 	protected LaunchOptions options = null;
+
+	private IRemoteFileProxy proxy;
 
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
@@ -229,8 +234,13 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		String filename = text.getText();
 
 		if (filename.length() > 0) {
-			File file = new File(filename);
-			if (!file.exists() || !file.isFile()) {
+			try {
+				proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			IFileStore fileStore = proxy.getResource(filename);
+			if (!fileStore.fetchInfo().exists() || fileStore.fetchInfo().isDirectory()){
 				String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
 				Object[] args = new Object[] { filename };
 				errorMessage = MessageFormat.format(msg, args);
@@ -251,19 +261,26 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	// Displays a file dialog to allow the user to select the kernel image file
 	private void showFileDialog(Shell shell) {
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+
 		FileDialog d = new FileDialog(shell, SWT.OPEN);
-		File kernel = new File(options.getKernelImageFile());
-		if (!kernel.exists()) {
-			kernel = new File("/boot"); 	//$NON-NLS-1$
-			if (!kernel.exists())
-				kernel = new File("/"); 	//$NON-NLS-1$
+		IFileStore kernel = proxy.getResource(options.getKernelImageFile());
+		if (!kernel.fetchInfo().exists()) {
+			kernel = proxy.getResource("/boot");	//$NON-NLS-1$
+
+			if (!kernel.fetchInfo().exists())
+				kernel = proxy.getResource("/");	//$NON-NLS-1$
 		}
 		d.setFileName(kernel.toString());
 		d.setText(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.text")); //$NON-NLS-1$
 		String newKernel = d.open();
 		if (newKernel != null) {
-			kernel = new File(newKernel);
-			if (!kernel.exists()) {
+			kernel = proxy.getResource(newKernel);
+			if (!kernel.fetchInfo().exists()) {
 				MessageBox mb = new MessageBox(shell, SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
 				mb.setMessage(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.error.kernelDoesNotExist.text")); 	//$NON-NLS-1$
 				switch (mb.open()) {
