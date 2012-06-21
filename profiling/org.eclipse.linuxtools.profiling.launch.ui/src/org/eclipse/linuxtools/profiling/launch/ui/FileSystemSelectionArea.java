@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.profiling.launch.ui;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
