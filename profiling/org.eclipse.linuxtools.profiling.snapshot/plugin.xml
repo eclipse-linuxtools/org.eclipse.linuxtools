@@ -50,6 +50,24 @@
          </contextualLaunch>
       </shortcut>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.profiling.snapshot.SnapshotLaunchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.profiling.snapshot.launchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.profiling.snapshot.launch.SnapshotLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType"
+            modes="profile"
+            name="Profile As Snapshot"
+            public="true">
+      </launchConfigurationType>
+   </extension>
 
 
 </plugin>

@@ -23,21 +23,21 @@
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-
+                  
                </documentation>
             </annotation>
          </attribute>
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-
+                  
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-
+                  
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -70,6 +70,16 @@
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="tabgroup" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A Class that extends &lt;code&gt;ProfileLaunchConfigurationTabGroup&lt;/code&gt; and that will provide a set of tabs.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup:"/>
                </appinfo>
             </annotation>
          </attribute>
