@@ -41,4 +41,4 @@ public class FileSystemElement {
 		return selectorProxy;
 	}
 
-};
+}
