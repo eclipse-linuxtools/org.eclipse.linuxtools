@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.profiling.snapshot.launch;
 
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
@@ -37,7 +36,8 @@ public class SnapshotLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+			ILaunchConfigurationWorkingCopy wc) {
+		//TODO determine what should be done here
 	}
 
 }
