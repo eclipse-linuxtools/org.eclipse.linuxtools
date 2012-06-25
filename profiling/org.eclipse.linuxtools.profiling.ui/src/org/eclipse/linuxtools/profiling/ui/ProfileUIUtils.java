@@ -177,7 +177,7 @@ public class ProfileUIUtils {
 		
 		// visitor object to check for the matching path string
 		ICElementVisitor vis = new ICElementVisitor() {
-			public boolean visit(ICElement element) throws CoreException {
+			public boolean visit(ICElement element) {
 				if (element.getElementType() == ICElement.C_CCONTAINER
 						|| element.getElementType() == ICElement.C_PROJECT){
 					return true;

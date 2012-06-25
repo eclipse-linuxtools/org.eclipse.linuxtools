@@ -190,6 +190,7 @@ public abstract class AbstractTest extends TestCase {
 		final IProject curProject = proj;
 		ISchedulingRule rule = wsp.getRuleFactory().buildRule();
 		Job buildJob = new Job("project build job") { //$NON-NLS-1$
+			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					curProject.build(
@@ -271,7 +272,7 @@ public abstract class AbstractTest extends TestCase {
 	
 	protected void deleteProject(final ICProject cproject) throws CoreException {
 		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
+			public void run(IProgressMonitor monitor) {
 				CProjectHelper.delete(cproject);
 			}			
 		}, null);
