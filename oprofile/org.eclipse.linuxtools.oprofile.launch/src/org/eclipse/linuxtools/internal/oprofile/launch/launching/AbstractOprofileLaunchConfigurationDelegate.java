@@ -15,7 +15,6 @@
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -76,7 +75,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
 		 */
 		//set up and launch the local c/c++ program
-		try {
+		
 			File wd = getWorkingDirectory( config );
 			if ( wd == null ) {
 				wd = new File( System.getProperty( "user.home", "." ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -92,9 +91,6 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			DebugPlugin.newProcess( launch, process, renderProcessLabel( commandArray[0] ) );
 
 			postExec(options, daemonEvents, launch, process);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);

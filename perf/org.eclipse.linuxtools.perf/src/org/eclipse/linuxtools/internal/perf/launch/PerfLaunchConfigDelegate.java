@@ -22,10 +22,6 @@ package org.eclipse.linuxtools.internal.perf.launch;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
-
-import org.eclipse.ui.console.*;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -42,6 +38,10 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.IOConsole;
 
 public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
 
@@ -136,9 +136,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			
 			//(Only for testing this line..) PerfCore.Report(config, null, null, null, "/home/thavidu/dev/eclipse-oprof2-workspace/org.eclipse.linuxtools.internal.perf.tests/resources/perf.data");
 			PerfCore.Report(config, getEnvironment(config), wd, monitor, null, print);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
