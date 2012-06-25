@@ -145,7 +145,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		if (candidateCount < 1) {
 			configuration = createConfiguration(bin);
 		} else if (candidateCount == 1) {
-			configuration = (ILaunchConfiguration) candidateConfigs.get(0);
+			configuration = candidateConfigs.get(0);
 		} else {
 			// Prompt the user to choose a config.  A null result means the user
 			// cancelled the dialog, in which case this method returns null,
@@ -225,6 +225,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 													}
 												}
 											} catch (CModelException e) {
+												// TODO should this be simply ignored ?
 											}
 										}
 									}
@@ -253,7 +254,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				} else if (count > 1) {
 					bin = chooseBinary(results, mode);
 				} else {
-					bin = (IBinary)results.get(0);
+					bin = results.get(0);
 				}
 			}
 			if (bin != null) {
@@ -275,6 +276,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 */
 	protected IBinary chooseBinary(List<IBinary> binList, String mode) {
 		ILabelProvider programLabelProvider = new CElementLabelProvider() {
+			@Override
 			public String getText(Object element) {
 				if (element instanceof IBinary) {
 					IBinary bin = (IBinary)element;
@@ -287,6 +289,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		};
 	
 		ILabelProvider qualifierLabelProvider = new CElementLabelProvider() {
+			@Override
 			public String getText(Object element) {
 				if (element instanceof IBinary) {
 					IBinary bin = (IBinary)element;

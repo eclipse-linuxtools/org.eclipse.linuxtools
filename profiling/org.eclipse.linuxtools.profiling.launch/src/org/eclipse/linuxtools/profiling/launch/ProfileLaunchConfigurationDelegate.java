@@ -115,7 +115,7 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 		for (String str : tmp) {
 			cmdLine.add(str);
 		}
-		return (String[]) cmdLine.toArray(new String[cmdLine.size()]);
+		return cmdLine.toArray(new String[cmdLine.size()]);
 	}
 	
 	
@@ -127,10 +127,9 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @param wd -- Working directory
 	 * @param usePty -- A value of 'true' usually suffices
 	 * @return A properly formed process, or null
-	 * @throws IOException -- If the process cannot be created
 	 */
 	public Process execute(String[] commandArray, String[] env, File wd,
-			boolean usePty) throws IOException {
+			boolean usePty) {
 		Process process = null;
 		try {
 			if (wd == null) {
@@ -192,8 +191,8 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @return The text contained within that console
 	 */
 	public static String getMainConsoleText(String search){
-		TextConsole proc = (TextConsole) getConsole(search);
-		return ((IDocument)proc.getDocument()).get();
+		TextConsole proc = getConsole(search);
+		return proc.getDocument().get();
 	}
 	
 	/**
@@ -203,7 +202,7 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @return
 	 */
 	public static IDocument getConsoleDocument(String search) {
-		return ((TextConsole)getConsole(search)).getDocument();
+		return getConsole(search).getDocument();
 	}
 	
 }

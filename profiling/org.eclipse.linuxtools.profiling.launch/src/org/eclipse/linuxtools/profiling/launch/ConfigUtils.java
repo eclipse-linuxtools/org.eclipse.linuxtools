@@ -87,8 +87,7 @@ public class ConfigUtils {
 	 * @since 5.0
 	 */
 	protected IPath verifyResource(String path,
-			IProgressMonitor monitor)
-			throws CoreException {
+			IProgressMonitor monitor) {
 		return Path.fromOSString(path);
 	}
 

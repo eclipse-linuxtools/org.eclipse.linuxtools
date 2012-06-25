@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.profiling.launch;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
@@ -20,7 +21,7 @@ public class RemoteConnectionException extends CoreException {
 	private static final long serialVersionUID = 1L;
 
 	public RemoteConnectionException(String message, Throwable t) {
-		super(new Status(Status.ERROR, ProfileLaunchPlugin.PLUGIN_ID, message, t));
+		super(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID, message, t));
 	}
 
 }

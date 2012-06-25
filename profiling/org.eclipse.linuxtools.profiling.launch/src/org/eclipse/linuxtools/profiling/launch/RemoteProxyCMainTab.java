@@ -53,7 +53,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -248,6 +247,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 	 * org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse
 	 * .debug.core.ILaunchConfigurationWorkingCopy)
 	 */
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		super.performApply(config);
 		ICProject cProject = this.getCProject();
@@ -295,6 +295,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 	/**
 	 * Show a dialog that lists all main types
 	 */
+	@Override
 	protected void handleSearchButtonSelected() {
 		if (getCProject() == null) {
 			MessageDialog
@@ -373,6 +374,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 	/**
 	 * @since 6.0
 	 */
+	@Override
 	protected void createProjectGroup(Composite parent, int colSpan) {
 		Composite projComp = new Composite(parent, SWT.NONE);
 		GridLayout projLayout = new GridLayout();
@@ -416,6 +418,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 		});
 	}
 
+	@Override
 	protected void updateProgramFromConfig(ILaunchConfiguration config) {
 		super.updateProgramFromConfig(config);
 		if(fProgText.getText().equals(EMPTY_STRING)){
@@ -482,14 +485,13 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
 		toLabel.setEnabled(false);
 
-		enableCopyFromExeButton.addSelectionListener(new SelectionListener() {
+		enableCopyFromExeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean copyEnabled = enableCopyFromExeButton.getSelection();
 				setEnableCopyFromSection(copyEnabled);
 				updateLaunchConfigurationDialog();
 			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
 		copyFromExeText = copyFromExeSelector.getURIText();
