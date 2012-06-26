@@ -70,7 +70,7 @@ import org.eclipse.ui.dialogs.TwoPaneElementSelector;
  * This class may be instantiated. This class is not intended to be subclassed.
  * </p>
  *
- * @since 2.0
+ * @since 1.1
  */
 @SuppressWarnings("restriction")
 public class RemoteProxyCMainTab extends CAbstractMainTab {

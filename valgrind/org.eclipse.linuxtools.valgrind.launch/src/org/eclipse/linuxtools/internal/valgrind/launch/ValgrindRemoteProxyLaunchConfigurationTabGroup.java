@@ -13,6 +13,9 @@ package org.eclipse.linuxtools.internal.valgrind.launch;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyProfileLaunchConfigurationTabGroup;
 
+/**
+ * @since 1.1
+ */
 public class ValgrindRemoteProxyLaunchConfigurationTabGroup extends
 		RemoteProxyProfileLaunchConfigurationTabGroup {
 

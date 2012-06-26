@@ -48,7 +48,9 @@ import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Version;
 
-
+/**
+ * @since 1.1
+ */
 public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurationDelegate {
 
 	private static final String VALGRIND_CMD = "valgrind"; //$NON-NLS-1$

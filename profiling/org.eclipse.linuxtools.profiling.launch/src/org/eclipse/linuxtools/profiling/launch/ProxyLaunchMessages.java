@@ -12,6 +12,9 @@ package org.eclipse.linuxtools.profiling.launch;
 
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * @since 1.1
+ */
 public class ProxyLaunchMessages extends NLS {
 
 	public ProxyLaunchMessages() {
