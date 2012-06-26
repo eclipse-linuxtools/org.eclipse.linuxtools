@@ -29,6 +29,10 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.preferences.PreferenceConstan
 import org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGenerator;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
+/**
+ * Parser for rpmlint output.
+ *
+ */
 public class RpmlintParser {
 	
 	
@@ -42,6 +46,10 @@ public class RpmlintParser {
 		// Empty constructor for making it a singleton.
 	}
 	
+	/**
+	 * Returns a singleton version of the parser.
+	 * @return The parser.
+	 */
 	public static RpmlintParser getInstance() {
 		if (rpmlintParser == null) {
 			rpmlintParser = new RpmlintParser();
@@ -63,6 +71,18 @@ public class RpmlintParser {
 		return parseRpmlintOutput(runRpmlintCommand(visitedResources));
 	}
 	
+	/**
+	 * Adds a rpmlint marker.
+	 * 
+	 * @param file The file to create the marker for.
+	 * @param message The marker message.
+	 * @param lineNumber The line at which the marker appears.
+	 * @param charStart The index of the starting char for the marker.
+	 * @param charEnd The index of the ending char for the marker.
+	 * @param severity The marker seveirty.
+	 * @param rpmlintID The id of the rpmlint warning/error.
+	 * @param rpmlintrefferedContent Additional content reffered by the marker.
+	 */
 	public void addMarker(IFile file, String message, int lineNumber, int charStart, int charEnd,
 			int severity, String rpmlintID, String rpmlintrefferedContent) {
 		try {
@@ -82,6 +102,15 @@ public class RpmlintParser {
 		}
 	}
 	
+	/**
+	 * Adds a rpmlint marker.
+	 * 
+	 * @param file The file to create the marker for.
+	 * @param message The marker message.
+	 * @param severity The marker seveirty.
+	 * @param rpmlintID The id of the rpmlint warning/error.
+	 * @param rpmlintrefferedContent Additional content reffered by the marker.
+	 */
 	public void addMarker(IFile file, String message, int severity,
 			String rpmlintID, String rpmlintrefferedContent) {
 		try {
@@ -103,6 +132,11 @@ public class RpmlintParser {
 		}
 	}
 	
+	/**
+	 * Clear the rpmlint specific markers.
+	 * 
+	 * @param resource The resource for which to clean the marker.
+	 */
 	public void deleteMarkers(IResource resource) {
 		try {
 			resource.deleteMarkers(RpmlintBuilder.MARKER_ID, false, IResource.DEPTH_ZERO);
