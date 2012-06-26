@@ -53,6 +53,8 @@ public class KernelSourceTree {
 	 * @param excluded The string array to store as excluded.
 	 * @param proxy The proxy to be used to get the remote files
 	 * @param monitor a progress monitor for this operation. Can be null.
+	 *
+	 * @since 1.1
 	 */
 	public void buildKernelTree(URI locationURI, String[] excluded, IRemoteFileProxy proxy, IProgressMonitor monitor) {
 		this.excluded = excluded;
