@@ -39,6 +39,7 @@ public class PMDso extends TreeParent {
 	public void setPath(String filePath) {
 		path = filePath;
 	}
+	@Override
 	public String toString() {
 		String prefix = "";
 		if (getPercent() != -1)

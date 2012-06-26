@@ -77,6 +77,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	public boolean canSave() {
 		return isValid(); // probably not best practice but for this case the two are the same.
 	}*/
+	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		setErrorMessage(null);
 
@@ -126,14 +127,16 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		_txtKernel_Location.setLayoutData(data);
 		_txtKernel_Location.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent mev) {
 				_handleKernelImageFileTextModify(_txtKernel_Location);
-			};
+			}
 		});
 
 		Button button = createPushButton(p, "Browse", null); //$NON-NLS-1$
 		final Shell shell = top.getShell();
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent sev) {
 				_showFileDialog(shell);
 			}
@@ -158,6 +161,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		_chkHideUnresolvedSymbols = _createCheckButton(p, PerfPlugin.STRINGS_HideUnresolvedSymbols);
 		_chkSourceLineNumbers = _createCheckButton(p, PerfPlugin.STRINGS_SourceLineNumbers);
 		_chkSourceLineNumbers.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent se) {
 				if ((_chkKernel_SourceLineNumbers != null) && (!_chkSourceLineNumbers.getSelection())) {
 					_chkKernel_SourceLineNumbers.setEnabled(false);
@@ -176,6 +180,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		final Button b = new Button(parent, SWT.CHECK);
 		b.setText(label);
 		b.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent se) {
 				setDirty(true);
 				updateLaunchConfigurationDialog();

@@ -22,6 +22,7 @@ public class PMFile extends TreeParent {
 		return this.path;
 	}
 	
+	@Override
 	public String toString() {
 		String prefix = "";
 		if (getPercent() != -1)

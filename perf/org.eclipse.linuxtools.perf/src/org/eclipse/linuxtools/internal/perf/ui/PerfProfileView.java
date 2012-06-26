@@ -46,6 +46,7 @@ public class PerfProfileView extends ViewPart {
 	private Action doubleClickAction;
 	
 	class NameSorter extends ViewerSorter {
+		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			return (((TreeParent) e1).getPercent() <= ((TreeParent) e2)
 					.getPercent()) ? -1 : 1;
@@ -62,6 +63,7 @@ public class PerfProfileView extends ViewPart {
 	 * This is a callback that will allow us
 	 * to create the viewer and initialize it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		drillDownAdapter = new DrillDownAdapter(viewer);
@@ -88,6 +90,7 @@ public class PerfProfileView extends ViewPart {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				PerfProfileView.this.fillContextMenu(manager);
 			}
@@ -122,6 +125,7 @@ public class PerfProfileView extends ViewPart {
 
 	private void hookDoubleClickAction() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				doubleClickAction.run();
 			}
@@ -139,6 +143,7 @@ public class PerfProfileView extends ViewPart {
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}

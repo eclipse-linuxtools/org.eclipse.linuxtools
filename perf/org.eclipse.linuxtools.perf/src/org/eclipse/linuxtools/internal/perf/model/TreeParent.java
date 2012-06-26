@@ -30,6 +30,7 @@ public class TreeParent {
 		return parent;
 	}
 
+	@Override
 	public String toString() {
 		return getName();
 	}
@@ -79,7 +80,7 @@ public class TreeParent {
 	}
 
 	public TreeParent [] getChildren() {
-		return (TreeParent [])children.toArray(new TreeParent[children.size()]);
+		return children.toArray(new TreeParent[children.size()]);
 	}
 
 	public boolean hasChildren() {

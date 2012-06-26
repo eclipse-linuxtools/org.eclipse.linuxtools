@@ -71,6 +71,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 		_chkDefaultEvent.setText("Default Event"); //$NON-NLS-1$
 		_chkDefaultEvent.setLayoutData(new GridData());
 		_chkDefaultEvent.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent se) {
 				refreshDefaultEnabled();
 				updateLaunchConfigurationDialog();
@@ -109,6 +110,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				_eventTabLists[i] = eventList;				
 				eventList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				eventList.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent se) {
 						updateLaunchConfigurationDialog();
 					}
@@ -144,6 +146,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				b.setText("      Add       ");
 				b.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 				b.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent se) {
 						int i = _tabFolder.getSelectionIndex();
 						if (rawTabIndex == i) {
@@ -173,6 +176,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				b.setText("Remove Selected Events");
 				b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
 				b.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent se) {
 						_eventTabLists[_tabFolder.getSelectionIndex()].remove(_eventTabLists[_tabFolder.getSelectionIndex()].getSelectionIndices());
 						updateLaunchConfigurationDialog();
@@ -196,6 +200,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				}
 				
 				eventList.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent se) {
 						updateLaunchConfigurationDialog();
 					}
@@ -219,6 +224,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	// hm this flag doesn't seem to actually do anything.
+	@Override
 	public boolean canSave() {
 		return isValid(); // probably not best practice but for this case the two are the same.
 	}

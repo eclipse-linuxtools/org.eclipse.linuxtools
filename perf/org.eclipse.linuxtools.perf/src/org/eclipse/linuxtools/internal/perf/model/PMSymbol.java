@@ -43,6 +43,7 @@ public class PMSymbol extends TreeParent {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return getPercent() + "% in " + getName() + " (" + samples + " samples)" + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
 	}

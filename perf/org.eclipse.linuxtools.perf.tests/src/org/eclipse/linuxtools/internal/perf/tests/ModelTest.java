@@ -76,8 +76,7 @@ public class ModelTest extends AbstractTest {
 	}
 
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-			throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		PerfEventsTab eventsTab = new PerfEventsTab();
 		PerfOptionsTab optionsTab = new PerfOptionsTab();
 		wc.setAttribute(PerfPlugin.ATTR_SourceLineNumbers, false);

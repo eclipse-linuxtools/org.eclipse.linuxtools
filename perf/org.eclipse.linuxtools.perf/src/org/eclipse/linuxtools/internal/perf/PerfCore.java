@@ -215,7 +215,7 @@ public class PerfCore {
 				}
 			} catch (CoreException e) { }			
 		}
-		return (String[])base.toArray( new String[base.size()] );
+		return base.toArray( new String[base.size()] );
 	}
 
 	public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
@@ -243,7 +243,7 @@ public class PerfCore {
 		
 		//(Annotate string per symbol)
 		//if (PerfPlugin.DEBUG_ON) System.out.println(Arrays.toString( (String[])base.toArray( new String[base.size()] ) ));
-		return (String[])base.toArray( new String[base.size()] );
+		return base.toArray( new String[base.size()] );
 	}
 	//Runs Perf Record on the given binary and records into perf.data before calling Report() to feed in the results. 
 	public static void Record(String binaryPath) {
@@ -548,7 +548,8 @@ public class PerfCore {
     public static void RefreshView()
     {
     	Display.getDefault().syncExec(new Runnable() {
-    		public void run() {
+    		@Override
+			public void run() {
     			//Try to switch the active view to Perf.
     			try {
     				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PerfPlugin.VIEW_ID);

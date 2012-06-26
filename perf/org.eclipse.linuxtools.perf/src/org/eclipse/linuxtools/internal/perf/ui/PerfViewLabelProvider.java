@@ -24,9 +24,11 @@ import org.eclipse.ui.PlatformUI;
 
 public class PerfViewLabelProvider extends LabelProvider {
 
+	@Override
 	public String getText(Object obj) {
 		return obj.toString();
 	}
+	@Override
 	public Image getImage(Object obj) {
 		String imageKey;
 		

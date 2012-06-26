@@ -76,7 +76,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		command.add( exePath.toOSString() ); // Add the path to the executable
 		//Compile string
 		command.addAll( Arrays.asList( arguments ) ); 
-		String[] commandArray = (String[])command.toArray( new String[command.size()] );
+		String[] commandArray = command.toArray( new String[command.size()] );
 		boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 		
 		Process process;

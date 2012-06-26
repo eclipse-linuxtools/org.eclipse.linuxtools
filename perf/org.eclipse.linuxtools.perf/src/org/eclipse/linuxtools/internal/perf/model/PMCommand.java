@@ -21,6 +21,7 @@ public class PMCommand extends TreeParent {
 		 */
 	}
 
+	@Override
 	public String toString() {
 		String prefix = "";
 		if (getPercent() != -1)

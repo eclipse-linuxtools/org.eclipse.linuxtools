@@ -43,7 +43,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
 
 	@Override
 	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+			ILaunchConfigurationWorkingCopy wc) {
 		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
 		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
 	}
@@ -62,7 +62,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
 					null,
 					getLaunchManager().generateLaunchConfigurationName(
 							projectName));
-			config = (ILaunchConfiguration) wc;
+			config = wc;
 
 		} catch (CoreException e) {
 			e.printStackTrace();

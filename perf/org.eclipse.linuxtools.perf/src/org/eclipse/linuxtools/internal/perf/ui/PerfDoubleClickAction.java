@@ -35,6 +35,7 @@ public class PerfDoubleClickAction extends Action {
 		super();
 		viewer = v;
 	}
+	@Override
 	public void run() {
 		ISelection selection = viewer.getSelection();
 		Object obj = ((IStructuredSelection)selection).getFirstElement();
