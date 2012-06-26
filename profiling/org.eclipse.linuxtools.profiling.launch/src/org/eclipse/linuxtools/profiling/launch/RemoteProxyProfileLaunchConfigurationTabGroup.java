@@ -24,6 +24,9 @@ import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 
+/**
+ * @since 1.1
+ */
 public abstract class RemoteProxyProfileLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {

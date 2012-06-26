@@ -20,6 +20,9 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyCMainTab;
 
+/**
+ * @since 1.1
+ */
 public class ConfigUtils {
 
 	private final static String EMPTY_STRING = "";
