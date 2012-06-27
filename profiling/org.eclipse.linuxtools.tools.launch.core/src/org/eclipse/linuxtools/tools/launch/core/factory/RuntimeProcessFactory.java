@@ -119,14 +119,35 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 				Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
 				if (pProxy != null){
 					BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
+					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
 					if(error.readLine() != null){
 						throw new IOException(error.readLine());
 					}
-					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
+					error.close();
 					String readLine = reader.readLine();
-					command = readLine;
+					ArrayList<String> lines = new ArrayList<String>();
+					while (readLine != null) {
+						lines.add(readLine);
+						readLine = reader.readLine();
+					}
+					reader.close();
+					if (project.getLocationURI()!=null) {
+						if(project.getLocationURI().toString().startsWith("rse:")) { //$NON-NLS-1$
+							// RSE output
+							command = lines.get(lines.size()-2);
+						} else {
+							// Remotetools output
+							command = lines.get(0);
+						}
+					} else {
+						// Local output
+						command = lines.get(0);
+					}
 				}
 			} catch (CoreException e) {
+				e.printStackTrace();
+			} catch (IndexOutOfBoundsException e) {
+				// Executable cannot be found in system path.
 				e.printStackTrace();
 			}
 		}
