@@ -305,10 +305,25 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		String projectName = configUtils.getProjectName();
 		IProject project = ConfigUtils.getProject(projectName);
 		URI projectURI = project.getLocationURI();
-		String Location = projectURI.getScheme() + "://" + projectURI.getHost();
+		
+		String host = projectURI.getHost();
+		
+		// Host might be null since it's not needed for a well-formed URI. Try authority instead
+		if(host == null){
+			host = projectURI.getAuthority();
+		}
+		
+		// If authority is also null, use a generic name
+		String location;
+		
+		if(host == null){
+			location = "remote host";
+		} else {
+			location = projectURI.getScheme() + "://" + host;
+		}
 
 		return config.getName()
-				+ " [" + valgrindPath.toString() + " " + getPlugin().getToolName(toolID) + " on " + Location + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ " [" + valgrindPath.toString() + " " + getPlugin().getToolName(toolID) + " on " + location + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 public class RemoteProxyManager implements IRemoteProxyManager {
 	
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
-	private static final String LocalHost = "LOCALHOST"; //$NON-NLS-1$
+	private static final String LOCALSCHEME = "file"; //$NON-NLS-1$
 	
 	private static RemoteProxyManager manager;
 	private LocalFileProxy lfp;
@@ -75,8 +75,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		String host = uri.getHost();
-		if (scheme != null && host != null && !LocalHost.equals(host)) {
+		if (scheme != null && !scheme.equals(LOCALSCHEME)){
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 				return manager.getFileProxy(uri);
@@ -94,8 +93,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		String host = uri.getHost();
-		if (scheme != null && host != null && !LocalHost.equals(host)) {
+		if (scheme != null && !scheme.equals(LOCALSCHEME)){
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 		       return manager.getLauncher(uri);
@@ -110,8 +108,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 
 	public String getOS(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
-		String host = uri.getHost();
-		if (scheme != null && host != null && !LocalHost.equals(host)) {
+		if (scheme != null && !scheme.equals(LOCALSCHEME)){
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
 			  return manager.getOS(uri);
