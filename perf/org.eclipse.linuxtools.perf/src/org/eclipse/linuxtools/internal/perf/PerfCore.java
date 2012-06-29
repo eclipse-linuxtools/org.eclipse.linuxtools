@@ -106,11 +106,7 @@ public class PerfCore {
 			 * Old versions of Perf will send events list to stderr instead of stdout
 			 * Checking if stdout is empty then read from stderr
 			 */
-			BufferedReader stdoutIn = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			BufferedReader stderrIn = new BufferedReader(new InputStreamReader(p.getErrorStream()));		
-
-			while (!stdoutIn.ready() && !stderrIn.ready()) continue;
-			input =  stdoutIn.ready() ? stdoutIn : stderrIn;
+			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 		} catch( IOException e ) {
 			e.printStackTrace();
