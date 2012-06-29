@@ -51,7 +51,7 @@ public class RPMBuild {
 
 	private String rpmBuildCmd;
 
-	private String buildFolder;
+	private String mainFolder;
 
 	/**
 	 * Constructs a new object.
@@ -62,35 +62,12 @@ public class RPMBuild {
 	public RPMBuild(IProjectConfiguration config) {
 		IEclipsePreferences node = DefaultScope.INSTANCE
 				.getNode(IRPMConstants.RPM_CORE_ID);
+		if (config.getBuildFolder().getLocation() == null)
+			mainFolder = config.getSourcesFolder().getLocationURI().toString();
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
-		if (config.getSourcesFolder().getLocation() == null) {
-			buildFolder = config.getBuildFolder().getLocationURI().toString();
-			String fullRemoteDirectory = config.getSourcesFolder()
-					.getLocationURI().toString();
-			String host = config.getSourcesFolder().getLocationURI().getHost();
-			int startIndex = fullRemoteDirectory.indexOf(host) + host.length();
-			String remoteDirectory = fullRemoteDirectory.substring(startIndex);
-			String[] tmpMacroDefines = {
-					// rpmBuildCmd,
-					"-v", //$NON-NLS-1$
-					DEFINE,
-					"_sourcedir " + //$NON-NLS-1$
-							remoteDirectory
-							+ "/" + IRPMConstants.SOURCES_FOLDER, //$NON-NLS-1$
-					DEFINE, "_srcrpmdir " + //$NON-NLS-1$
-							remoteDirectory + "/" + IRPMConstants.SRPMS_FOLDER, //$NON-NLS-1$
-					DEFINE, "_builddir " + //$NON-NLS-1$
-							remoteDirectory + "/" + IRPMConstants.BUILD_FOLDER, //$NON-NLS-1$
-					DEFINE, "_rpmdir " + //$NON-NLS-1$
-							remoteDirectory + "/" + IRPMConstants.RPMS_FOLDER, //$NON-NLS-1$
-					DEFINE, "_specdir " + //$NON-NLS-1$
-							remoteDirectory + "/" + IRPMConstants.SPECS_FOLDER, }; //$NON-NLS-1$
-			macroDefines.addAll(Arrays.asList(tmpMacroDefines));
-		} else {
-			String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
-			macroDefines.addAll(Arrays.asList(tmpMacroDefines));
-			macroDefines.addAll(config.getConfigDefines());
-		}
+		String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
+		macroDefines.addAll(Arrays.asList(tmpMacroDefines));
+		macroDefines.addAll(config.getConfigDefines());
 	}
 
 	/**
@@ -179,21 +156,16 @@ public class RPMBuild {
 		IRemoteCommandLauncher rmtCmdLauncher = null;
 		command.addAll(macroDefines);
 		command.add(buildParameter);
-		String remoteSpec = ""; //$NON-NLS-1$
 		if (specFile.getLocation() == null) {
+			command.remove(0);
 			rmtProxyMgr = RemoteProxyManager.getInstance();
 			try {
-				rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(buildFolder));
+				rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(mainFolder));
 			} catch (URISyntaxException e1) {
 				throw new CoreException(new Status(IStatus.ERROR,
 						IRPMConstants.RPM_CORE_ID, e1.getMessage(), e1));
-
 			}
-			String host = specFile.getLocationURI().getHost();
-			int startIndex = buildFolder.indexOf(host) + host.length();
-			remoteSpec = specFile.getLocationURI().toString()
-					.substring(startIndex);
-			command.add(remoteSpec);
+			command.add(specFile.getLocationURI().getPath());
 			String empty[] = new String[0];
 			Process pProxy = rmtCmdLauncher.execute(
 					Path.fromOSString(rpmBuildCmd),

@@ -88,6 +88,7 @@ public class RPMProjectCreator {
 
 			monitor.worked(10);
 			project.open(monitor);
+			RPMProject rpmProject = new RPMProject(project, layout);
 			if (projectPath.toString().indexOf(':') != -1) {
 				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
 					createDirsRemote(monitor, project, parsedIPathString);

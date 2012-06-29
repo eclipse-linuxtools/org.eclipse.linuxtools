@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
@@ -141,24 +142,43 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 			if(!specsFolder.exists()) {
 				specsFolder.create(false, true, null);
 			}
-        }
-        configDefines.add(DEFINE);
-		configDefines
-				.add("_sourcedir " + sourcesFolder.getLocation().toOSString()); //$NON-NLS-1$
+		}
 		configDefines.add(DEFINE);
-		configDefines
-				.add("_srcrpmdir " + srpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_builddir " + buildFolder.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_rpmdir " + rpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_specdir " + specsFolder.getLocation().toOSString()); //$NON-NLS-1$
-    }
-	
+		if (project.getLocationURI()==null) {
+			configDefines
+			.add("_sourcedir " + sourcesFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_srcrpmdir " + srpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_builddir " + buildFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_rpmdir " + rpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_specdir " + specsFolder.getLocation().toOSString()); //$NON-NLS-1$
+		} else {
+			String mainFolder = project.getLocationURI().getPath();
+			configDefines
+			.add("_sourcedir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SOURCES_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_srcrpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SRPMS_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_builddir " + mainFolder + IPath.SEPARATOR + IRPMConstants.BUILD_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_rpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.RPMS_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_specdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SPECS_FOLDER); //$NON-NLS-1$
+
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getBuildFolder()
 	 */

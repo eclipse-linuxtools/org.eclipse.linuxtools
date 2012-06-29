@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 
 /**
@@ -35,20 +36,38 @@ public class FlatBuildConfiguration implements IProjectConfiguration {
 	public FlatBuildConfiguration(IProject project) {
 		this.project = project;
 		configDefines.add(DEFINE);
-		configDefines
-				.add("_sourcedir " + project.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_srcrpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_builddir " + project.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_rpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
-		configDefines.add(DEFINE);
-		configDefines
-				.add("_specdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		if (project.getLocationURI()==null) {
+			configDefines
+			.add("_sourcedir " + project.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_srcrpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_builddir " + project.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_rpmdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_specdir " + project.getLocation().toOSString()); //$NON-NLS-1$
+		} else {
+			configDefines
+			.add("_sourcedir " + project.getLocationURI().getPath() + IPath.SEPARATOR); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_srcrpmdir " + project.getLocationURI().getPath() + IPath.SEPARATOR); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_builddir " + project.getLocationURI().getPath() + IPath.SEPARATOR); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_rpmdir " + project.getLocationURI().getPath() + IPath.SEPARATOR); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines
+			.add("_specdir " + project.getLocationURI().getPath() + IPath.SEPARATOR); //$NON-NLS-1$
+
+		}
 	}
 
 	public IContainer getBuildFolder() {
