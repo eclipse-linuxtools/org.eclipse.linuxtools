@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -437,7 +438,10 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	protected boolean hasPermissions(IProject project) throws OpcontrolException{
 		if (this.hasPermissions == null){
 			IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
-			this.hasPermissions = provider.hasPermissions(project);
+			if (provider instanceof IOpcontrolProvider2)
+				this.hasPermissions = ((IOpcontrolProvider2)provider).hasPermissions(project);
+			else
+				this.hasPermissions = true;
 		}
 		return this.hasPermissions;
 	}

@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -36,7 +36,7 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
 /**
  * A class which encapsulates running opcontrol.
  */
-public class LinuxOpcontrolProvider implements IOpcontrolProvider {
+public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	private static final String OPCONTROL_EXECUTABLE = "opcontrol";
 	
 	private static final int SUDO_TIMEOUT = 2000;
@@ -256,7 +256,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		IProject project = Oprofile.OprofileProject.getProject();
 		
 		
-		args.add(0, findOpcontrol());
+		args.add(0, findOpcontrolExecutable());
 
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = args.get(1);
@@ -363,7 +363,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
 	}
 	
-	protected String findOpcontrol() {
+	/**
+	 * @since 1.1
+	 */
+	protected String findOpcontrolExecutable() {
 		IProject project = Oprofile.OprofileProject.getProject();
 		if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			return OPCONTROL_EXECUTABLE;
@@ -384,7 +387,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 
 		return null;
-	}      
+	}
 
 	// Convert the event into arguments for opcontrol
 	private void eventToArguments(ArrayList<String> args, OprofileDaemonEvent event) {
@@ -513,8 +516,31 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	}
 
 	private boolean isInstalled(){
-		findOpcontrol();
+		findOpcontrolExecutable();
 		return isInstalled;
 	}
 
+	/**
+	 * Use {@link findOpcontrolExecutable}
+	 */
+	@Deprecated
+	private static String findOpcontrol() throws OpcontrolException {
+		IProject project = Oprofile.OprofileProject.getProject();
+		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin
+				.getId()), new Path(OPCONTROL_REL_PATH), null);
+
+		if (url != null) {
+			try {
+				return FileLocator.toFileURL(url).getPath();
+			} catch (IOException ignore) {
+			}
+		// If no linuxtools' toolchain is defined for this project and oprofile is not
+		// installed, throw exception
+		} else if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus(
+					"opcontrolProvider", null)); //$NON-NLS-1$
+		}
+
+		return null;
+	}
 }

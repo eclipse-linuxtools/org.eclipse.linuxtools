@@ -16,6 +16,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -35,7 +37,9 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 			//check if user has NOPASSWD sudo permission for opcontrol
 			//if the Linux Tools Path property was changed
 			if(project != null && !LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
-				if(!OprofileCorePlugin.getDefault().getOpcontrolProvider().hasPermissions(project)){
+				IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
+				if (provider instanceof IOpcontrolProvider2 &&
+					!((IOpcontrolProvider2)provider).hasPermissions(project)){
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolSudo", null));
 				}
 			}

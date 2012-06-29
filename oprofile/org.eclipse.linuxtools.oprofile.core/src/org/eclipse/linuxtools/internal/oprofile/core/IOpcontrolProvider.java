@@ -91,10 +91,4 @@ public interface IOpcontrolProvider {
 	public void deleteSession (String sessionName, String sessionEvent) throws OpcontrolException;
 
 	public boolean status() throws OpcontrolException;
-
-	/**
-	 * @since 1.1
-	 */
-	public boolean hasPermissions(IProject project) throws OpcontrolException;
-
 }

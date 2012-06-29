@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,12 +111,28 @@ public class InfoAdapter extends AbstractDataAdapter{
 		}
 	}
 
+	/**
+	 * @since 1.1
+	 */
 	public InfoAdapter(IFileStore resourceFile) {
 		InputStream inputStream = null;
 		try {
 			inputStream = resourceFile.openInputStream(EFS.NONE, new NullProgressMonitor());
 			createDOM(inputStream);
 		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Use {@link InfoAdapter(IFileStore)}
+	 */
+	@Deprecated
+	public InfoAdapter(File resourceFile) {
+		try {
+			FileInputStream fileInpStr = new FileInputStream(resourceFile);
+			createDOM(fileInpStr);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
