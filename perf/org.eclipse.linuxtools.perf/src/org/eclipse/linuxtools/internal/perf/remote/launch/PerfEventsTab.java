@@ -55,6 +55,7 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 		_chkDefaultEvent.setText("Default Event"); //$NON-NLS-1$
 		_chkDefaultEvent.setLayoutData(new GridData());
 		_chkDefaultEvent.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent se) {
 				refreshDefaultEnabled();
 				updateLaunchConfigurationDialog();
@@ -97,6 +98,7 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 					_eventTabLists[i] = eventList;				
 					eventList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 					eventList.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent se) {
 							updateLaunchConfigurationDialog();
 						}
@@ -132,6 +134,7 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 					b.setText("      Add       ");
 					b.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 					b.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent se) {
 							int i = _tabFolder.getSelectionIndex();
 							if (rawTabIndex == i) {
@@ -161,6 +164,7 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 					b.setText("Remove Selected Events");
 					b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
 					b.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent se) {
 							_eventTabLists[_tabFolder.getSelectionIndex()].remove(_eventTabLists[_tabFolder.getSelectionIndex()].getSelectionIndices());
 							updateLaunchConfigurationDialog();
@@ -184,6 +188,7 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 					}
 
 					eventList.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent se) {
 							updateLaunchConfigurationDialog();
 						}
@@ -200,28 +205,28 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 			refreshDefaultEnabled();
 
 			//restore custom hw breakpoints
-			List<String> hwbps = config.getAttribute(PerfPlugin.ATTR_HwBreakpointEvents, PerfPlugin.ATTR_HwBreakpointEvents_default);
+			List<?> hwbps = config.getAttribute(PerfPlugin.ATTR_HwBreakpointEvents, PerfPlugin.ATTR_HwBreakpointEvents_default);
 			if (hwbps != null) {
 				for (int i = 0; i < _eventTabLists.length; i++) {
 					if (_eventTabItems[i].getText().equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
 						_eventTabLists[i].removeAll();
-						for (String e : hwbps) {
+						for (Object e : hwbps) {
 							TableItem x = new TableItem(_eventTabLists[i], SWT.NONE);
-							x.setText(e);
+							x.setText((String)e);
 						}
 					}
 				}
 			}
 
 			//restore custom raw hw events
-			List<String> rawhe = config.getAttribute(PerfPlugin.ATTR_RawHwEvents, PerfPlugin.ATTR_RawHwEvents_default);
+			List<?> rawhe = config.getAttribute(PerfPlugin.ATTR_RawHwEvents, PerfPlugin.ATTR_RawHwEvents_default);
 			if (rawhe != null) {
 				for (int i = 0; i < _eventTabLists.length; i++) {
 					if (_eventTabItems[i].getText().equals(PerfPlugin.STRINGS_RAWHWEvents)) {
 						_eventTabLists[i].removeAll();
-						for (String e : rawhe) {
+						for (Object e : rawhe) {
 							TableItem x = new TableItem(_eventTabLists[i], SWT.NONE);
-							x.setText(e);
+							x.setText((String)e);
 						}
 					}
 				}
@@ -229,9 +234,9 @@ public class PerfEventsTab extends org.eclipse.linuxtools.internal.perf.launch.P
 
 			//tick all the boxes that are checked (the events i mean)			
 			//This is a little inefficient, I guess. TODO Check more efficiently?
-			List<String> selectedEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
+			List<?> selectedEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
 			if (selectedEvents != null) {
-				for(String s : selectedEvents) {
+				for(Object s : selectedEvents) {
 					for (int i = 0; i < _eventTabLists.length; i++) {
 						for(TableItem x : _eventTabLists[i].getItems()) {
 							if (x.getText().equals(s))

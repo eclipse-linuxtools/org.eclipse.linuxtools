@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -243,12 +242,12 @@ public class PerfCore {
 					newCommand.add("-v");
 				if (config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default))
 					newCommand.add("-M");
-				List<String> selE = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
+				List<?> selE = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
 				if (!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default) 
 						&& selE != null) {					
-					for(String e : selE) {
+					for(Object e : selE) {
 						newCommand.add("-e");
-						newCommand.add(e);
+						newCommand.add((String)e);
 					}
 				}
 			} catch (CoreException e) { }			
@@ -287,7 +286,7 @@ public class PerfCore {
 				}
 			} catch (CoreException e) { }			
 		}
-		return (String[])base.toArray( new String[base.size()] );
+		return base.toArray( new String[base.size()] );
 	}
 
 	public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
@@ -315,7 +314,7 @@ public class PerfCore {
 
 		//(Annotate string per symbol)
 		//if (PerfPlugin.DEBUG_ON) System.out.println(Arrays.toString( (String[])base.toArray( new String[base.size()] ) ));
-		return (String[])base.toArray( new String[base.size()] );
+		return base.toArray( new String[base.size()] );
 	}
 	//Runs Perf Record on the given binary and records into perf.data before calling Report() to feed in the results. 
 	public static void Record(ILaunchConfiguration config, String binaryPath) {
@@ -649,6 +648,7 @@ public class PerfCore {
 	public static void RefreshView()
 	{
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				//Try to switch the active view to Perf.
 				try {
