@@ -1196,7 +1196,6 @@ public class StapGraph extends Graph {
 	
 	
 	
-	@SuppressWarnings("unchecked")
 	/**
 	 * Unhighlights all selected nodes and sets selection to null
 	 */

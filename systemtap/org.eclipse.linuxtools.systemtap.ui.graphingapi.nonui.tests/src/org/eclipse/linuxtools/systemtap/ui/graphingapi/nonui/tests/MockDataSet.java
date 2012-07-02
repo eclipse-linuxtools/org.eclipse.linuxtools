@@ -39,11 +39,11 @@ public final class MockDataSet {
 		return data;
 	}
 	
-	public static ArrayList[] buildArray(int width, int height, int wrap) {
-		ArrayList[] list = new ArrayList[width];
+	public static ArrayList<Object>[] buildArray(int width, int height, int wrap) {
+		ArrayList<Object>[] list = createArrayList(width, new Object());
 		
 		for(int i=0; i<width; i++) {
-			list[i] = new ArrayList();
+			list[i] = new ArrayList<Object>();
 			for(int j=0; j<height; j++) {
 				list[i].add("" + ((j+i) % wrap));
 			}
@@ -51,6 +51,11 @@ public final class MockDataSet {
 		return list;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> ArrayList<T>[] createArrayList(int size, T instance) {
+		return (ArrayList<T>[])new ArrayList[size];
+	}
+
 	public static Integer[] buildIntegerArray(int[] arr) {
 		Integer[] ints = new Integer[arr.length];
 		for(int i=0; i<arr.length; i++)

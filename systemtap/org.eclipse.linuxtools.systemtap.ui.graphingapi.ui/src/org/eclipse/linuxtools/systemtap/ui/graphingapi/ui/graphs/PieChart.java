@@ -41,7 +41,6 @@ public class PieChart extends AChart implements IBlockGraph {
 		legend = new GraphLegend(this, labels, colors);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void paintElementList(GC gc) {
 		updateLegend(); //Make sure legend has current keys
 		Color temp = gc.getForeground();
@@ -83,7 +82,6 @@ public class PieChart extends AChart implements IBlockGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
-			@SuppressWarnings("unchecked")
 			public void run() {
 				Object[][] data;
 				elementList[0].clear();

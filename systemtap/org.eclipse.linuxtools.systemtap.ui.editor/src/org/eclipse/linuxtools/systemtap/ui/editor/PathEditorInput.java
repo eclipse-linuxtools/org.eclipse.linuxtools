@@ -85,7 +85,6 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider {
 		return fPath;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

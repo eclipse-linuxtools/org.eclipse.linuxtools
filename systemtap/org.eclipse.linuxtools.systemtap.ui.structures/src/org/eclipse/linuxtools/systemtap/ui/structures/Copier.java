@@ -22,9 +22,9 @@ public final class Copier {
 	 * 
 	 * @return The copy of the ArrayList array.
 	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList[] copy(ArrayList[] list) {
-		ArrayList[] list2 = new ArrayList[list.length];
+	public static <T> ArrayList<T>[] copy(ArrayList<T>[] list) {
+		@SuppressWarnings("unchecked")
+		ArrayList<T>[] list2 = (ArrayList<T>[])new ArrayList[list.length];
 		
 		for(int i=0; i<list2.length; i++)
 			list2[i] = copy(list[i]);
@@ -39,9 +39,9 @@ public final class Copier {
 	 * 
 	 * @return The copy of the ArrayList.
 	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList copy(ArrayList list) {
-		ArrayList list2 = new ArrayList();
+	public static<T> ArrayList<T> copy(ArrayList<T> list) {
+
+		ArrayList<T> list2 = new ArrayList<T>();
 		list2.addAll(list);
 		return list2;
 	}

@@ -8,8 +8,9 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui;
+
+import java.util.ArrayList;
 
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -61,5 +62,10 @@ public class GraphingAPINonUIPlugin extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui", path);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> ArrayList<T>[] createArrayList(int size, T instance) {
+		return (ArrayList<T>[])new ArrayList[size];
 	}
 }

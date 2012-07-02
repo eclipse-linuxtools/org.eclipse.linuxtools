@@ -20,6 +20,5 @@ import java.util.ArrayList;
  */
 public class DashboardSessionSettings {
 	public static String password = null;
-	@SuppressWarnings("unchecked")
-	public static ArrayList allmodules = null;
+	public static ArrayList<Object> allmodules = null;
 }

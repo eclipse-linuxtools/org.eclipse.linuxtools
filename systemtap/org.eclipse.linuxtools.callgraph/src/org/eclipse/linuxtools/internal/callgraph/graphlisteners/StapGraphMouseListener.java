@@ -134,7 +134,6 @@ public class StapGraphMouseListener implements MouseListener {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	private StapNode getNodeFromSelection() {
 		List<GraphNode> stapNodeList = graph.getSelection();
 		if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
@@ -152,7 +151,6 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private GraphNode getAggregateNodeFromSelection() {
 		List<GraphNode> graphNodeList = graph.getSelection();
 		if (graphNodeList.isEmpty() || graphNodeList.size() != 1) {
@@ -210,7 +208,6 @@ public class StapGraphMouseListener implements MouseListener {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void mouseUpEvent() {
 
 		listener.setStop(true);

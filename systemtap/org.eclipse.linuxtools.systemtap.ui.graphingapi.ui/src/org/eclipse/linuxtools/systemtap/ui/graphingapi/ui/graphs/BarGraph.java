@@ -44,7 +44,6 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 	/**
 	 * Paints all of the data elements to the screen
 	 */
-	@SuppressWarnings("unchecked")
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
 
@@ -99,7 +98,6 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
-			@SuppressWarnings("unchecked")
 			public void run() {
 				Object[][] data;
 				if(fullUpdate) {

@@ -32,12 +32,11 @@ public class MatchFilter implements IDataSetFilter {
 	 * 
 	 * @return The filtered dataset.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList[] filter(ArrayList[] data) {
+	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
 		
-		ArrayList[] newData = Copier.copy(data);
+		ArrayList<Object>[] newData = Copier.copy(data);
 		boolean equals;
 		for(int j, i=newData[column].size()-1; i>=0; i--) {
 			equals = newData[column].get(i).toString().equals(value.toString());	//TODO: Find better equivilance method

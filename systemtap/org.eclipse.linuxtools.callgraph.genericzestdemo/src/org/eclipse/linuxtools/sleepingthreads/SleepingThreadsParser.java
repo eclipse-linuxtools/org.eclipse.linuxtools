@@ -30,7 +30,6 @@ public class SleepingThreadsParser extends SystemTapParser {
 		data = new ArrayList<XMLData>();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IStatus realTimeParsing() {
 		if (!(internalData instanceof BufferedReader))

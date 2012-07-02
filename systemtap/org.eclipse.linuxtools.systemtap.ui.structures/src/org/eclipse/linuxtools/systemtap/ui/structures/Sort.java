@@ -40,7 +40,6 @@ public final class Sort {
 	 * @param p Recursed value, initially top value.
 	 * @param r Recursed value, initially bottom value.
 	 */
-	@SuppressWarnings("unchecked")
 	private static int partition (Object[] list, int p, int r) {
 		Comparable pivot = (list[p] instanceof Comparable ? (Comparable)list[p] : list[p].toString());
 		int lo = p;
@@ -62,7 +61,6 @@ public final class Sort {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static Comparable getComparable(Object o) {
 		return (o instanceof Comparable 
 				? (Comparable)o 

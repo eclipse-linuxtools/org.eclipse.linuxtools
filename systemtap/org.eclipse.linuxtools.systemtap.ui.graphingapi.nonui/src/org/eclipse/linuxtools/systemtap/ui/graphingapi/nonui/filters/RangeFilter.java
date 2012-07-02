@@ -34,12 +34,11 @@ public class RangeFilter implements IDataSetFilter {
 	 * 
 	 * @return The filtered dataset.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList[] filter(ArrayList[] data) {
+	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
 
-		ArrayList[] newData = Copier.copy(data);
+		ArrayList<Object>[] newData = Copier.copy(data);
 		for(int j,i=newData[column].size()-1; i>=0; i--) {
 			if(!inBounds(NumberType.obj2num(newData[column].get(i)))) {
 				for(j=0; j<newData.length; j++)

@@ -39,11 +39,11 @@ public class RangeFilterTest extends TestCase {
 		int width = 4;
 		int height = 10;
 		int wrap = height / 3;
-		ArrayList[] data = MockDataSet.buildArray(width, height, wrap);
+		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
-		ArrayList[] data2 = filter.filter(data);
+		ArrayList<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());

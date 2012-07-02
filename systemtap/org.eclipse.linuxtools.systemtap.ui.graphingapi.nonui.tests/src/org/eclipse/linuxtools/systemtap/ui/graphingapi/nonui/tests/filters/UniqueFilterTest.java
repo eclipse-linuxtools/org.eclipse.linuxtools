@@ -38,17 +38,16 @@ public class UniqueFilterTest extends TestCase {
 		assertNotNull(filter);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void testFilter() {
 		int width = 4;
 		int height = 10;
 		int wrap = height / 3;
-		ArrayList[] data = MockDataSet.buildArray(width, height, wrap);
+		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
 
-		ArrayList[] data2 = filter.filter(data);
+		ArrayList<Object>[] data2 = filter.filter(data);
 		
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
@@ -65,9 +64,9 @@ public class UniqueFilterTest extends TestCase {
 		filter = new UniqueFilter(-1, new SumAggregate(), 0);
 		assertNull(filter.filter(null));
 
-		data = new ArrayList[2];
-		data[0] = new ArrayList();
-		data[1] = new ArrayList();
+		data = MockDataSet.createArrayList(2, new Object());
+		data[0] = new ArrayList<Object>();
+		data[1] = new ArrayList<Object>();
 		
 		data[0].add("a");
 		data[0].add("a");

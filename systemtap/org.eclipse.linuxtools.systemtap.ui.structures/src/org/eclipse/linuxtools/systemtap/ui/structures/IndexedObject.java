@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
-@SuppressWarnings("unchecked")
 public class IndexedObject implements Comparable{
 	public int index;
 	public Object val;

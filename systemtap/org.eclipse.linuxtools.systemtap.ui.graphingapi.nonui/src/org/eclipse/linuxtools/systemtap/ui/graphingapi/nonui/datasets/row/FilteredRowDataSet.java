@@ -13,11 +13,10 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.GraphingAPINonUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-
-
 
 public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 	public FilteredRowDataSet(RowDataSet data) {
@@ -101,7 +100,6 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 	}
 	//End IFilteredDataSet Methods
 	
-	@SuppressWarnings("unchecked")
 	private void rebuildDataSet() {
 		IDataEntry top = original.getEntry(original.getEntryCount()-1);
 
@@ -109,16 +107,15 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 			dataCount = original.getRowCount();
 			topData = top;
 
-			ArrayList[] filterData = getFilterData();
+			ArrayList<Object>[] filterData = getFilterData();
 			for(int i=0; i<filters.size(); i++)
 				filterData = ((IDataSetFilter)filters.get(i)).filter(filterData);
 			setFilteredData(filterData);
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	private ArrayList[] getFilterData() {
-		ArrayList[] data = new ArrayList[original.getColCount()];
+	private ArrayList<Object>[] getFilterData() {
+		ArrayList<Object>[] data = GraphingAPINonUIPlugin.createArrayList(original.getColCount(), new Object());
 		for(int i=0; i<data.length; i++)
 			data[i] = new ArrayList<Object>();
 
@@ -132,8 +129,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 		return data;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void setFilteredData(ArrayList[] data) {
+	private void setFilteredData(ArrayList<?>[] data) {
 		this.data = new ArrayList<IDataEntry>();
 		
 		RowEntry entry;

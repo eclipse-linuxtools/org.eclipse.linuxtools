@@ -84,7 +84,6 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 * @param display The string used as a title for the module
 	 * @param data The <code>ActiveModuleData</code> representing the item to add.
 	 */
-	@SuppressWarnings("unchecked")
 	public void add(String display, ActiveModuleData data) {
 		 Display disp = PlatformUI.getWorkbench().getDisplay();
 		  Cursor cursor = new Cursor(disp, SWT.CURSOR_WAIT);

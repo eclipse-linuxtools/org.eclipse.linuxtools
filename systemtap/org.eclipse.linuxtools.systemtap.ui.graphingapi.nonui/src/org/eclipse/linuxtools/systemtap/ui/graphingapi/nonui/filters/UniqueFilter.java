@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters;
 import java.util.ArrayList;
 
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.GraphingAPINonUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.IDataAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
 import org.eclipse.linuxtools.systemtap.ui.structures.Copier;
@@ -35,15 +36,14 @@ public class UniqueFilter implements IDataSetFilter {
 	 * 
 	 * @return True if the number is within bounds.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList[] filter(ArrayList[] data) {
+	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
 
-		ArrayList[] newData = Copier.copy(data);
-		ArrayList[] aggregates = new ArrayList[newData.length];
+		ArrayList<Object>[] newData = Copier.copy(data);
+		ArrayList<Object>[] aggregates = GraphingAPINonUIPlugin.createArrayList(newData.length, new Object());
 		for(int i=0; i<aggregates.length;i++)
-			aggregates[i] = new ArrayList();
+			aggregates[i] = new ArrayList<Object>();
 		
 		for(int k,j,i=newData[0].size()-1; i>=0; i--) {
 			for(j=i-1; j>=0; j--) {

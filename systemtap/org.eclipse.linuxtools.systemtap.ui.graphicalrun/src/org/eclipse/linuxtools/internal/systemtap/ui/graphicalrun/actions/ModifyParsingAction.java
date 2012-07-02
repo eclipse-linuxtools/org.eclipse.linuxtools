@@ -35,6 +35,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
+import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
 
 /**
  * The action to allow users to change the parsing expression while a script is activly running.
@@ -48,7 +49,6 @@ public class ModifyParsingAction extends ConsoleAction implements IWorkbenchWind
 	 * Finally, it will dispose of the old <code>ChartStreamDaemon2</code> and add an new
 	 * one in its place.
 	 */
-	@SuppressWarnings("unchecked")
 	public void run() {
 		DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, getFilePath());
 		IWorkbench workbench = PlatformUI.getWorkbench();
@@ -64,7 +64,7 @@ public class ModifyParsingAction extends ConsoleAction implements IWorkbenchWind
 			ScriptConsole console = super.getActive();
 			LoggedCommand2 cmd = console.getCommand();
 
-			ArrayList listeners = cmd.getInputStreamListeners();
+			ArrayList<IGobblerListener> listeners = cmd.getInputStreamListeners();
 			ChartStreamDaemon2 daemon = null;
 			if(null != listeners) {
 				for(int i=0; i<listeners.size(); i++) {

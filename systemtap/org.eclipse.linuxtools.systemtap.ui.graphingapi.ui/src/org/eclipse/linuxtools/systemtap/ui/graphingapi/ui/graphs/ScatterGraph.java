@@ -37,7 +37,6 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		handleUpdateEvent();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
 
@@ -87,7 +86,6 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
-			@SuppressWarnings("unchecked")
 			public void run() {
 				Object[][] data = adapter.getData(removedItems, adapter.getRecordCount());
 

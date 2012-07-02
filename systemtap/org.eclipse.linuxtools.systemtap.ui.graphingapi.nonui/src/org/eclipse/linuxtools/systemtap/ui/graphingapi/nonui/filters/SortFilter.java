@@ -34,12 +34,11 @@ public class SortFilter implements IDataSetFilter {
 	 * 
 	 * @return The filtered dataset.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList[] filter(ArrayList[] data) {
+	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
 		
-		ArrayList[] newData = Copier.copy(data);
+		ArrayList<Object>[] newData = Copier.copy(data);
 		IndexedObject[] items = new IndexedObject[newData[0].size()];
 
 		try {

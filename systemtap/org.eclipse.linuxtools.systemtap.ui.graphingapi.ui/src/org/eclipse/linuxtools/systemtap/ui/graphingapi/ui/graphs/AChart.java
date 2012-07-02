@@ -33,11 +33,12 @@ import org.eclipse.swt.widgets.Button;
 
 
 public abstract class AChart extends GraphCanvas implements IGraph, IUpdateListener {
+	@SuppressWarnings("unchecked")
 	public AChart(GraphComposite parent, int style, String title, IAdapter adapt) {
 		super(parent, style);
 		adapter = adapt;
 
-		elementList = new LinkedList[adapt.getSeriesCount()];
+		elementList = (LinkedList<Object>[])new LinkedList[adapt.getSeriesCount()];
 		for(int i=0; i<elementList.length; i++)
 			elementList[i] = new LinkedList<Object>();
 
@@ -121,8 +122,7 @@ public abstract class AChart extends GraphCanvas implements IGraph, IUpdateListe
 	protected GraphComposite parent;
 	protected GraphLegend legend;
 	protected GraphLabel title;
-	@SuppressWarnings("unchecked")
-	protected LinkedList[] elementList;
+	protected LinkedList<Object>[] elementList;
 	
 	public boolean showTitle, showLegend;
 	

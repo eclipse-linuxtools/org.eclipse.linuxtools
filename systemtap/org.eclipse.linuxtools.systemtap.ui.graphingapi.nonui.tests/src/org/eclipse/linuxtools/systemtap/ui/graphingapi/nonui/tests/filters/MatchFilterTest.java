@@ -38,12 +38,12 @@ public class MatchFilterTest extends TestCase {
 		int width = 4;
 		int height = 10;
 		int wrap = height / 3;
-		ArrayList[] data = MockDataSet.buildArray(width, height, wrap);
+		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
 		MatchFilter filter = new MatchFilter(0, data[0].get(0), MatchFilter.KEEP_MATCHING);
-		ArrayList[] data2 = filter.filter(data);
+		ArrayList<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());

@@ -20,6 +20,7 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter.AvailableFilterTypes;
@@ -124,7 +125,7 @@ public class DashboardMetaData {
 			IMemento[] children2;
 			children = data.getChild(XMLGraphDisplays).getChildren(XMLgGraph);
 			module.graphs = new GraphData[children.length];
-			module.filters = new ArrayList[children.length];
+			module.filters = (ArrayList<IDataSetFilter>[])new ArrayList[children.length];
 			int j, ys;
 			for(i=0; i<children.length; i++) {
 				module.graphs[i] = new GraphData();
@@ -133,7 +134,7 @@ public class DashboardMetaData {
 				
 				//Get all filters for the graph
 				children2 = children[i].getChildren(XMLgFilter);
-				module.filters[i] = new ArrayList();
+				module.filters[i] = new ArrayList<IDataSetFilter>();
 				for(j=0; j<children2.length; j++) {
 					module.filters[i].add(AvailableFilterTypes.getDataSetFilter(children2[j]));
 				}

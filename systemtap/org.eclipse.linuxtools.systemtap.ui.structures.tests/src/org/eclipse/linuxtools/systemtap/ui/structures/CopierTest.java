@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.linuxtools.systemtap.ui.structures.Copier;
 
@@ -26,22 +27,27 @@ public class CopierTest extends TestCase {
 		super.setUp();
 	}
 	
+	public <T> ArrayList<T>[] createArray(int size, ArrayList<T>... elements) {
+		return Arrays.copyOf(elements, size);
+	}
+	
 	public void testCopy() {
-		ArrayList list = new ArrayList();
-		ArrayList[] lists = new ArrayList[3];
+		ArrayList<String> list = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer>[] lists = new ArrayList[3];
+		int listsSize = 3;
 
-		for(int i=0; i<lists.length; i++) {
+		for(int i=0; i<listsSize; i++) {
 			list.add("" + i);
-			lists[i] = new ArrayList();
 			for(int j=0; j<5; j++)
 				lists[i].add(new Integer(j));
 		}
 		
-		ArrayList list2 = Copier.copy(list);
+		ArrayList<String> list2 = Copier.copy(list);
 		for(int i=0; i<list.size(); i++)
 			assertEquals(list2.get(i), list.get(i));
 		
-		ArrayList[] lists2 = Copier.copy(lists);
+		ArrayList<?>[] lists2 = Copier.copy(lists);
 		for(int i=0; i<list.size(); i++) {
 			for(int j=0; j<lists[i].size(); j++)
 				assertEquals(lists2[i].get(j), lists[i].get(j));

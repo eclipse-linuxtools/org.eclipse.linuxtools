@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 
 /**
@@ -33,8 +34,7 @@ public class DashboardModule {
 	public String[] labels;
 	public IDataSetParser parser;
 	public GraphData[] graphs;
-	@SuppressWarnings("unchecked")
-	public ArrayList[] filters;
+	public ArrayList<IDataSetFilter>[] filters;
 	public String location;
 	
 	public String[] kernelVersions;

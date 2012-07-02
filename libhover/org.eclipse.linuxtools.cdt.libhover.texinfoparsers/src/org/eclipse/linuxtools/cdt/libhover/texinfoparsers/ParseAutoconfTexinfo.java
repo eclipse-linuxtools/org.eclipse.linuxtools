@@ -111,7 +111,7 @@ public class ParseAutoconfTexinfo {
 	static final Pattern RightAnglePattern	= Pattern.compile(">");
 
 
-	private static Map macroMap;
+	private static Map<String, MacroDef> macroMap;
 	
 	static class MacroParms {
 		String[] parms;
@@ -536,7 +536,7 @@ public class ParseAutoconfTexinfo {
 	private static void HandleDefmacro(BufferedWriter os, BufferedReader is, String s) throws IOException {
 		String il;
 		MacroDef md;
-		List FDefs = new ArrayList();
+		List<MacroDef> FDefs = new ArrayList<MacroDef>();
 		String Synopsis = null;
 
 		if (null != (md = HandleMacroDef(is, s))) FDefs.add(md);
@@ -589,7 +589,7 @@ public class ParseAutoconfTexinfo {
 
 	public static void BuildXMLFromTexinfo(String srcdir, String dstdir) {
 		try {
-			macroMap = new HashMap();
+			macroMap = new HashMap<String, MacroDef>();
 			BufferedWriter os = new BufferedWriter(new FileWriter(dstdir));
 
 			CreateHeader(os);
