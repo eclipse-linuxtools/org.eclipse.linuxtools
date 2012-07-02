@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
@@ -21,7 +20,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.Status;
@@ -35,8 +33,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
