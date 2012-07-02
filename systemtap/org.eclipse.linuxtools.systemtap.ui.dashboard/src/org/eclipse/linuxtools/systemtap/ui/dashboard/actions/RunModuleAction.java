@@ -54,7 +54,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures.ChartStreamDa
  * @author Ryan Morse
  */
 
-@SuppressWarnings("deprecation")
 public class RunModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
 //	public RunModuleAction(){
 	//	buildEnablementChecks();
@@ -176,7 +175,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 		fileName = module.script.getAbsolutePath();
 		String tmpfileName = fileName;
 		String serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+		if(ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
 			return;
         	

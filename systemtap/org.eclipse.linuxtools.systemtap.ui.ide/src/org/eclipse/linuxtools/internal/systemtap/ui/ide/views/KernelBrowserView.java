@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
@@ -46,7 +46,6 @@ import org.eclipse.ui.progress.UIJob;
  * @author Ryan Morse
  */
 
-@SuppressWarnings("deprecation")
 public class KernelBrowserView extends BrowserView {
 	private class KernelRefreshJob extends Job {
 		private boolean remote;
@@ -132,7 +131,7 @@ public class KernelBrowserView extends BrowserView {
 			}
 		};
 		viewer.addDoubleClickListener(dblClickListener);
-		IDEPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(propertyChangeListener);
+		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 
@@ -221,7 +220,7 @@ public class KernelBrowserView extends BrowserView {
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
-		IDEPlugin.getDefault().getPluginPreferences().removePropertyChangeListener(propertyChangeListener);
+		IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 		if(null != viewer)
 			viewer.removeDoubleClickListener(dblClickListener);
 		dblClickListener = null;

@@ -11,7 +11,6 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
 
 import java.io.*;
 
-@SuppressWarnings("deprecation")
 public class ScpClient {
 	
 	private Session session;
@@ -20,8 +19,8 @@ public class ScpClient {
 	//public static void main(String[] arg){
      
   
-      String user=ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER);
-      String host=ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME);
+      String user=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
+      String host=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
       
       
       //System.out.println(lfile + " " + rfile);
@@ -34,7 +33,7 @@ public class ScpClient {
       // username and password will be given via UserInfo interface.
       //UserInfo ui=new MyUserInfo();
       //session.setUserInfo(ui);
-      session.setPassword(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
+      session.setPassword(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
       java.util.Properties config = new java.util.Properties();
                       config.put("StrictHostKeyChecking", "no");
                       session.setConfig(config); 

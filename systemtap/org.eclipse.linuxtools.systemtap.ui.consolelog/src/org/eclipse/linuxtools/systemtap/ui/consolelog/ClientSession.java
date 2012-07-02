@@ -24,7 +24,6 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.DMResponse;
  * @author patrickm
  *
  */
-@SuppressWarnings("deprecation")
 public final class ClientSession extends Thread {
 	
 	private static ClientSession instance = null;
@@ -38,12 +37,12 @@ public final class ClientSession extends Thread {
 	private ClientSession () {
 		// only happens once
 		
-		hostname = ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME);
-    	portnumber = ConsoleLogPlugin.getDefault().getPluginPreferences().getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
-    	mbox = new TreeMap<Integer, LinkedBlockingQueue<byte[]>> ();
-    	connected = createConnection ();
-    	scriptnumber = 15;
-    	if (connected) this.start();
+		hostname = ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
+		portnumber = ConsoleLogPlugin.getDefault().getPreferenceStore().getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
+		mbox = new TreeMap<Integer, LinkedBlockingQueue<byte[]>> ();
+		connected = createConnection ();
+		scriptnumber = 15;
+		if (connected) this.start();
 	}
 	
 	/**
@@ -245,41 +244,41 @@ public final class ClientSession extends Thread {
      */
 	public boolean createConnection () {
 
-    	final DMRequest ccpacket = new DMRequest (DMRequest.CREATE_CONN, 0, 0, 0);
-    	final byte buffer[] = new byte[DMResponse.packetsize];
-    	final DMResponse respacket;
-    	hostname = ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME);
-    	portnumber = ConsoleLogPlugin.getDefault().getPluginPreferences().getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
-    	
-    	OutputStream out = null;
-    	try {
-    		
-    		Socket tmp = new Socket(hostname, portnumber);
-      		out = tmp.getOutputStream();
-    		in = tmp.getInputStream();
-    		out.write(ccpacket.getData());
-    		out.flush();
-    		in.read(buffer, 0, buffer.length);
-    		respacket = new DMResponse (buffer);
-    		
-    	} catch (final UnknownHostException uhe) {
-    		new ErrorMessage("Unknown host!", "See stderr for more details").open();
-    		System.err.println("Unknown host: " + uhe.getMessage());
-    		return false;
-    	} catch (final IOException ioe) {
-    		new ErrorMessage("Connection I/O error!", "See stderr for more details").open();
-    		System.err.println("Con I/O error: " + ioe.getMessage());
-    		//ioe.printStackTrace();
-    		return false;
-    	}
-    	
-    	if (!respacket.isValid())
-    	{
-    		return false;}
+		final DMRequest ccpacket = new DMRequest (DMRequest.CREATE_CONN, 0, 0, 0);
+		final byte buffer[] = new byte[DMResponse.packetsize];
+		final DMResponse respacket;
+		hostname = ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
+		portnumber = ConsoleLogPlugin.getDefault().getPreferenceStore().getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
 
- 	
-    	clientID = respacket.getclientID();
-    	return true;
+		OutputStream out = null;
+		try {
+
+			Socket tmp = new Socket(hostname, portnumber);
+			out = tmp.getOutputStream();
+			in = tmp.getInputStream();
+			out.write(ccpacket.getData());
+			out.flush();
+			in.read(buffer, 0, buffer.length);
+			respacket = new DMResponse (buffer);
+
+		} catch (final UnknownHostException uhe) {
+			new ErrorMessage("Unknown host!", "See stderr for more details").open();
+			System.err.println("Unknown host: " + uhe.getMessage());
+			return false;
+		} catch (final IOException ioe) {
+			new ErrorMessage("Connection I/O error!", "See stderr for more details").open();
+			System.err.println("Con I/O error: " + ioe.getMessage());
+			//ioe.printStackTrace();
+			return false;
+		}
+
+		if (!respacket.isValid())
+		{
+			return false;}
+
+
+			clientID = respacket.getclientID();
+			return true;
 	}
 	
 	/**

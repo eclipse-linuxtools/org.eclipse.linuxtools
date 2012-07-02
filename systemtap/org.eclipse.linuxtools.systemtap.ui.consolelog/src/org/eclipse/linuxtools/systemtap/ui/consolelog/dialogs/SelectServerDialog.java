@@ -29,9 +29,8 @@ public class SelectServerDialog extends Dialog {
 		super(parent);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean open() {
-		if (ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)) {
+		if (ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)) {
 			return true;
 		}
 		result = false;
@@ -59,7 +58,7 @@ public class SelectServerDialog extends Dialog {
 		data.horizontalAlignment = SWT.FILL;
 		hostText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		hostText.setLayoutData(data);
-		hostText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME));
+		hostText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME));
 			
 		data = new GridData();
 		data.grabExcessHorizontalSpace = false;
@@ -73,7 +72,7 @@ public class SelectServerDialog extends Dialog {
 		data.horizontalAlignment = SWT.FILL;
 		userText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		userText.setLayoutData(data);
-		userText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER));
+		userText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER));
 		
 		data = new GridData();
 		data.grabExcessHorizontalSpace = false;
@@ -88,7 +87,7 @@ public class SelectServerDialog extends Dialog {
 		passwordText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		passwordText.setEchoChar('*');
 		passwordText.setLayoutData(data);
-		passwordText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
+		passwordText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
 		
 		
 		data = new GridData();

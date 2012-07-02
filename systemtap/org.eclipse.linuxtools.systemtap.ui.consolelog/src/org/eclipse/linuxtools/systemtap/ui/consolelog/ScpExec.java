@@ -9,7 +9,6 @@ import com.jcraft.jsch.*;
 import java.io.*;
 import java.util.ArrayList;
 
-@SuppressWarnings("deprecation")
 public class ScpExec implements Runnable {
 	
 	private Session session;
@@ -53,14 +52,14 @@ public class ScpExec implements Runnable {
 	
 	protected boolean init()
 	{
-	  String user=ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER);
-      String host=ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME);
+	  String user=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
+      String host=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
       try{
       JSch jsch=new JSch();
       
       session=jsch.getSession(user, host, 22);
 
-      session.setPassword(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
+      session.setPassword(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
       
       java.util.Properties config = new java.util.Properties();
                       config.put("StrictHostKeyChecking", "no");

@@ -24,7 +24,6 @@ public class Application implements IPlatformRunnable {
 	 * 
 	 * @return an IPlatformRunnable condition, either EXIT_RESTART or EXIT_OK
 	 */
-	@SuppressWarnings("deprecation")
 	public Object run(Object args) throws Exception {
 		Display display = PlatformUI.createDisplay();
 

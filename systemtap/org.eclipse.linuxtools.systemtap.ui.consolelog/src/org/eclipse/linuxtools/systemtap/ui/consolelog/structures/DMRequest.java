@@ -21,7 +21,6 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
  * @author patrickm
  * 
  */
-@SuppressWarnings("deprecation")
 public class DMRequest extends DMPacket {
 
 	// packet size
@@ -107,7 +106,7 @@ public class DMRequest extends DMPacket {
 	    char a[] = new char[20];
 		for (int i = 0; i < 20 ; i++)
 			  a[i] = ' ';
-		String b= ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER);
+		String b= ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
 		b.getChars(0, b.length(), a, 0);
 		
 		b = null;
@@ -121,7 +120,7 @@ public class DMRequest extends DMPacket {
 			dos.writeInt(scriptID);
 			dos.writeInt(clientID);
 			dos.writeInt(0);
-			dos.writeInt(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER).length());
+			dos.writeInt(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER).length());
 			dos.writeBytes(b);
 		//	System.out.println(a.length + " " + a.toString().length() + " " + filename.substring(filename.lastIndexOf('/')).length());
 			dos.flush();

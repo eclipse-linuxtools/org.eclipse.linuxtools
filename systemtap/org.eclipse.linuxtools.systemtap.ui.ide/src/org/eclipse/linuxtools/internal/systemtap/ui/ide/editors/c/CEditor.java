@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
@@ -22,6 +20,8 @@ import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
@@ -48,7 +48,6 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
  * @author Henry Hughes
  * @author Ryan Morse
  */
-@SuppressWarnings("deprecation")
 public class CEditor extends AbstractDecoratedTextEditor {
 	private ColorManager colorManager;
 	/**
@@ -209,7 +208,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		super();
 		LogManager.logDebug("Start CEditor:", this); //$NON-NLS-1$
 		internal_init();
-		IDEPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(cColorPropertyChangeListener);
+		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(cColorPropertyChangeListener);
 		LogManager.logDebug("End CEditor:", this); //$NON-NLS-1$
 	}
 	/**
@@ -235,7 +234,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	public void dispose() {
 		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		IDEPlugin.getDefault().getPluginPreferences().removePropertyChangeListener(cColorPropertyChangeListener);
+		IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(cColorPropertyChangeListener);
 		colorManager.dispose();
 		super.dispose();
 		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$

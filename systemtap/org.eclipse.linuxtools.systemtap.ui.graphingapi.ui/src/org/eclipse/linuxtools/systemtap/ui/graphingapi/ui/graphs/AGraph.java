@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs;
 
 import java.util.LinkedList;
 
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.IGraphColorConstants;
@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Button;
 
 
 
-@SuppressWarnings("deprecation")
 public abstract class AGraph extends AChart implements IGraph {
 	public AGraph(GraphComposite parent, int style, String title, IAdapter adapt) {
 		super(parent, style, title, adapt);
@@ -50,7 +49,7 @@ public abstract class AGraph extends AChart implements IGraph {
 		createAxis(Localization.getString("AGraph.xAxis"), xSeriesTicks, GraphAxis.HORIZONTAL);
 		createAxis(Localization.getString("AGraph.yAxis"), ySeriesTicks, GraphAxis.VERTICAL);
 		
-		GraphingAPIUIPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(propertyChangeListener);
+		GraphingAPIUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 		
 		parent.addCheckOption(Localization.getString("AGraph.GridLines"), gridListener);
 		if(adapter.getSeriesCount() > 1)
@@ -159,7 +158,7 @@ public abstract class AGraph extends AChart implements IGraph {
 	}
 
 	public void dispose() {
-		GraphingAPIUIPlugin.getDefault().getPluginPreferences().removePropertyChangeListener(propertyChangeListener);
+		GraphingAPIUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 
 		parent.removeCheckOption(Localization.getString("AGraph.Normalize"));
 		parent.removeCheckOption(Localization.getString("AGraph.GridLines"));

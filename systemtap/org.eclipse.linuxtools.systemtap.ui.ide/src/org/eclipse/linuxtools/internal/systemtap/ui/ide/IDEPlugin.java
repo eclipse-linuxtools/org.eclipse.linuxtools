@@ -14,11 +14,11 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -30,7 +30,6 @@ import org.osgi.framework.BundleContext;
  * @see org.eclipse.ui.plugin.AbstractUIPlugin
  * @author Ryan Morse
  */
-@SuppressWarnings("deprecation")
 public class IDEPlugin extends AbstractUIPlugin {
 	private IWorkbenchListener workbenchListener;
 	private static IDEPlugin plugin;
@@ -87,7 +86,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 	 * Create an uri to be used to connect to the remote machine
 	 */
 	public URI createRemoteUri(String path) {
-		Preferences p = ConsoleLogPlugin.getDefault().getPluginPreferences();
+		IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
 		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
 		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
 		if (path == null)

@@ -28,7 +28,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
 
-@SuppressWarnings("deprecation")
 public class ScriptDetails extends Dialog {
 	private Text dirText;
 	private Text scriptText;
@@ -72,7 +71,7 @@ public class ScriptDetails extends Dialog {
 		data.horizontalAlignment = SWT.FILL;
 		dirText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		dirText.setLayoutData(data);
-		dirText.setText(DashboardPlugin.getDefault().getPluginPreferences().getString(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR));
+		dirText.setText(DashboardPlugin.getDefault().getPreferenceStore().getString(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR));
 		
 		data = new GridData();
 		data.grabExcessHorizontalSpace = false;

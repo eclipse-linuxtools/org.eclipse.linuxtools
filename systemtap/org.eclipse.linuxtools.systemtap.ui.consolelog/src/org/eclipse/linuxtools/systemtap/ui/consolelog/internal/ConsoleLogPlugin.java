@@ -33,10 +33,8 @@ public class ConsoleLogPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called upon plug-in activation
 	 */
-	@SuppressWarnings("deprecation")
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		this.internalInitializeDefaultPluginPreferences();
 	}
 
 	/**

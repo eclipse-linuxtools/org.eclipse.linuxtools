@@ -15,7 +15,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.SelectionEvent;
 
 
-@SuppressWarnings("deprecation")
 public class SCPDetails extends Dialog {
 	private Text userText;
 	private Text passwordText;
@@ -51,7 +50,7 @@ public class SCPDetails extends Dialog {
 		data.horizontalAlignment = SWT.FILL;
 		userText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		userText.setLayoutData(data);
-		userText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_USER));
+		userText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER));
 		
 		data = new GridData();
 		data.grabExcessHorizontalSpace = false;
@@ -66,7 +65,7 @@ public class SCPDetails extends Dialog {
 		passwordText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		passwordText.setEchoChar('*');
 		passwordText.setLayoutData(data);
-		passwordText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
+		passwordText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
 		
 		
 		data = new GridData();

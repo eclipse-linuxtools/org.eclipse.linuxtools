@@ -45,7 +45,6 @@ import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
  * and send the output to both the <code>ScriptConsole</code> window and a <code>DataSet</code>.
  * @author Ryan Morse
  */
-@SuppressWarnings("deprecation")
 public class RunScriptChartAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
 	public RunScriptChartAction() {
 		super();
@@ -68,7 +67,7 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
-		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+		if(ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
 			return;
 	

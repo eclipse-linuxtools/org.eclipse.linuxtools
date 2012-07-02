@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
@@ -55,7 +55,6 @@ import org.eclipse.ui.ide.ResourceUtil;
  * @author Ryan Morse
  */
 
-@SuppressWarnings("deprecation")
 public class RunScriptAction extends Action implements IWorkbenchWindowActionDelegate {
 	public RunScriptAction() {
 		super();
@@ -83,7 +82,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
-		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+		if(ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
 			return;
 
@@ -202,8 +201,8 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	
 	protected void getImportedTapsets(ArrayList<String> cmdList) {
-		Preferences pref = IDEPlugin.getDefault().getPluginPreferences();
-		String[] tapsets = pref.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
+		IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
+		String[] tapsets = preferenceStore.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
 		//Get all imported tapsets
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
