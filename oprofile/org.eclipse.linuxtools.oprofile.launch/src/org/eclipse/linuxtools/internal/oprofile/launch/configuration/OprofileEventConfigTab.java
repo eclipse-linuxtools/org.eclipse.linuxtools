@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
@@ -104,22 +105,26 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	private void createCounterTabs(Composite top){
 			//tabs for each of the counters
 		counters = OprofileCounter.getCounters(null);
-			TabItem[] counterTabs = new TabItem[counters.length];
-			counterSubTabs = new CounterSubTab[counters.length];
+		TabItem[] counterTabs = new TabItem[counters.length];
+		counterSubTabs = new CounterSubTab[counters.length];
+		
+		TabFolder tabFolder = new TabFolder(top, SWT.NONE);
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+
+		for (int i = 0; i < counters.length; i++) {
+			Composite c = new Composite(tabFolder, SWT.NONE);
+			CounterSubTab currentTab = new CounterSubTab(c, counters[i]);
+			counterSubTabs[i] = currentTab;
 			
-			TabFolder tabFolder = new TabFolder(top, SWT.NONE);
-			tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-	
-	
-			for (int i = 0; i < counters.length; i++) {
-				Composite c = new Composite(tabFolder, SWT.NONE);
-				CounterSubTab currentTab = new CounterSubTab(c, counters[i]);
-				counterSubTabs[i] = currentTab;
-				
-				counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
-				counterTabs[i].setControl(c);
-				counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
-			}
+			counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
+			counterTabs[i].setControl(c);
+			counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
+		}
+		
+		for (int i = 0; i < counters.length; i++) {
+			counterSubTabs[i].createEventsFilter();
+		}	
 		getTabFolderComposite();
 	}
 
@@ -272,6 +277,13 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 					for (int i = 0; i < counters.length; i++) {
 						counters[i] = new OprofileCounter(i);
 						counters[i].loadConfiguration(config);
+
+						for (CounterSubTab counterSubTab : counterSubTabs){
+							if(counterSubTab.enabledCheck.getSelection() && counterSubTab.eventList.getList().getSelectionIndex() == -1){
+								valid = false;
+							}
+						}
+
 						if (counters[i].getEnabled()) {
 							++numEnabledEvents;
 	
@@ -485,6 +497,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		private Text eventDescText;
 		private UnitMaskViewer unitMaskViewer;
 		private ListViewer eventList;
+		private Text eventFilterText;
 		private OprofileCounter counter;
 		
 		private ScrolledComposite scrolledTop;
@@ -608,6 +621,19 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 * @param parent composite these widgets will be created in
 		 */
 		private void createLeftCell(Composite parent) {
+			// Text box used to filter the event list
+			eventFilterText = new Text(parent, SWT.BORDER | SWT.SINGLE | SWT.ICON_CANCEL | SWT.SEARCH);
+			eventFilterText.setMessage(OprofileLaunchMessages.getString("tab.event.eventfilter.message"));
+			GridData eventFilterLayout = new GridData();
+			eventFilterLayout.horizontalAlignment = SWT.FILL;
+			eventFilterLayout.grabExcessHorizontalSpace = true;
+			eventFilterText.setLayoutData(eventFilterLayout);
+			eventFilterText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					eventList.refresh(false);
+				}
+			});
+
 			eventList = new ListViewer(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 			eventList.getList().setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
 
@@ -690,6 +716,41 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		/**
+		 * Creates a text filter for the events list widget 
+		 */
+		private void createEventsFilter(){
+			// Event Filter
+			ViewerFilter eventFilter = new ViewerFilter() {
+
+				@Override
+				public Object[] filter(Viewer viewer, Object parent, Object[] elements) {
+					Object[] filteredElements = super.filter(viewer,parent,elements);
+					handleEventListSelectionChange();
+					return filteredElements;
+				}
+
+				@Override
+				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					String[] filterTerms = eventFilterText.getText().trim().toLowerCase().split(" ");
+					String eventName = ((OpEvent)element).getText().toLowerCase();
+					String eventDescription = ((OpEvent)element).getTextDescription().toLowerCase();
+
+					boolean contains = true;
+
+					for (String filterTerm : filterTerms) {
+						if(contains){
+							contains = eventName.contains(filterTerm) || eventDescription.contains(filterTerm);
+						}
+					}
+					return contains;
+				}
+			};
+			if(eventList != null){
+				eventList.addFilter(eventFilter);
+			}
+		}
+		
+		/**
 		 * Initializes the tab on first creation.
 		 * @param config default configuration for the counter and the associated widgets
 		 */
@@ -758,6 +819,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			eventDescText.setEnabled(state);
 			unitMaskViewer.setEnabled(state);
 			eventList.getList().setEnabled(state);
+			eventFilterText.setEnabled(state);
 		}
 
 		/**
@@ -777,6 +839,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				int min = counter.getEvent().getMinCount();
 				if (counter.getCount() < min) {
 					setErrorMessage(getMinCountErrorMessage(min));
+				}
+			} else {
+				counter.setEvent(null);
+				eventDescText.setText("");
+				if(unitMaskViewer != null){
+					unitMaskViewer.displayEvent(null);
 				}
 			}
 
@@ -906,13 +974,18 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 * @param oe the event
 			 */
 			public void displayEvent(OpEvent oe) {
-				OpUnitMask mask = oe.getUnitMask();
-				int totalMasks = mask.getNumMasks();
-				
 				if (maskListComp != null) {
 					maskListComp.dispose();
 				}
 				
+				if(oe == null){
+					return;
+				}
+
+
+				OpUnitMask mask = oe.getUnitMask();
+				int totalMasks = mask.getNumMasks();
+
 				Composite newMaskComp = new Composite(top, SWT.NONE);
 				newMaskComp.setLayout(new GridLayout());
 				newMaskComp.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
