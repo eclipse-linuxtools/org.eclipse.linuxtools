@@ -14,11 +14,11 @@
   <parent>
     <artifactId>linuxtools-valgrind-parent</artifactId>
     <groupId>org.eclipse.linuxtools.valgrind</groupId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind.launch.remote</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.11.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools Valgrind Remote Launch Plug-in</name>
@@ -37,14 +37,6 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

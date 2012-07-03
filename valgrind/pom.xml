@@ -65,7 +65,7 @@
     <module>org.eclipse.linuxtools.valgrind.helgrind</module>
     <module>org.eclipse.linuxtools.valgrind.helgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.launch</module>
-    <!--<module>org.eclipse.linuxtools.valgrind.launch.remote</module>-->
+    <module>org.eclipse.linuxtools.valgrind.launch.remote</module>
     <module>org.eclipse.linuxtools.valgrind.massif</module>
     <module>org.eclipse.linuxtools.valgrind.massif.tests</module>
     <module>org.eclipse.linuxtools.valgrind.memcheck</module>
