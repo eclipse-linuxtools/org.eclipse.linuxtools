@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.launch;
 
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -62,6 +63,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
 					null,
 					getLaunchManager().generateLaunchConfigurationName(
 							projectName));
+			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
 			config = wc;
 
 		} catch (CoreException e) {
