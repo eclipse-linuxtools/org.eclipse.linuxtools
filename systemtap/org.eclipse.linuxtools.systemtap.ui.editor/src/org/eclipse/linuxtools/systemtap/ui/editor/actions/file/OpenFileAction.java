@@ -19,7 +19,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.RecentFileLog;
-import org.eclipse.linuxtools.systemtap.ui.editor.EditorAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.actions.EditorAction;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.swt.SWT;
