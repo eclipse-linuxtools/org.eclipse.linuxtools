@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.editor.actions;
 
+import org.eclipse.linuxtools.systemtap.ui.editor.EditorAction;
+
 public abstract class ActiveEditorAction extends EditorAction {
 	public ActiveEditorAction() {
 		super();
