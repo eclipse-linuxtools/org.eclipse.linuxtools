@@ -61,6 +61,18 @@
    <feature url="features/org.eclipse.linuxtools.perf_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.profiling.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling.remote" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.valgrind.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.remote" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.oprofile.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.remote.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.perf.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <!-- Source features -->
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
@@ -117,6 +129,18 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.perf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.profiling.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling.remote.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.valgrind.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.remote.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.oprofile.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.remote.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.perf.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <!-- Orbit Dependencies -->
