@@ -62,6 +62,7 @@
     <module>org.eclipse.linuxtools.oprofile.core.tests</module>
     <module>org.eclipse.linuxtools.oprofile.doc</module>
     <module>org.eclipse.linuxtools.oprofile-feature</module>
+    <module>org.eclipse.linuxtools.oprofile.remote-feature</module>
     <module>org.eclipse.linuxtools.oprofile.launch</module>
     <module>org.eclipse.linuxtools.oprofile.remote.launch</module>
     <module>org.eclipse.linuxtools.oprofile.launch.tests</module>
