@@ -83,6 +83,14 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="priority" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Positive integer stating priorty over launch provider&apos;s of the same type.
+Invalid values will be assigned the lowest priority to the extension.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

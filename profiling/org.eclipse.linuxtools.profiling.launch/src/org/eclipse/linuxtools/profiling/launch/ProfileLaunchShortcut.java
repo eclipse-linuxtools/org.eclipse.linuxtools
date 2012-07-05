@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.profiling.launch;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.cdt.core.model.CModelException;
@@ -89,24 +90,64 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		IExtensionPoint extPoint = Platform.getExtensionRegistry()
 				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, "launchProvider"); //$NON-NLS-1$
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
+		ArrayList<IConfigurationElement> configList = new ArrayList<IConfigurationElement>();
+
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
 				String currentType = config.getAttribute("type"); //$NON-NLS-1$
 				String shortcut = config.getAttribute("shortcut"); //$NON-NLS-1$
-				if (currentType != null &&  shortcut != null
+				if (currentType != null && shortcut != null
 						&& currentType.equals(type)) {
-					try {
-						Object obj = config.createExecutableExtension("shortcut"); //$NON-NLS-1$
-						if (obj instanceof ProfileLaunchShortcut) {
-							return (ProfileLaunchShortcut) obj;
+
+					String priority = config.getAttribute("priority");
+					if (priority != null) {
+						try {
+							Integer.parseInt(priority);
+							configList.add(config);
+						} catch (NumberFormatException e) {
+							// continue
 						}
-					} catch (CoreException e) {
-						// continue, perhaps another configuration will succeed
 					}
 				}
 			}
 		}
 
+		Collections.sort(configList, new Comparator<IConfigurationElement>() {
+			public int compare(IConfigurationElement c1,
+					IConfigurationElement c2) {
+				int p1, p2;
+				// If priority is not an int or is < 0, corresponding config has
+				// lowest priority.
+				try {
+					p1 = Integer.parseInt(c1.getAttribute("priority"));
+					if (p1 <= 0) {
+						return 1;
+					}
+				} catch (NumberFormatException e) {
+					return 1;
+				}
+				try {
+					p2 = Integer.parseInt(c2.getAttribute("priority"));
+					if (p2 <= 0) {
+						return -1;
+					}
+				} catch (NumberFormatException e) {
+					return -1;
+				}
+				return p1 < p2 ? -1 : 1;
+			}
+		});
+
+		for (IConfigurationElement config : configList) {
+			try {
+				Object obj = config.createExecutableExtension("shortcut"); //$NON-NLS-1$
+				if (obj instanceof ProfileLaunchShortcut) {
+					return (ProfileLaunchShortcut) obj;
+				}
+			} catch (CoreException e) {
+				// continue, other configuration may succeed
+			}
+		}
 		return null;
 	}
 
