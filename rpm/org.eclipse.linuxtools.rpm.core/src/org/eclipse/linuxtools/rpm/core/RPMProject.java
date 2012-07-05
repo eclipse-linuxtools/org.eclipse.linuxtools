@@ -152,6 +152,12 @@ public class RPMProject {
 		return result;
 	}
 
+	/**
+	 * Builds binary rpm.
+	 * @param out The stream to right command output to.
+	 * @return The result of the command.
+	 * @throws CoreException 
+	 */
 	public IStatus buildBinaryRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		IStatus result = rpmbuild.buildBinary(getSpecFile(), out);
