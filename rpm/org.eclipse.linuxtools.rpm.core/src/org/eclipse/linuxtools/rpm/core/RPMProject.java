@@ -169,6 +169,12 @@ public class RPMProject {
 		return result;
 	}
 
+	/**
+	 * Builds source rpm.
+	 * @param out The stream to right command output to.
+	 * @return The result of the command.
+	 * @throws CoreException 
+	 */
 	public IStatus buildSourceRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		IStatus result = rpmbuild.buildSource(getSpecFile(), out);
