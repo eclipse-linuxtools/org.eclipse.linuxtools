@@ -37,7 +37,6 @@
       <import plugin="org.eclipse.linuxtools.valgrind.launch"/>
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
-      <import plugin="org.eclipse.tm.tcf.core"/>
       <import feature="org.eclipse.linuxtools.valgrind" version="0.8.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.linuxtools.profiling.remote" version="0.8.0" match="greaterOrEqual"/>
    </requires>
