@@ -45,8 +45,6 @@ import org.eclipse.ui.console.MessageConsoleStream;
  */
 public class RPMBuild {
 
-	private static final String DEFINE = "--define"; //$NON-NLS-1$
-
 	private List<String> macroDefines = new ArrayList<String>();
 
 	private String rpmBuildCmd;
