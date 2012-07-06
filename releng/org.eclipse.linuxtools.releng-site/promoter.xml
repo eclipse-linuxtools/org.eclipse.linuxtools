@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+e?xml version="1.0" encoding="UTF-8"?>
 <!--
        Copyright (c) 2011 Obeo.
   All rights reserved. This program and the accompanying materials
@@ -23,7 +23,7 @@
 	-->
 
 	<property name="downloads.project.root" value="/linuxtools" />
-	<property name="repo.name" value="updates-nightly" />
+	<property name="repo.name" value="update-1.1" />
 	<property name="build.root" value="${project.build.directory}" />
 	<antversion property="antversion" />
 
