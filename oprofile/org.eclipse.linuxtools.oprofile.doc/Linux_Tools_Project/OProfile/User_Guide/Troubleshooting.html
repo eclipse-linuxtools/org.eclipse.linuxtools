@@ -35,7 +35,8 @@
 		</p>
 		<h2 id="Install_Script_Errors">Install Script Errors</h2>
 		<p>This section describes different errors that could occur from running the install scripts (i.e. <code>
-			<i>install.sh</i></code> or <code>
+			<i>install.sh</i></code>, <code>
+			<i>install-consolehelper.sh</i></code> or <code>
 			<i>install-noconsolehelper.sh</i></code>) 
 		</p>
 		<h3 id="Error:_script_must_be_run_as_the_root_user">Error: script must be run as the root user</h3>
@@ -59,16 +60,27 @@
 			<i>/usr/bin</i></code> directory. Of course, if the binaries do not exist on your system, then install the <code>
 			<i>oprofile</i></code> package.
 		</p>
+		<h3 id="Error:_.2Fusr.2Fbin.2Fpkexec_does_not_exist">Error: /usr/bin/pkexec does not exist</h3>
+		<p>You ran the <code>
+			<i>install.sh</i></code> script, but <code>pkexec</code> which is provided by PolicyKit was not installed on your system.
+			As described in 
+			<a href="Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</a>, if <code>PolicyKit</code> is not installed, then you can still choose from the other installation scripts : <code>
+			<i>install-consolehelper.sh</i></code> or <code>
+			<i>install-noconsolehelper.sh</i></code>.
+		</p>
+		<p>Solution: Run the <code>
+			<i>install-consolehelper.sh</i></code> script instead.
+		</p>
 		<h3 id="Error:_.2Fusr.2Fbin.2Fconsolehelper_does_not_exist.2C_run_install-noconsolehelper.sh_instead">Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead</h3>
 		<p>You ran the <code>
-			<i>install.sh</i></code> script, but <code>consolehelper</code> was not installed on your system.
+			<i>install-consolehelper.sh</i></code> script, but <code>consolehelper</code> was not installed on your system.
 			As described in 
 			<a href="Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</a>, if <code>consolehelper</code> is not installed, then you will need to use a root authentication mode that uses the <code>sudo</code> mechanism.
 		</p>
 		<p>Solution: Run the <code>
 			<i>install-noconsolehelper.sh</i></code> script instead.
 		</p>
-		<h3 id="Error:_cannot_create_opcontrol_wrapper_in_.3Cdirectory.3E">Error: cannot create opcontrol wrapper in &lt;directory&gt;</h3>
+		<h3 id="Error:_cannot_create_opcontrol_wrapper_in">Error: cannot create opcontrol wrapper in &lt;directory&gt;</h3>
 		<p>The <code>ln</code> command reports that the symlink could not be created. This can occur if the <code>
 			<i>natives/linux/scripts</i></code> subdirectory is located on an NFS mount; the NFS server will not allow the local root user to create files in the directory.
 		</p>
@@ -84,7 +96,7 @@ if [ $? -ne 0 ]; then
 fi
 </pre>
 		<p>The <code>
-			<i>install.sh</i></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
+			<i>install-consolehelper.sh</i></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
 		</p>
 		<h3 id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing_.28Deprecated.29">Error: cannot find opxml binary, required plugin missing (Deprecated)</h3>
 		<p>
