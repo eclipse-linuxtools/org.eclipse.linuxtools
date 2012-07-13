@@ -26,14 +26,19 @@
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/OProfile-View.html#View_Menu" label="View Menu"></topic>
 			</topic>
 		</topic>
+		<topic href="Linux_Tools_Project/OProfile/User_Guide/Remote-OProfile.html" label="Remote OProfile">
+			<topic href="Linux_Tools_Project/OProfile/User_Guide/Remote-OProfile.html#Set-up" label="Set-up"></topic>
+			<topic href="Linux_Tools_Project/OProfile/User_Guide/Remote-OProfile.html#Launching_A_Remote_Profile" label="Launching A Remote Profile"></topic>
+		</topic>
 		<topic href="Linux_Tools_Project/OProfile/User_Guide/Example-Project.html" label="Example Project"></topic>
 		<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html" label="Troubleshooting">
 			<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Install_Script_Errors" label="Install Script Errors">
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_script_must_be_run_as_the_root_user" label="Error: script must be run as the root user"></topic>
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_script_must_be_run_with_pwd_in_script_dir" label="Error: script must be run with pwd in script dir"></topic>
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_required_binaries_do_not_exist.2C_OProfile_not_installed.3F" label="Error: required binaries do not exist, OProfile not installed?"></topic>
+				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_.2Fusr.2Fbin.2Fpkexec_does_not_exist" label="Error: /usr/bin/pkexec does not exist"></topic>
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_.2Fusr.2Fbin.2Fconsolehelper_does_not_exist.2C_run_install-noconsolehelper.sh_instead" label="Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead"></topic>
-				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_cannot_create_opcontrol_wrapper_in_.3Cdirectory.3E" label="Error: cannot create opcontrol wrapper in &lt;directory&quot;"></topic>
+				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_cannot_create_opcontrol_wrapper_in" label="Error: cannot create opcontrol wrapper in "></topic>
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#Error:_cannot_find_opxml_binary.2C_required_plugin_missing_.28Deprecated.29" label="Error: cannot find opxml binary, required plugin missing (Deprecated)"></topic>
 			</topic>
 			<topic href="Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html#No_Samples_From_A_Profile" label="No Samples From A Profile"></topic>

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OProfile User Guide - Remote OProfile</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Remote OProfile</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="OProfile-View.html" title="OProfile View">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Example-Project.html" title="Example Project">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">OProfile View</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Example Project</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Remote_OProfile">Remote OProfile</h1>
+		<p>The OProfile plug-in allows profiling a project stored in a remote machine. This can be particularly useful when developing an application for a different architecture. </p>
+		<h2 id="Set-up">Set-up</h2>
+		<p>The remote OProfile plug-in doesn't have installation scripts, but requires some setup in the remote machine. First, the remote machine's user must be able to run OProfile as root. For this, log in the remote machine as root and edit the /etc/sudoers file to add the following line: </p>
+		<pre>&lt;user&gt; ALL=(ALL) NOPASSWD: &lt;linux-tools-path&gt;/opcontrol
+</pre>
+		<p>Where: </p>
+		<ul>
+			<li>
+				<b>&lt;user&gt;</b> - Remote machine's user 
+			</li>
+			<li>
+				<b>&lt;linux-tools-path&gt;</b> - Path for linux tools set for the project. The default is /usr/bin. This path can be modified by right-clicking the remote project, clicking in "Properties" and choosing the "Linux Tools Path" tab.
+			</li>
+		</ul>
+		<p>Also make sure that following line is not present or commented out: </p>
+		<pre>Defaults       requiretty
+</pre>
+		<p>This is necessary for running a remote command using sudo. </p>
+		<h2 id="Launching_A_Remote_Profile">Launching A Remote Profile</h2>
+		<p>To run OProfile remotely, right-click the project and navigate to "Profile As", then to "Profile Configurations". (Note: there's no One-click launch for remote OProfile). In the new window, double-click the Profile with OProfile (remote) profile configuration. </p>
+		<p>In the main tab, choose the binary that will be profiled by clicking the "Browse" button under "C/C++ executable".</p>
+		<p>
+			<img border="0" src="images/Screenshot-remote-oprofile.png"/> 
+		</p>
+		<p>The same 
+			<a href="Profiling-Configuration.html#Event_Configuration">Event Configuration</a> Event Configuration options for regular OProfile apply for remote OProfile as well. 
+		</p>
+		<p>After configuring the profile, click the Profile button to launch the profile. The same 
+			<a href="OProfile-View.html#OProfile_View">OProfile View</a> as the local one will show the results.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="OProfile-View.html" title="OProfile View">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="OProfile User Guide">
+						<img alt="OProfile User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Example-Project.html" title="Example Project">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">OProfile View</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Example Project</td>
+			</tr>
+		</table>
+	</body>
+</html>
