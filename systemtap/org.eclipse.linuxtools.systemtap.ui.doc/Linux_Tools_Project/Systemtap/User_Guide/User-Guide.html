@@ -26,7 +26,7 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Overview">Overview</h1>
-		<p>Welcome to the SystemTapGUI Help pages. This section is intended to provide users with information and links about the SystemTap scripting language itself, in addition to a brief introduction to SystemTap GUI's structure for new users and a brief explanation of SystemTap.</p>
+		<p>Welcome to the SystemTap GUI Help pages. This section is intended to provide users with information and links about the SystemTap scripting language itself, in addition to a brief introduction to SystemTap GUI's structure for new users and a brief explanation of SystemTap.</p>
 		<h2 id="SystemTap_GUI.27s_Plugin_Design">SystemTap GUI's Plugin Design</h2>
 		<p>SystemTap GUI was built with a modular goal in mind, namely, to provide the application as a series of plugins so that users may obtain just the ones they need without having to use a heavy-weight application should if they didn't need to. The most common example of this is to ship the Dashboard plugin independently, allowing non-SystemTap savvy users the ability to execute modules without having to write any scripts. The application in its complete state includes three perspective, each with a specific goal:</p>
 		<ul>
@@ -46,11 +46,9 @@
 		<p>SystemTap provides a simple command line interface and scripting language for writing instrumentation for a live running kernel. The internal tapset library as well as the published samples can be used to aid reuse and abstraction.</p>
 		<p>Current project members include Red Hat, IBM, Intel, and Hitachi.</p>
 		<h2 id="Configuration_Tutorial">Configuration Tutorial</h2>
-		<p>This tutorial is written to guide a new SystemTap GUI user through some basic post-installation setup in
+		<p>This tutorial is written to guide a new SystemTap user through some basic post-installation setup in
 			order to get the most out of the application.</p>
-		<h3 id="Installation">Installation</h3>
-		<p>This section details the steps required for the installation of Systemtap GUI on the user's machine.</p>
-		<h4 id="Requirements">Requirements</h4>
+		<h3 id="Requirements">Requirements</h3>
 		<p>
 			<b>Hardware Requirements:</b>
 		</p>
@@ -69,37 +67,9 @@
 				</ul>
 			</li>
 		</ul>
-		<p>The Gui is a client-server application and the server and client can be installed seperately. The client is an eclipse plugin and requires eclipse to be installed. It provides an IDE to write scripts and a visualizer to view the output in graphical form.</p>
-		<pre>The server (stapgui-server) provides stdout/stderr data collection and process management services for processes run on a remote system. The  server executes the SystemTap script, collects all output to stderr and stdout from that process, then funnels it via a socket to the client.
-</pre>
-		<p>The client and server can be installed on machines with different architectures.This allows users to monitor remote machines. You may also download and build the source yourself.</p>
-		<p>
-			<b>NOTE: The client and server are seperate packages and need to be installed independently.</b> You are viewing this help on the eclipse based client.
-		</p>
-		<p>NOTE: Installation assumes you already have both Eclipse and SystemTap installed.</p>
-		<h4 id="Server">Server</h4>
-		<ul>
-			<li>Install the systemtapguiserver rpm.</li>
-		</ul>
-		<pre>    Eg on Fedora run the command:
-     yum install systemtapguiserver
-</pre>
-		<ul>
-			<li>Run the command 'stapgui-server'. You will get a message saying "Listening for Connections..." in a minute or so which shows that the server is up and running.</li>
-		</ul>
-		<h4 id="Client">Client</h4>
-		<ul>
-			<li>Install the  eclipse-systemtapgui rpm.</li>
-		</ul>
-		<pre>    Eg on Fedora run the command:
-     yum install eclipse-systemtapgui
-</pre>
-		<ul>
-			<li>Launch eclipse and open the SystemTap IDE perspective to start writing scripts.</li>
-		</ul>
 		<h3 id="Kernel_Source_Location">Kernel Source Location</h3>
 		<p>In order to use the kernel source browser you'll need to point it to the kernel source initially. Do this by either selecting the Kernel Source Browser in the browser pane or by going to 
-			<b><u>W</u>indow-&gt;<u>P</u>references</b>, then going to the SystemTap-&gt;IDE-&gt;Path tab and setting the location there. This configuration detail is relevent to the IDE Perspective only.
+			<b><u>W</u>indow-&gt;<u>P</u>references</b>, then going to the SystemTap-&gt;IDE-&gt;'Kernel Source Path' tab and setting the location there. This configuration detail is relevent to the IDE Perspective only.
 		</p>
 		<h3 id="Tutorials">Tutorials</h3>
 		<p>If you haven't already, you will want to take the IDE and Graphing tutorials. You can find them in the Getting Started section of each perspective's help pages. These tutorial provides fundamental knowledge on graphing in SystemTap GUI.</p>
