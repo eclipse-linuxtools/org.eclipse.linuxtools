@@ -36,7 +36,7 @@
 		<p>In this tutorial we will orient you with IDE Perspective and its functions. At this point we assume
 			that you are able to run Systemtap GUI and are unfamiliar with how to procede. If you cannot yet start
 			the application, please refer to our 
-			<a href="User-Guide.html#Installation">Installation help page</a>
+			<a href="#Installation">Installation help page</a>
 
 			<b>NOTE:</b> If this is the first time opening the IDE Perspective it will take a while to load as it has to 
 			parse the tapsets.
@@ -86,7 +86,7 @@
 </pre>
 		<p> </p>
 		<p>Now to demonstrate the functionality of the Probe Alias browser we will have you complete the read probe yourself. Start by opening the syscall folder in the Probe Alias browser. If you do not have any content in the browser you are experiencing a problem with Systemtap installation and should refer to our 
-			<a href="User-Guide.html#Installation">Installation help page</a>. Ensure your cursor is located at the end of the file. Now scroll down and double click the read probe alias. Systemtap GUI will insert the skeleton probe at the point at which your cursor is at, and should look similar to the following: 
+			<a href="#Installation">Installation help page</a>. Ensure your cursor is located at the end of the file. Now scroll down and double click the read probe alias. Systemtap GUI will insert the skeleton probe at the point at which your cursor is at, and should look similar to the following: 
 		</p>
 		<pre>probe syscall.read
 {
@@ -730,7 +730,9 @@
 		<p>There is also a description of the examples - 
 			<a href="http://sourceware.org/systemtap/examples/demo_script.txt">http://sourceware.org/systemtap/examples/demo_script.txt</a>
 		</p>
-		<h4 id="top.stp_-_Prints_the_top_20_system_calls_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Ftop.stp.29">top.stp - Prints the top 20 system calls (http://sourceware.org/systemtap/examples/top.stp)</h4>
+		<h4 id="top.stp_-_Prints_the_top_20_system_calls_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Ftop.stp.29">top.stp - Prints the top 20 system calls (
+			<a href="http://sourceware.org/systemtap/examples/top.stp">http://sourceware.org/systemtap/examples/top.stp</a>)
+		</h4>
 		<pre>
 #!/usr/bin/env stap 
 #
@@ -759,7 +761,9 @@ probe kernel.function("sys_*") {
 probe timer.ms(5000) {
 	print_top ()
 </pre>
-		<h4 id="prof.stp_-_Simple_profiling_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fprof.stp.29">prof.stp - Simple profiling (http://sourceware.org/systemtap/examples/prof.stp)</h4>
+		<h4 id="prof.stp_-_Simple_profiling_.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fprof.stp.29">prof.stp - Simple profiling (
+			<a href="http://sourceware.org/systemtap/examples/prof.stp">http://sourceware.org/systemtap/examples/prof.stp</a>)
+		</h4>
 		<pre>
 #!/usr/bin/env stap
 
@@ -797,7 +801,9 @@ probe end {
 
 global calltime, ttime
 </pre>
-		<h4 id="keyhack.stp_-_Modifying_variables_in_the_kernel._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkeyhack.stp.29">keyhack.stp - Modifying variables in the kernel. (http://sourceware.org/systemtap/examples/keyhack.stp)</h4>
+		<h4 id="keyhack.stp_-_Modifying_variables_in_the_kernel._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkeyhack.stp.29">keyhack.stp - Modifying variables in the kernel. (
+			<a href="http://sourceware.org/systemtap/examples/keyhack.stp">http://sourceware.org/systemtap/examples/keyhack.stp</a>)
+		</h4>
 		<pre>
 #! /usr/bin/env stap
 
@@ -815,7 +821,9 @@ probe end {
 	printf("\nDONE\n")
 }
 </pre>
-		<h4 id="kmalloc.stp_-_Statistics_example._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc.stp.29">kmalloc.stp - Statistics example. (http://sourceware.org/systemtap/examples/kmalloc.stp)</h4>
+		<h4 id="kmalloc.stp_-_Statistics_example._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc.stp.29">kmalloc.stp - Statistics example. (
+			<a href="http://sourceware.org/systemtap/examples/kmalloc.stp">http://sourceware.org/systemtap/examples/kmalloc.stp</a>)
+		</h4>
 		<pre>
 #! /usr/bin/env stap
 
@@ -840,7 +848,9 @@ probe end {
 	print(@hist_log(kmalloc))
 }
 </pre>
-		<h4 id="kmalloc2.stp_-_Example_using_arrays_of_statistics._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc2.stp.29">kmalloc2.stp - Example using arrays of statistics. (http://sourceware.org/systemtap/examples/kmalloc2.stp)</h4>
+		<h4 id="kmalloc2.stp_-_Example_using_arrays_of_statistics._.28http:.2F.2Fsourceware.org.2Fsystemtap.2Fexamples.2Fkmalloc2.stp.29">kmalloc2.stp - Example using arrays of statistics. (
+			<a href="http://sourceware.org/systemtap/examples/kmalloc2.stp">http://sourceware.org/systemtap/examples/kmalloc2.stp</a>)
+		</h4>
 		<pre>
 #! /usr/bin/env stap
 

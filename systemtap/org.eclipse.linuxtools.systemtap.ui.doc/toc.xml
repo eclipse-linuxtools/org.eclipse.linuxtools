@@ -5,11 +5,7 @@
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#SystemTap_GUI.27s_Plugin_Design" label="SystemTap GUI's Plugin Design"></topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Systemtap" label="Systemtap"></topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Configuration_Tutorial" label="Configuration Tutorial">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Installation" label="Installation">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Requirements" label="Requirements"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Server" label="Server"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Client" label="Client"></topic>
-				</topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Requirements" label="Requirements"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Kernel_Source_Location" label="Kernel Source Location"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Tutorials" label="Tutorials"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Preferences_.28Optional.29" label="Preferences (Optional)"></topic>
@@ -98,6 +94,10 @@
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Run_2" label="Run"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Window_2" label="Window"></topic>
 				</topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Toolbars_2" label="Toolbars">
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Action_Bar_2" label="Action Bar"></topic>
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Perspective_Selector_2" label="Perspective Selector"></topic>
+				</topic>
 			</topic>
 		</topic>
 		<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html" label="SystemTap Dashboard">
@@ -132,9 +132,9 @@
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Run_3" label="Run"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Window_3" label="Window"></topic>
 				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Toolbars_2" label="Toolbars">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Action_Bar_2" label="Action Bar"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Perspective_Selector_2" label="Perspective Selector"></topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Toolbars_3" label="Toolbars">
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Action_Bar_3" label="Action Bar"></topic>
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Perspective_Selector_3" label="Perspective Selector"></topic>
 				</topic>
 			</topic>
 		</topic>
