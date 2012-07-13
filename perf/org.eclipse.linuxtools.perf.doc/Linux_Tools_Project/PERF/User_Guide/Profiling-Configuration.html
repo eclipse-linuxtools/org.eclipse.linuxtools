@@ -33,6 +33,11 @@
 		<p>The Perf plug-in has several options to configure, most of them are mirrors of the configuration options that exists on the binary. For more information about all these options refer to the Perf man pages or 
 			<a href="https://perf.wiki.kernel.org/">https://perf.wiki.kernel.org/</a> .
 		</p>
+		<h2 id="Remote_Profiling">Remote Profiling</h2>
+		<p>It is possible to use RSE or RemoteTools to profile a remote project. In Profile Configurations, after creating a configuration in the Profile with Remote Perf option, it is necessary to search for the project binary. The user can copy the C/C++ executable file from the remote server to the local workstation by selecting the Copy C/C++ executable check box. But the default it to profile the executable file specified in the C/C++ executable field. In this case, you need to browse for the binary. The working directory is automatically set to the underlying project directory, but you can modify it if necessary.</p>
+		<p>
+			<img border="0" src="images/Perf_maintabremote.png"/>
+		</p>
 		<h2 id="Perf_Options_tab">Perf Options tab</h2>
 		<p>This configuration tab contains runtime options for a profiling with Perf, such as loading a kernel image file or hide unsolved symbols. </p>
 		<p>
