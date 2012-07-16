@@ -64,7 +64,6 @@ public class GraphSelectorView extends ViewPart {
 		item = new CTabItem(scriptFolder, SWT.CLOSE);
 		item.setText(title);
 		Composite parent = new Composite(scriptFolder, SWT.NONE);
-		parent.setBackground(new Color(parent.getDisplay(), 0, 0, 255));
 		GraphDisplaySet gds = new GraphDisplaySet(parent, dataSet);
 		displaySets.add(gds);
 		item.setControl(parent);
