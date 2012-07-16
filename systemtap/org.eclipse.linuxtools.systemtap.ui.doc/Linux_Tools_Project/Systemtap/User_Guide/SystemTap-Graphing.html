@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>SystemTap GUI User Guide - SystemTap Graphing</title>
+		<title>SystemTap User Guide - SystemTap Graphing</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
@@ -32,28 +32,25 @@
 		<h1 id="SystemTap_Graphing">SystemTap Graphing</h1>
 		<h2 id="Getting_Started_2">Getting Started</h2>
 		<h3 id="Introduction">Introduction</h3>
-		<p>The Graphing Perspective in the SystemTap GUI is a perspective that is active once a user runs a script with the chart option (
+		<p>The Graphing Perspective in the SystemTap Plug-in is a perspective that is active once a user runs a script with the chart option (
 			<b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>). From this point a 
 			<a href="SystemTap-Graphing.html#DataTable">DataTable </a> is populated with live data as it is parsed from the Console. From the information in the DataTable you can generate the following graphs:
 		</p>
 		<ul>
 			<li>
-				<a href="SystemTap-Graphing.html#Bar_Graph">Bar Graph </a>
-			</li>
-			<li>
-				<a href="SystemTap-Graphing.html#Multi-Bar_Graph">Multi-Bar Graph </a>
+				<a href="SystemTap-Graphing.html#Scatter_Graph">Scatter Graph </a>
 			</li>
 			<li>
 				<a href="SystemTap-Graphing.html#Line_Graph">Line Graph </a>
 			</li>
 			<li>
-				<a href="SystemTap-Graphing.html#Multi-Line_Graph">Multi-Line Graph </a>
+				<a href="SystemTap-Graphing.html#Area_Graph">Area Graph </a>
 			</li>
 			<li>
-				<a href="SystemTap-Graphing.html#Scatter_Graph">Scatter Graph </a>
+				<a href="SystemTap-Graphing.html#Bar_Graph">Bar Graph </a>
 			</li>
 			<li>
-				<a href="SystemTap-Graphing.html#Multi-Scatter_Graph">Multi-Scatter Graph </a>
+				<a href="SystemTap-Graphing.html#Pie_Graph">Pie Graph </a>
 			</li>
 		</ul>
 		<p>These graph types can be used instantiated by using the Graph Wizard once the DataTable is populated. The Graphing Perspective can support multiple graphs from one DataTable. Each are updated and can be viewed by navigating through the tabs shown at the top of each graph.</p>
@@ -148,43 +145,42 @@ probe timer.ms(1000) {
 			</li>
 		</ul>
 		<h3 id="DataGraph_Types">DataGraph Types</h3>
-		<p>Currently there are six graph types built into SystemTap GUI.</p>
+		<p>Currently there are five graph types built into SystemTap Plug-in.</p>
 		<p>These graph types can be used instantiated by using the Graph Wizard once the DataTable is populated. The Graphing Perspective can support multiple graphs from one DataTable. Each are updated and can be viewed by navigating through the tabs shown at the top of each graph.</p>
-		<h4 id="Bar_Graph">Bar Graph</h4>
-		<p>The Bar Graph typically uses bars to show frequencies or values. </p>
-		<p>Creating a Bar Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis. </p>
+		<h4 id="Scatter_Graph">Scatter Graph</h4>
+		<p>A Scatter Graph uses Cartesian coordinates to show the relation of two or more quantitative variables.</p>
+		<p>Creating a Scatter Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
+			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
 		<p>
-			<img border="0" src="images/Bar.png"/>
-		</p>
-		<h4 id="Multi-Bar_Graph">Multi-Bar Graph</h4>
-		<p>The Multi-Bar Graph is useful for illustrating compounding series data against a fixed interval, such as time. </p>
-		<p>Creating a Multi-Bar Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
-		<p>
-			<img border="0" src="images/Multibar.png"/>
+			<img border="0" src="images/Scatter.png"/>
 		</p>
 		<h4 id="Line_Graph">Line Graph</h4>
 		<p>The Line Graph is traditionally ideal for horozontally depicting non-cumulative data over, say, time.</p>
 		<p>Creating a Line Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
-
+			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
+		<p>
 			<img border="0" src="images/Line.png"/>
 		</p>
-		<h4 id="Multi-Line_Graph">Multi-Line Graph</h4>
-		<p>A Multi-Line Graph is useful for contrasting multiple series of data on a fixed interval, such as time.</p>
-		<p>Creating a Multi-Line Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
+		<h4 id="Area_Graph">Area Graph</h4>
+		<p>The Area Graph is traditionally ideal for horozontally depicting non-cumulative data over, say, time.</p>
+		<p>Creating an Area Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
+			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
 		<p>
-			<img border="0" src="images/Multiline.png"/>
+			<img border="0" src="images/Area.png"/>
 		</p>
-		<h4 id="Scatter_Graph">Scatter Graph</h4>
-		<p>A Scatter Graph uses Cartesian coordinates to show the relation of two or more quantitative variables.</p>
-		<p>Creating a Scatter Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.</p>
+		<h4 id="Bar_Graph">Bar Graph</h4>
+		<p>The Bar Graph typically uses bars to show frequencies or values. </p>
+		<p>Creating a Bar Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis. 
+			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
 		<p>
-			<img border="0" src="images/Scatter.png"/>
+			<img border="0" src="images/Bar.png"/>
 		</p>
-		<h4 id="Multi-Scatter_Graph">Multi-Scatter Graph</h4>
-		<p>The Multi-Scatter Graph is useful for comparing two sets of series data with multiple Y values on the same X value.</p>
-		<p>Creating a Multi-Scatter Graph will prompt the user for four values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the first Y Series; here you select one of the series of data you want to plot along the Y Axis. The fourth option is the second Y series; here you select the other series of data you want to plot along the Y Axis.</p>
+		<h4 id="Pie_Graph">Pie Graph</h4>
+		<p>The Pie Graph typically uses bars to show percentages. </p>
+		<p>Creating a Bar Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis. 
+			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
 		<p>
-			<img border="0" src="images/Multiscatter.png"/>
+			<img border="0" src="images/Pie.png"/>
 		</p>
 		<h3 id="Filters">Filters</h3>
 		<p>Filters are screens that you can set on your DataTable to limit the quantity of samples you wish to work with. Filters are very often used in restricting the sheer amount of information available to make data tables and graphs more substantial to people.</p>
@@ -470,8 +466,8 @@ probe timer.ms(1000) {
 					</a>
 				</td>
 				<td style="width: 60%" align="center">
-					<a href="User-Guide.html" title="SystemTap GUI User Guide">
-						<img alt="SystemTap GUI User Guide" border="0" src="../../../images/home.gif"/>
+					<a href="User-Guide.html" title="SystemTap User Guide">
+						<img alt="SystemTap User Guide" border="0" src="../../../images/home.gif"/>
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
