@@ -133,6 +133,7 @@ public class GraphDisplaySet {
 		//This is a tab/button for opening new graphs
 		CTabItem newGraph = new CTabItem(folder, SWT.NONE);
 		newGraph.setImage(GraphingPlugin.getImageDescriptor("icons/actions/new_wiz.gif").createImage());
+		newGraph.setToolTipText(Localization.getString("GraphDisplaySet.DataView"));
 
 		//Tab containing the data table
 		CTabItem item = new CTabItem(folder, SWT.NONE);
