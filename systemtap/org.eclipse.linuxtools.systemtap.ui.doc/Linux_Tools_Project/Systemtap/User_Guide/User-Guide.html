@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>SystemTap GUI User Guide</title>
+		<title>SystemTap User Guide</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
-				<th style="width: 100%" align="center" colspan="3">SystemTap GUI User Guide</th>
+				<th style="width: 100%" align="center" colspan="3">SystemTap User Guide</th>
 			</tr>
 			<tr>
 				<td style="width: 20%" align="left"></td>
@@ -26,9 +26,9 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Overview">Overview</h1>
-		<p>Welcome to the SystemTap GUI Help pages. This section is intended to provide users with information and links about the SystemTap scripting language itself, in addition to a brief introduction to SystemTap GUI's structure for new users and a brief explanation of SystemTap.</p>
-		<h2 id="SystemTap_GUI.27s_Plugin_Design">SystemTap GUI's Plugin Design</h2>
-		<p>SystemTap GUI was built with a modular goal in mind, namely, to provide the application as a series of plugins so that users may obtain just the ones they need without having to use a heavy-weight application should if they didn't need to. The most common example of this is to ship the Dashboard plugin independently, allowing non-SystemTap savvy users the ability to execute modules without having to write any scripts. The application in its complete state includes three perspective, each with a specific goal:</p>
+		<p>Welcome to the SystemTap plug-in Help pages. This section is intended to provide users with information and links about the SystemTap scripting language itself, in addition to a brief introduction to SystemTap plug-in's structure for new users and a brief explanation of SystemTap.</p>
+		<h2 id="SystemTap_Plugin_Design">SystemTap Plugin Design</h2>
+		<p>SystemTap plug-in was built with a modular goal in mind, namely, to provide the application as a series of plugins so that users may obtain just the ones they need without having to use a heavy-weight application should if they didn't need to. The most common example of this is to ship the Dashboard plugin independently, allowing non-SystemTap savvy users the ability to execute modules without having to write any scripts. The application in its complete state includes three perspective, each with a specific goal:</p>
 		<ul>
 			<li>
 				<b>IDE Perspective</b> - Contains script editor and Function, Kernel Source, and Probe Alias browsers to assist in the creation and editting of SystemTap scripts.
@@ -45,9 +45,7 @@
 		<p>SystemTap provides free software (GPL) infrastructure to simplify the gathering of information about the running Linux kernel. This assists diagnosis of a performance or functional problem. SystemTap eliminates the need for the developer to go through the tedious and disruptive instrument, recompile, install, and reboot sequence that may be otherwise required to collect data.</p>
 		<p>SystemTap provides a simple command line interface and scripting language for writing instrumentation for a live running kernel. The internal tapset library as well as the published samples can be used to aid reuse and abstraction.</p>
 		<p>Current project members include Red Hat, IBM, Intel, and Hitachi.</p>
-		<h2 id="Configuration_Tutorial">Configuration Tutorial</h2>
-		<p>This tutorial is written to guide a new SystemTap user through some basic post-installation setup in
-			order to get the most out of the application.</p>
+		<h2 id="Installing">Installing</h2>
 		<h3 id="Requirements">Requirements</h3>
 		<p>
 			<b>Hardware Requirements:</b>
@@ -61,20 +59,31 @@
 		<ul>
 			<li>
 				<ul>
-					<li>Linux kernel v2.6.14 or newer</li>
-					<li>Eclipse v3.4.1</li>
+					<li>Linux kernel v2.6.14 or newer
+						<ul>
+							<li>Linux kernel devel and debuginfo packages</li>
+						</ul>
+					</li>
+					<li>Eclipse v3.8/v4.2 or newer</li>
 					<li>SystemTap v0.7 or newer</li>
 				</ul>
 			</li>
 		</ul>
+		<p>Once  all dependencies are installed, the easiest way to install the SystemTap plug-in for Eclipse is through the 
+			<b>
+				<i>Software Updates and Add-ons</i>
+			</b> menu. For information on how to use this menu, refer to 
+			<a href="http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site">this link</a>.
+		</p>
 		<h3 id="Kernel_Source_Location">Kernel Source Location</h3>
 		<p>In order to use the kernel source browser you'll need to point it to the kernel source initially. Do this by either selecting the Kernel Source Browser in the browser pane or by going to 
-			<b><u>W</u>indow-&gt;<u>P</u>references</b>, then going to the SystemTap-&gt;IDE-&gt;'Kernel Source Path' tab and setting the location there. This configuration detail is relevent to the IDE Perspective only.
+			<b><u>W</u>indow-&gt;<u>P</u>references</b>, then going to the SystemTap-&gt;IDE-&gt;'Kernel Source Path' tab. It is possible to explore the kernel source in your local machine or in the same machine used to run SystemTap scripts. Enter your option and inform the kernel source location. If you selected the remote option, it is necessary to set up the remote machine information at SystemTap-&gt;'Remote Server' tab.
+			This configuration detail is relevent to the IDE Perspective only.
 		</p>
 		<h3 id="Tutorials">Tutorials</h3>
-		<p>If you haven't already, you will want to take the IDE and Graphing tutorials. You can find them in the Getting Started section of each perspective's help pages. These tutorial provides fundamental knowledge on graphing in SystemTap GUI.</p>
+		<p>If you haven't already, you will want to take the IDE and Graphing tutorials. You can find them in the Getting Started section of each perspective's help pages. These tutorial provides fundamental knowledge on graphing in SystemTap plug-in.</p>
 		<h3 id="Preferences_.28Optional.29">Preferences (Optional)</h3>
-		<p>Finally, you may want to set certain non-essential preferences before using SystemTap GUI regularly. Use
+		<p>Finally, you may want to set certain non-essential preferences before using SystemTap plug-in regularly. Use
 
 			<b><u>W</u>indow-&gt;<u>P</u>references</b> to access the Preferences page. 
 		</p>
