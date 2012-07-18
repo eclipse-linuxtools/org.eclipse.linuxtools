@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.snapshot.launch;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -24,8 +25,25 @@ public class SnapshotLaunchConfigurationDelegate extends
 	}
 
 	@Override
-	public void launch(ILaunchConfiguration arg0, String arg1, ILaunch arg2,
-			IProgressMonitor arg3) {
+	public void launch(ILaunchConfiguration config, String mode, ILaunch launch,
+			IProgressMonitor monitor) {
+		try {
+
+			if (config != null) {
+				// get provider id from configuration.
+				String providerId = config.getAttribute("provider", "");
+				if (providerId.equals("")) {
+					return;
+				}
+				// get configuration delegate associated with provider id.
+				ProfileLaunchConfigurationDelegate delegate = getConfigurationDelegateFromId(providerId);
+				if (delegate != null) {
+					delegate.launch(config, mode, launch, monitor);
+				}
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		return;
 	}
 
