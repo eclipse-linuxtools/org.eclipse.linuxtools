@@ -126,4 +126,17 @@
          </contextualLaunch>
       </shortcut>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+      <provider
+            default="false"
+            delegate="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.oprofile.launch.provider"
+            name="Oprofile"
+            priority="2"
+            shortcut="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchShortcut"
+            tabgroup="org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
+            type="snapshot">
+      </provider>
+   </extension>
 </plugin>
