@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.profiling.launch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.eclipse.cdt.launch.ui.CArgumentsTab;
 import org.eclipse.cdt.launch.ui.CMainTab;
@@ -148,4 +149,34 @@ public abstract class ProfileLaunchConfigurationTabGroup extends AbstractLaunchC
 		return ret.toArray(new String [] {});
 	}
 
+	/**
+	 * Get map of all pairs of names and IDs of the specific provider type. This
+	 * looks through extensions of the extension point
+	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
+	 * that have a specific type.
+	 *
+	 * @param type A profiling type (eg. memory, snapshot, timing, etc.)
+	 * @return A <code>HashMap<String, String></code> of all pairs of names and IDs
+	 * of the specific type.
+	 * @since 1.1
+	 */
+	public static HashMap<String, String> getTabGroupNamesForType(String type) {
+		HashMap<String, String> ret = new HashMap<String, String>();
+		IExtensionPoint extPoint = Platform.getExtensionRegistry()
+				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID,
+						"launchProvider"); //$NON-NLS-1$
+		IConfigurationElement[] configs = extPoint.getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentId = config.getAttribute("id"); //$NON-NLS-1$
+				String currentName = config.getAttribute("name"); //$NON-NLS-1$
+				String currentType = config.getAttribute("type"); //$NON-NLS-1$
+				if (currentType != null && type != null
+						&& currentType.equals(type) && currentName != null) {
+					ret.put(currentName, currentId);
+				}
+			}
+		}
+		return ret;
+	}
 }

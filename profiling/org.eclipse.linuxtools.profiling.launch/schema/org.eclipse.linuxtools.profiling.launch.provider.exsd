@@ -101,6 +101,13 @@ Invalid values will be assigned the lowest priority to the extension.
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Name of launch provider.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
