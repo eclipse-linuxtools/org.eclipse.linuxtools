@@ -33,7 +33,6 @@ public class IDEPerspective implements IPerspectiveFactory {
 	public static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective";
 
 	public void createInitialLayout(IPageLayout layout) {
-		//this comment is just a test
 		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this); //$NON-NLS-1$
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		String editorArea = layout.getEditorArea();
