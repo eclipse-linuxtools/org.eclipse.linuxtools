@@ -30,6 +30,7 @@ Import-Package: org.eclipse.core.filesystem,
  org.eclipse.linuxtools.systemtap.ui.structures.runnable,
  org.eclipse.linuxtools.systemtap.ui.structures.ui,
  org.eclipse.linuxtools.systemtap.ui.structures.validators,
+ org.eclipse.linuxtools.tools.launch.core.factory,
  org.eclipse.ui.ide,
  org.eclipse.ui.part
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
