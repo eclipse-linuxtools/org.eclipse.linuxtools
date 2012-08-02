@@ -302,12 +302,14 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 			//tick all the boxes that are checked (the events i mean)			
 			//This is a little inefficient, I guess. TODO Check more efficiently?
 			List<?> selectedEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
-			if (selectedEvents != null) {
-				for(Object s : selectedEvents) {
-					for (int i = 0; i < _eventTabLists.length; i++) {
-						for(TableItem x : _eventTabLists[i].getItems()) {
-							if (x.getText().equals(s))
-								x.setChecked(true);
+
+			if(selectedEvents != null){
+				for (int i = 0; i < _eventTabLists.length; i++) {
+					for(TableItem event : _eventTabLists[i].getItems()) {
+						if(selectedEvents.contains(event.getText())){
+							event.setChecked(true);
+						} else {
+							event.setChecked(false);
 						}
 					}
 				}
