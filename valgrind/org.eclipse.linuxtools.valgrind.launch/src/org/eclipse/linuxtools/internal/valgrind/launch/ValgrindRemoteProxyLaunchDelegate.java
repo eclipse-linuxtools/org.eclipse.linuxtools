@@ -323,7 +323,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		}
 
 		return config.getName()
-				+ " [" + valgrindPath.toString() + " " + getPlugin().getToolName(toolID) + " on " + location + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ " [" + getPlugin().getToolName(toolID) + "]" + " " + valgrindPath.toString() + " on " + location; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	@Override
