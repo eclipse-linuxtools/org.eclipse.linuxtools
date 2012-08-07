@@ -81,7 +81,6 @@
 		</perspectiveExtension>
 		<perspectiveExtension
 			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.consolelog.StopActionSet"/>
 			<actionSet id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.ParsingActionSet"/>
 			<view
 				ratio="0.60f"
