@@ -32,6 +32,11 @@ import org.eclipse.ui.IWorkbenchActionConstants;
  * @author Ryan Morse
  */
 public class ProbeAliasBrowserView extends BrowserView {
+	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView";
+	private ProbeAliasAction doubleClickAction;
+	private IDoubleClickListener dblClickListener;
+	private Menu menu;
+
 	public ProbeAliasBrowserView() {
 		super();
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
@@ -95,9 +100,4 @@ public class ProbeAliasBrowserView extends BrowserView {
 			menu.dispose();
 		menu = null;
 	}
-
-	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView";
-	private ProbeAliasAction doubleClickAction;
-	private IDoubleClickListener dblClickListener;
-	private Menu menu;
 }
