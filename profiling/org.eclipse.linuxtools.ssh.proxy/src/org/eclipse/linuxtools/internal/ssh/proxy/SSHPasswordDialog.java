@@ -28,6 +28,7 @@ public class SSHPasswordDialog extends Dialog {
 	private Text passwordField;
 	public SSHPasswordDialog(Shell parent) {
 		super(parent);
+		this.getShell().setText(Messages.SSHPasswordDialog_Title);
 	}
 
 	protected Control createDialogArea(Composite parent) {
