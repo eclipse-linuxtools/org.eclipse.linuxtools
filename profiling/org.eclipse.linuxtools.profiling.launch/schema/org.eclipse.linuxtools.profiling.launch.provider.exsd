@@ -108,6 +108,13 @@ Invalid values will be assigned the lowest priority to the extension.
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="default" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  If true, this launch provider is set as default for the given type.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
