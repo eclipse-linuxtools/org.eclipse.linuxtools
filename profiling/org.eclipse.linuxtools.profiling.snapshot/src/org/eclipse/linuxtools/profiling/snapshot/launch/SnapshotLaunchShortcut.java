@@ -13,7 +13,9 @@ package org.eclipse.linuxtools.profiling.snapshot.launch;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
+import org.eclipse.linuxtools.profiling.snapshot.SnapshotPreferencesPage;
 
 public class SnapshotLaunchShortcut extends ProfileLaunchShortcut {
 
@@ -21,7 +23,28 @@ public class SnapshotLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	public void launch(IBinary bin, String mode) {
-		ProfileLaunchShortcut provider = getProfilingProvider(SNAPSHOT);
+		ProfileLaunchShortcut provider = null;
+		String providerId = null;
+		// Get default launch provider id from preference store
+		providerId = SnapshotPreferencesPage.getSelectedProviderId();
+		if (!providerId.equals("")) {
+			provider = ProfileLaunchShortcut
+					.getLaunchShortcutProviderFromId(providerId);
+		}
+		if (provider == null) {
+			// Get self assigned default
+			providerId = ProfileLaunchShortcut
+					.getDefaultLaunchShortcutProviderId(SNAPSHOT);
+			provider = ProfileLaunchShortcut
+					.getLaunchShortcutProviderFromId(providerId);
+			if (provider == null) {
+				// Get highest priority provider
+				providerId = ProfileLaunchConfigurationTabGroup
+						.getHighestProviderId(SNAPSHOT);
+				provider = ProfileLaunchShortcut
+						.getLaunchShortcutProviderFromId(providerId);
+			}
+		}
 		if (provider != null){
 			provider.launch(bin, mode);
 		}else{

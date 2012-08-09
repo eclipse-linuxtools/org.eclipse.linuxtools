@@ -15,6 +15,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.profiling.snapshot.launch.messages"; //$NON-NLS-1$
 	public static String SnapshotLaunchShortcut_0;
+	public static String SnapshotPreferencesPage_0;
+	public static String SnapshotPreferencesPage_1;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

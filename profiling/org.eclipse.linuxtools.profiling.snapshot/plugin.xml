@@ -68,6 +68,14 @@
             public="true">
       </launchConfigurationType>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.linuxtools.profiling.snapshot.SnapshotPreferencesPage"
+            id="org.eclipse.linuxtools.profiling.snapshot.MainPreferencePage"
+            name="Profiling">
+      </page>
+   </extension>
 
 
 </plugin>
