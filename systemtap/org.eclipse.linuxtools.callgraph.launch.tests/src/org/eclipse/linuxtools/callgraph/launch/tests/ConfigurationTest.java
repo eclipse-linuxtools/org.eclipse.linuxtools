@@ -20,6 +20,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 public class ConfigurationTest extends TestCase{
 	
@@ -90,9 +91,8 @@ public class ConfigurationTest extends TestCase{
 	}
 	
 	public void killStap() {
-		Runtime run = Runtime.getRuntime();
 		try {
-			run.exec("kill stap");
+			RuntimeProcessFactory.getFactory().exec("kill stap", null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

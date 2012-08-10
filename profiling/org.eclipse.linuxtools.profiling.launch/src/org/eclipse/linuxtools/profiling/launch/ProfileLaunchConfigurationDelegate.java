@@ -59,6 +59,7 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @return a launch configuration delegate that implements
 	 * <code>ProfileLaunchConfigurationDelegate</code> , or <code>null</code> if 
 	 * none could be found.
+	 * @since 1.2
 	 */
 	public static ProfileLaunchConfigurationDelegate getConfigurationDelegateFromId(
 			String id) {

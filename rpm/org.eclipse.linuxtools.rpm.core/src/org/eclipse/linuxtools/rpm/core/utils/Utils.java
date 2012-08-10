@@ -19,13 +19,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.FrameworkUtil;
-
 /**
  * Utilities for calling system executables.
  * 
@@ -43,12 +44,8 @@ public class Utils {
 	 */
 	public static BufferedProcessInputStream runCommandToInputStream(String... command)
 			throws IOException {
-		BufferedProcessInputStream in = null;
-		ProcessBuilder pBuilder = new ProcessBuilder(command);
-		pBuilder = pBuilder.redirectErrorStream(true);
-		Process child = pBuilder.start();
-		in = new BufferedProcessInputStream(child);
-		return in;
+		Process p = RuntimeProcessFactory.getFactory().exec(command, null);
+		return new BufferedProcessInputStream(p);
 	}
 
 	/**
@@ -61,12 +58,30 @@ public class Utils {
 	 *            The command with all parameters.
 	 * @return int The return value of the command.
 	 * @throws IOException If an IOException occurs.
+	 * @deprecated use {@link Utils#runCommand(OutputStream, IProject, String...)} instead.
 	 */
 	public static IStatus runCommand(final OutputStream outStream,
 			String... command) throws IOException {
-		ProcessBuilder pBuilder = new ProcessBuilder(command);
-		pBuilder = pBuilder.redirectErrorStream(true);
-		Process child = pBuilder.start();
+		return runCommand(null, null, command);
+	}
+
+	/**
+	 * Runs the given command and parameters.
+	 * 
+	 * @param outStream
+	 *            The stream to write the output to.
+	 * @param project
+	 * 			  The project which is executing this command.
+	 * @param command
+	 *            The command with all parameters.
+	 * @return int The return value of the command.
+	 * @throws IOException If an IOException occurs.
+	 * @since 1.1
+	 */
+	public static IStatus runCommand(final OutputStream outStream, IProject project,
+			String... command) throws IOException {
+		Process child = RuntimeProcessFactory.getFactory().exec(command, project);
+
 		final BufferedInputStream in = new BufferedInputStream(child
 				.getInputStream());
 		Job readinJob = new Job("") { //$NON-NLS-1$

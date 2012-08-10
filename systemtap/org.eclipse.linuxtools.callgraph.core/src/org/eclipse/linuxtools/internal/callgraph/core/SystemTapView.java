@@ -17,6 +17,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Font;
@@ -231,9 +232,8 @@ public abstract class SystemTapView extends ViewPart {
     public void createHelpActions() {
         help_version = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
             public void run() {
-                Runtime rt = Runtime.getRuntime();
                 try {
-                    Process pr = rt.exec("stap -V"); //$NON-NLS-1$
+                	Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null);
                     BufferedReader buf = new BufferedReader(
                             new InputStreamReader(pr.getErrorStream()));
                     String line = ""; //$NON-NLS-1$

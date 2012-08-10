@@ -47,6 +47,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
+import org.eclipse.ui.part.FileEditorInput;
 
 
 
@@ -129,9 +130,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected boolean isValid() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-        
+
 		if(isValidFile(ed))
-			if(isValidDirectory(((PathEditorInput)ed.getEditorInput()).getPath().toString()))
+			if(isValidDirectory(getFilePath()))
 				return true;
 		return true;
 	}
