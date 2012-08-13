@@ -324,6 +324,16 @@ public class TapsetParser implements Runnable {
 					child.add(new TreeNode(prev2 + ":unknown", prev2, false));
 				
 				prev2 = null;
+			} else if ("/*".equals(token.toString())){
+				// Skip comments
+				for(; i<s.length()-1; i++) {
+					if (s.regionMatches(i, "*/", 0, 2)){
+						i++;
+						break;
+					}
+				}
+				// clear token
+				token.delete(0, token.length());
 			}
 		}
 	}
