@@ -20,12 +20,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools</groupId>
     <artifactId>linuxtools-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
   </parent>
 
   <groupId>org.eclipse.linuxtools.lttng</groupId>
   <artifactId>linuxtools-lttng-parent</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools LTTng Parent</name>
