@@ -424,11 +424,14 @@ public class TapsetParser implements Runnable {
 	}
 	
 	/**
-	 * Runs stap -up2 on the selected probe group, using high and low
-	 * to determin which subelements to select.
+	 * Does a depth first search for valid probes: Runs stap -up2 on the
+	 * selected probe group, using high and low to determine which
+	 * subelements to select. If an error is encountered in a group this
+	 * function divides the group into a top and bottom half and makes a
+	 * recursive call on each subgroup to isolate the failing probes.
 	 * @param probe The top level probe group to probe.
 	 * @param low The lower bound of child elements of probe to include
-	 * @param high The upper bound of child elements of probe to inclue
+	 * @param high The upper bound of child elements of probe to include
 	 */
 	private void runPass2ProbeSet(TreeNode probe, int low, int high) {
 		if(low == high)
@@ -448,8 +451,8 @@ public class TapsetParser implements Runnable {
 		result = runStap(new String[] {"-u"}, probeStr.toString(), 2);
 		
 		if(0 < result.trim().length()) {
-			boolean success = parsePass2Probes(result, probe);
-			if(!success) {
+			boolean success = parsePass2Probes(result,probe);
+			if(!success && low+1 != high) {
 				runPass2ProbeSet(probe, low, low+((high-low)>>1));
 				runPass2ProbeSet(probe, low+((high-low)>>1), high);
 			}
