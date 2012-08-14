@@ -67,8 +67,8 @@ public class TapsetParser implements Runnable {
 	public void start() {
 		stopped = false;
 		init();
-		Thread t = new Thread(this, "TapsetParser");
-		t.start();
+		this.thread = new Thread(this, "TapsetParser");
+		thread.start();
 	}
 	
 	/**
@@ -77,6 +77,11 @@ public class TapsetParser implements Runnable {
 	 */
 	public synchronized void stop() {
 		stopped = true;
+		try {
+			this.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	/**
@@ -132,7 +137,6 @@ public class TapsetParser implements Runnable {
 		fireUpdateEvent();	//Inform listeners that a new batch of functions has variable info
 		runPass2Probes();
 		fireUpdateEvent();	//Inform listeners that a new batch of probes has variable info
-		stop();
 		successfulFinish = true;
 		fireUpdateEvent();	//Inform listeners that everything is done
 	}
@@ -159,7 +163,7 @@ public class TapsetParser implements Runnable {
 	 * This method will fire an updateEvent to all listeners.
 	 */
 	private void fireUpdateEvent() {
-		for(int i=0; i<listeners.size(); i++)
+		for(int i=0; i<listeners.size() && !stopped; i++)
 			((IUpdateListener)listeners.get(i)).handleUpdateEvent();
 	}
 	
@@ -434,7 +438,8 @@ public class TapsetParser implements Runnable {
 	 * @param high The upper bound of child elements of probe to include
 	 */
 	private void runPass2ProbeSet(TreeNode probe, int low, int high) {
-		if(low == high)
+
+		if(low == high || this.stopped)
 			return;
 		
 		TreeNode temp;
@@ -697,4 +702,5 @@ public class TapsetParser implements Runnable {
 	private TreeNode functions;
 	private TreeNode probes;
 	private String[] tapsets;
+	private Thread thread;
 }
