@@ -26,6 +26,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -51,6 +52,8 @@ public class SnapshotOptionsTab extends ProfileLaunchConfigurationTab {
 		providerCombo.setItems(providerNames.toArray(new String[0]));
 
 		tabgroup = new CTabFolder(top, SWT.NONE);
+		tabgroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
+				true));
 
 		providerCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
