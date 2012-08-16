@@ -338,6 +338,15 @@ public class TapsetParser implements Runnable {
 				}
 				// clear token
 				token.delete(0, token.length());
+			} else if ("//".equals(token.toString())){
+				// Skip comments
+				for(; i<s.length(); i++) {
+					if (s.charAt(i) == '\n'){
+						break;
+					}
+				}
+				// clear token
+				token.delete(0, token.length());
 			}
 		}
 	}
