@@ -48,6 +48,8 @@ public class STPEditor extends SimpleEditor {
 	private Annotation[] stpOldAnnotations;
 	private ProjectionAnnotationModel stpAnnotationModel;
 
+	public static final String ID="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor";
+
 	public STPEditor() {
 		super();
 		URL completionURL = null;
