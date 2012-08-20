@@ -58,12 +58,6 @@ public class GcdaRecordsParser {
 
 		//read magic
 		magic = stream.readInt();
-		//read version
-		//version = stream.readInt();
-		stream.readInt();
-		//read stamp
-		//stamp = stream.readInt();
-		stream.readInt();
 
 		if (magic == GCOV_DATA_MAGIC){
 			stream = new BEDataInputStream((DataInputStream) stream);
@@ -78,6 +72,12 @@ public class GcdaRecordsParser {
 				throw new CoreException(status);
 			}
 		}
+
+		//read version
+		int version = stream.readInt();
+		//read stamp
+		//stamp = stream.readInt();
+		stream.readInt();
 
 		while (true) {
 			try {
@@ -101,6 +101,31 @@ public class GcdaRecordsParser {
 									Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
 									throw new CoreException(status);
 								}
+
+								/*
+								 * danielhb, 2012-08-06: Gcov versions 4.7.0 or
+								 * later (long value = 875575105) has different format for
+								 * the data file:
+								 * 
+								 * prior format:
+								 * 
+								 * announce_function: header int32:ident int32:checksum
+								 * 
+								 * new format:
+								 * 
+								 * announce_function: header int32:ident
+					             *     int32:lineno_checksum int32:cfg_checksum
+								 * 
+								 * 
+								 * TL;DR Need to consume the extra long value.
+								 * 
+								 */
+								if (version >= 875575105)
+								{
+									// long cfgChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
+									stream.readInt();
+								}
+
 								break;
 							}
 						}
