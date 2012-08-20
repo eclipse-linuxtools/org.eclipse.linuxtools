@@ -67,11 +67,6 @@ public class GcnoRecordsParser {
 		boolean parseFirstFnctn = false;
 		
 		magic = stream.readInt();
-		//version = stream.readInt();
-		stream.readInt();
-		//stamp = stream.readInt();
-		stream.readInt();
-		
 		if (magic == GCOV_NOTE_MAGIC){
 			stream = new BEDataInputStream((DataInputStream) stream);
 		}else{
@@ -86,6 +81,10 @@ public class GcnoRecordsParser {
 			}
 		}
 		
+		int version = stream.readInt();
+		//stamp = stream.readInt();
+		stream.readInt();
+
 		/*------------------------------------------------------------------------------
 		System.out.println("Gcno LE, Magic "+magic+" version "+version+" stamp "+stamp);
 		*/
@@ -109,6 +108,29 @@ public class GcnoRecordsParser {
 					
 					long fnctnIdent = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
 					long fnctnChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
+					/*
+					 * danielhb, 2012-08-06: Gcov versions 4.7.0 or
+					 * later (long value = 875575105) has different format for
+					 * the data file:
+					 * 
+					 * prior format:
+					 * 
+					 * announce_function: header int32:ident int32:checksum
+					 * 
+					 * new format:
+					 * 
+					 * announce_function: header int32:ident
+		             *     int32:lineno_checksum int32:cfg_checksum
+					 * 
+					 * 
+					 * TL;DR Need to consume the extra long value.
+					 * 
+					 */
+					if (version >= 875575105)
+					{
+						// long cfgChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
+						stream.readInt();
+					}
 					String fnctnName = GcovStringReader.readString(stream);
 					String fnctnSrcFle = GcovStringReader.readString(stream);
 					long fnctnFrstLnNmbr= (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
