@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MinVersionTest extends AbstractMemcheckTest {
 
-	class ValgrindIncorrectVersion extends ValgrindStubCommand {
+	static class ValgrindIncorrectVersion extends ValgrindStubCommand {
 		@Override
 		public String whichVersion(IProject project) throws IOException {
 			 return "valgrind-3.2.1"; //$NON-NLS-1$
