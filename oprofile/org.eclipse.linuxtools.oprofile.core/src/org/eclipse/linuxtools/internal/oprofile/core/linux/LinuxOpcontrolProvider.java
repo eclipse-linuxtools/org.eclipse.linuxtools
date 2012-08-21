@@ -519,28 +519,4 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		findOpcontrolExecutable();
 		return isInstalled;
 	}
-
-	/**
-	 * Use {@link findOpcontrolExecutable}
-	 */
-	@Deprecated
-	private static String findOpcontrol() throws OpcontrolException {
-		IProject project = Oprofile.OprofileProject.getProject();
-		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin
-				.getId()), new Path(OPCONTROL_REL_PATH), null);
-
-		if (url != null) {
-			try {
-				return FileLocator.toFileURL(url).getPath();
-			} catch (IOException ignore) {
-			}
-		// If no linuxtools' toolchain is defined for this project and oprofile is not
-		// installed, throw exception
-		} else if(project == null || LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
-			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus(
-					"opcontrolProvider", null)); //$NON-NLS-1$
-		}
-
-		return null;
-	}
 }
