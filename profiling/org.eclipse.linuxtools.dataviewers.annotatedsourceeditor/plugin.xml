@@ -17,6 +17,9 @@
          </targetEditor>
       </column>
    </extension>
+   <extension point="org.eclipse.ui.editors.annotationTypes">
+      <type name="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.coloredLines" />
+   </extension>
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
