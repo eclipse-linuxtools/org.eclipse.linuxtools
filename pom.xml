@@ -52,7 +52,7 @@
     <tycho-extras-version>0.15.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+    <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository</orbit-site>
   </properties>
   <pluginRepositories>
