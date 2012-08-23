@@ -41,7 +41,7 @@ import org.eclipse.ui.progress.UIJob;
 
 /**
  * The Kernel Source Browser module for the SystemTap GUI. This browser provides a list of kernel source
- * files and allows the user to open those files in an editor in order to place probes in arbitary locations.
+ * files and allows the user to open those files in an editor in order to place probes in arbitrary locations.
  * @author Henry Hughes
  * @author Ryan Morse
  */
