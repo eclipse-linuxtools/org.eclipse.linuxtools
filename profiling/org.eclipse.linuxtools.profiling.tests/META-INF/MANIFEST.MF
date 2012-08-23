@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.profiling.tests.ProfileTestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -11,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.internal.profiling.tests,
+Export-Package: 
  org.eclipse.linuxtools.profiling.tests
 Import-Package: org.eclipse.cdt.build.core.scannerconfig,
  org.eclipse.cdt.core,
