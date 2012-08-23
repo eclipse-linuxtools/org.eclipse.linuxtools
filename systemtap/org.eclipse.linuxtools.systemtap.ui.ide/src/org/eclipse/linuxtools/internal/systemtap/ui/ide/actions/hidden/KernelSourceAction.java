@@ -16,12 +16,14 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorRegistry;
@@ -102,19 +104,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 		LogManager.logDebug("createEditorInput: returnVal-" + input, this); //$NON-NLS-1$
 		return input;
 	}
-	
-	/**
-	 * Returns the ID of the editor to use for the requested file. Usually returns
-	 * <code>CEditor.ID</code> in this code.
-	 * @param file The file to get the ID for.
-	 * @return	The ID for the editor that handles the requested file type.
-	 */
-	private String getEditorId(IFileStore fs) {
-		IWorkbench workbench= window.getWorkbench();
-		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
-		return editorRegistry.getDefaultEditor(fs.getName()).getId();
-	}
-	
+
 	/**
 	 * The main code body for this action. Causes one of the following to occur:
 	 * <ul>
@@ -141,12 +131,11 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 				IFileStore fs = (IFileStore)t.getData();
 				if (fs != null) {
 					IEditorInput input= createEditorInput(fs);
-					String editorId= getEditorId(fs);
 					try {
 						IEditorPart editor = wb.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 						if(editor instanceof STPEditor)
 							IDESessionSettings.activeSTPEditor = (STPEditor)editor;
-						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, editorId);
+						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CEditor.ID);
 						LogManager.logDebug("Editor opened", this); //$NON-NLS-1$
 					} catch (PartInitException e) {
 						LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
