@@ -30,8 +30,8 @@ public class SnapshotPreferencesPage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
 	private static final String TYPE = "snapshot"; //$NON-NLS-1$
-	private static final String KEY = "provider"; //$NON-NLS-1$
-	private static final String QUALIFIER = "org.eclipse.linuxtools.profiling.snapshot"; //$NON-NLS-1$
+	public static final String KEY = "provider"; //$NON-NLS-1$
+	public static final String QUALIFIER = "org.eclipse.linuxtools.profiling.snapshot"; //$NON-NLS-1$
 	private static IScopeContext configScopeInstance = ConfigurationScope.INSTANCE;
 
 	public void init(IWorkbench workbench) {
