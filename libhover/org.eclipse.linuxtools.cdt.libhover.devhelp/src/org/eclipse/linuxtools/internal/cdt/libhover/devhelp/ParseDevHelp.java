@@ -69,8 +69,8 @@ public class ParseDevHelp {
 		private String returnValue;
 		private String funcName;
 		private String rowTag;
-		private String prototype = new String(""); //$NON-NLS-1$
-		private String description = new String(""); //$NON-NLS-1$
+		private String prototype = ""; //$NON-NLS-1$
+		private String description = ""; //$NON-NLS-1$
 		private int divCounter;
 		private int rowItemCount;
 		

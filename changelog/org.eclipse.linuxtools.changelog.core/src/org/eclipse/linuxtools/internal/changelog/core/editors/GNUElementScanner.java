@@ -66,13 +66,13 @@ public class GNUElementScanner extends RuleBasedScanner {
 	 * 
 	 */
 	public GNUElementScanner() {
-		IToken file = new Token(new String(FILE_NAME));
+		IToken file = new Token(FILE_NAME);
 
-		IToken func = new Token(new String(FUNC_NAME));
+		IToken func = new Token(FUNC_NAME);
 
-		IToken email = new Token(new String(EMAIL));
+		IToken email = new Token(EMAIL);
 		
-		IToken other = new Token(new String(OTHER));
+		IToken other = new Token(OTHER);
 
 		IRule[] rules = new IRule[3];
 

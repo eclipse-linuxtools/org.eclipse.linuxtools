@@ -56,7 +56,7 @@ public final class DMError {
 	}
 	
 	public String toString() {
-		return new String(errtext);
+		return errtext;
 	}
 	
 }

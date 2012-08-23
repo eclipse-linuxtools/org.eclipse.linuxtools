@@ -392,17 +392,18 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	// Convert the event into arguments for opcontrol
 	private void eventToArguments(ArrayList<String> args, OprofileDaemonEvent event) {
 		// Event spec: "EVENT:count:mask:profileKernel:profileUser"
-		String spec = new String(OPD_SETUP_EVENT);
-		spec += event.getEvent().getText();
-		spec += OPD_SETUP_EVENT_SEPARATOR;
-		spec += event.getResetCount();
-		spec += OPD_SETUP_EVENT_SEPARATOR;
-		spec += event.getEvent().getUnitMask().getMaskValue();
-		spec += OPD_SETUP_EVENT_SEPARATOR;
-		spec += (event.getProfileKernel() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE);
-		spec += OPD_SETUP_EVENT_SEPARATOR;
-		spec += (event.getProfileUser() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE);
-		args.add(spec);
+		StringBuilder spec = new StringBuilder();
+		spec.append(OPD_SETUP_EVENT);
+		spec.append(event.getEvent().getText());
+		spec.append(OPD_SETUP_EVENT_SEPARATOR);
+		spec.append(event.getResetCount());
+		spec.append(OPD_SETUP_EVENT_SEPARATOR);
+		spec.append(event.getEvent().getUnitMask().getMaskValue());
+		spec.append(OPD_SETUP_EVENT_SEPARATOR);
+		spec.append((event.getProfileKernel() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
+		spec.append(OPD_SETUP_EVENT_SEPARATOR);
+		spec.append((event.getProfileUser() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
+		args.add(spec.toString());
 	}
 	
 	// Convert the options into arguments for opcontrol
@@ -410,22 +411,23 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		// Add separate flags
 		int mask = options.getSeparateProfilesMask();
 
-		String separate = new String(OPD_SETUP_SEPARATE);
+		StringBuilder separate = new StringBuilder();
+		separate.append(OPD_SETUP_SEPARATE);
 		
 		if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
-			separate += OPD_SETUP_SEPARATE_NONE;
+			separate.append(OPD_SETUP_SEPARATE_NONE);
 		} else {
 			//note that opcontrol will nicely ignore the trailing comma
 			if ((mask & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
-				separate += OPD_SETUP_SEPARATE_LIBRARY + OPD_SETUP_SEPARATE_SEPARATOR;
+				separate.append(OPD_SETUP_SEPARATE_LIBRARY + OPD_SETUP_SEPARATE_SEPARATOR);
 			if ((mask & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
-				separate += OPD_SETUP_SEPARATE_KERNEL + OPD_SETUP_SEPARATE_SEPARATOR;
+				separate.append(OPD_SETUP_SEPARATE_KERNEL + OPD_SETUP_SEPARATE_SEPARATOR);
 			if ((mask & OprofileDaemonOptions.SEPARATE_THREAD) != 0)
-				separate += OPD_SETUP_SEPARATE_THREAD + OPD_SETUP_SEPARATE_SEPARATOR;
+				separate.append(OPD_SETUP_SEPARATE_THREAD + OPD_SETUP_SEPARATE_SEPARATOR);
 			if ((mask & OprofileDaemonOptions.SEPARATE_CPU) != 0)
-				separate += OPD_SETUP_SEPARATE_CPU + OPD_SETUP_SEPARATE_SEPARATOR;
+				separate.append(OPD_SETUP_SEPARATE_CPU + OPD_SETUP_SEPARATE_SEPARATOR);
 		}
-		args.add(separate);
+		args.add(separate.toString());
 		
 		// Add kernel image
 		if (options.getKernelImageFile() == null || options.getKernelImageFile().length() == 0) {

@@ -587,7 +587,7 @@ public class LibHover implements ICHelpProvider {
 			// is coming back from the indexer which will be fully-qualified and have template
 			// parameters specified.
 			if (memberParms[i].contains(unqualifiedName) && !memberParms[i].contains(className)) {
-				String classTemplate = new String("");
+				String classTemplate = "";
 				if (templateTypes.size() > 0) {
 					classTemplate = "<";
 					String separator = "";
