@@ -10,29 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ DoubleClickTest.class, ChartTests.class, TreeTest.class,
+		BasicMassifTest.class, LaunchConfigTabTest.class,
+		ExportWizardTest.class, MultiProcessTest.class,
+		ExpandCollapseTest.class, SortTest.class, ChartExportTest.class })
 public class AllTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite(
-				"Tests for " + MassifPlugin.PLUGIN_ID); //$NON-NLS-1$
-		//$JUnit-BEGIN$
-		suite.addTestSuite(DoubleClickTest.class);
-		suite.addTestSuite(ChartTests.class);
-		suite.addTestSuite(TreeTest.class);
-		suite.addTestSuite(BasicMassifTest.class);
-		suite.addTestSuite(LaunchConfigTabTest.class);
-		suite.addTestSuite(ExportWizardTest.class);
-		suite.addTestSuite(MultiProcessTest.class);
-		suite.addTestSuite(ExpandCollapseTest.class);
-		suite.addTestSuite(SortTest.class);
-		suite.addTestSuite(ChartExportTest.class);
-		//$JUnit-END$
-		return suite;
-	}
-
 }
