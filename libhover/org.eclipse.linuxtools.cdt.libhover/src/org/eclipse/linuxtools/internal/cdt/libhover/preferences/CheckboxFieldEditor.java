@@ -362,7 +362,7 @@ public class CheckboxFieldEditor extends FieldEditor {
 	private void save() {
 		boolean inRange = true;
 		int i = 0;
-		String outString = new String();
+		String outString = "";
 		String del = "";
 		while (inRange) {
 			TableData t;
