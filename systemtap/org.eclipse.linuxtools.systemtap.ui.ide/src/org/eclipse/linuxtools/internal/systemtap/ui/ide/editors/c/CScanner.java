@@ -80,9 +80,12 @@ public class CScanner extends RuleBasedScanner {
 		List<IRule> rules= new ArrayList<IRule>();
 		
 		// Add rules for single line comments.
-		rules.add(new EndOfLineRule("//", comment)); //$NON-NLS-1$
-		
+		rules.add(new EndOfLineRule("//", comment)); //$NON-NLS-1$		
 		rules.add(new SingleLineRule("#", " ", preprocessor));
+
+		// Add rule for multiple-line comment.
+		rules.add(new PatternRule("/*", "*/", comment, '\\', false));
+
 		// Add rule for strings and character constants.
 		rules.add(new SingleLineRule("\"", "\"", string, '\\')); //$NON-NLS-2$ //$NON-NLS-1$
 		rules.add(new SingleLineRule("'", "'", string, '\\')); //$NON-NLS-2$ //$NON-NLS-1$
