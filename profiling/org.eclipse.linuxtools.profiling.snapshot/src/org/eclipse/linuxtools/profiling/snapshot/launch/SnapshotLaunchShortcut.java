@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class SnapshotLaunchShortcut extends ProfileLaunchShortcut {
 	
-	public static String LAUNCHCONF_ID = "org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType";
+	public static final String LAUNCHCONF_ID = "org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType";
 
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
