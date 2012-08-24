@@ -61,6 +61,8 @@ import org.osgi.framework.Bundle;
  */
 public class CProjectHelper {
 
+	public final static String PLUGIN_ID = "org.eclipse.linuxtools.profiling.tests"; //$NON-NLS-1$
+	
 	private final static IOverwriteQuery OVERWRITE_QUERY= new IOverwriteQuery() {
 		public String queryOverwrite(String file) {
 			return ALL;
@@ -91,7 +93,7 @@ public class CProjectHelper {
 					project.open(null);
 				}
 				if (!project.hasNature(CProjectNature.C_NATURE_ID)) {
-					String projectId = ProfileTestsPlugin.PLUGIN_ID + ".TestProject";
+					String projectId = PLUGIN_ID + ".TestProject"; //$NON-NLS-1$
 					addNatureToProject(project, CProjectNature.C_NATURE_ID, null);
 					CCorePlugin.getDefault().mapCProjectOwner(project, projectId, false);
 				}
@@ -345,7 +347,7 @@ public class CProjectHelper {
 			importOp.run(new NullProgressMonitor());
 		}
 		catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, ProfileTestsPlugin.PLUGIN_ID, 0, "Import Interrupted", e));
+			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, 0, "Import Interrupted", e));
 		}
 	}
 
