@@ -199,6 +199,7 @@ public final class TapsetLibrary {
 	/**
 	 * This method will stop services started by
 	 * {@link TapsetLibrary#init()} such as the {@link TapsetParser} 
+	 * @since 1.2
 	 */
 	public static void stop(){
 		if(null != stpp && stpp.isRunning()){
