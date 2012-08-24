@@ -92,7 +92,6 @@
         <platform-version>[3.7,3.8)</platform-version>
         <sdk-version>3.7</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
-        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
       </properties>
       <repositories>
         <repository>
@@ -121,7 +120,6 @@
         <platform-version>[4.2,)</platform-version>
         <sdk-version>4.2</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/milestones</cdt-site>
-        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
         <tcf-site>http://download.eclipse.org/tcf/builds/juno/milestones/</tcf-site>
       </properties>
       <repositories>
@@ -134,11 +132,6 @@
           <id>cdt</id>
           <layout>p2</layout>
           <url>${cdt-site}</url>
-        </repository>
-        <repository>
-          <id>cdttest</id>
-          <layout>p2</layout>
-          <url>${cdt-test-site}</url>
         </repository>
       </repositories>
     </profile>
