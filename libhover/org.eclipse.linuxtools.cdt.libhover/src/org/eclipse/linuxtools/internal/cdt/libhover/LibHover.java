@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006, 2007, 2008, 2011 Red Hat, Inc.
+ * Copyright (c) 2004, 2006, 2007, 2008, 2011, 2012 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -85,7 +86,7 @@ public class LibHover implements ICHelpProvider {
     // see comment in initialize()
     // private static String defaultSearchPath = null;
     
-	private static HashMap<ICHelpBook, LibHoverLibrary> libraries = new HashMap<ICHelpBook, LibHoverLibrary>();
+	private static ConcurrentHashMap<ICHelpBook, LibHoverLibrary> libraries = new ConcurrentHashMap<ICHelpBook, LibHoverLibrary>();
 	
     static final String  constructTypes[] = {
     	"dtype", // $NON-NLS-1$
@@ -112,7 +113,7 @@ public class LibHover implements ICHelpProvider {
     public static Collection<LibHoverLibrary> getLibraries() {
     	return libraries.values();
     }
-    
+
     public static void saveLibraries() {
     	// If user preference is to cache libhover data, then save any un-saved
     	// library hover data.
@@ -131,7 +132,7 @@ public class LibHover implements ICHelpProvider {
     				File lDir = new File(locationDir.toOSString());
     				lDir.mkdir();
     				IPath location = locationDir.append(getTransformedName(l.getName()) + ".libhover"); //$NON-NLS-1$
-    				File target = new File(location.toOSString()); //$NON-NLS-1$
+    				File target = new File(location.toOSString());
     				if (!target.exists()) {
     					FileOutputStream f = new FileOutputStream(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
     					ObjectOutputStream out = new ObjectOutputStream(f);
