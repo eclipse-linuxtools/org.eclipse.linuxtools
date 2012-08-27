@@ -1,3 +1,9 @@
+2012-08-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves bug #387727
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (libraries): Use ConcurrentHashMap to protect
+	against the possibility of a ConcurrentModificationException.
+
 2012-06-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* pom.xml: Bump up version.

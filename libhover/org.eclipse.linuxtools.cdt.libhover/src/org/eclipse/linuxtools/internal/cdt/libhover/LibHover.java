@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006, 2007, 2008, 2011 Red Hat, Inc.
+ * Copyright (c) 2004, 2006, 2007, 2008, 2011, 2012 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -85,7 +86,7 @@ public class LibHover implements ICHelpProvider {
     // see comment in initialize()
     // private static String defaultSearchPath = null;
     
-	private static HashMap<ICHelpBook, LibHoverLibrary> libraries = new HashMap<ICHelpBook, LibHoverLibrary>();
+	private static ConcurrentHashMap<ICHelpBook, LibHoverLibrary> libraries = new ConcurrentHashMap<ICHelpBook, LibHoverLibrary>();
 	
     static final String  constructTypes[] = {
     	"dtype", // $NON-NLS-1$
