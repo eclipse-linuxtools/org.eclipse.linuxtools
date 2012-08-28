@@ -199,9 +199,9 @@ public class ScpExec implements Runnable {
 	 */
 	public ArrayList<IGobblerListener> getInputStreamListeners() {
 		if(null != inputGobbler)
-			return inputListeners;
-		else
 			return inputGobbler.getDataListeners();
+		else
+			return inputListeners;
 	}
 	
 	/**
@@ -210,9 +210,9 @@ public class ScpExec implements Runnable {
 	 */
 	public ArrayList<IGobblerListener> getErrorStreamListeners() {
 		if(null != errorGobbler)
-			return errorListeners;
-		else
 			return errorGobbler.getDataListeners();
+		else
+			return errorListeners;
 	}
 	
 	/**
