@@ -57,7 +57,7 @@ public class RemoteConnection {
 	// no way for us to tell when the command has completed.  To handle this,
 	// we use a special wrapper class to call the command and use echo statements
 	// to tell when the command has completed.
-	private class RemoteCommand extends RemoteCommandShellOperation {
+	private static class RemoteCommand extends RemoteCommandShellOperation {
 
 		private boolean finished;
 		

@@ -90,7 +90,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	protected boolean newEntryWritten = false;
 	protected boolean createChangeLog = true;
 	
-	private class MyDocumentProvider extends FileDocumentProvider {
+	private static class MyDocumentProvider extends FileDocumentProvider {
 
 		@Override
 		public IDocument createDocument(Object element) throws CoreException {
@@ -98,7 +98,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 	}
 
-	private class MyStorageDocumentProvider extends StorageDocumentProvider {
+	private static class MyStorageDocumentProvider extends StorageDocumentProvider {
 
 		@Override
 		public IDocument createDocument(Object element) throws CoreException {

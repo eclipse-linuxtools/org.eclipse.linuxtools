@@ -37,7 +37,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 				getFieldEditorParent()));
 	}
 
-	class TasksListEditor extends ListEditor {
+	static class TasksListEditor extends ListEditor {
 
 		public TasksListEditor(String name, String labelText, Composite parent) {
 			super(name, labelText, parent);

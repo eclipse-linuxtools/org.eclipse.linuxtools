@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.FrameworkUtil;
 
 public class TestManualLaunching extends AbstractTest {
-	private class testingOprofileLaunchConfigurationDelegate extends OprofileManualLaunchConfigurationDelegate {
+	private static class testingOprofileLaunchConfigurationDelegate extends OprofileManualLaunchConfigurationDelegate {
 		public boolean eventsIsNull;
 		public OprofileDaemonOptions _options;  
 		protected void oprofileDumpSamples() { return; }

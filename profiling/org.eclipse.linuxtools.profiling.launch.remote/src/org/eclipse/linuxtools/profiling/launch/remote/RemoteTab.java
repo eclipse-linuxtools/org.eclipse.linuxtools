@@ -50,7 +50,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	private IHost[] hosts;
 	private String name;
 
-	private class RemoteSystemLabelProvider extends LabelProvider implements ITableLabelProvider {
+	private static class RemoteSystemLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;

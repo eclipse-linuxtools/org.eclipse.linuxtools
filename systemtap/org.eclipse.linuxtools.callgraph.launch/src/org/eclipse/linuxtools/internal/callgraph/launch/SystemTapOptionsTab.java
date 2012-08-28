@@ -1113,7 +1113,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 	}
 	
-	private class ListLabelProvider implements ILabelProvider {
+	private static class ListLabelProvider implements ILabelProvider {
 
 		@Override
 		public Image getImage(Object element) {

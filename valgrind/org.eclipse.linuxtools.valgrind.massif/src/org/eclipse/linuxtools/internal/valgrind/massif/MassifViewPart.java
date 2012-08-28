@@ -420,7 +420,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return treeViewer;
 	}
 
-	protected class MassifLabelProvider extends LabelProvider implements
+	protected static class MassifLabelProvider extends LabelProvider implements
 	ITableLabelProvider, IFontProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {

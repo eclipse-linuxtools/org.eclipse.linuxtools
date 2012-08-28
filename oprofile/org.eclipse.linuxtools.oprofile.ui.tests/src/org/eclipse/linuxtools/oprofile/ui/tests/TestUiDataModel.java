@@ -23,7 +23,7 @@ import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSymbol;
 
 public class TestUiDataModel extends TestCase {
 
-	private class TestingUiModelRoot extends UiModelRoot {
+	private static class TestingUiModelRoot extends UiModelRoot {
 		protected OpModelEvent[] getModelDataEvents() {
 			TestingOpModelRoot modelRoot = new TestingOpModelRoot();
 			modelRoot.refreshModel();
@@ -31,7 +31,7 @@ public class TestUiDataModel extends TestCase {
 		};
 	}
 
-	private class TestingUiModelRoot2 extends UiModelRoot {
+	private static class TestingUiModelRoot2 extends UiModelRoot {
 		protected OpModelEvent[] getModelDataEvents() {
 			return null;
 		};

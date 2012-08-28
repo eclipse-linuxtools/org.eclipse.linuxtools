@@ -357,7 +357,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		return output;
 	}
 		
-	private class StreamListener implements IStreamListener{
+	private static class StreamListener implements IStreamListener{
 		private int counter;
 		private BufferedWriter bw;
 		

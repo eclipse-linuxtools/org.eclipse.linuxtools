@@ -209,7 +209,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 * This class provides functionality for determining what image to 
 	 * display for each item in the tree.
 	 */
-	private class ViewLabelProvider extends LabelProvider {
+	private static class ViewLabelProvider extends LabelProvider {
 		public String getText(Object obj) {
 			return obj.toString();
 		}

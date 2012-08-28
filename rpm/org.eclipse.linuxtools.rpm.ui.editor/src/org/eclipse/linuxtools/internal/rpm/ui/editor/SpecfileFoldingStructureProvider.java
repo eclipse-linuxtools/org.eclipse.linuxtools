@@ -34,7 +34,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 public class SpecfileFoldingStructureProvider {
 
 	
-	private class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
+	private static class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
 		public int compare(SpecfileElement element1, SpecfileElement element2) {
 			Integer lineNbr1 = element1.getLineNumber();
 			Integer lineNbr2 = element2.getLineNumber();
