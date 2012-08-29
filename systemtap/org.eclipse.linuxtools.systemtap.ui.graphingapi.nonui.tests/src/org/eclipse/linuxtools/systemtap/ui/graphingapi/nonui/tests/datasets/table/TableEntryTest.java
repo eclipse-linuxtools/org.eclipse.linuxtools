@@ -1,5 +1,6 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -62,12 +63,12 @@ public class TableEntryTest {
 		assertNull(entry.getRow(10));
 		assertNull(entry.getRow(-1));
 		assertNotNull(entry.getRow(0));
-		assertEquals(data, entry.getRow(1));
+		assertArrayEquals(data, entry.getRow(1));
 
 		assertNull(entry.getRow(null));
 		assertNull(entry.getRow("asdf"));
 		assertNotNull(entry.getRow("2"));
-		assertEquals(data, entry.getRow("5"));
+		assertArrayEquals(data, entry.getRow("5"));
 	}
 	@Test
 	public void testGetColumn() {
