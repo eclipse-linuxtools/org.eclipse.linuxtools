@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	
@@ -206,7 +207,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public Image getImage() {
-		return ProfileRemoteLaunchPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/system_view.gif").createImage();
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/system_view.gif").createImage();
 	}
 	
 	@Override
