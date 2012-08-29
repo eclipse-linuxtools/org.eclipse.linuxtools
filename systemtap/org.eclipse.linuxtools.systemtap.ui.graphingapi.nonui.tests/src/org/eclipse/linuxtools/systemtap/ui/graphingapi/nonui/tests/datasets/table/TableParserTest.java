@@ -1,29 +1,29 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableParser;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
+import org.junit.Before;
+import org.junit.Test;
 
+public class TableParserTest {
 
-import junit.framework.TestCase;
-
-public class TableParserTest extends TestCase {
-	public TableParserTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setUp() {
 		parser = new TableParser(new String[] {"\\d+", "(\\D+)", "\\d+", "\\D+"}, "\n\n");
 		
 		IMemento m = XMLMemento.createWriteRoot("a");
 		parser.saveXML(m);
 		parser2 = new TableParser(m);
 	}
-	
+	@Test
 	public void testParse() {
 		assertNull(parser.parse(null));
 		assertNull(parser.parse(new StringBuilder("")));
@@ -43,7 +43,7 @@ public class TableParserTest extends TestCase {
 		assertEquals(2, entry.getRowCount());
 		assertEquals("1", entry.getRow(0)[0]);
 	}
-	
+	@Test
 	public void testSaveXML() {
 		IMemento m = XMLMemento.createWriteRoot("a");
 		parser.saveXML(m);
@@ -58,10 +58,6 @@ public class TableParserTest extends TestCase {
 		
 		IMemento child = m.getChild("Delimiter");
 		assertSame("\n\n", child.getString("parsingExpression"));
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	TableParser parser;

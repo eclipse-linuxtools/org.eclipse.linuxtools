@@ -1,6 +1,11 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowEntry;
@@ -10,24 +15,25 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.Tabl
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FilteredTableDataSetTest extends TestCase {
-	public FilteredTableDataSetTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+public class FilteredTableDataSetTest {
+	
+	@Before
+	public void setUp() {
 		data = new TableDataSet(new String[] {"a", "b", "c"});
 		dataSet = new FilteredTableDataSet(data);
 	}
 
+	@Test
 	public void testFilteredDataSet() {
 		FilteredTableDataSet fds = new FilteredTableDataSet(new String[] {"a", "b", "c"});
 		assertNotNull(fds);
 		assertNotNull(fds.getTitles());
 	}
 	
+	@Test
 	public void testAppend() {
 		TableEntry entry;
 		
@@ -54,6 +60,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertNull(dataSet.getRow(2));
 	}
 
+	@Test
 	public void testRemove() {
 		assertFalse(dataSet.remove(null));
 		assertFalse(dataSet.remove(new RowEntry()));
@@ -73,6 +80,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertFalse(dataSet.remove(0));
 	}
 	//End overwrite methods to insure data is removed from the original DataSet
+	@Test
 	public void testGetHistoricalData() {
 		TableEntry entry = new TableEntry();
 		entry.putRow(0, new String[] {"1", "2", "3"});
@@ -105,15 +113,16 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertSame("5", col[0]);
 	}
 	
+	@Test
 	public void testGetEntryCount() {
 		assertEquals(0, dataSet.getEntryCount());
 	}
-	
+	@Test
 	public void testGetEntry() {
 		assertNull(dataSet.getEntry(-1));
 		assertNull(dataSet.getEntry(20));
 	}
-	
+	@Test
 	public void testGetData() {
 		TableEntry entry= new TableEntry();
 		entry.add(new String[] {"1", "2", "3"});
@@ -126,6 +135,7 @@ public class FilteredTableDataSetTest extends TestCase {
 	}
 	
  	//Overwrite to ensure the data returned has all the filters applied
+	@Test
 	public void testGetColumn() {
 		TableEntry entry= new TableEntry();
 		entry.add(new String[] {"1", "2", "3"});
@@ -152,7 +162,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("2", col[0]);
 	}
-	
+	@Test
 	public void testAddFilter() {
 		TableEntry entry;
 		
@@ -182,7 +192,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals(5, ((Integer)row[0]).intValue());
 		assertEquals(2, ((Integer)row[2]).intValue());
 	}
-	
+	@Test
 	public void testRemoveFilter() {
 		TableEntry entry;
 		
@@ -212,7 +222,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals(5, ((Integer)row[0]).intValue());
 		assertEquals(2, ((Integer)row[2]).intValue());
 	}
-	
+	@Test
 	public void testClearFilters() {
 		TableEntry entry;
 		
@@ -244,7 +254,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals(2, ((Integer)row[2]).intValue());
 		assertEquals(0, dataSet.getFilters().length);
 	}
-	
+	@Test
 	public void testGetFilters() {
 		assertEquals(0, dataSet.getFilters().length);
 
@@ -256,10 +266,6 @@ public class FilteredTableDataSetTest extends TestCase {
 		
 		IDataSetFilter[] filters = dataSet.getFilters();
 		assertEquals(2, filters.length);
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	FilteredTableDataSet dataSet;

@@ -11,45 +11,41 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.ChartStreamDaemon;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class ChartStreamDaemonTest extends TestCase {
-	public ChartStreamDaemonTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-
+public class ChartStreamDaemonTest {
+	
+	@Before
+	public void setUp() {
 		csd = new ChartStreamDaemon(null, null);
 		assertNotNull(csd);
 
 		csd1 = new ChartStreamDaemon(new RowDataSet(new String[] {"a"}), new RowParser(new String[] {"\\w", "\\s"}));
 		assertNotNull(csd1);
 	}
-	
+	@Test
 	public void testHandleEvent() {
 		csd.handleDataEvent("a a a");
 		csd1.handleDataEvent("a a a");
 	}
-	
+	@Test
 	public void testIsDisposed() {
 		assertFalse(csd1.isDisposed());
 	}
-	
+	@Test
 	public void testDispose() {
 		assertFalse(csd1.isDisposed());
 		csd1.dispose();
 		assertTrue(csd1.isDisposed());
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-	
 	private ChartStreamDaemon csd, csd1;
 }

@@ -35,53 +35,42 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.Da
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.GraphDataTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.NumberTypeTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.UpdateManagerTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({// Adapters
+		BlockAdapterTest.class,
+		ScrollAdapterTest.class,
 
+		// Aggregates
+		AverageAggregateTest.class,
+		CountAggregateTest.class,
+		MaxAggregateTest.class,
+		MinAggregateTest.class,
+		SumAggregateTest.class,
+
+		// DataSets
+
+		// DataSets.Row
+		FilteredRowDataSetTest.class,
+		RowDataSetTest.class,
+		RowEntryTest.class,
+		RowParserTest.class,
+
+		// DataSets.Table
+		FilteredTableDataSetTest.class, TableDataSetTest.class,
+		TableEntryTest.class,
+		TableParserTest.class,
+
+		// Filters
+		MatchFilterTest.class, RangeFilterTest.class, SortFilterTest.class,
+		UniqueFilterTest.class,
+
+		// Structures
+		ChartStreamDaemonTest.class,
+		// ChartStreamDaemonTest2.class,
+		DataPointTest.class, GraphDataTest.class, NumberTypeTest.class,
+		UpdateManagerTest.class })
 public class AllTests {
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests");
-
-		//Adapters
-		suite.addTestSuite(BlockAdapterTest.class);
-		suite.addTestSuite(ScrollAdapterTest.class);
-		
-		//Aggregates
-		suite.addTestSuite(AverageAggregateTest.class);
-		suite.addTestSuite(CountAggregateTest.class);
-		suite.addTestSuite(MaxAggregateTest.class);
-		suite.addTestSuite(MinAggregateTest.class);
-		suite.addTestSuite(SumAggregateTest.class);
-		
-		//DataSets
-		
-		//DataSets.Row
-		suite.addTestSuite(FilteredRowDataSetTest.class);
-		suite.addTestSuite(RowDataSetTest.class);
-		suite.addTestSuite(RowEntryTest.class);
-		suite.addTestSuite(RowParserTest.class);
-		
-		//DataSets.Table
-		suite.addTestSuite(FilteredTableDataSetTest.class);
-		suite.addTestSuite(TableDataSetTest.class);
-		suite.addTestSuite(TableEntryTest.class);
-		suite.addTestSuite(TableParserTest.class);
-
-		//Filters
-		suite.addTestSuite(MatchFilterTest.class);
-		suite.addTestSuite(RangeFilterTest.class);
-		suite.addTestSuite(SortFilterTest.class);
-		suite.addTestSuite(UniqueFilterTest.class);
-
-		//Structures
-		suite.addTestSuite(ChartStreamDaemonTest.class);
-	//	suite.addTestSuite(ChartStreamDaemonTest2.class);
-		suite.addTestSuite(DataPointTest.class);
-		suite.addTestSuite(GraphDataTest.class);
-		suite.addTestSuite(NumberTypeTest.class);
-		suite.addTestSuite(UpdateManagerTest.class);
-
-		return suite;
-	}
 }

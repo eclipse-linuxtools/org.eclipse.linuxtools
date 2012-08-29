@@ -1,19 +1,10 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class DataPointTest extends TestCase {
-	public DataPointTest(String name) {
-		super(name);
-	}
+public class DataPointTest {
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-	
+	@Test
 	public void test() {}
 	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
 }
