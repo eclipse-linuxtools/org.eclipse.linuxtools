@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -50,7 +49,7 @@ public abstract class BrowserView extends ViewPart {
 	 * @author Ryan Morse
 	 *
 	 */
-	static class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+	static class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 		
 		public void dispose() {}

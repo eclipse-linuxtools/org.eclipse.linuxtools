@@ -14,34 +14,32 @@ package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-
 import org.eclipse.linuxtools.systemtap.ui.consolelog.LoggedCommand2;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.ChartStreamDaemon;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.ChartStreamDaemon;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 
 /**
  * The action to allow users to change the parsing expression while a script is activly running.
  * @author Ryan Morse
  */
-public class ModifyParsingAction extends ConsoleAction implements IWorkbenchWindowActionDelegate {
+public class ModifyParsingAction extends ConsoleAction {
 	/**
 	 * Prompts the user for a new regular expression to use in parsing the stap output for
 	 * the <code>DataSet</code>. If the user enters a new parsing expression then it will

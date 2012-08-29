@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.model;
 
-import java.io.Serializable;
 
-public class CovRootTreeElement extends AbstractTreeElement implements Serializable {
+public class CovRootTreeElement extends AbstractTreeElement {
 
 	/**
 	 * 

@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.GC;
  * An extension to GraphAxis.
  * @author Ryan Morse
  */
-public class GraphAxis2 extends GraphAxis implements IGraphPrimitive {
+public class GraphAxis2 extends GraphAxis {
 	public GraphAxis2(AGraph graph, String title, int tickCount, int type, Color color) {
 		super(graph, title, tickCount, type&1);
 		this.type = type;

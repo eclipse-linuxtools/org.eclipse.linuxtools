@@ -19,33 +19,31 @@ import java.text.MessageFormat;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.XMLMemento;
-
 import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardMetaData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModuleFileFilter;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
 
 /**
  * This class brings up a dialog box for the user to select what they want the
@@ -53,7 +51,7 @@ import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
  * dashboard for use at any time.
  * @author Ryan Morse
  */
-public class ExportScriptAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
+public class ExportScriptAction extends RunScriptAction {
 	/**
 	 * This method will bring up the export script dialog window for the user
 	 * to select what they want to new module to contain.  If the user enters

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.uistructures.StapSettingsDialog;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -26,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  * @see org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction
  */
-public class RunScriptOptionsAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
+public class RunScriptOptionsAction extends RunScriptAction {
 	public RunScriptOptionsAction() {
 		super();
 		LogManager.logDebug("initialized", this); //$NON-NLS-1$
