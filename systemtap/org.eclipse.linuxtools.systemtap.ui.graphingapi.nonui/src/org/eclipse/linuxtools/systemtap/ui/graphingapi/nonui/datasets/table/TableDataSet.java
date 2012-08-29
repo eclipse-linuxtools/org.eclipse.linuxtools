@@ -131,7 +131,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 		if(COL_ROW_NUM == col) {
 			Integer[] rows = new Integer[Math.min(end-start, getRowCount())];
 			for(int i=0;i<rows.length; i++)
-				rows[i] = new Integer(start+i+1);
+				rows[i] = Integer.valueOf(start+i+1);
 			return rows;
 		}
 		return data.get(data.size()-1).getColumn(col, start, end);
@@ -163,7 +163,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 		if(COL_ROW_NUM == col) {
 			Integer[] rows = new Integer[Math.min(end-start, data.size())];
 			for(int i=0;i<rows.length; i++)
-				rows[i] = new Integer(start+i+1);
+				rows[i] = Integer.valueOf(start+i+1);
 			return rows;
 		}
 		
@@ -172,7 +172,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 		for(int i=0; i<d.length; i++) {
 			d[i] = getEntry(i+start).get(key, col);
 			if(null == d[i])
-				d[i] = new Integer(0);
+				d[i] = Integer.valueOf(0);
 		}
 		return d;
 	}

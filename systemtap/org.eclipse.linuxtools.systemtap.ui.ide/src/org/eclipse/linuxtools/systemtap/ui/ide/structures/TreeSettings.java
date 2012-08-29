@@ -149,7 +149,7 @@ public final class TreeSettings {
 			writeTree(child, probes, 0);
 
 			child = data.createChild("modifiedDate");
-			child.putString("date", (new Long(Calendar.getInstance().getTimeInMillis())).toString());
+			child.putString("date", (Long.valueOf(Calendar.getInstance().getTimeInMillis())).toString());
 
 			FileWriter writer = new FileWriter(settingsFile);
 			data.save(writer);

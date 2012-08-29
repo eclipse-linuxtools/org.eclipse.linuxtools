@@ -146,7 +146,7 @@ public class RowDataSet implements IHistoricalDataSet {
 		if(COL_ROW_NUM == col) {
 			Integer[] rows = new Integer[Math.min(end-start, data.size())];
 			for(int i=0;i<rows.length; i++)
-				rows[i] = new Integer(start+i+1);
+				rows[i] = Integer.valueOf(start+i+1);
 			return rows;
 		}
 

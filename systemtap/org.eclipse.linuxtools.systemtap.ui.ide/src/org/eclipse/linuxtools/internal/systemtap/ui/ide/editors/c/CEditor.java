@@ -123,12 +123,12 @@ public class CEditor extends AbstractDecoratedTextEditor {
 				{
 					if(chars[needle-1] == '/' && chars[needle] == '*')
 					{
-						commentChunks.add(new Integer(needle));
+						commentChunks.add(needle);
 						while(needle < chars.length)
 						{
 							if(chars[needle-1] == '*' && chars[needle] == '/')
 							{
-								commentChunks.add(new Integer(needle));
+								commentChunks.add(needle);
 								needle++;
 								break;
 							}

@@ -157,7 +157,7 @@ public class BlockAdapter implements IAdapter {
 		Object[] row;
 		for(int j,i=0; i<o.length; i++) {
 			row = data.getRow(i+start);
-			o[i][0] = (IDataSet.COL_ROW_NUM == xSeries) ? new Integer(i) : row[xSeries];
+			o[i][0] = (IDataSet.COL_ROW_NUM == xSeries) ? Integer.valueOf(i) : row[xSeries];
 
 			for(j=0; j<ySeries.length; j++)
 				o[i][j+1] = row[ySeries[j]];
