@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 
-	private enum ResourceType { FILE, DIRECTORY };
+	private enum ResourceType { FILE, DIRECTORY }
 
 	private URI getEmptyPathURI(String scheme) {
 		try {

@@ -55,7 +55,7 @@ public class STPPartitioner extends FastPartitioner {
 			}
 		}
 		System.out.println(buffer);
-	};
+	}
 	
 }
 

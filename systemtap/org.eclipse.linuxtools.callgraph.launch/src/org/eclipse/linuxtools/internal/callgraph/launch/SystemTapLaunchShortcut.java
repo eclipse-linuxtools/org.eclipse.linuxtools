@@ -468,7 +468,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	}
 
 	public void errorHandler() {
-	};
+	}
 
 	/*
 	 * The following are convenience methods for test programs, etc. to check

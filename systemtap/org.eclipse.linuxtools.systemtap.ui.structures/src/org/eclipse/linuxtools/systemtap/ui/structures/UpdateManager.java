@@ -72,7 +72,7 @@ public class UpdateManager {
 				for(int i = 0; i < updateListeners.size(); i++)
 					(updateListeners.get(i)).handleUpdateEvent();
 			}
-			}catch(Exception e) {;}
+			}catch(Exception e) {}
 		}
 			
 	}

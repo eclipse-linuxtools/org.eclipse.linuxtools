@@ -26,7 +26,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 	private final String name;
 	private final String srcFile;
 	private ArrayList<Block> functionBlocks = new ArrayList<Block>();
-	private int numCounts = 0, blocksExecuted = 0, numBlocks = 0;;
+	private int numCounts = 0, blocksExecuted = 0, numBlocks = 0;
 	private final CoverageInfo cvrge = new CoverageInfo();
 
 	public GcnoFunction(long fnctnIdent, long fnctnChksm, String fnctnName, String fnctnSrcFle, long fnctnFrstLnNmbr) {

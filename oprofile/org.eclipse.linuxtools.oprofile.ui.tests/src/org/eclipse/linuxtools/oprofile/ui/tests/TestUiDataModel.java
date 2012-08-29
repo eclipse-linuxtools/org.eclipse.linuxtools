@@ -28,13 +28,13 @@ public class TestUiDataModel extends TestCase {
 			TestingOpModelRoot modelRoot = new TestingOpModelRoot();
 			modelRoot.refreshModel();
 			return modelRoot.getEvents();
-		};
+		}
 	}
 
 	private static class TestingUiModelRoot2 extends UiModelRoot {
 		protected OpModelEvent[] getModelDataEvents() {
 			return null;
-		};
+		}
 	}
 
 	private TestingUiModelRoot _uiModelRoot;

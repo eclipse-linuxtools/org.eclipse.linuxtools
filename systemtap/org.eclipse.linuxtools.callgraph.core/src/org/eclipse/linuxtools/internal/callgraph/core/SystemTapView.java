@@ -132,7 +132,7 @@ public abstract class SystemTapView extends ViewPart {
             return Status.OK_STATUS;
         }
 
-    };
+    }
 
     /**
      * Method for fetching a parser object. This method should return

@@ -50,7 +50,7 @@ public class JavaParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		javaParser = ChangeLogExtensionManager.getExtensionManager().getParserContributor("CompilationUnitEditor");;
+		javaParser = ChangeLogExtensionManager.getExtensionManager().getParserContributor("CompilationUnitEditor");
 		project = new ChangeLogTestProject("java-parser-test-project");
 		// make it a Java project
 		project.addJavaNature();

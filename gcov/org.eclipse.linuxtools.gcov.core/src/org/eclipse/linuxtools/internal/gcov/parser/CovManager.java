@@ -236,7 +236,7 @@ public class CovManager implements Serializable {
 
 				for (GcnoFunction fnctn : src.getFnctns()) {
 					String name = fnctn.getName();
-					name = STSymbolManager.sharedInstance.demangle(binaryObject, name, project);;
+					name = STSymbolManager.sharedInstance.demangle(binaryObject, name, project);
 					srcTreeElem.addChild(new CovFunctionTreeElement(
 							srcTreeElem, name, fnctn.getSrcFile(), fnctn
 							.getFirstLineNmbr(), fnctn.getCvrge()

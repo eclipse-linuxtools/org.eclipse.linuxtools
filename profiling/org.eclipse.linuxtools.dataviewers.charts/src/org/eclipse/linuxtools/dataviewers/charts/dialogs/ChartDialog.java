@@ -411,7 +411,7 @@ public class ChartDialog  extends Dialog {
 		public void widgetSelected(SelectionEvent e) {
 			validateInput();
 		}
-	};
+	}
 	
 	/**
 	 * @param viewer

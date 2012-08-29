@@ -282,4 +282,4 @@ public class StapGraphMouseListener implements MouseListener {
 //
 //		graph.setSelection(null);
 	}
-};
+}
