@@ -91,13 +91,13 @@ public final class AvailableFilterTypes {
 			
 			Number low, high;
 			if(l.contains("."))
-				low = new Double(Double.parseDouble(l));
+				low = Double.valueOf(l);
 			else
 				low = Long.valueOf(l);
 			if(h.contains("."))
-				high = new Double(Double.parseDouble(h));
+				high = Double.valueOf(h);
 			else
-				high = new Long(Long.parseLong(h));
+				high = Long.valueOf(h);
 			
 			return new RangeFilter(column, low, high, style);
 		case 2:
