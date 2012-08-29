@@ -38,7 +38,6 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
-import org.eclipse.ui.console.TextConsole;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
