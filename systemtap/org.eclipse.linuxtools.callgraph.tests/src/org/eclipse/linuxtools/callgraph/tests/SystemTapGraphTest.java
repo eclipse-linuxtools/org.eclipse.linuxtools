@@ -36,7 +36,7 @@ public class SystemTapGraphTest extends TestCase {
 	}*/
 	private boolean manual = false;
 	
-	public void testGraphLoading() throws InterruptedException {
+	public void testGraphLoading() {
 
 		StapGraphParser parse = new StapGraphParser();
 		parse.setSourcePath(Activator.PLUGIN_LOCATION+"eag.graph");

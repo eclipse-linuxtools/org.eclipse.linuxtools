@@ -105,7 +105,7 @@ public class TestSessionsParse extends TestCase {
 		assertEquals(evt3, evt3_ss_s2.getEvent());
 	}
 	
-	public void testStringOutput() throws Exception {
+	public void testStringOutput() {
 		assertEquals(EVENT1_OUTPUT, eventList.get(0).toString());
 		assertEquals(EVENT1_OUTPUT_WITHTAB, eventList.get(0).toString("\t")); //$NON-NLS-1$
 		assertEquals(EVENT2_OUTPUT, eventList.get(1).toString());

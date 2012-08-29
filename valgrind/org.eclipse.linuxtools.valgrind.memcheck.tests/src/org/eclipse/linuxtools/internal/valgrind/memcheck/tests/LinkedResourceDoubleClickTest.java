@@ -84,7 +84,7 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 		}
 	}
 	
-	private void doDoubleClick() throws Exception {
+	private void doDoubleClick() {
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		CoreMessagesViewer viewer = view.getMessagesViewer();
 

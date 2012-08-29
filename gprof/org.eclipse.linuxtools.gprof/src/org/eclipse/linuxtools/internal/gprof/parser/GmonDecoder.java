@@ -15,7 +15,6 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -205,7 +204,7 @@ public class GmonDecoder {
 	}
 
 	
-	public void dumpGmonResult(PrintStream ps) throws FileNotFoundException{
+	public void dumpGmonResult(PrintStream ps){
 		
 		ps.println("-- gmon Results --");
 		ps.println("cookie "+cookie);

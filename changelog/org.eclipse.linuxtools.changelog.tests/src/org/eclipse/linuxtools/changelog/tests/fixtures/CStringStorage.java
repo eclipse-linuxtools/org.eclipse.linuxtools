@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
 /**
@@ -25,7 +24,8 @@ public class CStringStorage implements IStorage {
 		this.string = input;
 	}
 
-	public InputStream getContents() throws CoreException {
+	@Override
+	public InputStream getContents() {
 		return new ByteArrayInputStream(string.getBytes());
 	}
 

@@ -68,7 +68,7 @@ public class GcovTestCPP {
 			}
 
 			@Test
-			public void cmpileProject() throws Exception {
+			public void cmpileProject() {
 				GcovTest.compileProject(bot, PROJECT_NAME);
 			}
 		

@@ -69,7 +69,7 @@ public class GcovTestCLibrary {
 			}
 
 			@Test
-			public void compileProject() throws Exception {
+			public void compileProject() {
 				GcovTest.compileProject(bot, PROJECT_NAME);
 			}
 

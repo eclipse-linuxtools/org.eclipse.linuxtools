@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.internal.cdt.libhover.preferences.PreferenceConsta
 
 public class CheckDevhelp extends TestCase {
 
+	@Override
 	protected void setUp() throws Exception {
 		IPath p = LibhoverPlugin.getDefault().getStateLocation().append("C"); //$NON-NLS-1$
 		File f = new File(p.toOSString());
@@ -70,7 +71,8 @@ public class CheckDevhelp extends TestCase {
 		assertTrue(found);
 	}
 	
-	protected void tearDown() throws Exception {
+	@Override
+	protected void tearDown() {
 	}
 
 }

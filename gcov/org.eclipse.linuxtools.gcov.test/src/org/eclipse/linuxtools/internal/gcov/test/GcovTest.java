@@ -68,7 +68,7 @@ public abstract class GcovTest {
 			bot.waitUntil(new DefaultCondition() {
 
 				@Override
-				public boolean test() throws Exception {
+				public boolean test() {
 					return pm.isDone();
 				}
 

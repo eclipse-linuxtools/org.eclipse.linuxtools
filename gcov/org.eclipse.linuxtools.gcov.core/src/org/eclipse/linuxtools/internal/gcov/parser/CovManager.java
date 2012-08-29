@@ -93,7 +93,7 @@ public class CovManager implements Serializable {
 	 * @throws CoreException, IOException, InterruptedException
 	 */
 
-	public void processCovFiles(List<String> covFilesPaths, String initialGcda) throws CoreException, IOException, InterruptedException {
+	public void processCovFiles(List<String> covFilesPaths, String initialGcda) throws CoreException, IOException {
 		GcdaRecordsParser daRcrd = null;
 		DataInput traceFile;
 		
@@ -323,11 +323,9 @@ public class CovManager implements Serializable {
 	/**
 	 * Retrieve a list containing gcda paths from a binary file  
 	 * @return
-	 * @throws CoreException
-	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public List<String> getGCDALocations() throws CoreException, IOException, InterruptedException
+	public List<String> getGCDALocations() throws InterruptedException
 	{	
 		IBinaryObject binaryObject = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryPath));
 		String binaryPath = binaryObject.getPath().toOSString();
@@ -417,7 +415,7 @@ public class CovManager implements Serializable {
 		}
 	}
 
-	public void dumpProcessCovFilesResult(PrintStream ps) throws FileNotFoundException {
+	public void dumpProcessCovFilesResult(PrintStream ps) {
 		ps.println("Parse gcda and gcno files done, resolve graph algorithm executed, now display results");
 		ps.println("- PRINT FUNCTIONS ARRAY : ");
 		for (int i = 0; i < allFnctns.size(); i++) {

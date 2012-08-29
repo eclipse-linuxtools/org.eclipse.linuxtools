@@ -42,7 +42,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 
-	private void doDoubleClick() throws Exception {
+	private void doDoubleClick() {
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		CoreMessagesViewer viewer = view.getMessagesViewer();
 

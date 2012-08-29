@@ -168,7 +168,7 @@ public class TestInfoParse extends TestCase {
 		assertEquals(0, info_0ctr.getNrCounters());
 	}
 	
-	public void testUnitMask() throws Exception {
+	public void testUnitMask() {
 		//test types of masks setting/unsetting
 		OpUnitMask mask_bit1 = info.getEvents(0)[1].getUnitMask(),
 //					mask_bit2 = info.getEvents(1)[1].getUnitMask(),
@@ -401,7 +401,7 @@ public class TestInfoParse extends TestCase {
 		assertEquals(1, mask_invalid.getMaskValue());
 	}
 	
-	public void testInfo() throws Exception {
+	public void testInfo() {
 		OpEvent[] result = info.getEvents(-1);
 		assertEquals(0, result.length);
 

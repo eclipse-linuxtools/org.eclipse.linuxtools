@@ -79,7 +79,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 
 	// Implemented abstract method of AbstractTest
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
 		OprofileSetupTab setupTab = new OprofileSetupTab();
 		configTab.setDefaults(wc);
