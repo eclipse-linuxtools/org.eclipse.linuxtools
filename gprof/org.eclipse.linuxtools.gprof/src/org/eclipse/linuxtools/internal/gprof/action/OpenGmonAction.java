@@ -42,6 +42,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenGmonAction implements IEditorLauncher {
 
+	@Override
 	public void open(IPath file) {
 		String s = getDefaultBinary(file);
 		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();

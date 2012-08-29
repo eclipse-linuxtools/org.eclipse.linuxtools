@@ -46,6 +46,7 @@ public class RunScriptChartAction extends RunScriptAction {
 		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logDebug("disposed", this); //$NON-NLS-1$
 		super.dispose();
@@ -59,6 +60,7 @@ public class RunScriptChartAction extends RunScriptAction {
 	 * for a <code>DataSet</code>. Once everything is setup, it will attempt to switch to the
 	 * Graphing Perspective.
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
@@ -107,6 +109,7 @@ public class RunScriptChartAction extends RunScriptAction {
 	 * selection of whether to use script options.
 	 * @return String[] representing the entire command that needs to be run.
 	 */
+	@Override
 	protected String[] buildScript() {
 		String[] script;
 		getChartingOptions();

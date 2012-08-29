@@ -1845,7 +1845,8 @@ public class StapGraph extends Graph {
 	
 	public static final Comparator<Entry<String, Long>> VALUE_ORDER = new Comparator<Entry<String, Long>>()
     {
-        public int compare(Entry<String, Long> a, Entry<String, Long> b){
+        @Override
+		public int compare(Entry<String, Long> a, Entry<String, Long> b){
         	return a.getValue().compareTo((b.getValue()));
         }
     };

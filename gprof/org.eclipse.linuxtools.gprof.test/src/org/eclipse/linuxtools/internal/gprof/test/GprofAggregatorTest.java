@@ -39,6 +39,7 @@ public class GprofAggregatorTest extends TestCase {
 			final String dirName = testDir.getName();
 			ats.addTest(
 					new TestCase(dirName + ":Aggregate") {
+						@Override
 						public void runTest() throws Throwable {
 							testAggregation(dirName);
 						}

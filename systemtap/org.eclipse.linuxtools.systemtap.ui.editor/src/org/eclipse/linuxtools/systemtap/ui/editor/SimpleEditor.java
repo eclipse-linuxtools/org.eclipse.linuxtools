@@ -46,6 +46,7 @@ public class SimpleEditor extends TextEditor {
 		setDocumentProvider(new SimpleDocumentProvider());
 	}
 
+	@Override
 	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
 		super.init(site, input);
 		RecentFileMenuManager.getInstance().registerActionBar(getEditorSite().getActionBars());
@@ -105,6 +106,7 @@ public class SimpleEditor extends TextEditor {
 	/**
 	 * Performs a SaveAs on the IDocument.
 	 */
+	@Override
 	public void doSaveAs() {
 		File file = queryFile();
 		if(file == null) {
@@ -183,6 +185,7 @@ public class SimpleEditor extends TextEditor {
 	 * Determines whether saving is allowed currently.
 	 * @return boolean value indicating whether or not saving is allowed
 	 */
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}

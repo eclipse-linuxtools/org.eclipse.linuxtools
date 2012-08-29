@@ -926,6 +926,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * <br>
 	 * The name of the created launch will be 'DefaultSystemTapLaunch' 
 	 */
+	@Override
 	public void launch(IBinary bin, String mode) {
 		initialize();
 		this.bin = bin;

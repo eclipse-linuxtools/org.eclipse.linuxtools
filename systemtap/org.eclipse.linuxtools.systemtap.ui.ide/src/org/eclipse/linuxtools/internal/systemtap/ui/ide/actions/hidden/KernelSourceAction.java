@@ -118,6 +118,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 	 * @see TreeNode#isClickable()
 	 * @see TreeExpandCollapseAction
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run", this); //$NON-NLS-1$
 		IWorkbench wb = PlatformUI.getWorkbench();

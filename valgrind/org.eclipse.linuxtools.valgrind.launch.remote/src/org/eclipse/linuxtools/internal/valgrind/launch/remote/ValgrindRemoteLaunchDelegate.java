@@ -44,6 +44,7 @@ ValgrindLaunchConfigurationDelegate {
 	private IPath remoteBinFile;
 	private RemoteConnection rc;
 
+	@Override
 	public void launch(final ILaunchConfiguration config, String mode,
 			final ILaunch launch, IProgressMonitor m) throws CoreException {
 		if (m == null) {
@@ -189,6 +190,7 @@ ValgrindLaunchConfigurationDelegate {
 	}
 
 
+	@Override
 	protected String createLaunchStr() {
 		return config.getName()
 		+ " [" + getPlugin().getToolName(toolID) + " on " + rc.getId() + "] "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

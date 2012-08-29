@@ -47,6 +47,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public int compare(Object obj1, Object obj2) {
 		TreeElement e1 = (TreeElement) obj1;
 		TreeElement e2 = (TreeElement) obj2;
@@ -59,6 +60,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
 	 */
+	@Override
 	public String getColumnHeaderText() {
 		String prefix = "";
 		Object o = viewer.getInput();
@@ -78,6 +80,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getColumnHeaderTooltip()
 	 */
+	@Override
 	public String getColumnHeaderTooltip() {
 		Object o = viewer.getInput();
 		if (o instanceof GmonDecoder) {
@@ -97,6 +100,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
 	 */
+	@Override
 	public String getValue(Object obj) {
 		TreeElement e = (TreeElement) obj;
 		int i = e.getSamples();
@@ -177,6 +181,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getBackground(java.lang.Object)
 	 */
+	@Override
 	public Color getBackground(Object element) {
 		return GmonView.getBackground(element);
 	}
@@ -217,6 +222,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 		this.samples = !this.samples;
 	}
 
+	@Override
 	public Number getNumber(Object obj) {
 		TreeElement e = (TreeElement) obj;
 		int i = e.getSamples();

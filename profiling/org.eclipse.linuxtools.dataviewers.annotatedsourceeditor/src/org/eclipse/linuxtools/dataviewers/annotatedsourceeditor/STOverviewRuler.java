@@ -383,23 +383,27 @@ public class STOverviewRuler implements IOverviewRuler {
 		fHeader= new Canvas(parent, SWT.NONE);
 		fCanvas= new Canvas(parent, SWT.NO_BACKGROUND);
 		fCanvas.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(PaintEvent event) {
 				if (fTextViewer != null)
 					doubleBufferPaint(event.gc);
 			}
 		});
 		fCanvas.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent event) {
 				handleDispose();
 				fTextViewer= null;
 			}
 		});
 		fCanvas.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDown(MouseEvent event) {
 				handleMouseDown(event);
 			}
 		});
 		fCanvas.addMouseMoveListener(new MouseMoveListener() {
+			@Override
 			public void mouseMove(MouseEvent event) {
 				handleMouseMove(event);
 			}
@@ -675,6 +679,7 @@ public class STOverviewRuler implements IOverviewRuler {
 			Display d= fCanvas.getDisplay();
 			if (d != null) {
 				d.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						redraw();
 						updateHeader();
@@ -908,6 +913,7 @@ public class STOverviewRuler implements IOverviewRuler {
 	}
 	
 	
+	@Override
 	public void setAnnotationTypeColor(Object annotationType, Color color) {
 		if (color != null)
 			fAnnotationTypes2Colors.put(annotationType, color);

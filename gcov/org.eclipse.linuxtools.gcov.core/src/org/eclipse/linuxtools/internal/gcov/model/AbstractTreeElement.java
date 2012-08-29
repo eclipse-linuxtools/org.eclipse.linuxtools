@@ -34,35 +34,43 @@ public abstract class AbstractTreeElement implements TreeElement{
 		this.instrumentedLines = instrumentedLines;
 	}
 	
+	@Override
 	public TreeElement getParent() {
 		return parent;
 	}
 	
+	@Override
 	public boolean hasChildren() {
 		return (children.size()>0);
 	}
 
+	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return children;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 	
+	@Override
 	public TreeElement getRoot() {
 		if (parent == null) return this;
 		return parent.getRoot();
 	}
 
+	@Override
 	public int getExecutedLines() {
 		return executedLines;
 	}
 	
+	@Override
 	public int getInstrumentedLines() {
 		return instrumentedLines;
 	}
 
+	@Override
 	public float getCoveragePercentage() {
 		 if (instrumentedLines !=0 )
 			return (100.f*executedLines)/(instrumentedLines);
@@ -73,6 +81,7 @@ public abstract class AbstractTreeElement implements TreeElement{
 		children.add(child);
 	}
 	
+	@Override
 	public int getTotalLines() {
 		return totalLines;
 	}

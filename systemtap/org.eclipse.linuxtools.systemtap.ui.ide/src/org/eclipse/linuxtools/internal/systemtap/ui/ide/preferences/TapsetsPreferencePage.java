@@ -34,6 +34,7 @@ public class TapsetsPreferencePage extends FieldEditorPreferencePage implements 
 	 * of preferences. Each field editor knows how to save and
 	 * restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new PathEditor(IDEPreferenceConstants.P_TAPSETS,
@@ -45,6 +46,7 @@ public class TapsetsPreferencePage extends FieldEditorPreferencePage implements 
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

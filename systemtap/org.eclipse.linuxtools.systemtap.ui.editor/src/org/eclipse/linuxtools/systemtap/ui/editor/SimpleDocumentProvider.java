@@ -40,10 +40,12 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 
 public class SimpleDocumentProvider extends AbstractDocumentProvider {
+	@Override
 	public boolean canSaveDocument(Object element) {
 		return super.canSaveDocument(element);
 	}
 
+	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
 		if (element instanceof IEditorInput) {
 			IDocument document= new Document();
@@ -181,6 +183,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#getOperationRunner(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
@@ -188,6 +191,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isModifiable(java.lang.Object)
 	 */
+	@Override
 	public boolean isModifiable(Object element) {
 		if (element instanceof IPathEditorInput) {
 			IPathEditorInput pei= (IPathEditorInput) element;
@@ -200,6 +204,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isReadOnly(java.lang.Object)
 	 */
+	@Override
 	public boolean isReadOnly(Object element) {
 		return !isModifiable(element);
 	}
@@ -207,6 +212,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isStateValidated(java.lang.Object)
 	 */
+	@Override
 	public boolean isStateValidated(Object element) {
 		return true;
 	}

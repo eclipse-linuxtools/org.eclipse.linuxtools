@@ -178,6 +178,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		scriptButton.setText(Messages.getString("SystemTapOptionsTab.BrowseFiles")); //$NON-NLS-1$
 		scriptButton.setLayoutData(new GridData());
 		scriptButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String filePath = scriptLocation.getText();
 				FileDialog dialog = new FileDialog(sh, SWT.SAVE);
@@ -200,6 +201,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		Button binaryButton = new Button(fileComp, SWT.PUSH);
 		binaryButton.setText(Messages.getString("SystemTapOptionsTab.WorkspaceButton2")); //$NON-NLS-1$
 		binaryButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(sh, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 				dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource"));  //$NON-NLS-1$
@@ -229,6 +231,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		Button argumentsButton = new Button(argumentsComp, SWT.PUSH);
 		argumentsButton.setText(Messages.getString("LaunchWizard.Func")); //$NON-NLS-1$
 		argumentsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				argumentsLocation.setText(
 						argumentsLocation.getText() + " process(\""  //$NON-NLS-1$
@@ -246,6 +249,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		launch.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
 		launch.setText(Messages.getString("LaunchWizard.Launch")); //$NON-NLS-1$
 		launch.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 					scriptPath = scriptLocation.getText();
 					binaryPath = binaryLocation.getText();
@@ -281,6 +285,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		return completed;
 	}
 	
+	@Override
 	public String setScriptPath() {
 		scriptPath = "IMPLEMENT";
 		return scriptPath;

@@ -110,6 +110,7 @@ public class TreeNode {
 			this.add((TreeNode)children[j]);
 	}
 	
+	@Override
 	public String toString() {
 		return display;
 	}

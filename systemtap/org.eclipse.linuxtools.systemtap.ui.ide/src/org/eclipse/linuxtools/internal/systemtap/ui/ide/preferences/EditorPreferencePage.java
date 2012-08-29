@@ -28,6 +28,7 @@ public class EditorPreferencePage extends FieldEditorPreferencePage implements I
 		LogManager.logDebug("End EditorPreferencePage:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new ColorFieldEditor(
@@ -45,6 +46,7 @@ public class EditorPreferencePage extends FieldEditorPreferencePage implements I
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

@@ -28,6 +28,7 @@ public class GraphAxis2 extends GraphAxis {
 		this.color = color;
 	}
 
+	@Override
 	public void calculateBounds() {
 		x1 = graph.getXPadding();
 		y1 = graph.getYPadding();
@@ -80,16 +81,19 @@ public class GraphAxis2 extends GraphAxis {
 		}
 	}
 
+	@Override
 	protected void drawGridLine(GC gc, int x1, int y1, int x2, int y2) {
 		if(HIDE_GRID_LINES != (HIDE_GRID_LINES&type))
 			super.drawGridLine(gc, x1, y1, x2, y2);
 	}
 	
+	@Override
 	protected void drawTick(GC gc, int x, int y, String val) {
 		if(HIDE_TICKS != (HIDE_TICKS&type))
 			super.drawTick(gc, x, y, val);
 	}
 
+	@Override
 	protected void drawTitle(GC gc) {
 		if(HIDE_TITLE != (HIDE_TITLE&type))
 			super.drawTitle(gc);

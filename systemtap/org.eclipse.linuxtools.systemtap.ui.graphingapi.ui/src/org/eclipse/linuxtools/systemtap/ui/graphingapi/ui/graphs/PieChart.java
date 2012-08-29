@@ -41,6 +41,7 @@ public class PieChart extends AChart implements IBlockGraph {
 		legend = new GraphLegend(this, labels, colors);
 	}
 	
+	@Override
 	public void paintElementList(GC gc) {
 		updateLegend(); //Make sure legend has current keys
 		Color temp = gc.getForeground();
@@ -74,10 +75,12 @@ public class PieChart extends AChart implements IBlockGraph {
 		gc.setBackground(temp1);
 	}
 	
+	@Override
 	public boolean isMultiGraph() {
 		return false;
 	}
 	
+	@Override
 	public void handleUpdateEvent() {
 		if(null == adapter) return;
 

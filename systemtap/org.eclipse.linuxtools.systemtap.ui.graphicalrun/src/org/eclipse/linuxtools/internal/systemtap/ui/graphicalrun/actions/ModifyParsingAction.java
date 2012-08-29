@@ -47,6 +47,7 @@ public class ModifyParsingAction extends ConsoleAction {
 	 * Finally, it will dispose of the old <code>ChartStreamDaemon2</code> and add an new
 	 * one in its place.
 	 */
+	@Override
 	public void run() {
 		DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, getFilePath());
 		IWorkbench workbench = PlatformUI.getWorkbench();

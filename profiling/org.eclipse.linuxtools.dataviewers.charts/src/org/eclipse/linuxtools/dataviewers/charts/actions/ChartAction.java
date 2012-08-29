@@ -41,6 +41,7 @@ public class ChartAction extends Action {
 		dialog = createDialog(shell, viewer);
 		setEnabled(!viewer.getViewer().getSelection().isEmpty());
 		viewer.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				setEnabled(!event.getSelection().isEmpty());
 			}

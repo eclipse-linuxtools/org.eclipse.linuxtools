@@ -52,6 +52,7 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	 * Called at the end of the layout algorithm -- change the size and colour
 	 * of each node according to times called/total time
 	 */
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, 
 			InternalRelationship[] relationshipsToConsider) {
 		final int minimumSize = 40;

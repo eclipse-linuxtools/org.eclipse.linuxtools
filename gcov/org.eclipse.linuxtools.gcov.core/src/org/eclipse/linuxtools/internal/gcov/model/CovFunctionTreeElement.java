@@ -32,14 +32,17 @@ public class CovFunctionTreeElement extends AbstractTreeElement {
 		
 	/* no children for functions*/
 	
+	@Override
 	public boolean hasChildren() {
 		return false;
 	}
 
+	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return null;
 	}
 
+	@Override
 	public void addChild(TreeElement child){
 	}
 	

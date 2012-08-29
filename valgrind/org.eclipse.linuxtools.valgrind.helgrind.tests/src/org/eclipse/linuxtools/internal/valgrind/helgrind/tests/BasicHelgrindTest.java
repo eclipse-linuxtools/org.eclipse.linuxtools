@@ -16,11 +16,13 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 
 public class BasicHelgrindTest extends AbstractHelgrindTest {
 	
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 	
+	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();

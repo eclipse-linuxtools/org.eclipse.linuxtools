@@ -26,6 +26,7 @@ public class OpenRecentFileAction extends OpenFileAction {
 		super.init(getWorkbenchWindow());
 	}
 	
+	@Override
 	protected File queryFile() {
 		int index = Integer.parseInt(this.getText().substring(0, 1));
 		

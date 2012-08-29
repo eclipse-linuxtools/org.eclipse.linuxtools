@@ -34,6 +34,7 @@ public class CodeAssistPreferencePage extends FieldEditorPreferencePage implemen
 	 * of preferences. Each field editor knows how to save and
 	 * restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(
@@ -66,6 +67,7 @@ public class CodeAssistPreferencePage extends FieldEditorPreferencePage implemen
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

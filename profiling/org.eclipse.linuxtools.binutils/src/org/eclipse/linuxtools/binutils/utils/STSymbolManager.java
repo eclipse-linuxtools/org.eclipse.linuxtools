@@ -91,6 +91,7 @@ public class STSymbolManager {
 	 */
 	private STSymbolManager() {
 		Runnable worker = new Runnable() {
+			@Override
 			public void run() {
 				try {
 					do {

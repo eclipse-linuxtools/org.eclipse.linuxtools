@@ -61,6 +61,7 @@ public class ExportScriptAction extends RunScriptAction {
 	
 	private static String scriptFileName = "/script.stp";
 	
+	@Override
 	public void run(IAction action) {
 		String script = getFilePath();
 		if(null == script || script.length() <= 0) {
@@ -242,6 +243,7 @@ public class ExportScriptAction extends RunScriptAction {
 	/**
 	 * Removes all internal references to objects.  No other method should be called after this.
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 	}

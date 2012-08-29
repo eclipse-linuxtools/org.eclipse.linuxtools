@@ -27,6 +27,7 @@ public class CovFolderContentProvider implements ITreeContentProvider {
 	protected CovFolderContentProvider(){
 	}
 
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		TreeElement elem = (TreeElement) parentElement;
 		LinkedList<? extends TreeElement> list = elem.getChildren();
@@ -35,16 +36,19 @@ public class CovFolderContentProvider implements ITreeContentProvider {
 		else return null;
 	}
 
+	@Override
 	public Object getParent(Object element) {
 		TreeElement elem = (TreeElement) element;
 		return elem.getParent();
 	}
 
+	@Override
 	public boolean hasChildren(Object element) {
 		TreeElement elem = (TreeElement) element;
 		return elem.hasChildren();
 	}
 
+	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement == null) return new Object[0];
 		CovManager cvrgMnger = (CovManager)inputElement;
@@ -53,9 +57,11 @@ public class CovFolderContentProvider implements ITreeContentProvider {
 		};
 	}
 
+	@Override
 	public void dispose() {
 	}
 
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}	
 }

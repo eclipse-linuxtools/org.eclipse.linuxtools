@@ -382,6 +382,7 @@ public class CovManager implements Serializable {
 			this.list = files;
 		}
 
+		@Override
 		public void run()
 		{
 			try {

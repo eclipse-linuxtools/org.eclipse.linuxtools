@@ -100,6 +100,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 	 * or it inserts text for a function call to the selected function in the active STPEditor
 	 * (creating a new editor if there is not one currently open).
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchPage page = window.getActivePage();

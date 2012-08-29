@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
  * @author Ryan Morse
  */
 public class CDocumentProvider extends SimpleDocumentProvider {
+	@Override
 	protected void setupDocument(IDocument document) {
 		LogManager.logDebug("Start setupDocument: document-" + document, this); //$NON-NLS-1$
 		if (document != null) {

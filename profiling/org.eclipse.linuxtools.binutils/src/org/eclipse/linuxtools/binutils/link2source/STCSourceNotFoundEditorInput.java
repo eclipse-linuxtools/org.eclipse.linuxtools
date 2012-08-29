@@ -48,6 +48,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#exists()
 	 */
+	@Override
 	public boolean exists() {
 		return false;
 	}
@@ -56,6 +57,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/c_file_obj.gif");
 	}
@@ -64,6 +66,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#getName()
 	 */
+	@Override
 	public String getName() {
 		return sourcePath.lastSegment() + ":" + lineNumber;
 	}
@@ -72,6 +75,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#getPersistable()
 	 */
+	@Override
 	public IPersistableElement getPersistable() {
 		return null;
 	}
@@ -80,6 +84,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 	 */
+	@Override
 	public String getToolTipText() {
 		return "Source not found";
 	}
@@ -88,6 +93,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 	 * (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return null;

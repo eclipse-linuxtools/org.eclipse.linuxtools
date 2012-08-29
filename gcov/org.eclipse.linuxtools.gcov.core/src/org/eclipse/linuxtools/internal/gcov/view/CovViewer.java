@@ -74,6 +74,7 @@ public class CovViewer extends AbstractSTTreeViewer {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getDialogSettings()
 	 */
+	@Override
 	public IDialogSettings getDialogSettings() {
 		return org.eclipse.linuxtools.gcov.Activator.getDefault().getDialogSettings();
 	}
@@ -82,6 +83,7 @@ public class CovViewer extends AbstractSTTreeViewer {
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#handleOpenEvent(org.eclipse.jface.viewers.OpenEvent)
 	 */
+	@Override
 	protected void handleOpenEvent(OpenEvent event) {
 
 		IStructuredSelection selection = (IStructuredSelection) event

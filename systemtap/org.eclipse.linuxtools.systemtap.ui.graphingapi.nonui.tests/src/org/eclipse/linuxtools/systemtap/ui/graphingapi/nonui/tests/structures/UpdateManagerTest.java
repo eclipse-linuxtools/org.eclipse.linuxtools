@@ -42,6 +42,7 @@ public class UpdateManagerTest {
 	
 	private UpdateManager manager;
 	private IUpdateListener listener = new IUpdateListener() {
+		@Override
 		public void handleUpdateEvent() {
 			//Do nothing;
 		}

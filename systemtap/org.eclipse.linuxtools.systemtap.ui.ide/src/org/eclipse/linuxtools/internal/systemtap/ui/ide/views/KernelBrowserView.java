@@ -61,6 +61,7 @@ public class KernelBrowserView extends BrowserView {
 			this.kernelSource = kernelSource;
 		}
 
+		@Override
 		public IStatus run(IProgressMonitor monitor) {
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 			KernelSourceTree kst = new KernelSourceTree();
@@ -85,6 +86,7 @@ public class KernelBrowserView extends BrowserView {
 			this.kst = kst;
 		}
 
+		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			monitor.beginTask(Localization.getString("KernelBrowserView.UpdateKernelBrowser"), 100); //$NON-NLS-1$
 			if (kst == null)
@@ -108,6 +110,7 @@ public class KernelBrowserView extends BrowserView {
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
@@ -140,6 +143,7 @@ public class KernelBrowserView extends BrowserView {
 	 * a response to the user changing the preferences related to the kernel source location, requiring
 	 * that the application update the kernel source information.
 	 */
+	@Override
 	public void refresh() {
 		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
 		
@@ -217,6 +221,7 @@ public class KernelBrowserView extends BrowserView {
 		}
 	};
 	
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

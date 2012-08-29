@@ -281,6 +281,7 @@ public class ScriptConsole extends IOConsole {
 	/**
 	 * Disposes of all internal references in the class. No method should be called after this.
 	 */
+	@Override
 	public void dispose() {
 		if(!isDisposed()) {
 			if(null != cmd)
@@ -299,6 +300,7 @@ public class ScriptConsole extends IOConsole {
 	 * Changes the name displayed on this console.
 	 * @param name The new name to display on the console.
 	 */
+	@Override
 	public void setName(String name) {
 		try {
 			super.setName(name);

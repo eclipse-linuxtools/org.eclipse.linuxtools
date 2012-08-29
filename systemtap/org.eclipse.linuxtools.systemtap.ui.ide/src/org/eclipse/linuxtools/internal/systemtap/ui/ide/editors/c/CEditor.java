@@ -233,6 +233,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		LogManager.logDebug("End internal_init", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void dispose() {
 		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
@@ -242,6 +243,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	protected CompositeRuler createCompositeRuler() {
 		LogManager.logDebug("Start createCompositeRuler:", this); //$NON-NLS-1$
 		CompositeRuler ruler = new CompositeRuler();
@@ -257,6 +259,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		return ruler;
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);

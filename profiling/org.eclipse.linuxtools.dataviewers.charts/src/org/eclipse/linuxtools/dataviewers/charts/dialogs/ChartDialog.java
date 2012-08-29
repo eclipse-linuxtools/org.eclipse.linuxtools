@@ -303,11 +303,13 @@ public class ChartDialog  extends Dialog {
 		final Button b2 = new Button(buttonComposite, SWT.PUSH);
 		b2.setText("Deselect all");
 		SelectionListener sl = new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e)
 			{
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				boolean b = (e.getSource() == b1);
@@ -408,6 +410,7 @@ public class ChartDialog  extends Dialog {
 
 	private class ValidateSelectionListener extends SelectionAdapter
 	{
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			validateInput();
 		}

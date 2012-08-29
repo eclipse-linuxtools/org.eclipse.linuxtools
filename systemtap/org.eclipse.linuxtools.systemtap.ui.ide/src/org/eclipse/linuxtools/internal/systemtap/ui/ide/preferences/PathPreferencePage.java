@@ -36,6 +36,7 @@ public class PathPreferencePage extends FieldEditorPreferencePage implements IWo
 		LogManager.logDebug("End PathPreferencePage:", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		Composite parent = getFieldEditorParent();
@@ -43,6 +44,7 @@ public class PathPreferencePage extends FieldEditorPreferencePage implements IWo
 							 {Localization.getString("PathPreferencePage.RemoteMachine"), REMOTE}}; //$NON-NLS-1$
 		RadioGroupFieldEditor radioEditor = new RadioGroupFieldEditor(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE,
 				Localization.getString("PathPreferencePage.RemoteOrLocalRadio"), 1, labels, parent, true) { //$NON-NLS-1$
+			@Override
 			protected void fireValueChanged(String property,
 					Object oldValue,
 					Object newValue){
@@ -79,6 +81,7 @@ public class PathPreferencePage extends FieldEditorPreferencePage implements IWo
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

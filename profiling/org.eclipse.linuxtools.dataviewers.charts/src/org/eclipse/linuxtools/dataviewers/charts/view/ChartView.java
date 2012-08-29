@@ -60,6 +60,7 @@ public class ChartView extends ViewPart {
 	 */
 	public  static void createChartView(final Chart chart) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					synchronized(lock) {
@@ -145,6 +146,7 @@ public class ChartView extends ViewPart {
 	 */
 	public void closeView() {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(ChartView.this);
 			}
@@ -170,6 +172,7 @@ public class ChartView extends ViewPart {
 		}
 	}
 	
+	@Override
 	public void dispose( )
 	{
 		super.dispose( );

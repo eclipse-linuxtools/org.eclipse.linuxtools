@@ -44,6 +44,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenGCAction implements IEditorLauncher {
 
+	@Override
 	public void open(IPath file) {
 		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 		String extension = file.getFileExtension();

@@ -34,6 +34,7 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 		setTitle(Localization.getString("RangeFilterWizardPage.CreateRangeFilter"));
 	}
 	
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
@@ -94,10 +95,12 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 		setControl(comp);
 	}
 	
+	@Override
 	public boolean canFlipToNextPage() {
 		return false;
 	}
 	
+	@Override
 	protected void createFilter() {
 		int selected = cboColumn.getSelectionIndex();
 		
@@ -115,6 +118,7 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 		} catch(NumberFormatException nfe) {}
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
 		if(null != cboColumn) {

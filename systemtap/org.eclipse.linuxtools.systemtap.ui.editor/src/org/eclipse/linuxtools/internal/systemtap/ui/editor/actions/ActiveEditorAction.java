@@ -16,6 +16,7 @@ public abstract class ActiveEditorAction extends EditorAction {
 		super();
 	}
 
+	@Override
 	protected void buildEnablementChecks() {
 		setEnablement(null != getActiveEditor());
 	}

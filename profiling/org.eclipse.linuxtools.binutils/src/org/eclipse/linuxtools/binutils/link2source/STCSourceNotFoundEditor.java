@@ -58,6 +58,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	public STCSourceNotFoundEditor() {
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 	}
@@ -89,6 +90,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 		return null;
 	}
 
+	@Override
 	public void setInput(IEditorInput input) {
 		super.setInput(input);
 		syncButtons();
@@ -109,6 +111,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			editLookupButton.setVisible(v);
 	}
 
+	@Override
 	protected String getText() {
 		boolean v = isValidMissingFile();
 		if (v) {
@@ -120,6 +123,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 		}
 	}
 
+	@Override
 	protected void createButtons(Composite parent) {
 		{
 			GridData data;
@@ -130,6 +134,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			locateFileButton.setLayoutData(data);
 			locateFileButton.setText("Locate File..."); //$NON-NLS-1$
 			locateFileButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					locateFile();
 				}
@@ -145,6 +150,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			editLookupButton.setLayoutData(data);
 			editLookupButton.setText("Edit Source Lookup Path..."); 
 			editLookupButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					editSourceLookupPath();
 				}

@@ -36,6 +36,7 @@ public class RunScriptOptionsAction extends RunScriptAction {
 	 * <code>buildOptionsScript</code> rather than the <code>buildStandardScript</code> method called
 	 * in the parent code.
 	 */
+	@Override
 	protected String[] buildScript() {
 		return buildOptionsScript();
 	}

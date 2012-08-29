@@ -198,6 +198,7 @@ public class GraphComposite extends Composite {
 	/**
 	 * Dispose is overriden in order to dispose of the listeners attached to this Composite on disposal.
 	 */
+	@Override
 	public void dispose() {
 		scaleListener = null;
 

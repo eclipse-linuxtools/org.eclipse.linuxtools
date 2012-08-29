@@ -75,6 +75,7 @@ public class GraphSelectorView extends ViewPart {
 	 * This method creates the framework for what will be displayed by this dialog box.
 	 * @param parent The composite that will contain all the elements from this dialog
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 
@@ -132,6 +133,7 @@ public class GraphSelectorView extends ViewPart {
 			return null;
 	}
 	
+	@Override
 	public void setFocus() {}
 	
 	public void addTabListener(ITabListener listener) {
@@ -161,6 +163,7 @@ public class GraphSelectorView extends ViewPart {
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
 	 */
+	@Override
 	public void dispose() {
 		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$

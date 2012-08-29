@@ -54,6 +54,7 @@ public final class Query {
 		this.orderBy = orderBy;
 	}
 
+	@Override
 	public String toString() {
 		return buildQuery(tableName, columnNames, newColumnNames, where,
 				groupBy, orderBy);

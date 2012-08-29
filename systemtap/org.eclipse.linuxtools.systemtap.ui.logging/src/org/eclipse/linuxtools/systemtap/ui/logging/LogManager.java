@@ -109,6 +109,7 @@ public class LogManager implements IPropertyChangeListener {
 	/**
 	 * Overridden in order to unregister our property change event.
 	 */
+	@Override
 	protected void finalize() throws Throwable {
 		//unregister ourselves
 		LoggingPlugin plugin = LoggingPlugin.getDefault();

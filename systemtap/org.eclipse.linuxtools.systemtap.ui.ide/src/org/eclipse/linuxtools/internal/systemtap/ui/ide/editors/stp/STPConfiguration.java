@@ -102,6 +102,7 @@ public class STPConfiguration extends SourceViewerConfiguration {
 	 * Instantiates and returns a double click strategy object if one does not exist, and returns the 
 	 * current one if it does.
 	 */
+	@Override
 	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer,String contentType) {
 		if (doubleClickStrategy == null)
 			doubleClickStrategy = new DoubleClickStrategy();

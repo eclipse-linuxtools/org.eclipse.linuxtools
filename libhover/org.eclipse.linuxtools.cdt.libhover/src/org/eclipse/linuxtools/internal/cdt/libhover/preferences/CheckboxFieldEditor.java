@@ -385,6 +385,7 @@ public class CheckboxFieldEditor extends FieldEditor {
 	 * @see org.eclipse.jface.preference.FieldEditor#setEnabled(boolean,
 	 *      org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void setEnabled(boolean enabled, Composite parent) {
 		super.setEnabled(enabled, parent);
 		getCheckboxControl(parent).setEnabled(enabled);

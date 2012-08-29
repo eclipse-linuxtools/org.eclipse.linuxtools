@@ -79,6 +79,7 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 	 * The main body of the action. Expands or Collapses the viewer specified at construction to
 	 * the level of the current selection.
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		if(!(cl.equals(FunctionBrowserView.class) || cl.equals(ProbeAliasBrowserView.class) || cl.equals(KernelBrowserView.class))) {

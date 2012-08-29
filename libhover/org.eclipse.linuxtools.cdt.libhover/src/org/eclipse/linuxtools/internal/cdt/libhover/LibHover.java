@@ -336,6 +336,7 @@ public class LibHover implements ICHelpProvider {
 			this.toffset = toffset;
 			this.tlength = tlength;
 		}
+		@Override
 		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
 			if (ast != null) {
 				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
@@ -354,7 +355,8 @@ public class LibHover implements ICHelpProvider {
 			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
 			this.binding = binding;
 		}
-    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+    	@Override
+		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
     		if (ast != null) {
     			decls = ast.getDeclarationsInAST(binding);
     		}

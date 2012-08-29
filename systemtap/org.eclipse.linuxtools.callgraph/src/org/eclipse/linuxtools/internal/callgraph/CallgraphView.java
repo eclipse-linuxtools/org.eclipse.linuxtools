@@ -108,6 +108,7 @@ public class CallgraphView extends SystemTapView {
 	 * @return status
 	 * 
 	 */
+	@Override
 	public IStatus initializeView(Display targetDisplay, IProgressMonitor monitor) {
 		
 		Display disp = targetDisplay;
@@ -413,6 +414,7 @@ public class CallgraphView extends SystemTapView {
 	 * This is a callback that will allow us to create the viewer and
 	 * initialize it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		if (masterComposite != null)
 			masterComposite.dispose();
@@ -438,25 +440,29 @@ public class CallgraphView extends SystemTapView {
 		addFileMenu();
 
 		save_cur_dot = new Action(Messages.getString("CallgraphView.SaveViewAsDot")) { //$NON-NLS-1$
+			@Override
 			public void run(){
 				writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
 			}
 
 		};
 		save_dot = new Action(Messages.getString("CallgraphView.SaveAllUncollapsedAsDot")) { //$NON-NLS-1$
-            public void run(){
+            @Override
+			public void run(){
               writeToDot(false, g.nodeDataMap.keySet());
             }
 		};
 		
 		save_col_dot = new Action (Messages.getString("CallgraphView.SaveAllCollapsedAsDot")) { //$NON-NLS-1$
-		     public void run(){
+		     @Override
+			public void run(){
 	                writeToDot(true, g.nodeDataMap.keySet());
 	            }
 			
 		};
 		
 		save_text = new Action (Messages.getString("CallgraphView.SaveCollapsedAsASCII")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				//Prints an 80 char table
 		        Shell sh = new Shell();
@@ -582,6 +588,7 @@ public class CallgraphView extends SystemTapView {
 	public void createViewActions() {
 		//Set drawmode to tree view
 		view_treeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
+			@Override
 			public void run() {
 				g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, g.getAnimationMode(), 
 						g.getRootVisibleNodeNumber());
@@ -598,6 +605,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Set drawmode to radial view
 		view_radialview = new Action(Messages.getString("CallgraphView.RadialView")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, g.getAnimationMode(),
 						g.getRootVisibleNodeNumber());
@@ -610,6 +618,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Set drawmode to aggregate view
 		view_aggregateview = new Action(Messages.getString("CallgraphView.AggregateView")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, g.getAnimationMode(), 
 						g.getRootVisibleNodeNumber());
@@ -623,6 +632,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Set drawmode to level view
 		view_levelview = new Action(Messages.getString("CallgraphView.LevelView")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, g.getAnimationMode(), 
 						g.getRootVisibleNodeNumber());
@@ -635,6 +645,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.reset();
 			}
@@ -652,6 +663,7 @@ public class CallgraphView extends SystemTapView {
 	public void createAnimateActions() {
 		//Set animation mode to slow
 		animation_slow = new Action(Messages.getString("CallgraphView.AnimationSlow"), IAction.AS_RADIO_BUTTON){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 				this.setChecked(true);
@@ -664,6 +676,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Set animation mode to fast
 		animation_fast = new Action(Messages.getString("CallgraphView.AnimationFast"), IAction.AS_RADIO_BUTTON){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				g.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
 				animation_slow.setChecked(false);
@@ -673,6 +686,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Toggle collapse mode
 		mode_collapsednodes = new Action(Messages.getString("CallgraphView.CollapsedMode"), IAction.AS_CHECK_BOX){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				
 				if (g.isCollapseMode()) {
@@ -693,6 +707,7 @@ public class CallgraphView extends SystemTapView {
 			private Spinner limit;
 			private Spinner buffer;
 			private Shell sh;
+			@Override
 			public void run() {
 				sh = new Shell();
 				sh.setLayout(new GridLayout());
@@ -717,6 +732,7 @@ public class CallgraphView extends SystemTapView {
 				set_limit.setText(Messages.getString("CallgraphView.SetValues")); //$NON-NLS-1$
 				set_limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				set_limit.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						boolean redraw = false;
 						if (limit.getSelection() >= 0 && buffer.getSelection() >= 0) {
@@ -767,12 +783,14 @@ public class CallgraphView extends SystemTapView {
 	
 	public void createMovementActions() {
 		goto_next = new Action(Messages.getString("CallgraphView.Next")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				g.drawNextNode();
 			}
 		};
 		
 		goto_previous = new Action(Messages.getString("CallgraphView.Previous")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				if (g.isCollapseMode()) {
 					g.setCollapseMode(false);
@@ -784,6 +802,7 @@ public class CallgraphView extends SystemTapView {
 		};
 		
 		goto_last = new Action(Messages.getString("CallgraphView.Last")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				if (g.isCollapseMode())
 					g.setCollapseMode(false);
@@ -792,6 +811,7 @@ public class CallgraphView extends SystemTapView {
 		};
 		
 		play = new Action(Messages.getString("CallgraphView.Play")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				if (g.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
 					g.play();
@@ -819,12 +839,14 @@ public class CallgraphView extends SystemTapView {
 	
 	public void createMarkerActions() {
 		markers_next = new Action(Messages.getString("CallgraphView.nextMarker")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				g.draw(g.getNextMarkedNode());
 			}
 		};
 		
 		markers_previous = new Action(Messages.getString("CallgraphView.previousMarker")) { //$NON-NLS-1$
+			@Override
 			public void run() {
 				g.draw(g.getPreviousMarkedNode());
 			}
@@ -835,6 +857,7 @@ public class CallgraphView extends SystemTapView {
 	protected boolean createOpenAction() {
 		//Opens from specified location
 		open_file = new Action(Messages.getString("CallgraphView.Open")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
 				String filePath =  dialog.open();
@@ -854,6 +877,7 @@ public class CallgraphView extends SystemTapView {
 	protected boolean createOpenDefaultAction() {
 		//Opens from the default location
 		open_default = new Action(Messages.getString("CallgraphView.OpenLastRun")){ //$NON-NLS-1$
+			@Override
 			public void run(){
 				StapGraphParser new_parser = new StapGraphParser();
 				new_parser.setViewID(CallGraphConstants.viewID);

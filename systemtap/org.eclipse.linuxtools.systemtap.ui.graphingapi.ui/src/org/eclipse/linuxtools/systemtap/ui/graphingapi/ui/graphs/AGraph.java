@@ -113,6 +113,7 @@ public abstract class AGraph extends AChart {
 		});
 	}
 	
+	@Override
 	public synchronized void repaint() {
 		rebound();
 		super.repaint();
@@ -151,12 +152,14 @@ public abstract class AGraph extends AChart {
 		}
 	}
 	
+	@Override
 	protected void paintAll(GC gc) {
 		for(int i = 0; i < axes.size(); i++)
 			axes.get(i).paint(gc);
 		super.paintAll(gc);
 	}
 
+	@Override
 	public void dispose() {
 		GraphingAPIUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 

@@ -81,7 +81,8 @@ public class RemoteArgumentsTab extends AbstractLaunchConfigurationTab {
 	        gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
 	        button_variables.setLayoutData(gd);
 	        button_variables.addSelectionListener(new SelectionAdapter() {
-	            public void widgetSelected(SelectionEvent arg0) {
+	            @Override
+				public void widgetSelected(SelectionEvent arg0) {
 	                handleVariablesButtonSelected(text_arguments);
 	            }
 	        });

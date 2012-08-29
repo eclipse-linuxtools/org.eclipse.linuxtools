@@ -232,7 +232,8 @@ public abstract class SystemTapView extends ViewPart {
    
     public void createHelpActions() {
         help_version = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
-            public void run() {
+            @Override
+			public void run() {
                 try {
                 	Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null);
                     BufferedReader buf = new BufferedReader(
@@ -262,7 +263,8 @@ public abstract class SystemTapView extends ViewPart {
         };
        
         help_about = new Action(Messages.getString("SystemTapView.AboutMenu")) { //$NON-NLS-1$
-            public void run() {
+            @Override
+			public void run() {
                 Display disp = Display.getCurrent();
                 if (disp == null){
                     disp = Display.getDefault();
@@ -335,7 +337,8 @@ public abstract class SystemTapView extends ViewPart {
     protected void createSaveAction() {
         //Save callgraph.out
         save_file = new Action(Messages.getString("SystemTapView.SaveMenu")){ //$NON-NLS-1$
-            public void run(){
+            @Override
+			public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
                 String filePath = dialog.open();
@@ -352,7 +355,8 @@ public abstract class SystemTapView extends ViewPart {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
         kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
                 AbstractUIPlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
-            public void run() {
+            @Override
+			public void run() {
                 getParser().cancelJob();
             }
         };

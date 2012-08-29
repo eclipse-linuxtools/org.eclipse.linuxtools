@@ -66,6 +66,7 @@ public class UpdateManager {
 	 * Handle any events that are timed to occur.
 	 */
 	private class Notify extends TimerTask {
+		@Override
 		public void run() {
 			try{
 			if(!stopped) {

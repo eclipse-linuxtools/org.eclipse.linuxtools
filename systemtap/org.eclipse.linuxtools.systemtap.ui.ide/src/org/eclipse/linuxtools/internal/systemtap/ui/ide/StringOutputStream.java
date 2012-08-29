@@ -16,6 +16,7 @@ import java.io.OutputStream;
 public class StringOutputStream extends OutputStream {
 	private StringBuffer str = new StringBuffer();
 
+	@Override
 	public String toString() {
 		return str.toString();
 	}

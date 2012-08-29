@@ -58,7 +58,8 @@ public class STPDocumentProvider extends SimpleDocumentProvider {
  /**
   * Instantiates and returns a new AnnotationModel object.
   */
- protected IAnnotationModel createAnnotationModel(Object element) {
+ @Override
+protected IAnnotationModel createAnnotationModel(Object element) {
          LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this); //$NON-NLS-1$
          return new AnnotationModel();
  }

@@ -29,6 +29,7 @@ public class CovFunctionContentProvider extends CovFileContentProvider {
 	protected CovFunctionContentProvider() {
 	}
 	
+	@Override
 	protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
 		LinkedList<? extends TreeElement> list = super.getElementChildrenList(root);
 		LinkedList<TreeElement> ret = new LinkedList<TreeElement>();

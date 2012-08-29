@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
+	@Override
 	public void initializeDefaultPreferences() {
 		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();

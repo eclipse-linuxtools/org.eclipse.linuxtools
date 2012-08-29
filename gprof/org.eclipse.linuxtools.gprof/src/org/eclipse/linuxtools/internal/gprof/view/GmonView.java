@@ -76,6 +76,7 @@ public class GmonView extends AbstractSTDataView {
 	private Action action4;
 	private Action switchSampleTime;
 
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		GridLayout l = (GridLayout) parent.getLayout();
@@ -86,6 +87,7 @@ public class GmonView extends AbstractSTDataView {
 	}
 
 
+	@Override
 	protected void createTitle(Composite parent) {
 		label = new Label(parent, SWT.WRAP);
 		GridData data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 1, 1);
@@ -279,6 +281,7 @@ public class GmonView extends AbstractSTDataView {
 	@Override
 	protected IAction createExportToCSVAction() {
 		IAction action = new STExportToCSVAction(this.getSTViewer()) {
+			@Override
 			public void run() {
 				Object o = getSTViewer().getInput();
 				if (o instanceof GmonDecoder) {

@@ -26,6 +26,7 @@ public class NewFileAction extends OpenFileAction {
 	 * Creates a new file.
 	 * @return the new file object.
 	 */
+	@Override
 	protected File queryFile() {
 		FileDialog dialog= new FileDialog(window.getShell(), SWT.SAVE);
 		dialog.setText(Localization.getString("NewFileAction.NewFile")); //$NON-NLS-1$

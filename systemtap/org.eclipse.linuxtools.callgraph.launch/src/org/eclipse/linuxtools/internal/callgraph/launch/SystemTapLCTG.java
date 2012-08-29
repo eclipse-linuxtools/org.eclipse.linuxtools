@@ -24,6 +24,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationDialog;
  */
 public abstract class SystemTapLCTG extends AbstractLaunchConfigurationTabGroup {
 
+	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<AbstractLaunchConfigurationTab>();
 		

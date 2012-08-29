@@ -29,6 +29,7 @@ public class DataTablePreferencePage extends FieldEditorPreferencePage implement
 		setDescription(Localization.getString("DataTablePreferencePage.GraphDisplayPreferences"));
 	}
 	
+	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, 
@@ -49,6 +50,7 @@ public class DataTablePreferencePage extends FieldEditorPreferencePage implement
 
 	public void init(IWorkbench workbench) {}
 	
+	@Override
 	public void dispose() {
 		super.dispose();
 	}

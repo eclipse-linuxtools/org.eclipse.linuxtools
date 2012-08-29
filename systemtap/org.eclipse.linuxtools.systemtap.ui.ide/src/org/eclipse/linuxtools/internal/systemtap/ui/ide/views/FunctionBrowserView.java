@@ -48,6 +48,7 @@ public class FunctionBrowserView extends BrowserView {
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
@@ -61,6 +62,7 @@ public class FunctionBrowserView extends BrowserView {
 	/**
 	 * Refreshes the list of functions in the viewer.
 	 */
+	@Override
 	public void refresh() {
 		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
 		functions = TapsetLibrary.getFunctions();
@@ -116,6 +118,7 @@ public class FunctionBrowserView extends BrowserView {
 		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

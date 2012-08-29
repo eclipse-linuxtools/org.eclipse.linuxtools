@@ -37,6 +37,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	protected Control createContents(Composite parent) {
 		LogManager.logDebug("Start createContents: parent-" + parent, this); //$NON-NLS-1$
 		final TabFolder tabFolder = new TabFolder(parent, SWT.BORDER);
@@ -109,6 +110,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		return cfe;
 	}
 	
+	@Override
 	protected void performDefaults() {
 		LogManager.logDebug("Start performDefaults:", this); //$NON-NLS-1$
 		stpDC.loadDefault();
@@ -129,6 +131,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		LogManager.logDebug("End performDefaults:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public boolean performOk() {
 		LogManager.logDebug("Start performOk:", this); //$NON-NLS-1$
 		stpDC.store();
@@ -149,6 +152,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		return true;
 	}
 	
+	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();

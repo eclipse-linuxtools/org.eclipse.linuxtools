@@ -29,19 +29,23 @@ public class CStringStorage implements IStorage {
 		return new ByteArrayInputStream(string.getBytes());
 	}
 
+	@Override
 	public IPath getFullPath() {
 		return null;
 	}
 
+	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		return null;
 	}
 
+	@Override
 	public String getName() {
 		int len = Math.min(5, string.length());
 		return string.substring(0, len).concat("..."); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isReadOnly() {
 		return true;
 	}

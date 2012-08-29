@@ -45,6 +45,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	
 
 	
+	@Override
 	public void launch(IEditorPart ed, String mode) {
 		resourceToSearchFor = ed.getTitle();
 		searchForResource = true;
@@ -54,6 +55,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		super.launch(ed, mode);
 	}
 	
+	@Override
 	public void launch(IBinary bin, String mode) {
 		launch(bin, mode, null);
 	}

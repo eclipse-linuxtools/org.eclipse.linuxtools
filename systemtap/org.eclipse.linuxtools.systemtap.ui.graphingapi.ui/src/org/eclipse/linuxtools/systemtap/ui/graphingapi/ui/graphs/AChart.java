@@ -75,6 +75,7 @@ public abstract class AChart extends GraphCanvas implements IGraph {
 			title.paint(gc);
 	}
 	
+	@Override
 	public void dispose() {
 		this.removePaintListener(paintListener);
 		parent.removeCheckOption(Localization.getString("AChart.Title"));
