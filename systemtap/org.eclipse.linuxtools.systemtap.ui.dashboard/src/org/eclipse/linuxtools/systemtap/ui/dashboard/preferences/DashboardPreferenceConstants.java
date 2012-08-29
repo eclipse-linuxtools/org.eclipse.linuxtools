@@ -12,9 +12,9 @@
 package org.eclipse.linuxtools.systemtap.ui.dashboard.preferences;
 
 public class DashboardPreferenceConstants {
-	public static final String P_MODULE_FOLDERS = "ModuleFoldersPreference";
-	public static final String P_DASHBOARD_UPDATE_DELAY = "DashboardUpdateDelay";
-	public static final String P_DASHBOARD_EXAMPLES_DIR = "ExamplesDir";
-	public static final String P_DASHBOARD_SCRIPT = "Script";
+	public static final String P_MODULE_FOLDERS = "ModuleFoldersPreference"; //$NON-NLS-1$
+	public static final String P_DASHBOARD_UPDATE_DELAY = "DashboardUpdateDelay"; //$NON-NLS-1$
+	public static final String P_DASHBOARD_EXAMPLES_DIR = "ExamplesDir"; //$NON-NLS-1$
+	public static final String P_DASHBOARD_SCRIPT = "Script"; //$NON-NLS-1$
 
 }

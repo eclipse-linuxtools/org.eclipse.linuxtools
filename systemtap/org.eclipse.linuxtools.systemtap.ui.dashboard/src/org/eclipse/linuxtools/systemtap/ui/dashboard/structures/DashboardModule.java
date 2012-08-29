@@ -41,7 +41,7 @@ public class DashboardModule {
 	public File[] kernelModules;
 
 	public String scriptFileName;
-	public static final String metaFileName = "/metaData";
+	public static final String metaFileName = "/metaData"; //$NON-NLS-1$
 	
 	public String getcategory()
 	{

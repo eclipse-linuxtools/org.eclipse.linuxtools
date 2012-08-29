@@ -36,7 +36,7 @@ public final class DashboardModuleLocator {
 	 * @return The entire list of Dashboard Modules organized as a Tree
 	 */
 	public static TreeNode getModules() {
-		TreeNode root = new TreeNode(null, "", false);
+		TreeNode root = new TreeNode(null, "", false); //$NON-NLS-1$
 
 		String[] locations = getModuleLocations();
 		DashboardModuleTreeBuilder dmtb = null;
@@ -75,15 +75,15 @@ public final class DashboardModuleLocator {
 			File f = new File(moduleLocation);
 			if(!f.exists()) {
 				f.mkdir();
-				JarArchive.unjarFiles(moduleStore, moduleLocation, "modules/");
+				JarArchive.unjarFiles(moduleStore, moduleLocation, "modules/"); //$NON-NLS-1$
 			}
 			allFolders[0] = moduleLocation;
 		} else {
-			allFolders[0] = System.getProperty("osgi.splashLocation");
-			int stapguiLoc = allFolders[0].indexOf("systemtapgui");
+			allFolders[0] = System.getProperty("osgi.splashLocation"); //$NON-NLS-1$
+			int stapguiLoc = allFolders[0].indexOf("systemtapgui"); //$NON-NLS-1$
 			if (stapguiLoc != -1) {
 				allFolders[0] = allFolders[0].substring(0, stapguiLoc);
-				allFolders[0] += "dashboard/modules/";
+				allFolders[0] += "dashboard/modules/"; //$NON-NLS-1$
 			}
 		}
 		
@@ -92,7 +92,7 @@ public final class DashboardModuleLocator {
 		return allFolders;
 	}
 	
-	public static final String moduleLocation = SystemTapGUISettings.installDirectory + "/.modules/";
-	public static final String moduleStore = SystemTapGUISettings.installDirectory + "/plugins/org.eclipse.linuxtools.systemtap.ui.dashboard_1.0.0.jar";
+	public static final String moduleLocation = SystemTapGUISettings.installDirectory + "/.modules/"; //$NON-NLS-1$
+	public static final String moduleStore = SystemTapGUISettings.installDirectory + "/plugins/org.eclipse.linuxtools.systemtap.ui.dashboard_1.0.0.jar"; //$NON-NLS-1$
 	
 }

@@ -11,11 +11,13 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
@@ -23,10 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 
 /**
  * This class provides the framework for the ModuleBrowsers.  Since
@@ -44,7 +42,7 @@ public abstract class GraphsView extends ViewPart {
 	/**
 	 * This class provides the framework for traversing the view's Tree structure.
 	 */
-	private static class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+	private static class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 		
 		public void dispose() {}
@@ -79,15 +77,17 @@ public abstract class GraphsView extends ViewPart {
 	 * display for each item in the tree.
 	 */
 	private static class ViewLabelProvider extends LabelProvider {
+		@Override
 		public String getText(Object obj) {
 			return obj.toString();
 		}
 
+		@Override
 		public Image getImage(Object obj) {
 			TreeNode treeObj = (TreeNode)obj;
 			Image img;
 			
-			img = DashboardPlugin.getImageDescriptor("icons/misc/graph_dis.gif").createImage();
+			img = DashboardPlugin.getImageDescriptor("icons/misc/graph_dis.gif").createImage(); //$NON-NLS-1$
 			if (treeObj.getChildCount() > 0)
 				img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 
@@ -99,6 +99,7 @@ public abstract class GraphsView extends ViewPart {
 	 * This method creates the framework for the view.  It initializes the viewer, which 
 	 * contains the TreeNode and handles how to display each entry.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		parent.getShell().setCursor(new Cursor(parent.getShell().getDisplay(), SWT.CURSOR_WAIT));
@@ -133,6 +134,7 @@ public abstract class GraphsView extends ViewPart {
 		return viewer;
 	}
 
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
@@ -141,12 +143,13 @@ public abstract class GraphsView extends ViewPart {
 	 * This method removes all internal references. Nothing should be called/referenced after
 	 * this method is run.
 	 */
+	@Override
 	public void dispose() {
 		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}
 	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.GraphsView";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.GraphsView"; //$NON-NLS-1$
 	protected TreeViewer viewer;
 }

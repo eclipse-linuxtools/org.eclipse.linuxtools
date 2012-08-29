@@ -319,10 +319,10 @@ public class DashboardAdapter {
 	private String modulename;
 	Transfer[] types = new Transfer[] { TextTransfer.getInstance() };
 
-	private static final Image closeImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/close.gif").createImage();
-	private static final Image collapseImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/collapse.gif").createImage();
-	private static final Image expandImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/expand.gif").createImage();
-	private static final Image maxImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/maximize.gif").createImage();
-	private static final Image restoreImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/restore.gif").createImage();
+	private static final Image closeImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/close.gif").createImage(); //$NON-NLS-1$
+	private static final Image collapseImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/collapse.gif").createImage(); //$NON-NLS-1$
+	private static final Image expandImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/expand.gif").createImage(); //$NON-NLS-1$
+	private static final Image maxImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/maximize.gif").createImage(); //$NON-NLS-1$
+	private static final Image restoreImage = DashboardPlugin.getImageDescriptor("icons/actions/graph/restore.gif").createImage(); //$NON-NLS-1$
 
 }

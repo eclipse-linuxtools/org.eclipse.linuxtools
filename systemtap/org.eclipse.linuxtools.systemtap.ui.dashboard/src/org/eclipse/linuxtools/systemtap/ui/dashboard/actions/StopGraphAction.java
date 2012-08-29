@@ -40,6 +40,7 @@ public class StopGraphAction extends Action implements IViewActionDelegate {
 		run();
 	}
 
+	@Override
 	public void run() {
 		run(selectedItem);
 	}
