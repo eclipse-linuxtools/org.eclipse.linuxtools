@@ -24,7 +24,7 @@ public class ConfigurationOptionsSetter {
 	 * @return
 	 */
 	public static String setOptions(ILaunchConfiguration config) {
-		StringBuilder options = new StringBuilder(); //$NON-NLS-1$
+		StringBuilder options = new StringBuilder();
 		try {
 
 		int verboseLevel = config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
@@ -102,7 +102,7 @@ public class ConfigurationOptionsSetter {
 			options.append(config.getAttribute(
 					LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
 					LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES)
-					+ " "); //$NON-NLS-1$ //$NON-NLS-2$
+					+ " "); //$NON-NLS-1$
 		}
 
 		if (config.getAttribute(

@@ -41,7 +41,7 @@ public class SystemTapErrorHandler {
              .getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
              Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
 
-        logContents = new StringBuilder(); //$NON-NLS-1$
+        logContents = new StringBuilder();
     }
 
     /**
@@ -158,7 +158,7 @@ public class SystemTapErrorHandler {
     	IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
     	CallgraphCorePlugin.getDefault().getLog().log(status);
     	
-        logContents = new StringBuilder(); //$NON-NLS-1$
+        logContents = new StringBuilder();
     }
    
     /**

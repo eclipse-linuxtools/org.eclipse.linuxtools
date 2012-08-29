@@ -231,7 +231,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 			public void widgetSelected(SelectionEvent e) {
 				argumentsLocation.setText(
 						argumentsLocation.getText() + " process(\""  //$NON-NLS-1$
-						+ binaryLocation.getText() + "\").function(\"\")"); //$NON-NLS-1$ //$NON-NLS-2$
+						+ binaryLocation.getText() + "\").function(\"\")"); //$NON-NLS-1$
 			}
 		});
 		

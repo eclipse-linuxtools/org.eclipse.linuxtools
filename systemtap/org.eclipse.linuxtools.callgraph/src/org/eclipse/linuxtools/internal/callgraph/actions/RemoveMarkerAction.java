@@ -85,7 +85,7 @@ public class RemoveMarkerAction implements IWorkbenchWindowActionDelegate {
 			try {
 				int start = doc.getLineOffset(i);
 				int length = doc.getLineLength(i);
-				if (doc.get(start, length).contains(stapCommentMarker)) { //$NON-NLS-1$
+				if (doc.get(start, length).contains(stapCommentMarker)) {
 					doc.replace(start, length, ""); //$NON-NLS-1$
 				}
 			} catch (BadLocationException e) {

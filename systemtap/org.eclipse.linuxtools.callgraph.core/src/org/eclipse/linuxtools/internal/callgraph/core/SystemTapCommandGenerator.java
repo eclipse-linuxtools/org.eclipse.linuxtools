@@ -88,7 +88,7 @@ public class SystemTapCommandGenerator {
 			script[script.length-1] = scriptPath;
 		}
 		
-		script[0] = command; //$NON-NLS-1$
+		script[0] = command;
 
 		for(int i=0; i< cmdList.size(); i++) {
 			if (cmdList.get(i) != null)

@@ -132,7 +132,7 @@ public class LibHover implements ICHelpProvider {
     				File lDir = new File(locationDir.toOSString());
     				lDir.mkdir();
     				IPath location = locationDir.append(getTransformedName(l.getName()) + ".libhover"); //$NON-NLS-1$
-    				File target = new File(location.toOSString()); //$NON-NLS-1$
+    				File target = new File(location.toOSString());
     				if (!target.exists()) {
     					FileOutputStream f = new FileOutputStream(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
     					ObjectOutputStream out = new ObjectOutputStream(f);
@@ -224,7 +224,7 @@ public class LibHover implements ICHelpProvider {
 					File f = file.toLocalFile(EFS.NONE, null);
 					if (f != null) {
 						String name = getCleanName(fileName.substring(0,fileName.length()-9));
-						HelpBook h = new HelpBook(name, type); //$NON-NLS-1$
+						HelpBook h = new HelpBook(name, type);
 						helpBooks.add(h);
 						helpBooksMap.put(name, h);
 						String location = file.toURI().toString();

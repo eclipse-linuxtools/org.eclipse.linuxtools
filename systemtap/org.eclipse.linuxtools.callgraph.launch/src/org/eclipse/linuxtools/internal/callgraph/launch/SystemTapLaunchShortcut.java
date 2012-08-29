@@ -111,7 +111,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	protected String name;
 	protected String binaryPath;
-	protected String scriptPath; //$NON-NLS-1$
+	protected String scriptPath;
 	protected String arguments;
 	protected String outputPath;
 	protected String binName;
@@ -443,7 +443,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				wc = getLaunchConfigType().newInstance(
 						null,
 						getLaunchManager()
-								.generateLaunchConfigurationName(name)); //$NON-NLS-1$
+								.generateLaunchConfigurationName(name));
 				setDefaultProfileAttributes(wc);
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -573,7 +573,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 				Object[] unitList = chooseUnit(list, numberOfFiles);
 				if (unitList == null || unitList.length == 0) {
-					return null; //$NON-NLS-1$
+					return null;
 				} else if (unitList.length == 1
 						&& unitList[0].toString().equals(USER_SELECTED_ALL)) {
 					funcs = "*"; //$NON-NLS-1$
@@ -642,7 +642,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 					if (obj instanceof ICContainer) {
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(validElement(c))) //$NON-NLS-1$
+							if (!(validElement(c)))
 								continue;
 							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
 								output.add(c);
@@ -674,13 +674,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				if (obj instanceof ICContainer) {
 					ICElement[] array = ((ICContainer) obj).getChildren();
 					for (ICElement c : array) {
-						if (!(validElement(c))) //$NON-NLS-1$
+						if (!(validElement(c)))
 							continue;
 						if (!output.contains(c))
 							output.add(c);
 					}
 				} else if (obj instanceof ICElement) {
-					if (validElement((ICElement) obj)) { //$NON-NLS-1$
+					if (validElement((ICElement) obj)) {
 						if (!output.contains(obj)) {
 							output.add(obj);
 						}

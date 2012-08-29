@@ -80,16 +80,16 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 			// return empty document and save later
 			return true;
 		} catch (MalformedURLException e) {
-			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID ,Localization.getString("SimpleDocumentProvider.incorrectURL"), e)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID ,Localization.getString("SimpleDocumentProvider.incorrectURL"), e)); //$NON-NLS-1$
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
 		
 		try {
 			setDocumentContent(document, reader);
 			return true;
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
 	}
 
@@ -150,11 +150,11 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 						Writer writer= new FileWriter(file);
 						writeDocumentContent(document, writer, monitor);
 					} else
-						throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "file is read-only", null)); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "file is read-only", null)); //$NON-NLS-1$
 				} else
-					throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "error creating file", null)); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "error creating file", null)); //$NON-NLS-1$
 			} catch (IOException e) {
-				throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("errorCreatingFile"), e)); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("errorCreatingFile"), e)); //$NON-NLS-1$
 			}
 		}
 	}

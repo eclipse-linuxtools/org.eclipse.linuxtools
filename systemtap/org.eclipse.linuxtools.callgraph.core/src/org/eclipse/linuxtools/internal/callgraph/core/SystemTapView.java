@@ -240,7 +240,7 @@ public abstract class SystemTapView extends ViewPart {
                     String message = ""; //$NON-NLS-1$
 
                     while ((line = buf.readLine()) != null) {
-                        message += line + NEW_LINE; //$NON-NLS-1$
+                        message += line + NEW_LINE;
                     }
 
                     try {

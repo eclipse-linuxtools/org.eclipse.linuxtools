@@ -35,7 +35,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 							output.add(item);
 					} else if (item instanceof ICElement) {
 						ICElement el = (ICElement) item;
-						if (SystemTapLaunchShortcut.validElement(el)) //$NON-NLS-1$
+						if (SystemTapLaunchShortcut.validElement(el))
 							output.add(el);
 					}
 					
@@ -61,7 +61,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 			for (ICElement child : cont.getChildren()) {
 
 				if (child instanceof ICElement)
-					if (SystemTapLaunchShortcut.validElement(child)) //$NON-NLS-1$
+					if (SystemTapLaunchShortcut.validElement(child))
 						return true;
 				if (child instanceof ICContainer) {
 					if (checkForValidChildren((ICContainer) child))

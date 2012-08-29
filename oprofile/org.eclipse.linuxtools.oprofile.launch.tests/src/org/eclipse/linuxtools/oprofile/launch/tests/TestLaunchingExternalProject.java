@@ -52,7 +52,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 			tempExternalProjectPath.mkdir();
 		}
 		externalProject = createExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
-				PROJECT_NAME, EXTERNAL_PROJECT_PATH); //$NON-NLS-1$
+				PROJECT_NAME, EXTERNAL_PROJECT_PATH);
 		config = createConfiguration(externalProject);
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
