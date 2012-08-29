@@ -27,12 +27,13 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.DMResponse;
 public final class ClientSession extends Thread {
 	
 	private static ClientSession instance = null;
-	private static int portnumber, clientID;
-	private static boolean connected;
-	private static String hostname;
-	private static int scriptnumber;
-	private static InputStream in;
-	private static TreeMap<Integer, LinkedBlockingQueue<byte[]>> mbox;
+
+	private int portnumber, clientID;
+	private boolean connected;
+	private String hostname;
+	private int scriptnumber;
+	private InputStream in;
+	private TreeMap<Integer, LinkedBlockingQueue<byte[]>> mbox;
 
 	private ClientSession () {
 		// only happens once
@@ -151,9 +152,9 @@ public final class ClientSession extends Thread {
 		{
 			if(!isConnected())
 			{
-				connected=instance.createConnection();
-		    	scriptnumber = 15;
-		    	if (connected) instance.start();
+				instance.connected=instance.createConnection();
+		    	instance.scriptnumber = 15;
+		    	if (instance.connected) instance.start();
 			}
 		}
 		return instance;
@@ -161,11 +162,11 @@ public final class ClientSession extends Thread {
 	
     public static int getNewScriptId()
     {
-      return scriptnumber++;	
+      return instance.scriptnumber++;	
     }
 	
 	public static boolean isConnected () {
-		return connected;
+		return instance.connected;
 	}
 	
 	public int getcid () {
