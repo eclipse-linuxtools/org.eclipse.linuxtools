@@ -7,28 +7,22 @@
  *
  * Contributors:
  *    Red Hat initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.profiling.snapshot.launch;
 
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
+import org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut;
+import org.eclipse.linuxtools.profiling.snapshot.SnapshotProviderPlugin;
 
-public class SnapshotLaunchShortcut extends ProfileLaunchShortcut {
-	
-	public static final String LAUNCHCONF_ID = "org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType";
-
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(LAUNCHCONF_ID);
-	}
+/**
+ * The launch shortcut for this plug-in.
+ * 
+ */
+public class SnapshotLaunchShortcut extends ProviderLaunchShortcut {
 
 	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
-		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
-		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
+	protected String getLaunchConfigID() {
+		return SnapshotProviderPlugin.PLUGIN_CONFIG_ID;
 	}
+
 
 }

@@ -71,9 +71,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
             class="org.eclipse.linuxtools.profiling.snapshot.SnapshotPreferencesPage"
-            id="org.eclipse.linuxtools.profiling.snapshot.MainPreferencePage"
-            name="Profiling">
+            id="org.eclipse.linuxtools.profiling.snapshot.preferences"
+            name="Snapshot">
       </page>
    </extension>
 

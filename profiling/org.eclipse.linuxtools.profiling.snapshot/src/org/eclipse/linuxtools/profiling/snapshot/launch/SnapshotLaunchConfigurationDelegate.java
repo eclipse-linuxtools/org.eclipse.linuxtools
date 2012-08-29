@@ -10,67 +10,23 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.snapshot.launch;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
-import org.eclipse.linuxtools.profiling.snapshot.SnapshotPreferencesPage;
+import org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.profiling.snapshot.SnapshotProviderPlugin;
 
+/**
+ * The launch configuration delegate for this plug-in.
+ * 
+ */
 public class SnapshotLaunchConfigurationDelegate extends
-		ProfileLaunchConfigurationDelegate {
-
-	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
+		ProviderLaunchConfigurationDelegate {
 
 	@Override
 	protected String getPluginID() {
-		return "org.eclipse.linuxtools.profiling.snapshot";
+		return SnapshotProviderPlugin.PLUGIN_ID;
 	}
 
 	@Override
-	public void launch(ILaunchConfiguration config, String mode,
-			ILaunch launch, IProgressMonitor monitor) {
-		try {
-
-			if (config != null) {
-				// get provider id from configuration.
-				String providerId = config.getAttribute("provider", "");
-				if (providerId.equals("")) {
-					providerId = getProviderIdToRun();
-				}
-				// get configuration delegate associated with provider id.
-				ProfileLaunchConfigurationDelegate delegate = getConfigurationDelegateFromId(providerId);
-				if (delegate != null) {
-					delegate.launch(config, mode, launch, monitor);
-				}
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return;
+	public String getProfilingType() {
+		return SnapshotProviderPlugin.PROFILING_TYPE;
 	}
-
-	private String getProviderIdToRun() {
-		// Get self assigned default
-		String providerId = ConfigurationScope.INSTANCE.getNode(SnapshotPreferencesPage.QUALIFIER).get(SnapshotPreferencesPage.KEY, "");
-		if (providerId == "") {
-			providerId = ProfileLaunchConfigurationTabGroup
-					.getHighestProviderId(SNAPSHOT);
-			if (providerId == "") {
-			// Get highest priority provider
-			providerId = ProfileLaunchShortcut
-					.getDefaultLaunchShortcutProviderId(SNAPSHOT);
-			}
-		}
-		return providerId;
-	}
-
-	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		return null;
-	}
-
 }
