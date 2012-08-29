@@ -13,11 +13,11 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
@@ -52,7 +52,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 			path = path.createChildPath(node);
 		}
 		if (node.hasSourceFile()) {
-			treeViewer.getViewer().expandToLevel(node, TreeViewer.ALL_LEVELS);
+			treeViewer.getViewer().expandToLevel(node, AbstractTreeViewer.ALL_LEVELS);
 			TreeSelection selection = new TreeSelection(path);
 	
 			// do double click

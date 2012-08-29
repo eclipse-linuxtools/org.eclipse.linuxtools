@@ -140,7 +140,7 @@ public class CovManager implements Serializable {
 			if (traceFile == null) return;
 			if (noRcrd.getFnctns().isEmpty()){
 				String message = gcnoPath + " doesn't contain any function:\n";
-				Status status = new Status(Status.ERROR, Activator.PLUGIN_ID, message);
+				Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
 				throw new CoreException(status);
 			}
 			daRcrd = new GcdaRecordsParser(noRcrd.getFnctns());

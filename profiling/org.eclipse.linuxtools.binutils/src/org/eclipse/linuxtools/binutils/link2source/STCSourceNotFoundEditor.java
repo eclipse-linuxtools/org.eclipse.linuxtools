@@ -29,6 +29,7 @@ import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor;
 import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.binutils.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -159,7 +160,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	@Override
 	protected void editSourceLookupPath() {
 		PreferenceDialog d = org.eclipse.ui.dialogs.PreferencesUtil.createPreferenceDialogOn(null, "org.eclipse.cdt.debug.ui.SourcePreferencePage", null, null);
-		if (d.open() == PreferenceDialog.OK) {
+		if (d.open() == Window.OK) {
 			closeEditor();
 			openSourceFileAtLocation(getProject(), getMissingFile(), getLineNumber());
 		}

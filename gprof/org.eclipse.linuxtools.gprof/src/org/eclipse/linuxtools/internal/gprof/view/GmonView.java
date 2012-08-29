@@ -214,7 +214,7 @@ public class GmonView extends AbstractSTDataView {
 			decoder.read(gmonPath);
 		} catch(Exception e) {
 			Status status = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
 					IStatus.ERROR,
 					e.getMessage(),
@@ -261,7 +261,7 @@ public class GmonView extends AbstractSTDataView {
 			}
 		} catch(Exception e) {
 			Status status = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
 					IStatus.ERROR,
 					e.getMessage(),

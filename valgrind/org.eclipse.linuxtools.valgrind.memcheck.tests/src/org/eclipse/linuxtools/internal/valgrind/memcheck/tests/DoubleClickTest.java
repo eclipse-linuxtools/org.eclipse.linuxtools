@@ -16,12 +16,12 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.internal.valgrind.ui.CoreMessagesViewer;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
@@ -60,7 +60,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		}
 		assertNotNull(frame);
 
-		viewer.getTreeViewer().expandToLevel(frame, TreeViewer.ALL_LEVELS);
+		viewer.getTreeViewer().expandToLevel(frame, AbstractTreeViewer.ALL_LEVELS);
 		TreeSelection selection = new TreeSelection(path);
 
 		// do double click

@@ -1,6 +1,7 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableEntry;
 
@@ -59,7 +60,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("4", col[0]);
 		
-		col = data.getColumn(TableDataSet.COL_ROW_NUM);
+		col = data.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(1, col.length);
 		assertEquals("1", col[0].toString());
 		
@@ -114,7 +115,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals("0", col[0].toString());
 		assertEquals("0", col[1].toString());
 		
-		col = data.getHistoricalData(null, TableDataSet.COL_ROW_NUM);
+		col = data.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());

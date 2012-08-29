@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.utils.BEDataInputStream;
@@ -81,7 +82,7 @@ public class GcnoRecordsParser {
 				stream = new LEDataInputStream((DataInputStream) stream);
 			}else{
 				String message = magic + " :desn't correspond to a correct note file header\n";
-				Status status = new Status(Status.ERROR, Activator.PLUGIN_ID, message);
+				Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
 				throw new CoreException(status);
 			}
 		}

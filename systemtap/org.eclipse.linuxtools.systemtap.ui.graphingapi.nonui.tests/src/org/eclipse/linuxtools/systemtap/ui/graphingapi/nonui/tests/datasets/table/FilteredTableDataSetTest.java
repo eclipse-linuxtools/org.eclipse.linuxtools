@@ -1,6 +1,8 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowDataSet;
+import junit.framework.TestCase;
+
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowEntry;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.FilteredTableDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
@@ -8,8 +10,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.Tabl
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter;
-
-import junit.framework.TestCase;
 
 public class FilteredTableDataSetTest extends TestCase {
 	public FilteredTableDataSetTest(String name) {
@@ -95,7 +95,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals("0", col[0].toString());
 		assertEquals("0", col[1].toString());
 		
-		col = dataSet.getHistoricalData(null, TableDataSet.COL_ROW_NUM);
+		col = dataSet.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
@@ -144,7 +144,7 @@ public class FilteredTableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("1", col[0]);
 		
-		col = dataSet.getColumn(RowDataSet.COL_ROW_NUM);
+		col = dataSet.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(1, col.length);
 		assertEquals("1", col[0].toString());
 		

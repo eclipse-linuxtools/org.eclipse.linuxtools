@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.cdt.internal.ui.editor.CEditor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
@@ -439,7 +440,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 					am.addAnnotation(annotation,new Position(offset));
 			}
 			} catch (BadLocationException e) {
-				Status s =new Status(Status.ERROR,STAnnotatedSourceEditorActivator.PLUGIN_ID,Status.ERROR,e.getMessage(),e);
+				Status s =new Status(IStatus.ERROR,STAnnotatedSourceEditorActivator.PLUGIN_ID,IStatus.ERROR,e.getMessage(),e);
 				STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
 			}
 		}

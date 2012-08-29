@@ -1,6 +1,7 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.row;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.FilteredRowDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row.RowEntry;
@@ -70,7 +71,7 @@ public class FilteredRowDataSetTest extends TestCase {
 		assertSame("1", col[0]);
 		assertSame("4", col[1]);
 		
-		col = fdata.getColumn(RowDataSet.COL_ROW_NUM);
+		col = fdata.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
@@ -104,7 +105,7 @@ public class FilteredRowDataSetTest extends TestCase {
 		assertSame("1", col[0]);
 		assertSame("4", col[1]);
 		
-		col = fdata.getHistoricalData(null, RowDataSet.COL_ROW_NUM);
+		col = fdata.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
