@@ -153,7 +153,7 @@ public abstract class AGraph extends AChart implements IGraph {
 	
 	protected void paintAll(GC gc) {
 		for(int i = 0; i < axes.size(); i++)
-			((GraphAxis)axes.get(i)).paint(gc);
+			axes.get(i).paint(gc);
 		super.paintAll(gc);
 	}
 
@@ -188,7 +188,7 @@ public abstract class AGraph extends AChart implements IGraph {
 				xSeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS);
 				GraphAxis a;
 				for(int i=0; i<axes.size(); i++) {
-					a = ((GraphAxis)axes.get(i));
+					a = axes.get(i);
 					if(GraphAxis.HORIZONTAL == a.getType())
 						a.setTickCount(xSeriesTicks);
 				}
@@ -196,7 +196,7 @@ public abstract class AGraph extends AChart implements IGraph {
 				ySeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS);
 				GraphAxis a;
 				for(int i=0; i<axes.size(); i++) {
-					a = ((GraphAxis)axes.get(i));
+					a = axes.get(i);
 					if(GraphAxis.VERTICAL == a.getType())
 						a.setTickCount(ySeriesTicks);
 				}

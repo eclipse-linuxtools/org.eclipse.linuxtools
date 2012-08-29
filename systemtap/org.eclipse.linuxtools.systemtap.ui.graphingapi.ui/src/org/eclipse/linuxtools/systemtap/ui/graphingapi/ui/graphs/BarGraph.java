@@ -63,7 +63,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 		double pw=0, ph;
 		
 		for(int j=0; j<elementList.length; j++) {
-			points = (DataPoint[])elementList[j].toArray(points);
+			points = elementList[j].toArray(points);
 
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			c1 = new Color(getDisplay(), c.getRed()>>1, c.getGreen()>>1, c.getBlue()>>1);

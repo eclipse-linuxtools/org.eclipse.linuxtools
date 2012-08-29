@@ -50,7 +50,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 	private void doDoubleClick(TreePath path) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer treeViewer = (TreeViewer) view.getViewer();
+		TreeViewer treeViewer = view.getViewer();
 
 		ICachegrindElement element = (ICachegrindElement) path.getLastSegment();
 		treeViewer.expandToLevel(element, TreeViewer.ALL_LEVELS);

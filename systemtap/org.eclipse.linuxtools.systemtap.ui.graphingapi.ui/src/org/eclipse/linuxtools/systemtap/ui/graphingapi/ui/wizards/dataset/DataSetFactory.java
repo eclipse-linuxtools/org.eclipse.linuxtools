@@ -91,9 +91,9 @@ public final class DataSetFactory {
 	
 	public static DataGrid getDataGrid(Composite composite, IDataSet set) {
 		if(set instanceof RowDataSet)
-			return new DataGrid(composite, (RowDataSet)set, DataGrid.NONE);
+			return new DataGrid(composite, set, DataGrid.NONE);
 		else if(set instanceof TableDataSet)
-			return new DataGrid(composite, (TableDataSet)set, DataGrid.FULL_UPDATE);
+			return new DataGrid(composite, set, DataGrid.FULL_UPDATE);
 			
 		return null;
 	}

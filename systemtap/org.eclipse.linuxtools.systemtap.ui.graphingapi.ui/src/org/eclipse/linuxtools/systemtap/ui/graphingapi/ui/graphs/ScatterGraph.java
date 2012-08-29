@@ -52,7 +52,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		double px, py;
 		
 		for(int j=0; j<elementList.length; j++) {
-			points = (DataPoint[])elementList[j].toArray(points);
+			points = elementList[j].toArray(points);
 	
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			gc.setForeground(c);

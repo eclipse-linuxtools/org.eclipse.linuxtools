@@ -103,7 +103,7 @@ public class GcnoRecordsParser {
 				int length=stream.readInt();
 
 				// parse gcno data
-				if ((int)tag ==  GCOV_TAG_FUNCTION){
+				if (tag ==  GCOV_TAG_FUNCTION){
 					// before parse new function, add current function to functions list
 					if (parseFirstFnctn == true) fnctns.add(fnctn);
 					
@@ -123,7 +123,7 @@ public class GcnoRecordsParser {
 					continue;
 				}
 				
-				else if ((int)tag ==  GCOV_TAG_BLOCKS){
+				else if (tag ==  GCOV_TAG_BLOCKS){
 					blocks = new ArrayList<Block>();
 					for (int i = 0; i < length; i++) {
 						long BlckFlag = stream.readInt()& MasksGenerator.UNSIGNED_INT_MASK;
@@ -164,7 +164,7 @@ public class GcnoRecordsParser {
 							if (a.getSrcBlock() != null ) {
 								 // Exceptional exit from this function, the 
 								 // 	source block must be a call.
-								srcBlk = blocks.get((int)srcBlockIndice);		
+								srcBlk = blocks.get(srcBlockIndice);		
 								srcBlk.setCallSite(true);
 								a.setCallNonReturn(true);
 							} else {
@@ -210,10 +210,10 @@ public class GcnoRecordsParser {
 						}
 					} while (true);
 					
-					fnctn.getFunctionBlocks().get(((int)numBlock))
+					fnctn.getFunctionBlocks().get((numBlock))
 					.setEncoding(lineNos);
 				
-					fnctn.getFunctionBlocks().get(((int)numBlock))
+					fnctn.getFunctionBlocks().get((numBlock))
 					.setNumLine(ix);
 					
 					continue;

@@ -89,7 +89,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 			TableEntry e;
 			Object[] o;
 			for(i=0; i<data.size(); i++) {
-				e = (TableEntry)data.get(i);
+				e = data.get(i);
 				for(j=0; j<e.getRowCount(); j++) {
 					o = e.getRow(j);
 					for(k=0; k<o.length; k++)
@@ -108,7 +108,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	
 	public int getRowCount() {
 		if(data.size() > 0)
-			return ((TableEntry)data.get(data.size()-1)).getRowCount();
+			return data.get(data.size()-1).getRowCount();
 		else
 			return 0;
 	}
@@ -118,7 +118,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	}
 	
 	public Object[] getRow(int row) {
-		return ((TableEntry)data.get(data.size()-1)).getRow(row);
+		return data.get(data.size()-1).getRow(row);
 	}
 	
 	public Object[] getColumn(int col) {
@@ -134,7 +134,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 				rows[i] = new Integer(start+i+1);
 			return rows;
 		}
-		return ((TableEntry)data.get(data.size()-1)).getColumn(col, start, end);
+		return data.get(data.size()-1).getColumn(col, start, end);
 	}
 
 	public void setData(IDataEntry data) {
@@ -183,7 +183,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	
 	public IDataEntry getEntry(int entry) {
 		if(entry >=0 && entry < getEntryCount())
-			return (TableEntry)data.get(entry);
+			return data.get(entry);
 		return null;
 	}
 	
@@ -196,7 +196,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	
 	//IBlockDataSet Methods
 	public Object[][] getData() {
-		return ((TableEntry)data.get(getEntryCount()-1)).getData();
+		return data.get(getEntryCount()-1).getData();
 	}
 	//End IBlockDataSet Methods
 	

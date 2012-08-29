@@ -312,7 +312,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			String message = generateErrorMessage(config.getName(), binaryArguments);
 			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), message);
+					(Helper.getConsoleByName(config.getName())), message);
 			dw.schedule();
 			
 		} catch (IOException e) {

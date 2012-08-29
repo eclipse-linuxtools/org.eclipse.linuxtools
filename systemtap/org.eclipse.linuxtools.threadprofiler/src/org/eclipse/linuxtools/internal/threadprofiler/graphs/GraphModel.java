@@ -229,7 +229,7 @@ public abstract class GraphModel {
 	}
 	
 	protected double getXIncrement(GC gc) {
-		double incr = ((double)gc.getClipping().width - (double)2*getXOffset())/BUFFER_SIZE;
+		double incr = (gc.getClipping().width - (double)2*getXOffset())/BUFFER_SIZE;
 		if ( incr <= 0 )
 			incr = 1;
 		return incr;

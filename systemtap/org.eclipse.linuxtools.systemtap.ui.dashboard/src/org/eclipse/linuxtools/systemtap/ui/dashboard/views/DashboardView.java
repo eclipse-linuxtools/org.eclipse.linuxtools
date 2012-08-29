@@ -299,18 +299,18 @@ public class DashboardView extends ViewPart {
 
 	private void fireTabCloseEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabClosed();
+			tabListeners.get(i).tabClosed();
 	}
 	
 	
 	private void fireTabOpenEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabOpened();
+			tabListeners.get(i).tabOpened();
 	}
 
 	private void fireTabChangedEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabChanged();
+			tabListeners.get(i).tabChanged();
 	}
 	
 	/**

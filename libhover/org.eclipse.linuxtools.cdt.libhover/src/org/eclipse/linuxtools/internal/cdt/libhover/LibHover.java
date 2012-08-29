@@ -275,7 +275,7 @@ public class LibHover implements ICHelpProvider {
         }
         
 		public int compareTo (FunctionSummary x) {
-			FunctionSummary y = (FunctionSummary)x;
+			FunctionSummary y = x;
 			return getName().compareTo(y.getName());
 		}
 
@@ -315,7 +315,7 @@ public class LibHover implements ICHelpProvider {
         public IRequiredInclude[] getIncludes() {
         	IRequiredInclude[] includes = new IRequiredInclude[Includes.size()];
         	for (int i = 0; i < Includes.size(); ++i) {
-        		includes[i] = (IRequiredInclude)Includes.get(i);
+        		includes[i] = Includes.get(i);
         	}
         	return includes;
         }
@@ -378,7 +378,7 @@ public class LibHover implements ICHelpProvider {
         	try {
         		if (context instanceof IHoverHelpInvocationContext) {
         			// We know the file offset of the member reference.
-        			IRegion region = (IRegion)((IHoverHelpInvocationContext)context).getHoverRegion();
+        			IRegion region = ((IHoverHelpInvocationContext)context).getHoverRegion();
         			
         			// Now, let's find the declaration of the method.  We need to do this because we want the specific
         			// member prototype to go searching for.  There could be many members called "x" which have different
@@ -636,7 +636,7 @@ public class LibHover implements ICHelpProvider {
 			SortedMap<String, FunctionInfo> map = cppInfo.functions.tailMap(prefix);
 			Set<Map.Entry<String, FunctionInfo>> c = map.entrySet();
 			for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
-				Map.Entry<String, FunctionInfo> e = (Map.Entry<String, FunctionInfo>)i.next();
+				Map.Entry<String, FunctionInfo> e = i.next();
 				FunctionInfo x = e.getValue();
 				String name = x.getName();
 				// Look for names that start with prefix, but ignore names that
@@ -661,7 +661,7 @@ public class LibHover implements ICHelpProvider {
 		}
 		IFunctionSummary[] summaries = new IFunctionSummary[fList.size()];
 		for (int k = 0; k < summaries.length; k++) {
-			summaries[k] = (IFunctionSummary)fList.get(k);
+			summaries[k] = fList.get(k);
 		}
 		return summaries;
 	}

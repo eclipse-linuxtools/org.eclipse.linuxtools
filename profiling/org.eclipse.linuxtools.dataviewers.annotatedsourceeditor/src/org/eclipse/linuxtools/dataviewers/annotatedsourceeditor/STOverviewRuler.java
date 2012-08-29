@@ -1035,7 +1035,7 @@ public class STOverviewRuler implements IOverviewRuler {
 	
 	
 	private Color getFPColor(Object annotation, double scale){
-		Color base= (Color) fAnnotationColors.get(annotation);
+		Color base= fAnnotationColors.get(annotation);
 		return getInterpolatedColor(base,scale);
 	}
 	
@@ -1065,7 +1065,7 @@ public class STOverviewRuler implements IOverviewRuler {
 	 * @since 3.0
 	 */
 	private Color findColor(Object annotationType) {
-		Color color= (Color) fAnnotationTypes2Colors.get(annotationType);
+		Color color= fAnnotationTypes2Colors.get(annotationType);
 		if (color != null)
 			return color;
 
@@ -1074,7 +1074,7 @@ public class STOverviewRuler implements IOverviewRuler {
 			Object[] superTypes= extension.getSupertypes(annotationType);
 			if (superTypes != null) {
 				for (int i= 0; i < superTypes.length; i++) {
-					color= (Color) fAnnotationTypes2Colors.get(superTypes[i]);
+					color= fAnnotationTypes2Colors.get(superTypes[i]);
 					if (color != null)
 						return color;
 				}

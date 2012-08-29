@@ -34,7 +34,7 @@ public class DataPoint {
 	 * @return
 	 */
 	public int getX() {
-		return (int) values[0];
+		return values[0];
 	}
 
 	public void setX(int x) {
@@ -46,7 +46,7 @@ public class DataPoint {
 	 * @return
 	 */
 	public int getY() {
-		return (int) values[1];
+		return values[1];
 	}
 
 	public void setY(int y) {

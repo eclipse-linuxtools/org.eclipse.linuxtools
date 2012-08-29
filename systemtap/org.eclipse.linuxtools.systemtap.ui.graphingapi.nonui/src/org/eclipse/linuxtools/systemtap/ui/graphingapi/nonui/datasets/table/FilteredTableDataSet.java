@@ -124,7 +124,7 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 			
  			ArrayList<Object>[] filterData = getFilterData();
 			for(int i=0; i<filters.size(); i++)
-				filterData = ((IDataSetFilter)filters.get(i)).filter(filterData);
+				filterData = filters.get(i).filter(filterData);
 			setFilteredData(filterData);
 		}
 	}

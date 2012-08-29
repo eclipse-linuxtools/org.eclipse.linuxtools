@@ -53,7 +53,7 @@ public class PieChart extends AChart implements IBlockGraph {
 		
 		int angle1, angle0 = 0;
 		Number[] points = new Number[0];
-		points = (Number[])elementList[0].toArray(points);
+		points = elementList[0].toArray(points);
 		for(int i=0; i<points.length; i++) {
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[i]);
 			gc.setForeground(c);

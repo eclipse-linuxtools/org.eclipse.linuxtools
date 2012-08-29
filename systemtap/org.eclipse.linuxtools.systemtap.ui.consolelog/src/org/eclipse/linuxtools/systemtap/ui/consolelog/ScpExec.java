@@ -81,9 +81,9 @@ public class ScpExec implements Runnable {
       	
 		int i;
 		for(i=0; i<inputListeners.size(); i++)
-			inputGobbler.addDataListener((IGobblerListener)inputListeners.get(i));
+			inputGobbler.addDataListener(inputListeners.get(i));
 		for(i=0; i<errorListeners.size(); i++)
-			errorGobbler.addDataListener((IGobblerListener)errorListeners.get(i));
+			errorGobbler.addDataListener(errorListeners.get(i));
 		return true;
 
       }catch(Exception e)

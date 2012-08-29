@@ -127,7 +127,7 @@ public class GraphSelectorView extends ViewPart {
 	public GraphDisplaySet getActiveDisplaySet() {
 		int index = scriptFolder.getSelectionIndex();
 		if(index >= 0 && index < displaySets.size())
-			return (GraphDisplaySet)displaySets.get(index);
+			return displaySets.get(index);
 		else
 			return null;
 	}
@@ -144,17 +144,17 @@ public class GraphSelectorView extends ViewPart {
 	
 	private void fireTabCloseEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabClosed();
+			tabListeners.get(i).tabClosed();
 	}
 	
 	private void fireTabOpenEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabOpened();
+			tabListeners.get(i).tabOpened();
 	}
 	
 	private void fireTabChangedEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
-			((ITabListener)tabListeners.get(i)).tabChanged();
+			tabListeners.get(i).tabChanged();
 	}
 
 	/**

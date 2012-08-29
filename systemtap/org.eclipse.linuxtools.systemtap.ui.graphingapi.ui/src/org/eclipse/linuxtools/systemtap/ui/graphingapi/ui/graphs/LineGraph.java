@@ -52,7 +52,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		double px2, py2;
 		
 		for(int j=0; j<elementList.length; j++) {
-			points = (DataPoint[])elementList[j].toArray(points);
+			points = elementList[j].toArray(points);
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			gc.setForeground(c);
 

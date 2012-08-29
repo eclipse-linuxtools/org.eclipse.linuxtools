@@ -84,7 +84,7 @@ public class GcdaRecordsParser {
 				int tag = stream.readInt();
 				long length = (stream.readInt() &  MasksGenerator.UNSIGNED_INT_MASK);
 				// parse gcda data
-				switch ((int) tag) {
+				switch (tag) {
 				case GCOV_TAG_FUNCTION: {
 					long fnctnId = stream.readInt() &  MasksGenerator.UNSIGNED_INT_MASK;
 					if (!fnctns.isEmpty()) {

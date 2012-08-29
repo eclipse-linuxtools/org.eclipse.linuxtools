@@ -65,7 +65,7 @@ public class ListEditor extends org.eclipse.jface.preference.ListEditor {
         while (st.hasMoreElements()) {
             v.add(st.nextElement());
         }
-        return (String[]) v.toArray(new String[v.size()]);
+        return v.toArray(new String[v.size()]);
     }
     
     private String dialogTitle;

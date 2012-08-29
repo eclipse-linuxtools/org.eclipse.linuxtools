@@ -106,7 +106,7 @@ ValgrindLaunchConfigurationDelegate {
 			dynamicDelegate = getDynamicDelegate(toolID);
 			String[] opts = getValgrindArgumentsArray(config);
 			@SuppressWarnings({ "unused", "unchecked" })
-			Map<String, String> env = (Map<String, String>) config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, (Map<String, String>) null);
+			Map<String, String> env = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, (Map<String, String>) null);
 			@SuppressWarnings("unused")
 			boolean usePty = config.getAttribute(
 					ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,

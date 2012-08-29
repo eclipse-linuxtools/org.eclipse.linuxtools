@@ -66,6 +66,6 @@ public class GraphingAPINonUIPlugin extends AbstractUIPlugin {
 
 	@SuppressWarnings("unchecked")
 	public static <T> ArrayList<T>[] createArrayList(int size, T instance) {
-		return (ArrayList<T>[])new ArrayList[size];
+		return new ArrayList[size];
 	}
 }

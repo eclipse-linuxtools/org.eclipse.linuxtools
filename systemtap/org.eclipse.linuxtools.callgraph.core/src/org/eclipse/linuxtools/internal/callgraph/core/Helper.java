@@ -45,12 +45,12 @@ public class Helper {
 	 * @return The text contained within that console
 	 */
 	public static String getMainConsoleTextByName(String name){
-		TextConsole proc = (TextConsole) getConsoleByName(name);
-		return ((IDocument)proc.getDocument()).get();
+		TextConsole proc = getConsoleByName(name);
+		return proc.getDocument().get();
 	}
 	
 	public static IDocument getConsoleDocumentByName(String name) {
-		return ((TextConsole)Helper.getConsoleByName(name)).getDocument();
+		return Helper.getConsoleByName(name).getDocument();
 	}
 	
 	/**

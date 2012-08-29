@@ -118,7 +118,7 @@ public class GraphComposite extends Composite {
 		sidebarVisible = withSidebar;
 		
 		for(int i=0; i<checkOptions.size(); i++)
-			((Button)checkOptions.get(i)).setVisible(sidebarVisible);
+			checkOptions.get(i).setVisible(sidebarVisible);
 		
 		zoomScale.setVisible(sidebarVisible);
 		label.setVisible(sidebarVisible);
@@ -142,7 +142,7 @@ public class GraphComposite extends Composite {
 
 		Button old = null;
 		if(checkOptions.size() > 0)
-			old = (Button)checkOptions.get(checkOptions.size()-1);
+			old = checkOptions.get(checkOptions.size()-1);
 
 		FormData data = new FormData();
 		data.bottom = (null != old) ? new FormAttachment(old,0) : new FormAttachment(100, 0);
@@ -162,7 +162,7 @@ public class GraphComposite extends Composite {
 	public void removeCheckOption(String title) {
 		Button b;
 		for(int i=0; i<checkOptions.size(); i++) {
-			b = (Button)checkOptions.get(i);
+			b = checkOptions.get(i);
 			if(b.getText().equals(title)) {
 				checkOptions.remove(b);
 				

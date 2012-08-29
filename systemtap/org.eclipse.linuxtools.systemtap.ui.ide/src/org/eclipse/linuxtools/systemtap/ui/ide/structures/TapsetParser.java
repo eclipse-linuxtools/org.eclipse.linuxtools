@@ -164,7 +164,7 @@ public class TapsetParser implements Runnable {
 	 */
 	private void fireUpdateEvent() {
 		for(int i=0; i<listeners.size() && !stopped; i++)
-			((IUpdateListener)listeners.get(i)).handleUpdateEvent();
+			listeners.get(i).handleUpdateEvent();
 	}
 	
 	/**
@@ -388,7 +388,7 @@ public class TapsetParser implements Runnable {
 				functionNames.add(probe.toString());
 			}
 		}
-		parameters = (String[])functionNames.toArray(parameters);
+		parameters = functionNames.toArray(parameters);
 		runPass2FunctionSet(parameters, 0, parameters.length-1);
 	}
 	

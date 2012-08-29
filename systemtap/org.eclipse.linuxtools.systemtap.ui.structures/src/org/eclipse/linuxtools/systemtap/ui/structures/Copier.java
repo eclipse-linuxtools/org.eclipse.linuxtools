@@ -24,7 +24,7 @@ public final class Copier {
 	 */
 	public static <T> ArrayList<T>[] copy(ArrayList<T>[] list) {
 		@SuppressWarnings("unchecked")
-		ArrayList<T>[] list2 = (ArrayList<T>[])new ArrayList[list.length];
+		ArrayList<T>[] list2 = new ArrayList[list.length];
 		
 		for(int i=0; i<list2.length; i++)
 			list2[i] = copy(list[i]);

@@ -103,7 +103,7 @@ public class ClassInfo implements Serializable {
 				ArrayList<MemberInfo> children = k.getChildren();
 				if (children != null) {
 					for (Iterator<MemberInfo> j = children.iterator(); j.hasNext();) {
-						MemberInfo child = (MemberInfo)i.next();
+						MemberInfo child = i.next();
 						matchList.add(child);
 					}
 				}

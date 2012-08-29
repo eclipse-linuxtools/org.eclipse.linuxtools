@@ -109,7 +109,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 
 			ArrayList<Object>[] filterData = getFilterData();
 			for(int i=0; i<filters.size(); i++)
-				filterData = ((IDataSetFilter)filters.get(i)).filter(filterData);
+				filterData = filters.get(i).filter(filterData);
 			setFilteredData(filterData);
 		}
 	}

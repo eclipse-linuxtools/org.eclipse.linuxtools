@@ -139,11 +139,11 @@ public class CEditor extends AbstractDecoratedTextEditor {
 				}
 				for(int i=0, pair, start, end; i < commentChunks.size(); i++)
 				{
-					if(!(((Integer)(commentChunks.get(i))).intValue() < offset))
+					if(!(commentChunks.get(i).intValue() < offset))
 					{
 						pair = i - i%2;
-						start = ((Integer)(commentChunks.get(pair))).intValue();
-						end = ((Integer)(commentChunks.get(pair+1))).intValue();
+						start = commentChunks.get(pair).intValue();
+						end = commentChunks.get(pair+1).intValue();
 						if(offset >= start && offset <= end)
 							die=true;
 					}

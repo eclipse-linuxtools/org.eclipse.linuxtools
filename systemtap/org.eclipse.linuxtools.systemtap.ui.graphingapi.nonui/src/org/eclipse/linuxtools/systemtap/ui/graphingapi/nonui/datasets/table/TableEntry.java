@@ -29,7 +29,7 @@ public class TableEntry implements IDataEntry {
 	public int getColCount() {
 		if(getRowCount() > 0) {
 			try {
-				return ((Object [])bodyContent.get(0)).length;
+				return bodyContent.get(0).length;
 			} catch(Exception cce) {}
 		}
 		return 0;
@@ -55,13 +55,13 @@ public class TableEntry implements IDataEntry {
 	public Object[] getRow(int row) {
 		if(row < 0 || row >= getRowCount())
 			return null;
-		return (Object[])bodyContent.get(row);
+		return bodyContent.get(row);
 	}
 	
 	public Object[] getRow(String key) {
 		Object[] row;
 		for(int i=0; i<bodyContent.size(); i++) {
-			row = (Object[])bodyContent.get(i);
+			row = bodyContent.get(i);
 			if(row[0].toString().equals(key))
 				return row;
 		}
@@ -76,7 +76,7 @@ public class TableEntry implements IDataEntry {
 		if(0 <= col && getColCount() > col && start >=0 && end > start && end <= getRowCount()) {
 			Object[] res = new Object[Math.min(end-start, getRowCount())];
 			for(int i=0; i<res.length; i++)
-				res[i] = ((Object[])bodyContent.get(i+start))[col];
+				res[i] = bodyContent.get(i+start)[col];
 			return res;
 		}
 		return null;
@@ -99,7 +99,7 @@ public class TableEntry implements IDataEntry {
 	public IDataEntry copy() {
 		TableEntry entry = new TableEntry();
 		for(int i=0; i<bodyContent.size(); i++)
-			entry.add((Object[])bodyContent.get(i));
+			entry.add(bodyContent.get(i));
 		
 		return entry;
 	}

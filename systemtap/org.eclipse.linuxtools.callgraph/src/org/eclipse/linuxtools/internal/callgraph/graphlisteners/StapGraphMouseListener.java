@@ -160,7 +160,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 		GraphNode node = null;
 		if (graphNodeList.get(0) instanceof GraphNode) {
-			node = (GraphNode) graphNodeList.remove(0);
+			node = graphNodeList.remove(0);
 		} else {
 			graph.setSelection(null);
 			return null;

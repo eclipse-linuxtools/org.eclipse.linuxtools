@@ -38,7 +38,7 @@ public abstract class AChart extends GraphCanvas implements IGraph, IUpdateListe
 		super(parent, style);
 		adapter = adapt;
 
-		elementList = (LinkedList<Object>[])new LinkedList[adapt.getSeriesCount()];
+		elementList = new LinkedList[adapt.getSeriesCount()];
 		for(int i=0; i<elementList.length; i++)
 			elementList[i] = new LinkedList<Object>();
 

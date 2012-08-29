@@ -73,7 +73,7 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 			if (graph.scale > 1)
 				graph.scrollSmoothBy((int) (xDiff/graph.scale), (int) (yDiff/graph.scale));
 			else
-				graph.scrollSmoothBy((int) (xDiff), (int) (yDiff));
+				graph.scrollSmoothBy(xDiff, yDiff);
 	
 			prevX = e.x;
 			prevY = e.y;
