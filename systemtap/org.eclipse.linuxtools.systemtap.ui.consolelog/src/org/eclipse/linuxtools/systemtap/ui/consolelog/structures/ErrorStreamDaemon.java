@@ -24,9 +24,10 @@ public class ErrorStreamDaemon extends ConsoleStreamDaemon {
 
 		outputData = new StringBuilder();
 		this.parser = parser;
-		
-		errorView = errorWindow;
-		errorView.clear();
+		if (null != errorWindow) {
+			errorView = errorWindow;
+			errorView.clear();
+		}
 	}
 	
 	/**

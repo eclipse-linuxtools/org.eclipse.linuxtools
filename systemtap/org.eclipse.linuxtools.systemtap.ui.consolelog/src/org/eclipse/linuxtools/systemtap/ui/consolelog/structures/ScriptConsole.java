@@ -216,6 +216,10 @@ public class ScriptConsole extends IOConsole {
 	 * @return boolean representing if the command is running
 	 */
 	public boolean isRunning() {
+		// If there is no command there is nothing running
+		if (null == cmd) {
+			return false;
+		}
 		return cmd.isRunning();
 	}
 	
@@ -224,6 +228,10 @@ public class ScriptConsole extends IOConsole {
 	 * @return boolean represneting whether or not the class has been disposed.
 	 */
 	public boolean isDisposed() {
+		// If there is no command it can be considered disposed
+		if (null == cmd) {
+			return true;
+		}
 		return cmd.isDisposed();
 	}
 	

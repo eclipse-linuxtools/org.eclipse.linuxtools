@@ -66,9 +66,7 @@
     <module>org.eclipse.linuxtools.callgraph.tests</module>
     <module>org.eclipse.linuxtools.systemtap-feature</module>
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog</module>
-    <!--
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog.tests</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.dashboard</module>
     <module>org.eclipse.linuxtools.systemtap.ui.dashboardextension</module>
     <module>org.eclipse.linuxtools.systemtap.ui.doc</module>
