@@ -159,7 +159,7 @@ public class StapGraphMouseListener implements MouseListener {
 		}
 
 		GraphNode node = null;
-		if (graphNodeList.get(0) instanceof GraphNode) {
+		if (graphNodeList.get(0) != null) {
 			node = graphNodeList.remove(0);
 		} else {
 			graph.setSelection(null);
@@ -219,7 +219,7 @@ public class StapGraphMouseListener implements MouseListener {
 		// ------------Debug information
 		if (list.size() == 1) {
 			int id;
-			if (list.get(0) instanceof StapNode)
+			if (list.get(0) != null)
 				id = list.get(0).id;
 			else {
 				graph.setSelection(null);
