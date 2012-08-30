@@ -75,9 +75,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.editor</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphicalrun</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphing</module>
-    <!--
-    <module>org.eclipse.linuxtools.systemtap.ui.graphing.tests</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui</module>
     <!--<module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests</module>-->
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.ui</module>
