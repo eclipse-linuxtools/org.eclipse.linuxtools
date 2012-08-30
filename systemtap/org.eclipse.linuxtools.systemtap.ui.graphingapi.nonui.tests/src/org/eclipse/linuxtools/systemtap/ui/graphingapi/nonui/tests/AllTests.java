@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests;
 
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.adapters.BlockAdapterTest;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.adapters.ScrollAdapterTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.aggregates.AverageAggregateTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.aggregates.CountAggregateTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.aggregates.MaxAggregateTest;
@@ -31,19 +29,13 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.Range
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.SortFilterTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.UniqueFilterTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.ChartStreamDaemonTest;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.DataPointTest;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.GraphDataTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.NumberTypeTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.UpdateManagerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({// Adapters
-		BlockAdapterTest.class,
-		ScrollAdapterTest.class,
-
-		// Aggregates
+@Suite.SuiteClasses({// Aggregates
 		AverageAggregateTest.class,
 		CountAggregateTest.class,
 		MaxAggregateTest.class,
@@ -68,9 +60,7 @@ import org.junit.runners.Suite;
 		UniqueFilterTest.class,
 
 		// Structures
-		ChartStreamDaemonTest.class,
-		// ChartStreamDaemonTest2.class,
-		DataPointTest.class, GraphDataTest.class, NumberTypeTest.class,
+		ChartStreamDaemonTest.class, NumberTypeTest.class,
 		UpdateManagerTest.class })
 public class AllTests {
 }
