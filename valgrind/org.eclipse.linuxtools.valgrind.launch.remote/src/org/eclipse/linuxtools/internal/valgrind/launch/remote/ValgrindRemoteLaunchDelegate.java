@@ -113,19 +113,20 @@ ValgrindLaunchConfigurationDelegate {
 					ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
 					ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 
-			String command = valgrindLocation.toString();
+			StringBuilder command = new StringBuilder();
+			command.append(valgrindLocation.toString());
 			// Add valgrind options
 			for (String opt : opts) {
-				command += " " + opt; //$NON-NLS-1$
+				command.append(" ").append(opt); //$NON-NLS-1$
 			}
 			// Add executable to run
-			command += " " + remoteBinFile.toString();
+			command.append(" ").append(remoteBinFile.toString()); //$NON-NLS-1$
 			// Add arguments to pass to executable
 			for (String argument : arguments) {
-				command += " " + argument; //$NON-NLS-1$
+				command.append(" ").append(argument); //$NON-NLS-1$
 			}
 			ArrayList<String> commandOutput = new ArrayList<String>();
-			int returnValue = rc.runCommand(command, remoteDir, commandOutput, new SubProgressMonitor(monitor, 1));
+			int returnValue = rc.runCommand(command.toString(), remoteDir, commandOutput, new SubProgressMonitor(monitor, 1));
 
 			// delete remote binary
 			rc.delete(remoteBinFile, new SubProgressMonitor(monitor, 1));
