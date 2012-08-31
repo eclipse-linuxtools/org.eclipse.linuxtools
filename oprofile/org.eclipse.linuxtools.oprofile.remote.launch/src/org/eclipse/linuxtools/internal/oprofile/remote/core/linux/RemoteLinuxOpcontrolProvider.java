@@ -21,10 +21,11 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 
 	private static final int SUDO_TIMEOUT = 5000;
 
-	public RemoteLinuxOpcontrolProvider() throws OpcontrolException {
+	public RemoteLinuxOpcontrolProvider() {
 	}
 
 
+	@Override
 	protected Process createOpcontrolProcess(String[] cmdArray, IProject project) throws OpcontrolException {
 		Process p = null;
 		try {
@@ -50,6 +51,7 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 	 * @param project
 	 * @return
 	 */
+	@Override
 	public boolean hasPermissions(IProject project) {
 		String linuxtoolsPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
 
