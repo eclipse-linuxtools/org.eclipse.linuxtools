@@ -13,7 +13,7 @@ import org.junit.Test;
 public class LoggingStreamDaemonTest {
 
 	@Before
-	protected void setUp(){
+	public void setUp(){
 		StreamGobbler gobbler = new StreamGobbler(System.in);
 		gobbler.start();
 		daemon = new LoggingStreamDaemon();

@@ -23,7 +23,7 @@ import org.junit.Test;
 public class KernelSourceTreeTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		kst = new KernelSourceTree();
 	}
 

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class CCodeFileFilterTest {
 
 	@Before
-	protected void setUp(){
+	public void setUp(){
 		filter = new CCodeFileFilter();
 	}
 

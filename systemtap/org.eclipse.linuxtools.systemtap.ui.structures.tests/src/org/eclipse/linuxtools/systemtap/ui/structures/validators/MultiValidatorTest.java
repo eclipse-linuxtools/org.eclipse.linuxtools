@@ -10,7 +10,7 @@ import org.junit.Test;
 public class MultiValidatorTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		validator = new MultiValidator();
 		validator.addValidator(new NumberValidator());
 		validator.addValidator(new NumberValidator());

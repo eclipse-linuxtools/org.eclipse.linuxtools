@@ -23,7 +23,7 @@ import org.junit.Test;
 public class ZipArchiveTest {
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		File f = new File("/tmp/test/a");
 		f.getParentFile().mkdirs();
 		f.createNewFile();
@@ -69,7 +69,16 @@ public class ZipArchiveTest {
 	}
 	
 	@After
-	protected void tearDown() {
-		new File("/tmp/test/").deleteOnExit();
+	public void tearDown() {
+		deleteFile(new File[]{new File("/tmp/test/")});
+	}
+	
+	private void deleteFile(File[] files){
+		for(File file: files){
+			if (file.isDirectory()){
+				deleteFile(file.listFiles());
+			}
+			file.delete();
+		}
 	}
 }

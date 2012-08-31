@@ -28,8 +28,10 @@ public class CopierTest {
 
 		for(int i=0; i<listsSize; i++) {
 			list.add("" + i);
-			for(int j=0; j<5; j++)
+			for(int j=0; j<5; j++){
+				lists[i] = new ArrayList<Integer>();
 				lists[i].add(new Integer(j));
+			}
 		}
 		
 		ArrayList<String> list2 = Copier.copy(list);

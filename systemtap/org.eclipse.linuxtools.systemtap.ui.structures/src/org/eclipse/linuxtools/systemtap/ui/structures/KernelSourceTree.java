@@ -35,6 +35,10 @@ public class KernelSourceTree {
 	 * @param excluded The string array to store as excluded.
 	 */
 	public void buildKernelTree(String direct, String[] excluded) {
+		if (direct == null || direct.isEmpty()){
+			kernelTree = null;
+			return;
+		}
 		try {
 			URI locationURI = new URI(direct);
 			IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(locationURI);

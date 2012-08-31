@@ -23,7 +23,7 @@ import org.junit.Test;
 public class CommandTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		tc = new Command(new String[] {"ls", "/home/"}, null, null);
 	}
 
@@ -63,7 +63,7 @@ public class CommandTest {
 
 	@Test
 	public void testGetReturnValue() {
-		assertEquals(-1, tc.getReturnValue());
+		assertEquals(Integer.MAX_VALUE, tc.getReturnValue());
 	}
 	
 	@Test

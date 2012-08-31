@@ -21,7 +21,7 @@ import org.junit.Test;
 public class StreamGobblerTest{
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		sg = new StreamGobbler(System.in);
 		sg.start();
 	}

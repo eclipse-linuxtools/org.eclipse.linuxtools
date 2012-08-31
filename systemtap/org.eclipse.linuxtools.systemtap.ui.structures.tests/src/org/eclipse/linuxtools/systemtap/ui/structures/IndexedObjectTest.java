@@ -9,7 +9,7 @@ import org.junit.Test;
 public class IndexedObjectTest{
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		one = new IndexedObject(1, "one");
 		two = new IndexedObject(2, "two");
 		three = new IndexedObject(3, "three");

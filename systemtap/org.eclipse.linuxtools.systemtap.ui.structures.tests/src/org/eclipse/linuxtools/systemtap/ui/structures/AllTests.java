@@ -23,10 +23,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ CCodeFileFilterTest.class, CommandTest.class,
-		CopierTest.class, IndexedObjectTest.class, JarArchiveTest.class,
-		KernelSourceTreeTest.class, LoggingStreamDaemonTest.class,
-		SortTest.class, StreamGobblerTest.class, StringFormatterTest.class,
-		TreeDefinitionNodeTest.class, TreeNodeTest.class,
+		CopierTest.class, IndexedObjectTest.class, KernelSourceTreeTest.class,
+		LoggingStreamDaemonTest.class, SortTest.class, StreamGobblerTest.class,
+		StringFormatterTest.class, TreeDefinitionNodeTest.class,
+		TreeNodeTest.class,
 		ZipArchiveTest.class,
 
 		// structures.validators

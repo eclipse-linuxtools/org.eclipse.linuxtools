@@ -18,11 +18,12 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
+import org.junit.Test;
 
 public class TreeDefinitionNodeTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		data = new StringBuilder("Object");
 		data2 = "Data";
 		d = "/usr/share";
@@ -35,6 +36,7 @@ public class TreeDefinitionNodeTest {
 		t.add(child);
 	}
 
+	@Test
 	public void testTreeDefinitionNode() {
 		String d1 = "One";
 		String d2 = "two";
@@ -48,18 +50,20 @@ public class TreeDefinitionNodeTest {
 		assertFalse("Create child clickable", t.isClickable());
 	}
 
-	
+	@Test
 	public void testGetDefinition() {
 		assertNotSame("Correct definition", d2, t.getDefinition());
 		assertEquals("Correct definition2", d2, ((TreeDefinitionNode)t.getChildAt(0)).getDefinition());
 	}
 	
+	@Test
 	public void testSetDefinition() {
 		String s1 = "/user/share/systemtap";
 		t.setDefinition(s1);
 		assertEquals("Replaced definition", s1, t.getDefinition());
 	}
 	
+	@Test
 	public void testDispose() {
 		assertNotNull(t.getDefinition());
 		t.dispose();

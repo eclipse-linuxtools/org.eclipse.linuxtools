@@ -3,8 +3,11 @@ package org.eclipse.linuxtools.systemtap.ui.structures.validators;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Test;
+
 public class IntegerValidatorTest {
 
+	@Test
 	public void testIsValid() {
 		IntegerValidator validator = new IntegerValidator();
 

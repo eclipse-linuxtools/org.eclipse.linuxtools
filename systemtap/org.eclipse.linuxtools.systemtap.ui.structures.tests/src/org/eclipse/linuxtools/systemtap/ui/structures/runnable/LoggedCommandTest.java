@@ -10,7 +10,7 @@ import org.junit.Test;
 public class LoggedCommandTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null, null);
 	}
 
@@ -38,16 +38,6 @@ public class LoggedCommandTest {
 	}
 	
 	@Test
-	public void testGetOutput() {
-		
-	}
-	
-	@Test
-	public void testSaveLog() {
-		
-	}
-	
-	@Test
 	public void testStop() {
 		cmd.start();
 		assertTrue(cmd.isRunning());
@@ -63,7 +53,7 @@ public class LoggedCommandTest {
 	}
 	
 	@After
-	protected void tearDown() {
+	public void tearDown() {
 		cmd.dispose();
 	}
 	

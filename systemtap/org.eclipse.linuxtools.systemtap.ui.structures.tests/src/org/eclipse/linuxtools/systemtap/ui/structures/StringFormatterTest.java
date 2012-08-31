@@ -21,7 +21,7 @@ import org.junit.Test;
 public class StringFormatterTest {
 
 	@Before
-	protected void setUp(){
+	public void setUp(){
 		formatter = new StringFormatter();
 	}
 

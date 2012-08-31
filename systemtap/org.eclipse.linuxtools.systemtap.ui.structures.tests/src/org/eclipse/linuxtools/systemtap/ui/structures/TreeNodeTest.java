@@ -22,7 +22,7 @@ import org.junit.Test;
 public class TreeNodeTest {
 
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		
 		data = new StringBuilder("Object");
 		data2 = "Data";
