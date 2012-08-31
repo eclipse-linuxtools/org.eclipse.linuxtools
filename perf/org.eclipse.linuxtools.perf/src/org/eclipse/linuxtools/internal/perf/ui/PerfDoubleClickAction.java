@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.perf.ui;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.CoreException;
@@ -74,8 +75,8 @@ public class PerfDoubleClickAction extends Action {
 				project = ProfileUIUtils.findCProjectWithAbsolutePath(binaryPath);
 				HashMap<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, sym.getFunctionName(), -1, file.getPath(), true);
 				boolean bFound = false;
-				for (String loc : map.keySet()) {
-					ProfileUIUtils.openEditorAndSelect(loc, map.get(loc)[0], map.get(loc)[1]);
+				for (Map.Entry<String, int[]> entry : map.entrySet()) {
+					ProfileUIUtils.openEditorAndSelect(entry.getKey(), entry.getValue()[0], entry.getValue()[1]);
 					bFound = true;
 				}
 				if (!bFound) {
