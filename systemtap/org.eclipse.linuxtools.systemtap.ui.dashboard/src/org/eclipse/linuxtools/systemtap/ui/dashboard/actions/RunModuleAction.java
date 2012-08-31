@@ -76,6 +76,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * The command is setup and started.  Any graphs associated with the module
 	 * are also added to the main window the the user to monitor.
 	 */
+	@Override
 	public void run() {
 		//Get the treeViewer
 //		BusyIndicator.showWhile(Display.getCurrent(), this.);
@@ -179,11 +180,11 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 			new SelectServerDialog(fWindow.getShell()).open() == false)
 			return;
         	
-	  if (module.location.equalsIgnoreCase("local")) {
+	  if (module.location.equalsIgnoreCase("local")) { //$NON-NLS-1$
 		 try{
 				ScpClient scpclient = new ScpClient();
 				tmpfileName=null;
-				tmpfileName="/tmp/"+ serverfileName;
+				tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
 				 scpclient.transfer(fileName,tmpfileName);
 		    }catch(Exception e){e.printStackTrace();}
 	  }
@@ -193,9 +194,9 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	
 		//TODO: Check for prebuilt module first
 		String[] cmd = new String[] {
-				"stap",
-				"-g",
-				"-m",
+				"stap", //$NON-NLS-1$
+				"-g", //$NON-NLS-1$
+				"-m", //$NON-NLS-1$
 				modname,
 				tmpfileName};
 		
@@ -222,7 +223,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 			amd.cmd = console;
 			amd.data = ds;
 			amd.paused = false;
-			addActive(module.category + "." + module.display, amd);
+			addActive(module.category + "." + module.display, amd); //$NON-NLS-1$
 		//}
 	
 	}

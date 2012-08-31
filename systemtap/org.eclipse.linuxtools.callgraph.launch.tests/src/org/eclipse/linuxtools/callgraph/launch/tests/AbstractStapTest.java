@@ -14,15 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapOptionsTab;
+import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractStapTest extends AbstractTest {
@@ -33,8 +32,7 @@ public abstract class AbstractStapTest extends AbstractTest {
 	}
 
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-			throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 			ILaunchConfigurationTab tab = new SystemTapOptionsTab();
 			tab.setDefaults(wc);
 	}

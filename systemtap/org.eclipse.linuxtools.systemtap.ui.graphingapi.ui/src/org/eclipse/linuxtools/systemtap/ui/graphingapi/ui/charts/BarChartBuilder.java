@@ -39,10 +39,12 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
      * 
      * @see com.ibm.examples.chart.widget.AbstractChartBuilder#buildChart()
      */
-    protected void createChart() {
+    @Override
+	protected void createChart() {
 		super.createChart();
     }
 
+	@Override
 	protected ISeries createChartISeries(int i) {
 		IBarSeries series = (IBarSeries)chart.getSeriesSet().
 			createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);
@@ -50,6 +52,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		return series;
 	}
 
+	@Override
 	public void updateDataSet() {
 		buildXSeries();
 	}

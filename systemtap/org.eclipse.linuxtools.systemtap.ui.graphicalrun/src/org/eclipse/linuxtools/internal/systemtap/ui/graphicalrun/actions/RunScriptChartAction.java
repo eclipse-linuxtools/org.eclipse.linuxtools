@@ -32,7 +32,6 @@ import org.eclipse.linuxtools.systemtap.ui.structures.PasswordPrompt;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
@@ -41,12 +40,13 @@ import org.eclipse.ui.WorkbenchException;
  * and send the output to both the <code>ScriptConsole</code> window and a <code>DataSet</code>.
  * @author Ryan Morse
  */
-public class RunScriptChartAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
+public class RunScriptChartAction extends RunScriptAction {
 	public RunScriptChartAction() {
 		super();
 		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
 
+	@Override
 	public void dispose() {
 		LogManager.logDebug("disposed", this); //$NON-NLS-1$
 		super.dispose();
@@ -60,6 +60,7 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 	 * for a <code>DataSet</code>. Once everything is setup, it will attempt to switch to the
 	 * Graphing Perspective.
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
@@ -108,6 +109,7 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 	 * selection of whether to use script options.
 	 * @return String[] representing the entire command that needs to be run.
 	 */
+	@Override
 	protected String[] buildScript() {
 		String[] script;
 		getChartingOptions();

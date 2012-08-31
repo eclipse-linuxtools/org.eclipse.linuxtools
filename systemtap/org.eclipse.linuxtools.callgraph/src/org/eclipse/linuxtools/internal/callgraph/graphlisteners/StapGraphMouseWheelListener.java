@@ -139,5 +139,5 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 
 	}
 
-};
+}
 

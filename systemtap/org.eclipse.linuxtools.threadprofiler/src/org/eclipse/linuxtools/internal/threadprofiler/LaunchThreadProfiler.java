@@ -6,6 +6,7 @@ import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchShortcut;
 
 public class LaunchThreadProfiler extends SystemTapLaunchShortcut{
 
+	@Override
 	public void launch(IBinary bin, String mode) {
 		try {
 			name = "Thread Profiler";

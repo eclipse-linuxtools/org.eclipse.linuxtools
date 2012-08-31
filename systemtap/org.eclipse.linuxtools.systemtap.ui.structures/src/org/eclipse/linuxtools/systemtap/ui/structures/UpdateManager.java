@@ -36,7 +36,7 @@ public class UpdateManager {
 			stopped = true;
 			timer.cancel();
 			for(int i=0; i<updateListeners.size(); i++)
-				removeUpdateListener((IUpdateListener)updateListeners.get(i));
+				removeUpdateListener(updateListeners.get(i));
 		}
 	}
 	
@@ -66,13 +66,14 @@ public class UpdateManager {
 	 * Handle any events that are timed to occur.
 	 */
 	private class Notify extends TimerTask {
+		@Override
 		public void run() {
 			try{
 			if(!stopped) {
 				for(int i = 0; i < updateListeners.size(); i++)
-					((IUpdateListener)(updateListeners.get(i))).handleUpdateEvent();
+					(updateListeners.get(i)).handleUpdateEvent();
 			}
-			}catch(Exception e) {;}
+			}catch(Exception e) {}
 		}
 			
 	}

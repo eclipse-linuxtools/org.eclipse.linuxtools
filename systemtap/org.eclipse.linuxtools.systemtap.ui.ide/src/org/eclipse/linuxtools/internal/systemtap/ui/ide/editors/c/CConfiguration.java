@@ -51,12 +51,14 @@ public class CConfiguration extends SourceViewerConfiguration {
 		LogManager.logDebug("Start/End CConfiguration: colorManager-" + colorManager, this); //$NON-NLS-1$
 		this.colorManager = colorManager;
 	}
+	@Override
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		LogManager.logDebug("Start/End getConfiguredContentTypes: sourceViewer-" + sourceViewer, this); //$NON-NLS-1$
 		return new String[] {
 			IDocument.DEFAULT_CONTENT_TYPE,
 			CPartitionScanner.C_COMMENT};
 	}
+	@Override
 	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
 		LogManager.logDebug("Start getDoubleClickStrategy: sourceViewer-" + sourceViewer + ", contentType-" + contentType, this); //$NON-NLS-1$ //$NON-NLS-2$
 		if (doubleClickStrategy == null)
@@ -82,6 +84,7 @@ public class CConfiguration extends SourceViewerConfiguration {
 		return scanner;
 	}
 
+	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		LogManager.logDebug("Start getPresentationReconciler: sourceViewer-" + sourceViewer, this); //$NON-NLS-1$
 		PresentationReconciler reconciler = new PresentationReconciler();

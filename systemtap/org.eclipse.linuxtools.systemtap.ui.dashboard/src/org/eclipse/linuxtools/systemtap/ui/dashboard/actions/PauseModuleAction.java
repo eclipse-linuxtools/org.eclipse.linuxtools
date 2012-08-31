@@ -55,6 +55,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * This is the main method of the class. It handles the "pretend" pause of the module.  The stap process is
 	 * stopped but the graph is left open.
 	 */
+	@Override
 	public void run() {
 		DashboardModule module = GetSelectedModule.getModule(view);
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);

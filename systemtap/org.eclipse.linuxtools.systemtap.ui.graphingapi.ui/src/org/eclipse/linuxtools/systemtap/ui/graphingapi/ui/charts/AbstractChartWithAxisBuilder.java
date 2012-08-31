@@ -43,6 +43,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	/**
 	 * Builds X axis.
 	 */
+	@Override
 	protected void buildXAxis() {
 		super.buildXAxis();
 		String labels[] = adapter.getLabels();
@@ -64,6 +65,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	/**
 	 * Builds Y axis.
 	 */
+	@Override
 	protected void buildYAxis() {
 		IAxis yAxis = this.chart.getAxisSet().getYAxis(0);
 		yAxis.getTitle().setText("");
@@ -77,6 +79,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	/**
 	 * Builds X series.
 	 */
+	@Override
 	protected void buildXSeries() {
 		Object data[][] = adapter.getData();
 		if (data == null || data.length == 0)

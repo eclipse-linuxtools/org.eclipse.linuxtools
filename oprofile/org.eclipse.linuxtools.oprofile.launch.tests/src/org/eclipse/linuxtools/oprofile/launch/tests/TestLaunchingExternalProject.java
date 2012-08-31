@@ -15,6 +15,7 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -52,7 +53,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 			tempExternalProjectPath.mkdir();
 		}
 		externalProject = createExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
-				PROJECT_NAME, EXTERNAL_PROJECT_PATH); //$NON-NLS-1$
+				PROJECT_NAME, EXTERNAL_PROJECT_PATH);
 		config = createConfiguration(externalProject);
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
@@ -78,7 +79,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 
 	// Implemented abstract method of AbstractTest
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
 		OprofileSetupTab setupTab = new OprofileSetupTab();
 		configTab.setDefaults(wc);
@@ -106,6 +107,6 @@ public class TestLaunchingExternalProject extends AbstractTest {
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
 		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + Path.SEPARATOR + "Debug" + Path.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage());
+		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + IPath.SEPARATOR + "Debug" + IPath.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage());
 	}
 }

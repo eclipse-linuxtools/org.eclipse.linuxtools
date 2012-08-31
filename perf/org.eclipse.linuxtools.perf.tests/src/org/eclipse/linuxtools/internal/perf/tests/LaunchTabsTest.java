@@ -61,7 +61,7 @@ public class LaunchTabsTest extends AbstractTest {
 	
 	
 	//getter functions for otherwise unaccessible member variables 
-	private class TestOptionsTab extends PerfOptionsTab {
+	private static class TestOptionsTab extends PerfOptionsTab {
 		protected Text get_txtKernel_Location() { return _txtKernel_Location; }
 		protected Button get_chkRecord_Realtime() { return _chkRecord_Realtime; }
 		protected Button get_chkRecord_Verbose() { return _chkRecord_Verbose; }
@@ -190,7 +190,7 @@ public class LaunchTabsTest extends AbstractTest {
 	}
 	
 	//getter functions for otherwise unaccessible member variables 
-	private class TestEventsTab extends PerfEventsTab {
+	private static class TestEventsTab extends PerfEventsTab {
 		public Button get_chkDefaultEvent() { return _chkDefaultEvent; }
 	}
 	

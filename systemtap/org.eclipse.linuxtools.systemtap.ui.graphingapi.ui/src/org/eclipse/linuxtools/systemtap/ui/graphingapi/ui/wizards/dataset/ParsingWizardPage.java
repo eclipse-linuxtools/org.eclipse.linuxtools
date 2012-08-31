@@ -137,10 +137,12 @@ public abstract class ParsingWizardPage extends WizardPage {
 		lblRegEx.setText(s.toString());
 	}
 	
+	@Override
 	public boolean canFlipToNextPage() {
 		return false;
 	}
 	
+	@Override
 	public void dispose() {
 		if(null != txtRegExpr) {
 			for(int i=0; i<txtRegExpr.length; i++) {
@@ -193,6 +195,7 @@ public abstract class ParsingWizardPage extends WizardPage {
 	}
 
 	private class RegExModifyListener extends TextModifyListener {
+		@Override
 		public void modifyText(ModifyEvent e) {
 			super.modifyText(e);
 			refreshRegEx();

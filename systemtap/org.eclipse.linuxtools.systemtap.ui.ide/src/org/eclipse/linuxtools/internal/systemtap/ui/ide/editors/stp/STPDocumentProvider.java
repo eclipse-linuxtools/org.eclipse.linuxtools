@@ -12,7 +12,6 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
@@ -59,7 +58,8 @@ public class STPDocumentProvider extends SimpleDocumentProvider {
  /**
   * Instantiates and returns a new AnnotationModel object.
   */
- protected IAnnotationModel createAnnotationModel(Object element) throws CoreException {
+ @Override
+protected IAnnotationModel createAnnotationModel(Object element) {
          LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this); //$NON-NLS-1$
          return new AnnotationModel();
  }

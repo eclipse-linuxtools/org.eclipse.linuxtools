@@ -9,6 +9,7 @@
  *     IBM Corporation - initial API and implementation
  ******************************************************************************/package org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -34,6 +35,7 @@ public class Activator extends AbstractUIPlugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
@@ -43,6 +45,7 @@ public class Activator extends AbstractUIPlugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
@@ -58,7 +61,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static void log(int status, String msg, Throwable e) {
-		plugin.getLog().log(new Status(status, PLUGIN_ID, Status.OK, msg, e));
+		plugin.getLog().log(new Status(status, PLUGIN_ID, IStatus.OK, msg, e));
 	}
 
 	public static void log(int status, String msg) {

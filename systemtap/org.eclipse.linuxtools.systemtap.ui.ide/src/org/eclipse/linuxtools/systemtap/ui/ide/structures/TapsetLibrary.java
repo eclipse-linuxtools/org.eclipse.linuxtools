@@ -195,7 +195,18 @@ public final class TapsetLibrary {
 				TreeSettings.setTrees(functionTree, probeTree);
 		}
 	};
-	
+
+	/**
+	 * This method will stop services started by
+	 * {@link TapsetLibrary#init()} such as the {@link TapsetParser} 
+	 * @since 1.2
+	 */
+	public static void stop(){
+		if(null != stpp && stpp.isRunning()){
+			stpp.stop();
+		}
+	}
+
 	private static TreeNode functionTree = null;
 	private static TreeNode probeTree = null;
 	private static TapsetParser stpp = null;

@@ -28,6 +28,7 @@ public class PasswordDialog extends Dialog {
 		super(parentShell);
 	}
 	
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(Localization.getString("PasswordDialog.Password"));
@@ -41,7 +42,8 @@ public class PasswordDialog extends Dialog {
 	 * 
 	 * @return The dialogue composite.
 	 */
-	 protected Control createDialogArea(Composite parent) {
+	 @Override
+	protected Control createDialogArea(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);
 
 		Label lblPassword = new Label(comp, SWT.RIGHT);
@@ -64,6 +66,7 @@ public class PasswordDialog extends Dialog {
 	  * 
 	  * @param buttonId ID of the button that the user clicks.
 	  */
+	@Override
 	protected void buttonPressed(int buttonId) {
 		if(0 == buttonId)
 			password = txtPassword.getText();

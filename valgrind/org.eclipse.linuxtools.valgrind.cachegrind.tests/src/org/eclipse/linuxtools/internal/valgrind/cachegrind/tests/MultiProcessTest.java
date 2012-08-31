@@ -84,7 +84,7 @@ public class MultiProcessTest extends AbstractCachegrindTest {
 	public void testNumFunctions() throws Exception {
 		ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
 		config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();;
+		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();

@@ -18,30 +18,34 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.MalformedURLException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-
 import org.eclipse.jface.operation.IRunnableContext;
-
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
-
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.EditorPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 
 public class SimpleDocumentProvider extends AbstractDocumentProvider {
+	@Override
 	public boolean canSaveDocument(Object element) {
 		return super.canSaveDocument(element);
 	}
 
+	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
 		if (element instanceof IEditorInput) {
 			IDocument document= new Document();
@@ -65,23 +69,29 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @throws CoreException if reading the file fails
 	 */
 	private boolean setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
-		Reader reader;
+		Reader reader = null;
 		try {
-			if (input instanceof IPathEditorInput)
+			if (input instanceof FileStoreEditorInput){
+				reader = new InputStreamReader(((FileStoreEditorInput)input).getURI().toURL().openStream());
+			} else if (input instanceof IPathEditorInput){
 				reader= new FileReader(((IPathEditorInput)input).getPath().toFile());
-			else {
+			} else {
 				return false;
 			}
 		} catch (FileNotFoundException e) {
 			// return empty document and save later
 			return true;
+		} catch (MalformedURLException e) {
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID ,Localization.getString("SimpleDocumentProvider.incorrectURL"), e)); //$NON-NLS-1$
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
 		
 		try {
 			setDocumentContent(document, reader);
 			return true;
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.editor", IStatus.OK, "error reading file", e)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
 	}
 
@@ -121,13 +131,15 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#createAnnotationModel(java.lang.Object)
 	 */
-	protected IAnnotationModel createAnnotationModel(Object element) throws CoreException {
+	@Override
+	protected IAnnotationModel createAnnotationModel(Object element) {
 		return null;
 	}
 
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#doSaveDocument(org.eclipse.core.runtime.IProgressMonitor, java.lang.Object, org.eclipse.jface.text.IDocument, boolean)
 	 */
+	@Override
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite) throws CoreException {
 		if (element instanceof IPathEditorInput) {
 			IPathEditorInput pei= (IPathEditorInput) element;
@@ -142,11 +154,11 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 						Writer writer= new FileWriter(file);
 						writeDocumentContent(document, writer, monitor);
 					} else
-						throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.editor", IStatus.OK, "file is read-only", null)); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "file is read-only", null)); //$NON-NLS-1$
 				} else
-					throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.editor", IStatus.OK, "error creating file", null)); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "error creating file", null)); //$NON-NLS-1$
 			} catch (IOException e) {
-				throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.editor", IStatus.OK, "error when saving file", e)); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("errorCreatingFile"), e)); //$NON-NLS-1$
 			}
 		}
 	}
@@ -171,6 +183,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#getOperationRunner(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
@@ -178,6 +191,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isModifiable(java.lang.Object)
 	 */
+	@Override
 	public boolean isModifiable(Object element) {
 		if (element instanceof IPathEditorInput) {
 			IPathEditorInput pei= (IPathEditorInput) element;
@@ -190,6 +204,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isReadOnly(java.lang.Object)
 	 */
+	@Override
 	public boolean isReadOnly(Object element) {
 		return !isModifiable(element);
 	}
@@ -197,6 +212,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isStateValidated(java.lang.Object)
 	 */
+	@Override
 	public boolean isStateValidated(Object element) {
 		return true;
 	}

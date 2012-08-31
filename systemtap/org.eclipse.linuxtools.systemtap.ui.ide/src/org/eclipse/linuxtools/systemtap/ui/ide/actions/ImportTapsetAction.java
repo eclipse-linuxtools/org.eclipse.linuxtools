@@ -85,6 +85,7 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 	 * method, then if the return from <code>queryFile</code> is non-null, the path is added to preferences
 	 * and the tapset browsers refreshed.
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		File file= queryFile();

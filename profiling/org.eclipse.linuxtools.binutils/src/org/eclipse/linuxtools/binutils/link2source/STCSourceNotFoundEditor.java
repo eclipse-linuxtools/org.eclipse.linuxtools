@@ -29,6 +29,7 @@ import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor;
 import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.binutils.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -57,6 +58,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	public STCSourceNotFoundEditor() {
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 	}
@@ -88,6 +90,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 		return null;
 	}
 
+	@Override
 	public void setInput(IEditorInput input) {
 		super.setInput(input);
 		syncButtons();
@@ -108,6 +111,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			editLookupButton.setVisible(v);
 	}
 
+	@Override
 	protected String getText() {
 		boolean v = isValidMissingFile();
 		if (v) {
@@ -119,6 +123,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 		}
 	}
 
+	@Override
 	protected void createButtons(Composite parent) {
 		{
 			GridData data;
@@ -129,6 +134,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			locateFileButton.setLayoutData(data);
 			locateFileButton.setText("Locate File..."); //$NON-NLS-1$
 			locateFileButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					locateFile();
 				}
@@ -144,6 +150,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 			editLookupButton.setLayoutData(data);
 			editLookupButton.setText("Edit Source Lookup Path..."); 
 			editLookupButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					editSourceLookupPath();
 				}
@@ -159,13 +166,13 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	@Override
 	protected void editSourceLookupPath() {
 		PreferenceDialog d = org.eclipse.ui.dialogs.PreferencesUtil.createPreferenceDialogOn(null, "org.eclipse.cdt.debug.ui.SourcePreferencePage", null, null);
-		if (d.open() == PreferenceDialog.OK) {
+		if (d.open() == Window.OK) {
 			closeEditor();
 			openSourceFileAtLocation(getProject(), getMissingFile(), getLineNumber());
 		}
 	}
 
-	private void addSourceMappingToDirector(IPath missingPath, IPath newSourcePath, AbstractSourceLookupDirector director) throws CoreException {
+	private void addSourceMappingToDirector(IPath missingPath, IPath newSourcePath, AbstractSourceLookupDirector director) {
 
 		ArrayList<ISourceContainer> containerList = new ArrayList<ISourceContainer>(Arrays.asList(
 				director.getSourceContainers()

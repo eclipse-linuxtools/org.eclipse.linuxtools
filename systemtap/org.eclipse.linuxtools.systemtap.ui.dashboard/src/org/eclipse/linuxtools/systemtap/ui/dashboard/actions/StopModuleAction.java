@@ -58,6 +58,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * All of the graphs are closed, the process is killed, and the item
 	 * is removed from the ActiveModuleBrowserView.
 	 */
+	@Override
 	public void run() {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			boolean stop = false;

@@ -101,16 +101,16 @@ public class DashboardMetaData {
 			module.scriptFileName = data.getString(XMLdScriptFileName);
 			File temp = null;
 			//Get the script
-			if ((module.location ==null) || (module.location.equalsIgnoreCase("local")))
+			if ((module.location ==null) || (module.location.equalsIgnoreCase("local"))) //$NON-NLS-1$
 			{
 			if(!tempScriptFolder.exists())
 				tempScriptFolder.mkdirs();
 			temp = new File(metaFile.getParentFile() + data.getString(XMLdScript));
-			module.script = new File(tempScriptFolder.getAbsolutePath() + "/" + module.hashCode() + ".stp");
+			module.script = new File(tempScriptFolder.getAbsolutePath() + "/" + module.hashCode() + ".stp"); //$NON-NLS-1$ //$NON-NLS-2$
 			temp.renameTo(module.script);
 			}
 			else
-				module.script = new File(module.location + "/" + module.scriptFileName);
+				module.script = new File(module.location + "/" + module.scriptFileName); //$NON-NLS-1$
 			//Get the column names
 			IMemento[] children = data.getChild(XMLParsingExpressions).getChildren(XMLpColumn);
 			module.labels = new String[children.length];
@@ -125,7 +125,7 @@ public class DashboardMetaData {
 			IMemento[] children2;
 			children = data.getChild(XMLGraphDisplays).getChildren(XMLgGraph);
 			module.graphs = new GraphData[children.length];
-			module.filters = (ArrayList<IDataSetFilter>[])new ArrayList[children.length];
+			module.filters = new ArrayList[children.length];
 			int j, ys;
 			for(i=0; i<children.length; i++) {
 				module.graphs[i] = new GraphData();
@@ -181,36 +181,36 @@ public class DashboardMetaData {
 		
 	private static File metaFile;
 	private DashboardModule module;
-	public static final File tempScriptFolder = new File(SystemTapGUISettings.tempDirectory + "scripts/");
-	public static final File tempModuleFolder = new File(SystemTapGUISettings.tempDirectory + "modules/");
+	public static final File tempScriptFolder = new File(SystemTapGUISettings.tempDirectory + "scripts/"); //$NON-NLS-1$
+	public static final File tempModuleFolder = new File(SystemTapGUISettings.tempDirectory + "modules/"); //$NON-NLS-1$
 	
-	public static final String XMLDashboardItem = "DashboardItem";
-	public static final String XMLdDisplay = "display";
-	public static final String XMLdCategory = "category";
-	public static final String XMLdDescription = "description";
-	public static final String XMLdDataset = "dataset";
-	public static final String XMLdScript = "script";
-	public static final String XMLdScriptFileName = "scriptFileName";
-	public static final String XMLdLocation = "location";
+	public static final String XMLDashboardItem = "DashboardItem"; //$NON-NLS-1$
+	public static final String XMLdDisplay = "display"; //$NON-NLS-1$
+	public static final String XMLdCategory = "category"; //$NON-NLS-1$
+	public static final String XMLdDescription = "description"; //$NON-NLS-1$
+	public static final String XMLdDataset = "dataset"; //$NON-NLS-1$
+	public static final String XMLdScript = "script"; //$NON-NLS-1$
+	public static final String XMLdScriptFileName = "scriptFileName"; //$NON-NLS-1$
+	public static final String XMLdLocation = "location"; //$NON-NLS-1$
 	
 
-	public static final String XMLParsingExpressions = "ParsingExpressions";
-	public static final String XMLpColumn = "Column";
-	public static final String XMLpName = "name";
-	public static final String XMLpParser = "Parser";
+	public static final String XMLParsingExpressions = "ParsingExpressions"; //$NON-NLS-1$
+	public static final String XMLpColumn = "Column"; //$NON-NLS-1$
+	public static final String XMLpName = "name"; //$NON-NLS-1$
+	public static final String XMLpParser = "Parser"; //$NON-NLS-1$
 
-	public static final String XMLGraphDisplays = "GraphDisplays";
-	public static final String XMLgGraph = "Graph";
-	public static final String XMLgId = "id";
-	public static final String XMLgTitle = "title";
-	public static final String XMLgColumn = "column";
-	public static final String XMLgAxis = "axis";
-	public static final String XMLgAxisX = "x";
-	public static final String XMLgAxisY = "y";
-	public static final String XMLgSeries = "Series";
-	public static final String XMLgFilter = "Filter";
+	public static final String XMLGraphDisplays = "GraphDisplays"; //$NON-NLS-1$
+	public static final String XMLgGraph = "Graph"; //$NON-NLS-1$
+	public static final String XMLgId = "id"; //$NON-NLS-1$
+	public static final String XMLgTitle = "title"; //$NON-NLS-1$
+	public static final String XMLgColumn = "column"; //$NON-NLS-1$
+	public static final String XMLgAxis = "axis"; //$NON-NLS-1$
+	public static final String XMLgAxisX = "x"; //$NON-NLS-1$
+	public static final String XMLgAxisY = "y"; //$NON-NLS-1$
+	public static final String XMLgSeries = "Series"; //$NON-NLS-1$
+	public static final String XMLgFilter = "Filter"; //$NON-NLS-1$
 
-	public static final String XMLKernelModule = "KernelModule";
-	public static final String XMLkVersion = "version";
-	public static final String XMLkModule = "module";
+	public static final String XMLKernelModule = "KernelModule"; //$NON-NLS-1$
+	public static final String XMLkVersion = "version"; //$NON-NLS-1$
+	public static final String XMLkModule = "module"; //$NON-NLS-1$
 }

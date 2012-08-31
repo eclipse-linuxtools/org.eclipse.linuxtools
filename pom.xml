@@ -46,13 +46,21 @@
       </comments>
     </license>
   </licenses>
+  <distributionManagement>
+    <downloadUrl>http://eclipse.org/linuxtools/downloads.php</downloadUrl>
+    <site>
+      <id>linuxtools.website</id>
+      <name>Eclipe Linux Tools Website</name>
+      <url>http://eclipse.org/linuxtools</url>
+    </site>
+  </distributionManagement>
 
   <properties>
     <tycho-version>0.15.0</tycho-version>
     <tycho-extras-version>0.15.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+    <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository</orbit-site>
   </properties>
   <pluginRepositories>
@@ -80,34 +88,6 @@
   
   <profiles>
     <profile>
-      <id>platform-indigo</id>
-      <activation>
-        <property>
-          <name>platform-version-name</name>
-          <value>indigo</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
-        <platform-version>[3.7,3.8)</platform-version>
-        <sdk-version>3.7</sdk-version>
-        <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
-        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
-      </properties>
-      <repositories>
-        <repository>
-          <id>indigo</id>
-          <layout>p2</layout>
-          <url>${eclipse-site}</url>
-        </repository>
-        <repository>
-          <id>cdt</id>
-          <layout>p2</layout>
-          <url>${cdt-site}</url>
-        </repository>
-      </repositories>
-    </profile>
-    <profile>
       <id>platform-juno</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -120,25 +100,12 @@
         <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
         <platform-version>[4.2,)</platform-version>
         <sdk-version>4.2</sdk-version>
-        <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/milestones</cdt-site>
-        <cdt-test-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-test-site>
-        <tcf-site>http://download.eclipse.org/tcf/builds/juno/milestones/</tcf-site>
       </properties>
       <repositories>
         <repository>
           <id>juno</id>
           <layout>p2</layout>
           <url>${eclipse-site}</url>
-        </repository>
-        <repository>
-          <id>cdt</id>
-          <layout>p2</layout>
-          <url>${cdt-site}</url>
-        </repository>
-        <repository>
-          <id>cdttest</id>
-          <layout>p2</layout>
-          <url>${cdt-test-site}</url>
         </repository>
       </repositories>
     </profile>
@@ -274,7 +241,7 @@
 	<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.5</version>
+          <version>2.6</version>
           <configuration>
             <encoding>ISO-8859-1</encoding>
           </configuration>
@@ -295,7 +262,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.0</version>
+          <version>3.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>2.5.1</version>
         </plugin>
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>

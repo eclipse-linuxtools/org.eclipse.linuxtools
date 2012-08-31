@@ -505,7 +505,7 @@ public class StapGraph extends Graph {
 						.getTotalTime() * 100);
 				
 				n.setText(key + "\n"  //$NON-NLS-1$
-						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+						+ num.format(percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ aggregateCount.get(key) + "\n") ; //$NON-NLS-1$
 				n.setData("AGGREGATE_NAME", key); //$NON-NLS-1$
 				
@@ -526,7 +526,7 @@ public class StapGraph extends Graph {
 				n.setForegroundColor(new Color(this.getDisplay(),255,255,255));
 				n.setTooltip(new Label(
 						Messages.getString("StapGraph.Func")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-						+ Messages.getString("StapGraph.Time") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ Messages.getString("StapGraph.Time") + num.format(percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						+ Messages.getString("StapGraph.NumOfCalls") + aggregateCount.get(key)		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
@@ -1746,7 +1746,7 @@ public class StapGraph extends Graph {
 			draw();
 		}
 		
-		for (int count = callOrderList.indexOf((Integer)id) + 1;
+		for (int count = callOrderList.indexOf(id) + 1;
 			count < callOrderList.size(); count++) {
 			int next = callOrderList.get(count);
 			if (getNodeData(id) == null)
@@ -1769,7 +1769,7 @@ public class StapGraph extends Graph {
 	public int getPreviousCalledNode(int id) {
 		int returnID = -1;
 		
-		for (int count = callOrderList.indexOf((Integer)id) - 1;
+		for (int count = callOrderList.indexOf(id) - 1;
 			count > -1; count--) {
 			if (getNodeData(id) == null)
 				continue;
@@ -1845,8 +1845,9 @@ public class StapGraph extends Graph {
 	
 	public static final Comparator<Entry<String, Long>> VALUE_ORDER = new Comparator<Entry<String, Long>>()
     {
-        public int compare(Entry<String, Long> a, Entry<String, Long> b){
-        	return ((Long)a.getValue()).compareTo(((Long)b.getValue()));
+        @Override
+		public int compare(Entry<String, Long> a, Entry<String, Long> b){
+        	return a.getValue().compareTo((b.getValue()));
         }
     };
 

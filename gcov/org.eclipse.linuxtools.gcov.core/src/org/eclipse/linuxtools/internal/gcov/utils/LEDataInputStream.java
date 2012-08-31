@@ -36,6 +36,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readShort()
 	 */
+	@Override
 	public final short readShort() throws IOException
 	{
 		in.readFully(buffer, 0, 2);
@@ -48,6 +49,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readUnsignedShort()
 	 */
+	@Override
 	public final int readUnsignedShort() throws IOException
 	{
 		in.readFully(buffer, 0, 2);
@@ -60,6 +62,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readChar()
 	 */
+	@Override
 	public final char readChar() throws IOException
 	{
 		in.readFully(buffer, 0, 2);
@@ -72,6 +75,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readInt()
 	 */
+	@Override
 	public final int readInt() throws IOException
 	{
 		in.readFully(buffer, 0, 4);
@@ -86,6 +90,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readLong()
 	 */
+	@Override
 	public final long readLong() throws IOException
 	{
 		in.readFully(buffer, 0, 8);
@@ -104,6 +109,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readFloat()
 	 */
+	@Override
 	public final float readFloat() throws IOException
 	{
 		return Float.intBitsToFloat(readInt());
@@ -113,6 +119,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readDouble()
 	 */
+	@Override
 	public final double readDouble() throws IOException
 	{
 		return Double.longBitsToDouble(readLong());
@@ -122,6 +129,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readBoolean()
 	 */
+	@Override
 	public boolean readBoolean() throws IOException {
 		return in.readBoolean();
 	}
@@ -130,6 +138,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readByte()
 	 */
+	@Override
 	public byte readByte() throws IOException {
 		return in.readByte();
 	}
@@ -138,6 +147,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readFully(byte[])
 	 */
+	@Override
 	public void readFully(byte[] b) throws IOException {
 		in.readFully(b);
 	}
@@ -146,6 +156,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readFully(byte[], int, int)
 	 */
+	@Override
 	public void readFully(byte[] b, int off, int len) throws IOException {
 		in.readFully(b,off,len);
 	}
@@ -154,6 +165,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readLine()
 	 */
+	@Override
 	@Deprecated
 	public String readLine() throws IOException {
 		return in.readLine();
@@ -163,6 +175,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readUTF()
 	 */
+	@Override
 	public String readUTF() throws IOException {
 		return in.readUTF();
 	}
@@ -171,6 +184,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#readUnsignedByte()
 	 */
+	@Override
 	public int readUnsignedByte() throws IOException {
 		return in.readUnsignedByte();
 	}
@@ -179,6 +193,7 @@ public class LEDataInputStream implements DataInput {
 	 * (non-Javadoc)
 	 * @see java.io.DataInput#skipBytes(int)
 	 */
+	@Override
 	public int skipBytes(int n) throws IOException {
 		return in.skipBytes(n);
 	}

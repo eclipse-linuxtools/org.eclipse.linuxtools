@@ -11,30 +11,30 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
 import org.eclipse.ui.XMLMemento;
+import org.junit.Before;
+import org.junit.Test;
 
-
-import junit.framework.TestCase;
-
-public class SortFilterTest extends TestCase {
-	public SortFilterTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+public class SortFilterTest {
+	@Before
+	public void setUp() {
 		filter = new SortFilter(0, SortFilter.ASCENDING);
 	}
-
+	@Test
 	public void testSortFilter() {
 		SortFilter filter = new SortFilter(-1, SortFilter.ASCENDING);
 		assertNotNull(filter);
 	}
-	
+	@Test
 	public void testFilter() {
 		int width = 4;
 		int height = 10;
@@ -90,18 +90,13 @@ public class SortFilterTest extends TestCase {
 		filter = new SortFilter(0, 0);
 		assertNotNull(filter.filter(data));
 	}
-	
+	@Test
 	public void testGetID() {
 		assertTrue(SortFilter.ID.equals(filter.getID()));
 	}
-
+	@Test
 	public void testWriteXML() {
 		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		filter = null;
 	}
 	
 	SortFilter filter;

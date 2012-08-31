@@ -37,6 +37,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		handleUpdateEvent();
 	}
 	
+	@Override
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
 
@@ -52,7 +53,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		double px, py;
 		
 		for(int j=0; j<elementList.length; j++) {
-			points = (DataPoint[])elementList[j].toArray(points);
+			points = elementList[j].toArray(points);
 	
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			gc.setForeground(c);
@@ -75,6 +76,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		gc.setBackground(temp1);
 	}
 	
+	@Override
 	public boolean isMultiGraph() {
 		return adapter.getSeriesCount() > 0;
 	}
@@ -82,6 +84,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 	/**
 	 * Updates the graph when the <code>IDataSet</code> has more data, adding the new samples to the graph.
 	 */
+	@Override
 	public void handleUpdateEvent() {
 		if(null == adapter) return;
 

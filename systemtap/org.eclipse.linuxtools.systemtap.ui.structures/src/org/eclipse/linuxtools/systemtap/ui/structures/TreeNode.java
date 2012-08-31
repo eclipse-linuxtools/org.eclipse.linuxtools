@@ -46,7 +46,7 @@ public class TreeNode {
 	
 	public TreeNode getChildAt(int i){
 		if(children.size() > i)
-			return (TreeNode)children.get(i);
+			return children.get(i);
 		else
 			return null;
 	}
@@ -110,6 +110,7 @@ public class TreeNode {
 			this.add((TreeNode)children[j]);
 	}
 	
+	@Override
 	public String toString() {
 		return display;
 	}
@@ -117,7 +118,7 @@ public class TreeNode {
 	public void dispose() {
 		if(null != children)
 			for(int i=children.size()-1; i>=0; i--)
-				((TreeNode)children.get(i)).dispose();
+				children.get(i).dispose();
 		children = null;
 		data = null;
 		display = null;

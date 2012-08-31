@@ -54,7 +54,7 @@ public class TestSetup extends AbstractTest {
 	}
 	
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
 		OprofileSetupTab setupTab = new OprofileSetupTab();
 		configTab.setDefaults(wc);
@@ -62,7 +62,7 @@ public class TestSetup extends AbstractTest {
 	}
 
 	//getter functions for otherwise unaccessible member variables 
-	private class OprofileTestingSetupTab extends OprofileSetupTab {
+	private static class OprofileTestingSetupTab extends OprofileSetupTab {
 		protected Button getKernelCheck() { return checkSeparateKernel; }
 		protected Button getLibraryCheck() { return checkSeparateLibrary; }
 		protected Text getTextKernelImage() { return kernelImageFileText; }
@@ -119,7 +119,7 @@ public class TestSetup extends AbstractTest {
 		assertTrue(tab.isValid(config));
 	}
 	
-	private class OprofileTestingEventConfigTab extends OprofileEventConfigTab {
+	private static class OprofileTestingEventConfigTab extends OprofileEventConfigTab {
 		@Override
 		protected boolean getTimerMode() { return false; }
 		@Override

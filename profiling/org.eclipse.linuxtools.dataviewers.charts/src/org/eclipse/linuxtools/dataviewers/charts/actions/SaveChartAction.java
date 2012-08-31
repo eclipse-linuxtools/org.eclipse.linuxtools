@@ -79,9 +79,9 @@ public class SaveChartAction extends Action {
 		} catch (Throwable _)
 		{
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
-					Status.ERROR,
+					IStatus.ERROR,
 					"Error when creating \"save as image\" action...",
 					_);
 			Activator.getDefault().getLog().log(s);
@@ -92,6 +92,7 @@ public class SaveChartAction extends Action {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		String path = dialog.open();
 		if (path == null) {
@@ -165,9 +166,9 @@ public class SaveChartAction extends Action {
 		}
 		catch (Exception e) {
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
-					Status.ERROR,
+					IStatus.ERROR,
 					e.getMessage(),
 					e);
 			Activator.getDefault().getLog().log(s);
@@ -190,9 +191,9 @@ public class SaveChartAction extends Action {
 		}
 		catch (Exception e) {
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
-					Status.ERROR,
+					IStatus.ERROR,
 					e.getMessage(),
 					e);
 			Activator.getDefault().getLog().log(s);

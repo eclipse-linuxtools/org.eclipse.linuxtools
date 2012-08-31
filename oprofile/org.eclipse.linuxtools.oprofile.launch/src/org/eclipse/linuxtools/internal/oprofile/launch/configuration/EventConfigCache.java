@@ -24,7 +24,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
  */
 public class EventConfigCache {
 	//a cache entry for an event check, used as the hashmap key 
-	class CheckEventEntry {
+	static class CheckEventEntry {
 		public Integer counterNum, maskValue;
 		public String eventName;
 		

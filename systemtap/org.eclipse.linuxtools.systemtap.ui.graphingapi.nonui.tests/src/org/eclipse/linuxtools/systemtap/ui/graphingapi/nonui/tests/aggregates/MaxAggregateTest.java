@@ -11,20 +11,17 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.aggregates;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MaxAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class MaxAggregateTest  {
 
-public class MaxAggregateTest extends TestCase {
-	public MaxAggregateTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	@Test
 	public void testAggregate() {
 		MaxAggregate aa = new MaxAggregate();
 		Number num;
@@ -54,12 +51,10 @@ public class MaxAggregateTest extends TestCase {
 		assertEquals(2.0, num.doubleValue(), 0.0);
 	}
 
+	@Test
 	public void testGetID() {
 		MaxAggregate aa = new MaxAggregate();
 		assertTrue(MaxAggregate.ID.equals(aa.getID()));
 	}
 	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
 }

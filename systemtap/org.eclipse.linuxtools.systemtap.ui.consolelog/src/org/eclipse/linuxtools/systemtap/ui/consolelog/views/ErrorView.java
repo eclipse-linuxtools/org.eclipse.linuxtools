@@ -36,6 +36,7 @@ public class ErrorView extends ViewPart {
 	 * Greates a new table to contain all of the error messages.
 	 * @param parent The composite to draw all content to.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		Composite c = new Composite(parent, SWT.NONE);
 
@@ -79,11 +80,13 @@ public class ErrorView extends ViewPart {
 			table.clear();
 	}
 	
+	@Override
 	public void setFocus() {}
 
 	/**
 	 * Disposes of everything in this class.
 	 */
+	@Override
 	public void dispose() {
 		if(null != table)
 			table.dispose();

@@ -47,7 +47,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
-import org.eclipse.ui.part.FileEditorInput;
 
 
 
@@ -80,6 +79,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * then builds the command line arguments for stap and retrieves the environment variables.
 	 * Finally, it gets an instance of <code>ScriptConsole</code> to run the script.
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;

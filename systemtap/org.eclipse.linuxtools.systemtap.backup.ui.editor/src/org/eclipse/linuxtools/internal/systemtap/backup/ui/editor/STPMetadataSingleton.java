@@ -14,16 +14,12 @@ package org.eclipse.linuxtools.internal.systemtap.backup.ui.editor;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 /**
@@ -179,71 +175,6 @@ public class STPMetadataSingleton {
 		if (i < 0)
 			throw new StringIndexOutOfBoundsException();
 		return data.substring(data.indexOf('.') + 1, data.length());
-	}
-
-	/**
-	 * 
-	 * Decide whether cached metadata exists on disk.
-	 * 
-	 * @return - whether metadata exists.
-	 */
-	private boolean haveMetadata(String location) {
-		File fileExists = new File(location);
-		if ((fileExists.canRead()) && fileExists.exists())
-			return true; 
-
-		return false;
-	}
-
-	/**
-	 * 
-	 * Build the metadata from visiting the tapsets in turn and
-	 * requesting coverage data from each one.
-	 * 
-	 * @throws FileNotFoundException 
-	 * 
-	 */
-	private void buildCompletionMetadata(String location) throws FileNotFoundException {
-		String[] tapsets = { "syscall", "signal", "netdev", "ioblock",
-				"ioscheduler", "nd_syscall", "vm", "nfsd", "process", "sunrpc",
-				"scheduler", "scsi", "socket", "tcp", "udp", "generic.fop" };
-		ArrayList<StringBuffer> processedMetadata = new ArrayList<StringBuffer>();
-		boolean openingBracket = false;
-
-		// Execute each tapset, then convert the output from stdin
-		// to a format more acceptable to completion.
-		for (int i = 0; i < tapsets.length; i++) {
-			StringBuffer[] data = executeSystemTap(tapsets[i]);
-			for (int z = 0; z < data.length; z++) {
-				openingBracket = false;
-				for (int c = 0; c < data[z].length(); c++) {
-					if (data[z].charAt(c) == ' ')
-						if (openingBracket == false) {
-							openingBracket = true;
-							data[z].setCharAt(c, '(');
-						} else {
-							data[z].setCharAt(c, ',');
-						}
-				}
-				data[z].append(')');
-				processedMetadata.add(data[z]);
-			}
-
-		}
-
-		// Output massaged data from stdout to a text file.
-		PrintStream out = null;
-		try {
-			out = new PrintStream(new FileOutputStream(location));
-		} catch (FileNotFoundException e) {
-			throw e;
-		}
-		Iterator<StringBuffer> i = processedMetadata.iterator();
-		while (i.hasNext()) {
-			StringBuffer line = i.next();
-			out.println(line.toString().trim());
-		}
-		out.close();
 	}
 
 	/**

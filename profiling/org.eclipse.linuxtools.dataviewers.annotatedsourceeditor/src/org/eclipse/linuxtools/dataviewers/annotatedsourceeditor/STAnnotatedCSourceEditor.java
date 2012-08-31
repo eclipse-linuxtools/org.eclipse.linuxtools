@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.cdt.internal.ui.editor.CEditor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
@@ -252,6 +253,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 			final int idx= computeIndex(ruler, descriptor);
 			
 			SafeRunnable runnable= new SafeRunnable() {
+				@Override
 				public void run() throws Exception {
 					IContributedRulerColumn column= descriptor.createColumn(fEditor);
 					fColumns.add(annotationColumn);
@@ -262,6 +264,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 			SafeRunner.run(runnable);
 		}
 		
+		@Override
 		protected void initializeColumn(IContributedRulerColumn column) {
 			super.initializeColumn(column);
 			RulerColumnDescriptor descriptor= column.getDescriptor();
@@ -272,12 +275,15 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 				} else if (LineNumberColumn.ID.equals(descriptor.getId())) {
 					fLineColumn= ((LineNumberColumn) column);
 					fLineColumn.setForwarder(new LineNumberColumn.ICompatibilityForwarder() {
+						@Override
 						public IVerticalRulerColumn createLineNumberRulerColumn() {
 							return fEditor.createLineNumberRulerColumn();
 						}
+						@Override
 						public boolean isQuickDiffEnabled() {
 							return fEditor.isPrefQuickDiffAlwaysOn();
 						}
+						@Override
 						public boolean isLineNumberRulerVisible() {
 							return fEditor.isLineNumberRulerVisible();
 						}
@@ -287,6 +293,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 					fColumn = ((STContributedRulerColumn) column);
 					//this is a workaround...
 					fColumn.setForwarder(new STContributedRulerColumn.ICompatibilityForwarder() {
+						@Override
 						public IVerticalRulerColumn createSTRulerColumn() {
 							if (fColumns != null && fColumns.size() > 0){
 								IVerticalRulerColumn fDelegate = fEditor.createSTRulerColumn(fColumns.get(fColumns.size()-1));
@@ -294,9 +301,11 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 							}
 							return null;
 						}
+						@Override
 						public boolean isQuickDiffEnabled() {
 							return fEditor.isPrefQuickDiffAlwaysOn();
 						}
+						@Override
 						public boolean isSTRulerVisible() {
 							return fEditor.isSTRulerVisible();
 						}
@@ -314,6 +323,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 		return fSTChangeRulerColumn;
 	}
 
+	@Override
 	public void lineGetBackground(LineBackgroundEvent event) {
 		if (fInput != null){
 			StyledTextContent c = (StyledTextContent)event.data;
@@ -384,11 +394,13 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 			this.control = control;
 		}
 
+		@Override
 		protected Object getToolTipArea(Event event) {
 			int line = control.toDocumentLineNumber(event.y);
 			return new ToolTipArea(line,control.getAnnotationColumn(line));
 		}
 
+		@Override
 		protected Composite createToolTipContentArea(Event event,
 				Composite parent) {
 			Composite comp = new Composite(parent, SWT.NONE);
@@ -406,6 +418,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 		}
 	}
 	
+	@Override
 	protected IOverviewRuler createOverviewRuler(ISharedTextColors sharedColors) {
 		IOverviewRuler ruler= new STOverviewRuler(getAnnotationAccess(), VERTICAL_RULER_WIDTH, sharedColors);
 		MarkerAnnotationPreferences fAnnotationPreferences = EditorsPlugin.getDefault().getMarkerAnnotationPreferences();
@@ -439,7 +452,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 					am.addAnnotation(annotation,new Position(offset));
 			}
 			} catch (BadLocationException e) {
-				Status s =new Status(Status.ERROR,STAnnotatedSourceEditorActivator.PLUGIN_ID,Status.ERROR,e.getMessage(),e);
+				Status s =new Status(IStatus.ERROR,STAnnotatedSourceEditorActivator.PLUGIN_ID,IStatus.ERROR,e.getMessage(),e);
 				STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
 			}
 		}

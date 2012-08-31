@@ -21,6 +21,8 @@ import org.osgi.framework.BundleContext;
  */
 public class EditorPlugin extends AbstractUIPlugin implements IStartup {
 
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor";
+
 	//The shared instance.
 	private static EditorPlugin plugin;
 	
@@ -34,6 +36,7 @@ public class EditorPlugin extends AbstractUIPlugin implements IStartup {
 	/**
 	 * This method is called upon plug-in activation
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -41,6 +44,7 @@ public class EditorPlugin extends AbstractUIPlugin implements IStartup {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
@@ -61,7 +65,7 @@ public class EditorPlugin extends AbstractUIPlugin implements IStartup {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.editor", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 	
 	public void earlyStartup() {}

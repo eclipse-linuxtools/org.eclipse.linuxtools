@@ -44,6 +44,7 @@ ValgrindLaunchConfigurationDelegate {
 	private IPath remoteBinFile;
 	private RemoteConnection rc;
 
+	@Override
 	public void launch(final ILaunchConfiguration config, String mode,
 			final ILaunch launch, IProgressMonitor m) throws CoreException {
 		if (m == null) {
@@ -106,7 +107,7 @@ ValgrindLaunchConfigurationDelegate {
 			dynamicDelegate = getDynamicDelegate(toolID);
 			String[] opts = getValgrindArgumentsArray(config);
 			@SuppressWarnings({ "unused", "unchecked" })
-			Map<String, String> env = (Map<String, String>) config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, (Map<String, String>) null);
+			Map<String, String> env = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, (Map<String, String>) null);
 			@SuppressWarnings("unused")
 			boolean usePty = config.getAttribute(
 					ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
@@ -189,6 +190,7 @@ ValgrindLaunchConfigurationDelegate {
 	}
 
 
+	@Override
 	protected String createLaunchStr() {
 		return config.getName()
 		+ " [" + getPlugin().getToolName(toolID) + " on " + rc.getId() + "] "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

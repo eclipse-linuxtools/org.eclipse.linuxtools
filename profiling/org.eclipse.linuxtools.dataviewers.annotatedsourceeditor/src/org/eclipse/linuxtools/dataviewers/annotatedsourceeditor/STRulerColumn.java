@@ -256,6 +256,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 			switch (direction) {
 				case SWT.UP:
 					timer= new Runnable() {
+						@Override
 						public void run() {
 							if (fAutoScrollDirection == SWT.UP) {
 								int top= getInclusiveTopIndex();
@@ -270,6 +271,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 					break;
 				case  SWT.DOWN:
 					timer = new Runnable() {
+						@Override
 						public void run() {
 							if (fAutoScrollDirection == SWT.DOWN) {
 								int top= getInclusiveTopIndex();
@@ -344,6 +346,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	 * @since 3.0
 	 */
 	private final Runnable fRunnable= new Runnable() {
+		@Override
 		public void run() {
 			synchronized (fRunnableLock) {
 				fIsRunnablePosted= false;
@@ -412,6 +415,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/*
 	 * @see IVerticalRulerColumn#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return fCanvas;
 	}
@@ -419,6 +423,7 @@ public class STRulerColumn implements IVerticalRulerColumn{
 	/*
 	 * @see IVerticalRuleColumnr#getWidth
 	 */
+	@Override
 	public int getWidth() {
 		return fIndentation[0];
 	}
@@ -527,12 +532,14 @@ public class STRulerColumn implements IVerticalRulerColumn{
 		fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
 		fCanvas.setForeground(fForeground);
 		fCanvas.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(PaintEvent event) {
 				if (fCachedTextViewer != null)
 					doubleBufferPaint(event.gc);
 			}
 		});
 		fCanvas.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				handleDispose();
 				fCachedTextViewer= null;

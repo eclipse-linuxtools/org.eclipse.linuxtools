@@ -82,7 +82,7 @@ public final class GraphFactory {
 		}
 		
 		String[] id = new String[0];
-		return (String[])ids.toArray(id);
+		return ids.toArray(id);
 	}
 	
 	public static String getGraphName(String id) {

@@ -96,13 +96,15 @@ public class OpenGmonDialog extends Dialog {
     }
 
 
-    protected Control createContents(Composite parent) {
+    @Override
+	protected Control createContents(Composite parent) {
         Control composite = super.createContents(parent);
         validateBinary();
         return composite;
     }
 
-    protected Control createDialogArea(Composite parent) {
+    @Override
+	protected Control createDialogArea(Composite parent) {
     	this.getShell().setText("Gmon File Viewer: binary file...");
         Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -137,7 +139,8 @@ public class OpenGmonDialog extends Dialog {
         binBrowseWorkspaceButton.addSelectionListener(
                 new SelectionAdapter()
                 {
-                    public void widgetSelected(SelectionEvent sev)
+                    @Override
+					public void widgetSelected(SelectionEvent sev)
                     {
                     	handleBrowseWorkspace("Open Binary file...", binText);
                     }
@@ -148,7 +151,8 @@ public class OpenGmonDialog extends Dialog {
         binBrowseFileSystemButton.addSelectionListener(
                 new SelectionAdapter()
                 {
-                    public void widgetSelected(SelectionEvent sev)
+                    @Override
+					public void widgetSelected(SelectionEvent sev)
                     {
                         handleBrowse("Open Binary file...", binText);
                     }
@@ -195,7 +199,8 @@ public class OpenGmonDialog extends Dialog {
 
     private class BinaryModifyListener implements ModifyListener
     {
-        public void modifyText(ModifyEvent e) {
+        @Override
+		public void modifyText(ModifyEvent e) {
             validateBinary();
         }
 
@@ -211,7 +216,8 @@ public class OpenGmonDialog extends Dialog {
         IContainer c = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(this.gmonFile);
         if (c != null) dialog.setInitialSelection(c.getProject());
         dialog.setValidator(new ISelectionStatusValidator() {
-            public IStatus validate(Object[] selection)
+            @Override
+			public IStatus validate(Object[] selection)
             {
                 if (selection.length != 1) {
                         return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$

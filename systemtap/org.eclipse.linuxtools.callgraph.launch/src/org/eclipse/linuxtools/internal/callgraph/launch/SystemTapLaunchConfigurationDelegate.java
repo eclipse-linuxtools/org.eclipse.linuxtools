@@ -38,7 +38,6 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
-import org.eclipse.ui.console.TextConsole;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
@@ -215,7 +214,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 							parserClass);
 			if (extensions == null || extensions.length < 1) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + parserClass); //$NON-NLS-1$
 				mess.schedule();
@@ -282,7 +281,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
 					
 					//Handle error from TEMP_ERROR_OUTPUT
-					errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
+					errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT));
 					if ((monitor != null && monitor.isCanceled()))
 						return;
 					
@@ -299,7 +298,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 			
-			if (! element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) { //$NON-NLS-1$ //$NON-NLS-2$
+			if (! element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
 				parser.schedule();
 			} else {
 				//Parser already scheduled, but double-check
@@ -312,7 +311,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			String message = generateErrorMessage(config.getName(), binaryArguments);
 			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), message);
+					(Helper.getConsoleByName(config.getName())), message);
 			dw.schedule();
 			
 		} catch (IOException e) {
@@ -357,7 +356,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		return output;
 	}
 		
-	private class StreamListener implements IStreamListener{
+	private static class StreamListener implements IStreamListener{
 		private int counter;
 		private BufferedWriter bw;
 		
@@ -365,7 +364,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			File file = new File(TEMP_ERROR_OUTPUT);
 			file.delete();
 			file.createNewFile();
-			bw = Helper.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
+			bw = Helper.setBufferedWriter(TEMP_ERROR_OUTPUT);
 			counter = 0;
 		}
 		

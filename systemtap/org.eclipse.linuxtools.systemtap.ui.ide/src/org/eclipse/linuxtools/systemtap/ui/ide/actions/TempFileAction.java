@@ -29,6 +29,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Henry Hughes
  */
 public class TempFileAction extends Action {
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();

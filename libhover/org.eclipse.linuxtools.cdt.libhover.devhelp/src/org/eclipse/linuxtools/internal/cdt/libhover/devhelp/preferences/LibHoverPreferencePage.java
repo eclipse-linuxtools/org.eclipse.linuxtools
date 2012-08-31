@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -77,7 +77,7 @@ public class LibHoverPreferencePage
 		setPreferenceStore(DevHelpPlugin.getDefault().getPreferenceStore());
 	}
 	
-	private class DevhelpStringFieldEditor extends DirectoryFieldEditor {
+	private static class DevhelpStringFieldEditor extends DirectoryFieldEditor {
 		public DevhelpStringFieldEditor(String name, String labelText,
 				Composite parent) {
 			super(name, labelText, parent);
@@ -130,15 +130,7 @@ public class LibHoverPreferencePage
 			
 		};
 		k.setUser(true);
-		k.addJobChangeListener(new IJobChangeListener() {
-			@Override
-			public void aboutToRun(IJobChangeEvent event) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void awake(IJobChangeEvent event) {
-				// TODO Auto-generated method stub
-			}
+		k.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent event) {
 				Display.getDefault().syncExec(new Runnable() {
@@ -151,18 +143,6 @@ public class LibHoverPreferencePage
 						}
 					}
 				});
-			}
-			@Override
-			public void running(IJobChangeEvent event) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void scheduled(IJobChangeEvent event) {
-				// TODO Auto-generated method stub	
-			}
-			@Override
-			public void sleeping(IJobChangeEvent event) {
-				// TODO Auto-generated method stub
 			}
 		});
 		k.schedule();

@@ -1,19 +1,23 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableEntry;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class TableDataSetTest {
 
-public class TableDataSetTest extends TestCase {
-	public TableDataSetTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setUp() {
 		data = new TableDataSet(new String[] {"a", "b", "c"});
 		entry0 = new TableEntry();
 		entry0.putRow(0, new String[] {"1", "2", "3"});
@@ -23,6 +27,7 @@ public class TableDataSetTest extends TestCase {
 		data.setData(entry);
 	}
 
+	@Test
 	public void testSetData() {
 		assertEquals(2, data.getEntryCount());
 		TableEntry entry = new TableEntry();
@@ -31,6 +36,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(3, data.getEntryCount());
 	}
 	
+	@Test
 	public void testAppend() {
 		assertEquals(2, data.getEntryCount());
 		TableEntry entry = new TableEntry();
@@ -38,13 +44,13 @@ public class TableDataSetTest extends TestCase {
 		data.append(entry);
 		assertEquals(3, data.getEntryCount());
 	}
-	
+	@Test
 	public void testGetTitles() {
 		String[] titles = data.getTitles();
 		assertEquals(3, titles.length);
 		assertSame("a", titles[0]);
 	}
-	
+	@Test
 	public void testGetColumn() {
 		assertNull(data.getColumn(-3));
 		assertNull(data.getColumn(10));
@@ -59,7 +65,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("4", col[0]);
 		
-		col = data.getColumn(TableDataSet.COL_ROW_NUM);
+		col = data.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(1, col.length);
 		assertEquals("1", col[0].toString());
 		
@@ -67,7 +73,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("5", col[0]);
 	}
-	
+	@Test
 	public void testGetRow() {
 		assertNull(data.getRow(-3));
 		assertNull(data.getRow(10));
@@ -78,27 +84,28 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(3, row.length);
 		assertSame("5", row[1]);
 	}
-	
+	@Test
 	public void testGetRowCount() {
 		assertEquals(1, data.getRowCount());
 	}
-	
+	@Test
 	public void testGetColCount() {
 		assertEquals(3, data.getColCount());
 		
 		assertEquals(0, new TableDataSet(null).getColCount());
 	}
-	
+	@Test
 	public void testReadFromFile() {}
-	
+	@Test
 	public void testWriteToFile() {}
-	
+	@Test
 	public void testGetID() {
 		assertEquals(TableDataSet.ID, data.getID());
 	}
 	//End IDataSet Methods
 	
 	//IHistoricalDataSet Methods
+	@Test
 	public void testGetHistoricalData() {
 		assertNull(data.getHistoricalData(null, -3));
 		assertNull(data.getHistoricalData(null, 10));
@@ -114,7 +121,7 @@ public class TableDataSetTest extends TestCase {
 		assertEquals("0", col[0].toString());
 		assertEquals("0", col[1].toString());
 		
-		col = data.getHistoricalData(null, TableDataSet.COL_ROW_NUM);
+		col = data.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
@@ -123,11 +130,11 @@ public class TableDataSetTest extends TestCase {
 		assertEquals(1, col.length);
 		assertSame("5", col[0]);
 	}
-	
+	@Test
 	public void testGetEntryCount() {
 		assertEquals(2, data.getEntryCount());
 	}
-	
+	@Test
 	public void testRemove() {
 		assertFalse(data.remove(null));
 		assertFalse(data.remove(new TableEntry()));
@@ -141,22 +148,18 @@ public class TableDataSetTest extends TestCase {
 		assertFalse(data.remove(entry));
 		assertTrue(data.remove(0));
 	}
-	
+	@Test
 	public void testGetEntry() {
 		assertNull(data.getEntry(-1));
 		assertNull(data.getEntry(20));
 		assertEquals(entry0, data.getEntry(0));
 	}
-	
+	@Test
 	public void testGetData() {
 		Object[][] d = data.getData();
 		assertNotNull(d);
 		assertEquals(1, d.length);
 		assertEquals("6", d[0][2]);
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	TableDataSet data;

@@ -23,8 +23,6 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IChangeRulerColumn;
 import org.eclipse.jface.text.source.ILineRange;
 import org.eclipse.jface.text.source.ISharedTextColors;
-import org.eclipse.jface.text.source.IVerticalRulerInfo;
-import org.eclipse.jface.text.source.IVerticalRulerInfoExtension;
 import org.eclipse.jface.text.source.IVerticalRulerListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.graphics.Color;
@@ -38,7 +36,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @since 3.0
  */
-public final class STChangeRulerColumn extends STRulerColumn implements IVerticalRulerInfo, IVerticalRulerInfoExtension, IChangeRulerColumn, IRevisionRulerColumn, IRevisionRulerColumnExtension {
+public final class STChangeRulerColumn extends STRulerColumn implements IChangeRulerColumn, IRevisionRulerColumn, IRevisionRulerColumnExtension {
 	/** The ruler's annotation model. */
 	private IAnnotationModel fAnnotationModel;
 	/** <code>true</code> if changes should be displayed using character indications instead of background colors. */
@@ -76,6 +74,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.LineNumberRulerColumn#createControl(org.eclipse.jface.text.source.CompositeRuler, org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
 		Control control= super.createControl(parentRuler, parentControl);
 		fRevisionPainter.setParentRuler(parentRuler);
@@ -86,6 +85,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfo#getLineOfLastMouseButtonActivity()
 	 */
+	@Override
 	public int getLineOfLastMouseButtonActivity() {
 		return getParentRuler().getLineOfLastMouseButtonActivity();
 	}
@@ -93,6 +93,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfo#toDocumentLineNumber(int)
 	 */
+	@Override
 	public int toDocumentLineNumber(int y_coordinate) {
 		return getParentRuler().toDocumentLineNumber(y_coordinate);
 	}
@@ -100,6 +101,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see IVerticalRulerColumn#setModel(IAnnotationModel)
 	 */
+	@Override
 	public void setModel(IAnnotationModel model) {
 		setAnnotationModel(model);
 		fRevisionPainter.setModel(model);
@@ -134,6 +136,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfoExtension#getModel()
 	 */
+	@Override
 	public IAnnotationModel getModel() {
 		return fAnnotationModel;
 	}
@@ -141,6 +144,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.LineNumberRulerColumn#createDisplayString(int)
 	 */
+	@Override
 	protected String createDisplayString(int line) {
 		StringBuffer buffer= new StringBuffer();
 		if (fShowSTRuler)
@@ -153,6 +157,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.LineNumberRulerColumn#computeNumberOfDigits()
 	 */
+	@Override
 	protected int computeNumberOfDigits() {
 		int digits;
 		if (fCharacterDisplay && getModel() != null) {
@@ -174,6 +179,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfoExtension#addVerticalRulerListener(org.eclipse.jface.text.source.IVerticalRulerListener)
 	 */
+	@Override
 	public void addVerticalRulerListener(IVerticalRulerListener listener) {
 		throw new UnsupportedOperationException();
 	}
@@ -181,6 +187,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfoExtension#removeVerticalRulerListener(org.eclipse.jface.text.source.IVerticalRulerListener)
 	 */
+	@Override
 	public void removeVerticalRulerListener(IVerticalRulerListener listener) {
 		throw new UnsupportedOperationException();
 	}
@@ -188,6 +195,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.LineNumberRulerColumn#doPaint(org.eclipse.swt.graphics.GC)
 	 */
+	@Override
 	void doPaint(GC gc, ILineRange visibleLines) {
 		Color foreground= gc.getForeground();
 		if (visibleLines != null) {
@@ -204,6 +212,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IVerticalRulerInfoExtension#getHover()
 	 */
+	@Override
 	public IAnnotationHover getHover() {
 		int activeLine= getParentRuler().getLineOfLastMouseButtonActivity();
 		if (fRevisionPainter.hasHover(activeLine))
@@ -216,6 +225,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IChangeRulerColumn#setHover(org.eclipse.jface.text.source.IAnnotationHover)
 	 */
+	@Override
 	public void setHover(IAnnotationHover hover) {
 		fRevisionPainter.setHover(hover);
 		fDiffPainter.setHover(hover);
@@ -224,6 +234,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IChangeRulerColumn#setBackground(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setBackground(Color background) {
 		super.setBackground(background);
 		fRevisionPainter.setBackground(background);
@@ -233,6 +244,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IChangeRulerColumn#setAddedColor(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setAddedColor(Color addedColor) {
 		fDiffPainter.setAddedColor(addedColor);
 	}
@@ -240,6 +252,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IChangeRulerColumn#setChangedColor(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setChangedColor(Color changedColor) {
 		fDiffPainter.setChangedColor(changedColor);
 	}
@@ -247,6 +260,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.source.IChangeRulerColumn#setDeletedColor(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setDeletedColor(Color deletedColor) {
 		fDiffPainter.setDeletedColor(deletedColor);
 	}
@@ -254,6 +268,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	/*
 	 * @see org.eclipse.jface.text.revisions.IRevisionRulerColumn#setRevisionInformation(org.eclipse.jface.text.revisions.RevisionInformation)
 	 */
+	@Override
 	public void setRevisionInformation(RevisionInformation info) {
 		fRevisionPainter.setRevisionInformation(info);
 		updateNumberOfDigits();
@@ -266,7 +281,8 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
      * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#getRevisionSelectionProvider()
      * @since 3.2
      */
-    public ISelectionProvider getRevisionSelectionProvider() {
+    @Override
+	public ISelectionProvider getRevisionSelectionProvider() {
 	    return fRevisionPainter.getRevisionSelectionProvider();
     }
 
@@ -274,7 +290,8 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
      * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#setRenderingMode(org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension.RenderingMode)
      * @since 3.3
      */
-    public void setRevisionRenderingMode(RenderingMode renderingMode) {
+    @Override
+	public void setRevisionRenderingMode(RenderingMode renderingMode) {
 		fRevisionPainter.setRenderingMode(renderingMode);
 	}
 
@@ -298,7 +315,8 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
      * @see org.eclipse.jface.text.source.LineNumberRulerColumn#getWidth()
      * @since 3.3
      */
-    public int getWidth() {
+    @Override
+	public int getWidth() {
    		int width= super.getWidth();
 		return width > 0 ? width : 8; // minimal width to display quick diff / revisions if no textual info is shown
     }
@@ -340,6 +358,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	 * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#showRevisionAuthor(boolean)
 	 * @since 3.3
 	 */
+	@Override
 	public void showRevisionAuthor(boolean show) {
 		fRevisionPainter.showRevisionAuthor(show);
 		updateNumberOfDigits();
@@ -352,6 +371,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	 * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#showRevisionId(boolean)
 	 * @since 3.3
 	 */
+	@Override
 	public void showRevisionId(boolean show) {
 		fRevisionPainter.showRevisionId(show);
 		updateNumberOfDigits();
@@ -364,6 +384,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	 * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#addRevisionListener(org.eclipse.jface.text.revisions.IRevisionListener)
 	 * @since 3.3
 	 */
+	@Override
 	public void addRevisionListener(IRevisionListener listener) {
 		fRevisionPainter.addRevisionListener(listener);
 	}
@@ -372,6 +393,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	 * @see org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension#removeRevisionListener(org.eclipse.jface.text.revisions.IRevisionListener)
 	 * @since 3.3
 	 */
+	@Override
 	public void removeRevisionListener(IRevisionListener listener) {
 		fRevisionPainter.removeRevisionListener(listener);
 	}
@@ -380,6 +402,7 @@ public final class STChangeRulerColumn extends STRulerColumn implements IVertica
 	 * @see org.eclipse.jface.text.source.LineNumberRulerColumn#handleDispose()
 	 * @since 3.3
 	 */
+	@Override
 	protected void handleDispose() {
 		fRevisionPainter.setParentRuler(null);
 		fRevisionPainter.setModel(null);

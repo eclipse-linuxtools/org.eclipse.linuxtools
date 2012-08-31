@@ -58,6 +58,7 @@ public class ExportScriptDialog extends Dialog {
 	 * This method will setup the size of the dialog window and set its title.
 	 * @param shell The shell that will contain this dialog box
 	 */
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(Localization.getString("ExportScriptDialog.ExportScript"));
@@ -70,6 +71,7 @@ public class ExportScriptDialog extends Dialog {
 	 * @param parent The Composite that will contain all components created in this method
 	 * @return The main Control created by this method.
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);
 
@@ -191,6 +193,7 @@ public class ExportScriptDialog extends Dialog {
 	 * later to build the actual module.  This method should not be called explicitly.
 	 * @param buttonID A reference to the button that was pressed. 0 - ID, 1- for others
 	 */
+	@Override
 	protected void buttonPressed(int buttonID) {
 		if(0 == buttonID) {	//OK
 			if(txtDisplay.getText().length() <= 0 || 

@@ -44,7 +44,8 @@ public class RuledTreeSelectionDialog extends CheckedTreeSelectionDialog {
      *  (non-Javadoc)
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
-    protected Control createDialogArea(Composite parent) {
+    @Override
+	protected Control createDialogArea(Composite parent) {
     	Composite composite = (Composite) super.createDialogArea(parent);
     	
         Label line = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL

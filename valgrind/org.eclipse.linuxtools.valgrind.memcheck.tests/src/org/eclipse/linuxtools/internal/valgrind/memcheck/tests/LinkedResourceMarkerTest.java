@@ -74,7 +74,7 @@ public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest
 		markers.remove(ix);
 	}
 
-	private boolean isWorkspaceFrame(ValgrindStackFrame frame) throws Exception {
+	private boolean isWorkspaceFrame(ValgrindStackFrame frame) {
 		ISourceLocator locator = frame.getLaunch().getSourceLocator();
 		Object result = DebugUITools.lookupSource(frame.getFile(), locator)
 				.getSourceElement();

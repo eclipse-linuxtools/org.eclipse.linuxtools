@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Button;
 
 
 
-public abstract class AGraph extends AChart implements IGraph {
+public abstract class AGraph extends AChart {
 	public AGraph(GraphComposite parent, int style, String title, IAdapter adapt) {
 		super(parent, style, title, adapt);
 		adapter = adapt;
@@ -113,6 +113,7 @@ public abstract class AGraph extends AChart implements IGraph {
 		});
 	}
 	
+	@Override
 	public synchronized void repaint() {
 		rebound();
 		super.repaint();
@@ -151,12 +152,14 @@ public abstract class AGraph extends AChart implements IGraph {
 		}
 	}
 	
+	@Override
 	protected void paintAll(GC gc) {
 		for(int i = 0; i < axes.size(); i++)
-			((GraphAxis)axes.get(i)).paint(gc);
+			axes.get(i).paint(gc);
 		super.paintAll(gc);
 	}
 
+	@Override
 	public void dispose() {
 		GraphingAPIUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 
@@ -188,7 +191,7 @@ public abstract class AGraph extends AChart implements IGraph {
 				xSeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS);
 				GraphAxis a;
 				for(int i=0; i<axes.size(); i++) {
-					a = ((GraphAxis)axes.get(i));
+					a = axes.get(i);
 					if(GraphAxis.HORIZONTAL == a.getType())
 						a.setTickCount(xSeriesTicks);
 				}
@@ -196,7 +199,7 @@ public abstract class AGraph extends AChart implements IGraph {
 				ySeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS);
 				GraphAxis a;
 				for(int i=0; i<axes.size(); i++) {
-					a = ((GraphAxis)axes.get(i));
+					a = axes.get(i);
 					if(GraphAxis.VERTICAL == a.getType())
 						a.setTickCount(ySeriesTicks);
 				}

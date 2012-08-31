@@ -85,6 +85,7 @@ public class StapGraphParser extends SystemTapParser {
 	}
 	
 	
+	@Override
 	public IStatus nonRealTimeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
 		neighbourMaps.clear();
@@ -207,7 +208,7 @@ public class StapGraphParser extends SystemTapParser {
 				 * 
 				 * 
 				 */
-				String[] args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
+				String[] args = s.substring(1, s.length()).split(DELIM);
 				// args[0] = name
 				// args[1] = id
 				// arsg[2] = time of event
@@ -303,7 +304,7 @@ public class StapGraphParser extends SystemTapParser {
 				 * 
 				 */
 				
-				args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
+				args = s.substring(1, s.length()).split(DELIM);
 				//args[0] = name
 				//args[1] = time of event
 				name = args[0];
@@ -562,7 +563,7 @@ public class StapGraphParser extends SystemTapParser {
 		if (tmp == null) tmp = ""; //$NON-NLS-1$
 		markedMap.put(id, tmp + 
 				Messages.getString("StapGraphParser.ActualTime") + time/1000000  //$NON-NLS-1$
-				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$ //$NON-NLS-2$
+				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$
 	}
 
 

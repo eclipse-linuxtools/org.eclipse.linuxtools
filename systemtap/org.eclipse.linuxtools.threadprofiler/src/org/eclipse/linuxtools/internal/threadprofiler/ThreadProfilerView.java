@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
-@SuppressWarnings("restriction")
 public class ThreadProfilerView extends SystemTapView {
 	private static final int CPU_BUFFER = 0;
 	private static final int MEM_BUFFER = 1;
@@ -63,6 +62,7 @@ public class ThreadProfilerView extends SystemTapView {
 	private ImageDescriptor playImage= ThreadProfilerPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
 	private ImageDescriptor pauseImage= ThreadProfilerPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	private Action playPause = new Action("Pause", pauseImage) {
+		@Override
 		public void run() {
 			pause = !pause;
 			//Toggle image
@@ -139,6 +139,7 @@ public class ThreadProfilerView extends SystemTapView {
 				final int count = counter;
 				counter++;
 				dropMenu.add(new Action(g.getTitle()) {
+					@Override
 					public void run(){
 						selector = count;
 						if (graphCanvas != null)
@@ -148,6 +149,7 @@ public class ThreadProfilerView extends SystemTapView {
 			}
 			final int count = counter;
 			dropMenu.add(new Action("Threads") {
+				@Override
 				public void run() {
 					selector = count;
 					if (graphCanvas != null)
@@ -231,7 +233,8 @@ public class ThreadProfilerView extends SystemTapView {
 		});
 		
 	    graphCanvas.addPaintListener(new PaintListener() {
-	        public void paintControl(PaintEvent e) {
+	        @Override
+			public void paintControl(PaintEvent e) {
 	        	long diff = System.currentTimeMillis() - lastRefresh;
 	        	if (pause || (diff < MAX_REFRESH_RATE && diff > 0))
 					try {
@@ -333,6 +336,7 @@ public class ThreadProfilerView extends SystemTapView {
 				}
 			}
 			
+			@Override
 			public void run() {
 				if (this.getText().equals(HIDE)) {
 					this.setText(SHOW);

@@ -216,6 +216,10 @@ public class ScriptConsole extends IOConsole {
 	 * @return boolean representing if the command is running
 	 */
 	public boolean isRunning() {
+		// If there is no command there is nothing running
+		if (null == cmd) {
+			return false;
+		}
 		return cmd.isRunning();
 	}
 	
@@ -224,6 +228,10 @@ public class ScriptConsole extends IOConsole {
 	 * @return boolean represneting whether or not the class has been disposed.
 	 */
 	public boolean isDisposed() {
+		// If there is no command it can be considered disposed
+		if (null == cmd) {
+			return true;
+		}
 		return cmd.isDisposed();
 	}
 	
@@ -281,6 +289,7 @@ public class ScriptConsole extends IOConsole {
 	/**
 	 * Disposes of all internal references in the class. No method should be called after this.
 	 */
+	@Override
 	public void dispose() {
 		if(!isDisposed()) {
 			if(null != cmd)
@@ -299,6 +308,7 @@ public class ScriptConsole extends IOConsole {
 	 * Changes the name displayed on this console.
 	 * @param name The new name to display on the console.
 	 */
+	@Override
 	public void setName(String name) {
 		try {
 			super.setName(name);

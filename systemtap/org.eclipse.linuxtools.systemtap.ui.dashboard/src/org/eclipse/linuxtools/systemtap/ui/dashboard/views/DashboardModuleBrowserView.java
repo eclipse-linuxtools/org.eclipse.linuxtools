@@ -41,13 +41,14 @@ public class DashboardModuleBrowserView extends ModuleView {
 	 * avialable on the system.  Once then are found, it will
 	 * set the viewer's content to the tree of modules that were found.
 	 */
+	@Override
 	protected void generateModuleTree() {
 		TreeNode modules = DashboardModuleLocator.getModules();
 		
 		if(null != modules)
 			viewer.setInput(modules);
 		else
-			viewer.setInput(new TreeNode("", false));
+			viewer.setInput(new TreeNode("", false)); //$NON-NLS-1$
 	
 	}
 	
@@ -57,6 +58,7 @@ public class DashboardModuleBrowserView extends ModuleView {
 	 * are actual modules.  It also sets up the layout for popup menu when users
 	 * right click on a module element.
 	 */
+	@Override
 	protected void makeActions() {
 		dblClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent e) {
@@ -69,10 +71,10 @@ public class DashboardModuleBrowserView extends ModuleView {
 		viewer.addDoubleClickListener(dblClickListener);
 		
 		//Gets items from plugin.xml
-		MenuManager manager = new MenuManager("modulePopup");
+		MenuManager manager = new MenuManager("modulePopup"); //$NON-NLS-1$
 		Control control = this.viewer.getControl();
-		manager.add(new Separator("file.ext"));
-		manager.add(new Separator("build.ext"));
+		manager.add(new Separator("file.ext")); //$NON-NLS-1$
+		manager.add(new Separator("build.ext")); //$NON-NLS-1$
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		Menu menu = manager.createContextMenu(control);
 		control.setMenu(menu);
@@ -84,6 +86,7 @@ public class DashboardModuleBrowserView extends ModuleView {
 	 * This method removes all internal references. Nothing should be called/referenced after
 	 * this method is run.
 	 */
+	@Override
 	public void dispose() {
 		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		viewer.removeDoubleClickListener(dblClickListener);
@@ -91,7 +94,7 @@ public class DashboardModuleBrowserView extends ModuleView {
 	}
 
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView"; //$NON-NLS-1$
 	private IDoubleClickListener dblClickListener;
 	
 }

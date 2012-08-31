@@ -88,6 +88,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 	 * if there is no active <code>STPEditor</code>, and then inserts a template probe for the
 	 * item that the user clicked on. 
 	 */
+	@Override
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchPage page = window.getActivePage();

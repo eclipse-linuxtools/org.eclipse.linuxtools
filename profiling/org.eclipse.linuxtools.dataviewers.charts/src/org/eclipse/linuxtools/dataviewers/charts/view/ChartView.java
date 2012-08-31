@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.dataviewers.charts.view;
 
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.linuxtools.dataviewers.charts.Activator;
@@ -59,6 +60,7 @@ public class ChartView extends ViewPart {
 	 */
 	public  static void createChartView(final Chart chart) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					synchronized(lock) {
@@ -68,9 +70,9 @@ public class ChartView extends ViewPart {
 					}
 				} catch (PartInitException e) {
 					Status s = new Status(
-							Status.ERROR,
+							IStatus.ERROR,
 							Activator.PLUGIN_ID,
-							Status.ERROR,
+							IStatus.ERROR,
 							e.getMessage(),
 							e);
 					Activator.getDefault().getLog().log(s);
@@ -102,9 +104,9 @@ public class ChartView extends ViewPart {
 		} catch (Throwable _)
 		{
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
-					Status.ERROR,
+					IStatus.ERROR,
 					"Error when creating AWT Frame...",
 					_);
 			Activator.getDefault().getLog().log(s);
@@ -130,7 +132,7 @@ public class ChartView extends ViewPart {
 			parent.setFocus();
 		} else {
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
 					"Error setting the focus to the chart view: main composite is not set!");
 			Activator.getDefault().getLog().log(s);
@@ -144,6 +146,7 @@ public class ChartView extends ViewPart {
 	 */
 	public void closeView() {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(ChartView.this);
 			}
@@ -162,13 +165,14 @@ public class ChartView extends ViewPart {
 		} else {
 			saveChartAction.setEnabled(false);
 			Status s = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					Activator.PLUGIN_ID,
 					"Error adding the chart to the chart view: SWT is not set!");
 			Activator.getDefault().getLog().log(s);
 		}
 	}
 	
+	@Override
 	public void dispose( )
 	{
 		super.dispose( );

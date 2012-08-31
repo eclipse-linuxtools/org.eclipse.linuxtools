@@ -33,18 +33,21 @@ public class LocalRemoteDirectoryEditor extends DirectoryFieldEditor {
 			b.setEnabled(!remote);
 	}
 
+	@Override
 	public String changePressed() {
 		if (this.remote)
 			return ""; //$NON-NLS-1$
 		return super.changePressed();
 	}
 
+	@Override
 	protected boolean doCheckState() {
 		if (this.remote)
 			return true;
 		return super.doCheckState();
 	}
 
+	@Override
 	public void setEnabled(boolean enabled, Composite parent) {
 		super.setEnabled(enabled, parent);
 		isEnabled = enabled;

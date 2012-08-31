@@ -71,6 +71,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#adjustForNumColumns(int)
 	 */
+	@Override
 	protected void adjustForNumColumns(int numColumns) {
 		if (numColumns > 1) {
 			Control control = getLabelControl();
@@ -92,6 +93,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#doFillIntoGrid(Composite, int)
 	 */
+	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		int comboC = 1;
 		if (numColumns > 1) {
@@ -112,6 +114,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#doLoad()
 	 */
+	@Override
 	protected void doLoad() {
 		updateComboForValue(getPreferenceStore().getString(getPreferenceName()));
 	}
@@ -119,6 +122,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#doLoadDefault()
 	 */
+	@Override
 	protected void doLoadDefault() {
 		updateComboForValue(getPreferenceStore().getDefaultString(getPreferenceName()));
 	}
@@ -126,6 +130,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#doStore()
 	 */
+	@Override
 	protected void doStore() {
 		if (fValue == null) {
 			getPreferenceStore().setToDefault(getPreferenceName());
@@ -138,6 +143,7 @@ public class ComboFieldEditor extends FieldEditor {
 	/**
 	 * @see FieldEditor#getNumberOfControls()
 	 */
+	@Override
 	public int getNumberOfControls() {
 		return 1;
 	}
@@ -154,6 +160,7 @@ public class ComboFieldEditor extends FieldEditor {
 			}
 			
 			fCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent evt) {
 					String oldValue = fValue;
 					String name = fCombo.getText();

@@ -34,6 +34,7 @@ public class ScatterChartBuilder extends LineChartBuilder {
 		super(parent, style, title, adapter);
     }
     
+	@Override
 	protected ISeries createChartISeries(int i) {
 		ILineSeries series = (ILineSeries)super.createChartISeries(i);
 		series.setSymbolColor(COLORS[i % COLORS.length]);

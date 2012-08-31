@@ -25,6 +25,7 @@ public class TreeDefinitionNode extends TreeNode {
 		definition = d;
 	}
 	
+	@Override
 	public void dispose() {
 		super.dispose();
 		definition = null;

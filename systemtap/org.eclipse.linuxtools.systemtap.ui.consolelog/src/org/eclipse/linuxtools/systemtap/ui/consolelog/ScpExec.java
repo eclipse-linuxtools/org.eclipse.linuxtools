@@ -17,7 +17,7 @@ public class ScpExec implements Runnable {
   
 	public ScpExec(String cmd[], String moduleName) {
 	//	this.moduleName = moduleName;
-		this.command = new String();
+		this.command = "";
 		
 		try{
 			
@@ -81,9 +81,9 @@ public class ScpExec implements Runnable {
       	
 		int i;
 		for(i=0; i<inputListeners.size(); i++)
-			inputGobbler.addDataListener((IGobblerListener)inputListeners.get(i));
+			inputGobbler.addDataListener(inputListeners.get(i));
 		for(i=0; i<errorListeners.size(); i++)
-			errorGobbler.addDataListener((IGobblerListener)errorListeners.get(i));
+			errorGobbler.addDataListener(errorListeners.get(i));
 		return true;
 
       }catch(Exception e)
@@ -199,9 +199,9 @@ public class ScpExec implements Runnable {
 	 */
 	public ArrayList<IGobblerListener> getInputStreamListeners() {
 		if(null != inputGobbler)
-			return inputListeners;
-		else
 			return inputGobbler.getDataListeners();
+		else
+			return inputListeners;
 	}
 	
 	/**
@@ -210,9 +210,9 @@ public class ScpExec implements Runnable {
 	 */
 	public ArrayList<IGobblerListener> getErrorStreamListeners() {
 		if(null != errorGobbler)
-			return errorListeners;
-		else
 			return errorGobbler.getDataListeners();
+		else
+			return errorListeners;
 	}
 	
 	/**

@@ -43,6 +43,7 @@ public class ChartStreamDaemon2 extends ChartStreamDaemon {
 	/**
 	 * Disposes of all the internal data.
 	 */
+	@Override
 	public void dispose() {
 		if(!isDisposed()) {
 			super.dispose();

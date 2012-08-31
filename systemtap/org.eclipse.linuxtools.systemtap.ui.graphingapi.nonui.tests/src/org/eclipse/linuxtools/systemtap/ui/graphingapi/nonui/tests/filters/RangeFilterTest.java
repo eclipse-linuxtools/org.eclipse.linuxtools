@@ -11,30 +11,31 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
 import org.eclipse.ui.XMLMemento;
+import org.junit.Before;
+import org.junit.Test;
 
-
-import junit.framework.TestCase;
-
-public class RangeFilterTest extends TestCase {
-	public RangeFilterTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+public class RangeFilterTest {
+	
+	@Before
+	public void setUp() {
 		filter = new RangeFilter(0, new Integer(1), new Integer(2), RangeFilter.INSIDE_BOUNDS | RangeFilter.INCLUSIVE);
 	}
-
+	@Test
 	public void testRangeFilter() {
 		RangeFilter filter = new RangeFilter(-1, new Integer(3), new Integer(5), RangeFilter.INSIDE_BOUNDS);
 		assertNotNull(filter);
 	}
-	
+	@Test
 	public void testFilter() {
 		int width = 4;
 		int height = 10;
@@ -122,17 +123,13 @@ public class RangeFilterTest extends TestCase {
 		filter = new RangeFilter(-1, new Integer(1), new Integer(3), 0);
 		assertNull(filter.filter(data));
 	}
-	
+	@Test
 	public void testGetID() {
 		assertTrue(RangeFilter.ID.equals(filter.getID()));
 	}
-
+	@Test
 	public void testWriteXML() {
 		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	RangeFilter filter;

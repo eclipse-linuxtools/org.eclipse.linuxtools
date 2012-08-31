@@ -86,16 +86,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @param parent the parent composite
 	 */
 	public void createControl(Composite parent) {
-		Composite top;
-
-		if(parent.getChildren().length > 0){
-			top = (Composite) parent.getChildren()[0];
-		} else {
-			top = new Composite(parent, SWT.NONE);
-			setControl(top);
-			top.setLayout(new GridLayout());
-				}
-	
+		Composite top = new Composite(parent, SWT.NONE);
+		setControl(top);
+		top.setLayout(new GridLayout());
 		this.top = top;
 	}
 	/**

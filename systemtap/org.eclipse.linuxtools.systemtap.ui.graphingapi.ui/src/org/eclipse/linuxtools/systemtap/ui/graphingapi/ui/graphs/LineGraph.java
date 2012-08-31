@@ -37,6 +37,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		handleUpdateEvent();
 	}
 	
+	@Override
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
 
@@ -52,7 +53,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		double px2, py2;
 		
 		for(int j=0; j<elementList.length; j++) {
-			points = (DataPoint[])elementList[j].toArray(points);
+			points = elementList[j].toArray(points);
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			gc.setForeground(c);
 
@@ -76,6 +77,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		gc.setForeground(temp);
 	}
 	
+	@Override
 	public boolean isMultiGraph() {
 		return adapter.getSeriesCount() > 0;
 	}
@@ -83,6 +85,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 	/**
 	 * Updates the graph when the <code>DataSet</code> has more data, adding the new samples to the graph.
 	 */
+	@Override
 	public void handleUpdateEvent() {
 		if(null == adapter) return;
 

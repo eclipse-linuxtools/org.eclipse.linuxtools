@@ -11,25 +11,25 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.test.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ConsoleStreamDaemon;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class ConsoleStreamDaemonTest {
 
-public class ConsoleStreamDaemonTest extends TestCase {
-	public ConsoleStreamDaemonTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setUp() {
 		StreamGobbler gobbler = new StreamGobbler(System.in);
 		gobbler.start();
 		daemon = new ConsoleStreamDaemon(null);
 	}
-	
+	@Test
 	public void testConsoleStreamDaemon() {
 		assertNotNull(daemon);
 
@@ -39,26 +39,22 @@ public class ConsoleStreamDaemonTest extends TestCase {
 		csd = new ConsoleStreamDaemon(ScriptConsole.getInstance("test"));
 		assertNotNull(csd);
 	}
-	
+	@Test
 	public void testHandleDataEvent() {
 		daemon.handleDataEvent("");
 		assertNotNull(daemon);
 	}
-
+	@Test
 	public void testIsDisposed() {
 		ConsoleStreamDaemon csd = new ConsoleStreamDaemon(null);
 		assertFalse(csd.isDisposed());
 		csd.dispose();
 		assertTrue(csd.isDisposed());
 	}
-	
+	@Test
 	public void testDispose() {
 		daemon.dispose();
 		assertNotNull(daemon);
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	private ConsoleStreamDaemon daemon;

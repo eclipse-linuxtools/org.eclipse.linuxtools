@@ -14,14 +14,14 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
@@ -32,10 +32,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 
 /**
  * This class provides the framework for the ModuleBrowsers.  Since
@@ -53,7 +49,7 @@ public abstract class ModuleView extends ViewPart {
 	/**
 	 * This class provides the framework for traversing the view's Tree structure.
 	 */
-	private class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+	private static class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 		
 		public void dispose() {}
@@ -83,40 +79,46 @@ public abstract class ModuleView extends ViewPart {
 		}
 	}
 public class ViewLabelProvider extends LabelProvider 
-	implements ILabelProvider, IFontProvider, IColorProvider{
+	implements IFontProvider, IColorProvider{
 
 	FontRegistry registry = new FontRegistry();
 	int j=0;
 
+	@Override
 	public Image getImage(Object element) {
 		TreeNode treeObj = (TreeNode)element;
 		Image img = null;
 		img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 		if (treeObj.getChildCount() == 0)
-			img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage();
+			img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage(); //$NON-NLS-1$
 		
 		return img;
 	}
 
+	@Override
 	public String getText(Object obj) {
 		return obj.toString();
 	}
 
+	@Override
 	public void addListener(ILabelProviderListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Override
 	public void removeListener(ILabelProviderListener listener) {
 		// TODO Auto-generated method stub
 
@@ -206,6 +208,7 @@ public class ViewLabelProvider extends LabelProvider
 	 * This method creates the framework for the view.  It initializes the viewer, which 
 	 * contains the TreeNode and handles how to display each entry.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		parent.getShell().setCursor(new Cursor(parent.getShell().getDisplay(), SWT.CURSOR_WAIT));
@@ -241,6 +244,7 @@ public class ViewLabelProvider extends LabelProvider
 		return viewer;
 	}
 
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
@@ -249,12 +253,13 @@ public class ViewLabelProvider extends LabelProvider
 	 * This method removes all internal references. Nothing should be called/referenced after
 	 * this method is run.
 	 */
+	@Override
 	public void dispose() {
 		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}
 	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.ModuleView";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.ModuleView"; //$NON-NLS-1$
 	protected TreeViewer viewer;
 }

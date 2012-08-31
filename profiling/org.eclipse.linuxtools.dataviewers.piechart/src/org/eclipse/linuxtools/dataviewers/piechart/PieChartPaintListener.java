@@ -30,6 +30,7 @@ public class PieChartPaintListener implements PaintListener {
 		this.plotArea = plotArea;
 	}
 
+	@Override
 	public void paintControl(PaintEvent e) {
 		GC gc = e.gc;
 		Rectangle bounds;

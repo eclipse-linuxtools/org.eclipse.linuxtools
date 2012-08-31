@@ -66,18 +66,13 @@
     <module>org.eclipse.linuxtools.callgraph.tests</module>
     <module>org.eclipse.linuxtools.systemtap-feature</module>
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog</module>
-    <!--
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog.tests</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.dashboard</module>
     <module>org.eclipse.linuxtools.systemtap.ui.dashboardextension</module>
     <module>org.eclipse.linuxtools.systemtap.ui.doc</module>
     <module>org.eclipse.linuxtools.systemtap.ui.editor</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphicalrun</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphing</module>
-    <!--
-    <module>org.eclipse.linuxtools.systemtap.ui.graphing.tests</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui</module>
     <!--<module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests</module>-->
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.ui</module>

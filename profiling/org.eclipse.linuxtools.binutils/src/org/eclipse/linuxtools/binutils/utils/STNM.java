@@ -58,7 +58,7 @@ public class STNM {
 	private void init(String command, String[] params, String file, IProject project) throws IOException {
 		String[] args = null;
 		if (params == null || params.length == 0) {
-			args = new String[] {command, file}; //$NON-NLS-1$
+			args = new String[] {command, file};
 		} else {
 			args = new String[params.length + 2];
 			args[0] = command;

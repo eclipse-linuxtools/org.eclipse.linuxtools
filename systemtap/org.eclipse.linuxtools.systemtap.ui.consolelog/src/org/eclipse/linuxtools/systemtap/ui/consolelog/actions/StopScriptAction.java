@@ -29,6 +29,7 @@ public class StopScriptAction extends ConsoleAction {
 	 * This is the main method of the class. It handles stopping the 
 	 * currently active <code>ScriptConsole</code>.
 	 */
+	@Override
 	public void run() {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			boolean stop = false;
@@ -45,6 +46,7 @@ public class StopScriptAction extends ConsoleAction {
 		});
 	}
 	
+	@Override
 	public void selectionChanged(IAction a, ISelection s) {
 				a.setEnabled(anyRunning());
 			}

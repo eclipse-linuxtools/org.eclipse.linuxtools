@@ -78,4 +78,4 @@ public class StapGraphKeyListener implements KeyListener {
 		}
 	}
 	
-};
+}

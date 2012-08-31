@@ -42,6 +42,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 	/**
 	 * Called by the Eclipse Workbench at plugin activation time. Starts the plugin lifecycle.
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		
@@ -52,6 +53,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 	/**
 	 * Called by the Eclipse Workbench to deactivate the plugin. 
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		

@@ -28,10 +28,12 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 		super(adapter, parent, style, title);
 	}
 
+	@Override
 	protected void createChart() {
 		this.chart = new PieChart(this, getStyle());
 	}
 
+	@Override
 	protected void buildXSeries() {
 		Object data[][] = adapter.getData();
 		if (data == null || data.length == 0 || data[0].length == 0)
@@ -57,6 +59,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 		chart.redraw();
 	}
 
+	@Override
 	public void updateDataSet() {
 		buildXSeries();
 	}

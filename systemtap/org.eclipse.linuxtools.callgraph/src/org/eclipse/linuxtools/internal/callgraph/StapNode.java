@@ -78,6 +78,7 @@ public class StapNode extends GraphNode{
 	/**
 	 * Returns the StapData object associated with this node.
 	 */
+	@Override
 	public StapData getData() {
 		return ((StapGraph) this.getGraphModel()).getNodeData(id);
 	}

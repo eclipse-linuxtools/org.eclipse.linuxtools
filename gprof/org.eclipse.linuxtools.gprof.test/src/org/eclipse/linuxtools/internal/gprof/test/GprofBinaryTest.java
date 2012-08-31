@@ -33,7 +33,8 @@ public class GprofBinaryTest extends TestCase {
 			final String dirName = testDir.getName();
 			ats.addTest(
 					new TestCase(dirName + ":BinaryChecker") {
-						public void runTest() throws Throwable {
+						@Override
+						public void runTest() {
 							testValidBinary(dirName+File.separator+GMON_BINARY_FILE);
 						}
 					}
@@ -50,7 +51,7 @@ public class GprofBinaryTest extends TestCase {
 		return ats;
 	}
 
-	public static void testValidBinary(String relativeBinaryPath) throws Exception {
+	public static void testValidBinary(String relativeBinaryPath) {
 		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeBinaryPath);
 		//Assert.assertEquals(true, GprofProgramChecker.isGProfCompatible(binary));
@@ -60,7 +61,7 @@ public class GprofBinaryTest extends TestCase {
 
 	}
 
-	public static void testInvalidBinary(String relativeGmonPath) throws Exception {
+	public static void testInvalidBinary(String relativeGmonPath) {
 		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeGmonPath);
 		//Assert.assertEquals(false, GprofProgramChecker.isGProfCompatible(binary));

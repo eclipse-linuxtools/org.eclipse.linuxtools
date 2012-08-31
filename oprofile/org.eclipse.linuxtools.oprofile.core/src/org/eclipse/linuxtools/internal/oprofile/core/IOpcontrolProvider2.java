@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.internal.oprofile.core;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
-import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 
 /**
  * Interface for oprofile core to utilize opcontrol program. Platform plugins should define/register

@@ -21,6 +21,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
  */
 public class SystemTapLaunchConfigurationTabGroup extends SystemTapLCTG{
 
+	@Override
 	public AbstractLaunchConfigurationTab[] getProfileTabs() {
 		return new AbstractLaunchConfigurationTab[] {
 				new SystemTapOptionsTab()

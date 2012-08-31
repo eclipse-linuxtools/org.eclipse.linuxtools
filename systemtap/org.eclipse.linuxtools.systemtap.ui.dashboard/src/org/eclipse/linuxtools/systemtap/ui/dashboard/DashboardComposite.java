@@ -121,12 +121,14 @@ public class DashboardComposite {
 			super();
 			sourceID = k;
 		}
+		@Override
 		public void dragStart(DragSourceEvent event) {
 			super.dragStart(event);
 			if(!external[sourceID].folder.isVisible())
 				event.doit = false;
 		}
 
+		@Override
 		public void dragSetData(DragSourceEvent event) {
 			super.dragSetData(event);
 			event.data = Integer.toString(sourceID);
@@ -145,6 +147,7 @@ public class DashboardComposite {
 		{
 			sourceID = k;
 		}
+		@Override
 		public void dragEnter(DropTargetEvent event) {
 			if(event.currentDataType != null)
 				event.detail = DND.DROP_MOVE;
@@ -152,10 +155,12 @@ public class DashboardComposite {
 				event.detail = DND.DROP_NONE;
 		}
 
+		@Override
 		public void dragOperationChanged(DropTargetEvent event) {
 			super.dragOperationChanged(event);
 		}
 		long lastDropTime = 0;
+		@Override
 		public void drop(DropTargetEvent event) {
 			super.drop(event);
 			int k = -1;
@@ -165,7 +170,7 @@ public class DashboardComposite {
 			 * problem now. To get around this, we check for timestamps within 100ms of each other.
 			 * If the last drop was fired less than 100ms ago, we silently eat the event.
 			 */
-			long eventTime = (long)(event.time & 0xFFFFFFFFL);
+			long eventTime = event.time & 0xFFFFFFFFL;
 			if(eventTime > lastDropTime - 100 && eventTime < lastDropTime + 100) return;
 			
 			try
@@ -300,7 +305,7 @@ public class DashboardComposite {
 			//we've found the lowest null slot
 			if(externalQueue.size() > 0)
 			{	//fill it from the queue
-				external[i] = (DashboardAdapter)externalQueue.remove(0);
+				external[i] = externalQueue.remove(0);
 				FormData data = new FormData();
 				data.left= new FormAttachment(0,0);
 				data.right = new FormAttachment(100,0);

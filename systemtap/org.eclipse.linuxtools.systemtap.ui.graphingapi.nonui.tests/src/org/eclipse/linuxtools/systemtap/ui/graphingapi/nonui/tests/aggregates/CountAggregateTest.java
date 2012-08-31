@@ -11,20 +11,17 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.aggregates;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.CountAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class CountAggregateTest {
 
-public class CountAggregateTest extends TestCase {
-	public CountAggregateTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	@Test
 	public void testAggregate() {
 		CountAggregate aa = new CountAggregate();
 		Number num;
@@ -55,12 +52,10 @@ public class CountAggregateTest extends TestCase {
 		assertEquals(5, num.doubleValue(), 0.0);
 	}
 	
+	@Test
 	public void testGetID() {
 		CountAggregate aa = new CountAggregate();
 		assertTrue(CountAggregate.ID.equals(aa.getID()));
 	}
 	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
 }

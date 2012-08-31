@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
  * @author Ryan Morse
  */
 public class DashboardPerspective implements IPerspectiveFactory {
-	public static String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective";
+	public static String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective"; //$NON-NLS-1$
 	
 	public void createInitialLayout(IPageLayout layout) {
 		LogManager.logDebug("Start createInitialLayout:", this); //$NON-NLS-1$
@@ -38,13 +38,13 @@ public class DashboardPerspective implements IPerspectiveFactory {
 		layout.setEditorAreaVisible(false);
 
 		//Create the left hand tabed view
-		IFolderLayout browsers = layout.createFolder("browsers", IPageLayout.LEFT, 0.25f, editorArea);
-		browsers.addPlaceholder(DashboardModuleBrowserView.ID + ":*");
+		IFolderLayout browsers = layout.createFolder("browsers", IPageLayout.LEFT, 0.25f, editorArea); //$NON-NLS-1$
+		browsers.addPlaceholder(DashboardModuleBrowserView.ID + ":*"); //$NON-NLS-1$
 		browsers.addView(DashboardModuleBrowserView.ID);
 		
 		
-		IFolderLayout browsers2 = layout.createFolder("browsers2", IPageLayout.BOTTOM, 0.5f, "browsers");
-		browsers2.addPlaceholder(ActiveModuleBrowserView.ID + ":*");
+		IFolderLayout browsers2 = layout.createFolder("browsers2", IPageLayout.BOTTOM, 0.5f, "browsers"); //$NON-NLS-1$ //$NON-NLS-2$
+		browsers2.addPlaceholder(ActiveModuleBrowserView.ID + ":*"); //$NON-NLS-1$
 		browsers2.addView(ActiveModuleBrowserView.ID);
 
 		layout.getViewLayout(DashboardModuleBrowserView.ID).setCloseable(false);

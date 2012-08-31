@@ -11,29 +11,26 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
 import org.eclipse.ui.XMLMemento;
+import org.junit.Test;
 
+public class MatchFilterTest  {
 
-import junit.framework.TestCase;
-
-public class MatchFilterTest extends TestCase {
-	public MatchFilterTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	@Test
 	public void testMatchFilter() {
 		MatchFilter filter = new MatchFilter(-1, null, MatchFilter.KEEP_MATCHING);
 		assertNotNull(filter);
 	}
-	
+	@Test
 	public void testFilter() {
 		int width = 4;
 		int height = 10;
@@ -62,18 +59,15 @@ public class MatchFilterTest extends TestCase {
 		filter = new MatchFilter(-1, "", MatchFilter.KEEP_MATCHING);
 		assertNull(filter.filter(data));
 	}
-	
+	@Test
 	public void testGetID() {
 		MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
 		assertTrue(MatchFilter.ID.equals(filter.getID()));
 	}
-
+	@Test
 	public void testWriteXML() {
 		MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
 		filter.writeXML(XMLMemento.createWriteRoot("test"));
 	}
 	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
 }

@@ -51,11 +51,11 @@ public class RPMProjectTest {
 	public static void setUp() throws Exception {
 		IWorkspaceDescription desc;
 		workspace = ResourcesPlugin.getWorkspace();
-		root = workspace.getRoot();
-		monitor = new NullProgressMonitor();
 		if (workspace == null) {
 			fail("Workspace was not setup");
 		}
+		root = workspace.getRoot();
+		monitor = new NullProgressMonitor();
 		if (root == null) {
 			fail("Workspace root was not setup");
 		}

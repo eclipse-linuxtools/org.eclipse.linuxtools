@@ -30,6 +30,7 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 		LogManager.logDebug("End GraphingPreferencePage:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void createFieldEditors() {
 		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 
@@ -48,6 +49,7 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 		LogManager.logDebug("End init:", this); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void dispose() {
 		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$

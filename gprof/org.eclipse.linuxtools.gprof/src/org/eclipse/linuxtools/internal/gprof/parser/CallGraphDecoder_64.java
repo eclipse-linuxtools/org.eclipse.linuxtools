@@ -9,6 +9,7 @@ public class CallGraphDecoder_64 extends CallGraphDecoder{
 		super(decoder);
 	}
 
+	@Override
 	protected long readAddress(DataInput stream) throws IOException {
 		long ret = stream.readLong();
 		return ret;

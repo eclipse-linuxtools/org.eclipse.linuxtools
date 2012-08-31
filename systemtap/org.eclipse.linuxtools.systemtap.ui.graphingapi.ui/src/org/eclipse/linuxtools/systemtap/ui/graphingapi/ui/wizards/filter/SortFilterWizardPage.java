@@ -31,6 +31,7 @@ public class SortFilterWizardPage extends FilterWizardPage {
 		setTitle(Localization.getString("SortFilterWizardPage.CreateSortFilter"));
 	}
 	
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
@@ -70,10 +71,12 @@ public class SortFilterWizardPage extends FilterWizardPage {
 		setControl(comp);
 	}
 	
+	@Override
 	public boolean canFlipToNextPage() {
 		return false;
 	}
 
+	@Override
 	protected void createFilter() {
 		int selected = cboColumn.getSelectionIndex();
 		int style = (radAscending.getSelection() ? SortFilter.ASCENDING : SortFilter.DESCENDING);
@@ -81,6 +84,7 @@ public class SortFilterWizardPage extends FilterWizardPage {
 			wizard.filter = new SortFilter(selected, style);
 	}
 
+	@Override
 	public void dispose() {
 		if(null != cboColumn) {
 			cboColumn.removeSelectionListener(selectionListener);

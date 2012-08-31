@@ -14,9 +14,8 @@ package org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.profiling.launch.ui.IRemoteResourceSelectorProxy;
-
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteFileManager;
 import org.eclipse.ptp.remote.core.IRemoteServices;
@@ -25,18 +24,17 @@ import org.eclipse.ptp.remote.ui.IRemoteUIConstants;
 import org.eclipse.ptp.remote.ui.IRemoteUIFileManager;
 import org.eclipse.ptp.remote.ui.IRemoteUIServices;
 import org.eclipse.ptp.remote.ui.PTPRemoteUIPlugin;
-
 import org.eclipse.swt.widgets.Shell;
 
 public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 
-	private enum ResourceType { FILE, DIRECTORY };
+	private enum ResourceType { FILE, DIRECTORY }
 
 	private URI getEmptyPathURI(String scheme) {
 		try {
 			return new URI(scheme, null, "/", null); //$NON-NLS-1$
 		} catch (URISyntaxException e) {
-			Activator.log(Status.ERROR, Messages.RDTResourceSelectorProxy_URI_syntax_error, e);
+			Activator.log(IStatus.ERROR, Messages.RDTResourceSelectorProxy_URI_syntax_error, e);
 			return null;
 		}
 	}
@@ -76,7 +74,7 @@ public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 			selectedPath = uiFileManager.browseDirectory(shell, prompt, uri.getPath(), IRemoteUIConstants.NONE);
 			break;
 		default:
-			Activator.log(Status.ERROR, Messages.RDTResourceSelectorProxy_unsupported_resourceType + resourceType);
+			Activator.log(IStatus.ERROR, Messages.RDTResourceSelectorProxy_unsupported_resourceType + resourceType);
 			return null;
 		}
 		URI selectedURI = null;

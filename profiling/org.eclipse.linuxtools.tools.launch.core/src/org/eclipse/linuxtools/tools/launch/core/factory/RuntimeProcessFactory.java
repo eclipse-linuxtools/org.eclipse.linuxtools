@@ -130,8 +130,9 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 				if (pProxy != null){
 					BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
 					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
-					if(error.readLine() != null){
-						throw new IOException(error.readLine());
+					String errorLine;
+					if((errorLine = error.readLine()) != null){
+						throw new IOException(errorLine);
 					}
 					error.close();
 					String readLine = reader.readLine();

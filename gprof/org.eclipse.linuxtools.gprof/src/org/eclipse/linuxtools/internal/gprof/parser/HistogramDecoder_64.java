@@ -9,6 +9,7 @@ public class HistogramDecoder_64 extends HistogramDecoder {
 		super(decoder);
 	}
 	
+	@Override
 	protected long readAddress(DataInput stream) throws IOException {
 		long ret = stream.readLong();
 		return ret;

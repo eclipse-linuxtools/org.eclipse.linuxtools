@@ -115,7 +115,6 @@ public class TestChangeLogTestProject {
 	public void canAddJavaNature() throws Exception {
 		IJavaProject javaProject = this.project.addJavaNature();
 		assertNotNull(javaProject);
-		assertTrue(javaProject instanceof IJavaProject);
 	}
 	
 	/**

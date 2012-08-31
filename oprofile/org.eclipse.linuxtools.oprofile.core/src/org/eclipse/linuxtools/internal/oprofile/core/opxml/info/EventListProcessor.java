@@ -44,7 +44,7 @@ public class EventListProcessor extends XMLProcessor {
 	private static final String ATTR_EVENT_LIST_COUNTER = "counter"; //$NON-NLS-1$
 	
 	// This is a special processor which is used to deal with a single mask value
-	private class MaskProcessor extends XMLProcessor {
+	private static class MaskProcessor extends XMLProcessor {
 		private OpUnitMask.MaskInfo info;
 		
 		/**

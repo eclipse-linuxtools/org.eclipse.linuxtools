@@ -48,6 +48,8 @@ public class STPEditor extends SimpleEditor {
 	private Annotation[] stpOldAnnotations;
 	private ProjectionAnnotationModel stpAnnotationModel;
 
+	public static final String ID="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor";
+
 	public STPEditor() {
 		super();
 		URL completionURL = null;
@@ -63,6 +65,7 @@ public class STPEditor extends SimpleEditor {
 		setDocumentProvider(new STPDocumentProvider());
 	}
 
+	@Override
 	public void createPartControl(Composite parent)
 	{
 	    super.createPartControl(parent);
@@ -73,6 +76,7 @@ public class STPEditor extends SimpleEditor {
 	   stpAnnotationModel = viewer.getProjectionAnnotationModel();
 	}
 	
+	@Override
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
 		
 		ISourceViewer viewer = new ProjectionViewer(parent, ruler,
@@ -97,6 +101,7 @@ public class STPEditor extends SimpleEditor {
 		stpOldAnnotations = updatedAnnotations;
 	}
 	
+	@Override
 	protected void createActions() {
 		Action action = new ContentAssistAction(ResourceBundle.getBundle("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.strings"), "ContentAssistProposal.", this); 
 		String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
@@ -110,11 +115,13 @@ public class STPEditor extends SimpleEditor {
 		return this.getSourceViewer();
 	}
 	
+	@Override
 	public void dispose() {
 		colorManager.dispose();
 		super.dispose();
 	}
 
+	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 
 		super.editorContextMenuAboutToShow(menu);

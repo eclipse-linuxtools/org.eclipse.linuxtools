@@ -135,7 +135,7 @@ public class StreamGobbler implements Runnable {
 		for(int i = 0; i < listeners.size(); i++)
 		{
 		
-			((IGobblerListener)(listeners.get(i))).handleDataEvent(line.toString());
+			listeners.get(i).handleDataEvent(line.toString());
 		}
 		line.delete(0, line.length());
 		locked = false;
@@ -151,7 +151,7 @@ public class StreamGobbler implements Runnable {
 		locked = true;*/
 		for(int i = 0; i < listeners.size(); i++)
 		{
-			((IGobblerListener)(listeners.get(i))).handleDataEvent(l);
+			listeners.get(i).handleDataEvent(l);
 		}
 //		line.delete(0, line.length());
 		locked = false;

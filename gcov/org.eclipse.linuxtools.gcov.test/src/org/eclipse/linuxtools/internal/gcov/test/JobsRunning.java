@@ -13,7 +13,7 @@ public class JobsRunning implements ICondition {
 	}
 	
 	@Override
-	public boolean test() throws Exception {
+	public boolean test() {
 		Job[] allJobs = Job.getJobManager().find(family);
 		return allJobs.length == 0;
 	}

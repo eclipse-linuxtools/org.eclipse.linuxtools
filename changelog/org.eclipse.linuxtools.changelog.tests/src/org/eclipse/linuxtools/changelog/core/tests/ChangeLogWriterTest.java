@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IEditorPart;
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +40,7 @@ public class ChangeLogWriterTest {
 	// A fake project
 	private ChangeLogTestProject project;
 	// the path elements to the ChangeLog file, absolute to the project root
-	private final String[] CHANGELOG_FILE_PATH_SEGMENTS = { "project-name", "src", "org" };
+	private final String CHANGELOG_FILE_PATH = "/project-name/src/org/";
 	private final String CHANGELOG_FILE_NAME = "ChangeLog";
 	private String changelogFilePath;
 	// IFile handle to '/path/changelog/ChangeLog'
@@ -58,16 +59,12 @@ public class ChangeLogWriterTest {
 		// create a testproject and add a file to it
 		project = new ChangeLogTestProject("changelogWriterProject");
 		// Generate full path to ChangeLog file
-		String changelogPath = "/";
-		for (String segment: CHANGELOG_FILE_PATH_SEGMENTS) {
-			changelogPath += segment + "/";
-		}
-		changelogFilePath = changelogPath + CHANGELOG_FILE_NAME;
+		changelogFilePath = CHANGELOG_FILE_PATH + CHANGELOG_FILE_NAME;
 		// add a ChangeLog file to the project at the path specified by
 		// CHANGELOG_FILE_PATH_SEGMENTS
 		InputStream newFileInputStream = new ByteArrayInputStream(
 				changeLogContent.getBytes());
-		changelogFile = project.addFileToProject(changelogPath + CHANGELOG_FILE_NAME, CHANGELOG_FILE_NAME,
+		changelogFile = project.addFileToProject(CHANGELOG_FILE_PATH + CHANGELOG_FILE_NAME, CHANGELOG_FILE_NAME,
 				newFileInputStream);
 	}
 
@@ -75,7 +72,7 @@ public class ChangeLogWriterTest {
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		// dispose testproject
 		project.getTestProject().delete(true, null);
 	}
@@ -174,12 +171,9 @@ public class ChangeLogWriterTest {
 	@Test
 	public void testWriteChangeLog() throws Exception {
 		// We want paths up to the ChangeLog file to overlap
-		String changedFilePath = "/";
-		for (String segment: CHANGELOG_FILE_PATH_SEGMENTS) {
-			changedFilePath += segment + "/";
-		}
+		
 		final String pathRelativeToChangeLog = "eclipse/example/test/NewCoffeeMaker.java";
-		clogWriter.setEntryFilePath( changedFilePath + pathRelativeToChangeLog );
+		clogWriter.setEntryFilePath( CHANGELOG_FILE_PATH + pathRelativeToChangeLog );
 
 		// Will show up surrounded by "(" and ")" in ChangeLog
 		String guessedFunctionName = "bazinga";

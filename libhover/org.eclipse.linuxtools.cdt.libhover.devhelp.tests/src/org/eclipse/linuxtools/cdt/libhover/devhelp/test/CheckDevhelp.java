@@ -7,14 +7,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.devhelp.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -25,19 +26,24 @@ import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHover;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverLibrary;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.ParseDevHelp;
-import org.eclipse.linuxtools.internal.cdt.libhover.preferences.PreferenceConstants;
+import org.junit.Before;
+import org.junit.Test;
 
-public class CheckDevhelp extends TestCase {
+public class CheckDevhelp {
+	
+	public final static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.testCacheExtLibhover"; //$NON-NLS-1$
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() {
 		IPath p = LibhoverPlugin.getDefault().getStateLocation().append("C"); //$NON-NLS-1$
 		File f = new File(p.toOSString());
 		f.delete();
 	}
 
+	@Test
 	public void testParse() {
 		ParseDevHelp.DevHelpParser p =  
-			new ParseDevHelp.DevHelpParser("/usr/share/gtk-doc/html");
+			new ParseDevHelp.DevHelpParser("/usr/share/gtk-doc/html"); //$NON-NLS-1$
 		LibHoverInfo hover = p.parse(new NullProgressMonitor());
 		assertTrue(hover != null);
 		Map<String, FunctionInfo> functions = hover.functions;
@@ -57,20 +63,17 @@ public class CheckDevhelp extends TestCase {
 			fail();
 		}
 		IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
-		ps.setValue(PreferenceConstants.CACHE_EXT_LIBHOVER, true);
+		ps.setValue(CACHE_EXT_LIBHOVER, true);
 		LibHover.getLibHoverDocs();
 		Collection<LibHoverLibrary> c = LibHover.getLibraries();
 		assertTrue(c.size() > 0);
 		boolean found = false;
 		for (Iterator<LibHoverLibrary> i = c.iterator(); i.hasNext();) {
 			LibHoverLibrary l = i.next();
-			if (l.getName().equals("devhelp"))
+			if (l.getName().equals("devhelp")) //$NON-NLS-1$
 				found = true;
 		}
 		assertTrue(found);
 	}
 	
-	protected void tearDown() throws Exception {
-	}
-
 }

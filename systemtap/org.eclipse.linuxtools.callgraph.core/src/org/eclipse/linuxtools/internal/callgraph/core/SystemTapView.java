@@ -32,6 +32,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapView extends ViewPart {
@@ -132,7 +133,7 @@ public abstract class SystemTapView extends ViewPart {
             return Status.OK_STATUS;
         }
 
-    };
+    }
 
     /**
      * Method for fetching a parser object. This method should return
@@ -231,7 +232,8 @@ public abstract class SystemTapView extends ViewPart {
    
     public void createHelpActions() {
         help_version = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
-            public void run() {
+            @Override
+			public void run() {
                 try {
                 	Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null);
                     BufferedReader buf = new BufferedReader(
@@ -240,7 +242,7 @@ public abstract class SystemTapView extends ViewPart {
                     String message = ""; //$NON-NLS-1$
 
                     while ((line = buf.readLine()) != null) {
-                        message += line + NEW_LINE; //$NON-NLS-1$
+                        message += line + NEW_LINE;
                     }
 
                     try {
@@ -261,7 +263,8 @@ public abstract class SystemTapView extends ViewPart {
         };
        
         help_about = new Action(Messages.getString("SystemTapView.AboutMenu")) { //$NON-NLS-1$
-            public void run() {
+            @Override
+			public void run() {
                 Display disp = Display.getCurrent();
                 if (disp == null){
                     disp = Display.getDefault();
@@ -334,7 +337,8 @@ public abstract class SystemTapView extends ViewPart {
     protected void createSaveAction() {
         //Save callgraph.out
         save_file = new Action(Messages.getString("SystemTapView.SaveMenu")){ //$NON-NLS-1$
-            public void run(){
+            @Override
+			public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
                 String filePath = dialog.open();
@@ -350,8 +354,9 @@ public abstract class SystemTapView extends ViewPart {
     protected void addKillButton() {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
         kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
-                CallgraphCorePlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
-            public void run() {
+                AbstractUIPlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
+            @Override
+			public void run() {
                 getParser().cancelJob();
             }
         };

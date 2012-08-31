@@ -11,6 +11,11 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MaxAggregate;
@@ -18,26 +23,20 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.SumAggre
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.UniqueFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.MockDataSet;
 import org.eclipse.ui.XMLMemento;
+import org.junit.Before;
+import org.junit.Test;
 
-
-import junit.framework.TestCase;
-
-public class UniqueFilterTest extends TestCase {
-	public UniqueFilterTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-
+public class UniqueFilterTest  {
+	@Before
+	public void setUp() {
 		filter = new UniqueFilter(0, new SumAggregate(), 0);
 	}
-
+	@Test
 	public void testUniqueFilter() {
 		filter = new UniqueFilter(-1, new MaxAggregate(), 0);
 		assertNotNull(filter);
 	}
-	
+	@Test
 	public void testFilter() {
 		int width = 4;
 		int height = 10;
@@ -75,18 +74,14 @@ public class UniqueFilterTest extends TestCase {
 		filter = new UniqueFilter(0, new SumAggregate(), 0);
 		assertNotNull(filter.filter(data));
 	}
-	
+	@Test
 	public void testGetID() {
 		assertTrue(UniqueFilter.ID.equals(filter.getID()));
 	}
-
+	@Test
 	public void testWriteXML() {
 		filter.writeXML(XMLMemento.createWriteRoot("test"));
 	}
 	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		filter = null;
-	}
 	UniqueFilter filter;
 }
