@@ -12,13 +12,10 @@ package org.eclipse.linuxtools.internal.profiling.provider.launch;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.profiling.provider.AbstractProviderPreferencesPage;
+import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public abstract class ProviderLaunchConfigurationDelegate extends
 		ProfileLaunchConfigurationDelegate {
@@ -31,9 +28,10 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 			if (config != null) {
 				// get provider id from configuration.
 				String providerId = config.getAttribute(
-						AbstractProviderPreferencesPage.PREFS_KEY, "");
+						ProviderOptionsTab.PROVIDER_CONFIG_ATT, "");
 				if (providerId.equals("")) {
-					providerId = getProviderIdToRun();
+					// No provider available in the configuration.
+					return;
 				}
 				// get configuration delegate associated with provider id.
 				ProfileLaunchConfigurationDelegate delegate = getConfigurationDelegateFromId(providerId);
@@ -47,28 +45,8 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 		return;
 	}
 
-	private String getProviderIdToRun() {
-		// Get self assigned default
-		String providerId = ConfigurationScope.INSTANCE.getNode(
-				getProfilingType()).get(
-				AbstractProviderPreferencesPage.PREFS_KEY, "");
-		if (providerId.equals("")) {
-			providerId = ProfileLaunchConfigurationTabGroup
-					.getHighestProviderId(getProfilingType());
-			if (providerId.equals("")) {
-				// Get highest priority provider
-				providerId = ProfileLaunchShortcut
-						.getDefaultLaunchShortcutProviderId(getProfilingType());
-			}
-		}
-		return providerId;
-	}
-
 	@Override
 	public String generateCommand(ILaunchConfiguration config) {
 		return null;
 	}
-
-	public abstract String getProfilingType();
-
 }

@@ -17,6 +17,7 @@ public class Messages extends NLS {
 	public static String ProviderLaunchShortcut_0;
 	public static String ProviderPreferencesPage_0;
 	public static String ProviderPreferencesPage_1;
+	public static String ProviderOptionsTab_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
