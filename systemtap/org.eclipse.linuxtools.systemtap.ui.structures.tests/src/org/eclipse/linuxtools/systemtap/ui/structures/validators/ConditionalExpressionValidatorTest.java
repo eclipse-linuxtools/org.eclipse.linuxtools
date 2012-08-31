@@ -1,19 +1,13 @@
 package org.eclipse.linuxtools.systemtap.ui.structures.validators;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.validators.ConditionalExpressionValidator;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class ConditionalExpressionValidatorTest extends TestCase {
-	public ConditionalExpressionValidatorTest(String name) {
-		super(name);
-	}
+public class ConditionalExpressionValidatorTest {
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	@Test
 	public void testIsValid() {
 		ConditionalExpressionValidator validator = new ConditionalExpressionValidator();
 		
@@ -29,9 +23,5 @@ public class ConditionalExpressionValidatorTest extends TestCase {
 		assertNull("if(a=b) valid", validator.isValid("if(a=b)"));
 		assertNotNull("if(a)b not valid", validator.isValid("if(a)d"));
 	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+
 }

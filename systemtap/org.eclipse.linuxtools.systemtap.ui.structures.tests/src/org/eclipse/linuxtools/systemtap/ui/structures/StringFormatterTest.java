@@ -11,31 +11,27 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.IFormattingStyles;
-import org.eclipse.linuxtools.systemtap.ui.structures.StringFormatter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class StringFormatterTest extends TestCase {
+public class StringFormatterTest {
 
-//	public static void main(String[] args) {}
-
-	public StringFormatterTest(String name) {
-		super(name);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	protected void setUp(){
 		formatter = new StringFormatter();
 	}
-	
+
+	@Test
 	public void testStringFormatter() {
 		formatter = new StringFormatter();
 		assertNotNull(formatter);
 	}
 	
+	@Test
 	public void testGetFormat() {
 		formatter.setFormat(IFormattingStyles.UNFORMATED);
 		assertEquals(IFormattingStyles.UNFORMATED, formatter.getFormat());
@@ -85,11 +81,6 @@ public class StringFormatterTest extends TestCase {
 		
 		formatter.setFormat(IFormattingStyles.DOUBLE);
 		assertTrue("8.0".equals(formatter.format("8")));
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 
 	StringFormatter formatter;
