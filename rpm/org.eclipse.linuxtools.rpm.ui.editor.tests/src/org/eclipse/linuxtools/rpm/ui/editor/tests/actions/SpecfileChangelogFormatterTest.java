@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests.actions;
 import static org.junit.Assert.assertEquals;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.runtime.CoreException;
@@ -30,6 +31,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	private static final String USER_NAME = "Alexander Kurtakov";
 	private SpecfileChangelogFormatter formatter;
 	private IEditorPart editor;
+	public final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy");
 
 	@Override
 	@Before
@@ -45,7 +47,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	@Test
 	public void testFormatDateLine() {
 		String expectedLine = MessageFormat
-				.format("* {0} {1} <{2}> {3}{4}-{5}", SpecfileChangelogFormatter.SIMPLE_DATE_FORMAT.format(new Date()), //$NON-NLS-1$
+				.format("* {0} {1} <{2}> {3}{4}-{5}", SIMPLE_DATE_FORMAT.format(new Date()), //$NON-NLS-1$
 						USER_NAME, USER_MAIL, "", "0", "0");
 		assertEquals(expectedLine,
 				formatter.formatDateLine(USER_NAME, USER_MAIL));
