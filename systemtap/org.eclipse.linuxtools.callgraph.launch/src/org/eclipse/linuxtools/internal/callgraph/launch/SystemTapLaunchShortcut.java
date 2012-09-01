@@ -166,7 +166,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+			ILaunchConfigurationWorkingCopy wc) {
 		SystemTapOptionsTab tab = new SystemTapOptionsTab();
 		tab.setDefaults(wc);
 	}
