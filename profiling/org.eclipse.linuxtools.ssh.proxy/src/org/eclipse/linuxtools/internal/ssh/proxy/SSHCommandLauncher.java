@@ -72,7 +72,7 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 							channel.setEnv(tokens[0], tokens[1]);
 							break;
 						default:
-							Activator.log(Status.WARNING, Messages.SSHCommandLauncher_malformed_env_var_string + s);
+							Activator.log(IStatus.WARNING, Messages.SSHCommandLauncher_malformed_env_var_string + s);
 					}
 				}
 

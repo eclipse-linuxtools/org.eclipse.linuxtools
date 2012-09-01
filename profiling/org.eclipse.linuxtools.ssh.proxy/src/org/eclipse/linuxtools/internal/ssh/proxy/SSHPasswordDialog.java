@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import org.eclipse.linuxtools.internal.ssh.proxy.Messages;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -35,11 +36,13 @@ public class SSHPasswordDialog extends Dialog {
 		this.host = host;
 	}
 
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(Messages.SSHPasswordDialog_Title);
 	}
 
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite comp = (Composite) super.createDialogArea(parent);
 		
@@ -68,8 +71,9 @@ public class SSHPasswordDialog extends Dialog {
 	}
 
 
+	@Override
 	protected void buttonPressed(int buttonId) {
-		if (buttonId == Dialog.OK)
+		if (buttonId == Window.OK)
 			this.password = passwordField.getText();
 		super.buttonPressed(buttonId);
 	}
