@@ -54,7 +54,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	 */
 	protected Control createContents(Composite parent) {
 		LogManager.logDebug("Start createComponents: parent-" + parent, this); //$NON-NLS-1$
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL );
 		Composite c = new Composite(sc, SWT.NONE);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
