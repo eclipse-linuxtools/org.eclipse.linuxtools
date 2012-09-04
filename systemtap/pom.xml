@@ -77,9 +77,7 @@
     <!--<module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests</module>-->
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.ui</module>
     <module>org.eclipse.linuxtools.systemtap.ui.ide</module>
-    <!--
     <module>org.eclipse.linuxtools.systemtap.ui.ide.tests</module>
-    -->
     <module>org.eclipse.linuxtools.systemtap.ui.logging</module>
     <module>org.eclipse.linuxtools.systemtap.ui.structures</module>
     <module>org.eclipse.linuxtools.systemtap.ui.structures.tests</module>
