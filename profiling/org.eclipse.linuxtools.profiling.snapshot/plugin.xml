@@ -65,7 +65,8 @@
             id="org.eclipse.linuxtools.profiling.snapshot.launchConfigurationType"
             modes="profile"
             name="Profile As Snapshot"
-            public="true">
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator">
       </launchConfigurationType>
    </extension>
    <extension
