@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy"); //$NON-NLS-1$
+    public final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy"); //$NON-NLS-1$
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private IEditorPart changelog;
 

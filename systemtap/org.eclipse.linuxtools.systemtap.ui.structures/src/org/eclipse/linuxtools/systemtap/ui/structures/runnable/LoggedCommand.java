@@ -34,7 +34,7 @@ public class LoggedCommand extends Command {
 	 * @param prompt The password promt for allowing the user to enter their password.
 	 */
 	public LoggedCommand(String[] cmd, String[] envVars, IPasswordPrompt prompt) {
-		super(cmd, envVars, prompt, 0);
+		this(cmd, envVars, prompt, 0);
 	}
 
 	/**

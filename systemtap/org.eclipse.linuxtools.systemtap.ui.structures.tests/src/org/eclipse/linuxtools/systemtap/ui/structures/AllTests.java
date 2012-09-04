@@ -18,36 +18,20 @@ import org.eclipse.linuxtools.systemtap.ui.structures.validators.DirectoryValida
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.IntegerValidatorTest;
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.MultiValidatorTest;
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.NumberValidatorTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ CCodeFileFilterTest.class, CommandTest.class,
+		CopierTest.class, IndexedObjectTest.class, KernelSourceTreeTest.class,
+		LoggingStreamDaemonTest.class, SortTest.class, StreamGobblerTest.class,
+		StringFormatterTest.class, TreeDefinitionNodeTest.class,
+		TreeNodeTest.class,
+		ZipArchiveTest.class,
 
+		// structures.validators
+		ConditionalExpressionValidatorTest.class, DirectoryValidatorTest.class,
+		IntegerValidatorTest.class, MultiValidatorTest.class,
+		NumberValidatorTest.class, })
 public class AllTests {
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.systemtap.ui.structures");
-
-		//Structures
-		suite.addTestSuite(CCodeFileFilterTest.class);
-		suite.addTestSuite(CommandTest.class);
-		suite.addTestSuite(CopierTest.class);
-		suite.addTestSuite(IndexedObjectTest.class);
-		suite.addTestSuite(JarArchiveTest.class);
-		suite.addTestSuite(KernelSourceTreeTest.class);
-		suite.addTestSuite(LoggingStreamDaemonTest.class);
-		suite.addTestSuite(SortTest.class);
-		suite.addTestSuite(StreamGobblerTest.class);
-		suite.addTestSuite(StringFormatterTest.class);
-		suite.addTestSuite(TreeDefinitionNodeTest.class);
-		suite.addTestSuite(TreeNodeTest.class);
-		suite.addTestSuite(ZipArchiveTest.class);
-
-		//structures.validators
-		suite.addTestSuite(ConditionalExpressionValidatorTest.class);
-		suite.addTestSuite(DirectoryValidatorTest.class);
-		suite.addTestSuite(IntegerValidatorTest.class);
-		suite.addTestSuite(MultiValidatorTest.class);
-		suite.addTestSuite(NumberValidatorTest.class);
-		
-		return suite;
-	}
 }

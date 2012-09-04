@@ -11,30 +11,29 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.core.filesystem.IFileStore;
+import org.junit.Before;
+import org.junit.Test;
 
+public class KernelSourceTreeTest {
 
-import junit.framework.TestCase;
-
-public class KernelSourceTreeTest extends TestCase {
-	public KernelSourceTreeTest(String name) {
-		super(name);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() {
 		kst = new KernelSourceTree();
 	}
 
+	@Test
 	public void testGetTree() {
 		assertNull("Inital tree is null", kst.getTree());
 	}
 	
+	@Test
 	public void testBuildKernelTree() {
 		TreeNode t;
 
@@ -49,18 +48,18 @@ public class KernelSourceTreeTest extends TestCase {
 		
 		direct = "/noSuchDirectory/";	//Missing folder
 		kst.buildKernelTree(direct, excluded);
-		assertNull("Missing directory", kst.getTree());
+		assertEquals("Missing directory", 0, kst.getTree().getChildCount());
 		
-		direct = "/root/";	//Inaccessable
+		direct = "/root/";	//Inaccessible
 		kst.buildKernelTree(direct, excluded);
-		assertNull("Inaccessable directory", kst.getTree());
+		assertEquals("Inaccessable directory", 0, kst.getTree().getChildCount());
 		
 		direct = "/bin/";	//No .c or .h files
 		kst.buildKernelTree(direct, excluded);
 		t = kst.getTree();
 		assertEquals("Bin folder item count", 0, t.getChildCount());
 		assertTrue("Bin folder name", "bin".equals(t.toString()));
-		assertTrue("Bin has file", t.getData() instanceof File);
+		assertTrue("Bin has file", t.getData() instanceof IFileStore);
 
 		excluded = new String[] {".git"};
 		direct = "/tmp/";	//No .c or .h files
@@ -71,10 +70,5 @@ public class KernelSourceTreeTest extends TestCase {
 		kst.dispose();
 	}
 	
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
 	KernelSourceTree kst;
 }

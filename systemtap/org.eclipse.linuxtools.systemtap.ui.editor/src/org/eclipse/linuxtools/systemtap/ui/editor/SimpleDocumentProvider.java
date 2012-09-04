@@ -40,10 +40,6 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 
 public class SimpleDocumentProvider extends AbstractDocumentProvider {
-	@Override
-	public boolean canSaveDocument(Object element) {
-		return super.canSaveDocument(element);
-	}
 
 	@Override
 	protected IDocument createDocument(Object element) throws CoreException {

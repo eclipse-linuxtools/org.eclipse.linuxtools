@@ -15,10 +15,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
@@ -51,41 +51,42 @@ import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 
 /**
  * This class brings up a dialog box for the user to select what they want the
- * new module to contain.  If a new module is build, it will be exported to the
+ * new module to contain. If a new module is build, it will be exported to the
  * dashboard for use at any time.
+ * 
  * @author Ryan Morse
  */
-public class CreateModuleAction extends Action implements IWorkbenchWindowActionDelegate {
+public class CreateModuleAction extends Action implements
+		IWorkbenchWindowActionDelegate {
 	/**
-	 * This method will bring up the export script dialog window for the user
-	 * to select what they want to new module to contain.  If the user enters
-	 * module information and clicks ok the module will be built and added to
-	 * the dashboard.
+	 * This method will bring up the export script dialog window for the user to
+	 * select what they want to new module to contain. If the user enters module
+	 * information and clicks ok the module will be built and added to the
+	 * dashboard.
 	 */
-	
-	//private static String scriptFileName = "/script.stp";
+
+	// private static String scriptFileName = "/script.stp";
 	public String script = null;
-	
+
 	public void init(IWorkbenchWindow window) {
-		fWindow= window;
+		fWindow = window;
 	}
-	
+
 	protected IWorkbenchWindow fWindow = null;
-	
+
 	public void run(IAction action) {
-	//	if(null == script || script.length() <= 0) {
-		//	String msg = MessageFormat.format(Localization.getString("ExportScriptAction.NoFileToExport"), null);
-		//	MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ExportScriptAction.Error"), msg);
-	//	} else {
-		    ScriptDetails sd = new ScriptDetails(fWindow.getShell());
-		    sd.open();
-		    if (sd.isCanceled()) return;
-		    
-		    script = DashboardPlugin.getDefault().getPreferenceStore().getString(DashboardPreferenceConstants.P_DASHBOARD_SCRIPT);
-			DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, script);
+		ScriptDetails sd = new ScriptDetails(fWindow.getShell());
+		sd.create();
+		if (sd.open() == Window.OK) {
+
+			script = DashboardPlugin.getDefault().getPreferenceStore()
+					.getString(DashboardPreferenceConstants.P_DASHBOARD_SCRIPT);
+			DataSetWizard wizard = new DataSetWizard(
+					GraphingConstants.DataSetMetaData, script);
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			wizard.init(workbench, null);
-			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
+			WizardDialog dialog = new WizardDialog(workbench
+					.getActiveWorkbenchWindow().getShell(), wizard);
 			dialog.create();
 			dialog.open();
 
@@ -93,15 +94,16 @@ public class CreateModuleAction extends Action implements IWorkbenchWindowAction
 			IDataSet dataSet = wizard.getDataSet();
 
 			wizard.dispose();
-			
-			if(null == parser || null == dataSet)
+
+			if (null == parser || null == dataSet)
 				return;
-			
-			ExportScriptDialog exportDialog = new ExportScriptDialog(fWindow.getShell(), dataSet);
+
+			ExportScriptDialog exportDialog = new ExportScriptDialog(
+					fWindow.getShell(), dataSet);
 			exportDialog.open();
-			
+
 			exportDialog.dispose();
-			if(!exportDialog.isCanceled()) {
+			if (!exportDialog.isCanceled()) {
 				String category = exportDialog.getCategory();
 				String display = exportDialog.getDisplay();
 				String description = exportDialog.getDescription();
@@ -109,42 +111,71 @@ public class CreateModuleAction extends Action implements IWorkbenchWindowAction
 				TreeNode filters = exportDialog.getGraphFilters();
 
 				validateDirectory();
-				File meta = saveMetaData(display, category, description, dataSet, parser, gd, filters,DashboardPlugin.getDefault().getPreferenceStore().getString(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR));
-				String archiveName = getSaveDirectory() + "/" + category.replace(' ', '_') + "." + display.replace(' ', '_');
+				File meta = saveMetaData(
+						display,
+						category,
+						description,
+						dataSet,
+						parser,
+						gd,
+						filters,
+						DashboardPlugin
+								.getDefault()
+								.getPreferenceStore()
+								.getString(
+										DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR));
+				String archiveName = getSaveDirectory() + "/" //$NON-NLS-1$
+						+ category.replace(' ', '_') + "." //$NON-NLS-1$
+						+ display.replace(' ', '_');
 				buildArchive(archiveName, new File(script), meta);
-				cleanupFiles(new String[] {archiveName, meta.getAbsolutePath()});
+				cleanupFiles(new String[] { archiveName, meta.getAbsolutePath() });
 				updateDashboard();
-		//	}
+				// }
+			}
 		}
 	}
-	
+
 	/**
-	 * This method will check to make sure the exported module directory is valid.
-	 * If it isn't then the foleders will be created in order to make the directory
-	 * valid.
+	 * This method will check to make sure the exported module directory is
+	 * valid. If it isn't then the foleders will be created in order to make the
+	 * directory valid.
 	 */
 	private void validateDirectory() {
 		File folder = new File(getSaveDirectory());
 
-		if(!folder.exists())
+		if (!folder.exists())
 			folder.mkdir();
 	}
-	
+
 	/**
-	 * This method will create a new XML Memento used to store all of the meta data
-	 * for the module.  This data is all based on what the user selected from the
-	 * dialog box.
-	 * @param disp The string to display that represents this module.
-	 * @param cat The category string representing where this module will be placed
-	 * @param desc The description string for this module
-	 * @param dataSet The IDataSet that holds the data for this module
-	 * @param parser The parer that can obtain the information from the raw output
-	 * @param gd GraphData Array specifying all of the information needed to create the selected graphs
-	 * @param filters TreeNode containing all of the selected filters for each graph.
+	 * This method will create a new XML Memento used to store all of the meta
+	 * data for the module. This data is all based on what the user selected
+	 * from the dialog box.
+	 * 
+	 * @param disp
+	 *            The string to display that represents this module.
+	 * @param cat
+	 *            The category string representing where this module will be
+	 *            placed
+	 * @param desc
+	 *            The description string for this module
+	 * @param dataSet
+	 *            The IDataSet that holds the data for this module
+	 * @param parser
+	 *            The parer that can obtain the information from the raw output
+	 * @param gd
+	 *            GraphData Array specifying all of the information needed to
+	 *            create the selected graphs
+	 * @param filters
+	 *            TreeNode containing all of the selected filters for each
+	 *            graph.
 	 */
-	private File saveMetaData(String disp, String cat, String desc, IDataSet dataSet, IDataSetParser parser, GraphData[] gd, TreeNode filters, String location) {
+	private File saveMetaData(String disp, String cat, String desc,
+			IDataSet dataSet, IDataSetParser parser, GraphData[] gd,
+			TreeNode filters, String location) {
 		File meta = null;
-		XMLMemento data = XMLMemento.createWriteRoot(DashboardMetaData.XMLDashboardItem);
+		XMLMemento data = XMLMemento
+				.createWriteRoot(DashboardMetaData.XMLDashboardItem);
 
 		try {
 			IMemento child, child2, child3;
@@ -156,118 +187,137 @@ public class CreateModuleAction extends Action implements IWorkbenchWindowAction
 			data.putString(DashboardMetaData.XMLdScript, script);
 			data.putString(DashboardMetaData.XMLdLocation, location);
 			data.putString(DashboardMetaData.XMLdScriptFileName, script);
-				
-			
+
 			child = data.createChild(DashboardMetaData.XMLParsingExpressions);
 			String[] cols = dataSet.getTitles();
-			for(int i=0; i<cols.length; i++) {
+			for (int i = 0; i < cols.length; i++) {
 				child2 = child.createChild(DashboardMetaData.XMLpColumn);
 				child2.putString(DashboardMetaData.XMLpName, cols[i]);
 			}
 			parser.saveXML(child.createChild(DashboardMetaData.XMLpParser));
 
 			child = data.createChild(DashboardMetaData.XMLGraphDisplays);
-			for(int j,i=0; i<gd.length; i++) {
+			for (int j, i = 0; i < gd.length; i++) {
 				child2 = child.createChild(DashboardMetaData.XMLgGraph);
 				child2.putString(DashboardMetaData.XMLgId, gd[i].graphID);
 				child2.putString(DashboardMetaData.XMLgTitle, gd[i].title);
 
 				TreeNode treeChild = filters.getChildAt(i);
-				for(j=0; j<treeChild.getChildCount(); j++) {
-					((IDataSetFilter)(treeChild.getChildAt(j).getData())).writeXML(child2);
+				for (j = 0; j < treeChild.getChildCount(); j++) {
+					((IDataSetFilter) (treeChild.getChildAt(j).getData()))
+							.writeXML(child2);
 				}
-				
+
 				child3 = child2.createChild(DashboardMetaData.XMLgSeries);
-				child3.putString(DashboardMetaData.XMLgAxis, DashboardMetaData.XMLgAxisX);
+				child3.putString(DashboardMetaData.XMLgAxis,
+						DashboardMetaData.XMLgAxisX);
 				child3.putInteger(DashboardMetaData.XMLgColumn, gd[i].xSeries);
-				for(j=0; j<gd[i].ySeries.length; j++) {
+				for (j = 0; j < gd[i].ySeries.length; j++) {
 					child3 = child2.createChild(DashboardMetaData.XMLgSeries);
-					child3.putString(DashboardMetaData.XMLgAxis, DashboardMetaData.XMLgAxisY);
-					child3.putInteger(DashboardMetaData.XMLgColumn, gd[i].ySeries[j]);
+					child3.putString(DashboardMetaData.XMLgAxis,
+							DashboardMetaData.XMLgAxisY);
+					child3.putInteger(DashboardMetaData.XMLgColumn,
+							gd[i].ySeries[j]);
 				}
 			}
-			
+
 			meta = new File(getSaveDirectory() + DashboardModule.metaFileName);
 			FileWriter writer = new FileWriter(meta);
 			data.save(writer);
 			writer.close();
-		} catch(FileNotFoundException fnfe) {
+		} catch (FileNotFoundException fnfe) {
 			return meta;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return meta;
 		}
 		return meta;
 	}
-	
+
 	/**
-	 * This method will create the module archive by first zipping the .stp file and the meta data
-	 * together.  Then it will compress the .zip file into a .gz file.  The .gz file's extension is 
-	 * set to .dash to discurage users from trying to modify it and to make it sepecific to the 
-	 * SystemTapGUI dashboard.
-	 * @param archiveName The name to use for the file containing the new module data.
-	 * @param script The file representing the .stp script file to use for the module
-	 * @param meta The XML Memento file representing the module details.
+	 * This method will create the module archive by first zipping the .stp file
+	 * and the meta data together. Then it will compress the .zip file into a
+	 * .gz file. The .gz file's extension is set to .dash to discurage users
+	 * from trying to modify it and to make it sepecific to the SystemTapGUI
+	 * dashboard.
+	 * 
+	 * @param archiveName
+	 *            The name to use for the file containing the new module data.
+	 * @param script
+	 *            The file representing the .stp script file to use for the
+	 *            module
+	 * @param meta
+	 *            The XML Memento file representing the module details.
 	 */
 	private void buildArchive(String archiveName, File script, File meta) {
-		String[] files = new String[] {meta.getAbsolutePath()};
-		String[] names = new String[] {DashboardModule.metaFileName};
-		
+		String[] files = new String[] { meta.getAbsolutePath() };
+		String[] names = new String[] { DashboardModule.metaFileName };
+
 		ZipArchive.zipFiles(archiveName, files, names);
-		ZipArchive.compressFile(archiveName + DashboardModuleFileFilter.DashboardModuleExtension, archiveName);
+		ZipArchive.compressFile(archiveName
+				+ DashboardModuleFileFilter.DashboardModuleExtension,
+				archiveName);
 	}
-	
+
 	/**
-	 * This method will delete any extra files that were generated as a result of building
-	 * the Dashboard module.
-	 * @param files A list of all of the file paths that should be removed
+	 * This method will delete any extra files that were generated as a result
+	 * of building the Dashboard module.
+	 * 
+	 * @param files
+	 *            A list of all of the file paths that should be removed
 	 */
 	private void cleanupFiles(String[] files) {
-		if(null == files)
+		if (null == files)
 			return;
-		
+
 		File f;
-		for(int i=0; i<files.length; i++) {
+		for (int i = 0; i < files.length; i++) {
 			f = new File(files[i]);
-			if(f.exists())
+			if (f.exists())
 				f.delete();
 		}
 	}
-	
+
 	/**
-	 * This method will get the directory name that should be used for saving the dashboard modules.
+	 * This method will get the directory name that should be used for saving
+	 * the dashboard modules.
 	 */
 	private String getSaveDirectory() {
-		return SystemTapGUISettings.settingsFolder + "/dashboard";
+		return SystemTapGUISettings.settingsFolder + "/dashboard"; //$NON-NLS-1$
 	}
-	
+
 	/**
-	 * This method forces the Dashboard's DashboardModuleBrowserView to refresh itself to ensure
-	 * that is contains the most up-to-date module list.
+	 * This method forces the Dashboard's DashboardModuleBrowserView to refresh
+	 * itself to ensure that is contains the most up-to-date module list.
 	 */
 	private void updateDashboard() {
 		try {
-			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(DashboardPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(
+					DashboardPerspective.ID,
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 			IViewPart ivp = p.findView(DashboardModuleBrowserView.ID);
-			((DashboardModuleBrowserView)ivp).refresh();
+			((DashboardModuleBrowserView) ivp).refresh();
 
-			//p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-		} catch(WorkbenchException we) {}
+			// p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID,
+			// PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		} catch (WorkbenchException we) {
+		}
 	}
-	
+
 	/**
-	 * Removes all internal references to objects.  No other method should be called after this.
+	 * Removes all internal references to objects. No other method should be
+	 * called after this.
 	 */
-	/*public void dispose() {
-		super.dispose();
-	}*/
+	/*
+	 * public void dispose() { super.dispose(); }
+	 */
 
 	public void selectionChanged(IAction action, ISelection selection) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

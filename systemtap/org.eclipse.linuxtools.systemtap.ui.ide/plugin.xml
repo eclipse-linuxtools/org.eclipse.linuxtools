@@ -90,11 +90,6 @@
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
-			name="%preference.typeing.name"
-			id="org.eclipse.linuxtools.systemtap.prefs.ide.typeing"
-			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.TypeingPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
-		<page
 			name="%preference.path.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage"

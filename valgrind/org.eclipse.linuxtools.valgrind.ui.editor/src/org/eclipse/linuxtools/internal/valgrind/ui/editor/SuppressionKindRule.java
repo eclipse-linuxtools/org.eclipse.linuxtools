@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IRule;
@@ -36,9 +35,8 @@ public class SuppressionKindRule implements IRule {
 		token = successToken;
 		
 		final List<String> suppKindsList = new ArrayList<String>();
-		Set<String> tools = suppKinds.keySet();
-		for (String tool : tools) {
-			suppKindsList.addAll(suppKinds.get(tool));
+		for (List<String> entry : suppKinds.values()) {
+			suppKindsList.addAll(entry);
 		}
 		
 		subrule = new WordRule(new IWordDetector() {

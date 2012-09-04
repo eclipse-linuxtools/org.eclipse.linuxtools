@@ -11,19 +11,19 @@
 
 package org.eclipse.linuxtools.systemtap.ui.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TreeDefinitionNodeTest extends TestCase {
-	public TreeDefinitionNodeTest(String name) {
-		super(name);
-	}
+public class TreeDefinitionNodeTest {
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setUp() {
 		data = new StringBuilder("Object");
 		data2 = "Data";
 		d = "/usr/share";
@@ -36,6 +36,7 @@ public class TreeDefinitionNodeTest extends TestCase {
 		t.add(child);
 	}
 
+	@Test
 	public void testTreeDefinitionNode() {
 		String d1 = "One";
 		String d2 = "two";
@@ -49,27 +50,24 @@ public class TreeDefinitionNodeTest extends TestCase {
 		assertFalse("Create child clickable", t.isClickable());
 	}
 
-	
+	@Test
 	public void testGetDefinition() {
 		assertNotSame("Correct definition", d2, t.getDefinition());
 		assertEquals("Correct definition2", d2, ((TreeDefinitionNode)t.getChildAt(0)).getDefinition());
 	}
 	
+	@Test
 	public void testSetDefinition() {
 		String s1 = "/user/share/systemtap";
 		t.setDefinition(s1);
 		assertEquals("Replaced definition", s1, t.getDefinition());
 	}
 	
+	@Test
 	public void testDispose() {
 		assertNotNull(t.getDefinition());
 		t.dispose();
 		assertNull(t.getDefinition());
-	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 	
 	TreeDefinitionNode t;
