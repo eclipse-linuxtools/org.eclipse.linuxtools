@@ -17,9 +17,9 @@ public class TableEntryTest {
 	@Before
 	public void setUp() {
 		entry = new TableEntry();
-		data = new Integer[] {new Integer(2), new Integer(5), new Integer(4)};
+		data = new Integer[] {2, 5, 4};
 		entry.add(data);
-		data = new Integer[] {new Integer(5), new Integer(1), new Integer(3)};
+		data = new Integer[] {5, 1, 3};
 		entry.add(data);
 	}
 	
@@ -78,7 +78,7 @@ public class TableEntryTest {
 	}
 	@Test
 	public void testPutRow() {
-		Integer[] data2 = new Integer[] {new Integer(2), new Integer(5)};
+		Integer[] data2 = new Integer[] {2, 5};
 		
 		//Can't add to -1 position
 		entry.putRow(-1, data2);
@@ -92,18 +92,18 @@ public class TableEntryTest {
 		assertEquals(2, entry.getRowCount());
 
 		//Add successful
-		data2 = new Integer[] {new Integer(2), new Integer(5), new Integer(6)};
+		data2 = new Integer[] {2, 5, 6};
 		entry.putRow(0, data2);
 		assertEquals(2, entry.getRowCount());
 	}
 	@Test
 	public void testAdd() {
-		Integer[] data2 = new Integer[] {new Integer(2), new Integer(5)};
+		Integer[] data2 = new Integer[] {2, 5};
 		entry.add(data2);
 		assertEquals(2, entry.getRowCount());
 
 		//Add successful
-		data2 = new Integer[] {new Integer(2), new Integer(5), new Integer(6)};
+		data2 = new Integer[] {2, 5, 6};
 		entry.add(data2);
 		assertEquals(3, entry.getRowCount());
 	}

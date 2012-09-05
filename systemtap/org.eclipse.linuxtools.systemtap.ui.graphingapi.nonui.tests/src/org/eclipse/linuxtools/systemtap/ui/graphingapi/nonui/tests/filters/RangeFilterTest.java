@@ -28,11 +28,11 @@ public class RangeFilterTest {
 	
 	@Before
 	public void setUp() {
-		filter = new RangeFilter(0, new Integer(1), new Integer(2), RangeFilter.INSIDE_BOUNDS | RangeFilter.INCLUSIVE);
+		filter = new RangeFilter(0, 1, 2, RangeFilter.INSIDE_BOUNDS | RangeFilter.INCLUSIVE);
 	}
 	@Test
 	public void testRangeFilter() {
-		RangeFilter filter = new RangeFilter(-1, new Integer(3), new Integer(5), RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter = new RangeFilter(-1, 3, 5, RangeFilter.INSIDE_BOUNDS);
 		assertNotNull(filter);
 	}
 	@Test
@@ -61,7 +61,7 @@ public class RangeFilterTest {
 		assertEquals(data[2].get(5), data2[2].get(3));
 
 
-		filter = new RangeFilter(0, new Integer(0), new Integer(2), RangeFilter.INSIDE_BOUNDS);
+		filter = new RangeFilter(0, 0, 2, RangeFilter.INSIDE_BOUNDS);
 		data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
@@ -77,7 +77,7 @@ public class RangeFilterTest {
 		assertEquals(data[2].get(7), data2[2].get(2));
 
 
-		filter = new RangeFilter(0, new Integer(0), new Integer(2), RangeFilter.OUTSIDE_BOUNDS | RangeFilter.INCLUSIVE);
+		filter = new RangeFilter(0, 0, 2, RangeFilter.OUTSIDE_BOUNDS | RangeFilter.INCLUSIVE);
 		data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
@@ -95,7 +95,7 @@ public class RangeFilterTest {
 		assertEquals(data[2].get(5), data2[2].get(3));
 
 
-		filter = new RangeFilter(0, new Integer(0), new Integer(2), RangeFilter.INSIDE_BOUNDS);
+		filter = new RangeFilter(0, 0, 2, RangeFilter.INSIDE_BOUNDS);
 		data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
@@ -111,7 +111,7 @@ public class RangeFilterTest {
 		assertEquals(data[2].get(7), data2[2].get(2));
 		
 
-		filter = new RangeFilter(0, new Integer(0), new Integer(2), RangeFilter.OUTSIDE_BOUNDS);
+		filter = new RangeFilter(0, 0, 2, RangeFilter.OUTSIDE_BOUNDS);
 		data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
@@ -120,7 +120,7 @@ public class RangeFilterTest {
 		assertEquals(0, data2[0].size());
 		
 		
-		filter = new RangeFilter(-1, new Integer(1), new Integer(3), 0);
+		filter = new RangeFilter(-1, 1, 3, 0);
 		assertNull(filter.filter(data));
 	}
 	@Test

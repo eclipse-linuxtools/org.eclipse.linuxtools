@@ -20,33 +20,33 @@ import org.junit.Test;
 public class NumberTypeTest {
 	@Test
 	public void testGetNumber() {
-		Number n = NumberType.getNumber(new Integer(3), 3.2);
+		Number n = NumberType.getNumber(3, 3.2);
 		assertTrue(n instanceof Integer);
 		assertEquals(3, n.intValue());
 
-		n = NumberType.getNumber(new Double(3), 3.2);
+		n = NumberType.getNumber(3d, 3.2);
 		assertTrue(n instanceof Double);
 		assertEquals(3.2, n.doubleValue(), 0.0);
 
-		n = NumberType.getNumber(new Float(3), 3.2);
+		n = NumberType.getNumber(3f, 3.2);
 		assertTrue(n instanceof Float);
 		assertEquals(3.2, n.floatValue(), 0.0001);
 
-		n = NumberType.getNumber(new Long(3), 3.2);
+		n = NumberType.getNumber(3L, 3.2);
 		assertTrue(n instanceof Long);
 		assertEquals(3, n.longValue());
 
-		n = NumberType.getNumber(new Byte((byte)3), 3.2);
+		n = NumberType.getNumber((byte)3, 3.2);
 		assertTrue(n instanceof Byte);
 		assertEquals(3, n.byteValue());
 
-		n = NumberType.getNumber(new Short((short)3), 3.2);
+		n = NumberType.getNumber((short)3, 3.2);
 		assertTrue(n instanceof Short);
 		assertEquals(3, n.shortValue());
 	}
 	@Test
 	public void testObj2num() {
-		Object[] obj = new Object[] {new Integer(3), new Double(2.3), new Float(4.2)};
+		Object[] obj = new Object[] {3, 2.3d, 4.2f};
 		Number[] num = NumberType.obj2num(obj);
 		
 		assertEquals(0, NumberType.obj2num("a").intValue());

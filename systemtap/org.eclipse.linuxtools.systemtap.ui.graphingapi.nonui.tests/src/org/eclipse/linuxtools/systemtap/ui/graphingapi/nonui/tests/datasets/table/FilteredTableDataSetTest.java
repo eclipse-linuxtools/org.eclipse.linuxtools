@@ -38,19 +38,19 @@ public class FilteredTableDataSetTest {
 		TableEntry entry;
 		
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.add(new Integer[] {4, 2, 3});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.add(new Integer[] {7, 2, 9});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.add(new Integer[] {2, 2, 6});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
 
 		Object[] row = dataSet.getRow(0);
@@ -167,25 +167,25 @@ public class FilteredTableDataSetTest {
 		TableEntry entry;
 		
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.add(new Integer[] {4, 2, 3});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.add(new Integer[] {7, 2, 9});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.add(new Integer[] {2, 2, 6});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
 		
-		dataSet.addFilter(new RangeFilter(0, new Integer(3), new Integer(4), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
+		dataSet.addFilter(new RangeFilter(0, 3, 4, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 		assertEquals(0, dataSet.getRowCount());
 		dataSet.clearFilters();
-		dataSet.addFilter(new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
+		dataSet.addFilter(new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 		
 		assertEquals(1, dataSet.getRowCount());
 		Object[] row = dataSet.getRow(0);
@@ -197,22 +197,22 @@ public class FilteredTableDataSetTest {
 		TableEntry entry;
 		
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.add(new Integer[] {4, 2, 3});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.add(new Integer[] {7, 2, 9});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.add(new Integer[] {2, 2, 6});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
 		
-		RangeFilter filter = new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		dataSet.addFilter(filter);
 		dataSet.addFilter(new SortFilter(2, SortFilter.ASCENDING));
 		dataSet.removeFilter(filter);
@@ -227,22 +227,22 @@ public class FilteredTableDataSetTest {
 		TableEntry entry;
 		
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.add(new Integer[] {4, 2, 3});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.add(new Integer[] {7, 2, 9});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.add(new Integer[] {2, 2, 6});
 		dataSet.append(entry);
 		entry = new TableEntry();
-		entry.add(new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
 		
-		dataSet.addFilter(new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
+		dataSet.addFilter(new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 		dataSet.addFilter(new SortFilter(2, SortFilter.ASCENDING));
 
 		assertEquals(2, dataSet.getFilters().length);
@@ -258,7 +258,7 @@ public class FilteredTableDataSetTest {
 	public void testGetFilters() {
 		assertEquals(0, dataSet.getFilters().length);
 
-		RangeFilter filter1 = new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter1 = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		SortFilter filter2 = new SortFilter(2, SortFilter.ASCENDING);
 		
 		dataSet.addFilter(filter1);
