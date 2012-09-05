@@ -1,3 +1,9 @@
+2012-09-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Add memcheck as memory profiling provider.
+	* plugin.properties: Add string for memcheck as memory profiling provider.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckLaunchConfigurationTabGroup.java: New file.
+
 2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckLaunchDelegate.java (getCommandArray): 
