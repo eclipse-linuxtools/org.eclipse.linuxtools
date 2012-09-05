@@ -15,12 +15,14 @@ import org.eclipse.linuxtools.profiling.snapshot.SnapshotProviderPlugin;
 
 /**
  * The launch shortcut for this plug-in.
- *
+ * 
  */
 public class SnapshotLaunchShortcut extends ProviderLaunchShortcut {
 
 	@Override
-	protected String getProfilingType() {
-		return SnapshotProviderPlugin.PROFILING_TYPE;
+	protected String getLaunchConfigID() {
+		return SnapshotProviderPlugin.PLUGIN_CONFIG_ID;
 	}
+
+
 }

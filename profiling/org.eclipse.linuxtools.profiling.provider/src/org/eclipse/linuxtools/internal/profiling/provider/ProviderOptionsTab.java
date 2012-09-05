@@ -41,7 +41,7 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 	HashMap<String, String> comboItems;
 	CTabFolder tabgroup;
 	Boolean initialized;
-	public static final String PROVIDER_CONFIG_ATT = "provider"; //$NON-NLS-1$
+	private static final String PROVIDER_CONFIG_ATT = "provider"; //$NON-NLS-1$
 
 	public void createControl(Composite parent) {
 		top = new Composite(parent, SWT.NONE);

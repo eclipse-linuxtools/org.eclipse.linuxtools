@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.profiling.snapshot.SnapshotProviderPlugin;
 
 /**
  * The launch configuration delegate for this plug-in.
- *
+ * 
  */
 public class SnapshotLaunchConfigurationDelegate extends
 		ProviderLaunchConfigurationDelegate {
@@ -23,5 +23,10 @@ public class SnapshotLaunchConfigurationDelegate extends
 	@Override
 	protected String getPluginID() {
 		return SnapshotProviderPlugin.PLUGIN_ID;
+	}
+
+	@Override
+	public String getProfilingType() {
+		return SnapshotProviderPlugin.PROFILING_TYPE;
 	}
 }

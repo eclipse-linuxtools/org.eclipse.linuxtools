@@ -284,8 +284,24 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 * @return
 	 */
 	protected abstract ILaunchConfigurationType getLaunchConfigType();
-	
+
 	protected abstract void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException;
+
+	/**
+	 * Set default attributes for the given configuration.
+	 *
+	 * @param config
+	 * @since 1.2
+	 */
+	public void setDefaultProfileLaunchShortcutAttributes(ILaunchConfiguration config){
+		try {
+			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+			setDefaultProfileAttributes(wc);
+			config = wc.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
 
 	protected ILaunchConfiguration createConfiguration(IBinary bin) {
 		ILaunchConfiguration config = null;

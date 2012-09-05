@@ -10,27 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.provider.launch;
 
-import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.linuxtools.internal.profiling.provider.AbstractProviderPreferencesPage;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
-	public void launch(IBinary bin, String mode) {
-		String providerId = getProviderIdToRun();
-		ProfileLaunchShortcut shortcut = ProfileLaunchShortcut
-				.getLaunchShortcutProviderFromId(providerId);
-		if (shortcut != null) {
-			shortcut.launch(bin, mode);
-		} else {
-			handleFail(Messages.ProviderLaunchShortcut_0 + getProfilingType());
-		}
+	protected ILaunchConfigurationType getLaunchConfigType() {
+		return getLaunchManager().getLaunchConfigurationType(getLaunchConfigID());
 	}
 
 	@Override
@@ -41,39 +30,10 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 	}
 
 	/**
-	 * Get id of provider to launch.
-	 *
-	 * @return unique id of provider to launch.
-	 */
-	private String getProviderIdToRun() {
-		String profilingType = getProfilingType();
-		// Get launch provider id from preferences.
-		String providerId = ConfigurationScope.INSTANCE.getNode(
-				profilingType).get(
-				AbstractProviderPreferencesPage.PREFS_KEY, "");
-		if (providerId.equals("")) {
-			// Get highest priority launch provider id.
-			providerId = ProfileLaunchConfigurationTabGroup
-					.getHighestProviderId(profilingType);
-			if (providerId.equals("")) {
-				// Get self assigned default.
-				providerId = ProfileLaunchShortcut
-						.getDefaultLaunchShortcutProviderId(profilingType);
-			}
-		}
-		return providerId;
-	}
-
-	/**
 	 * Get profiling type of this plug-in.
 	 *
 	 * @return String profiling type this plug-in supports.
 	 */
-	protected abstract String getProfilingType();
+	protected abstract String getLaunchConfigID();
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		// Not needed since we are overriding launch method.
-		return null;
-	}
 }
