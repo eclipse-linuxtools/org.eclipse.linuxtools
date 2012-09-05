@@ -1,3 +1,19 @@
+2012-09-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* .settings/.api_filters: New file.
+	* .settings/org.eclipse.pde.core.prefs: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindSingleToolOptionsTab.java: New file.
+	* META-INF/MANIFEST.MF: Bump up version to 1.2.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java: Extend
+	ProfileLaunchConfigurationDelegate instead of AbstractCLaunchDelegate to work with new
+	Profiling providers system. 
+	(generateCommand): Add override statement.
+	(createNewProcess): Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindOptionsTab.java (noToolCombo): New boolean to indicate
+	that the tool combo should not be created.
+	(createControl): Add call to update the tab.
+	(initializeFrom): Don't look at selection when there is no tool combo.
+	
 2011-12-17 Otavio Pontes <obusatto@br.ibm.com>
 
 	Related to bug #353056

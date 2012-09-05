@@ -97,6 +97,11 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	
 	protected Exception ex;
 	
+	/**
+	 * @since 1.2
+	 */
+	protected boolean noToolCombo;
+	
 	private Version valgrindVersion;
 	private boolean checkVersion;
 	
@@ -155,7 +160,9 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		createVerticalSpacer(top, 1);
 
-		createToolCombo(top);
+		// provide the tool combo if it is not excluded
+		if (!noToolCombo)
+			createToolCombo(top);
 
 		createVerticalSpacer(top, 1);
 
@@ -200,6 +207,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		
 		scrollTop.setContent(top);
 		recomputeSize();
+		
+		updateLaunchConfigurationDialog();
 	}
 
 	protected void recomputeSize() {
@@ -508,16 +517,18 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		updateErrorOptions();
 
 		try {
-			tool = configuration.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
-			int select = -1;
-			for (int i = 0; i < tools.length && select < 0; i++) {
-				if (tool.equals(tools[i])) {
-					select = i;
+			if (!noToolCombo) {
+				tool = configuration.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
+				int select = -1;
+				for (int i = 0; i < tools.length && select < 0; i++) {
+					if (tool.equals(tools[i])) {
+						select = i;
+					}
 				}
-			}
 
-			if (select != -1) {
-				toolsCombo.select(select);
+				if (select != -1) {
+					toolsCombo.select(select);
+				}
 			}
 			handleToolChanged();
 			
