@@ -12,13 +12,10 @@ package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import java.text.MessageFormat;
 
-import org.eclipse.linuxtools.internal.ssh.proxy.Messages;
-
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -72,10 +69,9 @@ public class SSHPasswordDialog extends Dialog {
 
 
 	@Override
-	protected void buttonPressed(int buttonId) {
-		if (buttonId == Window.OK)
-			this.password = passwordField.getText();
-		super.buttonPressed(buttonId);
+	protected void okPressed() {
+		this.password = passwordField.getText();
+		super.okPressed();
 	}
 
 	public String getPassword() {

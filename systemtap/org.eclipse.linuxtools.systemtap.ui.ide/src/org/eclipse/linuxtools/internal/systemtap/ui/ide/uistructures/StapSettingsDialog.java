@@ -125,21 +125,17 @@ public class StapSettingsDialog extends Dialog {
 	}
   
 	@Override
-	protected void buttonPressed(int buttonID) {
-		LogManager.logDebug("Start buttonPressed: buttonID-" + buttonID, this); //$NON-NLS-1$
-		if(0 == buttonID) {	//OK
-			cmdOpts = new boolean[checkBox.length];
-			cmdOptVals = new String[text.length];
-			
-			for(int i=0; i<cmdOpts.length; i++)
-				cmdOpts[i] = checkBox[i].getSelection();
-			
-			for(int i=0; i<cmdOptVals.length; i++)
-				cmdOptVals[i] = text[i].getText();
-		}
-		
-		super.buttonPressed(buttonID);
-		LogManager.logDebug("End buttonPressed:", this); //$NON-NLS-1$
+	protected void okPressed() {
+		cmdOpts = new boolean[checkBox.length];
+		cmdOptVals = new String[text.length];
+
+		for (int i = 0; i < cmdOpts.length; i++)
+			cmdOpts[i] = checkBox[i].getSelection();
+
+		for (int i = 0; i < cmdOptVals.length; i++)
+			cmdOptVals[i] = text[i].getText();
+
+		super.okPressed();
 	}
 	
 	public boolean[] getStapOpts() {
