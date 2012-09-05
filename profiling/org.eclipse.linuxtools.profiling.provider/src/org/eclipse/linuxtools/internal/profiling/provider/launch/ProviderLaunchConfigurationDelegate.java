@@ -61,7 +61,7 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 		if (providerId.equals("")) {
 			providerId = ProfileLaunchConfigurationTabGroup
 					.getHighestProviderId(getProfilingType());
-			if (providerId.equals("")) {
+			if (providerId == null) {
 				// Get highest priority provider
 				providerId = ProfileLaunchShortcut
 						.getDefaultLaunchShortcutProviderId(getProfilingType());
