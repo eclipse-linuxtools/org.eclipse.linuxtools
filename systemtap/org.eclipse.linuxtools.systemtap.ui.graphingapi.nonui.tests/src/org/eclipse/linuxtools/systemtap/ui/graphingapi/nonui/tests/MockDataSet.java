@@ -59,14 +59,14 @@ public final class MockDataSet {
 	public static Integer[] buildIntegerArray(int[] arr) {
 		Integer[] ints = new Integer[arr.length];
 		for(int i=0; i<arr.length; i++)
-			ints[i] = new Integer(arr[i]);
+			ints[i] = Integer.valueOf(arr[i]);
 		return ints;
 	}
 	
 	public static Double[] buildDoubleArray(double[] arr) {
 		Double[] doubles = new Double[arr.length];
 		for(int i=0; i<arr.length; i++)
-			doubles[i] = new Double(arr[i]);
+			doubles[i] = Double.valueOf(arr[i]);
 		return doubles;
 	}
 }

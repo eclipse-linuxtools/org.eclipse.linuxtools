@@ -238,8 +238,12 @@ public final class TreeSettings {
 		settingsFile = new File(SystemTapGUISettings.settingsFolder.getAbsolutePath() + fileName);
 
 		try {
-			if (!settingsFile.exists())
-				settingsFile.createNewFile();
+			if (!settingsFile.exists()){
+				// Create a new settings file-and its parent
+				// directories- if one does not exist.
+				settingsFile.getParentFile().mkdirs();
+				settingsFile.createNewFile();				
+			}
 		} catch(IOException ioe) {
 			return false;
 		}

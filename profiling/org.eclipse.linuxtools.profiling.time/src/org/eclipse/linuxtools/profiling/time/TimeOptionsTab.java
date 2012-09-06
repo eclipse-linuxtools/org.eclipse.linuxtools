@@ -8,23 +8,22 @@
  * Contributors:
  *    Red Hat initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.profiling.snapshot;
+package org.eclipse.linuxtools.profiling.time;
 
 import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
 
 /**
  * The options tab used for this plug-in's launch configuration tab group.
- * 
+ *
  */
-public class SnapshotOptionsTab extends ProviderOptionsTab {
+public class TimeOptionsTab extends ProviderOptionsTab {
 
 	public String getName() {
-		return SnapshotConstants.PLUGIN_NAME;
+		return TimeConstants.PLUGIN_NAME;
 	}
 
 	@Override
 	protected String getProfilingType() {
-		return SnapshotConstants.PROFILING_TYPE;
+		return TimeConstants.PROFILING_TYPE;
 	}
-
 }

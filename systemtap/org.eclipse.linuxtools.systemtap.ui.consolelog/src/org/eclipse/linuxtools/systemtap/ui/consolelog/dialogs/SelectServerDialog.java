@@ -2,17 +2,17 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.SelectionEvent;
 
 
 
@@ -46,62 +46,44 @@ public class SelectServerDialog extends Dialog {
 		layout.makeColumnsEqualWidth = false;
 		shell.setLayout(layout);
 		
-		GridData data = new GridData();
-		data.grabExcessHorizontalSpace = false;
-		data.horizontalAlignment = SWT.LEFT;
+		GridData dataLeft = new GridData();
+		dataLeft.grabExcessHorizontalSpace = false;
+		dataLeft.horizontalAlignment = SWT.LEFT;
 		Label hostLabel = new Label(shell, SWT.NONE);
 		hostLabel.setText("Host: ");
-		hostLabel.setLayoutData(data);
+		hostLabel.setLayoutData(dataLeft);
 		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
+		GridData dataFill = new GridData();
+		dataFill.grabExcessHorizontalSpace = true;
+		dataFill.horizontalAlignment = SWT.FILL;
 		hostText = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		hostText.setLayoutData(data);
+		hostText.setLayoutData(dataFill);
 		hostText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME));
 			
-		data = new GridData();
-		data.grabExcessHorizontalSpace = false;
-		data.horizontalAlignment = SWT.LEFT;
 		Label userLabel = new Label(shell, SWT.NONE);
 		userLabel.setText("User: ");
-		userLabel.setLayoutData(data);
+		userLabel.setLayoutData(dataLeft);
 		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
 		userText = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		userText.setLayoutData(data);
+		userText.setLayoutData(dataFill);
 		userText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER));
 		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = false;
-		data.horizontalAlignment = SWT.LEFT;
 		Label passwordLabel = new Label(shell, SWT.NONE);
 		passwordLabel.setText("Password: ");
-		passwordLabel.setLayoutData(data);
+		passwordLabel.setLayoutData(dataLeft);
 		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
 		passwordText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		passwordText.setEchoChar('*');
-		passwordText.setLayoutData(data);
+		passwordText.setLayoutData(dataFill);
 		passwordText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
 		
 		
-		data = new GridData();
+		GridData data = new GridData();
 		data.horizontalAlignment = SWT.LEFT;
 		data.horizontalSpan = 2;
 		rememberButton = new Button(shell, SWT.CHECK);
 		rememberButton.setLayoutData(data);
 		rememberButton.setText("Always connect to this host.");
-		rememberButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {}
-		});
 		
 		data = new GridData();
 		data.horizontalAlignment = SWT.RIGHT;
@@ -109,12 +91,12 @@ public class SelectServerDialog extends Dialog {
 		cancelButton.setLayoutData(data);
 		cancelButton.setSize(50, 100);
 		cancelButton.setText("Cancel");
-		cancelButton.addSelectionListener(new SelectionListener() {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				result = false;
 				shell.dispose();
 			}
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
 		data = new GridData();
@@ -123,7 +105,8 @@ public class SelectServerDialog extends Dialog {
 		connectButton.setLayoutData(data);
 		connectButton.setSize(50, 100);
 		connectButton.setText("Connect");
-		connectButton.addSelectionListener(new SelectionListener() {
+		connectButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// FIXME: no error handling is done, should probably be
 				// pushed down to the connection level
@@ -136,7 +119,6 @@ public class SelectServerDialog extends Dialog {
 
 				shell.close();
 			}
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
 		shell.pack();

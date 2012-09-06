@@ -76,6 +76,7 @@
     <module>org.eclipse.linuxtools.profiling.remote-feature</module>
     <module>org.eclipse.linuxtools.profiling.snapshot</module>
     <module>org.eclipse.linuxtools.profiling.tests</module>
+    <module>org.eclipse.linuxtools.profiling.time</module>
     <module>org.eclipse.linuxtools.profiling.ui</module>
     <module>org.eclipse.linuxtools.profiling.ui.capability</module>
     <module>org.eclipse.linuxtools.rdt.proxy</module>

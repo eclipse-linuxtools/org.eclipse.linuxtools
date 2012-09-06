@@ -228,6 +228,7 @@ public class SSHFileStore extends FileStore {
 		return createFileStore(strPath);
 	}
 
+	@Override
 	public IFileStore mkdir(int options, IProgressMonitor monitor)
 			throws CoreException {
 		if (monitor == null)

@@ -17,7 +17,7 @@ public class RowEntryTest {
 	@Before
 	public void setUp() {
 		entry = new RowEntry();
-		data = new Integer[] {new Integer(2), new Integer(5), new Integer(4)};
+		data = new Integer[] {2, 5, 4};
 		entry.putRow(0, data);
 	}
 
@@ -86,7 +86,7 @@ public class RowEntryTest {
 	
 	@Test
 	public void testPutRow() {
-		Integer[] data2 = new Integer[] {new Integer(2), new Integer(5)};
+		Integer[] data2 = new Integer[] {2, 5};
 		
 		//Can't add to -1 position
 		entry.putRow(-1, data2);

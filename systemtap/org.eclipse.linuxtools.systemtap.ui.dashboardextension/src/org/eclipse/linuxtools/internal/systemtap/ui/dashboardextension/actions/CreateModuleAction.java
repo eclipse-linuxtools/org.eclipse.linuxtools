@@ -97,13 +97,11 @@ public class CreateModuleAction extends Action implements
 
 			if (null == parser || null == dataSet)
 				return;
-
-			ExportScriptDialog exportDialog = new ExportScriptDialog(
-					fWindow.getShell(), dataSet);
-			exportDialog.open();
-
-			exportDialog.dispose();
-			if (!exportDialog.isCanceled()) {
+			
+			ExportScriptDialog exportDialog = new ExportScriptDialog(fWindow.getShell(), dataSet);
+			exportDialog.create();
+			
+			if(exportDialog.open() == Window.OK) {
 				String category = exportDialog.getCategory();
 				String display = exportDialog.getDisplay();
 				String description = exportDialog.getDescription();

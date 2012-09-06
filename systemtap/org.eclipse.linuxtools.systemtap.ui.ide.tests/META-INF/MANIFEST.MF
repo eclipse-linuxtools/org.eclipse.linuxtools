@@ -6,7 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Import-Package: junit.framework,
+Import-Package: org.junit,
+ org.junit.runner;version="4.10.0",
+ org.junit.runners;version="4.10.0",
  org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.actions,
  org.eclipse.linuxtools.systemtap.ui.ide.structures,

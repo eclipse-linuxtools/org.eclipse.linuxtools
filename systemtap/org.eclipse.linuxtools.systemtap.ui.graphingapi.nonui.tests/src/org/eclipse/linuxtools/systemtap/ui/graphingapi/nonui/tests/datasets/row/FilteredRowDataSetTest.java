@@ -144,22 +144,22 @@ public class FilteredRowDataSetTest  {
 		RowEntry entry;
 
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.putRow(0, new Integer[] {3, 2, 5});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.putRow(0, new Integer[] {4, 2, 3});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.putRow(0, new Integer[] {7, 2, 9});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.putRow(0, new Integer[] {2, 2, 6});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.putRow(0, new Integer[] {5, 2, 2});
 		data.append(entry);
 		
-		fdata.addFilter(new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
+		fdata.addFilter(new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 
 		assertEquals(3, fdata.getRowCount());
 		Object[] row = fdata.getRow(1);
@@ -191,22 +191,22 @@ public class FilteredRowDataSetTest  {
 		RowEntry entry;
 		
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.putRow(0, new Integer[] {3, 2, 5});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.putRow(0, new Integer[] {4, 2, 3});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.putRow(0, new Integer[] {7, 2, 9});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.putRow(0, new Integer[] {2, 2, 6});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.putRow(0, new Integer[] {5, 2, 2});
 		data.append(entry);
 		
-		RangeFilter filter = new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		fdata.addFilter(filter);
 		fdata.addFilter(new SortFilter(2, SortFilter.ASCENDING));
 		fdata.removeFilter(filter);
@@ -230,22 +230,22 @@ public class FilteredRowDataSetTest  {
 		RowEntry entry;
 		
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(3), new Integer(2), new Integer(5)});
+		entry.putRow(0, new Integer[] {3, 2, 5});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(4), new Integer(2), new Integer(3)});
+		entry.putRow(0, new Integer[] {4, 2, 3});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(7), new Integer(2), new Integer(9)});
+		entry.putRow(0, new Integer[] {7, 2, 9});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(2), new Integer(2), new Integer(6)});
+		entry.putRow(0, new Integer[] {2, 2, 6});
 		data.append(entry);
 		entry = new RowEntry();
-		entry.putRow(0, new Integer[] {new Integer(5), new Integer(2), new Integer(2)});
+		entry.putRow(0, new Integer[] {5, 2, 2});
 		data.append(entry);
 		
-		RangeFilter filter = new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		fdata.addFilter(filter);
 		fdata.addFilter(new SortFilter(2, SortFilter.ASCENDING));
 
@@ -264,7 +264,7 @@ public class FilteredRowDataSetTest  {
 	public void testGetFilters() {
 		assertEquals(0, fdata.getFilters().length);
 
-		RangeFilter filter1 = new RangeFilter(0, new Integer(3), new Integer(5), RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
+		RangeFilter filter1 = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		SortFilter filter2 = new SortFilter(2, SortFilter.ASCENDING);
 		
 		fdata.addFilter(filter1);

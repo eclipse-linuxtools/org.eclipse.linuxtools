@@ -8,23 +8,20 @@
  * Contributors:
  *    Red Hat initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.profiling.snapshot;
+package org.eclipse.linuxtools.profiling.time.launch;
 
-import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
+import org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut;
+import org.eclipse.linuxtools.profiling.time.TimeConstants;
 
 /**
- * The options tab used for this plug-in's launch configuration tab group.
- * 
+ * The launch shortcut for time profiling type plug-ins.
+ *
  */
-public class SnapshotOptionsTab extends ProviderOptionsTab {
-
-	public String getName() {
-		return SnapshotConstants.PLUGIN_NAME;
-	}
+public class TimeLaunchShortcut extends ProviderLaunchShortcut {
 
 	@Override
-	protected String getProfilingType() {
-		return SnapshotConstants.PROFILING_TYPE;
+	protected String getLaunchConfigID() {
+		return TimeConstants.PLUGIN_CONFIG_ID;
 	}
 
 }

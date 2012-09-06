@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.profiling.snapshot.launch;
 
 import org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut;
-import org.eclipse.linuxtools.profiling.snapshot.SnapshotProviderPlugin;
+import org.eclipse.linuxtools.profiling.snapshot.SnapshotConstants;
 
 /**
  * The launch shortcut for this plug-in.
@@ -21,7 +21,7 @@ public class SnapshotLaunchShortcut extends ProviderLaunchShortcut {
 
 	@Override
 	protected String getLaunchConfigID() {
-		return SnapshotProviderPlugin.PLUGIN_CONFIG_ID;
+		return SnapshotConstants.PLUGIN_CONFIG_ID;
 	}
 
 
