@@ -113,7 +113,7 @@ public class PerfCore {
 		} catch (CoreException e) {
 			return null;
 		}
-		if (projectName == null) {
+		if (projectName.equals("")) {
 			return null;
 		}
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
@@ -134,7 +134,12 @@ public class PerfCore {
 		} else {
 			ConfigUtils configUtils = new ConfigUtils(config);
 			try {
-				project = ConfigUtils.getProject(configUtils.getProjectName());
+				String projectName = configUtils.getProjectName();
+				// an empty string is not a legal path to file argument for ConfigUtils.getProject
+				if(projectName != null && !projectName.equals("")){
+					project = ConfigUtils.getProject(projectName);
+				}
+
 			} catch (CoreException e1) {
 				e1.printStackTrace();
 			}

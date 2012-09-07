@@ -9,7 +9,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui,
  org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.cdt.launch,
  org.eclipse.linuxtools.internal.profiling.launch,

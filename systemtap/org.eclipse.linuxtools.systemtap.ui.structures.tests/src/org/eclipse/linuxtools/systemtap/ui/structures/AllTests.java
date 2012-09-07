@@ -32,6 +32,6 @@ import org.junit.runners.Suite;
 		// structures.validators
 		ConditionalExpressionValidatorTest.class, DirectoryValidatorTest.class,
 		IntegerValidatorTest.class, MultiValidatorTest.class,
-		NumberValidatorTest.class, })
+		NumberValidatorTest.class })
 public class AllTests {
 }
