@@ -76,7 +76,7 @@ public class LinuxtoolsPathProperty {
 	 */
 	public String getLinuxtoolsPath(IProject project) {
 		if (project == null)
-			return null;
+			return "";
 
 		ScopedPreferenceStore store = new ScopedPreferenceStore(
 				new ProjectScope(project),

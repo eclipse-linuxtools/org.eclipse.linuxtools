@@ -135,6 +135,13 @@ public class OprofileCorePlugin extends Plugin {
 				if (configElements.length != 0) {
 					try {
 						String scheme = configElements[0].getAttribute("scheme");
+
+						// If no project associated, get the local opcontrol provider
+						if (Oprofile.OprofileProject.getProject() == null && scheme.equals("file")) {
+							opcontrolProvider = (IOpcontrolProvider) configElements[0].createExecutableExtension("class");//$NON-NLS-1$
+							break;
+						}
+
 						if(Oprofile.OprofileProject.getProject().getLocationURI().getScheme().equals(scheme)){
 							opcontrolProvider = (IOpcontrolProvider) configElements[0].createExecutableExtension("class");//$NON-NLS-1$
 						}

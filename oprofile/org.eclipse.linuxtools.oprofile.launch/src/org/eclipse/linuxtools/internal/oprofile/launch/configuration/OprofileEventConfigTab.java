@@ -185,7 +185,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			}
 		}
 
-		String host = project.getLocationURI().getHost();
+		String host;
+		if (project != null) {
+			host = project.getLocationURI().getHost();
+		} else {
+			host = null;
+		}
 
 		// Create the counter tabs if host has changed or if they haven't been created yet
 		// Check that initialization is not done for current project. 
@@ -342,7 +347,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 
 		IProject project = getProject(config);
 		Oprofile.OprofileProject.setProject(project);
-		if(project != null && !LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+		if(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			try{
 				if(!hasPermissions(project)){
 					return;
@@ -467,7 +472,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			return null;
 		}
-		if (name == null) {
+		if (name.equals(EMPTY_STRING)) {
 			return null;
 		}
 
