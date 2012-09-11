@@ -39,7 +39,7 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 				// shortcut.
 				if (providerId.equals("")) {
 					// acquire a provider id to run. 
-					providerId = getProviderIdToRun();
+					providerId = getProviderIdToRun(getProfilingType());
 					// get configuration shortcut associated with provider id.
 					ProfileLaunchShortcut shortcut= ProfileLaunchShortcut.getLaunchShortcutProviderFromId(providerId);
 					// set attributes related to the specific profiling shortcut configuration.
@@ -59,18 +59,30 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 		return;
 	}
 
-	private String getProviderIdToRun() {
-		// Get self assigned default
+	/**
+	 * Get a provider id to run for the given profiling type.
+	 *
+	 * This first checks for a provider in the preferences, and if
+	 * none can be found it will look for the provider with the
+	 * highest priority for the specified type. If this fails,
+	 * it will look for the default provider.
+	 *
+	 * @param type a profiling type
+	 * @return a provider id that contributes to the specified type
+	 */
+	public static String getProviderIdToRun(String type) {
+		// Look in the preferences for a provider
 		String providerId = ConfigurationScope.INSTANCE.getNode(
-				getProfilingType()).get(
+				type).get(
 				AbstractProviderPreferencesPage.PREFS_KEY, "");
 		if (providerId.equals("")) {
+			// Get highest priority provider
 			providerId = ProfileLaunchConfigurationTabGroup
-					.getHighestProviderId(getProfilingType());
+					.getHighestProviderId(type);
 			if (providerId == null) {
-				// Get highest priority provider
+				// Get default provider
 				providerId = ProfileLaunchShortcut
-						.getDefaultLaunchShortcutProviderId(getProfilingType());
+						.getDefaultLaunchShortcutProviderId(type);
 			}
 		}
 		return providerId;
