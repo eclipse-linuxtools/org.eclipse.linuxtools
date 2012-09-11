@@ -1,3 +1,13 @@
+2012-09-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchConfigurationTabGroup.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchShortcut.java: New file.
+	* META-INF/MANIFEST.MF: Import o.e.l.internal.valgrind.core. 
+	* plugin.properties: Add name for massif memory profiling provider.
+	* plugin.xml: Add massif as memory profiling provider.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifToolPage.java (setDefaults): Set the ATTR_TOOL to
+	massif.
+	
 2010-08-24  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Remove import package on org.mozilla.javascript.

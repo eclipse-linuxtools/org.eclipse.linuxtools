@@ -27,4 +27,17 @@
             name="%editor.name.0">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+      <provider
+            default="false"
+            delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.provider.valgrind.massif"
+            name="%massifLaunchConfiguration.name.0"
+            priority="2"
+            shortcut="org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchShortcut"
+            tabgroup="org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConfigurationTabGroup"
+            type="memory">
+      </provider>
+   </extension>   
 </plugin>
