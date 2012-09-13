@@ -20,17 +20,11 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.linuxtools.profiling.launch;bundle-version="0.11.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.filesystem,
- org.eclipse.linuxtools.systemtap.ui.graphing,
- org.eclipse.linuxtools.systemtap.ui.graphing.views,
- org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets,
- org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures,
- org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset,
  org.eclipse.linuxtools.systemtap.ui.structures,
  org.eclipse.linuxtools.systemtap.ui.structures.listeners,
  org.eclipse.linuxtools.systemtap.ui.structures.runnable,
  org.eclipse.linuxtools.systemtap.ui.structures.ui,
  org.eclipse.linuxtools.systemtap.ui.structures.validators,
- org.eclipse.linuxtools.tools.launch.core.factory,
  org.eclipse.ui.ide,
  org.eclipse.ui.part
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

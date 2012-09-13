@@ -22,7 +22,6 @@ import java.util.Stack;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -54,13 +53,14 @@ import org.eclipse.linuxtools.internal.valgrind.core.ValgrindInfo;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Version;
 
-public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
+public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	protected static final String NO = "no"; //$NON-NLS-1$
@@ -267,6 +267,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		}
 	}
 
+	@Override
 	protected IProcess createNewProcess(ILaunch launch, Process systemProcess, String programName) {
 		return DebugPlugin.newProcess(launch, systemProcess, renderProcessLabel(programName));
 	}
@@ -275,6 +276,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return getPlugin().getValgrindCommand();
 	}
 
+	@Override
+	public String generateCommand(ILaunchConfiguration config) {
+		return getValgrindCommand().getCommandLine();
+	}
+	
 	protected ValgrindLaunchPlugin getPlugin() {
 		return ValgrindLaunchPlugin.getDefault();
 	}

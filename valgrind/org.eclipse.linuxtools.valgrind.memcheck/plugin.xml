@@ -17,4 +17,17 @@
             definitionId="org.eclipse.linuxtools.valgrind.launch.memcheck">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+      <provider
+            default="true"
+            delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.provider.valgrind.memcheck"
+            name="%memcheckLaunchConfiguration.name.0"
+            priority="1"
+            shortcut="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchShortcut"
+            tabgroup="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckLaunchConfigurationTabGroup"
+            type="memory">
+      </provider>
+   </extension>   
 </plugin>

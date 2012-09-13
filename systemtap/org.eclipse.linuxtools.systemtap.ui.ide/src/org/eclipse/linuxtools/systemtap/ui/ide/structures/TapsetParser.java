@@ -72,7 +72,7 @@ public class TapsetParser implements Runnable {
 	}
 	
 	/**
-	 * This method chanegs the stop variable which is checked periodically by the
+	 * This method changes the stop variable which is checked periodically by the
 	 * running thread to see if it should stop running.
 	 */
 	public synchronized void stop() {
@@ -171,22 +171,21 @@ public class TapsetParser implements Runnable {
 	 * Runs the stap with the given options and returns the output generated 
 	 * @param options String[] of any optional parameters to pass to stap
 	 * @param probe String containing the script to run stap on
-	 * @param level integer representing what point to stop stap at (1,2,3,4,5)
+	 * @since 1.2
 	 */
-	protected String runStap(String[] options, String probe, int level) {
+	protected String runStap(String[] options, String probe) {
 		String[] args = null;
 		
-		int size = 4;	//start at 4 for stap, -pX, -e, script
+		int size = 2;	//start at 2 for stap, script, options will be added in later
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0)
 			size += tapsets.length<<1;
 		if(null != options && options.length > 0 && options[0].trim().length() > 0)
 			size += options.length;
-		
+
 		args = new String[size];
 		args[0] = ""; //$NON-NLS-1$
-		args[1] = "-p" + level; //$NON-NLS-1$
-		args[size-2] = "-e"; //$NON-NLS-1$
 		args[size-1] = probe;
+		args[size-2] = "";
 		
 		//Add extra tapset directories
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
@@ -197,7 +196,7 @@ public class TapsetParser implements Runnable {
 		}
 		if(null != options && options.length > 0 && options[0].trim().length() > 0) {
 			for(int i=0; i<options.length; i++)
-				args[args.length-options.length-2+i] = options[i];
+				args[args.length-options.length-1+i] = options[i];
 		}
 
 		StringOutputStream str = new StringOutputStream();
@@ -221,6 +220,17 @@ public class TapsetParser implements Runnable {
 	}
 	
 	/**
+	 * Runs the stap with the given options and returns the output generated
+	 * @param options String[] of any optional parameters to pass to stap
+	 * @param probe String containing the script to run stap on
+	 * @level level integer representing what point to stop stap at (1,2,3,4,5)
+	 */
+	@Deprecated
+	protected String runStap(String[] options, String probe, int level) {
+		return runStap(options, probe);
+	}
+
+	/**
 	 * Returns a String containing all of the content from the files
 	 * contained in the tapset libraries.  This file always returns
 	 * what ever it could get, even if an exception was generated.
@@ -233,12 +243,12 @@ public class TapsetParser implements Runnable {
 		String[] options;
 		if(null == script) {
 			script = "probe begin{}";
-			options = new String[] {"-v"};
+			options = new String[] {"-p1", "-v", "-e"};
 		} else {
 			options = null;
 		}
 
-		return runStap(options, script, 1);
+		return runStap(options, script);
 	}
 
 	/**
@@ -268,7 +278,6 @@ public class TapsetParser implements Runnable {
 		
 		for(int i=0; i<s.length(); i++) {
 			currChar = s.charAt(i);
-			
 			if(!Character.isWhitespace(currChar) && '}' != currChar && '{' != currChar) {
 				token.append(currChar);
 			} else if(token.length() > 0){
@@ -276,7 +285,6 @@ public class TapsetParser implements Runnable {
 				prev = token.toString();
 				token.delete(0, token.length());
 			}
-
 			//Only check for new values when starting a fresh token.
 			if(1 == token.length()) {
 				if("probe".equals(prev2) && "=".equals(token.toString())) {
@@ -411,7 +419,7 @@ public class TapsetParser implements Runnable {
 			functionStr.append(funcs[i]);
 		functionStr.append("}\n");
 
-		String result = runStap(new String[] {"-u"}, functionStr.toString(), 2);
+		String result = runStap(new String[] {"-u", "-p2", "-e"}, functionStr.toString());
 		
 		if(0 < result.trim().length()) {
 			parsePass2Functions(result);
@@ -462,7 +470,7 @@ public class TapsetParser implements Runnable {
 			else
 				runPass2ProbeSet(temp, 0, temp.getChildCount());
 		}
-		result = runStap(new String[] {"-u"}, probeStr.toString(), 2);
+		result = runStap(new String[] {"-u", "-p2", "-e"}, probeStr.toString());
 		
 		if(0 < result.trim().length()) {
 			boolean success = parsePass2Probes(result,probe);

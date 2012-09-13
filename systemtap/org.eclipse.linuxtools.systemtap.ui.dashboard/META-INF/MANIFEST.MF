@@ -17,10 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.consolelog
-Import-Package: org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures,
- org.eclipse.linuxtools.systemtap.ui.graphing,
- org.eclipse.linuxtools.systemtap.ui.ide,
- org.eclipse.linuxtools.systemtap.ui.ide.structures
+Import-Package: org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Name: %bundleName

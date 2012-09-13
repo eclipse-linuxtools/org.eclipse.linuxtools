@@ -17,11 +17,11 @@ Export-Package: org.eclipse.linuxtools.internal.valgrind.core;
    org.eclipse.linuxtools.valgrind.cachegrind.tests,
    org.eclipse.linuxtools.valgrind.helgrind.tests,
    org.eclipse.linuxtools.valgrind.massif.tests,
-   org.eclipse.linuxtools.valgrind.memcheck.tests",
+   org.eclipse.linuxtools.valgrind.memcheck.tests,
+   org.eclipse.linuxtools.valgrind.massif,
+   org.eclipse.linuxtools.valgrind.memcheck",
  org.eclipse.linuxtools.valgrind.core
-Import-Package: org.eclipse.cdt.utils,
- org.eclipse.cdt.utils.pty,
- org.eclipse.cdt.utils.spawner,
+Import-Package: org.eclipse.cdt.utils.pty,
  org.eclipse.core.resources,
  org.eclipse.debug.core
 Bundle-Localization: plugin

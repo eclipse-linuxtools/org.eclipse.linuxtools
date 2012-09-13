@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.linuxtools.profiling.memory.launch"
+         name="Profile Memory"
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.linuxtools.profiling.memory.launch.MemoryLaunchShortcut"
+            id="org.eclipse.linuxtools.profiling.memory"
+            label="Profile Memory"
+            modes="profile">
+
+            <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <or>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.IBinary">
+                        </instanceof>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.ICProject">
+                        </instanceof>
+                        <test
+                              property="org.eclipse.cdt.launch.isExecutable">
+                        </test>
+                        <test
+                              property="org.eclipse.cdt.launch.isCProject">
+                        </test>
+                        <and>
+                           <instanceof
+                                 value="org.eclipse.ui.IFileEditorInput">
+                           </instanceof>
+                           <adapt
+                                 type="org.eclipse.core.resources.IResource">
+                              <adapt
+                                    type="org.eclipse.cdt.core.model.ICElement">
+                              </adapt>
+                           </adapt>
+                        </and>
+                     </or>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.profiling.memory.MemoryLaunchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.profiling.memory.launchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.profiling.memory.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.profiling.memory.launch.MemoryLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.memory.launchConfigurationType"
+            modes="profile"
+            name="Profile Memory"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
+            class="org.eclipse.linuxtools.profiling.memory.MemoryPreferencesPage"
+            id="org.eclipse.linuxtools.profiling.memory.MainPreferencePage"
+            name="Memory">
+      </page>
+   </extension>
+
+
+</plugin>
