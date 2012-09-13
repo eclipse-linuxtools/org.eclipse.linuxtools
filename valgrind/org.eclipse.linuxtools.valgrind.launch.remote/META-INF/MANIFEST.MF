@@ -11,23 +11,14 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.internal.valgrind.launch.remote
-Import-Package: org.eclipse.cdt.core,
- org.eclipse.cdt.core.model,
+Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.cdt.debug.core,
  org.eclipse.cdt.launch,
- org.eclipse.cdt.launch.ui,
- org.eclipse.core.filesystem,
- org.eclipse.core.resources,
  org.eclipse.debug.core,
- org.eclipse.debug.core.model,
- org.eclipse.debug.core.sourcelookup.containers,
  org.eclipse.debug.ui,
- org.eclipse.debug.ui.sourcelookup,
- org.eclipse.linuxtools.profiling.launch.remote,
- org.eclipse.linuxtools.internal.valgrind.core,
  org.eclipse.linuxtools.internal.valgrind.launch,
  org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.launch,
+ org.eclipse.linuxtools.profiling.launch.remote,
  org.eclipse.linuxtools.valgrind.core,
- org.eclipse.linuxtools.valgrind.launch,
- org.eclipse.linuxtools.valgrind.ui
+ org.eclipse.linuxtools.valgrind.launch
