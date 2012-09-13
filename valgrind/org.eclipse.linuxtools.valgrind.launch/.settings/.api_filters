@@ -16,22 +16,4 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindRemoteProxyLaunchConfigurationTabGroup.java" type="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchConfigurationTabGroup">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="1.1"/>
-                <message_argument value="1.2"/>
-                <message_argument value="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchConfigurationTabGroup"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindRemoteProxyLaunchDelegate.java" type="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchDelegate">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="1.1"/>
-                <message_argument value="1.2"/>
-                <message_argument value="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchDelegate"/>
-            </message_arguments>
-        </filter>
-    </resource>
 </component>
