@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.internal.profiling.provider.launch;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
@@ -25,8 +25,15 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 	@Override
 	protected void setDefaultProfileAttributes(
 			ILaunchConfigurationWorkingCopy wc) {
-		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
-		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
+
+		// acquire a provider id to run.
+		String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(getProfilingType());
+		// get configuration shortcut associated with provider id.
+		ProfileLaunchShortcut shortcut= ProfileLaunchShortcut.getLaunchShortcutProviderFromId(providerId);
+		// set attributes related to the specific profiling shortcut configuration.
+		shortcut.setDefaultProfileLaunchShortcutAttributes(wc);
+
+		wc.setAttribute(ProviderOptionsTab.PROVIDER_CONFIG_ATT, providerId);
 	}
 
 	/**
@@ -35,5 +42,7 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 	 * @return String profiling type this plug-in supports.
 	 */
 	protected abstract String getLaunchConfigID();
+
+	public abstract String getProfilingType();
 
 }

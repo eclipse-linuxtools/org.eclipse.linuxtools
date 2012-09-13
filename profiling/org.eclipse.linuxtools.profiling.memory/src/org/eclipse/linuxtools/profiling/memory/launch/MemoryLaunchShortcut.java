@@ -26,4 +26,9 @@ public class MemoryLaunchShortcut extends ProviderLaunchShortcut {
 		return MemoryProfileConstants.PLUGIN_CONFIG_ID;
 	}
 
+	@Override
+	public String getProfilingType() {
+		return MemoryProfileConstants.PROFILING_TYPE;
+	}
+
 }

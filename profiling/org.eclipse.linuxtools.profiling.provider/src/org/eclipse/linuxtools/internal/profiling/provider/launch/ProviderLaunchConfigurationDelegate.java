@@ -34,17 +34,6 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 				String providerId = config.getAttribute(
 						ProviderOptionsTab.PROVIDER_CONFIG_ATT, "");
 
-				// the provider attribute is only set when launching from the
-				// dialog menu, if it's not set then we are launching from a
-				// shortcut.
-				if (providerId.equals("")) {
-					// acquire a provider id to run. 
-					providerId = getProviderIdToRun(getProfilingType());
-					// get configuration shortcut associated with provider id.
-					ProfileLaunchShortcut shortcut= ProfileLaunchShortcut.getLaunchShortcutProviderFromId(providerId);
-					// set attributes related to the specific profiling shortcut configuration.
-					shortcut.setDefaultProfileLaunchShortcutAttributes(config);
-				}
 				// get delegate associated with provider id.
 				ProfileLaunchConfigurationDelegate delegate = getConfigurationDelegateFromId(providerId);
 
