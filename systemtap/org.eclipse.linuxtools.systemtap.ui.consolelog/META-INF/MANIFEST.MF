@@ -16,7 +16,6 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.consolelog,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console;visibility:=reexport,
- org.eclipse.ui.workbench.texteditor,
  org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.structures,
  com.jcraft.jsch;bundle-version="0.1.37"

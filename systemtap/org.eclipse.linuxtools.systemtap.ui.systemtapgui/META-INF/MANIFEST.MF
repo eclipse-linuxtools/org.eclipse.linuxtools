@@ -8,12 +8,7 @@ Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.ui.logging,
- org.eclipse.help,
- org.eclipse.help.base,
- org.eclipse.help.ui,
- org.eclipse.help.webapp
+Require-Bundle: org.eclipse.linuxtools.systemtap.ui.logging,
+ org.eclipse.help.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

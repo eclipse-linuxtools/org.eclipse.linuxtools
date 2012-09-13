@@ -4,15 +4,12 @@ Bundle-Name: Threadprofiler
 Bundle-SymbolicName: org.eclipse.linuxtools.threadprofiler;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.threadprofiler.ThreadProfilerPlugin
-Require-Bundle: org.eclipse.ui, 
+Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.cdt.core,
  org.eclipse.linuxtools.callgraph.launch,
  org.eclipse.linuxtools.callgraph.core,
- org.eclipse.debug.core,
  org.eclipse.debug.ui,
- org.eclipse.linuxtools.profiling.launch,
- org.eclipse.swt
-Import-Package: org.eclipse.ui
+ org.eclipse.linuxtools.profiling.launch
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
