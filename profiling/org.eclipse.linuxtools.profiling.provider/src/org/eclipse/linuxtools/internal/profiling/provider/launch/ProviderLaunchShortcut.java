@@ -10,9 +10,18 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.provider.launch;
 
+import java.util.Map;
+
+import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.ILaunchConfigurationDialog;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
@@ -23,11 +32,150 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 	}
 
 	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
+	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
+		// create a launch configuration based on the shortcut
+		ILaunchConfiguration config = createConfiguration(bin, false);
+		boolean exists = false;
+
+		try {
+			for (ILaunchConfiguration cfg : getLaunchManager().getLaunchConfigurations()){
+				if (areEqual(config, cfg)){
+					exists = true;
+				}
+			}
+		} catch (CoreException e) {
+			exists = true;
+		}
+
+		// only save the configuration if it does not exist
+		if (! exists) {
+			createConfiguration(bin);
+		}
+
+		return super.findLaunchConfiguration(bin, mode);
+	}
+
+	/**
+	 * @param cfg1 a launch configuration
+	 * @param cfg2 a launch configuration
+	 * @return true if the launch configurations contain the exact
+	 * same attributes, and false otherwise.
+	 */
+	private boolean areEqual(ILaunchConfiguration cfg1,
+			ILaunchConfiguration cfg2) {
+
+		// We don't care about these attributes.
+		final String BUILD_BEFORE_LAUNCH = "org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR";
+		final String IN_CONSOLE = "org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON";
+
+		try {
+			Map<?, ?> attrs1 = cfg1.getAttributes();
+			Map<?, ?> attrs2 = cfg2.getAttributes();
+
+			for (Object key1 : attrs1.keySet()) {
+				if (! attrs2.containsKey(key1)
+						&& ! key1.toString().equals(BUILD_BEFORE_LAUNCH)
+						&& ! key1.toString().equals(IN_CONSOLE)) {
+					return false;
+				}
+			}
+
+			for (Object key2 : attrs2.keySet()) {
+				if (! attrs1.containsKey(key2)
+						&& ! key2.toString().equals(BUILD_BEFORE_LAUNCH)
+						&& ! key2.toString().equals(IN_CONSOLE)) {
+					return false;
+				}
+			}
+
+			for (Object key1 : attrs1.keySet()) {
+				for (Object key2 : attrs2.keySet()) {
+					if (key1.toString().equals(key2.toString())
+							&& ! attrs1.get(key1).toString().equals(attrs2.get(key2).toString())) {
+						return false;
+					}
+				}
+			}
+		} catch (CoreException e) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+	@Override
+	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 
 		// acquire a provider id to run.
 		String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(getProfilingType());
+
+		// get tab group associated with provider id.
+		ProfileLaunchConfigurationTabGroup tabgroup = ProfileLaunchConfigurationTabGroup.getTabGroupProviderFromId(providerId);
+
+		/**
+		 * Certain tabs' setDefaults(ILaunchConfigurationWorkingCopy) may
+		 * require a launch configuration dialog. Eg. CMainTab generates
+		 * a name for the configuration based on generateName in setDefaults()
+		 * so we can create a temporary launch configuration dialog here. With
+		 * the exception of generateName(String), the other methods do not
+		 * get called.
+		 */
+		ILaunchConfigurationDialog dialog  = new ILaunchConfigurationDialog() {
+
+			public void run(boolean fork, boolean cancelable,
+					IRunnableWithProgress runnable) {
+				throw new UnsupportedOperationException ();
+			}
+
+			public void updateMessage() {
+				throw new UnsupportedOperationException ();
+			}
+
+			public void updateButtons() {
+				throw new UnsupportedOperationException ();
+			}
+
+			public void setName(String name) {
+				throw new UnsupportedOperationException ();
+			}
+
+			public void setActiveTab(int index) {
+				throw new UnsupportedOperationException ();
+			}
+
+			public void setActiveTab(ILaunchConfigurationTab tab) {
+				throw new UnsupportedOperationException ();
+			}
+
+			public ILaunchConfigurationTab[] getTabs() {
+				return null;
+			}
+
+			public String getMode() {
+				return null;
+			}
+
+			public ILaunchConfigurationTab getActiveTab() {
+				return null;
+			}
+
+			public String generateName(String name) {
+				if (name == null) {
+					name = "";
+				}
+				return getLaunchManager().generateLaunchConfigurationName(name);
+			}
+		};
+
+		tabgroup.createTabs(dialog , "profile"); //$NON-NLS-1$
+
+		// set configuration to match default attributes for all tabs.
+		for (ILaunchConfigurationTab tab : tabgroup.getTabs()) {
+			tab.setLaunchConfigurationDialog(dialog);
+			tab.setDefaults(wc);
+		}
+
 		// get configuration shortcut associated with provider id.
 		ProfileLaunchShortcut shortcut= ProfileLaunchShortcut.getLaunchShortcutProviderFromId(providerId);
 		// set attributes related to the specific profiling shortcut configuration.

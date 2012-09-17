@@ -293,17 +293,29 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 * @param config
 	 * @since 1.2
 	 */
-	public void setDefaultProfileLaunchShortcutAttributes(ILaunchConfiguration config){
+	public void setDefaultProfileLaunchShortcutAttributes(ILaunchConfigurationWorkingCopy wc){
 		try {
-			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 			setDefaultProfileAttributes(wc);
-			config = wc.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
 
 	protected ILaunchConfiguration createConfiguration(IBinary bin) {
+		return createConfiguration(bin, true);
+	}
+
+	/**
+	 * Create a launch configuration based on a binary, and optionally
+	 * save it to the underlying resource.
+	 *
+	 * @param bin a representation of a binary
+	 * @param save true if the configuration should be saved to the
+	 * underlying resource, and false if it should not be saved.
+	 * @return a launch configuration generated for the binary.
+	 * @since 1.2
+	 */
+	protected ILaunchConfiguration createConfiguration(IBinary bin, boolean save) {
 		ILaunchConfiguration config = null;
 		try {
 			String projectName = bin.getResource().getProjectRelativePath().toString();
@@ -317,7 +329,11 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	
 			setDefaultProfileAttributes(wc);
 	
-			config = wc.doSave();
+			if (save){
+				config = wc.doSave();
+			} else {
+				config = wc;
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
