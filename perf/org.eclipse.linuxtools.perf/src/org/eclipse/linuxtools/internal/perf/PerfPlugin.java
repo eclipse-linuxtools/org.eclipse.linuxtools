@@ -58,7 +58,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String ATTR_DefaultEvent = "org.eclipse.linuxtools.internal.perf.attr.DefaultEvent";
 	public static final boolean ATTR_DefaultEvent_default = true;
 	public static final String ATTR_MultipleEvents = "org.eclipse.linuxtools.internal.perf.attr.MultipleEvents";
-	public static final boolean ATTR_MultipleEvents_default = true;
+	public static final boolean ATTR_MultipleEvents_default = false;
 	public static final String ATTR_SelectedEvents = "org.eclipse.linuxtools.internal.perf.attr.SelectedEvents";
 	public static final List<String> ATTR_SelectedEvents_default = null;
 	public static final String ATTR_RawHwEvents = "org.eclipse.linuxtools.internal.perf.attr.RawHwEvents";
