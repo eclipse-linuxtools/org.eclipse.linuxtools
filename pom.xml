@@ -51,7 +51,7 @@
     <tycho-version>0.15.0</tycho-version>
     <tycho-extras-version>0.15.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
-    <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
+    <eclipse-site>http://download.eclipse.org/releases/maintenance</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository</orbit-site>
   </properties>
@@ -117,7 +117,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
+        <eclipse-site>http://download.eclipse.org/releases/maintenance</eclipse-site>
         <platform-version>[4.2,)</platform-version>
         <sdk-version>4.2</sdk-version>
         <cdt-site>http://download.eclipse.org/tools/cdt/builds/juno/milestones</cdt-site>
