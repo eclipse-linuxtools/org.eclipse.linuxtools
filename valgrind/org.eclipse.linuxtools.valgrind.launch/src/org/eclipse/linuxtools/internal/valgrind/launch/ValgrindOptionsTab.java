@@ -507,7 +507,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		if (checkVersion) {
 			try {
-				IProject project = CDebugUtils.verifyCProject(configuration).getProject();
+				IProject project;
+				try {
+					project = CDebugUtils.verifyCProject(configuration).getProject();
+				} catch (Exception e1) {
+					// no project is still a possibility the validator handles
+					project = null;
+				}
 				valgrindVersion = getPlugin().getValgrindVersion(project);
 			} catch (CoreException e) {
 				ex = e;

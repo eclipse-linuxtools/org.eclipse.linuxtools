@@ -24,4 +24,9 @@ public class TimeLaunchShortcut extends ProviderLaunchShortcut {
 		return TimeConstants.PLUGIN_CONFIG_ID;
 	}
 
+	@Override
+	public String getProfilingType() {
+		return TimeConstants.PROFILING_TYPE;
+	}
+
 }

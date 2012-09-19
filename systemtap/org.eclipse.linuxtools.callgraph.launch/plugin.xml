@@ -92,6 +92,19 @@
           id="org.eclipse.linuxtools.callgraph.launch.systemtapLaunchImage">
     </launchConfigurationTypeImage>
  </extension>
+ <extension
+       point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+    <provider
+          default="true"
+          delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
+          id="org.eclipse.linuxtools.callgraph.launch.provider"
+          name="Callgraph"
+          priority="1"
+          shortcut="org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph"
+          tabgroup="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
+          type="time">
+    </provider>
+ </extension>
    
 
 </plugin>

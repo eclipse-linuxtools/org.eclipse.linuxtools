@@ -36,7 +36,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 
 			//check if user has NOPASSWD sudo permission for opcontrol
 			//if the Linux Tools Path property was changed
-			if(project != null && !LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+			if(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 				IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
 				if (provider instanceof IOpcontrolProvider2 &&
 					!((IOpcontrolProvider2)provider).hasPermissions(project)){

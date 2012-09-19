@@ -24,5 +24,9 @@ public class SnapshotLaunchShortcut extends ProviderLaunchShortcut {
 		return SnapshotConstants.PLUGIN_CONFIG_ID;
 	}
 
+	@Override
+	public String getProfilingType() {
+		return SnapshotConstants.PROFILING_TYPE;
+	}
 
 }

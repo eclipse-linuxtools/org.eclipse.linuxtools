@@ -285,13 +285,6 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_Multiplex, _chkMultiplexEvents.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, _chkModuleSymbols.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, _chkHideUnresolvedSymbols.getSelection());
-		try {
-			//if (this.canSave())
-				wconfig.doSave();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -305,13 +298,6 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default);
-		try {
-			//if (this.canSave())
-				wconfig.doSave();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

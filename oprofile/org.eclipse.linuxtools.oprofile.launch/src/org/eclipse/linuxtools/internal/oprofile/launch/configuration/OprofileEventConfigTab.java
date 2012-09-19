@@ -185,7 +185,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			}
 		}
 
-		String host = project.getLocationURI().getHost();
+		String host;
+		if (project != null) {
+			host = project.getLocationURI().getHost();
+		} else {
+			host = null;
+		}
 
 		// Create the counter tabs if host has changed or if they haven't been created yet
 		// Check that initialization is not done for current project. 
@@ -313,24 +318,22 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		IProject project = getProject(config);
-		try{
-			if(!hasPermissions(project)){
+		try {
+			if (!hasPermissions(project)) {
 				return;
 			}
-		if (getTimerMode()) {
-			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
-		} else {
-			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, defaultEventCheck.getSelection());
-			for (CounterSubTab cst : counterSubTabs) {
-				cst.performApply(config);
+			if (getTimerMode()) {
+				config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
+			} else {
+				config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, defaultEventCheck.getSelection());
+				for (CounterSubTab cst : counterSubTabs) {
+					cst.performApply(config);
+				}
 			}
-		}
-			config.doSave();
-		} catch(OpcontrolException e){
+
+		} catch (OpcontrolException e) {
 			return;
 
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -342,7 +345,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 
 		IProject project = getProject(config);
 		Oprofile.OprofileProject.setProject(project);
-		if(project != null && !LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+		if(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			try{
 				if(!hasPermissions(project)){
 					return;
@@ -363,11 +366,6 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		}
 
 		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, useDefault);
-		try {
-			config.doSave();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -467,7 +465,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			return null;
 		}
-		if (name == null) {
+		if (name.equals(EMPTY_STRING)) {
 			return null;
 		}
 
@@ -779,11 +777,6 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		public void performApply(ILaunchConfigurationWorkingCopy config) {
 			counter.saveConfiguration(config);
-			try {
-				config.doSave();
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
 		}
 
 		/**
