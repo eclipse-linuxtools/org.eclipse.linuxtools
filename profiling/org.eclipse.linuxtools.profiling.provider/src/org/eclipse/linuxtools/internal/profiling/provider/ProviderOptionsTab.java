@@ -41,8 +41,10 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 	ILaunchConfiguration initial;
 	HashMap<String, String> comboItems;
 	CTabFolder tabgroup;
-	Boolean initialized;
 	public static final String PROVIDER_CONFIG_ATT = "provider"; //$NON-NLS-1$
+
+	// if tabs are being initialized do not call performApply()
+	HashMap<String, Boolean> initialized = new HashMap<String, Boolean> ();
 
 	public void createControl(Composite parent) {
 		top = new Composite(parent, SWT.NONE);
@@ -70,10 +72,11 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 	}
 
 	public void loadTabGroupItems(CTabFolder tabgroup, String curProviderId) {
-		// dispose of old tabs
+		// dispose of old tabs and their state
 		for (CTabItem item : tabgroup.getItems()) {
 			item.dispose();
 		}
+		initialized.clear();
 
 		ProfileLaunchConfigurationTabGroup tabGroupConfig;
 
@@ -82,6 +85,10 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 			curProviderId = ProviderLaunchConfigurationDelegate
 					.getProviderIdToRun(getProfilingType());
 		}
+
+		// starting initialization of this tab's controls
+		initialized.put(curProviderId, false);
+
 		tabGroupConfig = ProfileLaunchConfigurationTabGroup
 				.getTabGroupProviderFromId(curProviderId);
 		if (tabGroupConfig == null) {
@@ -126,12 +133,10 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 		 * can properly load the widgets the first time.
 		 */
 
-		// starting initialization of this tab's controls
-		initialized = false;
-
 		// update current configuration (initial) with configuration being
 		// passed in
 		initial = configuration;
+
 
 		// check if there exists a launch provider id in the configuration
 		if (initial != null) {
@@ -153,14 +158,19 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 				tab.initializeFrom(configuration);
 			}
 		}
+
 		// finished initialization
-		initialized = true;
+		initialized.put(getProviderId(), true);
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		// make sure tabs are not null, and the tab's controls have been
 		// initialized.
-		if (tabs != null && initialized) {
+
+		Boolean isInitialized = initialized.get(getProviderId());
+		isInitialized = (isInitialized != null) ? isInitialized : false;
+
+		if (tabs != null && isInitialized) {
 			for (AbstractLaunchConfigurationTab tab : tabs) {
 				tab.performApply(configuration);
 			}
@@ -172,13 +182,28 @@ public abstract class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 	 *
 	 * @param configuration a configuration
 	 */
-	public void setProvider(String providerId) {
+	private void setProvider(String providerId) {
 		try {
 			ILaunchConfigurationWorkingCopy wc = initial.getWorkingCopy();
 			wc.setAttribute(PROVIDER_CONFIG_ATT, providerId);
 			initial = wc.doSave();
 		} catch (CoreException e1) {
 			e1.printStackTrace();
+		}
+	}
+
+	/**
+	 * Get the provider ID for the provider of the currently loaded
+	 * configuration.
+	 *
+	 * @return the provider ID or an empty string if the configuration
+	 * has no provider ID defined.
+	 */
+	private String getProviderId() {
+		try {
+			return initial.getAttribute(PROVIDER_CONFIG_ATT, "");
+		} catch (CoreException e) {
+			return "";
 		}
 	}
 
