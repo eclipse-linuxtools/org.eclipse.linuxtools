@@ -127,6 +127,8 @@ public abstract class BrowserView extends ViewPart {
 					img = IDEPlugin.getImageDescriptor("icons/vars/var_str.gif").createImage();
 				else if(item.endsWith(":unknown"))
 					img = IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage();
+				else
+					img = IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage();
 			}
 
 			return img;
