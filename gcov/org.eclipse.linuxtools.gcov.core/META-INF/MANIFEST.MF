@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gcov.core;singleton:=true
-Bundle-Version: 4.1.1.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.gcov.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.ui,
@@ -23,3 +23,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
+Export-Package: org.eclipse.linuxtools.gcov,
+ org.eclipse.linuxtools.internal.gcov.dialog;x-friends:="org.eclipse.linuxtools.gcov.launch",
+ org.eclipse.linuxtools.internal.gcov.parser;x-friends:="org.eclipse.linuxtools.gcov.launch",
+ org.eclipse.linuxtools.internal.gcov.view;x-friends:="org.eclipse.linuxtools.gcov.launch"

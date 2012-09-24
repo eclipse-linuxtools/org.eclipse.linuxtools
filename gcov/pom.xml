@@ -61,6 +61,7 @@
     <module>org.eclipse.linuxtools.gcov.core</module>
     <module>org.eclipse.linuxtools.gcov.docs</module>
     <module>org.eclipse.linuxtools.gcov-feature</module>
+    <module>org.eclipse.linuxtools.gcov.launch</module>
     <module>org.eclipse.linuxtools.gcov.test</module>
   </modules>
 

@@ -1,0 +1,15 @@
+<plugin>
+   <extension
+         point="org.eclipse.linuxtools.profiling.launch.launchProvider">
+      <provider
+            default="true"
+            delegate="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.provider.coverage.gcov"
+            name="%gcovLaunchConfiguration.name.0"
+            priority="1"
+            shortcut="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchShortcut"
+            tabgroup="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchConfigurationTabGroup"
+            type="coverage">
+      </provider>
+   </extension>   
+</plugin>
