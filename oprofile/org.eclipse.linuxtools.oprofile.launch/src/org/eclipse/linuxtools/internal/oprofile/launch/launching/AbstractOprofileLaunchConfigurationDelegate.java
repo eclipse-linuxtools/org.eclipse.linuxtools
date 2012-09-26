@@ -70,7 +70,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			events.toArray(daemonEvents);
 		}
 		
-		if (!preExec(options, daemonEvents)) return;
+		if (!preExec(options, daemonEvents, launch)) return;
 
 		/* 
 		 * this code written by QNX Software Systems and others and was 
@@ -91,7 +91,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			postExec(options, daemonEvents, launch, process);
 	}
 	
-	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
+	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);
 
 	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
 
