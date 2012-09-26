@@ -11,10 +11,12 @@
 package org.eclipse.linuxtools.internal.profiling.provider;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map.Entry;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
@@ -25,11 +27,24 @@ import org.eclipse.linuxtools.internal.profiling.provider.launch.Messages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
-public abstract class AbstractProviderPreferencesPage extends
-		FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class AbstractProviderPreferencesPage extends
+		FieldEditorPreferencePage implements IWorkbenchPreferencePage, IExecutableExtension {
 
-	private static IScopeContext configScopeInstance = ConfigurationScope.INSTANCE;
-	public static final String PREFS_KEY = "provider"; //$NON-NLS-1$
+	// Profiling type
+	private String type;
+
+	public void setInitializationData(IConfigurationElement config,
+			String propertyName, Object data) {
+		Hashtable<String, String> parameters = (Hashtable<String, String>) data;
+		String profilingType = parameters
+				.get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);
+
+		if (profilingType == null) {
+			profilingType = "";
+		}
+
+		setProfilingType(profilingType);
+	}
 
 	public AbstractProviderPreferencesPage() {
 		super(GRID);
@@ -37,7 +52,7 @@ public abstract class AbstractProviderPreferencesPage extends
 
 	public void init(IWorkbench workbench) {
 			final IPreferenceStore store = new ScopedPreferenceStore(
-					configScopeInstance, getProfilingType());
+					ConfigurationScope.INSTANCE, type);
 			setPreferenceStore(store);
 
 	}
@@ -45,16 +60,16 @@ public abstract class AbstractProviderPreferencesPage extends
 	public void initializeDefaultPreferences() {
 			super.performDefaults();
 			String providerId = ProfileLaunchShortcut
-					.getDefaultLaunchShortcutProviderId(getProfilingType());
-			configScopeInstance.getNode(getProfilingType())
-					.put(PREFS_KEY, providerId);
+					.getDefaultLaunchShortcutProviderId(type);
+			ConfigurationScope.INSTANCE.getNode(type)
+					.put(ProviderProfileConstants.PREFS_KEY, providerId);
 
 	}
 
 	@Override
 	protected void createFieldEditors() {
 			HashMap<String, String> map = ProfileLaunchConfigurationTabGroup
-					.getProviderNamesForType(getProfilingType());
+					.getProviderNamesForType(type);
 			// 2d array containing launch provider names on the first column and
 			// corresponding id's on the second.
 			String[][] providerList = new String[map.size()][2];
@@ -64,18 +79,20 @@ public abstract class AbstractProviderPreferencesPage extends
 				providerList[i][1] = entry.getValue();
 				i++;
 			}
-			RadioGroupFieldEditor editor = new RadioGroupFieldEditor(PREFS_KEY,
-					Messages.ProviderPreferencesPage_1, 1, providerList,
-					getFieldEditorParent());
+		RadioGroupFieldEditor editor = new RadioGroupFieldEditor(
+				ProviderProfileConstants.PREFS_KEY,
+				Messages.ProviderPreferencesPage_1, 1, providerList,
+				getFieldEditorParent());
 			addField(editor);
 
 	}
 
 	/**
-	 * Get profiling type of this plug-in.
+	 * Set profiling type.
 	 *
-	 * @return String profiling type this plug-in supports.
+	 * @param profilingType String profiling type.
 	 */
-	protected abstract String getProfilingType();
-
+	private void setProfilingType(String profilingType) {
+		type = profilingType;
+	}
 }

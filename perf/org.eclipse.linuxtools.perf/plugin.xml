@@ -142,7 +142,7 @@
             priority="1"
             shortcut="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut"
             tabgroup="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigurationTabGroup"
-            type="snapshot">
+            type="timing">
       </provider>
    </extension>   
 </plugin>

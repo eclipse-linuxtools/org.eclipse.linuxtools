@@ -14,17 +14,44 @@ import java.util.Map;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
+import org.eclipse.linuxtools.internal.profiling.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
-public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
+public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IExecutableExtension {
+
+	// Profiling type.
+	private String type;
+
+	// Launch configuration type id.
+	private String launchConfigId;
+
+	public void setInitializationData(IConfigurationElement config,
+			String propertyName, Object data) {
+		Map<String, String> parameters = (Map<String, String>) data;
+		String profilingType = parameters
+				.get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);
+		String configId = parameters
+				.get(ProviderProfileConstants.INIT_DATA_CONFIG_ID_KEY);
+
+		if (profilingType == null) {
+			profilingType = "";
+		}
+		if (configId == null) {
+			configId = "";
+		}
+
+		setLaunchConfigID(configId);
+		setProfilingType(profilingType);
+	}
 
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
@@ -189,7 +216,25 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 		// set attributes related to the specific profiling shortcut configuration.
 		shortcut.setDefaultProfileLaunchShortcutAttributes(wc);
 
-		wc.setAttribute(ProviderOptionsTab.PROVIDER_CONFIG_ATT, providerId);
+		wc.setAttribute(ProviderProfileConstants.PROVIDER_CONFIG_ATT,
+				providerId);
+	}
+
+	/**
+	 * Get name of profiling type that used for this tab.
+	 *
+	 * @return String profiling name.
+	 */
+	private void setProfilingType(String profilingType) {
+		type = profilingType;
+	}
+	/**
+	 * Set launch configuration type id.
+	 *
+	 * @param configId String configuration type id.
+	 */
+	private void setLaunchConfigID(String configId) {
+		launchConfigId = configId;
 	}
 
 	/**
@@ -197,8 +242,12 @@ public abstract class ProviderLaunchShortcut extends ProfileLaunchShortcut {
 	 *
 	 * @return String profiling type this plug-in supports.
 	 */
-	protected abstract String getLaunchConfigID();
+	private String getLaunchConfigID() {
+		return launchConfigId;
+	}
 
-	public abstract String getProfilingType();
+	public String getProfilingType() {
+		return type;
+	}
 
 }

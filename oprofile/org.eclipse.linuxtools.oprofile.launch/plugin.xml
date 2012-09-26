@@ -136,7 +136,7 @@
             priority="2"
             shortcut="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchShortcut"
             tabgroup="org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
-            type="snapshot">
+            type="timing">
       </provider>
    </extension>
 </plugin>

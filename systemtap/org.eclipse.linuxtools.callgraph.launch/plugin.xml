@@ -99,10 +99,10 @@
           delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
           id="org.eclipse.linuxtools.callgraph.launch.provider"
           name="Callgraph"
-          priority="1"
+          priority="3"
           shortcut="org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph"
           tabgroup="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
-          type="time">
+          type="timing">
     </provider>
  </extension>
    
