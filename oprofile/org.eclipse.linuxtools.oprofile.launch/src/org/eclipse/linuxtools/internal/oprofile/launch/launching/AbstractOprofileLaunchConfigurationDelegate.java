@@ -88,12 +88,12 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 		DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
 
-			postExec(options, daemonEvents, launch, process);
+			postExec(options, daemonEvents, process);
 	}
 	
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);
 
-	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
+	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process);
 
 	@Override
 	protected String getPluginID() {

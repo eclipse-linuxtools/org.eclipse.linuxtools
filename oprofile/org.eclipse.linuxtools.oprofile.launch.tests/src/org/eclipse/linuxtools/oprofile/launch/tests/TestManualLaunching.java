@@ -50,8 +50,8 @@ public class TestManualLaunching extends AbstractTest {
 			return; 
 		}
 		@Override
-		protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
-			super.postExec(options, daemonEvents, launch, process);
+		protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
+			super.postExec(options, daemonEvents, process);
 			
 			try {
 				process.waitFor();

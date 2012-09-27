@@ -77,7 +77,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 	}
 
 	@Override
-	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
+	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
 		// do nothing here since the termination listener already registered will handle everything needed
 	}
 	
