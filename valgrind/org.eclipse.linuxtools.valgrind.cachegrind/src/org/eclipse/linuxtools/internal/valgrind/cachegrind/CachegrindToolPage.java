@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -256,6 +257,7 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
+		config.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, CachegrindPlugin.TOOL_ID);
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM);
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_BRANCH_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_BRANCH_SIM);
 		
