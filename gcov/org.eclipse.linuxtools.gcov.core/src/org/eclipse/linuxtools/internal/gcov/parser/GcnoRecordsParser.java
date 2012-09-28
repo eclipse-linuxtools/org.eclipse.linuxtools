@@ -111,7 +111,7 @@ public class GcnoRecordsParser {
 					long fnctnChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
 					/*
 					 * danielhb, 2012-08-06: Gcov versions 4.7.0 or
-					 * later (long value = 875575105) has different format for
+					 * later (long value = 875575082) has different format for
 					 * the data file:
 					 * 
 					 * prior format:
@@ -127,7 +127,7 @@ public class GcnoRecordsParser {
 					 * TL;DR Need to consume the extra long value.
 					 * 
 					 */
-					if (version >= 875575105)
+					if (version >= 875575082)
 					{
 						// long cfgChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
 						stream.readInt();
