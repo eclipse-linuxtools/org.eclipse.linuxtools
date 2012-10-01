@@ -115,9 +115,6 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
 		}
 		
-		for (int i = 0; i < counters.length; i++) {
-			counterSubTabs[i].createEventsFilter();
-		}	
 		getTabFolderComposite();
 	}
 
@@ -231,6 +228,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				
 				for (CounterSubTab tab : counterSubTabs) {
 					tab.initializeTab(config);
+					tab.createEventsFilter();
 				}
 			try{
 				boolean enabledState = config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
