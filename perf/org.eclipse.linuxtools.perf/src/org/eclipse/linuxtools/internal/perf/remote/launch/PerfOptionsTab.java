@@ -26,8 +26,6 @@ import org.eclipse.linuxtools.profiling.launch.ConfigUtils;
 public class PerfOptionsTab extends org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
-
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Initializing optionsTab from previous config.");
 		ConfigUtils configUtils = new ConfigUtils(config);
 		IProject project = null;
 		try {

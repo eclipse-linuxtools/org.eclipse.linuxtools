@@ -13,11 +13,8 @@ package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -45,51 +42,34 @@ import org.eclipse.ui.PlatformUI;
 
 public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileLaunchConfigurationDelegate {
 	@Override
-	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
+	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch) {
 		// Set current project to allow using the oprofile path that
 		// was chosen for the project
 		Oprofile.OprofileProject.setProject(getProject());
-//		//set up the oprofile daemon
-//		try {
-//			//kill the daemon (it shouldn't be running already, but to be safe)
-//			oprofileShutdown();
-//			
-//			//reset data from the (possibly) existing default session, 
-//			// otherwise multiple runs will combine samples and results
-//			// won't make much sense
-//			oprofileReset();
-//			
-//			//setup the events and other parameters
-//			oprofileSetupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
-//		} catch (OpcontrolException oe) {
-//			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
-//			return;
-//		}
 		return true;
 	}
 
 	@Override
-	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
+	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
 		final LaunchOptions fOptions = options;
 		final OprofileDaemonEvent[] fDaemonEvents = daemonEvents;
-		final ILaunch fLaunch = launch;
 		Display.getDefault().syncExec(new Runnable() { 
 			public void run() {
 				//TODO: have a initialization dialog to do reset and setupDaemon?
 				// using a progress dialog, can't abort the launch if there's an exception..
 				try {
-					if (!oprofileStatus())
+					if (!oprofileStatus()) {
 						return;
+					}
 					oprofileReset();
 					oprofileSetupDaemon(fOptions.getOprofileDaemonOptions(), fDaemonEvents);
 				} catch (OpcontrolException oe) {
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
-					return;		//dont open the dialog
+					return; // dont open the dialog
 				}
 				
 				//manual oprofile control dialog
 				final OprofiledControlDialog dlg = new OprofiledControlDialog();
-				ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
 				
 				// This was earlier in an if (!fLaunch.isTerminated()) {} block. From a
 				// usability perspective I think it's better to show the oprofile control
@@ -98,59 +78,30 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				// --Severin, 2011-02-11
 				dlg.setBlockOnOpen(false);
 				dlg.open();
-				lmgr.addLaunchListener(new LaunchTerminationDialogCloser(fLaunch, dlg));
-			} 
-		});
-	}
-	
-	//A class used to listen for the termination of the current launch, and 
-	// run some functions when it is finished. 
-	class LaunchTerminationDialogCloser implements ILaunchesListener2 {
-		private ILaunch launch;
-		private OprofiledControlDialog dialog;
-		public LaunchTerminationDialogCloser(ILaunch il, OprofiledControlDialog dlg) {
-			launch = il;
-			dialog = dlg;
-		}
-		public void launchesTerminated(ILaunch[] launches) {
-			for (ILaunch l : launches) {
-				//kill the dialog when the launch is done
-				if (l.equals(launch)) {
-					//must be in the ui thread else thread access errors
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							dialog.close();
 
-							//progress dialog for ensuring the daemon is shut down
-							IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-								public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-									monitor.beginTask(OprofileLaunchMessages.getString("oprofiledcontroldialog.post.stopdaemon"), 1); //$NON-NLS-1$
-									try {
-										oprofileShutdown();
-									} catch (OpcontrolException e) {
-//									e.printStackTrace();
-									}
-									monitor.worked(1);
-									monitor.done();
-								}
-							};
-							ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-							try {
-								dialog.run(true, false, refreshRunner);
-							} catch (InvocationTargetException e) {
-								e.printStackTrace();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+				//progress dialog for ensuring the daemon is shut down
+				IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+						monitor.beginTask(OprofileLaunchMessages.getString("oprofiledcontroldialog.post.stopdaemon"), 1); //$NON-NLS-1$
+						try {
+							oprofileShutdown();
+						} catch (OpcontrolException e) {
 						}
-					});
+						monitor.worked(1);
+						monitor.done();
+					}
+				};
+				ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+				try {
+					dialog.run(true, false, refreshRunner);
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// cannot be thrown when cancelable is false
 				}
 			}
-		}
-		public void launchesAdded(ILaunch[] launches) { /* dont care */}
-		public void launchesChanged(ILaunch[] launches) { /* dont care */ }
-		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
-	}	
+		});
+	}
 	
 	/**
 	 * A custom dialog box to control the oprofile daemon.

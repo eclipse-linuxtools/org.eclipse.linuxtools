@@ -1,3 +1,13 @@
+2012-09-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/oprofile/launch/launching/AbstractOprofileLaunchConfigurationDelegate.java (launch): Add
+	ILaunch parameter to preExec call.
+	* src/org/eclipse/linuxtools/internal/oprofile/launch/launching/OprofileLaunchConfigurationDelegate.java (preExec): Perform
+	registration of launch termination listener here instead of in postExec. 
+	(postExec): Make empty since preExec now registers termination listener.
+	* src/org/eclipse/linuxtools/internal/oprofile/launch/launching/OprofileManualLaunchConfigurationDelegate.java (preExec): Change
+	to add ILaunch parameter.
+
 2011-12-16  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/launch/launching/OprofileManualLaunchConfigurationDelegate.java

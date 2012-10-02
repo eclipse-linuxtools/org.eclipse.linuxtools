@@ -15,13 +15,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.profiling.provider.AbstractProviderPreferencesPage;
-import org.eclipse.linuxtools.internal.profiling.provider.ProviderOptionsTab;
+import org.eclipse.linuxtools.internal.profiling.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
-public abstract class ProviderLaunchConfigurationDelegate extends
+public class ProviderLaunchConfigurationDelegate extends
 		ProfileLaunchConfigurationDelegate {
 
 	@Override
@@ -32,7 +31,7 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 			if (config != null) {
 				// get provider id from configuration.
 				String providerId = config.getAttribute(
-						ProviderOptionsTab.PROVIDER_CONFIG_ATT, "");
+						ProviderProfileConstants.PROVIDER_CONFIG_ATT, "");
 
 				// get delegate associated with provider id.
 				ProfileLaunchConfigurationDelegate delegate = getConfigurationDelegateFromId(providerId);
@@ -61,10 +60,9 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 	 */
 	public static String getProviderIdToRun(String type) {
 		// Look in the preferences for a provider
-		String providerId = ConfigurationScope.INSTANCE.getNode(
-				type).get(
-				AbstractProviderPreferencesPage.PREFS_KEY, "");
-		if (providerId.equals("")) {
+		String providerId = ConfigurationScope.INSTANCE.getNode(type).get(
+				ProviderProfileConstants.PREFS_KEY, "");
+		if (providerId.equals("") || getConfigurationDelegateFromId(providerId) == null) {
 			// Get highest priority provider
 			providerId = ProfileLaunchConfigurationTabGroup
 					.getHighestProviderId(type);
@@ -82,6 +80,9 @@ public abstract class ProviderLaunchConfigurationDelegate extends
 		return null;
 	}
 
-	public abstract String getProfilingType();
+	@Override
+	protected String getPluginID() {
+		return ProviderProfileConstants.PLUGIN_ID;
+	}
 
 }

@@ -1,3 +1,7 @@
+2012-09-28  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Allow cachegrind plug-in to access o.e.l.internal.valgrind.core.
+
 2012-09-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Allow memcheck and valgrind plug-ins to access o.e.l.internal.valgrind.core.

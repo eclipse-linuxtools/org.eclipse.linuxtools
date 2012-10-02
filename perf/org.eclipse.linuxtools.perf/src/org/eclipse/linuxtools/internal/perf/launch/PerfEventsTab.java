@@ -230,8 +230,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 	
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Initializing eventsTab from previous config.");
-		
 		IProject project = getProject(config);
 
 		try {
@@ -315,7 +313,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy wconfig) {
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Saving eventsTab values.");
 		//Store default event checkbox
 		wconfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, _chkDefaultEvent.getSelection());
 		
@@ -327,7 +324,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 					selectedEvents.add(x.getText());				
 			}
 		}
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Selected events:" + selectedEvents.toString());
 
 		if (selectedEvents.size() == 0) {
 			wconfig.setAttribute(PerfPlugin.ATTR_SelectedEvents, (String) null);
@@ -373,7 +369,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy wconfig) {
-		//if (PerfPlugin.DEBUG_ON) System.out.println("Initializing eventsTab from default values.");
 		wconfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_MultipleEvents, PerfPlugin.ATTR_MultipleEvents_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);

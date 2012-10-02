@@ -19,7 +19,8 @@ Export-Package: org.eclipse.linuxtools.internal.valgrind.core;
    org.eclipse.linuxtools.valgrind.massif.tests,
    org.eclipse.linuxtools.valgrind.memcheck.tests,
    org.eclipse.linuxtools.valgrind.massif,
-   org.eclipse.linuxtools.valgrind.memcheck",
+   org.eclipse.linuxtools.valgrind.memcheck,
+   org.eclipse.linuxtools.valgrind.cachegrind",
  org.eclipse.linuxtools.valgrind.core
 Import-Package: org.eclipse.cdt.utils.pty,
  org.eclipse.core.resources,

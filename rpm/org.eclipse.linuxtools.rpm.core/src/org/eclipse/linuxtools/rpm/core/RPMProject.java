@@ -156,7 +156,7 @@ public class RPMProject {
 	 * Builds binary rpm.
 	 * @param out The stream to right command output to.
 	 * @return The result of the command.
-	 * @throws CoreException 
+	 * @throws CoreException If exception occurs during building.
 	 */
 	public IStatus buildBinaryRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
@@ -173,7 +173,7 @@ public class RPMProject {
 	 * Builds source rpm.
 	 * @param out The stream to right command output to.
 	 * @return The result of the command.
-	 * @throws CoreException 
+	 * @throws CoreException If exception occurs during building.
 	 */
 	public IStatus buildSourceRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
