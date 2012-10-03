@@ -267,4 +267,18 @@
            <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
          </perspectiveExtension>
 	</extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+    <category
+          id="org.eclipse.linuxtools.systemtap.ui.ide"
+          name="%category.name">
+    </category>
+    <wizard
+          category="org.eclipse.linuxtools.systemtap.ui.ide"
+          class="org.eclipse.linuxtools.systemtap.ui.ide.wizards.StapNewWizard"
+          icon="icons/smileytap.gif"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.wizards.StapNewWizard"
+          name="%wizard.name">
+    </wizard>
+ </extension>
 </plugin>
