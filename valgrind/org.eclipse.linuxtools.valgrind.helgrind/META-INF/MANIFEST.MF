@@ -2,15 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.helgrind;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.helgrind.HelgrindPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Import-Package: org.eclipse.debug.core,
+Import-Package: org.eclipse.cdt.core.model,
+ org.eclipse.debug.core,
  org.eclipse.debug.ui,
+ org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.internal.valgrind.launch,
+ org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui
 Bundle-Vendor: %Bundle-Vendor.0
