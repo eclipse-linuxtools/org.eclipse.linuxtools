@@ -78,6 +78,10 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 				String curProviderId = comboItems.get(providerCombo.getText());
 				loadTabGroupItems(tabgroup, curProviderId);
 				initializeFrom(initial);
+				// Since we are calling initializeFrom manually, we have to
+				// update the launch configuration dialog manually to ensure
+				// initial validation on the configuration.
+				updateLaunchConfigurationDialog();
 				top.layout();
 			}
 		});
@@ -277,6 +281,22 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 		if (provider.equals("")) {
 			setErrorMessage(Messages.ProviderOptionsTab_0);
 			return false;
+		}
+
+		Boolean isInitialized = initialized.get(getProviderId());
+
+		if (isInitialized) {
+			// Tabs should not be null after initialization.
+			if (tabs == null) {
+				return false;
+			}
+
+			// Validate tab configurations of underlying tool.
+			for (AbstractLaunchConfigurationTab tab : tabs) {
+				if (!tab.isValid(config)) {
+					return false;
+				}
+			}
 		}
 		return true;
 	}
