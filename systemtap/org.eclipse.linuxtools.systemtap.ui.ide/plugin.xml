@@ -281,4 +281,37 @@
           name="%wizard.name">
     </wizard>
  </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunchShortcut"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.StapLaunchShortcut"
+          label="Systemtap Script"
+          modes="run">
+       <contextualLaunch>
+          <enablement>
+             <with
+                   variable="selection">
+                <count
+                      value="1">
+                </count>
+                <test
+                      forcePluginActivation="true"
+                      property="org.eclipse.linuxtools.systemtap.ui.ide.property.systemtap">
+                </test>
+             </with>
+          </enablement>
+       </contextualLaunch>
+    </shortcut>
+ </extension>
+ <extension
+       point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+          class="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.propertyTester1"
+          namespace="org.eclipse.linuxtools.systemtap.ui.ide.property"
+          properties="systemtap"
+          type="java.util.Arrays$ArrayList">
+    </propertyTester>
+ </extension>
 </plugin>
