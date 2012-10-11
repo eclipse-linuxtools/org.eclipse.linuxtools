@@ -67,6 +67,7 @@
     <module>org.eclipse.linuxtools.dataviewers.charts</module>
     <module>org.eclipse.linuxtools.dataviewers.annotatedsourceeditor</module>
     <module>org.eclipse.linuxtools.dataviewers-feature</module>
+    <module>org.eclipse.linuxtools.profiling.docs</module>
     <module>org.eclipse.linuxtools.profiling-feature</module>
     <module>org.eclipse.linuxtools.profiling.launch</module>
     <module>org.eclipse.linuxtools.profiling.launch.ui</module>
