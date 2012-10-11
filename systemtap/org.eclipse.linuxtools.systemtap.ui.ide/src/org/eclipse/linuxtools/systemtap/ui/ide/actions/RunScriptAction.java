@@ -83,26 +83,31 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	public void run() {
 		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		continueRun = true;
-		if(ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
+
+		if(getRunLocal() == false && ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
 			new SelectServerDialog(fWindow.getShell()).open() == false)
 			return;
 
 		if(isValid()) {
-			 try{
+			if(getRunLocal() == false) {
+				try{
 				 
 					ScpClient scpclient = new ScpClient();
 					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
 					tmpfileName="/tmp/"+ serverfileName;
 					 scpclient.transfer(fileName,tmpfileName);
 			        }catch(Exception e){e.printStackTrace();}
-					
+			}
 			String[] script = buildScript();
 			String[] envVars = getEnvironmentVariables();
             if(continueRun)
             {
-            
-    	
-            	ScriptConsole console = ScriptConsole.getInstance(serverfileName);
+            	ScriptConsole console;
+            	if(getRunLocal() == false) {
+            		console = ScriptConsole.getInstance(serverfileName);
+            	} else {
+            		console = ScriptConsole.getInstance(fileName);
+            	}
                 console.run(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
             }
 		}
@@ -285,22 +290,35 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 
 		script = new String[cmdList.size() + 4];
 		script[0] = "stap"; //$NON-NLS-1$
-			
-		script[script.length-1] = tmpfileName;
+
+		if(getRunLocal() == false)
+			script[script.length-1] = tmpfileName;
+		else
+			script[script.length-1] = fileName;
 		
 		for(int i=0; i< cmdList.size(); i++) {
 			script[i+1] = cmdList.get(i).toString();
 		}
 		script[script.length-3]="-m";
-		
-		String modname = serverfileName.substring(0, serverfileName.indexOf('.'));
+
+		String modname;
+		if(getRunLocal() == false) {
+			modname = serverfileName.substring(0, serverfileName.indexOf('.'));
+		}
+		/* We need to remove the directory prefix here because in the case of
+		 * running the script remotely, this is already done.  Not doing so
+		 * causes a modname error.
+		 */
+		else {
+			modname = fileName.substring(fileName.lastIndexOf('/')+1);
+			modname = modname.substring(0, modname.indexOf('.'));
+		}
 		if (modname.indexOf('-') != -1)
 			modname = modname.substring(0, modname.indexOf('-'));
 		script[script.length-2]=modname;
-		
 		return script;
 	}
-	
+
 	protected String[] getEnvironmentVariables() {
 		return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
 	}
@@ -325,7 +343,16 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		return subscription;
 	}
 
+	public void setLocalScript(boolean enabled) {
+		runLocal = enabled;
+	}
+
+	public boolean getRunLocal() {
+		return runLocal;
+	}
+
 	protected boolean continueRun = true;
+	protected boolean runLocal = false;
 	protected String fileName = null;
 	protected String tmpfileName = null;
 	protected String serverfileName = null;
