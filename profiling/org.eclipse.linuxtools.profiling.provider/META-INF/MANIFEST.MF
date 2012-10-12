@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Snapshot Profiling Plugin
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.provider;singleton:=true
 Bundle-Version: 1.2.0.qualifier
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.ui,
@@ -14,5 +14,6 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.cdt.launch,
  org.eclipse.linuxtools.internal.profiling.launch,
  org.eclipse.linuxtools.profiling.launch
-Export-Package: org.eclipse.linuxtools.internal.profiling.provider,
- org.eclipse.linuxtools.internal.profiling.provider.launch
+Export-Package: org.eclipse.linuxtools.internal.profiling.provider;x-internal:=true,
+ org.eclipse.linuxtools.internal.profiling.provider.launch;x-internal:=true
+Bundle-Localization: plugin
