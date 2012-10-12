@@ -1,3 +1,16 @@
+2012-10-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* resources/basicTest/.cproject: New file.
+	* resources/basicTest/.project: New file.
+	* resources/basicTest/test\ suppfile.supp: New file.
+	* resources/basicTest/test.c: New file.
+	* resources/basicTest/testsuppfile.supp: New file.
+	* resources/basicTest/testsuppfile2.supp: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ShortcutTest.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ValgrindTestMassifLaunchShortcut.java: New file.
+	* META-INF/MANIFEST.MF: Add dependency on org.eclipse.ui. 
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/AllTests.java: Add launch shortcut test.
+	
 2011-05-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ExportWizardTest.java (testExportNoLaunch): Move
