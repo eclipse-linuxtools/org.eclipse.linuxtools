@@ -20,4 +20,5 @@ Import-Package:
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
+ org.eclipse.ui.ide,
  org.eclipse.ui.texteditor

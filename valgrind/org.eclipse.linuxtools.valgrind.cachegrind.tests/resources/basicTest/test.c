@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,15 +8,12 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
+#include <stdlib.h>
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ BasicCachegrindTest.class, CModelLabelsTest.class,
-		DoubleClickTest.class, LaunchConfigTabTest.class,
-		MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class })
-public class AllTests {
-	
+#define SIZE 10
+int main() {
+	char *waste = (char *)malloc(sizeof(char) * SIZE);
+	waste[0] = waste[SIZE];
+	waste[SIZE] = 0;
+	return 0;
 }
