@@ -314,4 +314,30 @@
           type="java.util.Arrays$ArrayList">
     </propertyTester>
  </extension>
+ <extension
+       point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+          delegate="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunchConfigurationDelegate"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"
+          modes="run"
+          name="SystemTap"
+          public="true">
+    </launchConfigurationType>
+ </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+          configTypeID="org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"
+          icon="icons/smileytap.gif"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.systemtapLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+ </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+          class="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunchConfigurationTabGroup"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.systemTapLaunchConfigurationTabGroup"
+          type="org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType">
+    </launchConfigurationTabGroup>
+ </extension>
 </plugin>
