@@ -16,7 +16,8 @@
       <shortcut
             id="org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"
             label="%shortcut.label"
-            modes="profile">
+            modes="profile"
+            path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut">
                <parameter 
                      name="type"
@@ -111,7 +112,8 @@
       <shortcut
             id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchShortcut"
             label="%shortcut.label.0"
-            modes="profile">
+            modes="profile"
+            path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut">
                <parameter 
                      name="type"
@@ -206,7 +208,8 @@
       <shortcut
             id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchShortcut"
             label="%shortcut.label.1"
-            modes="profile">
+            modes="profile"
+            path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut">
                <parameter 
                      name="type"
