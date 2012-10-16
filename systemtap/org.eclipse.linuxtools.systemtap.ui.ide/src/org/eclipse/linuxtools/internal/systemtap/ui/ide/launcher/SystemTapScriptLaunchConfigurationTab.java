@@ -11,10 +11,16 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -27,6 +33,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.ResourceUtil;
 
 public class SystemTapScriptLaunchConfigurationTab extends
 		AbstractLaunchConfigurationTab {
@@ -49,7 +59,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 	private Label hostNamelabel;
 
 	public void createControl(Composite parent) {
-		
+
 		GridLayout layout = new GridLayout();
 		Composite top = new Composite(parent, SWT.NONE);
 		setControl(top);
@@ -107,7 +117,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 			public void widgetSelected(SelectionEvent e) {
 				update();
 			}
-			
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 				update();
 			}
@@ -184,7 +194,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SCRIPT_PATH_ATTR, ""); //$NON-NLS-1$
+		configuration.setAttribute(SCRIPT_PATH_ATTR, this.getSelectedScriptPath());
 		configuration.setAttribute(CURRENT_USER_ATTR, true);
 		configuration.setAttribute(USER_NAME_ATTR, ""); //$NON-NLS-1$
 		configuration.setAttribute(USER_PASS_ATTR, ""); //$NON-NLS-1$
@@ -222,6 +232,41 @@ public class SystemTapScriptLaunchConfigurationTab extends
 
 	public String getName() {
 		return Messages.SystemTapScriptLaunchConfigurationTab_9; 
+	}
+
+	private String getSelectedScriptPath(){
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+
+		String pathString = ""; //$NON-NLS-1$
+
+		if (window != null)
+		{
+			ISelection selection = window.getSelectionService().getSelection();
+
+			// Figure out the selected systemtap script
+			if (selection instanceof TreeSelection){
+				Object selectedElement = ((TreeSelection)selection).getFirstElement();
+				if (selectedElement instanceof IFile)
+				{
+					IPath path = ((IFile)selectedElement).getLocation();
+					pathString = path.toOSString();
+				}
+			}
+
+			// If it is a text selection use the path from the active editor.
+			if (selection instanceof TextSelection){
+				IEditorPart ed = window.getActivePage().getActiveEditor();
+				if(ed.getEditorInput() instanceof PathEditorInput)
+				 pathString = ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+				else
+			    pathString = ResourceUtil.getFile(ed.getEditorInput()).getLocation().toString();
+			}
+		}
+
+		if (pathString.endsWith(SystemTapScriptTester.STP_SUFFIX))
+			return pathString;
+
+		return ""; //$NON-NLS-1$
 	}
 
 }
