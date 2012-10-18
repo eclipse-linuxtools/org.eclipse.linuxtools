@@ -67,14 +67,17 @@ public class StreamGobbler implements Runnable {
 			int val=-1;
 
 			while(t == thisThread) {
-				while(0 < is.available()) {
-					if(-1 == (val = is.read()))
-						this.stop();
-					else
-						line.append((char)val);
+				val = is.read();
+				while(val != -1) {
+					line.append((char)val);
+
 					if ('\n' == val)
 						this.fireNewDataEvent();
-					
+
+					val = is.read();
+					if(-1 == val)
+						this.stop();
+
 				}
 				try {
 					Thread.sleep(10);
