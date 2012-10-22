@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
  * @author Ryan Morse
  */
 public class DashboardPerspective implements IPerspectiveFactory {
-	public static String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective"; //$NON-NLS-1$
 	
 	public void createInitialLayout(IPageLayout layout) {
 		LogManager.logDebug("Start createInitialLayout:", this); //$NON-NLS-1$
