@@ -36,7 +36,7 @@ public class ExtensionPointTest {
 	@Test
 	public void testId() {
 		String defaultId = ProviderLaunchShortcut.getDefaultLaunchShortcutProviderId(PROFILING_TYPE);
-		assertEquals(PLUGIN_ID + "2", defaultId);
+		assertEquals(PLUGIN_ID + "1", defaultId);
 
 		String highestProviderId = ProviderLaunchConfigurationTabGroup.getHighestProviderId(PROFILING_TYPE);
 		assertEquals(PLUGIN_ID + "1", highestProviderId);
