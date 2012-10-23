@@ -84,9 +84,33 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 * @param type A profiling type (eg. memory, snapshot, timing, etc.)
 	 * @return a profiling launch shortcut that implements <code>ProfileLaunchShortcut</code>
 	 * and provides the necessary profiling type, or <code>null</code> if none could be found.
-	 * @since 1.1
+	 * @since 1.2
 	 */
 	public ProfileLaunchShortcut getProfilingProvider(String type) {
+		
+		ArrayList<IConfigurationElement> configList = getOrderedConfigElements(type);
+
+		for (IConfigurationElement config : configList) {
+			try {
+				Object obj = config.createExecutableExtension("shortcut"); //$NON-NLS-1$
+				if (obj instanceof ProfileLaunchShortcut) {
+					return (ProfileLaunchShortcut) obj;
+				}
+			} catch (CoreException e) {
+				// continue, other configuration may succeed
+			}
+		}
+		return null;
+	}
+
+	
+	/**
+	 * Get launch providers for a given type and order them with regards to highest priority first.
+	 * 
+	 * @param type
+	 * @return array of launch provider configuration elements in prioritized order
+	 */
+	private static ArrayList<IConfigurationElement> getOrderedConfigElements(String type) {
 		IExtensionPoint extPoint = Platform.getExtensionRegistry()
 				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, "launchProvider"); //$NON-NLS-1$
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
@@ -137,20 +161,9 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				return p1 < p2 ? -1 : 1;
 			}
 		});
-
-		for (IConfigurationElement config : configList) {
-			try {
-				Object obj = config.createExecutableExtension("shortcut"); //$NON-NLS-1$
-				if (obj instanceof ProfileLaunchShortcut) {
-					return (ProfileLaunchShortcut) obj;
-				}
-			} catch (CoreException e) {
-				// continue, other configuration may succeed
-			}
-		}
-		return null;
+		return configList;
 	}
-
+	
 	/**
 	 * Get id of default profiling launch shortcut that provides the type 
 	 * of profiling. This looks through extensions of the
@@ -164,30 +177,17 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 * @since 1.2
 	 */
 	public static String getDefaultLaunchShortcutProviderId(String type) {
-		IExtensionPoint extPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID,
-						"launchProvider"); //$NON-NLS-1$
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement config : configs) {
-			if (config.getName().equals("provider")) { //$NON-NLS-1$
-				String currentType = config.getAttribute("type"); //$NON-NLS-1$
-				String shortcut = config.getAttribute("shortcut"); //$NON-NLS-1$
-				if (currentType != null && shortcut != null
-						&& currentType.equals(type)) {
-					String isDefault = config.getAttribute("default");
-					if (isDefault != null && isDefault.equals("true")) {
-						try {
-							Object obj = config
-									.createExecutableExtension("shortcut"); //$NON-NLS-1$
-							if (obj instanceof ProfileLaunchShortcut) {
-								return config.getAttribute("id");
-							}
-						} catch (CoreException e) {
-							// continue, perhaps another configuration will
-							// succeed
-						}
-					}
+		ArrayList<IConfigurationElement> list = getOrderedConfigElements(type);
+		for (IConfigurationElement config : list) {
+			try {
+				Object obj = config
+						.createExecutableExtension("shortcut"); //$NON-NLS-1$
+				if (obj instanceof ProfileLaunchShortcut) {
+					return config.getAttribute("id"); //$NON-NLS-1$
 				}
+			} catch (CoreException e) {
+				// continue, perhaps another configuration will
+				// succeed
 			}
 		}
 		return null;
