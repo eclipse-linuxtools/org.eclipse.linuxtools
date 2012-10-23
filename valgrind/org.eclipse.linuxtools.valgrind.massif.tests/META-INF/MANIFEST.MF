@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.massif.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.junit;bundle-version="4.7.0",
- org.eclipse.cdt.managedbuilder.gnu.ui
+ org.eclipse.cdt.managedbuilder.gnu.ui,
+ org.eclipse.ui.browser;bundle-version="3.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -16,4 +17,5 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.internal.valgrind.tests,
  org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.tests,
+ org.eclipse.ui.ide,
  org.eclipse.ui.texteditor

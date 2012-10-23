@@ -77,9 +77,6 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 			
 			IViewPart ivp = fWindow.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
 			((DashboardModuleBrowserView)ivp).refresh();
-		} else {
-			String msg = Localization.getString("ImportModuleLocationAction.FileIsNull"); //$NON-NLS-1$
-			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ImportModuleLocationAction.Problem"), msg); //$NON-NLS-1$
 		}
 		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}

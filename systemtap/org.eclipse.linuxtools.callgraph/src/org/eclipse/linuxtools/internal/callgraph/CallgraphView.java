@@ -11,11 +11,13 @@
 
 package org.eclipse.linuxtools.internal.callgraph;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -37,6 +39,7 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.internal.callgraph.graphlisteners.AutoScrollSelectionListener;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -587,76 +590,130 @@ public class CallgraphView extends SystemTapView {
 	
 	public void createViewActions() {
 		//Set drawmode to tree view
-		view_treeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
-			@Override
-			public void run() {
-				g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, g.getAnimationMode(), 
-						g.getRootVisibleNodeNumber());
-				g.scrollTo(g.getNode(g.getRootVisibleNodeNumber()).getLocation().x
-						- g.getBounds().width / 2, g.getNode(
-						g.getRootVisibleNodeNumber()).getLocation().y);
-				if (play != null)
-					play.setEnabled(true);
-			}
-		};
-		ImageDescriptor treeImage = CallgraphPlugin.getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
-		view_treeview.setImageDescriptor(treeImage);
+		try {
+			final Process p = new ProcessBuilder("/usr/bin/bash", "-c", "id | grep stapdev").start();
+			p.waitFor();
+			view_treeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
+				@Override
+				public void run() {
+					if(p != null && p.exitValue() == 0) {
+						g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, g.getAnimationMode(),
+								g.getRootVisibleNodeNumber());
+						g.scrollTo(g.getNode(g.getRootVisibleNodeNumber()).getLocation().x
+								- g.getBounds().width / 2, g.getNode(
+										g.getRootVisibleNodeNumber()).getLocation().y);
+						if (play != null)
+							play.setEnabled(true);
+					} else {
+						stapPermissionError();
+					}
+				}
+			};
+			ImageDescriptor treeImage = CallgraphPlugin.getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
+			view_treeview.setImageDescriptor(treeImage);
 		
 		
-		//Set drawmode to radial view
-		view_radialview = new Action(Messages.getString("CallgraphView.RadialView")){ //$NON-NLS-1$
-			@Override
-			public void run(){
-				g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, g.getAnimationMode(),
-						g.getRootVisibleNodeNumber());
-				if (play != null)
-					play.setEnabled(true);
-			}
-		};
-		ImageDescriptor d = CallgraphPlugin.getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
-		view_radialview.setImageDescriptor(d);
+			//Set drawmode to radial view
+			view_radialview = new Action(Messages.getString("CallgraphView.RadialView")){ //$NON-NLS-1$
+				@Override
+				public void run(){
+					if(p != null && p.exitValue() == 0) {
+						g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, g.getAnimationMode(),
+								g.getRootVisibleNodeNumber());
+						if (play != null)
+							play.setEnabled(true);
+					} else {
+						stapPermissionError();
+					}
+				}
+			};
+			ImageDescriptor d = CallgraphPlugin.getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
+			view_radialview.setImageDescriptor(d);
 		
-		//Set drawmode to aggregate view
-		view_aggregateview = new Action(Messages.getString("CallgraphView.AggregateView")){ //$NON-NLS-1$
-			@Override
-			public void run(){
-				g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, g.getAnimationMode(), 
-						g.getRootVisibleNodeNumber());
-				if (play != null)
-					play.setEnabled(false);
-			}
-		};
-		ImageDescriptor aggregateImage = CallgraphPlugin.getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
-		view_aggregateview.setImageDescriptor(aggregateImage);
-		
-		
-		//Set drawmode to level view
-		view_levelview = new Action(Messages.getString("CallgraphView.LevelView")){ //$NON-NLS-1$
-			@Override
-			public void run(){
-				g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, g.getAnimationMode(), 
-						g.getRootVisibleNodeNumber());
-				if (play != null)
-					play.setEnabled(true);
-			}
-		};
-		ImageDescriptor levelImage = CallgraphPlugin.getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
-		view_levelview.setImageDescriptor(levelImage);
+			//Set drawmode to aggregate view
+			view_aggregateview = new Action(Messages.getString("CallgraphView.AggregateView")){ //$NON-NLS-1$
+				@Override
+				public void run(){
+					if(p != null && p.exitValue() == 0) {
+						g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, g.getAnimationMode(),
+								g.getRootVisibleNodeNumber());
+						if (play != null)
+							play.setEnabled(false);
+					} else {
+						stapPermissionError();
+					}
+				}
+			};
+			ImageDescriptor aggregateImage = CallgraphPlugin.getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
+			view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
-		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
-			@Override
-			public void run(){
-				g.reset();
-			}
-		});
-		ImageDescriptor refreshImage = CallgraphPlugin.getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
-		getView_refresh().setImageDescriptor(refreshImage);
+			//Set drawmode to level view
+			view_levelview = new Action(Messages.getString("CallgraphView.LevelView")){ //$NON-NLS-1$
+				@Override
+				public void run(){
+					if(p != null && p.exitValue() == 0) {
+						g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, g.getAnimationMode(),
+								g.getRootVisibleNodeNumber());
+						if (play != null)
+							play.setEnabled(true);
+					} else {
+						stapPermissionError();
+					}
+				}
+			};
+			ImageDescriptor levelImage = CallgraphPlugin.getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
+			view_levelview.setImageDescriptor(levelImage);
 		
 		
+			setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
+				@Override
+				public void run(){
+					if(p != null && p.exitValue() == 0) {
+						g.reset();
+					} else {
+						stapPermissionError();
+					}
+				}
+			});
+			ImageDescriptor refreshImage = CallgraphPlugin.getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
+			getView_refresh().setImageDescriptor(refreshImage);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 
+	public void stapPermissionError() {
+		Process p = null;
+		try {
+			p = new ProcessBuilder("/usr/bin/bash", "-c", "whoami").start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		InputStreamReader isr = new InputStreamReader(p.getInputStream());
+		BufferedReader br = new BufferedReader(isr);
+		String user = null;
+		try {
+			user = br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		SystemTapUIErrorMessages message = new SystemTapUIErrorMessages(
+				Messages.getString("CallgraphView.StapError1"),
+				Messages.getString("CallgraphView.StapError1"), NLS.bind(
+						Messages.getString("CallgraphView.StapError2"), user));
+		message.schedule();
+	}
 	/**
 	 * Populates Animate menu.
 	 */

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Profiling Framework User Guide - Profiling Categories</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Profiling Categories</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Profiling Framework User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Profiling-Configurations.html" title="Profiling Configurations">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Framework User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Profiling Configurations</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Profiling_Categories">Profiling Categories</h1>
+		<p>In the past, some of the Linux Tools profiling plug-ins, such as Valgrind, would add a default launch short-cut.  The launch short-cut would use a set of default
+			parameters for the profiling tool and would launch the selected executable appropriately.  In the case of Valgrind, which supports multiple tools, the short-cut would 
+			default one particular tool to use (in Valgrind's case, this is the memcheck tool which checks for memory leaks).  In the Eclipse Debug Launch framework, each
+			launch short-cut can specify which mode or modes it applies to (run, debug, and profile).  For those short-cuts that specify the profile mode, this results in an added
+			menu entry under the Profile as... context menu.  For example, there are short-cuts for Perf, OProfile, and Valgrind which show up as Profile With Perf, Profile With OProfile,
+			and Profile With Valgrind, respectively.</p>
+		<p>This can be confusing to end-users who are not familiar with the various tools that are out there and what they can do.  For example, both OProfile and Perf provide timing
+			results for an application so there is overlap of functionality within the various tools.  To alleviate this, the current profiling tools have been
+			grouped into task categories.  By default, there are three initial categories:</p>
+		<ul>
+			<li>Timing - this measure the amount of time taken in functions and methods
+				<ul>
+					<li>includes Linux Tools Perf, OProfile, Callgraph (via SystemTap), and Gprof</li>
+				</ul>
+			</li>
+			<li>Memory - this profiles heap/stack/cache usage for an application
+				<ul>
+					<li>includes Linux Tools Memcheck, Massif, Cachegrind, and Helgrind tools from Valgrind</li>
+				</ul>
+			</li>
+			<li>Coverage - this measures how much of the code gets exercised in a run
+				<ul>
+					<li>includes Gcov</li>
+				</ul>
+			</li>
+		</ul>
+		<p>For details on using the tools mentioned above, see the appropriate User's Guide for the tool installed from the Linux Tools update site.</p>
+		<p>The Profiling Category framework is extensible and additional tools such as third-party profiling tools can be added to any of the basic three categories or a new category can be created if needed (e.g. other).</p>
+		<p>Each category contributes a launch short-cut which results in a menu item under the Profile as... context menu so that an end-user may select to get a timing profile or profile memory usage for a given
+			C/C++ executable.  To determine which profiling tool is used from a category short-cut,
+			each tool in a category gives itself a priority so that when multiple tools are installed from the same category, the one with the highest priority becomes the initial default.  For example, the Perf tool has the highest
+			priority of the profile timing category tools and so becomes the initial default, if installed.  Valgrind memcheck has the highest priority for profiling memory and Gcov is the default
+			for profiling code coverage (at present the only tool in the category).</p>
+		<p>The default for any category can be directly set/modified by the end-user via Window -&gt; Preferences -&gt; Profiling.  Each category of installed tools using the framework will present a
+			sub-page within the Profiling Preferences category.  The preferences page for the category will display a radio button for each tool that is installed, belonging to that particular category.
+			If no tools are installed for a given category, no preferences page is displayed.  If the user has not set a preferred tool for a category, the priority of each installed tool will determine the
+			default.</p>
+		<p>The following shows the Profiling Preferences page for the Timing Category whereby the Linux Tools Perf, OProfile, and Callgraph plug-ins are installed.  Note the Perf tool being the default:
+			<br/>
+			<br/>
+
+			<img border="0" src="images/LinuxToolsProfilingPreferences.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Profiling Framework User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Profiling Framework User Guide">
+						<img alt="Profiling Framework User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Profiling-Configurations.html" title="Profiling Configurations">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Framework User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Profiling Configurations</td>
+			</tr>
+		</table>
+	</body>
+</html>

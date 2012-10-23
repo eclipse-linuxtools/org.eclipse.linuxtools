@@ -249,15 +249,8 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
-		
+
 		try {
-			
-			if (! PerfCore.checkPerfInPath()) 
-			{
-				IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
-				ex =  new CoreException(status);
-			}
-			
 			_txtKernel_Location.setText(config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default));
 			_chkRecord_Realtime.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default));
 			_chkRecord_Verbose.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default));

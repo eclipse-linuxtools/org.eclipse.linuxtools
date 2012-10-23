@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Profiling Framework User Guide - Profiling Configurations</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Profiling Configurations</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Profiling-Categories.html" title="Profiling Categories">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Categories</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Profiling_Configurations">Profiling Configurations</h1>
+		<p>As mentioned, each short-cut creates a menu item under the Profile as... context menu (e.g. right-click on a C/C++ executable).  In addition to the short-cuts for each category, the end-user
+			may select Profile Configurations...</p>
+		<p>This brings up a dialog that allows the user to modify current launch configurations or to create new ones:
+			<br/>
+			<br/>
+		</p>
+		<p>
+			<img border="0" src="images/LinuxToolsProfilingConfigurations.png"/>
+		</p>
+		<p>The following tabs are provided in all Linux Tools profiling configurations:</p>
+		<ul>
+			<li>Main 
+				<ul>
+					<li>This tab allows one to set the C/C++ executable and Eclipse project.</li>
+				</ul>
+			</li>
+			<li>Arguments
+				<ul>
+					<li>This tab sets the arguments to pass to the C/C++ program when profiling it.</li>
+				</ul>
+			</li>
+			<li>Environment
+				<ul>
+					<li>This tab sets any environment variables to set when running the program and profiling.  You can choose to override the current environment or to replace it entirely.</li>
+				</ul>
+			</li>
+			<li>Source
+				<ul>
+					<li>This tab sets the source lookup path which may be used by the Linux Tools Profiling plug-ins to open source code via the UI.</li>
+				</ul>
+			</li>
+			<li>Common
+				<ul>
+					<li>This tab allows one to specify how the configuration gets stored, mark it as a favorite Profiling configuration, and to set up a console in the case where C/C++ standard input/output is used.</li>
+				</ul>
+			</li>
+		</ul>
+		<p>With all short-cuts, a set of default parameters are set up for you such as: the executable will be the one you right-clicked on and the project will be set to its
+			project automatically.
+			If you wish to create a new configuration from scratch, simply select the type of profiling launch configuration you wish to create by clicking in the left-hand tree view and
+			then push the 
+			<img border="0" src="images/LinuxToolsProfilingNewIcon.png"/> icon found in the top left corner.  This will create a new configuration with some defaults, but some options may require
+			setting manually (e.g. the executable and the project).
+		</p>
+		<p>In addition to the common tabs, each category contributes a tab for its own settings.  For example, for Profile Memory, there is a Memory tab added:
+			<br/>
+			<br/>
+		</p>
+		<p>
+			<img border="0" src="images/LinuxToolsMemoryProfilingTab.png"/>
+		</p>
+		<p>The category tab will have the name of the category (i.e. in this case Memory) and will have a drop-down at the top which allows you to specify which tool to use.  By default,
+			it will have the current tool selected in the Profiling Category preferences page for the category or the initial default.  You may override this for the configuration simply
+			by opening the drop-down box and choosing another tool (if one is installed for that category).</p>
+		<p>Below that, note there is another set of tabs.  These tabs are specific to setting options for the profiling tool chosen at the top.  For details on what the options mean, see the appropriate User's Guide for
+			the plug-in supplying the tool for profiling (e.g. in the Memory tab above, this would be the Valgrind tool's User's Guide).</p>
+		<p>When you choose a short-cut from the Profile as... context menu (e.g. Profile Memory),
+			a launch configuration will be created for you, if one does not currently exist for the C/C++ executable that is chosen.  If there are multiple configurations that
+			point to the same executable (obviously with different configuration names), a dialog will be offered to you to select which profile you wish to use.
+			<br/>
+			<br/>
+		</p>
+		<p>
+			<img border="0" src="images/LinuxToolsMultipleProfilingConfigs.png"/>
+		</p>
+		<p>In the case where a launch configuration already exists for the C/C++ executable but it specifies a different default tool to use than the current one set in the Profiling Category preferences page,
+			a new configuration will also be created.  Thus, if you had a single launch configuration already, there will now be two configurations and this will trigger the multiple configuration selection
+			dialog.  Unique names for new configurations are created from old ones, adding a numeric value (e.g. (2) ).  You are free to rename any configuration to make it easier for choosing via the
+			Profiling Configurations dialog.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Profiling-Categories.html" title="Profiling Categories">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Profiling Framework User Guide">
+						<img alt="Profiling Framework User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Categories</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
