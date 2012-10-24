@@ -99,11 +99,12 @@ class STPCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private String completionWord(IDocument doc, int offset)
 			throws BadLocationException {
+
 		for (int n = offset - 1; n >= 0; n--) {
 			char c = doc.getChar(n);
 			if ((Character.isSpaceChar(c)) || (c == '\n') || (c == '\0')) {
 				String word = doc.get(n + 1, offset - n - 1);
-				if (word.charAt(word.length() - 1) == '.')
+				if (!word.isEmpty() && word.charAt(word.length() - 1) == '.')
 					return word.substring(0, word.length() - 1);
 				else
 					return word;
