@@ -20,7 +20,6 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="false"
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.valgrind.helgrind"
             name="%LaunchConfiguration.name.0"

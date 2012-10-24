@@ -129,7 +129,6 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="false"
             delegate="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.oprofile.launch.provider"
             name="Oprofile"

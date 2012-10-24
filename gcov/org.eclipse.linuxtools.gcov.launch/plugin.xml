@@ -2,7 +2,6 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="true"
             delegate="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.coverage.gcov"
             name="%gcovLaunchConfiguration.name.0"

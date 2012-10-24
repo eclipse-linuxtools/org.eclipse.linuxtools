@@ -95,7 +95,6 @@
  <extension
        point="org.eclipse.linuxtools.profiling.launch.launchProvider">
     <provider
-          default="true"
           delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
           id="org.eclipse.linuxtools.callgraph.launch.provider"
           name="Callgraph"
