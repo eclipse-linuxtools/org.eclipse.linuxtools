@@ -103,7 +103,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 						e.printStackTrace();
 					}
 			}
-			final String[] script = buildScript();
+			final String[] script = buildStandardScript();
 			final String[] envVars = getEnvironmentVariables();
             if(continueRun)
             {
@@ -153,6 +153,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	 * @return The arguments to pass to <code>Runtime.exec</code> to start the stap process on this script.
 	 * @see TerminalCommand
 	 * @see Runtime#exec(java.lang.String[], java.lang.String[])
+	 * @deprecated Use {@link RunScriptBaseAction#buildStandardScript()} instead
 	 */
 	protected String[] buildScript() {
 		return buildStandardScript();

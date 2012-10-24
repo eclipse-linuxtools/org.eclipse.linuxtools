@@ -89,7 +89,7 @@ public class RunScriptChartAction extends RunScriptAction {
 
 			String[] script = null;
 		 
-			if(continueRun) script = buildScript();
+			if(continueRun) script = buildStandardScript();
 			if(continueRun) {
 				//createClientSession();
 				    String[] envVars = getEnvironmentVariables();
@@ -115,25 +115,6 @@ public class RunScriptChartAction extends RunScriptAction {
 	}
 	
 	/**
-	 * The <code>buildScript</code> method in this class replaces the one in the superclass and calls
-	 * <code>buildOptionsScript</code> or <code>buildStandardScript</code> depending on the users
-	 * selection of whether to use script options.
-	 * @return String[] representing the entire command that needs to be run.
-	 */
-	@Override
-	protected String[] buildScript() {
-		String[] script;
-		getChartingOptions();
-		
-	//	if(useOptions)
-		//	script = buildOptionsScript();
-		//else
-			script = buildStandardScript();
-		
-		return script;
-	}
-	
-	/**
 	 * This method is used to prompt the user for the parsing expression to be used in generating
 	 * the <code>DataSet</code> from the scripts output.
 	 */
@@ -156,15 +137,13 @@ public class RunScriptChartAction extends RunScriptAction {
 		wizard.dispose();
 		
 	}
-	
-	 /* protected String getFilePath() {
-	
-		  IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-	      return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
-    
-	  }*/
-	
-	//private boolean useOptions = false;
+
+	@Override
+	protected String[] buildStandardScript() {
+		getChartingOptions();
+		return super.buildStandardScript();
+	}
+
 	private IDataSet dataSet = null;
 	private IDataSetParser parser = null;
 
