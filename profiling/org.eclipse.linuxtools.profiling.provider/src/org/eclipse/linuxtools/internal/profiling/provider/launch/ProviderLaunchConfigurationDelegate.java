@@ -60,8 +60,9 @@ public class ProviderLaunchConfigurationDelegate extends
 	 */
 	public static String getProviderIdToRun(String type) {
 		// Look in the preferences for a provider
-		String providerId = ConfigurationScope.INSTANCE.getNode(type).get(
-				ProviderProfileConstants.PREFS_KEY, "");
+		String providerId = ConfigurationScope.INSTANCE.getNode(
+				ProviderProfileConstants.PLUGIN_ID).get(
+				ProviderProfileConstants.PREFS_KEY + type, "");
 		if (providerId.equals("") || getConfigurationDelegateFromId(providerId) == null) {
 			// Get highest priority provider
 			providerId = ProfileLaunchConfigurationTabGroup
