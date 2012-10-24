@@ -41,6 +41,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
+import com.jcraft.jsch.JSchException;
+
 /**
  * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
  * Contributors:
@@ -95,7 +97,11 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
 					tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
 					 scpclient.transfer(fileName,tmpfileName);
-			        }catch(Exception e){e.printStackTrace();}
+			        } catch (JSchException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			}
 			final String[] script = buildScript();
 			final String[] envVars = getEnvironmentVariables();

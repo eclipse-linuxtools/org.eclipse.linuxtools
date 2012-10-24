@@ -1,21 +1,38 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
-import com.jcraft.jsch.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.ErrorMessage;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 
-
-import java.io.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.UIKeyboardInteractive;
+import com.jcraft.jsch.UserInfo;
 
 public class ScpClient {
 	
 	private Session session;
   
-	public ScpClient() throws Exception {
+	public ScpClient() throws JSchException {
 	//public static void main(String[] arg){
      
   
@@ -38,7 +55,7 @@ public class ScpClient {
                       config.put("StrictHostKeyChecking", "no");
                       session.setConfig(config); 
       session.connect();
-      }catch(Exception e)
+      }catch(JSchException e)
       {
     	  e.printStackTrace(System.err);
     	  new ErrorMessage("Error in connection", "File Transfer failed.\n See stderr for more details").open();
@@ -46,7 +63,7 @@ public class ScpClient {
       }
     }
 
-    public void transfer(String fromFile, String toFile) throws Exception {
+    public void transfer(String fromFile, String toFile) throws IOException, JSchException{
       // exec 'scp -t rfile' remotely
     	FileInputStream fis=null;	
       String rfile=toFile;
@@ -107,7 +124,7 @@ public class ScpClient {
       session.disconnect();
       
     }
-    catch(Exception e){
+    catch(IOException e){
       try{if(fis!=null)fis.close();}catch(Exception ee){}
       throw e;
     }

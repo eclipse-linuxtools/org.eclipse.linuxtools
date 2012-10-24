@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
+import java.io.IOException;
+
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
@@ -34,6 +36,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
+
+import com.jcraft.jsch.JSchException;
 
 /**
  * Action used to run the systemTap script in the active editor.  This action will start stap
@@ -69,13 +73,20 @@ public class RunScriptChartAction extends RunScriptAction {
 			return;
 	
 		if(isValid()) {
-			 try{
-				 
-					ScpClient scpclient = new ScpClient();
-					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-					tmpfileName="/tmp/"+ serverfileName;
-					 scpclient.transfer(fileName,tmpfileName);
-			        }catch(Exception e){ continueRun = false;}
+			 try{	 
+				 ScpClient scpclient = new ScpClient();
+				 serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
+				 tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
+				 scpclient.transfer(fileName,tmpfileName);
+			 } catch (JSchException e){
+				 e.printStackTrace();
+				 continueRun = false;
+			 } catch (IOException e) {
+				e.printStackTrace();
+				continueRun = false;
+			} finally {
+			 }
+
 			String[] script = null;
 		 
 			if(continueRun) script = buildScript();
