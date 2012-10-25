@@ -8,7 +8,7 @@
  * Contributors:
  *    Red Hat initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.profiling.provider.launch;
+package org.eclipse.linuxtools.internal.profiling.launch.provider.launch;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.internal.profiling.provider.ProviderProfileConstants;
+import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
@@ -216,7 +216,7 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 		}
 
 		// get configuration shortcut associated with provider id.
-		ProfileLaunchShortcut shortcut= ProfileLaunchShortcut.getLaunchShortcutProviderFromId(providerId);
+		ProfileLaunchShortcut shortcut= ProviderFramework.getLaunchShortcutProviderFromId(providerId);
 		// set attributes related to the specific profiling shortcut configuration.
 		shortcut.setDefaultProfileLaunchShortcutAttributes(wc);
 

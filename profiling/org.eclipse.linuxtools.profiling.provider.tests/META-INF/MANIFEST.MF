@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.provider.tests;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Fragment-Host: org.eclipse.linuxtools.profiling.provider
+Fragment-Host: org.eclipse.linuxtools.profiling.launch
 Require-Bundle: org.junit,
  org.eclipse.linuxtools.profiling.tests
 Import-Package: org.eclipse.cdt.debug.core

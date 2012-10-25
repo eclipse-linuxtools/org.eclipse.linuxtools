@@ -8,7 +8,7 @@
  * Contributors:
  *    Red Hat initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.profiling.provider;
+package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 import java.util.ArrayList;
 import java.util.Map;

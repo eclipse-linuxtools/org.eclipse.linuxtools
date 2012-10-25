@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.internal.profiling.provider;
+package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 /**
  * Container class for various constants

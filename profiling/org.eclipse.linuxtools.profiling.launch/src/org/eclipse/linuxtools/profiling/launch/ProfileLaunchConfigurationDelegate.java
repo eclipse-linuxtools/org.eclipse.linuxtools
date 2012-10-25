@@ -19,15 +19,11 @@ import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.TextConsole;
 
@@ -57,45 +53,6 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Get a launch configuration delegate that is associated with the specified id. 
-	 * This looks through extensions of the extension point
-	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code> that
-	 * have a specific delegate attribute.
-	 * 
-	 * @param id a unique identifier
-	 * @return a launch configuration delegate that implements
-	 * <code>ProfileLaunchConfigurationDelegate</code> , or <code>null</code> if 
-	 * none could be found.
-	 * @since 1.2
-	 */
-	public static ProfileLaunchConfigurationDelegate getConfigurationDelegateFromId(
-			String id) {
-		IExtensionPoint extPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID,
-						"launchProvider"); //$NON-NLS-1$
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement config : configs) {
-			if (config.getName().equals("provider")) { //$NON-NLS-1$
-				String currentId = config.getAttribute("id"); //$NON-NLS-1$
-				String tabgroup = config.getAttribute("delegate"); //$NON-NLS-1$
-				if (currentId != null && tabgroup != null
-						&& currentId.equals(id)) {
-					try {
-						Object obj = config
-								.createExecutableExtension("delegate"); //$NON-NLS-1$
-						if (obj instanceof ProfileLaunchConfigurationDelegate) {
-							return (ProfileLaunchConfigurationDelegate) obj;
-						}
-					} catch (CoreException e) {
-						// continue, perhaps another configuration will succeed
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	/**

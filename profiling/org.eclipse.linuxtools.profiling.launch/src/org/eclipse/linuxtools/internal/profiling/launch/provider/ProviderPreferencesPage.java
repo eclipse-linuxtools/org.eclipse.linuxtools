@@ -9,10 +9,10 @@
  *    Red Hat initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.profiling.provider;
+package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.linuxtools.internal.profiling.provider.launch.Messages;
+import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
