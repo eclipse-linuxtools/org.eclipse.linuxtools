@@ -21,7 +21,9 @@
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
+            description="%LaunchConfiguration.description.0"
             id="org.eclipse.linuxtools.profiling.provider.valgrind.helgrind"
+            information="%LaunchConfiguration.information.0"
             name="%LaunchConfiguration.name.0"
             priority="3"
             shortcut="org.eclipse.linuxtools.internal.valgrind.helgrind.HelgrindLaunchShortcut"

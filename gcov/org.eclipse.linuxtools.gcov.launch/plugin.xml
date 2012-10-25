@@ -3,7 +3,9 @@
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
             delegate="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchConfigurationDelegate"
+            description="%gcovLaunchConfiguration.description"
             id="org.eclipse.linuxtools.profiling.provider.coverage.gcov"
+            information="%gcovLaunchConfiguration.information"
             name="%gcovLaunchConfiguration.name.0"
             priority="1"
             shortcut="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchShortcut"

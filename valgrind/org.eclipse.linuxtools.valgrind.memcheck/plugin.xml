@@ -21,7 +21,9 @@
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
+            description="%memcheckLaunchConfiguration.description.0"
             id="org.eclipse.linuxtools.profiling.provider.valgrind.memcheck"
+            information="%memcheckLaunchConfiguration.information.0"
             name="%memcheckLaunchConfiguration.name.0"
             priority="1"
             shortcut="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchShortcut"
