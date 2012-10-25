@@ -14,6 +14,7 @@
          name="Profile Timing"
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
+            icon="icons/time_obj.gif"
             id="org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"
             label="%shortcut.label"
             modes="profile"
@@ -110,6 +111,7 @@
          name="Profile Memory"
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
+            icon="icons/memory_view.gif"
             id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchShortcut"
             label="%shortcut.label.0"
             modes="profile"
@@ -206,6 +208,7 @@
          name="Profile Memory"
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
+            icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchShortcut"
             label="%shortcut.label.1"
             modes="profile"
@@ -296,5 +299,29 @@
                      value="coverage"/>
             </class>
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationType"
+            icon="icons/toggle.gif"
+            id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationType.image">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationType"
+            icon="icons/time_obj.gif"
+            id="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationType.image">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationType"
+            icon="icons/memory_view.gif"
+            id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationType.image">
+      </launchConfigurationTypeImage>
    </extension>
 </plugin>
