@@ -7,6 +7,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderPreferencesPage"
             id="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
             name="%page.name">
