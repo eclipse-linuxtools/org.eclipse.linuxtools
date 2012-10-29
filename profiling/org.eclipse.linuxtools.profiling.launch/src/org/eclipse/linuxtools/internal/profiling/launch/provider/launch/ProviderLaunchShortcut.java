@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider.launch;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -147,10 +149,13 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 
 		// acquire a provider id to run.
-		String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(wc, getProfilingType());
+		final String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(wc, getProfilingType());
+
+		// get tool name from id.
+		final String providerToolName = ProviderFramework.getProviderToolNameFromId(providerId);
 
 		// get tab group associated with provider id.
-		ProfileLaunchConfigurationTabGroup tabgroup = ProfileLaunchConfigurationTabGroup.getTabGroupProviderFromId(providerId);
+		final ProfileLaunchConfigurationTabGroup tabgroup = ProfileLaunchConfigurationTabGroup.getTabGroupProviderFromId(providerId);
 
 		/**
 		 * Certain tabs' setDefaults(ILaunchConfigurationWorkingCopy) may
@@ -203,7 +208,8 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 				if (name == null) {
 					name = "";
 				}
-				return getLaunchManager().generateLaunchConfigurationName(name);
+				String providerConfigutationName = generateProviderConfigurationName(name, providerToolName);
+				return getLaunchManager().generateLaunchConfigurationName(providerConfigutationName);
 			}
 		};
 
@@ -222,6 +228,21 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 
 		wc.setAttribute(ProviderProfileConstants.PROVIDER_CONFIG_ATT,
 				providerId);
+
+		// set tool name in configuration.
+		wc.setAttribute(ProviderProfileConstants.PROVIDER_CONFIG_TOOLNAME_ATT, providerToolName);
+
+		/**
+		 * To avoid renaming an already renamed launch configuration, we can
+		 * check the expected format of the name using regular expressions and
+		 * skip on matches.
+		 */
+		String curConfigName = wc.getName();
+		Pattern configNamePattern = Pattern.compile(".+\\s\\[.+\\](\\s\\(\\d+\\))?$"); //$NON-NLS-1$
+		Matcher match = configNamePattern.matcher(curConfigName);
+		if (!match.find()) {
+			wc.rename(dialog.generateName(curConfigName));
+		}
 	}
 
 	/**
@@ -252,6 +273,20 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 
 	public String getProfilingType() {
 		return type;
+	}
+
+	/**
+	 * Generate a string that can be used as a name for a provider launch configuration.
+	 * It combines <code>configName</code> and <code>toolName</code> into a String of
+	 * consistent format: <configuration name> [<tool name>].
+	 *
+	 * @param configName
+	 * @param toolName
+	 * @return String tool name appended to original configuration name.
+	 * @since 1.2
+	 */
+	public static String generateProviderConfigurationName(String configName, String toolName){
+		return configName + " " + "[" + toolName + "]"; //$NON-NLS-1$
 	}
 
 }

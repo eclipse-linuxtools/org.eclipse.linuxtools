@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
-
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -22,6 +22,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.swt.SWT;
@@ -118,6 +119,9 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 		// Show provider name in combo.
 		int itemIndex = getComboItemIndexFromId(curProviderId);
 		providerCombo.select(itemIndex);
+
+		// Set name of configuration.
+		setConfigurationName(providerCombo.getText());
 
 		// create the tab item, and load the specified tab inside
 		for (ILaunchConfigurationTab tab : tabs) {
@@ -318,5 +322,49 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * Set name of the launch configuration.
+	 *
+	 * @param newToolName String tool name to be appended to configuration name,
+	 */
+	private void setConfigurationName(String newToolName) {
+		try {
+			String currentToolName = initial.getAttribute(
+					ProviderProfileConstants.PROVIDER_CONFIG_TOOLNAME_ATT, "");
+
+			// Append the new tool name as long as the current and new tool
+			// names are different.
+			if (newToolName != null && !newToolName.equals("")
+					&& !currentToolName.equals(newToolName)) {
+
+				String projectName = initial.getAttribute(
+						ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+
+				// String of the form <project name> [<tool name>].
+				String newConfigurationName = ProviderLaunchShortcut
+						.generateProviderConfigurationName(projectName,
+								newToolName);
+
+				// Unique name of the form <project name> [<tool name>]{(<number>)}.
+				String newUniqueToolName = getLaunchManager()
+						.generateLaunchConfigurationName(newConfigurationName);
+
+				// Save changes in current configuration.
+				ILaunchConfigurationWorkingCopy wc = initial.getWorkingCopy();
+				wc.rename(newUniqueToolName);
+				wc.setAttribute(
+						ProviderProfileConstants.PROVIDER_CONFIG_TOOLNAME_ATT,
+						newToolName);
+				initial = wc.doSave();
+
+				// Set name field in launch configuration dialog to avoid the
+				// new configuration name from being overwritten.
+				getLaunchConfigurationDialog().setName(newUniqueToolName);
+			}
+		} catch (CoreException e) {
+			// If unable to set the name, leave the original name as is.
+		}
 	}
 }

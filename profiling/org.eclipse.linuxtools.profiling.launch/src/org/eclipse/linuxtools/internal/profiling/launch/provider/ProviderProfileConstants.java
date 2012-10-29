@@ -52,4 +52,9 @@ public class ProviderProfileConstants {
 	 * Key to acquire the provider launch configuration attribute.
 	 */
 	public static final String PROVIDER_CONFIG_ATT = "provider"; //$NON-NLS-1$
+
+	/**
+	 * Key to acquire the tool name launch configuration attribute.
+	 */
+	public static final String PROVIDER_CONFIG_TOOLNAME_ATT = "toolname"; //$NON-NLS-1$
 }
