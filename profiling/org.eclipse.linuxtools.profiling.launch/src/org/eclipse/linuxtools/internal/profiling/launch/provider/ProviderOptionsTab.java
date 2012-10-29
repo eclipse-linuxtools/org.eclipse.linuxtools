@@ -100,7 +100,7 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 		if (curProviderId == null || "".equals(curProviderId)) {
 			// get the id of a provider
 			curProviderId = ProviderLaunchConfigurationDelegate
-					.getProviderIdToRun(getProfilingType());
+					.getProviderIdToRun(null, getProfilingType());
 		}
 
 		// starting initialization of this tab's controls

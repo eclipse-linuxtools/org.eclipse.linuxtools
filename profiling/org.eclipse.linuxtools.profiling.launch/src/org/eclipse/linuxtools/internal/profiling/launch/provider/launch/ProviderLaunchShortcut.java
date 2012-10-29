@@ -67,7 +67,7 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 		String type = getProfilingType();
 
 		// check that there exists a provider for the given profiling type
-		if (ProviderLaunchConfigurationDelegate.getProviderIdToRun(type) == null) {
+		if (ProviderLaunchConfigurationDelegate.getProviderIdToRun(null, type) == null) {
 			handleFail(Messages.ProviderLaunchShortcut_0 + " " + type);
 			return null;
 		}
@@ -147,7 +147,7 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 
 		// acquire a provider id to run.
-		String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(getProfilingType());
+		String providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(wc, getProfilingType());
 
 		// get tab group associated with provider id.
 		ProfileLaunchConfigurationTabGroup tabgroup = ProfileLaunchConfigurationTabGroup.getTabGroupProviderFromId(providerId);

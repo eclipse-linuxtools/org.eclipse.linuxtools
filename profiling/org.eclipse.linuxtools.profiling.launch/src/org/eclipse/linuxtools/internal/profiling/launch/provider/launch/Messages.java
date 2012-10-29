@@ -18,6 +18,10 @@ public class Messages extends NLS {
 	public static String ProviderPreferencesPage_0;
 	public static String ProviderPreferencesPage_1;
 	public static String ProviderOptionsTab_0;
+	public static String UseProjectSetting_0;
+	public static String ProjectSettings_0;
+	public static String PreferenceLink_0;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
