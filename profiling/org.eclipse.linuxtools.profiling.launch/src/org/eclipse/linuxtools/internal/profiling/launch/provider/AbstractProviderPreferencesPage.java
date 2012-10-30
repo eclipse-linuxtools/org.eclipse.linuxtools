@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 public class AbstractProviderPreferencesPage extends
@@ -73,6 +74,12 @@ public class AbstractProviderPreferencesPage extends
 			ConfigurationScope.INSTANCE.getNode(ProviderProfileConstants.PLUGIN_ID)
 					.put(ProviderProfileConstants.PREFS_KEY + type, providerId);
 
+	}
+
+	@Override
+	protected Control createContents(Composite parent) {
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
+		return super.createContents(parent);
 	}
 
 	@Override
@@ -128,6 +135,15 @@ public class AbstractProviderPreferencesPage extends
 		}
 	}
 
+	/**
+	 * Return the help context id to use if the help button is pushed.
+	 * 
+	 * @return the help context id
+	 */
+	private String getHelpContextId() {
+		return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
+	}
+ 
 	/**
 	 * Set profiling type.
 	 *

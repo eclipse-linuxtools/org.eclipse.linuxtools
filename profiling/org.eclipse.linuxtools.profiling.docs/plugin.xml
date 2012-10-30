@@ -8,5 +8,12 @@
             primary="true">
       </toc>
    </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts_PROFILING.xml"
+            plugin="org.eclipse.linuxtools.profiling.launch">
+      </contexts>
+   </extension>
 
 </plugin>
