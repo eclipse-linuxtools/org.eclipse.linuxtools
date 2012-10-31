@@ -221,7 +221,7 @@
               <!-- Where to put jacoco coverage report -->
               <destFile>${sonar.jacoco.itReportPath}</destFile>
               <includes>
-                <include>org.eclipse.swtbot.*</include>
+                <include>org.eclipse.linuxtools.*</include>
               </includes>
               <append>true</append>
             </configuration>
