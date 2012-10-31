@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.launch.provider.launch;
 
-import java.util.Arrays;
-import java.util.List;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,13 +23,14 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 
 public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IExecutableExtension {
 
@@ -66,84 +66,99 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 
 	@Override
 	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
-		String type = getProfilingType();
+
+		// create a default launch configuration based on the shortcut
+		ILaunchConfiguration config = createConfiguration(bin, false);
+
+		String providerId = null;
+		try {
+			providerId = ProviderLaunchConfigurationDelegate.getProviderIdToRun(config.getWorkingCopy(), type);
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		}
 
 		// check that there exists a provider for the given profiling type
-		if (ProviderLaunchConfigurationDelegate.getProviderIdToRun(null, type) == null) {
+		if (providerId == null) {
 			handleFail(Messages.ProviderLaunchShortcut_0 + " " + type);
 			return null;
 		}
 
-		// create a launch configuration based on the shortcut
-		ILaunchConfiguration config = createConfiguration(bin, false);
-		boolean exists = false;
 
+		boolean exists = false;
+		ILaunchConfiguration[] configs = null;
 		try {
-			for (ILaunchConfiguration cfg : getLaunchManager().getLaunchConfigurations(getLaunchConfigType())){
-				if (areEqual(config, cfg)){
+			configs = getLaunchManager().getLaunchConfigurations(getLaunchConfigType());
+
+			// attributes for which a configuration can be considered valid for
+			// the current tool and profiling type
+			String[] relevantAttributes = new String[] {
+					ProviderProfileConstants.PROVIDER_CONFIG_ATT,
+					ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+					ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME };
+
+			// check that there a exists a valid configuration for the current
+			// tool and profiling type
+			for (ILaunchConfiguration cfg : configs) {
+				if (equalAttributes(config, cfg, relevantAttributes)) {
 					exists = true;
+					break;
 				}
 			}
 		} catch (CoreException e) {
 			exists = true;
 		}
 
-		// only save the configuration if it does not exist
-		if (! exists) {
+		// automatically create a configuration if there are none available
+		if (configs == null || configs.length == 0) {
 			createConfiguration(bin);
-		}
+		} else if (!exists) {
+			String provider = ProviderFramework
+					.getProviderToolNameFromId(providerId);
 
+			String profileType = Character.toUpperCase(type.charAt(0))
+					+ type.substring(1);
+
+			// prompt message
+			String promptMsg = MessageFormat.format(
+					Messages.ProviderLaunchConfigurationPrompt_0, new String[] {
+							profileType, provider });
+
+			MessageBox prompt = new MessageBox(getActiveWorkbenchShell(),
+					SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+			prompt.setMessage(promptMsg);
+
+			// prompt user for configuration creation
+			if (prompt.open() == SWT.YES) {
+				return createConfiguration(bin);
+			}
+		}
 		return super.findLaunchConfiguration(bin, mode);
 	}
 
 	/**
+	 * Check whether configurations <code>cfg1</code> and <code>cfg2</code>
+	 * share specified attributes <code>attributes</code>
+	 *
 	 * @param cfg1 a launch configuration
 	 * @param cfg2 a launch configuration
-	 * @return true if the launch configurations contain the exact
-	 * same attributes, and false otherwise.
+	 * @param attributes attributes to compare
+	 * @return <code>true</code> if specified attributes are equal on both configuration, <code>false</code> otherwise.
 	 */
-	private boolean areEqual(ILaunchConfiguration cfg1,
-			ILaunchConfiguration cfg2) {
-
-		// We don't care about these attributes.
-		final List<String> IGNORED_ATTRS = Arrays.asList(new String [] {
-						ICDTLaunchConfigurationConstants.ATTR_BUILD_BEFORE_LAUNCH,
-						ICDTLaunchConfigurationConstants.ATTR_COREFILE_PATH,
-						IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE });
-
+	private boolean equalAttributes(ILaunchConfiguration cfg1,
+			ILaunchConfiguration cfg2, String[] attributes) {
 		try {
-			Map<?, ?> attrs1 = cfg1.getAttributes();
-			Map<?, ?> attrs2 = cfg2.getAttributes();
-
-			for (Object key1 : attrs1.keySet()) {
-				if (! attrs2.containsKey(key1)
-						&& ! IGNORED_ATTRS.contains(key1.toString())) {
+			for (String attribute : attributes) {
+				String cfg1Attribute = cfg1.getAttribute(attribute, "");
+				String cfg2Attribute = cfg2.getAttribute(attribute, "");
+				if (!cfg1Attribute.equals(cfg2Attribute)) {
 					return false;
-				}
-			}
-
-			for (Object key2 : attrs2.keySet()) {
-				if (! attrs1.containsKey(key2)
-						&& ! IGNORED_ATTRS.contains(key2.toString())) {
-					return false;
-				}
-			}
-
-			for (Object key1 : attrs1.keySet()) {
-				for (Object key2 : attrs2.keySet()) {
-					if (key1.toString().equals(key2.toString())
-							&& ! attrs1.get(key1).toString().equals(attrs2.get(key2).toString())) {
-						return false;
-					}
 				}
 			}
 		} catch (CoreException e) {
 			return false;
 		}
-
 		return true;
 	}
-
 
 	@Override
 	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {

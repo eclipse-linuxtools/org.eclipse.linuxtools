@@ -21,7 +21,8 @@ public class Messages extends NLS {
 	public static String UseProjectSetting_0;
 	public static String ProjectSettings_0;
 	public static String PreferenceLink_0;
-	
+	public static String ProviderLaunchConfigurationPrompt_0;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
