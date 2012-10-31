@@ -63,6 +63,9 @@
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository</orbit-site>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.itReportPath>../../target/jacoco.exec</sonar.jacoco.itReportPath>
   </properties>
   <pluginRepositories>
     <pluginRepository>
@@ -204,6 +207,26 @@
             <descriptor>src.xml</descriptor>
           </descriptors>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.6.0.201210061924</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <!-- Where to put jacoco coverage report -->
+              <destFile>${sonar.jacoco.itReportPath}</destFile>
+              <includes>
+                <include>org.eclipse.swtbot.*</include>
+              </includes>
+              <append>true</append>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
