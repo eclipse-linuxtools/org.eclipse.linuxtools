@@ -1,7 +1,9 @@
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPCompletionProcessor;
@@ -11,7 +13,7 @@ public class STPCompletionProcessorTest {
 	
 	private static String TEST_STP_SCRIPT = ""+
 			"\n"+
-			"\n"+
+			"\n//marker1"+
 			"probe syscall.write{\n"+
 			"  // Some comment inside a probe\n"+
 			"   printf(\"%s fd %d\taddr%d\tcount%dargstr%s\n\", name, fd, buf_uaddr, count, argstr)\n"+
@@ -36,5 +38,62 @@ public class STPCompletionProcessorTest {
 						TEST_STP_SCRIPT.length());
 		assertNotNull(proposals);
 	}
-	
+
+	@Test
+	public void testGlobalCompletion() {
+		Document testDocument = new Document(TEST_STP_SCRIPT);
+		int offset = TEST_STP_SCRIPT.indexOf("//marker1");
+
+		STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
+		ICompletionProposal[] proposals = completionProcessor
+				.computeCompletionProposals(testDocument,
+						offset);
+		
+		assertTrue(proposalsContain(proposals, "probe "));
+		assertTrue(proposalsContain(proposals, "global "));
+		assertTrue(proposalsContain(proposals, "function "));
+	}
+
+	@Test
+	public void testGlobalPartialCompletion() throws BadLocationException {
+		Document testDocument = new Document(TEST_STP_SCRIPT);
+		int offset = TEST_STP_SCRIPT.indexOf("//marker1");
+		String prefix = "prob";
+		testDocument.replace(offset, 0, prefix);
+		offset += prefix.length();
+
+		STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
+		ICompletionProposal[] proposals = completionProcessor
+				.computeCompletionProposals(testDocument,
+						offset);
+		
+		assertTrue(proposalsContain(proposals, "probe "));
+		assertTrue(!proposalsContain(proposals, "global "));
+		assertTrue(!proposalsContain(proposals, "function "));
+	}
+
+	@Test
+	public void testGlobalInvalidCompletion() throws BadLocationException {
+		Document testDocument = new Document(TEST_STP_SCRIPT);
+		int offset = TEST_STP_SCRIPT.indexOf("//marker1");
+		String prefix = "probe fake.fake";
+		testDocument.replace(offset, 0, prefix);
+		offset += prefix.length();
+
+		STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
+		ICompletionProposal[] proposals = completionProcessor
+				.computeCompletionProposals(testDocument,
+						offset);
+		
+		assertTrue(proposalsContain(proposals, "No completion data found."));
+	}
+
+	private boolean proposalsContain(ICompletionProposal[] proposals, String proposal){
+		for (ICompletionProposal p : proposals) {
+			if (p.getDisplayString().equals(proposal))
+				return true;
+		}
+		return false;
+	}
+
 }
