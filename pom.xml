@@ -65,7 +65,7 @@
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository</orbit-site>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-    <sonar.jacoco.itReportPath>../../target/jacoco.exec</sonar.jacoco.itReportPath>
+    <!--sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath-->
   </properties>
   <pluginRepositories>
     <pluginRepository>
@@ -219,7 +219,7 @@
             </goals>
             <configuration>
               <!-- Where to put jacoco coverage report -->
-              <destFile>${sonar.jacoco.itReportPath}</destFile>
+              <!--destFile>${sonar.jacoco.reportPath}</destFile-->
               <includes>
                 <include>org.eclipse.linuxtools.*</include>
               </includes>
