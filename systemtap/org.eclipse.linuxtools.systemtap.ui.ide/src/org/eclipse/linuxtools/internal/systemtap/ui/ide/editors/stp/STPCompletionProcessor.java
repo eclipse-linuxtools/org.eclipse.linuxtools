@@ -83,15 +83,9 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 
 	private ICompletionProposal[] getProbeCompletionList(String prefix, int offset){
 		String[] completionData = STPMetadataSingleton.getCompletionResults(prefix);
-		// get the last section of the prefix
-		int i = prefix.indexOf('.');
-		if (i > 0){
-			prefix = prefix.substring(i+1);
-		}
 		return buildCompletionList(offset, prefix.length(), completionData);
-		
 	}
-	
+
 	private ICompletionProposal[] buildCompletionList(int offset, int prefixLength,String[] completionData){
 		// Build proposals and submit
 		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
