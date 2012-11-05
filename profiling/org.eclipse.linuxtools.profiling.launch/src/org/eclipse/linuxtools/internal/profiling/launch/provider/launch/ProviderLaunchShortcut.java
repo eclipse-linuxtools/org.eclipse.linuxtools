@@ -83,35 +83,46 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 			return null;
 		}
 
+		// true if a configuration exists for current project and program
+		boolean existsConfigForProject = false;
 
-		boolean exists = false;
-		ILaunchConfiguration[] configs = null;
+		// true if a configuration exists for current project, program and
+		// the default provider
+		boolean existsConfigForTool = false;
+
 		try {
-			configs = getLaunchManager().getLaunchConfigurations(getLaunchConfigType());
+			String projectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+			String programName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "");
+			ILaunchConfiguration[] configs = getLaunchManager().getLaunchConfigurations(getLaunchConfigType());
 
-			// attributes for which a configuration can be considered valid for
-			// the current tool and profiling type
-			String[] relevantAttributes = new String[] {
-					ProviderProfileConstants.PROVIDER_CONFIG_ATT,
-					ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME };
+			for(ILaunchConfiguration currConfig : configs){
+				String curProjectName = currConfig.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+				String curProgramName = currConfig.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "");
 
-			// check that there a exists a valid configuration for the current
-			// tool and profiling type
-			for (ILaunchConfiguration cfg : configs) {
-				if (equalAttributes(config, cfg, relevantAttributes)) {
-					exists = true;
-					break;
+				// check that current configuration belongs to the current project/program
+				if(curProjectName.equals(projectName) && curProgramName.equals(programName)){
+					existsConfigForProject = true;
+					String curProviderId = currConfig.getAttribute(ProviderProfileConstants.PROVIDER_CONFIG_ATT, "");
+
+					// check that current configuration has the same provider as the provider to run.
+					if(curProviderId.equals(providerId)){
+						existsConfigForTool = true;
+						break;
+					}
 				}
 			}
 		} catch (CoreException e) {
-			exists = true;
+			// a configuration might be corrupted, skip prompting logic
+			// and fall back to default behavior
+			existsConfigForProject = true;
+			existsConfigForTool = true;
 		}
 
-		// automatically create a configuration if there are none available
-		if (configs == null || configs.length == 0) {
+		// automatically create a configuration if there are none available for
+		// the current project/program
+		if (!existsConfigForProject) {
 			createConfiguration(bin);
-		} else if (!exists) {
+		} else if (!existsConfigForTool) {
 			String provider = ProviderFramework
 					.getProviderToolNameFromId(providerId);
 
@@ -120,8 +131,8 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 
 			// prompt message
 			String promptMsg = MessageFormat.format(
-					Messages.ProviderLaunchConfigurationPrompt_0, new String[] {
-							profileType, provider });
+					Messages.ProviderLaunchConfigurationPrompt_0,
+					(Object[]) new String[] { profileType, provider });
 
 			MessageBox prompt = new MessageBox(getActiveWorkbenchShell(),
 					SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -133,31 +144,6 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 			}
 		}
 		return super.findLaunchConfiguration(bin, mode);
-	}
-
-	/**
-	 * Check whether configurations <code>cfg1</code> and <code>cfg2</code>
-	 * share specified attributes <code>attributes</code>
-	 *
-	 * @param cfg1 a launch configuration
-	 * @param cfg2 a launch configuration
-	 * @param attributes attributes to compare
-	 * @return <code>true</code> if specified attributes are equal on both configuration, <code>false</code> otherwise.
-	 */
-	private boolean equalAttributes(ILaunchConfiguration cfg1,
-			ILaunchConfiguration cfg2, String[] attributes) {
-		try {
-			for (String attribute : attributes) {
-				String cfg1Attribute = cfg1.getAttribute(attribute, "");
-				String cfg2Attribute = cfg2.getAttribute(attribute, "");
-				if (!cfg1Attribute.equals(cfg2Attribute)) {
-					return false;
-				}
-			}
-		} catch (CoreException e) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override

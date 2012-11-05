@@ -71,17 +71,19 @@ public class ProviderLaunchConfigurationDelegate extends
 		if (wc != null) {
 			try {
 				IResource[] resources = wc.getMappedResources();
-				for (int i = 0; i < resources.length; ++i) {
-					IResource resource = resources[i];
-					if (resource instanceof IProject) {
-						IProject project = (IProject)resource;
-						ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
-								ProviderProfileConstants.PLUGIN_ID);
-						Boolean use_project_settings = store.getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + type);
-						if (use_project_settings.booleanValue() == true) {
-							String provider = store.getString(ProviderProfileConstants.PREFS_KEY + type);
-							if (!provider.equals(""))
-								providerId = provider;
+				if(resources != null){
+					for (int i = 0; i < resources.length; ++i) {
+						IResource resource = resources[i];
+						if (resource instanceof IProject) {
+							IProject project = (IProject)resource;
+							ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
+									ProviderProfileConstants.PLUGIN_ID);
+							Boolean use_project_settings = store.getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + type);
+							if (use_project_settings.booleanValue() == true) {
+								String provider = store.getString(ProviderProfileConstants.PREFS_KEY + type);
+								if (!provider.equals(""))
+									providerId = provider;
+							}
 						}
 					}
 				}
