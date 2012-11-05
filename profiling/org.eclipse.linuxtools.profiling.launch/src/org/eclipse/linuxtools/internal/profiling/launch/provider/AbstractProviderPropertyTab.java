@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -21,6 +22,8 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
@@ -68,9 +71,10 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 		IProject project = resource.getProject();
 		
 		// Create the preference store to use
-		setPreferenceStore(new ScopedPreferenceStore(
-				new ProjectScope(project),
-				ProviderProfileConstants.PLUGIN_ID));
+		ProjectScope ps = new ProjectScope(project);
+		ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
+		scoped.setSearchContexts(new IScopeContext[] { ps, InstanceScope.INSTANCE });
+		setPreferenceStore(scoped);
 
 		getPreferenceStore().setDefault(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), false);
 		getPreferenceStore().setDefault(ProviderProfileConstants.PREFS_KEY + getType(),
@@ -191,15 +195,18 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 	public void performOK() {
 		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
 		getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
+		try {
+			getPreferenceStore().save();
+		} catch (IOException e) {
+			// do nothing
+		}
 	}
 
 	private ScopedPreferenceStore getPreferenceStore() {
-		// TODO Auto-generated method stub
 		return preferenceStore;
 	}
 	
 	private void setPreferenceStore(ScopedPreferenceStore store) {
-		// TODO Auto-generated method stub
 		preferenceStore = store;
 	}
 	
@@ -207,6 +214,11 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 	protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
 		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
 		getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
+		try {
+			getPreferenceStore().save();
+		} catch (IOException e) {
+			// do nothing
+		}
 	}
 
     /**
