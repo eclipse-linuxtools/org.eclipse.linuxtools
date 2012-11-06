@@ -21,7 +21,7 @@
   <version>2.8.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>Linux Tools ChangeLog Feature for C/C++</name>
+  <name>Linux Tools ChangeLog Feature for Java</name>
   
   <build>
     <plugins>
