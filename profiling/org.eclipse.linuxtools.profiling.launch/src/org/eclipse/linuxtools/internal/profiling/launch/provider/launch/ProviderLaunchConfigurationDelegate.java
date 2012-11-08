@@ -28,26 +28,22 @@ public class ProviderLaunchConfigurationDelegate extends
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
-			ILaunch launch, IProgressMonitor monitor) {
-		try {
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-			if (config != null) {
-				// get provider id from configuration.
-				String providerId = config.getAttribute(
-						ProviderProfileConstants.PROVIDER_CONFIG_ATT, "");
+		if (config != null) {
+			// get provider id from configuration.
+			String providerId = config.getAttribute(
+					ProviderProfileConstants.PROVIDER_CONFIG_ATT, "");
 
-				// get delegate associated with provider id.
-				ProfileLaunchConfigurationDelegate delegate = ProviderFramework.getConfigurationDelegateFromId(providerId);
+			// get delegate associated with provider id.
+			ProfileLaunchConfigurationDelegate delegate = ProviderFramework
+					.getConfigurationDelegateFromId(providerId);
 
-				// launch delegate
-				if (delegate != null) {
-					delegate.launch(config, mode, launch, monitor);
-				}
+			// launch delegate
+			if (delegate != null) {
+				delegate.launch(config, mode, launch, monitor);
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
-		return;
 	}
 
 	/**
