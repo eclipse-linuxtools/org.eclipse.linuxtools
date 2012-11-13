@@ -114,6 +114,28 @@
       </repositories>
     </profile>
     <profile>
+      <id>platform-kepler</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>kepler</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-site>http://download.eclipse.org/releases/staging</eclipse-site>
+        <platform-version>[4.3,)</platform-version>
+        <sdk-version>4.3</sdk-version>
+      </properties>
+      <repositories>
+        <repository>
+          <id>kepler</id>
+          <layout>p2</layout>
+          <url>${eclipse-site}</url>
+        </repository>
+      </repositories>
+    </profile>
+    <profile>
       <id>build-server</id>
       <build>
         <plugins>
