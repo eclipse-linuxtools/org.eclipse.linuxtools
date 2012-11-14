@@ -84,9 +84,64 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 			return getGlobalKeywordCompletion(prefix, offset);
 		}
 		
+		// If inside a probe return probe variable completions.
+		if (partition.getType() == STPPartitionScanner.STP_PROBE){
+			return getProbeVariableCompletions(document, offset, prefix);
+		}
+		
 		return NO_COMPLETIONS;
 	}
 
+	private ICompletionProposal[] getProbeVariableCompletions(IDocument document, int offset, String prefix){
+		String probe = getProbe(document, offset);
+		String[] completionData = stpMetadataSingleton.getProbeVariableCompletions(probe, prefix);
+		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
+
+		
+		// return buildCompletionList(offset, prefix.length(), completionData);
+		int prefixLength = prefix.length();
+		for (int i = 0; i < completionData.length; i++){
+			int endIndex = completionData[i].indexOf(':');
+			result[i] = new CompletionProposal(
+							completionData[i].substring(prefixLength, endIndex),
+							offset,
+							0,
+							endIndex - prefixLength,
+							null, 
+							completionData[i],
+							null,
+							null);
+		}
+		return result;	
+	}
+
+	/**
+	 * Returns the full name of the probe surrounding the given
+	 * offset. This function assumes that the given offset is inside
+	 * of a {@link STPPartitionScanner#STP_PROBE} section.
+	 * @param document 
+	 * @param offset
+	 * @return the probe name
+	 */
+	private String getProbe(IDocument document, int offset){
+		String probePoint = null;
+
+		try {
+			ITypedRegion partition = document.getPartition(offset);
+			String probe = document.get(partition.getOffset(), partition.getLength());
+			
+			// make sure that we are inside a probe
+			if (probe.startsWith(PROBE_KEYWORD)){
+				probePoint = probe.substring(PROBE_KEYWORD.length(), probe.indexOf('{'));
+				probePoint = probePoint.trim();
+			}
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+
+		return probePoint;
+	}
+	
 	private ICompletionProposal[] getProbeCompletionList(String prefix, int offset){
 		String[] completionData = stpMetadataSingleton.getCompletionResults(prefix);
 		return buildCompletionList(offset, prefix.length(), completionData);
@@ -105,8 +160,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 							completionData[i],
 							null,
 							null);
-		return result;
-		
+		return result;	
 	}
 
 	private ICompletionProposal[] getGlobalKeywordCompletion(String prefix, int offset) {
@@ -162,12 +216,29 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 
 		for (int n = offset - 1; n >= 0; n--) {
 			char c = doc.getChar(n);
-			if ((Character.isSpaceChar(c)) || (c == '\n') || (c == '\0')) {
+			if (isDelimiter(c)) {
 				String word = doc.get(n + 1, offset - n - 1);
 				return word;
 			}
 		}
 		return ""; //$NON-NLS-1$
+	}
+
+	private boolean isDelimiter(char c) {
+		if (Character.isSpaceChar(c))
+			return true;
+
+		switch (c) {
+		case '\n':
+		case '\0':
+		case ',':
+		case ')':
+		case '(':
+		case '{':
+		case '}':
+			return true;
+		}
+		return false;
 	}
 
 	/* (non-Javadoc)

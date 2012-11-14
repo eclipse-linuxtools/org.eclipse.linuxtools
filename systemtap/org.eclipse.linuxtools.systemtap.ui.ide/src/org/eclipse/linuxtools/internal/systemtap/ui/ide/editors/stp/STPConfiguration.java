@@ -48,8 +48,9 @@ public class STPConfiguration extends SourceViewerConfiguration {
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] {
 				IDocument.DEFAULT_CONTENT_TYPE,
-				STPPartitionScanner. STP_COMMENT,
-				STPPartitionScanner.STP_STRING};
+				STPPartitionScanner.STP_COMMENT,
+				STPPartitionScanner.STP_STRING,
+				STPPartitionScanner.STP_PROBE};
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +66,10 @@ public class STPConfiguration extends SourceViewerConfiguration {
 		assistant
 				.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
 		IContentAssistProcessor processor = new STPCompletionProcessor();
+
 		assistant.setContentAssistProcessor(processor,IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(processor,STPPartitionScanner.STP_PROBE);
+		
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 		return assistant;
 	}
@@ -138,7 +142,11 @@ public class STPConfiguration extends SourceViewerConfiguration {
 		dr = new DefaultDamagerRepairer(getSTPScanner());
 		reconciler.setDamager(dr, STPPartitionScanner.STP_CONDITIONAL);
 		reconciler.setRepairer(dr, STPPartitionScanner.STP_CONDITIONAL);
-		
+
+		dr = new DefaultDamagerRepairer(getSTPScanner());
+		reconciler.setDamager(dr, STPPartitionScanner.STP_PROBE);
+		reconciler.setRepairer(dr, STPPartitionScanner.STP_PROBE);
+
 		return reconciler;
 	}
 

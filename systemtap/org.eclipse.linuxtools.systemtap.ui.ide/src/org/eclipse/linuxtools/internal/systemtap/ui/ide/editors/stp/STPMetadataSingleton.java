@@ -143,11 +143,33 @@ public class STPMetadataSingleton {
 		return getMatchingChildren(node, match);
 	}
 
+	/**
+	 * Returns a list of variables available in the given probe.
+	 * @param probe The probe for which to find variables
+	 * @param prefix The prefix to complete.  
+	 * @return a list of variables matching the prefix.
+	 */
+	public String[] getProbeVariableCompletions(String probe, String prefix){
+		TreeNode node = TapsetLibrary.getProbes();
+
+		// Get the matching leaf node.
+		node = getChildByName(node, getTapset(probe));
+		if (node == null )
+			return NO_MATCHES;
+
+		node = getChildByName(node, probe);
+		if (node == null )
+			return NO_MATCHES;
+
+		// Get the completions.
+		return getMatchingChildren(node, prefix);
+	}
+
 	private TreeNode getChildByName(TreeNode node, String name){
 		int n = node.getChildCount();
 
 		for (int i = 0; i < n; i++) {
-			if (node.getChildAt(i).getData().equals(name))
+			if (node.getChildAt(i).toString().equals(name))
 				return node.getChildAt(i);
 		}
 
