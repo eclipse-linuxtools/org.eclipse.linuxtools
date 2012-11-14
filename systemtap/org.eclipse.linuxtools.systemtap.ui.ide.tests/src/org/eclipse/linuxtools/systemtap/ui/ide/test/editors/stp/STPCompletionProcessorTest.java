@@ -2,11 +2,15 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
+
+import java.io.IOException;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPCompletionProcessor;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.junit.Test;
 
 public class STPCompletionProcessorTest {
@@ -70,6 +74,35 @@ public class STPCompletionProcessorTest {
 		assertTrue(proposalsContain(proposals, "probe "));
 		assertTrue(!proposalsContain(proposals, "global "));
 		assertTrue(!proposalsContain(proposals, "function "));
+	}
+	
+	@Test
+	public void testProbeCompletion() throws BadLocationException {
+		assumeTrue(stapInstalled());
+
+		Document testDocument = new Document(TEST_STP_SCRIPT);
+		int offset = TEST_STP_SCRIPT.indexOf("//marker1");
+		String prefix = "probe ";
+		testDocument.replace(offset, 0, prefix);
+		offset += prefix.length();
+
+		STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
+		ICompletionProposal[] proposals = completionProcessor
+				.computeCompletionProposals(testDocument,
+						offset);
+
+		assertTrue(proposalsContain(proposals, "syscall"));
+		assertTrue(!proposalsContain(proposals, "syscall.write"));
+	}
+
+	private boolean stapInstalled(){
+		try {
+			Process process = RuntimeProcessFactory.getFactory().exec(new String[]{"stap", "-V"}, null);
+			return (process != null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Test

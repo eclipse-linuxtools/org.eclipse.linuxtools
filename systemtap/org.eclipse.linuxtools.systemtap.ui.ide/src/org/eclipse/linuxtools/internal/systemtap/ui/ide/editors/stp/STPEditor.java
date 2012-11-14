@@ -57,14 +57,6 @@ public class STPEditor extends SimpleEditor {
 
 	public STPEditor() {
 		super();
-		URL completionURL = null;
-	
-		completionURL = buildCompletionDataLocation("completion/stp_completion.properties");
-		STPMetadataSingleton completionDataStore = STPMetadataSingleton.getInstance();
-		
-		if (completionURL != null)
-			completionDataStore.build(completionURL);
-
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new STPConfiguration(colorManager,this));
 		setDocumentProvider(new STPDocumentProvider());
@@ -145,39 +137,4 @@ public class STPEditor extends SimpleEditor {
 
 	}
 	
-	private URL buildCompletionDataLocation(String completionDataLocation) {
-		URL completionURLLocation = null; 
-		try {
-			completionURLLocation = getCompletionURL(completionDataLocation);			
-		} catch (IOException e) {
-			completionURLLocation = null;
-		}
-		
-		if (completionURLLocation == null) {
-			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, 
-					IStatus.OK, "Cannot locate plug-in location for System Tap completion metadata " +
-							"(completion/stp_completion.properties). Completions are not available.", null));
-			return null;
-		} 
-		
-		File completionFile = new File(completionURLLocation.getFile());
-		if ((completionFile == null) || (!completionFile.exists()) || (!completionFile.canRead())) {
-			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, 
-					IStatus.OK, "Cannot find System Tap completion metadata at  " +completionFile.getPath() + 
-					"Completions are not available.", null));
-					
-			return null;
-		}
-
-		return completionURLLocation;
-		
-	}
-	private URL getCompletionURL(String completionLocation) throws IOException {
-		URL fileURL = null;
-		URL location = IDEPlugin.getDefault().getBundle().getEntry(completionLocation);
-
-		if (location != null)
-			fileURL = FileLocator.toFileURL(location);		
-		return fileURL;
-	}
 }

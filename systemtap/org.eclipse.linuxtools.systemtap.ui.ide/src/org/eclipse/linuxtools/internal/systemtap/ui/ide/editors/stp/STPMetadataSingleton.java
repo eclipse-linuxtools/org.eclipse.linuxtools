@@ -24,10 +24,15 @@ import java.util.HashMap;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+
 
 /**
  * 
- * Build and hold completion metadata fo Systemtap. This originally is generated from stap coverage data
+ * Build and hold completion metadata for Systemtap. This originally is generated from stap coverage data
  * 
  *
  */
@@ -52,8 +57,54 @@ public class STPMetadataSingleton {
 	public static STPMetadataSingleton getInstance() {
 		if (instance == null) {
 			instance = new STPMetadataSingleton();
+			
+			URL completionURL = null;
+			
+			completionURL = buildCompletionDataLocation("completion/stp_completion.properties"); //$NON-NLS-1$
+			STPMetadataSingleton completionDataStore = STPMetadataSingleton.getInstance();
+			
+			if (completionURL != null)
+				completionDataStore.build(completionURL);
+
+
 		}
 		return instance;
+	}
+
+	private static URL buildCompletionDataLocation(String completionDataLocation) {
+		URL completionURLLocation = null; 
+		try {
+			completionURLLocation = getCompletionURL(completionDataLocation);			
+		} catch (IOException e) {
+			completionURLLocation = null;
+		}
+		
+		if (completionURLLocation == null) {
+			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, 
+					IStatus.OK, "Cannot locate plug-in location for System Tap completion metadata " +
+							"(completion/stp_completion.properties). Completions are not available.", null));
+			return null;
+		} 
+		
+		File completionFile = new File(completionURLLocation.getFile());
+		if ((completionFile == null) || (!completionFile.exists()) || (!completionFile.canRead())) {
+			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, 
+					IStatus.OK, "Cannot find System Tap completion metadata at  " +completionFile.getPath() + 
+					"Completions are not available.", null));
+					
+			return null;
+		}
+
+		return completionURLLocation;
+		
+	}
+	private static URL getCompletionURL(String completionLocation) throws IOException {
+		URL fileURL = null;
+		URL location = IDEPlugin.getDefault().getBundle().getEntry(completionLocation);
+
+		if (location != null)
+			fileURL = FileLocator.toFileURL(location);		
+		return fileURL;
 	}
 
 	/**

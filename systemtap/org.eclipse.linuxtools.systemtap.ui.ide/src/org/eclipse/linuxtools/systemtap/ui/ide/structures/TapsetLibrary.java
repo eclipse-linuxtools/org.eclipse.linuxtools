@@ -43,9 +43,9 @@ public final class TapsetLibrary {
 	}
 	
 	/**
-	 * This mthod will attempt to get the most up-to-date information.
+	 * This method will attempt to get the most up-to-date information.
 	 * However, if the TapsetParser is running already it will quit, 
-	 * assuming that new information will be avilable soon.  By registering
+	 * assuming that new information will be available soon.  By registering
 	 * a listener at that point the class can be notified when an update is
 	 * available.
 	 */
@@ -53,12 +53,15 @@ public final class TapsetLibrary {
 		if(null != stpp && stpp.isRunning())
 			return;
 
-		if(IDEPlugin.getDefault().getPreferenceStore()
-				.getBoolean(IDEPreferenceConstants.P_STORED_TREE) && 
-				isTreeFileCurrent())
+		IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
+
+		if (preferenceStore.contains(IDEPreferenceConstants.P_STORED_TREE)
+				&& preferenceStore.getBoolean(IDEPreferenceConstants.P_STORED_TREE)
+				&& isTreeFileCurrent()) {
 			readTreeFile();
-		else
+		} else {
 			runStapParser();
+		}
 	}
 	
 	/**
@@ -121,14 +124,14 @@ public final class TapsetLibrary {
 	public static File getTapsetLocation(IPreferenceStore p) {
 		File f;
 		String path = p.getString(PreferenceConstants.P_ENV[2][0]);
-		if(path.trim().equals("")) {
-			f = new File("/usr/share/systemtap/tapset");
+		if(path.trim().equals("")) { //$NON-NLS-1$
+			f = new File("/usr/share/systemtap/tapset"); //$NON-NLS-1$
 			if(!f.exists()) {
-				f = new File("/usr/local/share/systemtap/tapset");
+				f = new File("/usr/local/share/systemtap/tapset"); //$NON-NLS-1$
 				if(!f.exists()) {
 					InputDialog i = new InputDialog(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-							Localization.getString("TapsetBrowserView.TapsetLocation"), Localization.getString("TapsetBrowserView.WhereDefaultTapset"), "", null);
+							Localization.getString("TapsetBrowserView.TapsetLocation"), Localization.getString("TapsetBrowserView.WhereDefaultTapset"), "", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					i.open();
 					p.setValue(PreferenceConstants.P_ENV[2][0], i.getValue());
 					f = new File( i.getValue() );
@@ -146,7 +149,7 @@ public final class TapsetLibrary {
 	 * time stamp.  This is to see if the folder may have new data in it
 	 * @param time The current time stamp
 	 * @param folder The folder to check if it is newer the then time stamp
-	 * @return boolean indicating whther the time stamp is newer then the folder
+	 * @return boolean indicating whether the time stamp is newer then the folder
 	 */
 	private static boolean checkIsCurrentFolder(long time, File folder) {
 		File[] fs = folder.listFiles();
@@ -165,7 +168,7 @@ public final class TapsetLibrary {
 	/**
 	 * Adds a new listener to the TapsetParser
 	 * @param listener the listener to be added
-	 * @return boolean indacating whether or not the listener was added
+	 * @return boolean indicating whether or not the listener was added
 	 */
 	public static boolean addListener(IUpdateListener listener) {
 		if(null == stpp)
