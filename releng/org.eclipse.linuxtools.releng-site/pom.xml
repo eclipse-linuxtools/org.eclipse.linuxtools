@@ -57,6 +57,29 @@
         </executions>
       </plugin>
       <!--
+           Clean out contents of backed up target folder.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <executable>rm</executable>
+              <arguments>
+                <argument>-rf</argument>
+                <argument>${relengTargetDir}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--
            Packaging type 'eclipse-repository' performs a clean on the
            'initialize' phase. The maven-javadoc-plugin executes
            'generate-sources', which will also trigger an 'initialize' (clean).
