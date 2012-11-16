@@ -25,6 +25,7 @@ public class SystemTapScriptLaunchShortcut implements ILaunchShortcut {
 	public void launch(IEditorPart editor, String mode) {
 		RunScriptAction action = new RunScriptAction();
 		action.init(editor.getSite().getWorkbenchWindow());
+		action.setLocalScript(true);
 		action.run();
 	}
 
@@ -32,6 +33,7 @@ public class SystemTapScriptLaunchShortcut implements ILaunchShortcut {
 		RunScriptByPathAction action = new RunScriptByPathAction();
 		IPath path = ((IFile)((TreeSelection)selection).getFirstElement()).getLocation();
 		action.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), path);
+		action.setLocalScript(true);
 		action.run();
 	}
 
