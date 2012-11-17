@@ -82,4 +82,9 @@ public class GcovTestC {
 			public void openGcovSummary() throws Exception {
 				GcovTest.openGcovSummary(bot, PROJECT_NAME, true);
 			}
+			
+			@Test
+			public void testGcovSummaryByLaunch() throws Exception {
+				GcovTest.openGcovSummaryByLaunch(bot, PROJECT_NAME);
+			}
 }

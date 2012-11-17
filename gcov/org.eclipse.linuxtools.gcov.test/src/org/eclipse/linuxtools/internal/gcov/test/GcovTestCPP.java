@@ -68,7 +68,7 @@ public class GcovTestCPP {
 			}
 
 			@Test
-			public void cmpileProject() {
+			public void compileProject() {
 				GcovTest.compileProject(bot, PROJECT_NAME);
 			}
 		
@@ -81,4 +81,10 @@ public class GcovTestCPP {
 			public void openGcovSummary() throws Exception {
 				GcovTest.openGcovSummary(bot, PROJECT_NAME, false);
 			}
+			
+			@Test
+			public void testGcovSummaryByLaunch() throws Exception {
+				GcovTest.openGcovSummaryByLaunch(bot, PROJECT_NAME);
+			}
+
 }
