@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
+import java.io.IOException;
+
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
@@ -34,6 +36,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
+
+import com.jcraft.jsch.JSchException;
 
 /**
  * Action used to run the systemTap script in the active editor.  This action will start stap
@@ -69,16 +73,23 @@ public class RunScriptChartAction extends RunScriptAction {
 			return;
 	
 		if(isValid()) {
-			 try{
-				 
-					ScpClient scpclient = new ScpClient();
-					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-					tmpfileName="/tmp/"+ serverfileName;
-					 scpclient.transfer(fileName,tmpfileName);
-			        }catch(Exception e){ continueRun = false;}
+			 try{	 
+				 ScpClient scpclient = new ScpClient();
+				 serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
+				 tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
+				 scpclient.transfer(fileName,tmpfileName);
+			 } catch (JSchException e){
+				 e.printStackTrace();
+				 continueRun = false;
+			 } catch (IOException e) {
+				e.printStackTrace();
+				continueRun = false;
+			} finally {
+			 }
+
 			String[] script = null;
 		 
-			if(continueRun) script = buildScript();
+			if(continueRun) script = buildStandardScript();
 			if(continueRun) {
 				//createClientSession();
 				    String[] envVars = getEnvironmentVariables();
@@ -104,25 +115,6 @@ public class RunScriptChartAction extends RunScriptAction {
 	}
 	
 	/**
-	 * The <code>buildScript</code> method in this class replaces the one in the superclass and calls
-	 * <code>buildOptionsScript</code> or <code>buildStandardScript</code> depending on the users
-	 * selection of whether to use script options.
-	 * @return String[] representing the entire command that needs to be run.
-	 */
-	@Override
-	protected String[] buildScript() {
-		String[] script;
-		getChartingOptions();
-		
-	//	if(useOptions)
-		//	script = buildOptionsScript();
-		//else
-			script = buildStandardScript();
-		
-		return script;
-	}
-	
-	/**
 	 * This method is used to prompt the user for the parsing expression to be used in generating
 	 * the <code>DataSet</code> from the scripts output.
 	 */
@@ -145,15 +137,13 @@ public class RunScriptChartAction extends RunScriptAction {
 		wizard.dispose();
 		
 	}
-	
-	 /* protected String getFilePath() {
-	
-		  IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-	      return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
-    
-	  }*/
-	
-	//private boolean useOptions = false;
+
+	@Override
+	protected String[] buildStandardScript() {
+		getChartingOptions();
+		return super.buildStandardScript();
+	}
+
 	private IDataSet dataSet = null;
 	private IDataSetParser parser = null;
 

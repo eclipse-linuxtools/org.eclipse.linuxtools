@@ -63,15 +63,24 @@
 			each tool in a category gives itself a priority so that when multiple tools are installed from the same category, the one with the highest priority becomes the initial default.  For example, the Perf tool has the highest
 			priority of the profile timing category tools and so becomes the initial default, if installed.  Valgrind memcheck has the highest priority for profiling memory and Gcov is the default
 			for profiling code coverage (at present the only tool in the category).</p>
-		<p>The default for any category can be directly set/modified by the end-user via Window -&gt; Preferences -&gt; Profiling.  Each category of installed tools using the framework will present a
-			sub-page within the Profiling Preferences category.  The preferences page for the category will display a radio button for each tool that is installed, belonging to that particular category.
+		<p>The default for any category can be directly set/modified by the end-user via Window -&gt; Preferences -&gt; C/C++ -&gt; Profiling Categories.  Each category of installed tools using the framework will present a
+			sub-page beneath the top-level Profiling Categories page.  The preferences page for each category will display a radio button to represent each tool that is installed that belongs to that particular profiling category.
 			If no tools are installed for a given category, no preferences page is displayed.  If the user has not set a preferred tool for a category, the priority of each installed tool will determine the
-			default.</p>
-		<p>The following shows the Profiling Preferences page for the Timing Category whereby the Linux Tools Perf, OProfile, and Callgraph plug-ins are installed.  Note the Perf tool being the default:
+			default choice.  For example, Perf, if installed, is the highest priority Timing Category profile tool from Linux Tools.</p>
+		<p>The following shows the Profiling Categories preference for the Timing Category whereby the Linux Tools Perf, OProfile, and Callgraph plug-ins are installed.  Note the Perf tool being the default:
 			<br/>
 			<br/>
 
 			<img border="0" src="images/LinuxToolsProfilingPreferences.png"/>
+		</p>
+		<p>Also note that there is additional information presented as to how the tool functions (e.g. Function Timing vs Hardware Events Timing) and that there are special usage notes via tooltips (e.g. see diagram for notes on using
+			gprof).</p>
+		<p>For projects that want to set a different category default than the workspace, the same settings are available via the Project Properties page.  Like the preferences pages, tooltip information is provided.  The Profiling Categories property settings can be found under
+			Project -&gt; Properties -&gt; C/C++ General.  Each category allows the end-user to specify project-specific settings or to default to use the workspace preferences instead.  In the case where project-specific settings
+			are not enabled, the selection of a profiling tool is disabled.  The page also includes a link to the associated
+			workspace Profiling Category preferences for that category should the end-user wish to set them that way or verify what is currently in place.  When project-specific settings are chosen, they will override the workspace preferences for that particular category when profiling within that project.  </p>
+		<p>
+			<img border="0" src="images/LinuxToolsProfilingProperties.png"/>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>

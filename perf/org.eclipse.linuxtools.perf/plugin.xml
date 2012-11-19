@@ -135,10 +135,11 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="true"
             delegate="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate"
+            description="%perfLaunchConfiguration.description"
             id="org.eclipse.linuxtools.perf.provider"
-            name="Perf"
+            information="%perfLaunchConfiguration.information"
+            name="%perfLaunchConfiguration.name.0"
             priority="1"
             shortcut="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut"
             tabgroup="org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigurationTabGroup"

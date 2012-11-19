@@ -30,17 +30,7 @@ public class RunScriptOptionsAction extends RunScriptAction {
 		super();
 		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
-	
-	/**
-	 * The <code>buildScript</code> method in this class replaces the one in the superclass and calls
-	 * <code>buildOptionsScript</code> rather than the <code>buildStandardScript</code> method called
-	 * in the parent code.
-	 */
-	@Override
-	protected String[] buildScript() {
-		return buildOptionsScript();
-	}
-	
+
 	/**
 	 * This method executes the same code as the <code>buildStandardScript</code> with one change,
 	 * being that instead of calling the <code>getImportedTapsets</code> method from the parent class, it
@@ -56,7 +46,7 @@ public class RunScriptOptionsAction extends RunScriptAction {
 		getImportedTapsets(cmdList);
 		
 		if(isGuru())
-			cmdList.add("-g");
+			cmdList.add("-g"); //$NON-NLS-1$
 
 		getCommandLineOptions(cmdList);
 		
@@ -88,10 +78,10 @@ public class RunScriptOptionsAction extends RunScriptAction {
 			//Get rest of commandline options
 			for(i=0; i<cmdOptVals.length; i++) {
 				if(null != cmdOptVals[i] && cmdOptVals[i].trim().length() > 0) {
-					if("-v".equals(IDEPreferenceConstants.P_STAP[i+cmdOpts.length][0])) {
-						cmdList.add("-" + cmdOptVals[i]);
-					} else if("-p NUM".equals(IDEPreferenceConstants.P_STAP[i+cmdOpts.length][0])) {
-						cmdList.add("-p" + cmdOptVals[i]);
+					if("-v".equals(IDEPreferenceConstants.P_STAP[i+cmdOpts.length][0])) { //$NON-NLS-1$
+						cmdList.add("-" + cmdOptVals[i]); //$NON-NLS-1$
+					} else if("-p NUM".equals(IDEPreferenceConstants.P_STAP[i+cmdOpts.length][0])) { //$NON-NLS-1$
+						cmdList.add("-p" + cmdOptVals[i]); //$NON-NLS-1$
 					} else {
 						cmdList.add(IDEPreferenceConstants.P_STAP[i+cmdOpts.length][0].substring(0,2));
 

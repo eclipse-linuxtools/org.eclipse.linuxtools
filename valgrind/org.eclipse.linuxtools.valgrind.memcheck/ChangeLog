@@ -1,3 +1,11 @@
+2012-10-19  cabernal  <cabernal@redhat.com>
+
+	* plugin.properties: Add tool information definition.
+	* plugin.xml: Add tool information to launch provider.
+2012-10-10  cabernal  <cabernal@redhat.com>
+
+	* plugin.properties: Add tool description definiton.
+	* plugin.xml: Add tool description to launch provider.
 2012-09-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add import of o.e.l.internal.valgrind.core. 

@@ -67,6 +67,7 @@
     <module>org.eclipse.linuxtools.cdt.libhover.newlib</module>
     <module>org.eclipse.linuxtools.cdt.libhover.newlib-feature</module>
     <module>org.eclipse.linuxtools.cdt.libhover.devhelp</module>
+    <module>org.eclipse.linuxtools.cdt.libhover.devhelp.tests</module>
     <module>org.eclipse.linuxtools.cdt.libhover.devhelp-feature</module>
   </modules>
 

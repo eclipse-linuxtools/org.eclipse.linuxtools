@@ -30,9 +30,10 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="false"
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
+            description="%massifLaunchConfiguration.description.0"
             id="org.eclipse.linuxtools.profiling.provider.valgrind.massif"
+            information="%massifLaunchConfiguration.information.0"
             name="%massifLaunchConfiguration.name.0"
             priority="2"
             shortcut="org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchShortcut"

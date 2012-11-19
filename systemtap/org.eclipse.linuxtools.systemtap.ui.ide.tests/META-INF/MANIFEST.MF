@@ -6,12 +6,13 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Import-Package: org.junit,
- org.junit.runner;version="4.10.0",
- org.junit.runners;version="4.10.0",
- org.eclipse.linuxtools.systemtap.ui.ide,
+Import-Package: org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.actions,
  org.eclipse.linuxtools.systemtap.ui.ide.structures,
- org.eclipse.linuxtools.systemtap.ui.structures
+ org.eclipse.linuxtools.systemtap.ui.structures,
+ org.eclipse.linuxtools.tools.launch.core.factory,
+ org.junit,
+ org.junit.runner;version="4.10.0",
+ org.junit.runners;version="4.10.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.ide

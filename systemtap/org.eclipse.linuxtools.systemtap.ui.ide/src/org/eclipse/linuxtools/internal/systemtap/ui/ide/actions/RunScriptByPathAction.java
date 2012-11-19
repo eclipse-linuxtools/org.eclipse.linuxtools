@@ -11,8 +11,10 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptBaseAction;
 import org.eclipse.ui.IWorkbenchWindow;
 
 /**
@@ -23,13 +25,17 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @author Sami Wagiaalla
  * 
  */
-public class RunScriptByPathAction extends RunScriptAction {
+public class RunScriptByPathAction extends RunScriptBaseAction {
 
 	IPath path;
 
 	public void init(IWorkbenchWindow window, IPath path) {
 		super.init(window);
 		this.path = path;
+	}
+
+	public void init(IWorkbenchWindow window, String path) {
+		init(window, new Path(path));
 	}
 
 	@Override

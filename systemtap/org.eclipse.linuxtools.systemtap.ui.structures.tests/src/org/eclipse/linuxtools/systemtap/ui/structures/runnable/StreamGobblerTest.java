@@ -15,14 +15,27 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class StreamGobblerTest{
 
+	private static class TestStream extends InputStream{
+		int i = 10;
+		@Override
+		public int read() {
+			if (i < 0)
+				return -1;
+
+			return i--;
+		}
+	}
+
 	@Before
 	public void setUp() {
-		sg = new StreamGobbler(System.in);
+		sg = new StreamGobbler(new TestStream());
 		sg.start();
 	}
 
@@ -33,7 +46,7 @@ public class StreamGobblerTest{
 		sg = new StreamGobbler(null);
 		assertNotNull("StreamGobbler not null", sg);
 
-		sg = new StreamGobbler(System.in);
+		sg = new StreamGobbler(new TestStream());
 		assertNotNull("StreamGobbler not null", sg);
 	}
 

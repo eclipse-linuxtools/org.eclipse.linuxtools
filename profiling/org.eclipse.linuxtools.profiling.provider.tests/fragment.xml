@@ -8,7 +8,7 @@
             id="org.eclipse.linuxtools.profiling.stub"
             label="Profile As Stub"
             modes="profile">
-            <class class="org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchShortcut">
+            <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
                <parameter 
                      name="type"
                      value="stub"/>
@@ -104,7 +104,7 @@
       <launchConfigurationTabGroup
             id="org.eclipse.linuxtools.profiling.stub.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.profiling.stub.launchConfigurationType">
-            <class class="org.eclipse.linuxtools.internal.profiling.provider.ProviderLaunchConfigurationTabGroup">
+            <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup">
                <parameter 
                      name="type"
                      value="stub"/>
@@ -122,7 +122,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.linuxtools.internal.profiling.provider.launch.ProviderLaunchConfigurationDelegate"
+            delegate="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.stub.launchConfigurationType"
             modes="profile"
             name="Profile As Stub"
@@ -144,7 +144,7 @@
             category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
             id="org.eclipse.linuxtools.profiling.snapshot.preferences"
             name="Snapshot">
-            <class class="org.eclipse.linuxtools.internal.profiling.provider.AbstractProviderPreferencesPage">
+            <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
                <parameter 
                      name="type"
                      value="timing"/>
@@ -154,7 +154,6 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="false"
             delegate="org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.stubby1"
             name="Profile As Stubby 1"
@@ -164,7 +163,6 @@
             type="stub">
       </provider>
             <provider
-            default="true"
             delegate="org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.stubby2"
             name="Profile As Stubby 2"
@@ -174,7 +172,6 @@
             type="stub">
       </provider>
             <provider
-            default="false"
             delegate="org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.stubby3"
             name="Profile As Stubby 3"

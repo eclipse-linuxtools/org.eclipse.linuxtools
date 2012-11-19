@@ -29,7 +29,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();
 
 		//ide
-		store.setDefault(IDEPreferenceConstants.P_STORED_TREE, true);
+		store.setDefault(IDEPreferenceConstants.P_STORED_TREE, false);
 		store.setDefault(IDEPreferenceConstants.P_REMOTE_PROBES, false);
 		
 		//ide.path

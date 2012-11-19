@@ -95,10 +95,11 @@
  <extension
        point="org.eclipse.linuxtools.profiling.launch.launchProvider">
     <provider
-          default="true"
           delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
+          description="%callgraphLaunchConfiguration.description"
           id="org.eclipse.linuxtools.callgraph.launch.provider"
-          name="Callgraph"
+          information="%callgraphLaunchConfiguration.information"
+          name="%callgraphLaunchConfiguration.name.0"
           priority="3"
           shortcut="org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph"
           tabgroup="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationTabGroup"

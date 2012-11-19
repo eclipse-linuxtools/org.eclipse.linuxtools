@@ -28,7 +28,7 @@
   <version>1.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools Valgrind Parent</name>
+  <name>Eclipse Linux Tools Profiling Framework Parent</name>
 
   <licenses>
     <license>
@@ -73,7 +73,6 @@
     <module>org.eclipse.linuxtools.profiling.launch.ui</module>
     <module>org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy</module>
     <module>org.eclipse.linuxtools.profiling.launch.remote</module>
-    <module>org.eclipse.linuxtools.profiling.provider</module>
     <module>org.eclipse.linuxtools.profiling.provider.tests</module>
     <module>org.eclipse.linuxtools.profiling.remote-feature</module>
     <module>org.eclipse.linuxtools.profiling.tests</module>

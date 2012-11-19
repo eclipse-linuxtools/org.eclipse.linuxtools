@@ -2,11 +2,12 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
       <provider
-            default="true"
             delegate="org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationDelegate"
+            description="%gprofLaunchConfiguration.description"
             id="org.eclipse.linuxtools.profiling.provider.timing.gprof"
+            information="%gprofLaunchConfiguration.information"
             name="%gprofLaunchConfiguration.name.0"
-            priority="1"
+            priority="4"
             shortcut="org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchShortcut"
             tabgroup="org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationTabGroup"
             type="timing">

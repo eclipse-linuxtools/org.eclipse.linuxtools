@@ -21,6 +21,8 @@ import java.util.Stack;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
@@ -31,6 +33,7 @@ import org.eclipse.linuxtools.internal.perf.model.PMEvent;
 import org.eclipse.linuxtools.internal.perf.model.PMFile;
 import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
+import org.eclipse.linuxtools.internal.perf.ui.PerfDoubleClickAction;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.osgi.framework.FrameworkUtil;
 
@@ -95,6 +98,31 @@ public class ModelTest extends AbstractTest {
 				"resources/defaultevent-data/perf.data.err.log");
 
 		checkChildrenPercentages(invisibleRoot, invisibleRoot.getPercent());
+	}
+
+	public void testDoubleClickAction () {
+		TreeParent invisibleRoot = buildModel(
+				"resources/defaultevent-data/perf.data",
+				"resources/defaultevent-data/perf.data.txt",
+				"resources/defaultevent-data/perf.data.err.log");
+
+		PerfPlugin.getDefault().setModelRoot(invisibleRoot);
+		// update the model root for the view
+		PerfCore.RefreshView();
+
+		// number of parents excluding invisibleRoot
+		int numOfParents = getNumberOfParents(invisibleRoot) - 1;
+
+		// create a double click action to act on the tree viewer
+		TreeViewer tv = PerfPlugin.getDefault().getProfileView().getTreeViewer();
+		PerfDoubleClickAction dblClick = new PerfDoubleClickAction(tv);
+
+		// double click every element
+		doubleClickAllChildren(invisibleRoot, tv, dblClick);
+
+		// If all elements are expanded, this is the number of elements
+		// in our model that have children.
+		assertEquals(numOfParents, tv.getExpandedElements().length);
 	}
 
 	public void testParserMultiEvent() {
@@ -221,6 +249,42 @@ public class ModelTest extends AbstractTest {
 				checkChildrenStructure(tp, newStack);
 			}
 		}
+	}
+
+	/**
+	 * Performs a Perf double-click action on every element in the
+	 * TreeViewer model.
+	 *
+	 * @param root some element that will serve as the root
+	 * @param tv a TreeViewer containing elements from the Perf model
+	 * @param dblClick the double-click action to perform on every
+	 * element of the TreeViewer.
+	 */
+	private void doubleClickAllChildren(TreeParent root, TreeViewer tv,
+			PerfDoubleClickAction dblClick) {
+
+		for (TreeParent child : root.getChildren()) {
+			// see PerfDoubleClickAction for IStructuredSelection
+			tv.setSelection(new StructuredSelection(child));
+			dblClick.run();
+			doubleClickAllChildren(child, tv, dblClick);
+		}
+	}
+
+	/**
+	 * Find the number of ancestors of the given root that have children.
+	 * This includes the given root in the computation.
+	 *
+	 * @param root some element that will serve as the root
+	 * @return the number of elements under, and including the
+	 * given root, that have children elements.
+	 */
+	private int getNumberOfParents(TreeParent root) {
+		int ret = root.hasChildren() ? 1 : 0;
+		for (TreeParent child : root.getChildren()) {
+			ret += getNumberOfParents(child);
+		}
+		return ret;
 	}
 
 	/**
