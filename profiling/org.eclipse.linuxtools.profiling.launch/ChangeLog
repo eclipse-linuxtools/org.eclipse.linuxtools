@@ -1,3 +1,5 @@
+Note: this is no longer used...see git logs.
+
 2011-12-02  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java: Add URI

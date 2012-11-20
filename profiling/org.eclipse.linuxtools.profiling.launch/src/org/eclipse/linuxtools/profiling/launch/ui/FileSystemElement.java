@@ -11,6 +11,9 @@
 
 package org.eclipse.linuxtools.profiling.launch.ui;
 
+/**
+ * @since 1.3
+ */
 public class FileSystemElement {
 
 	private String scheme;

@@ -109,5 +109,12 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e.getMessage(), e));
 	}
-
+	
+	public static void log(int status, String msg, Throwable e) {
+		plugin.getLog().log(new Status(status, PLUGIN_ID, IStatus.OK, msg, e));
+	}
+	
+	public static void log(int status, String msg) {
+		log(status, msg, null);
+	}
 }

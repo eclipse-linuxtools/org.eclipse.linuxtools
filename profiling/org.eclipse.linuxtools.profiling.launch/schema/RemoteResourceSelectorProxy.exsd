@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.linuxtools.profiling.launch.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.linuxtools.profiling.launch" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.linuxtools.profiling.launch.ui" id="RemoteResourceSelectorProxy" name="Remote Resource Selector Proxy"/>
+         <meta.schema plugin="org.eclipse.linuxtools.profiling.launch" id="RemoteResourceSelectorProxy" name="Remote Resource Selector Proxy"/>
       </appinfo>
       <documentation>
          Use this to identify a Remote Resource Selector Proxy object of type IRemoteResourceSelectorProxy.
