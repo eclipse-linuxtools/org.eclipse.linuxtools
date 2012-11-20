@@ -28,7 +28,7 @@
             priority="2"
             shortcut="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindLaunchShortcut"
             tabgroup="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindLaunchConfigurationTabGroup"
-            type="memory">
+            type="timing">
       </provider>
    </extension>   
 
