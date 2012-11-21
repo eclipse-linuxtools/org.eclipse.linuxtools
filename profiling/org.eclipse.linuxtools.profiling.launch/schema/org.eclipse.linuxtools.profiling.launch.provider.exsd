@@ -52,21 +52,21 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  The unique identifier for this provider.
+                  specifies a unique identifier for this launch provider.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="type" type="string" use="required">
             <annotation>
                <documentation>
-                  The type of profiling provided.
+                  specifies the profiling type of this launch provider.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="shortcut" type="string" use="required">
             <annotation>
                <documentation>
-                  A Class that extends &lt;code&gt;ProfileLaunchShortcut&lt;/code&gt; and that will provide a launch for profiling.
+                  specifies the fully qualified name of the Java class that extends &lt;code&gt;ProfileLaunchShortcut&lt;/code&gt; and that will provide a launch for profiling.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut:"/>
@@ -76,7 +76,7 @@
          <attribute name="tabgroup" type="string" use="required">
             <annotation>
                <documentation>
-                  A Class that extends &lt;code&gt;ProfileLaunchConfigurationTabGroup&lt;/code&gt; and that will provide a set of tabs.
+                  specifies the fully qualified name of a Java class that implements &lt;code&gt;ProfileLaunchConfigurationTabGroup&lt;/code&gt;  and that will provide a set of tabs.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup:"/>
@@ -86,7 +86,7 @@
          <attribute name="priority" type="string" use="required">
             <annotation>
                <documentation>
-                  Positive integer stating priorty over launch provider&apos;s of the same type.
+                  positive integer specifying priority over launch provider&apos;s of the same type.
 Invalid values will be assigned the lowest priority to the extension.
                </documentation>
             </annotation>
@@ -94,7 +94,7 @@ Invalid values will be assigned the lowest priority to the extension.
          <attribute name="delegate" type="string" use="required">
             <annotation>
                <documentation>
-                  A Class that extends &lt;code&gt;ProfileLaunchConfigurationDelegate&lt;/code&gt; and that will provide a launch delegate for profiling.
+                  specifies the fully qualified name of the Java class that extends &lt;code&gt;ProfileLaunchConfigurationDelegate&lt;/code&gt; and provides a launch delegate for profiling.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate:"/>
@@ -104,21 +104,21 @@ Invalid values will be assigned the lowest priority to the extension.
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  Name of launch provider.
+                  specifies a human-readable name for this launch provider.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="description" type="string">
             <annotation>
                <documentation>
-                  Description of launch provider to be used in preferences tool tip information.
+                  specifies a human-readable description of launch provider to be used in the preferences tool tip information.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="information" type="string">
             <annotation>
                <documentation>
-                  Additional information for launch provider to be displayed in the preferences page.
+                  specifies additional plug-in specific information to be displayed in the preferences page.
                </documentation>
             </annotation>
          </attribute>
@@ -139,14 +139,27 @@ Invalid values will be assigned the lowest priority to the extension.
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         &lt;extension
- point=&quot;org.eclipse.linuxtools.profiling.launch.launchProvider&quot;&gt;
-     &lt;provider
-         id=&quot;org.eclipse.linuxtools.perf.provider&quot;
-            shortcut=&quot;org.eclipse.linuxtools.internal.perf.launch.PerfLaunchShortcut&quot;
-            type=&quot;snapshot&quot;&gt;
-  &lt;/provider&gt;
+         The following is an example of a launch provider extension point:
+
+&lt;extension
+      point=&quot;org.eclipse.linuxtools.profiling.launch.launchProvider&quot;&gt;
+   &lt;provider
+         id=&quot;com.example.perf.provider&quot;
+         delegate=&quot;com.example.perf.launch.PerfLaunchConfigDelegate&quot;
+         shortcut=&quot;com.example.perf.launch.PerfLaunchShortcut&quot;
+         tabgroup=&quot;com.example.perf.launch.PerfLaunchConfigurationTabGroup&quot;
+         priority=&quot;1&quot;
+         type=&quot;timing&quot;
+         name=&quot;Perf&quot;
+         description=&quot;Hardware/Software Events Timing&quot;
+         information=&quot;Note: does not require set-up or special compilation.&quot;&gt;
+   &lt;/provider&gt;
 &lt;/extension&gt;
+
+In the above example, the contributed launch provider will become available as a tool for the &quot;Profile Timing&quot; launch shortcut (accessible from the “Profile As” context menu), 
+preferences page and project properties page. Furthermore, this tool will be set as the default for the specified type as a result of setting its priority to 1. In addition, the tool&apos;s 
+launch configuration will be available under the &quot;Profiling Time&quot; launch configuration category. Here the specified tab group will be used to provide an interface for configuring
+tool specific settings.
       </documentation>
    </annotation>
 
