@@ -11,20 +11,28 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.structures;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
@@ -63,6 +71,7 @@ public class TapsetParser implements Runnable {
 		probes = new TreeNode("", false);
 
 		String s = readPass1(null);
+		s = addStaticProbes(s);
 		parseProbes(s);
 		sortTrees();
 	}
@@ -378,6 +387,35 @@ public class TapsetParser implements Runnable {
 	protected void sortTrees() {
 		functions.sortTree();
 		probes.sortTree();
+	}
+
+	/**
+	 * Reads the static probes list and adds it to the probes tree.
+	 * This function assumes that the probes list will be sorted.
+	 * @return 
+	 */
+	private String addStaticProbes(String probeList) {
+		StringBuilder probes = new StringBuilder(probeList);
+
+		BufferedReader input = null;
+		try {
+			URL location = IDEPlugin.getDefault().getBundle().getEntry("completion/static_probe_list.properties"); //$NON-NLS-1$
+			location = FileLocator.toFileURL(location);
+			input = new BufferedReader(new FileReader(new File(location.getFile())));
+			String line = input.readLine();
+			while (line != null){
+				probes.append('\n');
+				probes.append(line);
+				line = input.readLine();
+			}
+			input.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return probes.toString();
 	}
 	
 	/**

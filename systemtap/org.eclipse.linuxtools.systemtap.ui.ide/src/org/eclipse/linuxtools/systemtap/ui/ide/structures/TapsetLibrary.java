@@ -91,7 +91,7 @@ public final class TapsetLibrary {
 	/**
 	 * This method checks to see if the tapsets have changed
 	 * at all since the TreeSettings.xml file was created.
-	 * @return boolean indecating whether or not the TreeSettings.xml file has the most up-to-date version
+	 * @return boolean indicating whether or not the TreeSettings.xml file has the most up-to-date version
 	 */
 	private static boolean isTreeFileCurrent() {
 		long treesDate = TreeSettings.getTreeFileDate();
