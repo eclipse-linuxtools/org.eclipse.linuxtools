@@ -205,7 +205,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScript"
 				icon="icons/actions/run/run_exc.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.group"
-				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction"
+				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptLocallyAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"
 				style="push"
 				state="false"/>
