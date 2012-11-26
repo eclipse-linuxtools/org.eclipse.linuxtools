@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -23,7 +23,7 @@ import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.TextConsole;
 
 public class Helper {
-	
+
 	/**
 	 * @param name : A String that can be found in the console (BE AS SPECIFIC AS POSSIBLE)
 	 * @return The TextConsole having 'name' somewhere within it's name
@@ -39,7 +39,7 @@ public class Helper {
 		return null;
 	}
 
-	
+
 	/**
 	 * @param name : A String that can be found in the console (BE AS SPECIFIC AS POSSIBLE)
 	 * @return The text contained within that console
@@ -48,11 +48,11 @@ public class Helper {
 		TextConsole proc = getConsoleByName(name);
 		return proc.getDocument().get();
 	}
-	
+
 	public static IDocument getConsoleDocumentByName(String name) {
 		return Helper.getConsoleByName(name).getDocument();
 	}
-	
+
 	/**
 	 * @param absoluteFilePath : the absolute path to the file
 	 * @param content : the text to be written
@@ -64,10 +64,10 @@ public class Helper {
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(content);
 			out.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
-					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
 					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
@@ -86,23 +86,23 @@ public class Helper {
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.append(content);
 			out.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
-					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
 					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Read the contents of a file
 	 * @param absoluteFilePath : The absolute path of the file from which to read.
 	 * @return : The contents of the file as a String.
 	 */
 	public static String readFile(String absoluteFilePath) {
-		
+
 		try {
 			String output = ""; //$NON-NLS-1$
 			String tmp = ""; //$NON-NLS-1$
@@ -111,16 +111,16 @@ public class Helper {
 				output+=tmp + "\n"; //$NON-NLS-1$
 			}
 			bw.close();
-			
+
 			return output;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
-	
+
 	public static BufferedWriter setBufferedWriter(String absoluteFilePath) {
 		try {
 			File f = new File(absoluteFilePath);
@@ -129,16 +129,15 @@ public class Helper {
 			FileWriter fstream;
 			fstream = new FileWriter(absoluteFilePath, true);
 			return new BufferedWriter(fstream);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
-					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
 					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 }
- 
