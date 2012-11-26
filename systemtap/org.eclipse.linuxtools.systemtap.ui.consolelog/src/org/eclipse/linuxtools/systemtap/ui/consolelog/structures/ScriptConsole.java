@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -22,6 +23,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
 import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -38,10 +40,18 @@ import org.eclipse.ui.console.IOConsole;
  * @author Ryan Morse
  */
 public class ScriptConsole extends IOConsole {
+
+	private LoggedCommand2 cmd;
+	private Runnable stopCommand;
+	private String moduleName;
+
+	private ErrorStreamDaemon errorDaemon;
+	private ConsoleStreamDaemon consoleDaemon;
+
 	/**
 	 * This method is used to get a reference to a <code>ScriptConsole</code>.  If there
-	 * is already an console that has the same name as that provided it will be stopped, 
-	 * cleared and returned to the caller to use.  If there is no console matching the 
+	 * is already an console that has the same name as that provided it will be stopped,
+	 * cleared and returned to the caller to use.  If there is no console matching the
 	 * provided name then a new <code>ScriptConsole</code> will be created for use.
 	 * @param name The name of the console that should be returned if available.
 	 * @return The console with the provided name, or a new instance if none exist.
@@ -50,7 +60,7 @@ public class ScriptConsole extends IOConsole {
 		ScriptConsole console = null;
 		try {
 			IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-	
+
 			//Prevent running the same script twice
 			if(null != ic) {
 				ScriptConsole activeConsole;
@@ -70,7 +80,7 @@ public class ScriptConsole extends IOConsole {
 					}
 				}
 			}
-			
+
 			if(null == console) {
 				console = new ScriptConsole(name, null);
 				ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] {console});
@@ -80,63 +90,22 @@ public class ScriptConsole extends IOConsole {
 		}
 		return console;
 	}
-	
-	/*public static ScriptConsole getInstance(String name) {
-		ScriptConsole console = null;
-		try {
-			IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-	
-			//Prevent running the same script twice
-			if(null != ic) {
-				ScriptConsole activeConsole;
-				StopScriptAction ssa = new StopScriptAction();
-				ssa.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				for(int i=0; i<ic.length; i++) {
-					if (ic[i] instanceof ScriptConsole) {
-						activeConsole = (ScriptConsole)ic[i];
-						if(activeConsole.getName().endsWith(name)) {
-							//Stop any script currently running
-							ssa.run(i);
-				
-							//Remove output from last run
-							activeConsole.clearConsole();
-							activeConsole.setName(name);
-							console = activeConsole;
-						}
-					}
-				}
-			}
-			
-			if(null == console) {
-				console = new ScriptConsole(name, null, sub);
-				ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] {console});
-			}
-		} catch(NullPointerException npe) {
-			console = null;
-		}
-		return console;
-	}*/
+
 	private ScriptConsole(String name, ImageDescriptor imageDescriptor) {
 		super(name, imageDescriptor);
 		cmd = null;
 	}
-	
-	/*private ScriptConsole(String name, ImageDescriptor imageDescriptor, Subscription sub) {
-		super(name, imageDescriptor);
-		this.subscription = sub;
-		cmd = null;
-	}*/
-	
+
 	/**
-	 * Creates the <code>ConsoleStreamDaemon</code> for passing data from the 
+	 * Creates the <code>ConsoleStreamDaemon</code> for passing data from the
 	 * <code>LoggedCommand</code>'s InputStream to the Console.
 	 */
 	protected void createConsoleDaemon() {
 		consoleDaemon = new ConsoleStreamDaemon(this);
 	}
-	
+
 	/**
-	 * Creates the <code>ErrorStreamDaemon</code> for passing data from the 
+	 * Creates the <code>ErrorStreamDaemon</code> for passing data from the
 	 * <code>LoggedCommand</code>'s ErrorStream to the Console and ErrorView.
 	 */
 	protected void createErrorDaemon(IErrorParser parser) {
@@ -146,7 +115,7 @@ public class ScriptConsole extends IOConsole {
 			errorView = ((ErrorView)ivp);
 		errorDaemon = new ErrorStreamDaemon(this, errorView, parser);
 	}
-	
+
 	/**
 	 * Runs the provided command in this ScriptConsole instance.
 	 * @param command The command and arguments to run.
@@ -156,9 +125,15 @@ public class ScriptConsole extends IOConsole {
 	 */
 	public void run(String[] command, String[] envVars, IPasswordPrompt prompt, IErrorParser errorParser) {
 	    cmd = new LoggedCommand2(command, envVars, prompt, 100,this.getName());
+		this.stopCommand = new Runnable() {
+			public void run() {
+				ScpExec stop = new ScpExec(new String[]{getStopString()}, getModuleName());
+				stop.start();
+			}
+		};
 	    this.run(cmd, errorParser);
-	} 
-	
+	}
+
 	/**
 	 * Runs the provided command in this ScriptConsole instance on the current
 	 * host.
@@ -170,9 +145,18 @@ public class ScriptConsole extends IOConsole {
 	 */
 	public void runLocally(String[] command, String[] envVars, IPasswordPrompt prompt, IErrorParser errorParser) {
 		cmd = new LocalLoggedCommand(command, envVars, prompt, 100, this.getName());
+		this.stopCommand = new Runnable() {
+			public void run() {
+				try {
+					RuntimeProcessFactory.getFactory().exec(getStopString(), null, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
 		this.run(cmd, errorParser);
-	} 
-	
+	}
+
 	private void run(LoggedCommand2 cmd, IErrorParser errorParser){
 		createConsoleDaemon();
 		if (errorParser != null)
@@ -182,9 +166,9 @@ public class ScriptConsole extends IOConsole {
         cmd.addInputStreamListener(consoleDaemon);
         cmd.start();
         activate();
-        ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this);		
+        ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this);
 	}
-	
+
 	/**
 	 * Check to see if the Command is still running
 	 * @return boolean representing if the command is running
@@ -196,7 +180,7 @@ public class ScriptConsole extends IOConsole {
 		}
 		return cmd.isRunning();
 	}
-	
+
 	/**
 	 * Check to see if this class has already been disposed.
 	 * @return boolean represneting whether or not the class has been disposed.
@@ -208,20 +192,21 @@ public class ScriptConsole extends IOConsole {
 		}
 		return cmd.isDisposed();
 	}
-	
+
 	/**
 	 * Method to allow the user to save the Commands output to a file for use latter.
 	 * @param file The new file to save the output to.
 	 */
 	public void saveStream(File file) {
-		if(isRunning())
-		//	if(!subscription.saveLog(file))
-		//		MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("ScriptConsole.Problem"), Localization.getString("ScriptConsole.ErrorSavingLog"));
-			if(!cmd.saveLog(file))
-                MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("ScriptConsole.Problem"), Localization.getString("ScriptConsole.ErrorSavingLog"));
-
+		if (isRunning())
+			if (!cmd.saveLog(file))
+				MessageDialog
+						.openWarning(
+								PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow().getShell(),
+								Localization.getString("ScriptConsole.Problem"), Localization.getString("ScriptConsole.ErrorSavingLog")); //$NON-NLS-1$//$NON-NLS-2$
 	}
-	
+
 	/**
 	 * Gets the command that is running in this console, or null if there is no running command.
 	 * @return The <code>LoggedCommand</code> that is running in this console.
@@ -229,32 +214,41 @@ public class ScriptConsole extends IOConsole {
 	public LoggedCommand2 getCommand() {
 		return cmd;
 	}
-	
-	/*public String getOutput() {
-		return subscription.getOutput();
-	}*/
-	
+
 	/**
 	 * Stops the running command and the associated listeners.
 	 */
 	public synchronized void stop() {
 		  if(isRunning()) {
-			  String command[] = new String[1];
-				String moduleName = this.getName();
-				moduleName = moduleName.substring(0,moduleName.indexOf('.'));
-				if (moduleName.indexOf('-') != -1)
-					moduleName = moduleName.substring(0, moduleName.indexOf('-'));
-			
-				command[0] = "ps -ef | grep " + moduleName + " | grep stapio | awk '{print $2}' | xargs kill -SIGINT";
-				ScpExec stop = new ScpExec(command, moduleName);
-		        stop.start();
-              cmd.stop();
-              cmd.removeErrorStreamListener(errorDaemon);
-              cmd.removeInputStreamListener(consoleDaemon);
-              setName(Localization.getString("ScriptConsole.Terminated") + super.getName());
+			  // Remove the readers so the process is not blocked
+			  // on writing to console 
+			  cmd.removeErrorStreamListener(errorDaemon);
+			  cmd.removeInputStreamListener(consoleDaemon);
+
+			  // Stop the underlying stap process
+			  this.stopCommand.run();
+
+			  // Stop the command
+			  cmd.stop();
+              setName(Localization.getString("ScriptConsole.Terminated") + super.getName()); //$NON-NLS-1$
 		}
 	}
-	
+
+	private String getModuleName(){
+		if(this.moduleName == null){
+			moduleName = this.getName();
+			int lastSlash = moduleName.lastIndexOf('/')+1;
+			int lastDot = moduleName.indexOf(".stp"); //$NON-NLS-1$
+			if (lastSlash > 0 && lastDot > 0){
+				moduleName = moduleName.substring(lastSlash, lastDot);
+			}
+		}
+		return this.moduleName;
+	}
+
+	private String getStopString(){
+		  return "pkill -SIGINT -f stapio.*"+ getModuleName();  //$NON-NLS-1$
+	}
 	/**
 	 * Disposes of all internal references in the class. No method should be called after this.
 	 */
@@ -283,10 +277,4 @@ public class ScriptConsole extends IOConsole {
 		if(null != ConsolePlugin.getDefault())
 			ConsolePlugin.getDefault().getConsoleManager().refresh(this);
 	}
-	
-	private LoggedCommand2 cmd;
-	
-	private ErrorStreamDaemon errorDaemon;
-	private ConsoleStreamDaemon consoleDaemon;
-//	private Subscription subscription;
 }

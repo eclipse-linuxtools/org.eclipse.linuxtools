@@ -83,7 +83,7 @@ public class LoggedCommand extends Command {
 	    	removeInputStreamListener(logger);
 		}
 	}
-	
+
 	/**
 	 * Dispoes of all internal references in this class.  Nothing should be called
 	 * after dispose.
@@ -95,6 +95,6 @@ public class LoggedCommand extends Command {
 	    	logger.dispose();
 		}
 	}
-	
+
 	private LoggingStreamDaemon logger;
 }

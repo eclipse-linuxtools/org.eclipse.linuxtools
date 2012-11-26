@@ -34,8 +34,9 @@ public class StopScriptAction extends ConsoleAction {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
 				ScriptConsole console = getActive();
-				if(null != console && console.isRunning())
+				if(null != console && console.isRunning()){
 					console.stop();
+				}
 			}
 		});
 	}
