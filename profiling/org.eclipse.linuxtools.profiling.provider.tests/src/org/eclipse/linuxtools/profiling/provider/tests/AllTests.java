@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({LaunchTest.class, ExtensionPointTest.class})
+@SuiteClasses({LaunchTest.class, ExtensionPointTest.class, PreferencesTest.class})
 public class AllTests {
 
 }
