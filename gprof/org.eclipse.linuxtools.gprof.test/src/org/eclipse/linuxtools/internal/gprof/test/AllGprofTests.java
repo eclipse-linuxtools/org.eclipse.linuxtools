@@ -23,6 +23,8 @@ public class AllGprofTests {
 		suite.addTest(GprofTest.suite());
 		suite.addTest(GprofAggregatorTest.suite());
 		suite.addTest(GprofParserTest.suite());
+		suite.addTestSuite(GprofLaunchTest.class);
+		suite.addTestSuite(GprofShortcutTest.class);
 		//$JUnit-END$
 		return suite;
 	}

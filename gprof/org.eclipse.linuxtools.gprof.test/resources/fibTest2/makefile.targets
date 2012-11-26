@@ -1,0 +1,8 @@
+fibTest2: $(OBJS) $(USER_OBJS)
+	@echo 'Building target: $@'
+	@echo 'Invoking: GCC C++ Linker'
+	@echo 'OBJS is: $(OBJS)'
+	g++  -pg -o "fibTest2" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Finished building target: $@'
+	@echo ' '
+
