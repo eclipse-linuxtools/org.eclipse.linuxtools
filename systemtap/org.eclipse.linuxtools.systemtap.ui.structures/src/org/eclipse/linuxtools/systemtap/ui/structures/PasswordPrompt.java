@@ -20,33 +20,27 @@ public class PasswordPrompt implements IPasswordPrompt {
 	public PasswordPrompt() {
 		this(null);
 	}
-	
+
 	public PasswordPrompt(String pass) {
 		password = pass;
 		triedSaved = false;
 	}
-	
+
 	/**
 	 * Prompts the user for their password.
-	 * 
+	 *
 	 * @return The string response of the user.
 	 */
 	public String getPassword() {
 		if(triedSaved || null == password) {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-				boolean stop = false;
 				public void run() {
-					if(stop) return;
-					try {
-						PasswordDialog input = new PasswordDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
-						input.open();
-						password = input.getPassword();
-						save = input.getPasswordSaved();
-						input.dispose();
-						if(null == password) password = "";
-					} catch (Exception e) {
-						stop = true;
-					}
+					PasswordDialog input = new PasswordDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+					input.open();
+					password = input.getPassword();
+					save = input.getPasswordSaved();
+					input.dispose();
+					if(null == password) password = ""; //$NON-NLS-1$
 				}
 			});
 		}
@@ -54,7 +48,7 @@ public class PasswordPrompt implements IPasswordPrompt {
 		triedSaved = true;
 		return password;
 	}
-	
+
 	public boolean getSavePassword() {
 		return save;
 	}
