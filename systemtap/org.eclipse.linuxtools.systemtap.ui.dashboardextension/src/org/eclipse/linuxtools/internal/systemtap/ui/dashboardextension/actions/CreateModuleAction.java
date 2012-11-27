@@ -14,12 +14,31 @@ package org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.actions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ScriptDetails;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardMetaData;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModuleFileFilter;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
+import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
@@ -30,30 +49,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
-import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ScriptDetails;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardMetaData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModuleFileFilter;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
-
 /**
  * This class brings up a dialog box for the user to select what they want the
  * new module to contain. If a new module is build, it will be exported to the
  * dashboard for use at any time.
- * 
+ *
  * @author Ryan Morse
  */
 public class CreateModuleAction extends Action implements
@@ -97,10 +97,10 @@ public class CreateModuleAction extends Action implements
 
 			if (null == parser || null == dataSet)
 				return;
-			
+
 			ExportScriptDialog exportDialog = new ExportScriptDialog(fWindow.getShell(), dataSet);
 			exportDialog.create();
-			
+
 			if(exportDialog.open() == Window.OK) {
 				String category = exportDialog.getCategory();
 				String display = exportDialog.getDisplay();
@@ -149,7 +149,7 @@ public class CreateModuleAction extends Action implements
 	 * This method will create a new XML Memento used to store all of the meta
 	 * data for the module. This data is all based on what the user selected
 	 * from the dialog box.
-	 * 
+	 *
 	 * @param disp
 	 *            The string to display that represents this module.
 	 * @param cat
@@ -225,7 +225,7 @@ public class CreateModuleAction extends Action implements
 			writer.close();
 		} catch (FileNotFoundException fnfe) {
 			return meta;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return meta;
 		}
 		return meta;
@@ -234,10 +234,10 @@ public class CreateModuleAction extends Action implements
 	/**
 	 * This method will create the module archive by first zipping the .stp file
 	 * and the meta data together. Then it will compress the .zip file into a
-	 * .gz file. The .gz file's extension is set to .dash to discurage users
-	 * from trying to modify it and to make it sepecific to the SystemTapGUI
+	 * .gz file. The .gz file's extension is set to .dash to discourage users
+	 * from trying to modify it and to make it specific to the SystemTapGUI
 	 * dashboard.
-	 * 
+	 *
 	 * @param archiveName
 	 *            The name to use for the file containing the new module data.
 	 * @param script
@@ -259,7 +259,7 @@ public class CreateModuleAction extends Action implements
 	/**
 	 * This method will delete any extra files that were generated as a result
 	 * of building the Dashboard module.
-	 * 
+	 *
 	 * @param files
 	 *            A list of all of the file paths that should be removed
 	 */
