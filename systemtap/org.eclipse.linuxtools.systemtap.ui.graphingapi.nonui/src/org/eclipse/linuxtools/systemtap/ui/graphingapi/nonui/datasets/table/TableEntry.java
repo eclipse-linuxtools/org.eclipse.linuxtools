@@ -21,20 +21,18 @@ public class TableEntry implements IDataEntry {
 	public TableEntry() {
 		bodyContent = new ArrayList<Object[]>();
 	}
-	
+
 	public int getRowCount() {
 		return bodyContent.size();
 	}
-	
+
 	public int getColCount() {
 		if(getRowCount() > 0) {
-			try {
-				return bodyContent.get(0).length;
-			} catch(Exception cce) {}
+			return bodyContent.get(0).length;
 		}
 		return 0;
 	}
-	
+
 	public Object get(String key, int col) {
 		if(col >= 0 && col < getColCount()) {
 			Object[] row = getRow(key);
@@ -43,7 +41,7 @@ public class TableEntry implements IDataEntry {
 		}
 		return null;
 	}
-	
+
 	public Object[][] getData() {
 		Object[][] d = new Object[getRowCount()][getColCount()];
 		for(int i=0; i<getRowCount(); i++) {
@@ -57,7 +55,7 @@ public class TableEntry implements IDataEntry {
 			return null;
 		return bodyContent.get(row);
 	}
-	
+
 	public Object[] getRow(String key) {
 		Object[] row;
 		for(int i=0; i<bodyContent.size(); i++) {
@@ -67,11 +65,11 @@ public class TableEntry implements IDataEntry {
 		}
 		return null;
 	}
-	
+
 	public Object[] getColumn(int col) {
 		return getColumn(col, 0, getRowCount());
 	}
-	
+
 	public Object[] getColumn(int col, int start, int end) {
 		if(0 <= col && getColCount() > col && start >=0 && end > start && end <= getRowCount()) {
 			Object[] res = new Object[Math.min(end-start, getRowCount())];
@@ -81,7 +79,7 @@ public class TableEntry implements IDataEntry {
 		}
 		return null;
 	}
-	
+
 	public void putRow(int row, Object[] data) {
 		if(row >= bodyContent.size())
 			add(data);
@@ -90,23 +88,23 @@ public class TableEntry implements IDataEntry {
 			bodyContent.remove(row+1);
 		}
 	}
-	
+
 	public void add(Object[] data) {
 		if(null != data && (data.length == getColCount() || getRowCount() == 0))
 			bodyContent.add(data);
 	}
-	
+
 	public IDataEntry copy() {
 		TableEntry entry = new TableEntry();
 		for(int i=0; i<bodyContent.size(); i++)
 			entry.add(bodyContent.get(i));
-		
+
 		return entry;
 	}
-	
+
 	public boolean remove(int row) {
 		return (null != bodyContent.remove(row));
 	}
-	
+
 	private ArrayList<Object[]> bodyContent;	//ArrayList of arrays
 }
