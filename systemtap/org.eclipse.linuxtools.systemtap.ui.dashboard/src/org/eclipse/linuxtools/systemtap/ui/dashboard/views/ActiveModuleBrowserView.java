@@ -14,6 +14,16 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ActivateGraphAction;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleTreeNode;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
+import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
@@ -24,17 +34,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
-
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ActivateGraphAction;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleTreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 
 /**
  * This class is used to display a list of all of the Modules that are running
@@ -47,18 +46,18 @@ public class ActiveModuleBrowserView extends ModuleView {
 		super();
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected void generateModuleTree() {
 		viewer.setInput(new TreeNode("root", "", false)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		viewer.setLabelProvider(new ViewLabelProvider());
 	}
-	
+
 	/**
 	 * This method builds the actions for the items inside this view.  It adds a
 	 * double click listener to each of the Items so they will be run if they
@@ -78,7 +77,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 		getSite().registerContextMenu(manager, viewer);
 		super.makeActions();
 	}
-	
+
 	/**
 	 * This method handles adding a new module to the list of active modules.
 	 * It will then generate each of the graphs that are a part of the module.
@@ -115,7 +114,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(null);
 		  cursor.dispose();
 	}
-	
+
 	/**
 	 * This method handles pausing a module in the ActiveModuleBrowserView.  When
 	 * it locates the item to be paused, it will return a reference to that module.
@@ -129,10 +128,10 @@ public class ActiveModuleBrowserView extends ModuleView {
 				return (ActiveModuleData)(tree.getChildAt(i).getData());
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * This method handles removing a module in the ActiveModuleBrowserView.  When
 	 * it locates the item to be removed, it will return a remove it from the tree
@@ -150,26 +149,24 @@ public class ActiveModuleBrowserView extends ModuleView {
 				return node;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * This method checks to see if the provided module is running or not.
 	 * @param mod The module to check if it is running
 	 * @return boolean representing whether the provided module is running
 	 */
 	public boolean isActive(DashboardModule mod) {
-		try {
-			TreeNode tree = (TreeNode)viewer.getInput();
-			for(int i=0; i<tree.getChildCount(); i++) {
-				if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
-					return true;
-			}
-		} catch(Exception e) {}
+		TreeNode tree = (TreeNode)viewer.getInput();
+		for(int i=0; i<tree.getChildCount(); i++) {
+			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
+				return true;
+		}
 		return false;
 	}
-	
+
 	/**
 	 * This method checks to see if the provided module is running, and if so
 	 * whether or not it is paused.
@@ -177,17 +174,14 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 * @return boolean representing whether the provided module is paused
 	 */
 	public boolean isPaused(DashboardModule mod) {
-		try {
-			TreeNode tree = (TreeNode)viewer.getInput();
-			for(int i=0; i<tree.getChildCount(); i++) {
-				if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
-					return ((ActiveModuleData)tree.getChildAt(i).getData()).paused;
-			}
-		} catch(Exception e) {}
-		
+		TreeNode tree = (TreeNode)viewer.getInput();
+		for(int i=0; i<tree.getChildCount(); i++) {
+			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
+				return ((ActiveModuleData)tree.getChildAt(i).getData()).paused;
+		}
 		return false;
 	}
-	
+
 	/**
 	 * This method checks to see if any modules are still running
 	 * @return boolean - are any modules are still running?
@@ -197,7 +191,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 		return tree.getChildCount() > 0;
 		//return true;
 	}
-	
+
 	/**
 	 * This method removes all internal references. Nothing should be called/referenced after
 	 * this method is run.
@@ -208,9 +202,9 @@ public class ActiveModuleBrowserView extends ModuleView {
 		super.dispose();
 		viewer = null;
 	}
-	
+
 	/**
-	 * This class provides functionality for determining what image to 
+	 * This class provides functionality for determining what image to
 	 * display for each item in the tree.
 	 */
 	private static class ViewLabelProvider extends LabelProvider {
@@ -223,7 +217,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 		public Image getImage(Object obj) {
 			TreeNode treeObj = (TreeNode)obj;
 			Image img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-			
+
 			if(treeObj.getChildCount() > 0)
 				img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage(); //$NON-NLS-1$
 			else if(treeObj instanceof GraphTreeNode){
@@ -235,7 +229,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 
 			return img;
 		}
-	}	
-	
+	}
+
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView"; //$NON-NLS-1$
 }

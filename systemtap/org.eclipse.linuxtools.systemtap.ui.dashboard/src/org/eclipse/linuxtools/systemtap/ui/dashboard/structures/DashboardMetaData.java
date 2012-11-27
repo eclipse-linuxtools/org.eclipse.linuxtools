@@ -14,20 +14,20 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.XMLMemento;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter.AvailableFilterTypes;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
 
 /**
- * This class handles retreiving information from the metadata contained in a Dashboard module.
+ * This class handles retrieving information from the metadata contained in a Dashboard module.
  * It will read through the metadata and create a new DashboardModule data set to contain
  * all of the information contained in the XML Memento file.
  * @author Ryan Morse
@@ -43,11 +43,11 @@ public class DashboardMetaData {
 		if(file.exists())
 			readData();
 	}
-	
+
 	public DashboardModule getModule() {
 		return module;
 	}
-	
+
 	/**
 	 * This method checks to see if there is an available module for the specified kernel version.
 	 * @param kernelVersion String for the specific kernel to try to get a module for.
@@ -59,9 +59,9 @@ public class DashboardMetaData {
 				return true;
 		return false;
 	}
-	
+
 	/**
-	 * This method tries to retreive the module for the provided kernel version.
+	 * This method tries to retrieve the module for the provided kernel version.
 	 * @param kernelVersion String for the specific kernel to try to get a module for
 	 * @return File that represents the module for the requested kernel version.
 	 */
@@ -117,7 +117,7 @@ public class DashboardMetaData {
 			int i;
 			for(i=0; i<children.length; i++)
 				module.labels[i] = children[i].getString(XMLpName);
-			
+
 			//Get the parser
 			module.parser = DataSetFactory.createParserXML(module.dataSetID, data.getChild(XMLParsingExpressions).getChild(XMLpParser));
 
@@ -131,14 +131,14 @@ public class DashboardMetaData {
 				module.graphs[i] = new GraphData();
 				module.graphs[i].graphID = children[i].getString(XMLgId);
 				module.graphs[i].title = children[i].getString(XMLgTitle);
-				
+
 				//Get all filters for the graph
 				children2 = children[i].getChildren(XMLgFilter);
 				module.filters[i] = new ArrayList<IDataSetFilter>();
 				for(j=0; j<children2.length; j++) {
 					module.filters[i].add(AvailableFilterTypes.getDataSetFilter(children2[j]));
 				}
-				
+
 				//Get all x & y series for the graph
 				children2 = children[i].getChildren(XMLgSeries);
 				module.graphs[i].ySeries = new int[children2.length-1];
@@ -152,7 +152,7 @@ public class DashboardMetaData {
 					}
 				}
 			}
-			
+
 			//Retreive any kernel module data.
 			children = data.getChildren(XMLKernelModule);
 			module.kernelVersions = new String[children.length];
@@ -172,18 +172,17 @@ public class DashboardMetaData {
 			return false;
 		} catch(WorkbenchException we) {
 			return false;
-		} catch(Exception e) {
+		} catch (IOException e) {
 			return false;
 		}
-
 		return true;
 	}
-		
+
 	private static File metaFile;
 	private DashboardModule module;
 	public static final File tempScriptFolder = new File(SystemTapGUISettings.tempDirectory + "scripts/"); //$NON-NLS-1$
 	public static final File tempModuleFolder = new File(SystemTapGUISettings.tempDirectory + "modules/"); //$NON-NLS-1$
-	
+
 	public static final String XMLDashboardItem = "DashboardItem"; //$NON-NLS-1$
 	public static final String XMLdDisplay = "display"; //$NON-NLS-1$
 	public static final String XMLdCategory = "category"; //$NON-NLS-1$
@@ -192,7 +191,7 @@ public class DashboardMetaData {
 	public static final String XMLdScript = "script"; //$NON-NLS-1$
 	public static final String XMLdScriptFileName = "scriptFileName"; //$NON-NLS-1$
 	public static final String XMLdLocation = "location"; //$NON-NLS-1$
-	
+
 
 	public static final String XMLParsingExpressions = "ParsingExpressions"; //$NON-NLS-1$
 	public static final String XMLpColumn = "Column"; //$NON-NLS-1$

@@ -13,13 +13,11 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.internal;
 
 import java.io.File;
 
-import org.eclipse.ui.IWorkbenchListener;
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.osgi.framework.BundleContext;
-
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardMetaData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardCloseMonitor;
+import org.eclipse.ui.IWorkbenchListener;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -38,7 +36,7 @@ public class DashboardPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		
+
 		workbenchListener = new DashboardCloseMonitor();
 		plugin.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
@@ -57,18 +55,16 @@ public class DashboardPlugin extends AbstractUIPlugin {
 		removeFolder(DashboardMetaData.tempScriptFolder);
 		removeFolder(DashboardMetaData.tempModuleFolder);
 	}
-	
+
 	private void removeFolder(File folder) {
-		try {
-			File[] files = folder.listFiles();
-			for(int j=0; j<files.length; j++) {
-				if(files[j].isDirectory())
-					removeFolder(files[j]);
-				else
-					files[j].delete();
-			}
-			folder.delete();
-		} catch(Exception e) {}
+		File[] files = folder.listFiles();
+		for(int j=0; j<files.length; j++) {
+			if(files[j].isDirectory())
+				removeFolder(files[j]);
+			else
+				files[j].delete();
+		}
+		folder.delete();
 	}
 
 	/**
@@ -88,7 +84,7 @@ public class DashboardPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.dashboard", path); //$NON-NLS-1$
 	}
-	
+
 	private IWorkbenchListener workbenchListener;
 	private static DashboardPlugin plugin;
 }
