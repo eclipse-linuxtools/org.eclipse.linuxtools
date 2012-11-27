@@ -29,31 +29,23 @@ import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;
 
 public class ScpClient {
-	
+
 	private Session session;
-  
+
 	public ScpClient() throws JSchException {
-	//public static void main(String[] arg){
-     
-  
-      String user=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
+
+	  String user=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
       String host=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
-      
-      
-      //System.out.println(lfile + " " + rfile);
 
       try{
       JSch jsch=new JSch();
-      
+
       session=jsch.getSession(user, host, 22);
 
-      // username and password will be given via UserInfo interface.
-      //UserInfo ui=new MyUserInfo();
-      //session.setUserInfo(ui);
       session.setPassword(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
       java.util.Properties config = new java.util.Properties();
-                      config.put("StrictHostKeyChecking", "no");
-                      session.setConfig(config); 
+                      config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$ //$NON-NLS-2$
+                      session.setConfig(config);
       session.connect();
       }catch(JSchException e)
       {
@@ -64,43 +56,39 @@ public class ScpClient {
     }
 
     public void transfer(String fromFile, String toFile) throws IOException, JSchException{
-      // exec 'scp -t rfile' remotely
-    	FileInputStream fis=null;	
+    	FileInputStream fis=null;
       String rfile=toFile;
       String lfile=fromFile;
-      String command="scp -t "+rfile;
+      String command="scp -t "+rfile; //$NON-NLS-1$
       try {
-      Channel channel=session.openChannel("exec");
-      ((ChannelExec)channel).setCommand(command);
+    	  Channel channel=session.openChannel("exec"); //$NON-NLS-1$
+    	  ((ChannelExec)channel).setCommand(command);
 
-      // get I/O streams for remote scp
-      OutputStream out=channel.getOutputStream();
-      InputStream in=channel.getInputStream();
+    	  // get I/O streams for remote scp
+    	  OutputStream out=channel.getOutputStream();
+    	  InputStream in=channel.getInputStream();
 
-      channel.connect();
-      
+    	  channel.connect();
 
       if(checkAck(in)!=0){
-    	  System.out.println("err");
+    	  System.out.println("err"); //$NON-NLS-1$
       }
 
       // send "C0644 filesize filename", where filename should not include '/'
       long filesize=(new File(lfile)).length();
-      command="C0644 "+filesize+" ";
+      command="C0644 "+filesize+" "; //$NON-NLS-1$ //$NON-NLS-2$
       if(lfile.lastIndexOf('/')>0){
         command+=lfile.substring(lfile.lastIndexOf('/')+1);
       }
       else{
         command+=lfile;
       }
-      command+="\n";
-      
+      command+="\n"; //$NON-NLS-1$
+
       out.write(command.getBytes()); out.flush();
       if(checkAck(in)!=0){
-    	  System.out.println("err");
+    	  System.out.println("err"); //$NON-NLS-1$
       }
-      
-
 
       // send a content of lfile
       fis=new FileInputStream(lfile);
@@ -116,16 +104,17 @@ public class ScpClient {
       // send '\0'
       buf[0]=0; out.write(buf, 0, 1); out.flush();
       if(checkAck(in)!=0){
-	System.out.println("err");
+	System.out.println("err"); //$NON-NLS-1$
       }
       out.close();
 
       channel.disconnect();
       session.disconnect();
-      
+
     }
     catch(IOException e){
-      try{if(fis!=null)fis.close();}catch(Exception ee){}
+      if(fis!=null)
+    	  fis.close();
       throw e;
     }
   }
@@ -160,23 +149,23 @@ public class ScpClient {
   public static class MyUserInfo implements UserInfo, UIKeyboardInteractive{
     public String getPassword(){ return passwd; }
     public boolean promptYesNo(String str){
-      Object[] options={ "yes", "no" };
-      int foo=JOptionPane.showOptionDialog(null, 
+      Object[] options={ "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
+      int foo=JOptionPane.showOptionDialog(null,
              str,
-             "Warning", 
-             JOptionPane.DEFAULT_OPTION, 
+             "Warning",
+             JOptionPane.DEFAULT_OPTION,
              JOptionPane.WARNING_MESSAGE,
              null, options, options[0]);
        return foo==0;
     }
-  
+
     String passwd;
     JTextField passwordField=new JPasswordField(20);
 
     public String getPassphrase(){ return null; }
     public boolean promptPassphrase(String message){ return true; }
     public boolean promptPassword(String message){
-      Object[] ob={passwordField}; 
+      Object[] ob={passwordField};
       int result=
 	  JOptionPane.showConfirmDialog(null, ob, message,
 					JOptionPane.OK_CANCEL_OPTION);
@@ -189,7 +178,7 @@ public class ScpClient {
     public void showMessage(String message){
       JOptionPane.showMessageDialog(null, message);
     }
-    final GridBagConstraints gbc = 
+    final GridBagConstraints gbc =
       new GridBagConstraints(0,0,1,1,1,1,
                              GridBagConstraints.NORTHWEST,
                              GridBagConstraints.NONE,
@@ -231,8 +220,8 @@ public class ScpClient {
         gbc.gridy++;
       }
 
-      if(JOptionPane.showConfirmDialog(null, panel, 
-                                       destination+": "+name,
+      if(JOptionPane.showConfirmDialog(null, panel,
+                                       destination+": "+name, //$NON-NLS-1$
                                        JOptionPane.OK_CANCEL_OPTION,
                                        JOptionPane.QUESTION_MESSAGE)
          ==JOptionPane.OK_OPTION){
