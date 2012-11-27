@@ -38,7 +38,7 @@ public final class TreeSettings {
 	}
 	/**
 	 * Returns the modification date for the Tree File. Used to make sure that the cache is not out of
-	 * date. 
+	 * date.
 	 * @return The datestamp for the Tree file.
 	 */
 	public static long getTreeFileDate() {
@@ -55,7 +55,7 @@ public final class TreeSettings {
 		if(!readData()) return null;
 		return functions;
 	}
-	
+
 	/**
 	 * Allows access to the Tapset Probe Alias tree, which contains a list of all probe aliases
 	 * in the tapset library.
@@ -65,7 +65,7 @@ public final class TreeSettings {
 		if(!readData()) return null;
 		return probes;
 	}
-	
+
 	/**
 	 * Sets the Probe Alias and Function trees that are being cached to the trees given as arguments.
 	 * @param func The Function tree to store in cache.
@@ -78,7 +78,7 @@ public final class TreeSettings {
 		probes = probe;
 		return writeData();
 	}
-	
+
 	/**
 	 * Reads the contents of the cache file into memory.
 	 * @return True if the read is successful.
@@ -95,42 +95,42 @@ public final class TreeSettings {
 				return false;
 			}
 
-			XMLMemento data = XMLMemento.createReadRoot(reader, "TreeSettings");
+			XMLMemento data = XMLMemento.createReadRoot(reader, "TreeSettings"); //$NON-NLS-1$
 
-			IMemento child = data.getChild("functionTree");
-			String s = child.getString("string");
-			if("<null>".equals(s))
+			IMemento child = data.getChild("functionTree"); //$NON-NLS-1$
+			String s = child.getString("string"); //$NON-NLS-1$
+			if("<null>".equals(s)) //$NON-NLS-1$
 				s = null;
-			String d = child.getString("data");
-			if("<null>".equals(d))
+			String d = child.getString("data"); //$NON-NLS-1$
+			if("<null>".equals(d)) //$NON-NLS-1$
 				d = null;
 
 			functions = new TreeNode(d, s, false);
 			readTree(child, functions, 0);
-			
-			child = data.getChild("probeTree");
-			s = child.getString("string");
-			if("<null>".equals(s))
+
+			child = data.getChild("probeTree"); //$NON-NLS-1$
+			s = child.getString("string"); //$NON-NLS-1$
+			if("<null>".equals(s)) //$NON-NLS-1$
 				s = null;
-			d = child.getString("data");
-			if("<null>".equals(d))
+			d = child.getString("data"); //$NON-NLS-1$
+			if("<null>".equals(d)) //$NON-NLS-1$
 				d = null;
 			probes = new TreeNode(d, s, false);
 			readTree(child, probes, 0);
 
-			child = data.getChild("modifiedDate");
-			treeFileDate = Long.parseLong(child.getString("date"));
+			child = data.getChild("modifiedDate"); //$NON-NLS-1$
+			treeFileDate = Long.parseLong(child.getString("date")); //$NON-NLS-1$
 		} catch(FileNotFoundException fnfe) {
 			return false;
 		} catch(WorkbenchException we) {
 			return false;
-		} catch(Exception e) {
+		} catch(IOException e) {
 			return false;
 		}
 
 		return true;
 	}
-	
+
 	/**
 	 * Writes the tree data currently stored by this class to disk for later access.
 	 * @return True if the write is successful.
@@ -138,57 +138,57 @@ public final class TreeSettings {
 	private static boolean writeData() {
 		if(null == settingsFile && !openFile())
 			return false;
-		
-		try {
-			XMLMemento data = XMLMemento.createWriteRoot("TreeSettings");
 
-			IMemento child = data.createChild("functionTree");
+		try {
+			XMLMemento data = XMLMemento.createWriteRoot("TreeSettings"); //$NON-NLS-1$
+
+			IMemento child = data.createChild("functionTree"); //$NON-NLS-1$
 			writeTree(child, functions, 0);
 
-			child = data.createChild("probeTree");
+			child = data.createChild("probeTree"); //$NON-NLS-1$
 			writeTree(child, probes, 0);
 
-			child = data.createChild("modifiedDate");
-			child.putString("date", (Long.valueOf(Calendar.getInstance().getTimeInMillis())).toString());
+			child = data.createChild("modifiedDate"); //$NON-NLS-1$
+			child.putString("date", (Long.valueOf(Calendar.getInstance().getTimeInMillis())).toString()); //$NON-NLS-1$
 
 			FileWriter writer = new FileWriter(settingsFile);
 			data.save(writer);
 		} catch(FileNotFoundException fnfe) {
 			return false;
-		} catch(Exception e) {
+		} catch(IOException e) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
-	 * Writes the tree passed in to the <code>IMemento</code> argument, up to the specified depth. 
+	 * Writes the tree passed in to the <code>IMemento</code> argument, up to the specified depth.
 	 * @param child The <code>IMemento</code> to store the tree to.
 	 * @param tree The <code>TreeNode</code> to store.
 	 * @param depth The maximum depth level to write out.
 	 */
 	private static void writeTree(IMemento child, TreeNode tree, int depth) {
 		if(null == tree.toString())
-			child.putString("string", "<null>");
+			child.putString("string", "<null>"); //$NON-NLS-1$ //$NON-NLS-2$
 		else
-			child.putString("string", tree.toString());
+			child.putString("string", tree.toString()); //$NON-NLS-1$
 
 		if(null == tree.getData())
-			child.putString("data","<null>");
+			child.putString("data","<null>"); //$NON-NLS-1$ //$NON-NLS-2$
 		else
-			child.putString("data", tree.getData().toString());
+			child.putString("data", tree.getData().toString()); //$NON-NLS-1$
 
 		if(tree instanceof TreeDefinitionNode) {
 			if(null == ((TreeDefinitionNode)tree).getDefinition())
-				child.putString("definition","<null>");
+				child.putString("definition","<null>"); //$NON-NLS-1$ //$NON-NLS-2$
 			else
-				child.putString("definition", ((TreeDefinitionNode)tree).getDefinition().toString());
+				child.putString("definition", ((TreeDefinitionNode)tree).getDefinition().toString()); //$NON-NLS-1$
 		}
-		
-		child.putInteger("click", (tree.isClickable()?1:0));
+
+		child.putInteger("click", (tree.isClickable()?1:0)); //$NON-NLS-1$
 		for(int i=0; i<tree.getChildCount(); i++) {
-			writeTree(child.createChild("level" + depth), tree.getChildAt(i), depth+1);
+			writeTree(child.createChild("level" + depth), tree.getChildAt(i), depth+1); //$NON-NLS-1$
 		}
 	}
 
@@ -200,40 +200,40 @@ public final class TreeSettings {
 	 * @param depth The maximum depth to read.
 	 */
 	private static void readTree(IMemento data, TreeNode parent, int depth) {
-		IMemento[] children = data.getChildren("level" + depth);
+		IMemento[] children = data.getChildren("level" + depth); //$NON-NLS-1$
 
 		try {
 			if(null != children) {
 				for(int i=0; i<children.length; i++) {
-					String s = children[i].getString("string");
-					String d = children[i].getString("data");
-					String def = children[i].getString("definition");
+					String s = children[i].getString("string"); //$NON-NLS-1$
+					String d = children[i].getString("data"); //$NON-NLS-1$
+					String def = children[i].getString("definition"); //$NON-NLS-1$
 
-					boolean c = ((0==children[i].getInteger("click").intValue())?false:true);
-					
-					if("<null>".equals(s))
+					boolean c = ((0==children[i].getInteger("click").intValue())?false:true); //$NON-NLS-1$
+
+					if("<null>".equals(s)) //$NON-NLS-1$
 						s = null;
-					if("<null>".equals(d))
+					if("<null>".equals(d)) //$NON-NLS-1$
 						d = null;
-					
+
 					TreeNode t;
 					if(null == def) {
 						t = new TreeNode(d, s, c);
 					} else {
-						if("<null>".equals(def))
+						if("<null>".equals(def)) //$NON-NLS-1$
 							def = null;
-						
+
 						t = new TreeDefinitionNode(d, s, def, c);
 					}
 					parent.add(t);
-					
+
 					readTree(children[i], t, depth+1);
 				}
 			}
 		} catch(NullPointerException e) {
 		}
 	}
-	
+
 	private static boolean openFile() {
 		settingsFile = new File(SystemTapGUISettings.settingsFolder.getAbsolutePath() + fileName);
 
@@ -242,7 +242,7 @@ public final class TreeSettings {
 				// Create a new settings file-and its parent
 				// directories- if one does not exist.
 				settingsFile.getParentFile().mkdirs();
-				settingsFile.createNewFile();				
+				settingsFile.createNewFile();
 			}
 		} catch(IOException ioe) {
 			return false;
@@ -250,10 +250,10 @@ public final class TreeSettings {
 
 		return true;
 	}
-	
+
 	private static long treeFileDate;
 	private static TreeNode functions;
 	private static TreeNode probes;
-	private static final String fileName = "/TreeSettings.xml";
+	private static final String fileName = "/TreeSettings.xml"; //$NON-NLS-1$
 	private static File settingsFile = null;
 }

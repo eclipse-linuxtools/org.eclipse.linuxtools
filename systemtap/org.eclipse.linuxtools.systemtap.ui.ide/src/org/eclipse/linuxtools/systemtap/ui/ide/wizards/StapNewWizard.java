@@ -10,33 +10,35 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.ui.ide.wizards;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jface.operation.*;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.runtime.CoreException;
-
-import org.eclipse.ui.*;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.ide.IDE;
 
 /**
- * This is a sample new wizard. Its role is to create a new file 
+ * This is a sample new wizard. Its role is to create a new file
  * resource in the provided container. If the container resource
- * (a folder or a project) is selected in the workspace 
+ * (a folder or a project) is selected in the workspace
  * when the wizard is opened, it will accept it as the target
  * container. The wizard creates one file with the extension
  * "mpe". If a sample multi-page editor (also available
@@ -47,7 +49,7 @@ import org.eclipse.ui.ide.IDE;
 public class StapNewWizard extends Wizard implements INewWizard {
 	private StapNewWizardPage page;
 	private ISelection selection;
-	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.ui.ide.wizards.stap_strings");
+	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.ui.ide.wizards.stap_strings"); //$NON-NLS-1$
 
 	/**
 	 * Constructor for StapNewWizard.
@@ -56,7 +58,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 		super();
 		setNeedsProgressMonitor(true);
 	}
-	
+
 	/**
 	 * Adding the page to the wizard.
 	 */
@@ -97,7 +99,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
@@ -106,11 +108,11 @@ public class StapNewWizard extends Wizard implements INewWizard {
 
 	private void doFinish(String containerName,	String fileName, IProgressMonitor monitor) throws CoreException {
 		// create a .stp file
-		
-		monitor.beginTask(resourceBundle.getString("StapNewWizard.BeginTask") + fileName, 2);
+
+		monitor.beginTask(resourceBundle.getString("StapNewWizard.BeginTask") + fileName, 2); //$NON-NLS-1$
 		final File newFile = new File(containerName, fileName);
 		try {
-			String envString = "#!/usr/bin/env stap";
+			String envString = "#!/usr/bin/env stap"; //$NON-NLS-1$
 			FileOutputStream FOS = new FileOutputStream(newFile);
 			newFile.createNewFile();
 			FOS.write(envString.getBytes());
@@ -119,7 +121,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 			throwCoreException("Error: " + e);
 		}
 		monitor.worked(1);
-		monitor.setTaskName(resourceBundle.getString("StapNewWizard.SetTask"));
+		monitor.setTaskName(resourceBundle.getString("StapNewWizard.SetTask")); //$NON-NLS-1$
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				try {
@@ -137,7 +139,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status =
-			new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.ide", IStatus.OK, message, null);
+			new Status(IStatus.ERROR, "org.eclipse.linuxtools.systemtap.ui.ide", IStatus.OK, message, null); //$NON-NLS-1$
 		throw new CoreException(status);
 	}
 

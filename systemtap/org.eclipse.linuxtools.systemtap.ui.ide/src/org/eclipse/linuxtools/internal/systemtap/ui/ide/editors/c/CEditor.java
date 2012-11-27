@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -55,7 +56,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 * The handler for doubleclick events on the ruler for this text editor.
 	 */
 	private RulerDoubleClickHandler handler = new RulerDoubleClickHandler();
-	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor";
+	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"; //$NON-NLS-1$
 	
 	/**
 	 * The <code>RulerDoubleClickHandler</code> handles double click events on the
@@ -100,16 +101,16 @@ public class CEditor extends AbstractDecoratedTextEditor {
 			int lineno = getVerticalRuler().getLineOfLastMouseButtonActivity();
 
 			String s = getSourceViewer().getDocument().get();
-			String[] lines = s.split("\n");
+			String[] lines = s.split("\n"); //$NON-NLS-1$
 			String line = lines[lineno].trim();
 			boolean die = false;
-			if("".equals(line))		//eat blank lines
+			if("".equals(line))		//eat blank lines //$NON-NLS-1$
 			   die = true;
-			if(line.startsWith("#"))	//eat preprocessor directives
+			if(line.startsWith("#"))	//eat preprocessor directives //$NON-NLS-1$
 				die = true;
-			if(line.startsWith("//"))	//eat C99 comments
+			if(line.startsWith("//"))	//eat C99 comments //$NON-NLS-1$
 				die = true;
-			if(line.startsWith("/*") && !line.contains("*/") && !line.endsWith("*/"))	//try to eat single-line C comments
+			if(line.startsWith("/*") && !line.contains("*/") && !line.endsWith("*/"))	//try to eat single-line C comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				die = true;
 			
 			//gogo find comment segments
@@ -148,8 +149,8 @@ public class CEditor extends AbstractDecoratedTextEditor {
 							die=true;
 					}
 				}
-			} catch (Exception excp) {
-				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this); //$NON-NLS-1$
+			} catch (BadLocationException excp) {
+				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this);
 			}
 			if(die) {
 				LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
@@ -168,7 +169,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 					String kernrelative = filepath.substring(kernroot.length()+1, filepath.length());
 					StringBuffer sb = new StringBuffer();
 					
-					sb.append("probe kernel.statement(\"*@"+ kernrelative + ":" + (lineno+1) + "\")");
+					sb.append("probe kernel.statement(\"*@"+ kernrelative + ":" + (lineno+1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 				/*	if(!checkProbe(sb.toString() + "{ }")) {
 						LogManager.logInfo("Initializing", MessageDialog.class);
@@ -176,7 +177,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 								Localization.getString("CEditor.ProbeInsertFailed"),Localization.getString("CEditor.CanNotProbeLine"));
 						LogManager.logInfo("Disposing", MessageDialog.class);
 					} else { */
-						sb.append("\n{\n\t\n}\n");
+						sb.append("\n{\n\t\n}\n"); //$NON-NLS-1$
 						STPEditor activeSTPEditor = IDESessionSettings.getActiveSTPEditor(); 
 						if(null == activeSTPEditor) {
 							NewFileAction action = new NewFileAction();
@@ -265,11 +266,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		super.createPartControl(parent);
 		IVerticalRuler ruler = this.getVerticalRuler();
 		Control control = ruler.getControl();
-		try {
-			control.addMouseListener(handler);
-		} catch(Exception e) {
-			LogManager.logCritical("Exception createPartControl: " + e.getMessage(), this); //$NON-NLS-1$
-		}
+		control.addMouseListener(handler);
 		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
 	
