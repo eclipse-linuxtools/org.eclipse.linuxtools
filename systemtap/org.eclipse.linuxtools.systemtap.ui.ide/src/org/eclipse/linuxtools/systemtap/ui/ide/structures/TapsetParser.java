@@ -368,7 +368,10 @@ public class TapsetParser implements Runnable {
 					String[] test = secondp.split(s);
 					i = 0;
 					for(String t : test) {
-						if(i == 1) {
+						// If i== 1 this is a function name.
+						// Ignore ALL_CAPS functions; they are not meant for end
+						// user use.
+						if(i == 1 && !t.matches("[A-Z_1-9]*")) { //$NON-NLS-1$
 							functions.add(new TreeNode(t, t, true));
 						}
 						else if(i > 1 && t.length() >= 1) {

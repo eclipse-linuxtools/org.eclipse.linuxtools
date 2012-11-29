@@ -79,6 +79,9 @@ public final class TapsetLibrary {
 		probeTree = stpp.getProbes();
 	}
 	
+	public static boolean isFinishSuccessful(){
+		return stpp.isFinishSuccessful();
+	}
 	/**
 	 * This method will get all of the tree information from 
 	 * the TreeSettings xml file.

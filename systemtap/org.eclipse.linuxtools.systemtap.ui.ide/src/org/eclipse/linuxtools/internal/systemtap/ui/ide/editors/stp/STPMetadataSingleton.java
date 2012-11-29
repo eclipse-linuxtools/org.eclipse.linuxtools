@@ -73,6 +73,16 @@ public class STPMetadataSingleton {
 	}
 
 	/**
+	 * Returns a list of functions that complete the given prefix.
+	 * @param prefix
+	 * @return
+	 */
+	public String[] getFunctionCompletions(String prefix) {
+		TreeNode node = TapsetLibrary.getFunctions();
+		return getMatchingChildren(node, prefix);
+	}
+
+	/**
 	 * Returns a list of variables available in the given probe.
 	 * @param probe The probe for which to find variables
 	 * @param prefix The prefix to complete.
