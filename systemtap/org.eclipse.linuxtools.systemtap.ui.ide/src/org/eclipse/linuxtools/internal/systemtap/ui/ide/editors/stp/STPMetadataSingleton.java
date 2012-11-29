@@ -13,18 +13,8 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 
@@ -33,22 +23,13 @@ import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
  *
  * Build and hold completion metadata for Systemtap. This originally is generated from stap coverage data
  *
- *
  */
-
-// TODO: Generate a strategy to determine when meta-data is older than what is currently available. Right now
-// the generation of new meta-data is too slow to do this efficiently.
 public class STPMetadataSingleton {
 
-	public static String[] NO_MATCHES = new String[] {"No completion data found."};
+	public static String[] NO_MATCHES = new String[] {Messages.STPMetadataSingleton_noCompletions};
 
 	private static STPMetadataSingleton instance = null;
 
-	private HashMap<String, ArrayList<String>> builtMetadata = new HashMap<String, ArrayList<String>>();
-	private boolean barLookups = false;
-
-	// Not a true singleton, but enough for the simplistic purpose
-	// it has to serve.
 	protected STPMetadataSingleton() {
 		TapsetLibrary.init();
 	}
@@ -56,54 +37,8 @@ public class STPMetadataSingleton {
 	public static STPMetadataSingleton getInstance() {
 		if (instance == null) {
 			instance = new STPMetadataSingleton();
-
-			URL completionURL = null;
-
-			completionURL = buildCompletionDataLocation("completion/stp_completion.properties"); //$NON-NLS-1$
-			STPMetadataSingleton completionDataStore = STPMetadataSingleton.getInstance();
-
-			if (completionURL != null)
-				completionDataStore.build(completionURL);
-
-
 		}
 		return instance;
-	}
-
-	private static URL buildCompletionDataLocation(String completionDataLocation) {
-		URL completionURLLocation = null;
-		try {
-			completionURLLocation = getCompletionURL(completionDataLocation);
-		} catch (IOException e) {
-			completionURLLocation = null;
-		}
-
-		if (completionURLLocation == null) {
-			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID,
-					IStatus.OK, "Cannot locate plug-in location for System Tap completion metadata " +
-							"(completion/stp_completion.properties). Completions are not available.", null));
-			return null;
-		}
-
-		File completionFile = new File(completionURLLocation.getFile());
-		if ((completionFile == null) || (!completionFile.exists()) || (!completionFile.canRead())) {
-			IDEPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID,
-					IStatus.OK, "Cannot find System Tap completion metadata at  " +completionFile.getPath() +
-					"Completions are not available.", null));
-
-			return null;
-		}
-
-		return completionURLLocation;
-
-	}
-	private static URL getCompletionURL(String completionLocation) throws IOException {
-		URL fileURL = null;
-		URL location = IDEPlugin.getDefault().getBundle().getEntry(completionLocation);
-
-		if (location != null)
-			fileURL = FileLocator.toFileURL(location);
-		return fileURL;
 	}
 
 	/**
@@ -115,11 +50,6 @@ public class STPMetadataSingleton {
 	 *
 	 */
 	public String[] getCompletionResults(String match) {
-		// TODO: Until an error strategy is devised to better inform
-		// the user that there was a problem compiling completions other than
-		// a modal error dialog, or a log message use this.
-		if (barLookups)
-			return NO_MATCHES;
 
 		// Check to see if the proposal hint included a <tapset>.<partialprobe>
 		// or just a <probe>. (ie syscall. or syscall.re).
@@ -189,45 +119,6 @@ public class STPMetadataSingleton {
 	}
 
 	/**
-	 *
-	 * From the file, read the metadata. The data follows the format of
-	 *
-	 * <tapset>.<probe>(<parameter list>)
-	 *
-	 * ie
-	 *
-	 * tcp.disconnect(name:string,sock:long,flags:long)
-	 * @param fileURL
-
-	 * @throws IOException
-	 *
-	 */
-	private void readCompletionMetadata(URL fileURL) throws IOException {
-		try {
-			BufferedReader input = new BufferedReader(new FileReader(new File(fileURL.getFile())));
-			try {
-				String line = null;
-				while ((line = input.readLine()) != null) {
-					String tapset = ""; //$NON-NLS-1$
-					String probe = ""; //$NON-NLS-1$
-					tapset = getTapset(line);
-					probe = getTapsetProbe(line);
-					ArrayList<String> data = builtMetadata.get(tapset);
-					if (data == null)
-						data = new ArrayList<String>();
-
-					data.add(probe);
-					builtMetadata.put(tapset, data);
-				}
-			} finally {
-				input.close();
-			}
-		} catch (IOException ex) {
-			throw ex;
-		}
-	}
-
-	/**
 	 * Given data, decide whether it is comprised of a <tapset>.<probe>
 	 * hint, or just a <tapset>.
 	 *
@@ -254,139 +145,4 @@ public class STPMetadataSingleton {
 		return data.substring(0, data.indexOf('.'));
 	}
 
-	/**
-	 * Given data, extract <probe>
-	 *
-	 * @param data - hint data
-	 * @return
-	 */
-	private String getTapsetProbe(String data) {
-		int i = data.indexOf('.');
-		if (i < 0)
-			throw new StringIndexOutOfBoundsException();
-		return data.substring(data.indexOf('.') + 1, data.length());
-	}
-
-
-	/**
-	 *
-	 * Decide whether cached metadata exists on disk.
-	 *
-	 * @return - whether metadata exists.
-	 */
-	/*private boolean haveMetadata(String location) {
-		File fileExists = new File(location);
-		if ((fileExists.canRead()) && fileExists.exists())
-			return true;
-
-		return false;
-	}*/
-
-	/**
-	 *
-	 * Build the metadata from visiting the tapsets in turn and
-	 * requesting coverage data from each one.
-	 *
-	 * @throws FileNotFoundException
-	 *
-	 */
-	/*private void buildCompletionMetadata(String location) throws FileNotFoundException {
-		String[] tapsets = { "syscall", "signal", "netdev", "ioblock",
-				"ioscheduler", "nd_syscall", "vm", "nfsd", "process", "sunrpc",
-				"scheduler", "scsi", "socket", "tcp", "udp", "generic.fop" };
-		ArrayList<StringBuffer> processedMetadata = new ArrayList<StringBuffer>();
-		boolean openingBracket = false;
-
-		// Execute each tapset, then convert the output from stdin
-		// to a format more acceptable to completion.
-		for (int i = 0; i < tapsets.length; i++) {
-			StringBuffer[] data = executeSystemTap(tapsets[i]);
-			for (int z = 0; z < data.length; z++) {
-				openingBracket = false;
-				for (int c = 0; c < data[z].length(); c++) {
-					if (data[z].charAt(c) == ' ')
-						if (openingBracket == false) {
-							openingBracket = true;
-							data[z].setCharAt(c, '(');
-						} else {
-							data[z].setCharAt(c, ',');
-						}
-				}
-				data[z].append(')');
-				processedMetadata.add(data[z]);
-			}
-
-		}
-
-		// Output massaged data from stdout to a text file.
-		PrintStream out = null;
-		try {
-			out = new PrintStream(new FileOutputStream(location));
-		} catch (FileNotFoundException e) {
-			throw e;
-		}
-		Iterator<StringBuffer> i = processedMetadata.iterator();
-		while (i.hasNext()) {
-			StringBuffer line = i.next();
-			out.println(line.toString().trim());
-		}
-		out.close();
-	}*/
-
-	/**
-	 *
-	 * Execute Systemtap binary, cpature stdout and return.
-	 *
-	 * @param tapset to request coverage data from.
-	 * @return
-	 */
-
-	// TODO: This could stand to be completely rewritten to be safer,
-	// and be tolerant of faults. As it is we ship default meta-data
-	// so this should never be executed in the user context. But eventually
-	// an option will be made available to the user to regenerate the data.
-	/*private StringBuffer[] executeSystemTap(String tapset) {
-
-		ArrayList<StringBuffer> data = new ArrayList<StringBuffer>();
-
-		try {
-			String a;
-			Process p = RuntimeProcessFactory.getFactory().exec(
-					"stap -L " + tapset + ".*", null);
-			BufferedReader in = new BufferedReader(new InputStreamReader(p
-					.getInputStream()), 5000);
-			while ((a = in.readLine()) != null) {
-				data.add(new StringBuffer(a));
-			}
-			p.waitFor();
-			in.close();
-		} catch (IOException e) {
-			return new StringBuffer[] {};
-		}
-
-		catch (java.lang.InterruptedException ie) {
-			return new StringBuffer[] {};
-		}
-
-		return data.toArray(new StringBuffer[0]);
-	}
-
-	public void parse(ResourceBundle bundle) {
-		System.out.println(System.getProperty("user.pwd"));
-
-		System.out.println(System.getProperties());
-	//	System.out.println(bundle.containsKey("syscall"));
-	//	System.out.println(bundle.containsKey("syscall."));
-		System.out.println(bundle.getKeys());
-	}*/
-
-	public void build(URL fileURL) {
-		try {
-//			if (!haveMetadata(location))
-//				buildCompletionMetadata(location);
-			readCompletionMetadata(fileURL);
-		} catch (IOException e) {
-			barLookups = true;
-		}
-	}
 }

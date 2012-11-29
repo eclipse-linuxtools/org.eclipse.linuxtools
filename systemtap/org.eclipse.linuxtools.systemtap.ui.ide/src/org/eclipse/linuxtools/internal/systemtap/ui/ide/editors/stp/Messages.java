@@ -7,6 +7,7 @@ public class Messages extends NLS {
 	public static String STPCompletionProcessor_global;
 	public static String STPCompletionProcessor_probe;
 	public static String STPCompletionProcessor_function;
+	public static String STPMetadataSingleton_noCompletions;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
