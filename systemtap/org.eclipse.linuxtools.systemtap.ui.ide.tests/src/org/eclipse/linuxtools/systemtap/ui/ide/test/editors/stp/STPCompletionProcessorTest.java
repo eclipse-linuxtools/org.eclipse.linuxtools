@@ -137,9 +137,9 @@ public class STPCompletionProcessorTest {
 				.computeCompletionProposals(testDocument,
 						offset);
 
-		assertTrue(proposalsContain(proposals, "fd:long "));
+		assertTrue(proposalsContain(proposals, "fd:long"));
 		assertTrue(proposalsContain(proposals, "name:string"));
-		assertTrue(proposalsContain(proposals, "buf_uaddr:long "));
+		assertTrue(proposalsContain(proposals, "buf_uaddr:long"));
 	}
 
 	

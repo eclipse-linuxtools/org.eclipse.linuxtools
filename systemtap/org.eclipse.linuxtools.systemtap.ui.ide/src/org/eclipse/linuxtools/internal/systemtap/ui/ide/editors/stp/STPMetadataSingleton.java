@@ -60,7 +60,7 @@ public class STPMetadataSingleton {
 		// If the result is a tapset and partial probe, get the tapset, then
 		// narrow down the list with partial probe matches.
 		if (tapsetAndProbeIncluded) {
-			node = getChildByName(node, getTapset(match));
+			node = node.getChildByName(getTapset(match));
 			if (node == null )
 				return NO_MATCHES;
 
@@ -82,27 +82,16 @@ public class STPMetadataSingleton {
 		TreeNode node = TapsetLibrary.getProbes();
 
 		// Get the matching leaf node.
-		node = getChildByName(node, getTapset(probe));
+		node = node.getChildByName(getTapset(probe));
 		if (node == null )
 			return NO_MATCHES;
 
-		node = getChildByName(node, probe);
+		node = node.getChildByName(probe);
 		if (node == null )
 			return NO_MATCHES;
 
 		// Get the completions.
 		return getMatchingChildren(node, prefix);
-	}
-
-	private TreeNode getChildByName(TreeNode node, String name){
-		int n = node.getChildCount();
-
-		for (int i = 0; i < n; i++) {
-			if (node.getChildAt(i).toString().equals(name))
-				return node.getChildAt(i);
-		}
-
-		return null;
 	}
 
 	private String[] getMatchingChildren(TreeNode node, String prefix) {

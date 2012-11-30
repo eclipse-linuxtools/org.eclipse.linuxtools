@@ -63,8 +63,8 @@ public class TapsetParser implements Runnable {
 		probes = new TreeNode("", false);
 
 		String s = readPass1(null);
-		parseLevel1(s);
-		cleanupTrees();
+		parseProbes(s);
+		sortTrees();
 	}
 
 	/**
@@ -270,65 +270,67 @@ public class TapsetParser implements Runnable {
 	 * 	Root->Files->Functions
 	 * @param s The entire output from running stap -v -p1 -L.
 	 */
-	private void parseLevel1(String s) {
-		String prev = null;
-		StringBuilder token = new StringBuilder("");
-		TreeNode parent;
-		TreeNode item;
+	private void parseProbes(String s) {
+		String token = null;
+		StringBuilder prev = new StringBuilder(""); //$NON-NLS-1$
+		TreeNode currentProbe = null;
+		TreeNode group = null;
 
-		TreeNode child;
-	
-	 	StringTokenizer st = new StringTokenizer(s, "\n", false);
+	 	StringTokenizer st = new StringTokenizer(s, "\n", false); //$NON-NLS-1$
  		st.nextToken(); //skip the stap command itself
 	 	while(st.hasMoreTokens()){
-	 		StringTokenizer next_level = new StringTokenizer(st.nextToken());
- 			token.setLength(0);
- 			int total = next_level.countTokens();
-	 		for(int i = 0; i < total; i++){
-	 			prev = next_level.nextToken();
-	 			if(i == 0) {
-	 				probes.add(new TreeNode(prev, prev, true));
-	 				parent = probes.getChildAt(probes.getChildCount()-1);
-	 				parent.add(new TreeDefinitionNode("probe " + prev, prev, parent.getData().toString(), true));
+	 		String tokenString = st.nextToken();
+	 		int firstDotIndex = tokenString.indexOf('.');
+ 			String groupName = tokenString;
+	 		if (firstDotIndex > 0){
+	 			groupName = tokenString.substring(0, firstDotIndex);
+	 		}
+
+			// If the current probe belongs to a group other than
+			// the most recent group. This should rarely be needed because the
+			// probe list is sorted... mostly.
+	 		if(group == null || !group.getData().equals(groupName)){
+	 			group = probes.getChildByName(groupName);
+	 		}
+
+	 		// Create a new group and add it
+	 		if(group == null){
+	 			group = new TreeNode(groupName, groupName, true);
+	 			probes.add(group);
+	 		}
+
+	 		StringTokenizer probe = new StringTokenizer(tokenString);
+ 			prev.setLength(0);
+ 			
+ 			// The first token is the probe name
+ 			token = probe.nextToken();
+ 			currentProbe = new TreeDefinitionNode("probe " + token, token, null, true); //$NON-NLS-1$
+ 			group.add(currentProbe);
+
+ 			// the remaining tokens are variable names and variable types name:type.
+	 		while(probe.hasMoreTokens()){	
+	 			token = probe.nextToken();
+
+				// Because some variable types contain spaces (var2:struct task_struct)
+	 			// the only way to know if we have the entire string representing a
+	 			// variable is if we reach the next token containing a ':' or we reach
+	 			// the end of the stream.
+	 			if (token.contains(":") && prev.length() > 0){ //$NON-NLS-1$
+	 				prev.setLength(prev.length() - 1); // Remove the trailing space.
+	 				currentProbe.add(new TreeNode(prev.toString(), prev.toString(), false));
+	 				prev.setLength(0);
 	 			}
-	 			else if(i < (total - 1)) {
-	 				//if the token is empty, of course add it
-	 				if(token.length() == 0) {
-	 					token.append(prev);
-	 				}
-	 				//if the token has a : already, and the current token doesn't, append it
-	 				else if(!(token.length()==0) && !prev.contains(":")) {
-	 					token.append(prev + " ");
-	 				}
-	 				//if token isn't empty, and the current one contains a ':', add token, empty, and append prev
-	 				else if(!(token.length()==0) && prev.contains(":")) {
-	 					item = probes.getChildAt(probes.getChildCount()-1);
-	 					child = item.getChildAt(item.getChildCount()-1);
-	 					child.add(new TreeNode(token.toString(), token.toString(), false));
-	 					token.setLength(0);
-	 					token.append(prev + " ");
-	 				}
-	 			}
-	 			else if(i == (total - 1)) {
-	 				if(prev.contains(":")) { //add token, then add prev
-	 					item = probes.getChildAt(probes.getChildCount()-1);
-	 					child = item.getChildAt(item.getChildCount()-1);
-	 					child.add(new TreeNode(token.toString(), token.toString(), false));
-	 					item = probes.getChildAt(probes.getChildCount()-1);
-	 					child = item.getChildAt(item.getChildCount()-1);
-	 					child.add(new TreeNode(prev, prev, false));
-	 				}
-	 				else { // end var type, append to token, then add token
-	 					token.append(prev);
-	 					item = probes.getChildAt(probes.getChildCount()-1);
-	 					child = item.getChildAt(item.getChildCount()-1);
-	 					child.add(new TreeNode(token.toString(), token.toString(), false));
-	 				}
-	 			}
+	 			prev.append(token + " "); //$NON-NLS-1$
+	 		}
+
+ 			// Add the last token if there is one
+	 		if (prev.length() > 0){
+	 			prev.setLength(prev.length() - 1); // Remove the trailing space.
+	 			currentProbe.add(new TreeNode(prev.toString(), prev.toString(), false));
 	 		}
 	 	}
 	}
-	
+
 	/**
 	 * This method is used to build up the list of functions that were found
 	 * during the first pass of stap.  Stap is invoked by: $stap -v -p1 -e
@@ -373,22 +375,9 @@ public class TapsetParser implements Runnable {
 		}
 	}
 
-	/**
-	 * Removes all directories that do not contain any fuctions or
-	 * probe aliases from both trees.
-	 */
-	protected void cleanupTrees() {
-		for(int i=functions.getChildCount()-1; i>=0; i--) {
-			if(0 == functions.getChildAt(i).getChildCount())
-				functions.remove(i);
-			if(0 == probes.getChildAt(i).getChildCount())
-				probes.remove(i);
-		}
-
+	protected void sortTrees() {
 		functions.sortTree();
 		probes.sortTree();
-		
-		formatProbes();
 	}
 	
 	/**
