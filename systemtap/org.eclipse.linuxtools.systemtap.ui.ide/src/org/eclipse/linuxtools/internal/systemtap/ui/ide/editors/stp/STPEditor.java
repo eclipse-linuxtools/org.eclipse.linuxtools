@@ -12,19 +12,11 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -34,16 +26,13 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.editor.ColorManager;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.ui.texteditor.ContentAssistAction;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 public class STPEditor extends SimpleEditor {
 
@@ -104,16 +93,6 @@ public class STPEditor extends SimpleEditor {
 		}
 		stpAnnotationModel.modifyAnnotations(stpOldAnnotations,newAnnotations,null);		
 		stpOldAnnotations = updatedAnnotations;
-	}
-	
-	@Override
-	protected void createActions() {
-		Action action = new ContentAssistAction(ResourceBundle.getBundle("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.strings"), "ContentAssistProposal.", this); 
-		String id = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
-		action.setActionDefinitionId(id);
-		setAction("ContentAssistProposal", action); 
-		markAsStateDependentAction("ContentAssistProposal", true);
-		super.createActions();
 	}
 	
 	public ISourceViewer getMySourceViewer() {
