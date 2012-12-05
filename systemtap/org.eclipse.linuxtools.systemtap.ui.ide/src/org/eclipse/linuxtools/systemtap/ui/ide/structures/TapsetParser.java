@@ -418,69 +418,6 @@ public class TapsetParser implements Runnable {
 	}
 	
 	/**
-	 * Reorders the probes tree so that probes are grouped by type
-	 * instead of by file they were defined in.
-	 * 
-	 * ProbeTree organized by class grouping.  ie:
-	 * 	syscall
-	 * 		syscall.open
-	 * 			filename
-	 * 			flags
-	 * 			mode
-	 * 			name
-	 * 		syscall.open.return
-	 * 			name
-	 * 			retstr
-	 * 		syscall.read
-	 * 		...
-	 * 	tcp
-	 * 		tcp.disconnect
-	 * 		tcp.disconnect.return
-	 */
-	private void formatProbes() {
-		TreeNode probes2 = new TreeNode("", false);
-		TreeNode probe, fileNode, probeGroup, probeFolder;
-		String directory;
-		String[] folders;
-		boolean added;
-		
-		for(int j,i=0; i<probes.getChildCount(); i++) {	//Probe main group
-			fileNode = probes.getChildAt(i);
-			for(j=0; j<fileNode.getChildCount(); j++) {	//Actual probes
-				probe = fileNode.getChildAt(j);
-				directory = probe.toString();
-				
-				if(directory.endsWith(".return") || directory.endsWith(".entry"))
-					directory = directory.substring(0, directory.lastIndexOf('.'));
-				
-				folders = directory.split("\\.");
-				probeGroup = probes2;
-				
-				for(int k=0; k<folders.length-1; k++) {	//Complete path directory
-
-					added = false;
-					for(int l=0; l<probeGroup.getChildCount(); l++) {	//Destination folder
-						probeFolder = probeGroup.getChildAt(l);
-						if(probeFolder.toString().equals(folders[k])) {
-							probeGroup = probeFolder;
-							added = true;
-							break;
-						}
-					}
-					if(!added) {	//Create brand new folder since it doesn't exist yet
-						probeFolder = new TreeNode(folders[k], false);
-						probeGroup.add(probeFolder);
-						probeGroup = probeFolder;
-					}
-				}
-				probeGroup.add(probe);	//Add the probe to its appropriate directory
-			}
-		}
-		probes = probes2;
-		probes.sortTree();
-	}
-		
-	/**
 	 * This method will clean up everything from the run.
 	 */
 	public void dispose() {
