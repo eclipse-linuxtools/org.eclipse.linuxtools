@@ -2,17 +2,17 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.SelectionEvent;
 
 
 public class SCPDetails extends Dialog {
@@ -74,11 +74,11 @@ public class SCPDetails extends Dialog {
 		cancelButton.setLayoutData(data);
 		cancelButton.setSize(50, 100);
 		cancelButton.setText("Cancel");
-		cancelButton.addSelectionListener(new SelectionListener() {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				shell.dispose();
 			}
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
 		data = new GridData();
@@ -87,7 +87,8 @@ public class SCPDetails extends Dialog {
 		sendButton.setLayoutData(data);
 		sendButton.setSize(50, 100);
 		sendButton.setText("Send");
-		sendButton.addSelectionListener(new SelectionListener() {
+		sendButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// FIXME: no error handling is done, should probably be
 				// pushed down to the connection level
@@ -97,7 +98,6 @@ public class SCPDetails extends Dialog {
 
 				shell.close();
 			}
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
 		shell.open();
