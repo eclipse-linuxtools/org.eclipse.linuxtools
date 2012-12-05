@@ -98,6 +98,7 @@ public class StapNewWizardPage extends WizardPage {
 		Button button = new Button(container, SWT.PUSH);
 		button.setText(resourceBundle.getString("StapNewWizardPage.Browse")); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowse();
 			}

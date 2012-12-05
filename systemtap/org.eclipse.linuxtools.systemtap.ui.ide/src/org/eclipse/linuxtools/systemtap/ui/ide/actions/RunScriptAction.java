@@ -55,6 +55,7 @@ public class RunScriptAction extends RunScriptBaseAction {
 	 * Returns the path of the current editor in the window this action is associated with.
 	 * @return The string representation of the path of the current file.
 	 */
+	@Override
 	protected String getFilePath() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
 		if(ed.getEditorInput() instanceof PathEditorInput)
@@ -69,6 +70,7 @@ public class RunScriptAction extends RunScriptBaseAction {
 	 * used as an argument to stap (as opposed to an unsaved buffer).
 	 * @return True if the file is valid.
 	 */
+	@Override
 	protected boolean isValid() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
 

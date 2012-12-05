@@ -63,6 +63,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 	 * Adding the page to the wizard.
 	 */
 
+	@Override
 	public void addPages() {
 		page = new StapNewWizardPage(selection);
 		addPage(page);
@@ -73,6 +74,7 @@ public class StapNewWizard extends Wizard implements INewWizard {
 	 * the wizard. We will create an operation and run it
 	 * using wizard as execution context.
 	 */
+	@Override
 	public boolean performFinish() {
 		final String containerName = page.getContainerName();
 		final String fileName = page.getFileName();

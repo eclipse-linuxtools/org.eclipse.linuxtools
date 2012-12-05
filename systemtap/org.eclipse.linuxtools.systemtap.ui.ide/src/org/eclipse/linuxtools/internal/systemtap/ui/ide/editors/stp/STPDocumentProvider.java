@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 public class STPDocumentProvider extends SimpleDocumentProvider {
 
+	@Override
 	protected void setupDocument(IDocument document) {
 		LogManager.logDebug("Start setupDocument: document-" + document, this); //$NON-NLS-1$
 		if (document != null) {
