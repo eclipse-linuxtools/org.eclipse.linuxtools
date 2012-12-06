@@ -288,6 +288,12 @@ public class TapsetParser implements Runnable {
  		st.nextToken(); //skip the stap command itself
 	 	while(st.hasMoreTokens()){
 	 		String tokenString = st.nextToken();
+
+			// If the token starts with '_' or '__' it is a private probe so
+			// skip it.
+ 			if (tokenString.startsWith("_")) //$NON-NLS-1$
+ 				continue;
+
 	 		int firstDotIndex = tokenString.indexOf('.');
  			String groupName = tokenString;
 	 		if (firstDotIndex > 0){
@@ -309,7 +315,7 @@ public class TapsetParser implements Runnable {
 
 	 		StringTokenizer probe = new StringTokenizer(tokenString);
  			prev.setLength(0);
- 			
+
  			// The first token is the probe name
  			token = probe.nextToken();
  			currentProbe = new TreeDefinitionNode("probe " + token, token, null, true); //$NON-NLS-1$
