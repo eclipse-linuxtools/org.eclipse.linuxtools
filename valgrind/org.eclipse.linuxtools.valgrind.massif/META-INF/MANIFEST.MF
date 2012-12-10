@@ -27,4 +27,5 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
+ org.eclipse.ui.ide,
  org.swtchart

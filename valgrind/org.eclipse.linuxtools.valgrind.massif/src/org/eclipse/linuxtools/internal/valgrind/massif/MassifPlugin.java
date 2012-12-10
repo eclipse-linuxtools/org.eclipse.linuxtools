@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -22,6 +23,8 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -78,23 +81,18 @@ public class MassifPlugin extends AbstractUIPlugin {
 	
 	public void openEditorForNode(MassifHeapTreeNode element) {
 		// do source lookup
-		String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
 		if (sourceLocator instanceof ISourceLookupDirector) {
 			Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
-			String fullFilePath;
 			if (obj != null && obj instanceof IStorage){
 				if (obj instanceof IFile) {
-					fullFilePath = ((IFile) obj).getLocation().toOSString();
-				} else {
-					fullFilePath = workspaceLocation + ((IStorage) obj).getFullPath().toOSString();
-				}
-				try {
-					ProfileUIUtils.openEditorAndSelect(fullFilePath, element.getLine());
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				} catch (BadLocationException e) {
-					e.printStackTrace();
+					try {
+						ProfileUIUtils.openEditorAndSelect(((IFile)obj), element.getLine());
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
