@@ -22,7 +22,7 @@
             icon="icons/time_obj.gif"
             id="org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"
             label="%shortcut.label"
-            modes="profile"
+            modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
                <parameter 
@@ -91,7 +91,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationType"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -119,7 +119,7 @@
             icon="icons/memory_view.gif"
             id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchShortcut"
             label="%shortcut.label.0"
-            modes="profile"
+            modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
                <parameter 
@@ -188,7 +188,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationType"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name.0"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -216,7 +216,7 @@
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchShortcut"
             label="%shortcut.label.1"
-            modes="profile"
+            modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
                <parameter 
@@ -285,7 +285,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationType"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name.1"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -376,5 +376,40 @@
             scheme="local"
             schemeLabel="Local">
       </resourceSelectorProxy>
-   </extension>   
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="org.eclipse.linuxtools.profiling.launch.menu"
+            objectClass="org.eclipse.core.resources.IResource">
+         <action
+               class="org.eclipse.linuxtools.internal.profiling.launch.ProfileContextualLaunchAction"
+               enablesFor="+"
+               id="org.eclipse.linuxtools.profiling.launch.submenu"
+               label="Profiling Tools"
+               menubarPath="additions"
+               style="pulldown">
+         </action>
+      </objectContribution>
+   </extension>
+      <extension
+         point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+            bannerImage="icons/profile_wiz.png"
+            id="org.eclipse.debug.ui.launchGroup.profilee"
+            image="icons/time_obj.gif"
+            label="Profiling Tools"
+            mode="linuxtools"
+            title="Profiling Tools">
+      </launchGroup>
+   </extension>
+      <extension
+            point="org.eclipse.debug.core.launchModes">
+         <launchMode
+               label="Profile"
+               launchAsLabel="Linux Profiling Tools"
+               mode="linuxtools">
+         </launchMode>
+      </extension>
 </plugin>

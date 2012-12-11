@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.launch;singleton:=true
-Bundle-Version: 1.3.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -23,11 +23,12 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.core,
  org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
+ org.eclipse.debug.ui.actions,
  org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.console
-Export-Package: org.eclipse.linuxtools.internal.profiling.launch,
+Export-Package: org.eclipse.linuxtools.internal.profiling.launch;x-internal:=true,
  org.eclipse.linuxtools.internal.profiling.launch.provider;x-friends:="org.eclipse.linuxtools.gprof.test",
  org.eclipse.linuxtools.internal.profiling.launch.provider.launch;x-friends:="org.eclipse.linuxtools.gprof.test",
  org.eclipse.linuxtools.profiling.launch,

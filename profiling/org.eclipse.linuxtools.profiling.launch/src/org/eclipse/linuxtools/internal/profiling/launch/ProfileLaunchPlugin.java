@@ -24,6 +24,9 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static ProfileLaunchPlugin plugin;
 
+	// The launch mode this plug-in supports
+	public static final String LAUNCH_MODE = "linuxtools"; //$NON-NLS-1$
+
 	
 	/**
 	 * The constructor

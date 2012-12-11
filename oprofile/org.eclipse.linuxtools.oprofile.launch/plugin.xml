@@ -6,7 +6,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.oprofile.launch.oprofile"
-            modes="profile"
+            modes="linuxtools"
             name="%launchconfigurationtype.label"
             public="true"
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
@@ -15,7 +15,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileManualLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.oprofile.launch.oprofile.manual"
-            modes="profile"
+            modes="linuxtools"
             name="%launchconfigurationtype.manual.label"
             public="true"
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
@@ -55,7 +55,7 @@
             icon="icons/profile_run.png"
             id="org.eclipse.linuxtools.oprofile.launch.profileshortcut"
             label="%launchshortcuts.label"
-            modes="profile">
+            modes="linuxtools">
          <contextualLaunch>
            <enablement>
 <!-- FIXME: this is not a proper enablement condition -->           
@@ -86,7 +86,7 @@
             icon="icons/profile_manual_run.png"
             id="org.eclipse.linuxtools.oprofile.launch.profileshortcut.manual"
             label="%manual.launchshortcuts.label"
-            modes="profile">
+            modes="linuxtools">
          <contextualLaunch>
             <enablement>
                <with

@@ -6,7 +6,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -37,7 +37,7 @@
             icon="icons/valgrind-icon.png"
             id="org.eclipse.linuxtools.valgrind.launch.remote.shortcut"
             label="%shortcut.label"
-            modes="profile">
+            modes="linuxtools">
       </shortcut>
    </extension>
 

@@ -14,7 +14,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name.0"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -42,7 +42,7 @@
             id="org.eclipse.linuxtools.systemtap.quicklaunchStapGraph1"
             icon="icons/bar_graph.png"
             label="%launch.name"
-            modes="profile">
+            modes="linuxtools">
          <contextualLaunch>
             <enablement>
                <with

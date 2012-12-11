@@ -203,7 +203,7 @@ public abstract class GcovTest {
 			}
 		}
 		treeBot.expandNode(projectName).select(binNodeName);
-		String menuItem = "Profile As";
+		String menuItem = "Profiling Tools";
 		String subMenuItem = "1 Profile Code Coverage";
 		ContextMenuHelper.clickContextMenu(treeBot, menuItem, subMenuItem);
 

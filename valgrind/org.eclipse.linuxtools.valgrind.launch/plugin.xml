@@ -8,7 +8,7 @@
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.valgrindLaunch"
-            modes="profile"
+            modes="linuxtools"
             name="%launchConfigurationType.name.0"
             public="true"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
@@ -39,7 +39,7 @@
             icon="icons/valgrind-icon.png"
             id="org.eclipse.linuxtools.valgrind.launch.shortcut1"
             label="%shortcut.label.0"
-            modes="profile">
+            modes="linuxtools">
          <contextualLaunch>
             <enablement>
                <with
