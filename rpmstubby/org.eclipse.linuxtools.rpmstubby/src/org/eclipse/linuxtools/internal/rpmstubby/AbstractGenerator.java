@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -65,8 +66,7 @@ public abstract class AbstractGenerator {
 		} catch (CoreException e) {
 			StubbyLog.logError(e);
 		}
-		StubbyPlugin.getActiveWorkbenchShell().getDisplay()
-				.asyncExec(new Runnable() {
+		Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						IWorkbenchPage page = PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage();
