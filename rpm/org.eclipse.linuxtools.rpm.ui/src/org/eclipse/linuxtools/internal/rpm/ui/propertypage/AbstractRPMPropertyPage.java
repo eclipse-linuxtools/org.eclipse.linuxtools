@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -27,7 +26,7 @@ public abstract class AbstractRPMPropertyPage extends PropertyPage {
 	protected abstract void addFields(Composite parent);
 	
 	/**
-	 * @see PreferencePage#createContents(Composite)
+	 * @see PropertyPage#createContents(Composite)
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
