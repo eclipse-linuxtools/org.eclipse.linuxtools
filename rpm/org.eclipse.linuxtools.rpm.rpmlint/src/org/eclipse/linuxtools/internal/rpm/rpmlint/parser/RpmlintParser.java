@@ -22,12 +22,14 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.builder.RpmlintBuilder;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGenerator;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * Parser for rpmlint output.
@@ -276,7 +278,8 @@ public class RpmlintParser {
 		BufferedInputStream in = null;
 		int i = 2;
 		String[] cmd = new String[visitedResources.size() + i];
-		cmd[0] = Activator.getRpmlintPath();
+		cmd[0] = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
+				PreferenceConstants.P_RPMLINT_PATH);
 		cmd[1] = "-i"; //$NON-NLS-1$
 		for(String resource: visitedResources){
 			cmd[i] = resource;
@@ -325,17 +328,17 @@ public class RpmlintParser {
 	private int getMixedUseOfTabsAndSpaces(String refferedContent){
 		int lineNbr = -1;
 		if (refferedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
-			String tabsAndSpacesPref = Activator
-			.getDefault()
-			.getPreferenceStore()
-			.getString(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES);
+			String tabsAndSpacesPref = new ScopedPreferenceStore(
+					InstanceScope.INSTANCE, Activator.PLUGIN_ID)
+					.getString(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES);
 			String[] spacesAndTabs = refferedContent.split("line"); //$NON-NLS-1$
-			if (tabsAndSpacesPref == PreferenceConstants.P_RPMLINT_SPACES)
-				lineNbr = Integer.parseInt(spacesAndTabs[1]
-				                                         .split(",")[0].trim()); //$NON-NLS-1$
-			else
-				lineNbr = Integer.parseInt(spacesAndTabs[2]
-				                                         .replaceFirst("\\)", EMPTY_STRING).trim()); //$NON-NLS-1$
+			if (tabsAndSpacesPref == PreferenceConstants.P_RPMLINT_SPACES) {
+				lineNbr = Integer
+						.parseInt(spacesAndTabs[1].split(",")[0].trim()); //$NON-NLS-1$
+			} else {
+				lineNbr = Integer.parseInt(spacesAndTabs[2].replaceFirst(
+						"\\)", EMPTY_STRING).trim()); //$NON-NLS-1$
+			}
 		}
 		return lineNbr;
 	}

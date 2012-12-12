@@ -12,8 +12,10 @@
 package org.eclipse.linuxtools.internal.rpm.rpmlint.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 
 /**
@@ -26,7 +28,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID);
 		store.setDefault(PreferenceConstants.P_RPMLINT_PATH, PreferenceConstants.DP_RPMLINT_PATH);
 		store.setDefault(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES, PreferenceConstants.P_RPMLINT_SPACES);		
 		
