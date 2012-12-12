@@ -113,7 +113,7 @@ public class STPCompletionProcessorTest {
 	@Test
 	public void testGlobalInvalidCompletion() throws BadLocationException {
 		ICompletionProposal[] proposals = getCompletionsForPrefix("probe fake.fake");
-		assertTrue(proposalsContain(proposals, "No completion data found."));
+		assertTrue(proposals.length == 0);
 	}
 
 	@Test

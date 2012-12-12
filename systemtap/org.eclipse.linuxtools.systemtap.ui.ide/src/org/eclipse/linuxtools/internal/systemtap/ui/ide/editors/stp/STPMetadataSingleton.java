@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
  */
 public class STPMetadataSingleton {
 
-	public static String[] NO_MATCHES = new String[] {Messages.STPMetadataSingleton_noCompletions};
+	public static String[] NO_MATCHES = new String[0];
 
 	private static STPMetadataSingleton instance = null;
 
