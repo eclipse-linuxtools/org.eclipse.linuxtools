@@ -29,7 +29,7 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 	private IDocumentProvider documentProvider;
 	private Specfile specfile;
 	private SpecfileEditor specEditor;
-	protected final static String SECTION_POSITIONS = "section_positions"; //$NON-NLS-1$
+	protected static final String SECTION_POSITIONS = "section_positions"; //$NON-NLS-1$
 	protected IPositionUpdater positionUpdater = new DefaultPositionUpdater(SECTION_POSITIONS);
 	
 	public SpecfileContentProvider(ITextEditor editor) {

@@ -19,14 +19,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 /**
  * Defines the common functionallity for resolution which fix is to replace text in a line.
  */
-abstract public class AReplaceTextResolution extends ARpmlintResolution {
+public abstract class AReplaceTextResolution extends ARpmlintResolution {
 	
 	/**
 	 * Returns the original string
 	 * 
 	 * @return the original string
 	 */
-	abstract public String getOriginalString();
+	public abstract String getOriginalString();
 	
 	/**
 	 * Returns the string to replace in the <code>Document</code>
@@ -34,7 +34,7 @@ abstract public class AReplaceTextResolution extends ARpmlintResolution {
 	 * @return the string to replace
 	 * 
 	 */
-	abstract public String getReplaceString();
+	public abstract String getReplaceString();
 	
 	/**
 	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)

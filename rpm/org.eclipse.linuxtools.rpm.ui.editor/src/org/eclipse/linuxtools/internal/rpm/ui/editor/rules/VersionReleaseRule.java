@@ -34,17 +34,17 @@ public class VersionReleaseRule implements IPredicateRule {
 	/** Where we can find out what the preceeding token was */
 	SpecfileChangelogScanner fChangelogScanner;
 
-	protected final static char CHARS_SEPERATOR = '-';
+	protected static final char CHARS_SEPERATOR = '-';
 
-	protected final static int STATE_START = 0;
+	protected static final int STATE_START = 0;
 
-	protected final static int STATE_VERSION = 1;
+	protected static final int STATE_VERSION = 1;
 
-	protected final static int STATE_RELEASE = 2;
+	protected static final int STATE_RELEASE = 2;
 
-	protected final static int STATE_TRAIL = 3;
+	protected static final int STATE_TRAIL = 3;
 
-	protected final static int STATE_DONE = 4;
+	protected static final int STATE_DONE = 4;
 
 	public VersionReleaseRule(IToken token) {
 		this.fToken = token;
