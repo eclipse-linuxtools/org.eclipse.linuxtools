@@ -162,7 +162,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *         <code>current</code>,<code>false</code> if not
 	 */
 	private boolean containsWord(SpecfileDefine macro, String current) {
-		return macro.getName().toLowerCase().equals(current);
+		return macro.getName().equalsIgnoreCase(current);
 	}
 
 	/**
