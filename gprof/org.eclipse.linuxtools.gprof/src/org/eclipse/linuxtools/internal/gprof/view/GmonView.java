@@ -240,6 +240,7 @@ public class GmonView extends AbstractSTDataView {
 			IWorkbenchPage page = window.getActivePage();
 			if (secondary_id_usually_path_to_gmon_file != null) {
 				secondary_id_usually_path_to_gmon_file = secondary_id_usually_path_to_gmon_file.replace('.', '_');
+				secondary_id_usually_path_to_gmon_file = secondary_id_usually_path_to_gmon_file.replace(':', '_');
 			}
 			gmonview = (GmonView) page.showView(ID,secondary_id_usually_path_to_gmon_file, IWorkbenchPage.VIEW_ACTIVATE);
 			if (decoder.getHistogramDecoder().getProf_rate() == 0){
