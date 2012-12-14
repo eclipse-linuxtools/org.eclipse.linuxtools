@@ -376,5 +376,34 @@
             scheme="local"
             schemeLabel="Local">
       </resourceSelectorProxy>
-   </extension>   
+   </extension>
+   <!-- Remote Profile Timing launch Configuration Type -->
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.internal.profiling.launch.provider.remote.launch.ProviderLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.profiling.provider.remote.TimingLaunchConfigurationType"
+            modes="profile"
+            name="Profile Timing (remote)"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <!-- Remote Profile Timing launch Configuration Tab Groups -->
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            id="org.eclipse.linuxtools.profiling.provider.remote.TimingLaunchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.profiling.provider.remote.TimingLaunchConfigurationType">
+            <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.remote.ProviderLaunchConfigurationTabGroup">
+               <parameter 
+                     name="type"
+                     value="timing"/>
+               <parameter 
+                     name="name"
+                     value="Timing (Remote)"/>
+            </class>
+      </launchConfigurationTabGroup>
+   </extension>
 </plugin>
