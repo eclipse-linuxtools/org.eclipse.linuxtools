@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
+import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -25,6 +27,9 @@ import org.eclipse.ui.console.IConsole;
  * @author Ryan Morse
  */
 public class StopScriptAction extends ConsoleAction {
+
+	private IAction action;
+
 	/**
 	 * This is the main method of the class. It handles stopping the
 	 * currently active <code>ScriptConsole</code>.
@@ -42,9 +47,25 @@ public class StopScriptAction extends ConsoleAction {
 	}
 
 	@Override
-	public void selectionChanged(IAction a, ISelection s) {
-				a.setEnabled(anyRunning());
+	public void init(IViewPart view) {
+		updateEnablement();
+		view.addPropertyListener(new IPropertyListener() {
+			public void propertyChanged(Object source, int propId) {
+				updateEnablement();
 			}
+		});
+	}
+
+	private void updateEnablement(){
+		if (this.action != null)
+			this.action.setEnabled(ScriptConsole.isActiveConsoleRunning());
+	}
+
+	@Override
+	public void selectionChanged(IAction action, ISelection selection) {
+		this.action = action;
+		updateEnablement();
+	}
 
 
 	/**

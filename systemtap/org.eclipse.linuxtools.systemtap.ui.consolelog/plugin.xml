@@ -27,6 +27,16 @@
 				toolbarPath="launchGroup"
 				state="false"
 				style="push"/>
+   <action
+         class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction"
+         icon="icons/actions/stop_script.gif"
+         id="org.eclipse.linuxtools.systemtap.ui.consolelog.stopScriptAction"
+         label="%action.stopScript.name"
+         state="true"
+         style="push"
+         toolbarPath="launchGroup"
+         tooltip="%action.stopScript.desc">
+   </action>
 
 		</viewContribution> 
 	</extension>

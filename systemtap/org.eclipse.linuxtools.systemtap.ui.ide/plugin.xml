@@ -209,16 +209,6 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"
 				style="push"
 				state="false"/>
-			<action
-				label="%action.stop.name"
-				tooltip="%action.stop.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScript"
-				icon="icons/actions/terminate_co.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/stop.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.consolelog.commands.StopScript"
-				style="push"
-				state="false"/>
 		</actionSet>
 	</extension>
 
