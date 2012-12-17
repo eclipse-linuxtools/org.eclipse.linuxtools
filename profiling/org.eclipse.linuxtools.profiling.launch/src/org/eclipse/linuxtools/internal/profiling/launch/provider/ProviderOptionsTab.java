@@ -21,7 +21,6 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
-import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
@@ -100,14 +99,14 @@ public class ProviderOptionsTab extends ProfileLaunchConfigurationTab {
 
 		if (curProviderId == null || "".equals(curProviderId)) {
 			// get the id of a provider
-			curProviderId = ProviderLaunchConfigurationDelegate
+			curProviderId = ProviderFramework
 					.getProviderIdToRun(null, getProfilingType());
 		}
 
 		// starting initialization of this tab's controls
 		initialized.put(curProviderId, false);
 
-		tabGroupConfig = ProfileLaunchConfigurationTabGroup
+		tabGroupConfig = ProviderFramework
 				.getTabGroupProviderFromId(curProviderId);
 		if (tabGroupConfig == null) {
 			// no provider found

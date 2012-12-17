@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
@@ -37,7 +36,7 @@ public class ExtensionPointTest {
 		String highestProviderId = ProviderFramework.getHighestProviderId(PROFILING_TYPE);
 		assertEquals(PLUGIN_ID + "1", highestProviderId);
 
-		String[] providerIds = ProviderLaunchConfigurationTabGroup.getProviderIdsForType(PROFILING_TYPE);
+		String[] providerIds = ProviderFramework.getProviderIdsForType(PROFILING_TYPE);
 		HashSet<String> set = new HashSet<String>(Arrays.asList(providerIds));
 		for (int i = 0; i < providerIds.length; i++){
 			assertTrue(set.contains(PLUGIN_ID + (i+1)));
@@ -71,8 +70,8 @@ public class ExtensionPointTest {
 
 	@Test
 	public void testTabGroup () {
-		ProfileLaunchConfigurationTabGroup tabgroup = ProviderLaunchConfigurationTabGroup.getTabGroupProvider(PROFILING_TYPE);
-		ProfileLaunchConfigurationTabGroup tabgroup2 = ProviderLaunchConfigurationTabGroup.getTabGroupProviderFromId(PLUGIN_ID + "1");
+		ProfileLaunchConfigurationTabGroup tabgroup = ProviderFramework.getTabGroupProvider(PROFILING_TYPE);
+		ProfileLaunchConfigurationTabGroup tabgroup2 = ProviderFramework.getTabGroupProviderFromId(PLUGIN_ID + "1");
 
 		assertTrue(tabgroup instanceof StubbyLaunchConfigurationTabGroup);
 		assertTrue(tabgroup2 instanceof StubbyLaunchConfigurationTabGroup);

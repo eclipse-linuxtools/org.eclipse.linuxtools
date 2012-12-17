@@ -16,13 +16,10 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
-import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.swt.widgets.Composite;
@@ -97,7 +94,7 @@ public class AbstractProviderPreferencesPage extends
 		int i = 0;
 		for (Entry<String, String> entry : map.entrySet()) {
 			String toolId = entry.getValue();
-			String toolDescription = getToolInformationFromId(toolId, PROVIDER_ATT_DESC);
+			String toolDescription = ProviderFramework.getToolInformationFromId(toolId, PROVIDER_ATT_DESC);
 			String toolName = entry.getKey();
 
 			// Append tool description to tool name if available.
@@ -127,7 +124,7 @@ public class AbstractProviderPreferencesPage extends
 			// Get tool specific information from provider id.
 			String curProviderId = (String) control.getData();
 			// Set tool tip description text.
-			String toolDescription = getToolInformationFromId(curProviderId,
+			String toolDescription = ProviderFramework.getToolInformationFromId(curProviderId,
 					PROVIDER_ATT_INFO);
 			if (toolDescription != null && !toolDescription.equals("")) {
 				control.setToolTipText(toolDescription);
@@ -151,31 +148,5 @@ public class AbstractProviderPreferencesPage extends
 	 */
 	private void setProfilingType(String profilingType) {
 		type = profilingType;
-	}
-
-	/**
-	 * Get content of attribute <code>attribute</code> from the launch provider
-	 * with id <code>toolId</code>.
-	 * 
-	 * @param toolId String unique id of the tool.
-	 * @return String description of tool.
-	 */
-	private static String getToolInformationFromId(String toolId,
-			String attribute) {
-		IExtensionPoint extPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID,
-						"launchProvider"); //$NON-NLS-1$
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement config : configs) {
-			if (config.getName().equals("provider")) { //$NON-NLS-1$
-				String currentId = config.getAttribute("id"); //$NON-NLS-1$
-				String currentToolDescription = config.getAttribute(attribute); //$NON-NLS-1$
-				if (currentId != null && currentToolDescription != null
-						&& currentId.equals(toolId)) {
-					return currentToolDescription;
-				}
-			}
-		}
-		return null;
 	}
 }

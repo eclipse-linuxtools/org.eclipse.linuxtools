@@ -15,13 +15,21 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
+import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * This class has various methods to access relevant information from
@@ -252,14 +260,11 @@ public class ProviderFramework {
 	 * extensions of the
 	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
 	 * extensions point.
-	 * 
-	 * @since 1.2
+	 *
+	 * @since 2.0
 	 */
 	public static String getProviderToolNameFromId(String id) {
-		IExtensionPoint extPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID,
-						"launchProvider"); //$NON-NLS-1$
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
+		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
 				String currentId = config.getAttribute("id"); //$NON-NLS-1$
@@ -269,6 +274,181 @@ public class ProviderFramework {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get content of attribute <code>attribute</code> from the launch provider
+	 * with id <code>toolId</code>.
+	 *
+	 * @param toolId String unique id of the tool.
+	 * @return String description of tool.
+	 * @since 2.0
+	 */
+	public static String getToolInformationFromId(String toolId,
+			String attribute) {
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentId = config.getAttribute("id"); //$NON-NLS-1$
+				String currentToolDescription = config.getAttribute(attribute); //$NON-NLS-1$
+				if (currentId != null && currentToolDescription != null
+						&& currentId.equals(toolId)) {
+					return currentToolDescription;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get a profiling tab that provides the specified type of profiling. This
+	 * looks through extensions of the extension point
+	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code> that have a
+	 * specific type attribute.
+	 *
+	 * @param type A profiling type (eg. memory, snapshot, timing, etc.)
+	 * @return a tab that implements <code>ProfileLaunchConfigurationTabGroup</code>
+	 * and provides the necessary profiling type, or <code>null</code> if none could be found.
+	 * @since 2.0
+	 */
+	public static ProfileLaunchConfigurationTabGroup getTabGroupProvider(String type) {
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentType = config.getAttribute("type"); //$NON-NLS-1$
+				String shortcut = config.getAttribute("tabgroup"); //$NON-NLS-1$
+				if (currentType != null && shortcut != null
+						&& currentType.equals(type)) {
+					try {
+						Object obj = config
+								.createExecutableExtension("tabgroup"); //$NON-NLS-1$
+						if (obj instanceof ProfileLaunchConfigurationTabGroup) {
+							return (ProfileLaunchConfigurationTabGroup) obj;
+						}
+					} catch (CoreException e) {
+						// continue, perhaps another configuration will succeed
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get a profiling tab that is associated with the specified id.
+	 * This looks through extensions of the extension point
+	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code> that have a
+	 * specific id.
+	 *
+	 * @param id A unique identifier
+	 * @return a tab that implements <code>ProfileLaunchConfigurationTabGroup</code>
+	 * and provides the necessary profiling type, or <code>null</code> if none could be found.
+	 * @since 2.0
+	 */
+	public static ProfileLaunchConfigurationTabGroup getTabGroupProviderFromId(
+			String id) {
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentId = config.getAttribute("id"); //$NON-NLS-1$
+				String tabgroup = config.getAttribute("tabgroup"); //$NON-NLS-1$
+				if (currentId != null && tabgroup != null
+						&& currentId.equals(id)) {
+					try {
+						Object obj = config
+								.createExecutableExtension("tabgroup"); //$NON-NLS-1$
+						if (obj instanceof ProfileLaunchConfigurationTabGroup) {
+							return (ProfileLaunchConfigurationTabGroup) obj;
+						}
+					} catch (CoreException e) {
+						// continue, perhaps another configuration will succeed
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get all IDs of the specific type. This looks through extensions of
+	 * the extension point <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
+	 * that have a specific type.
+	 *
+	 * @param type A profiling type (eg. memory, snapshot, timing, etc.)
+	 * @return A <code>String []</code> of all IDs of the specific type.
+	 * @since 2.0
+	 */
+	public static String[] getProviderIdsForType(String type) {
+		ArrayList<String> ret = new ArrayList<String> ();
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentId = config.getAttribute("id"); //$NON-NLS-1$
+				String currentType = config.getAttribute("type"); //$NON-NLS-1$
+				if (currentType != null && type != null
+						&& currentType.equals(type)) {
+					ret.add(currentId);
+				}
+			}
+		}
+		return ret.toArray(new String [] {});
+	}
+
+	/**
+	 * Get a provider id to run for the given profiling type.
+	 *
+	 * This first checks for a provider in the project properties if the project
+	 * can be found and has indicated that project preferences are to override
+	 * the workspace preferences.  If no project is obtainable or the project
+	 * has not indicated override, then it looks at provider preferences.  If these
+	 * are not set or the specified preference points to a non-installed provider,
+	 * it will look for the provider with the highest priority for the specified type. 
+	 * If this fails, it will look for the default provider.
+	 *
+	 * @param type a profiling type
+	 * @return a provider id that contributes to the specified type
+	 * @since 2.0
+	 */
+
+	public static String getProviderIdToRun(ILaunchConfigurationWorkingCopy wc, String type) {
+		String providerId = null;
+		// Look for a project first
+		if (wc != null) {
+			try {
+				IResource[] resources = wc.getMappedResources();
+				if(resources != null){
+					for (int i = 0; i < resources.length; ++i) {
+						IResource resource = resources[i];
+						if (resource instanceof IProject) {
+							IProject project = (IProject)resource;
+							ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
+									ProviderProfileConstants.PLUGIN_ID);
+							Boolean use_project_settings = store.getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + type);
+							if (use_project_settings.booleanValue() == true) {
+								String provider = store.getString(ProviderProfileConstants.PREFS_KEY + type);
+								if (!provider.equals(""))
+									providerId = provider;
+							}
+						}
+					}
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
+		// if no providerId specified for project, get one from the preferences
+		if (providerId == null) {
+			// Look in the preferences for a provider
+			providerId = ConfigurationScope.INSTANCE.getNode(
+					ProviderProfileConstants.PLUGIN_ID).get(
+							ProviderProfileConstants.PREFS_KEY + type, "");
+			if (providerId.equals("") || getConfigurationDelegateFromId(providerId) == null) {
+
+				// Get highest priority provider
+				providerId = getHighestProviderId(type);
+			}
+		}
+		return providerId;
 	}
 
 }

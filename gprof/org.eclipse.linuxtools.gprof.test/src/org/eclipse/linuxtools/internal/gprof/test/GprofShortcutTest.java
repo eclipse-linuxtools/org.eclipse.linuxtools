@@ -24,7 +24,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
-import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -93,7 +93,7 @@ public class GprofShortcutTest extends AbstractTest {
 	@Test
 	public void testShortCut() {
 		try {
-			String id = ProviderLaunchConfigurationDelegate.getProviderIdToRun(wc, GPROF_CATEGORY);
+			String id = ProviderFramework.getProviderIdToRun(wc, GPROF_CATEGORY);
 			assertTrue(id.equals(GPROF_PROVIDER_ID));
 			shortcut.launch(proj.getBinaryContainer().getBinaries()[0], ILaunchManager.PROFILE_MODE);
 		} catch (Exception e) {
