@@ -49,8 +49,6 @@ public class PomModel {
 	 * @return The proposed package name.
 	 */
 	public String getPackageName() {
-		// TODO make it return names suitable for Fedora's package naming
-		// guidelines.
 		return xpathEval("/project/artifactId");
 	}
 
@@ -84,7 +82,6 @@ public class PomModel {
 	 * @return The license name.
 	 */
 	public String getLicense() {
-		// TODO make it return suitable license names.
 		return xpathEval("/project/licenses/license/name");
 	}
 
@@ -122,8 +119,7 @@ public class PomModel {
 			try {
 				dependencies.put(xpath.evaluate("groupId", node), xpath.evaluate("artifactId", node));
 			} catch (XPathExpressionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// just no deps generated
 			}
 		}
 		return dependencies;
@@ -134,8 +130,7 @@ public class PomModel {
 		try {
 			result = xpath.evaluate(path, docroot);
 		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore, nothing that can be read
 		}
 		return result;
 	}
@@ -146,8 +141,7 @@ public class PomModel {
 			result = (NodeList) xpath.evaluate(path, docroot,
 					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore, nothing that can be read
 		}
 		return result;
 	}
