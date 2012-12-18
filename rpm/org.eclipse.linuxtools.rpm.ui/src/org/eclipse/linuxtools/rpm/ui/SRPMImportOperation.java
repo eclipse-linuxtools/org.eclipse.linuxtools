@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -40,9 +41,6 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	private File sourceRPM;
 	private URL remoteSRPM;
 	private RPMProjectLayout projectLayout;
-
-	// Progressmonitor
-	private IProgressMonitor monitor;
 
 	private List<Exception> rpm_errorTable;
 
@@ -80,33 +78,31 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 		// Total number of work steps needed
 		int totalWork = 3;
 
-		monitor = progressMonitor;
 		rpm_errorTable = new ArrayList<Exception>();
 
-		monitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
+		progressMonitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
 		totalWork);
 
 		// Try to create an instance of the build class. 
 		try {
 			RPMProject rpmProject = new RPMProject(project, projectLayout);
-			monitor.worked(1);
-			monitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
+			progressMonitor.worked(1);
+			progressMonitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
 			if (sourceRPM != null) {
 				rpmProject.importSourceRPM(sourceRPM);
-				monitor.worked(2);
+				progressMonitor.worked(2);
 			} else if (remoteSRPM != null) {
-				SubProgressMonitor submonitor = new SubProgressMonitor(monitor, 1);
+				SubProgressMonitor submonitor = new SubProgressMonitor(progressMonitor, 1);
 				rpmProject.importSourceRPM(remoteSRPM, submonitor);
-				monitor.worked(2);
+				progressMonitor.worked(2);
 			} else {
 				throw new IllegalStateException();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (CoreException e) {
 			rpm_errorTable.add(e);
 			return;
 		}
-		monitor.worked(2);
+		progressMonitor.worked(2);
 	}
 
 
@@ -117,33 +113,27 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	IStatus[] errors = new IStatus[rpm_errorTable.size()];
 	Iterator<Exception> count = rpm_errorTable.iterator();
 	int iCount = 0;
-	String error_message=Messages.getString("SRPMImportOperation.0"); //$NON-NLS-1$
+	String errorMessage=Messages.getString("SRPMImportOperation.0"); //$NON-NLS-1$
 	while (count.hasNext()) {
+			Object anonErrorObject = count.next();
+			if (anonErrorObject instanceof Throwable) {
+				Throwable errorObject = (Throwable) anonErrorObject;
+				errorMessage = errorObject.getMessage();
+				if (errorMessage == null) {
+					errorMessage = Messages.getString("SRPMImportOperation.1"); //$NON-NLS-1$
+				}
 
-		Object anonErrorObject = count.next();
-		if (anonErrorObject instanceof Throwable) {
-			Throwable errorObject = (Throwable)  anonErrorObject;
-			error_message=errorObject.getMessage();
-			if (error_message == null)
-				error_message=Messages.getString("SRPMImportOperation.1"); //$NON-NLS-1$
-				
-		}
-		else
-			if (anonErrorObject instanceof Status)
-			{
+			} else if (anonErrorObject instanceof Status) {
 				Status errorObject = (Status) anonErrorObject;
-				error_message=errorObject.getMessage();
-				if (error_message == null)
-					error_message=Messages.getString("SRPMImportOperation.2"); //$NON-NLS-1$
+				errorMessage = errorObject.getMessage();
+				if (errorMessage == null) {
+					errorMessage = Messages.getString("SRPMImportOperation.2"); //$NON-NLS-1$
+				}
 			}
-		IStatus error =
-			new Status(
-				IStatus.ERROR,
-				"RPM Plugin",IStatus.OK, //$NON-NLS-1$
-				error_message,
-				null);
-		errors[iCount] = error;
-		iCount++;
+			IStatus error = new Status(IStatus.ERROR, "RPM Plugin", IStatus.OK, //$NON-NLS-1$
+					errorMessage, null);
+			errors[iCount] = error;
+			iCount++;
 	}
 
 	return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("SRPMImportOperation.3"), //$NON-NLS-1$

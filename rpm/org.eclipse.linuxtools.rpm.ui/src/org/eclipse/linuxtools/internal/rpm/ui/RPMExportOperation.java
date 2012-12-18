@@ -88,9 +88,9 @@ public class RPMExportOperation extends Job {
 	}
 
 	private class BuildThread extends Thread {
-		BuildType exportType;
-		RPMProject rpmProject;
-		IStatus result = null;
+		private BuildType exportType;
+		private RPMProject rpmProject;
+		private IStatus result = null;
 
 		public BuildThread(BuildType exportType, RPMProject rpmProject) {
 			this.exportType = exportType;
