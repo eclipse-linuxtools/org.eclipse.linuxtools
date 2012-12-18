@@ -47,7 +47,7 @@ public class FeatureModel {
 		try {
 			result = xpath.evaluate(path, docroot);
 		} catch (XPathExpressionException e) {
-			e.printStackTrace();
+			//ignore, empty string is fine on missing path
 		}
 		return result;
 	}
