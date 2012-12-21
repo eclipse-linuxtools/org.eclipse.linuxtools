@@ -99,6 +99,19 @@ public class PerfPlugin extends AbstractUIPlugin {
 		return _modelRoot;
 	}
 
+	/**
+	 * Return cleared model root.
+	 * @return TreeParent cleared model root.
+	 */
+	public TreeParent clearModelRoot(){
+		if (_modelRoot == null) {
+			_modelRoot = new TreeParent("");
+		} else {
+			_modelRoot.clear();
+		}
+		return _modelRoot;
+	}
+
 	public void setModelRoot(TreeParent rootnode) {
 		this._modelRoot = rootnode;
 	}

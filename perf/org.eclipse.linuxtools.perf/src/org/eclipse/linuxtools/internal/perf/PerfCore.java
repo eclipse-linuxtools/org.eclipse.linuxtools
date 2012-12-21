@@ -163,7 +163,11 @@ public class PerfCore {
 		} catch( IOException e ) {
 			e.printStackTrace();
 		} 
+		return parseEventList(input);
+	}
 
+	public static HashMap<String,ArrayList<String>> parseEventList (BufferedReader input){
+		HashMap<String,ArrayList<String>> events = new HashMap<String,ArrayList<String>>();
 		String line;
 		try {
 			// Process list of events. Each line is of the form <event>\s+<category>.
@@ -205,16 +209,9 @@ public class PerfCore {
 		return events;
 	}
 
-
 	//Gets the current version of perf
 	public static String getPerfVersion(ILaunchConfiguration config, String[] environ, IPath workingDir) {
-		ConfigUtils configUtils = new ConfigUtils(config);
-		IProject project = null;
-		try {
-			project = ConfigUtils.getProject(configUtils.getProjectName());
-		} catch (CoreException e1) {
-			e1.printStackTrace();
-		}
+		IProject project = getProject(config);
 		Process p = null;
 		IRemoteFileProxy proxy = null;
 		IFileStore workingDirFileStore = null;
@@ -362,20 +359,8 @@ public class PerfCore {
 	//perfDataLoc is optional - it is used to provide a pre-existing data file instead of something recorded from
 	//whatever project is being profiled. It is only used for junit tests atm.
 	public static void Report(ILaunchConfiguration config, String[] environ, IPath workingDir, IProgressMonitor monitor, String perfDataLoc, PrintStream print) {
-		ConfigUtils configUtils = new ConfigUtils(config);
-		IProject project = null;
-		try {
-			project = ConfigUtils.getProject(configUtils.getProjectName());
-		} catch (CoreException e1) {
-			e1.printStackTrace();
-		}
-		TreeParent invisibleRoot = PerfPlugin.getDefault().getModelRoot();  
-		if (invisibleRoot == null) {
-			invisibleRoot = new TreeParent("");
-			PerfPlugin.getDefault().setModelRoot(invisibleRoot);
-		} else {
-			invisibleRoot.clear();
-		}
+		IProject project = getProject(config);
+		TreeParent invisibleRoot = PerfPlugin.getDefault().clearModelRoot();
 
 		boolean OldPerfVersion = false;
 		if (getPerfVersion(config, environ, workingDir).contains("perf version 0.0.2.PERF")) {
