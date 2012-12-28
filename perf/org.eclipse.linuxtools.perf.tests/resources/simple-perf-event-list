@@ -1,0 +1,19 @@
+
+List of pre-defined events (to be used in -e):
+  cpu-cycles OR cycles                               [Hardware event]
+  stalled-cycles-frontend OR idle-cycles-frontend    [Hardware event]
+
+  cpu-clock                                          [Software event]
+  task-clock                                         [Software event]
+
+  L1-dcache-loads                                    [Hardware cache event]
+  L1-dcache-load-misses                              [Hardware cache event]
+
+  rNNN                                               [Raw hardware event descriptor]
+  cpu/t1=v1[,t2=v2,t3 ...]/modifier                  [Raw hardware event descriptor]
+   (see 'perf list --help' on how to encode it)
+
+  mem:<addr>[:access]                                [Hardware breakpoint]
+
+  mac80211:drv_return_void                           [Tracepoint event]
+  mac80211:drv_return_int                            [Tracepoint event]

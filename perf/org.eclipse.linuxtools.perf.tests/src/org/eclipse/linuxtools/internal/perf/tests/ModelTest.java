@@ -11,13 +11,16 @@
 package org.eclipse.linuxtools.internal.perf.tests;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -206,6 +209,113 @@ public class ModelTest extends AbstractTest {
 		String[] cmdLabels = { "hellotest", "[kernel.kallsyms]",
 				"ld-2.14.90.so", "perf" };
 		checkCommadLabels(cmdLabels, cmd);
+	}
+
+	public void testParseEventList() {
+		BufferedReader input = null;
+		try {
+			input = new BufferedReader(new FileReader("resources/simple-perf-event-list"));
+		} catch (FileNotFoundException e) {
+			fail();
+		}
+
+		HashMap<String, ArrayList<String>> eventList = PerfCore.parseEventList(input);
+		for(String key : eventList.keySet()){
+			if ("Raw hardware event descriptor".equals(key)) {
+				assertTrue(eventList.get(key).contains("rNNN"));
+				assertTrue(eventList.get(key).contains("cpu/t1=v1"));
+			} else if ("Hardware breakpoint".equals(key)) {
+				assertTrue(eventList.get(key).contains("mem:<addr>"));
+			} else if ("Software event".equals(key)) {
+				assertTrue(eventList.get(key).contains("cpu-clock"));
+				assertTrue(eventList.get(key).contains("task-clock"));
+			} else if ("Hardware cache event".equals(key)) {
+				assertTrue(eventList.get(key).contains("L1-dcache-loads"));
+				assertTrue(eventList.get(key).contains("L1-dcache-load-misses"));
+			} else if ("Tracepoint event".equals(key)) {
+				assertTrue(eventList.get(key).contains("mac80211:drv_return_void"));
+				assertTrue(eventList.get(key).contains("mac80211:drv_return_int"));
+			} else if ("Hardware event".equals(key)) {
+				assertTrue(eventList.get(key).contains("cpu-cycles"));
+				assertTrue(eventList.get(key).contains("stalled-cycles-frontend"));
+			}
+		}
+	}
+
+	public void testRecordString() {
+		ILaunchConfigurationWorkingCopy tempConfig = null;
+		try {
+			tempConfig = config.copy("test-config");
+			tempConfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, true);
+			tempConfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, true);
+			tempConfig.setAttribute(PerfPlugin.ATTR_Multiplex, true);
+
+			ArrayList<String> selectedEvents = new ArrayList<String>();
+			selectedEvents.add("cpu-cycles");
+			selectedEvents.add("cache-misses");
+			selectedEvents.add("cpu-clock");
+			tempConfig.setAttribute(PerfPlugin.ATTR_SelectedEvents,	selectedEvents);
+
+			tempConfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+
+		} catch (CoreException e) {
+			fail();
+		}
+
+		String[] recordString = PerfCore.getRecordString(tempConfig);
+		assertNotNull(recordString);
+
+		String[] expectedString = { PerfPlugin.PERF_COMMAND,
+				"record",
+				"-f",
+				"-r",
+				"-v",
+				"-M",
+				"-e",
+				"cpu-cycles",
+				"-e",
+				"cache-misses",
+				"-e",
+				"cpu-clock" };
+		assertTrue(recordString.length == expectedString.length);
+
+		for (int i = 0; i < recordString.length; i++) {
+			assertTrue(recordString[i].equals(expectedString[i]));
+		}
+	}
+
+	public void testReportString(){ILaunchConfigurationWorkingCopy tempConfig = null;
+		try {
+			tempConfig = config.copy("test-config");
+			tempConfig.setAttribute(PerfPlugin.ATTR_Kernel_Location,
+					"/boot/kernel");
+			tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
+		} catch (CoreException e) {
+			fail();
+		}
+
+		String[] reportString = PerfCore.getReportString(tempConfig,
+				"resources/defaultevent-data/perf.data");
+		assertNotNull(reportString);
+
+		String[] expectedString = { PerfPlugin.PERF_COMMAND,
+				"report",
+				"--sort",
+				"comm,dso,sym",
+				"-n",
+				"-t",
+				"" + (char) 1,
+				"--vmlinux",
+				"/boot/kernel",
+				"-m",
+				"-i",
+				"resources/defaultevent-data/perf.data" };
+		assertTrue(reportString.length == expectedString.length);
+
+		for (int i = 0; i < reportString.length; i++) {
+			assertTrue(reportString[i].equals(expectedString[i]));
+		}
+
 	}
 
 	/**
