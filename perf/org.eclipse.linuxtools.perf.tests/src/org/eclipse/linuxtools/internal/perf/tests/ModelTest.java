@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -239,6 +241,99 @@ public class ModelTest extends AbstractTest {
 				assertTrue(eventList.get(key).contains("cpu-cycles"));
 				assertTrue(eventList.get(key).contains("stalled-cycles-frontend"));
 			}
+		}
+	}
+
+	public void testParseAnnotation() {
+		BufferedReader input = null;
+
+		try {
+			input = new BufferedReader(new FileReader(
+					"resources/perf-annotation-data"));
+		} catch (FileNotFoundException e) {
+			fail();
+		}
+
+		// Set up arguments for the annotation parser.
+		IPath workingDir = Path.fromOSString("/working/directory/");
+		PMCommand cmd = new PMCommand("testCommand");
+		PMDso dso = new PMDso("testDso", false);
+		PMFile tmpFile = new PMFile(PerfPlugin.STRINGS_UnfiledSymbols);
+		PMSymbol sym = new PMSymbol("testSym", 0, 0);
+
+		// Set children and respective parents.
+		cmd.addChild(dso);
+		dso.addChild(tmpFile);
+		tmpFile.addChild(sym);
+
+		dso.setParent(cmd);
+		tmpFile.setParent(dso);
+		sym.setParent(tmpFile);
+
+		PerfCore.parseAnnotation(null, input, workingDir, dso, sym);
+
+		// Expected results data.
+		String expectedDsoPath = "/working/directory/fibonacci";
+		String expectedFilePath = "/home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp";
+
+		assertTrue(expectedDsoPath.equals(dso.getPath()));
+		assertTrue(dso.getChildren().length == 2);
+
+		for (TreeParent dsoChild : dso.getChildren()) {
+			String filePath = ((PMFile) dsoChild).getPath();
+
+			if (PerfPlugin.STRINGS_UnfiledSymbols.equals(filePath)) {
+				assertFalse(dsoChild.hasChildren());
+			} else {
+				assertTrue(expectedFilePath.equals(filePath));
+				assertTrue(dsoChild.hasChildren());
+				assertTrue(dsoChild.getChildren().length == 1);
+
+				TreeParent curSym = dsoChild.getChildren()[0];
+				assertTrue(curSym.hasChildren());
+				assertTrue(curSym.getChildren().length == 5);
+
+				float percentCount = 0;
+				for (TreeParent symChild : curSym.getChildren()) {
+					percentCount += symChild.getPercent();
+				}
+
+				assertTrue(Math.ceil(percentCount) == 100.0);
+
+			}
+		}
+	}
+
+	public void testAnnotateString(){
+		ILaunchConfigurationWorkingCopy tempConfig = null;
+		try {
+			tempConfig = config.copy("test-config");
+			tempConfig.setAttribute(PerfPlugin.ATTR_Kernel_Location,
+					"/boot/kernel");
+			tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
+		} catch (CoreException e) {
+			fail();
+		}
+
+		String[] annotateString = PerfCore.getAnnotateString(tempConfig, "dso",
+				"symbol", "resources/defaultevent-data/perf.data", false);
+
+		String[] expectedString = new String[] { PerfPlugin.PERF_COMMAND,
+				"annotate",
+				"-d",
+				"dso",
+				"-s",
+				"symbol",
+				"-l",
+				"-P",
+				"--vmlinux",
+				"/boot/kernel",
+				"-m",
+				"-i",
+				"resources/defaultevent-data/perf.data" };
+
+		for (int i = 0; i < annotateString.length; i++) {
+			assertTrue(annotateString[i].equals(expectedString[i]));
 		}
 	}
 

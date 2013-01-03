@@ -1,0 +1,39 @@
+
+Sorted summary for file ./fibonacci
+----------------------------------------------
+
+   42.59 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:10
+    7.41 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:13
+    7.41 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:15
+    5.56 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:11
+    5.56 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:13
+    5.56 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:15
+    3.70 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:8
+    3.70 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:8
+    3.70 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:8
+    3.70 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:8
+    3.70 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:13
+    1.85 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:10
+    1.85 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:13
+    1.85 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:13
+    1.85 /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:15
+ Percent |	Source code & Disassembly of /home/user/workspace/fibonacci/Debug/fibonacci
+------------------------------------------------
+         :
+         :
+         :
+         :	Disassembly of section .text:
+         :
+         :	00000000004008bc <fib(unsigned long)>:
+         :	using namespace std;
+         :
+         :	long fib(unsigned long n);
+         :	long sqr(unsigned long n);
+         :
+         :	long fib(unsigned long n) {
+ /home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp:8
+    3.70 :	  4008bc:       push   %rbp
+    0.00 :	  4008bd:       mov    %rsp,%rbp
+    3.70 :	  4008c0:       push   %rbx
+    3.70 :	  4008c1:       sub    $0x18,%rsp
+    3.70 :	  4008c5:       mov    %rdi,-0x18(%rbp)
