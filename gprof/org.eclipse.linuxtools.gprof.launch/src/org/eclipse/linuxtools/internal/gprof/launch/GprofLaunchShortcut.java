@@ -11,7 +11,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.gprof.launch;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.gprof.launch.GprofLaunchPlugin;
@@ -22,7 +21,7 @@ public class GprofLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+			ILaunchConfigurationWorkingCopy wc) {
 	}
 
 	/**
