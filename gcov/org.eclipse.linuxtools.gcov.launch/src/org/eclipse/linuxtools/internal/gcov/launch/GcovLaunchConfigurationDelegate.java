@@ -78,6 +78,7 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 			launch = il;
 			this.exePath = exePath;
 		}
+		@Override
 		public void launchesTerminated(ILaunch[] launches) {
 
 			for (ILaunch l : launches) {
@@ -91,6 +92,7 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 					//need to run this in the ui thread otherwise get SWT Exceptions
 					// based on concurrency issues
 					Display.getDefault().syncExec(new Runnable() {
+						@Override
 						public void run() {
 							String s = exePath.toOSString();			
 							CovManager cvrgeMnger = new CovManager(s, getProject());
@@ -113,8 +115,11 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 			}
 
 		}
+		@Override
 		public void launchesAdded(ILaunch[] launches) { /* dont care */}
+		@Override
 		public void launchesChanged(ILaunch[] launches) { /* dont care */ }
+		@Override
 		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
 
 	}
@@ -151,6 +156,6 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 
 	@Override
 	public String generateCommand(ILaunchConfiguration config) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }
