@@ -19,9 +19,9 @@ import java.net.URLConnection;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.internal.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.osgi.util.NLS;
 
@@ -63,7 +63,7 @@ public class FileDownloadJob extends Job {
 			is.close();
 			fos.close();
 		} catch (IOException e) {
-			RPMCorePlugin.getDefault().getLog().log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();

@@ -11,8 +11,10 @@
 package org.eclipse.linuxtools.internal.rpm.core;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * Initialize preferences.
@@ -22,8 +24,7 @@ public class RPMCoreInitializer extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = RPMCorePlugin.getDefault()
-				.getPreferenceStore();
+		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,IRPMConstants.RPM_CORE_ID);
 		String user_name = System.getProperty("user.name"); //$NON-NLS-1$
 		store.setDefault(IRPMConstants.RPM_DISPLAYED_LOG_NAME, ".logfilename_" //$NON-NLS-1$
 				+ user_name);
