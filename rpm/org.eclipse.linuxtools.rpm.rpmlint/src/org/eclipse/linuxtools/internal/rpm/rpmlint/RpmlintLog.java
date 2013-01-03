@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.rpm.rpmlint;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -98,6 +99,6 @@ public class RpmlintLog {
     * @param status The status to log.
     */
    public static void log(IStatus status) {
-	   Activator.getDefault().getLog().log(status);
+	   Platform.getLog(Platform.getBundle(Activator.PLUGIN_ID)).log(status);
    }
 }
