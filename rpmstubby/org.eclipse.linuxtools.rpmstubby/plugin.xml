@@ -10,18 +10,6 @@
 	-->
 
 <plugin>
-
-	<extension point="org.eclipse.ui.preferencePages">
-		<page category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-			class="org.eclipse.linuxtools.internal.rpmstubby.preferences.StubbyPreferencePage"
-			id="org.eclipse.linuxtools.rpmstubby.preferences.stubbyPreferencePage"
-			name="%menu.label" />
-	</extension>
-	<extension point="org.eclipse.core.runtime.preferences">
-		<initializer
-			class="org.eclipse.linuxtools.internal.rpmstubby.preferences.PreferenceInitializer">
-		</initializer>
-	</extension>
  <extension
        point="org.eclipse.ui.commands">
         <category
