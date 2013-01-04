@@ -21,6 +21,12 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 
 public class LocalFileProxy implements IRemoteFileProxy {
 
+	URI workingDirURI; 
+
+	public LocalFileProxy(URI uri) {
+		workingDirURI=uri;
+	}
+
 	public URI toURI(IPath path) {
 		return path.toFile().toURI();
 	}
@@ -45,6 +51,10 @@ public class LocalFileProxy implements IRemoteFileProxy {
 	public IFileStore getResource(String path) {
 		// TODO Auto-generated method stub
 		return EFS.getLocalFileSystem().getStore(new Path(path));
+	}
+
+	public URI getWorkingDir() {
+		return workingDirURI;
 	}
 
 }

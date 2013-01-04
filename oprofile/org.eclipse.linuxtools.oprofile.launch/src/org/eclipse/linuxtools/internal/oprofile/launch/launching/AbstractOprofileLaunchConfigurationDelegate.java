@@ -37,6 +37,7 @@ import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCou
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.ui.PartInitException;
@@ -78,9 +79,8 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		 */
 		//set up and launch the local c/c++ program
 		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(Oprofile.OprofileProject.getProject());
-
-		URI workingDirURI = Oprofile.OprofileProject.getProject().getLocationURI();
-
+		IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		URI workingDirURI = proxy.getWorkingDir();
 		IPath workingDirPath = new Path(workingDirURI.getPath());
 
 		String arguments[] = getProgramArgumentsArray( config );

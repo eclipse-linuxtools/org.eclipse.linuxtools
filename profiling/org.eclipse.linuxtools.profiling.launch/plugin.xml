@@ -4,6 +4,7 @@
    <extension-point id="RemoteProxyManager" name="Remote Proxy Manager" schema="schema/RemoteProxyManager.exsd"/>
    <extension-point id="launchProvider" name="Launch Provider" schema="schema/org.eclipse.linuxtools.profiling.launch.provider.exsd"/>
    <extension-point id="RemoteResourceSelectorProxy" name="Remote Resource Selector Proxy" schema="schema/RemoteResourceSelectorProxy.exsd"/>
+   <extension-point id="RemoteProxyNatureMapping" name="RemoteProxyNatureMapping" schema="schema/RemoteProxyNatureMapping.exsd"/>
 
    <extension
          point="org.eclipse.ui.preferencePages">

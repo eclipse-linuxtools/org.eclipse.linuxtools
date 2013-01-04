@@ -30,9 +30,10 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 	private static final String LOCALSCHEME = "file"; //$NON-NLS-1$
-	
+
 	private static RemoteProxyManager manager;
 	private LocalFileProxy lfp;
+	private RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
 	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<String, IRemoteProxyManager>();
 	
 	private RemoteProxyManager() {
@@ -45,9 +46,9 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return manager;
 	}
 	
-	LocalFileProxy getLocalFileProxy() {
+	LocalFileProxy getLocalFileProxy(URI uri) {
 		if (lfp == null)
-			lfp = new LocalFileProxy();
+			lfp = new LocalFileProxy(uri);
 		return lfp;
 	}
 	
@@ -83,12 +84,18 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 				throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
 							IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
 		}
-		return getLocalFileProxy();
+		return getLocalFileProxy(uri);
 	}
 
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
 		if (project == null) {
-			return getLocalFileProxy();
+			return getLocalFileProxy(null);
+		}
+		String scheme = mapping.getSchemeFromNature(project);
+		if (scheme!=null) {
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			if (manager != null)
+				return manager.getFileProxy(project);
 		}
 		URI projectURI = project.getLocationURI();
 		return getFileProxy(projectURI);
@@ -108,6 +115,11 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		if (project == null){
 			return new LocalLauncher();
 		}
+		String scheme = mapping.getSchemeFromNature(project);
+		if (scheme!=null) {
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			return manager.getLauncher(project);
+		}
 		URI projectURI = project.getLocationURI();
 		return getLauncher(projectURI);
 	}
@@ -123,6 +135,11 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	}
 
 	public String getOS(IProject project) throws CoreException {
+		String scheme = mapping.getSchemeFromNature(project);
+		if (scheme!=null) {
+			IRemoteProxyManager manager = getRemoteManager(scheme);
+			return manager.getOS(project);
+		}
 		URI projectURI = project.getLocationURI();
 		return getOS(projectURI);
 	}

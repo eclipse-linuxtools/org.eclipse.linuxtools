@@ -18,15 +18,18 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.rdt.proxy.Activator;
+import org.eclipse.linuxtools.rdt.proxy.RDTProxyManager;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteFileManager;
 import org.eclipse.ptp.remote.core.IRemoteProcess;
 import org.eclipse.ptp.remote.core.IRemoteProcessBuilder;
+import org.eclipse.ptp.remote.core.IRemoteResource;
 import org.eclipse.ptp.remote.core.IRemoteServices;
 import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
 import org.eclipse.ptp.remote.core.RemoteProcessAdapter;
@@ -63,7 +66,16 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	public RDTCommandLauncher(IProject project) {
 		fProcess = null;
 		fShowCommand = false;
-		uri = project.getLocationURI();
+		try {
+			if (project.hasNature(RDTProxyManager.SYNC_NATURE)) {
+				IRemoteResource remoteRes = (IRemoteResource)project.getAdapter(IRemoteResource.class);
+				uri = remoteRes.getActiveLocationURI();
+			} else{
+				uri = project.getLocationURI();
+			}
+		} catch (CoreException e) {
+			uri = project.getLocationURI();
+		}
 		lineSeparator = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

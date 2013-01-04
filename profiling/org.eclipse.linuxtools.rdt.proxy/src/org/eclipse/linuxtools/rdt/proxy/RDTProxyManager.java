@@ -25,6 +25,8 @@ import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
 
 public class RDTProxyManager implements IRemoteProxyManager {
 
+	public final static String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
+	
 	@Override
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		return new RDTFileProxy(uri);
