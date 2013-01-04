@@ -93,11 +93,7 @@ public class RPMProjectCreator {
 				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
 					createDirsRemote(monitor, project, parsedIPathString);
 				}
-			} else {
-				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
-					createDirs(monitor, project);
-				}
-			}
+			} 
 			latest = project;
 
 		} catch (CoreException e) {
@@ -112,21 +108,6 @@ public class RPMProjectCreator {
 	 */
 	public IProject getLatestProject() {
 		return latest;
-	}
-
-	private void createDirs(IProgressMonitor monitor, IProject project)
-			throws CoreException {
-
-		project.getFolder(IRPMConstants.SPECS_FOLDER).create(true, true,
-				monitor);
-		project.getFolder(IRPMConstants.SOURCES_FOLDER).create(true, true,
-				monitor);
-		project.getFolder(IRPMConstants.BUILD_FOLDER).create(true, true,
-				monitor);
-		project.getFolder(IRPMConstants.RPMS_FOLDER)
-				.create(true, true, monitor);
-		project.getFolder(IRPMConstants.SRPMS_FOLDER).create(true, true,
-				monitor);
 	}
 
 	private void createDirsRemote(IProgressMonitor monitor, IProject project,
