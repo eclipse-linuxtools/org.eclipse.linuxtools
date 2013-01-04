@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.internal.console.ConsoleView;
+import org.eclipse.ui.console.IConsoleView;
 
 
 
@@ -33,7 +33,6 @@ import org.eclipse.ui.internal.console.ConsoleView;
  * action that makes use of the Console.
  * @author Ryan Morse
  */
-@SuppressWarnings("restriction")
 public abstract class ConsoleAction extends Action implements IWorkbenchWindowActionDelegate, IViewActionDelegate {
 	public void init(IWorkbenchWindow window) {}
 	
@@ -53,7 +52,7 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	 */
 	protected ScriptConsole getActive() {
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
-		IConsole activeConsole = ((ConsoleView)ivp).getConsole();
+		IConsole activeConsole = ((IConsoleView)ivp).getConsole();
 		if (activeConsole instanceof ScriptConsole){
 			return (ScriptConsole)activeConsole;
 		}else{
@@ -74,9 +73,9 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	 */
 	private void buildEnablementChecks() {
 		IWorkbenchPart wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart();
-		if (wbp instanceof ConsoleView){
+		if (wbp instanceof IConsoleView){
 			IViewPart ivp = (IViewPart) wbp;
-			setEnablement(isRunning((ConsoleView)ivp));
+			setEnablement(isRunning((IConsoleView)ivp));
 			ivp.addPropertyListener(listener);
 		}
 	}
@@ -84,7 +83,7 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	/**
 	 * Checks to see if the active console is still running
 	 */
-	private boolean isRunning(ConsoleView cv) {
+	private boolean isRunning(IConsoleView cv) {
 		if (cv.getConsole() instanceof ScriptConsole){
 			ScriptConsole console = (ScriptConsole)cv.getConsole();
 			return (console != null && console.isRunning());
@@ -115,8 +114,8 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	private IAction act;
 	private IPropertyListener listener = new IPropertyListener() {
 		public void propertyChanged(Object o, int i) {
-			if(o instanceof ConsoleView)
-				setEnablement(isRunning((ConsoleView)o));
+			if(o instanceof IConsoleView)
+				setEnablement(isRunning((IConsoleView)o));
 		}
 	};
 }
