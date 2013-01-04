@@ -28,9 +28,7 @@ public class IDESessionSettings {
 	 * Use {@link IDESessionSettings#setActiveSTPEditor(STPEditor)} and
 	 * {@link IDESessionSettings#getActiveSTPEditor()} 
 	 */
-	// FIXME: This should be changed to private in the next release.
-	@Deprecated
-	public static STPEditor activeSTPEditor = null;
+	private static STPEditor activeSTPEditor = null;
 	public static String password = null;
 	
 	/**
