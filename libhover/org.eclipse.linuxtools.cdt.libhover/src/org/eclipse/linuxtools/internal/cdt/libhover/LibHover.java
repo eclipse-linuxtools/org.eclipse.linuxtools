@@ -89,13 +89,13 @@ public class LibHover implements ICHelpProvider {
 	private static ConcurrentHashMap<ICHelpBook, LibHoverLibrary> libraries = new ConcurrentHashMap<ICHelpBook, LibHoverLibrary>();
 	
     static final String  constructTypes[] = {
-    	"dtype", // $NON-NLS-1$
-    	"enum",  // $NON-NLS-1$
-    	"function", // $NON-NLS-1$
-    	"groupsynopsis", // $NON-NLS-1$
-    	"struct", // $NON-NLS-1$
-    	"type",  // $NON-NLS-1$
-    	"union"  // $NON-NLS-1$
+    	"dtype", //$NON-NLS-1$
+    	"enum",  //$NON-NLS-1$
+    	"function", //$NON-NLS-1$
+    	"groupsynopsis", //$NON-NLS-1$
+    	"struct", //$NON-NLS-1$
+    	"type",  //$NON-NLS-1$
+    	"union"  //$NON-NLS-1$
     };
     
     static final int dtypeIndex         = 0;
@@ -206,11 +206,11 @@ public class LibHover implements ICHelpProvider {
 	}
 
 	private static String getTransformedName(String name) {
-		return name.replaceAll("\\s", "_");
+		return name.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private static String getCleanName(String name) {
-		return name.replaceAll("_", " ");
+		return name.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private static void getCachedLibraries(IFileStore dir, String type) {
@@ -294,13 +294,13 @@ public class LibHover implements ICHelpProvider {
             public String getPrototypeString(boolean namefirst) {
                 if (true == namefirst) {
                 	if (prototypeHasBrackets())
-                		return Name + " " + Prototype + " " + ReturnType; // $NON-NLS-1$ // $NON-NLS-2$
-                    return Name + " (" + Prototype + ") " + ReturnType; // $NON-NLS-1$ // $NON-NLS-2$
+                		return Name + " " + Prototype + " " + ReturnType; //$NON-NLS-1$ //$NON-NLS-2$
+                    return Name + " (" + Prototype + ") " + ReturnType; //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else {
                 	if (prototypeHasBrackets())
-                		return ReturnType + " " + Name + " " + Prototype; // $NON-NLS-1$ // $NON-NLS-2$
-                    return ReturnType + " " + Name + " (" + Prototype + ")"; // $NON-NLS-1$ // $NON-NLS-2$ // $NON-NLS-3$
+                		return ReturnType + " " + Name + " " + Prototype; //$NON-NLS-1$ //$NON-NLS-2$
+                    return ReturnType + " " + Name + " (" + Prototype + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 }
             }
         }
@@ -332,7 +332,7 @@ public class LibHover implements ICHelpProvider {
 		private IASTName result = null;
 		public EnclosingASTNameJob (ITranslationUnit t, 
 				int toffset, int tlength) {
-			super("EnclosingASTNameJob", t); // $NON-NLS-1$
+			super("EnclosingASTNameJob", t); //$NON-NLS-1$
 			this.toffset = toffset;
 			this.tlength = tlength;
 		}
@@ -352,7 +352,7 @@ public class LibHover implements ICHelpProvider {
 		private IBinding binding;
 		private IASTName[] decls = null;
 		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
-			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
+			super("ASTDeclarationFinderJob", t); //$NON-NLS-1$
 			this.binding = binding;
 		}
     	@Override
@@ -444,7 +444,7 @@ public class LibHover implements ICHelpProvider {
 			String[] qualified = c.getQualifiedName();
 			className = qualified[0];
 			for (int k = 1; k < qualified.length; ++k) {
-				className += "::" + qualified[k];
+				className += "::" + qualified[k]; //$NON-NLS-1$
 			}
 
 			// Check if we have an instance of a template class.	
@@ -455,8 +455,8 @@ public class LibHover implements ICHelpProvider {
 				ICPPTemplateParameterMap tiMap = ti.getTemplateParameterMap();
 				ICPPTemplateDefinition td = ti.getTemplateDefinition();
 				ICPPTemplateParameter[] templateArgs = td.getTemplateParameters();
-				className += "<";
-				String separator = "";
+				className += "<"; //$NON-NLS-1$
+				String separator = ""; //$NON-NLS-1$
 				for (int x = 0; x < templateArgs.length; ++x) {
 					ICPPTemplateParameter tp = templateArgs[x];
 					ICPPTemplateArgument ta = tiMap.getArgument(tp);
@@ -475,10 +475,10 @@ public class LibHover implements ICHelpProvider {
 							className += separator + getClassName((ICPPClassType)type);
 						else
 							className += separator + type.toString();
-						separator = ",";
+						separator = ","; //$NON-NLS-1$
 					}
 				}
-				className += ">";
+				className += ">"; //$NON-NLS-1$
 			}
 		} catch(DOMException e) {
 			return null;
@@ -547,7 +547,7 @@ public class LibHover implements ICHelpProvider {
 				f.Prototype = m.getPrototype();
 				f.Summary = m.getDescription();
 //				String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
-				f.Name = className + "::" + memberName; // $NON-NLS-1$
+				f.Name = className + "::" + memberName; //$NON-NLS-1$
 				String[] templateParms = info.getTemplateParms();
 				for (int i = 0; i < templateTypes.size(); ++i) {
 					f.ReturnType = f.ReturnType.replaceAll(templateParms[i], templateTypes.get(i));
@@ -555,16 +555,16 @@ public class LibHover implements ICHelpProvider {
 					f.Name = f.Name.replaceAll(templateParms[i], templateTypes.get(i));
 				}
 				if (f.ReturnType.indexOf('<') >= 0) {
-					f.ReturnType = f.ReturnType.replaceAll("<", "&lt;");
-					f.ReturnType = f.ReturnType.replaceAll(">", "&gt;");
+					f.ReturnType = f.ReturnType.replaceAll("<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+					f.ReturnType = f.ReturnType.replaceAll(">", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
 				}
 				if (f.Prototype.indexOf('<') >= 0) {
-					f.Prototype = f.Prototype.replaceAll("<", "&lt;");
-					f.Prototype = f.Prototype.replaceAll(">", "&gt;");
+					f.Prototype = f.Prototype.replaceAll("<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+					f.Prototype = f.Prototype.replaceAll(">", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
 				}
 				if (f.Name.indexOf('<') >= 0) {
-					f.Name = f.Name.replaceAll("<", "&lt;");
-					f.Name = f.Name.replaceAll(">", "&gt;");
+					f.Name = f.Name.replaceAll("<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
+					f.Name = f.Name.replaceAll(">", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				f.setPrototypeHasBrackets(true);
 				f.setIncludeName(info.getInclude());
@@ -578,7 +578,7 @@ public class LibHover implements ICHelpProvider {
 	private boolean isParmMatch(MemberInfo m, String[] args, ArrayList<String> templateTypes, ClassInfo info) {
 		String[] memberParms = m.getParamTypes();
 		String className = info.getClassName();
-		int index = className.lastIndexOf("::");
+		int index = className.lastIndexOf("::"); //$NON-NLS-1$
 		String unqualifiedName = className.substring(index+2);
 		for (int i = 0; i < memberParms.length; ++i) {
 			String[] templateParms = info.getTemplateParms();
@@ -590,15 +590,15 @@ public class LibHover implements ICHelpProvider {
 			// is coming back from the indexer which will be fully-qualified and have template
 			// parameters specified.
 			if (memberParms[i].contains(unqualifiedName) && !memberParms[i].contains(className)) {
-				String classTemplate = "";
+				String classTemplate = ""; //$NON-NLS-1$
 				if (templateTypes.size() > 0) {
-					classTemplate = "<";
-					String separator = "";
+					classTemplate = "<"; //$NON-NLS-1$
+					String separator = ""; //$NON-NLS-1$
 					for (int j = 0; j < templateTypes.size(); ++j) {
 						classTemplate += separator + templateTypes.get(j);
-						separator = ",";
+						separator = ","; //$NON-NLS-1$
 					}
-					classTemplate += ">";
+					classTemplate += ">"; //$NON-NLS-1$
 				}
 				memberParms[i] = memberParms[i].replaceAll(unqualifiedName, className + classTemplate);
 			}
@@ -611,9 +611,9 @@ public class LibHover implements ICHelpProvider {
 		String[] result = new String[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
 			String param = parameterTypes[i].toString();
-			param = param.replaceAll("\\{.*\\}", "");
+			param = param.replaceAll("\\{.*\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			param = param.trim();
-			int index = param.indexOf("#");
+			int index = param.indexOf("#"); //$NON-NLS-1$
 			while (index >= 0) {
 				// We assume no class has more than 9 template parms.
 				int digit = param.charAt(index + 1) - '0';
@@ -622,7 +622,7 @@ public class LibHover implements ICHelpProvider {
 					param = param.replaceFirst(param.substring(index, index + 2), templateTypes.get(digit));
 				else
 					param = param.replaceFirst(param.substring(index, index + 2), templateParms[digit]);
-				index = param.indexOf("#");
+				index = param.indexOf("#"); //$NON-NLS-1$
 			}
 			result[i] = param;
 		}

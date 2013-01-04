@@ -19,9 +19,9 @@ public class HelpBook implements ICHelpBook {
 	
 	public HelpBook (String title, String typeName) {
 		this.title = title;
-		if (typeName.equals("C")) // $NON-NLS-1$
+		if (typeName.equals("C")) //$NON-NLS-1$
 		    type = HELP_TYPE_C;
-		else if (typeName.equals("C++")) // $NON-NLS-1$
+		else if (typeName.equals("C++")) //$NON-NLS-1$
 			type = HELP_TYPE_CPP;
 		else
 			type = HELP_TYPE_ASM;

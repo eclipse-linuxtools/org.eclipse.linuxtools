@@ -188,7 +188,7 @@ public class LibHoverLibrary {
 	 * @return ClassInfo or null if no class info can be found
 	 */
 	public ClassInfo getClassInfo(String className, ArrayList<String> templateTypes) {
-		String typedefName = className.replaceAll("<.*>", "<>"); // $NON-NLS-1$ // $NON-NLS-2$
+		String typedefName = className.replaceAll("<.*>", "<>"); //$NON-NLS-1$ //$NON-NLS-2$
 		TypedefInfo typedef = getHoverInfo().typedefs.get(typedefName);
 		if (typedef != null) {
 			className = typedef.getTransformedType(className);  // Reset class name to typedef transformation

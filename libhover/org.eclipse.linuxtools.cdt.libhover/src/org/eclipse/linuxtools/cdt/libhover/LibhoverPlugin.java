@@ -15,7 +15,6 @@ import org.eclipse.core.resources.ISaveParticipant;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHover;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverLoadJob;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverMessages;
@@ -29,7 +28,7 @@ import org.osgi.framework.BundleContext;
 public class LibhoverPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.libhover";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.libhover"; //$NON-NLS-1$
 
 	private static final String LOAD_JOB_TXT = "LibHover.LoadJob.txt"; //$NON-NLS-1$
 	
@@ -57,7 +56,7 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 		ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID,
 				new ISaveParticipant() {
 					public void saving(ISaveContext saveContext) {
-						LibhoverPlugin.getDefault().save(saveContext);
+						save(saveContext);
 					}				
 					public void rollback(ISaveContext saveContext) {}
 					public void prepareToSave(ISaveContext saveContext) {}
@@ -93,21 +92,4 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 	
-	/*
-	 * Returns the id of the plugin
-	 */
-	public static String getID() {
-		return PLUGIN_ID;
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
 }
