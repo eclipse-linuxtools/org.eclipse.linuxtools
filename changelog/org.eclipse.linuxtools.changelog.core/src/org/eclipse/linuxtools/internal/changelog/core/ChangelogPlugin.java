@@ -23,7 +23,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ChangelogPlugin extends AbstractUIPlugin {
 	
-	public final static String PLUGIN_ID = "org.eclipse.linuxtools.changelog.core"; // $NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.changelog.core"; // $NON-NLS-1$
 	
 	// The shared instance.
 	private static ChangelogPlugin plugin;

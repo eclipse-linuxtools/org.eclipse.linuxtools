@@ -39,7 +39,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	
 	final String line_sep = System.getProperty("line.separator"); //$NON-NLS-1$
 	
-	final String TAB = "\t"; // $NON-NLS-1$
+	final static String TAB = "\t"; // $NON-NLS-1$
 	
 	
 	public String formatDateLine(String authorName, String authorEmail) {
@@ -106,12 +106,10 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 						// Check for the case where the default content (e.g. new or removed file)
 						// is being caught again because user has prepared the ChangeLog more than once.
 						// In such a case, just return.  We don't need to repeat ourselves.
-						if (defaultContent.length() > 0) {
-							if (entry.lastIndexOf(defaultContent) > 0)
+						if (defaultContent.length() > 0 && entry.lastIndexOf(defaultContent) > 0) {
 								return ""; // $NON-NLS-1$
 						}
-						int nextFunctLoc = functLogEntry + fileDetail.length()
-						+ 2;
+						int nextFunctLoc = functLogEntry + fileDetail.length() + 2;
 						String nextFunc = ""; // $NON-NLS-1$
 						try {
 							nextFunc = changelog_doc.get(nextFunctLoc,

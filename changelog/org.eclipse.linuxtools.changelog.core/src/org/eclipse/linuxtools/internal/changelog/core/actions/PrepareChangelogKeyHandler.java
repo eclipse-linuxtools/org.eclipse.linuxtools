@@ -83,7 +83,7 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
 						if (sp != null) {
 							s = sp.getSelection();
 						}
-						if (s != null && s instanceof IStructuredSelection) {
+						if (s instanceof IStructuredSelection) {
 							IStructuredSelection ss = (IStructuredSelection)s;
 							Object element = ss.getFirstElement();
 							IResource r = null;

@@ -117,7 +117,7 @@ public class JavaParser implements IParserChangeLogContrib {
 						+ currentElementName;
 			} else {
 				// cut root class name
-				int rootClassPos = currentElementName.indexOf(".");
+				int rootClassPos = currentElementName.indexOf('.');
 				if (rootClassPos >= 0)
 					currentElementName = currentElementName
 							.substring(rootClassPos + 1);

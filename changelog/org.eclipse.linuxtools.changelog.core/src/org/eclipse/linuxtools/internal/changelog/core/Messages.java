@@ -16,10 +16,8 @@ import java.util.ResourceBundle;
 /**
  * @author pmuldoon
  *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Messages {
+public final class Messages {
 
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.changelog.core.strings"; //$NON-NLS-1$
 

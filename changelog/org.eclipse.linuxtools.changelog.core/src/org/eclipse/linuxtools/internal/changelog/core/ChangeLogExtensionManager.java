@@ -32,7 +32,7 @@ import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
  * @author klee
  * 
  */
-public class ChangeLogExtensionManager {
+public final class ChangeLogExtensionManager {
 
 	
 	private static final ChangeLogExtensionManager exm = new ChangeLogExtensionManager();

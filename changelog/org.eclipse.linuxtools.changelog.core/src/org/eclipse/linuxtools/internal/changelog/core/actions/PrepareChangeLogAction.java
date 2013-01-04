@@ -324,16 +324,20 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				// Check the type of entry and sort into lists.  Do not add an entry
 				// for ChangeLog files.
 				if (!(p.getPath().lastSegment().equals("ChangeLog"))) { // $NON-NLS-1$
-					if (kind == SyncInfo.ADDITION) {
+					switch (kind) {
+					case SyncInfo.ADDITION:
 						p.setNewfile(true);
 						newList.add(p);
-					} else if (kind == SyncInfo.DELETION) {
+						break;
+					case SyncInfo.DELETION:
 						p.setRemovedFile(true);
 						removeList.add(p);
-					} else if (kind == SyncInfo.CHANGE) {
+						break;
+					case SyncInfo.CHANGE:
 						if (info.getLocal().getType() == IResource.FILE) {
 							changeList.add(p);
 						}
+						break;
 					}
 				} else {
 					this.changeLogModified = true;

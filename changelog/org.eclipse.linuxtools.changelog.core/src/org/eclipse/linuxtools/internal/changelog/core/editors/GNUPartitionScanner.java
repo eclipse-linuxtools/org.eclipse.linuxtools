@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
@@ -25,9 +24,9 @@ public class GNUPartitionScanner extends RuleBasedPartitionScanner {
 	// a change occurs within the area.  In this case, we are only interested in
 	// email entries which are surrounded by < and > and source entries which
 	// have one or more file names which may extend across lines.
-	public final static String CHANGELOG_EMAIL = "changelog_email"; //$NON-NLS-1$
-	public final static String CHANGELOG_SRC_ENTRY = "changelog_src_entry"; //$NON-NLS-1$
-	public final static String[] CHANGELOG_PARTITION_TYPES= 
+	public static final String CHANGELOG_EMAIL = "changelog_email"; //$NON-NLS-1$
+	public static final String CHANGELOG_SRC_ENTRY = "changelog_src_entry"; //$NON-NLS-1$
+	public static final String[] CHANGELOG_PARTITION_TYPES= 
 		new String[] { CHANGELOG_EMAIL, CHANGELOG_SRC_ENTRY };
 	
 	/**
@@ -48,10 +47,4 @@ public class GNUPartitionScanner extends RuleBasedPartitionScanner {
 		setPredicateRules(result);
 	}
 	
-	@Override
-	public IToken nextToken() {
-		return super.nextToken();
-	}
-
-
 }

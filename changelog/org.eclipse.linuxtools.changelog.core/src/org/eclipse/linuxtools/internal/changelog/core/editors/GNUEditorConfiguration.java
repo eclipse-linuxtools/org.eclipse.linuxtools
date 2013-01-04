@@ -38,7 +38,7 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 public class GNUEditorConfiguration extends TextSourceViewerConfiguration implements
 		IEditorChangeLogContrib, IEditorChangeLogContrib2 {
 
-	public final static String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
+	public static final String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
 
 	private GNUElementScanner scanner;
 

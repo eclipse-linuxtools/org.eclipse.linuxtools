@@ -20,11 +20,11 @@ import org.eclipse.jface.text.formatter.IFormattingStrategy;
 
 public class ChangeLogFormattingStrategy implements IFormattingStrategy {
 
-	private final String NEW_LINE_CHAR = "\n";
+	private static final String NEW_LINE_CHAR = "\n";
 
-	private final String WHITE_SPACE_CHAR = " ";
+	private static final String WHITE_SPACE_CHAR = " ";
 
-	private final String TAB_SPACE_CHAR = "\t";
+	private static final String TAB_SPACE_CHAR = "\t";
 
 	public String format(String content, boolean isLineStart,
 			String indentation, int[] positions) {
