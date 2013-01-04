@@ -64,8 +64,8 @@ public final class RecentFileLog {
 		String[] paths = new String[RecentFileMenuManager.MAX_RECENT_FILES];
 
 		for(int i=0; i<RecentFileMenuManager.MAX_RECENT_FILES; i++) {
-			files[i] = getString("file" + i);
-			paths[i] = getString("path" + i);
+			files[i] = getString("file" + i); //$NON-NLS-1$
+			paths[i] = getString("path" + i); //$NON-NLS-1$
 		}
 
 		if(!file.getAbsolutePath().equals(paths[0])) {
@@ -105,14 +105,14 @@ public final class RecentFileLog {
 		
 		for(int i=0; i<RecentFileMenuManager.MAX_RECENT_FILES; i++) {
 			if(null != files[i] && null != paths[i]) {
-				setString("file" + i, files[i]);
-				setString("path" + i, paths[i]);
+				setString("file" + i, files[i]); //$NON-NLS-1$
+				setString("path" + i, paths[i]); //$NON-NLS-1$
 				RecentFileMenuManager.update();
 			}
 		}
 		return true;
 	}
 
-	private static final String fileName = EditorPlugin.getDefault().getStateLocation().append("recentFiles.log").toOSString();
+	private static final String fileName = EditorPlugin.getDefault().getStateLocation().append("recentFiles.log").toOSString(); //$NON-NLS-1$
 	private static final RecentFileLog log = new RecentFileLog();
 }

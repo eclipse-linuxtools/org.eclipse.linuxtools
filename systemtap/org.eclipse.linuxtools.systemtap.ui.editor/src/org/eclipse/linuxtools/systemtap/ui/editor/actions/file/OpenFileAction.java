@@ -16,7 +16,6 @@ import java.io.File;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.RecentFileLog;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.actions.EditorAction;
@@ -75,7 +74,7 @@ public class OpenFileAction extends EditorAction {
 	 */
 	protected File queryFile() {
 		FileDialog dialog= new FileDialog(window.getShell(), SWT.OPEN);
-		dialog.setText(Localization.getString("OpenFileAction.OpenFile"));
+		dialog.setText(Localization.getString("OpenFileAction.OpenFile")); //$NON-NLS-1$
 		String path= dialog.open();
 		if (path != null && path.length() > 0)
 			return new File(path);
@@ -92,8 +91,8 @@ public class OpenFileAction extends EditorAction {
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
 		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
 		for (IEditorDescriptor d : descriptors)
-			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") ||
-				d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) {
+			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") || //$NON-NLS-1$
+				d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) { //$NON-NLS-1$
 				return d.getId();
 			}
 		return SimpleEditor.ID;

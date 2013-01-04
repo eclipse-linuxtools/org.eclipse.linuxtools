@@ -37,7 +37,7 @@ public class SimpleEditor extends TextEditor {
 	public SimpleEditor() {
 		super();
 		// make sure we inherit all the text editing commands (delete line etc).
-		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope" });
+		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope" }); //$NON-NLS-1$
 		internal_init();
 	}
 
@@ -174,7 +174,7 @@ public class SimpleEditor extends TextEditor {
 	
 	private File queryFile() {
 		FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-		dialog.setText("New File");
+		dialog.setText("New File"); //$NON-NLS-1$
 		String path= dialog.open();
 		if (path != null && path.length() > 0)
 			return new File(path);
@@ -190,5 +190,5 @@ public class SimpleEditor extends TextEditor {
 		return true;
 	}
 	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"; //$NON-NLS-1$
 }

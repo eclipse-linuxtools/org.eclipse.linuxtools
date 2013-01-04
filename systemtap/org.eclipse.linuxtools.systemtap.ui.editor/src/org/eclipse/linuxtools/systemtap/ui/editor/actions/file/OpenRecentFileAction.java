@@ -30,15 +30,15 @@ public class OpenRecentFileAction extends OpenFileAction {
 	protected File queryFile() {
 		int index = Integer.parseInt(this.getText().substring(0, 1));
 		
-		String path = RecentFileLog.getString("path" + (index-1));
+		String path = RecentFileLog.getString("path" + (index-1)); //$NON-NLS-1$
 		if (path != null && path.length() > 0)
 			return new File(path);
 		return null;
 	}
 
 	public void update() {
-		String name = RecentFileLog.getString("file" + index);
-		this.setText(index+1 + " " + (name != null ? name : "NA"));
+		String name = RecentFileLog.getString("file" + index); //$NON-NLS-1$
+		this.setText(index+1 + " " + (name != null ? name : "NA")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private int index;

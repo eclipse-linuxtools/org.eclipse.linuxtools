@@ -23,7 +23,7 @@ public class RecentFileMenuManager {
 		
 		for(int i=0; i<MAX_RECENT_FILES; i++)
 			bars.setGlobalActionHandler(
-					"org.eclipse.linuxtools.systemtap.ui.editor.actions.file.openRecentFile" + i,
+					"org.eclipse.linuxtools.systemtap.ui.editor.actions.file.openRecentFile" + i, //$NON-NLS-1$
 					fileActions[i]);
 		bars.updateActionBars();
 	}
