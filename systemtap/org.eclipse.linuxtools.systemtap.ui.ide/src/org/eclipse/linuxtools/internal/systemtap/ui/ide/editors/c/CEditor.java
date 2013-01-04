@@ -32,8 +32,8 @@ import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -88,12 +88,13 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 * @see org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command
 	 * @see org.eclipse.swt.events.MouseListener
 	 */
-	private class RulerDoubleClickHandler implements MouseListener
+	private class RulerDoubleClickHandler extends MouseAdapter
 	{
 		/**
 		 * The doubleclick event handler method.
 		 * @param	e	The <code>MouseEvent</code> that represents this doubleclick event.
 		 */
+		@Override
 		public void mouseDoubleClick(MouseEvent e) 
 		{
 			LogManager.logDebug("Start mouseDoubleClick: e-" + e, this); //$NON-NLS-1$
@@ -150,7 +151,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 					}
 				}
 			} catch (BadLocationException excp) {
-				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this);
+				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this); //$NON-NLS-1$
 			}
 			if(die) {
 				LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
@@ -195,11 +196,6 @@ public class CEditor extends AbstractDecoratedTextEditor {
 			}
 			getSite().getShell().setCursor(null);	//Return the cursor to normal
 			LogManager.logDebug("End mouseDoubleClick:", this); //$NON-NLS-1$
-		}
-
-		public void mouseDown(MouseEvent e) {
-		}
-		public void mouseUp(MouseEvent e) {
 		}
 	}
 
