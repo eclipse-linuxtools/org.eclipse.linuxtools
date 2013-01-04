@@ -213,8 +213,8 @@ public class ExportScriptAction extends RunScriptAction {
 			return;
 
 		File f;
-		for(int i=0; i<files.length; i++) {
-			f = new File(files[i]);
+		for(String fileName: files) {
+			f = new File(fileName);
 			if(f.exists())
 				f.delete();
 		}
@@ -241,11 +241,4 @@ public class ExportScriptAction extends RunScriptAction {
 		} catch(WorkbenchException we) {}
 	}
 
-	/**
-	 * Removes all internal references to objects.  No other method should be called after this.
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
 }
