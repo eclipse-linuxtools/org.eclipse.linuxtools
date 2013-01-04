@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
 public class GraphingPreferenceConstants {
 
 	//graphing
-	public static final String P_GRAPH_UPDATE_DELAY = "GraphUpdateDelay";
+	public static final String P_GRAPH_UPDATE_DELAY = "GraphUpdateDelay"; //$NON-NLS-1$
 	
 
 }

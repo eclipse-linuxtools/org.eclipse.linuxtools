@@ -25,7 +25,7 @@ import org.eclipse.ui.IPerspectiveFactory;
  * @author Ryan Morse
  */
 public class GraphingPerspective implements IPerspectiveFactory {
-	public static String ID = "org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective";
+	public static String ID = "org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"; //$NON-NLS-1$
 
 	public void createInitialLayout(IPageLayout layout) {
 		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this); //$NON-NLS-1$
