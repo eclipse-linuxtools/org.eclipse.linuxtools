@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 
@@ -74,7 +75,7 @@ public class ErrorTableDisplay {
 	 * @param row The pre-divied sections of the error message.
 	 */
 	public void addRow(final String[] row) {
-		addRow(row, ConsoleLogPlugin.getImageDescriptor("icons/views/error_st_obj.gif").createImage()); //$NON-NLS-1$
+		addRow(row, AbstractUIPlugin.imageDescriptorFromPlugin(ConsoleLogPlugin.PLUGIN_ID, "icons/views/error_st_obj.gif").createImage()); //$NON-NLS-1$
 	}
 
 	/**
