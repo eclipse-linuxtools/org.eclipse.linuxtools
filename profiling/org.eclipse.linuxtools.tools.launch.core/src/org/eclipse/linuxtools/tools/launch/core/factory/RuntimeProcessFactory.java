@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.tools.launch.core.factory;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -56,53 +55,9 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		return cmdarray;
 	}
 
-	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#fillPathCommand(String[], IProject)} instead.
-	 */
-	@Deprecated
-	private String[] fillPathCommand(String[] cmdarray, String[] envp) throws IOException {
-		cmdarray[0] = whichCommand(cmdarray[0], envp);
-		return cmdarray;
-	}
-	
-	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#fillPathSudoCommand(String[], IProject)} instead.
-	 */
-	@Deprecated
-	private String[] fillPathSudoCommand(String[] cmdarray, String[] envp) throws IOException {
-		cmdarray[2] = whichCommand(cmdarray[2], envp);
-		return cmdarray;
-	}
-
 	private String[] fillPathSudoCommand(String[] cmdarray, IProject project) throws IOException {
 		cmdarray[1] = whichCommand(cmdarray[1], project);
 		return cmdarray;
-	}
-
-	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#whichCommand(String, IProject)} instead.
-	 */
-	@Deprecated
-	public String whichCommand(String command, String[] envp) throws IOException {
-		Process p = Runtime.getRuntime().exec(new String[] {WHICH_CMD, command}, envp);
-		try {
-			if (p.waitFor() == 0) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				command = reader.readLine();
-			} else {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-				throw new IOException(reader.readLine());
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return command;
 	}
 
 	/**
@@ -227,17 +182,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	}
 
 	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#exec(String, String[], IFileStore, IProject)} instead.
-	 */
-	@Deprecated
-	public Process exec(String cmd, String[] envp, File dir, IProject project)
-		throws IOException {
-		return exec(tokenizeCommand(cmd), envp, dir, project);
-	}
-
-	/**
 	 * Execute one command using the path selected in 'Linux Tools Path' preference page
 	 * in the informed project.
 	 * @param cmd The desired command
@@ -253,20 +197,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	public Process exec(String cmd, String[] envp, IFileStore dir, IProject project)
 		throws IOException {
 		return exec(tokenizeCommand(cmd), envp, dir, project);
-	}
-
-	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#exec(String[], String[], IFileStore, IProject)} instead.
-	 */
-	@Deprecated
-	public Process exec(String cmdarray[], String[] envp, File dir, IProject project)
-		throws IOException {
-		envp = updateEnvironment(envp, project);
-		cmdarray = fillPathCommand(cmdarray, envp);
-
-		return Runtime.getRuntime().exec(cmdarray, envp, dir);
 	}
 
 	/**
@@ -351,17 +281,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	}
 
 	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#sudoExec(String, String[], IFileStore, IProject)} instead.
-	 */
-	@Deprecated
-	public Process sudoExec(String cmd, String[] envp, File dir, IProject project)
-			throws IOException {
-			return sudoExec(tokenizeCommand(cmd), envp, dir, project);
-	}
-
-	/**
 	 * Execute one command, as root, using the path selected in 'Linux Tools Path'
 	 * preference page in the informed project.
 	 * @param cmd The desired command
@@ -403,27 +322,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	 */
 	public Process sudoExec(String[] cmdarray, String[] envp, IProject project) throws IOException {
 		return sudoExec(cmdarray, envp, (IFileStore)null, project);
-	}
-
-	/**
-	 * @deprecated
-	 *
-	 * Use {@link RuntimeProcessFactory#sudoExec(String[], String[], IFileStore, IProject)} instead.
-	 */
-	@Deprecated
-	public Process sudoExec(String[] cmdarray, String[] envp, File dir, IProject project) throws IOException {
-		List<String> cmdList = Arrays.asList(cmdarray);
-		ArrayList<String> cmdArrayList = new ArrayList<String>(cmdList);
-		cmdArrayList.add(0, "sudo"); //$NON-NLS-1$
-		cmdArrayList.add(1, "-n"); //$NON-NLS-1$
-		
-		String[] cmdArraySudo = new String[cmdArrayList.size()];
-		cmdArrayList.toArray(cmdArraySudo);
-		
-		envp = updateEnvironment(envp, project);
-		cmdArraySudo = fillPathSudoCommand(cmdArraySudo, envp);
-
-		return Runtime.getRuntime().exec(cmdArraySudo, envp, dir);
 	}
 
 	/**
