@@ -19,7 +19,7 @@
 
   <artifactId>org.eclipse.linuxtools.oprofile.ui.tests</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Linux Tools OProfile UI Tests Plug-in</name>
 
