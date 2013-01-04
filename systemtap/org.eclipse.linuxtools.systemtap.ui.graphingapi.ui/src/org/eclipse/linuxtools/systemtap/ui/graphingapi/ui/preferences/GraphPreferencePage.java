@@ -26,51 +26,47 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 	public GraphPreferencePage() {
 		super(GRID);
 		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences"));
+		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, 
-				Localization.getString("GraphPreferencePage.ShowXGridLines"),
+				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor(
 				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, 
-				Localization.getString("GraphPreferencePage.ShowYGridLines"),
+				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.MaxDataItems"),
+				Localization.getString("GraphPreferencePage.MaxDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.ViewableDataItems"),
+				Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_X_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.XSeriesTicks"),
+				Localization.getString("GraphPreferencePage.XSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.YSeriesTicks"),
+				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {}
 	
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
 }
 

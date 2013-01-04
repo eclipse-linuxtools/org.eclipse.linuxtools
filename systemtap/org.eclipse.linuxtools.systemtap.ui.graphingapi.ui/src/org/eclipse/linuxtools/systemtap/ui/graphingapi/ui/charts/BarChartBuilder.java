@@ -28,22 +28,12 @@ import org.swtchart.ISeries.SeriesType;
  */
 
 public class BarChartBuilder extends AbstractChartWithAxisBuilder {
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.barchartbuilder";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.barchartbuilder"; //$NON-NLS-1$
 
     public BarChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
 		super(adapter, parent, style, title);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.ibm.examples.chart.widget.AbstractChartBuilder#buildChart()
-     */
-    @Override
-	protected void createChart() {
-		super.createChart();
-    }
-
 	@Override
 	protected ISeries createChartISeries(int i) {
 		IBarSeries series = (IBarSeries)chart.getSeriesSet().

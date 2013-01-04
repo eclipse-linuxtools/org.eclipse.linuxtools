@@ -30,22 +30,12 @@ import org.swtchart.LineStyle;
 
 public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.linechartbuilder";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.linechartbuilder"; //$NON-NLS-1$
 
     public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
 		super(adapter, parent, style, title);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.ibm.examples.chart.widget.AbstractChartBuilder#buildChart()
-     */
-    @Override
-	protected void createChart() {
-		super.createChart();
-    }
-
 	@Override
 	public void updateDataSet() {
 		buildXSeries();
