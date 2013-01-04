@@ -53,24 +53,6 @@ public class Utils {
 	 * 
 	 * @param outStream
 	 *            The stream to write the output to.
-	 * 
-	 * @param command
-	 *            The command with all parameters.
-	 * @return int The return value of the command.
-	 * @throws IOException If an IOException occurs.
-	 * @deprecated use {@link Utils#runCommand(OutputStream, IProject, String...)} instead.
-	 */
-	@Deprecated
-	public static IStatus runCommand(final OutputStream outStream,
-			String... command) throws IOException {
-		return runCommand(null, null, command);
-	}
-
-	/**
-	 * Runs the given command and parameters.
-	 * 
-	 * @param outStream
-	 *            The stream to write the output to.
 	 * @param project
 	 * 			  The project which is executing this command.
 	 * @param command
