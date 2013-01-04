@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 
@@ -50,7 +51,7 @@ public class WelcomeView extends ViewPart {
 		lblTitle.setForeground(new Color(parent.getDisplay(), 0, 0, 100));
 		lblTitle.setAlignment(SWT.CENTER);
 
-		Image imgIcon = new Image(parent.getDisplay(), SystemTapGUIPlugin.getImageDescriptor("splash.bmp").getImageData());
+		Image imgIcon = new Image(parent.getDisplay(), AbstractUIPlugin.imageDescriptorFromPlugin(SystemTapGUIPlugin.PLUGIN_ID, "splash.bmp").getImageData());
 		Label lblImage = new Label(cmpMain,SWT.NONE);
 		lblImage.setBackground(cmpMain.getBackground());
 		lblImage.setImage(imgIcon);
