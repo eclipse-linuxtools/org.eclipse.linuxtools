@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -183,77 +184,24 @@ public class OpxmlRunner {
 	}
 	
 	private boolean handleModelData (String [] args){
-		Process p;
-		try {
-			ArrayList<String> cmd = new ArrayList<String>();
-			cmd.add("opreport"); //$NON-NLS-1$
-			cmd.add("-Xdg"); //$NON-NLS-1$
-			if (!InfoAdapter.hasTimerSupport()){
-				cmd.add("event:" + args[1]); //$NON-NLS-1$
-			}
-			String [] a = {};
-			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(a), Oprofile.OprofileProject.getProject());
-			
-			StringBuilder output = new StringBuilder();
-			StringBuilder errorOutput = new StringBuilder();
-			String s = null;
-			try {
-				BufferedReader stdInput = new BufferedReader(new InputStreamReader(
-						p.getInputStream()));
-				BufferedReader stdError = new BufferedReader(new InputStreamReader(
-						p.getErrorStream()));
-				try {
-					// Read output of opreport. We need to do this, since this might
-					// cause the plug-in to hang. See Eclipse bug 341621 for more info.
-					// FIXME: Both of those while loops should really be done in two separate
-					// threads, so that we avoid this very problem when the error input
-					// stream buffer fills up.
-					while ((s = stdInput.readLine()) != null) {
-						output.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
-					}
-					while ((s = stdError.readLine()) != null) {
-						errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
-					}
-				} finally {
-					stdInput.close();
-					stdError.close();
-				}
-				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
-				OprofileCorePlugin
-						.log(IStatus.ERROR,
-								NLS.bind(
-										OprofileProperties
-												.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} 
-
-			
-			// convert the string to inputstream to pass 
-			InputStream is = null;
-			try {
-				is = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-
-			if (p.waitFor() != 0){
-				return false;
-			}
-			ModelDataAdapter mda = new ModelDataAdapter(is);
-			if (! mda.isParseable()){
-				return false;
-			}
-			mda.process();
-			BufferedReader bi = new BufferedReader(new InputStreamReader(mda.getInputStream()));
-			saveOpxmlToFile(bi, args);
-		} catch (IOException e) {
-			e.printStackTrace();
-			OprofileCorePlugin.showErrorDialog("opxmlParse", null); //$NON-NLS-1$
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		ArrayList<String> cmd = new ArrayList<String>();
+		cmd.add("-Xdg"); //$NON-NLS-1$
+		if (!InfoAdapter.hasTimerSupport()){
+			cmd.add("event:" + args[1]); //$NON-NLS-1$
 		}
+		String [] a = {};
+		InputStream is = runOpReport(cmd.toArray(a));
+
+		if (is == null){
+			return false;
+		}
+		ModelDataAdapter mda = new ModelDataAdapter(is);
+		if (! mda.isParseable()){
+			return false;
+		}
+		mda.process();
+		BufferedReader bi = new BufferedReader(new InputStreamReader(mda.getInputStream()));
+		saveOpxmlToFile(bi, args);
 		return true;
 	}
 	
@@ -275,54 +223,10 @@ public class OpxmlRunner {
 	private String[] getEventNames (){
 		String [] ret = null;
 		try {
-			String cmd[] = {"opreport", "-X", "-d"};
+			String cmd[] = {"-X", "-d"};
+			InputStream is = runOpReport(cmd);
 			
-			Process p = RuntimeProcessFactory.getFactory().exec(cmd, Oprofile.OprofileProject.getProject());
-			StringBuilder output = new StringBuilder();
-			StringBuilder errorOutput = new StringBuilder();
-			String s = null;
-			try {
-				BufferedReader stdInput = new BufferedReader(new InputStreamReader(
-						p.getInputStream()));
-				BufferedReader stdError = new BufferedReader(new InputStreamReader(
-						p.getErrorStream()));
-				try {
-					// Read output of opreport. We need to do this, since this might
-					// cause the plug-in to hang. See Eclipse bug 341621 for more info.
-					// FIXME: Both of those while loops should really be done in two separate
-					// threads, so that we avoid this very problem when the error input
-					// stream buffer fills up.
-					while ((s = stdInput.readLine()) != null) {
-						output.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
-					}
-					while ((s = stdError.readLine()) != null) {
-						errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
-					}
-				} finally {
-					stdInput.close();
-					stdError.close();
-				}
-				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
-					OprofileCorePlugin
-							.log(IStatus.ERROR,
-									NLS.bind(
-											OprofileProperties
-													.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} 
-
-			
-			// convert the string to inputstream to pass to builder.parse
-			InputStream is = null;
-			try {
-				is = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			
-			if (p.waitFor() == 0){
+			if (is != null){
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder;
 				builder = factory.newDocumentBuilder();
@@ -359,9 +263,77 @@ public class OpxmlRunner {
 		} catch (SAXException e) {
 			e.printStackTrace();
 			OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", null); //$NON-NLS-1$
+		}
+		return ret;
+	}
+
+	/**
+	 * Run opreport with specified arguments <code>args</code> and
+	 * return InputStream to output of report for parsing.
+	 *
+	 * @param args arguments to run with opreport
+	 * @return InputStream to output of report
+	 */
+	private InputStream runOpReport(String[] args){
+
+		ArrayList<String> cmd = new ArrayList<String>();
+		cmd.add("opreport"); //$NON-NLS-1$
+		Collections.addAll(cmd, args);
+
+		Process p = null;
+		try {
+			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(new String[0]), Oprofile.OprofileProject.getProject());
+
+			StringBuilder output = new StringBuilder();
+			StringBuilder errorOutput = new StringBuilder();
+			String s = null;
+			try {
+				BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+						p.getInputStream()));
+				BufferedReader stdError = new BufferedReader(new InputStreamReader(
+						p.getErrorStream()));
+				try {
+					// Read output of opreport. We need to do this, since this might
+					// cause the plug-in to hang. See Eclipse bug 341621 for more info.
+					// FIXME: Both of those while loops should really be done in two separate
+					// threads, so that we avoid this very problem when the error input
+					// stream buffer fills up.
+					while ((s = stdInput.readLine()) != null) {
+						output.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+					while ((s = stdError.readLine()) != null) {
+						errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+				} finally {
+					stdInput.close();
+					stdError.close();
+				}
+				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
+				OprofileCorePlugin
+						.log(IStatus.ERROR,
+								NLS.bind(
+										OprofileProperties
+												.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			if(p.waitFor() == 0){
+				// convert the string to inputstream to pass to builder.parse
+				try {
+					return new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlParse", null); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return ret;
+
+		return null;
 	}
 }
