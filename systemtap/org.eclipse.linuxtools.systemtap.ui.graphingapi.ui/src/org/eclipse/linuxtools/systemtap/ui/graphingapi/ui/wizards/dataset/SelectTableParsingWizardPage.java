@@ -111,15 +111,15 @@ public class SelectTableParsingWizardPage extends ParsingWizardPage {
 	protected void copyExisting(IMemento oldMeta, IMemento newMeta) {
 		IMemento[] children = oldMeta.getChildren(IDataSetParser.XMLColumn);
 		IMemento child;
-		for(int j=0; j<children.length; j++) {
+		for(IMemento memento:children) {
 			child = newMeta.createChild(IDataSetParser.XMLColumn);
-			child.putString(IDataSetParser.XMLname, children[j].getString(IDataSetParser.XMLname));
+			child.putString(IDataSetParser.XMLname, memento.getString(IDataSetParser.XMLname));
 		}
 		children = oldMeta.getChildren(IDataSetParser.XMLSeries);
-		for(int j=0; j<children.length; j++) {
+		for(IMemento memento:children) {
 			child = newMeta.createChild(IDataSetParser.XMLSeries);
-			child.putString(IDataSetParser.XMLparsingExpression, children[j].getString(IDataSetParser.XMLparsingExpression));
-			child.putString(IDataSetParser.XMLparsingSpacer, children[j].getString(IDataSetParser.XMLparsingSpacer));
+			child.putString(IDataSetParser.XMLparsingExpression, memento.getString(IDataSetParser.XMLparsingExpression));
+			child.putString(IDataSetParser.XMLparsingSpacer, memento.getString(IDataSetParser.XMLparsingSpacer));
 		}
 		newMeta.createChild(IDataSetParser.XMLDelimiter).putString(IDataSetParser.XMLparsingExpression, oldMeta.getChild(IDataSetParser.XMLDelimiter).getString(IDataSetParser.XMLparsingExpression));
 	}
