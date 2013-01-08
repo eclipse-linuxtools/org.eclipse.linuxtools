@@ -11,17 +11,11 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.GraphicalRunPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
@@ -30,18 +24,13 @@ import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.PasswordPrompt;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
-
-import com.jcraft.jsch.JSchException;
 
 /**
  * Action used to run the systemTap script in the active editor.  This action will start stap
@@ -49,73 +38,25 @@ import com.jcraft.jsch.JSchException;
  * @author Ryan Morse
  */
 public class RunScriptChartAction extends RunScriptAction {
-	public RunScriptChartAction() {
-		super();
-	}
 
-	/**
-	 * The main body of this event. Starts by making sure the current editor is valid to run,
-	 * then builds the command line arguments for stap and retrieves the environment variables.
-	 * Next, it gets an instance of <code>ScriptConsole</code> to run the script. Finally, it
-	 * Registers a new <code>ChartStreamDaemon2</code> to handle formating the script output
-	 * for a <code>DataSet</code>. Once everything is setup, it will attempt to switch to the
-	 * Graphing Perspective.
-	 */
 	@Override
-	public void run() {
-		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
-		continueRun = true;
-		if(ConsoleLogPlugin.getDefault().getPreferenceStore().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true &&
-			new SelectServerDialog(fWindow.getShell()).open() == false)
-			return;
-	
-		if(isValid()) {
-			 try{	 
-				 ScpClient scpclient = new ScpClient();
-				 serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-				 tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
-				 scpclient.transfer(fileName,tmpfileName);
-			 } catch (JSchException e){
-				 ErrorDialog.openError(fWindow.getShell() , "", e.getMessage(), new Status(IStatus.ERROR, GraphicalRunPlugin.PLUGIN_ID, e.getMessage(), e));
-				 continueRun = false;
-			 } catch (IOException e) {
-				 ErrorDialog.openError(fWindow.getShell() , "", e.getMessage(), new Status(IStatus.ERROR, GraphicalRunPlugin.PLUGIN_ID, e.getMessage(), e));
-				 continueRun = false;
-			}
-
-			if (continueRun) {
-				String[] script = buildStandardScript();
-				String[] envVars = getEnvironmentVariables();
-				ScriptConsole console = ScriptConsole
-						.getInstance(serverfileName);
-				console.run(script, envVars, new PasswordPrompt(
-						IDESessionSettings.password), new StapErrorParser());
-
-				// subscription.addInputStreamListener(new
-				// ChartStreamDaemon2(console, dataSet, parser));
-				console.getCommand().addInputStreamListener(
-						new ChartStreamDaemon2(console, dataSet, parser));
-
-				// Change to the graphing perspective
-				try {
-					IWorkbenchPage p = PlatformUI.getWorkbench()
-							.showPerspective(
-									GraphingPerspective.ID,
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow());
-					IViewPart ivp = p.showView(GraphSelectorView.ID);
-					String name = console.getName();
-					((GraphSelectorView) ivp).createScriptSet(
-							name.substring(name.lastIndexOf('/') + 1), dataSet);
-				} catch (WorkbenchException we) {
-
-				}
-			}
+	protected void scriptConsoleInitialized(ScriptConsole console){
+		console.getCommand().addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
+		try {
+			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+			IViewPart ivp = p.showView(GraphSelectorView.ID);
+			String name = console.getName();
+			((GraphSelectorView)ivp).createScriptSet(name.substring(name.lastIndexOf('/')+1), dataSet);
+		} catch(WorkbenchException we) {
+			IStatus status = new Status(IStatus.ERROR,
+				      GraphicalRunPlugin.PLUGIN_ID, 1, Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective , we);
+			ErrorDialog.openError(Display.getCurrent().getActiveShell(),
+					Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective,
+					null,
+					status);
 		}
-		
-		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * This method is used to prompt the user for the parsing expression to be used in generating
 	 * the <code>DataSet</code> from the scripts output.
@@ -128,16 +69,14 @@ public class RunScriptChartAction extends RunScriptAction {
 		dialog.create();
 		dialog.open();
 		parser = wizard.getParser();
-		
+
 		dataSet = wizard.getDataSet();
-		
 
 		if(null == parser || null == dataSet)
 		{
 			continueRun = false;
 		}
 		wizard.dispose();
-		
 	}
 
 	@Override
