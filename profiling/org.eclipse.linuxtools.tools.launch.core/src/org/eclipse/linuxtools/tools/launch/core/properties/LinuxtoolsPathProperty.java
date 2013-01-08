@@ -19,6 +19,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.tools.launch.core.Activator;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
+/**
+ * Class used to get information provided in Linux Tools Path Property Page.
+ * This class provides the path to be used to run linux tools commands
+ */
 public class LinuxtoolsPathProperty {
 	public static final String LINUXTOOLS_PATH_NAME = Activator.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
 	public static final String LINUXTOOLS_PATH_SYSTEM_NAME = Activator.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
