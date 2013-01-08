@@ -32,9 +32,11 @@ import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
@@ -63,12 +65,6 @@ public class GraphDisplaySet {
 		dataSet = data;
 	//	if(null != cmd) {
 			updater = new UpdateManager(delay);
-			updater.addUpdateListener(new IUpdateListener() {
-				public void handleUpdateEvent() {
-		//			if(!cmd.isRunning())
-			//			updater.stop();
-				}
-			});
 	//	}
 		createPartControl(parent);
 		
@@ -116,11 +112,8 @@ public class GraphDisplaySet {
 		listener = new ButtonClickListener();
 		folder.addSelectionListener(listener);
 
-		folder.addCTabFolder2Listener(new CTabFolder2Listener() {
-			public void restore(CTabFolderEvent e) {}
-			public void showList(CTabFolderEvent e) {}
-			public void minimize(CTabFolderEvent e) {}
-			public void maximize(CTabFolderEvent e) {}
+		folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+			@Override
 			public void close(CTabFolderEvent e) {
 				int selected = folder.indexOf((CTabItem)e.item)-2;
 				if(null != updater)
@@ -200,8 +193,8 @@ public class GraphDisplaySet {
 	 * When the user selects the first tab a new dialog is displayed for
 	 * them to slect what they want to display for the new graph.
 	 */
-	public class ButtonClickListener implements SelectionListener {
-		public void widgetDefaultSelected(SelectionEvent event) {}
+	public class ButtonClickListener extends SelectionAdapter {
+		@Override
 		public void widgetSelected(SelectionEvent event) {
 			CTabFolder folder = (CTabFolder)event.getSource();
 

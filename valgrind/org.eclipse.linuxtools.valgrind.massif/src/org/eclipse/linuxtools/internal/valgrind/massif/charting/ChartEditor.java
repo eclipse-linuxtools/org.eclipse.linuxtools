@@ -19,8 +19,8 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -176,12 +176,9 @@ public class ChartEditor extends EditorPart {
 		axisSet.getYAxis(0).setRange(new Range(yRange.lower, yRange.upper + yExtra));
 
 		// listeners
-		control.getPlotArea().addMouseListener(new MouseListener() {
+		control.getPlotArea().addMouseListener(new MouseAdapter() {
 
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
+			@Override
 			public void mouseDown(MouseEvent e) {
 				showView();
 				TableViewer viewer = input.getView().getTableViewer();
@@ -218,11 +215,6 @@ public class ChartEditor extends EditorPart {
 				}
 
 			}
-
-			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
 		});
 
 	}

@@ -27,8 +27,8 @@ import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileViewSaveDefaultSessionAction;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -133,9 +133,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			startDaemonButton = new Button(area, SWT.PUSH);
 			startDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			startDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.startdaemon")); //$NON-NLS-1$
-			startDaemonButton.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			startDaemonButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					try {
 						oprofileStartCollection();
@@ -156,9 +155,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			stopDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			stopDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.stopdaemon")); //$NON-NLS-1$
 			stopDaemonButton.setEnabled(false);		//disabled at start
-			stopDaemonButton.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			stopDaemonButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					try {
 						oprofileShutdown();
@@ -176,9 +174,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			saveSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			saveSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.savesession")); //$NON-NLS-1$
 			saveSessionButton.setEnabled(false);		//disabled at start
-			saveSessionButton.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			saveSessionButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.save")); //$NON-NLS-1$
 					OprofileViewSaveDefaultSessionAction hack = new OprofileViewSaveDefaultSessionAction();
@@ -189,9 +186,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			resetSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			resetSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.resetsession")); //$NON-NLS-1$
 			resetSessionButton.setEnabled(false);		//disabled at start
-			resetSessionButton.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			resetSessionButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					try {
 						oprofileReset();
@@ -208,9 +204,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			refreshViewButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			refreshViewButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.refreshview")); //$NON-NLS-1$
 			refreshViewButton.setEnabled(false);		//disabled at start
-			refreshViewButton.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			refreshViewButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.dumpsamples")); //$NON-NLS-1$
 					try {

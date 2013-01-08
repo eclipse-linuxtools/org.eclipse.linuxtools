@@ -16,6 +16,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -84,17 +85,17 @@ public class StapSettingsDialog extends Dialog {
 			text[j].setBounds(new Rectangle(320*(j/5),20+50*(j%5),300,27));
 
 			if("-v".equals(IDEPreferenceConstants.P_STAP[i][0])) {
-				text[j].addKeyListener(new KeyListener() {
+				text[j].addKeyListener(new KeyAdapter() {
+					@Override
 					public void keyPressed(KeyEvent e) {
 						if('v' != e.character) {
 							e.doit = false;
 						}
 					}
-					
-					public void keyReleased(KeyEvent e) {}
 				});
 			} else if("-p NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) {
-				text[j].addKeyListener(new KeyListener() {
+				text[j].addKeyListener(new KeyAdapter() {
+					@Override
 					public void keyPressed(KeyEvent e) {
 						if(32 <= e.character && 126 >= e.character) {
 							if('1' > e.character || '5' < e.character)
@@ -103,19 +104,16 @@ public class StapSettingsDialog extends Dialog {
 								e.doit = false;
 						}
 					}
-					
-					public void keyReleased(KeyEvent e) {}
 				});
 			} else if("-s NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) {
-				text[j].addKeyListener(new KeyListener() {
+				text[j].addKeyListener(new KeyAdapter() {
+					@Override
 					public void keyPressed(KeyEvent e) {
 						if(32 <= e.character && 126 >= e.character) {
 							if(!Character.isDigit(e.character))
 								e.doit = false;
 						}
 					}
-					
-					public void keyReleased(KeyEvent e) {}
 				});
 			}
 		}

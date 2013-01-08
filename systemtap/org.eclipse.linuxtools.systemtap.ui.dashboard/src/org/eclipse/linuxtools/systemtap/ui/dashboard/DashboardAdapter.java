@@ -11,6 +11,17 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard;
 
+import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopGraphAction;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -21,8 +32,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -35,18 +44,6 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
-
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopGraphAction;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
 
 /**
  * This class is used to contain a graph for the DashboardComposite.  The class
@@ -102,15 +99,7 @@ public class DashboardAdapter {
 	private void createGraph(GraphData gd, IDataSet ds) {
 		//Setup canvas
 		CTabItem item = new CTabItem(folder, SWT.NONE);
-		Composite c = new Composite(folder, SWT.NONE);
-		c.addControlListener(new ControlListener() {
-		      public void controlMoved(ControlEvent e) {
-		      }
-
-		      public void controlResized(ControlEvent e) {
-		        
-		      }
-		    });    
+		Composite c = new Composite(folder, SWT.NONE);   
 		//c.setExpan
 		FormData data = new FormData();
 		data.left = new FormAttachment(0,0);

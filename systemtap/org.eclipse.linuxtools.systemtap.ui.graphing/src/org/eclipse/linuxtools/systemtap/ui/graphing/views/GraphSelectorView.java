@@ -19,11 +19,11 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Listener;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -98,20 +98,16 @@ public class GraphSelectorView extends ViewPart {
 		data.right = new FormAttachment(100, 0);
 		data.bottom = new FormAttachment(100, 0);
 		scriptFolder.setLayoutData(data);
-		scriptFolder.addSelectionListener(new SelectionListener() {
+		scriptFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fireTabChangedEvent();
 			}
-			
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
 
-		scriptFolder.addCTabFolder2Listener(new CTabFolder2Listener() {
-			public void restore(CTabFolderEvent e) {}
-			public void showList(CTabFolderEvent e) {}
-			public void minimize(CTabFolderEvent e) {}
-			public void maximize(CTabFolderEvent e) {}
+		scriptFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+			@Override
 			public void close(CTabFolderEvent e) {
 				displaySets.remove(scriptFolder.indexOf((CTabItem)e.item));
 				fireTabCloseEvent();

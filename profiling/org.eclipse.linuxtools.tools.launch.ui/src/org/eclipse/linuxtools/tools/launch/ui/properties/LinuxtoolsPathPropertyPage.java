@@ -28,10 +28,10 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 import org.eclipse.linuxtools.tools.launch.ui.Activator;
 import org.eclipse.linuxtools.tools.launch.ui.Messages;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -100,14 +100,10 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 		systemEnvButton = new Button(radios, SWT.RADIO);
 		systemEnvButton.setText(Messages.LINUXTOOLS_PATH_SYSTEM_ENV);
 		systemEnvButton.setSelection(systemPathSelected);
-		systemEnvButton.addSelectionListener(new SelectionListener() {
+		systemEnvButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					updateOptionsEnable();
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 		});
 
