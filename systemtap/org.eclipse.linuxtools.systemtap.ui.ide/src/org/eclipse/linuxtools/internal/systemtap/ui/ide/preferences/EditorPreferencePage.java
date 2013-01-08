@@ -11,26 +11,24 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class EditorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public EditorPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start EditorPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("EditorPreferencePage.EditorPreferenceDescription"));
-		LogManager.logDebug("End EditorPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new ColorFieldEditor(
 				IDEPreferenceConstants.P_EDITOR_BACKGROUND, 
 				Localization.getString("EditorPreferencePage.BackgroundColor"), getFieldEditorParent()));
@@ -39,16 +37,8 @@ public class EditorPreferencePage extends FieldEditorPreferencePage implements I
 				IDEPreferenceConstants.P_SHOW_LINE_NUMBERS,
 				Localization.getString("EditorPreferencePage.ShowLineNumbers"),
 				getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
-	}
-
-	@Override
-	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		super.dispose();
 	}
 }

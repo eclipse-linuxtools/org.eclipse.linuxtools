@@ -11,26 +11,23 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class IDEPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public IDEPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start IDEPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription("Preferences when loading the IDE perspective");
-		LogManager.logDebug("End IDEPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new BooleanFieldEditor(
 				IDEPreferenceConstants.P_STORED_TREE,
 				Localization.getString("IDEPreferencePage.UseStoredTapsetTree"), //$NON-NLS-1$
@@ -39,16 +36,9 @@ public class IDEPreferencePage extends FieldEditorPreferencePage implements IWor
 				IDEPreferenceConstants.P_REMOTE_PROBES,
 				Localization.getString("IDEPreferencePage.RemoteProbes"), //$NON-NLS-1$
 				getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
-	@Override
-	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		super.dispose();
-	}
 }

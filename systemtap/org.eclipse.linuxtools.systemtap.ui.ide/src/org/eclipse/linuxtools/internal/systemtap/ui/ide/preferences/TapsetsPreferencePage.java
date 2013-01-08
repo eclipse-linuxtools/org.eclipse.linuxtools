@@ -11,21 +11,19 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class TapsetsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public TapsetsPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start TapsetsPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("TapsetsPreferencePage.AdditionalTapsetsCategory"));
-		LogManager.logDebug("End TapsetsPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -36,19 +34,10 @@ public class TapsetsPreferencePage extends FieldEditorPreferencePage implements 
 	 */
 	@Override
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		addField(new PathEditor(IDEPreferenceConstants.P_TAPSETS,
 				Localization.getString("TapsetsPreferencePage.AdditionalTapsets"), Localization.getString("TapsetsPreferencePage.TapsetDirectory"), getFieldEditorParent()));
-		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
-	}
-
-	@Override
-	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		super.dispose();
 	}
 }

@@ -11,26 +11,24 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class StapOptionsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public StapOptionsPreferencePage() {
 		super(GRID);
-		LogManager.logDebug("Start StapOptionsPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("StapOptionsPreferencePage.StapOptions"));
-		LogManager.logDebug("End StapOptionsPreferencePage:", this); //$NON-NLS-1$
 	}
 
 	@Override
 	public void createFieldEditors() {
-		LogManager.logDebug("Start createFieldEditors:", this); //$NON-NLS-1$
 		for(int i=0; i<IDEPreferenceConstants.P_STAP.length; i++) {
 			addField(
 					new BooleanFieldEditor(
@@ -47,16 +45,8 @@ public class StapOptionsPreferencePage extends FieldEditorPreferencePage impleme
 				addField(sfe);
 			}
 		}
-		LogManager.logDebug("End createFieldEditors:", this); //$NON-NLS-1$
 	}
 
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
-	}
-
-	@Override
-	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		super.dispose();
 	}
 }

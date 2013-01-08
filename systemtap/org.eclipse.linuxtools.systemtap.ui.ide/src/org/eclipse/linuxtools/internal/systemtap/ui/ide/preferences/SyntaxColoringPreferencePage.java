@@ -11,35 +11,31 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class SyntaxColoringPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 	public SyntaxColoringPreferencePage() {
 		super();
-		LogManager.logDebug("Start SyntaxColoringPreferencePage:", this); //$NON-NLS-1$
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("SyntaxColoringPreferencePage.SyntaxColoringOptions"));
-		LogManager.logDebug("End SyntaxColoringPreferencePage:", this); //$NON-NLS-1$
 	}
 	
 	public void init(IWorkbench workbench) {
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected Control createContents(Composite parent) {
-		LogManager.logDebug("Start createContents: parent-" + parent, this); //$NON-NLS-1$
 		final TabFolder tabFolder = new TabFolder(parent, SWT.BORDER);
 		
 		//STP Editor
@@ -95,24 +91,20 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 				IDEPreferenceConstants.P_C_STRING_COLOR,
 				Localization.getString("SyntaxColoringPreferencePage.StringColor"), comp);
 
-		LogManager.logDebug("End createContents: returnVal-" + tabFolder, this); //$NON-NLS-1$
 	    return tabFolder;
 	}
 	
 	private ColorFieldEditor createColorFieldEditor(String name, String lblText, Composite parent) {
-		LogManager.logDebug("Start createColorFieldEditor: name-" + name + ", lblText-" + lblText + ", parent-" + parent, this); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ColorFieldEditor cfe = new ColorFieldEditor(name, lblText, parent);
 		cfe.setPage(this);
 		cfe.setPreferenceStore(getPreferenceStore());
 		cfe.load();
 		
-		LogManager.logDebug("End createColorFieldEditor: returnVal-" + cfe, this); //$NON-NLS-1$
 		return cfe;
 	}
 	
 	@Override
 	protected void performDefaults() {
-		LogManager.logDebug("Start performDefaults:", this); //$NON-NLS-1$
 		stpDC.loadDefault();
 		stpKC.loadDefault();
 		stpEC.loadDefault();
@@ -128,12 +120,10 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		cSC.loadDefault();
 		
 		super.performDefaults();
-		LogManager.logDebug("End performDefaults:", this); //$NON-NLS-1$
 	}
 	
 	@Override
 	public boolean performOk() {
-		LogManager.logDebug("Start performOk:", this); //$NON-NLS-1$
 		stpDC.store();
 		stpKC.store();
 		stpEC.store();
@@ -148,13 +138,11 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 		cTC.store();
 		cSC.store();
 
-		LogManager.logDebug("End performOk returnVal-true", this); //$NON-NLS-1$
 		return true;
 	}
 	
 	@Override
 	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 		stpDC.dispose();
 		stpKC.dispose();

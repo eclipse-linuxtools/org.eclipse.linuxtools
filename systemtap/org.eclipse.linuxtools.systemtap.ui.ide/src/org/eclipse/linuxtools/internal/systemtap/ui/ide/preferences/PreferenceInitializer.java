@@ -18,14 +18,12 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.ICColorConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPColorConstants;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.graphics.RGB;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();
 
 		//ide
@@ -91,6 +89,5 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_TYPE_COLOR, ICColorConstants.TYPE);
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_STRING_COLOR, ICColorConstants.STRING);
 
-		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }
