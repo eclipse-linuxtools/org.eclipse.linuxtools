@@ -59,12 +59,12 @@ public class LineGraph extends AGraph implements IScrollGraph {
 
 			px2 = 0;
 			py2 = super.getSize().y - super.getYPadding();
-			for(int i=0; i<points.length; i++) {
-				px = (points[i].x-super.getLocalXMin());
+			for(DataPoint point: points) {
+				px = (point.x-super.getLocalXMin());
 				px *= xSize;
 				px += super.getXPadding();
 	
-				py = super.getLocalYMax() - points[i].y;
+				py = super.getLocalYMax() - point.y;
 				py *= ySize;
 				py += super.getYPadding();
 	

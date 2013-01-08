@@ -59,12 +59,12 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 			gc.setForeground(c);
 			gc.setBackground(c);
 	
-			for(int i=0; i<points.length; i++) {
-				px = (points[i].x-super.getLocalXMin());
+			for(DataPoint point:points) {
+				px = (point.x-super.getLocalXMin());
 				px *= xSize;
 				px += super.getXPadding() - (DIAMETER>>1);
 	
-				py = super.getLocalYMax() - points[i].y;
+				py = super.getLocalYMax() - point.y;
 				py *= ySize;
 				py += super.getYPadding() - (DIAMETER>>1);
 	
