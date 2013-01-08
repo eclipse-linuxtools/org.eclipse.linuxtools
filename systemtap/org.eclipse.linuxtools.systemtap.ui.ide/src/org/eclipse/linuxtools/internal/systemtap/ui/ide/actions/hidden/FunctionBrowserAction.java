@@ -122,7 +122,6 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 						return;
 				}
 				input = ed.getEditorInput();
-				//System.out.println("Node " +  t.toString() + "claims to be clickable");
 				IEditorPart editor;
 				try {
 					editor = page.openEditor(input, STPEditor.ID);

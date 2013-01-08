@@ -78,7 +78,6 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 	
 				py = super.getSize().y - super.getYPadding();
 				ph = ((super.getLocalYMax() - points[i].y) * ySize) + super.getYPadding()-py;
-				//System.out.println("rectangle area:" + j + " " + px + " " + pw + " " + py + " " + ph + " " + points[i].x + " " + points[i].y );
 				gc.fillGradientRectangle((int)(px), (int)py, (int)pw, (int)ph, true);
 			}
 		}

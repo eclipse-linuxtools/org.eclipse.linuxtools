@@ -49,11 +49,6 @@ public class DashboardPerspective implements IPerspectiveFactory {
 
 		layout.getViewLayout(DashboardModuleBrowserView.ID).setCloseable(false);
 		layout.getViewLayout(ActiveModuleBrowserView.ID).setCloseable(false);
-		//DashboardModuleBrowserView.getmoduleNames();
-		/*for (int i=0 ; i<moduleNames.size(); i++)
-		{
-			System.out.println("Dashboard perspective: " + moduleNames.get(i));
-		}*/
 
 		//Add the graph content view.
 		layout.addStandaloneView(DashboardView.ID, false, IPageLayout.TOP, 1.0f, editorArea);

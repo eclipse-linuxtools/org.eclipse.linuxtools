@@ -77,8 +77,6 @@ public abstract class AGraph extends AChart {
 		DataPoint p;
 		Object o;
 		
-		//System.out.println("defaults:" + minX + " " + minY + " " + maxX + " " + maxY);
-		
 		for(int j=0; j<elementList.length; j++) {
 			for(int i=lBound; i<uBound; i++) {
 				o = elementList[j].get(i);
@@ -89,11 +87,6 @@ public abstract class AGraph extends AChart {
 				if(p.y > maxY) maxY = (int)p.y;
 			}
 		}
-		
-		//This is to attempt to keep the data series a constant width apart
-		//if(uBound < viewableItems && adapter instanceof ScrollAdapter)
-			//minX = maxX - (int)(((maxX-minX)/(uBound-1.0))*(viewableItems-1));
-		
 		
 		return new Rectangle(minX, minY, maxX-minX, maxY-minY);
 	}
