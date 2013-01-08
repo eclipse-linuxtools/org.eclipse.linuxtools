@@ -152,17 +152,6 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	}
 	
 	/**
-	 * Called by <code>run(IAction)</code> to generate the command line necessary to run the script.
-	 * @return The arguments to pass to <code>Runtime.exec</code> to start the stap process on this script.
-	 * @see TerminalCommand
-	 * @see Runtime#exec(java.lang.String[], java.lang.String[])
-	 * @deprecated Use {@link RunScriptBaseAction#buildStandardScript()} instead
-	 */
-	protected String[] buildScript() {
-		return buildStandardScript();
-	}
-	
-	/**
 	 * The command line argument generation method used by <code>RunScriptAction</code>. This generates
 	 * a stap command line that includes the tapsets specified in user preferences, a guru mode flag
 	 * if necessary, and the path to the script on disk.
