@@ -33,6 +33,8 @@ public final class TestingOprofileLaunchConfigurationDelegate extends OprofileLa
 	@Override
 	protected void oprofileShutdown() { return; }
 	@Override
+	protected boolean oprofileStatus() { return true; }
+	@Override
 	protected void oprofileStartCollection() { return; }
 	@Override
 	protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) { 

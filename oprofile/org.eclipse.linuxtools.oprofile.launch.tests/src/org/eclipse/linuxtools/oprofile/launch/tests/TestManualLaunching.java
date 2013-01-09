@@ -44,6 +44,8 @@ public class TestManualLaunching extends AbstractTest {
 		@Override
 		protected void oprofileStartCollection() { return; }
 		@Override
+		protected boolean oprofileStatus() { return true; }
+		@Override
 		protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) { 
 			_options = options; 
 			eventsIsNull = events == null ? true : false; 
