@@ -37,8 +37,8 @@ import org.osgi.framework.FrameworkUtil;
 
 public class TestLaunchingExternalProject extends AbstractTest {
 	
-	private final Path EXTERNAL_PROJECT_PATH = new Path("/tmp/eclipse-oprofile-ext_project_test");
-	private final String PROJECT_NAME = "primeTest";
+	private final Path EXTERNAL_PROJECT_PATH = new Path("/tmp/eclipse-oprofile-ext_project_test"); //$NON-NLS-1$
+	private final String PROJECT_NAME = "primeTest"; //$NON-NLS-1$
 	private ILaunchConfiguration config;
 	private Shell testShell;
 	private IProject externalProject;	// external project to work with
@@ -107,6 +107,6 @@ public class TestLaunchingExternalProject extends AbstractTest {
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
 		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + IPath.SEPARATOR + "Debug" + IPath.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage());
+		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + IPath.SEPARATOR + "Debug" + IPath.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage()); //$NON-NLS-1$
 	}
 }
