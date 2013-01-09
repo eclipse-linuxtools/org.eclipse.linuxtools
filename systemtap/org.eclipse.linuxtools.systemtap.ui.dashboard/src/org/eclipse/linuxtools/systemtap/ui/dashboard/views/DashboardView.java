@@ -14,34 +14,29 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardAdapter;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardComposite;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
+import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Listener;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
-
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardAdapter;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardComposite;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
 
 
 /**
@@ -55,12 +50,9 @@ public class DashboardView extends ViewPart {
 
 	public DashboardView() {
 	super();
-	LogManager.logDebug("Start DashboardView:", this); //$NON-NLS-1$
-	LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	composites = new ArrayList<DashboardComposite>();
 	tabListeners = new ArrayList<ITabListener>();
 	moduleNames = new ArrayList<String>();
-	LogManager.logDebug("End DashboardView:", this); //$NON-NLS-1$
 
 }
 
@@ -72,9 +64,7 @@ public class DashboardView extends ViewPart {
 	 * @param title The name to be shown on the new tab
 	 */
 	public void createComposite(String title) {
-		CTabItem item;
-
-		item = new CTabItem(scriptFolder, SWT.CLOSE);
+		CTabItem item = new CTabItem(scriptFolder, SWT.CLOSE);
 		item.setText(title);
 		
 		Composite parent = new Composite(scriptFolder, SWT.NONE);
@@ -91,22 +81,8 @@ public class DashboardView extends ViewPart {
 		fireTabOpenEvent();
 	}
 
- /*
-	 * This method creates the layout for the view.  It makes use of 
-	 * <code>DashboardComposite</code> to handle positioning of all of the graphs.
-	 * @param parent The composite that contains all elements added by this view.
-	 */
-/*	public void createPartControl(Composite parent) {
-		composite[CompositeNo] = new DashboardComposite(parent, SWT.BORDER);
-		IPreferenceStore p = DashboardPlugin.getDefault().getPreferenceStore();
-		int delay = p.getInt(DashboardPreferenceConstants.P_DASHBOARD_UPDATE_DELAY);
-		updater = new UpdateManager(delay);
-	}*/
-	
 	@Override
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
-	     //bar.pack();
 		FormData data2 = new FormData();
 		data2.left = new FormAttachment(0, 0);
 		data2.top = new FormAttachment(0, 0);
@@ -122,40 +98,6 @@ public class DashboardView extends ViewPart {
 		data3.top = new FormAttachment(0, 0);
 		data3.right = new FormAttachment(100, 0);
 		data3.bottom = new FormAttachment(6, 0);
-	//	while (DashboardModuleLocator.moduleNames == null) {}
-	//	allModuleNames = new ArrayList<String>(DashboardModuleBrowserView.getmoduleNames());
-	
-		
-	/*	Composite toolbar = new Composite(cmpGraph, SWT.NONE);
-		Button modbutton = new Button(toolbar,SWT.PUSH);
-	//	modbutton.setBackground(new Color(Display.getCurrent(), IGraphColorConstants.COLORS[0]));
-		modbutton.setText(allModuleNames.get(1));
-		//modbutton.setText("text0");
-		modbutton = new Button(toolbar,SWT.PUSH);
-		//modbutton.setBackground(new Color(Display.getCurrent(), IGraphColorConstants.COLORS[1]));
-		modbutton.setText(allModuleNames.get(0));
-		for (int i = 2; i < 5; i++) {
-		      modbutton = new Button(toolbar, SWT.PUSH);
-		      modbutton.setText(allModuleNames.get(i));
-		     // modbutton.setBackground(new Color(Display.getCurrent(), IGraphColorConstants.COLORS[i]));
-		    }
-		toolbar.setLayout(new RowLayout());
-		toolbar.setLayoutData(data3);
-		toolbar.pack();*/
-		
-	  /* ToolBar bar = new ToolBar(cmpGraph, SWT.BORDER);
-	      ToolItem item = new ToolItem(bar, SWT.PUSH);
-	      item.setText(allModuleNames.get(1));
-	      item = new ToolItem(bar, SWT.PUSH);
-	      item.setText(allModuleNames.get(0));
-	
-		    for (int i = 2; i < allModuleNames.size(); i++) {
-		      item = new ToolItem(bar, SWT.PUSH);
-		      item.setText(allModuleNames.get(i));
-		    }
-		 bar.setLayoutData(data3);
-		 bar.pack(); */
-	
 
 		//Create the folder for all of the script sets, so it takes up all of the parent composite
 		scriptFolder = new CTabFolder(cmpGraph, SWT.NONE);
@@ -165,20 +107,15 @@ public class DashboardView extends ViewPart {
 		data.right = new FormAttachment(100, 0);
 		data.bottom = new FormAttachment(100, 0);
 		scriptFolder.setLayoutData(data);
-		scriptFolder.addSelectionListener(new SelectionListener() {
+		scriptFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fireTabChangedEvent();
 			}
-			
-			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-		
 
-		scriptFolder.addCTabFolder2Listener(new CTabFolder2Listener() {
-			public void restore(CTabFolderEvent e) {}
-			public void showList(CTabFolderEvent e) {}
-			public void minimize(CTabFolderEvent e) {}
-			public void maximize(CTabFolderEvent e) {}
+		scriptFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+			@Override
 			public void close(CTabFolderEvent e) {
 				composites.remove(scriptFolder.indexOf((CTabItem)e.item));
 		    	moduleNames.remove(scriptFolder.indexOf((CTabItem)e.item));
@@ -188,43 +125,15 @@ public class DashboardView extends ViewPart {
 		
 		Display display = parent.getShell().getDisplay();
 		
-		/*scriptFolder.setSelectionBackground(new Color[] {
-		        display.getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW),
-		        display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW),
-		        display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW)}, new int[] { 50,
-		        100});*/
-		
          scriptFolder.setSelectionBackground(display.getSystemColor(SWT.COLOR_GRAY));
-         //scriptFolder.setForeground(display.getSystemColor(SWT.COLOR_YELLOW));
          scriptFolder.setMaximizeVisible(true);
          scriptFolder.setSelectionForeground(display.getSystemColor(SWT.COLOR_BLACK));
-         
-		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 
 
 	@Override
 	public void setFocus() {}
 
-	/*public Composite getComposite() {
-		return composite.deadComposite;
-	}*/
-	
-	/**
-	 * This method creates a new graph in the view.  It creates a wrapper for the graph
-	 * and then adds an update listener to the graph, and finally registers it with
-	 * the composite.
-	 * @param gd The data needed to create a new graph
-	 * @param ds The dataset used to store all script output data
-	 * @return The newly create graph component.
-	 */
-/*	public DashboardAdapter createGraph(GraphData gd, IDataSet ds) {
-		DashboardAdapter adapter = new DashboardAdapter(composite, gd, ds);
-		updater.addUpdateListener(adapter.getGraph());
-		composite.add(adapter);
-		
-		return adapter;
-	}*/
 	/**
 	 * This method creates a new graph in the view.  It creates a wrapper for the graph
 	 * and then adds an update listener to the graph, and finally registers it with
@@ -234,30 +143,25 @@ public class DashboardView extends ViewPart {
 	 * @return The newly create graph component.
 	 */
 	public DashboardAdapter createGraph(GraphData gd, IDataSet ds, String moduleName) {
-		 Display disp = PlatformUI.getWorkbench().getDisplay();
-		  Cursor cursor = new Cursor(disp, SWT.CURSOR_WAIT);
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(cursor);
-   //    while (ds.getRowCount() <= 0 ) {}
+		Display disp = PlatformUI.getWorkbench().getDisplay();
+		disp.getActiveShell().setCursor(disp.getSystemCursor(SWT.CURSOR_WAIT));
 		int index = searchModuleNames(moduleName);
 	
 		DashboardAdapter adapter = null;
 		if (index == -1)
 		{
-				createComposite(moduleName);
+			createComposite(moduleName);
 			index = searchModuleNames(moduleName);
 		}
 		adapter = new DashboardAdapter(composites.get(index), gd, ds, moduleName);
 		updater.addUpdateListener(adapter.getGraph());
 		composites.get(index).add(adapter);
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(null);
-		  cursor.dispose();
+		disp.getActiveShell().setCursor(null);
 		return adapter;
 	}
 	
 	private int searchModuleNames(String moduleName) {
-		for (int i = 0; i<moduleNames.size();i++)
-		{
-			
+		for (int i = 0; i<moduleNames.size();i++) {
 			if (moduleName.equals(moduleNames.get(i))) return i;
 		}
 		return -1;
@@ -271,23 +175,15 @@ public class DashboardView extends ViewPart {
 		int index = searchModuleNames(moduleName);
 		composites.get(index).remove(graph);
 		graph.dispose();
-		/*if (composites.get(index).getusedSlots() == 0)
-		{
-			composites.remove(index);
-			moduleNames.remove(index);
-			tabListeners.remove(index);
-			fireTabCloseEvent();
-		}*/
 	}
 	
 	public void closeComposite(String moduleName)
 	{
 		int index = searchModuleNames(moduleName);
-		if (composites.get(index).getusedSlots() <= 0)
-		{
-		scriptFolder.getItem(index).dispose();
-		moduleNames.remove(index);
-		composites.remove(index);
+		if (composites.get(index).getusedSlots() <= 0) {
+			scriptFolder.getItem(index).dispose();
+			moduleNames.remove(index);
+			composites.remove(index);
 		}
 	}
 	
@@ -300,19 +196,22 @@ public class DashboardView extends ViewPart {
 	}
 
 	private void fireTabCloseEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
-			tabListeners.get(i).tabClosed();
+		for(ITabListener tabListener:tabListeners) {
+			tabListener.tabClosed();
+		}
 	}
 	
 	
 	private void fireTabOpenEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
-			tabListeners.get(i).tabOpened();
+		for(ITabListener tabListener:tabListeners) {
+			tabListener.tabOpened();
+		}
 	}
 
 	private void fireTabChangedEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
-			tabListeners.get(i).tabChanged();
+		for(ITabListener tabListener:tabListeners) {
+			tabListener.tabChanged();
+		}
 	}
 	
 	/**
@@ -321,8 +220,6 @@ public class DashboardView extends ViewPart {
 	 */
 	@Override
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 
 		if(null != scriptFolder)
@@ -335,7 +232,6 @@ public class DashboardView extends ViewPart {
 		if(null != tabListeners)
 			tabListeners.removeAll(tabListeners);
 		tabListeners = null;
-		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 		
 	}
 	

@@ -36,7 +36,6 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class GraphsView extends ViewPart {
 	public GraphsView() {
 		super();
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -145,7 +144,6 @@ public abstract class GraphsView extends ViewPart {
 	 */
 	@Override
 	public void dispose() {
-		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}

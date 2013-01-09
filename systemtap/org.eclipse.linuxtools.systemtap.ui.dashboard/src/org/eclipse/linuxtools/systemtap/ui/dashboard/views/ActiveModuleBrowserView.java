@@ -22,10 +22,8 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphDa
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -44,7 +42,6 @@ import org.eclipse.ui.PlatformUI;
 public class ActiveModuleBrowserView extends ModuleView {
 	public ActiveModuleBrowserView() {
 		super();
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
 
 	@Override
@@ -87,9 +84,8 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 * @param data The <code>ActiveModuleData</code> representing the item to add.
 	 */
 	public void add(String display, ActiveModuleData data) {
-		 Display disp = PlatformUI.getWorkbench().getDisplay();
-		  Cursor cursor = new Cursor(disp, SWT.CURSOR_WAIT);
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(cursor);
+		Display disp = PlatformUI.getWorkbench().getDisplay();
+		disp.getActiveShell().setCursor(disp.getSystemCursor(SWT.CURSOR_WAIT));
 
 		TreeNode root = (TreeNode)viewer.getInput();
 		ActiveModuleTreeNode child = new ActiveModuleTreeNode(data, display, true);
@@ -111,8 +107,7 @@ public class ActiveModuleBrowserView extends ModuleView {
 		}
 		root.sortLevel();
 		viewer.refresh();
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(null);
-		  cursor.dispose();
+		disp.getActiveShell().setCursor(null);
 	}
 
 	/**
@@ -189,7 +184,6 @@ public class ActiveModuleBrowserView extends ModuleView {
 	public boolean anyRunning() {
 		TreeNode tree = (TreeNode)viewer.getInput();
 		return tree.getChildCount() > 0;
-		//return true;
 	}
 
 	/**
@@ -198,7 +192,6 @@ public class ActiveModuleBrowserView extends ModuleView {
 	 */
 	@Override
 	public void dispose() {
-		LogManager.logInfo("disposing", this); //$NON-NLS-1$
 		super.dispose();
 		viewer = null;
 	}
