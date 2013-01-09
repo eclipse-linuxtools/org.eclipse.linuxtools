@@ -155,12 +155,12 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
 							if (field.isHyperLink(item.getData())){
 								Rectangle bounds = item.getBounds(i);
 							if (bounds.contains(e.x,e.y)){
-									cursor = new Cursor(e.display,SWT.CURSOR_HAND);
+									cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
 									tree.setCursor(cursor);
 									return;
 								}
 							}
-							cursor = new Cursor(e.display,SWT.CURSOR_ARROW);
+							cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
 							tree.setCursor(cursor);
 						}
 					}
