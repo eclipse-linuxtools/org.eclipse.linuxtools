@@ -57,13 +57,13 @@ public class ContextMenuHelper {
 						MenuItem theItem = getMenuItem(bot, texts);
 						if (theItem != null && !theItem.isEnabled())
 							throw new IllegalStateException(
-									"Menu item is diabled");
+									"Menu item is diabled"); //$NON-NLS-1$
 
 						return theItem;
 					}
 				});
 		if (menuItem == null) {
-			throw new WidgetNotFoundException("Could not find menu: "
+			throw new WidgetNotFoundException("Could not find menu: " //$NON-NLS-1$
 					+ Arrays.asList(texts));
 		}
 

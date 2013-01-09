@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.provider.tests.stubby;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -26,7 +25,7 @@ public class StubbyLaunchConfigurationDelegate extends
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+			ILaunch launch, IProgressMonitor monitor) {
 	}
 
 	@Override

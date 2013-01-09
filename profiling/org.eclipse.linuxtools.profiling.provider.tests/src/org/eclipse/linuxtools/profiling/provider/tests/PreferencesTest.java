@@ -16,6 +16,10 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRe
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -43,13 +47,13 @@ import org.osgi.framework.FrameworkUtil;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class PreferencesTest extends AbstractTest{
-	private static final String PROJ_NAME = "fibTest";
-	private static final String STUB_TOOLTIP = "tooltip test";
-	private static final String STUB_LABEL = "Test Tool [description test]";
-	private static final String PROFILING_PREFS_CATEGORY = "Timing";
-	private static final String PROFILING_PREFS_TYPE = "timing";
+	private static final String PROJ_NAME = "fibTest"; //$NON-NLS-1$
+	private static final String STUB_TOOLTIP = "tooltip test"; //$NON-NLS-1$
+	private static final String STUB_LABEL = "Test Tool [description test]"; //$NON-NLS-1$
+	private static final String PROFILING_PREFS_CATEGORY = "Timing"; //$NON-NLS-1$
+	private static final String PROFILING_PREFS_TYPE = "timing"; //$NON-NLS-1$
 	private static final String[][] PROFILING_PREFS_INFO = {
-			{ "Coverage", "coverage" }, { "Memory", "memory" },{ "Timing", "timing" } };
+			{ "Coverage", "coverage" }, { "Memory", "memory" },{ "Timing", "timing" } };  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 	@BeforeClass
 	public static void setUpWorkbench() throws Exception {
@@ -57,19 +61,19 @@ public class PreferencesTest extends AbstractTest{
 
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		try {
-			bot.viewByTitle("Welcome").close();
+			bot.viewByTitle("Welcome").close(); //$NON-NLS-1$
 			// hide Subclipse Usage stats popup if present/installed
-			bot.shell("Subclipse Usage").activate();
-			bot.button("Cancel").click();
+			bot.shell("Subclipse Usage").activate(); //$NON-NLS-1$
+			bot.button("Cancel").click(); //$NON-NLS-1$
 		} catch (WidgetNotFoundException e) {
 			// ignore
 		}
 
 		// Set C/C++ perspective.
-		bot.perspectiveByLabel("C/C++").activate();
+		bot.perspectiveByLabel("C/C++").activate(); //$NON-NLS-1$
 		bot.sleep(500);
 		for (SWTBotShell sh : bot.shells()) {
-			if (sh.getText().startsWith("C/C++")) {
+			if (sh.getText().startsWith("C/C++")) { //$NON-NLS-1$
 				sh.activate();
 				bot.sleep(500);
 				break;
@@ -77,43 +81,43 @@ public class PreferencesTest extends AbstractTest{
 		}
 
 		// Turn off automatic building by default to avoid timing issues
-		SWTBotMenu windowsMenu = bot.menu("Window");
-		windowsMenu.menu("Preferences").click();
-		SWTBotShell shell = bot.shell("Preferences");
+		SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
+		windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
+		SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
 		shell.activate();
-		bot.tree().expandNode("General").select("Workspace");
-		SWTBotCheckBox buildAuto = bot.checkBox("Build automatically");
+		bot.tree().expandNode("General").select("Workspace"); //$NON-NLS-1$ //$NON-NLS-2$
+		SWTBotCheckBox buildAuto = bot.checkBox("Build automatically"); //$NON-NLS-1$
 		if (buildAuto != null && buildAuto.isChecked()) {
 			buildAuto.click();
 		}
 		bot.sleep(1000);
-		bot.button("Apply").click();
-		bot.button("OK").click();
+		bot.button("Apply").click(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 		bot.waitUntil(shellCloses(shell));
 	}
 
 	@Test
-	public void testDefaultPreferences() throws Exception {
+	public void testDefaultPreferences() {
 		for (String[] preferenceInfo : PROFILING_PREFS_INFO) {
 			checkDefaultPreference(preferenceInfo[0], preferenceInfo[1]);
 		}
 	}
 
 	@Test
-	public void testPreferencesPage() throws Exception {
+	public void testPreferencesPage() {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 		// Set default tool for "timing" profiling.
 		checkDefaultPreference(PROFILING_PREFS_CATEGORY, PROFILING_PREFS_TYPE);
 
 		// Open preferences shell.
-		SWTBotMenu windowsMenu = bot.menu("Window");
-		windowsMenu.menu("Preferences").click();
-		SWTBotShell shell = bot.shell("Preferences");
+		SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
+		windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
+		SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
 		shell.activate();
 
 		// Go to "Profiling Categories" preferences page.
-		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling Categories");
+		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling Categories"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(treeItem);
 
 		// Select "Timing" category page.
@@ -121,7 +125,7 @@ public class PreferencesTest extends AbstractTest{
 
 		// Get name of default tool to deselect.
 		String defaultToolId = ProviderFramework.getProviderIdToRun(null, PROFILING_PREFS_TYPE);
-		String defaultToolName = ProviderFramework.getToolInformationFromId(defaultToolId , "name");
+		String defaultToolName = ProviderFramework.getToolInformationFromId(defaultToolId , "name"); //$NON-NLS-1$
 
 		// Workaround for BZ #344484.
 		deselectSelectionByName(defaultToolName, bot);
@@ -132,37 +136,37 @@ public class PreferencesTest extends AbstractTest{
 		assertTrue(STUB_TOOLTIP.equals(stubRadio.getToolTipText()));
 		stubRadio.click();
 
-		bot.button("Apply").click();
-		bot.button("OK").click();
+		bot.button("Apply").click(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 
 	@Test
-	public void testProfileProject() throws Exception {
+	public void testProfileProject() throws InvocationTargetException, CoreException, URISyntaxException, InterruptedException, IOException {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), PROJ_NAME);
 		testPreferencesPage();
 
 		// Focus on project explorer view.
-		bot.viewByTitle("Project Explorer").bot();
+		bot.viewByTitle("Project Explorer").bot(); //$NON-NLS-1$
 		bot.activeShell();
 		SWTBotTree treeBot = bot.tree();
 		treeBot.setFocus();
 
 		// Select project binary.
 		// AbstractTest#createProjectAndBuild builds one executable binary under Binaries.
-		treeBot.expandNode(PROJ_NAME).expandNode("Binaries").getNode(0).select();
+		treeBot.expandNode(PROJ_NAME).expandNode("Binaries").getNode(0).select(); //$NON-NLS-1$
 
-		String menuItem = "Profiling Tools";
-		String subMenuItem = "3 Profile Timing";
+		String menuItem = "Profiling Tools"; //$NON-NLS-1$
+		String subMenuItem = "3 Profile Timing"; //$NON-NLS-1$
 
 		// Click on "Profiling Tools -> 3 Profiling Timing" context menu to execute shortcut.
 		ContextMenuHelper.clickContextMenu(treeBot, menuItem, subMenuItem);
 
 		// Assert that the expected tool is running.
-		SWTBotShell profileShell = bot.shell("Successful profile launch").activate();
+		SWTBotShell profileShell = bot.shell("Successful profile launch").activate(); //$NON-NLS-1$
 		assertNotNull(profileShell);
 
-		bot.button("OK").click();
+		bot.button("OK").click(); //$NON-NLS-1$
 		bot.waitUntil(shellCloses(profileShell));
 
 		deleteProject(proj);
@@ -172,35 +176,35 @@ public class PreferencesTest extends AbstractTest{
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 		// Open preferences shell.
-		SWTBotMenu windowsMenu = bot.menu("Window");
-		windowsMenu.menu("Preferences").click();
-		SWTBotShell shell = bot.shell("Preferences");
+		SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
+		windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
+		SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
 		shell.activate();
 
 		// Go to specified tree item in "Profiling Categories" preferences page.
-		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling Categories");
+		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling Categories"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(treeItem);
 
 		treeItem.select(preferenceCategory);
 
 		// Restore defaults.
-		bot.button("Restore Defaults").click();
-		bot.button("Apply").click();
+		bot.button("Restore Defaults").click(); //$NON-NLS-1$
+		bot.button("Apply").click(); //$NON-NLS-1$
 
 		// Get information for default tool.
 		String defaultToolId = ProviderFramework.getProviderIdToRun(null, profilingType);
-		String defaultToolName = ProviderFramework.getToolInformationFromId(defaultToolId , "name");
-		String defaultToolInfo = ProviderFramework.getToolInformationFromId(defaultToolId , "information");
-		String defaultToolDescription = ProviderFramework.getToolInformationFromId(defaultToolId , "description");
-		String defaultToolLabel = defaultToolName + " [" + defaultToolDescription + "]";
+		String defaultToolName = ProviderFramework.getToolInformationFromId(defaultToolId , "name"); //$NON-NLS-1$
+		String defaultToolInfo = ProviderFramework.getToolInformationFromId(defaultToolId , "information"); //$NON-NLS-1$
+		String defaultToolDescription = ProviderFramework.getToolInformationFromId(defaultToolId , "description"); //$NON-NLS-1$
+		String defaultToolLabel = defaultToolName + " [" + defaultToolDescription + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Assert default radio is as expected.
 		SWTBotRadio defaultRadio = bot.radio(defaultToolLabel);
 		assertNotNull(defaultRadio);
 		assertTrue(defaultToolInfo.equals(defaultRadio.getToolTipText()));
 
-		bot.button("Apply").click();
-		bot.button("OK").click();
+		bot.button("Apply").click(); //$NON-NLS-1$
+		bot.button("OK").click(); //$NON-NLS-1$
 	}
 
 	@Override
@@ -209,8 +213,7 @@ public class PreferencesTest extends AbstractTest{
 	}
 
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-			throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 	}
 
 	/**
@@ -226,8 +229,8 @@ public class PreferencesTest extends AbstractTest{
 			public void run() {
 				@SuppressWarnings("unchecked")
 				Matcher<Widget> matcher = allOf(widgetOfType(Button.class),
-						withStyle(SWT.RADIO, "SWT.RADIO"),
-						withRegex(name + ".*"));
+						withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
+						withRegex(name + ".*")); //$NON-NLS-1$
 
 				Button b = (Button) bot.widget(matcher); // the current selection
 				b.setSelection(false);

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.provider.tests.stubby;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
@@ -19,14 +18,13 @@ public class StubbyLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType("org.eclipse.linuxtools.profiling.stubby.launchConfigurationType");
+		return getLaunchManager().getLaunchConfigurationType("org.eclipse.linuxtools.profiling.stubby.launchConfigurationType"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc)  {
 		// Set this for testing purposes
-		wc.setAttribute("foo", "bar");
+		wc.setAttribute("foo", "bar"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

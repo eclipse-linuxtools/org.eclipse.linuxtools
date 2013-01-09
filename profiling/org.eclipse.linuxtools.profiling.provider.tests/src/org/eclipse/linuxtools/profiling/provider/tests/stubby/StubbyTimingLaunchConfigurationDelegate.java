@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.provider.tests.stubby;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -24,14 +23,14 @@ public class StubbyTimingLaunchConfigurationDelegate extends
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+			ILaunch launch, IProgressMonitor monitor) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
 				MessageDialog.openConfirm(window.getShell(),
-						"Successful profile launch",
-						"Successful profile launch");
+						"Successful profile launch", //$NON-NLS-1$
+						"Successful profile launch"); //$NON-NLS-1$
 			}
 		});
 	}

@@ -30,10 +30,10 @@ import org.osgi.framework.FrameworkUtil;
 
 public class LaunchTest extends AbstractTest {
 
-	private static final String BIN_NAME = "fibTest";
-	private static final String BIN_PATH = "Debug/" + BIN_NAME;
-	private static final String STUB_ID = "org.eclipse.linuxtools.profiling.stub";
-	private static final String LAUNCH_SHORT_EXTPT = "org.eclipse.debug.ui.launchShortcuts";
+	private static final String BIN_NAME = "fibTest"; //$NON-NLS-1$
+	private static final String BIN_PATH = "Debug/" + BIN_NAME; //$NON-NLS-1$
+	private static final String STUB_ID = "org.eclipse.linuxtools.profiling.stub"; //$NON-NLS-1$
+	private static final String LAUNCH_SHORT_EXTPT = "org.eclipse.debug.ui.launchShortcuts"; //$NON-NLS-1$
 
 	ProviderLaunchShortcut shortcut;
 	String launchConfigTypeId;
@@ -46,13 +46,9 @@ public class LaunchTest extends AbstractTest {
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LAUNCH_SHORT_EXTPT);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
 		for (IConfigurationElement cfg : configs) {
-			if (cfg.getAttribute("id").equals(STUB_ID)){
-				try {
-					shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class");
-					launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value");
-				} catch (Exception e){
-					fail ();
-				}
+			if (cfg.getAttribute("id").equals(STUB_ID)){ //$NON-NLS-1$
+					shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class"); //$NON-NLS-1$
+					launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 	}
@@ -62,8 +58,7 @@ public class LaunchTest extends AbstractTest {
 		try {
 			deleteProject(proj);
 		} catch (CoreException e) {
-			fail ();
-
+			fail (e.getMessage());
 		}
 	}
 
@@ -76,19 +71,19 @@ public class LaunchTest extends AbstractTest {
 		assertTrue(configs.length > 0);
 
 		for (IConfigurationElement cfg : configs) {
-			if (cfg.getAttribute("id").equals(STUB_ID)){
-				try {
-					assertTrue(cfg.createExecutableExtension("class") instanceof ProviderLaunchShortcut);
-					assertTrue(cfg.getChildren("class").length == 1);
-					IConfigurationElement elem = cfg.getChildren("class")[0];
+			if (cfg.getAttribute("id").equals(STUB_ID)){ //$NON-NLS-1$
+					try {
+						assertTrue(cfg.createExecutableExtension("class") instanceof ProviderLaunchShortcut); //$NON-NLS-1$
+					} catch (CoreException e) {
+						fail(e.getMessage());
+					}
+					assertTrue(cfg.getChildren("class").length == 1); //$NON-NLS-1$
+					IConfigurationElement elem = cfg.getChildren("class")[0]; //$NON-NLS-1$
 					for (int i = 0; i < 2; i++) {
-						assertNotNull(elem.getChildren("parameter")[i].getAttribute("name"));
-						assertNotNull(elem.getChildren("parameter")[i].getAttribute("value"));
+						assertNotNull(elem.getChildren("parameter")[i].getAttribute("name")); //$NON-NLS-1$ //$NON-NLS-2$
+						assertNotNull(elem.getChildren("parameter")[i].getAttribute("value")); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
-				} catch (Exception e){
-					fail ();
-				}
 			}
 		}
 	}
@@ -108,14 +103,14 @@ public class LaunchTest extends AbstractTest {
 
 		try {
 			for (ILaunchConfiguration config : getLaunchManager().getLaunchConfigurations()){
-				if (config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "").equals(BIN_PATH)){
-					if (config.getAttribute("foo", "").equals("bar")){
+				if (config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "").equals(BIN_PATH)){ //$NON-NLS-1$
+					if (config.getAttribute("foo", "").equals("bar")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						return;
 					}
 				}
 			}
 		} catch (CoreException e) {
-			fail ();
+			fail (e.getMessage());
 		}
 		fail ();
 	}
@@ -131,8 +126,8 @@ public class LaunchTest extends AbstractTest {
 			setProfileAttributes(wc);
 
 			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-		} catch (Exception e) {
-			fail ();
+		} catch (CoreException e) {
+			fail (e.getMessage());
 		}
 	}
 
@@ -143,12 +138,12 @@ public class LaunchTest extends AbstractTest {
 
 		try {
 			for (ILaunchConfiguration config : getLaunchManager().getLaunchConfigurations()){
-				if (config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "").equals(BIN_PATH)){
-					assertNotSame("bar", config.getAttribute("foo", ""));
+				if (config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "").equals(BIN_PATH)){ //$NON-NLS-1$
+					assertNotSame("bar", config.getAttribute("foo", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
 		} catch (CoreException e) {
-			fail ();
+			fail (e.getMessage());
 		}
 	}
 
@@ -158,11 +153,10 @@ public class LaunchTest extends AbstractTest {
 	}
 
 	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-			throws CoreException {
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		// A delegate launch will have this property set, otherwise a shortcut launch will be assumed
 		// This is the provider with the highest priority
-		wc.setAttribute(ProviderProfileConstants.PROVIDER_CONFIG_ATT, "org.eclipse.linuxtools.profiling.provider.stubby1");
+		wc.setAttribute(ProviderProfileConstants.PROVIDER_CONFIG_ATT, "org.eclipse.linuxtools.profiling.provider.stubby1"); //$NON-NLS-1$
 		// Make each configuration unique
 		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, String.valueOf(System.currentTimeMillis()));
 	}

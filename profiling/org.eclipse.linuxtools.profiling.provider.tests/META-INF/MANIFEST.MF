@@ -8,9 +8,7 @@ Fragment-Host: org.eclipse.linuxtools.profiling.launch
 Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.swtbot.eclipse.finder;bundle-version="2.0.5",
- org.eclipse.swtbot.forms.finder;bundle-version="2.0.5",
- org.apache.log4j,
- org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="8.0.0"
+ org.apache.log4j
 Bundle-Localization: fragment
 Bundle-Vendor: %Bundle-Vendor
 Import-Package: org.eclipse.swtbot.swt.finder.junit
