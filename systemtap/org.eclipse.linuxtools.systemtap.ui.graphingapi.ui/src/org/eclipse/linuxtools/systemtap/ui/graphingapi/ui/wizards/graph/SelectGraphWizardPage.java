@@ -15,39 +15,22 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
-
-
-
 
 public class SelectGraphWizardPage extends WizardPage implements Listener {
 	public SelectGraphWizardPage() {
 		super("selectGraph");
 		setTitle(Localization.getString("SelectGraphWizardPage.SelectGraph"));
-		btnGraphs = null;
 	}
 	
 	public void createControl(Composite parent) {
 		wizard = (SelectGraphWizard)getWizard();
 		
-		Composite comp = new Composite(parent, SWT.NULL);
-		comp.setLayout(new FormLayout());
-		FormData data1 = new FormData();
-		data1.left = new FormAttachment(0, 0);
-		data1.top = new FormAttachment(0, 0);
-		data1.right = new FormAttachment(40, 0);
-		data1.bottom = new FormAttachment(100, 0);
-		
-		Composite cmpGraphOpts = new Composite(comp, SWT.NONE);
-		cmpGraphOpts.setLayoutData(data1);
+		Composite cmpGraphOpts = new Composite(parent, SWT.NONE);
 		ColumnLayout colLayout = new ColumnLayout();
 		colLayout.maxNumColumns = 1;
 		cmpGraphOpts.setLayout(colLayout);
@@ -55,34 +38,25 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 		String[] graphIDs = GraphFactory.getAvailableGraphs(wizard.model.getDataSet());
 		btnGraphs = new Button[graphIDs.length];
 		for(int i=0; i<btnGraphs.length; i++) {
-			btnGraphs[i] = new Button(cmpGraphOpts, SWT.NONE);
-			//btnGraphs[i].setText(GraphTypeConstants.getGraphName(graphIDs[i]));
+			btnGraphs[i] = new Button(cmpGraphOpts, SWT.TOGGLE);
 			btnGraphs[i].setImage(GraphFactory.getGraphImage(graphIDs[i]));
 			btnGraphs[i].addListener(SWT.Selection, this);
 			btnGraphs[i].setData(graphIDs[i]);
+			btnGraphs[i].setToolTipText(GraphFactory.getGraphName(btnGraphs[i].getData().toString()) + "\n\n" +
+					GraphFactory.getGraphDescription(btnGraphs[i].getData().toString()));
 		}
-		
-		FormData data2 = new FormData();
-		data2.left = new FormAttachment(cmpGraphOpts);
-		data2.top = new FormAttachment(0, 0);
-		data2.right = new FormAttachment(100, 0);
-		data2.bottom = new FormAttachment(100, 0);
-		
-		lblDesc = new Label(comp, SWT.WRAP);
-		lblDesc.setLayoutData(data2);
-		setControl(comp);
+		setControl(cmpGraphOpts);
 	}
 	
 	public void handleEvent(Event event) {
 		if(event.widget instanceof Button) {
 			Button target = (Button)event.widget;
-
 			for(int i=0; i<btnGraphs.length; i++)
 				if(target == btnGraphs[i]) {
-					lblDesc.setText(GraphFactory.getGraphName(btnGraphs[i].getData().toString()) + "\n\n" +
-									GraphFactory.getGraphDescription(btnGraphs[i].getData().toString()));
 					saveDataToModel(btnGraphs[i].getData().toString());
 					wizard.getContainer().updateButtons();
+				} else {
+					btnGraphs[i].setSelection(false);
 				}
 		}
 	}
@@ -112,10 +86,8 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 			for(int i=0; i<btnGraphs.length; i++)
 				btnGraphs[i] = null;
 		btnGraphs = null;
-		lblDesc = null;
 	}
 	
 	private Button[] btnGraphs;
-	private Label lblDesc;
 	private SelectGraphWizard wizard;
 }
