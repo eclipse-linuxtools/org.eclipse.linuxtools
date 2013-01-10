@@ -30,59 +30,6 @@
       </view>
    </extension>
 
-
-<!--
-   <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="org.eclipse.linuxtools.callgraph.actionSet"
-            label="Systemtap Marker Action Set"
-            visible="true">
-         <action
-               class="org.eclipse.linuxtools.internal.callgraph.actions.InsertMarkerAction"
-               definitionId="org.eclipse.linuxtools.callgraph.command3"
-               id="org.eclipse.linuxtools.callgraph.actions.StapAction"
-               label="Insert stap marker function"
-               tooltip="Insert systemtap marker">
-         </action>
-         <action
-               class="org.eclipse.linuxtools.internal.callgraph.actions.RemoveMarkerAction"
-               definitionId="org.eclipse.linuxtools.callgraph.command4"
-               id="org.eclipse.linuxtools.callgraph.actions.StapRemoveAction"
-               label="Remove stap marker function"
-               tooltip="Remove systemtap marker">
-         </action>
-      </actionSet>
-   </extension>
-   
-   	<extension point="org.eclipse.ui.bindings">
-		<key
-        commandId="org.eclipse.linuxtools.callgraph.command3"
-        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-        sequence="Ctrl+5"/>
-  <key
-        commandId="org.eclipse.linuxtools.callgraph.command4"
-        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-        sequence="Ctrl+6">
-  </key>
-	</extension>
-    <extension
-          point="org.eclipse.ui.commands">
-       <command
-             categoryId="org.eclipse.linuxtools.callgraph.category2"
-             id="org.eclipse.linuxtools.callgraph.command3"
-             name="Insert stap marker function">
-       </command>
-       <category
-             id="org.eclipse.linuxtools.callgraph.category2"
-             name="SystemTap">
-       </category>
-       <command
-             categoryId="org.eclipse.linuxtools.callgraph.category2"
-             id="org.eclipse.linuxtools.callgraph.command4"
-             name="Remove stap marker function">
-       </command>
-    </extension>-->
     <extension
           id="org.eclipse.linuxtools.callgraph.graphparser"
           name="%extension.name.0"
