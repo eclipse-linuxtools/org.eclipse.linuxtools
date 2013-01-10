@@ -630,10 +630,8 @@ public class StapGraph extends Graph {
 		
 		
 		StapData data = getNodeData(rootVisibleNodeNumber);
-		if (data.children != null) {
-			if (data.children.size() < 1) {
-				return;
-			}
+		if (data.children != null && data.children.size() < 1) {
+			return;
 		}
 		
 		List<Integer> list = data.children;

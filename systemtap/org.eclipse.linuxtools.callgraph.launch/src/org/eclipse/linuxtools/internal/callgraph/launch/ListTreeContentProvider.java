@@ -60,12 +60,12 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		try {
 			for (ICElement child : cont.getChildren()) {
 
-				if (child instanceof ICElement)
-					if (SystemTapLaunchShortcut.validElement(child))
-						return true;
-				if (child instanceof ICContainer) {
-					if (checkForValidChildren((ICContainer) child))
-						return true;
+				if ((child instanceof ICElement)
+						&& SystemTapLaunchShortcut.validElement(child))
+					return true;
+				if ((child instanceof ICContainer)
+						&& checkForValidChildren((ICContainer) child)) {
+					return true;
 				}
 			}
 		} catch (CModelException e) {
@@ -106,9 +106,9 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 						ArrayList<ICElement> output = new ArrayList<ICElement>();
 						
 						for (ICElement item : array) {
-							if (item instanceof ICContainer) {
-								if (checkForValidChildren((ICContainer) item))
-									output.add(item);
+							if ((item instanceof ICContainer)
+									&& checkForValidChildren((ICContainer) item)) {
+								output.add(item);
 							}
 
 							if (SystemTapLaunchShortcut.validElement(item))

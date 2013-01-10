@@ -139,10 +139,10 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		StringBuffer output = new StringBuffer();
 		
 		for (String func : toWrite.split(" ")) { //$NON-NLS-1$
-			if (func.length() > 0) {
-				if (exclusions == null || exclusions.size() < 1 || exclusions.contains(func) ) {					
-					output.append(generateProbe(func));
-				}		
+			if (func.length() > 0
+					&& (exclusions == null || exclusions.size() < 1 || exclusions
+							.contains(func))) {
+				output.append(generateProbe(func));
 			}
 		}
 

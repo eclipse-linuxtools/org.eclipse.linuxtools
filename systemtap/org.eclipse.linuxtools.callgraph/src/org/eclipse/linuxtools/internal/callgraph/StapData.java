@@ -67,11 +67,9 @@ public class StapData {
         
         
     	//Add this data to the caller's list of IDs
-		if (this.parent != -1) {
-			if (graphModel.getNodeData(this.parent) != null) {
-				graphModel.getNodeData(this.parent).addCallee(this.id);
-				this.levelOfRecursion = graphModel.getNodeData(this.parent).levelOfRecursion + 1;
-			}
+		if (this.parent != -1 && graphModel.getNodeData(this.parent) != null) {
+			graphModel.getNodeData(this.parent).addCallee(this.id);
+			this.levelOfRecursion = graphModel.getNodeData(this.parent).levelOfRecursion + 1;
 		}
         
 		//---------------Recursion management
