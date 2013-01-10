@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.oprofile.launch.tests;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -129,6 +130,8 @@ public class TestSetup extends AbstractTest {
 		protected int getNumberOfCounters() { return 1; }
 		@Override
 		protected boolean checkEventSetupValidity(int counter, String name, int maskValue) { return true; }
+		@Override
+		protected boolean hasPermissions(IProject project) { return true; }
 		public Button getDefaultCheck() { return defaultEventCheck; }
 	}
 	
