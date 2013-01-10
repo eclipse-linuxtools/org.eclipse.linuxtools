@@ -76,7 +76,7 @@ public final class NumberType {
 	 * 
 	 * @return The Number array cleaned.
 	 */
-	public static Number[] cleanObj2Num(Object[] o) throws NumberFormatException {
+	public static Number[] cleanObj2Num(Object[] o) {
 		Number[] arr = new Number[o.length];
 		for(int i = 0; i < o.length; i++)
 			arr[i] = cleanObj2Num(o[i]);
@@ -92,7 +92,7 @@ public final class NumberType {
 	 * 
 	 * @return The Number object cleaned.
 	 */
-	public static Number cleanObj2Num(Object o) throws NumberFormatException {
+	public static Number cleanObj2Num(Object o) {
 		if(o instanceof Number)
 			return (Number)o;
 		else {

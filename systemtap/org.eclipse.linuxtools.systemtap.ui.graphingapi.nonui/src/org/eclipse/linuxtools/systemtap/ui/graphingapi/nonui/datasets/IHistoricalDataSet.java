@@ -12,8 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets;
 
 public interface IHistoricalDataSet extends IDataSet {
-	public void append(IDataEntry entry) throws ArrayIndexOutOfBoundsException;
-
+	public void append(IDataEntry entry);
 	public Object[] getHistoricalData(String key, int col);
 	public Object[] getHistoricalData(String key, int col, int start, int end);
 	public int getEntryCount();

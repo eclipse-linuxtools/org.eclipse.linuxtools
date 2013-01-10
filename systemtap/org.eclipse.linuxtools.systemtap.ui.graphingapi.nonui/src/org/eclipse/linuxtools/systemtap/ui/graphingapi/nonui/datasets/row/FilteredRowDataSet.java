@@ -36,7 +36,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 	
 	//Overwrite methods to insure data is removed from the original DataSet
 	@Override
-	public void append(IDataEntry entry) throws ArrayIndexOutOfBoundsException {
+	public void append(IDataEntry entry) {
 		original.append(entry);
 	}
 	
