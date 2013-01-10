@@ -51,10 +51,7 @@ import org.eclipse.ui.WorkbenchException;
  */
 public class OpenScriptOutputAction extends Action implements IWorkbenchWindowActionDelegate {
 	public void init(IWorkbenchWindow window) {
-		LogManager.logDebug("Start OpenScriptOutputAction.init", this); //$NON-NLS-1$
-		LogManager.logDebug("Initializing", this); //$NON-NLS-1$
 		fWindow = window;
-		LogManager.logDebug("End OpenScriptOutputAction.init", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -65,19 +62,16 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	 * @param act The action that fired this method.
 	 */
 	public void run(IAction act) {
-		LogManager.logDebug("Start OpenScriptOutputAction.run", this); //$NON-NLS-1$
-		
 		File f = queryFile();
 		
 		if(null == f) {
 		} else if(!f.exists()) {
-			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileDNE"));
+			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileDNE")); //$NON-NLS-1$
 		} else if(!f.canRead()) {
-			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileCanNotRead"));
+			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileCanNotRead")); //$NON-NLS-1$
 		} else {
 			//Get the file from the user
-			StringBuilder sb = new StringBuilder();
-			readFile(f, sb);
+			StringBuilder sb = readFile(f);
 			if(getChartingOptions(f.getAbsolutePath())) {
 				IDataEntry output;
 				while(true) {
@@ -97,8 +91,6 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 				}
 			}
 		}
-
-		LogManager.logDebug("End OpenScriptOutputAction.run", this); //$NON-NLS-1$
 	}
 	
 
@@ -108,15 +100,12 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	 * @return The File selected to open.
 	 */
 	private File queryFile() {
-		LogManager.logDebug("Start queryFile:", this); //$NON-NLS-1$
 		FileDialog dialog= new FileDialog(fWindow.getShell(), SWT.OPEN);
-		dialog.setText(Localization.getString("OpenScriptOutputAction.OpenFile"));
+		dialog.setText(Localization.getString("OpenScriptOutputAction.OpenFile")); //$NON-NLS-1$
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
-			LogManager.logDebug("queryFile: returnVal-" + path, this); //$NON-NLS-1$
 			return new File(path);
 		}
-		LogManager.logDebug("queryFile: returnVal-null", this); //$NON-NLS-1$
 		return null;
 	}
 
@@ -126,21 +115,17 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	 * @param message The message that should be shown in the error dialog.
 	 */
 	private void displayError(String message) {
-		LogManager.logDebug("Start OpenScriptOutputAction.displayError", this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
-		MessageDialog.openWarning(fWindow.getShell(), Localization.getString("OpenScriptOutputAction.Problem"), message);
-		LogManager.logInfo("Disposing", MessageDialog.class); //$NON-NLS-1$
-		LogManager.logDebug("End OpenScriptOutputAction.displayError", this); //$NON-NLS-1$
+		MessageDialog.openWarning(fWindow.getShell(), Localization.getString("OpenScriptOutputAction.Problem"), message); //$NON-NLS-1$
 	}
 	
 	/**
 	 * This method will read the contents of the provided file and
 	 * add the contents to the provided StringBuilder.
 	 * @param f The file that will be opened for reading
-	 * @param sb The StringBuilder to store the contents of the file
+	 * @param The contents of the file
 	 */
-	private void readFile(File f, StringBuilder sb) {
-		LogManager.logDebug("Start ImportDataSetAction.readData", this); //$NON-NLS-1$
+	private StringBuilder readFile(File f) {
+		StringBuilder sb = new StringBuilder();
 		try {
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
@@ -157,7 +142,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 			ioe.printStackTrace();
 			LogManager.logCritical("IOException ImportDataSetAction.readData:" + ioe.getMessage(), this); //$NON-NLS-1$
 		}
-		LogManager.logDebug("End ImportDataSetAction.readData", this); //$NON-NLS-1$
+		return sb;
 	}
 	
 	/**
@@ -188,11 +173,8 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start OpenScriptOutputAction.dispose", this); //$NON-NLS-1$
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		fWindow = null;
 		parser = null;
-		LogManager.logDebug("End OpenScriptOutputAction.dispose", this); //$NON-NLS-1$
 	}
 	
 	private IWorkbenchWindow fWindow;
