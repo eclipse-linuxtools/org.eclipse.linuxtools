@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Sleepingthreads
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.genericzestdemo;singleton:=true
 Bundle-Version: 0.11.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.sleepingthreads.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.callgraph.core,
  org.eclipse.zest.core;bundle-version="1.2.0",
@@ -22,5 +21,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.swt,
  org.eclipse.swt.graphics,
  org.eclipse.swt.widgets,
- org.eclipse.ui,
- org.eclipse.ui.plugin
+ org.eclipse.ui
