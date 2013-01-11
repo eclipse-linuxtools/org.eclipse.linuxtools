@@ -1,11 +1,5 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
-
-//import com.trilead.ssh2.SCPClient;
-//import com.trilead.ssh2.Connection;
-//import com.jcraft.jsch.*;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -20,8 +14,6 @@ import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener
 import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
 
 import com.jcraft.jsch.JSchException;
-
-
 
 public class Subscription extends Thread {
 	private int scriptid;
@@ -56,16 +48,12 @@ public class Subscription extends Thread {
 	}
 
 	public boolean init() {
-			// send subscription request packet
-			// check if response is OK
-
+		// send subscription request packet
+		// check if response is OK
 		if (!ClientSession.isConnected()) {
 			return false;
 	     }
 
-
-	  // BusyIndicator.showWhile(null, new Runnable() {
-		//   public void run() {
         try{
 		ScpClient scpclient = new ScpClient();
 		 scpclient.transfer(filename,"/tmp/"+ filename.substring(filename.lastIndexOf('/')+1)); //$NON-NLS-1$
@@ -77,8 +65,6 @@ public class Subscription extends Thread {
 		scriptid = ClientSession.getNewScriptId();
 		final DMRequest subreq = new DMRequest(DMRequest.SUBSCRIBE,scriptid, filename,session.getcid(), 0, isGuru);
 		if (!session.sendRequest(subreq)) {
-			//System.out.println("sent subscription");
-		//	return false;
 		}
 
 
@@ -90,28 +76,29 @@ public class Subscription extends Thread {
 
 		final DMResponse subrep = session.recvResponse(scriptid);
 		if (subrep.isValid()) {
-	    	scriptid = subrep.getscriptID();
-
+			scriptid = subrep.getscriptID();
 
 			logger = new LoggingStreamDaemon();
 			inputListeners.add(logger);
 
-			try{
-			pos = new PipedOutputStream();
-	        pis = new PipedInputStream(pos);
-	        pos.flush();
-	    	}catch (IOException e) {
-				new ErrorMessage("Could not subscribe!", "See stderr for more details").open();
+			try {
+				pos = new PipedOutputStream();
+				pis = new PipedInputStream(pos);
+				pos.flush();
+			} catch (IOException e) {
+				new ErrorMessage("Could not subscribe!",
+						"See stderr for more details").open();
 			}
 
 			inputGobbler = new StreamGobbler(pis);
 			addInputStreamListener(logger);
 
 			return true;
-		}
-		else {
+		} else {
 			session.delSubscription(scriptid);
-			new ErrorMessage("Could not subscribe!", "Response from Server not valid \n See stderr for more details").open();
+			new ErrorMessage("Could not subscribe!",
+					"Response from Server not valid \n See stderr for more details")
+					.open();
 			return false;
 		}
 	}
@@ -144,8 +131,7 @@ public class Subscription extends Thread {
 					inputGobbler.fireNewDataEvent(str + "\n"); //$NON-NLS-1$
 				}
 			return;
-			}
-			else if (subrep.isValid()) {
+			} else if (subrep.isValid()) {
 
 				final String outp = new String (session.recvData(scriptid, subrep.getsize()));
 
@@ -158,8 +144,9 @@ public class Subscription extends Thread {
 		}
 
 		final DMRequest unsub = new DMRequest (DMRequest.UNSUBSCRIBE, scriptid, session.getcid(), 0);
-		if (!session.sendRequest (unsub))
+		if (!session.sendRequest (unsub)) {
 			System.err.println ("Failed Unsubscribing: " + session.getcid());
+		}
 
 		subrep = session.recvResponse(scriptid);
 		delSubscription();
@@ -175,8 +162,7 @@ public class Subscription extends Thread {
 		return "table" + script; //$NON-NLS-1$
 	}
 
-	public String getOutput()
-	{
+	public String getOutput() {
 		return logger.getOutput();
 	}
 
@@ -198,7 +184,7 @@ public class Subscription extends Thread {
 			}
 			inputGobbler = null;
 
-			if(null != errorGobbler){
+			if(null != errorGobbler) {
 				errorGobbler.dispose();
 				errorGobbler.stop();
 			}
@@ -211,12 +197,11 @@ public class Subscription extends Thread {
 	 * @param listener A listener to monitor the InputStream from the Process
 	 */
 	public void addInputStreamListener(IGobblerListener listener) {
-		if(null != inputGobbler)
-		{
+		if(null != inputGobbler) {
 			inputGobbler.addDataListener(listener);
-		}
-		else
+		} else {
 			inputListeners.add(listener);
+		}
 	}
 
 	/**
@@ -224,10 +209,11 @@ public class Subscription extends Thread {
 	 * @param listener A listener to monitor the ErrorStream from the Process
 	 */
 	public void addErrorStreamListener(IGobblerListener listener) {
-		if(null != errorGobbler)
+		if(null != errorGobbler) {
 			errorGobbler.addDataListener(listener);
-		else
+		} else {
 			errorListeners.add(listener);
+		}
 	}
 
 	/**
@@ -235,10 +221,11 @@ public class Subscription extends Thread {
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
 	public ArrayList<IGobblerListener> getInputStreamListeners() {
-		if(null != inputGobbler)
+		if(null != inputGobbler) {
 			return inputGobbler.getDataListeners();
-		else
+		} else {
 			return inputListeners;
+		}
 	}
 
 	/**
@@ -246,10 +233,11 @@ public class Subscription extends Thread {
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
 	public ArrayList<IGobblerListener> getErrorStreamListeners() {
-		if(null != errorGobbler)
+		if(null != errorGobbler) {
 			return errorGobbler.getDataListeners();
-		else
+		} else {
 			return errorListeners;
+		}
 	}
 
 	/**
@@ -257,10 +245,11 @@ public class Subscription extends Thread {
 	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
 	 */
 	public void removeInputStreamListener(IGobblerListener listener) {
-		if(null != inputGobbler)
+		if(null != inputGobbler) {
 			inputGobbler.removeDataListener(listener);
-		else
+		} else {
 			inputListeners.remove(listener);
+		}
 	}
 
 	/**
@@ -268,14 +257,14 @@ public class Subscription extends Thread {
 	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
 	 */
 	public void removeErrorStreamListener(IGobblerListener listener) {
-		if(null != errorGobbler)
+		if(null != errorGobbler) {
 			errorGobbler.removeDataListener(listener);
-		else
+		} else {
 			errorListeners.remove(listener);
+		}
 	}
 
-	public void delSubscription()
-	{
+	public void delSubscription() {
 		session.delSubscription(scriptid);
 	}
 

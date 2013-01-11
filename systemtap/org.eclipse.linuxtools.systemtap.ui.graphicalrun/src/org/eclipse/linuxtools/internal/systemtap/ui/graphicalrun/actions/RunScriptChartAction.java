@@ -13,7 +13,11 @@ package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.GraphicalRunPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
@@ -47,13 +51,6 @@ import com.jcraft.jsch.JSchException;
 public class RunScriptChartAction extends RunScriptAction {
 	public RunScriptChartAction() {
 		super();
-		LogManager.logDebug("initialized", this); //$NON-NLS-1$
-	}
-
-	@Override
-	public void dispose() {
-		LogManager.logDebug("disposed", this); //$NON-NLS-1$
-		super.dispose();
 	}
 
 	/**
@@ -79,34 +76,39 @@ public class RunScriptChartAction extends RunScriptAction {
 				 tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
 				 scpclient.transfer(fileName,tmpfileName);
 			 } catch (JSchException e){
-				 e.printStackTrace();
+				 ErrorDialog.openError(fWindow.getShell() , "", e.getMessage(), new Status(IStatus.ERROR, GraphicalRunPlugin.PLUGIN_ID, e.getMessage(), e));
 				 continueRun = false;
 			 } catch (IOException e) {
-				e.printStackTrace();
-				continueRun = false;
-			} finally {
-			 }
+				 ErrorDialog.openError(fWindow.getShell() , "", e.getMessage(), new Status(IStatus.ERROR, GraphicalRunPlugin.PLUGIN_ID, e.getMessage(), e));
+				 continueRun = false;
+			}
 
-			String[] script = null;
-		 
-			if(continueRun) script = buildStandardScript();
-			if(continueRun) {
-				//createClientSession();
-				    String[] envVars = getEnvironmentVariables();
-			    	ScriptConsole console = ScriptConsole.getInstance(serverfileName);
-	                console.run(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
-	            
-			//	subscription.addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
-				console.getCommand().addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
-				
-				//Change to the graphing perspective
+			if (continueRun) {
+				String[] script = buildStandardScript();
+				String[] envVars = getEnvironmentVariables();
+				ScriptConsole console = ScriptConsole
+						.getInstance(serverfileName);
+				console.run(script, envVars, new PasswordPrompt(
+						IDESessionSettings.password), new StapErrorParser());
+
+				// subscription.addInputStreamListener(new
+				// ChartStreamDaemon2(console, dataSet, parser));
+				console.getCommand().addInputStreamListener(
+						new ChartStreamDaemon2(console, dataSet, parser));
+
+				// Change to the graphing perspective
 				try {
-					IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+					IWorkbenchPage p = PlatformUI.getWorkbench()
+							.showPerspective(
+									GraphingPerspective.ID,
+									PlatformUI.getWorkbench()
+											.getActiveWorkbenchWindow());
 					IViewPart ivp = p.showView(GraphSelectorView.ID);
 					String name = console.getName();
-					((GraphSelectorView)ivp).createScriptSet(name.substring(name.lastIndexOf('/')+1), dataSet);
-				} catch(WorkbenchException we) {
-					
+					((GraphSelectorView) ivp).createScriptSet(
+							name.substring(name.lastIndexOf('/') + 1), dataSet);
+				} catch (WorkbenchException we) {
+
 				}
 			}
 		}

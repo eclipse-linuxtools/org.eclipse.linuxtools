@@ -22,6 +22,7 @@ import org.osgi.framework.BundleContext;
 public class GraphicalRunPlugin extends AbstractUIPlugin implements IStartup {
 	//The shared instance.
 	private static GraphicalRunPlugin plugin;
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.graphicalrun"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor.
@@ -62,7 +63,7 @@ public class GraphicalRunPlugin extends AbstractUIPlugin implements IStartup {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.graphicalrun", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
 	public void earlyStartup() {}

@@ -1,20 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2012 Red Hat Inc. and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
- *     Red Hat Inc - Copied from LoggedCommand removed all functions defined
- *     in LoggedCommand2 plus some small modifications
+ *     Red Hat Inc - Copied from LoggedCommand and modified
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
@@ -37,7 +38,7 @@ public class LocalLoggedCommand extends LoggedCommand2 {
 	 * the <code>StreamGobblers</code> with their respective streams.
 	 */
 	@Override
-	protected boolean init() {
+	protected IStatus init() {
 		try {
 			process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, null);
 
@@ -45,11 +46,10 @@ public class LocalLoggedCommand extends LoggedCommand2 {
 			inputGobbler = new StreamGobbler(process.getInputStream());
 
 			this.transferListeners();
-			return true;
+			return Status.OK_STATUS;
 		} catch (IOException e) {
-			e.printStackTrace();
+			return new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, e.getMessage(), e);
 		}
-		return false;
 	}
 	
 	/**
