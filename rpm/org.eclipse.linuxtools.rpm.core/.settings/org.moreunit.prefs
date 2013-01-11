@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+org.moreunit.package_suffix=tests
+org.moreunit.prefixes=
+org.moreunit.test_methodType=testMethodTypeNoPrefix
+org.moreunit.test_type=junit4
+org.moreunit.unitsourcefolder=org.eclipse.linuxtools.rpm.core\:src\:org.eclipse.linuxtools.rpm.core.tests\:src
+org.moreunit.useprojectsettings=true
