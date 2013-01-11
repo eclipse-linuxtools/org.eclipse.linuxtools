@@ -47,8 +47,8 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         SpecfileElement resolveElement = new SpecfileElement();
         resolveElement.setSpecfile(specfile);
         String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING : (specfile.getEpoch() + ":"); //$NON-NLS-1$
-        String version = specfile.getVersion() == null ? EMPTY_STRING : specfile.getVersion();
-        String release = specfile.getRelease() == null ? EMPTY_STRING : specfile.getRelease();
+        String version = specfile.getVersion();
+        String release = specfile.getRelease();
         
         // remove the dist macro if it exist in the release string.
         release = release.replaceAll("\\%\\{\\?dist\\}", EMPTY_STRING); //$NON-NLS-1$
@@ -58,29 +58,26 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 				authorEmail, epoch, version, release);
 
         String format = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT);
-        if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR))
+        if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR)) {
         	dateLine =  MessageFormat.format("* {0} {1} <{2}> - {3}{4}-{5}", formatTodaysDate(), //$NON-NLS-1$
 					authorName, authorEmail, epoch, version, release);
         
-        else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED))
+        } else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED)) {
         	dateLine =  MessageFormat
 					.format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
+        }
         
        	dateLine = UiUtils.resolveDefines(specfile, dateLine);
         return dateLine;
 
     }
 
-    public String mergeChangelog(String dateLine, String functionGuess,
-            IEditorPart changelog, String changeLogLocation, String fileLocation) {
-    	return mergeChangelog(dateLine, functionGuess, EMPTY_STRING, changelog, changeLogLocation, fileLocation);
-    }
-
     protected Specfile getParsedSpecfile() {
-        if (changelog == null)
+        if (changelog == null) {
             changelog = PlatformUI.getWorkbench()
                     .getActiveWorkbenchWindow().getActivePage()
                     .getActiveEditor();
+        }
         if (changelog instanceof SpecfileEditor) {
             SpecfileEditor specEditor = (SpecfileEditor) changelog;
             return specEditor.getSpecfile();
@@ -112,8 +109,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
             // there is some random number suffix to the category positions,
             // we need to find the one we want
             for (String positionCategory: positionCategories) {
-                if (positionCategory.startsWith("__content_types_category")) //$NON-NLS-1$
+                if (positionCategory.startsWith("__content_types_category")) {//$NON-NLS-1$
                     contentTypesPositionCategory = positionCategory;
+                }
             }
 
             if (contentTypesPositionCategory != null) {
@@ -126,8 +124,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
                         ITypedRegion partition = doc.getPartition(offset);
                         if (partition.getType().equals(
-                                SpecfilePartitionScanner.SPEC_CHANGELOG))
+                                SpecfilePartitionScanner.SPEC_CHANGELOG)) {
                             changelogPartition = partition;
+                        }
 
                     }
                     // Temporary buffer for changelog text
@@ -143,10 +142,12 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                         // make sure there are at least 2 newlines before 
                         // the changelog section
                         String endString = doc.get(doc.getLength() - 2, 2);
-                        if (endString.charAt(0) != '\n')
+                        if (endString.charAt(0) != '\n') {
                             buf.append('\n');
-                        if (endString.charAt(1) != '\n')
+                        }
+                        if (endString.charAt(1) != '\n') {
                             buf.append('\n');
+                        }
                         
                         buf.append("%changelog\n"); //$NON-NLS-1$
                         
@@ -175,8 +176,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     }
                     
                     // always terminate the file with a new line
-                    if (changelogLines.length > 0)
+                    if (changelogLines.length > 0) {
                         buf.append('\n');
+                    }
                     
                     doc.replace(offset, length, buf.toString());
 
@@ -187,14 +189,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                 } catch (BadLocationException e) {
         			SpecfileLog.logError(e);
                 }
-            } else {
-                // log error, we didn't find content type category positions,
-                // WTF?
-            }
-        } else {
-            // TODO: LOg error.
-            System.err.println(Messages.SpecfileChangelogFormatter_0 + changelog.getClass().toString()
-                    + Messages.SpecfileChangelogFormatter_1);
+            } 
         }
         return EMPTY_STRING;
 	}

@@ -56,7 +56,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	@Test
 	public void testMergeChangelogStringStringStringIEditorPartStringString() {
 		// TODO find how to test this
-		formatter.mergeChangelog("proba", "", editor, "", "");
+		formatter.mergeChangelog("proba", "", "", editor, "", "");
 	}
 
 }
