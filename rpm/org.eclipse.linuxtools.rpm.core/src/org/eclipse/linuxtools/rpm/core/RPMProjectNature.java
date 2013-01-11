@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
@@ -40,17 +36,6 @@ public class RPMProjectNature implements IProjectNature {
 	}
 
 	/**
-	 * Removes the RPM project nature from a given workspace project.
-	 * @param project the project
-	 * @param mon a progress monitor, or <code>null</code> if progress monitoring
-	 * is not desired
-	 * @throws CoreException if removing the RPM project nature fails
-	 */
-	public static void removeRPMNature(IProject project, IProgressMonitor mon) throws CoreException {
-		removeNature(project, IRPMConstants.RPM_NATURE_ID, mon);
-	}
-	
-	/**
 	 * Utility method for adding a nature to a project.
 	 * 
 	 * @param proj
@@ -75,26 +60,6 @@ public class RPMProjectNature implements IProjectNature {
 		project.setDescription(description, monitor);
 	}
 
-	/**
-	 * Utility method for removing a project nature from a project.
-	 * 
-	 * @param proj
-	 *            the project to remove the nature from
-	 * @param natureId
-	 *            the nature id to remove
-	 * @param monitor
-	 *            a progress monitor to indicate the duration of the operation,
-	 *            or <code>null</code> if progress reporting is not required.
-	 */
-	private static void removeNature(IProject project, String natureId, IProgressMonitor monitor) throws CoreException {
-		IProjectDescription description = project.getDescription();
-		String[] prevNatures = description.getNatureIds();
-		List<String> newNatures = new ArrayList<String>(Arrays.asList(prevNatures));
-		newNatures.remove(natureId);
-		description.setNatureIds(newNatures.toArray(new String[newNatures.size()]));
-		project.setDescription(description, monitor);
-	}
-	
 	public void configure() throws CoreException {
 	}
 
