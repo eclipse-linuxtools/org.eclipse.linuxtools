@@ -358,8 +358,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 		 * versions of rpm may need to reserve characters other than '-'.
 		 */
 		String packageName = nameText.getText();
-		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1 //$NON-NLS-1$ //$NON-NLS-2$
-				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (packageName.indexOf(' ') != -1 || packageName.indexOf('<') != -1
+				|| packageName.indexOf('>') != -1 || packageName.indexOf('=') != -1) {
 			updateStatus(Messages.SpecfileNewWizardPage_26
 					+ Messages.SpecfileNewWizardPage_27);
 			return;
