@@ -110,15 +110,10 @@ public class SpecfileFoldingStructureProvider {
 	}
 
 	private void addFoldingRegions(Set<Position> regions, Object[] elements) {
-		Position position;
 		// add folding on the preamble section
-		try {
-			SpecfileElement element = (SpecfileElement) elements[0];
-			position = new Position(0, element.getLineStartPosition() - 1);
-			regions.add(position);
-		} catch (Exception exception){
-			//pass
-		}
+		SpecfileElement element = (SpecfileElement) elements[0];
+		Position position = new Position(0, element.getLineStartPosition() - 1);
+		regions.add(position);
 
 		for (int i = 0; i < elements.length; i++) {
 			SpecfileElement startElement = (SpecfileElement) elements[i];
