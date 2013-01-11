@@ -75,12 +75,13 @@ public class RPMBuild {
 	 *            the spec file
 	 * @param outStream
 	 *            The stream to write the output to.
+	 * @return The return code of the build job.
 	 * @throws CoreException
 	 *             If the operation fails.
 	 */
-	public void buildPrep(IResource specFile, OutputStream outStream)
+	public IStatus buildPrep(IResource specFile, OutputStream outStream)
 			throws CoreException {
-		build(specFile, outStream, "-bp"); //$NON-NLS-1$
+		return build(specFile, outStream, "-bp"); //$NON-NLS-1$
 	}
 
 	/**

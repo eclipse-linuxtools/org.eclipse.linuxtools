@@ -66,10 +66,20 @@ public class RPMProject {
 		}
 	}
 
+	/**
+	 * Returns the configuration (RPMBuild, FLAT) for this project.
+	 * 
+	 * @return The project configuration.
+	 */
 	public IProjectConfiguration getConfiguration() {
 		return rpmConfig;
 	}
 
+	/**
+	 * Returns the .spec file of this project.
+	 * 
+	 * @return The .spec file or null if one is not found.
+	 */
 	public IResource getSpecFile() {
 		IContainer specsFolder = getConfiguration().getSpecsFolder();
 		IResource file = null;
@@ -80,12 +90,17 @@ public class RPMProject {
 			List<IResource> installedSpecs = specVisitor.getSpecFiles();
 			file = installedSpecs.get(0);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// ignore, failed to find .spec file.
 		}
 		return file;
 	}
 
+	/**
+	 * Import a SRPM into this RPM project using local file.
+	 * 
+	 * @param externalFile The SRPM file.
+	 * @throws CoreException If there is problem with the .src.rpm file.
+	 */
 	public void importSourceRPM(File externalFile) throws CoreException {
 		// Copy original SRPM to workspace
 		IFile srpmFile = getConfiguration().getSrpmsFolder().getFile(
@@ -139,6 +154,12 @@ public class RPMProject {
 		importSourceRPM(tempFile);
 	}
 
+	/**
+	 * Build both source and binary rpms.
+	 * @param outStream The stream to right command output to.
+	 * @return The result of the command.
+	 * @throws CoreException If exception occurs during building.
+	 */
 	public IStatus buildAll(OutputStream outStream) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		IStatus result = rpmbuild.buildAll(getSpecFile(), outStream);
@@ -186,11 +207,18 @@ public class RPMProject {
 		return result;
 	}
 
-	public void buildPrep(OutputStream out) throws CoreException {
+	/**
+	 * Prepares sources for build (rpmbuild -bp).
+	 * @param out The stream to right command output to.
+	 * @return The result of the command.
+	 * @throws CoreException If exception occurs during building.
+	 */
+	public IStatus buildPrep(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildPrep(getSpecFile(), out);
+		IStatus result = rpmbuild.buildPrep(getSpecFile(), out);
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+		return result;
 	}
 
 }

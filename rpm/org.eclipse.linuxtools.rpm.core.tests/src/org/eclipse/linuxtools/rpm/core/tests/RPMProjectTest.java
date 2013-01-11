@@ -12,10 +12,10 @@ package org.eclipse.linuxtools.rpm.core.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IContainer;
@@ -24,9 +24,9 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -34,6 +34,7 @@ import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -48,44 +49,17 @@ public class RPMProjectTest {
 	final String file_sep = System.getProperty("file.separator"); //$NON-NLS-1$
 
 	@BeforeClass
-	public static void setUp() throws Exception {
-		IWorkspaceDescription desc;
+	public static void setUp() {
 		workspace = ResourcesPlugin.getWorkspace();
-		if (workspace == null) {
-			fail("Workspace was not setup");
-		}
 		root = workspace.getRoot();
 		monitor = new NullProgressMonitor();
-		if (root == null) {
-			fail("Workspace root was not setup");
-		}
-		desc = workspace.getDescription();
-		desc.setAutoBuilding(false);
-		workspace.setDescription(desc);
 	}
 
 	@Test
 	public void testImportHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testHelloWorld");
-		testProject.create(monitor);
-		testProject.open(monitor);
-
-		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject,
-				RPMProjectLayout.RPMBUILD);
-
-		// Find the test SRPM and install it
-		URL url = FileLocator.find(FrameworkUtil
-				.getBundle(RPMProjectTest.class), new Path(
-				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
-						"helloworld-2-2.src.rpm"), null);
-		if (url == null) {
-			fail("Unable to find resource" + file_sep + "srpms" + file_sep
-					+ "helloworld-2-2.src.rpm");
-		}
-		File foo = new File(FileLocator.toFileURL(url).getPath());
-		rpmProject.importSourceRPM(foo);
+		RPMProject rpmProject = importSrpm(testProject);
 
 		// Make sure the original SRPM got copied into the workspace
 		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
@@ -127,10 +101,6 @@ public class RPMProjectTest {
 				.getBundle(RPMProjectTest.class), new Path(
 				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
 						"helloworld-2-2.src.rpm"), null);
-		if (url == null) {
-			fail("Unable to find resource" + file_sep + "srpms" + file_sep
-					+ "helloworld-2-2.src.rpm");
-		}
 		File foo = new File(FileLocator.toFileURL(url).getPath());
 		rpmProject.importSourceRPM(foo);
 
@@ -162,24 +132,7 @@ public class RPMProjectTest {
 	public void testBuildPrepHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildPrepHelloWorld");
-		testProject.create(monitor);
-		testProject.open(monitor);
-
-		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject,
-				RPMProjectLayout.RPMBUILD);
-
-		// Find the test SRPM, install, and build-prep it
-		URL url = FileLocator.find(FrameworkUtil
-				.getBundle(RPMProjectTest.class), new Path(
-				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
-						"helloworld-2-2.src.rpm"), null);
-		if (url == null) {
-			fail("Unable to find resource" + file_sep + "srpms" + file_sep
-					+ "helloworld-2-2.src.rpm");
-		}
-		File foo = new File(FileLocator.toFileURL(url).getPath());
-		rpmProject.importSourceRPM(foo);
+		RPMProject rpmProject = importSrpm(testProject);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		rpmProject.buildPrep(bos);
 		
@@ -197,6 +150,57 @@ public class RPMProjectTest {
 	public void testBuildSourceRPMHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
+		RPMProject rpmProject = importSrpm(testProject);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rpmProject.buildSourceRPM(bos);
+
+		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+				.getFile(new Path("helloworld-2-2.src.rpm"));
+		assertTrue(foo2.exists());
+
+		testProject.delete(true, true, null);
+	}
+
+	@Test
+	public void testBuildBinaryRPMHelloWorld() throws Exception {
+		// Create a project for the test
+		IProject testProject = root.getProject("testBuildBinaryRPMHelloWorld1");
+		RPMProject rpmProject = importSrpm(testProject);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rpmProject.buildBinaryRPM(bos);
+
+		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+				.getFile(new Path("helloworld-2-2.src.rpm"));
+		assertTrue(foo2.exists());
+
+		String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
+		IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
+				.getFile(new Path("helloworld-2-2."+arch+".rpm"));
+		assertTrue(foo3.exists());
+		testProject.delete(true, true, null);
+	}
+
+	@Test
+	public void testBuildAllRPMHelloWorld() throws Exception {
+		// Create a project for the test
+		IProject testProject = root.getProject("testBuildAllRPMHelloWorld1");
+		RPMProject rpmProject = importSrpm(testProject);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rpmProject.buildAll(bos);
+
+		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+				.getFile(new Path("helloworld-2-2.src.rpm"));
+		assertTrue(foo2.exists());
+
+		String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
+		IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
+				.getFile(new Path("helloworld-2-2."+arch+".rpm"));
+		assertTrue(foo3.exists());
+		testProject.delete(true, true, null);
+	}
+
+	private RPMProject importSrpm(IProject testProject) throws CoreException,
+			IOException {
 		testProject.create(monitor);
 		testProject.open(monitor);
 
@@ -209,20 +213,9 @@ public class RPMProjectTest {
 				.getBundle(RPMProjectTest.class), new Path(
 				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
 						"helloworld-2-2.src.rpm"), null);
-		if (url == null) {
-			fail("Unable to find resource" + file_sep + "srpms" + file_sep
-					+ "helloworld-2-2.src.rpm");
-		}
 		File foo = new File(FileLocator.toFileURL(url).getPath());
 		rpmProject.importSourceRPM(foo);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		rpmProject.buildSourceRPM(bos);
-
-		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(foo2.exists());
-
-		testProject.delete(true, true, null);
+		return rpmProject;
 	}
 	
 	@Test
@@ -238,16 +231,8 @@ public class RPMProjectTest {
         IProjectConfiguration config = rpmProject.getConfiguration();
         String folder = config.getSourcesFolder().getLocation().toOSString();
        
-        boolean srcFolderPath = true;
-       
         int sourceFolder = folder.indexOf("SOURCES");
-       
-        if (sourceFolder==-1) {
-                srcFolderPath=false;
-        }
-                       
-        assertTrue(srcFolderPath);
+        assertTrue(sourceFolder != -1);
         testProject.delete(true, true, null);
-
-}
+    }
 }
