@@ -20,6 +20,10 @@ import org.eclipse.core.runtime.Status;
  */
 public class StubbyLog {
 	
+	private StubbyLog() {
+		//don't allow instantiation
+	}
+
    /**
     * Log the specified information.
     * 
