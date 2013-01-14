@@ -50,774 +50,787 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
+public class STRulerColumn implements IVerticalRulerColumn {
+    /**
+     * Internal listener class.
+     */
+    class InternalListener implements IViewportListener, ITextListener {
 
-public class STRulerColumn implements IVerticalRulerColumn{
-	/**
-	 * Internal listener class.
-	 */
-	class InternalListener implements IViewportListener, ITextListener {
+        /**
+         * @since 3.1
+         */
+        private boolean fCachedRedrawState = true;
 
-		/**
-		 * @since 3.1
-		 */
-		private boolean fCachedRedrawState= true;
+        /*
+         * @see IViewportListener#viewportChanged(int)
+         */
+        @Override
+        public void viewportChanged(int verticalPosition) {
+            if (fCachedRedrawState && verticalPosition != fScrollPos)
+                redraw();
+        }
 
-		/*
-		 * @see IViewportListener#viewportChanged(int)
-		 */
-		@Override
-		public void viewportChanged(int verticalPosition) {
-			if (fCachedRedrawState && verticalPosition != fScrollPos)
-				redraw();
-		}
+        /*
+         * @see ITextListener#textChanged(TextEvent)
+         */
+        @Override
+        public void textChanged(TextEvent event) {
+            fCachedRedrawState = event.getViewerRedrawState();
+            if (!fCachedRedrawState)
+                return;
+            if (updateNumberOfDigits()) {
+                computeIndentations();
+                layout(event.getViewerRedrawState());
+                return;
+            }
+            boolean viewerCompletelyShown = isViewerCompletelyShown();
+            if (viewerCompletelyShown || fSensitiveToTextChanges || event.getDocumentEvent() == null)
+                postRedraw();
+            fSensitiveToTextChanges = viewerCompletelyShown;
+        }
+    }
 
-		/*
-		 * @see ITextListener#textChanged(TextEvent)
-		 */
-		@Override
-		public void textChanged(TextEvent event) {
-			fCachedRedrawState= event.getViewerRedrawState();
-			if (!fCachedRedrawState)
-				return;
-			if (updateNumberOfDigits()) {
-				computeIndentations();
-				layout(event.getViewerRedrawState());
-				return;
-			}
-			boolean viewerCompletelyShown= isViewerCompletelyShown();
-			if (viewerCompletelyShown || fSensitiveToTextChanges || event.getDocumentEvent() == null)
-				postRedraw();
-			fSensitiveToTextChanges= viewerCompletelyShown;
-		}
-	}
+    /**
+     * Handles all the mouse interaction in this line number ruler column.
+     */
+    class MouseHandler implements MouseListener, MouseMoveListener {
 
-	/**
-	 * Handles all the mouse interaction in this line number ruler column.
-	 */
-	class MouseHandler implements MouseListener, MouseMoveListener {
+        /** The cached view port size */
+        private int fCachedViewportSize;
+        /** The area of the line at which line selection started */
+        private IRegion fStartLine;
+        /** The number of the line at which line selection started */
+        private int fStartLineNumber;
+        /** The auto scroll direction */
+        private int fAutoScrollDirection;
+        /* @since 3.2 */
+        private boolean fIsListeningForMove = false;
 
-		/** The cached view port size */
-		private int fCachedViewportSize;
-		/** The area of the line at which line selection started */
-		private IRegion fStartLine;
-		/** The number of the line at which line selection started */
-		private int fStartLineNumber;
-		/** The auto scroll direction */
-		private int fAutoScrollDirection;
-		/* @since 3.2 */
-		private boolean fIsListeningForMove= false;
+        /*
+         * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+         */
+        @Override
+        public void mouseUp(MouseEvent event) {
+            // see bug 45700
+            if (event.button == 1) {
+                stopSelecting();
+                stopAutoScroll();
+            }
+        }
 
-		/*
-		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
-		 */
-		@Override
-		public void mouseUp(MouseEvent event) {
-			// see bug 45700
-			if (event.button == 1) {
-				stopSelecting();
-				stopAutoScroll();
-			}
-		}
+        /*
+         * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+         */
+        @Override
+        public void mouseDown(MouseEvent event) {
+            fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
+            int newLine = fParentRuler.toDocumentLineNumber(event.y) + 1;
+            if (annotationColumn instanceof ISTAnnotationHyperlink) {
+                ISTAnnotationHyperlink ahp = (ISTAnnotationHyperlink) annotationColumn;
+                if (ahp.isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()) {
+                    ahp.handleHyperlink(newLine);
+                }
+            } else if (event.button == 1) { // see bug 45700
+                startSelecting();
+            }
+        }
 
-		/*
-		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-		 */
-		@Override
-		public void mouseDown(MouseEvent event) {
-			fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
-			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
-			if (annotationColumn instanceof ISTAnnotationHyperlink){
-				ISTAnnotationHyperlink ahp = (ISTAnnotationHyperlink)annotationColumn;
-				if (ahp.isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
-					ahp.handleHyperlink(newLine);
-				}
-			} else if (event.button == 1) { // see bug 45700
-				startSelecting();
-			}
-		}
+        /*
+         * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+         */
+        @Override
+        public void mouseDoubleClick(MouseEvent event) {
+            fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
+            stopSelecting();
+            stopAutoScroll();
+        }
 
-		/*
-		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
-		 */
-		@Override
-		public void mouseDoubleClick(MouseEvent event) {
-			fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
-			stopSelecting();
-			stopAutoScroll();
-		}
+        /*
+         * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+         */
+        @Override
+        public void mouseMove(MouseEvent event) {
+            int newLine = fParentRuler.toDocumentLineNumber(event.y) + 1;
+            if (annotationColumn instanceof ISTAnnotationHyperlink) {
+                Cursor cursor;
+                if (((ISTAnnotationHyperlink) annotationColumn).isAnnotationHyperlink(newLine)
+                        && !annotationColumn.getAnnotation(newLine).trim().isEmpty()) {
+                    cursor = event.display.getSystemCursor(SWT.CURSOR_HAND);
+                } else {
+                    cursor = event.display.getSystemCursor(SWT.CURSOR_ARROW);
+                }
+                fCanvas.setCursor(cursor);
+            }
+            if (fIsListeningForMove && !autoScroll(event)) {
+                expandSelection(newLine);
+            }
+            fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
+        }
 
-		/*
-		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
-		 */
-		@Override
-		public void mouseMove(MouseEvent event) {
-			int newLine= fParentRuler.toDocumentLineNumber(event.y) + 1;
-			if (annotationColumn instanceof ISTAnnotationHyperlink){
-				Cursor cursor;
-				if (((ISTAnnotationHyperlink)annotationColumn).isAnnotationHyperlink(newLine) && !annotationColumn.getAnnotation(newLine).trim().isEmpty()){
-					cursor = event.display.getSystemCursor(SWT.CURSOR_HAND);
-				} else {
-					cursor = event.display.getSystemCursor(SWT.CURSOR_ARROW);
-				}
-				fCanvas.setCursor(cursor);
-			}
-			if (fIsListeningForMove && !autoScroll(event)) {
-				expandSelection(newLine);
-			}
-			fParentRuler.setLocationOfLastMouseButtonActivity(event.x, event.y);
-		}
+        /**
+         * Called when line drag selection started. Adds mouse move and track listeners to this column's control.
+         */
+        private void startSelecting() {
+            try {
+                // select line
+                IDocument document = fCachedTextViewer.getDocument();
+                fStartLineNumber = fParentRuler.getLineOfLastMouseButtonActivity();
+                fStartLine = document.getLineInformation(fStartLineNumber);
+                fCachedTextViewer.setSelectedRange(fStartLine.getOffset(), fStartLine.getLength());
+                // prepare for drag selection
+                fIsListeningForMove = true;
+            } catch (BadLocationException x) {
+            }
+        }
 
-		/**
-		 * Called when line drag selection started. Adds mouse move and track
-		 * listeners to this column's control.
-		 */
-		private void startSelecting() {
-			try {
-				// select line
-				IDocument document= fCachedTextViewer.getDocument();
-				fStartLineNumber= fParentRuler.getLineOfLastMouseButtonActivity();
-				fStartLine= document.getLineInformation(fStartLineNumber);
-				fCachedTextViewer.setSelectedRange(fStartLine.getOffset(), fStartLine.getLength());
-				// prepare for drag selection
-				fIsListeningForMove= true;
-			} catch (BadLocationException x) {
-			}
-		}
-	
-		/**
-		 * Called when line drag selection stopped. Removes all previously
-		 * installed listeners from this column's control.
-		 */
-		private void stopSelecting() {
-			// drag selection stopped
-			fIsListeningForMove= false;
-		}
+        /**
+         * Called when line drag selection stopped. Removes all previously installed listeners from this column's
+         * control.
+         */
+        private void stopSelecting() {
+            // drag selection stopped
+            fIsListeningForMove = false;
+        }
 
-		/**
-		 * Expands the line selection from the remembered start line to the
-		 * given line.
-		 *
-		 * @param lineNumber the line to which to expand the selection
-		 */
-		private void expandSelection(int lineNumber) {
-			try {
-				IDocument document= fCachedTextViewer.getDocument();
-				IRegion lineInfo= document.getLineInformation(lineNumber);
-				int start= Math.min(fStartLine.getOffset(), lineInfo.getOffset());
-				int end= Math.max(fStartLine.getOffset() + fStartLine.getLength(), lineInfo.getOffset() + lineInfo.getLength());
-				if (lineNumber < fStartLineNumber)
-					fCachedTextViewer.setSelectedRange(end, start - end);
-				else
-					fCachedTextViewer.setSelectedRange(start, end - start);
-			} catch (BadLocationException x) {
-			}
-		}
+        /**
+         * Expands the line selection from the remembered start line to the given line.
+         * 
+         * @param lineNumber
+         *            the line to which to expand the selection
+         */
+        private void expandSelection(int lineNumber) {
+            try {
+                IDocument document = fCachedTextViewer.getDocument();
+                IRegion lineInfo = document.getLineInformation(lineNumber);
+                int start = Math.min(fStartLine.getOffset(), lineInfo.getOffset());
+                int end = Math.max(fStartLine.getOffset() + fStartLine.getLength(),
+                        lineInfo.getOffset() + lineInfo.getLength());
+                if (lineNumber < fStartLineNumber)
+                    fCachedTextViewer.setSelectedRange(end, start - end);
+                else
+                    fCachedTextViewer.setSelectedRange(start, end - start);
+            } catch (BadLocationException x) {
+            }
+        }
 
-		/**
-		 * Called when auto scrolling stopped. Clears the auto scroll direction.
-		 */
-		private void stopAutoScroll() {
-			fAutoScrollDirection= SWT.NULL;
-		}
+        /**
+         * Called when auto scrolling stopped. Clears the auto scroll direction.
+         */
+        private void stopAutoScroll() {
+            fAutoScrollDirection = SWT.NULL;
+        }
 
-		/**
-		 * Called on drag selection.
-		 *
-		 * @param event the mouse event caught by the mouse move listener
-		 * @return <code>true</code> if scrolling happened, <code>false</code> otherwise
-		 */
-		private boolean autoScroll(MouseEvent event) {
-			Rectangle area= fCanvas.getClientArea();
-			if (event.y > area.height) {
-				autoScroll(SWT.DOWN);
-				return true;
-			}
-			if (event.y < 0) {
-				autoScroll(SWT.UP);
-				return true;
-			}
-			stopAutoScroll();
-			return false;
-		}
+        /**
+         * Called on drag selection.
+         * 
+         * @param event
+         *            the mouse event caught by the mouse move listener
+         * @return <code>true</code> if scrolling happened, <code>false</code> otherwise
+         */
+        private boolean autoScroll(MouseEvent event) {
+            Rectangle area = fCanvas.getClientArea();
+            if (event.y > area.height) {
+                autoScroll(SWT.DOWN);
+                return true;
+            }
+            if (event.y < 0) {
+                autoScroll(SWT.UP);
+                return true;
+            }
+            stopAutoScroll();
+            return false;
+        }
 
-		/**
-		 * Scrolls the viewer into the given direction.
-		 *
-		 * @param direction the scroll direction
-		 */
-		private void autoScroll(int direction) {
+        /**
+         * Scrolls the viewer into the given direction.
+         * 
+         * @param direction
+         *            the scroll direction
+         */
+        private void autoScroll(int direction) {
 
-			if (fAutoScrollDirection == direction)
-				return;
+            if (fAutoScrollDirection == direction)
+                return;
 
-			final int TIMER_INTERVAL= 5;
-			final Display display = fCanvas.getDisplay();
-			Runnable timer= null;
-			switch (direction) {
-				case SWT.UP:
-					timer= new Runnable() {
-						@Override
-						public void run() {
-							if (fAutoScrollDirection == SWT.UP) {
-								int top= getInclusiveTopIndex();
-								if (top > 0) {
-									fCachedTextViewer.setTopIndex(top -1);
-									expandSelection(top -1);
-									display.timerExec(TIMER_INTERVAL, this);
-								}
-							}
-						}
-					};
-					break;
-				case  SWT.DOWN:
-					timer = new Runnable() {
-						@Override
-						public void run() {
-							if (fAutoScrollDirection == SWT.DOWN) {
-								int top= getInclusiveTopIndex();
-								fCachedTextViewer.setTopIndex(top +1);
-								expandSelection(top +1 + fCachedViewportSize);
-								display.timerExec(TIMER_INTERVAL, this);
-							}
-						}
-					};
-					break;
-			}
+            final int TIMER_INTERVAL = 5;
+            final Display display = fCanvas.getDisplay();
+            Runnable timer = null;
+            switch (direction) {
+            case SWT.UP:
+                timer = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fAutoScrollDirection == SWT.UP) {
+                            int top = getInclusiveTopIndex();
+                            if (top > 0) {
+                                fCachedTextViewer.setTopIndex(top - 1);
+                                expandSelection(top - 1);
+                                display.timerExec(TIMER_INTERVAL, this);
+                            }
+                        }
+                    }
+                };
+                break;
+            case SWT.DOWN:
+                timer = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fAutoScrollDirection == SWT.DOWN) {
+                            int top = getInclusiveTopIndex();
+                            fCachedTextViewer.setTopIndex(top + 1);
+                            expandSelection(top + 1 + fCachedViewportSize);
+                            display.timerExec(TIMER_INTERVAL, this);
+                        }
+                    }
+                };
+                break;
+            }
 
-			if (timer != null) {
-				fAutoScrollDirection= direction;
-				display.timerExec(TIMER_INTERVAL, timer);
-			}
-		}
+            if (timer != null) {
+                fAutoScrollDirection = direction;
+                display.timerExec(TIMER_INTERVAL, timer);
+            }
+        }
 
-		/**
-		 * Returns the viewer's first visible line, even if only partially visible.
-		 *
-		 * @return the viewer's first visible line
-		 */
-		private int getInclusiveTopIndex() {
-			if (fCachedTextWidget != null && !fCachedTextWidget.isDisposed()) {
-				return JFaceTextUtil.getPartialTopIndex(fCachedTextViewer);
-			}
-			return -1;
-		}
-	}
+        /**
+         * Returns the viewer's first visible line, even if only partially visible.
+         * 
+         * @return the viewer's first visible line
+         */
+        private int getInclusiveTopIndex() {
+            if (fCachedTextWidget != null && !fCachedTextWidget.isDisposed()) {
+                return JFaceTextUtil.getPartialTopIndex(fCachedTextViewer);
+            }
+            return -1;
+        }
+    }
 
-	/** This column's parent ruler */
-	private CompositeRuler fParentRuler;
-	/** Cached text viewer */
-	private ITextViewer fCachedTextViewer;
-	/** Cached text widget */
-	private StyledText fCachedTextWidget;
-	/** The columns canvas */
-	private Canvas fCanvas;
-	/** Cache for the actual scroll position in pixels */
-	private int fScrollPos;
-	/** The drawable for double buffering */
-	private Image fBuffer;
-	/** The internal listener */
-	private InternalListener fInternalListener= new InternalListener();
-	/** The font of this column */
-	private Font fFont;
-	/** The indentation cache */
-	private int[] fIndentation;
-	/** Indicates whether this column reacts on text change events */
-	private boolean fSensitiveToTextChanges= false;
-	/** The foreground color */
-	private Color fForeground;
-	/** The background color */
-	private Color fBackground;
-	/** Cached number of displayed digits */
-	private int fCachedNumberOfDigits= -1;
-	/** Flag indicating whether a relayout is required */
-	private boolean fRelayoutRequired= false;
-	/**
-	 * Redraw runnable lock
-	 * @since 3.0
-	 */
-	private final Object fRunnableLock= new Object();
-	/**
-	 * Redraw runnable state
-	 * @since 3.0
-	 */
-	private boolean fIsRunnablePosted= false;
-	/**
-	 * Redraw runnable
-	 * @since 3.0
-	 */
-	private final Runnable fRunnable= new Runnable() {
-		@Override
-		public void run() {
-			synchronized (fRunnableLock) {
-				fIsRunnablePosted= false;
-			}
-			redraw();
-		}
-	};
-	/* @since 3.2 */
-	private MouseHandler fMouseHandler;
+    /** This column's parent ruler */
+    private CompositeRuler fParentRuler;
+    /** Cached text viewer */
+    private ITextViewer fCachedTextViewer;
+    /** Cached text widget */
+    private StyledText fCachedTextWidget;
+    /** The columns canvas */
+    private Canvas fCanvas;
+    /** Cache for the actual scroll position in pixels */
+    private int fScrollPos;
+    /** The drawable for double buffering */
+    private Image fBuffer;
+    /** The internal listener */
+    private InternalListener fInternalListener = new InternalListener();
+    /** The font of this column */
+    private Font fFont;
+    /** The indentation cache */
+    private int[] fIndentation;
+    /** Indicates whether this column reacts on text change events */
+    private boolean fSensitiveToTextChanges = false;
+    /** The foreground color */
+    private Color fForeground;
+    /** The background color */
+    private Color fBackground;
+    /** Cached number of displayed digits */
+    private int fCachedNumberOfDigits = -1;
+    /** Flag indicating whether a relayout is required */
+    private boolean fRelayoutRequired = false;
+    /**
+     * Redraw runnable lock
+     * 
+     * @since 3.0
+     */
+    private final Object fRunnableLock = new Object();
+    /**
+     * Redraw runnable state
+     * 
+     * @since 3.0
+     */
+    private boolean fIsRunnablePosted = false;
+    /**
+     * Redraw runnable
+     * 
+     * @since 3.0
+     */
+    private final Runnable fRunnable = new Runnable() {
+        @Override
+        public void run() {
+            synchronized (fRunnableLock) {
+                fIsRunnablePosted = false;
+            }
+            redraw();
+        }
+    };
+    /* @since 3.2 */
+    private MouseHandler fMouseHandler;
 
-	private final ISTAnnotationColumn annotationColumn;
-	
-	/**
-	 * Constructs a new vertical ruler column.
-	 */
-	public STRulerColumn(ISTAnnotationColumn ac) {
-		annotationColumn = ac;
-	}
-	
-	public ISTAnnotationColumn getSTAnnotationColumn(){
-		return annotationColumn;
-	}
+    private final ISTAnnotationColumn annotationColumn;
 
-	/**
-	 * Sets the foreground color of this column.
-	 *
-	 * @param foreground the foreground color
-	 */
-	public void setForeground(Color foreground) {
-		fForeground= foreground;
-	}
+    /**
+     * Constructs a new vertical ruler column.
+     */
+    public STRulerColumn(ISTAnnotationColumn ac) {
+        annotationColumn = ac;
+    }
 
-	/**
-	 * Returns the foreground color being used to print the line numbers.
-	 *
-	 * @return the configured foreground color
-	 * @since 3.0
-	 */
-	protected Color getForeground() {
-		return fForeground;
-	}
+    public ISTAnnotationColumn getSTAnnotationColumn() {
+        return annotationColumn;
+    }
 
-	/**
-	 * Sets the background color of this column.
-	 *
-	 * @param background the background color
-	 */
-	public void setBackground(Color background) {
-		fBackground= background;
-		if (fCanvas != null && !fCanvas.isDisposed())
-			fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
-	}
+    /**
+     * Sets the foreground color of this column.
+     * 
+     * @param foreground
+     *            the foreground color
+     */
+    public void setForeground(Color foreground) {
+        fForeground = foreground;
+    }
 
-	/**
-	 * Returns the System background color for list widgets.
-	 *
-	 * @param display the display
-	 * @return the System background color for list widgets
-	 */
-	protected Color getBackground(Display display) {
-		if (fBackground == null)
-			return display.getSystemColor(SWT.COLOR_LIST_BACKGROUND);
-		return fBackground;
-	}
+    /**
+     * Returns the foreground color being used to print the line numbers.
+     * 
+     * @return the configured foreground color
+     * @since 3.0
+     */
+    protected Color getForeground() {
+        return fForeground;
+    }
 
-	/*
-	 * @see IVerticalRulerColumn#getControl()
-	 */
-	@Override
-	public Control getControl() {
-		return fCanvas;
-	}
+    /**
+     * Sets the background color of this column.
+     * 
+     * @param background
+     *            the background color
+     */
+    public void setBackground(Color background) {
+        fBackground = background;
+        if (fCanvas != null && !fCanvas.isDisposed())
+            fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
+    }
 
-	/*
-	 * @see IVerticalRuleColumnr#getWidth
-	 */
-	@Override
-	public int getWidth() {
-		return fIndentation[0];
-	}
+    /**
+     * Returns the System background color for list widgets.
+     * 
+     * @param display
+     *            the display
+     * @return the System background color for list widgets
+     */
+    protected Color getBackground(Display display) {
+        if (fBackground == null)
+            return display.getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+        return fBackground;
+    }
 
-	/**
-	 * Computes the number of digits to be displayed. Returns
-	 * <code>true</code> if the number of digits changed compared
-	 * to the previous call of this method. If the method is called
-	 * for the first time, the return value is also <code>true</code>.
-	 *
-	 * @return whether the number of digits has been changed
-	 * @since 3.0
-	 */
-	protected boolean updateNumberOfDigits() {
-		if (fCachedTextViewer == null)
-			return false;
+    /*
+     * @see IVerticalRulerColumn#getControl()
+     */
+    @Override
+    public Control getControl() {
+        return fCanvas;
+    }
 
-		int digits= computeNumberOfDigits();
+    /*
+     * @see IVerticalRuleColumnr#getWidth
+     */
+    @Override
+    public int getWidth() {
+        return fIndentation[0];
+    }
 
-		if (fCachedNumberOfDigits != digits) {
-			fCachedNumberOfDigits= digits;
-			return true;
-		}
+    /**
+     * Computes the number of digits to be displayed. Returns <code>true</code> if the number of digits changed compared
+     * to the previous call of this method. If the method is called for the first time, the return value is also
+     * <code>true</code>.
+     * 
+     * @return whether the number of digits has been changed
+     * @since 3.0
+     */
+    protected boolean updateNumberOfDigits() {
+        if (fCachedTextViewer == null)
+            return false;
 
-		return false;
-	}
+        int digits = computeNumberOfDigits();
 
-	/**
-	 * Does the real computation of the number of digits. Subclasses may override this method if
-	 * they need extra space on the line number ruler.
-	 *
-	 * @return the number of digits to be displayed on the line number ruler.
-	 */
-	protected int computeNumberOfDigits() {
-		IDocument document= fCachedTextViewer.getDocument();
-		int lines= document == null ? 0 : document.getNumberOfLines();
-		int digits = 3;
-		if (annotationColumn.getTitle() != null){
-			digits += annotationColumn.getTitle().length();
-		}
-		
-		while (lines > Math.pow(10, digits) -1) {
-			++digits;
-		}
-		return (digits);
-	}
+        if (fCachedNumberOfDigits != digits) {
+            fCachedNumberOfDigits = digits;
+            return true;
+        }
 
-	/**
-	 * Layouts the enclosing viewer to adapt the layout to changes of the
-	 * size of the individual components.
-	 *
-	 * @param redraw <code>true</code> if this column can be redrawn
-	 */
-	protected void layout(boolean redraw) {
-		if (!redraw) {
-			fRelayoutRequired= true;
-			return;
-		}
+        return false;
+    }
 
-		fRelayoutRequired= false;
-		if (fCachedTextViewer instanceof ITextViewerExtension) {
-			ITextViewerExtension extension= (ITextViewerExtension) fCachedTextViewer;
-			Control control= extension.getControl();
-			if (control instanceof Composite && !control.isDisposed()) {
-				Composite composite= (Composite) control;
-				composite.layout(true);
-			}
-		}
-	}
+    /**
+     * Does the real computation of the number of digits. Subclasses may override this method if they need extra space
+     * on the line number ruler.
+     * 
+     * @return the number of digits to be displayed on the line number ruler.
+     */
+    protected int computeNumberOfDigits() {
+        IDocument document = fCachedTextViewer.getDocument();
+        int lines = document == null ? 0 : document.getNumberOfLines();
+        int digits = 3;
+        if (annotationColumn.getTitle() != null) {
+            digits += annotationColumn.getTitle().length();
+        }
 
-	/**
-	 * Computes the indentations for the given font and stores them in
-	 * <code>fIndentation</code>.
-	 */
-	protected void computeIndentations() {
-		if (fCanvas == null || fCanvas.isDisposed())
-			return;
-		GC gc= new GC(fCanvas);
-		try {
-			gc.setFont(fCanvas.getFont());
-			fIndentation= new int[fCachedNumberOfDigits + 3];
-			char[] nines= new char[fCachedNumberOfDigits + 2];
-			Arrays.fill(nines, '9');
-			String nineString= new String(nines);
-			Point p= gc.stringExtent(nineString);
-			fIndentation[0]= p.x;
-			for (int i= 1; i <= fCachedNumberOfDigits; i++) {
-				p= gc.stringExtent(nineString.substring(0, i));
-				fIndentation[i]= fIndentation[0] - p.x;
-			}
-		} finally {
-			gc.dispose();
-		}
-	}
+        while (lines > Math.pow(10, digits) - 1) {
+            ++digits;
+        }
+        return (digits);
+    }
 
-	/*
-	 * @see IVerticalRulerColumn#createControl(CompositeRuler, Composite)
-	 */
-	@Override
-	public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
-		fParentRuler= parentRuler;
-		fCachedTextViewer= parentRuler.getTextViewer();
-		fCachedTextWidget= fCachedTextViewer.getTextWidget();
-		
-		fCanvas= new Canvas(parentControl, SWT.BORDER);
-		fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
-		fCanvas.setForeground(fForeground);
-		fCanvas.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent event) {
-				if (fCachedTextViewer != null)
-					doubleBufferPaint(event.gc);
-			}
-		});
-		fCanvas.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				handleDispose();
-				fCachedTextViewer= null;
-				fCachedTextWidget= null;
-			}
-		});
+    /**
+     * Layouts the enclosing viewer to adapt the layout to changes of the size of the individual components.
+     * 
+     * @param redraw
+     *            <code>true</code> if this column can be redrawn
+     */
+    protected void layout(boolean redraw) {
+        if (!redraw) {
+            fRelayoutRequired = true;
+            return;
+        }
 
-		fMouseHandler= new MouseHandler();
-		fCanvas.addMouseListener(fMouseHandler);
-		fCanvas.addMouseMoveListener(fMouseHandler);
+        fRelayoutRequired = false;
+        if (fCachedTextViewer instanceof ITextViewerExtension) {
+            ITextViewerExtension extension = (ITextViewerExtension) fCachedTextViewer;
+            Control control = extension.getControl();
+            if (control instanceof Composite && !control.isDisposed()) {
+                Composite composite = (Composite) control;
+                composite.layout(true);
+            }
+        }
+    }
 
-		if (fCachedTextViewer != null) {
-			fCachedTextViewer.addViewportListener(fInternalListener);
-			fCachedTextViewer.addTextListener(fInternalListener);
-			if (fFont == null) {
-				if (fCachedTextWidget != null && !fCachedTextWidget.isDisposed())
-					fFont= fCachedTextWidget.getFont();
-			}
-		}
+    /**
+     * Computes the indentations for the given font and stores them in <code>fIndentation</code>.
+     */
+    protected void computeIndentations() {
+        if (fCanvas == null || fCanvas.isDisposed())
+            return;
+        GC gc = new GC(fCanvas);
+        try {
+            gc.setFont(fCanvas.getFont());
+            fIndentation = new int[fCachedNumberOfDigits + 3];
+            char[] nines = new char[fCachedNumberOfDigits + 2];
+            Arrays.fill(nines, '9');
+            String nineString = new String(nines);
+            Point p = gc.stringExtent(nineString);
+            fIndentation[0] = p.x;
+            for (int i = 1; i <= fCachedNumberOfDigits; i++) {
+                p = gc.stringExtent(nineString.substring(0, i));
+                fIndentation[i] = fIndentation[0] - p.x;
+            }
+        } finally {
+            gc.dispose();
+        }
+    }
 
-		if (fFont != null)
-			fCanvas.setFont(fFont);
+    /*
+     * @see IVerticalRulerColumn#createControl(CompositeRuler, Composite)
+     */
+    @Override
+    public Control createControl(CompositeRuler parentRuler, Composite parentControl) {
+        fParentRuler = parentRuler;
+        fCachedTextViewer = parentRuler.getTextViewer();
+        fCachedTextWidget = fCachedTextViewer.getTextWidget();
 
-		updateNumberOfDigits();
-		computeIndentations();
-		return fCanvas;
-	}
+        fCanvas = new Canvas(parentControl, SWT.BORDER);
+        fCanvas.setBackground(getBackground(fCanvas.getDisplay()));
+        fCanvas.setForeground(fForeground);
+        fCanvas.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent event) {
+                if (fCachedTextViewer != null)
+                    doubleBufferPaint(event.gc);
+            }
+        });
+        fCanvas.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                handleDispose();
+                fCachedTextViewer = null;
+                fCachedTextWidget = null;
+            }
+        });
 
-	/**
-	 * Disposes the column's resources.
-	 */
-	protected void handleDispose() {
-		if (fCachedTextViewer != null) {
-			fCachedTextViewer.removeViewportListener(fInternalListener);
-			fCachedTextViewer.removeTextListener(fInternalListener);
-		}
+        fMouseHandler = new MouseHandler();
+        fCanvas.addMouseListener(fMouseHandler);
+        fCanvas.addMouseMoveListener(fMouseHandler);
 
-		if (fBuffer != null) {
-			fBuffer.dispose();
-			fBuffer= null;
-		}
-	}
+        if (fCachedTextViewer != null) {
+            fCachedTextViewer.addViewportListener(fInternalListener);
+            fCachedTextViewer.addTextListener(fInternalListener);
+            if (fFont == null) {
+                if (fCachedTextWidget != null && !fCachedTextWidget.isDisposed())
+                    fFont = fCachedTextWidget.getFont();
+            }
+        }
 
-	/**
-	 * Double buffer drawing.
-	 *
-	 * @param dest the GC to draw into
-	 */
-	private void doubleBufferPaint(GC dest) {
-		Point size= fCanvas.getSize();
-		if (size.x <= 0 || size.y <= 0)
-			return;
+        if (fFont != null)
+            fCanvas.setFont(fFont);
 
-		if (fBuffer != null) {
-			Rectangle r= fBuffer.getBounds();
-			if (r.width != size.x || r.height != size.y) {
-				fBuffer.dispose();
-				fBuffer= null;
-			}
-		}
-		if (fBuffer == null)
-			fBuffer= new Image(fCanvas.getDisplay(), size.x, size.y);
+        updateNumberOfDigits();
+        computeIndentations();
+        return fCanvas;
+    }
 
-		GC gc= new GC(fBuffer);
-		gc.setFont(fCanvas.getFont());
-		if (fForeground != null)
-			gc.setForeground(fForeground);
+    /**
+     * Disposes the column's resources.
+     */
+    protected void handleDispose() {
+        if (fCachedTextViewer != null) {
+            fCachedTextViewer.removeViewportListener(fInternalListener);
+            fCachedTextViewer.removeTextListener(fInternalListener);
+        }
 
-		try {
-			gc.setBackground(getBackground(fCanvas.getDisplay()));
-			gc.fillRectangle(0, 0, size.x, size.y);
+        if (fBuffer != null) {
+            fBuffer.dispose();
+            fBuffer = null;
+        }
+    }
 
-			ILineRange visibleLines= JFaceTextUtil.getVisibleModelLines(fCachedTextViewer);
-			if (visibleLines == null)
-				return;
-			fScrollPos= fCachedTextWidget.getTopPixel();
-			doPaint(gc, visibleLines);
-		} finally {
-			gc.dispose();
-		}
+    /**
+     * Double buffer drawing.
+     * 
+     * @param dest
+     *            the GC to draw into
+     */
+    private void doubleBufferPaint(GC dest) {
+        Point size = fCanvas.getSize();
+        if (size.x <= 0 || size.y <= 0)
+            return;
 
-		dest.drawImage(fBuffer, 0, 0);
-	}
+        if (fBuffer != null) {
+            Rectangle r = fBuffer.getBounds();
+            if (r.width != size.x || r.height != size.y) {
+                fBuffer.dispose();
+                fBuffer = null;
+            }
+        }
+        if (fBuffer == null)
+            fBuffer = new Image(fCanvas.getDisplay(), size.x, size.y);
 
-	/**
-	 * Returns <code>true</code> if the viewport displays the entire viewer contents, i.e. the
-	 * viewer is not vertically scrollable.
-	 * 
-	 * @return <code>true</code> if the viewport displays the entire contents, <code>false</code> otherwise
-	 * @since 3.2
-	 */
-	protected final boolean isViewerCompletelyShown() {
-		return JFaceTextUtil.isShowingEntireContents(fCachedTextWidget);
-	}
+        GC gc = new GC(fBuffer);
+        gc.setFont(fCanvas.getFont());
+        if (fForeground != null)
+            gc.setForeground(fForeground);
 
-	/**
-	 * Draws the ruler column.
-	 *
-	 * @param gc the GC to draw into
-	 * @param visibleLines the visible model lines
-	 * @since 3.2
-	 */
-	void doPaint(GC gc, ILineRange visibleLines) {
-		Display display= fCachedTextWidget.getDisplay();
-		
-		// draw diff info
-		int y= -JFaceTextUtil.getHiddenTopLinePixels(fCachedTextWidget);
-		
-		int lastLine= end(visibleLines);
-		for (int line= visibleLines.getStartLine(); line < lastLine; line++) {
-			int widgetLine= JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
-			if (widgetLine == -1)
-				continue;
+        try {
+            gc.setBackground(getBackground(fCanvas.getDisplay()));
+            gc.fillRectangle(0, 0, size.x, size.y);
 
-			int lineHeight= fCachedTextWidget.getLineHeight(fCachedTextWidget.getOffsetAtLine(widgetLine));
-			paintLine(line, y, lineHeight, gc, display);
-			y += lineHeight;
-		}
-	}
+            ILineRange visibleLines = JFaceTextUtil.getVisibleModelLines(fCachedTextViewer);
+            if (visibleLines == null)
+                return;
+            fScrollPos = fCachedTextWidget.getTopPixel();
+            doPaint(gc, visibleLines);
+        } finally {
+            gc.dispose();
+        }
 
-	/* @since 3.2 */
-	private static int end(ILineRange range) {
-		return range.getStartLine() + range.getNumberOfLines();
-	}
-	
-	/**
-	 * Computes the string to be printed for <code>line</code>. The default implementation returns
-	 * <code>Integer.toString(line + 1)</code>.
-	 *
-	 * @param line the line number for which the line number string is generated
-	 * @return the string to be printed on the line number bar for <code>line</code>
-	 * @since 3.0
-	 */
-	protected String createDisplayString(int line) {
-		return Integer.toString(line);
-	}
+        dest.drawImage(fBuffer, 0, 0);
+    }
 
-	/**
-	 * Returns the difference between the baseline of the widget and the
-	 * baseline as specified by the font for <code>gc</code>. When drawing
-	 * line numbers, the returned bias should be added to obtain text lined up
-	 * on the correct base line of the text widget.
-	 *
-	 * @param gc the <code>GC</code> to get the font metrics from
-	 * @param widgetLine the widget line
-	 * @return the baseline bias to use when drawing text that is lined up with
-	 *         <code>fCachedTextWidget</code>
-	 * @since 3.2
-	 */
-	private int getBaselineBias(GC gc, int widgetLine) {
-		/*
-		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=62951
-		 * widget line height may be more than the font height used for the
-		 * line numbers, since font styles (bold, italics...) can have larger
-		 * font metrics than the simple font used for the numbers.
-		 */
-		int offset= fCachedTextWidget.getOffsetAtLine(widgetLine);
-		int widgetBaseline= fCachedTextWidget.getBaseline(offset);
-		
-		FontMetrics fm = gc.getFontMetrics();
-		int fontBaseline = fm.getAscent() + fm.getLeading();
-		int baselineBias= widgetBaseline - fontBaseline;
-		return Math.max(0, baselineBias);
-	}
+    /**
+     * Returns <code>true</code> if the viewport displays the entire viewer contents, i.e. the viewer is not vertically
+     * scrollable.
+     * 
+     * @return <code>true</code> if the viewport displays the entire contents, <code>false</code> otherwise
+     * @since 3.2
+     */
+    protected final boolean isViewerCompletelyShown() {
+        return JFaceTextUtil.isShowingEntireContents(fCachedTextWidget);
+    }
 
-	/**
-	 * Paints the line. After this method is called the line numbers are painted on top
-	 * of the result of this method.
-	 *
-	 * @param line the line of the document which the ruler is painted for
-	 * @param y the y-coordinate of the box being painted for <code>line</code>, relative to <code>gc</code>
-	 * @param lineheight the height of one line (and therefore of the box being painted)
-	 * @param gc the drawing context the client may choose to draw on.
-	 * @param display the display the drawing occurs on
-	 * @since 3.0
-	 */
-	protected void paintLine(int line, int y, int lineheight, GC gc, Display display) {
-		int widgetLine= JFaceTextUtil.modelLineToWidgetLine(fParentRuler.getTextViewer(), line);
-		int indentation= fCachedNumberOfDigits; 
-		
-		if (annotationColumn instanceof ISTAnnotationHyperlink){
-			ISTAnnotationHyperlink ah = (ISTAnnotationHyperlink)annotationColumn;
-			if (ah.isAnnotationHyperlink(widgetLine)){
-				paintHyperLink(line, y, indentation, lineheight, gc, display);
-			}
-		} else {
-			int baselineBias= getBaselineBias(gc, widgetLine);
-			String s = annotationColumn.getAnnotation(widgetLine);
-			if (widgetLine == 0){
-				for (int i=0;i<annotationColumn.getTitle().length();i++)
-					s += " ";
-			}
-			gc.drawString(s, indentation, y + baselineBias, true);
-		}
-	}
+    /**
+     * Draws the ruler column.
+     * 
+     * @param gc
+     *            the GC to draw into
+     * @param visibleLines
+     *            the visible model lines
+     * @since 3.2
+     */
+    void doPaint(GC gc, ILineRange visibleLines) {
+        Display display = fCachedTextWidget.getDisplay();
 
-	/**
-	 * Triggers a redraw in the display thread.
-	 *
-	 * @since 3.0
-	 */
-	protected final void postRedraw() {
-		if (fCanvas != null && !fCanvas.isDisposed()) {
-			Display d= fCanvas.getDisplay();
-			if (d != null) {
-				synchronized (fRunnableLock) {
-					if (fIsRunnablePosted)
-						return;
-					fIsRunnablePosted= true;
-				}
-				d.asyncExec(fRunnable);
-			}
-		}
-	}
+        // draw diff info
+        int y = -JFaceTextUtil.getHiddenTopLinePixels(fCachedTextWidget);
 
-	/*
-	 * @see IVerticalRulerColumn#redraw()
-	 */
-	@Override
-	public void redraw() {
-		if (fRelayoutRequired) {
-			layout(true);
-			return;
-		}
-		if (fCachedTextViewer != null && fCanvas != null && !fCanvas.isDisposed()) {
-			GC gc= new GC(fCanvas);
-			doubleBufferPaint(gc);
-			gc.dispose();
-		}
-	}
+        int lastLine = end(visibleLines);
+        for (int line = visibleLines.getStartLine(); line < lastLine; line++) {
+            int widgetLine = JFaceTextUtil.modelLineToWidgetLine(fCachedTextViewer, line);
+            if (widgetLine == -1)
+                continue;
 
-	/*
-	 * @see IVerticalRulerColumn#setModel(IAnnotationModel)
-	 */
-	@Override
-	public void setModel(IAnnotationModel model) {
-	}
+            int lineHeight = fCachedTextWidget.getLineHeight(fCachedTextWidget.getOffsetAtLine(widgetLine));
+            paintLine(line, y, lineHeight, gc, display);
+            y += lineHeight;
+        }
+    }
 
-	/*
-	 * @see IVerticalRulerColumn#setFont(Font)
-	 */
-	@Override
-	public void setFont(Font font) {
-		fFont= font;
-		if (fCanvas != null && !fCanvas.isDisposed()) {
-			fCanvas.setFont(fFont);
-			updateNumberOfDigits();
-			computeIndentations();
-		}
-	}
+    /* @since 3.2 */
+    private static int end(ILineRange range) {
+        return range.getStartLine() + range.getNumberOfLines();
+    }
 
-	/**
-	 * Returns the parent (composite) ruler of this ruler column.
-	 *
-	 * @return the parent ruler
-	 * @since 3.0
-	 */
-	protected CompositeRuler getParentRuler() {
-		return fParentRuler;
-	}
-	
-	protected void paintHyperLink(int line, int y, int x, int lineheight, GC gc, Display display) {
-		String str = annotationColumn.getAnnotation(line);
-		final TextStyle styledString = new TextStyle(gc.getFont(),null,null);
-		styledString.foreground = display.getSystemColor(SWT.COLOR_BLUE);
-		styledString.underline = true;
-		TextLayout tl = new TextLayout(display);
-		tl.setText(str);
-		tl.setStyle(styledString, 0, str.length());
-		y += lineheight/2 - gc.stringExtent(str).y/2; 
-		tl.draw(gc, x, y);
-		if (line == 0){
-			int baselineBias= getBaselineBias(gc, line);
-			String s = "";
-			for (int i=0;i<annotationColumn.getTitle().length();i++)
-				s += " ";
-			gc.drawString(s, x + tl.getWidth() + 8, y + baselineBias, true);
-		}
-	}
+    /**
+     * Computes the string to be printed for <code>line</code>. The default implementation returns
+     * <code>Integer.toString(line + 1)</code>.
+     * 
+     * @param line
+     *            the line number for which the line number string is generated
+     * @return the string to be printed on the line number bar for <code>line</code>
+     * @since 3.0
+     */
+    protected String createDisplayString(int line) {
+        return Integer.toString(line);
+    }
+
+    /**
+     * Returns the difference between the baseline of the widget and the baseline as specified by the font for
+     * <code>gc</code>. When drawing line numbers, the returned bias should be added to obtain text lined up on the
+     * correct base line of the text widget.
+     * 
+     * @param gc
+     *            the <code>GC</code> to get the font metrics from
+     * @param widgetLine
+     *            the widget line
+     * @return the baseline bias to use when drawing text that is lined up with <code>fCachedTextWidget</code>
+     * @since 3.2
+     */
+    private int getBaselineBias(GC gc, int widgetLine) {
+        /*
+         * https://bugs.eclipse.org/bugs/show_bug.cgi?id=62951 widget line height may be more than the font height used
+         * for the line numbers, since font styles (bold, italics...) can have larger font metrics than the simple font
+         * used for the numbers.
+         */
+        int offset = fCachedTextWidget.getOffsetAtLine(widgetLine);
+        int widgetBaseline = fCachedTextWidget.getBaseline(offset);
+
+        FontMetrics fm = gc.getFontMetrics();
+        int fontBaseline = fm.getAscent() + fm.getLeading();
+        int baselineBias = widgetBaseline - fontBaseline;
+        return Math.max(0, baselineBias);
+    }
+
+    /**
+     * Paints the line. After this method is called the line numbers are painted on top of the result of this method.
+     * 
+     * @param line
+     *            the line of the document which the ruler is painted for
+     * @param y
+     *            the y-coordinate of the box being painted for <code>line</code>, relative to <code>gc</code>
+     * @param lineheight
+     *            the height of one line (and therefore of the box being painted)
+     * @param gc
+     *            the drawing context the client may choose to draw on.
+     * @param display
+     *            the display the drawing occurs on
+     * @since 3.0
+     */
+    protected void paintLine(int line, int y, int lineheight, GC gc, Display display) {
+        int widgetLine = JFaceTextUtil.modelLineToWidgetLine(fParentRuler.getTextViewer(), line);
+        int indentation = fCachedNumberOfDigits;
+
+        if (annotationColumn instanceof ISTAnnotationHyperlink) {
+            ISTAnnotationHyperlink ah = (ISTAnnotationHyperlink) annotationColumn;
+            if (ah.isAnnotationHyperlink(widgetLine)) {
+                paintHyperLink(line, y, indentation, lineheight, gc, display);
+            }
+        } else {
+            int baselineBias = getBaselineBias(gc, widgetLine);
+            String s = annotationColumn.getAnnotation(widgetLine);
+            if (widgetLine == 0) {
+                for (int i = 0; i < annotationColumn.getTitle().length(); i++)
+                    s += " ";
+            }
+            gc.drawString(s, indentation, y + baselineBias, true);
+        }
+    }
+
+    /**
+     * Triggers a redraw in the display thread.
+     * 
+     * @since 3.0
+     */
+    protected final void postRedraw() {
+        if (fCanvas != null && !fCanvas.isDisposed()) {
+            Display d = fCanvas.getDisplay();
+            if (d != null) {
+                synchronized (fRunnableLock) {
+                    if (fIsRunnablePosted)
+                        return;
+                    fIsRunnablePosted = true;
+                }
+                d.asyncExec(fRunnable);
+            }
+        }
+    }
+
+    /*
+     * @see IVerticalRulerColumn#redraw()
+     */
+    @Override
+    public void redraw() {
+        if (fRelayoutRequired) {
+            layout(true);
+            return;
+        }
+        if (fCachedTextViewer != null && fCanvas != null && !fCanvas.isDisposed()) {
+            GC gc = new GC(fCanvas);
+            doubleBufferPaint(gc);
+            gc.dispose();
+        }
+    }
+
+    /*
+     * @see IVerticalRulerColumn#setModel(IAnnotationModel)
+     */
+    @Override
+    public void setModel(IAnnotationModel model) {
+    }
+
+    /*
+     * @see IVerticalRulerColumn#setFont(Font)
+     */
+    @Override
+    public void setFont(Font font) {
+        fFont = font;
+        if (fCanvas != null && !fCanvas.isDisposed()) {
+            fCanvas.setFont(fFont);
+            updateNumberOfDigits();
+            computeIndentations();
+        }
+    }
+
+    /**
+     * Returns the parent (composite) ruler of this ruler column.
+     * 
+     * @return the parent ruler
+     * @since 3.0
+     */
+    protected CompositeRuler getParentRuler() {
+        return fParentRuler;
+    }
+
+    protected void paintHyperLink(int line, int y, int x, int lineheight, GC gc, Display display) {
+        String str = annotationColumn.getAnnotation(line);
+        final TextStyle styledString = new TextStyle(gc.getFont(), null, null);
+        styledString.foreground = display.getSystemColor(SWT.COLOR_BLUE);
+        styledString.underline = true;
+        TextLayout tl = new TextLayout(display);
+        tl.setText(str);
+        tl.setStyle(styledString, 0, str.length());
+        y += lineheight / 2 - gc.stringExtent(str).y / 2;
+        tl.draw(gc, x, y);
+        if (line == 0) {
+            int baselineBias = getBaselineBias(gc, line);
+            String s = "";
+            for (int i = 0; i < annotationColumn.getTitle().length(); i++)
+                s += " ";
+            gc.drawString(s, x + tl.getWidth() + 8, y + baselineBias, true);
+        }
+    }
 
 }

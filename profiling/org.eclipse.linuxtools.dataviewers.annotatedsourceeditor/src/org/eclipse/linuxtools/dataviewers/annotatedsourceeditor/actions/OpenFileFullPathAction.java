@@ -15,20 +15,20 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AbstractSTAnnotatedSourceEditorInput;
 
-
 public abstract class OpenFileFullPathAction extends AbstractOpenSourceFileAction {
-	private String filepath;
-	public OpenFileFullPathAction(String filepath, long ts) {
-		super(filepath, ts);
-		this.filepath = filepath;
-	}
+    private String filepath;
 
-	@Override
-	public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
+    public OpenFileFullPathAction(String filepath, long ts) {
+        super(filepath, ts);
+        this.filepath = filepath;
+    }
 
-	@Override
-	public IFileStore getFileStore(){
-		return 	EFS.getLocalFileSystem().getStore(new Path(filepath));
-	}
+    @Override
+    public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
+
+    @Override
+    public IFileStore getFileStore() {
+        return EFS.getLocalFileSystem().getStore(new Path(filepath));
+    }
 
 }

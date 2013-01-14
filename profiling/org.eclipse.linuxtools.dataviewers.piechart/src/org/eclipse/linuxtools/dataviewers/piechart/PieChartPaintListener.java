@@ -21,87 +21,87 @@ import org.swtchart.ISeries;
 
 public class PieChartPaintListener implements PaintListener {
 
-	private PieChart chart;
-	private Control plotArea;
-	private static final int X_GAP = 10;
+    private PieChart chart;
+    private Control plotArea;
+    private static final int X_GAP = 10;
 
-	public PieChartPaintListener(PieChart chart, Control plotArea) {
-		this.chart = chart;
-		this.plotArea = plotArea;
-	}
+    public PieChartPaintListener(PieChart chart, Control plotArea) {
+        this.chart = chart;
+        this.plotArea = plotArea;
+    }
 
-	@Override
-	public void paintControl(PaintEvent e) {
-		GC gc = e.gc;
-		Rectangle bounds;
-		if (plotArea == null)
-			bounds = gc.getClipping();
-		else
-			bounds = plotArea.getBounds();
-		double[][] series = this.getPieSeriesArray();
-		int width = (bounds.width - bounds.x)/ series.length;
-		int x = bounds.x;
+    @Override
+    public void paintControl(PaintEvent e) {
+        GC gc = e.gc;
+        Rectangle bounds;
+        if (plotArea == null)
+            bounds = gc.getClipping();
+        else
+            bounds = plotArea.getBounds();
+        double[][] series = this.getPieSeriesArray();
+        int width = (bounds.width - bounds.x) / series.length;
+        int x = bounds.x;
 
-		for (double s[] : series) {
-			drawPieChart(e, s, new Rectangle(x, bounds.y, width, bounds.height));
-			x += width;
-		}
-	}
+        for (double s[] : series) {
+            drawPieChart(e, s, new Rectangle(x, bounds.y, width, bounds.height));
+            x += width;
+        }
+    }
 
-	private void drawPieChart(PaintEvent e, double series[], Rectangle bounds) {
-		int nelemSeries = series.length;
-		double sumTotal = 0;
+    private void drawPieChart(PaintEvent e, double series[], Rectangle bounds) {
+        int nelemSeries = series.length;
+        double sumTotal = 0;
 
-		for(int i = 0; i < nelemSeries; i++){
-			sumTotal += series[i];
-		}
+        for (int i = 0; i < nelemSeries; i++) {
+            sumTotal += series[i];
+        }
 
-		GC gc = e.gc;
-		gc.setLineWidth(1);
-		
-		int pieWidth = Math.min(bounds.width - X_GAP, bounds.height);
-		int pieX = bounds.x + (bounds.width - pieWidth)/2;
-		int pieY = bounds.y + (bounds.height - pieWidth)/2;
-		if (sumTotal == 0)
-			gc.drawOval(pieX, pieY,pieWidth,pieWidth);
-		else {
-			double factor = 100 / sumTotal;
-			int sweepAngle=0;
-			int incrementAngle=0;
-			int initialAngle=90;
-			for (int i=0; i < nelemSeries; i++) {
-				gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
+        GC gc = e.gc;
+        gc.setLineWidth(1);
 
-				if (i==(nelemSeries-1))
-					sweepAngle = 360 - incrementAngle;
-				else {
-					double angle = series[i] * factor * 3.6;
-					sweepAngle = (int) Math.round(angle);
-				}
-				gc.fillArc(pieX, pieY, pieWidth,pieWidth,initialAngle,(-sweepAngle));
-				gc.drawArc(pieX, pieY, pieWidth,pieWidth,initialAngle,(-sweepAngle));
-				incrementAngle +=sweepAngle;
-				initialAngle += (-sweepAngle);
-			}
-		}
-	}
+        int pieWidth = Math.min(bounds.width - X_GAP, bounds.height);
+        int pieX = bounds.x + (bounds.width - pieWidth) / 2;
+        int pieY = bounds.y + (bounds.height - pieWidth) / 2;
+        if (sumTotal == 0)
+            gc.drawOval(pieX, pieY, pieWidth, pieWidth);
+        else {
+            double factor = 100 / sumTotal;
+            int sweepAngle = 0;
+            int incrementAngle = 0;
+            int initialAngle = 90;
+            for (int i = 0; i < nelemSeries; i++) {
+                gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
 
-	private double[][] getPieSeriesArray() {
-		ISeries series[] = this.chart.getSeriesSet().getSeries();
-		if (series == null || series.length == 0)
-			return new double[0][0];
-		double result[][] = new double[series[0].getXSeries().length][series.length];
+                if (i == (nelemSeries - 1))
+                    sweepAngle = 360 - incrementAngle;
+                else {
+                    double angle = series[i] * factor * 3.6;
+                    sweepAngle = (int) Math.round(angle);
+                }
+                gc.fillArc(pieX, pieY, pieWidth, pieWidth, initialAngle, (-sweepAngle));
+                gc.drawArc(pieX, pieY, pieWidth, pieWidth, initialAngle, (-sweepAngle));
+                incrementAngle += sweepAngle;
+                initialAngle += (-sweepAngle);
+            }
+        }
+    }
 
-		for (int i=0; i<result.length; i++) {
-			for (int j=0; j<result[i].length; j++) {
-				double d[] = series[j].getXSeries();
-				if (d != null && d.length > 0)
-					result[i][j] = d[i];
-				else
-					result[i][j] = 0;
-			}
-		}
+    private double[][] getPieSeriesArray() {
+        ISeries series[] = this.chart.getSeriesSet().getSeries();
+        if (series == null || series.length == 0)
+            return new double[0][0];
+        double result[][] = new double[series[0].getXSeries().length][series.length];
 
-		return result;
-	}
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[i].length; j++) {
+                double d[] = series[j].getXSeries();
+                if (d != null && d.length > 0)
+                    result[i][j] = d[i];
+                else
+                    result[i][j] = 0;
+            }
+        }
+
+        return result;
+    }
 }

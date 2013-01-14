@@ -16,21 +16,20 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Listener;
 
-
 public class STColumnSizeListener implements Listener {
-	private STDataViewersHideShowManager hideshowMng;
+    private STDataViewersHideShowManager hideshowMng;
 
-	public STColumnSizeListener(STDataViewersHideShowManager hideshowMng){
-		this.hideshowMng = hideshowMng; 
-	}
-	
-	public void handleEvent(Event event) {
-		if (hideshowMng != null) {
-			Item column = (Item)event.widget;
-			AbstractSTViewer stViewer = hideshowMng.getSTViewer();
-			int width = stViewer.getColumnWidth(column);
-			hideshowMng.setWidth(stViewer.getColumnIndex(column), width);
-		}
-	}
+    public STColumnSizeListener(STDataViewersHideShowManager hideshowMng) {
+        this.hideshowMng = hideshowMng;
+    }
+
+    public void handleEvent(Event event) {
+        if (hideshowMng != null) {
+            Item column = (Item) event.widget;
+            AbstractSTViewer stViewer = hideshowMng.getSTViewer();
+            int width = stViewer.getColumnWidth(column);
+            hideshowMng.setWidth(stViewer.getColumnIndex(column), width);
+        }
+    }
 
 }

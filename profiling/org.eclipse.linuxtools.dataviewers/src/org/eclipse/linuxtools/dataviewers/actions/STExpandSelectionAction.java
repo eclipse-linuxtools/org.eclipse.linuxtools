@@ -19,35 +19,37 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersImages;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 
-
 /**
- * This action expands the selected items of  the tree
- *
+ * This action expands the selected items of the tree
+ * 
  */
 public class STExpandSelectionAction extends Action {
-	
-	private final AbstractSTTreeViewer stViewer;
-	
-	/**
-	 * Constructor
-	 * @param stViewer the stViewer to expand
-	 */
-	public STExpandSelectionAction(AbstractSTTreeViewer stViewer) {
-		super(STDataViewersMessages.expandSelectionAction_title,
-				STDataViewersImages.getImageDescriptor(STDataViewersImages.IMG_EXPANDALL));
-		this.stViewer = stViewer;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
-	public void run() {
-		TreeSelection selection = (TreeSelection)stViewer.getViewer().getSelection();
-		if (selection != null && selection != TreeSelection.EMPTY) {
-			for (Iterator<?> itSel = selection.iterator(); itSel.hasNext();) {
-				stViewer.getViewer().expandToLevel(itSel.next(), TreeViewer.ALL_LEVELS);
-			}
-		}
-	}
+
+    private final AbstractSTTreeViewer stViewer;
+
+    /**
+     * Constructor
+     * 
+     * @param stViewer
+     *            the stViewer to expand
+     */
+    public STExpandSelectionAction(AbstractSTTreeViewer stViewer) {
+        super(STDataViewersMessages.expandSelectionAction_title, STDataViewersImages
+                .getImageDescriptor(STDataViewersImages.IMG_EXPANDALL));
+        this.stViewer = stViewer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.action.Action#run()
+     */
+    public void run() {
+        TreeSelection selection = (TreeSelection) stViewer.getViewer().getSelection();
+        if (selection != null && selection != TreeSelection.EMPTY) {
+            for (Iterator<?> itSel = selection.iterator(); itSel.hasNext();) {
+                stViewer.getViewer().expandToLevel(itSel.next(), TreeViewer.ALL_LEVELS);
+            }
+        }
+    }
 }

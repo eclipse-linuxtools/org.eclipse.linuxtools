@@ -18,43 +18,41 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class STAnnotatedSourceEditorPreferencePage extends PreferencePage
-		implements IWorkbenchPreferencePage {
-	
-	/**
-	 * A named preference that controls if the line number ruler is shown in the UI
-	 * (value <code>"lineNumberRuler"</code>).
-	 * <p>
-	 * The preference value is of type <code>Boolean</code>.
-	 * </p>
-	 */
-	public final static String EDITOR_ST_RULER= "STRuler"; //$NON-NLS-1$
+public class STAnnotatedSourceEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	public STAnnotatedSourceEditorPreferencePage() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * A named preference that controls if the line number ruler is shown in the UI (value
+     * <code>"lineNumberRuler"</code>).
+     * <p>
+     * The preference value is of type <code>Boolean</code>.
+     * </p>
+     */
+    public final static String EDITOR_ST_RULER = "STRuler"; //$NON-NLS-1$
 
-	public STAnnotatedSourceEditorPreferencePage(String title) {
-		super(title);
-		// TODO Auto-generated constructor stub
-	}
+    public STAnnotatedSourceEditorPreferencePage() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public STAnnotatedSourceEditorPreferencePage(String title,
-			ImageDescriptor image) {
-		super(title, image);
-		// TODO Auto-generated constructor stub
-	}
+    public STAnnotatedSourceEditorPreferencePage(String title) {
+        super(title);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	protected Control createContents(Composite parent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public STAnnotatedSourceEditorPreferencePage(String title, ImageDescriptor image) {
+        super(title, image);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-		// TODO Auto-generated method stub
+    @Override
+    protected Control createContents(Composite parent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+        // TODO Auto-generated method stub
+
+    }
 
 }

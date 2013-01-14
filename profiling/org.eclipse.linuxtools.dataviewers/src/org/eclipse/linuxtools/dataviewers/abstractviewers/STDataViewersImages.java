@@ -21,177 +21,167 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-
 /*
  * This class handle the registration of all images used into org.eclipse.linuxtools.dataviewers
  */
 public class STDataViewersImages {
-	private static ImageRegistry imageRegistry;
-	
-	/**
-	 * A table of all the <code>ImageDescriptor</code>s.
-	 */
-	private static HashMap<String,ImageDescriptor> imageDescriptors;
+    private static ImageRegistry imageRegistry;
 
-	/* Declare Common paths */
-	private static URL ICON_BASE_URL= null;
+    /**
+     * A table of all the <code>ImageDescriptor</code>s.
+     */
+    private static HashMap<String, ImageDescriptor> imageDescriptors;
 
-	static {
-		String pathSuffix = "icons/"; //$NON-NLS-1$
+    /* Declare Common paths */
+    private static URL ICON_BASE_URL = null;
 
-		STDataViewersActivator activator = STDataViewersActivator.getDefault();
-		ICON_BASE_URL= activator.getBundle().getEntry(pathSuffix);
-		imageRegistry = activator.getImageRegistry();
-		if (imageRegistry == null)
-			imageRegistry= new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
-	}
+    static {
+        String pathSuffix = "icons/"; //$NON-NLS-1$
 
-	public final static String IMG_EXPORT = "export.gif";
-	public final static String IMG_EDIT_PROPERTIES = "prop_edt.gif";
-	public final static String IMG_PERCENTAGE = "percentage.gif";
-	
-	public final static String IMG_SEARCH = "search.gif";
-	
-	public final static String IMG_PRINT = "printer.gif";
-	public final static String IMG_LEFT = "left.gif";
-	public final static String IMG_LEFTEND = "left-end.gif";
-	public final static String IMG_RIGHT = "right.gif";
-	public final static String IMG_RIGHTEND = "right-end.gif";
-	public final static String IMG_SAVE_TXT = "IMG_SAVE_TXT";
+        STDataViewersActivator activator = STDataViewersActivator.getDefault();
+        ICON_BASE_URL = activator.getBundle().getEntry(pathSuffix);
+        imageRegistry = activator.getImageRegistry();
+        if (imageRegistry == null)
+            imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
+    }
 
-	public static final String IMG_EXPANDALL = "expand_all.gif";
-	public static final String IMG_COLLAPSEALL = "collapse_all.gif";
+    public final static String IMG_EXPORT = "export.gif";
+    public final static String IMG_EDIT_PROPERTIES = "prop_edt.gif";
+    public final static String IMG_PERCENTAGE = "percentage.gif";
 
-	public static final String IMG_FILTER = "filter_ps.gif";
-	
-	public static final String IMG_SORT = "sort.gif";
-	
+    public final static String IMG_SEARCH = "search.gif";
 
-	/**
-	 * Declare all images
-	 */
-	private static void declareImages() {
+    public final static String IMG_PRINT = "printer.gif";
+    public final static String IMG_LEFT = "left.gif";
+    public final static String IMG_LEFTEND = "left-end.gif";
+    public final static String IMG_RIGHT = "right.gif";
+    public final static String IMG_RIGHTEND = "right-end.gif";
+    public final static String IMG_SAVE_TXT = "IMG_SAVE_TXT";
+
+    public static final String IMG_EXPANDALL = "expand_all.gif";
+    public static final String IMG_COLLAPSEALL = "collapse_all.gif";
+
+    public static final String IMG_FILTER = "filter_ps.gif";
+
+    public static final String IMG_SORT = "sort.gif";
+
+    /**
+     * Declare all images
+     */
+    private static void declareImages() {
         declareRegistryImage(IMG_EXPORT, "export.gif");
-		declareRegistryImage(IMG_EDIT_PROPERTIES, "prop_edt.gif");
-		declareRegistryImage(IMG_PERCENTAGE, "percentage.gif");
-		
+        declareRegistryImage(IMG_EDIT_PROPERTIES, "prop_edt.gif");
+        declareRegistryImage(IMG_PERCENTAGE, "percentage.gif");
+
         declareRegistryImage(ISharedImages.IMG_OBJS_INFO_TSK, "info_obj.gif");
         declareRegistryImage(ISharedImages.IMG_TOOL_FORWARD, "forward_nav.gif");
         declareRegistryImage(ISharedImages.IMG_TOOL_BACK, "backward_nav.gif");
-        
+
         declareRegistryImage(IMG_SEARCH, "search.gif");
-        
+
         declareRegistryImage(IMG_PRINT, "printer.gif");
         declareRegistryImage(IMG_LEFT, "left.gif");
         declareRegistryImage(IMG_LEFTEND, "left-end.gif");
         declareRegistryImage(IMG_RIGHT, "right.gif");
         declareRegistryImage(IMG_RIGHTEND, "right-end.gif");
-        
+
         declareRegistryImage(IMG_EXPANDALL, "expand_all.gif");
         declareRegistryImage(IMG_COLLAPSEALL, "collapse_all.gif");
-        
+
         declareRegistryImage(IMG_FILTER, "filter_ps.gif");
-        
+
         declareRegistryImage(IMG_SORT, "sort.gif");
-	}
-	
-	/**
-	 * Declare an Image in the registry table.
-	 * @param key 	The key to use when registering the image
-	 * @param path	The path where the image can be found. This path is relative to where
-	 *				this plugin class is found (i.e. typically the packages directory)
-	 */
-	private final static void declareRegistryImage(String key, URL path) {
-		ImageDescriptor desc= ImageDescriptor.getMissingImageDescriptor();
-		desc= ImageDescriptor.createFromURL(path);
-		imageRegistry.put(key, desc);
-		imageDescriptors.put(key, desc);
-	}
-	
-	/**
-	 * Declare an Image in the registry table.
-	 * @param key 	The key to use when registering the image
-	 * @param path	The path where the image can be found. This path is relative to where
-	 *				this plugin class is found (i.e. typically the packages directory)
-	 */
-	private final static void declareRegistryImage(String key, String path) {
-		try {
-			URL url = makeIconFileURL(path);
-			declareRegistryImage(key, url);
-		} catch (MalformedURLException me) {
-		}
-		
-	}
-	
-	/**
-	 * Returns the ImageRegistry.
-	 */
-	public static ImageRegistry getImageRegistry() {
-		if (imageRegistry == null) {
-			initializeImageRegistry();
-		}
-		return imageRegistry;
-	}
+    }
 
-	/**
-	 *	Initialize the image registry by declaring all of the required
-	 *	graphics. This involves creating JFace image descriptors describing
-	 *	how to create/find the image should it be needed.
-	 *	The image is not actually allocated until requested.
-	 *
-	 * 	Prefix conventions
-	 *		Wizard Banners			WIZBAN_
-	 *		Preference Banners		PREF_BAN_
-	 *		Property Page Banners	PROPBAN_
-	 *		Color toolbar			CTOOL_
-	 *		Enable toolbar			ETOOL_
-	 *		Disable toolbar			DTOOL_
-	 *		Local enabled toolbar	ELCL_
-	 *		Local Disable toolbar	DLCL_
-	 *		Object large			OBJL_
-	 *		Object small			OBJS_
-	 *		View 					VIEW_
-	 *		Product images			PROD_
-	 *		Misc images				MISC_
-	 *
-	 *	Where are the images?
-	 *		The images (typically gifs) are found in the same location as this plugin class.
-	 *		This may mean the same package directory as the package holding this class.
-	 *		The images are declared using this.getClass() to ensure they are looked up via
-	 *		this plugin class.
-	 * @see org.eclipse.jface.resource.ImageRegistry
-	 */
-	public static ImageRegistry initializeImageRegistry() {
-		imageDescriptors = new HashMap<String,ImageDescriptor>(30);
-		declareImages();
-		return imageRegistry;
-	}
+    /**
+     * Declare an Image in the registry table.
+     * 
+     * @param key
+     *            The key to use when registering the image
+     * @param path
+     *            The path where the image can be found. This path is relative to where this plugin class is found (i.e.
+     *            typically the packages directory)
+     */
+    private final static void declareRegistryImage(String key, URL path) {
+        ImageDescriptor desc = ImageDescriptor.getMissingImageDescriptor();
+        desc = ImageDescriptor.createFromURL(path);
+        imageRegistry.put(key, desc);
+        imageDescriptors.put(key, desc);
+    }
 
-	/**
-	 * Returns the <code>Image</code> identified by the given key,
-	 * or <code>null</code> if it does not exist.
-	 */
-	public static Image getImage(String key) {
-		if (imageDescriptors == null) initializeImageRegistry();
-		return getImageRegistry().get(key);
-	}
-	
-	/**
-	 * Returns the <code>ImageDescriptor</code> identified by the given key,
-	 * or <code>null</code> if it does not exist.
-	 */
-	public static ImageDescriptor getImageDescriptor(String key) {
-		if (imageDescriptors == null) {
-			initializeImageRegistry();
-		}
-		return imageDescriptors.get(key);
-	}
-	
-	private static URL makeIconFileURL(String iconPath) throws MalformedURLException {
-		if (ICON_BASE_URL == null) {
-			throw new MalformedURLException();
-		}
-			
-		return new URL(ICON_BASE_URL, iconPath);
-	}
+    /**
+     * Declare an Image in the registry table.
+     * 
+     * @param key
+     *            The key to use when registering the image
+     * @param path
+     *            The path where the image can be found. This path is relative to where this plugin class is found (i.e.
+     *            typically the packages directory)
+     */
+    private final static void declareRegistryImage(String key, String path) {
+        try {
+            URL url = makeIconFileURL(path);
+            declareRegistryImage(key, url);
+        } catch (MalformedURLException me) {
+        }
+
+    }
+
+    /**
+     * Returns the ImageRegistry.
+     */
+    public static ImageRegistry getImageRegistry() {
+        if (imageRegistry == null) {
+            initializeImageRegistry();
+        }
+        return imageRegistry;
+    }
+
+    /**
+     * Initialize the image registry by declaring all of the required graphics. This involves creating JFace image
+     * descriptors describing how to create/find the image should it be needed. The image is not actually allocated
+     * until requested.
+     * 
+     * Prefix conventions Wizard Banners WIZBAN_ Preference Banners PREF_BAN_ Property Page Banners PROPBAN_ Color
+     * toolbar CTOOL_ Enable toolbar ETOOL_ Disable toolbar DTOOL_ Local enabled toolbar ELCL_ Local Disable toolbar
+     * DLCL_ Object large OBJL_ Object small OBJS_ View VIEW_ Product images PROD_ Misc images MISC_
+     * 
+     * Where are the images? The images (typically gifs) are found in the same location as this plugin class. This may
+     * mean the same package directory as the package holding this class. The images are declared using this.getClass()
+     * to ensure they are looked up via this plugin class.
+     * 
+     * @see org.eclipse.jface.resource.ImageRegistry
+     */
+    public static ImageRegistry initializeImageRegistry() {
+        imageDescriptors = new HashMap<String, ImageDescriptor>(30);
+        declareImages();
+        return imageRegistry;
+    }
+
+    /**
+     * Returns the <code>Image</code> identified by the given key, or <code>null</code> if it does not exist.
+     */
+    public static Image getImage(String key) {
+        if (imageDescriptors == null)
+            initializeImageRegistry();
+        return getImageRegistry().get(key);
+    }
+
+    /**
+     * Returns the <code>ImageDescriptor</code> identified by the given key, or <code>null</code> if it does not exist.
+     */
+    public static ImageDescriptor getImageDescriptor(String key) {
+        if (imageDescriptors == null) {
+            initializeImageRegistry();
+        }
+        return imageDescriptors.get(key);
+    }
+
+    private static URL makeIconFileURL(String iconPath) throws MalformedURLException {
+        if (ICON_BASE_URL == null) {
+            throw new MalformedURLException();
+        }
+
+        return new URL(ICON_BASE_URL, iconPath);
+    }
 }

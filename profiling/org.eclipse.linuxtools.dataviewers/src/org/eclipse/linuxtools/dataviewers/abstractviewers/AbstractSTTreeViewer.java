@@ -28,226 +28,244 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * This wrapper extends AbstractSTViewer {@link AbstractSTViewer}
- * It is designed to be instantiated with a TreeViewer JFace control
- *  
+ * This wrapper extends AbstractSTViewer {@link AbstractSTViewer} It is designed to be instantiated with a TreeViewer
+ * JFace control
+ * 
  */
 public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
-	
-	
-	public AbstractSTTreeViewer(Composite parent) {
-		super(parent, SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION);
-	}
-	
-	
-	public AbstractSTTreeViewer(Composite parent,boolean init) {
-		super(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
-	}
-	
-	public AbstractSTTreeViewer(Composite parent, int style) {
-		super(parent,style,true);
-	}
-	
-	public AbstractSTTreeViewer(Composite parent, int style,boolean init) {
-		super(parent,style,init);
-	}
 
+    public AbstractSTTreeViewer(Composite parent) {
+        super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
+    }
 
-	/*
-	 * It creates the TreeViewer wrapped
-	 * @param parent
-	 * @param style
-	 * @return ColumnViewer
-	 */
-	@Override
-	protected ColumnViewer createViewer(Composite parent, int style) {
-		return new TreeViewer(createTree(parent, style)) {
-			@Override
-			// FIXME Temporary fix for eclipse bug #170521
-			// (bug in the refresh() method)
-			// Saves the expanded elements in order to correctly restore
-			// the expanded state of the tree.
-			public void refresh(Object element) {
-				getTree().setRedraw(false);
-				Object[] elements = this.getExpandedElements();
-				super.refresh(element);
-				this.setExpandedElements(elements);
-				getTree().setRedraw(true);
-			}
-		};
-	}
-	
-	/**
-	 * Create the main tree control
-	 * 
-	 * @param parent
-	 * @param style
-	 * @return Tree
-	 */
-	protected Tree createTree(Composite parent, int style) {
-		Tree tree = new Tree(parent, style);
-		tree.setLinesVisible(true);
-		tree.setHeaderVisible(true);
-	
-		return tree;
-	}
+    public AbstractSTTreeViewer(Composite parent, boolean init) {
+        super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION, init);
+    }
 
-	@Override
-	/**
-	 * Create the columns in the tree.
-	 * 
-	 */
-	protected void createColumns() {
-		Tree tree = getViewer().getTree();
-		TableLayout layout = new TableLayout();
-		tree.setLayout(layout);
-		tree.setHeaderVisible(true);
-		tree.setLinesVisible(true);
-		
-		for (int i = 0; i < getAllFields().length; i++) {
-			ISTDataViewersField field = getAllFields()[i];
-			TreeColumn tc = new TreeColumn(tree, field.getAlignment(), i);
-			tc.setText(field.getColumnHeaderText());
-			tc.setToolTipText(field.getColumnHeaderTooltip());
-			tc.setImage(field.getColumnHeaderImage());
-			tc.setWidth(field.getPreferredWidth());
-			tc.setResizable(true);
-			tc.setMoveable(true);
-			
-			tc.addSelectionListener(createHeaderListener());
-			tc.setData(field);
-			
-			// defining the column label provider.
-			// this has to be done after setting the column's data.
-			TreeViewerColumn viewerColumn =
-				new TreeViewerColumn(getViewer(), tc);
-			viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
-		}
-		
-		tree.addMouseListener(new MouseAdapter(){
-					public void mouseDoubleClick(MouseEvent e) {
-						Tree tree = (Tree)e.widget;
-						TreeItem item = tree.getItem(new Point(e.x,e.y));
-						if (item != null){
-							for(int i=0;i<tree.getColumnCount();i++){
-								ISTDataViewersField field = getAllFields()[i];
-								if (field.isHyperLink(item.getData())){
-									Rectangle bounds = item.getBounds(i);
-									if (bounds.contains(e.x,e.y)){
-										handleHyperlink(field,item.getData());
-										return;
-									}
-								}
-							}
-						}
-				}
-			});
+    public AbstractSTTreeViewer(Composite parent, int style) {
+        super(parent, style, true);
+    }
 
-		tree.addMouseMoveListener(new MouseMoveListener(){
-					@Override
-					public void mouseMove(MouseEvent e) {
-						Tree tree = (Tree)e.widget;
-						TreeItem item = tree.getItem(new Point(e.x,e.y));
-						if (item == null) return;
-		
-						for(int i=0;i<tree.getColumnCount();i++){
-							ISTDataViewersField field = getAllFields()[i];
-							Cursor cursor = null ;
-							if (field.isHyperLink(item.getData())){
-								Rectangle bounds = item.getBounds(i);
-							if (bounds.contains(e.x,e.y)){
-									cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
-									tree.setCursor(cursor);
-									return;
-								}
-							}
-							cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
-							tree.setCursor(cursor);
-						}
-					}
-		
-				});
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
-	 */
-	public Item[] getColumns() {
-		return getViewer().getTree().getColumns();
-	}
-	
-	@Override
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#updateDirectionIndicator(org.eclipse.swt.widgets.Item)
-	 */
-	public void updateDirectionIndicator(Item column) {
-		getViewer().getTree().setSortColumn((TreeColumn)column);
-		if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING)
-			getViewer().getTree().setSortDirection(SWT.UP);
-		else
-			getViewer().getTree().setSortDirection(SWT.DOWN);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnOrder()
-	 */
-	public int[] getColumnOrder() {
-		return getViewer().getTree().getColumnOrder();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnOrder(int[])
-	 */
-	protected void setColumnOrder(int[] order) {
-		getViewer().getTree().setColumnOrder(order);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnIndex(org.eclipse.swt.widgets.Item)
-	 */
-	public int getColumnIndex(Item column) {
-		return getViewer().getTree().indexOf((TreeColumn)column);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnWidth(org.eclipse.swt.widgets.Item)
-	 */
-	@Override
-	public int getColumnWidth(Item column) {
-		return ((TreeColumn)column).getWidth();
-	}
+    public AbstractSTTreeViewer(Composite parent, int style, boolean init) {
+        super(parent, style, init);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnResizable(org.eclipse.swt.widgets.Item, boolean)
-	 */
-	@Override
-	public void setColumnResizable(Item column, boolean resizable) {
-		((TreeColumn)column).setResizable(resizable);
-	}
+    /*
+     * It creates the TreeViewer wrapped
+     * 
+     * @param parent
+     * 
+     * @param style
+     * 
+     * @return ColumnViewer
+     */
+    @Override
+    protected ColumnViewer createViewer(Composite parent, int style) {
+        return new TreeViewer(createTree(parent, style)) {
+            @Override
+            // FIXME Temporary fix for eclipse bug #170521
+            // (bug in the refresh() method)
+            // Saves the expanded elements in order to correctly restore
+            // the expanded state of the tree.
+            public void refresh(Object element) {
+                getTree().setRedraw(false);
+                Object[] elements = this.getExpandedElements();
+                super.refresh(element);
+                this.setExpandedElements(elements);
+                getTree().setRedraw(true);
+            }
+        };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnWidth(org.eclipse.swt.widgets.Item, int)
-	 */
-	@Override
-	public void setColumnWidth(Item column, int width) {
-		((TreeColumn)column).setWidth(width);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getViewer()
-	 */
-	public TreeViewer getViewer() {
-		return (TreeViewer)super.getViewer();
-	}
-	
-	public void handleHyperlink(ISTDataViewersField field,Object data){}
+    /**
+     * Create the main tree control
+     * 
+     * @param parent
+     * @param style
+     * @return Tree
+     */
+    protected Tree createTree(Composite parent, int style) {
+        Tree tree = new Tree(parent, style);
+        tree.setLinesVisible(true);
+        tree.setHeaderVisible(true);
+
+        return tree;
+    }
+
+    @Override
+    /**
+     * Create the columns in the tree.
+     * 
+     */
+    protected void createColumns() {
+        Tree tree = getViewer().getTree();
+        TableLayout layout = new TableLayout();
+        tree.setLayout(layout);
+        tree.setHeaderVisible(true);
+        tree.setLinesVisible(true);
+
+        for (int i = 0; i < getAllFields().length; i++) {
+            ISTDataViewersField field = getAllFields()[i];
+            TreeColumn tc = new TreeColumn(tree, field.getAlignment(), i);
+            tc.setText(field.getColumnHeaderText());
+            tc.setToolTipText(field.getColumnHeaderTooltip());
+            tc.setImage(field.getColumnHeaderImage());
+            tc.setWidth(field.getPreferredWidth());
+            tc.setResizable(true);
+            tc.setMoveable(true);
+
+            tc.addSelectionListener(createHeaderListener());
+            tc.setData(field);
+
+            // defining the column label provider.
+            // this has to be done after setting the column's data.
+            TreeViewerColumn viewerColumn = new TreeViewerColumn(getViewer(), tc);
+            viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
+        }
+
+        tree.addMouseListener(new MouseAdapter() {
+            public void mouseDoubleClick(MouseEvent e) {
+                Tree tree = (Tree) e.widget;
+                TreeItem item = tree.getItem(new Point(e.x, e.y));
+                if (item != null) {
+                    for (int i = 0; i < tree.getColumnCount(); i++) {
+                        ISTDataViewersField field = getAllFields()[i];
+                        if (field.isHyperLink(item.getData())) {
+                            Rectangle bounds = item.getBounds(i);
+                            if (bounds.contains(e.x, e.y)) {
+                                handleHyperlink(field, item.getData());
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        tree.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                Tree tree = (Tree) e.widget;
+                TreeItem item = tree.getItem(new Point(e.x, e.y));
+                if (item == null)
+                    return;
+
+                for (int i = 0; i < tree.getColumnCount(); i++) {
+                    ISTDataViewersField field = getAllFields()[i];
+                    Cursor cursor = null;
+                    if (field.isHyperLink(item.getData())) {
+                        Rectangle bounds = item.getBounds(i);
+                        if (bounds.contains(e.x, e.y)) {
+                            cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
+                            tree.setCursor(cursor);
+                            return;
+                        }
+                    }
+                    cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
+                    tree.setCursor(cursor);
+                }
+            }
+
+        });
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
+     */
+    public Item[] getColumns() {
+        return getViewer().getTree().getColumns();
+    }
+
+    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#updateDirectionIndicator(org.eclipse.swt.
+     * widgets.Item)
+     */
+    public void updateDirectionIndicator(Item column) {
+        getViewer().getTree().setSortColumn((TreeColumn) column);
+        if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING)
+            getViewer().getTree().setSortDirection(SWT.UP);
+        else
+            getViewer().getTree().setSortDirection(SWT.DOWN);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnOrder()
+     */
+    public int[] getColumnOrder() {
+        return getViewer().getTree().getColumnOrder();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnOrder(int[])
+     */
+    protected void setColumnOrder(int[] order) {
+        getViewer().getTree().setColumnOrder(order);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnIndex(org.eclipse.swt.widgets.Item)
+     */
+    public int getColumnIndex(Item column) {
+        return getViewer().getTree().indexOf((TreeColumn) column);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnWidth(org.eclipse.swt.widgets.Item)
+     */
+    @Override
+    public int getColumnWidth(Item column) {
+        return ((TreeColumn) column).getWidth();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnResizable(org.eclipse.swt.widgets
+     * .Item, boolean)
+     */
+    @Override
+    public void setColumnResizable(Item column, boolean resizable) {
+        ((TreeColumn) column).setResizable(resizable);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnWidth(org.eclipse.swt.widgets.Item,
+     * int)
+     */
+    @Override
+    public void setColumnWidth(Item column, int width) {
+        ((TreeColumn) column).setWidth(width);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getViewer()
+     */
+    public TreeViewer getViewer() {
+        return (TreeViewer) super.getViewer();
+    }
+
+    public void handleHyperlink(ISTDataViewersField field, Object data) {
+    }
 }

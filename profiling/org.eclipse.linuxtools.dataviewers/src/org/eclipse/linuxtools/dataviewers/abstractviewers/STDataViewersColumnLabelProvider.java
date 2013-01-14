@@ -18,79 +18,86 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 
-
 /**
  * Label provider, on top of {@link ISTProfField}s
  */
 public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
-	private final ISTDataViewersField fields;
+    private final ISTDataViewersField fields;
 
-	/**
-	 * Create a STDataViewersColumnLabelProvider on a field
-	 * 
-	 * @param field
-	 */
-	public STDataViewersColumnLabelProvider(Item column) {
-		Object data = column.getData();
-		if (data instanceof ISTDataViewersField) {
-			fields =  (ISTDataViewersField)data;
-		} else {
-			STDataViewersActivator.getDefault().getLog().log(
-					new Status(
-							IStatus.ERROR,
-							STDataViewersActivator.PLUGIN_ID,
-							"No ISTDataField associated to Column!"));
-			fields = null;
-		}
-	}
+    /**
+     * Create a STDataViewersColumnLabelProvider on a field
+     * 
+     * @param field
+     */
+    public STDataViewersColumnLabelProvider(Item column) {
+        Object data = column.getData();
+        if (data instanceof ISTDataViewersField) {
+            fields = (ISTDataViewersField) data;
+        } else {
+            STDataViewersActivator
+                    .getDefault()
+                    .getLog()
+                    .log(new Status(IStatus.ERROR, STDataViewersActivator.PLUGIN_ID,
+                            "No ISTDataField associated to Column!"));
+            fields = null;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-	 */
-	public String getText(Object element) {
-		return fields.getValue(element);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+     */
+    public String getText(Object element) {
+        return fields.getValue(element);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getImage(java.lang.Object)
-	 */
-	public Image getImage(Object element) {
-		return fields.getImage(element);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ColumnLabelProvider#getImage(java.lang.Object)
+     */
+    public Image getImage(Object element) {
+        return fields.getImage(element);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipText(java.lang.Object)
-	 */
-	@Override
-	public String getToolTipText(Object element) {
-		return fields.getToolTipText(element);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipText(java.lang.Object)
+     */
+    @Override
+    public String getToolTipText(Object element) {
+        return fields.getToolTipText(element);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getBackground(java.lang.Object)
-	 */
-	@Override
-	public Color getBackground(Object element) {
-		return fields.getBackground(element);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ColumnLabelProvider#getBackground(java.lang.Object)
+     */
+    @Override
+    public Color getBackground(Object element) {
+        return fields.getBackground(element);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getForeground(java.lang.Object)
-	 */
-	@Override
-	public Color getForeground(Object element) {
-		return fields.getForeground(element);
-	}
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.CellLabelProvider#useNativeToolTip(java.lang.Object)
-	 */
-	public boolean useNativeToolTip(Object object) {
-		return true;
-	}
-	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ColumnLabelProvider#getForeground(java.lang.Object)
+     */
+    @Override
+    public Color getForeground(Object element) {
+        return fields.getForeground(element);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.CellLabelProvider#useNativeToolTip(java.lang.Object)
+     */
+    public boolean useNativeToolTip(Object object) {
+        return true;
+    }
+
 }

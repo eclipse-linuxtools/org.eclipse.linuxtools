@@ -15,33 +15,35 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersImages;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 
-
 /**
  * This action collapse all the tree
- *
+ * 
  */
 public class STCollapseAllTreeAction extends Action {
 
-	private final AbstractSTTreeViewer stViewer;
-	
-	/**
-	 * Constructor
-	 * @param stViewer the stViewer to collapse
-	 */
-	public STCollapseAllTreeAction(AbstractSTTreeViewer stViewer) {
-		super(STDataViewersMessages.collapseAllAction_title,
-				STDataViewersImages.getImageDescriptor(STDataViewersImages.IMG_COLLAPSEALL));
-		this.stViewer = stViewer;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
-	public void run() {
-		Object input = stViewer.getViewer().getInput();
-		if (input != null) {
-			stViewer.getViewer().collapseAll();
-		}
-	}
+    private final AbstractSTTreeViewer stViewer;
+
+    /**
+     * Constructor
+     * 
+     * @param stViewer
+     *            the stViewer to collapse
+     */
+    public STCollapseAllTreeAction(AbstractSTTreeViewer stViewer) {
+        super(STDataViewersMessages.collapseAllAction_title, STDataViewersImages
+                .getImageDescriptor(STDataViewersImages.IMG_COLLAPSEALL));
+        this.stViewer = stViewer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.action.Action#run()
+     */
+    public void run() {
+        Object input = stViewer.getViewer().getInput();
+        if (input != null) {
+            stViewer.getViewer().collapseAll();
+        }
+    }
 }

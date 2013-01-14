@@ -15,23 +15,23 @@ import java.util.ResourceBundle;
 import org.eclipse.osgi.util.NLS;
 
 public class STTextEditorMessages extends NLS {
-	private static final String BUNDLE_FOR_CONSTRUCTED_KEYS= "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STConstructedTextEditorMessages"; //$NON-NLS-1$
-	private static ResourceBundle fgBundleForConstructedKeys= ResourceBundle.getBundle(BUNDLE_FOR_CONSTRUCTED_KEYS);
+    private static final String BUNDLE_FOR_CONSTRUCTED_KEYS = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STConstructedTextEditorMessages"; //$NON-NLS-1$
+    private static ResourceBundle fgBundleForConstructedKeys = ResourceBundle.getBundle(BUNDLE_FOR_CONSTRUCTED_KEYS);
 
-	/**
-	 * Returns the message bundle which contains constructed keys.
-	 *
-	 * @since 3.1
-	 * @return the message bundle
-	 */
-	public static ResourceBundle getBundleForConstructedKeys() {
-		return fgBundleForConstructedKeys;
-	}
+    /**
+     * Returns the message bundle which contains constructed keys.
+     * 
+     * @since 3.1
+     * @return the message bundle
+     */
+    public static ResourceBundle getBundleForConstructedKeys() {
+        return fgBundleForConstructedKeys;
+    }
 
-	private static final String BUNDLE_NAME= STTextEditorMessages.class.getName();
-	
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, STTextEditorMessages.class);
-	}
+    private static final String BUNDLE_NAME = STTextEditorMessages.class.getName();
+
+    static {
+        NLS.initializeMessages(BUNDLE_NAME, STTextEditorMessages.class);
+    }
 
 }

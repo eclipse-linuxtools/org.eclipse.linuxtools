@@ -23,41 +23,47 @@ import org.eclipse.jface.viewers.StructuredSelection;
  */
 public class STSelectionProvider implements ISelectionProvider {
 
-	private final LinkedList<ISelectionChangedListener> listeners = new LinkedList<ISelectionChangedListener>();
-	private ISelection selection = StructuredSelection.EMPTY;
+    private final LinkedList<ISelectionChangedListener> listeners = new LinkedList<ISelectionChangedListener>();
+    private ISelection selection = StructuredSelection.EMPTY;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
-	 */
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		listeners.add(listener);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
-	 */
-	public ISelection getSelection() {
-		return selection;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
-	 */
-	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		listeners.remove(listener);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
-	 */
-	public void setSelection(ISelection selection) {
-		this.selection = selection;
-		for (ISelectionChangedListener listener : listeners) {
-			listener.selectionChanged(new SelectionChangedEvent(this, selection));
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.
+     * ISelectionChangedListener)
+     */
+    public void addSelectionChangedListener(ISelectionChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
+     */
+    public ISelection getSelection() {
+        return selection;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.
+     * ISelectionChangedListener)
+     */
+    public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
+     */
+    public void setSelection(ISelection selection) {
+        this.selection = selection;
+        for (ISelectionChangedListener listener : listeners) {
+            listener.selectionChanged(new SelectionChangedEvent(this, selection));
+        }
+    }
 }

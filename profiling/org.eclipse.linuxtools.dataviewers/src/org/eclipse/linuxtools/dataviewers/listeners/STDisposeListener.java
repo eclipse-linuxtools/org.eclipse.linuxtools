@@ -14,16 +14,15 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 
-
 public class STDisposeListener implements DisposeListener {
-	AbstractSTViewer stViewer;
-	
-	public STDisposeListener(AbstractSTViewer stViewer){
-		this.stViewer = stViewer;
-	}
+    AbstractSTViewer stViewer;
 
-	public void widgetDisposed(DisposeEvent e) {
-		stViewer.saveState();
-	}
+    public STDisposeListener(AbstractSTViewer stViewer) {
+        this.stViewer = stViewer;
+    }
+
+    public void widgetDisposed(DisposeEvent e) {
+        stViewer.saveState();
+    }
 
 }

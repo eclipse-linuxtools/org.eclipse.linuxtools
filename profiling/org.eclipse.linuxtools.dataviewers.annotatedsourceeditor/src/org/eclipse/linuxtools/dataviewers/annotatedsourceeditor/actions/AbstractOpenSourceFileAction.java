@@ -25,68 +25,63 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+public abstract class AbstractOpenSourceFileAction extends Action {
+    public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor";
+    private long ts;
 
-public abstract class AbstractOpenSourceFileAction extends Action{
-	public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor";
-	private long ts;
-	
-	public AbstractOpenSourceFileAction(String filepath,long ts){
-		super.setText("Open =>" + filepath);
-		this.ts = ts;
-	}
-	
-	@Override
-	public void run() {
+    public AbstractOpenSourceFileAction(String filepath, long ts) {
+        super.setText("Open =>" + filepath);
+        this.ts = ts;
+    }
 
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		
-		IFileStore fileStore = getFileStore();
-		
-		if (fileStore != null && !fileStore.fetchInfo().isDirectory()) {
-			if (fileStore.fetchInfo().exists()) {
-				long timeStamp = fileStore.fetchInfo().getLastModified();
+    @Override
+    public void run() {
 
-				if (timeStamp>ts) {
-					MessageBox msg = new MessageBox(window.getShell(),SWT.ICON_WARNING | SWT.APPLICATION_MODAL | SWT.YES| SWT.NO);
-					msg.setText(fileStore.toString());
-					msg.setMessage("The file "
-							+ fileStore
-							+ " is newer than the analysis result, \n"
-							+ " if you continue opening it the visualization could result inconsistent. \n Do you want to continue?");
-				}
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 
-				try {
-					IWorkbenchPage page = window.getActivePage();
-					if (page != null) {
-						IFileStore fs =  EFS.getStore(fileStore.toURI());
-						IEditorInput input = getInput(fs);
-						page.openEditor(input,  EDITOR_ID, false);
-					}
-				} catch (Exception e) {
-					Status s = new Status(
-							IStatus.ERROR,
-							STAnnotatedSourceEditorActivator.getUniqueIdentifier(),
-							IStatus.ERROR,
-							"Error when opening annotated source view",
-							e);
-					STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
-				}
-			} else{
-				showMessage("The selected file does not exist: " + fileStore,window.getShell());
-			}
-		}
-		
-	}
+        IFileStore fileStore = getFileStore();
 
-	private void showMessage(String message,Shell shell) {
-		MessageBox msgBox = new MessageBox(shell,SWT.ICON_ERROR);
-		msgBox.setText("Error");
-		msgBox.setMessage(message);
-		msgBox.open();
-	}
-		
-	public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
-	
-	public abstract IFileStore getFileStore();
+        if (fileStore != null && !fileStore.fetchInfo().isDirectory()) {
+            if (fileStore.fetchInfo().exists()) {
+                long timeStamp = fileStore.fetchInfo().getLastModified();
+
+                if (timeStamp > ts) {
+                    MessageBox msg = new MessageBox(window.getShell(), SWT.ICON_WARNING | SWT.APPLICATION_MODAL
+                            | SWT.YES | SWT.NO);
+                    msg.setText(fileStore.toString());
+                    msg.setMessage("The file "
+                            + fileStore
+                            + " is newer than the analysis result, \n"
+                            + " if you continue opening it the visualization could result inconsistent. \n Do you want to continue?");
+                }
+
+                try {
+                    IWorkbenchPage page = window.getActivePage();
+                    if (page != null) {
+                        IFileStore fs = EFS.getStore(fileStore.toURI());
+                        IEditorInput input = getInput(fs);
+                        page.openEditor(input, EDITOR_ID, false);
+                    }
+                } catch (Exception e) {
+                    Status s = new Status(IStatus.ERROR, STAnnotatedSourceEditorActivator.getUniqueIdentifier(),
+                            IStatus.ERROR, "Error when opening annotated source view", e);
+                    STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
+                }
+            } else {
+                showMessage("The selected file does not exist: " + fileStore, window.getShell());
+            }
+        }
+
+    }
+
+    private void showMessage(String message, Shell shell) {
+        MessageBox msgBox = new MessageBox(shell, SWT.ICON_ERROR);
+        msgBox.setText("Error");
+        msgBox.setMessage(message);
+        msgBox.open();
+    }
+
+    public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
+
+    public abstract IFileStore getFileStore();
 }
-

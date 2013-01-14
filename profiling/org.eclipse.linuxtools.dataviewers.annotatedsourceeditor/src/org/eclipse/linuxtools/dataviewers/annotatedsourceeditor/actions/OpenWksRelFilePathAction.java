@@ -24,41 +24,39 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AbstractSTAnnotatedSourceEditorInput;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator;
 
-
-
 public abstract class OpenWksRelFilePathAction extends AbstractOpenSourceFileAction {
-	private String filepath;
-	
-	public OpenWksRelFilePathAction(String filepath, long ts) {
-		super(filepath, ts);
-		
-		this.filepath = filepath;
-	}
+    private String filepath;
 
-	@Override
-	public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
-	
-	@Override
-	public IFileStore getFileStore(){
-		 File file = new File(filepath);
-	        IFile f = null;
-	        if (!file.isAbsolute())
-	        {
-	            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-	            if (workspace != null) {
-	                IWorkspaceRoot wrkRoot = workspace.getRoot();
-	                f = wrkRoot.getFile(new Path(filepath));
-	                IPath p = f.getLocation();
-	                if (p != null) file = p.toFile();
-	            }
-	            try {
-					IFileStore fs =  EFS.getStore(file.toURI());
-					return fs;
-				} catch (CoreException e) {
-					STAnnotatedSourceEditorActivator.getDefault().getLog().log(e.getStatus());
-				}
-	        }
-	        return null;
-	}
+    public OpenWksRelFilePathAction(String filepath, long ts) {
+        super(filepath, ts);
+
+        this.filepath = filepath;
+    }
+
+    @Override
+    public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
+
+    @Override
+    public IFileStore getFileStore() {
+        File file = new File(filepath);
+        IFile f = null;
+        if (!file.isAbsolute()) {
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            if (workspace != null) {
+                IWorkspaceRoot wrkRoot = workspace.getRoot();
+                f = wrkRoot.getFile(new Path(filepath));
+                IPath p = f.getLocation();
+                if (p != null)
+                    file = p.toFile();
+            }
+            try {
+                IFileStore fs = EFS.getStore(file.toURI());
+                return fs;
+            } catch (CoreException e) {
+                STAnnotatedSourceEditorActivator.getDefault().getLog().log(e.getStatus());
+            }
+        }
+        return null;
+    }
 
 }

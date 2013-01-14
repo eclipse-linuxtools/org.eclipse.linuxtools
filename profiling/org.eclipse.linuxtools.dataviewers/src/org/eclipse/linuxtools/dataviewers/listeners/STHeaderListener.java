@@ -18,49 +18,48 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Item;
 
-
 /**
  * Handles the case of user selecting the header area.
  */
 public class STHeaderListener implements SelectionListener {
 
-	private AbstractSTViewer stViewer;
-	
-	public STHeaderListener(AbstractSTViewer stViewer){
-		this.stViewer = stViewer;
-	}
-	
-	public void widgetDefaultSelected(SelectionEvent e) {
-		widgetSelected(e);
-	}
+    private AbstractSTViewer stViewer;
 
-	public void widgetSelected(SelectionEvent e) {
-		final Item column = (Item) e.widget;
-		final ISTDataViewersField field = (ISTDataViewersField) column.getData();
-		resortTable(column, field);
-	}
+    public STHeaderListener(AbstractSTViewer stViewer) {
+        this.stViewer = stViewer;
+    }
 
-	/**
-	 * Resort the table based on field.
-	 * 
-	 * @param column
-	 *            the column being updated
-	 * @param field
-	 * @param monitor
-	 */
-	private void resortTable(final Item column,final ISTDataViewersField field) {
-		STDataViewersComparator sorter = stViewer.getTableSorter();
+    public void widgetDefaultSelected(SelectionEvent e) {
+        widgetSelected(e);
+    }
 
-		if (column.equals(sorter.getTopColumn()))
-			sorter.reverseTopPriority();
-		else
-			sorter.setTopPriority(column, field);
-		
-		BusyIndicator.showWhile(null,new Runnable() {
-			public void run() {
-				stViewer.getViewer().refresh();
-				stViewer.updateDirectionIndicator(column);
-			}
-		});
-	}
+    public void widgetSelected(SelectionEvent e) {
+        final Item column = (Item) e.widget;
+        final ISTDataViewersField field = (ISTDataViewersField) column.getData();
+        resortTable(column, field);
+    }
+
+    /**
+     * Resort the table based on field.
+     * 
+     * @param column
+     *            the column being updated
+     * @param field
+     * @param monitor
+     */
+    private void resortTable(final Item column, final ISTDataViewersField field) {
+        STDataViewersComparator sorter = stViewer.getTableSorter();
+
+        if (column.equals(sorter.getTopColumn()))
+            sorter.reverseTopPriority();
+        else
+            sorter.setTopPriority(column, field);
+
+        BusyIndicator.showWhile(null, new Runnable() {
+            public void run() {
+                stViewer.getViewer().refresh();
+                stViewer.updateDirectionIndicator(column);
+            }
+        });
+    }
 }

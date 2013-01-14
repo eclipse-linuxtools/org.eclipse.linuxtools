@@ -13,5 +13,5 @@ package org.eclipse.linuxtools.dataviewers.listeners;
 import org.eclipse.swt.widgets.Listener;
 
 public interface ISpecialDrawerListener extends Listener {
-	public String getValue(Object obj); 
+    public String getValue(Object obj);
 }

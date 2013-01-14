@@ -24,24 +24,25 @@ import org.eclipse.swt.graphics.Image;
  * This action allows the user to sort the data in the viewer
  */
 public class STDataViewersSortAction extends Action {
-    
-	private final AbstractSTViewer stViewer;
-    
+
+    private final AbstractSTViewer stViewer;
+
     private final STDataViewersSortDialog dialog;
 
     /**
      * Constructor
+     * 
      * @param view
      * @param dialog
      */
     public STDataViewersSortAction(AbstractSTViewer stViewer) {
         super(STDataViewersMessages.sortAction_title);
-        Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_SORT); 
+        Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_SORT);
         super.setImageDescriptor(ImageDescriptor.createFromImage(img));
         super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
         this.stViewer = stViewer;
-        
-        //building a sort dialog 
+
+        // building a sort dialog
         dialog = getSortDialog();
 
         setEnabled(true);
@@ -49,25 +50,26 @@ public class STDataViewersSortAction extends Action {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.eclipse.jface.action.Action#run()
      */
     public void run() {
         if (dialog.open() == Window.OK && dialog.isDirty()) {
-        	BusyIndicator.showWhile(null,new Runnable() {
-    			public void run() {
-    				stViewer.setComparator(dialog.getSorter());
-    			}
-    		});
-        	
+            BusyIndicator.showWhile(null, new Runnable() {
+                public void run() {
+                    stViewer.setComparator(dialog.getSorter());
+                }
+            });
+
         }
     }
-    
+
     /**
-	 * Return a sort dialog for the receiver.
-	 * 
-	 * @return TableSortDialog
-	 */
-	protected STDataViewersSortDialog getSortDialog() {
-		return new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(),stViewer.getTableSorter());
-	}
+     * Return a sort dialog for the receiver.
+     * 
+     * @return TableSortDialog
+     */
+    protected STDataViewersSortDialog getSortDialog() {
+        return new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(), stViewer.getTableSorter());
+    }
 }

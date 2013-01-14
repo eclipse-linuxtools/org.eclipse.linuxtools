@@ -17,18 +17,18 @@ import org.eclipse.osgi.util.NLS;
  */
 final class STRulerMessages extends NLS {
 
-	private static final String BUNDLE_NAME= STRulerMessages.class.getName();
+    private static final String BUNDLE_NAME = STRulerMessages.class.getName();
 
-	private STRulerMessages() {
-		// Do not instantiate
-	}
+    private STRulerMessages() {
+        // Do not instantiate
+    }
 
-	public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_title;
-	public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_message;
-	public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_rememberquestion;
-	
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, STRulerMessages.class);
-	}
+    public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_title;
+    public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_message;
+    public static String AbstractDecoratedTextEditor_revision_quickdiff_switch_rememberquestion;
+
+    static {
+        NLS.initializeMessages(BUNDLE_NAME, STRulerMessages.class);
+    }
 
 }

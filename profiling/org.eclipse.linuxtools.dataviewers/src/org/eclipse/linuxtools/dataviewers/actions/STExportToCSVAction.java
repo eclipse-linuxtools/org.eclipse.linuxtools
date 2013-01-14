@@ -24,68 +24,67 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 import org.eclipse.linuxtools.dataviewers.dialogs.STDataViewersExportToCSVDialog;
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * This action export the STViewers data to CSV format file
- *
+ * 
  */
 public class STExportToCSVAction extends Action {
-	
-	private final AbstractSTViewer stViewer;
-	
-	private STDataViewersCSVExporter exporter;
-	
-	/**
-	 * Job family for Export to CSV background jobs.
-	 */
-	public static final String EXPORT_TO_CSV_JOB_FAMILY = "Export to CSV";
-	
-	/**
-	 * Constructor
-	 * @param stViewer the stViewer to export
-	 */
-	public STExportToCSVAction(AbstractSTViewer stViewer) {
-		super(STDataViewersMessages.exportToCSVAction_title);
-		Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_EXPORT); 
-		super.setImageDescriptor(ImageDescriptor.createFromImage(img));
-		
-		this.stViewer = stViewer;
-		this.exporter = new STDataViewersCSVExporter(stViewer);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
-	public void run() {
-		STDataViewersExportToCSVDialog dialog =
-			new STDataViewersExportToCSVDialog(stViewer.getViewer().getControl().getShell(), exporter);
-		if (dialog.open() == Dialog.OK) {
-			Job exportToCSVJob =
-				new Job("Export to CSV") {
-					public IStatus run(IProgressMonitor monitor) {
-						exporter.export(monitor);
-						return Status.OK_STATUS;
-					}
 
-					@Override
-					public boolean belongsTo(Object family) {
-						return EXPORT_TO_CSV_JOB_FAMILY.equals(family);
-					}
-					
-					
-					
-				};
-			exportToCSVJob.setUser(true);
-			exportToCSVJob.schedule();
-		}
-	}
-	
-	/**
-	 * 
-	 * @return exporter
-	 */
-	public STDataViewersCSVExporter getExporter(){
-		return exporter;
-	}
+    private final AbstractSTViewer stViewer;
+
+    private STDataViewersCSVExporter exporter;
+
+    /**
+     * Job family for Export to CSV background jobs.
+     */
+    public static final String EXPORT_TO_CSV_JOB_FAMILY = "Export to CSV";
+
+    /**
+     * Constructor
+     * 
+     * @param stViewer
+     *            the stViewer to export
+     */
+    public STExportToCSVAction(AbstractSTViewer stViewer) {
+        super(STDataViewersMessages.exportToCSVAction_title);
+        Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_EXPORT);
+        super.setImageDescriptor(ImageDescriptor.createFromImage(img));
+
+        this.stViewer = stViewer;
+        this.exporter = new STDataViewersCSVExporter(stViewer);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.action.Action#run()
+     */
+    public void run() {
+        STDataViewersExportToCSVDialog dialog = new STDataViewersExportToCSVDialog(stViewer.getViewer().getControl()
+                .getShell(), exporter);
+        if (dialog.open() == Dialog.OK) {
+            Job exportToCSVJob = new Job("Export to CSV") {
+                public IStatus run(IProgressMonitor monitor) {
+                    exporter.export(monitor);
+                    return Status.OK_STATUS;
+                }
+
+                @Override
+                public boolean belongsTo(Object family) {
+                    return EXPORT_TO_CSV_JOB_FAMILY.equals(family);
+                }
+
+            };
+            exportToCSVJob.setUser(true);
+            exportToCSVJob.schedule();
+        }
+    }
+
+    /**
+     * 
+     * @return exporter
+     */
+    public STDataViewersCSVExporter getExporter() {
+        return exporter;
+    }
 }
