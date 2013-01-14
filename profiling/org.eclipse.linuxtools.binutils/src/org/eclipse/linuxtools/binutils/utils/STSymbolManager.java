@@ -493,7 +493,28 @@ public class STSymbolManager {
         if (defaultparser != null) {
             parsers.add(defaultparser);
         }
-        return buildBinaryObject(path, parsers);
+        IBinaryObject ret = buildBinaryObject(path, parsers);
+        if (ret == null) { // trying all BinaryParsers...
+            parsers.clear();
+            IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(CCorePlugin.PLUGIN_ID, CCorePlugin.BINARY_PARSER_SIMPLE_ID);
+            for (IExtension extension: extensionPoint.getExtensions()) {
+                if (extension != null) {
+                    IConfigurationElement element[] = extension.getConfigurationElements();
+                    for (IConfigurationElement element2 : element) {
+                        if (element2.getName().equalsIgnoreCase("cextension")) { //$NON-NLS-1$
+                            IBinaryParser parser;
+                            try {
+                                parser = (IBinaryParser) element2.createExecutableExtension("run"); //$NON-NLS-1$
+                                parsers.add(parser);
+                            } catch (CoreException e) {
+                            }
+                        }
+                    }
+                }
+            }
+            ret = buildBinaryObject(path, parsers);
+        }
+        return ret;
     }
 
     /**
