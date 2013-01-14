@@ -18,15 +18,16 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * binutils factory (especially used for cross-compile tools)
+ * 
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public interface ISTBinutilsFactory {
 
-	Addr2line getAddr2line(String path, IProject project) throws IOException;
+    Addr2line getAddr2line(String path, IProject project) throws IOException;
 
-	CPPFilt getCPPFilt(IProject project) throws IOException;
+    CPPFilt getCPPFilt(IProject project) throws IOException;
 
-	STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException;
-	
-	boolean testAvailability();
+    STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException;
+
+    boolean testAvailability();
 }

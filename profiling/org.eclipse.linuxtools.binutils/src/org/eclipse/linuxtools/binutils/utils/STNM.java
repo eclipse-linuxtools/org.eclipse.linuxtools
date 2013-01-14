@@ -26,98 +26,107 @@ import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory
  */
 public class STNM {
 
-	private static Pattern undef_pattern  = null;
-	private static Pattern normal_pattern = null;
-	
-	private final STNMSymbolsHandler handler;
+    private static Pattern undef_pattern = null;
+    private static Pattern normal_pattern = null;
 
-	/**
-	 * Constructor
-	 * @param command the nm to call
-	 * @param params nm params
-	 * @param file file to parse
-	 * @throws IOException
-	 */
-	public STNM(String command, String[] params, String file, STNMSymbolsHandler handler) throws IOException {
-		this(command, params, file, handler, null);
-	}
+    private final STNMSymbolsHandler handler;
 
-	/**
-	 * Constructor
-	 * @param command the nm to call
-	 * @param params nm params
-	 * @param file file to parse
-	 * @param project the project to get the path to use to run nm
-	 * @throws IOException
-	 */
-	public STNM(String command, String[] params, String file, STNMSymbolsHandler handler, IProject project) throws IOException {
-		this.handler = handler;
-		if (handler != null) init(command, params, file, project);
-	}
+    /**
+     * Constructor
+     * 
+     * @param command
+     *            the nm to call
+     * @param params
+     *            nm params
+     * @param file
+     *            file to parse
+     * @throws IOException
+     */
+    public STNM(String command, String[] params, String file, STNMSymbolsHandler handler) throws IOException {
+        this(command, params, file, handler, null);
+    }
 
-	private void init(String command, String[] params, String file, IProject project) throws IOException {
-		String[] args = null;
-		if (params == null || params.length == 0) {
-			args = new String[] {command, file};
-		} else {
-			args = new String[params.length + 2];
-			args[0] = command;
-			args[params.length+1] = file;
-			System.arraycopy(params, 0, args, 1, params.length);
-		}
-		Process process = CdtSpawnerProcessFactory.getFactory().exec(args, project);
-		parseOutput(process.getInputStream());
-		process.destroy();
-	}
-	
+    /**
+     * Constructor
+     * 
+     * @param command
+     *            the nm to call
+     * @param params
+     *            nm params
+     * @param file
+     *            file to parse
+     * @param project
+     *            the project to get the path to use to run nm
+     * @throws IOException
+     */
+    public STNM(String command, String[] params, String file, STNMSymbolsHandler handler, IProject project)
+            throws IOException {
+        this.handler = handler;
+        if (handler != null)
+            init(command, params, file, project);
+    }
 
-	private void parseOutput(InputStream stream) throws IOException {
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(stream));
-		String line;
+    private void init(String command, String[] params, String file, IProject project) throws IOException {
+        String[] args = null;
+        if (params == null || params.length == 0) {
+            args = new String[] { command, file };
+        } else {
+            args = new String[params.length + 2];
+            args[0] = command;
+            args[params.length + 1] = file;
+            System.arraycopy(params, 0, args, 1, params.length);
+        }
+        Process process = CdtSpawnerProcessFactory.getFactory().exec(args, project);
+        parseOutput(process.getInputStream());
+        process.destroy();
+    }
 
-		// See matcher.java for regular expression string data definitions.
+    private void parseOutput(InputStream stream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
 
-		if (undef_pattern == null) {
-			undef_pattern = Pattern.compile("^\\s+U\\s+(\\S+)"); //$NON-NLS-1$
-		}
+        // See matcher.java for regular expression string data definitions.
 
-		if (normal_pattern == null) {
-			normal_pattern = Pattern.compile("^(\\S+)\\s+([AaTtBbDd])\\s+(\\S+)"); //$NON-NLS-1$
-		}
-		while ((line = reader.readLine()) != null) {
-			Matcher undef_matcher = undef_pattern.matcher(line);
-			Matcher normal_matcher = normal_pattern.matcher(line);
-			try {
-				if (undef_matcher.matches()) {
-					handler.foundUndefSymbol(undef_matcher.group(1));
-				} else if (normal_matcher.matches()) {
-					char type = normal_matcher.group(2).charAt(0);
-					String name = normal_matcher.group(3);
-					String address =normal_matcher.group(1);
-					
-					switch (type) {
-					case 'T':
-					case 't':
-						handler.foundTextSymbol(name, address);
-						break;
-					case 'B':
-					case 'b':
-						handler.foundBssSymbol(name, address);
-						break;
-					case 'D':
-					case 'd':
-						handler.foundDataSymbol(name, address);
-						break;
-					}
-				}
-			} catch (NumberFormatException e) {
-				// ignore.
-			} catch (IndexOutOfBoundsException e) {
-				// ignore
-			}
-		}
+        if (undef_pattern == null) {
+            undef_pattern = Pattern.compile("^\\s+U\\s+(\\S+)"); //$NON-NLS-1$
+        }
 
-	}
+        if (normal_pattern == null) {
+            normal_pattern = Pattern.compile("^(\\S+)\\s+([AaTtBbDd])\\s+(\\S+)"); //$NON-NLS-1$
+        }
+        while ((line = reader.readLine()) != null) {
+            Matcher undef_matcher = undef_pattern.matcher(line);
+            Matcher normal_matcher = normal_pattern.matcher(line);
+            try {
+                if (undef_matcher.matches()) {
+                    handler.foundUndefSymbol(undef_matcher.group(1));
+                } else if (normal_matcher.matches()) {
+                    char type = normal_matcher.group(2).charAt(0);
+                    String name = normal_matcher.group(3);
+                    String address = normal_matcher.group(1);
+
+                    switch (type) {
+                    case 'T':
+                    case 't':
+                        handler.foundTextSymbol(name, address);
+                        break;
+                    case 'B':
+                    case 'b':
+                        handler.foundBssSymbol(name, address);
+                        break;
+                    case 'D':
+                    case 'd':
+                        handler.foundDataSymbol(name, address);
+                        break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // ignore.
+            } catch (IndexOutOfBoundsException e) {
+                // ignore
+            }
+        }
+
+    }
 
 }

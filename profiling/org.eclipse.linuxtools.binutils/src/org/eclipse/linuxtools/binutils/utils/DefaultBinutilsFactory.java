@@ -19,33 +19,34 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 /**
  * Default binutils factory
+ * 
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class DefaultBinutilsFactory implements ISTBinutilsFactory {
-	private static final String CPPFILT_CMD = "c++filt"; //$NON-NLS-1$
-	private static final String ADDR2LINE_CMD = "addr2line"; //$NON-NLS-1$
-	
-	@Override
-	public Addr2line getAddr2line(String path, IProject project) throws IOException {
-		String addr2line = RuntimeProcessFactory.getFactory().whichCommand(ADDR2LINE_CMD, project);
-		return new Addr2line(addr2line, path);
-	}
+    private static final String CPPFILT_CMD = "c++filt"; //$NON-NLS-1$
+    private static final String ADDR2LINE_CMD = "addr2line"; //$NON-NLS-1$
 
-	@Override
-	public CPPFilt getCPPFilt(IProject project) throws IOException {
-		return new CPPFilt(RuntimeProcessFactory.getFactory().whichCommand(CPPFILT_CMD, project));
-	}
+    @Override
+    public Addr2line getAddr2line(String path, IProject project) throws IOException {
+        String addr2line = RuntimeProcessFactory.getFactory().whichCommand(ADDR2LINE_CMD, project);
+        return new Addr2line(addr2line, path);
+    }
 
-	@Override
-	public STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException {
-		return new STNM("nm", null, path, handler, project);
-	}
-	
-	/**
-	 * No availability test for default binutils.
-	 */
-	@Override
-	public boolean testAvailability() {
-		return true;
-	}
+    @Override
+    public CPPFilt getCPPFilt(IProject project) throws IOException {
+        return new CPPFilt(RuntimeProcessFactory.getFactory().whichCommand(CPPFILT_CMD, project));
+    }
+
+    @Override
+    public STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException {
+        return new STNM("nm", null, path, handler, project);
+    }
+
+    /**
+     * No availability test for default binutils.
+     */
+    @Override
+    public boolean testAvailability() {
+        return true;
+    }
 }

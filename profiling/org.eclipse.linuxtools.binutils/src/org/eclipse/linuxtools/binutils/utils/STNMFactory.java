@@ -18,27 +18,28 @@ import org.eclipse.linuxtools.binutils.utils.STNM;
 
 public class STNMFactory {
 
-	/**
-	 * @param cpuType
-	 * @param programPath
-	 * @return an instance of nm for the given program
-	 * @throws IOException
-	 */
-	public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler) throws IOException {
-		return getNM(cpuType, programPath, handler, null);
-	}
+    /**
+     * @param cpuType
+     * @param programPath
+     * @return an instance of nm for the given program
+     * @throws IOException
+     */
+    public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler) throws IOException {
+        return getNM(cpuType, programPath, handler, null);
+    }
 
-	/**
-	 * @param cpuType
-	 * @param programPath
-	 * @param project The project to get the path to be used to run nm
-	 * @return an instance of nm for the given program
-	 * @throws IOException
-	 */
-	public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler, IProject project) throws IOException {
-		ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
-		return factory.getNM(programPath, handler, project);
-	}
-
+    /**
+     * @param cpuType
+     * @param programPath
+     * @param project
+     *            The project to get the path to be used to run nm
+     * @return an instance of nm for the given program
+     * @throws IOException
+     */
+    public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler, IProject project)
+            throws IOException {
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
+        return factory.getNM(programPath, handler, project);
+    }
 
 }

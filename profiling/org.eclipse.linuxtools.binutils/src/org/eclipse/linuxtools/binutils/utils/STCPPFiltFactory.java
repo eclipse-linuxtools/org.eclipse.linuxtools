@@ -17,33 +17,30 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * c++filt factory for all toolsets.
- *
+ * 
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class STCPPFiltFactory {
 
-	
-	/**
-	 * @param cpuType
-	 * @return an instance of cppfile for the given cpu type
-	 * @throws IOException
-	 */
-	public static CPPFilt getCPPFilt(String cpuType) throws IOException {
-		return getCPPFilt(cpuType, null);
-	}
+    /**
+     * @param cpuType
+     * @return an instance of cppfile for the given cpu type
+     * @throws IOException
+     */
+    public static CPPFilt getCPPFilt(String cpuType) throws IOException {
+        return getCPPFilt(cpuType, null);
+    }
 
-	/**
-	 * @param cpuType
-	 * @param project The project to get the path to run cppfilt
-	 * @return an instance of cppfile for the given cpu type
-	 * @throws IOException
-	 */
-	public static CPPFilt getCPPFilt(String cpuType, IProject project) throws IOException {
-		ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
-		return factory.getCPPFilt(project);
-	}
-
-	
-	
+    /**
+     * @param cpuType
+     * @param project
+     *            The project to get the path to run cppfilt
+     * @return an instance of cppfile for the given cpu type
+     * @throws IOException
+     */
+    public static CPPFilt getCPPFilt(String cpuType, IProject project) throws IOException {
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
+        return factory.getCPPFilt(project);
+    }
 
 }
