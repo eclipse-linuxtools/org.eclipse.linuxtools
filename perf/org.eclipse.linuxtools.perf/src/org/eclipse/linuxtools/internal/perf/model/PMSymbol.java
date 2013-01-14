@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.perf.model;
 import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
 
 public class PMSymbol extends TreeParent {
-	private Double samples;
 	private boolean pathConflictFound = false;
 
 	public String getFunctionName() {
@@ -28,9 +27,8 @@ public class PMSymbol extends TreeParent {
 		return tmpName;
 	}
 
-	public PMSymbol(String symbolName, double samples, float pc) {
-		super(symbolName, pc);
-		this.samples = samples;
+	public PMSymbol(String symbolName, float pc, int samples) {
+		super(symbolName, pc, samples);
 	}
 
 	public void addPercent(Integer lineNum, Float percent) {  //Adds percent to a lineref within this symbol.
@@ -45,7 +43,7 @@ public class PMSymbol extends TreeParent {
 
 	@Override
 	public String toString() {
-		return getPercent() + "% in " + getName() + " (" + samples + " samples)" + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
+		return getPercent() + "% (" + getNumberOfSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
 	}
 
 	public void markConflict() {

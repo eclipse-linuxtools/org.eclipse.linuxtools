@@ -17,6 +17,18 @@ public class TreeParent {
 	private TreeParent parent;
 	private ArrayList<TreeParent> children;
 	private float percent = -1;
+	private int samples = -1;
+
+	public TreeParent(String name, float percent) {
+		this.name = name;
+		this.percent = percent;
+		children = new ArrayList<TreeParent>();
+	}
+
+	public TreeParent(String name, float percent, int samples) {
+		this(name, percent);
+		this.samples = samples;
+	}
 	
 	public String getName() {
 		return name;
@@ -32,7 +44,7 @@ public class TreeParent {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + " (" + getNumberOfSamples() + " samples)";
 	}
 
 	public Boolean equals(String s) {
@@ -47,14 +59,40 @@ public class TreeParent {
 		this.percent = percent;
 	}
 
-	public TreeParent(String name) {
-		this.name = name;
-		children = new ArrayList<TreeParent>();
+	/**
+	 * Get the number of samples collected for this element.
+	 * 
+	 * If this element is a child of PMSymbol (eg. PMLineRef) we should
+	 * calculate its samples using its given percentage and the number of
+	 * samples from its parent. If this element is a parent of PMSymbol we
+	 * should calculate its samples by accumulating all samples from its
+	 * children.
+	 * 
+	 * @return the number of samples
+	 */
+	public int getNumberOfSamples () {
+		// Child of PMSymbol, distribute samples by percentage
+		if (this instanceof PMLineRef) {
+			if (samples == -1) {
+				samples = (int) (getParent().getNumberOfSamples() * (getPercent() / 100));
+			}
+		} else {
+			// Parent of PMSymbol, accumulate from children elements
+			if (samples == -1) {
+				int sampleSum = 0;
+
+				for (TreeParent child : getChildren()) {
+					sampleSum += child.getNumberOfSamples();
+				}
+				samples = sampleSum;
+			}
+		}
+
+		return samples;
 	}
 
-	public TreeParent(String name, float percent) {
+	public TreeParent(String name) {
 		this.name = name;
-		this.percent = percent;
 		children = new ArrayList<TreeParent>();
 	}
 

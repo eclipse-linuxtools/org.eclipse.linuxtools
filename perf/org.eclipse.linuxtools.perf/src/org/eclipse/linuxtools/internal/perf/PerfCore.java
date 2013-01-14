@@ -429,7 +429,7 @@ public class PerfCore {
 		float percent;
 
 		Process p = null;
-		double samples;
+		int samples;
 		String comm,dso,symbol;
 		boolean kernelFlag;
 		PMEvent currentEvent = null;
@@ -464,7 +464,7 @@ public class PerfCore {
 						continue;
 					}
 					percent = Float.parseFloat(items[0]); //percent column
-					samples = Double.parseDouble(items[1].trim()); //samples column
+					samples = Integer.parseInt(items[1].trim()); //samples column
 					comm = items[2].trim(); //command column
 					dso = items[3].trim(); //dso column
 					symbol = items[4].trim(); //symbol column 
@@ -496,7 +496,7 @@ public class PerfCore {
 					 *  attach all symbols as children of 'Unfiled Symbols'.
 					 */
 					currentFile = currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols);
-					currentSym = new PMSymbol(symbol, samples, percent);
+					currentSym = new PMSymbol(symbol, percent, samples);
 					currentFile.addChild(currentSym);
 				}
 			}
