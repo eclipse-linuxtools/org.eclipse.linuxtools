@@ -14,19 +14,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-
-
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = GraphingPlugin.getDefault().getPreferenceStore();
-
 		//graphing
 		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
-		
-		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }

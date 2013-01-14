@@ -26,19 +26,15 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.SelectGraphWizard;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -47,6 +43,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 
@@ -57,21 +54,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GraphDisplaySet {
 	public GraphDisplaySet(Composite parent, IDataSet data) {
-		LogManager.logDebug("Start GraphSelectorView:", this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		IPreferenceStore p = GraphingPlugin.getDefault().getPreferenceStore();
 		int delay = p.getInt(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY);
 
 		dataSet = data;
-	//	if(null != cmd) {
-			updater = new UpdateManager(delay);
-	//	}
+		updater = new UpdateManager(delay);
 		createPartControl(parent);
 		
 		builders = new ArrayList<AbstractChartBuilder>();
-	//	graphs = new ArrayList();
 		tabListeners = new ArrayList<ITabListener>();
-		LogManager.logDebug("End GraphSelectorView:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -79,8 +70,6 @@ public class GraphDisplaySet {
 	 * @param parent The composite that will contain all the elements from this dialog
 	 */
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
-
 		parent.setLayout(new FormLayout());
 		FormData data1 = new FormData();
 		Composite cmpCoolBar = new Composite(parent, SWT.NONE);
@@ -125,7 +114,7 @@ public class GraphDisplaySet {
 
 		//This is a tab/button for opening new graphs
 		CTabItem newGraph = new CTabItem(folder, SWT.NONE);
-		newGraph.setImage(GraphingPlugin.getImageDescriptor("icons/actions/new_wiz.gif").createImage());
+		newGraph.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GraphingPlugin.PLUGIN_ID, "icons/actions/new_wiz.gif").createImage());
 		newGraph.setToolTipText(Localization.getString("GraphDisplaySet.DataView"));
 
 		//Tab containing the data table
@@ -145,8 +134,6 @@ public class GraphDisplaySet {
 		item.setControl(c);
 		folder.setSelection(item);
 		lastSelectedTab = 1;
-
-		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 	
 	public IDataSet getDataSet() {
@@ -170,9 +157,6 @@ public class GraphDisplaySet {
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-
 		if(null != updater)
 			updater.dispose();
 		updater = null;
@@ -184,8 +168,6 @@ public class GraphDisplaySet {
 			folder = null;
 		}
 		listener = null;
-		
-		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
 	
 	/**
@@ -263,6 +245,5 @@ public class GraphDisplaySet {
 	private UpdateManager updater;
 	private ArrayList<ITabListener> tabListeners;
 	
-//	private ArrayList graphs;
 	private ArrayList<AbstractChartBuilder> builders;
 }
