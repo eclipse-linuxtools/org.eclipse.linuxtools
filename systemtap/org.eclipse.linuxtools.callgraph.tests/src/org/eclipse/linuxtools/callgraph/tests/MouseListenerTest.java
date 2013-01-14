@@ -26,7 +26,7 @@ public class MouseListenerTest extends TestCase {
 
 	public void test() {
 		StapGraphParser parse = new StapGraphParser();
-		parse.setSourcePath(Activator.PLUGIN_LOCATION + "eag.graph");
+		parse.setSourcePath(Activator.getPluginLocation() + "eag.graph");
 		parse.testRun(new NullProgressMonitor(), true);
 
 		CallgraphView cView = (CallgraphView) ViewFactory.createView("org.eclipse.linuxtools.callgraph.callgraphview");
@@ -36,10 +36,6 @@ public class MouseListenerTest extends TestCase {
 		j.runInUIThread(new NullProgressMonitor());
 
 		StapGraphMouseListener mListener = cView.getGraph().getMouseListener();
-		// StapGraphKeyListener kListener =
-		// CallgraphView.getGraph().getKeyListener();
-		// StapGraphMouseWheelListener mwListener =
-		// CallgraphView.getGraph().getMouseWheelListener();
 
 		StapGraph g = cView.getGraph();
 		g.setProject(parse.project);
@@ -50,7 +46,7 @@ public class MouseListenerTest extends TestCase {
 		mListener.mouseDownEvent(0, 0);
 		g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
 				StapGraph.CONSTANT_ANIMATION_FASTEST, g.getFirstUsefulNode());
-		mListener.mouseUpEvent();
+		mListener.mouseUp(null);
 
 	}
 }

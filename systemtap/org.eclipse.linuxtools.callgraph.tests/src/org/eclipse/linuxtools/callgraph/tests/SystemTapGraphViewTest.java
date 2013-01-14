@@ -22,17 +22,7 @@ public class SystemTapGraphViewTest extends TestCase {
 	
 	//TODO: write some better tests here
 	public void test() {
-		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
-
-		
 		stapView = (SystemTapTextView)  ViewFactory.createView("org.eclipse.linuxtools.callgraph.core.staptextview");
-		if (stapView == null)
-			try {
-				throw new Exception("The SystemTapView is null");
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
 		
 		stapView.println(testText);
 		assertEquals(stapView.getText(), testText);
