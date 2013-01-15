@@ -2,10 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
 	<extension
-		point="org.eclipse.ui.startup">
-	</extension>
-
-	<extension
 		point="org.eclipse.ui.commands">
 		<command
 			name="%command.runChart.name"
