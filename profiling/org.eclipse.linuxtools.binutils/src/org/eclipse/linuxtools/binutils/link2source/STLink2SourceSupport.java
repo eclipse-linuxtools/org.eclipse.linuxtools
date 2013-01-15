@@ -444,7 +444,7 @@ public class STLink2SourceSupport {
     }
 
     private boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {
-        if (sourceLoc == null || "??".equals(sourceLoc.toString()))
+        if (sourceLoc == null || "??".equals(sourceLoc.toString())) //$NON-NLS-1$
             return false;
         try {
             IEditorInput editorInput = getEditorInput(sourceLoc, project);
@@ -452,7 +452,7 @@ public class STLink2SourceSupport {
             if (p != null) {
                 if (editorInput == null) {
                     p.openEditor(new STCSourceNotFoundEditorInput(project, sourceLoc, lineNumber),
-                            "org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor", true);
+                            STCSourceNotFoundEditor.ID, true);
                 } else {
                     IEditorPart editor = p.openEditor(editorInput, CUIPlugin.EDITOR_ID, true);
                     if (lineNumber > 0 && editor instanceof ITextEditor) {

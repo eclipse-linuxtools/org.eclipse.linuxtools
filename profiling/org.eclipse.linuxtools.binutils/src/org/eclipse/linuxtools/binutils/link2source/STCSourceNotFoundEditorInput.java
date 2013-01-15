@@ -59,7 +59,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
      */
     @Override
     public ImageDescriptor getImageDescriptor() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/c_file_obj.gif");
+        return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/c_file_obj.gif"); //$NON-NLS-1$
     }
 
     /*
@@ -69,7 +69,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
      */
     @Override
     public String getName() {
-        return sourcePath.lastSegment() + ":" + lineNumber;
+        return sourcePath.lastSegment() + ":" + lineNumber; //$NON-NLS-1$
     }
 
     /*
@@ -89,7 +89,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
      */
     @Override
     public String getToolTipText() {
-        return "Source not found";
+        return Messages.STCSourceNotFoundEditorInput_source_not_found;
     }
 
     /*

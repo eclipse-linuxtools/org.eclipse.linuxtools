@@ -39,7 +39,7 @@ public class DefaultBinutilsFactory implements ISTBinutilsFactory {
 
     @Override
     public STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException {
-        return new STNM("nm", null, path, handler, project);
+        return new STNM("nm", null, path, handler, project); //$NON-NLS-1$
     }
 
     /**

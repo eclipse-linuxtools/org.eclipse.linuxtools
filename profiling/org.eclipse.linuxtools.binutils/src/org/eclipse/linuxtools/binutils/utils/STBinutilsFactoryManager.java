@@ -54,15 +54,15 @@ public class STBinutilsFactoryManager {
     private ISTBinutilsFactory getBinutilsFactoryImpl(String cpu) {
         try {
             IExtensionRegistry reg = Platform.getExtensionRegistry();
-            IExtensionPoint ep = reg.getExtensionPoint("org.eclipse.linuxtools.binutils.crossCompilerBinutils");
+            IExtensionPoint ep = reg.getExtensionPoint("org.eclipse.linuxtools.binutils.crossCompilerBinutils"); //$NON-NLS-1$
             IExtension[] exts = ep.getExtensions();
             for (IExtension extension : exts) {
                 IConfigurationElement[] elems = extension.getConfigurationElements();
                 for (IConfigurationElement configurationElement : elems) {
-                    String s = configurationElement.getAttribute("CPU");
+                    String s = configurationElement.getAttribute("CPU"); //$NON-NLS-1$
                     if (cpu.equals(s)) {
                         ISTBinutilsFactory factory = (ISTBinutilsFactory) configurationElement
-                                .createExecutableExtension("binutilsFactory");
+                                .createExecutableExtension("binutilsFactory"); //$NON-NLS-1$
                         if (factory.testAvailability())
                             return factory;
                     }

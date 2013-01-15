@@ -49,6 +49,11 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     private final static String foundMappingsContainerName = "Found Mappings"; //$NON-NLS-1$
 
+    /**
+     * @since 4.1
+     */
+    public final static String ID = "org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor"; //$NON-NLS-1$
+
     private Button locateFileButton;
     private Button editLookupButton;
 
@@ -112,9 +117,9 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     protected String getText() {
         boolean v = isValidMissingFile();
         if (v) {
-            return "Can't find a source file at \"" + getMissingFile() + "\" \n";
+            return Messages.STCSourceNotFoundEditor_cant_find_source_file + "\"" + getMissingFile() + "\" \n"; //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-            return "No source available for \"\"";
+            return Messages.STCSourceNotFoundEditor_no_source_available;
         }
     }
 
@@ -127,7 +132,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
             data.grabExcessHorizontalSpace = false;
             data.grabExcessVerticalSpace = false;
             locateFileButton.setLayoutData(data);
-            locateFileButton.setText("Locate File..."); //$NON-NLS-1$
+            locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
             locateFileButton.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent evt) {
@@ -143,7 +148,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
             data.grabExcessHorizontalSpace = false;
             data.grabExcessVerticalSpace = false;
             editLookupButton.setLayoutData(data);
-            editLookupButton.setText("Edit Source Lookup Path...");
+            editLookupButton.setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
             editLookupButton.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent evt) {
@@ -162,7 +167,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     @Override
     protected void editSourceLookupPath() {
         PreferenceDialog d = org.eclipse.ui.dialogs.PreferencesUtil.createPreferenceDialogOn(null,
-                "org.eclipse.cdt.debug.ui.SourcePreferencePage", null, null);
+                "org.eclipse.cdt.debug.ui.SourcePreferencePage", null, null); //$NON-NLS-1$
         if (d.open() == Window.OK) {
             closeEditor();
             openSourceFileAtLocation(getProject(), getMissingFile(), getLineNumber());
@@ -202,7 +207,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
             InstanceScope.INSTANCE.getNode(CDebugCorePlugin.PLUGIN_ID).flush();
         } catch (BackingStoreException e) {
             IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-                    "Failed saving settings for content type " + CDebugCorePlugin.PLUGIN_ID, e);
+                    Messages.STCSourceNotFoundEditor_failed_saving_settings_for_content_type + CDebugCorePlugin.PLUGIN_ID, e);
             throw new CoreException(status);
         }
     }
@@ -210,7 +215,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     protected void locateFile() {
         FileDialog dialog = new FileDialog(getEditorSite().getShell(), SWT.NONE);
         IPath missingPath = getMissingFile();
-        dialog.setFilterNames(new String[] { "Missing Source File" });
+        dialog.setFilterNames(new String[] { Messages.STCSourceNotFoundEditor_missing_source_file });
         dialog.setFilterExtensions(new String[] { "*." + missingPath.getFileExtension() }); //$NON-NLS-1$
         String res = dialog.open();
         if (res != null) {
