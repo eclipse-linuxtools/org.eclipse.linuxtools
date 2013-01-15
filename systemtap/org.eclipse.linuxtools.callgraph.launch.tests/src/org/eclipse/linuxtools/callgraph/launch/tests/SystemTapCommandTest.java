@@ -26,9 +26,6 @@ public class SystemTapCommandTest extends TestCase{
 	 * Tests if SystemTapCommand is properly obtaining output from the runtime process
 	 */
 	public void testCommand() {
-		System.out.println("\n\nLaunching SystemTapCommandTest\n");
-
-		
 		//Set up variables
 		String testText = "CORRECT";
 		String tempLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()

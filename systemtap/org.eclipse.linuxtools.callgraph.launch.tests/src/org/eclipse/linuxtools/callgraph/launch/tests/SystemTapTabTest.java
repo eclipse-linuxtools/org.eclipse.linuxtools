@@ -25,26 +25,23 @@ import org.eclipse.swt.widgets.Shell;
 public class SystemTapTabTest extends TestCase{
 
 	
-	public void testTabs(){
+	public void testTabs() throws CoreException{
 		Shell sh = new Shell();
 		Composite cmp = new Composite(sh, SWT.NONE);
-		
+
 		LaunchStapGraph shortCut = new LaunchStapGraph();
 		SystemTapOptionsTab stp = new SystemTapOptionsTab();
 		stp.createControl(cmp);
 		ILaunchConfiguration configuration;
-		try {
-			configuration = shortCut.outsideGetLaunchConfigType().
-			newInstance(null, (DebugPlugin.getDefault().getLaunchManager()).
-					generateLaunchConfigurationName("invalid"));
-			ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
-			stp.setDefaults(wc);
-			stp.performApply(wc);
-			wc.doSave();
-			stp.initializeFrom(configuration);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		configuration = shortCut.outsideGetLaunchConfigType().newInstance(
+				null,
+				(DebugPlugin.getDefault().getLaunchManager())
+						.generateLaunchConfigurationName("invalid"));
+		ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
+		stp.setDefaults(wc);
+		stp.performApply(wc);
+		wc.doSave();
+		stp.initializeFrom(configuration);
 		sh.open();
 	}
 }

@@ -18,10 +18,14 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
 
 public class SystemTapErrorHandlerTest extends TestCase {
 
-	SystemTapErrorHandler errHandler;
-	String errorString;
+	private SystemTapErrorHandler errHandler;
+	private String errorString;
 
-	
+	@Override
+	protected void setUp() {
+		errHandler = new SystemTapErrorHandler();
+	}
+
 	public void testErrorNotRecognized(){
 
 		errorString = "This error will not be caught \n" +
@@ -29,61 +33,56 @@ public class SystemTapErrorHandlerTest extends TestCase {
 				"Unrecognized \n" +
 				"Not found \n" +
 				"Error";
-		
-		errHandler = new SystemTapErrorHandler();
+
 		errHandler.handle(new NullProgressMonitor(), errorString);
-		
-		assertTrue(!errHandler.isErrorRecognized());
+
+		assertFalse(errHandler.isErrorRecognized());
 	}
-	
-		
+
+
 	public void testErrorRecognized(){
 
 		errorString = "As long as the word stapdev or stapusr is here, error is recognized";
-		
-		errHandler = new SystemTapErrorHandler();
+
 		errHandler.handle(new NullProgressMonitor(), errorString);
-		
+
 		assertTrue(errHandler.isErrorRecognized());
 	}
-	
-	
+
+
 	public void testUserGroupError(){
-		
+
 		errorString = "ERROR: You are trying to run systemtap as a normal user.\n" +
 			"You should either be root, or be part of either " +
 			"group \"stapdev\" or group \"stapusr.\n";
-		
-		errHandler = new SystemTapErrorHandler();
+
 		errHandler.handle(new NullProgressMonitor(), errorString);
-		
+
 		assertTrue(errHandler.isErrorRecognized());
 		assertTrue(errHandler.getErrorMessage().contains("Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap."));
 	}
-	
-	
+
+
 	public void testDebugInfoError(){
-		
+
 		errorString = "missing [architecture] kernel/module debuginfo under '[kernel-build-tree]'";
-		
-		errHandler = new SystemTapErrorHandler();
+
 		errHandler.handle(new NullProgressMonitor(), errorString);
-		
+
 		assertTrue(errHandler.isErrorRecognized());
 		assertTrue(errHandler.getErrorMessage().contains("No debuginfo could be found. Make sure you have yum-utils installed, and run debuginfo-install kernel as root."));
 	}
-	
-	
-	public void testUprobesError(){
-		
-		errorString = "SystemTap's version of uprobes is out of date. As root, or a member of the 'root' group, run \"make -C /usr/local/share/systemtap/runtime/uprobes\".";
-		
-		errHandler = new SystemTapErrorHandler();
-		errHandler.handle(new NullProgressMonitor(), errorString);
-		
-		assertTrue(errHandler.isErrorRecognized());
-		assertTrue(errHandler.getErrorMessage().contains("SystemTap's version of uprobes is out of date. As root, please run \"make -C /usr/local/share/systemtap/runtime/uprobes\"."));
-		
-	}
 
+
+	public void testUprobesError(){
+
+		errorString = "SystemTap's version of uprobes is out of date. As root, or a member of the 'root' group, run \"make -C /usr/local/share/systemtap/runtime/uprobes\".";
+
+		errHandler.handle(new NullProgressMonitor(), errorString);
+
+		assertTrue(errHandler.isErrorRecognized());
+		System.out.println(errHandler.getErrorMessage());
+		assertTrue(errHandler.getErrorMessage().contains("SystemTap's version of uprobes is out of date."));
+		assertTrue(errHandler.getErrorMessage().contains("make -C /usr/local/share/systemtap/runtime/uprobes\"."));
+	}
 }
