@@ -82,8 +82,9 @@ public class SystemTapTextView extends SystemTapView {
 			inLineOffset = 0;
 			for (int k = 0; k < split_txt.length; k++) {
 				// Skip blank substrings
-				if (split_txt[k].length() == 0)
+				if (split_txt[k].length() == 0) {
 					continue;
+				}
 
 				// Split for the number codes
 				String[] coloursAndText = split_txt[k].split("\\)~"); //$NON-NLS-1$
@@ -101,8 +102,9 @@ public class SystemTapTextView extends SystemTapView {
 
 				// The first element in the array should contain the colours
 				String[] colours = coloursAndText[0].split(","); //$NON-NLS-1$
-				if (colours.length < 3)
+				if (colours.length < 3) {
 					continue;
+				}
 
 				// The second element in the array should contain the text
 				viewer.append(coloursAndText[1]);
@@ -207,8 +209,9 @@ public class SystemTapTextView extends SystemTapView {
 	public void updateMethod() {
 		if (getParser().getData() instanceof String) {
 			String data = (String) getParser().getData();
-			if (data.length() > 0)
+			if (data.length() > 0) {
 				prettyPrintln((String) getParser().getData());
+			}
 		}
 	}
 
@@ -226,6 +229,4 @@ public class SystemTapTextView extends SystemTapView {
 	protected boolean createOpenDefaultAction() {
 		return false;
 	}
-
-
 }

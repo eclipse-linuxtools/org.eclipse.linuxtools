@@ -36,14 +36,17 @@ public class StapUIJob extends UIJob {
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (parser.getSecondaryID() != null && parser.getSecondaryID().length() > 0)
+		if (parser.getSecondaryID() != null && parser.getSecondaryID().length() > 0) {
 			viewer = ViewFactory.createView(viewID, parser.getSecondaryID());
-		else
+		} else {
 			viewer = ViewFactory.createView(viewID);
-		if (!viewer.setParser(parser))
+		}
+		if (!viewer.setParser(parser)) {
 			return Status.CANCEL_STATUS;
-		if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
+		}
+		if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS) {
 			return Status.CANCEL_STATUS;
+		}
 		
 		if (!parser.realTime) {
 			viewer.updateMethod();

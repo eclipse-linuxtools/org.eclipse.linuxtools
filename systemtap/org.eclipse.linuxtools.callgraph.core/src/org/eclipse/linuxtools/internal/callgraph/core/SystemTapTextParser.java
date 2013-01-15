@@ -33,8 +33,9 @@ public class SystemTapTextParser extends SystemTapParser{
 
 	@Override
 	public IStatus realTimeParsing() {
-		if (!(internalData instanceof BufferedReader))
+		if (!(internalData instanceof BufferedReader)) {
 			return Status.CANCEL_STATUS;
+		}
 
 		BufferedReader buff = (BufferedReader) internalData;
 		StringBuffer text = new StringBuffer();
@@ -42,13 +43,15 @@ public class SystemTapTextParser extends SystemTapParser{
 		String line;
 		try {
 			while ((line = buff.readLine()) != null) {
-				if (monitor.isCanceled())
+				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
+				}
 				text.append(line + "\n"); //$NON-NLS-1$
 			}
 			setData(text.toString());
-			if (text.length() > 0)
+			if (text.length() > 0) {
 				System.out.println(text.toString());
+			}
 			view.update();
 		} catch (IOException e) {
 			e.printStackTrace();

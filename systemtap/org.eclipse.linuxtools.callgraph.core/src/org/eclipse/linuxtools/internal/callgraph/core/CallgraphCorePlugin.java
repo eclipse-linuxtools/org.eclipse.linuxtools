@@ -16,7 +16,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -70,16 +70,6 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(LaunchConfigurationConstants.PLUGIN_ID, path);
-	}
 	
 	/**
 	 * Returns the location of the plugin by checking the path of the bundle's 
@@ -87,8 +77,8 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public String getPluginLocation() {
-		Bundle bundle = getBundle();
+	public static String getPluginLocation() {
+		Bundle bundle = Platform.getBundle(PLUGIN_ID);
 
 		URL locationUrl = FileLocator.find(bundle,new Path("/"), null); //$NON-NLS-1$
 		URL fileUrl = null;

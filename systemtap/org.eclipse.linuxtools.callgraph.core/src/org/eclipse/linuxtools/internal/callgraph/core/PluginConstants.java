@@ -46,7 +46,7 @@ public final class PluginConstants {
 
 	public static String getPluginLocation() {
 		if (PLUGIN_LOCATION.length() < 1)
-			PluginConstants.setPluginLocation(CallgraphCorePlugin.getDefault().getPluginLocation());
+			PluginConstants.setPluginLocation(CallgraphCorePlugin.getPluginLocation());
 		
 		return PLUGIN_LOCATION;
 	}

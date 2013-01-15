@@ -14,9 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -53,10 +50,11 @@ public abstract class SystemTapParser extends Job {
 	public SystemTapParser(String name, String filePath) {
 		super(name);
 		// BY DEFAULT READ/WRITE FROM HERE
-		if (filePath != null)
+		if (filePath != null) {
 			this.sourcePath = filePath;
-		else
+		} else {
 			this.sourcePath = PluginConstants.getDefaultIOPath();
+		}
 		this.viewID = null;
 		initialize();
 	}
@@ -201,23 +199,6 @@ public abstract class SystemTapParser extends Job {
 
 	}
 
-	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
-		for (Map.Entry<Integer, ArrayList<Integer>> a : blah.entrySet()) {
-			MP.print(a.getKey() + " ::> "); //$NON-NLS-1$
-			for (int c : a.getValue()) {
-				System.out.print(c + " "); //$NON-NLS-1$
-			}
-			MP.println(""); //$NON-NLS-1$
-		}
-	}
-
-	public void printMap(Map<?, ?> blah) {
-		for (Map.Entry<?, ?> a : blah.entrySet()) {
-			MP.println(a.getKey() + " ::> " + a.getValue()); //$NON-NLS-1$
-		}
-	}
-
-
 	/**
 	 * For easier JUnit testing only. Allows public access to run method without
 	 * scheduling an extra job.
@@ -227,11 +208,13 @@ public abstract class SystemTapParser extends Job {
 	 */
 	public IStatus testRun(IProgressMonitor m, boolean realTime) {
 		try {
-			internalData = new BufferedReader(new FileReader(new File(sourcePath)));
-		if (realTime)
-			return realTimeParsing();
-		else
-			return nonRealTimeParsing();
+			internalData = new BufferedReader(new FileReader(new File(
+					sourcePath)));
+			if (realTime) {
+				return realTimeParsing();
+			} else {
+				return nonRealTimeParsing();
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -361,8 +344,9 @@ public abstract class SystemTapParser extends Job {
 	}
 
 	public void setKillButtonEnabled(boolean val) {
-		if (view != null)
+		if (view != null) {
 			view.setKillButtonEnabled(val);
+		}
 	}
 
 	public boolean isRealTime() {

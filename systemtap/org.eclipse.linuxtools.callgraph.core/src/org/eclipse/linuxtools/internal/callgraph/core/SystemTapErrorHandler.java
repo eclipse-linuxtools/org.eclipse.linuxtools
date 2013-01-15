@@ -63,8 +63,9 @@ public class SystemTapErrorHandler {
             for (String message : errorsList) {
                 buff = new BufferedReader(new FileReader(file));
                 while ((line = buff.readLine()) != null) {
-                    if (m != null && m.isCanceled())
+                    if (m != null && m.isCanceled()) {
                         return;
+                    }
                     int index = line.indexOf('=');
                     Pattern pat = Pattern.compile(line.substring(0, index),Pattern.DOTALL);
                     Matcher matcher = pat.matcher(message);
@@ -125,8 +126,9 @@ public class SystemTapErrorHandler {
         while ((line = br.readLine()) != null) {
             counter++;
             builder.append(line + "\n"); //$NON-NLS-1$
-            if (m != null && m.isCanceled())
+            if (m != null && m.isCanceled()) {
                 return;
+            }
             if (counter == LINE_LIMIT) {
                 handle(m, builder.toString());
                 builder = new StringBuilder();

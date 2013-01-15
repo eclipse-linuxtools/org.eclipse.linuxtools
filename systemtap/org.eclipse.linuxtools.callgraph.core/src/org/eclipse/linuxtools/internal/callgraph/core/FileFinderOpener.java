@@ -40,14 +40,16 @@ public class FileFinderOpener {
 	 */
 	public static void findAndOpen(ICProject project, String functionName) {
 		//Safety valve: Do not enforce use of project names
-		if (project == null)
+		if (project == null) {
 			return;
+		}
 		
 		map = ProfileUIUtils.findFunctionsInProject(project, functionName, -1, null);
 		ArrayList<String> files = new ArrayList<String>(map.keySet());
 		
-		if (files == null || files.size() < 1)
+		if (files == null || files.size() < 1) {
 			return;
+		}
 
 		if (files.size() == 1) {
 			open(files.get(0), map.get(files.get(0))[0], map.get(files.get(0))[1]);
@@ -73,8 +75,9 @@ public class FileFinderOpener {
 	}
 	
 	public static void open(String path, int offset, int length) {
-		if (path == null)
+		if (path == null) {
 			return;
+		}
 		try {
 			ProfileUIUtils.openEditorAndSelect(path, offset, length);
 		} catch (PartInitException e) {

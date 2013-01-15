@@ -74,17 +74,21 @@ public class DocWriter extends UIJob {
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (console == null)
+		if (console == null) {
 			return Status.CANCEL_STATUS;
-		if (message == null)
+		}
+		if (message == null) {
 			return Status.OK_STATUS;
+		}
 		
 		IDocument doc = console.getDocument();
 		
-		if (length < 0) 
+		if (length < 0) {
 			length = 0;
-		if (start < 0)
+		}
+		if (start < 0) {
 			start = doc.getLength();
+		}
 		try {
 			doc.replace(start, length, message);
 		} catch (BadLocationException e) {
