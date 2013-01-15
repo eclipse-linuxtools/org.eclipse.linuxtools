@@ -56,8 +56,9 @@ public class StapTreeListener implements ITreeViewerListener{
 		}
 		
 		int lvl = d.levelOfRecursion;
-		if (highestLevelNodes.get(lvl) == null)
+		if (highestLevelNodes.get(lvl) == null) {
 			highestLevelNodes.put(lvl, new ArrayList<Integer>());
+		}
 		highestLevelNodes.get(lvl).add(d.id);
 	}
 

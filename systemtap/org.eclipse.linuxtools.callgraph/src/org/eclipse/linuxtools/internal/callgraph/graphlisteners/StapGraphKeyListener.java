@@ -13,24 +13,19 @@ package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 import org.eclipse.linuxtools.internal.callgraph.CallgraphView;
 import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 
 /**
  * StapGraph key listener
  */
-public class StapGraphKeyListener implements KeyListener {
+public class StapGraphKeyListener extends KeyAdapter {
 	private CallgraphView callgraphView;
 	
 	public StapGraphKeyListener(StapGraph g) {
 		callgraphView = g.getCallgraphView();
 	}
 	
-	@Override
-	public void keyPressed(KeyEvent e) {
-
-	}
-
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.stateMask != SWT.SHIFT) {
@@ -40,31 +35,6 @@ public class StapGraphKeyListener implements KeyListener {
 		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
 		if (e.character == 'R') {
 			callgraphView.getView_refresh().run();
-//		}else if (e.character == '1') {
-//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
-//		}else if (e.character == '2') {
-//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTER);
-//		}else if (e.character == '3') {
-//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
-//		}else if (e.character == 'k') {
-//			Shell sh = graph.getShell();
-//			graph.dispose();
-//			sh.close();
-//		}else if (e.character == 'n') {
-//			int id = graph.getNextMarkedNode();
-//			graph.draw(id, 0, 0);
-//			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
-//		}else if (e.character == 'p') {
-//			int id = graph.getPreviousMarkedNode();
-//			graph.draw(id, 0, 0);
-//			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
-//		}else if (e.character == 'd') {
-//			graph.deleteAll(-1);
-//		}else if (e.character == 'T') {
-//			graph.deleteAll(graph.getRootVisibleNode());
-//			graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
-//					graph.getRootVisibleNode());
-//			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'C') {
 			callgraphView.getMode_collapsednodes().run();
 		} else if (e.character == 'N') {

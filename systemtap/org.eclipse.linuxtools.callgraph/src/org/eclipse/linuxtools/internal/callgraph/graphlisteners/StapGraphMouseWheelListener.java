@@ -20,35 +20,29 @@ import org.eclipse.swt.events.MouseWheelListener;
  *
  */
 public class StapGraphMouseWheelListener implements MouseWheelListener {
-//	private long snapshot;
 	private StapGraph graph;
 	
 	public StapGraphMouseWheelListener(StapGraph g) {
 		this.graph = g;
 	}
 	
-	
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		
-		
 		if (e.stateMask != SWT.CTRL) {
 			// Scrolling
 			if (e.count > 0) {
 				AutoScrollHelper.scrollUp(graph);
-			}
-	
-			else {
+			} else {
 				AutoScrollHelper.scrollDown(graph);
 			}
 			return;
 		}
 		
 		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_LEVEL && 
-				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE)
+				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE) {
 			return;
-				
+		}
 
 		if (e.count <= 0) {
 			if (graph.scale < 2){
@@ -60,7 +54,7 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 		}else {
 			if (graph.scale <= 2){
 				graph.scale *= (10.0 / 11.0);
-			}else{
+			} else {
 				graph.scale = (int) graph.scale - 1;
 			}
 		}
@@ -76,67 +70,6 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 		int yDiff = (realeY - graph.getSize().y);
 		
 		graph.scrollTo(realeX + xDiff, realeY - yDiff);
-//		x = graph.getNode(graph.getRootVisibleNode()).getLocation().x - x;
-//		y = graph.getNode(graph.getRootVisibleNode()).getLocation().y - y;
-//		graph.scrollBy(x/3, y);
-//		graph.moveAllNodesBy(graph.getBounds().width/2 - e.x, graph.getBounds().height/2 - e.y);
-//		System.out.println("AFTER: " + graph.getNode(graph.getRootVisibleNode()).getLocation().x + ", " +graph.getNode(graph.getRootVisibleNode()).getLocation().y + "\n\n") ; 
-
-//		// Don't scroll for circle mode
-//		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_CIRCLE)
-//			return;
-//
-//		// Scrolling
-//		if (e.count > 0) {
-//
-//			long tempSnapshot = System.currentTimeMillis();
-//			if (tempSnapshot - snapshot < 100)
-//				return;
-//			snapshot = tempSnapshot;
-//
-//			// Scrolling up
-//			if (graph.getBottomLevelToDraw() < graph.getLowestLevelOfNodesAdded()
-//					- StapGraph.CONSTANT_LEVEL_BUFFER / 2)
-//				graph.addLevelToTop();
-//
-//			graph.decreaseTopLevelOnScreen();
-//			if (graph.getTopLevelOnScreen() < 0) {
-//				graph.setTopLevelOnScreen(0);
-//			}
-//
-//			graph
-//					.scrollToY(graph.getNode(
-//							graph.getLevel(graph.getTopLevelOnScreen()).get(0))
-//							.getLocation().y);
-//			graph.update();
-//
-//		}
-//
-//		else {
-//
-//			long tempSnapshot = System.currentTimeMillis();
-//
-//			if (tempSnapshot - snapshot < 100)
-//				return;
-//			snapshot = tempSnapshot;
-//
-//			// Don't delete levels yet
-//			if (graph.getTopLevelOnScreen() > StapGraph.CONSTANT_LEVEL_BUFFER / 4)
-//				graph.addLevelToBottom();
-//
-//			graph.incrementTopLevelOnScreen();
-//			if (graph.getTopLevelOnScreen() < 0) {
-//				graph.setTopLevelOnScreen(0);
-//			}
-//
-//			graph
-//			.scrollToY(graph.getNode(
-//							graph.getLevel(graph.getTopLevelOnScreen()).get(0))
-//							.getLocation().y);
-//			graph.update();
-//
-//		}
-
 	}
 
 }

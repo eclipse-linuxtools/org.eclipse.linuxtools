@@ -22,10 +22,11 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		Image im = null;
-		if ( ((StapData) element).isMarked())
+		if ( ((StapData) element).isMarked()) {
 			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/public_co.gif"); //$NON-NLS-1$
-		else
+		} else {
 			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/compare_method.gif"); //$NON-NLS-1$
+		}
 		return im;
 	}
 

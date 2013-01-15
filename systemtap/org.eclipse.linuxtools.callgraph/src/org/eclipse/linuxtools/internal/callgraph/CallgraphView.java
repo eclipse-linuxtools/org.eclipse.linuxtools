@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  *	The SystemTap View for displaying output of the 'stap' command, and acts
@@ -84,8 +85,8 @@ public class CallgraphView extends SystemTapView {
 	private  Action save_col_dot;
 	private  Action save_cur_dot;
 	private  Action save_text;
-	ImageDescriptor playImage= CallgraphPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
-	ImageDescriptor pauseImage= CallgraphPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
+	ImageDescriptor playImage= getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
+	ImageDescriptor pauseImage= getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
@@ -139,7 +140,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add first button
-		Image image = CallgraphPlugin.getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
+		Image image = getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
 		Button up = new Button(papaCanvas, SWT.PUSH);
 		GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -154,7 +155,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add second button
-		image = CallgraphPlugin.getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
+		image = getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
 		Button down = new Button(papaCanvas, SWT.PUSH);
 		buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -553,14 +554,11 @@ public class CallgraphView extends SystemTapView {
 		mgr.add(view_aggregateview);
 		mgr.add(mode_collapsednodes);
 		
-//		help.add(help_about);
-		
 		markers.add(markers_next);
 		markers.add(markers_previous);
 		
 		animation.add(animation_slow);
 		animation.add(animation_fast);
-//		menu.add(markers);
 
 		setGraphOptions(false);
 	}
@@ -609,7 +607,7 @@ public class CallgraphView extends SystemTapView {
 					}
 				}
 			};
-			ImageDescriptor treeImage = CallgraphPlugin.getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
+			ImageDescriptor treeImage = getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
 			view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -627,7 +625,7 @@ public class CallgraphView extends SystemTapView {
 					}
 				}
 			};
-			ImageDescriptor d = CallgraphPlugin.getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
+			ImageDescriptor d = getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
 			view_radialview.setImageDescriptor(d);
 		
 			//Set drawmode to aggregate view
@@ -644,7 +642,7 @@ public class CallgraphView extends SystemTapView {
 					}
 				}
 			};
-			ImageDescriptor aggregateImage = CallgraphPlugin.getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
+			ImageDescriptor aggregateImage = getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
 			view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -662,7 +660,7 @@ public class CallgraphView extends SystemTapView {
 					}
 				}
 			};
-			ImageDescriptor levelImage = CallgraphPlugin.getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
+			ImageDescriptor levelImage = getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
 			view_levelview.setImageDescriptor(levelImage);
 		
 		
@@ -676,7 +674,7 @@ public class CallgraphView extends SystemTapView {
 					}
 				}
 			});
-			ImageDescriptor refreshImage = CallgraphPlugin.getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
+			ImageDescriptor refreshImage = getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
 			getView_refresh().setImageDescriptor(refreshImage);
 
 		} catch (IOException e) {
@@ -749,15 +747,14 @@ public class CallgraphView extends SystemTapView {
 				if (g.isCollapseMode()) {
 					g.setCollapseMode(false);
 					g.draw(g.getRootVisibleNodeNumber());
-				}
-				else {
+				} else {
 					g.setCollapseMode(true);
 					g.draw(g.getRootVisibleNodeNumber());
 				}
 			}
 		};
 		
-		ImageDescriptor newImage = CallgraphPlugin.getImageDescriptor("icons/mode_collapsednodes.gif"); //$NON-NLS-1$
+		ImageDescriptor newImage = getImageDescriptor("icons/mode_collapsednodes.gif"); //$NON-NLS-1$
 		mode_collapsednodes.setImageDescriptor(newImage);
 		
 		limits = new Action(Messages.getString("CallgraphView.SetLimits"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
@@ -813,8 +810,9 @@ public class CallgraphView extends SystemTapView {
 						}
 						sh.dispose();
 						
-						if (redraw)
+						if (redraw) {
 							g.draw();
+						}
 					}
 					
 				});
@@ -1148,6 +1146,10 @@ public class CallgraphView extends SystemTapView {
 				e.printStackTrace();
 			} 
         }
+	}
+	
+	private static ImageDescriptor getImageDescriptor(String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, path);
 	}
 
 

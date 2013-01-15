@@ -11,10 +11,10 @@
 package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
 import org.eclipse.linuxtools.internal.callgraph.StapGraph;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 
-public class AutoScrollSelectionListener implements SelectionListener{
+public class AutoScrollSelectionListener extends SelectionAdapter{
 	public static final int AutoScroll_up = 0;
 	public static final int AutoScroll_down = 1;
 	public static final int AutoScroll_bar = 2;
@@ -24,11 +24,6 @@ public class AutoScrollSelectionListener implements SelectionListener{
 	public AutoScrollSelectionListener(int type, StapGraph g) {
 		this.type = type;
 		this.graph = g;
-	}
-
-	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
-
 	}
 
 	@Override
