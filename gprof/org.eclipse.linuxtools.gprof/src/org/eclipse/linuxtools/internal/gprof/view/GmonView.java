@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
+import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
 import org.eclipse.linuxtools.gprof.Activator;
@@ -36,11 +37,14 @@ import org.eclipse.linuxtools.internal.gprof.view.fields.SampleProfField;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.CGArc;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.CGCategory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -53,8 +57,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GmonView extends AbstractSTDataView {
 
-	public static final String ID = "org.eclipse.linuxtools.gprof.view";
-	
+	public static final String ID = "org.eclipse.linuxtools.gprof.view"; //$NON-NLS-1$
+
 	/** WHITE color */
 	public static final Color WHITE = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WHITE);
 	/** GREEN1 color : for children category */
@@ -70,6 +74,8 @@ public class GmonView extends AbstractSTDataView {
 	public static final int SAMPLE_MODE = 1;
 
 	private Label label;
+    private Text fFilterText;
+    private TreeColumnViewerFilter fViewerFilter;
 	private Action action1;
 	private Action action2;
 	private Action action3;
@@ -84,47 +90,60 @@ public class GmonView extends AbstractSTDataView {
 		l.verticalSpacing = 0;
 		l.marginHeight = 0;
 		l.marginWidth = 0;
+		fViewerFilter = new TreeColumnViewerFilter((TreeViewer) getSTViewer().getViewer(), getSTViewer().getAllFields()[0], true);
+		getSTViewer().getViewer().addFilter(fViewerFilter);
 	}
-
 
 	@Override
 	protected void createTitle(Composite parent) {
 		label = new Label(parent, SWT.WRAP);
 		GridData data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 1, 1);
 		label.setLayoutData(data);
+		fFilterText = new Text(parent, SWT.BORDER | SWT.SINGLE | SWT.SEARCH | SWT.ICON_SEARCH
+                | SWT.ICON_CANCEL);
+		fFilterText.setMessage(Messages.GmonView_type_filter_text);
+        fFilterText.setToolTipText(Messages.GmonView_filter_by_name);
+        fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        fFilterText.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                String text = fFilterText.getText();
+                fViewerFilter.setMatchingText(text);
+            }
+        });
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#contributeToToolbar(org.eclipse.jface.action.IToolBarManager)
 	 */
 	@Override
 	protected void contributeToToolbar(IToolBarManager manager) {
 		super.contributeToToolbar(manager);
-		manager.add(new Separator());		
+		manager.add(new Separator());
 		manager.add(action2);
 		action2.setChecked(true);
 		manager.add(action3);
 		manager.add(action4);
 		manager.add(action1);
 		manager.add(new Separator());
-		manager.add(switchSampleTime); 
+		manager.add(switchSampleTime);
 		manager.add(new Separator());
 		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer()));
 	}
 
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#createActions()
 	 */
 	@Override
 	protected void createActions() {
 		super.createActions();
-		action1 = new SwitchContentProviderAction("Display function call graph", "icons/ch_callees.png", getSTViewer().getViewer(), CallGraphContentProvider.sharedInstance);
-		action2 = new SwitchContentProviderAction("Sort samples per file", "icons/c_file_obj.gif", getSTViewer().getViewer(), FileHistogramContentProvider.sharedInstance);
-		action3 = new SwitchContentProviderAction("Sort samples per function", "icons/function_obj.gif", getSTViewer().getViewer(), FunctionHistogramContentProvider.sharedInstance);
-		action4 = new SwitchContentProviderAction("Sort samples per line", "icons/line_obj.gif", getSTViewer().getViewer(), FlatHistogramContentProvider.sharedInstance);
+		action1 = new SwitchContentProviderAction("Display function call graph", "icons/ch_callees.png", getSTViewer().getViewer(), CallGraphContentProvider.sharedInstance); //$NON-NLS-1$ //$NON-NLS-2$
+		action2 = new SwitchContentProviderAction("Sort samples per file", "icons/c_file_obj.gif", getSTViewer().getViewer(), FileHistogramContentProvider.sharedInstance); //$NON-NLS-1$ //$NON-NLS-2$
+		action3 = new SwitchContentProviderAction("Sort samples per function", "icons/function_obj.gif", getSTViewer().getViewer(), FunctionHistogramContentProvider.sharedInstance); //$NON-NLS-1$ //$NON-NLS-2$
+		action4 = new SwitchContentProviderAction("Sort samples per line", "icons/line_obj.gif", getSTViewer().getViewer(), FlatHistogramContentProvider.sharedInstance); //$NON-NLS-1$ //$NON-NLS-2$
 		switchSampleTime = new SwitchSampleTimeAction(this);
 	}
 
@@ -169,14 +188,14 @@ public class GmonView extends AbstractSTDataView {
 	 * @param titleLabel the title label
 	 */
 	public static void setHistTitle(GmonDecoder decoder, Label titleLabel) {
-		String title = " gmon file: "
+		String title = " gmon file: " //$NON-NLS-1$
 			+ decoder.getGmonFile()
-			+ "\n program file: "
+			+ "\n program file: " //$NON-NLS-1$
 			+ decoder.getProgram().getPath();
 		HistogramDecoder histo = decoder.getHistogramDecoder();
 		if (histo.hasValues()) {
 			double prof_rate = histo.getProf_rate();
-			String period = "";
+			String period = ""; //$NON-NLS-1$
 			if (prof_rate != 0){
 				char tUnit = histo.getTimeDimension();
 				switch (tUnit) {
@@ -184,10 +203,10 @@ public class GmonView extends AbstractSTDataView {
 				case 'm': prof_rate /= 1000000; break;
 				case 'u': prof_rate /= 1000; break;
 				}
-				period = ", each sample counts as " + SampleProfField.getValue(1, prof_rate);
+				period = ", each sample counts as " + SampleProfField.getValue(1, prof_rate); //$NON-NLS-1$
 			}
-			title += "\n " +histo.getBucketSize()
-			+ " bytes per bucket" + period;
+			title += "\n " +histo.getBucketSize() //$NON-NLS-1$
+			+ " bytes per bucket" + period; //$NON-NLS-1$
 		}
 		titleLabel.setText(title);
 		titleLabel.getParent().layout(true);
@@ -205,10 +224,10 @@ public class GmonView extends AbstractSTDataView {
 		if (binary == null) {
 			MessageDialog.openError(
 					PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-					"Invalid binary file",
-					binaryPath + " is not a valid binary file.");
+					"Invalid binary file", //$NON-NLS-1$
+					binaryPath + " is not a valid binary file."); //$NON-NLS-1$
 			return null;
-		} else if (binary.getCPU().equals("ppc64"))
+		} else if (binary.getCPU().equals("ppc64")) //$NON-NLS-1$
 			binary = new PPC64ElfBinaryObjectWrapper(binary.getBinaryParser(), binary.getPath(), binary.getType());
 
 		GmonDecoder decoder = new GmonDecoder(binary, project);
@@ -244,7 +263,7 @@ public class GmonView extends AbstractSTDataView {
 			}
 			gmonview = (GmonView) page.showView(ID,secondary_id_usually_path_to_gmon_file, IWorkbenchPage.VIEW_ACTIVATE);
 			if (decoder.getHistogramDecoder().getProf_rate() == 0){
-				gmonview.switchSampleTime.setToolTipText("Unable to display time, because profiling rate is null");
+				gmonview.switchSampleTime.setToolTipText("Unable to display time, because profiling rate is null"); //$NON-NLS-1$
 				gmonview.switchSampleTime.setEnabled(false);
 			}
 			gmonview.setInput(decoder);
@@ -275,7 +294,7 @@ public class GmonView extends AbstractSTDataView {
 		return gmonview;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#createExportToCSVAction()
 	 */
@@ -287,7 +306,7 @@ public class GmonView extends AbstractSTDataView {
 				Object o = getSTViewer().getInput();
 				if (o instanceof GmonDecoder) {
 					GmonDecoder gd = (GmonDecoder) o;
-					getExporter().setFilePath(gd.getGmonFile() + ".csv");
+					getExporter().setFilePath(gd.getGmonFile() + ".csv"); //$NON-NLS-1$
 				}
 				super.run();
 			}

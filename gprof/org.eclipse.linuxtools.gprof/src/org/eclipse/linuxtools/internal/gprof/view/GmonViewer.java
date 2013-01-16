@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.gprof.view;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.OpenEvent;
@@ -30,9 +29,8 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.HistRoot;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
 import org.eclipse.swt.widgets.Composite;
 
-
 /**
- * TreeViewer 
+ * TreeViewer
  *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
@@ -48,13 +46,13 @@ public class GmonViewer extends AbstractSTTreeViewer {
 		super(parent);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer#createViewer(org.eclipse.swt.widgets.Composite, int)
 	 */
 	@Override
-	protected ColumnViewer createViewer(Composite parent, int style) {
-		TreeViewer tv = (TreeViewer) super.createViewer(parent, style);
+	protected TreeViewer createViewer(Composite parent, int style) {
+		TreeViewer tv = super.createViewer(parent, style);
 		tv.setAutoExpandLevel(2);
 		return tv;
 	}
@@ -84,7 +82,7 @@ public class GmonViewer extends AbstractSTTreeViewer {
 	}
 
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#handleOpenEvent(org.eclipse.jface.viewers.OpenEvent)
 	 */

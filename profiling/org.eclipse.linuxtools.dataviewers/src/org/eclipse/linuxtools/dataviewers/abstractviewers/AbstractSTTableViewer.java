@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -30,231 +29,220 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * This wrapper extends AbstractSTViewer {@link AbstractSTViewer} It is designed to be instantiated with a TableViewer
  * JFace control
- * 
+ *
  */
 public abstract class AbstractSTTableViewer extends AbstractSTViewer {
 
-    public AbstractSTTableViewer(Composite parent) {
-        super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
-    }
+	public AbstractSTTableViewer(Composite parent) {
+		super(parent, SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION);
+	}
 
-    public AbstractSTTableViewer(Composite parent, boolean init) {
-        super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION, init);
-    }
 
-    public AbstractSTTableViewer(Composite parent, int style) {
-        super(parent, style, true);
-    }
+	public AbstractSTTableViewer(Composite parent,boolean init) {
+		super(parent,SWT.BORDER |SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI| SWT.FULL_SELECTION,init);
+	}
 
-    public AbstractSTTableViewer(Composite parent, int style, boolean init) {
-        super(parent, style, init);
-    }
+	public AbstractSTTableViewer(Composite parent, int style) {
+		super(parent,style,true);
+	}
 
-    @Override
-    /*
-     * It creates the TableViewer wrapped
-     * 
-     * @param parent
-     * 
-     * @param style
-     * 
-     * @return ColumnViewer
-     */
-    protected ColumnViewer createViewer(Composite parent, int style) {
-        return new TableViewer(createTable(parent, style));
-    }
+	public AbstractSTTableViewer(Composite parent, int style,boolean init) {
+		super(parent,style,init);
+	}
 
-    /**
-     * Create the main table control
-     * 
-     * @param parent
-     * @return Table
-     */
-    protected Table createTable(Composite parent, int style) {
-        Table table = new Table(parent, style);
-        table.setLinesVisible(true);
-        table.setHeaderVisible(true);
+	/**
+	 * It creates the wrapped TableViewer
+	 * @param parent - the parent Composite
+	 * @param style - the table style
+	 * @return a TableViewer
+	 * @since 4.1
+	 */
+	@Override
+	protected TableViewer createViewer(Composite parent, int style) {
+		Table t = createTable(parent, style);
+		return new TableViewer(t);
+	}
 
-        return table;
-    }
+	/**
+	 * Create the main table control
+	 *
+	 * @param parent
+	 * @return Table
+	 */
+	protected Table createTable(Composite parent, int style) {
+		Table table = new Table(parent, style);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 
-    @Override
-    /**
-     * Create the columns in the table.
-     * 
-     */
-    protected void createColumns() {
-        Table table = getViewer().getTable();
-        TableLayout layout = new TableLayout();
-        table.setLayout(layout);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+		return table;
+	}
 
-        for (int i = 0; i < getAllFields().length; i++) {
-            ISTDataViewersField field = getAllFields()[i];
-            TableColumn tc = new TableColumn(table, field.getAlignment(), i);
-            tc.setText(field.getColumnHeaderText());
-            tc.setToolTipText(field.getColumnHeaderTooltip());
-            tc.setImage(field.getColumnHeaderImage());
-            tc.setWidth(field.getPreferredWidth());
-            tc.setResizable(true);
-            tc.setMoveable(true);
+	@Override
+	/**
+	 * Create the columns in the table.
+	 *
+	 */
+	protected void createColumns() {
+		Table table = getViewer().getTable();
+		TableLayout layout = new TableLayout();
+		table.setLayout(layout);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
 
-            tc.addSelectionListener(createHeaderListener());
-            tc.setData(field);
+		for (int i = 0; i < getAllFields().length; i++) {
+			ISTDataViewersField field = getAllFields()[i];
+			TableColumn tc = new TableColumn(table, field.getAlignment(), i);
+			tc.setText(field.getColumnHeaderText());
+			tc.setToolTipText(field.getColumnHeaderTooltip());
+			tc.setImage(field.getColumnHeaderImage());
+			tc.setWidth(field.getPreferredWidth());
+			tc.setResizable(true);
+			tc.setMoveable(true);
 
-            // defining the column label provider.
-            // this has to be done after setting the column's data.
-            TableViewerColumn viewerColumn = new TableViewerColumn(getViewer(), tc);
-            viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
-        }
+			tc.addSelectionListener(createHeaderListener());
+			tc.setData(field);
 
-        table.addMouseListener(new MouseAdapter() {
-            public void mouseDoubleClick(MouseEvent e) {
-                Table table = (Table) e.widget;
-                TableItem item = table.getItem(new Point(e.x, e.y));
-                if (item != null) {
-                    for (int i = 0; i < table.getColumnCount(); i++) {
-                        ISTDataViewersField field = getAllFields()[i];
-                        if (field.isHyperLink(item.getData())) {
-                            Rectangle bounds = item.getBounds(i);
-                            if (bounds.contains(e.x, e.y)) {
-                                handleHyperlink(field, item.getData());
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+			// defining the column label provider.
+			// this has to be done after setting the column's data.
+			TableViewerColumn viewerColumn =
+				new TableViewerColumn(getViewer(), tc);
+			viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
+		}
 
-        table.addMouseMoveListener(new MouseMoveListener() {
 
-            @Override
-            public void mouseMove(MouseEvent e) {
-                Table table = (Table) e.widget;
-                TableItem item = table.getItem(new Point(e.x, e.y));
-                if (item == null)
-                    return;
+		table.addMouseListener(new MouseAdapter(){
+					@Override
+                    public void mouseDoubleClick(MouseEvent e) {
+						Table table = (Table)e.widget;
+						TableItem item = table.getItem(new Point(e.x,e.y));
+						if (item != null){
+							for(int i=0;i<table.getColumnCount();i++){
+								ISTDataViewersField field = getAllFields()[i];
+								if (field.isHyperLink(item.getData())){
+									Rectangle bounds = item.getBounds(i);
+									if (bounds.contains(e.x,e.y)){
+										handleHyperlink(field,item.getData());
+										return;
+									}
+								}
+							}
+						}
+					}
+				});
 
-                for (int i = 0; i < table.getColumnCount(); i++) {
-                    ISTDataViewersField field = getAllFields()[i];
-                    Cursor cursor = null;
-                    if (field.isHyperLink(item.getData())) {
-                        Rectangle bounds = item.getBounds(i);
-                        if (bounds.contains(e.x, e.y)) {
-                            cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
-                            table.setCursor(cursor);
-                            return;
-                        }
-                    }
-                    cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
-                    table.setCursor(cursor);
-                }
+		table.addMouseMoveListener(new MouseMoveListener(){
 
-            }
+						@Override
+						public void mouseMove(MouseEvent e) {
+							Table table = (Table)e.widget;
+							TableItem item = table.getItem(new Point(e.x,e.y));
+							if (item == null) return;
 
-        });
-    }
+							for(int i=0;i<table.getColumnCount();i++){
+								ISTDataViewersField field = getAllFields()[i];
+								Cursor cursor = null ;
+								if (field.isHyperLink(item.getData())){
+									Rectangle bounds = item.getBounds(i);
+								if (bounds.contains(e.x,e.y)){
+										cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
+										table.setCursor(cursor);
+										return;
+									}
+								}
+								cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
+								table.setCursor(cursor);
+							}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
-     */
-    @Override
-    public Item[] getColumns() {
-        return getViewer().getTable().getColumns();
-    }
+						}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#updateDirectionIndicator(org.eclipse.swt.
-     * widgets.Item)
-     */
-    @Override
-    public void updateDirectionIndicator(Item column) {
-        getViewer().getTable().setSortColumn((TableColumn) column);
-        if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING)
-            getViewer().getTable().setSortDirection(SWT.UP);
-        else
-            getViewer().getTable().setSortDirection(SWT.DOWN);
-    }
+					});
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnOrder()
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
+	 */
+	@Override
+	public Item[] getColumns() {
+		return getViewer().getTable().getColumns();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#updateDirectionIndicator(org.eclipse.swt.widgets.Item)
+	 */
+	@Override
+	public void updateDirectionIndicator(Item column) {
+		getViewer().getTable().setSortColumn((TableColumn)column);
+		if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING)
+			getViewer().getTable().setSortDirection(SWT.UP);
+		else
+			getViewer().getTable().setSortDirection(SWT.DOWN);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnOrder()
+	 */
+	@Override
     public int[] getColumnOrder() {
-        return getViewer().getTable().getColumnOrder();
-    }
+		return getViewer().getTable().getColumnOrder();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnOrder(int[])
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnOrder(int[])
+	 */
+	@Override
     protected void setColumnOrder(int[] order) {
-        getViewer().getTable().setColumnOrder(order);
-    }
+		getViewer().getTable().setColumnOrder(order);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnIndex(org.eclipse.swt.widgets.Item)
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnIndex(org.eclipse.swt.widgets.Item)
+	 */
+	@Override
     public int getColumnIndex(Item column) {
-        return getViewer().getTable().indexOf((TableColumn) column);
-    }
+		return getViewer().getTable().indexOf((TableColumn)column);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnWidth(org.eclipse.swt.widgets.Item)
-     */
-    @Override
-    public int getColumnWidth(Item column) {
-        return ((TableColumn) column).getWidth();
-    }
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumnWidth(org.eclipse.swt.widgets.Item)
+	 */
+	@Override
+	public int getColumnWidth(Item column) {
+		return ((TableColumn)column).getWidth();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnResizable(org.eclipse.swt.widgets
-     * .Item, boolean)
-     */
-    @Override
-    public void setColumnResizable(Item column, boolean resizable) {
-        ((TableColumn) column).setResizable(resizable);
-    }
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnResizable(org.eclipse.swt.widgets.Item, boolean)
+	 */
+	@Override
+	public void setColumnResizable(Item column, boolean resizable) {
+		((TableColumn)column).setResizable(resizable);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnWidth(org.eclipse.swt.widgets.Item,
-     * int)
-     */
-    @Override
-    public void setColumnWidth(Item column, int width) {
-        ((TableColumn) column).setWidth(width);
-    }
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#setColumnWidth(org.eclipse.swt.widgets.Item, int)
+	 */
+	@Override
+	public void setColumnWidth(Item column, int width) {
+		((TableColumn)column).setWidth(width);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getViewer()
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getViewer()
+	 */
+	@Override
     public TableViewer getViewer() {
-        return (TableViewer) super.getViewer();
-    }
+		return (TableViewer)super.getViewer();
+	}
 
-    public void handleHyperlink(ISTDataViewersField field, Object data) {
-    };
+
+	public void handleHyperlink(ISTDataViewersField field,Object data){};
 }
