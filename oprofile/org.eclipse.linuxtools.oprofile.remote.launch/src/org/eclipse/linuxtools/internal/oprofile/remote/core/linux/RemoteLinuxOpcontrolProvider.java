@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
  */
 public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 
-	private static final String OPCONTROL_EXECUTABLE = "opcontrol";
+	private static final String OPCONTROL_EXECUTABLE = "opcontrol"; //$NON-NLS-1$
 
 	private static final int SUDO_TIMEOUT = 5000;
 
@@ -57,20 +57,20 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 
 		try {
 			String opcontrolPath = null;
-			if(linuxtoolsPath.equals("")){
+			if(linuxtoolsPath.isEmpty()){
 				opcontrolPath = RuntimeProcessFactory.getFactory().whichCommand(OPCONTROL_EXECUTABLE, project);
-			} else if(linuxtoolsPath.endsWith("/")){
-				opcontrolPath = linuxtoolsPath + "opcontrol";
+			} else if(linuxtoolsPath.endsWith("/")){ //$NON-NLS-1$
+				opcontrolPath = linuxtoolsPath + "opcontrol"; //$NON-NLS-1$
 			} else {
-				opcontrolPath = linuxtoolsPath + "/opcontrol";
+				opcontrolPath = linuxtoolsPath + "/opcontrol"; //$NON-NLS-1$
 			}
 
-			if(opcontrolPath.equals("")){
+			if(opcontrolPath.isEmpty()){
 				return false;
 			}
 
 			// Check if user has sudo permissions without password by running sudo -l.
-			final Process p = RuntimeProcessFactory.getFactory().exec("sudo -l", project);
+			final Process p = RuntimeProcessFactory.getFactory().exec("sudo -l", project); //$NON-NLS-1$
 			final StringBuffer buffer = new StringBuffer();
 
 			if(p == null){
@@ -78,6 +78,7 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 			}
 
 			Thread t = new Thread() {
+				@Override
 				public void run() {
 					try {
 						BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -99,9 +100,9 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 		     t.start();
 			 t.join(SUDO_TIMEOUT);
 
-			 String[] sudoLines = buffer.toString().split("\n");
+			 String[] sudoLines = buffer.toString().split("\n"); //$NON-NLS-1$
 			 for (String s : sudoLines) {
-				 if(s.contains(opcontrolPath) && s.contains("NOPASSWD")){
+				 if(s.contains(opcontrolPath) && s.contains("NOPASSWD")){ //$NON-NLS-1$
 						return true;
 				 }
 			}

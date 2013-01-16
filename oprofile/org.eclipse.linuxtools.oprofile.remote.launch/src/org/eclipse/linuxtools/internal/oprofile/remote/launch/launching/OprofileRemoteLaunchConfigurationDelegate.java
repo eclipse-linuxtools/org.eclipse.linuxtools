@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.profiling.launch.ProxyLaunchMessages;
  *  @since 1.1
  */
 public class OprofileRemoteLaunchConfigurationDelegate extends OprofileLaunchConfigurationDelegate {
-	private final static String EMPTY_STRING = "";
+	private final static String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	@Override
 	protected IProject getProject() {
