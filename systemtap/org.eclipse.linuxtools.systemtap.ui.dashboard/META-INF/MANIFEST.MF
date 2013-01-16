@@ -19,5 +19,5 @@ Require-Bundle: org.eclipse.ui,
 Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.linuxtools.systemtap.ui.ide.actions
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Name: %bundleName
