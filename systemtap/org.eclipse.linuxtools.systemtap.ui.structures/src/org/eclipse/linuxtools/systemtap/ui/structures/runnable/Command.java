@@ -13,13 +13,13 @@ package org.eclipse.linuxtools.systemtap.ui.structures.runnable;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.systemtap.ui.structures.StructuresPlugin;
 import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
-
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 
@@ -50,8 +50,6 @@ public class Command implements Runnable {
 	public Command(String[] cmd, String[] envVars, IPasswordPrompt prompt, int monitorDelay) {
 		this.cmd = cmd;
 		this.envVars = envVars;
-		this.prompt = prompt;
-		this.monitorDelay = monitorDelay;
 	}
 	
 	/**
@@ -72,7 +70,7 @@ public class Command implements Runnable {
 	 * This must be called in order to get the process to start running.
 	 */
 	public void start() {
-		if(init()) {
+		if(init().isOK()) {
 			Thread t = new Thread(this, cmd[0]);
 			t.start();
 		} else {
@@ -85,23 +83,35 @@ public class Command implements Runnable {
 	 * Starts up the process that will execute the provided command and registers
 	 * the <code>StreamGobblers</code> with their respective streams.
 	 */
-	protected boolean init() {
+	protected IStatus init() {
 		try {
 			process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, null);
 
 			errorGobbler = new StreamGobbler(process.getErrorStream());            
 			inputGobbler = new StreamGobbler(process.getInputStream());
-			
-			int i;
-			for(i=0; i<inputListeners.size(); i++)
-				inputGobbler.addDataListener(inputListeners.get(i));
-			for(i=0; i<errorListeners.size(); i++)
-				errorGobbler.addDataListener(errorListeners.get(i));
-			return true;
-		} catch(IOException ioe) {}
-		return false;
+
+			this.transferListeners();
+			return Status.OK_STATUS;
+		} catch (IOException e) {
+			return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
+		}
 	}
 	
+	/**
+	 * This transfers any listeners which may have been added
+	 * to the command before the process has been constructed
+	 * properly to the process itself.
+	 * @since 1.2
+	 */
+	protected void transferListeners(){
+		for(IGobblerListener listener :inputListeners) {
+			inputGobbler.addDataListener(listener);
+		}
+		for(IGobblerListener listener: errorListeners) {
+			errorGobbler.addDataListener(listener);
+		}
+	}
+
 	/**
 	 * This method handles checking the status of the running <code>Process</code>. It
 	 * is called when the new Thread is created, and thus should never be called by
@@ -110,42 +120,36 @@ public class Command implements Runnable {
 	public void run() {
 		errorGobbler.start();
 		inputGobbler.start();
-		
 		try {
-			while(!stopped) {
-				try {
-					if(null != errorGobbler && errorGobbler.readLine().endsWith(Localization.getString("Command.Password"))) {
-						PrintWriter writer = new PrintWriter(process.getOutputStream(), true);
-						writer.println(prompt.getPassword());
-					}
-					
-					returnVal = process.exitValue();	//Dont care what the value is, just whether it throws an exception
-					stop();	//Above line will throw an exception if not finished
-				} catch(IllegalThreadStateException itse) {}
-				
-				if(0 < monitorDelay)
-					Thread.sleep(monitorDelay);
-			}
-		} catch(InterruptedException ie) {
-		} catch(NullPointerException npe) {}
+			process.waitFor();
+		} catch (InterruptedException e) {} 
+		stop();
 	}
-	
+
 	/**
 	 * Stops the process from running and stops the <code>StreamGobblers</code> from monitering
 	 * the dead process.
 	 */
 	public synchronized void stop() {
 		if(!stopped) {
-			stopped = true;
 			if(null != errorGobbler)
 				errorGobbler.stop();
 			if(null != inputGobbler)
 				inputGobbler.stop();
-			if(null != process)
+			try {
+				if(process != null){
+					process.waitFor();
+				}
+			} catch (InterruptedException e) {
+				// This thread was interrupted while waiting for
+				// the process to exit. Destroy the process just
+				// to make sure it exits.
 				process.destroy();
+			}
+			stopped = true;
 		}
 	}
-	
+
 	/**
 	 * Method to check whether or not the process in running.
 	 * @return The execution status.
@@ -198,28 +202,24 @@ public class Command implements Runnable {
 	 * Returns the list of everything that is listening the the InputStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
-	
 	public ArrayList<IGobblerListener> getInputStreamListeners() {
 		if(null != inputGobbler)
+			return inputGobbler.getDataListeners();
+		else
 			return inputListeners;
-		else {
-			ArrayList<IGobblerListener> dataListeners = inputGobbler.getDataListeners();
-			return dataListeners;
-		}
 	}
-	
+
 	/**
 	 * Returns the list of everything that is listening the the ErrorStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
-	
 	public ArrayList<IGobblerListener> getErrorStreamListeners() {
 		if(null != errorGobbler)
-			return errorListeners;
-		else
 			return errorGobbler.getDataListeners();
+		else
+			return errorListeners;
 	}
-	
+
 	/**
 	 * Removes the provided listener from those monitoring the InputStream.
 	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
@@ -230,7 +230,7 @@ public class Command implements Runnable {
 		else
 			inputListeners.remove(listener);
 	}
-	
+
 	/**
 	 * Removes the provided listener from those monitoring the ErrorStream.
 	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
@@ -263,18 +263,16 @@ public class Command implements Runnable {
 		}
 	}
 	
-	private boolean stopped = false;
+	protected boolean stopped = false;
 	private boolean disposed = false;
-	private StreamGobbler inputGobbler = null;
-	private StreamGobbler errorGobbler = null;
+	protected StreamGobbler inputGobbler = null;
+	protected StreamGobbler errorGobbler = null;
 	private ArrayList<IGobblerListener> inputListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
 	private ArrayList<IGobblerListener> errorListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
 	private int returnVal = Integer.MAX_VALUE;
 
 	private String[] cmd;
 	private String[] envVars;
-	private IPasswordPrompt prompt;
-	private int monitorDelay;
 	protected Process process;
 	
 	public static final int ERROR_STREAM = 0;

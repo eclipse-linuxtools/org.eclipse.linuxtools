@@ -82,15 +82,17 @@ public class StreamGobbler implements Runnable {
 	 * from the stream.
 	 */
 	public synchronized void stop() {
-		try {
-			// Interrupt the thread just in case it is blocked on a read.
-			reader.interrupt();
-			// Wait for the reader thread to finish.
-			reader.join();
-		} catch (InterruptedException e) {
-			// The thread was interrupted; nothing to do; finish stopping.
+		if (reader != null){
+			try {
+				// Interrupt the thread just in case it is blocked on a read.
+				reader.interrupt();
+				// Wait for the reader thread to finish.
+				reader.join();
+			} catch (InterruptedException e) {
+				// The thread was interrupted; nothing to do; finish stopping.
+			}
+			reader = null;
 		}
-		reader = null;
 		notify();
 		// Fire one last time to ensure listeners have gotten everything.
 		this.fireNewDataEvent();

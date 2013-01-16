@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
+ *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
@@ -15,13 +15,14 @@ import java.io.File;
 
 import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.structures.LoggingStreamDaemon;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 
 /**
  * A class to spawn a separate thread to run a <code>Process</code> and to automatically
  * log everything using the <code>LoggingStreamDaemon</code>.
  * @author Ryan Morse
  */
-public class LoggedCommand2 extends ScpExec {
+public class LoggedCommand2 extends Command {
 	/**
 	 * Spawns the new thread that this class will run in.  From the Runnable
 	 * interface spawning the new thread automatically calls the run() method.
@@ -31,10 +32,8 @@ public class LoggedCommand2 extends ScpExec {
 	 * @param envVars List of all environment variables to use
 	 * @param prompt The password promt for allowing the user to enter their password.
 	 */
-	public LoggedCommand2(String[] cmd, String[] envVars, IPasswordPrompt prompt, String moduleName) {
-
-		super(cmd,moduleName);
-		
+	public LoggedCommand2(String[] cmd, String[] envVars, IPasswordPrompt prompt) {
+		this(cmd, envVars, prompt, 0);
 	}
 
 	/**
@@ -47,9 +46,9 @@ public class LoggedCommand2 extends ScpExec {
 	 * @param prompt The password promt for allowing the user to enter their password.
 	 * @param monitorDelay the time between checking to see if the process finished
 	 */	
-	public LoggedCommand2(String[] cmd, String[] envVars, IPasswordPrompt prompt, int monitorDelay, String moduleName) {
-    	 super(cmd,moduleName);
-    	 logger = new LoggingStreamDaemon();
+	public LoggedCommand2(String[] cmd, String[] envVars, IPasswordPrompt prompt, int monitorDelay) {
+		super(cmd, envVars, prompt, monitorDelay);
+		logger = new LoggingStreamDaemon();
 		addInputStreamListener(logger);
 	}
 	

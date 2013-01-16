@@ -80,7 +80,7 @@ public class LoggedCommand extends Command {
 	public synchronized void stop() {
 		if(isRunning()) {
 			super.stop();
-	    	removeInputStreamListener(logger);
+			removeInputStreamListener(logger);
 		}
 	}
 
