@@ -4,13 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.callgraph.core;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -57,22 +58,22 @@ public class SystemTapTextView extends SystemTapView {
 	 * @param text
 	 */
 	public void prettyPrintln(String text) {
-		Vector<StyleRange> styles = new Vector<StyleRange>();
+		List<StyleRange> styles = new ArrayList<StyleRange>();
 		String[] txt = text.split("\\n"); //$NON-NLS-1$
 		int lineOffset = 0;
 		int inLineOffset;
 
 		// txt[] contains text, with one entry for each new line
-		for (int i = 0; i < txt.length; i++) {
+		for (String line: txt) {
 
 			// Skip blank strings
-			if (txt[i].length() == 0) {
+			if (line.isEmpty()) {
 				viewer.append(PluginConstants.NEW_LINE);
 				continue;
 			}
 
 			// Search for colour codes, if none exist then continue
-			String[] split_txt = txt[i].split("~\\("); //$NON-NLS-1$
+			String[] split_txt = line.split("~\\("); //$NON-NLS-1$
 			if (split_txt.length == 1) {
 				viewer.append(split_txt[0]);
 				viewer.append(PluginConstants.NEW_LINE);
@@ -80,22 +81,22 @@ public class SystemTapTextView extends SystemTapView {
 			}
 
 			inLineOffset = 0;
-			for (int k = 0; k < split_txt.length; k++) {
+			for (String split: split_txt) {
 				// Skip blank substrings
-				if (split_txt[k].length() == 0) {
+				if (split.isEmpty()) {
 					continue;
 				}
 
 				// Split for the number codes
-				String[] coloursAndText = split_txt[k].split("\\)~"); //$NON-NLS-1$
+				String[] coloursAndText = split.split("\\)~"); //$NON-NLS-1$
 
 				// If the string is properly formatted, colours should be length
 				// 2
 				// If it is not properly formatted, don't colour (just print)
 				if (coloursAndText.length != 2) {
-					for (int j = 0; j < coloursAndText.length; j++) {
-						viewer.append(coloursAndText[j]);
-						inLineOffset += coloursAndText[j].length();
+					for (String colourAndText: coloursAndText) {
+						viewer.append(colourAndText);
+						inLineOffset += colourAndText.length();
 					}
 					continue;
 				}
@@ -132,7 +133,7 @@ public class SystemTapTextView extends SystemTapView {
 				// the line
 				StyleRange newStyle = new StyleRange(lineOffset + inLineOffset,
 						coloursAndText[1].length(), newColor, null);
-				styles.addElement(newStyle);
+				styles.add(newStyle);
 
 				inLineOffset += coloursAndText[1].length();
 			}
@@ -142,7 +143,7 @@ public class SystemTapTextView extends SystemTapView {
 
 		// Create a new style range
 		StyleRange[] s = new StyleRange[styles.size()];
-		styles.copyInto(s);
+		styles.toArray(s);
 
 		int cnt = viewer.getCharCount();
 
@@ -179,7 +180,7 @@ public class SystemTapTextView extends SystemTapView {
 
 	/**
 	 * Testing convenience method to see what was printed
-	 * 
+	 *
 	 * @return viewer text
 	 */
 	public String getText() {
@@ -198,7 +199,7 @@ public class SystemTapTextView extends SystemTapView {
 	@Override
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
-	
+
 		addKillButton();
 		addFileMenu();
 		addHelpMenu();
