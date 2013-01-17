@@ -32,6 +32,7 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -64,17 +65,17 @@ public class DashboardAdapter {
 		FormLayout layout = new FormLayout();
 		layout.marginHeight = 0; layout.marginWidth = 0;
 		parent.deadComposite.setLayout(layout);
-		
+
 		FormData data = new FormData();
 		data.left = new FormAttachment(0,0);
 		data.top = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
 		data.bottom = new FormAttachment(100,0);
-		
+
 		folder.setLayoutData(folder);
 		folder.setLayout(new FormLayout());
 		//folder.setTabHeight(0);
-		
+
 		ToolBar toolBar = new ToolBar (folder, SWT.FLAT | SWT.BORDER);
 		min = new ToolItem(toolBar, SWT.PUSH);
 		min.setImage(expandImage);
@@ -86,7 +87,7 @@ public class DashboardAdapter {
 		folder.setTopRight(toolBar);
          modulename = moduleName;
 		resetDND(null, null);
-		
+
 		createGraph(gd, ds);
 		wireButtons(parent);
 	}
@@ -99,7 +100,7 @@ public class DashboardAdapter {
 	private void createGraph(GraphData gd, IDataSet ds) {
 		//Setup canvas
 		CTabItem item = new CTabItem(folder, SWT.NONE);
-		Composite c = new Composite(folder, SWT.NONE);   
+		Composite c = new Composite(folder, SWT.NONE);
 		//c.setExpan
 		FormData data = new FormData();
 		data.left = new FormAttachment(0,0);
@@ -111,7 +112,7 @@ public class DashboardAdapter {
 		item.setControl(c);
 		//item.setText(gd.title);
 		folder.setSelection(item);
-		
+
 		//Create graph
 		gc = new GraphComposite(c, SWT.NONE, gd, ds);
 		gc.configure(false);
@@ -122,23 +123,31 @@ public class DashboardAdapter {
 		fd.bottom = new FormAttachment(100,0);
 		gc.setLayoutData(fd);
 	}
-	
+
 	/**
 	 * This method resets all Drag And Drop information.
 	 * @param drag This is the object that is being moved
 	 * @param drop This is the object that occupies the desired location of the first object.
 	 */
 	public void resetDND(DragSourceListener drag, DropTargetListener drop) {
-		if(drag != null) dragSource.removeDragListener(drag);
-		if(drop != null) dropTarget.removeDropListener(drop);
-		if(dragSource != null) dragSource.dispose();
-		if(dropTarget != null) dropTarget.dispose();
+		if(drag != null) {
+			dragSource.removeDragListener(drag);
+		}
+		if(drop != null) {
+			dropTarget.removeDropListener(drop);
+		}
+		if(dragSource != null) {
+			dragSource.dispose();
+		}
+		if(dropTarget != null) {
+			dropTarget.dispose();
+		}
 		dragSource = new DragSource(folder, DND.DROP_MOVE);
 		dragSource.setTransfer(types);
 		dropTarget = new DropTarget(folder, DND.DROP_MOVE | DND.DROP_DEFAULT);
 		dropTarget.setTransfer(types);
 	}
-	
+
 	/**
 	 * Creates and addes the action listeners for the buttons.
 	 * @param comp The composite that is containing this class.
@@ -149,7 +158,7 @@ public class DashboardAdapter {
 		min.addSelectionListener(listener);
 		max.addSelectionListener(listener);
 	}
-	
+
 	/**
 	 * Updates the containers parent with the provided composite.
 	 * @param c The new composite that will serve as the parent.
@@ -165,7 +174,7 @@ public class DashboardAdapter {
 	public void setLayoutData(Object o) {
 		folder.setLayoutData(o);
 	}
-	
+
 	/**
 	 * Sets whether or not the graph is visible
 	 * @param b Visibility flag.
@@ -173,16 +182,16 @@ public class DashboardAdapter {
 	public void setVisible(boolean b) {
 		folder.setVisible(b);
 	}
-	
+
 	/**
 	 * Returns the internal graph that is being displayed
 	 * @return The graph that is held by this class.
 	 */
 	public AbstractChartBuilder getGraph() {
 		return gc.getCanvas();
-		
+
 	}
-	
+
 	/**
 	 * Closes this class and removes it from being displayed in the parent composite.
 	 * Also updates its display information in the ActiveModuleBrowserView.
@@ -205,35 +214,41 @@ public class DashboardAdapter {
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		if(null != folder)
+		if(null != folder) {
 			folder.dispose();
+		}
 		folder = null;
-		if(null != close)
+		if(null != close) {
 			close.dispose();
+		}
 		close = null;
-		if(null != min)
+		if(null != min) {
 			min.dispose();
+		}
 		min = null;
-		if(null != dragSource)
+		if(null != dragSource) {
 			dragSource.dispose();
+		}
 		dragSource = null;
-		if(null != dropTarget)
+		if(null != dropTarget) {
 			dropTarget.dispose();
+		}
 		dropTarget = null;
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardView.ID);
 		((DashboardView)ivp).getUpdater().removeUpdateListener(getGraph());
-		if(null != gc && !gc.isDisposed())
+		if(null != gc && !gc.isDisposed()) {
 			gc.dispose();
+		}
 		gc = null;
 		types = null;
 	}
-	
+
 	/**
 	 * This class handles the button clicks for the three buttons on the window bar.  It
 	 * supports closing the window, as well as toggling whether or not to display the
@@ -241,7 +256,7 @@ public class DashboardAdapter {
 	 * @author Henry Hughes
 	 * @author Ryan Morse
 	 */
-	private class DashboardShimButtonController implements SelectionListener {
+	private class DashboardShimButtonController extends SelectionAdapter {
 		DashboardAdapter shim;
 		DashboardComposite composite;
 		boolean maximized = false;
@@ -249,10 +264,12 @@ public class DashboardAdapter {
 			this.shim = shim;
 			this.composite = composite;
 		}
-		
+
+		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if(e.widget == close)
+			if(e.widget == close) {
 				closeShim();
+			}
 
 			if(e.widget == min) {
 				Composite c = (Composite)folder.getSelection().getControl();
@@ -261,42 +278,37 @@ public class DashboardAdapter {
 					if(children[i] instanceof GraphComposite) {
 						GraphComposite gc = (GraphComposite)children[i];
 						gc.configure(!gc.isSidebarVisible());
-						if(gc.isSidebarVisible())
+						if(gc.isSidebarVisible()) {
 							min.setImage(collapseImage);
-						else
+						} else {
 							min.setImage(expandImage);
+						}
 					}
 				}
 			}
 			if(e.widget == max) {
-				Composite c = (Composite)folder.getSelection().getControl();
+				Composite c = (Composite) folder.getSelection().getControl();
 				Control[] children = c.getChildren();
-				for(int i = 0; i < children.length; i++) {
-					if(children[i] instanceof GraphComposite) {
-		//				GraphComposite gc = (GraphComposite)children[i];
-							if(!maximized)
-						{
-						composite.maximize(shim);
-						max.setImage(restoreImage);
-						maximized= true;
+				for (int i = 0; i < children.length; i++) {
+					if (children[i] instanceof GraphComposite) {
+						if (!maximized) {
+							composite.maximize(shim);
+							max.setImage(restoreImage);
+							maximized = true;
+						} else {
+							composite.restore();
+							max.setImage(maxImage);
+							maximized = false;
 						}
-          			else
-          			{
-						composite.restore();
-						max.setImage(maxImage);
-						maximized= false;
-						}					
-						}
+					}
 				}
 			}
 
 		}
 
-		public void widgetDefaultSelected(SelectionEvent e) {}
 	}
-	
-	public String getmodulename()
-	{
+
+	public String getmodulename() {
 		return modulename;
 	}
 

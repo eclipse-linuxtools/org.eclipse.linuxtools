@@ -40,18 +40,18 @@ public class DashboardGraphsBrowserView extends GraphsView {
 	public DashboardGraphsBrowserView() {
 		super();
 	}
-	
+
 	@Override
 	protected void generateGraphsTree() {
 		viewer.setInput(new TreeNode("root", "", false)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		viewer.setLabelProvider(new ViewLabelProvider());
 	}
-	
+
 	/**
 	 * This method builds the actions for the items inside this view.  It adds a
 	 * double click listener to each of the Items so they will be run if they
@@ -71,7 +71,7 @@ public class DashboardGraphsBrowserView extends GraphsView {
 		getSite().registerContextMenu(manager, viewer);
 		super.makeActions();
 	}
-	
+
 	public void add(String display, ActiveModuleData data) {
 		TreeNode root = (TreeNode)viewer.getInput();
 		ActiveModuleTreeNode child = new ActiveModuleTreeNode(data, display, true);
@@ -90,11 +90,11 @@ public class DashboardGraphsBrowserView extends GraphsView {
 			graphNode = new GraphTreeNode(graphData, data.module.graphs[i].title, true);
 			act.run(graphNode);
 			child.add(graphNode);
-			
+
 		}
 		root.sortLevel();
 		viewer.refresh();
-		
+
 	}
 	/**
 	 * This method removes all internal references. Nothing should be called/referenced after
@@ -106,7 +106,7 @@ public class DashboardGraphsBrowserView extends GraphsView {
 		viewer=null;
 	}
 	/**
-	 * This class provides functionality for determining what image to 
+	 * This class provides functionality for determining what image to
 	 * display for each item in the tree.
 	 */
 	private static class ViewLabelProvider extends LabelProvider {
@@ -119,20 +119,21 @@ public class DashboardGraphsBrowserView extends GraphsView {
 		public Image getImage(Object obj) {
 			TreeNode treeObj = (TreeNode)obj;
 			Image img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-			
-			if(treeObj.getChildCount() > 0)
+
+			if(treeObj.getChildCount() > 0) {
 				img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage(); //$NON-NLS-1$
-			else if(treeObj instanceof GraphTreeNode){
-				if(null == ((DashboardGraphData)((GraphTreeNode)treeObj).getData()).adapter)
+			} else if(treeObj instanceof GraphTreeNode){
+				if(null == ((DashboardGraphData)((GraphTreeNode)treeObj).getData()).adapter) {
 					img = DashboardPlugin.getImageDescriptor("icons/misc/graph_dis.gif").createImage(); //$NON-NLS-1$
-				else
+				} else {
 					img = DashboardPlugin.getImageDescriptor("icons/misc/graph_act.gif").createImage(); //$NON-NLS-1$
+				}
 			}
 
 			return img;
 		}
-	}	
+	}
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardGraphsBrowserView"; //$NON-NLS-1$
-	
+
 }
 

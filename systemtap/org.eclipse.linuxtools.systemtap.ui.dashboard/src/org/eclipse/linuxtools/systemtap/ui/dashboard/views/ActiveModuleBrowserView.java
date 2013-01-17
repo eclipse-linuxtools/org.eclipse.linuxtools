@@ -156,8 +156,9 @@ public class ActiveModuleBrowserView extends ModuleView {
 	public boolean isActive(DashboardModule mod) {
 		TreeNode tree = (TreeNode)viewer.getInput();
 		for(int i=0; i<tree.getChildCount(); i++) {
-			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
+			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) {//$NON-NLS-1$
 				return true;
+			}
 		}
 		return false;
 	}
@@ -171,8 +172,9 @@ public class ActiveModuleBrowserView extends ModuleView {
 	public boolean isPaused(DashboardModule mod) {
 		TreeNode tree = (TreeNode)viewer.getInput();
 		for(int i=0; i<tree.getChildCount(); i++) {
-			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) //$NON-NLS-1$
+			if(tree.getChildAt(i).toString().equals(mod.category + "." + mod.display)) {//$NON-NLS-1$
 				return ((ActiveModuleData)tree.getChildAt(i).getData()).paused;
+			}
 		}
 		return false;
 	}
@@ -211,13 +213,14 @@ public class ActiveModuleBrowserView extends ModuleView {
 			TreeNode treeObj = (TreeNode)obj;
 			Image img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 
-			if(treeObj.getChildCount() > 0)
+			if(treeObj.getChildCount() > 0) {
 				img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage(); //$NON-NLS-1$
-			else if(treeObj instanceof GraphTreeNode){
-				if(null == ((DashboardGraphData)((GraphTreeNode)treeObj).getData()).adapter)
+			} else if(treeObj instanceof GraphTreeNode) {
+				if(null == ((DashboardGraphData)((GraphTreeNode)treeObj).getData()).adapter) {
 					img = DashboardPlugin.getImageDescriptor("icons/misc/graph_dis.gif").createImage(); //$NON-NLS-1$
-				else
+				} else {
 					img = DashboardPlugin.getImageDescriptor("icons/misc/graph_act.gif").createImage(); //$NON-NLS-1$
+				}
 			}
 
 			return img;

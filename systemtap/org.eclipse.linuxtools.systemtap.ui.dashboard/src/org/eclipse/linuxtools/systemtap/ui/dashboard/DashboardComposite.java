@@ -55,7 +55,7 @@ public class DashboardComposite {
 	 */
 	private final InternalCompositeDropListener[] dropListeners = new InternalCompositeDropListener[8];
 	/**
-	 * Queue at the end of the list. When there are 8 objects rendering and a 9th object is added, 
+	 * Queue at the end of the list. When there are 8 objects rendering and a 9th object is added,
 	 * it is placed on this queue and displayed when an internal composite is released.
 	 */
 	private final ArrayList<DashboardAdapter> externalQueue = new ArrayList<DashboardAdapter>();
@@ -63,7 +63,7 @@ public class DashboardComposite {
 	 * The actual rendering surface.
 	 */
 	private final Composite surface;
-	
+
 	int maximized = 0;
 	/**
 	 * Parental hell. When objects are added to this composite incorrectly, the next run of the
@@ -72,11 +72,11 @@ public class DashboardComposite {
 	 * rendering queue, it is also reparented to the dead composite.
 	 */
 	public final Composite deadComposite;
-	
+
 	public void layout() {	//TODO: Remove this.  It is a temporary solution to another bug
 		surface.layout(true, true);
 	}
-	
+
 	/**
 	 * Default constructor for the DashboardComposite. Creates all of the internal composites, sets up
 	 * listeners.
@@ -95,8 +95,7 @@ public class DashboardComposite {
 		surface.setLayout(new FormLayout());
 		deadComposite = new Composite(parent, style);
 		deadComposite.setVisible(false);
-		for(int i = 0; i < internal.length; i++)
-		{
+		for(int i = 0; i < internal.length; i++) {
 			internal[i] = new Composite(surface, SWT.NONE);
 			data = new FormData();
 			internal[i].setLayoutData(data);
@@ -107,25 +106,24 @@ public class DashboardComposite {
 			dropListeners[i] = new InternalCompositeDropListener(i);
 		}
 	}
-	
+
 	/**
 	 * This listener detects drag events inside the DashboardComposite and creates
 	 * a string that represents the ID of the composite that is being dragged.
 	 * @author Henry Hughes
 	 */
-	private class InternalCompositeDragListener extends DragSourceAdapter
-	{
+	private class InternalCompositeDragListener extends DragSourceAdapter {
 		final int sourceID;
-		public InternalCompositeDragListener(int k)
-		{
+		public InternalCompositeDragListener(int k)	{
 			super();
 			sourceID = k;
 		}
 		@Override
 		public void dragStart(DragSourceEvent event) {
 			super.dragStart(event);
-			if(!external[sourceID].folder.isVisible())
+			if(!external[sourceID].folder.isVisible()) {
 				event.doit = false;
+			}
 		}
 
 		@Override
@@ -134,25 +132,24 @@ public class DashboardComposite {
 			event.data = Integer.toString(sourceID);
 		}
 	}
-	
+
 	/**
 	 * This listener detects drop events, and invokes the move(int,int) method in DashboardComposite
 	 * to swap the composites.
 	 * @author Henry Hughes
 	 */
-	private class InternalCompositeDropListener extends DropTargetAdapter
-	{
+	private class InternalCompositeDropListener extends DropTargetAdapter {
 		final int sourceID;
-		public InternalCompositeDropListener(int k)
-		{
+		public InternalCompositeDropListener(int k)	{
 			sourceID = k;
 		}
 		@Override
 		public void dragEnter(DropTargetEvent event) {
-			if(event.currentDataType != null)
+			if(event.currentDataType != null) {
 				event.detail = DND.DROP_MOVE;
-			else
+			} else {
 				event.detail = DND.DROP_NONE;
+			}
 		}
 
 		@Override
@@ -164,40 +161,39 @@ public class DashboardComposite {
 		public void drop(DropTargetEvent event) {
 			super.drop(event);
 			int k = -1;
-			
+
 			/* For some absurdly stupid reason this method seems to be called twice under
 			 * certain circumstances. This is probably a bug in eclipse's SDK, nonetheless, it's our
 			 * problem now. To get around this, we check for timestamps within 100ms of each other.
 			 * If the last drop was fired less than 100ms ago, we silently eat the event.
 			 */
 			long eventTime = event.time & 0xFFFFFFFFL;
-			if(eventTime > lastDropTime - 100 && eventTime < lastDropTime + 100) return;
-			
-			try
-			{
-				k = Integer.parseInt((String)event.data);
+			if(eventTime > lastDropTime - 100 && eventTime < lastDropTime + 100) {
+				return;
 			}
-			catch (NumberFormatException e) {}
-			if(k > -1 && k < 8 && k != sourceID)
-			{
+
+			try	{
+				k = Integer.parseInt((String)event.data);
+			} catch (NumberFormatException e) {
+				//ignore unparseable
+			}
+			if(k > -1 && k < 8 && k != sourceID) {
 				move(k, sourceID);
 				move(k,k);  //dont ask me why, but the original graph refuses to update without this
 				lastDropTime = eventTime;
-			}	
+			}
 		}
 	}
-	
+
 	/**
 	 * Adds the input DashboardAdapter to the DashboardComposite, either assigning it an internal composite
 	 * and rescaling the composite if necessary, or adding it to the queue if there are no free internal
 	 * composites to use.
 	 * @param c DashboardAdapter to add.
 	 */
-	public void add(DashboardAdapter c)
-	{
+	public void add(DashboardAdapter c)	{
 		int index = findLowestOpenSlot();
-		if(index == -1)	//add to the queue
-		{
+		if(index == -1)	{//add to the queue
 			externalQueue.add(c);
 			return;
 		}
@@ -214,25 +210,25 @@ public class DashboardComposite {
 		scale();
 		surface.layout(true, true);
 	}
-	
+
 	/**
 	 * Removes the input DashboardAdapter, removing it from the internal composite it's associated to
-	 * or from the queue, compacting the internal and external arrays, then rescaling. 
+	 * or from the queue, compacting the internal and external arrays, then rescaling.
 	 * @param c DashboardAdapter to remove.
 	 */
-	public void remove(DashboardAdapter c)
-	{
+	public void remove(DashboardAdapter c) {
 		int index = -1;
-		for(int i = 0; i < external.length; i++)
-			if(external[i] == c)
+		for(int i = 0; i < external.length; i++) {
+			if(external[i] == c) {
 				index = i;
-		if(index == -1)	//it's probably in externalQueue, pop it off of the queue and done
+			}
+		}
+		if(index == -1)	{ //it's probably in externalQueue, pop it off of the queue and done
 			externalQueue.remove(c);
-		else	//it's on the rendering queue... deal with it
-		{
+		} else {	//it's on the rendering queue... deal with it
 			external[index].resetDND(dragListeners[index], dropListeners[index]);
 			external[index] = null;
-			
+
 			compact();
 			reparent();
 			calculateUsedSlots();
@@ -242,30 +238,28 @@ public class DashboardComposite {
 	}
 	/**
 	 * Swaps the objects rendering on composites from and to, reparenting them to their new homes and
-	 * moving them in the actual array. Also resets drag and drop listeners on those objects. 
+	 * moving them in the actual array. Also resets drag and drop listeners on those objects.
 	 */
-	public void move(int from, int to)
-	{
+	public void move(int from, int to) {
 		DashboardAdapter fromShim = external[from], toShim = external[to];
 		external[to] = fromShim;
 		external[from] = toShim;
-		
+
 		external[to].setParent(internal[to]);
 		external[from].setParent(internal[from]);
-		
-		fromShim.resetDND(dragListeners[from], dropListeners[from]); 
+
+		fromShim.resetDND(dragListeners[from], dropListeners[from]);
 		toShim.resetDND(dragListeners[to], dropListeners[to]);
 		bindDND(from);
 		bindDND(to);
-		
+
 		return;
 	}
 	/**
 	 * Binds the drag and drop listeners for the given slots.
 	 * @param slot Slot to bind D&D.
 	 */
-	private void bindDND(int slot)
-	{
+	private void bindDND(int slot) {
 		external[slot].dragSource.addDragListener(dragListeners[slot]);
 		external[slot].dropTarget.addDropListener(dropListeners[slot]);
 	}
@@ -273,38 +267,40 @@ public class DashboardComposite {
 	 * Finds the lowest open slot index.
 	 * @return Returns the lowest available internal slot's index.
 	 */
-	private int findLowestOpenSlot()
-	{
-		for(int i = 0; i < external.length; i++)
-			if(external[i] == null)
+	private int findLowestOpenSlot() {
+		for(int i = 0; i < external.length; i++) {
+			if(external[i] == null) {
 				return i;
+			}
+		}
 		return -1;
 	}
 	/**
 	 * Calculates the number of used slots.
 	 */
-	private void calculateUsedSlots()
-	{
+	private void calculateUsedSlots() {
 		int count = 0;
-		for (int i = 0; i < external.length; i++)
-			if(external[i] != null)
+		for (int i = 0; i < external.length; i++) {
+			if(external[i] != null) {
 				count++;
+			}
+		}
 		usedSlotCount = count;
 	}
 	/**
 	 * "Crushes" the external array, removing open slots that are not at the end of the list.
 	 */
-	private void compact()
-	{
+	private void compact() {
 		int i = 0, j = 0;
-		while(i < external.length)
-		{
-			while(i < external.length && external[i] != null)
+		while(i < external.length) {
+			while(i < external.length && external[i] != null) {
 				i++;
-			if(i == external.length) break;
+			}
+			if(i == external.length) {
+				break;
+			}
 			//we've found the lowest null slot
-			if(externalQueue.size() > 0)
-			{	//fill it from the queue
+			if(externalQueue.size() > 0) {	//fill it from the queue
 				external[i] = externalQueue.remove(0);
 				FormData data = new FormData();
 				data.left= new FormAttachment(0,0);
@@ -315,9 +311,12 @@ public class DashboardComposite {
 				continue;
 			}
 			j = i;
-			while(j < external.length && external[j] == null)
+			while(j < external.length && external[j] == null) {
 				j++;
-			if(j == external.length) break;		//we never found a non-null, so i is the first blank slot
+			}
+			if(j == external.length) {
+				break;		//we never found a non-null, so i is the first blank slot
+			}
 			external[i] = external[j];
 			external[j] = null;
 			i = j;
@@ -326,69 +325,56 @@ public class DashboardComposite {
 	/**
 	 * Reparents all the external DashboardAdapters to the correct internal composite.
 	 */
-	private void reparent()
-	{
-		for(int i = 0; i < internal.length; i++)
-		{
+	private void reparent()	{
+		for(int i = 0; i < internal.length; i++) {
 			Control[] c = internal[i].getChildren();
-			for(int j = 0; j < c.length; j++)
-			{
-				if(external[i] != null && c[j] == external[i].folder)
+			for(int j = 0; j < c.length; j++) {
+				if(external[i] != null && c[j] == external[i].folder) {
 					c[j].setVisible(true);
-				else
+				} else {
 					c[j].setParent(deadComposite);
+				}
 			}
 		}
-		for(int i = 0 ; i < external.length; i++)
-		{
-			if(external[i] != null)
-			{
+		for(int i = 0 ; i < external.length; i++) {
+			if(external[i] != null)	{
 				external[i].setParent(internal[i]);
 				external[i].resetDND(null, null);
 				bindDND(i);
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes the input DashboardAdapter, removing it from the internal composite it's associated to
-	 * or from the queue, compacting the internal and external arrays, then rescaling. 
+	 * or from the queue, compacting the internal and external arrays, then rescaling.
 	 * @param c DashboardAdapter to remove.
 	 */
-	public void maximize(DashboardAdapter c)
-	{
+	public void maximize(DashboardAdapter c) {
 		int index = -1;
-		for(int i = 0; i < external.length; i++)
-			if(external[i] == c)
+		for (int i = 0; i < external.length; i++) {
+			if (external[i] == c) {
 				index = i;
-	//	if(index == -1)	//it's probably in externalQueue, pop it off of the queue and done
-		//	externalQueue.remove(c);
-		//else	//it's on the rendering queue... deal with it
-		//{
-	//		external[index].resetDND(dragListeners[index], dropListeners[index]);
-	//		external[index] = null;
-			usedSlotCount = 1;
-			//calculateUsedSlots(index);
-			maximized = index;
-			scale();
-			surface.layout(true, true);
-	//	}
+			}
+		}
+		usedSlotCount = 1;
+		maximized = index;
+		scale();
+		surface.layout(true, true);
 	}
 	/**
 	 * Removes the input DashboardAdapter, removing it from the internal composite it's associated to
-	 * or from the queue, compacting the internal and external arrays, then rescaling. 
+	 * or from the queue, compacting the internal and external arrays, then rescaling.
 	 * @param c DashboardAdapter to remove.
 	 */
-	public void restore()
-	{
+	public void restore() {
 			calculateUsedSlots();
 			maximized = 0;
 			scale();
 			surface.layout(true, true);
 	}
-	
-	public int getusedSlots()
-	{
+
+	public int getusedSlots() {
 		return usedSlotCount;
 	}
 	/**
@@ -402,8 +388,7 @@ public class DashboardComposite {
 		case 8:
 		case 7:
 			//turn on all internal composites, 4x2 layout
-			for(int i = 0; i < 8; i++)
-			{
+			for(int i = 0; i < 8; i++) {
 				FormData data = new FormData();
 				data.left = new FormAttachment(i%2 * 50, 0);
 				data.right = new FormAttachment((i%2 +1)* 50, 0);
@@ -411,14 +396,15 @@ public class DashboardComposite {
 				data.bottom = new FormAttachment(i/2+1, 4, 0);
 				internal[i].setLayoutData(data);
 				internal[i].setVisible(true);
-				if(external[i] != null) external[i].setVisible(true);
+				if(external[i] != null) {
+					external[i].setVisible(true);
+				}
 			}
 			break;
 		case 6:
 		case 5:
 			//turn on 6 internal composites, 3x2 layout
-			for(int i = 0; i < 6; i++)
-			{
+			for(int i = 0; i < 6; i++) {
 				FormData data = new FormData();
 				data.left = new FormAttachment(i%2 * 50, 0);
 				data.right = new FormAttachment((i%2+1) * 50, 0);
@@ -426,19 +412,21 @@ public class DashboardComposite {
 				data.bottom = new FormAttachment(i/2+1,3, 0);
 				internal[i].setLayoutData(data);
 				internal[i].setVisible(true);
-				if(external[i]!= null) external[i].setVisible(true);
+				if(external[i]!= null) {
+					external[i].setVisible(true);
+				}
 			}
-			for(int i = 6; i < 8; i++)
-			{
+			for(int i = 6; i < 8; i++) {
 				internal[i].setVisible(false);
-				if(external[i] != null) external[i].setVisible(false);	//this should never happen
+				if(external[i] != null) {
+					external[i].setVisible(false);	//this should never happen
+				}
 			}
 			break;
 		case 4:
 		case 3:
 			//turn on 4 internal composites, 2x2 layout
-			for(int i = 0; i < 4; i++)
-			{
+			for(int i = 0; i < 4; i++) {
 				FormData data = new FormData();
 				data.left = new FormAttachment(i%2 * 50, 0);
 				data.right = new FormAttachment((i%2+1) * 50, 0);
@@ -446,18 +434,20 @@ public class DashboardComposite {
 				data.bottom = new FormAttachment(i/2+1,2, 0);
 				internal[i].setLayoutData(data);
 				internal[i].setVisible(true);
-				if(external[i] != null) external[i].setVisible(true);
+				if(external[i] != null) {
+					external[i].setVisible(true);
+				}
 			}
-			for(int i = 4; i < 8; i++)
-			{
+			for(int i = 4; i < 8; i++) {
 				internal[i].setVisible(false);
-				if(external[i] != null) external[i].setVisible(false);	//this should never happen
+				if(external[i] != null) {
+					external[i].setVisible(false);	//this should never happen
+				}
 			}
 			break;
 		case 2:
 			//turn on 2 internal composites, 1x2 layout
-			for(int i = 0; i < 2; i++)
-			{
+			for(int i = 0; i < 2; i++) {
 				FormData data = new FormData();
 				data.left = new FormAttachment(0, 3);
 				data.right = new FormAttachment(100, -3);
@@ -467,10 +457,11 @@ public class DashboardComposite {
 				internal[i].setVisible(true);
 				external[i].setVisible(true);
 			}
-			for(int i = 2; i < 8; i++)
-			{
+			for(int i = 2; i < 8; i++) {
 				internal[i].setVisible(false);
-				if(external[i] != null) external[i].setVisible(false);	//this should never happen
+				if(external[i] != null) {
+					external[i].setVisible(false);	//this should never happen
+				}
 			}
 			break;
 		case 1:
@@ -484,13 +475,16 @@ public class DashboardComposite {
 			data.bottom = new FormAttachment(100, 0);
 			internal[maximized].setLayoutData(data);
 			internal[maximized].setVisible(true);
-			if(external[maximized] != null) external[maximized].setVisible(true);
-			for(int i = usedSlotCount; i < 8; i++)
-			{
-				if (i!=maximized)
-				{
-				internal[i].setVisible(false);
-				if(external[i] != null) external[i].setVisible(false);	//this should never happen
+			if(external[maximized] != null) {
+				external[maximized].setVisible(true);
+			}
+			for (int i = usedSlotCount; i < 8; i++) {
+				if (i != maximized) {
+					internal[i].setVisible(false);
+					if (external[i] != null) {
+						external[i].setVisible(false); // this should never
+														// happen
+					}
 				}
 			}
 		}

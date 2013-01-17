@@ -13,22 +13,16 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = DashboardPlugin.getDefault().getPreferenceStore();
 
 		//dashboard
 		store.setDefault(DashboardPreferenceConstants.P_MODULE_FOLDERS, ""); //$NON-NLS-1$
 		store.setDefault(DashboardPreferenceConstants.P_DASHBOARD_UPDATE_DELAY, 1000);
 		store.setDefault(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR, "/usr/local/share/doc/systemtap/examples"); //$NON-NLS-1$
-
-		LogManager.logDebug("End initializeDefaultPreferences:", this); //$NON-NLS-1$
 	}
 }

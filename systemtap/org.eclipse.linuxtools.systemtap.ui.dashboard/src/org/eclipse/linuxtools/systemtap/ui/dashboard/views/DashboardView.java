@@ -40,8 +40,8 @@ import org.eclipse.ui.part.ViewPart;
 
 
 /**
- * This is the main view of the dashboard.  It is where all of the graphs are displayed 
- * when they are run.  It utalizes <code>DashboardComposite</code> to handle all of the 
+ * This is the main view of the dashboard.  It is where all of the graphs are displayed
+ * when they are run.  It utalizes <code>DashboardComposite</code> to handle all of the
  * layout data for the view.
  * @author Henry Hughes
  * @author Ryan Morse
@@ -56,17 +56,17 @@ public class DashboardView extends ViewPart {
 
 }
 
-	
+
 	/**
 	 * This method will create a new composite for the module
-	 * The composite will be given a new tab item at the end of 
+	 * The composite will be given a new tab item at the end of
 	 * the list.
 	 * @param title The name to be shown on the new tab
 	 */
 	public void createComposite(String title) {
 		CTabItem item = new CTabItem(scriptFolder, SWT.CLOSE);
 		item.setText(title);
-		
+
 		Composite parent = new Composite(scriptFolder, SWT.NONE);
 		parent.setBackground(new Color(parent.getDisplay(), 0, 0, 255));
 		DashboardComposite comp = new DashboardComposite(parent, SWT.BORDER);
@@ -90,7 +90,7 @@ public class DashboardView extends ViewPart {
 		data2.bottom = new FormAttachment(100, 0);
 		Composite cmpGraph = new Composite(parent, SWT.NONE);
 		cmpGraph.setLayoutData(data2);
-		
+
 		//This is for the tab view
 		cmpGraph.setLayout(new FormLayout());
 		FormData data3 = new FormData();
@@ -122,9 +122,9 @@ public class DashboardView extends ViewPart {
 				fireTabCloseEvent();
 			}
 		});
-		
+
 		Display display = parent.getShell().getDisplay();
-		
+
          scriptFolder.setSelectionBackground(display.getSystemColor(SWT.COLOR_GRAY));
          scriptFolder.setMaximizeVisible(true);
          scriptFolder.setSelectionForeground(display.getSystemColor(SWT.COLOR_BLACK));
@@ -146,10 +146,9 @@ public class DashboardView extends ViewPart {
 		Display disp = PlatformUI.getWorkbench().getDisplay();
 		disp.getActiveShell().setCursor(disp.getSystemCursor(SWT.CURSOR_WAIT));
 		int index = searchModuleNames(moduleName);
-	
+
 		DashboardAdapter adapter = null;
-		if (index == -1)
-		{
+		if (index == -1) {
 			createComposite(moduleName);
 			index = searchModuleNames(moduleName);
 		}
@@ -159,10 +158,12 @@ public class DashboardView extends ViewPart {
 		disp.getActiveShell().setCursor(null);
 		return adapter;
 	}
-	
+
 	private int searchModuleNames(String moduleName) {
 		for (int i = 0; i<moduleNames.size();i++) {
-			if (moduleName.equals(moduleNames.get(i))) return i;
+			if (moduleName.equals(moduleNames.get(i))) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -176,7 +177,7 @@ public class DashboardView extends ViewPart {
 		composites.get(index).remove(graph);
 		graph.dispose();
 	}
-	
+
 	public void closeComposite(String moduleName)
 	{
 		int index = searchModuleNames(moduleName);
@@ -186,7 +187,7 @@ public class DashboardView extends ViewPart {
 			composites.remove(index);
 		}
 	}
-	
+
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
@@ -200,8 +201,8 @@ public class DashboardView extends ViewPart {
 			tabListener.tabClosed();
 		}
 	}
-	
-	
+
+
 	private void fireTabOpenEvent() {
 		for(ITabListener tabListener:tabListeners) {
 			tabListener.tabOpened();
@@ -213,7 +214,7 @@ public class DashboardView extends ViewPart {
 			tabListener.tabChanged();
 		}
 	}
-	
+
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
@@ -222,26 +223,31 @@ public class DashboardView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 
-		if(null != scriptFolder)
+		if(null != scriptFolder) {
 			scriptFolder.dispose();
+		}
 		scriptFolder = null;
-		if(null != composites)
+		if(null != composites) {
 			composites.removeAll(composites);
+		}
 		composites = null;
 		scriptFolder = null;
-		if(null != tabListeners)
+		if(null != tabListeners) {
 			tabListeners.removeAll(tabListeners);
+		}
 		tabListeners = null;
-		
+
 	}
-	
+
 	public static void addmodulename(String str)
 	{
-		if (allModuleNames == null) allModuleNames = new ArrayList<String>();
-		
+		if (allModuleNames == null) {
+			allModuleNames = new ArrayList<String>();
+		}
+
 		allModuleNames.add(str);
 	}
-	
+
 	private ArrayList<DashboardComposite> composites;
 	private ArrayList<String> moduleNames;
 	public static ArrayList<String> allModuleNames = null;
@@ -249,7 +255,7 @@ public class DashboardView extends ViewPart {
 	private UpdateManager updater;
 	private CTabFolder scriptFolder;
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"; //$NON-NLS-1$
-	
+
 }
 
 

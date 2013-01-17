@@ -61,10 +61,11 @@ public class DashboardPlugin extends AbstractUIPlugin {
 			File[] files = folder.listFiles();
 			if (files != null) {
 				for (File file : folder.listFiles()) {
-					if (file.isDirectory())
+					if (file.isDirectory()) {
 						removeFolder(file);
-					else
+					} else {
 						file.delete();
+					}
 				}
 			}
 			folder.delete();

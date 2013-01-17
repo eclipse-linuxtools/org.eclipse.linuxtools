@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
@@ -37,23 +36,23 @@ public abstract class GraphsView extends ViewPart {
 	public GraphsView() {
 		super();
 	}
-	
+
 	/**
 	 * This class provides the framework for traversing the view's Tree structure.
 	 */
 	private static class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
-		
+
 		public void dispose() {}
-		
+
 		public Object[] getElements(Object parent) {
 			return getChildren(parent);
 		}
-		
+
 		public Object getParent(Object child) {
 			return null;
 		}
-		
+
 		public Object[] getChildren(Object par) {
 			TreeNode parent = ((TreeNode)par);
 
@@ -62,15 +61,15 @@ public abstract class GraphsView extends ViewPart {
 			for(int i=0; i<children.length; i++) {
 				children[i] = parent.getChildAt(i);
 			}
-			
+
 			return children;
 		}
-		
+
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode)parent).getChildCount() > 0;
 		}
 	}
-	
+
 	/**
 	 * This class provides functionality for determining what image to
 	 * display for each item in the tree.
@@ -85,22 +84,22 @@ public abstract class GraphsView extends ViewPart {
 		public Image getImage(Object obj) {
 			TreeNode treeObj = (TreeNode)obj;
 			Image img;
-			
+
 			img = DashboardPlugin.getImageDescriptor("icons/misc/graph_dis.gif").createImage(); //$NON-NLS-1$
-			if (treeObj.getChildCount() > 0)
+			if (treeObj.getChildCount() > 0) {
 				img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+			}
 
 			return img;
 		}
-	}	
-	
+	}
+
 	/**
-	 * This method creates the framework for the view.  It initializes the viewer, which 
+	 * This method creates the framework for the view.  It initializes the viewer, which
 	 * contains the TreeNode and handles how to display each entry.
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		parent.getShell().setCursor(new Cursor(parent.getShell().getDisplay(), SWT.CURSOR_WAIT));
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(new ViewContentProvider());
@@ -108,9 +107,8 @@ public abstract class GraphsView extends ViewPart {
 
 		generateGraphsTree();
 		makeActions();
-		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * This method is intented to provided the necessary information for generating everthing
 	 * that needs to be displayed in the tree viewer.
@@ -121,14 +119,14 @@ public abstract class GraphsView extends ViewPart {
 	 * This method is intented to add new Actions to the view.
 	 */
 	protected void makeActions() {}
-	
+
 	/**
 	 * This method is intented to handle updating the view when items are added or removed.
 	 */
 	public void refresh() {
 		generateGraphsTree();
 	}
-	
+
 	public TreeViewer getViewer() {
 		return viewer;
 	}
@@ -147,7 +145,7 @@ public abstract class GraphsView extends ViewPart {
 		super.dispose();
 		viewer = null;
 	}
-	
+
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.GraphsView"; //$NON-NLS-1$
 	protected TreeViewer viewer;
 }
