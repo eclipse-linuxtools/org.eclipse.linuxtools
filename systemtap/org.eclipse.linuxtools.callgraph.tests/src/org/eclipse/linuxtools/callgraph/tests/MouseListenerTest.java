@@ -4,13 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.tests;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
@@ -21,9 +19,11 @@ import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
 import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
 import org.eclipse.linuxtools.internal.callgraph.graphlisteners.StapGraphMouseListener;
 import org.eclipse.zest.core.widgets.GraphItem;
+import org.junit.Test;
 
-public class MouseListenerTest extends TestCase {
+public class MouseListenerTest {
 
+	@Test
 	public void test() {
 		StapGraphParser parse = new StapGraphParser();
 		parse.setSourcePath(Activator.getPluginLocation() + "eag.graph");

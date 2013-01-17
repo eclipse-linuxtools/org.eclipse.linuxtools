@@ -4,16 +4,16 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.util.ArrayList;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -23,25 +23,26 @@ import org.eclipse.linuxtools.internal.callgraph.CallgraphView;
 import org.eclipse.linuxtools.internal.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
 import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
+import org.junit.Test;
 
-public class SystemTapGraphTest extends TestCase {	
-	
-	
+public class SystemTapGraphTest {
+
+
 	private boolean manual = false;
-	
+	@Test
 	public void testGraphLoading() {
 
 		StapGraphParser parse = new StapGraphParser();
 		parse.setSourcePath(Activator.getPluginLocation()+"eag.graph");
 		assertEquals(Status.OK_STATUS, parse.testRun(new NullProgressMonitor(), true));
-		
+
 		StapUIJob j = new StapUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
 		CallgraphView cView = (CallgraphView)  ViewFactory.createView(CallGraphConstants.viewID);
-		 
+
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();
-			
+
 
 			tasks.add("(Manually) Maximize CallgraphView");
 			tasks.add("Refresh");
@@ -59,7 +60,7 @@ public class SystemTapGraphTest extends TestCase {
 			tasks.add("Save file");
 			tasks.add("Reload file");
 			tasks.add("Maximize");
-			
+
 
 		    int taskNumber = 0;
 			for (String task : tasks) {
@@ -103,7 +104,7 @@ public class SystemTapGraphTest extends TestCase {
 				case 15:
 					StapGraphParser new_parser = new StapGraphParser();
 					new_parser.setSourcePath(Activator.getPluginLocation()+"eag.graph");
-					new_parser.testRun(new NullProgressMonitor(), true);	
+					new_parser.testRun(new NullProgressMonitor(), true);
 					break;
 				case 16:
 					cView.maximizeIfUnmaximized();
