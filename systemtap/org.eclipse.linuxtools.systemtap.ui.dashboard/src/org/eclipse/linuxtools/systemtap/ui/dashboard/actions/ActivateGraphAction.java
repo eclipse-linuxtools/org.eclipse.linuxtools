@@ -15,17 +15,15 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
-
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewActionDelegate;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This action is responsible for starting up a closed graph.  This is used when a module
@@ -37,7 +35,7 @@ public class ActivateGraphAction extends Action implements IViewActionDelegate {
 	public void init(IViewPart view) {
 		selectedItem = null;
 	}
-	
+
 	public void run(IAction act) {
 		run();
 	}
@@ -46,35 +44,30 @@ public class ActivateGraphAction extends Action implements IViewActionDelegate {
 	public void run() {
 		run(selectedItem);
 	}
-	
+
 	/**
 	 * This method retreives the graph information for the selected item and then
 	 * creates the graph for display.
 	 * @param selected The graph item that is currently selected and needs to be activated
 	 */
 	public void run(GraphTreeNode selected) {
-		 Display disp = PlatformUI.getWorkbench().getDisplay();
-		  Cursor cursor = new Cursor(disp, SWT.CURSOR_WAIT);
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(cursor);
+		Display disp = PlatformUI.getWorkbench().getDisplay();
+		disp.getActiveShell().setCursor(disp.getSystemCursor(SWT.CURSOR_WAIT));
 
-		
-		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardView.ID);
+		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(DashboardView.ID);
 
-		DashboardGraphData data = ((DashboardGraphData)selected.getData());
-		
-	 	
-	//	IFilteredDataSet fds = DataSetFactory.createFilteredDataSet(data.data);
-	//	for(int k=0; k<data.filters.length; k++)
-		//	fds.addFilter(data.filters[k]);
-		data.adapter = ((DashboardView)ivp).createGraph(data.graph, data.data, data.moduleName);
+		DashboardGraphData data = ((DashboardGraphData) selected.getData());
+		data.adapter = ((DashboardView) ivp).createGraph(data.graph, data.data,
+				data.moduleName);
 
-		ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
-		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView)ivp;
+		ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(ActiveModuleBrowserView.ID);
+		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView) ivp;
 		ambv.getViewer().refresh();
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(null);
-		  cursor.dispose();
+		disp.getActiveShell().setCursor(null);
 	}
-	
+
 	/**
 	 * This method updates what item is currently selected.
 	 * @param action The action that started this method.
@@ -95,27 +88,24 @@ public class ActivateGraphAction extends Action implements IViewActionDelegate {
 		}
 		action.setEnabled(false);
 	}
-	
+
 	private GraphTreeNode selectedItem;
 
 	public void run(GraphTreeNode selected, String module) {
-		 Display disp = PlatformUI.getWorkbench().getDisplay();
-		  Cursor cursor = new Cursor(disp, SWT.CURSOR_WAIT);
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(cursor);
+		Display disp = PlatformUI.getWorkbench().getDisplay();
+		disp.getActiveShell().setCursor(disp.getSystemCursor(SWT.CURSOR_WAIT));
 
-		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardView.ID);
+		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(DashboardView.ID);
 
-		DashboardGraphData data = ((DashboardGraphData)selected.getData());
-		
-	//	IFilteredDataSet fds = DataSetFactory.createFilteredDataSet(data.data);
-	//	for(int k=0; k<data.filters.length; k++)
-		//	fds.addFilter(data.filters[k]);
-		data.adapter = ((DashboardView)ivp).createGraph(data.graph, data.data, module);
+		DashboardGraphData data = ((DashboardGraphData) selected.getData());
+		data.adapter = ((DashboardView) ivp).createGraph(data.graph, data.data,
+				module);
 
-		ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
-		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView)ivp;
+		ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(ActiveModuleBrowserView.ID);
+		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView) ivp;
 		ambv.getViewer().refresh();
-		  PlatformUI.getWorkbench().getDisplay().getActiveShell().setCursor(null);
-		  cursor.dispose();
+		disp.getActiveShell().setCursor(null);
 	}
 }

@@ -63,15 +63,13 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 			public void run() {
 				TreeNode treenode = GetSelectedModule.getNode(view);
 				DashboardModule module = null;
-				if (treenode.getChildCount() == 0)
-				{
-					module = (DashboardModule)treenode.getData();
+				if (treenode.getChildCount() == 0) {
+					module = (DashboardModule) treenode.getData();
 					stopmodule(module);
-				}
-				else
-				{
-					for(int j=0; j<treenode.getChildCount(); j++) {
-						module = (DashboardModule)treenode.getChildAt(j).getData();
+				} else {
+					for (int j = 0; j < treenode.getChildCount(); j++) {
+						module = (DashboardModule) treenode.getChildAt(j)
+								.getData();
 						stopmodule(module);
 					}
 				}
@@ -79,30 +77,30 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 		});
 	}
 
-	private void stopmodule(DashboardModule module)
-	{
+	private void stopmodule(DashboardModule module) {
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
 		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView)ivp;
 		GraphTreeNode graphNode;
 		DashboardGraphData graphData;
 
-		if(ambv.isActive(module)) {
+		if (ambv.isActive(module)) {
 			ActiveModuleTreeNode node = ambv.remove(module);
-			ActiveModuleData amd = (ActiveModuleData)node.getData();
+			ActiveModuleData amd = (ActiveModuleData) node.getData();
 
-			ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardView.ID);
-			DashboardView dv = (DashboardView)ivp;
+			ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getActivePage().findView(DashboardView.ID);
+			DashboardView dv = (DashboardView) ivp;
 
-			for(int i=0; i<node.getChildCount(); i++) {
-				graphNode = (GraphTreeNode)node.getChildAt(i);
-				graphData = (DashboardGraphData)graphNode.getData();
-				if(null != graphData.adapter) {
+			for (int i = 0; i < node.getChildCount(); i++) {
+				graphNode = (GraphTreeNode) node.getChildAt(i);
+				graphData = (DashboardGraphData) graphNode.getData();
+				if (null != graphData.adapter) {
 					dv.removeGraph(graphData.adapter, module.getcategory());
 					graphData.adapter = null;
 				}
 			}
 
-			if(!amd.paused) {
+			if (!amd.paused) {
 				if (amd.cmd.isRunning())
 					amd.cmd.stop();
 				amd.data = null;
@@ -228,10 +226,9 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
 			ActiveModuleBrowserView amdv = (ActiveModuleBrowserView)ivp;
 			int childcount = node.getChildCount();
-			if(0 == childcount && amdv.isActive((DashboardModule)node.getData()))
+			if(0 == childcount && amdv.isActive((DashboardModule)node.getData())) {
 				setEnablement(true);
-			else if(childcount > 0)
-			{
+			} else if(childcount > 0) {
 				boolean active = false;
 
 				for(int j=0; j<childcount; j++) {
@@ -239,10 +236,12 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 						active = true;
 						break; }
 				}
-				if (active == true ) setEnablement(true);
-			}
-			else
+				if (active == true ) {
+					setEnablement(true);
+				}
+			} else {
 				setEnablement(false);
+			}
 		}
 	};
 

@@ -21,7 +21,6 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.IViewPart;
@@ -41,12 +40,10 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		fWindow= null;
 	}
 
 	public void init(IWorkbenchWindow window) {
-		LogManager.logInfo("Initializing fWindow: " + window, this); //$NON-NLS-1$
 		fWindow= window;
 	}
 
@@ -65,18 +62,16 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 	 */
 	@Override
 	public void run() {
-		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		File file= queryFolder();
 		if (file != null) {
 			IPreferenceStore p = DashboardPlugin.getDefault().getPreferenceStore();
 			String folders = p.getString(DashboardPreferenceConstants.P_MODULE_FOLDERS);
 
 			p.setValue(DashboardPreferenceConstants.P_MODULE_FOLDERS, folders + File.pathSeparator + file.getAbsolutePath());
-			
+
 			IViewPart ivp = fWindow.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
 			((DashboardModuleBrowserView)ivp).refresh();
 		}
-		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -89,10 +84,8 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 		dialog.setText(Localization.getString("ImportModuleLocationAction.ImportDashboardModules")); //$NON-NLS-1$
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
-			LogManager.logDebug("queryFile: returnVal-" + path, this); //$NON-NLS-1$
 			return new File(path);
 		}
-		LogManager.logDebug("queryFile: returnVal-null", this); //$NON-NLS-1$
 		return null;
 	}
 }

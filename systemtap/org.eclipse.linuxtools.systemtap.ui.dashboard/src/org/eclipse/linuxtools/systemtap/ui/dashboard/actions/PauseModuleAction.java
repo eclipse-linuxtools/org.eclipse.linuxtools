@@ -151,8 +151,9 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * that is registered.
 	 */
 	private static void fireActionEvent() {
-		for(int i=0; i<listeners.size(); i++)
-			listeners.get(i).handleActionEvent();
+		for(IActionListener listener:listeners) {
+			listener.handleActionEvent();
+		}
 	}
 
 	/**
@@ -181,10 +182,11 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	private final ISelectionChangedListener activeModuleListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode)((StructuredSelection)(e.getSelection())).getFirstElement();
-			if(((ActiveModuleData)node.getData()).paused)
+			if(((ActiveModuleData)node.getData()).paused) {
 				setEnablement(false);
-			else
+			} else {
 				setEnablement(true);
+			}
 		}
 	};
 
@@ -199,21 +201,23 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
 			ActiveModuleBrowserView amdv = (ActiveModuleBrowserView)ivp;
 			int childcount = node.getChildCount();
-			if(0 == childcount && amdv.isActive((DashboardModule)node.getData()) && !amdv.isPaused((DashboardModule)node.getData()))
+			if(0 == childcount && amdv.isActive((DashboardModule)node.getData()) && !amdv.isPaused((DashboardModule)node.getData())) {
 				setEnablement(true);
-			else if(childcount > 0)
-			{
+			} else if(childcount > 0) {
 				boolean pause = false;
 				for(int j=0; j<childcount; j++) {
 					if(amdv.isActive((DashboardModule)node.getChildAt(j).getData()) && !amdv.isPaused((DashboardModule)node.getChildAt(j).getData())) {
 						pause = true;
-						break; }
+						break;
+					}
 				}
-				if (pause == true ) setEnablement(true);
+				if (pause == true ) {
+					setEnablement(true);
+				}
 
-			}
-			else
+			} else {
 				setEnablement(false);
+			}
 		}
 	};
 
