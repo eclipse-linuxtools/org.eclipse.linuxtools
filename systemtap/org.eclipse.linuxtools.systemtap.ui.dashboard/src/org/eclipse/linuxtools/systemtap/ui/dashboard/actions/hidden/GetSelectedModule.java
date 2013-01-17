@@ -39,17 +39,19 @@ public final class GetSelectedModule {
 	 * @return The selected DashboardModule contained in the provided view
 	 */
 	public static DashboardModule getModule(IViewPart view) {
-		if(null == view)
+		if(null == view) {
 			view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
-		
-		if(view instanceof DashboardModuleBrowserView)
+		}
+
+		if(view instanceof DashboardModuleBrowserView) {
 			return getModule2((DashboardModuleBrowserView)view);
-		else if(view instanceof ActiveModuleBrowserView)
+		} else if(view instanceof ActiveModuleBrowserView) {
 			return getModule2((ActiveModuleBrowserView)view);
+		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * This class examins the provied view and retreives the selected item from
 	 * it.  It then converts the selected item into a DashboardModule and returns it.
@@ -63,28 +65,27 @@ public final class GetSelectedModule {
 			Object element = ((IStructuredSelection)selected).getFirstElement();
 			if(element instanceof ModuleTreeNode) {
 				ModuleTreeNode mod = (ModuleTreeNode)element;
-				
 				return (DashboardModule)mod.getData();
 			}
 		}
 		return null;
 	}
-	
+
 	public static TreeNode getNode(IViewPart view) {
 		TreeViewer viewer = null;
-		if(null == view)
+		if(null == view) {
 			view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
-		if(view instanceof DashboardModuleBrowserView)
+		}
+		if(view instanceof DashboardModuleBrowserView) {
 			viewer = ((DashboardModuleBrowserView)view).getViewer();
-		else 
+		} else {
 			viewer = ((ActiveModuleBrowserView)view).getViewer();
+		}
 		ISelection selected = viewer.getSelection();
 		if(null != selected && selected instanceof IStructuredSelection) {
 			Object element = ((IStructuredSelection)selected).getFirstElement();
 			if(element instanceof TreeNode) {
-				TreeNode node = (TreeNode)element;
-				
-				return node;
+				return (TreeNode)element;
 			}
 		}
 		return null;
@@ -97,8 +98,8 @@ public final class GetSelectedModule {
 	 * @param view The ActiveModuleBrowserView that is currently open
 	 * @return The selected DashboardModule from the view
 	 */
-	
-	
+
+
 	private static DashboardModule getModule2(ActiveModuleBrowserView view) {
 		TreeViewer viewer = view.getViewer();
 		ISelection selected = viewer.getSelection();
@@ -106,7 +107,6 @@ public final class GetSelectedModule {
 			Object element = ((IStructuredSelection)selected).getFirstElement();
 			if(element instanceof TreeNode) {
 				TreeNode mod = (TreeNode)element;
-				
 				return ((ActiveModuleData)mod.getData()).module;
 			}
 		}
