@@ -26,9 +26,9 @@
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.graphing.name"
-			id="org.eclipse.linuxtools.systemtap.prefs.graphing"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.view"
+            id="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
 	</extension>
 	
 	<extension
