@@ -108,11 +108,6 @@
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
-		<page
-			name="%preference.stap.name"
-			id="org.eclipse.linuxtools.systemtap.prefs.ide.stap"
-			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.StapPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<!--page
 			name="%preference.stapOptions.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.stapoptions"
@@ -122,7 +117,7 @@
 			name="%preference.tapsets.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.TapsetsPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.ide.stap"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 	</extension>
 
 	<extension
