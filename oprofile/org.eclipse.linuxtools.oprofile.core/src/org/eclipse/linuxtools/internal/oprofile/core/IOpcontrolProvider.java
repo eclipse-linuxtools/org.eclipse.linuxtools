@@ -7,9 +7,10 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 
@@ -18,31 +19,31 @@ import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOption
  * an OpcontrolProvider for the core to use.
  */
 public interface IOpcontrolProvider {
-	
+
 	/**
 	 * Initialize the Oprofile kernel module
 	 * @throws OpcontrolException
 	 */
 	public void initModule() throws OpcontrolException;
-	
+
 	/**
 	 * De-initialize (unload) the kernel module
 	 * @throws OpcontrolException
 	 */
 	public void deinitModule() throws OpcontrolException;
-	
+
 	/**
 	 * Clears out data from the current session
 	 * @throws OpcontrolException
 	 */
 	public void reset() throws OpcontrolException;
-	
+
 	/**
 	 * Flush the current oprofiled sample buffers to disk
 	 * @throws OpcontrolException
 	 */
 	public void dumpSamples() throws OpcontrolException;
-	
+
 	/**
 	 * Setup oprofiled collection parameters
 	 * @param options a list of command-line arguments for opcontrol
@@ -50,31 +51,31 @@ public interface IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void setupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) throws OpcontrolException;
-	
+
 	/**
 	 * Start data collection by oprofiled (will start oprofiled if necessary)
 	 * @throws OpcontrolException
 	 */
 	public void startCollection() throws OpcontrolException;
-	
+
 	/**
 	 * Stop data collection (does NOT stop daemon)
 	 * @throws OpcontrolException
 	 */
 	public void stopCollection() throws OpcontrolException;
-	
+
 	/**
 	 * Stop data collection and shutdown oprofiled
 	 * @throws OpcontrolException
 	 */
 	public void shutdownDaemon() throws OpcontrolException;
-	
+
 	/**
 	 * Start oprofiled (does NOT start data collection)
 	 * @throws OpcontrolException
 	 */
 	public void startDaemon() throws OpcontrolException;
-	
+
 	/**
 	 * Save the current session
 	 * @throws OpcontrolException
@@ -88,6 +89,8 @@ public interface IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void deleteSession (String sessionName, String sessionEvent) throws OpcontrolException;
+
+	public boolean hasPermissions(IProject project) throws OpcontrolException;
 
 	public boolean status() throws OpcontrolException;
 }

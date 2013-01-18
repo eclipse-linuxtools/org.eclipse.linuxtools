@@ -3,7 +3,6 @@ package org.eclipse.linuxtools.internal.oprofile.remote.launch.configuration;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
-import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCounter;
@@ -30,10 +29,7 @@ public class OprofileRemoteEventConfigTab extends OprofileEventConfigTab  {
 		try{
 			if (this.hasPermissions == null){
 				IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
-				if (provider instanceof IOpcontrolProvider2)
-					this.hasPermissions = ((IOpcontrolProvider2)provider).hasPermissions(project);
-				else
-					this.hasPermissions = true;
+				this.hasPermissions = provider.hasPermissions(project);
 			}
 		} catch(OpcontrolException e){
 			return false;

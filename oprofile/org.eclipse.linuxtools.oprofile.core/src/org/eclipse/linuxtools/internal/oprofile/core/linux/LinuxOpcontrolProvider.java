@@ -8,7 +8,7 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com>
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.linux;
 
 import java.io.BufferedReader;
@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
+import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -36,19 +36,19 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
 /**
  * A class which encapsulates running opcontrol.
  */
-public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
+public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String OPCONTROL_EXECUTABLE = "opcontrol";
-	
+
 	private static final int SUDO_TIMEOUT = 2000;
 
 	// Location of opcontrol security wrapper
 	private static final String OPCONTROL_REL_PATH = "natives/linux/scripts/" + OPCONTROL_EXECUTABLE; //$NON-NLS-1$
-	
+
 	private static boolean isInstalled;
 
 	// Initialize the Oprofile kernel module and oprofilefs
 	private static final String OPD_INIT_MODULE = "--init"; //$NON-NLS-1$
-	
+
 	// Setup daemon collection arguments
 	private static final String OPD_SETUP = "--setup"; //$NON-NLS-1$
 	private static final String OPD_HELP = "--help"; //$NON-NLS-1$
@@ -73,33 +73,33 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	// Kernel image file options
 	private static final String OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
 	private static final String OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
-	
+
 	// Start the daemon process without starting data collection
 	private static final String OPD_START_DAEMON = "--start-daemon"; //$NON-NLS-1$
-	
+
 	// Start collecting profiling data
 	private static final String OPD_START_COLLECTION = "--start"; //$NON-NLS-1$
-	
+
 	// Flush the collected profiling data to disk
 	private static final String OPD_DUMP = "--dump"; //$NON-NLS-1$
-	
+
 	// Stop data collection
 	private static final String OPD_STOP_COLLECTION = "--stop"; //$NON-NLS-1$
-	
+
 	// Stop data collection and stop daemon
 	private static final String OPD_SHUTDOWN = "--shutdown"; //$NON-NLS-1$
-	
+
 	// Clear out data from current session
 	private static final String OPD_RESET = "--reset"; //$NON-NLS-1$
-	
+
 	// Unload the oprofile kernel module and oprofilefs
 	private static final String OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$
-	
+
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
 	private String verbosity = ""; //$NON-NLS-1$
-	
-	
+
+
 	public LinuxOpcontrolProvider() {
 	}
 
@@ -110,7 +110,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void deinitModule() throws OpcontrolException {
 		runOpcontrol(OPD_DEINIT_MODULE);
 	}
-	
+
 	/**
 	 * Dump collected profiling data
 	 * @throws OpcontrolException
@@ -118,7 +118,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void dumpSamples() throws OpcontrolException {
 		runOpcontrol(OPD_DUMP);
 	}
-	
+
 	/**
 	 * Loads the kernel module and oprofilefs
 	 * @throws OpcontrolException
@@ -126,7 +126,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void initModule() throws OpcontrolException {
 		runOpcontrol(OPD_INIT_MODULE);
 	}
-	
+
 	/**
 	 * Clears out data from current session
 	 * @throws OpcontrolException
@@ -134,7 +134,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void reset() throws OpcontrolException {
 		runOpcontrol(OPD_RESET);
 	}
-	
+
 	/**
 	 * Saves the current ("default") session
 	 * @param name	the name to which to save the session
@@ -161,7 +161,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Delete the session with the specified name for the specified event
 	 * @param sessionName The name of the session to delete
@@ -197,7 +197,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		}
 		runOpcontrol(args);
 	}
-	
+
 	/**
 	 * Stop data collection and remove daemon
 	 * @throws OpcontrolException
@@ -205,7 +205,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void shutdownDaemon() throws OpcontrolException {
 		runOpcontrol(OPD_SHUTDOWN);
 	}
-	
+
 	/**
 	 * Start data collection (will start daemon if necessary)
 	 * @throws OpcontrolException
@@ -213,7 +213,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void startCollection() throws OpcontrolException {
 		runOpcontrol(OPD_START_COLLECTION);
 	}
-	
+
 	/**
 	 * Start daemon without starting profiling
 	 * @throws OpcontrolException
@@ -221,7 +221,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public void startDaemon() throws OpcontrolException {
 		runOpcontrol(OPD_START_DAEMON);
 	}
-	
+
 	/**
 	 * Stop data collection
 	 * @throws OpcontrolException
@@ -237,14 +237,14 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	public boolean status() throws OpcontrolException {
 		return runOpcontrol(OPD_HELP);
 	}
-	
+
 	// Convenience function
 	private boolean runOpcontrol(String cmd) throws OpcontrolException {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(cmd);
 		return runOpcontrol(list);
 	}
-	
+
 	// Will add opcontrol program to beginning of args
 	// args: list of opcontrol arguments (not including opcontrol program itself)
 	/**
@@ -252,10 +252,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 	 * this appears to currently be the only way we can tell if user correctly
 	 * entered the password
 	 */
-	private boolean runOpcontrol(ArrayList<String> args) throws OpcontrolException {	
+	private boolean runOpcontrol(ArrayList<String> args) throws OpcontrolException {
 		IProject project = Oprofile.OprofileProject.getProject();
-		
-		
+
+
 		args.add(0, findOpcontrolExecutable());
 
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
@@ -263,15 +263,15 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		if (verbosity.length() > 0 && (cmd.equals (OPD_START_COLLECTION) || cmd.equals(OPD_START_DAEMON))) {
 			args.add(verbosity);
 		}
-		
+
 		String[] cmdArray = new String[args.size()];
 		args.toArray(cmdArray);
-		
+
 		// Print what is passed on to opcontrol
 		if (OprofileCorePlugin.isDebugMode()) {
 			printOpcontrolCmd(cmdArray);
 		}
-		
+
 		Process p = createOpcontrolProcess(cmdArray, project);
 		return checkOpcontrolProcess(p);
 
@@ -296,10 +296,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 				throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null)); //$NON-NLS-1$
 			}
 
-		} catch (IOException ioe) {			
+		} catch (IOException ioe) {
 			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe)); //$NON-NLS-1$
 		}
-		
+
 		return p;
 	}
 
@@ -335,12 +335,12 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 					OpcontrolException ex = errHandler.handleError(output, errOutput);
 					throw ex;
 				}
-				
+
 				if (errOutput.length() != 0) {
 					return true;
 				}
-				
-			} catch (IOException ioe) { 
+
+			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -351,7 +351,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 
 	/**
 	 * Print to stdout what is passed on to opcontrol.
-	 * 
+	 *
 	 * @param cmdArray
 	 */
 	private void printOpcontrolCmd(String[] cmdArray) {
@@ -362,7 +362,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		}
 		System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
 	}
-	
+
 	/**
 	 * @since 1.1
 	 */
@@ -405,7 +405,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 		spec.append((event.getProfileUser() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
 		args.add(spec.toString());
 	}
-	
+
 	// Convert the options into arguments for opcontrol
 	private void optionsToArguments(ArrayList<String> args, OprofileDaemonOptions options) {
 		// Add separate flags
@@ -413,7 +413,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 
 		StringBuilder separate = new StringBuilder();
 		separate.append(OPD_SETUP_SEPARATE);
-		
+
 		if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
 			separate.append(OPD_SETUP_SEPARATE_NONE);
 		} else {
@@ -428,7 +428,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 				separate.append(OPD_SETUP_SEPARATE_CPU + OPD_SETUP_SEPARATE_SEPARATOR);
 		}
 		args.add(separate.toString());
-		
+
 		// Add kernel image
 		if (options.getKernelImageFile() == null || options.getKernelImageFile().length() == 0) {
 			args.add(OPD_KERNEL_NONE);
@@ -438,7 +438,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider2 {
 
 		//image filter -- always non-null
 		args.add(OPD_SETUP_IMAGE + options.getBinaryImage());
-		
+
 		//callgraph depth
 		args.add(OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}

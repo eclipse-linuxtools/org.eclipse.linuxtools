@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import org.eclipse.core.resources.IProject;
@@ -17,7 +17,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
-import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider2;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -38,31 +37,30 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 			//if the Linux Tools Path property was changed
 			if(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 				IOpcontrolProvider provider = OprofileCorePlugin.getDefault().getOpcontrolProvider();
-				if (provider instanceof IOpcontrolProvider2 &&
-					!((IOpcontrolProvider2)provider).hasPermissions(project)){
+				if (!provider.hasPermissions(project)){
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolSudo", null));
 				}
 			}
 			// Set current project to allow using the oprofile path that
-			// was chosen for the project 
+			// was chosen for the project
 			Oprofile.OprofileProject.setProject(project);
-			
+
 			if (!oprofileStatus())
 				return false;
-			
+
 			//kill the daemon (it shouldn't be running already, but to be safe)
 			oprofileShutdown();
-			
-			//reset data from the (possibly) existing default session, 
+
+			//reset data from the (possibly) existing default session,
 			// otherwise multiple runs will combine samples and results
 			// won't make much sense
 			oprofileReset();
-			
+
 			//setup the events and other parameters
 			oprofileSetupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
-			
-			//start the daemon & collection of samples 
-			//note: since the daemon is only profiling for the specific image we told 
+
+			//start the daemon & collection of samples
+			//note: since the daemon is only profiling for the specific image we told
 			// it to, no matter to start the daemon before the binary itself is run
 			oprofileStartCollection();
 
@@ -80,9 +78,9 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
 		// do nothing here since the termination listener already registered will handle everything needed
 	}
-	
-	//A class used to listen for the termination of the current launch, and 
-	// run some functions when it is finished. 
+
+	//A class used to listen for the termination of the current launch, and
+	// run some functions when it is finished.
 	class LaunchTerminationWatcher implements ILaunchesListener2 {
 		private ILaunch launch;
 		public LaunchTerminationWatcher(ILaunch il) {
