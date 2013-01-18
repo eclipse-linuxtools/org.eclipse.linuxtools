@@ -7,11 +7,11 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *    Keith Seitz <keiths@redhat.com> - setup code in launch the method, initially 
+ *    Keith Seitz <keiths@redhat.com> - setup code in launch the method, initially
  *        written in the now-defunct OprofileSession class
- *    QNX Software Systems and others - the section of code marked in the launch 
+ *    QNX Software Systems and others - the section of code marked in the launch
  *        method, and the exec method
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import java.net.URI;
@@ -45,7 +45,7 @@ import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 	protected ILaunchConfiguration config;
-	
+
 	@Override
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		this.config = config;
@@ -61,20 +61,20 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			//get the events to profile from the counters
 			OprofileCounter[] counters = OprofileCounter.getCounters(config);
 			ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
-			
+
 			for (int i = 0; i < counters.length; ++i) {
 				if (counters[i].getEnabled())
 					events.add(counters[i].getDaemonEvent());
 			}
-			
+
 			daemonEvents = new OprofileDaemonEvent[events.size()];
 			events.toArray(daemonEvents);
 		}
-		
+
 		if (!preExec(options, daemonEvents, launch)) return;
 
-		/* 
-		 * this code written by QNX Software Systems and others and was 
+		/*
+		 * this code written by QNX Software Systems and others and was
 		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
 		 */
 		//set up and launch the local c/c++ program
@@ -90,18 +90,18 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 			postExec(options, daemonEvents, process);
 	}
-	
+
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);
 
 	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process);
 
 	@Override
 	protected String getPluginID() {
-		return OprofileLaunchPlugin.getUniqueIdentifier();
+		return OprofileLaunchPlugin.PLUGIN_ID;
 	}
-	
-	//Helper function to refresh the oprofile view. Opens and focuses the view 
-	// if it isn't already. 
+
+	//Helper function to refresh the oprofile view. Opens and focuses the view
+	// if it isn't already.
 	protected void refreshOprofileView() {
 		OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
 		if (view != null) {
@@ -115,31 +115,31 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 		}
 	}
-	
+
 	/* all these functions exist to be overridden by the test class in order to allow launch testing */
-	
+
 	protected void oprofileShutdown() throws OpcontrolException {
-		OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();	
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
 	}
-	
+
 	protected void oprofileReset() throws OpcontrolException {
-		OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();		
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
 	}
-	
+
 	protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) throws OpcontrolException {
-		OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options, events);		
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options, events);
 	}
 
 	protected void oprofileStartCollection() throws OpcontrolException {
 		OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
 	}
-	
+
 	protected void oprofileDumpSamples() throws OpcontrolException {
 		OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
 	}
-	
+
 	/**
-	 * Runs opcontrol --help. Returns true if there was any output, false 
+	 * Runs opcontrol --help. Returns true if there was any output, false
 	 * otherwise. Return value can be used to tell if the user successfully
 	 * entered a password.
 	 * @return true if opcontrol --help was run correctly. False otherwise
@@ -148,7 +148,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	protected boolean oprofileStatus() throws OpcontrolException {
 		return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
 	}
-	
+
 	protected IProject getProject(){
 		try{
 			IProject project = CDebugUtils.verifyCProject(config).getProject();
