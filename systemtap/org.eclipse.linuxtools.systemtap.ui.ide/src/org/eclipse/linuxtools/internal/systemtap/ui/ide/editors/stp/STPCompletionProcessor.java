@@ -311,6 +311,10 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 		return false;
 	}
 
+	public void waitForInitialization(){
+		this.stpMetadataSingleton.waitForInitialization();
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
 	 */

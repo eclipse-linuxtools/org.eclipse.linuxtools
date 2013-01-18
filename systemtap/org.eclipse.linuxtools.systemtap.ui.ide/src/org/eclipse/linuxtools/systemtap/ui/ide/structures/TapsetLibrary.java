@@ -197,10 +197,31 @@ public final class TapsetLibrary {
 		public void handleUpdateEvent() {
 			functionTree = stpp.getFunctions();
 			probeTree = stpp.getProbes();
-			if(stpp.isFinishSuccessful())
+			if(stpp.isFinishSuccessful()){
 				TreeSettings.setTrees(functionTree, probeTree);
+				synchronized (stpp) {
+					stpp.notifyAll();
+				}
+			}
 		}
 	};
+
+	/**
+	 * Blocks the current thread until the parser has finished
+	 * parsing probes and functions.
+	 * @since 2.0
+	 */
+	public static void waitForInitialization() {
+		while (!stpp.isFinishSuccessful()){
+			try {
+				synchronized (stpp) {
+					stpp.wait(5000);
+				}
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
+	}
 
 	/**
 	 * This method will stop services started by

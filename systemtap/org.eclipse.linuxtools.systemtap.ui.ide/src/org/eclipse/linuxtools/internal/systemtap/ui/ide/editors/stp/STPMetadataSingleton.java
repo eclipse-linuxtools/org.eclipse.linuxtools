@@ -41,6 +41,10 @@ public class STPMetadataSingleton {
 		return instance;
 	}
 
+	public void waitForInitialization(){
+		TapsetLibrary.waitForInitialization();
+	}
+
 	/**
 	 * Given the parameter return the completion proposals that best match the data.
 	 *
