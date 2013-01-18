@@ -158,12 +158,13 @@ public abstract class AbstractSTTableViewer extends AbstractSTViewer {
 					});
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
+     * @since 4.1
 	 */
 	@Override
-	public Item[] getColumns() {
+	public TableColumn[] getColumns() {
 		return getViewer().getTable().getColumns();
 	}
 
