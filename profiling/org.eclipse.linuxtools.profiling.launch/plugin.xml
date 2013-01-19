@@ -337,6 +337,12 @@
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProfilingPropertyPage"
             id="org.eclipse.linuxtools.profiling.launch.provider.properties.page"
             name="%page.name">
+            <filter
+               name="projectNature"
+               value="org.eclipse.cdt.core.cnature" />
+            <enabledWhen>
+              <adapt type="org.eclipse.core.resources.IProject" />
+         </enabledWhen>
       </page>
    </extension>
    <extension
@@ -348,9 +354,6 @@
             parent="org.eclipse.linuxtools.internal.profiling.launch.provider.ProfilingPropertyPage"
             weight="010">
       </tab>
-   </extension>
-   <extension
-         point="org.eclipse.cdt.ui.cPropertyTab">
       <tab
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.MemoryPropertyTab"
             icon="icons/memory_view.gif"
@@ -358,9 +361,6 @@
             parent="org.eclipse.linuxtools.internal.profiling.launch.provider.ProfilingPropertyPage"
             weight="011">
       </tab>
-   </extension>
-   <extension
-         point="org.eclipse.cdt.ui.cPropertyTab">
       <tab
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.CoveragePropertyTab"
             icon="icons/toggle.gif"
