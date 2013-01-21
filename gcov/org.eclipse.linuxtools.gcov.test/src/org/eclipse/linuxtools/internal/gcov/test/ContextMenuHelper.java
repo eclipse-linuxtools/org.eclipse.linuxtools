@@ -53,11 +53,13 @@ public class ContextMenuHelper {
                 // show
                 final MenuItem menuItem = UIThreadRunnable
                                 .syncExec(new WidgetResult<MenuItem>() {
-                                        public MenuItem run() {
+                                        @Override
+										public MenuItem run() {
                                                 MenuItem theItem = getMenuItem(bot, texts);
-                                                if (theItem != null && !theItem.isEnabled())
+                                                if (theItem != null && !theItem.isEnabled()) {
                                                         throw new IllegalStateException(
                                                                         "Menu item is diabled");
+                                                }
 
                                                 return theItem;
                                         }
@@ -72,9 +74,11 @@ public class ContextMenuHelper {
 
                 // hide
                 UIThreadRunnable.syncExec(new VoidResult() {
-                        public void run() {
-                                if (menuItem.isDisposed())
+                        @Override
+						public void run() {
+                                if (menuItem.isDisposed()) {
                                         return; // menu already gone
+                                }
                                 hide(menuItem.getParent());
                         }
                 });
@@ -120,10 +124,12 @@ public class ContextMenuHelper {
                 // show
                 final MenuItem menuItem = UIThreadRunnable
                                 .syncExec(new WidgetResult<MenuItem>() {
-                                        public MenuItem run() {
+                                        @Override
+										public MenuItem run() {
                                                 MenuItem theItem = getMenuItem(bot, texts);
-                                                if (theItem != null && theItem.isEnabled())
+                                                if (theItem != null && theItem.isEnabled()) {
                                                         enabled.set(true);
+                                                }
                                                 return theItem;
                                         }
                                 });
@@ -133,9 +139,11 @@ public class ContextMenuHelper {
                 }
                 // hide
                 UIThreadRunnable.syncExec(new VoidResult() {
-                        public void run() {
-                                if (menuItem.isDisposed())
+                        @Override
+						public void run() {
+                                if (menuItem.isDisposed()) {
                                         return; // menu already gone
+                                }
                                 hide(menuItem.getParent());
                         }
                 });
@@ -164,7 +172,8 @@ public class ContextMenuHelper {
                 event.type = SWT.Selection;
 
                 UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
-                        public void run() {
+                        @Override
+						public void run() {
                                 menuItem.notifyListeners(SWT.Selection, event);
                         }
                 });
