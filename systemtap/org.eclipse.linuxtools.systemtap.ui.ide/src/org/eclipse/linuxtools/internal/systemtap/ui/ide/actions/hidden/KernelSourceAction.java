@@ -70,7 +70,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 		expandAction = new TreeExpandCollapseAction(KernelBrowserView.class);
 		LogManager.logDebug("End KernelSourceAction:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Updates <code>selection</code> with the current selection whenever the user changes
 	 * the current selection.
@@ -126,7 +126,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 		if(o instanceof TreeNode) {
 			TreeNode t = (TreeNode)o;
 			if(t.isClickable()) {
-				
+
 				IFileStore fs = (IFileStore)t.getData();
 				if (fs != null) {
 					IEditorInput input= createEditorInput(fs);
@@ -135,16 +135,17 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 						if(editor instanceof STPEditor)
 							IDESessionSettings.setActiveSTPEditor((STPEditor)editor);
 						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CEditor.ID);
+//						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, "org.eclipse.cdt.ui.editor.CEditor");
 						LogManager.logDebug("Editor opened", this); //$NON-NLS-1$
 					} catch (PartInitException e) {
 						LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
 					}
-					
+
 				}
 			}
 			else
 			{
-				
+
 				expandAction.run();
 			}
 		}
