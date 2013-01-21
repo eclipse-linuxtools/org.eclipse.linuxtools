@@ -25,6 +25,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.CollapseAllHandler;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -39,6 +41,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public abstract class BrowserView extends ViewPart {
 	protected TreeViewer viewer;
+	protected CollapseAllHandler collapseHandler;
 
 	public BrowserView() {
 		super();
@@ -141,6 +144,9 @@ public abstract class BrowserView extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
+		IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+		collapseHandler = new CollapseAllHandler(getViewer());
+		handlerService.activateHandler(CollapseAllHandler.COMMAND_ID, collapseHandler);
 		RecentFileMenuManager.getInstance().registerActionBar(getViewSite().getActionBars());
 	}
 
@@ -157,6 +163,9 @@ public abstract class BrowserView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 		viewer = null;
+		if(collapseHandler != null) {
+			collapseHandler.dispose();
+		}
 	}
 
 	abstract void refresh();

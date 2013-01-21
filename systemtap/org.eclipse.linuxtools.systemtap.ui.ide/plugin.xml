@@ -34,6 +34,20 @@
         id="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"
         name="%view.probe.name"/>
 	</extension>
+	<extension point="org.eclipse.ui.menus">
+       <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
+           <command
+                 commandId="org.eclipse.ui.navigate.collapseAll" />
+       </menuContribution>
+       <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView">
+           <command
+                 commandId="org.eclipse.ui.navigate.collapseAll" />
+       </menuContribution>
+       <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView">
+           <command
+                 commandId="org.eclipse.ui.navigate.collapseAll" />
+       </menuContribution>
+    </extension>
 	
 	<extension
 		point="org.eclipse.ui.editors">
@@ -164,9 +178,6 @@
 			description="%category.popup.desc"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"/>
 	</extension>
-	
-	
-
 	<extension
 		point="org.eclipse.ui.actionSets">
 		<actionSet
