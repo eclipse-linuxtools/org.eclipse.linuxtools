@@ -125,9 +125,9 @@ public class TestSetup extends AbstractTest {
 	
 	private static class OprofileTestingEventConfigTab extends OprofileEventConfigTab {
 		@Override
-		protected boolean getTimerMode() { return false; }
+		protected boolean getOprofileTimerMode() { return false; }
 		@Override
-		protected int getNumberOfCounters() { return 1; }
+		protected int getNumberOfOprofileCounters() { return 1; }
 		@Override
 		protected boolean checkEventSetupValidity(int counter, String name, int maskValue) { return true; }
 		@Override
