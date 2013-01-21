@@ -16,7 +16,6 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 
 /**
@@ -30,13 +29,11 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 public class CPartitionScanner extends RuleBasedPartitionScanner {
 	public final static String C_DEFAULT = "__stp_default";
 	public final static String C_COMMENT = "__stp_comment";
-	
+
 	public CPartitionScanner() {
-		LogManager.logDebug("Start CPartitionScanner:", this); //$NON-NLS-1$
 		IToken stpComment = new Token(C_COMMENT);
 		IPredicateRule[] rules = new IPredicateRule[1];
 		rules[0] = new MultiLineRule("/*", "*/", stpComment);
 		setPredicateRules(rules);
-		LogManager.logDebug("End CPartitionScanner:", this); //$NON-NLS-1$
 	}
 }

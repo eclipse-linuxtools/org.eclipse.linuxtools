@@ -57,31 +57,31 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 */
 	private RulerDoubleClickHandler handler = new RulerDoubleClickHandler();
 	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"; //$NON-NLS-1$
-	
+
 	/**
 	 * The <code>RulerDoubleClickHandler</code> handles double click events on the
-	 * ruler for this text editor. It first checks to see if the user clicked on a 
+	 * ruler for this text editor. It first checks to see if the user clicked on a
 	 * comment line, then if they clicked on a line that SystemTap can use as a probe
 	 * point, and if the line of code passes both checks, it dispatches an event to the
 	 * active STPEditor to insert a code block describing the line of code that the user
 	 * clicked on.
-	 * 
+	 *
 	 * The block of code is sent to the STPEditor only under the following circumstances:
 	 * <ul>
 	 * 	<li>The line of code is not blank</li>
 	 * 	<li>If the line of code contains a single-line comment, it must not be the only text on that line</li>
 	 * 	<li>The line of code must not fall within a multiline comment</li>
-	 * 	<li>The line of code must be a line that can be used by SystemTap, 
+	 * 	<li>The line of code must be a line that can be used by SystemTap,
 	 * 	determined by running the following:<br/>
 	 * 		<code>stap -p2 -e 'probe kernel.statement("*@filename:linenumber")'</code><br/>
 	 * 		If <code>stap</code> does not generate errors while running the test command, the
 	 * 		line is assumed valid.</li>
 	 * </ul>
-	 * 
+	 *
 	 * If all of the above are met, the active STPEditor listed in <code>IDESessionSettings</code>
 	 * is told to insert a template probe for this line of code using the <code>SimpleEditor.insertText</code> method.
 	 * If no the returned STPEditor reference is null, the code opens a new editor.
-	 * 
+	 *
 	 * @author Henry Hughes
 	 * @author Ryan Morse
 	 * @see org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor#insertText
@@ -95,9 +95,8 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		 * @param	e	The <code>MouseEvent</code> that represents this doubleclick event.
 		 */
 		@Override
-		public void mouseDoubleClick(MouseEvent e) 
+		public void mouseDoubleClick(MouseEvent e)
 		{
-			LogManager.logDebug("Start mouseDoubleClick: e-" + e, this); //$NON-NLS-1$
 			getSite().getShell().setCursor(new Cursor(getSite().getShell().getDisplay(), SWT.CURSOR_WAIT));
 			int lineno = getVerticalRuler().getLineOfLastMouseButtonActivity();
 
@@ -113,7 +112,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 				die = true;
 			if(line.startsWith("/*") && !line.contains("*/") && !line.endsWith("*/"))	//try to eat single-line C comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				die = true;
-			
+
 			//gogo find comment segments
 			try
 			{
@@ -154,35 +153,26 @@ public class CEditor extends AbstractDecoratedTextEditor {
 				LogManager.logCritical("Exception mouseDoubleClick: " + excp.getMessage(), this); //$NON-NLS-1$
 			}
 			if(die) {
-				LogManager.logInfo("Initializing", MessageDialog.class); //$NON-NLS-1$
 				MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 						Localization.getString("CEditor.ProbeInsertFailed"),Localization.getString("CEditor.CanNotProbeLine")); //$NON-NLS-1$ //$NON-NLS-2$
-				LogManager.logInfo("Disposing", MessageDialog.class); //$NON-NLS-1$
 			} else {
 				IEditorInput in = getEditorInput();
 				if(in instanceof FileStoreEditorInput) {
 					FileStoreEditorInput input = (FileStoreEditorInput)in;
-	
+
 					IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 					String kernroot = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
-	
+
 					String filepath = input.getURI().getPath();
 					String kernrelative = filepath.substring(kernroot.length()+1, filepath.length());
 					StringBuffer sb = new StringBuffer();
-					
+
 					sb.append("probe kernel.statement(\"*@"+ kernrelative + ":" + (lineno+1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-				/*	if(!checkProbe(sb.toString() + "{ }")) {
-						LogManager.logInfo("Initializing", MessageDialog.class);
-						MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-								Localization.getString("CEditor.ProbeInsertFailed"),Localization.getString("CEditor.CanNotProbeLine"));
-						LogManager.logInfo("Disposing", MessageDialog.class);
-					} else { */
 						sb.append("\n{\n\t\n}\n"); //$NON-NLS-1$
-						STPEditor activeSTPEditor = IDESessionSettings.getActiveSTPEditor(); 
+						STPEditor activeSTPEditor = IDESessionSettings.getActiveSTPEditor();
 						if(null == activeSTPEditor) {
 							NewFileAction action = new NewFileAction();
-							//action.init(input.getMainWindow());
 							action.run();
 							IEditorPart ed = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 							if(ed instanceof STPEditor)
@@ -191,24 +181,20 @@ public class CEditor extends AbstractDecoratedTextEditor {
 
 						if(null != activeSTPEditor)
 							activeSTPEditor.insertText(sb.toString());
-					//}
 				}
 			}
 			getSite().getShell().setCursor(null);	//Return the cursor to normal
-			LogManager.logDebug("End mouseDoubleClick:", this); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * Default Constructor for the <code>CEditor</code> class. Creates an instance of the editor which
-	 * is not associated with any given input. 
+	 * is not associated with any given input.
 	 */
 	public CEditor() {
 		super();
-		LogManager.logDebug("Start CEditor:", this); //$NON-NLS-1$
 		internal_init();
 		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(cColorPropertyChangeListener);
-		LogManager.logDebug("End CEditor:", this); //$NON-NLS-1$
 	}
 	/**
 	 * Part of the initialization routine. Creates the <code>ColorManager</code> used by this editor,
@@ -221,51 +207,42 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#setSourceViewerConfiguration(org.eclipse.jface.text.source.SourceViewerConfiguration)
 	 */
 	protected void internal_init() {
-		LogManager.logDebug("Start internal_init:", this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		configureInsertMode(SMART_INSERT, false);
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new CConfiguration(colorManager));
 		setDocumentProvider(new CDocumentProvider());
-		LogManager.logDebug("End internal_init", this); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void dispose() {
-		LogManager.logDebug("Start dispose:", this); //$NON-NLS-1$
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(cColorPropertyChangeListener);
 		colorManager.dispose();
 		super.dispose();
-		LogManager.logDebug("End dispose:", this); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected CompositeRuler createCompositeRuler() {
-		LogManager.logDebug("Start createCompositeRuler:", this); //$NON-NLS-1$
 		CompositeRuler ruler = new CompositeRuler();
 		AnnotationRulerColumn column = new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
 		ruler.addDecorator(0, column);
 
-		if (isLineNumberRulerVisible())
+		if (isLineNumberRulerVisible()) {
 			ruler.addDecorator(1, createLineNumberRulerColumn());
-		else if (isPrefQuickDiffAlwaysOn())
+		} else if (isPrefQuickDiffAlwaysOn()) {
 			ruler.addDecorator(1, createLineNumberRulerColumn());
+		}
 
-		LogManager.logDebug("End createCompositeRuler: returnVal-" + ruler, this); //$NON-NLS-1$
 		return ruler;
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
 		IVerticalRuler ruler = this.getVerticalRuler();
 		Control control = ruler.getControl();
 		control.addMouseListener(handler);
-		LogManager.logDebug("End createPartControl:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Color Preference Change Notification method, called whenever the user has changed preferences
 	 * regarding syntax highlighing. This method notifies its internal structures (<code>CScanner</code>,
@@ -274,32 +251,28 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 */
 	private void notifyColorPrefsChanged()
 	{
-		LogManager.logDebug("Start notifyColorPrefsChanged:", this); //$NON-NLS-1$
 		SourceViewerConfiguration svc = getSourceViewerConfiguration();
 		if(!(svc instanceof CConfiguration)) {
-			LogManager.logDebug("End notifyColorPrefsChanged:", this); //$NON-NLS-1$
 			return;
 		}
 		CConfiguration config = (CConfiguration)svc;
 		CScanner scanner = config.getCScanner();
 		scanner.initializeScanner();
-		
+
 		SourceViewer viewer = (SourceViewer)getSourceViewer();
 		viewer.unconfigure();
 		viewer.configure(svc);
 		viewer.invalidateTextPresentation();
 		viewer.refresh();
-		LogManager.logDebug("End notifyColorPrefsChanged:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Detects changes in the preferences relating to the C Editor's syntax highlighting, and
 	 * fires the <code>notifyColorPrefsChanged</code> method when a change has occured.
-	 * @see #notifyColorPrefsChanged() 
+	 * @see #notifyColorPrefsChanged()
 	 */
 	private final IPropertyChangeListener cColorPropertyChangeListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			LogManager.logDebug("Start propertyChange: event-" + event, this); //$NON-NLS-1$
 			if(event.getProperty().equals(IDEPreferenceConstants.P_C_COMMENT_COLOR) ||
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_DEFAULT_COLOR) ||
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_KEYWORD_COLOR) ||
@@ -308,7 +281,6 @@ public class CEditor extends AbstractDecoratedTextEditor {
 			   event.getProperty().equals(IDEPreferenceConstants.P_C_TYPE_COLOR)) {
 				notifyColorPrefsChanged();
 			}
-			LogManager.logDebug("End propertyChange: event-" + event, this); //$NON-NLS-1$
 		}
 	};
 }

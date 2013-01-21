@@ -39,8 +39,8 @@ public class CScanner extends RuleBasedScanner {
 	private static String[] fgKeywords= {"auto","break","case","const","continue","default","do","else","extern","for","goto","if","return","signed","sizeof","static","switch","typedef","unsigned","volatile","while" };
 	private static String[] fgTypes=  { 	"char","double","enum","float","int","long","register","short","struct","union","void",
 											"char*","double*","float*","int*","long*","short*","void*","u8","u16","u32","u64",
-											"s8","s16","s32",""}; 
-	private static String[] fgConstants= { "NULL" }; 
+											"s8","s16","s32",""};
+	private static String[] fgConstants= { "NULL" };
 	private ColorManager manager;
 	public CScanner(ColorManager manager) {
 		LogManager.logDebug("Start CScanner: manager-" + manager, this); //$NON-NLS-1$
@@ -55,32 +55,27 @@ public class CScanner extends RuleBasedScanner {
 	 */
 	public void initializeScanner()
 	{
-		LogManager.logDebug("Start initializeScanner:", this); //$NON-NLS-1$
 		IPreferenceStore store = IDEPlugin.getDefault().getPreferenceStore();
 		RGB cKeyword, cType, cString, cComment, cDefault, cPreprocessor;
-		
+
 		cKeyword = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_KEYWORD_COLOR);
 		cType = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_TYPE_COLOR);
 		cString = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_STRING_COLOR);
 		cComment = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_COMMENT_COLOR);
 		cDefault = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_DEFAULT_COLOR);
 		cPreprocessor = PreferenceConverter.getColor(store, IDEPreferenceConstants.P_C_PREPROCESSOR_COLOR);
-		
+
 		IToken keyword = new Token(new TextAttribute(manager.getColor(cKeyword), null, SWT.BOLD));
 		IToken type = new Token(new TextAttribute(manager.getColor(cType)));
 		IToken string = new Token(new TextAttribute(manager.getColor(cString)));
 		IToken comment = new Token(new TextAttribute(manager.getColor(cComment)));
 		IToken other = new Token(new TextAttribute(manager.getColor(cDefault)));
 		IToken preprocessor = new Token(new TextAttribute(manager.getColor(cPreprocessor)));
-	/*	IToken procInstr =
-			new Token(
-				new TextAttribute(
-					manager.getColor(ICColorConstants.PROC_INSTR)));*/
 
 		List<IRule> rules= new ArrayList<IRule>();
-		
+
 		// Add rules for single line comments.
-		rules.add(new EndOfLineRule("//", comment)); //$NON-NLS-1$		
+		rules.add(new EndOfLineRule("//", comment)); //$NON-NLS-1$
 		rules.add(new SingleLineRule("#", " ", preprocessor));
 
 		// Add rule for multiple-line comment.
@@ -89,25 +84,26 @@ public class CScanner extends RuleBasedScanner {
 		// Add rule for strings and character constants.
 		rules.add(new SingleLineRule("\"", "\"", string, '\\')); //$NON-NLS-2$ //$NON-NLS-1$
 		rules.add(new SingleLineRule("'", "'", string, '\\')); //$NON-NLS-2$ //$NON-NLS-1$
-	
+
 		// Add generic whitespace rule.
 		rules.add(new WhitespaceRule(new WhitespaceDetector()));
-		
+
 		// Add word rule for keywords, types, and constants.
 		WordRule wordRule= new WordRule(new WordDetector(), other);
-		for (int i= 0; i < fgKeywords.length; i++)
-			wordRule.addWord(fgKeywords[i], keyword);
-		for (int i= 0; i < fgTypes.length; i++)
-			wordRule.addWord(fgTypes[i], type);
-		for (int i= 0; i < fgConstants.length; i++)
-			wordRule.addWord(fgConstants[i], type);
+		for (String fgKeyword: fgKeywords) {
+			wordRule.addWord(fgKeyword, keyword);
+		}
+		for (String fgType: fgTypes) {
+			wordRule.addWord(fgType, type);
+		}
+		for (String fgConstant: fgConstants) {
+			wordRule.addWord(fgConstant, type);
+		}
 		rules.add(wordRule);
-				
+
 		IRule[] result= new IRule[rules.size()];
 		setDefaultReturnToken(other);
 		rules.toArray(result);
 		setRules(result);
-
-		LogManager.logDebug("End initializeScanner:", this); //$NON-NLS-1$
 	}
 }

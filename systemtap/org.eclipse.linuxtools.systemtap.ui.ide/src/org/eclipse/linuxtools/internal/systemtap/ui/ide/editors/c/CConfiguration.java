@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.systemtap.ui.editor.ColorManager;
 import org.eclipse.linuxtools.systemtap.ui.editor.DoubleClickStrategy;
 import org.eclipse.linuxtools.systemtap.ui.editor.NonRuleBasedDamagerRepairer;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.graphics.RGB;
 
 
@@ -48,22 +47,19 @@ public class CConfiguration extends SourceViewerConfiguration {
 	 * @param colorManager	the <code>ColorManager</code> to use for text highlighting
 	 */
 	public CConfiguration(ColorManager colorManager) {
-		LogManager.logDebug("Start/End CConfiguration: colorManager-" + colorManager, this); //$NON-NLS-1$
 		this.colorManager = colorManager;
 	}
 	@Override
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		LogManager.logDebug("Start/End getConfiguredContentTypes: sourceViewer-" + sourceViewer, this); //$NON-NLS-1$
 		return new String[] {
 			IDocument.DEFAULT_CONTENT_TYPE,
 			CPartitionScanner.C_COMMENT};
 	}
 	@Override
 	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType) {
-		LogManager.logDebug("Start getDoubleClickStrategy: sourceViewer-" + sourceViewer + ", contentType-" + contentType, this); //$NON-NLS-1$ //$NON-NLS-2$
-		if (doubleClickStrategy == null)
+		if (doubleClickStrategy == null) {
 			doubleClickStrategy = new DoubleClickStrategy();
-		LogManager.logDebug("End getDoubleClickStrategy: returnVal-" + doubleClickStrategy, this); //$NON-NLS-1$
+		}
 		return doubleClickStrategy;
 	}
 
@@ -76,19 +72,16 @@ public class CConfiguration extends SourceViewerConfiguration {
 	 * @return	the instance of the CScanner associated with this instance
 	 */
 	protected CScanner getCScanner() {
-		LogManager.logDebug("Start getCScanner:", this); //$NON-NLS-1$
 		if (scanner == null) {
 			scanner = new CScanner(colorManager);
 		}
-		LogManager.logDebug("End getCScanner: returnVal-" + scanner, this); //$NON-NLS-1$
 		return scanner;
 	}
 
 	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
-		LogManager.logDebug("Start getPresentationReconciler: sourceViewer-" + sourceViewer, this); //$NON-NLS-1$
 		PresentationReconciler reconciler = new PresentationReconciler();
-		
+
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getCScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
@@ -99,8 +92,7 @@ public class CConfiguration extends SourceViewerConfiguration {
 				new TextAttribute(colorManager.getColor(comment)));
 		reconciler.setDamager(ndr, CPartitionScanner.C_COMMENT);
 		reconciler.setRepairer(ndr, CPartitionScanner.C_COMMENT);
-	
-		LogManager.logDebug("End getPresentationReconciler: returnVal-" + reconciler, this); //$NON-NLS-1$
+
 		return reconciler;
 	}
 }

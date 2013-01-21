@@ -17,7 +17,6 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleDocumentProvider;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 
 
@@ -31,7 +30,6 @@ import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 public class CDocumentProvider extends SimpleDocumentProvider {
 	@Override
 	protected void setupDocument(IDocument document) {
-		LogManager.logDebug("Start setupDocument: document-" + document, this); //$NON-NLS-1$
 		if (document != null) {
 			IDocumentPartitioner partitioner =
 				new FastPartitioner(
@@ -40,12 +38,10 @@ public class CDocumentProvider extends SimpleDocumentProvider {
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);
 		}
-		LogManager.logDebug("End setupDocument:", this); //$NON-NLS-1$
 	}
 
 	@Override
 	protected IAnnotationModel createAnnotationModel(Object element) {
-		LogManager.logDebug("Start/End createAnnotationModel: element-" + element, this); //$NON-NLS-1$
 		return new AnnotationModel();
 	}
 }
