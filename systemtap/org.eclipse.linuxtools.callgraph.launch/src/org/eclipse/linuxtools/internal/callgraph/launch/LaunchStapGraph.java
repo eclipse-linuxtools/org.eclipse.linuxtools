@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
@@ -34,27 +33,23 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	private String projectName;
 	protected static final String ATTR_PARSER = "org.eclipse.linuxtools.callgraph.graphparser"; //$NON-NLS-1$
 	protected static final String ATTR_VIEWER = "org.eclipse.linuxtools.callgraph.callgraphview";  //$NON-NLS-1$
-	
-	
-	
+
 	public LaunchStapGraph() {
 		funcs = null;
 		exclusions = new ArrayList<String>();
 		projectName = null;
 	}
-	
 
-	
 	@Override
 	public void launch(IEditorPart ed, String mode) {
 		resourceToSearchFor = ed.getTitle();
 		searchForResource = true;
-		
-		//Note: This launch will eventually end up calling 
-		//launch(IBinary bin, String mode) below 
+
+		//Note: This launch will eventually end up calling
+		//launch(IBinary bin, String mode) below
 		super.launch(ed, mode);
 	}
-	
+
 	@Override
 	public void launch(IBinary bin, String mode) {
 		launch(bin, mode, null);
@@ -69,11 +64,11 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 				+ "parse_function_partial.stp";  //$NON-NLS-1$
 
 		viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
-		
 
-		
+
+
 		projectName = bin.getCProject().getElementName();
-		
+
 		try {
 			if (wc == null)
 				wc = createConfiguration(bin, name);
@@ -81,7 +76,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			binaryPath = escapeSpecialCharacters(binaryPath);
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
-			
+
 			if (writeFunctionListToScript(resourceToSearchFor) == null)
 				return;
 			if (funcs == null || funcs.length() < 0)
@@ -97,22 +92,18 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 					Messages.getString("LaunchStapGraph.ScriptGenErrMsg"));  //$NON-NLS-1$
 			mess.schedule();
 			e.printStackTrace();
-		} catch (CoreException e1) {
-			e1.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			resourceToSearchFor = ""; //$NON-NLS-1$
 			searchForResource = false;
 		}
-		
-		
+
+
 	}
-	
+
 	public void setFuncs(String val) {
 		funcs = val;
 	}
-	
+
 	/**
 	 * Generates the call and return function probes for the specified function
 	 * @param function
@@ -122,22 +113,22 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		String output = "probe process(@1).function(\"" + function + "\").call ? {	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc(),tid()) } 	}	probe process(@1).function(\"" + function + "\").return ? {		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc(),tid())	else { printf(\"?%d,,%s\\n\", tid(), user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return output;
 	}
-	
+
 	/**
 	 * Prompts the user for a list of functions to probe
-	 * 
+	 *
 	 * @param bw
 	 * @return
 	 */
 	public String writeFunctionListToScript(String resourceToSearchFor) {
 		String toWrite = getFunctionsFromBinary(bin, resourceToSearchFor);
-		
+
 		if (toWrite == null || toWrite.length() < 1) {
 			return null;
 		}
-		
+
 		StringBuffer output = new StringBuffer();
-		
+
 		for (String func : toWrite.split(" ")) { //$NON-NLS-1$
 			if (func.length() > 0
 					&& (exclusions == null || exclusions.size() < 1 || exclusions
@@ -152,8 +143,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	/**
 	 * Copies the contents of the specified partial script. You should call writeStapMarkers first
-	 * if you want StapMarkers to function properly. 
-	 * 
+	 * if you want StapMarkers to function properly.
+	 *
 	 * @param bw
 	 * @return
 	 * @throws IOException
@@ -177,24 +168,21 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		return toWrite;
 	}
-	
-	
+
+
 	public void setExclusions(ArrayList<String> e) {
 		exclusions = e;
 	}
 
 	@Override
 	public String generateScript() throws IOException {
-		
+
 		String scriptContents = "";  //$NON-NLS-1$
 
-
-//		scriptContents += writeStapMarkers();
-
 		scriptContents += funcs;
-		
+
 		scriptContents += writeFromPartialScript(projectName);
-		
+
 		return scriptContents;
 	}
 
@@ -204,7 +192,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	@Override
 	public String setScriptPath() {
-		scriptPath = PluginConstants.getDefaultOutput() 
+		scriptPath = PluginConstants.getDefaultOutput()
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		return scriptPath;
 	}
@@ -219,36 +207,4 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	public String setViewID() {
 		return ATTR_VIEWER;
 	}
-	
-//	/**
-//	 * Determines whether or not the user wants StapMarkers and inserts them. To
-//	 * disable StapMarkers, simply stop calling this function. This should be called
-//	 * before writeFromPartialScript.
-//	 * 
-//	 * @param bw
-//	 * @return
-//	 * @throws IOException
-//	 */
-//	private String writeStapMarkers() throws IOException {
-//		String toWrite = Messages.getString("LaunchStapGraph.26"); //$NON-NLS-1$
-//		if (MessageDialog.openQuestion(new Shell(),
-//				Messages.getString("LaunchStapGraph.27"), //$NON-NLS-1$
-//				Messages.getString("LaunchStapGraph.28") //$NON-NLS-1$
-//						+ Messages.getString("LaunchStapGraph.29"))) { //$NON-NLS-1$
-//			toWrite = Messages.getString("LaunchStapGraph.30") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.31") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.32") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.33") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.34") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.35") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.36") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.37") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.38") //$NON-NLS-1$
-//					+ Messages.getString("LaunchStapGraph.39") + Messages.getString("LaunchStapGraph.40"); //$NON-NLS-1$ //$NON-NLS-2$
-//			partialScriptPath = PluginConstants.getPluginLocation()
-//					+ Messages.getString("LaunchStapGraph.41"); //$NON-NLS-1$
-//		}
-//		
-//		return toWrite;
-//	}
 }
