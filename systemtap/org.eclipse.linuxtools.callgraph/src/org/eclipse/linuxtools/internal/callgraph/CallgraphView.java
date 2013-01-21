@@ -587,103 +587,72 @@ public class CallgraphView extends SystemTapView {
 	
 	
 	public void createViewActions() {
-		//Set drawmode to tree view
-		try {
-			final Process p = new ProcessBuilder("/usr/bin/bash", "-c", "id | grep stapdev").start();
-			p.waitFor();
-			view_treeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
-				@Override
-				public void run() {
-					if(p != null && p.exitValue() == 0) {
-						g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, g.getAnimationMode(),
-								g.getRootVisibleNodeNumber());
-						g.scrollTo(g.getNode(g.getRootVisibleNodeNumber()).getLocation().x
-								- g.getBounds().width / 2, g.getNode(
-										g.getRootVisibleNodeNumber()).getLocation().y);
-						if (play != null)
-							play.setEnabled(true);
-					} else {
-						stapPermissionError();
-					}
-				}
-			};
-			ImageDescriptor treeImage = getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
-			view_treeview.setImageDescriptor(treeImage);
-		
-		
-			//Set drawmode to radial view
-			view_radialview = new Action(Messages.getString("CallgraphView.RadialView")){ //$NON-NLS-1$
-				@Override
-				public void run(){
-					if(p != null && p.exitValue() == 0) {
-						g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, g.getAnimationMode(),
-								g.getRootVisibleNodeNumber());
-						if (play != null)
-							play.setEnabled(true);
-					} else {
-						stapPermissionError();
-					}
-				}
-			};
-			ImageDescriptor d = getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
-			view_radialview.setImageDescriptor(d);
-		
-			//Set drawmode to aggregate view
-			view_aggregateview = new Action(Messages.getString("CallgraphView.AggregateView")){ //$NON-NLS-1$
-				@Override
-				public void run(){
-					if(p != null && p.exitValue() == 0) {
-						g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, g.getAnimationMode(),
-								g.getRootVisibleNodeNumber());
-						if (play != null)
-							play.setEnabled(false);
-					} else {
-						stapPermissionError();
-					}
-				}
-			};
-			ImageDescriptor aggregateImage = getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
-			view_aggregateview.setImageDescriptor(aggregateImage);
-		
-		
-			//Set drawmode to level view
-			view_levelview = new Action(Messages.getString("CallgraphView.LevelView")){ //$NON-NLS-1$
-				@Override
-				public void run(){
-					if(p != null && p.exitValue() == 0) {
-						g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, g.getAnimationMode(),
-								g.getRootVisibleNodeNumber());
-						if (play != null)
-							play.setEnabled(true);
-					} else {
-						stapPermissionError();
-					}
-				}
-			};
-			ImageDescriptor levelImage = getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
-			view_levelview.setImageDescriptor(levelImage);
-		
-		
-			setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
-				@Override
-				public void run(){
-					if(p != null && p.exitValue() == 0) {
-						g.reset();
-					} else {
-						stapPermissionError();
-					}
-				}
-			});
-			ImageDescriptor refreshImage = getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
-			getView_refresh().setImageDescriptor(refreshImage);
+		view_treeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
+			@Override
+			public void run() {
+				g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
+						g.getAnimationMode(), g.getRootVisibleNodeNumber());
+				g.scrollTo(g.getNode(g.getRootVisibleNodeNumber())
+						.getLocation().x - g.getBounds().width / 2, g
+						.getNode(g.getRootVisibleNodeNumber())
+						.getLocation().y);
+				if (play != null)
+					play.setEnabled(true);
+			}
+		};
+		ImageDescriptor treeImage = getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
+		view_treeview.setImageDescriptor(treeImage);
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		//Set drawmode to radial view
+		view_radialview = new Action(Messages.getString("CallgraphView.RadialView")){ //$NON-NLS-1$
+			@Override
+			public void run(){
+				g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL,
+						g.getAnimationMode(), g.getRootVisibleNodeNumber());
+				if (play != null)
+					play.setEnabled(true);
+			}
+		};
+		ImageDescriptor d = getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
+		view_radialview.setImageDescriptor(d);
+
+		//Set drawmode to aggregate view
+		view_aggregateview = new Action(Messages.getString("CallgraphView.AggregateView")){ //$NON-NLS-1$
+			@Override
+			public void run(){
+				g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE,
+						g.getAnimationMode(), g.getRootVisibleNodeNumber());
+				if (play != null)
+					play.setEnabled(false);
+			}
+		};
+		ImageDescriptor aggregateImage = getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
+		view_aggregateview.setImageDescriptor(aggregateImage);
+
+
+		//Set drawmode to level view
+		view_levelview = new Action(Messages.getString("CallgraphView.LevelView")){ //$NON-NLS-1$
+			@Override
+			public void run(){
+				g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL,
+						g.getAnimationMode(), g.getRootVisibleNodeNumber());
+				if (play != null)
+					play.setEnabled(true);
+			}
+		};
+		ImageDescriptor levelImage = getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
+		view_levelview.setImageDescriptor(levelImage);
+
+
+		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
+			@Override
+			public void run(){
+				g.reset();
+			}
+		});
+		ImageDescriptor refreshImage = getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
+		getView_refresh().setImageDescriptor(refreshImage);
 
 	}
 	

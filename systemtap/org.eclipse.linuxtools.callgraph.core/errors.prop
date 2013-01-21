@@ -7,7 +7,7 @@
 .*Unable to find full path for "stap".*=SystemTap is necessary for the running of this command. If it is installed please make sure it is on the standard path.
 .*parse error.*=There may be an error in the arguments you sent or in the stap script, consult the log for more details.
 .*MAXMAPENTRIES exceeded.*=The maximum number of entries for a map has been exceeded, please change the MAXMAPENTRIES directive in the options tap of SystemTap Profile Configurations.
-.*stapdev.*stapusr.*=Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap.
+.*stapusr.*stapdev.*=Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap.
 .*Error inserting module.*File exists=A previous run of systemtap did not finish execution properly. In commandline, try ps aux | grep stap, kill any running stap processes and try again. 
 .*line 0: syntax error near unexpected token.*=Your workspace name may contain opening and closing brackets -- please switch to a workspace that does not use brackets and try again.
 .*SystemTap's version of uprobes is out of date.*=SystemTap's version of uprobes is out of date. If this is a standard SystemTap install, please run as root "make -C /usr/share/systemtap/runtime/uprobes". If SystemTap was built from source, please run as root "make -C /usr/local/share/systemtap/runtime/uprobes".

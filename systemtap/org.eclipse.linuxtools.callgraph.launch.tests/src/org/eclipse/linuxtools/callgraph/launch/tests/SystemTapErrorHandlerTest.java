@@ -42,7 +42,7 @@ public class SystemTapErrorHandlerTest extends TestCase {
 
 	public void testErrorRecognized(){
 
-		errorString = "As long as the word stapdev or stapusr is here, error is recognized";
+		errorString = "As long as the word stapusr or stapdev is here, error is recognized";
 
 		errHandler.handle(new NullProgressMonitor(), errorString);
 
@@ -53,8 +53,8 @@ public class SystemTapErrorHandlerTest extends TestCase {
 	public void testUserGroupError(){
 
 		errorString = "ERROR: You are trying to run systemtap as a normal user.\n" +
-			"You should either be root, or be part of either " +
-			"group \"stapdev\" or group \"stapusr.\n";
+			"You should either be root, or be part of the group \"stapusr\" and " +
+			"possibly one of the groups \"stapsys\" or \"stapdev\".";
 
 		errHandler.handle(new NullProgressMonitor(), errorString);
 

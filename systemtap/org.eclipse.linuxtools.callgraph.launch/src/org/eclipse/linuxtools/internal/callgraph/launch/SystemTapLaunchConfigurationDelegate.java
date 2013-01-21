@@ -236,10 +236,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			parser.setKillButtonEnabled(true);
 						
-			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
-				parser.setRealTime(true);
-				parser.schedule();
-			}
 			monitor.worked(1);
 
 			/*
@@ -298,14 +294,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 			
-			if (! element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
-				parser.schedule();
-			} else {
-				//Parser already scheduled, but double-check
-				if (parser != null)
-					parser.cancelJob();
+			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
+				parser.setRealTime(true);
 			}
 			
+			parser.schedule();
 			monitor.worked(1);
 			
 			String message = generateErrorMessage(config.getName(), binaryArguments);
