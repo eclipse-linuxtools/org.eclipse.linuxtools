@@ -78,7 +78,7 @@ public class Command implements Runnable {
 			returnVal = Integer.MIN_VALUE;
 		}
 	}
-	
+
 	/**
 	 * Starts up the process that will execute the provided command and registers
 	 * the <code>StreamGobblers</code> with their respective streams.

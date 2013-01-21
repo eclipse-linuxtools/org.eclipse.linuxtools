@@ -2,12 +2,14 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
 import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
 import org.eclipse.ui.PlatformUI;
 
@@ -17,30 +19,16 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-public class ScpExec extends LoggedCommand2 {
+public class ScpExec extends LoggedCommand {
 
 	private Session session;
 	private Channel channel;
 
 	public ScpExec(String cmds[]) {
 		super(cmds, null, null);
-		this.command = cmds[0];
+		this.command = ""; //$NON-NLS-1$
 		for (String cmd:cmds) {
 			this.command = this.command + " " + cmd; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
-	 * This must be called in order to get the process to start running.
-	 */
-	@Override
-	public void start() {
-		if(init().isOK()) {
-			Thread t = new Thread(this, command);
-			t.start();
-		} else {
-			stop();
 		}
 	}
 
@@ -117,11 +105,6 @@ public class ScpExec extends LoggedCommand2 {
 	@Override
 	public synchronized void stop() {
 		if(!stopped) {
-			stopped = true;
-			if(null != errorGobbler)
-				errorGobbler.stop();
-			if(null != inputGobbler)
-				inputGobbler.stop();
             channel.disconnect();
             session.disconnect();
 		}
