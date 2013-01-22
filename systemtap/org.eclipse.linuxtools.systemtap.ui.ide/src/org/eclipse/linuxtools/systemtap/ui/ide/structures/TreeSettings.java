@@ -42,7 +42,9 @@ public final class TreeSettings {
 	 * @return The datestamp for the Tree file.
 	 */
 	public static long getTreeFileDate() {
-		if(!readData()) return -1;
+		if (!readData()) {
+			return -1;
+		}
 		return treeFileDate;
 	}
 
@@ -52,7 +54,9 @@ public final class TreeSettings {
 	 * @return The <code>TreeNode</code> root of the Function tree.
 	 */
 	public static TreeNode getFunctionTree() {
-		if(!readData()) return null;
+		if (!readData()) {
+			return null;
+		}
 		return functions;
 	}
 
@@ -62,7 +66,9 @@ public final class TreeSettings {
 	 * @return The <code>TreeNode</code> root of the Probe Alias tree.
 	 */
 	public static TreeNode getProbeTree() {
-		if(!readData()) return null;
+		if (!readData()) {
+			return null;
+		}
 		return probes;
 	}
 
@@ -73,7 +79,9 @@ public final class TreeSettings {
 	 * @return True if the caching is successful.
 	 */
 	public static boolean setTrees(TreeNode func, TreeNode probe) {
-		if(null == func || null == probe) return false;
+		if (null == func || null == probe) {
+			return false;
+		}
 		functions = func;
 		probes = probe;
 		return writeData();
@@ -84,8 +92,9 @@ public final class TreeSettings {
 	 * @return True if the read is successful.
 	 */
 	private static boolean readData() {
-		if(null == settingsFile && !openFile())
+		if (null == settingsFile && !openFile()) {
 			return false;
+		}
 
 		try {
 			FileReader reader = new FileReader(settingsFile);
@@ -99,22 +108,26 @@ public final class TreeSettings {
 
 			IMemento child = data.getChild("functionTree"); //$NON-NLS-1$
 			String s = child.getString("string"); //$NON-NLS-1$
-			if("<null>".equals(s)) //$NON-NLS-1$
+			if ("<null>".equals(s)) { //$NON-NLS-1$
 				s = null;
+			}
 			String d = child.getString("data"); //$NON-NLS-1$
-			if("<null>".equals(d)) //$NON-NLS-1$
+			if ("<null>".equals(d)) { //$NON-NLS-1$
 				d = null;
+			}
 
 			functions = new TreeNode(d, s, false);
 			readTree(child, functions, 0);
 
 			child = data.getChild("probeTree"); //$NON-NLS-1$
 			s = child.getString("string"); //$NON-NLS-1$
-			if("<null>".equals(s)) //$NON-NLS-1$
+			if ("<null>".equals(s)) { //$NON-NLS-1$
 				s = null;
+			}
 			d = child.getString("data"); //$NON-NLS-1$
-			if("<null>".equals(d)) //$NON-NLS-1$
+			if ("<null>".equals(d)) { //$NON-NLS-1$
 				d = null;
+			}
 			probes = new TreeNode(d, s, false);
 			readTree(child, probes, 0);
 
@@ -136,8 +149,9 @@ public final class TreeSettings {
 	 * @return True if the write is successful.
 	 */
 	private static boolean writeData() {
-		if(null == settingsFile && !openFile())
+		if (null == settingsFile && !openFile()) {
 			return false;
+		}
 
 		try {
 			XMLMemento data = XMLMemento.createWriteRoot("TreeSettings"); //$NON-NLS-1$
@@ -169,21 +183,25 @@ public final class TreeSettings {
 	 * @param depth The maximum depth level to write out.
 	 */
 	private static void writeTree(IMemento child, TreeNode tree, int depth) {
-		if(null == tree.toString())
+		if (null == tree.toString()) {
 			child.putString("string", "<null>"); //$NON-NLS-1$ //$NON-NLS-2$
-		else
+		} else {
 			child.putString("string", tree.toString()); //$NON-NLS-1$
+		}
 
-		if(null == tree.getData())
-			child.putString("data","<null>"); //$NON-NLS-1$ //$NON-NLS-2$
-		else
+		if (null == tree.getData()) {
+			child.putString("data", "<null>"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
 			child.putString("data", tree.getData().toString()); //$NON-NLS-1$
+		}
 
-		if(tree instanceof TreeDefinitionNode) {
-			if(null == ((TreeDefinitionNode)tree).getDefinition())
-				child.putString("definition","<null>"); //$NON-NLS-1$ //$NON-NLS-2$
-			else
-				child.putString("definition", ((TreeDefinitionNode)tree).getDefinition().toString()); //$NON-NLS-1$
+		if (tree instanceof TreeDefinitionNode) {
+			if (null == ((TreeDefinitionNode) tree).getDefinition()) {
+				child.putString("definition", "<null>"); //$NON-NLS-1$ //$NON-NLS-2$
+			} else {
+				child.putString(
+						"definition", ((TreeDefinitionNode) tree).getDefinition().toString()); //$NON-NLS-1$
+			}
 		}
 
 		child.putInteger("click", (tree.isClickable()?1:0)); //$NON-NLS-1$
@@ -211,17 +229,20 @@ public final class TreeSettings {
 
 					boolean c = ((0==children[i].getInteger("click").intValue())?false:true); //$NON-NLS-1$
 
-					if("<null>".equals(s)) //$NON-NLS-1$
+					if ("<null>".equals(s)) { //$NON-NLS-1$
 						s = null;
-					if("<null>".equals(d)) //$NON-NLS-1$
+					}
+					if ("<null>".equals(d)) { //$NON-NLS-1$
 						d = null;
+					}
 
 					TreeNode t;
 					if(null == def) {
 						t = new TreeNode(d, s, c);
 					} else {
-						if("<null>".equals(def)) //$NON-NLS-1$
+						if ("<null>".equals(def)) { //$NON-NLS-1$
 							def = null;
+						}
 
 						t = new TreeDefinitionNode(d, s, def, c);
 					}
