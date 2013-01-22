@@ -83,8 +83,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.structures.tests</module>
     <module>org.eclipse.linuxtools.systemtap.ui.systemtapgui</module>
     <module>org.eclipse.linuxtools.systemtap.ui.tests</module>
-    <module>org.eclipse.linuxtools.threadprofiler</module>
-    <module>org.eclipse.linuxtools.threadprofiler.feature</module>
   </modules>
 
 </project>

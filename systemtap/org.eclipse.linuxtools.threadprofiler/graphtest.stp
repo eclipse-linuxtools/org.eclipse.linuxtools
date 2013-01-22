@@ -1,7 +1,0 @@
-global counter
-
-probe timer.s(1) {
-	printf("%d, %d, %d", counter, counter*5, counter*10);
-	counter++;
-
-}
