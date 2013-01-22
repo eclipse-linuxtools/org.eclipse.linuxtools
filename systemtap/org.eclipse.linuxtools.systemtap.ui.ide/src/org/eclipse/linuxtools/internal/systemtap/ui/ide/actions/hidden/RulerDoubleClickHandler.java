@@ -33,7 +33,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * The <code>RulerDoubleClickHandler</code> handles double click events on the
@@ -65,8 +65,8 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
  */
 public class RulerDoubleClickHandler extends MouseAdapter {
 
-	private AbstractDecoratedTextEditor editor;
-	public RulerDoubleClickHandler(AbstractDecoratedTextEditor editor) {
+	private ITextEditor editor;
+	public RulerDoubleClickHandler(ITextEditor editor) {
 		this.editor = editor;
 	}
 	/**

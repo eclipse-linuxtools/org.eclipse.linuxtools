@@ -16,13 +16,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
@@ -32,6 +30,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 
 /**
  * This <code>Action</code> is raised by <code>KernelBrowserView</code> whenever the user selects
@@ -45,6 +44,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView
  */
 public class KernelSourceAction extends Action implements ISelectionListener, IWorkbenchAction {
+	private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor";
 	private final IWorkbenchWindow window;
 	public final static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.KBAction";
 	private KernelBrowserView viewer;
@@ -134,8 +134,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, IW
 						IEditorPart editor = wb.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 						if(editor instanceof STPEditor)
 							IDESessionSettings.setActiveSTPEditor((STPEditor)editor);
-						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CEditor.ID);
-//						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, "org.eclipse.cdt.ui.editor.CEditor");
+						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
 						LogManager.logDebug("Editor opened", this); //$NON-NLS-1$
 					} catch (PartInitException e) {
 						LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
