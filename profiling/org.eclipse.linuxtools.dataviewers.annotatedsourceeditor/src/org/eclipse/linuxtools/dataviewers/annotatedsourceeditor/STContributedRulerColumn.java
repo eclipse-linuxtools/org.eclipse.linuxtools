@@ -41,7 +41,6 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.preferencespages.STAnnotatedSourceEditorPreferencePage;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
@@ -80,7 +79,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     private static final String FG_COLOR_KEY = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER_COLOR;
     private static final String BG_COLOR_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND;
     private static final String USE_DEFAULT_BG_KEY = AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND_SYSTEM_DEFAULT;
-    private final static String ST_KEY = STAnnotatedSourceEditorPreferencePage.EDITOR_ST_RULER;
+    private final static String ST_KEY = "STRuler"; //$NON-NLS-1$
     private final static String REVISION_ASK_BEFORE_QUICKDIFF_SWITCH_KEY = AbstractDecoratedTextEditorPreferenceConstants.REVISION_ASK_BEFORE_QUICKDIFF_SWITCH;
 
     private IVerticalRulerColumn fDelegate;
@@ -498,7 +497,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Returns whether the line number ruler column should be visible according to the preference store settings.
      * Subclasses may override this method to provide a custom preference setting.
-     * 
+     *
      * @return <code>true</code> if the line numbers should be visible
      */
     private boolean getLineNumberPreference() {
@@ -511,7 +510,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Returns whether quick diff info should be visible upon opening an editor according to the preference store
      * settings.
-     * 
+     *
      * @return <code>true</code> if the line numbers should be visible
      */
     private boolean getQuickDiffPreference() {
@@ -546,7 +545,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * <p>
      * The return value is
      * </p>
-     * 
+     *
      * @param store
      *            the preference store
      * @param pref
@@ -581,7 +580,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Ensures that quick diff information is displayed and the quick diff provider is the one with the specified id. If
      * a different quick diff provider is in use, the user may be asked whether he wants to switch.
-     * 
+     *
      * @param diffProviderId
      *            the quick diff provider id to use
      * @return <code>true</code> if quick diff could be enabled for the given id, <code>false</code> otherwise
@@ -642,7 +641,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     /**
      * Installs the differ annotation model with the current quick diff display.
-     * 
+     *
      * @param column
      *            the column to install the model on
      */
@@ -660,7 +659,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     /**
      * Uninstalls the differ annotation model from the current quick diff display.
-     * 
+     *
      * @param column
      *            the column to remove the model from
      */
@@ -682,7 +681,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * Extracts the line differ from the displayed document's annotation model. If none can be found, a new differ is
      * created and attached to the annotation model.
      * </p>
-     * 
+     *
      * @return the annotation model that contains the line differ, or <code>null</code> if none could be found or
      *         created
      * @see IChangeRulerColumn#QUICK_DIFF_MODEL_ID
@@ -724,7 +723,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Extracts the line differ from the displayed document's annotation model. If none can be found, <code>null</code>
      * is returned.
-     * 
+     *
      * @return the line differ, or <code>null</code> if none could be found
      */
     private IAnnotationModel getDiffer() {
@@ -749,7 +748,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Sets the forwarder. Used by {@link AbstractDecoratedTextEditor} to maintain the contract of its
      * {@link AbstractDecoratedTextEditor#createLineNumberRulerColumn} method.
-     * 
+     *
      * @param forwarder
      *            the forwarder
      */
@@ -760,7 +759,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     /**
      * Initializes the given line number ruler column from the preference store.
-     * 
+     *
      * @param rulerColumn
      *            the ruler column to be initialized
      */
@@ -777,7 +776,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Returns <code>true</code> if the ruler is showing line numbers, <code>false</code> if it is only showing change
      * information.
-     * 
+     *
      * @return <code>true</code> if line numbers are shown, <code>false</code> otherwise
      */
     public boolean isShowingSTRuler() {
@@ -788,7 +787,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Returns <code>true</code> if the ruler is showing change information, <code>false</code> if it is only showing
      * line numbers.
-     * 
+     *
      * @return <code>true</code> if change information is shown, <code>false</code> otherwise
      */
     public boolean isShowingChangeInformation() {
@@ -798,7 +797,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     /**
      * Shows revision information on the receiver.
-     * 
+     *
      * @param info
      *            the revision information to show
      * @param quickDiffProviderId
@@ -823,7 +822,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     /**
      * Returns <code>true</code> if the ruler is showing revision information, <code>false</code> if it is only showing
      * line numbers.
-     * 
+     *
      * @return <code>true</code> if revision information is shown, <code>false</code> otherwise
      */
     public boolean isShowingRevisionInformation() {
@@ -834,7 +833,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     /**
      * Returns the selection provider of the revision column, <code>null</code> if none is available.
-     * 
+     *
      * @return the revision selection provider
      */
     public ISelectionProvider getRevisionSelectionProvider() {

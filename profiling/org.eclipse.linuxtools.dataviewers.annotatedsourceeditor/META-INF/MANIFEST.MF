@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core
 Export-Package: org.eclipse.linuxtools.dataviewers.annotatedsourceeditor,
  org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.actions,
- org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.hyperlink,
- org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.preferencespages
+ org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.hyperlink
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
