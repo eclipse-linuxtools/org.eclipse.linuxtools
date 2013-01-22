@@ -13,17 +13,17 @@
 <plugin>
 
     <extension-point id="parserContribution" 
-    	name="Changelog Language Parser Contribution" 
+    	name="%extension-point.name" 
     	schema="schema/parserContribution.exsd"/>
-    <extension-point id="formatterContribution" name="Changelog Format Contribution" schema="schema/formatterContribution.exsd"/>
-    <extension-point id="editorContribution" name="ChangeLog Editor Contribution" schema="schema/editorContribution.exsd"/>
+    <extension-point id="formatterContribution" name="%extension-point.name.0" schema="schema/formatterContribution.exsd"/>
+    <extension-point id="editorContribution" name="%extension-point.name.1" schema="schema/editorContribution.exsd"/>
   
     <extension
   		point="org.eclipse.ui.commands">
 		
 		<category
-			name="Changelog"
-			description="Changelog key bindings"
+			name="%category.name"
+			description="%category.description"
 			id="org.eclipse.linuxtools.changelog">
 		</category>
 
@@ -35,24 +35,24 @@
 		</command>
   <command
         categoryId="org.eclipse.linuxtools.changelog"
-        description="Prepares Changelog"
+        description="%command.description"
         id="org.eclipse.linuxtools.changelog.core.preparechangelog"
-        name="Prepare Changelog"/>
+        name="%command.name"/>
   <command
         categoryId="org.eclipse.linuxtools.changelog"
-        description="Copies latest changelog entry to clipboard"
+        description="%command.description.0"
         id="org.eclipse.linuxtools.changelog.core.prepareCommit"
-        name="Prepare Commit"/>
+        name="%command.name.0"/>
   <command
         categoryId="org.eclipse.linuxtools.changelog"
-        description="Formats ChangeLog"
+        description="%command.description.1"
         id="org.eclipse.linuxtools.changelog.core.formatChangeLog"
-        name="Format ChangeLog"/>
+        name="%command.name.1"/>
   <command
         categoryId="org.eclipse.linuxtools.changelog"
-        description="Prepares ChangeLog in an editor"
+        description="%command.description.2"
         id="org.eclipse.linuxtools.changelog.core.preparechangelog2"
-        name="Prepare Changelog In Editor">
+        name="%command.name.2">
   </command>
 	</extension>
 	
@@ -85,7 +85,7 @@
              filenames="ChangeLog"
              icon="icons/file_obj.gif"
              id="org.eclipse.linuxtools.changelog.core.editor6"
-             name="ChangeLog Editor"/>
+             name="%editor.name"/>
     </extension>
     <extension
           point="org.eclipse.linuxtools.changelog.core.editorContribution">
@@ -126,7 +126,7 @@
              sequence="Ctrl+Alt+C"/>
        <scheme
              id="org.eclipse.linuxtools.changelog.keyscheme.default"
-             name="default"/>
+             name="%scheme.name"/>
        <key
              commandId="org.eclipse.linuxtools.changelog.core.preparechangelog"
              contextId="org.eclipse.ui.contexts.window"
@@ -187,7 +187,7 @@
 	<extension 
 	point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
 <target id="org.eclipse.changelog.editor.target" 
-	name="Changelog Editor">
+	name="%target.name">
 <context type="org.eclipse.ui.texteditor.ITextEditor"/>
 </target>
 </extension>
@@ -199,7 +199,7 @@
     id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
     targetId="org.eclipse.changelog.editor.target"
     class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUHyperlinkDetector"
-    name="Changelog Detector">
+    name="%hyperlinkDetector.name">
   </hyperlinkDetector>
 </extension>
 <extension point="org.eclipse.ui.menus">
