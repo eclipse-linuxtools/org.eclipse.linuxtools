@@ -66,14 +66,6 @@
 			icon="icons/views/page_obj.gif"
 			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
 			default="true"/>
-		<editor
-			name="%editor.c.name"
-			id="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"
-			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor"
-			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-			icon="icons/views/page_obj.gif"
-			default="false"
-			extensions="c,h,cpp"/>
 	</extension>
 
 	<extension
