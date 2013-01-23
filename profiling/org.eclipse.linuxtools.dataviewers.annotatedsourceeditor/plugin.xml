@@ -46,12 +46,17 @@
       </editor>
    </extension>
    <extension
-         point="org.eclipse.ui.commands">
-      <command
-            description="%ActionDefinition.STColumnToggle.description"
-            id=" org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STColumnToggle"
-            name="Show Annotation Columns">
-      </command>
-   </extension>
+		point="org.eclipse.ui.popupMenus">
+		<viewerContribution
+            targetID="#CEditorRulerContext"
+            id="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STColumn">
+         <action
+               label="Show Annotation Columns"
+               class="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AnnotationColumnToggle"
+               menubarPath="after=additions"
+               id="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STColumnToggle">
+         </action>
+        </viewerContribution>
+	</extension>
 
 </plugin>

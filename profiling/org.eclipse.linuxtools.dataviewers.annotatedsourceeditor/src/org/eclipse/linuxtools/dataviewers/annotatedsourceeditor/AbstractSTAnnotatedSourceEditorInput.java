@@ -25,7 +25,7 @@ public abstract class AbstractSTAnnotatedSourceEditorInput extends FileStoreEdit
 
     /**
      * gets how many STColumn exist
-     * 
+     *
      * @return
      */
     public int getColumnCount() {
@@ -36,21 +36,8 @@ public abstract class AbstractSTAnnotatedSourceEditorInput extends FileStoreEdit
     }
 
     /**
-     * gets the title of a ST Column
-     * 
-     * @param column
-     * @return
-     */
-    public String getTitle(ISTAnnotationColumn column) {
-        if (columns == null) {
-            columns = getColumns();
-        }
-        return column != null ? column.getTitle() : null;
-    }
-
-    /**
      * gets the background column of a editor line
-     * 
+     *
      * @param line
      * @return
      */
@@ -63,13 +50,6 @@ public abstract class AbstractSTAnnotatedSourceEditorInput extends FileStoreEdit
         return column != null ? column.getAnnotation(line) : null;
     }
 
-    public String getLongDescription(int line, ISTAnnotationColumn column) {
-        if (columns == null) {
-            columns = getColumns();
-        }
-        return column != null ? column.getLongDescription(line) : null;
-    }
-
     public String getTooltip(int line, ISTAnnotationColumn column) {
         if (columns == null) {
             columns = getColumns();
@@ -79,7 +59,7 @@ public abstract class AbstractSTAnnotatedSourceEditorInput extends FileStoreEdit
 
     /**
      * gets the ISTAnnotationColumn objects list
-     * 
+     *
      * @return
      */
     public abstract ArrayList<ISTAnnotationColumn> getColumns();
