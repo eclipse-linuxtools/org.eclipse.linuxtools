@@ -27,30 +27,29 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 
 
 /**
  * This <code>Action</code> is fired when the user double clicks on an entry in the
  * IDE's current <code>FunctionBrowserView</code>. The behavior of this <code>Action</code> is
- * to expand or collapse the function tree if the user clicks on a non-function (say a file containing 
- * functions), or to insert a blank call to the function if the user double clicks on a function 
- * (defined by the clickable property in the <code>TreeNode</code> class, retrieved through 
- * <code>TreeNode.isClickable</code>. 
+ * to expand or collapse the function tree if the user clicks on a non-function (say a file containing
+ * functions), or to insert a blank call to the function if the user double clicks on a function
+ * (defined by the clickable property in the <code>TreeNode</code> class, retrieved through
+ * <code>TreeNode.isClickable</code>.
  * @author Henry Hughes
  * @author Ryan Morse
  * @see org.eclipse.linuxtools.systemtap.ui.structures.TreeNode#isClickable()
  * @see org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor#insertTextAtCurrent(String)
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.TreeExpandCollapseAction
  */
-public class FunctionBrowserAction extends Action implements IWorkbenchAction, ISelectionListener {
+public class FunctionBrowserAction extends Action implements ISelectionListener {
 	private final IWorkbenchWindow window;
 	private final FunctionBrowserView viewer;
-	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction";
+	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction"; //$NON-NLS-1$
 	private IStructuredSelection selection;
 	private TreeExpandCollapseAction expandAction;
-	
+
 	/**
 	 * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
 	 * as well as the <code>FunctionBrowserView</code> that will fire this action.
@@ -62,8 +61,9 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
-		setText(Localization.getString("FunctionBrowserAction.Insert"));
-		setToolTipText(Localization.getString("FunctionBrowserAction.InsertFunction"));
+		setText(Localization.getString("FunctionBrowserAction.Insert")); //$NON-NLS-1$
+		setToolTipText(Localization
+				.getString("FunctionBrowserAction.InsertFunction")); //$NON-NLS-1$
 		window.getSelectionService().addSelectionListener(this);
 		viewer = browser;
 		expandAction = new TreeExpandCollapseAction(FunctionBrowserView.class);
@@ -92,7 +92,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 			setEnabled(false);
 		}
 	}
-	
+
 	/**
 	 * The main action code, invoked when this action is fired. This code checks the current
 	 * selection's clickable property, and either invokes the <code>TreeExpandCollapseAction</code> if
@@ -125,13 +125,13 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 				IEditorPart editor;
 				try {
 					editor = page.openEditor(input, STPEditor.ID);
-					
+
 					if(editor instanceof STPEditor) {
 						STPEditor stpeditor = (STPEditor)editor;
 						//build the string
-						String s = t.toString() + "\n";
+						String s = t.toString() + "\n"; //$NON-NLS-1$
 						stpeditor.insertTextAtCurrent(s);
-						
+
 					}
 				} catch (PartInitException e) {
 					LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$

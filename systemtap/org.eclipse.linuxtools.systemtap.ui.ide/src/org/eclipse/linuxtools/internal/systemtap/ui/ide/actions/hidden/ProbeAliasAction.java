@@ -25,7 +25,6 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 
 
@@ -39,12 +38,12 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView
  * @see org.eclipse.jface.action.Action
  */
-public class ProbeAliasAction extends Action implements ISelectionListener, IWorkbenchAction {
+public class ProbeAliasAction extends Action implements ISelectionListener {
 	private final IWorkbenchWindow window;
 	private final ProbeAliasBrowserView viewer;
-	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.ProbeAliasAction";
+	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.ProbeAliasAction"; //$NON-NLS-1$
 	private IStructuredSelection selection;
-	
+
 	/**
 	 * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
 	 * as well as the <code>ProbeAliasBrowserView</code> that will fire this action.
@@ -56,12 +55,13 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
-		setText(Localization.getString("ProbeAliasAction.Insert"));
-		setToolTipText(Localization.getString("ProbeAliasAction.InsertSelectedProbe"));
+		setText(Localization.getString("ProbeAliasAction.Insert")); //$NON-NLS-1$
+		setToolTipText(Localization
+				.getString("ProbeAliasAction.InsertSelectedProbe")); //$NON-NLS-1$
 		window.getSelectionService().addSelectionListener(this);
 		viewer = view;
 	}
-	
+
 	/**
 	 * Updates <code>selection</code> with the current selection whenever the user changes
 	 * the current selection.
@@ -86,7 +86,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 	/**
 	 * The main body of the action. This method checks for the current editor, creating one
 	 * if there is no active <code>STPEditor</code>, and then inserts a template probe for the
-	 * item that the user clicked on. 
+	 * item that the user clicked on.
 	 */
 	@Override
 	public void run() {
@@ -107,26 +107,28 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 			if(editor instanceof STPEditor) {
 				STPEditor stpeditor = (STPEditor)editor;
 				//build the string
-				StringBuilder s = new StringBuilder("\nprobe "+ t.toString());
+				StringBuilder s = new StringBuilder("\nprobe " + t.toString()); //$NON-NLS-1$
 				if(!t.isClickable())
 					if(0 <t.getChildCount())
-						s.append(".*");
+						s.append(".*"); //$NON-NLS-1$
 					else
 						return;
-				s.append("\n{\n");
+				s.append("\n{\n"); //$NON-NLS-1$
 				if(t.isClickable() && t.getChildCount() > 0) {
-					s.append("\t/*\n\t * " +
-							Localization.getString("ProbeAliasAction.AvailableVariables") +
-							"\n\t * ");
+					s.append("\t/*\n\t * " + //$NON-NLS-1$
+							Localization
+									.getString("ProbeAliasAction.AvailableVariables") + //$NON-NLS-1$
+							"\n\t * "); //$NON-NLS-1$
 					boolean first = true;
 					for(int i = 0; i < t.getChildCount(); i++) {
 						if(first) first = false;
-						else  s.append(", ");
+						else
+							s.append(", "); //$NON-NLS-1$
 						s.append(t.getChildAt(i).toString());
 					}
-					s.append("\n\t */\n");
+					s.append("\n\t */\n"); //$NON-NLS-1$
 				}
-				s.append("\n}\n");
+				s.append("\n}\n"); //$NON-NLS-1$
 				stpeditor.insertText(s.toString());
 			}
 		}

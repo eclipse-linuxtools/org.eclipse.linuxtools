@@ -25,7 +25,6 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 
 /**
@@ -34,11 +33,12 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
  * @author Henry Hughes
  * @author Ryan Morse
  */
-public class TreeExpandCollapseAction extends Action  implements ISelectionListener,IWorkbenchAction {
+public class TreeExpandCollapseAction extends Action implements
+		ISelectionListener {
 	private final IWorkbenchWindow fWindow;
 	private IStructuredSelection selection;
 	private final Class<?> cl;
-	
+
 	/**
 	 * The default constructor. Takes a <code>Class</code> representing the viewer that it is to expand
 	 * or collapse, as there is only one in the workbench at a time.
@@ -126,7 +126,7 @@ public class TreeExpandCollapseAction extends Action  implements ISelectionListe
 		if(doExpand) {
 			viewer.getViewer().expandToLevel(o,1);
 		} else {
-			viewer.getViewer().collapseToLevel(o,1);	
+			viewer.getViewer().collapseToLevel(o,1);
 		}
 		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
