@@ -28,7 +28,6 @@ import org.osgi.framework.FrameworkUtil;
  * 
  */
 public class RPMExportOperation extends Job {
-	private IProgressMonitor monitor;
 	private RPMProject rpmProject;
 	private BuildType exportType;
 
@@ -49,29 +48,47 @@ public class RPMExportOperation extends Job {
 	 * 
 	 */
 	@Override
-	public IStatus run(IProgressMonitor progressMonitor) {
-		int totalWork = 2;
-
-		monitor = progressMonitor;
-
-		// Start progress
-		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
-				totalWork);
-		monitor.worked(1);
-		BuildThread bt = new BuildThread(exportType, rpmProject);
-		bt.start();
-		while (bt.getState() != Thread.State.TERMINATED) {
-			if (monitor.isCanceled()) {
-				bt.interrupt();
-				return Status.CANCEL_STATUS;
+	public IStatus run(IProgressMonitor monitor) {
+		IStatus result = null;
+		IOConsole myConsole = findConsole();
+		IOConsoleOutputStream out = myConsole.newOutputStream();
+		myConsole.clearConsole();
+		myConsole.activate();
+		switch (exportType) {
+		case ALL:
+			try {
+				monitor.setTaskName(Messages
+						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+				result = rpmProject.buildAll(out);
+			} catch (CoreException e) {
+				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+						e.getMessage(), e);
 			}
+			break;
+
+		case BINARY:
+			monitor.setTaskName(Messages
+					.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+			try {
+				result = rpmProject.buildBinaryRPM(out);
+			} catch (CoreException e) {
+				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+						e.getMessage(), e);
+			}
+			break;
+
+		case SOURCE:
+			monitor.setTaskName(Messages
+					.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
+			try {
+				result = rpmProject.buildSourceRPM(out);
+			} catch (CoreException e) {
+				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+						e.getMessage(), e);
+			}
+			break;
 		}
-		monitor.worked(1);
-		monitor.done();
-		if (bt.getResult() != null){
-			return bt.getResult();
-		}
-		return Status.OK_STATUS;
+		return result;
 	}
 
 	private IOConsole findConsole() {
@@ -85,63 +102,5 @@ public class RPMExportOperation extends Job {
 		RpmConsole myConsole = new RpmConsole(rpmProject);
 		conMan.addConsoles(new IConsole[] { myConsole });
 		return myConsole;
-	}
-
-	private class BuildThread extends Thread {
-		private BuildType exportType;
-		private RPMProject rpmProject;
-		private IStatus result = null;
-
-		public BuildThread(BuildType exportType, RPMProject rpmProject) {
-			this.exportType = exportType;
-			this.rpmProject = rpmProject;
-		}
-
-		@Override
-		public void run() {
-			IOConsole myConsole = findConsole();
-			IOConsoleOutputStream out = myConsole.newOutputStream();
-			myConsole.clearConsole();
-			myConsole.activate();
-			switch (exportType) {
-			case ALL:
-				try {
-					monitor.setTaskName(Messages
-							.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-					result = rpmProject.buildAll(out);
-				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-							e.getMessage(), e);
-				}
-				break;
-
-			case BINARY:
-				monitor.setTaskName(Messages
-						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-				try {
-					result = rpmProject.buildBinaryRPM(out);
-				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-							e.getMessage(), e);
-				}
-				break;
-
-			case SOURCE:
-				monitor.setTaskName(Messages
-						.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
-				try {
-					result = rpmProject.buildSourceRPM(out);
-				} catch (CoreException e) {
-					result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-							e.getMessage(), e);
-				}
-				break;
-			}
-			
-		}
-		
-		public IStatus getResult(){
-			return result;
-		}
 	}
 }
