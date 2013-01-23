@@ -27,15 +27,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SaveLogAction extends ConsoleAction {
 	/**
-	 * The main method of this class. Handles getting the currnet <code>ScriptConsole</code>
+	 * The main method of this class. Handles getting the current <code>ScriptConsole</code>
 	 * and telling it to save the output to the selected file.
 	 */
 	@Override
 	public void run() {
-		ScriptConsole console = getActive();
+		ScriptConsole console = ScriptConsole.getActive();
 		if(null != console && console.isRunning()) {
 			File file = getFile();
-			
+
 			if(null != file)
 				console.saveStream(file);
 		}
@@ -48,10 +48,10 @@ public class SaveLogAction extends ConsoleAction {
 	private File getFile() {
 		String path = null;
 		FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-		dialog.setText(Localization.getString("SaveLogAction.OutputFile"));
+		dialog.setText(Localization.getString("SaveLogAction.OutputFile")); //$NON-NLS-1$
 
 		path = dialog.open();
-		
+
 		if(null == path)
 			return null;
 

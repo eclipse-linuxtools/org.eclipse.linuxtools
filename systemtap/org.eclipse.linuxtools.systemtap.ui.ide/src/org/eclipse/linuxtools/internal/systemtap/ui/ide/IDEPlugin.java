@@ -14,13 +14,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
-import org.eclipse.ui.IWorkbenchListener;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
+import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -33,7 +32,7 @@ import org.osgi.framework.BundleContext;
 public class IDEPlugin extends AbstractUIPlugin {
 	private IWorkbenchListener workbenchListener;
 	private static IDEPlugin plugin;
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.ide";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.ide"; //$NON-NLS-1$
 
 	public IDEPlugin() {
 		plugin = this;
@@ -45,24 +44,22 @@ public class IDEPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		
+
 		workbenchListener = new IDECloseMonitor();
 		plugin.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
 
 	/**
-	 * Called by the Eclipse Workbench to deactivate the plugin. 
+	 * Called by the Eclipse Workbench to deactivate the plugin.
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		
-		StopScriptAction ssa = new StopScriptAction();
-		ssa.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-		ssa.stopAll();
+
+		ScriptConsole.stopAll();
 
 		plugin.getWorkbench().removeWorkbenchListener(workbenchListener);
-		
+
 		plugin = null;
 	}
 
@@ -92,7 +89,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
 		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
 		if (path == null)
-			path = "";
+			path = ""; //$NON-NLS-1$
 		try {
 			URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
 			return uri;

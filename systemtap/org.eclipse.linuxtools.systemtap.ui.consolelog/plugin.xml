@@ -27,16 +27,6 @@
 				toolbarPath="launchGroup"
 				state="false"
 				style="push"/>
-   <action
-         class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction"
-         icon="icons/actions/stop_script.gif"
-         id="org.eclipse.linuxtools.systemtap.ui.consolelog.stopScriptAction"
-         label="%action.stopScript.name"
-         state="true"
-         style="push"
-         toolbarPath="launchGroup"
-         tooltip="%action.stopScript.desc">
-   </action>
 
 		</viewContribution> 
 	</extension>
@@ -54,4 +44,15 @@
 			class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 	</extension>
+ <extension
+       point="org.eclipse.ui.console.consolePageParticipants">
+    <consolePageParticipant
+          class="org.eclipse.linuxtools.systemtap.ui.consolelog.ScriptConsolePageParticipant"
+          id="org.eclipse.linuxtools.systemtap.ui.consolelog.scriptConsolePageParticipant">
+       <enablement>
+          <instanceof
+                value="org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole">
+          </instanceof></enablement>
+    </consolePageParticipant>
+ </extension>
 </plugin>

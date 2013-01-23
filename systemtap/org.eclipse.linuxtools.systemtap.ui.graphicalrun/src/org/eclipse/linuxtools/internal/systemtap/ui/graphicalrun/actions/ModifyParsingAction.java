@@ -36,7 +36,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
 /**
- * The action to allow users to change the parsing expression while a script is activly running.
+ * The action to allow users to change the parsing expression while a script is actively running.
  * @author Ryan Morse
  */
 public class ModifyParsingAction extends ConsoleAction {
@@ -60,7 +60,7 @@ public class ModifyParsingAction extends ConsoleAction {
 		IDataSet dataSet = wizard.getDataSet();
 
 		if(null != parser && null != dataSet) {
-			ScriptConsole console = super.getActive();
+			ScriptConsole console = ScriptConsole.getActive();
 			LoggedCommand cmd = console.getCommand();
 
 			ArrayList<IGobblerListener> listeners = cmd.getInputStreamListeners();
@@ -78,16 +78,16 @@ public class ModifyParsingAction extends ConsoleAction {
 				cmd.addInputStreamListener(daemon);
 			} else
 				daemon.setParser(dataSet, parser);
-			
+
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(GraphSelectorView.ID);
 			GraphSelectorView graphSelector = ((GraphSelectorView)ivp);
 			String name = console.getName();
 			graphSelector.createScriptSet(name.substring(name.lastIndexOf('/')+1), dataSet);
 		}
-		
+
 		wizard.dispose();
 	}
-	
+
 	/**
 	 * Gets the file location of the file open in the editor window.
 	 * @return The path of the file in the active editor window.
