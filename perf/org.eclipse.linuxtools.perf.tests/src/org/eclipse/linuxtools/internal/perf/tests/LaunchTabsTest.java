@@ -193,7 +193,7 @@ public class LaunchTabsTest extends AbstractTest {
 	
 	//getter functions for otherwise unaccessible member variables 
 	private static class TestEventsTab extends PerfEventsTab {
-		public Button get_chkDefaultEvent() { return _chkDefaultEvent; }
+		public Button get_chkDefaultEvent() { return chkDefaultEvent; }
 	}
 	
 	public void testEventsTab() throws CoreException {
