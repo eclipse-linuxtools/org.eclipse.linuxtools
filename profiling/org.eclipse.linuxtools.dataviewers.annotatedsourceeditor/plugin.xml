@@ -44,10 +44,6 @@
             id="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor"
             name="ST Annotated Source Editor">
       </editor>
-      <editor
-            id="org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor2"
-            name="name">
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
