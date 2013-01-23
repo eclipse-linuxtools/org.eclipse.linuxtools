@@ -12,6 +12,8 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -38,7 +40,7 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView
  * @see org.eclipse.jface.action.Action
  */
-public class ProbeAliasAction extends Action implements ISelectionListener {
+public class ProbeAliasAction extends Action implements ISelectionListener, IDoubleClickListener {
 	private final IWorkbenchWindow window;
 	private final ProbeAliasBrowserView viewer;
 	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.ProbeAliasAction"; //$NON-NLS-1$
@@ -133,5 +135,9 @@ public class ProbeAliasAction extends Action implements ISelectionListener {
 			}
 		}
 		LogManager.logDebug("End run:", this); //$NON-NLS-1$
+	}
+
+	public void doubleClick(DoubleClickEvent event) {
+		run();
 	}
 }

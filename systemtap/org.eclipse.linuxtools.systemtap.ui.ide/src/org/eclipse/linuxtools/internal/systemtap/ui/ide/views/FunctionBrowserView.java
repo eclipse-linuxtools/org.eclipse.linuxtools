@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.FunctionBrowserAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
@@ -35,7 +33,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 public class FunctionBrowserView extends BrowserView {
 	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView";
 	private FunctionBrowserAction doubleClickAction;
-	private IDoubleClickListener dblClickListener;
 	private TreeNode functions;
 	private TreeNode localFunctions;
 	private Menu menu;
@@ -44,7 +41,7 @@ public class FunctionBrowserView extends BrowserView {
 		super();
 		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
@@ -69,17 +66,17 @@ public class FunctionBrowserView extends BrowserView {
 		addLocalFunctions(localFunctions);
 		LogManager.logDebug("End refresh:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Adds the local functions specified in the argument to the viewer.
 	 * @param localFunctionTree A tree of the local functions.
 	 */
 	public void addLocalFunctions(TreeNode localFunctionTree) {
 		LogManager.logDebug("Start addLocalFunctions: localFunctionTree-" + localFunctionTree, this); //$NON-NLS-1$
-		
+
 		if(functions.getChildCount() > 0) {
 			TreeNode localFuncs = functions.getChildAt(0);
-			
+
 			if("<local>".equals(localFuncs.toString()))
 				functions.remove(0);
 
@@ -99,15 +96,8 @@ public class FunctionBrowserView extends BrowserView {
 	private void makeActions() {
 		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new FunctionBrowserAction(getSite().getWorkbenchWindow(), this);
-		dblClickListener = new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				LogManager.logDebug("Start doubleClick: event-" + event, this); //$NON-NLS-1$
-				doubleClickAction.run();
-				LogManager.logDebug("End doubleClick:", this); //$NON-NLS-1$
-			}
-		};
-		viewer.addDoubleClickListener(dblClickListener);
-		
+		viewer.addDoubleClickListener(doubleClickAction);
+
 		//This loads the menu from plugin.xml
 		MenuManager manager = new MenuManager("functionPopup");
 		Control control = this.viewer.getControl();
@@ -117,17 +107,16 @@ public class FunctionBrowserView extends BrowserView {
 		getSite().registerContextMenu(manager, viewer);
 		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
+		if(null != viewer)
+			viewer.removeDoubleClickListener(doubleClickAction);
 		if(null != doubleClickAction)
 			doubleClickAction.dispose();
 		doubleClickAction = null;
-		if(null != viewer)
-			viewer.removeDoubleClickListener(dblClickListener);
-		dblClickListener = null;
 		if(null != localFunctions)
 			localFunctions.dispose();
 		localFunctions = null;

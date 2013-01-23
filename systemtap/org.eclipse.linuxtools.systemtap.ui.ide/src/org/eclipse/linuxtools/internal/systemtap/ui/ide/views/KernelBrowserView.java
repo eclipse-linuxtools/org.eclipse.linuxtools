@@ -19,12 +19,11 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -126,14 +125,7 @@ public class KernelBrowserView extends BrowserView {
 	public void makeActions() {
 		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
-		dblClickListener = new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				LogManager.logDebug("Start doubleClick: event-" + event, this); //$NON-NLS-1$
-				doubleClickAction.run();
-				LogManager.logDebug("End doubleClick:", this); //$NON-NLS-1$
-			}
-		};
-		viewer.addDoubleClickListener(dblClickListener);
+		viewer.addDoubleClickListener(doubleClickAction);
 		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
@@ -146,7 +138,7 @@ public class KernelBrowserView extends BrowserView {
 	@Override
 	public void refresh() {
 		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
-		
+
 		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 		String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
 		if(null == kernelSource || kernelSource.length() < 1) {
@@ -198,7 +190,7 @@ public class KernelBrowserView extends BrowserView {
 			return false;
 		return true;
 	}
-	
+
 	private void showBrowserErrorMessage(String message) {
 		TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
 		t.add(new TreeNode("", message, false)); //$NON-NLS-1$
@@ -220,7 +212,7 @@ public class KernelBrowserView extends BrowserView {
 			LogManager.logDebug("End propertyChange:", this); //$NON-NLS-1$
 		}
 	};
-	
+
 	@Override
 	public void dispose() {
 		LogManager.logInfo("Disposing", this); //$NON-NLS-1$

@@ -12,6 +12,8 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -43,7 +45,7 @@ import org.eclipse.ui.PartInitException;
  * @see org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor#insertTextAtCurrent(String)
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.TreeExpandCollapseAction
  */
-public class FunctionBrowserAction extends Action implements ISelectionListener {
+public class FunctionBrowserAction extends Action implements ISelectionListener, IDoubleClickListener {
 	private final IWorkbenchWindow window;
 	private final FunctionBrowserView viewer;
 	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction"; //$NON-NLS-1$
@@ -141,5 +143,9 @@ public class FunctionBrowserAction extends Action implements ISelectionListener 
 			}
 		}
 		LogManager.logDebug("End run:", this); //$NON-NLS-1$
+	}
+
+	public void doubleClick(DoubleClickEvent event) {
+		run();
 	}
 }

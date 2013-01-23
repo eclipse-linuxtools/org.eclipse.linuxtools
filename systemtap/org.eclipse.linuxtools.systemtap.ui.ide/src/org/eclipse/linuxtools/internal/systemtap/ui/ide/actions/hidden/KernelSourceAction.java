@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -42,7 +44,7 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.TreeExpandCollapseAction
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView
  */
-public class KernelSourceAction extends Action implements ISelectionListener {
+public class KernelSourceAction extends Action implements ISelectionListener, IDoubleClickListener {
 	private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor"; //$NON-NLS-1$
 	private final IWorkbenchWindow window;
 	public final static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.KBAction"; //$NON-NLS-1$
@@ -149,5 +151,9 @@ public class KernelSourceAction extends Action implements ISelectionListener {
 			}
 		}
 		LogManager.logDebug("End run", this); //$NON-NLS-1$
+	}
+
+	public void doubleClick(DoubleClickEvent event) {
+		run();
 	}
 }
