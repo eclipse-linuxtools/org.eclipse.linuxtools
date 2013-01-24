@@ -50,7 +50,7 @@ public final class TapsetLibrary {
 	 * available.
 	 */
 	public static void init() {
-		if (null != stpp && stpp.isRunning()) {
+		if (null != stpp) {
 			return;
 		}
 
@@ -70,12 +70,9 @@ public final class TapsetLibrary {
 	 * to get the information directly from the files.
 	 */
 	private static void runStapParser() {
-		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
-								.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
-
-		stpp = new TapsetParser(tapsets);
-		stpp.start();
+		stpp = TapsetParser.getInstance();
 		stpp.addListener(completionListener);
+		stpp.schedule();
 		functionTree = stpp.getFunctions();
 		probeTree = stpp.getProbes();
 	}
@@ -235,8 +232,15 @@ public final class TapsetLibrary {
 	 * @since 1.2
 	 */
 	public static void stop(){
-		if(null != stpp && stpp.isRunning()){
-			stpp.stop();
+		if(null != stpp){
+			stpp.cancel();
+			try {
+				stpp.join();
+			} catch (InterruptedException e) {
+				// The current thread was interrupted while waiting
+				// for the parser thread to exit. Nothing to do
+				// continue stopping.
+			}
 		}
 	}
 
