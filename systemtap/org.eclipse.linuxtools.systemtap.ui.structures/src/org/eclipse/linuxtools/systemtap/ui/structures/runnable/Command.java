@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.structures.StructuresPlugin;
-import org.eclipse.linuxtools.systemtap.ui.structures.IPasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
@@ -32,7 +31,7 @@ public class Command implements Runnable {
 	/*
 	 * Bug in the exec command prevents using a single string.  Forced
 	 * to use a workaround in order to run commands with spaces.
-	 * 
+	 *
 	 * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4365120
 	 * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4109888
 	 */
@@ -44,27 +43,12 @@ public class Command implements Runnable {
 	 * StreamGobbler.
 	 * @param cmd The entire command to run
 	 * @param envVars List of all environment variables to use
-	 * @param prompt The password promt for allowing the user to enter their password.
-	 * @param monitorDelay The time in MS to wait between checking whether the <code>Process</code> has finished.
 	 */
-	public Command(String[] cmd, String[] envVars, IPasswordPrompt prompt, int monitorDelay) {
+	public Command(String[] cmd, String[] envVars) {
 		this.cmd = cmd;
 		this.envVars = envVars;
 	}
-	
-	/**
-	 * Spawns the new thread that this class will run in.  From the Runnable
-	 * interface spawning the new thread automatically calls the run() method.
-	 * This must be called by the implementing class in order to start the
-	 * StreamGobbler.
-	 * @param cmd The entire command to run
-	 * @param envVars List of all environment variables to use
-	 * @param prompt The password promt for allowing the user to enter their password.
-	 */
-	public Command(String[] cmd, String[] envVars, IPasswordPrompt prompt) {
-		this(cmd, envVars, prompt, 100);
-	}
-	
+
 	/**
 	 * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
 	 * This must be called in order to get the process to start running.
@@ -87,7 +71,7 @@ public class Command implements Runnable {
 		try {
 			process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, null);
 
-			errorGobbler = new StreamGobbler(process.getErrorStream());            
+			errorGobbler = new StreamGobbler(process.getErrorStream());
 			inputGobbler = new StreamGobbler(process.getInputStream());
 
 			this.transferListeners();
@@ -96,7 +80,7 @@ public class Command implements Runnable {
 			return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * This transfers any listeners which may have been added
 	 * to the command before the process has been constructed
@@ -122,7 +106,7 @@ public class Command implements Runnable {
 		inputGobbler.start();
 		try {
 			process.waitFor();
-		} catch (InterruptedException e) {} 
+		} catch (InterruptedException e) {}
 		stop();
 	}
 
@@ -157,7 +141,7 @@ public class Command implements Runnable {
 	public boolean isRunning() {
 		return !stopped;
 	}
-	
+
 	/**
 	 * Method to check if this class has already been disposed.
 	 * @return Status of the class.
@@ -165,9 +149,9 @@ public class Command implements Runnable {
 	public boolean isDisposed() {
 		return disposed;
 	}
-	
+
 	/**
-	 * The return value of the process. 
+	 * The return value of the process.
 	 * 2^231-1 if the process is still running.
 	 * -2^231 if there was an error creating the process
 	 * @return The return value generated from running the provided command.
@@ -186,7 +170,7 @@ public class Command implements Runnable {
 		else
 			inputListeners.add(listener);
 	}
-	
+
 	/**
 	 * Registers the provided <code>IGobblerListener</code> with the ErrorStream
 	 * @param listener A listener to monitor the ErrorStream from the Process
@@ -197,7 +181,7 @@ public class Command implements Runnable {
 		else
 			errorListeners.add(listener);
 	}
-	
+
 	/**
 	 * Returns the list of everything that is listening the the InputStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
@@ -241,7 +225,7 @@ public class Command implements Runnable {
 		else
 			errorListeners.remove(listener);
 	}
-	
+
 	/**
 	 * Disposes of all internal components of this class. Nothing in the class should be
 	 * referenced after this is called.
@@ -256,13 +240,13 @@ public class Command implements Runnable {
 			if(null != inputGobbler)
 				inputGobbler.dispose();
 			inputGobbler = null;
-			
+
 			if(null != errorGobbler)
 				errorGobbler.dispose();
 			errorGobbler = null;
 		}
 	}
-	
+
 	protected boolean stopped = false;
 	private boolean disposed = false;
 	protected StreamGobbler inputGobbler = null;
@@ -274,7 +258,7 @@ public class Command implements Runnable {
 	private String[] cmd;
 	private String[] envVars;
 	protected Process process;
-	
+
 	public static final int ERROR_STREAM = 0;
 	public static final int INPUT_STREAM = 1;
 }

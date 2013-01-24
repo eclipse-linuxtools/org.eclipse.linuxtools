@@ -152,7 +152,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 				tmpfileName};
 
 			   	ScriptConsole console = ScriptConsole.getInstance(serverfileName);
-            console.run(cmd, null, null, null);
+            console.run(cmd, null, null);
 		IDataSet ds;
 		if(paused) {
 			ds = ambv.pause(module).data;

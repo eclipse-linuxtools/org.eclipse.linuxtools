@@ -11,14 +11,14 @@ public class LoggedCommandTest {
 
 	@Before
 	public void setUp() {
-		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null, null);
+		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
 	}
 
 	@Test
 	public void testLoggedCommand() {
 		cmd.dispose();
 
-		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null, null);
+		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
 		cmd.start();
 		assertTrue(cmd.isRunning());
 		assertFalse(cmd.isDisposed());
@@ -27,7 +27,7 @@ public class LoggedCommandTest {
 		assertFalse(cmd.isDisposed());
 		cmd.dispose();
 
-		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null, null, 100);
+		cmd = new LoggedCommand(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
 		cmd.start();
 		assertTrue(cmd.isRunning());
 		assertFalse(cmd.isDisposed());
@@ -36,7 +36,7 @@ public class LoggedCommandTest {
 		assertFalse(cmd.isDisposed());
 		cmd.dispose();
 	}
-	
+
 	@Test
 	public void testStop() {
 		cmd.start();
@@ -44,18 +44,18 @@ public class LoggedCommandTest {
 		cmd.stop();
 		assertFalse(cmd.isRunning());
 	}
-	
+
 	@Test
 	public void testDispose() {
 		assertFalse(cmd.isDisposed());
 		cmd.dispose();
 		assertTrue(cmd.isDisposed());
 	}
-	
+
 	@After
 	public void tearDown() {
 		cmd.dispose();
 	}
-	
+
 	LoggedCommand cmd;
 }

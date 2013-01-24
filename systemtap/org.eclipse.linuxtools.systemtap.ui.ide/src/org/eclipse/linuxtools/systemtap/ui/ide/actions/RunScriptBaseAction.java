@@ -36,7 +36,6 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
-import org.eclipse.linuxtools.systemtap.ui.structures.PasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -51,7 +50,7 @@ import com.jcraft.jsch.JSchException;
  * Contributors:
  *    Ryan Morse - Original author.
  *    Red Hat Inc. - Copied most code from RunScriptAction here and made it into
- *                   base class for run actions. 
+ *                   base class for run actions.
  * @since 1.2
  */
 
@@ -95,7 +94,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 		if(isValid()) {
 			if(getRunLocal() == false) {
 				try{
-				 
+
 					ScpClient scpclient = new ScpClient();
 					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
 					tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
@@ -115,10 +114,10 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
             			final ScriptConsole console;
             			if(getRunLocal() == false) {
             				console = ScriptConsole.getInstance(serverfileName);
-            				console.run(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
+            				console.run(script, envVars, new StapErrorParser());
             			} else {
             				console = ScriptConsole.getInstance(fileName);
-            				console.runLocally(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
+            				console.runLocally(script, envVars, new StapErrorParser());
             			}
                         scriptConsoleInitialized(console);
             		}
@@ -126,7 +125,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
             }
 		}
 	}
-	
+
 	/**
 	 * Once a console for running the script has been created this
 	 * function is called so that observers can be added for example
@@ -136,13 +135,13 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	}
 
 	protected abstract String getFilePath();
-	
+
 	protected abstract boolean isValid();
 
 	/**
 	 * Checks whether the directory to which the given file
 	 * belongs is a valid directory. Currently this function just
-	 * checks if the given file does not belong to the tapset 
+	 * checks if the given file does not belong to the tapset
 	 * directory.
 	 * @param fileName
 	 * @return true if the given path is valid false otherwise.
@@ -159,7 +158,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 		}
 		return true;
 	}
-	
+
 	/**
 	 * The command line argument generation method used by <code>RunScriptAction</code>. This generates
 	 * a stap command line that includes the tapsets specified in user preferences, a guru mode flag
@@ -170,7 +169,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	//FixMe: Take care of this in the next release. For now only the guru mode is sent
 		ArrayList<String> cmdList = new ArrayList<String>();
 		String[] script;
-		
+
 		getImportedTapsets(cmdList);
 
 		if(isGuru())
@@ -180,12 +179,12 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 
 		return script;
 	}
-	
+
 	/**
 	 * Adds the tapsets that the user has added in preferences to the input <code>ArrayList</code>
 	 * @param cmdList The list to add the user-specified tapset locations to.
 	 */
-	
+
 	protected void getImportedTapsets(ArrayList<String> cmdList) {
 		IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
 		String[] tapsets = preferenceStore.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
@@ -198,9 +197,9 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	   		}
 		}
 	}
-	
+
 	/**
-	 * Checks the current script to determine if guru mode is required in order to run. This is determined 
+	 * Checks the current script to determine if guru mode is required in order to run. This is determined
 	 * by the presence of embedded C.
 	 * @return True if the script contains embedded C code.
 	 */
@@ -208,7 +207,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 		try {
 			File f = new File(fileName);
 			FileReader fr = new FileReader(f);
-			
+
 			int curr = 0;
 			int prev = 0;
 			boolean front = false;
@@ -242,7 +241,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 		}
 		return false;
 	}
-	
+
 	protected boolean createClientSession()
 	{
 		if (!ClientSession.isConnected() && new SelectServerDialog(fWindow.getShell()).open()) {
@@ -252,7 +251,7 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 				console = ScriptConsole.getInstance(fileName, subscription);
 				console.run();
 				}*/
-		}		
+		}
 		return true;
 	}
 
@@ -316,22 +315,22 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	protected String[] getEnvironmentVariables() {
 		return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
 	}
-	
+
 	public void selectionChanged(IAction act, ISelection select) {
 		this.act = act;
 		setEnablement(false);
 		buildEnablementChecks();
 	}
-	
+
 	private void buildEnablementChecks() {
 		if(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof STPEditor)
 			setEnablement(true);
 	}
-	
+
 	private void setEnablement(boolean enabled) {
 		act.setEnabled(enabled);
 	}
-	
+
 	protected Subscription getSubscription()
 	{
 		return subscription;
@@ -344,5 +343,5 @@ abstract public class RunScriptBaseAction extends Action implements IWorkbenchWi
 	public boolean getRunLocal() {
 		return runLocal;
 	}
-	
+
 }
