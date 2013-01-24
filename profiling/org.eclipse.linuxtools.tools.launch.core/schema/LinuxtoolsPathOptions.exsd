@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.linuxtools.tools.launch.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.linuxtools.tools.launch.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.linuxtools.tools.launch.ui" id="org.eclipse.linuxtools.tools.launch.ui.LinuxtoolsPathOptions" name="LinuxtoolsPathOptions"/>
+         <meta.schema plugin="org.eclipse.linuxtools.tools.launch.core" id="org.eclipse.linuxtools.tools.launch.core.LinuxtoolsPathOptions" name="LinuxtoolsPathOptions"/>
       </appinfo>
       <documentation>
          Use this Extension Point to add new options to the combobox in Linuxtools Path property page.
@@ -88,7 +88,7 @@
       </appinfo>
       <documentation>
          &lt;pre&gt;
-&lt;extension point=&quot;org.eclipse.linuxtools.tools.launch.ui.LinuxtoolsPathOptions&quot;&gt;
+&lt;extension point=&quot;org.eclipse.linuxtools.tools.launch.core.LinuxtoolsPathOptions&quot;&gt;
     &lt;option name=&quot;My Path&quot;
             path=&quot;/usr/local/my_custom_linuxtools_path&quot;
             default=&quot;true&quot;&gt;

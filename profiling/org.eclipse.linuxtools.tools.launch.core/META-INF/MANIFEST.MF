@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.tools.launch.core
+Bundle-SymbolicName: org.eclipse.linuxtools.tools.launch.core;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: %provider
 Bundle-Localization: plugin
@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filesystem;bundle-version="1.3.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.tools.launch.core.factory,
+Export-Package: org.eclipse.linuxtools.tools.launch.core,
+ org.eclipse.linuxtools.tools.launch.core.factory,
  org.eclipse.linuxtools.tools.launch.core.properties
