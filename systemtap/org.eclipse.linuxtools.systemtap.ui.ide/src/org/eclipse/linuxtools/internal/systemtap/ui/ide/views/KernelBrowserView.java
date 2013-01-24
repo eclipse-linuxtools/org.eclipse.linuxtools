@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.KernelSourceAction;
@@ -32,7 +31,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
@@ -65,12 +63,14 @@ public class KernelBrowserView extends BrowserView {
 			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 			KernelSourceTree kst = new KernelSourceTree();
 			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
-			if (remote)
+			if (remote) {
 				kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
-			else
+			} else {
 				kst.buildKernelTree(kernelSource, excluded);
-			if (monitor.isCanceled())
+			}
+			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
+			}
 			UpdateKernelBrowserJob job = new UpdateKernelBrowserJob(kst);
 			job.schedule();
 			monitor.done();
@@ -88,8 +88,9 @@ public class KernelBrowserView extends BrowserView {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			monitor.beginTask(Localization.getString("KernelBrowserView.UpdateKernelBrowser"), 100); //$NON-NLS-1$
-			if (kst == null)
+			if (kst == null) {
 				return Status.OK_STATUS;
+			}
 			viewer.setInput(kst.getTree());
 			kst.dispose();
 			monitor.done();
@@ -99,35 +100,24 @@ public class KernelBrowserView extends BrowserView {
 
 	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
 	private KernelSourceAction doubleClickAction;
-	private IDoubleClickListener dblClickListener;
-
-	public KernelBrowserView() {
-		super();
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
-	}
 
 	/**
 	 * Creates the UI on the given <code>Composite</code>
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		LogManager.logDebug("Start createPartControl: parent-" + parent, this); //$NON-NLS-1$
 		super.createPartControl(parent);
-
 		refresh();
 		makeActions();
-		LogManager.logDebug("End createPartControl", this); //$NON-NLS-1$
 	}
 
 	/**
 	 * Wires up all of the actions for this browser, such as double and right click handlers.
 	 */
 	public void makeActions() {
-		LogManager.logDebug("Start makeActions:", this); //$NON-NLS-1$
 		doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
 		viewer.addDoubleClickListener(doubleClickAction);
 		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
-		LogManager.logDebug("End makeActions:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -137,8 +127,6 @@ public class KernelBrowserView extends BrowserView {
 	 */
 	@Override
 	public void refresh() {
-		LogManager.logDebug("Start refresh:", this); //$NON-NLS-1$
-
 		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 		String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
 		if(null == kernelSource || kernelSource.length() < 1) {
@@ -154,9 +142,9 @@ public class KernelBrowserView extends BrowserView {
 			boolean error = false;
 			try {
 				kernelLocationURI = IDEPlugin.getDefault().createRemoteUri(kernelSource);
-				if (kernelLocationURI == null)
+				if (kernelLocationURI == null) {
 					error = true;
-				else {
+				} else {
 					proxy = RemoteProxyManager.getInstance().getFileProxy(kernelLocationURI);
 					if (!validateProxy(proxy, kernelSource))
 						error = true;
@@ -174,20 +162,23 @@ public class KernelBrowserView extends BrowserView {
 		refreshJob.setUser(true);
 		refreshJob.setPriority(Job.SHORT);
 		refreshJob.schedule();
-		LogManager.logDebug("End refresh:", this); //$NON-NLS-1$
 	}
 
 	private boolean validateProxy(IRemoteFileProxy proxy, String kernelSource) {
-		if (proxy == null)
+		if (proxy == null) {
 			return false;
+		}
 		IFileStore fs = proxy.getResource(kernelSource);
-		if (fs == null)
+		if (fs == null) {
 			return false;
+		}
 		IFileInfo info = fs.fetchInfo();
-		if (info == null)
+		if (info == null) {
 			return false;
-		if (!info.exists())
+		}
+		if (!info.exists()) {
 			return false;
+		}
 		return true;
 	}
 
@@ -203,26 +194,24 @@ public class KernelBrowserView extends BrowserView {
 	 */
 	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			LogManager.logDebug("Start propertyChange: event-" + event, this); //$NON-NLS-1$
 			if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
 				event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
 				event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
 				refresh();
 			}
-			LogManager.logDebug("End propertyChange:", this); //$NON-NLS-1$
 		}
 	};
 
 	@Override
 	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		super.dispose();
 		IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
-		if(null != viewer)
-			viewer.removeDoubleClickListener(dblClickListener);
-		dblClickListener = null;
-		if(null != doubleClickAction)
+		if(null != viewer) {
+			viewer.removeDoubleClickListener(doubleClickAction);
+		}
+		if(null != doubleClickAction) {
 			doubleClickAction.dispose();
+		}
 		doubleClickAction = null;
 	}
 }
