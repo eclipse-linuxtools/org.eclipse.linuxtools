@@ -18,13 +18,12 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
-import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
-import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileEventConfigTab;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileSetupTab;
-import org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileManualLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.oprofile.launch.tests.utils.LaunchTestingOptions;
+import org.eclipse.linuxtools.oprofile.launch.tests.utils.OprofileTestingEventConfigTab;
+import org.eclipse.linuxtools.oprofile.launch.tests.utils.TestingOprofileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
@@ -32,36 +31,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.FrameworkUtil;
 
 public class TestManualLaunching extends AbstractTest {
-	private static class testingOprofileLaunchConfigurationDelegate extends OprofileManualLaunchConfigurationDelegate {
-		public boolean eventsIsNull;
-		public OprofileDaemonOptions _options;  
-		@Override
-		protected void oprofileDumpSamples() { return; }
-		@Override
-		protected void oprofileReset() { return; }
-		@Override
-		protected void oprofileShutdown() { return; }
-		@Override
-		protected void oprofileStartCollection() { return; }
-		@Override
-		protected boolean oprofileStatus() { return true; }
-		@Override
-		protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) { 
-			_options = options; 
-			eventsIsNull = events == null ? true : false; 
-			return; 
-		}
-		@Override
-		protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
-			super.postExec(options, daemonEvents, process);
-			
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
@@ -89,23 +58,25 @@ public class TestManualLaunching extends AbstractTest {
 
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
+		OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
 		OprofileSetupTab setupTab = new OprofileSetupTab();
+		configTab.setOprofileProject(proj.getProject());
 		configTab.setDefaults(wc);
 		setupTab.setDefaults(wc);
 	}
 	
 	public void testDefaultLaunch() throws CoreException {
-		testingOprofileLaunchConfigurationDelegate delegate = new testingOprofileLaunchConfigurationDelegate();
+		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 		
-		LaunchOptions options = new LaunchOptions();
+		LaunchTestingOptions options = new LaunchTestingOptions();
+		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
 		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
 		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-		
+
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
@@ -117,7 +88,7 @@ public class TestManualLaunching extends AbstractTest {
 	}
 	
 	public void testEventLaunch() throws CoreException {
-		testingOprofileLaunchConfigurationDelegate delegate = new testingOprofileLaunchConfigurationDelegate();
+		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 		
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
@@ -129,7 +100,8 @@ public class TestManualLaunching extends AbstractTest {
 		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(0), true);
 		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(0), 0);
 		wc.doSave();
-		LaunchOptions options = new LaunchOptions();
+		LaunchTestingOptions options = new LaunchTestingOptions();
+		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
 		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$

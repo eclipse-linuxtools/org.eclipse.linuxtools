@@ -25,9 +25,9 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
-import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
-import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileEventConfigTab;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileSetupTab;
+import org.eclipse.linuxtools.oprofile.launch.tests.utils.LaunchTestingOptions;
+import org.eclipse.linuxtools.oprofile.launch.tests.utils.OprofileTestingEventConfigTab;
 import org.eclipse.linuxtools.oprofile.launch.tests.utils.TestingOprofileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.layout.GridLayout;
@@ -80,7 +80,8 @@ public class TestLaunchingExternalProject extends AbstractTest {
 	// Implemented abstract method of AbstractTest
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
+		OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
+		configTab.setOprofileProject(externalProject);
 		OprofileSetupTab setupTab = new OprofileSetupTab();
 		configTab.setDefaults(wc);
 		setupTab.setDefaults(wc);
@@ -92,7 +93,8 @@ public class TestLaunchingExternalProject extends AbstractTest {
 	 * @throws CoreException
 	 */
 	public void testLaunchExternalProject() throws CoreException {		
-		LaunchOptions options = new LaunchOptions();
+		LaunchTestingOptions options = new LaunchTestingOptions();
+		options.setOprofileProject(externalProject);
 		options.loadConfiguration(config);
 		
 		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
@@ -102,7 +104,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
 		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
 		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-		
+
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);

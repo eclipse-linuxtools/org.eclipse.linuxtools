@@ -59,7 +59,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		OprofileDaemonEvent[] daemonEvents = null;
 		if (!config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
 			//get the events to profile from the counters
-			OprofileCounter[] counters = OprofileCounter.getCounters(config);
+			OprofileCounter[] counters = oprofileCounters(config);
 			ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
 
 			for (int i = 0; i < counters.length; ++i) {
@@ -78,10 +78,8 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
 		 */
 		//set up and launch the local c/c++ program
-		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(Oprofile.OprofileProject.getProject());
-		IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
-		URI workingDirURI = proxy.getWorkingDir();
-		IPath workingDirPath = new Path(workingDirURI.getPath());
+		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(oprofileProject());
+		IPath workingDirPath = new Path(oprofileWorkingDirURI().getPath());
 
 		String arguments[] = getProgramArgumentsArray( config );
 		Process process = launcher.execute(exePath, arguments, getEnvironment(config), workingDirPath, monitor);
@@ -136,6 +134,27 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 	protected void oprofileDumpSamples() throws OpcontrolException {
 		OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+	}
+
+	protected IProject oprofileProject(){
+		return Oprofile.OprofileProject.getProject();
+	}
+
+
+	/**
+	 * Return the URI of the current working directory from the current
+	 * project's file proxy.
+	 *
+	 * @return URI URI of the working directory.
+	 * @throws CoreException
+	 */
+	protected URI oprofileWorkingDirURI() throws CoreException{
+		IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(oprofileProject());
+		return proxy.getWorkingDir();
+	}
+
+	protected OprofileCounter[] oprofileCounters(ILaunchConfiguration config){
+		return OprofileCounter.getCounters(config);
 	}
 
 	/**
