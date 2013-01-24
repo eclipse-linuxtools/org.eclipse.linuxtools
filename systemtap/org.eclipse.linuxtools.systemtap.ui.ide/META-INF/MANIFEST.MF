@@ -34,5 +34,5 @@ Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.ui.dialogs,
  org.eclipse.ui.ide,
  org.eclipse.ui.part
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 
