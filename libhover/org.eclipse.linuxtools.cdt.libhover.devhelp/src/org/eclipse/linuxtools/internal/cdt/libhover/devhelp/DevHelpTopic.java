@@ -41,6 +41,7 @@ public class DevHelpTopic implements ITopic {
 	private String name;
 	private XPath xpath;
 	private String label;
+	private String link;
 	private List<ITopic> subTopics;
 
 	DevHelpTopic(String name) {
@@ -83,6 +84,7 @@ public class DevHelpTopic implements ITopic {
 				if (label.equals("")) {
 					label = name;
 				}
+				link = xpathEval("/book/@link", docroot);
 
 				// set subtopics
 				NodeList nodes = xpathEvalNodes("/book/chapters/sub", docroot);
@@ -133,7 +135,7 @@ public class DevHelpTopic implements ITopic {
 
 	@Override
 	public String getHref() {
-		return "/" + DevHelpPlugin.PLUGIN_ID + "/" + name + "/index.html"; // $NON-NLS-1$ //$NON-NLS-2$" //$NON-NLS-3$
+		return "/" + DevHelpPlugin.PLUGIN_ID + "/" + name + "/"+link; // $NON-NLS-1$ //$NON-NLS-2$" //$NON-NLS-3$
 
 	}
 
