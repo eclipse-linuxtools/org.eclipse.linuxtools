@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 
 
 public class CoverageAnnotationColumn implements ISTAnnotationColumn {
-	
+
 
 	private final ArrayList<Line> lines;
 
@@ -44,17 +44,6 @@ public class CoverageAnnotationColumn implements ISTAnnotationColumn {
 	@Override
 	public String getLongDescription(int line) {
 		return null;
-	}
-
-	@Override
-	public String getTitle() {
-		return "Coverage";
-	}
-
-	
-	@Override
-	public String getHeaderTooltip() {
-		return "Coverage";
 	}
 
 	@Override

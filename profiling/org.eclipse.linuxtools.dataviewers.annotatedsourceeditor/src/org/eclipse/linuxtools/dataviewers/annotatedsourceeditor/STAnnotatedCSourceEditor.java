@@ -41,11 +41,7 @@ import org.eclipse.swt.custom.LineBackgroundListener;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.StyledTextContent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -85,31 +81,10 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 
     @Override
     public void createPartControl(Composite parent) {
+    	super.createPartControl(parent);
         if (fInput == null) {
-            super.createPartControl(parent);
             return;
         }
-
-        GridLayout layout = new GridLayout();
-        layout.numColumns = fInput.getColumnCount() + 1;
-        layout.horizontalSpacing = 0;
-        parent.setLayout(layout);
-        GridData gd = new GridData();
-        gd.grabExcessHorizontalSpace = false;
-        gd.grabExcessVerticalSpace = true;
-
-        parent.setLayoutData(gd);
-
-        Composite fParentSv = new Composite(parent, SWT.NONE);
-        gd = new GridData(GridData.FILL_BOTH);
-        gd.horizontalSpan = fInput.getColumnCount() + 1;
-        gd.horizontalIndent = gd.verticalIndent = 0;
-        fParentSv.setLayoutData(gd);
-        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL);
-        fillLayout.marginWidth = fillLayout.marginHeight = 0;
-        fParentSv.setLayout(fillLayout);
-
-        super.createPartControl(fParentSv);
 
         STColumnSupport columnSupport = (STColumnSupport) getAdapter(IColumnSupport.class);
         RulerColumnRegistry registry = RulerColumnRegistry.getDefault();
@@ -123,42 +98,15 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
         }
 
         CompositeRuler vr = (CompositeRuler) super.getVerticalRuler();
-        int count = 0;
-        Font font = parent.getFont();
-        FontData fd = font.getFontData()[0];
-        fd.setStyle(SWT.BOLD);
         for (Iterator<?> iter = vr.getDecoratorIterator(); iter.hasNext();) {
             IVerticalRulerColumn column = (IVerticalRulerColumn) iter.next();
             if (column instanceof STContributedRulerColumn) {
                 STContributedRulerColumn fSTColumn = (STContributedRulerColumn) column;
-                Label label = new Label(parent, SWT.BORDER);
-                gd = new GridData();
-                count++;
-                if (count == 1)
-                    gd.horizontalIndent = VERTICAL_RULER_WIDTH + 5;
-                else
-                    gd.horizontalIndent = 0;
-                gd.widthHint = fSTColumn.getWidth();
-                label.setFont(new Font(label.getDisplay(), fd));
-                label.setLayoutData(gd);
-                label.moveAbove(fParentSv);
-                label.setText(fSTColumn.getAnnotationColumn(0).getTitle());
-                fSTColumn.setLabelColumn(label);
-
                 if (fSTColumn.isShowingSTRuler()) {
                     ToolTipSupport.enableFor(fSTColumn);
                 }
             }
         }
-
-        Label label = new Label(parent, SWT.BORDER);
-        gd = new GridData();
-        gd.horizontalAlignment = SWT.FILL;
-        gd.grabExcessHorizontalSpace = true;
-        label.setFont(new Font(label.getDisplay(), fd));
-        label.setLayoutData(gd);
-        label.moveAbove(fParentSv);
-        label.setText(getTitle());
 
         showLinesColored();
 

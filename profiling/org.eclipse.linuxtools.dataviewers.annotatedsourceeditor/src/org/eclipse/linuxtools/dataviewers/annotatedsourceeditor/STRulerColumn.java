@@ -194,7 +194,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
         /**
          * Expands the line selection from the remembered start line to the given line.
-         * 
+         *
          * @param lineNumber
          *            the line to which to expand the selection
          */
@@ -222,7 +222,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
         /**
          * Called on drag selection.
-         * 
+         *
          * @param event
          *            the mouse event caught by the mouse move listener
          * @return <code>true</code> if scrolling happened, <code>false</code> otherwise
@@ -243,7 +243,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
         /**
          * Scrolls the viewer into the given direction.
-         * 
+         *
          * @param direction
          *            the scroll direction
          */
@@ -294,7 +294,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
         /**
          * Returns the viewer's first visible line, even if only partially visible.
-         * 
+         *
          * @return the viewer's first visible line
          */
         private int getInclusiveTopIndex() {
@@ -335,19 +335,19 @@ public class STRulerColumn implements IVerticalRulerColumn {
     private boolean fRelayoutRequired = false;
     /**
      * Redraw runnable lock
-     * 
+     *
      * @since 3.0
      */
     private final Object fRunnableLock = new Object();
     /**
      * Redraw runnable state
-     * 
+     *
      * @since 3.0
      */
     private boolean fIsRunnablePosted = false;
     /**
      * Redraw runnable
-     * 
+     *
      * @since 3.0
      */
     private final Runnable fRunnable = new Runnable() {
@@ -377,7 +377,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Sets the foreground color of this column.
-     * 
+     *
      * @param foreground
      *            the foreground color
      */
@@ -387,7 +387,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Returns the foreground color being used to print the line numbers.
-     * 
+     *
      * @return the configured foreground color
      * @since 3.0
      */
@@ -397,7 +397,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Sets the background color of this column.
-     * 
+     *
      * @param background
      *            the background color
      */
@@ -409,7 +409,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Returns the System background color for list widgets.
-     * 
+     *
      * @param display
      *            the display
      * @return the System background color for list widgets
@@ -440,7 +440,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
      * Computes the number of digits to be displayed. Returns <code>true</code> if the number of digits changed compared
      * to the previous call of this method. If the method is called for the first time, the return value is also
      * <code>true</code>.
-     * 
+     *
      * @return whether the number of digits has been changed
      * @since 3.0
      */
@@ -461,26 +461,26 @@ public class STRulerColumn implements IVerticalRulerColumn {
     /**
      * Does the real computation of the number of digits. Subclasses may override this method if they need extra space
      * on the line number ruler.
-     * 
+     *
      * @return the number of digits to be displayed on the line number ruler.
      */
     protected int computeNumberOfDigits() {
         IDocument document = fCachedTextViewer.getDocument();
         int lines = document == null ? 0 : document.getNumberOfLines();
-        int digits = 3;
-        if (annotationColumn.getTitle() != null) {
-            digits += annotationColumn.getTitle().length();
-        }
+        int digits = 0;
+        for (int i = 0; i < lines; i++) {
+			String annotation = annotationColumn.getAnnotation(i);
+			if (annotation.length() > digits) {
+				digits = annotation.length();
+			}
 
-        while (lines > Math.pow(10, digits) - 1) {
-            ++digits;
-        }
-        return (digits);
+		}
+        return digits;
     }
 
     /**
      * Layouts the enclosing viewer to adapt the layout to changes of the size of the individual components.
-     * 
+     *
      * @param redraw
      *            <code>true</code> if this column can be redrawn
      */
@@ -591,7 +591,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Double buffer drawing.
-     * 
+     *
      * @param dest
      *            the GC to draw into
      */
@@ -634,7 +634,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
     /**
      * Returns <code>true</code> if the viewport displays the entire viewer contents, i.e. the viewer is not vertically
      * scrollable.
-     * 
+     *
      * @return <code>true</code> if the viewport displays the entire contents, <code>false</code> otherwise
      * @since 3.2
      */
@@ -644,7 +644,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Draws the ruler column.
-     * 
+     *
      * @param gc
      *            the GC to draw into
      * @param visibleLines
@@ -677,7 +677,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
     /**
      * Computes the string to be printed for <code>line</code>. The default implementation returns
      * <code>Integer.toString(line + 1)</code>.
-     * 
+     *
      * @param line
      *            the line number for which the line number string is generated
      * @return the string to be printed on the line number bar for <code>line</code>
@@ -691,7 +691,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
      * Returns the difference between the baseline of the widget and the baseline as specified by the font for
      * <code>gc</code>. When drawing line numbers, the returned bias should be added to obtain text lined up on the
      * correct base line of the text widget.
-     * 
+     *
      * @param gc
      *            the <code>GC</code> to get the font metrics from
      * @param widgetLine
@@ -716,7 +716,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Paints the line. After this method is called the line numbers are painted on top of the result of this method.
-     * 
+     *
      * @param line
      *            the line of the document which the ruler is painted for
      * @param y
@@ -741,17 +741,13 @@ public class STRulerColumn implements IVerticalRulerColumn {
         } else {
             int baselineBias = getBaselineBias(gc, widgetLine);
             String s = annotationColumn.getAnnotation(widgetLine);
-            if (widgetLine == 0) {
-                for (int i = 0; i < annotationColumn.getTitle().length(); i++)
-                    s += " ";
-            }
             gc.drawString(s, indentation, y + baselineBias, true);
         }
     }
 
     /**
      * Triggers a redraw in the display thread.
-     * 
+     *
      * @since 3.0
      */
     protected final void postRedraw() {
@@ -806,7 +802,7 @@ public class STRulerColumn implements IVerticalRulerColumn {
 
     /**
      * Returns the parent (composite) ruler of this ruler column.
-     * 
+     *
      * @return the parent ruler
      * @since 3.0
      */
@@ -827,8 +823,6 @@ public class STRulerColumn implements IVerticalRulerColumn {
         if (line == 0) {
             int baselineBias = getBaselineBias(gc, line);
             String s = "";
-            for (int i = 0; i < annotationColumn.getTitle().length(); i++)
-                s += " ";
             gc.drawString(s, x + tl.getWidth() + 8, y + baselineBias, true);
         }
     }
