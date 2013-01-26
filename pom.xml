@@ -97,11 +97,11 @@
         <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
-          <value>juno</value>
+          <value>kepler</value>
         </property>
       </activation>
       <properties>
-        <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
+        <eclipse-site>http://download.eclipse.org/releases/kepler</eclipse-site>
         <platform-version>[4.2,)</platform-version>
         <sdk-version>4.2</sdk-version>
       </properties>
