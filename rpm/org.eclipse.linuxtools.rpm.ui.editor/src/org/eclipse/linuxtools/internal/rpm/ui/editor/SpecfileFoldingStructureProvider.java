@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 
 public class SpecfileFoldingStructureProvider {
 
-	
+
 	private static class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
 		public int compare(SpecfileElement element1, SpecfileElement element2) {
 			Integer lineNbr1 = element1.getLineNumber();
@@ -41,7 +41,7 @@ public class SpecfileFoldingStructureProvider {
 			return lineNbr1.compareTo(lineNbr2);
 		}
 	}
-	
+
 	private static final Annotation[] EMPTY = new Annotation[] {};
 	private SpecfileEditor sEditor;
 	private IDocument sDocument;
@@ -62,8 +62,9 @@ public class SpecfileFoldingStructureProvider {
 	public void updateFoldingRegions() {
 		ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
 				.getAdapter(ProjectionAnnotationModel.class);
-		if (model != null)
+		if (model != null) {
 			updateFoldingRegions(model);
+		}
 	}
 
 	void updateFoldingRegions(ProjectionAnnotationModel model) {
@@ -71,14 +72,16 @@ public class SpecfileFoldingStructureProvider {
 		Annotation[] deletions = computeDifferences(model, structure);
 		Map<Annotation,Position> additions = computeAdditions(structure);
 		if ((deletions.length != 0 || !additions.isEmpty())
-				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled()))
+				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled())) {
 			model.modifyAnnotations(deletions, additions, EMPTY);
+		}
 	}
 
 	private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
 		Map<Annotation,Position> additionsMap = new HashMap<Annotation,Position>();
-		for (Position position: currentRegions)
+		for (Position position: currentRegions) {
 			additionsMap.put(new ProjectionAnnotation(), position);
+		}
 		return additionsMap;
 	}
 
@@ -89,38 +92,40 @@ public class SpecfileFoldingStructureProvider {
 			Annotation annotation = iter.next();
 			if (annotation instanceof ProjectionAnnotation) {
 				Position position = model.getPosition(annotation);
-				if (current.contains(position))
+				if (current.contains(position)) {
 					current.remove(position);
-				else
+				} else {
 					deletions.add(annotation);
+				}
 			}
 		}
 		return deletions.toArray(new Annotation[deletions.size()]);
 	}
 
 	private Set<Position> createFoldingStructure(Specfile specfile) {
-		Set<Position> set = new HashSet<Position>();
-		
 		List<SpecfileElement> elements = new ArrayList<SpecfileElement>();
 		elements.addAll(specfile.getSections());
 		elements.addAll(specfile.getComplexSections());
 		Collections.sort(elements, new ElementByLineNbrComparator());
-		addFoldingRegions(set, elements.toArray());
-		return set;
+		return addFoldingRegions(elements);
 	}
 
-	private void addFoldingRegions(Set<Position> regions, Object[] elements) {
+	private Set<Position> addFoldingRegions(List<SpecfileElement> elements) {
+		Set<Position> regions = new HashSet<Position>();
 		// add folding on the preamble section
-		SpecfileElement element = (SpecfileElement) elements[0];
-		Position position = new Position(0, element.getLineStartPosition() - 1);
-		regions.add(position);
+		Position position;
+		if (elements.size() > 0) {
+			SpecfileElement element = elements.get(0);
+			position = new Position(0, element.getLineStartPosition() - 1);
+			regions.add(position);
+		}
 
-		for (int i = 0; i < elements.length; i++) {
-			SpecfileElement startElement = (SpecfileElement) elements[i];
+		for (int i = 0; i < elements.size(); i++) {
+			SpecfileElement startElement = elements.get(i);
 			int offsetPos = startElement.getLineStartPosition();
 			int lenghtPos;
-			if (i < elements.length -1) {
-				SpecfileElement endElement = (SpecfileElement) elements[i+1];
+			if (i < elements.size() -1) {
+				SpecfileElement endElement = elements.get(i+1);
 				lenghtPos = endElement.getLineStartPosition() - startElement.getLineStartPosition() - 1;
 			} else {
 				lenghtPos = sDocument.getLength() - startElement.getLineStartPosition();
@@ -128,5 +133,6 @@ public class SpecfileFoldingStructureProvider {
 			position = new Position(offsetPos, lenghtPos);
 			regions.add(position);
 		}
+		return regions;
 	}
 }
