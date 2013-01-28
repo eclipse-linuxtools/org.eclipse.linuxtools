@@ -11,15 +11,11 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.FunctionBrowserAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 
 
@@ -65,13 +61,13 @@ public class FunctionBrowserView extends BrowserView {
 		if(functions.getChildCount() > 0) {
 			TreeNode localFuncs = functions.getChildAt(0);
 
-			if("<local>".equals(localFuncs.toString())) {
+			if("<local>".equals(localFuncs.toString())) { //$NON-NLS-1$
 				functions.remove(0);
 			}
 
 			if(null != localFunctions) {
 				localFunctions = localFunctionTree;
-				localFunctions.setDisplay("<local>");
+				localFunctions.setDisplay("<local>"); //$NON-NLS-1$
 				functions.addAt(localFunctions, 0);
 			}
 		}
@@ -84,14 +80,6 @@ public class FunctionBrowserView extends BrowserView {
 	private void makeActions() {
 		doubleClickAction = new FunctionBrowserAction(getSite().getWorkbenchWindow(), this);
 		viewer.addDoubleClickListener(doubleClickAction);
-
-		//This loads the menu from plugin.xml
-//		MenuManager manager = new MenuManager("functionPopup");
-//		Control control = this.viewer.getControl();
-//		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-//		Menu menu = manager.createContextMenu(control);
-//		control.setMenu(menu);
-//		getSite().registerContextMenu(manager, viewer);
 	}
 
 	@Override

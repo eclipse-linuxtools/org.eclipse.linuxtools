@@ -25,13 +25,13 @@ public class ConditionalFilterPreferencePage extends FieldEditorPreferencePage i
 	public ConditionalFilterPreferencePage() {
 		super(GRID);
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("ConditionalFilterPreferencePage.ConditiionalFilterSelector"));
+		setDescription(Localization.getString("ConditionalFilterPreferencePage.ConditiionalFilterSelector")); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void createFieldEditors() {
 		addField(new ListEditor(IDEPreferenceConstants.P_CONDITIONAL_FILTERS,
-				Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent()));
+				Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public void init(IWorkbench workbench) {

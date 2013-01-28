@@ -29,16 +29,14 @@ import org.eclipse.swt.SWT;
 
 public class STPElementScanner extends BufferedRuleBasedScanner {
 
-	private String[] keywordList= {"probe", "for", "else", "foreach", "exit", "printf", "in", "return",
-			"break", "global", "next", "while", "if", "delete", "#include", "function", "do", 
-			"print", "error","log", "printd", "printdln", "println", "sprint", "sprintf", "system", "warn"};
+	private String[] keywordList = { "probe", "for", "else", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			"foreach", "exit", "printf", "in", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			"return", "break", "global", "next", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			"while", "if", "delete", "#include", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			"function", "do", "print", "error", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			"log", "printd", "printdln", "println", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+			"sprint", "sprintf", "system", "warn" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 
-
-// TODO: Not sure if we want these keywords or not. Defer for now.
-//			"backtrace", "caller", "caller_addr", "cpu", "egid", "euid", "execname", "gid", "is_return",
-//			"pexecname", "pid", "ppid", "tid", "uid", "print_backtrace", "print_regs", "print_stack", 
-//			"stack_size", "stack_unused", "stack_used", "stp_pid", "target"};
-	
 	/**
 	 * 
 	 * Build Element scanner for Syntax Highlighting for Systemtap Editor
@@ -88,23 +86,20 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
 		for (int i=0; i<keywordList.length; i++)
 			keywordsRule.addWord(keywordList[i], keywordToken);
 
-        setRules(new IRule[] {
-        		new MultiLineRule("/*", "*/", commentToken),
-        		new EndOfLineRule("/*", commentToken),
-                new EndOfLineRule("#", commentToken),
-                new EndOfLineRule("//",  commentToken),
-        		new EndOfLineRule("#if", defaultToken),
-                new EndOfLineRule("#else", defaultToken),
-                new EndOfLineRule("#endif", defaultToken),
-                new EndOfLineRule("#define", defaultToken),
-                new SingleLineRule("\"", "\"", stringToken, '\\'),
-                new SingleLineRule("'", "'", stringToken, '\\'),
-        		keywordsRule,
-                new WhitespaceRule(new IWhitespaceDetector() {
-                   public boolean isWhitespace(char c) {
-                      return Character.isWhitespace(c);
-                   }
-                }),
-             });
+		setRules(new IRule[] { new MultiLineRule("/*", "*/", commentToken), //$NON-NLS-1$//$NON-NLS-2$
+				new EndOfLineRule("/*", commentToken), //$NON-NLS-1$
+				new EndOfLineRule("#", commentToken), //$NON-NLS-1$
+				new EndOfLineRule("//", commentToken), //$NON-NLS-1$
+				new EndOfLineRule("#if", defaultToken), //$NON-NLS-1$
+				new EndOfLineRule("#else", defaultToken), //$NON-NLS-1$
+				new EndOfLineRule("#endif", defaultToken), //$NON-NLS-1$
+				new EndOfLineRule("#define", defaultToken), //$NON-NLS-1$
+				new SingleLineRule("\"", "\"", stringToken, '\\'), //$NON-NLS-1$ //$NON-NLS-2$
+				new SingleLineRule("'", "'", stringToken, '\\'), //$NON-NLS-1$//$NON-NLS-2$
+				keywordsRule, new WhitespaceRule(new IWhitespaceDetector() {
+					public boolean isWhitespace(char c) {
+						return Character.isWhitespace(c);
+					}
+				}), });
 	}
 }

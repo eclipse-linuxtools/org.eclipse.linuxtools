@@ -24,7 +24,7 @@ public class StapOptionsPreferencePage extends FieldEditorPreferencePage impleme
 	public StapOptionsPreferencePage() {
 		super(GRID);
 		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("StapOptionsPreferencePage.StapOptions"));
+		setDescription(Localization.getString("StapOptionsPreferencePage.StapOptions")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -33,13 +33,13 @@ public class StapOptionsPreferencePage extends FieldEditorPreferencePage impleme
 			addField(
 					new BooleanFieldEditor(
 						IDEPreferenceConstants.P_STAP[i][2],
-						IDEPreferenceConstants.P_STAP[i][0] + "\t" + IDEPreferenceConstants.P_STAP[i][1],
+						IDEPreferenceConstants.P_STAP[i][0] + "\t" + IDEPreferenceConstants.P_STAP[i][1], //$NON-NLS-1$
 						getFieldEditorParent()));
 			
 			if(2 < IDEPreferenceConstants.P_STAP[i][0].length()) {
 				StringFieldEditor sfe = new StringFieldEditor(
 					IDEPreferenceConstants.P_STAP_OPTS[i-IDEPreferenceConstants.P_STAP.length+IDEPreferenceConstants.P_STAP_OPTS.length],
-					"\t",
+					"\t", //$NON-NLS-1$
 					getFieldEditorParent());
 				
 				addField(sfe);

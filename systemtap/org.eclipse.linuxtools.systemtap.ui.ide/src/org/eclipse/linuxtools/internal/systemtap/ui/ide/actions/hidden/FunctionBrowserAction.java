@@ -111,7 +111,6 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 				IEditorPart ed = page.getActiveEditor();
 				if(ed == null) {
 					NewFileAction action = new NewFileAction();
-					//action.init(page.getWorkbenchWindow());
 					action.run();
 					if (action.isSuccessful())
 						ed = page.getWorkbenchWindow().getActivePage().getActiveEditor();

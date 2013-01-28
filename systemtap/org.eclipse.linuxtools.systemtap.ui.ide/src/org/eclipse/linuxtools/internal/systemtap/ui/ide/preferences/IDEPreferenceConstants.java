@@ -41,30 +41,25 @@ public class IDEPreferenceConstants {
 	
 	//ide.stap.stapoptions
 	public static final String[][] P_STAP = new String[][] {
-//		{"-h", "\tshow help", "hStapPreference"}, 
-//		{"-V", "\tshow version", "VStapPreference"}, 
-		{"-k", "\tkeep temporary directory", "kStapPreference"}, 
-		{"-u", "\tunoptimized translation", "uStapPreference"}, 
-//		{"-g", "\tguru mode", "gStapPreference"}, 
-		{"-b", "\tbulk (relayfs) mode", "bStapPreference"}, 
-		{"-t", "\tbenchmarking timing information", "tStapPreference"}, 
-		{"-v", "\t\t\tincrease verbosity [0]", "vStapPreference"}, 
-		{"-p NUM", "\t\tstop after pass NUM 1-5"/*, instead of 5 (parse, elaborate, translate, compile, run)"*/, "pStapPreference"}, 
-		{"-s NUM", "\t\tbuffer size in megabytes", "sStapPreference"}, 
-//		{"-I DIR", "\t\tlook in DIR for additional .stp script files, in addition to /usr/share/systemtap/tapset", "IStapPreference"}, 
-		{"-D NM=VAL", "\temit macro definition into C code", "DStapPreference"}, 
-		{"-R DIR", "\t\tlook in DIR for runtime", "RStapPreference"}, 
-		{"-r RELEASE", "\tuse kernel RELEASE", "rStapPreference"}, 
-		{"-m MODULE", "\tset probe module name", "mStapPreference"}, 
-		{"-o FILE", "\t\tsend output to file", "oStapPreference"}, 
-		{"-c CMD", "\t\tstart the probes, run CMD, and exit when it finishes", "cStapPreference"}, 
-		{"-x PID", "\t\tsets target() to PID", "xStapPreference"}};
+		{"-k", "\tkeep temporary directory", "kStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-u", "\tunoptimized translation", "uStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-b", "\tbulk (relayfs) mode", "bStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-t", "\tbenchmarking timing information", "tStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-v", "\t\t\tincrease verbosity [0]", "vStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-p NUM", "\t\tstop after pass NUM 1-5", "pStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-s NUM", "\t\tbuffer size in megabytes", "sStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-D NM=VAL", "\temit macro definition into C code", "DStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-R DIR", "\t\tlook in DIR for runtime", "RStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-r RELEASE", "\tuse kernel RELEASE", "rStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-m MODULE", "\tset probe module name", "mStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-o FILE", "\t\tsend output to file", "oStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-c CMD", "\t\tstart the probes, run CMD, and exit when it finishes", "cStapPreference"},  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		{"-x PID", "\t\tsets target() to PID", "xStapPreference"}}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	public static final String[] P_STAP_OPTS = new String[] {
 		"vStapOptPreference", //$NON-NLS-1$
 		"pStapOptPreference", //$NON-NLS-1$
 		"sStapOptPreference", //$NON-NLS-1$
-//		"IStapOptPreference", //$NON-NLS-1$
 		"DStapOptPreference", //$NON-NLS-1$
 		"RStapOptPreference", //$NON-NLS-1$
 		"rStapOptPreference", //$NON-NLS-1$
