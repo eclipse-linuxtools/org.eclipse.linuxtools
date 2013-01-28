@@ -20,6 +20,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -48,15 +49,13 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	}
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		//LogManager.logDebug("Start/End setActivePart: action-" + action + ", targetPart-" + targetPart, this);
 	}
 
 	/**
 	 * The main body of the event. This code gets the filename from the selected entry in the viewer,
-	 * then opens a new <code>STPEditor</code> for that file. 
+	 * then opens a new <code>STPEditor</code> for that file.
 	 */
 	public void run(IAction action) {
-		LogManager.logDebug("Start run: action-" + action, this); //$NON-NLS-1$
 		if(!isEnabled())
 			return;
 		Object o = selection.getFirstElement();
@@ -65,27 +64,25 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 		TreeDefinitionNode t = (TreeDefinitionNode)o;
 		String filename = t.getDefinition();
 		Path p = new Path(filename);
-		
+
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		PathEditorInput input = new PathEditorInput(p, window);
 		try {
 			IEditorPart editorPart = window.getActivePage().openEditor(input, STPEditor.ID);
 			STPEditor editor = (STPEditor)editorPart;
 			int line;
-			
-			if(t.getData().toString().startsWith("probe"))
+
+			if(t.getData().toString().startsWith("probe")) //$NON-NLS-1$
 				line = probeFind(t, editor);
 			else
 				line = functionFind(t, editor);
 
 			editor.jumpToLocation(++line, 0);
 		} catch (PartInitException e) {
-			LogManager.logCritical("Exception run: " + e.getMessage(), this); //$NON-NLS-1$
-			e.printStackTrace();
+			ExceptionErrorDialog.openError(Messages.TempFileAction_errorDialogTitle, e);
 		}
-		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Tries to find the line of code that corrisponds to the provided
 	 * function node within the file open in the provided editor.
@@ -96,14 +93,14 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	private int functionFind(TreeDefinitionNode t, STPEditor editor) {
 		String func = t.toString();
 		func = func.substring(0, func.indexOf('('));
-		
-		int line = editor.find("function " + func);
+
+		int line = editor.find("function " + func); //$NON-NLS-1$
 
 		if(line < 0)
 			line = editor.find(func);
 		return Math.max(line, 0);
 	}
-	
+
 	/**
 	 * Tries to find the line of code that corrisponds to the provided
 	 * probe node within the file open in the provided editor.
@@ -112,22 +109,21 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	 * @return int representing the line where the node is defined
 	 */
 	private int probeFind(TreeDefinitionNode t, STPEditor editor) {
-		int line = editor.find("probe " + t.toString());
+		int line = editor.find("probe " + t.toString()); //$NON-NLS-1$
 
 		if(line < 0)
 			line = editor.find(t.getData().toString());
 		if(line < 0)
-			line = editor.find(t.getData().toString().replace(" ", ""));
+			line = editor.find(t.getData().toString().replace(" ", "")); //$NON-NLS-1$ //$NON-NLS-2$
 		return Math.max(line, 0);
 	}
-	
+
 	/**
 	 * Updates <code>selection</code> with the current selection whenever the user changes
 	 * the current selection.
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		if(selection instanceof IStructuredSelection) {
-			LogManager.logDebug("this.selection changed: oldValue: "+ this.selection + " newValue: " + selection, this); //$NON-NLS-1$ //$NON-NLS-2$
 			this.selection = (IStructuredSelection)selection;
 			Object o = this.selection.getFirstElement();
 			if(o instanceof TreeDefinitionNode)
@@ -146,9 +142,8 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 		}
 	}
 
-	public void dispose() {
-		LogManager.logInfo("disposing", this); //$NON-NLS-1$
-	}
-
 	public void init(IWorkbenchWindow window) {}
+
+	public void dispose() {}
+
 }

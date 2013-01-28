@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.uistructures.StapSettingsDialog;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -28,7 +27,6 @@ import org.eclipse.ui.PlatformUI;
 public class RunScriptOptionsAction extends RunScriptAction {
 	public RunScriptOptionsAction() {
 		super();
-		LogManager.logDebug("initialized", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -44,17 +42,17 @@ public class RunScriptOptionsAction extends RunScriptAction {
 		String[] script;
 
 		getImportedTapsets(cmdList);
-		
+
 		if(isGuru())
 			cmdList.add("-g"); //$NON-NLS-1$
 
 		getCommandLineOptions(cmdList);
-		
+
 		script = finalizeScript(cmdList);
-		
+
 		return script;
 	}
-	
+
 	/**
 	 * This method prompts the user to select optional command line arguments to use when running this
 	 * script, and adds them to the <code>ArrayList</code> passed in.
@@ -63,7 +61,7 @@ public class RunScriptOptionsAction extends RunScriptAction {
 	protected void getCommandLineOptions(ArrayList<String> cmdList) {
 		StapSettingsDialog ssd = new StapSettingsDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
 		ssd.open();
-		
+
 		boolean[] cmdOpts = ssd.getStapOpts();
 		String[] cmdOptVals = ssd.getStapOptVals();
 

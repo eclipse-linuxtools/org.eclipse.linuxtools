@@ -21,8 +21,9 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.Messages;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
@@ -59,8 +60,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	 * @param browser	The <code>KernelBrowserView</code> that fires this action.
 	 */
 	public KernelSourceAction(IWorkbenchWindow window, KernelBrowserView browser) {
-		LogManager.logDebug("Start KernelSourceAction: window-" + window + ", browser-" + browser, this); //$NON-NLS-1$ //$NON-NLS-2$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
@@ -70,7 +69,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 		window.getSelectionService().addSelectionListener(this);
 		viewer = browser;
 		expandAction = new TreeExpandCollapseAction(KernelBrowserView.class);
-		LogManager.logDebug("End KernelSourceAction:", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -79,18 +77,15 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
-			LogManager.logDebug("Changing selection", this); //$NON-NLS-1$
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
 		} else {
-			LogManager.logDebug("Disabling, selection not IStructuredSelection", this); //$NON-NLS-1$
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
 	}
 
 	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		window.getSelectionService().removeSelectionListener(this);
 	}
 
@@ -101,7 +96,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	 */
 	private IEditorInput createEditorInput(IFileStore fs) {
 		FileStoreEditorInput input= new FileStoreEditorInput(fs);
-		LogManager.logDebug("createEditorInput: returnVal-" + input, this); //$NON-NLS-1$
 		return input;
 	}
 
@@ -120,7 +114,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	 */
 	@Override
 	public void run() {
-		LogManager.logDebug("Start run", this); //$NON-NLS-1$
 		IWorkbench wb = PlatformUI.getWorkbench();
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
@@ -137,9 +130,8 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 						if(editor instanceof STPEditor)
 							IDESessionSettings.setActiveSTPEditor((STPEditor)editor);
 						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
-						LogManager.logDebug("Editor opened", this); //$NON-NLS-1$
 					} catch (PartInitException e) {
-						LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
+						ExceptionErrorDialog.openError(Messages.TempFileAction_errorDialogTitle, e);
 					}
 
 				}
@@ -150,7 +142,6 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 				expandAction.run();
 			}
 		}
-		LogManager.logDebug("End run", this); //$NON-NLS-1$
 	}
 
 	public void doubleClick(DoubleClickEvent event) {

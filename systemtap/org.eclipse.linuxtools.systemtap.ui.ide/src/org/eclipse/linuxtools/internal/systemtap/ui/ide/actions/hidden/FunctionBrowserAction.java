@@ -85,11 +85,9 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 	 */
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
-			LogManager.logDebug("Changing selection", this); //$NON-NLS-1$
 			selection = (IStructuredSelection) incoming;
 			setEnabled(selection.size() == 1);
 		} else {
-			LogManager.logDebug("Disabling, selection not IStructuredSelection", this); //$NON-NLS-1$
 			// Other selections, for example containing text or of other kinds.
 			setEnabled(false);
 		}
@@ -104,7 +102,6 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 	 */
 	@Override
 	public void run() {
-		LogManager.logDebug("Start run:", this); //$NON-NLS-1$
 		IWorkbenchPage page = window.getActivePage();
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
@@ -142,7 +139,6 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 				expandAction.run();
 			}
 		}
-		LogManager.logDebug("End run:", this); //$NON-NLS-1$
 	}
 
 	public void doubleClick(DoubleClickEvent event) {

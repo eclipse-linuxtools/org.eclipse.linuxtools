@@ -38,14 +38,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.logging.preferences.Preferen
  */
 public class LogManager implements IPropertyChangeListener {
 	private LogManager() {}
-	
-	/**
-	 * Disables the logging service.
-	 */
-	private void disable() {
-		logDebug("disabling",this);
-	}
-	
+
 	/**
 	 * Initializes the logging service: hooks a property change listener to the Logging Plugin,
 	 * causes self-initialization, and starts logging.
@@ -54,7 +47,7 @@ public class LogManager implements IPropertyChangeListener {
 		LoggingPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 		init();
 	}
-	
+
 	/**
 	 * Gets user logging preferences and prepares the logging system to operate.
 	 */
@@ -65,7 +58,7 @@ public class LogManager implements IPropertyChangeListener {
 		int level = Integer.parseInt(store.getString(PreferenceConstants.P_LOG_LEVEL));
 		int type = Integer.parseInt(store.getString(PreferenceConstants.P_LOG_TYPE));
 		String filename = store.getString(PreferenceConstants.P_LOG_FILE);
-		
+
 		if(enabled) {
 			if(CONSOLE == type)
 				writer = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -85,10 +78,9 @@ public class LogManager implements IPropertyChangeListener {
 				log(INFO, "Initialized - Stream " + writer.toString());
 				new LogDaemon(writer, level);
 			}
-		} else
-			disable();
+		}
 	}
-	
+
 	/**
 	 * Static accessor method, returns the shared instance of LogManager.
 	 * @return Returns the shared instance of <code>LogManager</code>
@@ -96,7 +88,7 @@ public class LogManager implements IPropertyChangeListener {
 	public static LogManager getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * Adds the input string to the logging queue at the specified level.
 	 * @param level Level to log the input message to.
@@ -105,7 +97,7 @@ public class LogManager implements IPropertyChangeListener {
 	private synchronized void log(int level, String input) {
 		entries.add(new LogEntry(level, input));
 	}
-	
+
 	/**
 	 * Overridden in order to unregister our property change event.
 	 */
@@ -121,7 +113,7 @@ public class LogManager implements IPropertyChangeListener {
 		//let the JRE take care of the rest
 		super.finalize();
 	}
-	
+
 	/**
 	 * Stamps the input string with an identifier for the Object that sent it.
 	 * @param input Message that has been requested to be logged.
@@ -133,25 +125,15 @@ public class LogManager implements IPropertyChangeListener {
 		String className = cs.getName();
 		return "[" + className + "@" + Integer.toHexString(o.hashCode()) + "] " + input ;
 	}
-	
+
 	/**
-	 * Logs to the Info level. This logging level is used for basic application runtime messages such as 
+	 * Logs to the Info level. This logging level is used for basic application runtime messages such as
 	 * creation of viewparts, dialogs, etc.
 	 * @param input Message to log.
 	 * @param o Object making the logging request.
 	 */
 	public static synchronized void logInfo(String input, Object o) {
 		instance.log(INFO, instance.stamp(input,o));
-	}
-	
-	/**
-	 * Logs to the Debug level. This logging level is used for debugging messages, such as method
-	 * entry messages.
-	 * @param input Message to log.
-	 * @param o Object making the logging request.
-	 */
-	public static synchronized void logDebug(String input, Object o) {
-		instance.log(DEBUG, instance.stamp(input,o));
 	}
 
 	/**
@@ -173,7 +155,7 @@ public class LogManager implements IPropertyChangeListener {
 	public static synchronized void logFatal(String input, Object o) {
 		instance.log(FATAL, instance.stamp(input,o));
 	}
-	
+
 	/**
 	 * Property change event handler, notifies the logging system when the user has changed
 	 * logging related preferences.
@@ -186,7 +168,7 @@ public class LogManager implements IPropertyChangeListener {
 			init();
 		}
 	}
-	
+
 	/**
 	 * Gets the entries needing to be logged still
 	 * @return all entries that have not yet been logged

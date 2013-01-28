@@ -14,21 +14,17 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.uistructures;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
-
-import org.eclipse.swt.widgets.Label;
 
 
 /**
@@ -40,38 +36,33 @@ import org.eclipse.swt.widgets.Label;
 public class StapSettingsDialog extends Dialog {
 	public StapSettingsDialog(Shell parentShell) {
 		super(parentShell);
-		LogManager.logDebug("Start/End StapSettingsDialog: parentShell-" + parentShell, this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		LogManager.logDebug("Start configureShell: shell-" + shell, this); //$NON-NLS-1$
-		shell.setText(Localization.getString("StapSettingsDialog.StapOptions"));
+		shell.setText(Localization.getString("StapSettingsDialog.StapOptions")); //$NON-NLS-1$
 		shell.setSize(new org.eclipse.swt.graphics.Point(640,170 + ((1+checkBox.length)>>1) + 50*((1+text.length)>>1)));
-		LogManager.logDebug("End configureShell:", this); //$NON-NLS-1$
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		LogManager.logDebug("Start createDialogArea: parent-" + parent, this); //$NON-NLS-1$
 		Composite comp = (Composite) super.createDialogArea(parent);
-		
+
 		//Check boxes
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		cmpChkBoxes = new Composite(comp, SWT.NONE);
 		cmpChkBoxes.setLayout(gridLayout);
 		cmpChkBoxes.setBounds(new Rectangle(100,5,460,30*((1+checkBox.length)>>1)));
-		
+
 		int i;
 		for(i=0; i<IDEPreferenceConstants.P_STAP.length - IDEPreferenceConstants.P_STAP_OPTS.length; i++) {
 			checkBox[i] = new Button(cmpChkBoxes, SWT.CHECK);
 			checkBox[i].setText(IDEPreferenceConstants.P_STAP[i][0] + IDEPreferenceConstants.P_STAP[i][1]);
 			checkBox[i].setBackground(cmpChkBoxes.getBackground());
 		}
-		
+
 		//Labels and Text fields
 		cmpTxtBoxes = new Composite(comp, SWT.NONE);
 		cmpTxtBoxes.setBounds(new Rectangle(5,5+30*((1+checkBox.length)>>1),620,50*((1+text.length)>>1)));
@@ -84,7 +75,7 @@ public class StapSettingsDialog extends Dialog {
 			text[j] = new Text(cmpTxtBoxes, SWT.BORDER);
 			text[j].setBounds(new Rectangle(320*(j/5),20+50*(j%5),300,27));
 
-			if("-v".equals(IDEPreferenceConstants.P_STAP[i][0])) {
+			if("-v".equals(IDEPreferenceConstants.P_STAP[i][0])) { //$NON-NLS-1$
 				text[j].addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
@@ -93,7 +84,7 @@ public class StapSettingsDialog extends Dialog {
 						}
 					}
 				});
-			} else if("-p NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) {
+			} else if("-p NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) { //$NON-NLS-1$
 				text[j].addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
@@ -105,7 +96,7 @@ public class StapSettingsDialog extends Dialog {
 						}
 					}
 				});
-			} else if("-s NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) {
+			} else if("-s NUM".equals(IDEPreferenceConstants.P_STAP[i][0])) { //$NON-NLS-1$
 				text[j].addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
@@ -117,11 +108,10 @@ public class StapSettingsDialog extends Dialog {
 				});
 			}
 		}
-		
-		LogManager.logDebug("End createDialogArea: returnVal-" + comp, this); //$NON-NLS-1$
+
 		return comp;
 	}
-  
+
 	@Override
 	protected void okPressed() {
 		cmdOpts = new boolean[checkBox.length];
@@ -135,19 +125,16 @@ public class StapSettingsDialog extends Dialog {
 
 		super.okPressed();
 	}
-	
+
 	public boolean[] getStapOpts() {
-		LogManager.logDebug("Start/End getStapOpts: returnVal-" + cmdOpts, this); //$NON-NLS-1$
 		return cmdOpts;
 	}
-	
+
 	public String[] getStapOptVals() {
-		LogManager.logDebug("Start/End getStapOptVals: returnVal-" + cmdOptVals, this); //$NON-NLS-1$
 		return cmdOptVals;
 	}
-	
+
 	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
 		cmdOpts = null;
 		cmdOptVals = null;
 		cmpChkBoxes.dispose();
@@ -162,11 +149,11 @@ public class StapSettingsDialog extends Dialog {
 		label = null;
 		text = null;
 	}
-	
+
 	//private static String[] tapsets = null;
 	private static boolean[] cmdOpts = null;
 	private static String[] cmdOptVals = null;
-	
+
 	private Composite cmpChkBoxes = null;
 	private Composite cmpTxtBoxes = null;
 	private Button checkBox[] = new Button[IDEPreferenceConstants.P_STAP.length - IDEPreferenceConstants.P_STAP_OPTS.length];
