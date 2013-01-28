@@ -11,33 +11,37 @@
 
 package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
-import org.eclipse.core.runtime.IPlatformRunnable;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-public class Application implements IPlatformRunnable {
-	
+public class Application implements IApplication {
+
 	/**
 	 * Instantiates the workbench and creats a settings folder if it does not exist.
-	 * 
+	 *
 	 * @param args not used
-	 * 
+	 *
 	 * @return an IPlatformRunnable condition, either EXIT_RESTART or EXIT_OK
 	 */
-	public Object run(Object args) throws Exception {
+	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 
-		if(!SystemTapGUISettings.settingsFolder.exists())
+		if(!SystemTapGUISettings.settingsFolder.exists()) {
 			SystemTapGUISettings.settingsFolder.mkdir();
-
+		}
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) {
-				return IPlatformRunnable.EXIT_RESTART;
+				return IApplication.EXIT_RESTART;
 			}
-			return IPlatformRunnable.EXIT_OK;
+			return IApplication.EXIT_OK;
 		} finally {
 			display.dispose();
 		}
+	}
+
+	public void stop() {
 	}
 }

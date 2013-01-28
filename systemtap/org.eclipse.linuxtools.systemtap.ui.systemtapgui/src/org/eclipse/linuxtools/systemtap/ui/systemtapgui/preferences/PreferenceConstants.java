@@ -22,22 +22,8 @@ public class PreferenceConstants {
 		{"EnvPath", "PATH"},
 		{"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"},
 		{"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"},
-		//{"EnvDateTime", "DATE_TIME"},
-		//{"EnvUser", "USER"},
-		//{"EnvKernel", "KERNEL"},
-		//{"EnvTestName", "TEST_NAME"},
-		//{"EnvSystemtap", "SYSTEMTAP"},
-		//{"EnvElfutils", "ELFUTILS"},
-		//{"EnvStapObj", "STAP_OBJ"},
-		//{"EnvStapSrc", "STAP_SRC"},
-		//{"EnvStapInstall", "STAP_INSTALL"},
-		//{"EnvStapTests", "STAP_TESTS"},
-		//{"EnvCvsroot", "CVSROOT"},
-		//{"EnvMailToAddr", "MAIL_TO_ADDR"},
-		//{"EnvBuildResults", "BUILD_RESULTS"},
-		//{"EnvTestResults", "TEST_RESULTS"},
 	};
-	
+
 	//systemtap
 	public static final String P_WINDOW_STATE = "RestoreWindowStatePreference";
 }

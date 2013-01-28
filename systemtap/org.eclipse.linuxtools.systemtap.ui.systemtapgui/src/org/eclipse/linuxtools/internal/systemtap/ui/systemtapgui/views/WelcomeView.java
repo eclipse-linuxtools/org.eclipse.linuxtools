@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -29,14 +28,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 public class WelcomeView extends ViewPart {
-	public WelcomeView() {
-		super();
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
-	}
-	
+
 	/**
 	 * Establishes the components for the Welcome View.
-	 * 
+	 *
 	 * @param parent Composite parent of the new object.
 	 */
 	public void createPartControl(Composite parent) {
@@ -55,10 +50,10 @@ public class WelcomeView extends ViewPart {
 		Label lblImage = new Label(cmpMain,SWT.NONE);
 		lblImage.setBackground(cmpMain.getBackground());
 		lblImage.setImage(imgIcon);
-		
+
 		lblImage.setAlignment(SWT.CENTER);
-		
-		
+
+
 		FormData titleData = new FormData();
 		titleData.left = new FormAttachment(0, 0);
 		titleData.top = new FormAttachment(0, 0);
@@ -73,16 +68,11 @@ public class WelcomeView extends ViewPart {
 		iconData.bottom = new FormAttachment(80, 0);
 		lblImage.setLayoutData(iconData);
 
-		
+
 	}
-	
+
 	public void setFocus() {
 	}
 
-	public void dispose() {
-		LogManager.logInfo("Disposing", this); //$NON-NLS-1$
-		super.dispose();
-	}
-	
 	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views.WelcomeView";
 }

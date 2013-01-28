@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.views.WelcomeView;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -23,22 +22,18 @@ public class Perspective implements IPerspectiveFactory {
 
 	/**
 	 * Sets options in the IPageLayout object such as editorAreaVisible and the Welcome View.
-	 * 
+	 *
 	 * @param layout The IPageLayout object to set options on.
 	 */
 	public void createInitialLayout(IPageLayout layout) {
-		LogManager.logDebug("Start createInitialLayout: layout-" + layout, this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
-		
+
 		layout.addStandaloneView(WelcomeView.ID, false, IPageLayout.TOP, 1.00f, editorArea);
 		layout.getViewLayout(WelcomeView.ID).setCloseable(false);
 		layout.addShowViewShortcut(WelcomeView.ID);
 
 		layout.addPerspectiveShortcut(ID);
-		
-		LogManager.logDebug("End createInitialLayout:", this); //$NON-NLS-1$
 
 	}
 }

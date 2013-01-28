@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -26,9 +25,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 	public ApplicationWorkbenchAdvisor() {
 		super();
-		LogManager.getInstance().begin();
 	}
-	
+
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
@@ -36,19 +34,16 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public String getInitialWindowPerspectiveId() {
 		return PERSPECTIVE_ID;
 	}
-	
+
 	/**
 	 * Initializes the configurer object, loads preferences.
 	 *
 	 * @param configurer The IWorkbenchConfigurer object to initialize.
 	 */
 	public void initialize(IWorkbenchConfigurer configurer) {
-		LogManager.logDebug("Start initialize: configurer-" + configurer, this); //$NON-NLS-1$
-		LogManager.logInfo("Initializing", this); //$NON-NLS-1$
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(
 				SystemTapGUIPlugin.getDefault().getPreferenceStore()
 				.getBoolean(PreferenceConstants.P_WINDOW_STATE));
-		LogManager.logDebug("End initialize:", this); //$NON-NLS-1$
 	}
 }

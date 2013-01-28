@@ -14,15 +14,12 @@ package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
-		LogManager.logDebug("Start initializeDefaultPreferences:", this); //$NON-NLS-1$
 		IPreferenceStore store = SystemTapGUIPlugin.getDefault().getPreferenceStore();
-
 		//gui
 		store.setDefault(PreferenceConstants.P_WINDOW_STATE, true);
 	}
