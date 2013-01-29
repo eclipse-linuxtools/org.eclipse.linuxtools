@@ -9,10 +9,11 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
+package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 

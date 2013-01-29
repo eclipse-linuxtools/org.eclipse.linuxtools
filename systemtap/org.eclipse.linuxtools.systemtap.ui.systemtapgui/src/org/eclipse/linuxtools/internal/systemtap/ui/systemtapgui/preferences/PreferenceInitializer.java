@@ -9,11 +9,12 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
+import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
 
 
 

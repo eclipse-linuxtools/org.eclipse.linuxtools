@@ -5,7 +5,7 @@
 		id="application"
 		point="org.eclipse.core.runtime.applications">
 		<application>
-			<run class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.Application"/>
+			<run class="org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Application"/>
 		</application>
 	</extension>
 
@@ -33,7 +33,7 @@
 		<page
 			name="%preference.systemTap.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.view"
-			class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.SystemTapPreferencePage"/>
+			class="org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.preferences.SystemTapPreferencePage"/>
 		<page
 			name="%preference.envVars.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.environmentvariables"
@@ -43,6 +43,6 @@
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.preferences.PreferenceInitializer"/>
 	</extension>
 </plugin>
