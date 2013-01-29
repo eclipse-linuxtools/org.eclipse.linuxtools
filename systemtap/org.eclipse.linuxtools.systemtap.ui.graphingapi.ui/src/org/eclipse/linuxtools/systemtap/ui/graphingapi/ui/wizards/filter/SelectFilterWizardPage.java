@@ -15,8 +15,8 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -29,13 +29,13 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 public class SelectFilterWizardPage extends WizardPage {
 	public SelectFilterWizardPage() {
-		super("selectFilter");
-		setTitle(Localization.getString("SelectFilterWizardPage.SelectFilter"));
-		filterID = "";
+		super("selectFilter"); //$NON-NLS-1$
+		setTitle(Localization.getString("SelectFilterWizardPage.SelectFilter")); //$NON-NLS-1$
+		filterID = ""; //$NON-NLS-1$
 		btnFilters = null;
 		buttonListener = new ButtonSelectionListener();
 	}
-	
+
 	public void createControl(Composite parent) {
 		wizard = (SelectFilterWizard)super.getWizard();
 
@@ -46,13 +46,13 @@ public class SelectFilterWizardPage extends WizardPage {
 		data1.top = new FormAttachment(0, 0);
 		data1.right = new FormAttachment(40, 0);
 		data1.bottom = new FormAttachment(100, 0);
-		
+
 		Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
 		cmpFilterOpts.setLayoutData(data1);
 		ColumnLayout colLayout = new ColumnLayout();
 		colLayout.maxNumColumns = 1;
 		cmpFilterOpts.setLayout(colLayout);
-		
+
 		btnFilters = new Button[AvailableFilterTypes.filterIDs.length];
 		for(int i=0; i<btnFilters.length; i++) {
 			btnFilters[i] = new Button(cmpFilterOpts, SWT.NONE);
@@ -60,18 +60,18 @@ public class SelectFilterWizardPage extends WizardPage {
 			btnFilters[i].addSelectionListener(buttonListener);
 			btnFilters[i].setData(AvailableFilterTypes.filterIDs[i]);
 		}
-		
+
 		FormData data2 = new FormData();
 		data2.left = new FormAttachment(cmpFilterOpts);
 		data2.top = new FormAttachment(0, 0);
 		data2.right = new FormAttachment(100, 0);
 		data2.bottom = new FormAttachment(100, 0);
-		
+
 		lblDesc = new Label(comp, SWT.WRAP);
 		lblDesc.setLayoutData(data2);
 		setControl(comp);
 	}
-	
+
 	@Override
 	public IWizardPage getNextPage() {
 		return AvailableFilterTypes.getFilterWizardPage(filterID);
@@ -81,7 +81,7 @@ public class SelectFilterWizardPage extends WizardPage {
 	public boolean canFlipToNextPage() {
 		return (filterID.length() > 0);
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -94,10 +94,10 @@ public class SelectFilterWizardPage extends WizardPage {
 		btnFilters = null;
 		lblDesc = null;
 	}
-	
-	private class ButtonSelectionListener implements SelectionListener {
-		public void widgetDefaultSelected(SelectionEvent e) {}
-		
+
+	private class ButtonSelectionListener extends SelectionAdapter {
+
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			if(e.widget instanceof Button) {
 				Button target = (Button)e.widget;
@@ -105,7 +105,7 @@ public class SelectFilterWizardPage extends WizardPage {
 				for(int i=0; i<btnFilters.length; i++) {
 					if(target == btnFilters[i]) {
 						filterID = btnFilters[i].getData().toString();
-						lblDesc.setText(AvailableFilterTypes.getFilterName(filterID) + "\n\n" +
+						lblDesc.setText(AvailableFilterTypes.getFilterName(filterID) + "\n\n" + //$NON-NLS-1$
 										AvailableFilterTypes.getFilterDescription(filterID));
 						wizard.getContainer().updateButtons();
 					}
@@ -113,7 +113,7 @@ public class SelectFilterWizardPage extends WizardPage {
 			}
 		}
 	}
-	
+
 	private Button[] btnFilters;
 	private Label lblDesc;
 	private String filterID;

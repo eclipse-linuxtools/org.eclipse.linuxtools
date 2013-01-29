@@ -25,19 +25,19 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 	public SelectGraphWizard(IDataSet data) {
 		model = new GraphModel(data);
 	}
-	
+
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 	}
-	
+
 	@Override
 	public void addPages() {
-		setWindowTitle(Localization.getString("SelectGraphWizard.CreateGraph"));
+		setWindowTitle(Localization.getString("SelectGraphWizard.CreateGraph")); //$NON-NLS-1$
 		selectGraphPage = new SelectGraphWizardPage();
 		addPage(selectGraphPage);
 		selectSeriesPage = new SelectSeriesWizardPage();
 		addPage(selectSeriesPage);
 	}
-	
+
 	@Override
 	public boolean canFinish() {
 		if (this.getContainer().getCurrentPage() == selectSeriesPage &&
@@ -51,16 +51,16 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 		model.destroy();
 		return true;
 	}
-	
+
 	@Override
 	public boolean performFinish() {
 		return true;
 	}
-	
+
 	public GraphData getGraphData() {
 		return model.getGraphData();
 	}
-	
+
 	@Override
 	public void dispose() {
 		if(null != selectGraphPage)
@@ -69,7 +69,7 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 			selectSeriesPage.dispose();
 		super.dispose();
 	}
-	
+
 	public SelectGraphWizardPage selectGraphPage;
 	public SelectSeriesWizardPage selectSeriesPage;
 	public GraphModel model;

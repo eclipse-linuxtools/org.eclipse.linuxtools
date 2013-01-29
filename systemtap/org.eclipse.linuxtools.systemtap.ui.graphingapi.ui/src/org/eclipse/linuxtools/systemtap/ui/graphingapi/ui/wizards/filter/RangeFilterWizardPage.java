@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.FormAttachment;
@@ -30,10 +31,10 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 public class RangeFilterWizardPage extends FilterWizardPage {
 	public RangeFilterWizardPage() {
-		super("selectFilterOptions");
-		setTitle(Localization.getString("RangeFilterWizardPage.CreateRangeFilter"));
+		super("selectFilterOptions"); //$NON-NLS-1$
+		setTitle(Localization.getString("RangeFilterWizardPage.CreateRangeFilter")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
@@ -51,10 +52,10 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 		ColumnLayout colLayout = new ColumnLayout();
 		colLayout.maxNumColumns = 1;
 		cmpFilterOpts.setLayout(colLayout);
-		
+
 		//Column
 		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
-		lblColumn.setText(Localization.getString("RangeFilterWizardPage.Column"));
+		lblColumn.setText(Localization.getString("RangeFilterWizardPage.Column")); //$NON-NLS-1$
 		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN);
 		cboColumn.addSelectionListener(selectionListener);
 		for(int i=0; i<wizard.series.length; i++)
@@ -64,53 +65,53 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 
 		//Low
 		Label lblLow = new Label(cmpFilterOpts, SWT.NONE);
-		lblLow.setText(Localization.getString("RangeFilterWizardPage.LowerBound"));
+		lblLow.setText(Localization.getString("RangeFilterWizardPage.LowerBound")); //$NON-NLS-1$
 		txtLow = new Text(cmpFilterOpts, SWT.BORDER);
 		txtLow.addModifyListener(modifyListener);
 		txtLow.addKeyListener(numberKeyListener);
-		
+
 		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
 		//High
 		Label lblHigh = new Label(cmpFilterOpts, SWT.NONE);
-		lblHigh.setText(Localization.getString("RangeFilterWizardPage.UpperBound"));
+		lblHigh.setText(Localization.getString("RangeFilterWizardPage.UpperBound")); //$NON-NLS-1$
 		txtHigh = new Text(cmpFilterOpts, SWT.BORDER);
 		txtHigh.addModifyListener(modifyListener);
 		txtHigh.addKeyListener(numberKeyListener);
-		
+
 		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
 		//Style
 		radInside = new Button(cmpFilterOpts, SWT.RADIO);
-		radInside.setText(Localization.getString("RangeFilterWizardPage.InsideBounds"));
+		radInside.setText(Localization.getString("RangeFilterWizardPage.InsideBounds")); //$NON-NLS-1$
 		radInside.addSelectionListener(selectionListener);
 		radInside.setSelection(true);
 		radOutside = new Button(cmpFilterOpts, SWT.RADIO);
-		radOutside.setText(Localization.getString("RangeFilterWizardPage.OutsideBounds"));
+		radOutside.setText(Localization.getString("RangeFilterWizardPage.OutsideBounds")); //$NON-NLS-1$
 		radOutside.addSelectionListener(selectionListener);
 
 		chkInclusive = new Button(cmpFilterOpts, SWT.CHECK);
-		chkInclusive.setText(Localization.getString("RangeFilterWizardPage.Inclusive"));
+		chkInclusive.setText(Localization.getString("RangeFilterWizardPage.Inclusive")); //$NON-NLS-1$
 
 		setControl(comp);
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return false;
 	}
-	
+
 	@Override
 	protected void createFilter() {
 		int selected = cboColumn.getSelectionIndex();
-		
+
 		try {
 			double high = Double.parseDouble(txtHigh.getText().trim());
 			double low = Double.parseDouble(txtLow.getText().trim());
 			int style = (radInside.getSelection() ? RangeFilter.INSIDE_BOUNDS : RangeFilter.OUTSIDE_BOUNDS);
 			if(chkInclusive.getSelection())
 				style |= RangeFilter.INCLUSIVE;
-			
+
 			if(selected >=0 && selected < cboColumn.getItemCount()) {
 				if(low <= high)
 					wizard.filter = new RangeFilter(selected, new Double(low), new Double(high), style);
@@ -159,17 +160,19 @@ public class RangeFilterWizardPage extends FilterWizardPage {
 			radOutside = null;
 		}
 	}
-	
-	private final KeyListener numberKeyListener = new KeyListener() {
+
+	private final KeyListener numberKeyListener = new KeyAdapter() {
+		@Override
 		public void keyPressed(KeyEvent e) {
 			if((e.character >= ' ' && e.character <= '~')
-				&& (e.character > '9' || e.character < '0'))
+				&& (e.character > '9' || e.character < '0')) {
 				e.doit = false;
-			if(e.character == '.' && !((Text)e.widget).getText().contains("."))
+			}
+			if(e.character == '.' && !((Text)e.widget).getText().contains(".")) { //$NON-NLS-1$
 				e.doit = true;
+			}
 		}
-		
-		public void keyReleased(KeyEvent e) {}
+
 	};
 
 	private Combo cboColumn;

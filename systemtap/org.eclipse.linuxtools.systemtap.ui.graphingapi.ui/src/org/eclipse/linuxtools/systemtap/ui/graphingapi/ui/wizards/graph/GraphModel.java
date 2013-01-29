@@ -17,73 +17,73 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphDat
 public class GraphModel {
 	public GraphModel(IDataSet d) {
 		graph = new GraphData();
-		graph.graphID = "";
-		graph.title = "";
+		graph.graphID = ""; //$NON-NLS-1$
+		graph.title = ""; //$NON-NLS-1$
 		graph.xSeries = -1;
 		graph.ySeries = null;
 		data = d;
 	}
-	
+
 	public void destroy() {
 		graph = null;
 	}
-	
+
 	public GraphData getGraphData() {
 		return graph;
 	}
-	
+
 	public IDataSet getDataSet() {
 		return data;
 	}
-	
+
 	public String[] getSeries() {
 		return data.getTitles();
 	}
-	
+
 	public String getGraphID() {
 		return graph.graphID;
 	}
-	
+
 	public int getXSeries() {
 		return graph.xSeries;
 	}
-	
+
 	public int[] getYSeries() {
 		return graph.ySeries;
 	}
-	
+
 	public void setTitle(String title) {
 		graph.title = title;
 	}
-	
+
 	public void setKey(String key) {
 		graph.key = key;
 	}
-	
+
 	public void setGraph(String g) {
 		graph.graphID = g;
 	}
-	
+
 	public void setXSeries(int x) {
 		graph.xSeries = x;
 	}
-	
+
 	public void setYSeries(int[] y) {
 		graph.ySeries = y;
 	}
-	
+
 	public boolean isGraphSet() {
-		return ("" != graph.graphID);
+		return !graph.graphID.isEmpty();
 	}
-	
+
 	public boolean isSeriesSet() {
 		return ((-1 <= graph.xSeries) && (null != graph.ySeries) && graph.ySeries.length > 0);
 	}
-	
+
 	public boolean isTitleSet() {
-		return !("".equals(graph.title));
+		return !graph.title.isEmpty();
 	}
-	
+
 	private GraphData graph;
 	private IDataSet data;
 }

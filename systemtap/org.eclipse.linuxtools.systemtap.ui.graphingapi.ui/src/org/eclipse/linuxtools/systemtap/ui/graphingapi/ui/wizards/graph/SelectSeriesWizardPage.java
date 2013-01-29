@@ -33,13 +33,13 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 public class SelectSeriesWizardPage extends WizardPage {
 	public SelectSeriesWizardPage() {
-		super("selectSeries");
-		setTitle(Localization.getString("SelectSeriesWizardPage.SelectSeries"));
+		super("selectSeries"); //$NON-NLS-1$
+		setTitle(Localization.getString("SelectSeriesWizardPage.SelectSeries")); //$NON-NLS-1$
 	}
-	
+
 	public void createControl(Composite parent) {
 		model = ((SelectGraphWizard)super.getWizard()).model;
-		
+
 		//Set the layout data
 		Composite comp = new Composite(parent, SWT.NULL);
 		comp.setLayout(new FormLayout());
@@ -51,17 +51,17 @@ public class SelectSeriesWizardPage extends WizardPage {
 
 		//Add the title wigets
 		Label lblTitle = new Label(comp, SWT.NONE);
-		lblTitle.setText(Localization.getString("SelectSeriesWizardPage.Title"));
+		lblTitle.setText(Localization.getString("SelectSeriesWizardPage.Title")); //$NON-NLS-1$
 		txtTitle = new Text(comp, SWT.BORDER);
 		txtTitle.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getWizard().getContainer().updateButtons();
 				if(txtTitle.getText().length() == 0) {
-					setErrorMessage(Localization.getString("SelectSeriesWizardPage.TitleNotSet"));
+					setErrorMessage(Localization.getString("SelectSeriesWizardPage.TitleNotSet")); //$NON-NLS-1$
 					setMessage(null);
 				} else {
 					setErrorMessage(null);
-					setMessage("");
+					setMessage(""); //$NON-NLS-1$
 				}
 			}
 		});
@@ -84,7 +84,7 @@ public class SelectSeriesWizardPage extends WizardPage {
 		data1.top = new FormAttachment(txtTitle, 20);
 		data1.right = new FormAttachment(40, 0);
 		data1.bottom = new FormAttachment(100, 0);
-		
+
 		Composite cmpGraphOpts = new Composite(comp, SWT.NONE);
 		cmpGraphOpts.setLayoutData(data1);
 		ColumnLayout colLayout = new ColumnLayout();
@@ -97,22 +97,22 @@ public class SelectSeriesWizardPage extends WizardPage {
 		lblYItems = new Label[cboYItems.length];
 
 		Label lblXItem = new Label(cmpGraphOpts, SWT.NONE);
-		lblXItem.setText(Localization.getString("SelectSeriesWizardPage.XSeries"));
+		lblXItem.setText(Localization.getString("SelectSeriesWizardPage.XSeries")); //$NON-NLS-1$
 		cboXItem = new Combo(cmpGraphOpts, SWT.DROP_DOWN);
 		cboXItem.addSelectionListener(new ComboSelectionListener());
-		cboXItem.add(Localization.getString("SelectSeriesWizardPage.RowID"));
+		cboXItem.add(Localization.getString("SelectSeriesWizardPage.RowID")); //$NON-NLS-1$
 		cboXItem.select(0);
 
 		new Label(cmpGraphOpts, SWT.NONE);	//Spacer
-		
+
 		for(int i=0; i<cboYItems.length; i++) {
 			lblYItems[i] = new Label(cmpGraphOpts, SWT.NONE);
-			lblYItems[i].setText(Localization.getString("SelectSeriesWizardPage.YSeries") + i + ":");
+			lblYItems[i].setText(Localization.getString("SelectSeriesWizardPage.YSeries") + i + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 			cboYItems[i] = new Combo(cmpGraphOpts, SWT.DROP_DOWN);
 			cboYItems[i].addSelectionListener(new ComboSelectionListener());
 
 			if(i>0) {
-				cboYItems[i].add(Localization.getString("SelectSeriesWizardPage.NA"));
+				cboYItems[i].add(Localization.getString("SelectSeriesWizardPage.NA")); //$NON-NLS-1$
 				cboYItems[i].select(0);
 				cboYItems[i].setVisible(false);
 				lblYItems[i].setVisible(false);
@@ -124,34 +124,34 @@ public class SelectSeriesWizardPage extends WizardPage {
 			for(j=0; j<lblYItems.length; j++)
 				cboYItems[j].add(labels[i]);
 		}
-		
-		
+
+
 		//Add the key filter wigets
 		btnKey = new Button(comp, SWT.CHECK);
-		btnKey.setText(Localization.getString("SelectSeriesWizardPage.UseHistoricalData"));
+		btnKey.setText(Localization.getString("SelectSeriesWizardPage.UseHistoricalData")); //$NON-NLS-1$
 		btnKey.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
 				txtKey.setEnabled(btnKey.getSelection());
 			}
 		});
-		
+
 		data1 = new FormData();
 		data1.left = new FormAttachment(cmpGraphOpts, 20);
 		data1.top = new FormAttachment(txtTitle, 0);
 		data1.right = new FormAttachment(100, 0);
 		btnKey.setLayoutData(data1);
-		
+
 		lblKey = new Label(comp, SWT.NONE);
-		lblKey.setText(Localization.getString("SelectSeriesWizardPage.KeyFilter"));
+		lblKey.setText(Localization.getString("SelectSeriesWizardPage.KeyFilter")); //$NON-NLS-1$
 		txtKey = new Text(comp, SWT.BORDER);
-		
+
 		if(null != txtKey) {
 			txtKey.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
 					getWizard().getContainer().updateButtons();
 					if(txtTitle.getText().length() == 0) {
-						setErrorMessage(Localization.getString("SelectSeriesWizardPage.KeyNotSet"));
+						setErrorMessage(Localization.getString("SelectSeriesWizardPage.KeyNotSet")); //$NON-NLS-1$
 						setMessage(null);
 					} else {
 						setErrorMessage(null);
@@ -160,13 +160,13 @@ public class SelectSeriesWizardPage extends WizardPage {
 				}
 			});
 		}
-		
+
 		data1 = new FormData();
 		data1.left = new FormAttachment(cmpGraphOpts, 20);
 		data1.top = new FormAttachment(btnKey, 0);
 		data1.right = new FormAttachment(80, 0);
 		lblKey.setLayoutData(data1);
-		
+
 		data1 = new FormData();
 		data1.left = new FormAttachment(cmpGraphOpts, 20);
 		data1.top = new FormAttachment(lblKey, 2);
@@ -176,14 +176,14 @@ public class SelectSeriesWizardPage extends WizardPage {
 		//Make comp visible
 		setControl(comp);
 	}
-	
+
 	public void setKeyEnablement(boolean required, boolean optional) {
 		btnKey.setVisible(optional);
 		txtKey.setVisible(required || optional);
 		lblKey.setVisible(required || optional);
 		txtKey.setEnabled(required);
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return false;
@@ -197,14 +197,14 @@ public class SelectSeriesWizardPage extends WizardPage {
 	private boolean saveDataToModel() {
 		if(isSeriesUnique()) {
 			model.setTitle(txtTitle.getText());
-			
+
 			if(null != txtKey && txtKey.isEnabled())
 				model.setKey(txtKey.getText());
 			else
 				model.setKey(null);
-			
+
 			model.setXSeries(cboXItem.getSelectionIndex()-1);
-			
+
 			int i, count;
 			for(i=1, count=1; i<cboYItems.length; i++)
 				if(cboYItems[i].isVisible() && 0 != cboYItems[i].getSelectionIndex())
@@ -221,11 +221,11 @@ public class SelectSeriesWizardPage extends WizardPage {
 	}
 
 	private boolean isSeriesUnique() {
-		if("".equals(txtTitle.getText().trim()))
+		if("".equals(txtTitle.getText().trim())) //$NON-NLS-1$
 			return false;
 		if(null != txtKey && txtKey.isEnabled() && txtKey.getText().length() <= 0)
 			return false;
-		
+
 		for(int j,i=0; i<cboYItems.length; i++) {
 			if(cboYItems[i].isVisible()) {
 				for(j=i+1; j<cboYItems.length; j++) {
@@ -257,7 +257,7 @@ public class SelectSeriesWizardPage extends WizardPage {
 		if(null != txtTitle)
 			txtTitle.dispose();
 		txtTitle = null;
-		
+
 		if(null != txtKey)
 			txtKey.dispose();
 		txtKey = null;
@@ -285,10 +285,10 @@ public class SelectSeriesWizardPage extends WizardPage {
 		lblYItems = null;
 		model = null;
 	}
-	
+
 	private class ComboSelectionListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent e) {}
-		
+
 		public void widgetSelected(SelectionEvent e) {
 			if(!cboXItem.equals(e.getSource())) {
 				boolean setVisible = true;
@@ -305,14 +305,14 @@ public class SelectSeriesWizardPage extends WizardPage {
 			}
 
 			if(!isSeriesUnique()) {
-				setErrorMessage(Localization.getString("SelectSeriesWizardPage.SeriesNotSelected"));
+				setErrorMessage(Localization.getString("SelectSeriesWizardPage.SeriesNotSelected")); //$NON-NLS-1$
 				setMessage(null);
 			} else {
 				setErrorMessage(null);
-				setMessage("");
+				setMessage(""); //$NON-NLS-1$
 			}
 			if(txtTitle.getText().length() == 0) {
-				setErrorMessage(Localization.getString("SelectSeriesWizardPage.TitleNotSet"));
+				setErrorMessage(Localization.getString("SelectSeriesWizardPage.TitleNotSet")); //$NON-NLS-1$
 				setMessage(null);
 			}
 

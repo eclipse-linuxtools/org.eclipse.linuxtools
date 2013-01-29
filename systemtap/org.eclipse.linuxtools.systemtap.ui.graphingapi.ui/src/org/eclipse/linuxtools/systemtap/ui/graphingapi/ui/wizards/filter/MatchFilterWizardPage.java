@@ -28,10 +28,10 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 public class MatchFilterWizardPage extends FilterWizardPage {
 	public MatchFilterWizardPage() {
-		super("selectFilterOptions");
-		setTitle(Localization.getString("MatchFilterWizardPage.CreateMatchFilter"));
+		super("selectFilterOptions"); //$NON-NLS-1$
+		setTitle(Localization.getString("MatchFilterWizardPage.CreateMatchFilter")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
@@ -49,20 +49,20 @@ public class MatchFilterWizardPage extends FilterWizardPage {
 		ColumnLayout colLayout = new ColumnLayout();
 		colLayout.maxNumColumns = 1;
 		cmpFilterOpts.setLayout(colLayout);
-		
+
 		//Column
 		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
-		lblColumn.setText(Localization.getString("MatchFilterWizardPage.Column"));
+		lblColumn.setText(Localization.getString("MatchFilterWizardPage.Column")); //$NON-NLS-1$
 		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN);
 		cboColumn.addSelectionListener(selectionListener);
 		for(int i=0; i<wizard.series.length; i++)
 			cboColumn.add(wizard.series[i]);
 
 		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
-		
+
 		//String to compare to
 		Label lblCompare = new Label(cmpFilterOpts, SWT.NONE);
-		lblCompare.setText(Localization.getString("MatchFilterWizardPage.CompareTo"));
+		lblCompare.setText(Localization.getString("MatchFilterWizardPage.CompareTo")); //$NON-NLS-1$
 		txtCompare = new Text(cmpFilterOpts, SWT.BORDER);
 		txtCompare.addModifyListener(modifyListener);
 
@@ -70,16 +70,16 @@ public class MatchFilterWizardPage extends FilterWizardPage {
 
 		//Style
 		radKeepMatch = new Button(cmpFilterOpts, SWT.RADIO);
-		radKeepMatch.setText(Localization.getString("MatchFilterWizardPage.KeepMatching"));
+		radKeepMatch.setText(Localization.getString("MatchFilterWizardPage.KeepMatching")); //$NON-NLS-1$
 		radKeepMatch.addSelectionListener(selectionListener);
 		radKeepMatch.setSelection(true);
 		radRemoveMatch = new Button(cmpFilterOpts, SWT.RADIO);
-		radRemoveMatch.setText(Localization.getString("MatchFilterWizardPage.RemoveMatching"));
+		radRemoveMatch.setText(Localization.getString("MatchFilterWizardPage.RemoveMatching")); //$NON-NLS-1$
 		radRemoveMatch.addSelectionListener(selectionListener);
-		
+
 		setControl(comp);
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return false;
@@ -91,8 +91,9 @@ public class MatchFilterWizardPage extends FilterWizardPage {
 		String compare = txtCompare.getText().trim();
 		int style = (radKeepMatch.getSelection() ? MatchFilter.KEEP_MATCHING : MatchFilter.REMOVE_MATCHING);
 		if(selected >=0 && selected < cboColumn.getItemCount()) {
-			if(compare.length() > 0)
+			if(compare.length() > 0) {
 				wizard.filter = new MatchFilter(selected, compare, style);
+			}
 		}
 	}
 
@@ -121,7 +122,7 @@ public class MatchFilterWizardPage extends FilterWizardPage {
 			radRemoveMatch.dispose();
 			radRemoveMatch = null;
 		}
-		
+
 		super.dispose();
 	}
 

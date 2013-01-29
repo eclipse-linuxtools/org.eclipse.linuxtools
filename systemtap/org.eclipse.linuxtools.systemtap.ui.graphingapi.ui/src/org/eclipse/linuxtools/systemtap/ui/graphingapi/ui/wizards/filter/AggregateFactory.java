@@ -24,19 +24,19 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.SumAggre
 
 public final class AggregateFactory {
 	private static final String[] aggregateNames = new String[] {
-		Localization.getString("AggregateFactory.AverageAggregate"),
-		Localization.getString("AggregateFactory.CountAggregate"),
-		Localization.getString("AggregateFactory.MaxAggregate"),
-		Localization.getString("AggregateFactory.MinAggregate"),
-		Localization.getString("AggregateFactory.SumAggregate")
+		Localization.getString("AggregateFactory.AverageAggregate"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.CountAggregate"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.MaxAggregate"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.MinAggregate"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.SumAggregate") //$NON-NLS-1$
 	};
 
 	private static final String[] aggregateDescriptions = new String[] {
-		Localization.getString("AggregateFactory.AverageDescription"),
-		Localization.getString("AggregateFactory.CountDescription"),
-		Localization.getString("AggregateFactory.MaxDescription"),
-		Localization.getString("AggregateFactory.MinDescription"),
-		Localization.getString("AggregateFactory.SumDescription")
+		Localization.getString("AggregateFactory.AverageDescription"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.CountDescription"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.MaxDescription"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.MinDescription"), //$NON-NLS-1$
+		Localization.getString("AggregateFactory.SumDescription") //$NON-NLS-1$
 	};
 
 	public static final String[] aggregateIDs = new String[] {
@@ -46,29 +46,29 @@ public final class AggregateFactory {
 		MinAggregate.ID,
 		SumAggregate.ID
 	};
-	
+
 	public static String getAggregateName(String id) {
 		int index = getIndex(id);
 		if(index >= 0)
 			return aggregateNames[index];
 		return null;
 	}
-	
+
 	public static String getAggregateDescription(String id) {
 		int index = getIndex(id);
 		if(index >= 0)
 			return aggregateDescriptions[index];
 		return null;
 	}
-	
+
 	private static int getIndex(String id) {
 		for(int i=0; i< aggregateIDs.length; i++)
 			if(id.equals(aggregateIDs[i]))
 				return i;
-		
+
 		return -1;
 	}
-	
+
 	public static final IDataAggregate createAggregate(String id) {
 		switch(getIndex(id)) {
 			case 0:

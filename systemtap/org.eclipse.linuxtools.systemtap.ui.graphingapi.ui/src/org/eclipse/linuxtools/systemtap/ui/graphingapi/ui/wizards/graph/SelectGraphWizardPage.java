@@ -23,18 +23,18 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 public class SelectGraphWizardPage extends WizardPage implements Listener {
 	public SelectGraphWizardPage() {
-		super("selectGraph");
-		setTitle(Localization.getString("SelectGraphWizardPage.SelectGraph"));
+		super("selectGraph"); //$NON-NLS-1$
+		setTitle(Localization.getString("SelectGraphWizardPage.SelectGraph")); //$NON-NLS-1$
 	}
-	
+
 	public void createControl(Composite parent) {
 		wizard = (SelectGraphWizard)getWizard();
-		
+
 		Composite cmpGraphOpts = new Composite(parent, SWT.NONE);
 		ColumnLayout colLayout = new ColumnLayout();
 		colLayout.maxNumColumns = 1;
 		cmpGraphOpts.setLayout(colLayout);
-		
+
 		String[] graphIDs = GraphFactory.getAvailableGraphs(wizard.model.getDataSet());
 		btnGraphs = new Button[graphIDs.length];
 		for(int i=0; i<btnGraphs.length; i++) {
@@ -42,12 +42,12 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 			btnGraphs[i].setImage(GraphFactory.getGraphImage(graphIDs[i]));
 			btnGraphs[i].addListener(SWT.Selection, this);
 			btnGraphs[i].setData(graphIDs[i]);
-			btnGraphs[i].setToolTipText(GraphFactory.getGraphName(btnGraphs[i].getData().toString()) + "\n\n" +
+			btnGraphs[i].setToolTipText(GraphFactory.getGraphName(btnGraphs[i].getData().toString()) + "\n\n" + //$NON-NLS-1$
 					GraphFactory.getGraphDescription(btnGraphs[i].getData().toString()));
 		}
 		setControl(cmpGraphOpts);
 	}
-	
+
 	public void handleEvent(Event event) {
 		if(event.widget instanceof Button) {
 			Button target = (Button)event.widget;
@@ -60,9 +60,9 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 				}
 		}
 	}
-	
+
 	@Override
-	public IWizardPage getNextPage() {    		
+	public IWizardPage getNextPage() {
 		return wizard.selectSeriesPage;
 	}
 
@@ -70,15 +70,15 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 	public boolean canFlipToNextPage() {
 		return wizard.model.isGraphSet();
 	}
-	
+
 	private void saveDataToModel(String selected) {
 		GraphModel model = wizard.model;
 		model.setGraph(selected);
 		wizard.selectSeriesPage.setKeyEnablement(
-				GraphFactory.isKeyRequired(model.getGraphID(), model.getDataSet()), 
+				GraphFactory.isKeyRequired(model.getGraphID(), model.getDataSet()),
 				GraphFactory.isKeyOptional(model.getGraphID(), model.getDataSet()));
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -87,7 +87,7 @@ public class SelectGraphWizardPage extends WizardPage implements Listener {
 				btnGraphs[i] = null;
 		btnGraphs = null;
 	}
-	
+
 	private Button[] btnGraphs;
 	private SelectGraphWizard wizard;
 }
