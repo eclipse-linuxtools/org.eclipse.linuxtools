@@ -13,23 +13,6 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.ui.viewActions">
-		<viewContribution
-			id="org.eclipse.linuxtools.systemtap.ui.consolelog.consoleview.toolbar"
-			targetID="org.eclipse.ui.console.ConsoleView">
-			<action
-				id="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.SaveLogAction"
-				label="%action.saveLog.name"
-				tooltip="%action.saveLog.desc"
-				class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.SaveLogAction"
-				icon="icons/actions/save_log.gif"
-				toolbarPath="launchGroup"
-				state="false"
-				style="push"/>
-
-		</viewContribution> 
-	</extension>
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">

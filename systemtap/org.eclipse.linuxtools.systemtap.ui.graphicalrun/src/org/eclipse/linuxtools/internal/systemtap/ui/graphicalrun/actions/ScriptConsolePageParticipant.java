@@ -7,11 +7,9 @@
  *
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog;
+package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.SaveLogAction;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
@@ -36,13 +34,11 @@ public class ScriptConsolePageParticipant implements IConsolePageParticipant {
 
 		ScriptConsole console = (ScriptConsole) iConsole;
 
-		StopScriptAction stopScriptAction = new StopScriptAction(console);
-		SaveLogAction saveLogAction = new SaveLogAction(console);
+		ModifyParsingAction modifyParsingAction = new ModifyParsingAction(console);
 
 		// contribute to toolbar
 		IToolBarManager manager = page.getSite().getActionBars().getToolBarManager();
-		manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, stopScriptAction);
-		manager.appendToGroup(IConsoleConstants.OUTPUT_GROUP, saveLogAction);
+		manager.appendToGroup(IConsoleConstants.OUTPUT_GROUP, modifyParsingAction);
 	}
 
 	public void dispose() {

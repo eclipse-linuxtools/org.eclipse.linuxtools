@@ -13,31 +13,38 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
 import java.io.File;
 
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-
-
 /**
  * This class is used to allow the user to save the log generated from an active console
  * @author Ryan Morse
  */
 public class SaveLogAction extends ConsoleAction {
+
+
+	public SaveLogAction(ScriptConsole fConsole) {
+		super(fConsole,
+				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/save_log.gif"), //$NON-NLS-1$
+				Localization.getString("action.saveLog.name"), //$NON-NLS-1$
+				Localization.getString("action.saveLog.desc")); //$NON-NLS-1$
+	}
+
 	/**
 	 * The main method of this class. Handles getting the current <code>ScriptConsole</code>
 	 * and telling it to save the output to the selected file.
 	 */
 	@Override
 	public void run() {
-		ScriptConsole console = ScriptConsole.getActive();
-		if(null != console && console.isRunning()) {
+		if(null != console) {
 			File file = getFile();
-
-			if(null != file)
+			if(null != file){
 				console.saveStream(file);
+			}
 		}
 	}
 
@@ -52,8 +59,9 @@ public class SaveLogAction extends ConsoleAction {
 
 		path = dialog.open();
 
-		if(null == path)
+		if(null == path){
 			return null;
+		}
 
 		return new File(path);
 	}

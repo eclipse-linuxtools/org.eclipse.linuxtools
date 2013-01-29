@@ -13,7 +13,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.GraphicalRunPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
@@ -40,6 +42,14 @@ import org.eclipse.ui.WorkbenchException;
  * @author Ryan Morse
  */
 public class ModifyParsingAction extends ConsoleAction {
+
+	ModifyParsingAction(ScriptConsole fConsole) {
+		super(fConsole,
+				Platform.getBundle(GraphicalRunPlugin.PLUGIN_ID).getEntry("icons/actions/regEx.gif"), //$NON-NLS-1$
+				Messages.ModifyParsingAction_name,
+				Messages.ModifyParsingAction_desc);
+	}
+
 	/**
 	 * Prompts the user for a new regular expression to use in parsing the stap output for
 	 * the <code>DataSet</code>. If the user enters a new parsing expression then it will
@@ -60,7 +70,6 @@ public class ModifyParsingAction extends ConsoleAction {
 		IDataSet dataSet = wizard.getDataSet();
 
 		if(null != parser && null != dataSet) {
-			ScriptConsole console = ScriptConsole.getActive();
 			LoggedCommand cmd = console.getCommand();
 
 			ArrayList<IGobblerListener> listeners = cmd.getInputStreamListeners();

@@ -51,22 +51,6 @@
 				style="push"
 				state="false"/>
 		</actionSet>
-		<actionSet
-			label="%actionset.modifyParsing.name"
-			visible="false"
-			id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.ParsingActionSet">
-			<action
-				label="%action.modifyParsing.name"
-				tooltip="%action.modifyParsing.name"
-				id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.ModifyParsingAction"
-				icon="icons/actions/regEx.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/build.ext"
-				menubarPath="edit/edit.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions.ModifyParsingAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.graphicalrun.commands.ModifyParsing"
-				style="push"
-				state="false"/>
-		</actionSet>
 	</extension>
 
 	<extension
@@ -86,4 +70,16 @@
 			<viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
 		</perspectiveExtension>
 	</extension>
+ <extension
+       point="org.eclipse.ui.console.consolePageParticipants">
+    <consolePageParticipant
+          class="org.eclipse.linuxtools.internal.systemtap.ui.graphicalrun.actions.ScriptConsolePageParticipant"
+          id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.consolePageParticipant2">
+       <enablement>
+          <instanceof
+                value="org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole">
+          </instanceof>
+       </enablement>
+    </consolePageParticipant>
+ </extension>
 </plugin>
