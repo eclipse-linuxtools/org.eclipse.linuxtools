@@ -77,7 +77,7 @@ public abstract class AbstractSTDataView extends ViewPart {
     /**
      * Create optional arbitrary Controls, on top of viewer. Does nothing by default. Can be used to display a title, or
      * some other informations.
-     * 
+     *
      * @param parent
      *            the parent composite, with a gridlayout (1 column)
      */
@@ -87,7 +87,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl(Composite parent) {
@@ -139,7 +139,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the copy actions.
-     * 
+     *
      * @return IAction
      */
     protected IAction createCopyToAction() {
@@ -148,7 +148,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the export To CSV actions.
-     * 
+     *
      * @return IAction
      */
     protected IAction createExportToCSVAction() {
@@ -157,7 +157,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the collapse selection actions.
-     * 
+     *
      * @return IAction
      */
     protected IAction createCollapseSelectionAction() {
@@ -170,7 +170,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the expand selection actions.
-     * 
+     *
      * @return IAction
      */
     protected IAction createExpandSelectionAction() {
@@ -183,7 +183,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the Hide and/or Show action.
-     * 
+     *
      * @return IAction
      */
     protected IAction createHideShowColumnAction() {
@@ -192,7 +192,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the sort action.
-     * 
+     *
      * @return IAction
      */
     protected IAction createSortAction() {
@@ -201,7 +201,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the collapse all action.
-     * 
+     *
      * @return IAction
      */
     protected IAction createCollapseAllAction() {
@@ -214,7 +214,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates the expand all action.
-     * 
+     *
      * @return IAction
      */
     protected IAction createExpandAllAction() {
@@ -230,7 +230,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * If you intend to add an action in the context menu you may override the <code>fillContextMenu</code> method.
      * </p>
-     * 
+     *
      * @see #fillContextMenu(IMenuManager manager)
      */
     protected MenuManager initContextMenu() {
@@ -250,7 +250,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * You can override this method if you want - but remember to call <code>super.initToolBar()</code>.
      * </p>
-     * 
+     *
      * @param manager
      *            the tool bar manager of this view
      */
@@ -271,21 +271,12 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Init the menu for the receiver.
-     * 
+     *
      * @param menu
      */
     protected void initMenu(IMenuManager menu) {
-        if (sortAction != null) {
-            menu.add(sortAction);
-        }
-        if (hideShowColAction != null) {
-            menu.add(hideShowColAction);
-        }
         if (preferencesAction != null) {
             menu.add(preferencesAction);
-        }
-        if (exportToCSVAction != null) {
-            menu.add(exportToCSVAction);
         }
 
         contributeToDropDownMenu(menu);
@@ -293,7 +284,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
      */
     public void setFocus() {
@@ -305,7 +296,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Return the viewer.
-     * 
+     *
      * @return AbstractSTViewer
      */
     public AbstractSTViewer getSTViewer() {
@@ -314,7 +305,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Return the tree for the receiver.
-     * 
+     *
      * @return Control
      */
     public Control getControl() {
@@ -323,7 +314,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Shortcut for getViewer().setInput(input) See {@link TreeViewer#setInput(Object)}
-     * 
+     *
      * @param input
      */
     public void setInput(Object input) {
@@ -332,7 +323,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Get the IWorkbenchSiteProgressService for the receiver.
-     * 
+     *
      * @return IWorkbenchSiteProgressService or <code>null</code>.
      */
     protected IWorkbenchSiteProgressService getProgressService() {
@@ -346,7 +337,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Return the preferences action.
-     * 
+     *
      * @return IAction
      */
     protected IAction getPreferencesAction() {
@@ -355,7 +346,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Set the preferences action.
-     * 
+     *
      * @param preferencesAction
      */
     protected void setPreferencesAction(ViewPreferencesAction preferencesAction) {
@@ -364,7 +355,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Gets the selection provider.
-     * 
+     *
      * @return the selection provider
      */
     protected ISelectionProvider getSelectionProvider() {
@@ -373,7 +364,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Return the input of the viewer.
-     * 
+     *
      * @return Object
      */
     public Object getViewerInput() {
@@ -382,7 +373,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Set the selection of the receiver.
-     * 
+     *
      * @param selection
      */
     protected void setSelection(IStructuredSelection selection) {
@@ -394,7 +385,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * Subclasses may extend it. don't forget to call <code>super.fillContextMenu(...)</code>
      * </p>
-     * 
+     *
      * @param manager
      */
     protected void fillContextMenu(IMenuManager manager) {
@@ -419,7 +410,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * Subclasses may override it.
      * </p>
-     * 
+     *
      * @param menu
      */
     protected void contributeToDropDownMenu(IMenuManager menu) {
@@ -431,7 +422,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * Subclasses may override it.
      * </p>
-     * 
+     *
      * @param manager
      */
     protected void contributeToToolbar(IToolBarManager manager) {
@@ -443,7 +434,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * <p>
      * Subclasses may override it.
      * </p>
-     * 
+     *
      * @param actionBars
      */
     protected void registerGlobalActions(IActionBars actionBars) {
@@ -456,7 +447,7 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates an instance of ISTFindReplaceTarget. It has to return an object not null when the Find action is enabled
-     * 
+     *
      * @return ISTFindReplaceTarget
      */
     public ISTFindReplaceTarget createSTFindReplaceTarget() {
@@ -469,11 +460,11 @@ public abstract class AbstractSTDataView extends ViewPart {
      * By default it returns <code>getAllFields()</code>. If you want to change that behavior you'll have to override
      * this method.
      * </p>
-     * 
+     *
      * <p>
      * Subclasses may override it.
      * </p>
-     * 
+     *
      * @return the fields that are able to be sorted
      */
     protected ISTDataViewersField[] getSortingFields() {
@@ -482,11 +473,11 @@ public abstract class AbstractSTDataView extends ViewPart {
 
     /**
      * Creates a wrapper handling a TreeTable or Table Viewer
-     * 
+     *
      * <p>
      * Subclasses may override it.
      * </p>
-     * 
+     *
      * @param parent
      * @return an AbstractSTViewer
      */
