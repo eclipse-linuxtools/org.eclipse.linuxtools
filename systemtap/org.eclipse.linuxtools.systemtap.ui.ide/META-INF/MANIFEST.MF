@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.actions,
  org.eclipse.linuxtools.systemtap.ui.ide.structures
-Require-Bundle: org.eclipse.linuxtools.systemtap.ui.logging,
+Require-Bundle: 
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.systemtap.ui.editor,

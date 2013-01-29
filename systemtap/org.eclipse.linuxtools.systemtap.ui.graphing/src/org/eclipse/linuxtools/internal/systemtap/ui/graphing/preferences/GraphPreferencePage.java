@@ -17,7 +17,6 @@ import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -29,7 +28,7 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
@@ -65,11 +64,11 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
 				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
-		
+
 	}
 
 	public void init(IWorkbench workbench) {
 	}
-	
+
 }
 
