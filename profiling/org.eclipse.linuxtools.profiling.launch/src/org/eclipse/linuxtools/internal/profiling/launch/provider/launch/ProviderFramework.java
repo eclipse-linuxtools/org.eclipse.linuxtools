@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -180,6 +184,30 @@ public class ProviderFramework {
 				String currentType = config.getAttribute("type"); //$NON-NLS-1$
 				if (currentType != null && type != null
 						&& currentType.equals(type) && currentName != null) {
+					ret.put(currentName, currentId);
+				}
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Get map of all pairs of names and IDs of profiling providers. This
+	 * looks through extensions of the extension point
+	 * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>.
+	 *
+	 * @return A <code>SortedMap<String, String></code> of all pairs of names and IDs
+	 * of profiling providers.
+	 * @since 2.0
+	 */
+	public static SortedMap<String, String> getAllProviderNames() {
+		SortedMap<String, String> ret = new TreeMap<String, String>();
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentId = config.getAttribute("id"); //$NON-NLS-1$
+				String currentName = config.getAttribute("name"); //$NON-NLS-1$
+				if (currentName != null && currentId != null) {
 					ret.put(currentName, currentId);
 				}
 			}
@@ -388,6 +416,28 @@ public class ProviderFramework {
 				if (currentType != null && type != null
 						&& currentType.equals(type)) {
 					ret.add(currentId);
+				}
+			}
+		}
+		return ret.toArray(new String [] {});
+	}
+
+	/**
+	 * Get all the profiling categories. This looks through extensions of
+	 * the extension point <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
+	 * and stores the different categories found.
+	 *
+	 * @return A <code>String []</code> of all profiling categories.
+	 * @since 2.0
+	 */
+	public static String[] getProviderCategories() {
+		Set<String> ret = new TreeSet<String> ();
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			if (config.getName().equals("provider")) { //$NON-NLS-1$
+				String currentType = config.getAttribute("type"); //$NON-NLS-1$
+				if (currentType != null) {
+					ret.add(currentType);
 				}
 			}
 		}

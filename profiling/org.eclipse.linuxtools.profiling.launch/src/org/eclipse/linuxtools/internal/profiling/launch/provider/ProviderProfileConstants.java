@@ -24,12 +24,12 @@ public class ProviderProfileConstants {
 	 * Profiling preferences key.
 	 */
 	public static final String PREFS_KEY = "provider"; //$NON-NLS-1$
-	
+
 	/**
 	 * Project attribute to indicate project is overriding settings
 	 */
 	public static final String USE_PROJECT_SETTINGS = "use_project";
-	
+
 	/**
 	 * Key to acquire the extension point class parameter containing the
 	 * profiling type.

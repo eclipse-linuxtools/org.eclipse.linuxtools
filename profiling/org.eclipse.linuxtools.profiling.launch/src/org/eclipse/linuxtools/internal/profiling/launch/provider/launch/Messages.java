@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,11 @@ public class Messages extends NLS {
 	public static String ProjectSettings_0;
 	public static String PreferenceLink_0;
 	public static String ProviderLaunchConfigurationPrompt_0;
+	public static String ProviderNoProfilers_title_0;
+	public static String ProviderNoProfilers_msg_0;
+	public static String ProviderProfilerMissing_title_0;
+	public static String ProviderProfilerMissing_msg_0;
+	public static String ProviderProfilerMissing_msg_1;
 
 	static {
 		// initialize resource bundle
