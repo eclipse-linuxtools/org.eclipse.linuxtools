@@ -20,6 +20,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
+import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate;
@@ -68,22 +69,26 @@ public class LaunchTest extends AbstractTest {
 	}
 
 	public void testDefaultRun () {
-		try {
-			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-		} catch (CoreException e) {
-			fail();
+		if (PerfCore.checkPerfInPath()) {
+			try {
+				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
+			} catch (CoreException e) {
+				fail();
+			}
 		}
 	}
 
 	public void testClockEventRun () {
-		try {
-			ArrayList<String> list = new ArrayList<String>();
-			list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
-			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
-			wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
-			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-		} catch (CoreException e) {
-			fail();
+		if (PerfCore.checkPerfInPath()) {
+			try {
+				ArrayList<String> list = new ArrayList<String>();
+				list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
+				wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+				wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
+				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
+			} catch (CoreException e) {
+				fail();
+			}
 		}
 	}
 
