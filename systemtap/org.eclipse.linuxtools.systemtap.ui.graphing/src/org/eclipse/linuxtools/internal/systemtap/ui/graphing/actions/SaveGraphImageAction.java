@@ -18,10 +18,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
-
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.GC;
@@ -35,7 +34,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This action is designed to allow for saving of the graph in the active window.  
+ * This action is designed to allow for saving of the graph in the active window.
  * It will let the user select the location to save the image, and then save it as
  * a jpg image.
  * @author Ryan Morse
@@ -46,7 +45,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	}
 
 	/**
-	 * This is the main method of the action.  It handles getting the active graph, 
+	 * This is the main method of the action.  It handles getting the active graph,
 	 * prompting the user for a location to save the image to, and then actually doing
 	 * the save.
 	 * @param act The action that fired this method.
@@ -56,26 +55,26 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		try {
 			PlatformUI.getWorkbench().getDisplay().update();
 		} catch(SWTException swte) {
-			LogManager.logCritical("SWTException SaveGraphImageAction.run:" + swte.getMessage(), this); //$NON-NLS-1$
+			ExceptionErrorDialog.openError(Localization.getString("SaveGraphImageAction.UnableToSaveGraph"), swte); //$NON-NLS-1$
 		}
 		if(null == g) {
 			displayError(Localization.getString("SaveGraphImageAction.CanNotGetGraph")); //$NON-NLS-1$
 			return;
 		}
-		
+
 		ImageData image = getImage(g);
 		if(null == image) {
 			displayError(Localization.getString("SaveGraphImageAction.CanNotCreateImage")); //$NON-NLS-1$
 			return;
 		}
-		
+
 		String path = getFile();
 		if(null == path)
 			return;
 
 		save(image, path);
 	}
-	
+
 	/**
 	 * This method retreives the active graph from the GraphSelectorView.  If no
 	 * graph is active it will return null.
@@ -90,7 +89,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 			g = gds.getActiveGraph();
 		return g;
 	}
-	
+
 	/**
 	 * This method converts the Graph into an actual image.
 	 * @param g The graph that needs to be converted to an image
@@ -106,9 +105,9 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		image.dispose();
 		return data;
 	}
-	
+
 	/**
-	 * This method will display a dialog box for the user to select a 
+	 * This method will display a dialog box for the user to select a
 	 * location to save the graph image.
 	 * @return The String location selected to save the image to.
 	 */
@@ -129,7 +128,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		loader.data = new ImageData[] {image};
 		loader.save(path, SWT.IMAGE_JPEG);
 	}
-	
+
 	/**
 	 * This method will display the error message to the user in the case
 	 * that something went wrong.
@@ -138,9 +137,9 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	private void displayError(String message) {
 		MessageDialog.openWarning(fWindow.getShell(), Localization.getString("SaveGraphImageAction.Problem"), message); //$NON-NLS-1$
 	}
-	
+
 	/**
-	 * This method is used to generate the checks to see it this button 
+	 * This method is used to generate the checks to see it this button
 	 * should be enabled or not.
 	 */
 	public void selectionChanged(IAction a, ISelection s) {
@@ -150,7 +149,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	}
 
 	/**
-	 * This method is used to generate the checks to see it this button 
+	 * This method is used to generate the checks to see it this button
 	 * should be enabled or not.
 	 */
 	private void buildEnablementChecks() {
@@ -162,19 +161,19 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 						action.setEnabled(false);
 				}
-				
+
 				public void tabOpened() {
 					gsv.getActiveDisplaySet().addTabListener(new ITabListener() {
 						public void tabClosed() {
 							if(null == gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(false);
 						}
-						
+
 						public void tabOpened() {
 							if(null != gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(true);
 						}
-						
+
 						public void tabChanged() {
 							if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(false);
@@ -183,7 +182,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 						}
 					});
 				}
-				
+
 				public void tabChanged() {
 					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 						action.setEnabled(false);
@@ -193,7 +192,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 			});
 		}
 	}
-	
+
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
@@ -202,7 +201,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		fWindow = null;
 		action = null;
 	}
-	
+
 	private IWorkbenchWindow fWindow;
 	private IAction action;
 }

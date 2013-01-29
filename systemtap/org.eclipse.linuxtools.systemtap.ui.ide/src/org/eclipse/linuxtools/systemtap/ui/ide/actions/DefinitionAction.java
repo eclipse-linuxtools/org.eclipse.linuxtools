@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.ui.IEditorPart;
@@ -42,11 +41,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class DefinitionAction extends Action implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
 	private IStructuredSelection selection = null;
-
-	public DefinitionAction() {
-		super();
-		LogManager.logInfo("initialized", this); //$NON-NLS-1$
-	}
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}

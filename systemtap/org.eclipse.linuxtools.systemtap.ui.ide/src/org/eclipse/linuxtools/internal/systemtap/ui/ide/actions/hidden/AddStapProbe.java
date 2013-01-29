@@ -25,7 +25,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -101,9 +101,7 @@ public class AddStapProbe extends AbstractRulerActionDelegate {
 						}
 					}
 				} catch (BadLocationException excp) {
-					LogManager
-							.logCritical(
-									"Exception mouseDoubleClick: " + excp.getMessage(), this); //$NON-NLS-1$
+					ExceptionErrorDialog.openError(Localization.getString("AddStapProbe.UnableToInsertProbe"), excp); //$NON-NLS-1$
 				}
 				if (die) {
 					MessageDialog

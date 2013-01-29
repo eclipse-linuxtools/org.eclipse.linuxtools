@@ -30,7 +30,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IViewPart;
@@ -63,7 +63,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	 */
 	public void run(IAction act) {
 		File f = queryFile();
-		
+
 		if(null == f) {
 		} else if(!f.exists()) {
 			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileDNE")); //$NON-NLS-1$
@@ -86,16 +86,16 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 					IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 					IViewPart ivp = p.findView(GraphSelectorView.ID);
 					((GraphSelectorView)ivp).createScriptSet(f.getName(), dataSet);
-				} catch(WorkbenchException we) {
-					LogManager.logCritical("WorkbenchException OpenScriptOutputAction.run:" + we.getMessage(), this); //$NON-NLS-1$
+				} catch (WorkbenchException e) {
+					ExceptionErrorDialog.openError(Localization.getString("OpenScriptOutputAction.UnableToOpenDialogTitle"), e); //$NON-NLS-1$
 				}
 			}
 		}
 	}
-	
+
 
 	/**
-	 * This method will display a dialog box for the user to select a 
+	 * This method will display a dialog box for the user to select a
 	 * location to open a file from.
 	 * @return The File selected to open.
 	 */
@@ -117,7 +117,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	private void displayError(String message) {
 		MessageDialog.openWarning(fWindow.getShell(), Localization.getString("OpenScriptOutputAction.Problem"), message); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * This method will read the contents of the provided file and
 	 * add the contents to the provided StringBuilder.
@@ -129,7 +129,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 		try {
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
-			
+
 			String line;
 			while(null != (line=br.readLine())) {
 				sb.append(line);
@@ -137,14 +137,14 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 			br.close();
 		} catch(FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
-			LogManager.logCritical("FileNotFoundException ImportDataSetAction.readData:" + fnfe.getMessage(), this); //$NON-NLS-1$
+			ExceptionErrorDialog.openError(Localization.getString("OpenScriptOutputAction.ErrorReadingFile"), fnfe); //$NON-NLS-1$
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
-			LogManager.logCritical("IOException ImportDataSetAction.readData:" + ioe.getMessage(), this); //$NON-NLS-1$
+			ExceptionErrorDialog.openError(Localization.getString("OpenScriptOutputAction.ErrorReadingFile"), ioe); //$NON-NLS-1$
 		}
 		return sb;
 	}
-	
+
 	/**
 	 * This method will get all of the parsing information from the user.
 	 * @param filePath The location of the file to be opened.
@@ -164,10 +164,10 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 		wizard.dispose();
 		return(null != parser && null != dataSet);
 	}
-	
+
 	public void selectionChanged(IAction a, ISelection s) {
 	}
-	
+
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
@@ -176,7 +176,7 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 		fWindow = null;
 		parser = null;
 	}
-	
+
 	private IWorkbenchWindow fWindow;
 	private IDataSet dataSet;
 	private IDataSetParser parser;

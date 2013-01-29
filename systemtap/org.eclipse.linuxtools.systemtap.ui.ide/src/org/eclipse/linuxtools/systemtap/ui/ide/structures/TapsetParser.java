@@ -34,10 +34,10 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -235,9 +235,9 @@ public class TapsetParser implements Runnable {
 			}
 			launcher.waitAndRead(str, strErr, new NullProgressMonitor());
 		} catch (URISyntaxException e) {
-			LogManager.logCritical("URISyntaxException runStap: " + e.getMessage(), this); //$NON-NLS-1$
+			ExceptionErrorDialog.openError(Messages.TapsetParser_ErrorRunningSystemtap, e);
 		} catch (CoreException e) {
-			LogManager.logCritical("CoreException runStap: " + e.getMessage(), this); //$NON-NLS-1$
+			ExceptionErrorDialog.openError(Messages.TapsetParser_ErrorRunningSystemtap, e);
 		}
 
 		return str.toString();

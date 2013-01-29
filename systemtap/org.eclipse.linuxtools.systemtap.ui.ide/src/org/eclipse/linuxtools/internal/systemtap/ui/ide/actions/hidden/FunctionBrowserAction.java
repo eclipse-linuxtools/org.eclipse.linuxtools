@@ -20,8 +20,8 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
@@ -59,7 +59,6 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 	 * @param browser	browser that fires this action
 	 */
 	public FunctionBrowserAction(IWorkbenchWindow window, FunctionBrowserView browser) {
-		LogManager.logInfo("initialized", this); //$NON-NLS-1$
 		this.window = window;
 		setId(ID);
 		setActionDefinitionId(ID);
@@ -76,7 +75,6 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 		selection = null;
 		expandAction.dispose();
 		expandAction = null;
-		LogManager.logInfo("disposed", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -133,7 +131,7 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 
 					}
 				} catch (PartInitException e) {
-					LogManager.logCritical("PartInitException run: " + e.getMessage(), this); //$NON-NLS-1$
+					ExceptionErrorDialog.openError(Localization.getString("FunctionBrowserAction.UnableToInsertFunction"), e); //$NON-NLS-1$
 				}
 			} else {
 				expandAction.run();

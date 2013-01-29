@@ -75,7 +75,6 @@ public class LogManager implements IPropertyChangeListener {
 				}
 			}
 			if(null != writer) {
-				log(INFO, "Initialized - Stream " + writer.toString());
 				new LogDaemon(writer, level);
 			}
 		}
@@ -87,15 +86,6 @@ public class LogManager implements IPropertyChangeListener {
 	 */
 	public static LogManager getInstance() {
 		return instance;
-	}
-
-	/**
-	 * Adds the input string to the logging queue at the specified level.
-	 * @param level Level to log the input message to.
-	 * @param input String to log.
-	 */
-	private synchronized void log(int level, String input) {
-		entries.add(new LogEntry(level, input));
 	}
 
 	/**
@@ -115,48 +105,6 @@ public class LogManager implements IPropertyChangeListener {
 	}
 
 	/**
-	 * Stamps the input string with an identifier for the Object that sent it.
-	 * @param input Message that has been requested to be logged.
-	 * @param o Object that requested that the message be logged.
-	 * @return A string comprising both the original message and an identifier for the Object.
-	 */
-	private String stamp(String input, Object o) {
-		Class<?> cs = o.getClass();
-		String className = cs.getName();
-		return "[" + className + "@" + Integer.toHexString(o.hashCode()) + "] " + input ;
-	}
-
-	/**
-	 * Logs to the Info level. This logging level is used for basic application runtime messages such as
-	 * creation of viewparts, dialogs, etc.
-	 * @param input Message to log.
-	 * @param o Object making the logging request.
-	 */
-	public static synchronized void logInfo(String input, Object o) {
-		instance.log(INFO, instance.stamp(input,o));
-	}
-
-	/**
-	 * Logs to the Critical level. This logging level is used to signify that an error has occured
-	 * but the software was able to handle it without crashing.
-	 * @param input Message to log.
-	 * @param o Object making the logging request.
-	 */
-	public static synchronized void logCritical(String input, Object o) {
-		instance.log(CRITICAL, instance.stamp(input,o));
-	}
-
-	/**
-	 * Logs to the Fatal level. This logging level is used when an error occurs that the software cannot
-	 * handle, and the application crashes as a result of it.
-	 * @param input Message to log.
-	 * @param o Object making the logging request.
-	 */
-	public static synchronized void logFatal(String input, Object o) {
-		instance.log(FATAL, instance.stamp(input,o));
-	}
-
-	/**
 	 * Property change event handler, notifies the logging system when the user has changed
 	 * logging related preferences.
 	 */
@@ -164,7 +112,6 @@ public class LogManager implements IPropertyChangeListener {
 		String property = event.getProperty();
 		if(property.equals(PreferenceConstants.P_LOG_ENABLED) || property.equals(PreferenceConstants.P_LOG_FILE)
 				|| property.equals(PreferenceConstants.P_LOG_LEVEL) || property.equals(PreferenceConstants.P_LOG_TYPE)) {
-			logInfo("LogManager reinitialization in progress", this);
 			init();
 		}
 	}
