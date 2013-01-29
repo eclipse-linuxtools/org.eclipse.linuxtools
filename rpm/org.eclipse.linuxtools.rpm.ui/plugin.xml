@@ -113,5 +113,16 @@
          </enablement>
       </consolePatternMatchListener>
    </extension>
+  <extension
+        id="org.eclipse.linuxtools.rpm.ui.popup"
+        name="%extension.name"
+        point="org.eclipse.ui.menus">
+        <menuContribution
+              locationURI="popup:org.eclipse.ui.popup.any?after=additions" >
+              <menu id="org.eclipse.linuxtools.rpm.ui.popup"
+                    label="%menu.label">
+              </menu>
+        </menuContribution>
+  </extension>
  
 </plugin>

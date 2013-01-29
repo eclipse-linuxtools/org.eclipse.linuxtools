@@ -49,38 +49,37 @@
    <extension
          point="org.eclipse.ui.menus">
          <menuContribution
-            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+            locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup">
          <command
                commandId="rpmlint.toggleRpmlint.command"
                label="%addremovewarnings.name" >
                 <visibleWhen>
-   		<iterate operator="and" ifEmpty="false">
-      			<adapt type="org.eclipse.core.resources.IProject">
-      			</adapt>
-   		</iterate>
-        </visibleWhen>
-               
+   					<iterate operator="and" ifEmpty="false">
+   						<adapt type="org.eclipse.core.resources.IProject">
+   							<test property="org.eclipse.core.resources.projectNature" value="org.eclipse.linuxtools.rpm.core.rpmnature"/> 
+   						</adapt>
+   					</iterate>
+        		</visibleWhen>
                </command>
          <command
                commandId="rpmlint.runRpmlint.command"
                label="%runrpmlintcommand.label">
                <visibleWhen>
-  <iterate operator="and" ifEmpty="false">
-    <or>
-      <adapt type="org.eclipse.core.resources.IResource">
-         <or>
-            <test property="org.eclipse.core.resources.name" value="*.rpm"/> 
-            <test property="org.eclipse.core.resources.name" value="*.spec"/> 
-         </or>
-      </adapt>
-      <with variable="activeEditorId">
-	       <equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
-      </with>
-    </or>
-   </iterate>
-</visibleWhen>
-               
-               </command>
+				  <iterate operator="or" ifEmpty="false">
+   					 <or>
+     					 <adapt type="org.eclipse.core.resources.IResource">
+     					    <or>
+								<test property="org.eclipse.core.resources.name" value="*.rpm"/> 
+         			          	<test property="org.eclipse.core.resources.name" value="*.spec"/> 
+         					</or>
+      					</adapt>
+    					<with variable="activeEditorId">
+	       					<equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
+      					</with>
+    				</or>
+   				</iterate>
+			</visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
