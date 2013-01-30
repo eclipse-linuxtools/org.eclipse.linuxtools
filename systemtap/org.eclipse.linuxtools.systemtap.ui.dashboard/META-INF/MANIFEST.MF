@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.consolelog
 Import-Package: com.jcraft.jsch;version="0.1.46",
- org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures
+ org.eclipse.linuxtools.systemtap.ui.ide.actions
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Name: %bundleName

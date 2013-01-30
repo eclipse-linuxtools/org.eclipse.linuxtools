@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures;
+package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
@@ -36,10 +36,10 @@ public class ChartStreamDaemon2 extends ChartStreamDaemon {
 		parser = p;
 		if(0 != outputData.length())
 			outputData.delete(0, outputData.length()-1);
-		//outputData.append(console.);
+
 		outputData.append(console.getCommand().getOutput());
 	}
-	
+
 	/**
 	 * Disposes of all the internal data.
 	 */

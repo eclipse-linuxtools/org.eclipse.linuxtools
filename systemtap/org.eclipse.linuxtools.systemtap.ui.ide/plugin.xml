@@ -207,7 +207,16 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"
 				style="push"
 				state="false"/>
-		</actionSet>
+	        <action
+                label="%action.runChart.name"
+                tooltip="%action.runChart.desc"
+                id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChart"
+                icon="icons/actions/run/run_chart.gif"
+                toolbarPath="org.eclipse.ui.workbench.file/build.ext"
+                class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChartAction"
+                style="push"
+                state="false"/>
+		</actionSet>	
 	</extension>
 
 	<extension

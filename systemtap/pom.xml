@@ -71,7 +71,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.dashboardextension</module>
     <module>org.eclipse.linuxtools.systemtap.ui.doc</module>
     <module>org.eclipse.linuxtools.systemtap.ui.editor</module>
-    <module>org.eclipse.linuxtools.systemtap.ui.graphicalrun</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphing</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui</module>
     <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests</module>

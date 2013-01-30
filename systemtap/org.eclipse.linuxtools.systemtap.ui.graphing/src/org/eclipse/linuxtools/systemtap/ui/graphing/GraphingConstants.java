@@ -17,6 +17,6 @@ import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 
 
 public final class GraphingConstants {
-	private static final String dataSetFileName = "/GraphSettings.xml";
+	private static final String dataSetFileName = "/GraphSettings.xml"; //$NON-NLS-1$
 	public static final File DataSetMetaData = new File(SystemTapGUISettings.settingsFolder.getAbsolutePath() + dataSetFileName);
 }

@@ -21,18 +21,18 @@ import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener
 public class ChartStreamDaemon implements IGobblerListener {
 	public ChartStreamDaemon(IDataSet d, IDataSetParser p) {
 		data = d;
-		outputData = new StringBuilder("");
+		outputData = new StringBuilder(""); //$NON-NLS-1$
 		parser = p;
 		disposed = false;
 	}
-	
+
 	/**
 	 * Takes one line from the output data and appends it to data object.
 	 */
 	protected void pushData() {
 		if(null == data || null == parser)
 			return;
-		
+
 		IDataEntry e = parser.parse(outputData);
 		if(null != e)
 			data.setData(e);
@@ -42,11 +42,11 @@ public class ChartStreamDaemon implements IGobblerListener {
 		outputData.append(line);
 		this.pushData();
 	}
-	
+
 	public boolean isDisposed() {
 		return disposed;
 	}
-	
+
 	public void dispose() {
 		if(!disposed) {
 			disposed = true;

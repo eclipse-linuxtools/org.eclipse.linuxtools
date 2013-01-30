@@ -24,6 +24,11 @@ Require-Bundle:
 Bundle-ActivationPolicy: lazy
 Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.core.filesystem,
+ org.eclipse.linuxtools.systemtap.ui.graphing,
+ org.eclipse.linuxtools.systemtap.ui.graphing.views,
+ org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets,
+ org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures,
+ org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset,
  org.eclipse.linuxtools.systemtap.ui.structures,
  org.eclipse.linuxtools.systemtap.ui.structures.listeners,
  org.eclipse.linuxtools.systemtap.ui.structures.runnable,
