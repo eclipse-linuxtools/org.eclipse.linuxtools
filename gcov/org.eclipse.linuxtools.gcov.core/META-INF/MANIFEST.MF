@@ -24,6 +24,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.gcov,
- org.eclipse.linuxtools.internal.gcov.dialog;x-friends:="org.eclipse.linuxtools.gcov.launch",
  org.eclipse.linuxtools.internal.gcov.parser;x-friends:="org.eclipse.linuxtools.gcov.launch",
  org.eclipse.linuxtools.internal.gcov.view;x-friends:="org.eclipse.linuxtools.gcov.launch"

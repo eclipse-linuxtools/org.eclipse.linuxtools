@@ -20,11 +20,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.gprof,
- org.eclipse.linuxtools.internal.gprof.action;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.internal.gprof.dialog;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.internal.gprof.parser;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.internal.gprof.symbolManager;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.internal.gprof.utils;x-friends:="org.eclipse.linuxtools.gprof.test",
  org.eclipse.linuxtools.internal.gprof.view;x-friends:="org.eclipse.linuxtools.gprof.test,org.eclipse.linuxtools.gprof.launch",
- org.eclipse.linuxtools.internal.gprof.view.fields;x-friends:="org.eclipse.linuxtools.gprof.test",
  org.eclipse.linuxtools.internal.gprof.view.histogram;x-friends:="org.eclipse.linuxtools.gprof.test"
