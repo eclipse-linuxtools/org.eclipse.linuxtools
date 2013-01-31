@@ -14,10 +14,12 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -28,9 +30,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -80,7 +82,7 @@ public class StapNewWizardPage extends WizardPage {
 				dialogChanged();
 			}
 		});
-		label = new Label(container, SWT.NULL); // XXX just create a new layout with different width
+		new Label(container, SWT.NULL); // XXX just create a new layout with different width
 
 		label = new Label(container, SWT.NULL);
 		label.setText(resourceBundle.getString("StapNewWizardPage.Directory")); //$NON-NLS-1$
@@ -115,15 +117,17 @@ public class StapNewWizardPage extends WizardPage {
 		if (selection != null && selection.isEmpty() == false
 				&& selection instanceof IStructuredSelection) {
 			IStructuredSelection ssel = (IStructuredSelection) selection;
-			if (ssel.size() > 1)
+			if (ssel.size() > 1) {
 				return;
+			}
 			Object obj = ssel.getFirstElement();
 			if (obj instanceof IResource) {
 				IContainer container;
-				if (obj instanceof IContainer)
+				if (obj instanceof IContainer) {
 					container = (IContainer) obj;
-				else
+				} else {
 					container = ((IResource) obj).getParent();
+				}
 				containerText.setText(container.getFullPath().toString());
 			}
 		}
@@ -134,12 +138,15 @@ public class StapNewWizardPage extends WizardPage {
 	 * Uses the standard container selection dialog to choose the new value for
 	 * the container field.
 	 */
-
 	private void handleBrowse() {
-		DirectoryDialog dialog = new DirectoryDialog(getShell());
-		dialog.open();
-		String result = dialog.getFilterPath();
-		containerText.setText(result);
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
+				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, ""); //$NON-NLS-1$
+		if (dialog.open() == Window.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				containerText.setText(((Path) result[0]).toString());
+			}
+		}
 	}
 
 	/**
