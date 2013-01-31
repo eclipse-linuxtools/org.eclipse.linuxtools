@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
-import org.eclipse.linuxtools.systemtap.ui.editor.RecentFileMenuManager;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
@@ -152,7 +151,6 @@ public abstract class BrowserView extends ViewPart {
 		IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 		collapseHandler = new CollapseAllHandler(getViewer());
 		handlerService.activateHandler(CollapseAllHandler.COMMAND_ID, collapseHandler);
-		RecentFileMenuManager.getInstance().registerActionBar(getViewSite().getActionBars());
 	}
 
 	public TreeViewer getViewer() {

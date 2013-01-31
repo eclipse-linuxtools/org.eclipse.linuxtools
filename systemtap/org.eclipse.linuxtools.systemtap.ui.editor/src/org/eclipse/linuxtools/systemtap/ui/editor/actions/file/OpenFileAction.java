@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.editor.RecentFileLog;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.actions.EditorAction;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
@@ -34,19 +33,19 @@ import org.eclipse.ui.PlatformUI;
 
 
 public class OpenFileAction extends EditorAction {
-	
+
 	private boolean successful;
-	
+
 	public OpenFileAction() {
 		super();
 		setEnabled(true);
 		successful = false;
 	}
-	
+
 	public void run(IAction act) {
 		run();
 	}
-	
+
 	/**
 	 * Opens the editor input.
 	 */
@@ -62,12 +61,11 @@ public class OpenFileAction extends EditorAction {
 			IWorkbenchPage page= window.getActivePage();
 			try {
 				page.openEditor(input, editorId);
-				RecentFileLog.updateRecentFiles(file);
 				successful = true;
 			} catch (PartInitException e) {}
 		}
 	}
-	
+
 	/**
 	 * Request the name and location of the file to the user.
 	 * @return the File object associated to the selected file.
@@ -108,7 +106,7 @@ public class OpenFileAction extends EditorAction {
 		PathEditorInput input= new PathEditorInput(location);
 		return input;
 	}
-	
+
 	public boolean isSuccessful() {
 		return successful;
 	}

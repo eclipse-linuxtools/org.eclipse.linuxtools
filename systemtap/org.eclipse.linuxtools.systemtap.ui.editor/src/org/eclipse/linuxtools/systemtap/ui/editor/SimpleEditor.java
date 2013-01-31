@@ -49,21 +49,20 @@ public class SimpleEditor extends TextEditor {
 	@Override
 	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
 		super.init(site, input);
-		RecentFileMenuManager.getInstance().registerActionBar(getEditorSite().getActionBars());
 	}
 
 	/**
 	 * Searches the IDocument for the specified string.
-	 * 
+	 *
 	 * @param search string to find
 	 * @return the integer line number of the string
 	 */
 	public int find(String search) {
 		IDocument doc = getSourceViewer().getDocument();
 		FindReplaceDocumentAdapter finder = new FindReplaceDocumentAdapter(doc);
-		
+
 		int line = 0;
-		
+
 		jumpToLocation(0, 0);
 		try {
 			IRegion reg = finder.find(0, search, true, false, false, false);
@@ -76,7 +75,7 @@ public class SimpleEditor extends TextEditor {
 
 		return line;
 	}
-	
+
 	/**
 	 * Jumps to the location in the IDocument.
 	 * @param line the line you wish to jump to
@@ -90,7 +89,7 @@ public class SimpleEditor extends TextEditor {
 			this.getSelectionProvider().setSelection(new TextSelection(doc, offset, 0));
 		} catch(BadLocationException boe) {}
 	}
-	
+
 	/**
 	 * Selects a line in the IDocument.
 	 * @param line the line you wish to select
@@ -102,7 +101,7 @@ public class SimpleEditor extends TextEditor {
 			this.getSelectionProvider().setSelection(new TextSelection(doc, doc.getLineOffset(line-1), doc.getLineLength(line-1)-1));
 		} catch(BadLocationException boe) {}
 	}
-	
+
 	/**
 	 * Performs a SaveAs on the IDocument.
 	 */
@@ -117,15 +116,15 @@ public class SimpleEditor extends TextEditor {
 
 		IDocument doc = getSourceViewer().getDocument();
 		String s = doc.get();
-		
+
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			PrintStream ps = new PrintStream(fos);
-			
+
 			ps.print(s);
 			ps.close();
 		} catch(FileNotFoundException fnfe) {}
-		
+
 		setInput(inputFile);
 		setPartName(inputFile.getName());
 	}
@@ -140,7 +139,7 @@ public class SimpleEditor extends TextEditor {
 		PathEditorInput input= new PathEditorInput(location);
 		return input;
 	}
-	
+
 	/**
 	 * Inserts text into the IDocument.
 	 * @param text string to insert
@@ -161,7 +160,7 @@ public class SimpleEditor extends TextEditor {
 	public void insertTextAtCurrent(String text) {
 		ISelection selection = this.getSelectionProvider().getSelection();
 		IDocument doc = getSourceViewer().getDocument();
-		
+
 		if(selection instanceof ITextSelection) {
 			ITextSelection s = (ITextSelection) selection;
 			StringBuffer sb = new StringBuffer(doc.get().substring(0,s.getOffset()));
@@ -171,7 +170,7 @@ public class SimpleEditor extends TextEditor {
 			this.setHighlightRange(s.getOffset() + text.trim().length(),0,true);
 		}
 	}
-	
+
 	private File queryFile() {
 		FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
 		dialog.setText("New File"); //$NON-NLS-1$
@@ -180,7 +179,7 @@ public class SimpleEditor extends TextEditor {
 			return new File(path);
 		return null;
 	}
-	
+
 	/**
 	 * Determines whether saving is allowed currently.
 	 * @return boolean value indicating whether or not saving is allowed
@@ -189,6 +188,6 @@ public class SimpleEditor extends TextEditor {
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
-	
+
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"; //$NON-NLS-1$
 }

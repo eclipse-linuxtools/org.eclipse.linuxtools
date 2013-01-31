@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
@@ -14,12 +13,9 @@
 			description="%category.file.desc"
 			id="org.eclipse.linuxtools.systemtap.ui.editor.category.file"/>
 	</extension>
-
-	
 	
 	<extension
 		point="org.eclipse.ui.actionSets">
-
 		<actionSet
 			label="%actionset.file.name"
 			visible="false"
@@ -36,33 +32,10 @@
 				state="false"/>
 			<action
 				label=""
-				
 				id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction"
-				
 				class="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction"
 				definitionId="org.eclipse.ui.newWizard"
-				
 				state="false"/>
-				
-			
-			<!--<menu
-				id="org.eclipse.linuxtools.systemtap.ui.editor.recentFilesMenu"
-				label="%menu.recentFiles.name"
-				path="file2/recentFiles.ext">
-				<groupMarker name="slot0"/>
-				<groupMarker name="slot1"/>
-				<groupMarker name="slot2"/>
-				<groupMarker name="slot3"/>
-			</menu> -->
-			<!--<action
-				label="%menu.recentFiles.slot3.name"
-				id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.openRecentFile"
-				menubarPath="file2/org.eclipse.linuxtools.systemtap.ui.editor.recentFilesMenu/slot3"
-				class="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenRecentFileAction"
-				definitionId="org.eclipse.ui.file.openRecentFile"
-				style="push"
-				state="false"/>-->
 		</actionSet>
-
 	</extension>
 </plugin>
