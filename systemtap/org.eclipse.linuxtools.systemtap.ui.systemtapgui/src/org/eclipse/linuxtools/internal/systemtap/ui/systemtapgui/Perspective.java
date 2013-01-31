@@ -18,7 +18,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 
 public class Perspective implements IPerspectiveFactory {
-	public static String ID = "org.eclipse.linuxtools.systemtap.ui.systemtapgui.Perspective";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.systemtapgui.Perspective";
 
 	/**
 	 * Sets options in the IPageLayout object such as editorAreaVisible and the Welcome View.

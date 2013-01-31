@@ -18,12 +18,12 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class SystemTapGUIPlugin extends AbstractUIPlugin {
-	
+
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.systemtapgui";
 
 	//The shared instance.
 	private static SystemTapGUIPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */

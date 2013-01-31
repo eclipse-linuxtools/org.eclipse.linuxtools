@@ -133,7 +133,6 @@ public final class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private MenuManager createFileMenu() {
 
 		MenuManager menu = new MenuManager(Localization.getString("ApplicationActionBarAdvisor.File"), IWorkbenchActionConstants.M_FILE + "2");
-		//menu.remove("org.eclipse.ui.edit.text.openExternalFile");
 		menu.add(new Separator(IWorkbenchActionConstants.FILE_START));
 		menu.add(new Separator(IWorkbenchActionConstants.NEW_EXT));
 		menu.add(new Separator(IWorkbenchActionConstants.CLOSE_EXT));

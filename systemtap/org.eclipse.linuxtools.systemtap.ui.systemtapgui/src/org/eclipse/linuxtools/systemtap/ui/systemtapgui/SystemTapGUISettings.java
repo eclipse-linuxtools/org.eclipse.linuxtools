@@ -13,8 +13,11 @@ package org.eclipse.linuxtools.systemtap.ui.systemtapgui;
 
 import java.io.File;
 
-public final class SystemTapGUISettings {
-	public static final File settingsFolder = new File(System.getenv("HOME") + "/.systemtapgui/");
-	public static final String installDirectory = System.getProperty("user.dir");
-	public static final String tempDirectory = "/tmp/systemtapgui/";
+/**
+ * @since 2.0
+ */
+public interface SystemTapGUISettings {
+	File settingsFolder = new File(System.getenv("HOME") + "/.systemtapgui/");
+	String installDirectory = System.getProperty("user.dir");
+	String tempDirectory = "/tmp/systemtapgui/";
 }
