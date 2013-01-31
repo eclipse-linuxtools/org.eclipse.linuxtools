@@ -13,17 +13,16 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptBaseAction;
 import org.eclipse.ui.IWorkbenchWindow;
 
 /**
- * This is a child of {@link RunScriptAction} which alloes callers to run a
+ * This is a child of {@link RunScriptBaseAction} which alloes callers to run a
  * script by only passing in the path to the script. An active editor is not
  * needed
- * 
+ *
  * @author Sami Wagiaalla
- * 
+ *
  */
 public class RunScriptByPathAction extends RunScriptBaseAction {
 
