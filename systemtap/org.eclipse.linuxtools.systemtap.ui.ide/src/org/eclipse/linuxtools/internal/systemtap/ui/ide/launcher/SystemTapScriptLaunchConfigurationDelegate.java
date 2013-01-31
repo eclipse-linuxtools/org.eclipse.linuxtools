@@ -13,27 +13,39 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptByPathAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
 import org.eclipse.ui.PlatformUI;
 
 public class SystemTapScriptLaunchConfigurationDelegate implements
 		ILaunchConfigurationDelegate {
 
+	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-		RunScriptByPathAction action = new RunScriptByPathAction();
 		IPreferenceStore preferenceStore = ConsoleLogPlugin.getDefault().getPreferenceStore();
+
+		RunScriptAction action;
+
+		boolean runWithChart = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.RUN_WITH_CHART, false);
+		if (runWithChart){
+			action = new RunScriptChartAction();
+		}else{
+			action = new RunScriptAction();
+		}
 
 		// Path
 		String path = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, ""); //$NON-NLS-1$
-		action.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), path);
+		action.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		action.setPath(new Path(path));
 
 		// User Name
 		String userName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""); //$NON-NLS-1$

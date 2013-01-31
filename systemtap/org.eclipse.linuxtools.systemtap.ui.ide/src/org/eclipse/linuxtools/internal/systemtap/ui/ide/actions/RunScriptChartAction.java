@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.ChartStreamDaemon2;
@@ -20,6 +20,8 @@ import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.Messages;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
 import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
@@ -36,6 +38,7 @@ public class RunScriptChartAction extends RunScriptAction {
 
 	@Override
 	protected void scriptConsoleInitialized(ScriptConsole console){
+		getChartingOptions();
 		console.getCommand().addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
 		try {
 			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
@@ -67,12 +70,6 @@ public class RunScriptChartAction extends RunScriptAction {
 			continueRun = false;
 		}
 		wizard.dispose();
-	}
-
-	@Override
-	protected String[] buildStandardScript() {
-		getChartingOptions();
-		return super.buildStandardScript();
 	}
 
 	private IDataSet dataSet = null;

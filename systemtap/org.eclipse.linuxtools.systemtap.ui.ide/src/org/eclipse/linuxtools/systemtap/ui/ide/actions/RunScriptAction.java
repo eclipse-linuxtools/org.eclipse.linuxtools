@@ -15,11 +15,10 @@ import java.text.MessageFormat;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.ResourceUtil;
 
 
 
@@ -31,35 +30,26 @@ import org.eclipse.ui.ide.ResourceUtil;
 public class RunScriptAction extends RunScriptBaseAction {
 
 	/**
-	 * Returns the path of the current editor in the window this action is associated with.
-	 * @return The string representation of the path of the current file.
-	 */
-	@Override
-	protected String getFilePath() {
-		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-		if(ed.getEditorInput() instanceof PathEditorInput)
-		 return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
-		else
-	     return ResourceUtil.getFile(ed.getEditorInput()).getLocation().toString();
-
-	}
-
-	/**
 	 * Checks if the current editor is operating on a file that actually exists and can be
 	 * used as an argument to stap (as opposed to an unsaved buffer).
 	 * @return True if the file is valid.
 	 */
 	@Override
 	protected boolean isValid() {
-		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+		// If the path is not set this action will run the script from
+		// the active editor
+		if (this.path == null){
+			IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+			if(!isValidEditor(ed)){
+				return false;
+			}
+		}
 
-		if(isValidFile(ed))
-			if(isValidDirectory(getFilePath()))
-				return true;
-		return true;
+		return this.getFilePath().endsWith(SystemTapScriptTester.STP_SUFFIX)
+				&& isValidDirectory(this.getFilePath());
 	}
 
-	private boolean isValidFile(IEditorPart ed) {
+	private boolean isValidEditor(IEditorPart ed) {
 		if(null == ed) {
 			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null); //$NON-NLS-1$
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Problem"), msg); //$NON-NLS-1$

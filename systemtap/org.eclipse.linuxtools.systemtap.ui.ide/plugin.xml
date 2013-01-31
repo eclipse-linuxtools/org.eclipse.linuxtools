@@ -213,7 +213,7 @@
                 id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChart"
                 icon="icons/actions/run/run_chart.gif"
                 toolbarPath="org.eclipse.ui.workbench.file/build.ext"
-                class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChartAction"
+                class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartAction"
                 style="push"
                 state="false"/>
 		</actionSet>	
