@@ -67,7 +67,7 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 				.getString("FunctionBrowserAction.InsertFunction")); //$NON-NLS-1$
 		window.getSelectionService().addSelectionListener(this);
 		viewer = browser;
-		expandAction = new TreeExpandCollapseAction(FunctionBrowserView.class);
+		expandAction = new TreeExpandCollapseAction(viewer);
 	}
 
 	public void dispose() {
@@ -81,6 +81,7 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 	 * Updates <code>selection</code> with the current selection whenever the user changes
 	 * the current selection.
 	 */
+	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		if (incoming instanceof IStructuredSelection) {
 			selection = (IStructuredSelection) incoming;
@@ -138,6 +139,7 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 		}
 	}
 
+	@Override
 	public void doubleClick(DoubleClickEvent event) {
 		run();
 	}
