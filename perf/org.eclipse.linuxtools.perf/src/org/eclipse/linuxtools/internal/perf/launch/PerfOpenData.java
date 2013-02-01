@@ -34,6 +34,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
 				.getFileForLocation(file).getProject().getName();
 		ILaunchConfiguration config = createDefaultConfiguration(projectName);
 		PerfCore.Report(config, null, null, null, file.toOSString(), null);
+		PerfCore.RefreshView(file.toOSString());
 	}
 
 	@Override
