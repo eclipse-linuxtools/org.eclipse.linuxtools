@@ -49,6 +49,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
 	 */
+	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
 		return computeCompletionProposals(viewer.getDocument(), offset);
@@ -90,7 +91,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 		if (partition.getType() == STPPartitionScanner.STP_PROBE){
 			ICompletionProposal[] variableCompletions = getProbeVariableCompletions(document, offset, prefix);
 			ICompletionProposal[] functionCompletions = getFunctionCompletions(offset, prefix);
-			
+
 			ArrayList<ICompletionProposal> completions = new ArrayList<ICompletionProposal>(
 					variableCompletions.length + functionCompletions.length);
 			completions.addAll(Arrays.asList(variableCompletions));
