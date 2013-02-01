@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-//	ChangeLogWriterTest.class,
+	ChangeLogWriterTest.class,
 	GNUFormatTest.class,
 	JavaParserTest.class,
 	CParserTest.class,

@@ -87,6 +87,7 @@ public class ChangeLogWriterTest {
 		final IEditorPart currentContent = EditorHelper.openEditor(changelogFile);
 		clogWriter.setChangelog(currentContent);
 		assertEquals(currentContent, clogWriter.getChangelog());
+		EditorHelper.closeEditor(currentContent);
 	}
 
 	@Test
@@ -222,6 +223,7 @@ public class ChangeLogWriterTest {
 		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedContent, actualContent.toString());
+		EditorHelper.closeEditor(editorContent);
 	}
 
 	@Test
@@ -289,5 +291,6 @@ public class ChangeLogWriterTest {
 		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedChangeLogEntry, actualContent.toString());
+		EditorHelper.closeEditor(editorContent);
 	}
 }
