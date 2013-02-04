@@ -38,6 +38,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
+import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -134,6 +136,15 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			IPath workingDir = Path.fromOSString(wd.toURI().getPath());
 			PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
 			PerfCore.RefreshView(renderProcessLabel(exePath.toOSString()));
+
+			if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
+					PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
+				String title = renderProcessLabel(workingDir + "perf.data"); //$NON-NLS-1$
+				SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir);
+				sdData.parse();
+				PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
+				SourceDisassemblyView.RefreshView();
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -52,6 +52,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Button _chkMultiplexEvents;
 	protected Button _chkModuleSymbols;
 	protected Button _chkHideUnresolvedSymbols;
+	protected Button _chkShowSourceDisassembly;
 	protected Exception ex;
 	
 	protected Composite top;
@@ -168,6 +169,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		_chkModuleSymbols = _createCheckButton(p, PerfPlugin.STRINGS_ModuleSymbols);
 		_chkHideUnresolvedSymbols = _createCheckButton(p, PerfPlugin.STRINGS_HideUnresolvedSymbols);
 		_chkSourceLineNumbers = _createCheckButton(p, PerfPlugin.STRINGS_SourceLineNumbers);
+		_chkShowSourceDisassembly = _createCheckButton(p, PerfPlugin.STRINGS_ShowSourceDisassembly);
 		_chkSourceLineNumbers.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent se) {
@@ -279,6 +281,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 			_chkMultiplexEvents.setSelection(config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default));
 			_chkModuleSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default));
 			_chkHideUnresolvedSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default));
+			_chkShowSourceDisassembly.setSelection(config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly, PerfPlugin.ATTR_ShowSourceDisassembly_default));
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,6 +298,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_Multiplex, _chkMultiplexEvents.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, _chkModuleSymbols.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, _chkHideUnresolvedSymbols.getSelection());
+		wconfig.setAttribute(PerfPlugin.ATTR_ShowSourceDisassembly, _chkShowSourceDisassembly.getSelection());
 	}
 
 	@Override

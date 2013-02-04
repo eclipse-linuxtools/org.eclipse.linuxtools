@@ -31,8 +31,11 @@ public class PerfPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.perf";
+
 	// View ID
 	public static final String VIEW_ID = "org.eclipse.linuxtools.perf.ui.ProfileView";
+	public static final String SOURCE_DISASSEMBLY_VIEW_ID = "org.eclipse.linuxtools.perf.ui.SourceDisassemblyView";
+
 	// Launch Config ID
 	public static final String LAUNCHCONF_ID = "org.eclipse.linuxtools.perf.launch.profile";
 	
@@ -53,6 +56,8 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final boolean ATTR_ModuleSymbols_default = false;
 	public static final String ATTR_HideUnresolvedSymbols = "org.eclipse.linuxtools.internal.perf.attr.HideUnresolvedSymbols";
 	public static final boolean ATTR_HideUnresolvedSymbols_default = true;
+	public static final String ATTR_ShowSourceDisassembly = "org.eclipse.linuxtools.internal.perf.attr.ShowSourceDisassembly";
+	public static final boolean ATTR_ShowSourceDisassembly_default = false;
 	
 	//Perf Events tab attribs.
 	public static final String ATTR_DefaultEvent = "org.eclipse.linuxtools.internal.perf.attr.DefaultEvent";
@@ -79,10 +84,13 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String STRINGS_HWBREAKPOINTS = "Hardware breakpoint";
 	public static final String STRINGS_UnfiledSymbols = "Unfiled Symbols";
 	public static final String STRINGS_MultipleFilesForSymbol = "Symbols conflicting in multiple files";
+	public static final String STRINGS_ShowSourceDisassembly = "Show Source Disassembly View";
 	
 	public static final String PERF_COMMAND = "perf";
 	public static final String PERF_DEFAULT_DATA = "perf.data";
 	public static final boolean DEBUG_ON = false; //Spew debug messages or not.
+
+
 	
 	  
 	
@@ -91,12 +99,19 @@ public class PerfPlugin extends AbstractUIPlugin {
 	
 	// Model Root
 	private TreeParent _modelRoot;
-	
+
+	// Source Disassembly Data
+	private SourceDisassemblyData sourceDisassemblyData;
+
 	//Profile view
 	private PerfProfileView _ProfileView = null;
 
 	public TreeParent getModelRoot() {
 		return _modelRoot;
+	}
+
+	public SourceDisassemblyData getSourceDisassemblyData () {
+		return sourceDisassemblyData;
 	}
 
 	/**
@@ -115,7 +130,11 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public void setModelRoot(TreeParent rootnode) {
 		this._modelRoot = rootnode;
 	}
-	
+
+	public void setSourceDisassemblyData (SourceDisassemblyData sourceDisassemblyData) {
+		this.sourceDisassemblyData = sourceDisassemblyData;
+	}
+
 	public PerfProfileView getProfileView() {
 		if (_ProfileView == null) {
 			try {

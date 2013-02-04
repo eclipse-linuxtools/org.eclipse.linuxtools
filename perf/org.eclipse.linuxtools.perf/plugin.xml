@@ -19,6 +19,14 @@
             name="Remote Perf Profile View"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView"
+            icon="icons/symbol.gif"
+            id="org.eclipse.linuxtools.perf.ui.SourceDisassemblyView"
+            name="Source Disassembly">
+      </view>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
