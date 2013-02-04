@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
-      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/linuxtools/update-1.2/site.xml&amp;format=xml">
-   <description url="http://download.eclipse.org/linuxtools/update-1.2">
-      Release 1.2 of Linux Tools project.
+      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/linuxtools/update-1.2.1/site.xml&amp;format=xml">
+   <description url="http://download.eclipse.org/linuxtools/update-1.2.1">
+      Release 1.2.1 of Linux Tools project.
    </description>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.0.0">
       <category name="Linux Tools"/>

@@ -56,7 +56,7 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>update-1.2</mirror-repo-name>
+    <mirror-repo-name>update-1.2.1</mirror-repo-name>
     <tycho-version>0.16.0</tycho-version>
     <tycho-extras-version>0.16.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
