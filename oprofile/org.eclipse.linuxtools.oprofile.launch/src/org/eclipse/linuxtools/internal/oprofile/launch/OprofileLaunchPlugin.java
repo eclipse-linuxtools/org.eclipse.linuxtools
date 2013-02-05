@@ -39,6 +39,7 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE"; 			//$NON-NLS-1$
 	public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; 		//$NON-NLS-1$
 	public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";		//$NON-NLS-1$
+	public static final String ATTR_EXECUTIONS_NUMBER = ID_LAUNCH_PROFILE + ".EXECUTIONS_NUMBER";		//$NON-NLS-1$
 
 	// Manual Profile string \\
 	public static final String ATTR_MANUAL_PROFILE = ID_LAUNCH_PROFILE + ".MANUAL_PROFILE";		//$NON-NLS-1$

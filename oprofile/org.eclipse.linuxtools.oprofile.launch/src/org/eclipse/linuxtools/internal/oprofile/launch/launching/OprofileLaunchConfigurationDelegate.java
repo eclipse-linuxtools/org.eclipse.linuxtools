@@ -66,7 +66,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 
 			//add a listener for termination of the launch prior to execution of launch
 			ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
-			lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
+			lmgr.addLaunchListener(new LaunchTerminationWatcher(launch, options.getExecutionsNumber()));
 		} catch (OpcontrolException oe) {
 			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 			return false;
@@ -83,8 +83,10 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 	// run some functions when it is finished.
 	class LaunchTerminationWatcher implements ILaunchesListener2 {
 		private ILaunch launch;
-		public LaunchTerminationWatcher(ILaunch il) {
+		private int executions;
+		public LaunchTerminationWatcher(ILaunch il, int executions) {
 			launch = il;
+			this.executions = executions;
 		}
 		public void launchesTerminated(ILaunch[] launches) {
 			try {
@@ -95,7 +97,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 					 * activate the OProfile view (open it if it isn't already),
 					 * refresh the view (which parses the data/ui model and displays it).
 					 */
-					if (l.equals(launch)) {
+					if (l.equals(launch) && l.getProcesses().length == executions) {
 						oprofileDumpSamples();
 						oprofileShutdown();
 

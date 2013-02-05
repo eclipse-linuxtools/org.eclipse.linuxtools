@@ -22,7 +22,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -31,6 +33,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
+import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCounter;
@@ -82,11 +85,20 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		IPath workingDirPath = new Path(oprofileWorkingDirURI().getPath());
 
 		String arguments[] = getProgramArgumentsArray( config );
-		Process process = launcher.execute(exePath, arguments, getEnvironment(config), workingDirPath, monitor);
+		Process process = null;
+		for(int i = 0; i < options.getExecutionsNumber(); i++){
+			process = launcher.execute(exePath, arguments, getEnvironment(config), workingDirPath, monitor);
+			DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
+			try{
+				process.waitFor();
+			} catch (InterruptedException e){
+				process.destroy();
+				Status status = new Status(IStatus.ERROR, OprofileLaunchPlugin.PLUGIN_ID, OprofileLaunchMessages.getString("oprofilelaunch.error.interrupted_error.status_message"));
+				throw new CoreException(status);
+			}
+		}
 
-		DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
-
-			postExec(options, daemonEvents, process);
+		postExec(options, daemonEvents, process);
 	}
 
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);

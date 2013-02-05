@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -46,11 +47,13 @@ import org.eclipse.swt.widgets.Text;
  */
 public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	protected Text kernelImageFileText;
-	
+
 	protected Button checkSeparateLibrary;
 	protected Button checkSeparateKernel;
 
 	protected LaunchOptions options = null;
+
+	protected Spinner executionsSpinner;
 
 	private IRemoteFileProxy proxy;
 
@@ -72,6 +75,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		options.loadConfiguration(config);
 		
 		kernelImageFileText.setText(options.getKernelImageFile());
+		executionsSpinner.setSelection(options.getExecutionsNumber());
 		
 		int separate = options.getSeparateSamples();
 		
@@ -157,7 +161,25 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 		checkSeparateLibrary = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateLibrary.text")); //$NON-NLS-1$
 		checkSeparateKernel = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateKernel.text")); //$NON-NLS-1$
+
+		//Number of executions spinner
+		Composite executionsComposite = new Composite(top, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(2, false);
+		executionsComposite.setLayout(gridLayout);
+		Label executionsLabel = new Label(executionsComposite, SWT.LEFT);
+		executionsLabel.setText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.text")); //$NON-NLS-1
+		executionsLabel.setToolTipText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.tooltip")); //$NON-NLS-1$
+		executionsSpinner = new Spinner(executionsComposite, SWT.BORDER);
+		executionsSpinner.setMinimum(1);
+		executionsSpinner.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				options.setExecutionsNumber(executionsSpinner.getSelection());
+				updateLaunchConfigurationDialog();
+			}
+		});
 	}
+
+
 
 	// convenience method to create radio buttons with the given label
 	private Button myCreateCheckButton(Composite parent, String label) {

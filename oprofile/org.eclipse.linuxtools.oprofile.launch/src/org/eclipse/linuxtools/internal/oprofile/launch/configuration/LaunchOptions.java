@@ -31,8 +31,11 @@ public class LaunchOptions {
 	// The launch options for the daemon
 	private OprofileDaemonOptions options;
 
+	private int executionsNumber;
+
 	public LaunchOptions() {
 		options = new OprofileDaemonOptions();
+		executionsNumber = 1;
 	}
 	
 	/**
@@ -73,6 +76,7 @@ public class LaunchOptions {
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, options.getKernelImageFile());
 		config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, options.getSeparateProfilesMask());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_EXECUTIONS_NUMBER, getExecutionsNumber());
 	}
 	
 	/**
@@ -84,6 +88,7 @@ public class LaunchOptions {
 		try {
 			options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
 			options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
+			setExecutionsNumber(config.getAttribute(OprofileLaunchPlugin.ATTR_EXECUTIONS_NUMBER, 1));
 		} catch (CoreException e) {
 		}
 	}
@@ -142,5 +147,13 @@ public class LaunchOptions {
 	 */
 	public void setBinaryImage(String image) {
 		options.setBinaryImage(image);
+	}
+
+	public int getExecutionsNumber() {
+		return executionsNumber;
+	}
+
+	public void setExecutionsNumber(int executionsNumber) {
+		this.executionsNumber = executionsNumber;
 	}
 }
