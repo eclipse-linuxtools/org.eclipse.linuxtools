@@ -59,6 +59,7 @@ public class StreamGobbler implements Runnable {
 	 * data.  When a new line is read it will fire a DataEvent for listeners
 	 * to get a hold of the data.
 	 */
+	@Override
 	public void run() {
 		if (reader != Thread.currentThread())
 			return;

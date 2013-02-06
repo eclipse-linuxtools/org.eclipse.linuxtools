@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserVi
  * @author Ryan Morse
  */
 public class DashboardCloseMonitor implements IWorkbenchListener {
+	@Override
 	public boolean preShutdown(IWorkbench workbench, boolean forced) {
 		boolean close = true;
 		if(!forced) {
@@ -46,5 +47,6 @@ public class DashboardCloseMonitor implements IWorkbenchListener {
 		return close;
 	}
 	
+	@Override
 	public void postShutdown(IWorkbench workbench) {}
 }

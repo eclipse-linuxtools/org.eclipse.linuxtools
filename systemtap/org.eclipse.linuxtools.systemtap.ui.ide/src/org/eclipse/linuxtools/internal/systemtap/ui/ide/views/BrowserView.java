@@ -51,18 +51,23 @@ public abstract class BrowserView extends ViewPart {
 	 *
 	 */
 	static class ViewContentProvider implements ITreeContentProvider {
+		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 
+		@Override
 		public void dispose() {}
 
+		@Override
 		public Object[] getElements(Object parent) {
 			return getChildren(parent);
 		}
 
+		@Override
 		public Object getParent(Object child) {
 			return null;
 		}
 
+		@Override
 		public Object[] getChildren(Object par) {
 			TreeNode parent = ((TreeNode)par);
 
@@ -75,6 +80,7 @@ public abstract class BrowserView extends ViewPart {
 			return children;
 		}
 
+		@Override
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode)parent).getChildCount() > 0;
 		}
@@ -174,8 +180,10 @@ public abstract class BrowserView extends ViewPart {
 	abstract void refresh();
 
 	protected class ViewUpdater implements IUpdateListener {
+		@Override
 		public void handleUpdateEvent() {
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					refresh();
 				}

@@ -42,12 +42,15 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class StopModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+	@Override
 	public void init(IViewPart view) {
 		this.view = view;
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {}
 
+	@Override
 	public void run(IAction act) {
 		run();
 	}
@@ -60,6 +63,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	@Override
 	public void run() {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				TreeNode treenode = GetSelectedModule.getNode(view);
 				DashboardModule module = null;
@@ -119,6 +123,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * @param act The action that called this method
 	 * @param select The newly selected item.
 	 */
+	@Override
 	public void selectionChanged(IAction act, ISelection select) {
 		this.act = act;
 		setEnablement(false);
@@ -155,6 +160,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * Removes all internal references provided by this action.  Nothing should be
 	 * called or referenced after the dispose method.
 	 */
+	@Override
 	public void dispose() {
 		RunModuleAction.removeActionListener(runListener);
 
@@ -200,6 +206,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * Enables this action everytime a new module is run.
 	 */
 	private final IActionListener runListener = new IActionListener() {
+		@Override
 		public void handleActionEvent() {
 			setEnablement(true);
 		}
@@ -210,6 +217,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * is selected.
 	 */
 	private final ISelectionChangedListener activeModuleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			setEnablement(true);
 		}
@@ -221,6 +229,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * enablement based on whether or not it is running.
 	 */
 	private final ISelectionChangedListener moduleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode)((StructuredSelection)(e.getSelection())).getFirstElement();
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);

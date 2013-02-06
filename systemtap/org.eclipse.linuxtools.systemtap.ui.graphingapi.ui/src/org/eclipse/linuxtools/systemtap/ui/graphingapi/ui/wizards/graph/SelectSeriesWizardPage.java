@@ -37,6 +37,7 @@ public class SelectSeriesWizardPage extends WizardPage {
 		setTitle(Localization.getString("SelectSeriesWizardPage.SelectSeries")); //$NON-NLS-1$
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		model = ((SelectGraphWizard)super.getWizard()).model;
 
@@ -54,6 +55,7 @@ public class SelectSeriesWizardPage extends WizardPage {
 		lblTitle.setText(Localization.getString("SelectSeriesWizardPage.Title")); //$NON-NLS-1$
 		txtTitle = new Text(comp, SWT.BORDER);
 		txtTitle.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				getWizard().getContainer().updateButtons();
 				if(txtTitle.getText().length() == 0) {
@@ -130,7 +132,9 @@ public class SelectSeriesWizardPage extends WizardPage {
 		btnKey = new Button(comp, SWT.CHECK);
 		btnKey.setText(Localization.getString("SelectSeriesWizardPage.UseHistoricalData")); //$NON-NLS-1$
 		btnKey.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				txtKey.setEnabled(btnKey.getSelection());
 			}
@@ -148,6 +152,7 @@ public class SelectSeriesWizardPage extends WizardPage {
 
 		if(null != txtKey) {
 			txtKey.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(ModifyEvent e) {
 					getWizard().getContainer().updateButtons();
 					if(txtTitle.getText().length() == 0) {
@@ -287,8 +292,10 @@ public class SelectSeriesWizardPage extends WizardPage {
 	}
 
 	private class ComboSelectionListener implements SelectionListener {
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
 
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			if(!cboXItem.equals(e.getSource())) {
 				boolean setVisible = true;

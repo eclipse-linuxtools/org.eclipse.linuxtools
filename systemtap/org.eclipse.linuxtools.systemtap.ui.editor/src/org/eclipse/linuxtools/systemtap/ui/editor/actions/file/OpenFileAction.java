@@ -42,6 +42,7 @@ public class OpenFileAction extends EditorAction {
 		successful = false;
 	}
 
+	@Override
 	public void run(IAction act) {
 		run();
 	}

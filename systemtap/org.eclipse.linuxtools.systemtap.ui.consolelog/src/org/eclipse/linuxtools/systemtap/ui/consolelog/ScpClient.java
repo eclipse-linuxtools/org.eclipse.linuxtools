@@ -137,10 +137,12 @@ public class ScpClient {
 	}
 
   public static class MyUserInfo implements UserInfo, UIKeyboardInteractive{
+		@Override
 		public String getPassword() {
 			return passwd;
 		}
 
+		@Override
 		public boolean promptYesNo(String str) {
 			Object[] options = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
 			int foo = JOptionPane.showOptionDialog(null, str,
@@ -153,14 +155,17 @@ public class ScpClient {
 		String passwd;
 		JTextField passwordField = new JPasswordField(20);
 
+		@Override
 		public String getPassphrase() {
 			return null;
 		}
 
+		@Override
 		public boolean promptPassphrase(String message) {
 			return true;
 		}
 
+		@Override
 		public boolean promptPassword(String message) {
 			Object[] ob = { passwordField };
 			int result = JOptionPane.showConfirmDialog(null, ob, message,
@@ -173,6 +178,7 @@ public class ScpClient {
 			}
 		}
 
+		@Override
 		public void showMessage(String message) {
 			JOptionPane.showMessageDialog(null, message);
 		}
@@ -182,6 +188,7 @@ public class ScpClient {
 				new Insets(0, 0, 0, 0), 0, 0);
 		private Container panel;
 
+		@Override
 		public String[] promptKeyboardInteractive(String destination,
 				String name, String instruction, String[] prompt, boolean[] echo) {
 			panel = new JPanel();

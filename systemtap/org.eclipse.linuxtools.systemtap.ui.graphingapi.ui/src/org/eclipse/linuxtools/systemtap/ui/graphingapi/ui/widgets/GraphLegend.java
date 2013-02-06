@@ -37,10 +37,12 @@ public class GraphLegend implements IGraphPrimitive {
 		height = 0;
 	}
 	
+	@Override
 	public boolean isVisible() {
 		return true;
 	}
 	
+	@Override
 	public void calculateBounds() {
 		x = graph.getSize().x - width;
 		y = 0;
@@ -65,12 +67,14 @@ public class GraphLegend implements IGraphPrimitive {
 		width += BOX_SIZE + 3*BORDER;
 	}
 	
+	@Override
 	public boolean isUnder(Point loc) {
 		if(loc.x >=x && loc.y >= y && loc.x <= x+width && loc.y <= y+height)
 			return true;
 		return false;
 	}
 	
+	@Override
 	public void paint(GC gc) {
 		if(width == 0 || height ==0)
 			getSize(gc);

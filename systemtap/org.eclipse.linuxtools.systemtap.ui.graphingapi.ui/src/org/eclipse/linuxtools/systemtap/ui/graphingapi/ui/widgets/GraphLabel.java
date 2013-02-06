@@ -52,6 +52,7 @@ public class GraphLabel implements IGraphPrimitive {
 		return width;
 	}
 	
+	@Override
 	public void calculateBounds() {
 		if(null != parent) {
 			Point size = parent.getSize();
@@ -63,16 +64,19 @@ public class GraphLabel implements IGraphPrimitive {
 		}
 	}
 	
+	@Override
 	public boolean isVisible() {
 		return true;
 	}
 	
+	@Override
 	public boolean isUnder(Point loc) {
 		if(loc.x >= x && loc.y >= y && loc.x <= x+width && loc.y <=y+height)
 			return true;
 		return false;
 	}
 	
+	@Override
 	public void paint(GC gc) {
 		if(staticSize)
 			gc.setFont(new Font(canvas.getDisplay(), "Times", (int)size, style));

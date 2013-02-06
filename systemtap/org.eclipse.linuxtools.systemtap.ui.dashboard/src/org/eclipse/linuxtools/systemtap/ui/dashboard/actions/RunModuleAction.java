@@ -57,14 +57,17 @@ import com.jcraft.jsch.JSchException;
 
 public class RunModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
 
+	@Override
 	public void init(IViewPart view) {
 		this.view = view;
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {
 		fWindow= window;
 	}
 
+	@Override
 	public void run(IAction act) {
 		run();
 	}
@@ -176,6 +179,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * @param act The action that called this method
 	 * @param select The newly selected item.
 	 */
+	@Override
 	public void selectionChanged(IAction act, ISelection select) {
 		this.act = act;
 		setEnablement(false);
@@ -215,6 +219,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * Removes all internal references provided by this action.  Nothing should be
 	 * called or referenced after the dispose method.
 	 */
+	@Override
 	public void dispose() {
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().findView(DashboardModuleBrowserView.ID);
@@ -264,6 +269,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * Enables this action everytime a module is stopped.
 	 */
 	private final IActionListener stopListener = new IActionListener() {
+		@Override
 		public void handleActionEvent() {
 			setEnablement(true);
 		}
@@ -273,6 +279,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * Enables this action everytime a module is paused.
 	 */
 	private final IActionListener pauseListener = new IActionListener() {
+		@Override
 		public void handleActionEvent() {
 			setEnablement(true);
 		}
@@ -284,6 +291,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * enablement based on whether or not it is already paused.
 	 */
 	private final ISelectionChangedListener activeModuleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode) ((StructuredSelection) (e.getSelection()))
 					.getFirstElement();
@@ -301,6 +309,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * enablement based on whether or not it is running.
 	 */
 	private final ISelectionChangedListener moduleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode) ((StructuredSelection) (e.getSelection()))
 					.getFirstElement();

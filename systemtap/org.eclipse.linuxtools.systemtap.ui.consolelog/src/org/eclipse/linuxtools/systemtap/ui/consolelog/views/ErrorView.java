@@ -54,6 +54,7 @@ public class ErrorView extends ViewPart {
 	 */
 	public void add(final String[] log) {
 		table.getControl().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				table.addRow(log);
 

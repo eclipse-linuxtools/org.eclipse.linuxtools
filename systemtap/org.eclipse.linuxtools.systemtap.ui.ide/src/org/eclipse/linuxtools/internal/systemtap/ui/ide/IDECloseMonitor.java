@@ -27,6 +27,7 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @author Ryan Morse
  */
 public class IDECloseMonitor implements IWorkbenchListener {
+	@Override
 	public boolean preShutdown(IWorkbench workbench, boolean forced) {
 		boolean close = true;
 		if(!forced) {
@@ -40,5 +41,6 @@ public class IDECloseMonitor implements IWorkbenchListener {
 		return close;
 	}
 
+	@Override
 	public void postShutdown(IWorkbench workbench) {}
 }

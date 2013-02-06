@@ -42,6 +42,7 @@ public class ViewScriptAction extends Action implements IViewActionDelegate {
 	/**
 	 * This method sets what item the user has selected to view.
 	 */
+	@Override
 	public void init(IViewPart view) {
 		selectedItem = null;
 	}
@@ -53,6 +54,7 @@ public class ViewScriptAction extends Action implements IViewActionDelegate {
 	 * use the modified version as well as the original.
 	 * @param act An action representing the click event used to start this method.
 	 */
+	@Override
 	public void run(IAction act) {
 		DashboardModule data = (DashboardModule)selectedItem.getData();
 		
@@ -91,6 +93,7 @@ public class ViewScriptAction extends Action implements IViewActionDelegate {
 	 * @param action The action that fired this method.
 	 * @param selection The newly selected item.
 	 */
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection selected = (IStructuredSelection)selection;

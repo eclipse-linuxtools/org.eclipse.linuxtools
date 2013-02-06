@@ -32,10 +32,12 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
  * @author Ryan Morse
  */
 public class StopGraphAction extends Action implements IViewActionDelegate {
+	@Override
 	public void init(IViewPart view) {
 		selectedItem = null;
 	}
 	
+	@Override
 	public void run(IAction act) {
 		run();
 	}
@@ -67,6 +69,7 @@ public class StopGraphAction extends Action implements IViewActionDelegate {
 	 * @param action The action that started this method.
 	 * @param selection The newly selected item
 	 */
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection selected = (IStructuredSelection)selection;

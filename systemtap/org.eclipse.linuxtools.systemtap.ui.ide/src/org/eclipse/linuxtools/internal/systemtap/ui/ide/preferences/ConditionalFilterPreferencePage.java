@@ -34,6 +34,7 @@ public class ConditionalFilterPreferencePage extends FieldEditorPreferencePage i
 				Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 }

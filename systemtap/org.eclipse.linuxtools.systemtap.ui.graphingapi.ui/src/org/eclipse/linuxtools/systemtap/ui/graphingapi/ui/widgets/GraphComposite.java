@@ -215,6 +215,7 @@ public class GraphComposite extends Composite {
 	 *  propertyChangeListener - Detects changes in user preferences and applies them
 	 */
 	private SelectionListener scaleListener = new SelectionListener() {
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			
 			Scale scaler = (Scale) e.widget;
@@ -227,6 +228,7 @@ public class GraphComposite extends Composite {
 			}
 		}
 
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
 	};
 	

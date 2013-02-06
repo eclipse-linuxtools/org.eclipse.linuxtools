@@ -94,13 +94,16 @@ public abstract class AChart extends GraphCanvas implements IGraph {
 	 *  legendListener - A SelectionListener for the legend checkbox
 	 */
 	private final PaintListener paintListener = new PaintListener() {
+		@Override
 		public void paintControl(PaintEvent e) {
 			paintAll(e.gc);
 		}
 	};
 	
 	private SelectionListener titleListener = new SelectionListener() {
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			showTitle = ((Button)e.getSource()).getSelection();
 			repaint();
@@ -108,7 +111,9 @@ public abstract class AChart extends GraphCanvas implements IGraph {
 	};
 	
 	private SelectionListener legendListener = new SelectionListener() {
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			showLegend = ((Button)e.getSource()).getSelection();
 			repaint();
@@ -116,6 +121,7 @@ public abstract class AChart extends GraphCanvas implements IGraph {
 	};
 	
 	public abstract boolean isMultiGraph();
+	@Override
 	public abstract void handleUpdateEvent();
 	public abstract void paintElementList(GC gc);
 

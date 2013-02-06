@@ -25,6 +25,7 @@ public class IntegerValidator implements IInputValidator {
 	 * 
 	 * @return The return message.
 	 */
+	@Override
 	public String isValid(String s) {
 		try {
 			Integer.parseInt(s);

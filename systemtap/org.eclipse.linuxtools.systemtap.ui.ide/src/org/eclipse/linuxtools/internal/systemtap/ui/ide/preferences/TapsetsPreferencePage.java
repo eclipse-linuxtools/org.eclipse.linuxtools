@@ -38,6 +38,7 @@ public class TapsetsPreferencePage extends FieldEditorPreferencePage implements 
 				Localization.getString("TapsetsPreferencePage.AdditionalTapsets"), Localization.getString("TapsetsPreferencePage.TapsetDirectory"), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 }

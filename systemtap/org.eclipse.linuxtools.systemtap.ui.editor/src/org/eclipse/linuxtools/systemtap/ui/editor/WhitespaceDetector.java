@@ -22,6 +22,7 @@ public class WhitespaceDetector implements IWhitespaceDetector {
 	 * 
 	 * @return a boolean value indicating if the character is whitespace
 	 */
+	@Override
 	public boolean isWhitespace(char c) {
 		return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
 	}

@@ -31,6 +31,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 public class IDEPerspective implements IPerspectiveFactory {
 	public static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"; //$NON-NLS-1$
 
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(true);

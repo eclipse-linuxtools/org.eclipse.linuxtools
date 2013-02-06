@@ -36,6 +36,7 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 				getFieldEditorParent()));
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 	

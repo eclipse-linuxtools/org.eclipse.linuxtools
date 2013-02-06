@@ -44,6 +44,7 @@ public class GraphAxis implements IGraphPrimitive {
 		return type;
 	}
 	
+	@Override
 	public boolean isVisible() {
 		return true;
 	}
@@ -51,6 +52,7 @@ public class GraphAxis implements IGraphPrimitive {
 	/**
 	 * Determines if the given point is inside this axis' bounds.
 	 */
+	@Override
 	public boolean isUnder(Point loc) {
 		if(type==VERTICAL && loc.x < graph.getXPadding() ||
 			type==HORIZONTAL && loc.y > graph.getSize().y-graph.getYPadding())
@@ -58,6 +60,7 @@ public class GraphAxis implements IGraphPrimitive {
 		return false;
 	}
 	
+	@Override
 	public void calculateBounds() {
 		x1 = graph.getXPadding();
 		y2 = graph.getSize().y-graph.getYPadding();
@@ -163,6 +166,7 @@ public class GraphAxis implements IGraphPrimitive {
 		return format.format(val) + PREFIXES[metric];
 	}
 	
+	@Override
 	public void paint(GC gc) {
 		calculateBounds();
 		

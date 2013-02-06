@@ -39,18 +39,22 @@ public class ImportModuleLocationAction extends Action implements IWorkbenchWind
 		setEnabled(true);
 	}
 
+	@Override
 	public void dispose() {
 		fWindow= null;
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {
 		fWindow= window;
 	}
 
+	@Override
 	public void run(IAction action) {
 		run();
 	}
 
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {}
 
 	/**

@@ -39,6 +39,7 @@ public class DashboardPreferencePage extends FieldEditorPreferencePage implement
 				Localization.getString("DashboardPreferencePage.ExamplesDir"),  getFieldEditorParent())); //$NON-NLS-1$
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 }

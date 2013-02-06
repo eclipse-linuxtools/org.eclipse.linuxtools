@@ -32,10 +32,12 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class ActivateGraphAction extends Action implements IViewActionDelegate {
+	@Override
 	public void init(IViewPart view) {
 		selectedItem = null;
 	}
 
+	@Override
 	public void run(IAction act) {
 		run();
 	}
@@ -73,6 +75,7 @@ public class ActivateGraphAction extends Action implements IViewActionDelegate {
 	 * @param action The action that started this method.
 	 * @param selection The newly selected item
 	 */
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection selected = (IStructuredSelection)selection;

@@ -62,6 +62,7 @@ public class STPCompletionProcessorTest {
 	}
 
 	private static class MyUpdateListener implements IUpdateListener {
+		@Override
 		public void handleUpdateEvent() {
 			synchronized (this) {
 				this.notifyAll();

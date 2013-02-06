@@ -101,6 +101,7 @@ public class Command implements Runnable {
 	 * is called when the new Thread is created, and thus should never be called by
 	 * any implementing program. To run call the <code>start</code> method.
 	 */
+	@Override
 	public void run() {
 		errorGobbler.start();
 		inputGobbler.start();

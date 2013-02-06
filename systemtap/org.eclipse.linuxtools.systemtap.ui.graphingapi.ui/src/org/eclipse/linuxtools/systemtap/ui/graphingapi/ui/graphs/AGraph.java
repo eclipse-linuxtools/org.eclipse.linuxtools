@@ -93,6 +93,7 @@ public abstract class AGraph extends AChart {
 	
 	private synchronized void rebound() {
 		getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				setGlobalArea(getArea(maxItems));
 				setLocalArea(getArea(viewableItems));
@@ -169,6 +170,7 @@ public abstract class AGraph extends AChart {
 	 *  propertyChangeListener - Detects changes in user preferences and applies them
 	 */
 	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
 			if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS))
@@ -202,7 +204,9 @@ public abstract class AGraph extends AChart {
 	};
 	
 	private SelectionListener gridListener = new SelectionListener() {
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			showGrid = ((Button)e.getSource()).getSelection();
 			repaint();
@@ -210,7 +214,9 @@ public abstract class AGraph extends AChart {
 	};
 	
 	private SelectionListener normalizeListener = new SelectionListener() {
+		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {}
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			normalize = ((Button)e.getSource()).getSelection();
 			if(!normalize) removeSeriesAxis();

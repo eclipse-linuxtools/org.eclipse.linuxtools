@@ -36,6 +36,7 @@ public class UniqueFilter implements IDataSetFilter {
 	 * 
 	 * @return True if the number is within bounds.
 	 */
+	@Override
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
@@ -87,6 +88,7 @@ public class UniqueFilter implements IDataSetFilter {
 		return sb.toString();
 	}
 	
+	@Override
 	public String getID() {
 		return ID;
 	}
@@ -96,6 +98,7 @@ public class UniqueFilter implements IDataSetFilter {
 	 * 
 	 * @param parent Parent object of the new child Memento to create.
 	 */
+	@Override
 	public void writeXML(IMemento parent) {
 		IMemento child = parent.createChild("Filter", ID);
 		child.putInteger("column", column);

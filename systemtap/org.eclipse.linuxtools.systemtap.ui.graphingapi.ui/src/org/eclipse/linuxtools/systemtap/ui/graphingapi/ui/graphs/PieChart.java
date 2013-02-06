@@ -85,6 +85,7 @@ public class PieChart extends AChart implements IBlockGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				Object[][] data;
 				elementList[0].clear();

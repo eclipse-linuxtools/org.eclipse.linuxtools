@@ -65,6 +65,7 @@ public class ErrorTableDisplay {
 	 */
 	public void clear() {
 		table.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				table.removeAll();
 			}
@@ -86,6 +87,7 @@ public class ErrorTableDisplay {
 	 */
 	public void addRow(final String[] row, final Image img) {
 		table.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				item = new TableItem(table, SWT.NULL);
 				for(int i=0; i<row.length; i++)

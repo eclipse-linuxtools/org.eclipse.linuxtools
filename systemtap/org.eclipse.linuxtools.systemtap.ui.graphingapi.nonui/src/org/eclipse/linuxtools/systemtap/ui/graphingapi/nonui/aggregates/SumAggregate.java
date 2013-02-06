@@ -22,6 +22,7 @@ public class SumAggregate implements IDataAggregate {
 	 * 
 	 * @return The sum total of all the column's values.
 	 */
+	@Override
 	public Number aggregate(Number[] column) {
 		if(column == null || column.length == 0)
 			return null;
@@ -34,6 +35,7 @@ public class SumAggregate implements IDataAggregate {
 		return NumberType.getNumber(column[0], num);
 	}
 	
+	@Override
 	public String getID() {
 		return ID;
 	}

@@ -25,7 +25,8 @@ public class ConditionalExpressionValidator implements IInputValidator {
 	 * 
 	 * @return The return message.
 	 */
-	 public String isValid(String s) {
+	 @Override
+	public String isValid(String s) {
 		if(null == s)
 			return Localization.getString("ConditionalExpressionValidator.NotNull");
 		if(!s.startsWith("if"))

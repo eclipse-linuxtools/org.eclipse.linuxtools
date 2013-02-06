@@ -25,6 +25,7 @@ public class SystemTapScriptTester extends PropertyTester {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
 

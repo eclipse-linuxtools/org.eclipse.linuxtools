@@ -25,6 +25,7 @@ public class IndexedObject implements Comparable{
 		return val.toString();
 	}
 	
+	@Override
 	public int compareTo(Object o) {
 		if(o instanceof IndexedObject) {
 			Comparable thisVal = (val instanceof Comparable) ? (Comparable)val : val.toString();

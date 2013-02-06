@@ -86,21 +86,25 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
  	//End overwrite to ensure the data returned has all the filters applied
 
 	//IFilteredDataSet Methods
+	@Override
 	public void addFilter(IDataSetFilter filter) {
 		filters.add(filter);
 		filtersChanged = true;
 	}
 	
+	@Override
 	public boolean removeFilter(IDataSetFilter filter) {
 		filtersChanged = filters.remove(filter);
 		return filtersChanged;
 	}
 	
+	@Override
 	public void clearFilters() {
 		filters.clear();
 		filtersChanged = true;
 	}
 	
+	@Override
 	public IDataSetFilter[] getFilters() {
 		IDataSetFilter[] f = new IDataSetFilter[filters.size()];
 		filters.toArray(f);

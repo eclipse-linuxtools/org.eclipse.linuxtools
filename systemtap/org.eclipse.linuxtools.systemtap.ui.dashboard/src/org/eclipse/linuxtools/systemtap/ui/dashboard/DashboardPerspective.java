@@ -28,6 +28,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 public class DashboardPerspective implements IPerspectiveFactory {
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective"; //$NON-NLS-1$
 
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		//Don't display the editor
 		String editorArea = layout.getEditorArea();

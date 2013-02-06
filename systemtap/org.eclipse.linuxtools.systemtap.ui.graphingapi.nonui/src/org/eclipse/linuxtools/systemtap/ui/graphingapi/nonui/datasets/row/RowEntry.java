@@ -18,40 +18,48 @@ public class RowEntry implements IDataEntry {
 		data = null;
 	}
 	
+	@Override
 	public int getRowCount() {
 		if(null != data)
 			return 1;
 		return 0;
 	}
 	
+	@Override
 	public int getColCount() {
 		return (null == data) ? 0 : data.length;
 	}
 	
+	@Override
 	public Object get(String key, int col) {
 		return (0 <= col && col < getColCount()) ? data[col] : null;
 	}
 	
+	@Override
 	public Object[] getRow(int row) {
 		if(0 == row)
 			return data;
 		return null;
 	}
 	
+	@Override
 	public Object[] getRow(String key) {
 		return data;
 	}
 	
+	@Override
 	public Object[] getColumn(int col) {
 		if(0 <= col && getColCount() > col) 
 			return new Object[] {get(null, col)};
 		return null;
 	}
 	
+	@Override
 	public Object[][] getData() {
 		return new Object[][] {getRow(null)};
 	}
 	
+	@Override
 	public IDataEntry copy() {
 		RowEntry entry = new RowEntry();
 		if(null != data) {
@@ -62,11 +70,13 @@ public class RowEntry implements IDataEntry {
 		return entry;
 	}
 	
+	@Override
 	public void putRow(int row, Object[] data) {
 		if(0 == row)
 			this.data = data;
 	}
 	
+	@Override
 	public boolean remove(int row) {
 		if(row == 0) {
 			data = null;

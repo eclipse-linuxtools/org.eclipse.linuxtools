@@ -100,6 +100,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				Object[][] data;
 				if(fullUpdate) {

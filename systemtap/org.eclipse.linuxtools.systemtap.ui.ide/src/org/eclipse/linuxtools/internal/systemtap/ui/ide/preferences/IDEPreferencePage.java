@@ -38,6 +38,7 @@ public class IDEPreferencePage extends FieldEditorPreferencePage implements IWor
 				getFieldEditorParent()));
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 

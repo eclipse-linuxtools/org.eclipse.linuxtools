@@ -40,12 +40,15 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class PauseModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+	@Override
 	public void init(IViewPart view) {
 		this.view = view;
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {}
 
+	@Override
 	public void run(IAction act) {
 		run();
 	}
@@ -76,6 +79,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * @param act The action that called this method
 	 * @param select The newly selected item.
 	 */
+	@Override
 	public void selectionChanged(IAction act, ISelection select) {
 		this.act = act;
 		setEnablement(false);
@@ -113,6 +117,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * Removes all internal references provided by this action.  Nothing should be
 	 * called or referenced after the dispose method.
 	 */
+	@Override
 	public void dispose() {
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
 		final DashboardModuleBrowserView dmbv = (DashboardModuleBrowserView)ivp;
@@ -160,6 +165,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * Enables this action everytime a new module is run.
 	 */
 	private final IActionListener runListener = new IActionListener() {
+		@Override
 		public void handleActionEvent() {
 			setEnablement(true);
 		}
@@ -169,6 +175,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * Disables this action everytime a module is stopped.
 	 */
 	private final IActionListener stopListener = new IActionListener() {
+		@Override
 		public void handleActionEvent() {
 			setEnablement(false);
 		}
@@ -180,6 +187,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * enablement based on whether or not it is already paused.
 	 */
 	private final ISelectionChangedListener activeModuleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode)((StructuredSelection)(e.getSelection())).getFirstElement();
 			if(((ActiveModuleData)node.getData()).paused) {
@@ -196,6 +204,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * enablement based on whether or not it is running.
 	 */
 	private final ISelectionChangedListener moduleListener = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
 			TreeNode node = (TreeNode)((StructuredSelection)(e.getSelection())).getFirstElement();
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);

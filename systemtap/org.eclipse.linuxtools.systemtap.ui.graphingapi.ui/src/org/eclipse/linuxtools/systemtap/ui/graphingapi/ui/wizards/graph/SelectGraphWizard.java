@@ -26,6 +26,7 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 		model = new GraphModel(data);
 	}
 
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 	}
 

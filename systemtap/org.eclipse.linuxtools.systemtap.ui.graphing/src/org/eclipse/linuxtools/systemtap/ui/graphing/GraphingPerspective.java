@@ -26,6 +26,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 public class GraphingPerspective implements IPerspectiveFactory {
 	public static String ID = "org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"; //$NON-NLS-1$
 
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);

@@ -22,18 +22,22 @@ public class BlockAdapter implements IAdapter {
 		this.ySeries = ySeries;
 	}
 	
+	@Override
 	public Number getXMax() {
 		return getXMax(0, getRecordCount());
 	}
 	
+	@Override
 	public Number getXMax(int start, int end) {
 		return getSeriesMax(xSeries, start, end);
 	}
 	
+	@Override
 	public Number getYMax() {
 		return getYMax(0, getRecordCount());
 	}
 	
+	@Override
 	public Number getYMax(int start, int end) {
 		Number max = new Double(Double.MIN_VALUE);
 		Number a;
@@ -44,18 +48,22 @@ public class BlockAdapter implements IAdapter {
 		return max;
 	}
 
+	@Override
 	public Number getYSeriesMax(int y) {
 		return getYSeriesMax(y, 0, getRecordCount());
 	}
 	
+	@Override
 	public Number getYSeriesMax(int y, int start, int end) {
 		return getSeriesMax(ySeries[y], start, end);
 	}
 	
+	@Override
 	public Number getSeriesMax(int series) {
 		return getSeriesMax(series, 0, getRecordCount());
 	}
 	
+	@Override
 	public Number getSeriesMax(int series, int start, int end) {
 		if(start < 0 || end > data.getRowCount() || start > end)
 			return null;
@@ -74,18 +82,22 @@ public class BlockAdapter implements IAdapter {
 		return max;
 	}
 
+	@Override
 	public Number getXMin() {
 		return getXMin(0, getRecordCount());
 	}
 	
+	@Override
 	public Number getXMin(int start, int end) {
 		return getSeriesMin(xSeries, start, end);
 	}
 	
+	@Override
 	public Number getYMin() {
 		return getYMin(0, getRecordCount());
 	}
 	
+	@Override
 	public Number getYMin(int start, int end) {
 		Number min = new Double(Double.MIN_VALUE);
 		Number a;
@@ -96,18 +108,22 @@ public class BlockAdapter implements IAdapter {
 		return min;
 	}
 
+	@Override
 	public Number getYSeriesMin(int y) {
 		return getYSeriesMin(y, 0, getRecordCount());
 	}
 	
+	@Override
 	public Number getYSeriesMin(int y, int start, int end) {
 		return getSeriesMin(ySeries[y], start, end);
 	}
 	
+	@Override
 	public Number getSeriesMin(int series) {
 		return getSeriesMin(series, 0, getRecordCount());
 	}
 	
+	@Override
 	public Number getSeriesMin(int series, int start, int end) {
 		if(start < 0 || end > data.getRowCount() || start > end)
 			return null;
@@ -126,6 +142,7 @@ public class BlockAdapter implements IAdapter {
 		return min;
 	}
 
+	@Override
 	public String[] getLabels() {
 		String[] labels = data.getTitles();
 		
@@ -138,19 +155,23 @@ public class BlockAdapter implements IAdapter {
 		return labels2;
 	}
 	
+	@Override
 	public int getSeriesCount() {
 		return ySeries.length;
 	}
 
+	@Override
 	public int getRecordCount() {
 		return data.getRowCount();
 	}
 	
+	@Override
 	public Object[][] getData() {
 		return getData(0, getRecordCount());
 	}
 	
 	//[Row][Column]
+	@Override
 	public Object[][] getData(int start, int end) {
 		Object[][] o = new Object[Math.min(end-start,getRecordCount())][ySeries.length+1];
 		

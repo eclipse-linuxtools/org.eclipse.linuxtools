@@ -20,6 +20,7 @@ public class ErrorMessage {
 	
 	public void open() {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {  		
 				MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
 				messageBox.setMessage(error);

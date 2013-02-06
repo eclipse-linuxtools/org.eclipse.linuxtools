@@ -47,6 +47,7 @@ public class StapOptionsPreferencePage extends FieldEditorPreferencePage impleme
 		}
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 }

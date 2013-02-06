@@ -15,12 +15,14 @@ import org.eclipse.jface.text.rules.IWordDetector;
 
 public class WordDetector implements IWordDetector {
 	
+	@Override
 	public boolean isWordPart(char character) {
 		if (character == '.') return true;
 		
 		return Character.isJavaIdentifierPart(character);
 	}
 	
+	@Override
 	public boolean isWordStart(char character) {
 		return Character.isJavaIdentifierStart(character);
 	}

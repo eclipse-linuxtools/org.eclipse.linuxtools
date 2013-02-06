@@ -44,17 +44,21 @@ public class ImportTapsetAction extends Action implements IWorkbenchWindowAction
 		setEnabled(true);
 	}
 
+	@Override
 	public void dispose() {
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {
 		fWindow= window;
 	}
 
+	@Override
 	public void run(IAction action) {
 		run();
 	}
 
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 

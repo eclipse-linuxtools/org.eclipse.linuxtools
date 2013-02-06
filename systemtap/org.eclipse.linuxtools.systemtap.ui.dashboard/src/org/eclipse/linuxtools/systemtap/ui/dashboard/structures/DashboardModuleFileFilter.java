@@ -20,6 +20,7 @@ import java.io.FileFilter;
  * @author Ryan Morse
  */
 public class DashboardModuleFileFilter implements FileFilter {
+	@Override
 	public boolean accept(File f) {
 		return f.isDirectory() || f.getName().toLowerCase().endsWith(DashboardModuleExtension);
 	}

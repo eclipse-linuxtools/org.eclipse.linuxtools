@@ -89,6 +89,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		if(null == adapter) return;
 
 		this.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				Object[][] data = adapter.getData(removedItems, adapter.getRecordCount());
 

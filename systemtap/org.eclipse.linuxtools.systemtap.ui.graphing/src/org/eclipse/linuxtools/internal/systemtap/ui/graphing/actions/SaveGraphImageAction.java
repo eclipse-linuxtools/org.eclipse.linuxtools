@@ -40,6 +40,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class SaveGraphImageAction extends Action implements IWorkbenchWindowActionDelegate {
+	@Override
 	public void init(IWorkbenchWindow window) {
 		fWindow = window;
 	}
@@ -50,6 +51,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	 * the save.
 	 * @param act The action that fired this method.
 	 */
+	@Override
 	public void run(IAction act) {
 		AbstractChartBuilder g = getGraph();
 		try {
@@ -142,6 +144,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	 * This method is used to generate the checks to see it this button
 	 * should be enabled or not.
 	 */
+	@Override
 	public void selectionChanged(IAction a, ISelection s) {
 		action = a;
 		action.setEnabled(false);
@@ -157,23 +160,28 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		if(null != ivp) {
 			final GraphSelectorView gsv = (GraphSelectorView)ivp;
 			gsv.addTabListener(new ITabListener() {
+				@Override
 				public void tabClosed() {
 					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 						action.setEnabled(false);
 				}
 
+				@Override
 				public void tabOpened() {
 					gsv.getActiveDisplaySet().addTabListener(new ITabListener() {
+						@Override
 						public void tabClosed() {
 							if(null == gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(false);
 						}
 
+						@Override
 						public void tabOpened() {
 							if(null != gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(true);
 						}
 
+						@Override
 						public void tabChanged() {
 							if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 								action.setEnabled(false);
@@ -183,6 +191,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 					});
 				}
 
+				@Override
 				public void tabChanged() {
 					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
 						action.setEnabled(false);
@@ -197,6 +206,7 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anyting in this class after calling the dispose method.
 	 */
+	@Override
 	public void dispose() {
 		fWindow = null;
 		action = null;
