@@ -54,7 +54,6 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(c);
-		sc.setMinSize(c.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.length];
 		for(int i=0; i<envVariables.length; i++) {

@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui;
 
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
-import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -34,15 +32,4 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		return PERSPECTIVE_ID;
 	}
 
-	/**
-	 * Initializes the configurer object, loads preferences.
-	 *
-	 * @param configurer The IWorkbenchConfigurer object to initialize.
-	 */
-	public void initialize(IWorkbenchConfigurer configurer) {
-		super.initialize(configurer);
-		configurer.setSaveAndRestore(
-				SystemTapGUIPlugin.getDefault().getPreferenceStore()
-				.getBoolean(PreferenceConstants.P_WINDOW_STATE));
-	}
 }

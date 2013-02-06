@@ -11,11 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.preferences;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -27,8 +24,7 @@ public class SystemTapPreferencePage extends FieldEditorPreferencePage implement
 	 * Get the current preferences.
 	 */
 	public SystemTapPreferencePage() {
-		super(GRID);
-		setPreferenceStore(SystemTapGUIPlugin.getDefault().getPreferenceStore());
+		super(FLAT);
 		setDescription(Localization.getString("SystemTapPreferencePage.GUIPreferencesDescription"));
 	}
 
@@ -36,10 +32,6 @@ public class SystemTapPreferencePage extends FieldEditorPreferencePage implement
 	 * Sets up the field editors for optional change by the user.
 	 */
 	public void createFieldEditors() {
-		addField(new BooleanFieldEditor(
-				PreferenceConstants.P_WINDOW_STATE,
-				Localization.getString("SystemTapPreferencePage.RememberWindowState"),
-				getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {

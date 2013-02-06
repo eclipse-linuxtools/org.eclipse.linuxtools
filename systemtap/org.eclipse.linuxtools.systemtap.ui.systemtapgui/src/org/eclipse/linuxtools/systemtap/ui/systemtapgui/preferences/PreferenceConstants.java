@@ -24,6 +24,4 @@ public class PreferenceConstants {
 		{"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"},
 	};
 
-	//systemtap
-	public static final String P_WINDOW_STATE = "RestoreWindowStatePreference";
 }
