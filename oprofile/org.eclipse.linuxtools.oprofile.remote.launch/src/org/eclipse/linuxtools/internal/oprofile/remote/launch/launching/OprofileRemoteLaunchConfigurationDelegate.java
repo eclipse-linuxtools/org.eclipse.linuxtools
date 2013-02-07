@@ -13,8 +13,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProxyLaunchMessages;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyCMainTab;
 
 
 /**
@@ -52,6 +54,24 @@ public class OprofileRemoteLaunchConfigurationDelegate extends OprofileLaunchCon
 		IPath path = new Path(uri.getPath());
 
 		return path;
+	}
+
+	@Override
+	protected URI oprofileWorkingDirURI(ILaunchConfiguration config) throws CoreException {
+		String workingDirString = config.getAttribute(RemoteProxyCMainTab.ATTR_REMOTE_WORKING_DIRECTORY_NAME, EMPTY_STRING);
+		if(workingDirString.equals(EMPTY_STRING)){
+			return getProject().getLocationURI();
+		} else {
+			URI workingDirUri;
+				try {
+					workingDirUri = new URI(workingDirString);
+				} catch (URISyntaxException e) {
+					Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(),
+							OprofileLaunchMessages.getString("oprofilelaunch.error.invalidworkingdir.status_message")); //$NON-NLS-1$
+					throw new CoreException(status);
+				}
+			return workingDirUri;
+		}
 	}
 
 }

@@ -84,7 +84,7 @@ public final class TestingOprofileLaunchConfigurationDelegate extends
 	}
 
 	@Override
-	protected URI oprofileWorkingDirURI(){
+	protected URI oprofileWorkingDirURI(ILaunchConfiguration config){
 		return oprofileProject().getLocationURI();
 	}
 }

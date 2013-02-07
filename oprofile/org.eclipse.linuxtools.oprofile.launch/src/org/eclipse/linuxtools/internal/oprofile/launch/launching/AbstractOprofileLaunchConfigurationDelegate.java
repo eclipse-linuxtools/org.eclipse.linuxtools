@@ -14,7 +14,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
+import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
@@ -40,7 +42,6 @@ import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCou
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
-import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.ui.PartInitException;
@@ -82,7 +83,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		 */
 		//set up and launch the local c/c++ program
 		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(oprofileProject());
-		IPath workingDirPath = new Path(oprofileWorkingDirURI().getPath());
+		IPath workingDirPath = new Path(oprofileWorkingDirURI(config).getPath());
 
 		String arguments[] = getProgramArgumentsArray( config );
 		Process process = null;
@@ -160,9 +161,22 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	 * @return URI URI of the working directory.
 	 * @throws CoreException
 	 */
-	protected URI oprofileWorkingDirURI() throws CoreException{
-		IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(oprofileProject());
-		return proxy.getWorkingDir();
+	protected URI oprofileWorkingDirURI(ILaunchConfiguration config) throws CoreException{
+		File workingDirectory = this.getWorkingDirectory(config);
+		if(workingDirectory == null){
+			return getProject().getLocationURI();
+		} else {
+			URI uri = null;
+			try {
+				uri = new URI(workingDirectory.getAbsolutePath());
+			} catch (URISyntaxException e) {
+				//Since working directory paths are verified by the launch tab, this exception should never be thrown
+				Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(),
+						OprofileLaunchMessages.getString("oprofilelaunch.error.invalidworkingdir.status_message"));
+				throw new CoreException(status);
+			}
+			return uri;
+		}
 	}
 
 	protected OprofileCounter[] oprofileCounters(ILaunchConfiguration config){
