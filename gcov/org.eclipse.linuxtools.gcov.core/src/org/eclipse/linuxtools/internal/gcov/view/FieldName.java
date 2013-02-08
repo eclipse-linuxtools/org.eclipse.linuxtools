@@ -37,7 +37,7 @@ public class FieldName extends AbstractSTDataViewersField {
 	        nm = nm.substring(nm.lastIndexOf('\\')+1);
 	        return nm;
 	    }
-	    return "";
+	    return ""; //$NON-NLS-1$
 	}
 
 	/*
@@ -51,7 +51,7 @@ public class FieldName extends AbstractSTDataViewersField {
             String s = elem.getName();
             return s;
         }
-        return "";
+        return ""; //$NON-NLS-1$
 	}
 
 	/*

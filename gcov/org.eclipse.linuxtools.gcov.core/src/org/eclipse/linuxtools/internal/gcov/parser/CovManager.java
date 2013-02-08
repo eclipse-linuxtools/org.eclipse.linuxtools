@@ -119,9 +119,9 @@ public class CovManager implements Serializable {
 		
 		
 		for (String gcdaPath: covFilesPaths) {
-			String gcnoPath = gcdaPath.replace(".gcda", ".gcno");
+			String gcnoPath = gcdaPath.replace(".gcda", ".gcno"); //$NON-NLS-1$ //$NON-NLS-2$
 			// parse GCNO file
-			traceFile = OpenTraceFileStream(gcnoPath, ".gcno", sourcePath);
+			traceFile = OpenTraceFileStream(gcnoPath, ".gcno", sourcePath); //$NON-NLS-1$
 			if (traceFile == null) return;
 			GcnoRecordsParser noRcrd = new GcnoRecordsParser(sourceMap, allSrcs);
 			noRcrd.parseData(traceFile);
@@ -136,7 +136,7 @@ public class CovManager implements Serializable {
 				((DataInputStream)traceFile).close();
 
 			// parse GCDA file
-			traceFile = OpenTraceFileStream(gcdaPath, ".gcda", sourcePath);
+			traceFile = OpenTraceFileStream(gcdaPath, ".gcda", sourcePath); //$NON-NLS-1$
 			if (traceFile == null) return;
 			if (noRcrd.getFnctns().isEmpty()){
 				String message = gcnoPath + " doesn't contain any function:\n";
@@ -182,7 +182,7 @@ public class CovManager implements Serializable {
 		for (SourceFile sf : allSrcs) {
 			File srcFile = new File (sf.getName());
 			String folderName = srcFile.getParent();
-			if (folderName == null) folderName = "?";
+			if (folderName == null) folderName = "?"; //$NON-NLS-1$
 			Folder folder = null;
 			for (Folder f: allFolders) {
 				if (f.getPath().equals(folderName))
@@ -256,10 +256,10 @@ public class CovManager implements Serializable {
 			InputStream inputStream = new BufferedInputStream(fis);
 			return new DataInputStream(inputStream);
 		} else {
-			String postfix = "";
+			String postfix = ""; //$NON-NLS-1$
 			File dir = null;
 			do {
-				if ("".equals(postfix)) postfix = f.getName();
+				if ("".equals(postfix)) postfix = f.getName(); //$NON-NLS-1$
 				else postfix = f.getName() + File.separator + postfix;
 				f = f.getParentFile();
 				if (f != null) {
@@ -277,7 +277,7 @@ public class CovManager implements Serializable {
 
 			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 			FileDialog fg = new FileDialog(shell, SWT.OPEN);
-			fg.setFilterExtensions(new String[] {"*" + extension, "*.*", "*"});
+			fg.setFilterExtensions(new String[] {"*" + extension, "*.*", "*"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			fg.setFileName(filename);
 			fg.setText(filePath + " not found. Please enter location of " + filename);
 			String s = fg.open();
@@ -330,22 +330,9 @@ public class CovManager implements Serializable {
 		IBinaryObject binaryObject = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryPath));
 		String binaryPath = binaryObject.getPath().toOSString();
 		List<String> l = new LinkedList<String>();
-		String cpu = binaryObject.getCPU();
 		Process p;
-		if ("sh".equals(cpu)) {
-			String stringsTool = "sh4strings"; 
-			p = getStringsProcess(stringsTool, binaryPath);
-			if ( p == null) p = getStringsProcess("sh4-linux-strings", binaryPath);
-		} else if ("stxp70".equals(cpu)) {
-			String stringsTool = "stxp70v3-strings"; 
-			p = getStringsProcess(stringsTool, binaryPath);
-		} else if ("st200".equals(cpu)){
-			String stringsTool = cpu + "strings";
-			p = getStringsProcess(stringsTool, binaryPath);
-		} else  {
-			String stringsTool = "strings";
-			p = getStringsProcess(stringsTool, binaryPath);
-		}
+		String stringsTool = "strings";
+		p = getStringsProcess(stringsTool, binaryPath);
 		if (p == null) {
 			Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
 					"An error occured during analysis: unable to retrieve gcov data", new IOException());
@@ -397,13 +384,13 @@ public class CovManager implements Serializable {
 			LineNumberReader lnr = new LineNumberReader(isr);
 			String line = null;
 			while ((line =lnr.readLine()) != null) {
-				if (line.endsWith(".gcda"))
+				if (line.endsWith(".gcda")) //$NON-NLS-1$
 				{
 					// absolute .gcda filepaths retrieved using the "strings" tool may
 					// be prefixed by random printable characters so strip leading
 					// characters until the filepath starts with "X:/", "X:\", "/"  or "\"
 					// FIXME: need a more robust mechanism to locate .gcda files [Bugzilla 329710]
-					while ((line.length() > 6) && !line.matches("^([A-Za-z]:)?[/\\\\].*")) {
+					while ((line.length() > 6) && !line.matches("^([A-Za-z]:)?[/\\\\].*")) { //$NON-NLS-1$
 						line = line.substring(1);
 					}
 					IPath p = new Path(line);

@@ -10,11 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.action;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
@@ -25,11 +21,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.dialog.OpenGCDialog;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
 import org.eclipse.swt.widgets.Shell;
@@ -50,12 +43,12 @@ public class OpenGCAction implements IEditorLauncher {
 		String extension = file.getFileExtension();
 		File gcno;
 		File gcda;
-		if ("gcno".equals(extension)) {
-			IPath file2 = file.removeFileExtension().addFileExtension("gcda");
+		if ("gcno".equals(extension)) { //$NON-NLS-1$
+			IPath file2 = file.removeFileExtension().addFileExtension("gcda"); //$NON-NLS-1$
 			gcno = file.toFile();
 			gcda = file2.toFile();
-		} else if ("gcda".equals(extension)) {
-			IPath file2 = file.removeFileExtension().addFileExtension("gcno");
+		} else if ("gcda".equals(extension)) { //$NON-NLS-1$
+			IPath file2 = file.removeFileExtension().addFileExtension("gcno"); //$NON-NLS-1$
 			gcda = file.toFile();
 			gcno = file2.toFile();
 			
@@ -91,83 +84,25 @@ public class OpenGCAction implements IEditorLauncher {
 		}
 	}
 
-	private String getDefaultBinary(IPath file) {
-		File gmonFile = file.toFile();
-		File parent = gmonFile.getParentFile();
-		File info = new File(parent,"AnalysisInfo.txt");
-		IProject project = null;
-		IFile ifile = null;
-		try {
-			String line;
-			String  tab[];
-			if (info.exists()) {
-				BufferedReader br = null;
-				try {
-					br = new BufferedReader(new FileReader(info.toString()));
-
-					while ((line = br.readLine())!= null){
-						tab = line.split("=");
-						String name="", value="";
-						if (tab.length > 1){
-							name=tab[0];
-							value=tab[1].trim();	
-							if (name.equals("Project Name ")){
-								project = ResourcesPlugin.getWorkspace().getRoot().getProject(value);
-							}
-							else if (name.equals("Program Name ")){
-								if(project != null){
-									ifile = project.getFile(value);
-									br.close();
-									if (ifile.exists()) {
-										return ifile.getLocation().toString();
-									}
-								}
-							}	
-						}
-					}
-				} finally {
-					if (br != null) br.close();
-				}
-			}else{
-				IFile c = ResourcesPlugin.getWorkspace().getRoot()
-				.getFileForLocation(file);
-				if (c != null) {
-					project = c.getProject();
-					if (project != null && project.exists()) {
-						ICProject cproject = CoreModel.getDefault().create(project);
-						if (cproject != null) {
-							try {
-								IBinary[] b = cproject.getBinaryContainer()
-								.getBinaries();
-								if (b != null && b.length > 0 && b[0] != null) {
-									IResource r = b[0].getResource();
-									return r.getLocation().toOSString();
-								}
-							} catch (CModelException _) {
-							}
-						}
-					}
-				}
-			}
-		} catch (FileNotFoundException e) {
-			Status status = new Status(
-					IStatus.WARNING,
-					Activator.PLUGIN_ID,
-					IStatus.WARNING,
-					e.getMessage(),
-					e
-			);
-			Activator.getDefault().getLog().log(status);
-		} catch (IOException e) {
-			Status status = new Status(
-					IStatus.ERROR,
-					Activator.PLUGIN_ID,
-					IStatus.ERROR,
-					e.getMessage(),
-					e
-			);
-			Activator.getDefault().getLog().log(status);
-		}
-		return "";
+    private String getDefaultBinary(IPath file) {
+        IProject project = null;
+        IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
+        if (c != null) {
+            project = c.getProject();
+            if (project != null && project.exists()) {
+                ICProject cproject = CoreModel.getDefault().create(project);
+                if (cproject != null) {
+                    try {
+                        IBinary[] b = cproject.getBinaryContainer().getBinaries();
+                        if (b != null && b.length > 0 && b[0] != null) {
+                            IResource r = b[0].getResource();
+                            return r.getLocation().toOSString();
+                        }
+                    } catch (CModelException _) {
+                    }
+                }
+            }
+        }
+        return ""; //$NON-NLS-1$
 	}
 }

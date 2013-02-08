@@ -92,7 +92,7 @@ public class CovViewer extends AbstractSTTreeViewer {
 
 		if (element != null) {
 			if (element.getParent() != null) {
-				String sourceLoc = "";
+				String sourceLoc = ""; //$NON-NLS-1$
 				long lineNumber = 0;
 
 				if (element.getClass() == CovFileTreeElement.class)

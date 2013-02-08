@@ -38,7 +38,7 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
 		if (e.getClass() != CovFunctionTreeElement.class)
 			return Integer.toString(e.getTotalLines());
 		else 
-			return "";
+			return ""; //$NON-NLS-1$
 	}
 
 
@@ -52,7 +52,7 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
 		if (e.getClass() != CovFunctionTreeElement.class)
 			return "Total lines number = "+Integer.toString(e.getTotalLines());
 		else 
-			return "";
+			return ""; //$NON-NLS-1$
 	}
 
 

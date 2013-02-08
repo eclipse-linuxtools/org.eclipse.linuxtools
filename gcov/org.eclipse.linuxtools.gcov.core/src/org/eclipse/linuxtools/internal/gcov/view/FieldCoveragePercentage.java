@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 public class FieldCoveragePercentage extends AbstractPercentageDrawerField implements IChartField {
 
-	public final static NumberFormat nf = new DecimalFormat("##0.0#");
+	public final static NumberFormat nf = new DecimalFormat("##0.0#"); //$NON-NLS-1$
 
 
 	@Override
