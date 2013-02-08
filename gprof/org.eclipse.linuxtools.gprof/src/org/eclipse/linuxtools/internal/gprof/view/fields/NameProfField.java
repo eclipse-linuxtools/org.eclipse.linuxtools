@@ -59,7 +59,7 @@ public class NameProfField extends AbstractSTDataViewersField {
 			TreeElement e = (TreeElement) obj;
 			return e.getName();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/*
@@ -79,10 +79,10 @@ public class NameProfField extends AbstractSTDataViewersField {
 	public String getToolTipText(Object element) {
 		TreeElement elem = (TreeElement) element;
 		String s = elem.getSourcePath();
-		if (s != null && !"??".equals(s)) {
+		if (s != null && !"??".equals(s)) { //$NON-NLS-1$
 			int lineNumber = elem.getSourceLine();
 			if (lineNumber > 0) {
-				return s + ":" + lineNumber;
+				return s + ":" + lineNumber; //$NON-NLS-1$
 			}
 			return s;
 		}

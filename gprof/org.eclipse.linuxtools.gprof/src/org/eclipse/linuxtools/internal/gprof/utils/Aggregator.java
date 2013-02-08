@@ -28,7 +28,8 @@ public class Aggregator {
 
 	/**
 	 * Aggregates the given gmon files in the given directory
-	 * @param gprof2use (sh4gprof, or st200gprof, ...)
+	 * @param gprof2use
+	 *     typically gprof, but can be something else (cross-development tools like sh4gprof, st200gprof, ...)
 	 * @param binaryFile
 	 * @param gmons
 	 * @param directory
@@ -37,7 +38,7 @@ public class Aggregator {
 	public static File aggregate(String gprof2use, String binaryFile, java.util.List<String> gmons, File directory) {
 		String[] cmd = new String[gmons.size() + 3];
 		cmd[0] = gprof2use;
-		cmd[1] = "-s";
+		cmd[1] = "-s"; //$NON-NLS-1$
 		cmd[2] = binaryFile;
 		int i = 3;
 		for (String string : gmons) {
@@ -82,7 +83,7 @@ public class Aggregator {
 	final static class ProcessReader extends Thread {
 		
 		private final Process p;
-		private String errorMessage = "";
+		private String errorMessage = ""; //$NON-NLS-1$
 		
 		ProcessReader(Process p) {
 			this.p = p;
@@ -95,7 +96,7 @@ public class Aggregator {
 				do {
 					String s = lnr.readLine();
 					if (s == null) break;
-					errorMessage += s + "\n";
+					errorMessage += s + "\n"; //$NON-NLS-1$
 				} while (true);
 			} catch (IOException _) {
 				// do nothing

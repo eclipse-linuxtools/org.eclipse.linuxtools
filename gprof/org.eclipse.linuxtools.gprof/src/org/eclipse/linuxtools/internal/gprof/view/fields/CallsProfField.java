@@ -105,7 +105,7 @@ public class CallsProfField extends AbstractSTDataViewersField implements IChart
 	public String getValue(Object obj) {
 		TreeElement e = (TreeElement) obj;
 		int i = e.getCalls();
-		if (i == -1) return "";
+		if (i == -1) return ""; //$NON-NLS-1$
 		String ret = String.valueOf(i);
 		return ret;
 	}

@@ -24,6 +24,7 @@ import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gprof.utils.LEDataInputStream;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.HistRoot;
@@ -84,7 +85,7 @@ public class GmonDecoder {
 		this.project = project;
 		program.getBinaryParser().getFormat();
 		String cpu = program.getCPU();
-		if ("x86_64".equals(cpu) || "ppc64".equals(cpu)){
+		if (Platform.ARCH_X86_64.equals(cpu) || "ppc64".equals(cpu)){
 			histo = new HistogramDecoder_64(this);
 			callGraph = new CallGraphDecoder_64(this);
 			_32_bit_platform = false;
@@ -267,28 +268,14 @@ public class GmonDecoder {
 		return file;
 	}
 
-
 	public String getFileName(ISymbol s) {
 		String ret = filenames.get(s);
 		if (ret == null) {
 			ret = STSymbolManager.sharedInstance.getFilename(s, project);
-			if (ret == null) ret = "??";
+			if (ret == null) ret = "??"; //$NON-NLS-1$
 			filenames.put(s, ret);
 		}
 		return ret;
-	}
-
-
-	public boolean isICache() {
-		IPath p = new Path(this.file);
-		String s = p.lastSegment();
-		return (s.endsWith("ICACHE"));
-	}
-
-	public boolean isDCache() {
-		IPath p = new Path(this.file);
-		String s = p.lastSegment();
-		return (s.endsWith("DCACHE"));
 	}
 
 	public void setShouldDump(boolean shouldDump) {

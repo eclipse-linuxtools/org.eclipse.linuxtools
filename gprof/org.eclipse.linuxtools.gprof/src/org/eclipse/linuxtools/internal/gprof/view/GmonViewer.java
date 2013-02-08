@@ -92,7 +92,7 @@ public class GmonViewer extends AbstractSTTreeViewer {
 		TreeElement element = (TreeElement) selection.getFirstElement();
 		if (element != null){
 			String s = element.getSourcePath();
-			if (s == null || "??".equals(s)) {
+			if (s == null || "??".equals(s)) { //$NON-NLS-1$
 				return; // nothing to do here.
 			}
 			else {

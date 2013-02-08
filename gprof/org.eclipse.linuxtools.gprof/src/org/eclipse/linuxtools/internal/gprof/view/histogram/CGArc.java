@@ -103,7 +103,7 @@ public class CGArc extends AbstractTreeElement {
 	public String getName() {
 		String functionName = getFunctionName();
 		Path p = new Path(getSourcePath());
-		return functionName + " (" + p.lastSegment() + ":" + getSourceLine() + ")";
+		return functionName + " (" + p.lastSegment() + ":" + getSourceLine() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/* 
@@ -135,11 +135,9 @@ public class CGArc extends AbstractTreeElement {
 			String fileName = ((HistRoot)getRoot()).decoder.getFileName(symbol);
 			return fileName;
 		} else {
-			if (arc.parentPath == null) return "??";
+			if (arc.parentPath == null) return "??"; //$NON-NLS-1$
 			return arc.parentPath;
 		}
 	}
-	
-	
 
 }

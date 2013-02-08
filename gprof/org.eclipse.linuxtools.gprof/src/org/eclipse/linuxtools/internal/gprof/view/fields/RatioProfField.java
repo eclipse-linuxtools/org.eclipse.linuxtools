@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
 public class RatioProfField extends AbstractPercentageDrawerField implements IChartField{
 	
 	/** Format to use to display percentages */
-	public final static NumberFormat nf = new DecimalFormat("##0.0#");
+	public final static NumberFormat nf = new DecimalFormat("##0.0#"); //$NON-NLS-1$
 	
 	
 	/**

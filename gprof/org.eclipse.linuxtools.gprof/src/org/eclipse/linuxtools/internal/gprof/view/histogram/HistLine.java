@@ -65,7 +65,7 @@ public class HistLine extends AbstractTreeElement {
 	@Override
 	public String getName() {
 		String functionName = getParent().getName();
-		return functionName + " (" + getParent().getParent().getName() + ":" + this.line + ")";
+		return functionName + " (" + getParent().getParent().getName() + ":" + this.line + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/*

@@ -65,7 +65,7 @@ public class HistBucket extends AbstractTreeElement {
 	 */
 	@Override
 	public String getName() {
-		return "0x" + Long.toHexString(bucket.start_addr);
+		return "0x" + Long.toHexString(bucket.start_addr); //$NON-NLS-1$
 	}
 
 	/*

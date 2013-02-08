@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.gprof.view.fields;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
-import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.internal.gprof.view.GmonView;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
 import org.eclipse.swt.graphics.Color;
@@ -56,17 +55,7 @@ public class SamplePerCallField extends SampleProfField {
 	 */
 	@Override
 	public String getColumnHeaderText() {
-		String prefix = "";
-		Object o = viewer.getInput();
-		if (o instanceof GmonDecoder) {
-			GmonDecoder decoder = (GmonDecoder) o;
-			if (decoder.isICache()) {
-				prefix = "ICACHE ";
-			} else if (decoder.isDCache()) {
-				prefix = "DCACHE ";
-			}
-		}
-		return prefix + "Time/Call";
+		return "Time/Call";
 	}
 
 	/*
@@ -75,16 +64,7 @@ public class SamplePerCallField extends SampleProfField {
 	 */
 	@Override
 	public String getColumnHeaderTooltip() {
-		Object o = viewer.getInput();
-		if (o instanceof GmonDecoder) {
-			GmonDecoder decoder = (GmonDecoder) o;
-			if (decoder.isICache()) {
-				return "Time/Call spent by function accessing instruction cache";
-			} else if (decoder.isDCache()) {
-				return "Time/Call spent by function accessing data cache";
-			}else return "Time/Call spent by function";
-		}
-		return null;
+		return "Time/Call spent by function";
 	}
 
 
@@ -98,13 +78,13 @@ public class SamplePerCallField extends SampleProfField {
 		TreeElement e = (TreeElement) obj;
 		int i = e.getSamples();
 		int j = e.getCalls();
-		if (i == -1 || j <= 0) return "";
+		if (i == -1 || j <= 0) return ""; //$NON-NLS-1$
 		float k = (float)i/(float)j;
 
 		double prof_rate = getProfRate();
 		if(prof_rate != 0){
 			return getValue(k, prof_rate);
-		}else return "";
+		}else return ""; //$NON-NLS-1$
 	}
 
 	/*

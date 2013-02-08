@@ -38,7 +38,7 @@ public class SwitchSampleTimeAction extends Action {
 	 */
 	public SwitchSampleTimeAction(AbstractSTDataView view) {
 		super("Switch sample/time", SWT.TOGGLE);
-		this.setImageDescriptor(Activator.getImageDescriptor("icons/datetime_obj.gif"));
+		this.setImageDescriptor(Activator.getImageDescriptor("icons/datetime_obj.gif")); //$NON-NLS-1$
 		this.setToolTipText("Switch sample/time");
 		this.view = view;
 	}
