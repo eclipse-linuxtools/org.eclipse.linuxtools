@@ -69,9 +69,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     public static interface ICompatibilityForwarder {
         IVerticalRulerColumn createSTRulerColumn();
 
-        boolean isQuickDiffEnabled();
 
-        boolean isSTRulerVisible();
     }
 
     public static final String ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.column"; //$NON-NLS-1$
@@ -501,10 +499,8 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return <code>true</code> if the line numbers should be visible
      */
     private boolean getLineNumberPreference() {
-        if (fForwarder != null)
-            return fForwarder.isSTRulerVisible();
         IPreferenceStore store = getPreferenceStore();
-        return store != null ? store.getBoolean(ST_KEY) : false;
+        return store != null ? store.getBoolean(STAnnotatedCSourceEditor.ST_RULER) : false;
     }
 
     /**
@@ -514,8 +510,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return <code>true</code> if the line numbers should be visible
      */
     private boolean getQuickDiffPreference() {
-        if (fForwarder != null)
-            return fForwarder.isQuickDiffEnabled();
         IPreferenceStore store = getPreferenceStore();
         boolean setting = store != null ? store
                 .getBoolean(AbstractDecoratedTextEditorPreferenceConstants.QUICK_DIFF_ALWAYS_ON) : false;

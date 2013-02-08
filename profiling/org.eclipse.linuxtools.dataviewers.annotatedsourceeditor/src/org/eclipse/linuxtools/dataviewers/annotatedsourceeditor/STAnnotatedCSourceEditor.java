@@ -38,7 +38,6 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineBackgroundEvent;
 import org.eclipse.swt.custom.LineBackgroundListener;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.StyledTextContent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -46,13 +45,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.internal.editors.text.EditorsPlugin;
-import org.eclipse.ui.internal.texteditor.AnnotationColumn;
-import org.eclipse.ui.internal.texteditor.LineNumberColumn;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
-import org.eclipse.ui.texteditor.rulers.IColumnSupport;
 import org.eclipse.ui.texteditor.rulers.IContributedRulerColumn;
 import org.eclipse.ui.texteditor.rulers.RulerColumnDescriptor;
 import org.eclipse.ui.texteditor.rulers.RulerColumnRegistry;
@@ -65,13 +60,9 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 
     protected STContributedRulerColumn fAbstractSTRulerColumn;
 
-    private IColumnSupport fColumnSupport;
-
-    private LineNumberColumn fLineColumn;
+    private STColumnSupport fColumnSupport;
 
     private STContributedRulerColumn fColumn;
-
-    private StyledText fCachedTextWidget;
 
     private AbstractSTAnnotatedSourceEditorInput fInput;
 
@@ -86,7 +77,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
             return;
         }
 
-        STColumnSupport columnSupport = (STColumnSupport) getAdapter(IColumnSupport.class);
+        STColumnSupport columnSupport = getSTColumnSupport();
         RulerColumnRegistry registry = RulerColumnRegistry.getDefault();
 
         for (int i = 1; i <= fInput.getColumnCount(); i++) {
@@ -109,32 +100,19 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
         }
 
         showLinesColored();
-
-        if (getViewer() != null) {
-            ISourceViewer sv = getViewer();
-
+        if (getSourceViewer() != null) {
+            ISourceViewer sv = getSourceViewer();
             if (sv.getTextWidget() != null) {
-
-                fCachedTextWidget = sv.getTextWidget();
-                fCachedTextWidget.addLineBackgroundListener(this);
+                sv.getTextWidget().addLineBackgroundListener(this);
             }
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    @Override
-    public Object getAdapter(Class required) {
-        if (IColumnSupport.class.equals(required)) {
-            if (fColumnSupport == null)
-                fColumnSupport = createSTColumnSupport();
-            return fColumnSupport;
-        }
-
-        return super.getAdapter(required);
-    }
-
-    protected IColumnSupport createSTColumnSupport() {
-        return new STColumnSupport(this, RulerColumnRegistry.getDefault());
+    private STColumnSupport getSTColumnSupport() {
+    	if (fColumnSupport == null) {
+          fColumnSupport = new STColumnSupport(this, RulerColumnRegistry.getDefault());
+    	}
+    	return fColumnSupport;
     }
 
     protected class STColumnSupport extends AbstractDecoratedTextEditor.ColumnSupport {
@@ -191,27 +169,6 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
             RulerColumnDescriptor descriptor = column.getDescriptor();
             IVerticalRuler ruler = getVerticalRuler();
             if (ruler instanceof CompositeRuler) {
-                if (AnnotationColumn.ID.equals(descriptor.getId())) {
-                    ((AnnotationColumn) column).setDelegate(createAnnotationRulerColumn((CompositeRuler) ruler));
-                } else if (LineNumberColumn.ID.equals(descriptor.getId())) {
-                    fLineColumn = ((LineNumberColumn) column);
-                    fLineColumn.setForwarder(new LineNumberColumn.ICompatibilityForwarder() {
-                        @Override
-                        public IVerticalRulerColumn createLineNumberRulerColumn() {
-                            return fEditor.createLineNumberRulerColumn();
-                        }
-
-                        @Override
-                        public boolean isQuickDiffEnabled() {
-                            return fEditor.isPrefQuickDiffAlwaysOn();
-                        }
-
-                        @Override
-                        public boolean isLineNumberRulerVisible() {
-                            return fEditor.isLineNumberRulerVisible();
-                        }
-                    });
-                }
                 if (STContributedRulerColumn.ID.equals(descriptor.getId())) {
                     fColumn = ((STContributedRulerColumn) column);
                     // this is a workaround...
@@ -224,16 +181,6 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
                                 return fDelegate;
                             }
                             return null;
-                        }
-
-                        @Override
-                        public boolean isQuickDiffEnabled() {
-                            return fEditor.isPrefQuickDiffAlwaysOn();
-                        }
-
-                        @Override
-                        public boolean isSTRulerVisible() {
-                            return fEditor.isSTRulerVisible();
                         }
                     });
                 }
@@ -322,8 +269,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
     @Override
     protected IOverviewRuler createOverviewRuler(ISharedTextColors sharedColors) {
         IOverviewRuler ruler = new STOverviewRuler(getAnnotationAccess(), VERTICAL_RULER_WIDTH, sharedColors);
-        MarkerAnnotationPreferences fAnnotationPreferences = EditorsPlugin.getDefault()
-                .getMarkerAnnotationPreferences();
+        MarkerAnnotationPreferences fAnnotationPreferences = getAnnotationPreferences();
         Iterator<?> e = fAnnotationPreferences.getAnnotationPreferences().iterator();
         while (e.hasNext()) {
             AnnotationPreference preference = (AnnotationPreference) e.next();
