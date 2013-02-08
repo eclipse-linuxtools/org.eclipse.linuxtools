@@ -5,7 +5,7 @@
          point="org.eclipse.ui.editors">
       <editor
             default="true"
-            filenames="gmon.out, gmon.outDCACHE, gmon.outICACHE, gmon.sum, gmon.sumDCACHE, gmon.sumICACHE, gmon.sum.xyz, gmon.out.000, gmon.out.001, gmon.out.002, gmon.out.003, gmon.out.004, gmon.out.005, gmon.out.006, gmon.out.007, gmon.out.008, gmon.out.009, gmon.out.010, gmon.out.011, gmon.out.012, gmon.out.013, gmon.out.014, gmon.out.015, gmon.out.016"
+            filenames="gmon.out, gmon.sum"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.editor.single"
             launcher="org.eclipse.linuxtools.internal.gprof.action.OpenGmonAction"
