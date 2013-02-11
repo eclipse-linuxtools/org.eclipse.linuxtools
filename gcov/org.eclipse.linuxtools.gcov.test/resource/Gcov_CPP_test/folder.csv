@@ -1,5 +1,5 @@
 Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
-+-;Summary;2467;60;28;46.67
++-;Summary;2,467;60;28;46.67
   +-;4.5.1;638;14;1;7.14
   | +-;iostream;74;1;1;100.0
   | +-;ostream;564;13;0;0.0
@@ -20,7 +20,7 @@ Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
   |   +-;M::mult::mult();;1;1;100.0
   |   +-;M::mult::multiply(long, long);;6;6;100.0
   |   +-;M::mult::~mult();;1;1;100.0
-  +-;bits;1743;19;0;0.0
+  +-;bits;1,743;19;0;0.0
     +-;basic_ios.h;441;10;0;0.0
     | +-;std::basic_ios<char, std::char_traits<char> >::rdstate() const;;2;0;0.0
     | +-;std::basic_ios<char, std::char_traits<char> >::setstate(std::_Ios_Iostate);;2;0;0.0

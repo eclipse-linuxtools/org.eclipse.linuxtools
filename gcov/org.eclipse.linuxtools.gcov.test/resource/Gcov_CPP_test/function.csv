@@ -1,5 +1,5 @@
 Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
-+-;Summary;2467;60;28;46.67
++-;Summary;2,467;60;28;46.67
   +-;F::fact::f(long);;5;5;100.0
   +-;F::fact::fact();;1;1;100.0
   +-;F::fact::~fact();;1;1;100.0

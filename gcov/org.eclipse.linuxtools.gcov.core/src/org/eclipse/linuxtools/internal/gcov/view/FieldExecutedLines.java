@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.view;
 
+import java.text.NumberFormat;
+
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
@@ -32,32 +34,33 @@ public class FieldExecutedLines extends AbstractSTDataViewersField implements IC
 	 */
 	@Override
 	public String getValue(Object obj) {
-		TreeElement e = (TreeElement) obj;
-		return Integer.toString(e.getExecutedLines());
+		int v = getExecutedLines(obj);
+		return NumberFormat.getInstance().format(v);
 	}
 
 	@Override
 	public String getToolTipText(Object element) {
-		TreeElement e = (TreeElement) element;
-		String s = "Executed lines number = "
-			+ Integer.toString(e.getExecutedLines());
+	    int v = getExecutedLines(element);
+	    String s = NumberFormat.getInstance().format(v);
+	    s += " executed line";
+	    if (v > 1) s += "s";
 		return s;
 	}
 
 	@Override
 	public int compare(Object obj1, Object obj2) {
-		TreeElement e1 = (TreeElement) obj1;
-		TreeElement e2 = (TreeElement) obj2;
-		String s1 = Integer.toString(e1.getExecutedLines());
-		String s2 = Integer.toString(e2.getExecutedLines());
-		if (s1 == null) {
-			if (s2 == null)
-				return 0;
-			return -1;
-		}
-		if (s2 == null)
-			return 1;
-		return s1.compareTo(s2);
+	    int i1 = getExecutedLines(obj1);
+	    int i2 = getExecutedLines(obj2);
+	    if (i1>i2) return 1;
+	    if (i1<i2) return -1;
+	    return 0;
+	}
+	
+	private int getExecutedLines(Object o) {
+	    if (o instanceof TreeElement) {
+	        return ((TreeElement) o).getExecutedLines();
+	    }
+	    return 0;
 	}
 
 	/*
@@ -65,8 +68,7 @@ public class FieldExecutedLines extends AbstractSTDataViewersField implements IC
 	 * @see org.eclipse.linuxtools.dataviewers.charts.provider.IChartField#getNumber(java.lang.Object)
 	 */
 	@Override
-	public Number getNumber(Object obj) {
-		TreeElement e = (TreeElement) obj;
-		return e.getExecutedLines();
+	public Integer getNumber(Object obj) {
+		return getExecutedLines(obj);
 	}
 }

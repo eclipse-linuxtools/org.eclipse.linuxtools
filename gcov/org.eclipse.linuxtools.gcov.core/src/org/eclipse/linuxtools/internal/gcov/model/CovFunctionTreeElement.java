@@ -24,7 +24,7 @@ public class CovFunctionTreeElement extends AbstractTreeElement {
 	
 	public CovFunctionTreeElement(TreeElement parent, String name, String sourceFilePath, 
 			long firstLnNmbr, int executedLines, int instrumentedLines) {
-		super(parent, name, 0, executedLines, instrumentedLines);
+		super(parent, name, -1, executedLines, instrumentedLines);
 		this.sourceFilePath = sourceFilePath;
 		this.firstLnNmbr = firstLnNmbr;
 	}

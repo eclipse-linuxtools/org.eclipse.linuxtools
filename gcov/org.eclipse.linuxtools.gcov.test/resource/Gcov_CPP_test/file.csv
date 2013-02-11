@@ -1,5 +1,5 @@
 Hierarchy;Name;Total Lines;Instrumented Lines;Executed Lines;Coverage %
-+-;Summary;2467;60;28;46.67
++-;Summary;2,467;60;28;46.67
   +-;basic_ios.h;441;10;0;0.0
   | +-;std::basic_ios<char, std::char_traits<char> >::rdstate() const;;2;0;0.0
   | +-;std::basic_ios<char, std::char_traits<char> >::setstate(std::_Ios_Iostate);;2;0;0.0
