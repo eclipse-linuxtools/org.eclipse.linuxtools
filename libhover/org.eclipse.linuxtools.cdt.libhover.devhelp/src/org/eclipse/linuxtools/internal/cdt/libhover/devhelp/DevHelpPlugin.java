@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.cdt.libhover.devhelp;
+package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

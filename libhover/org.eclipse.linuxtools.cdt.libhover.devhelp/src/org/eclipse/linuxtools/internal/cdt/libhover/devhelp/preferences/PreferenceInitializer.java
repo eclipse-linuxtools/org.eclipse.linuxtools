@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.cdt.libhover.devhelp.DevHelpPlugin;
+import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpPlugin;
 
 /**
  * Class used to initialize default preference values.

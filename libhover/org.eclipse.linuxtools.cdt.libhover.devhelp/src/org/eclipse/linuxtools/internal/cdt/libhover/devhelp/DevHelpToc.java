@@ -25,7 +25,6 @@ import org.eclipse.help.IToc;
 import org.eclipse.help.ITopic;
 import org.eclipse.help.IUAElement;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.cdt.libhover.devhelp.DevHelpPlugin;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.PreferenceConstants;
 
 public class DevHelpToc implements IToc {

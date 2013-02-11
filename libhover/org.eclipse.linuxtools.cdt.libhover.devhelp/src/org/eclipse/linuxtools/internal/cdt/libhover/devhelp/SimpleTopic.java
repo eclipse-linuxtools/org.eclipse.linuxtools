@@ -21,7 +21,6 @@ import javax.xml.xpath.XPathFactory;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.help.ITopic;
 import org.eclipse.help.IUAElement;
-import org.eclipse.linuxtools.cdt.libhover.devhelp.DevHelpPlugin;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

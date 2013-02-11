@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.help.ITopic;
 import org.eclipse.help.IUAElement;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.cdt.libhover.devhelp.DevHelpPlugin;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.PreferenceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
