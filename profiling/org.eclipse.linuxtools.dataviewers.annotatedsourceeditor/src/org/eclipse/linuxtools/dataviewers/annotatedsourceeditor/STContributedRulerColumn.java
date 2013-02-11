@@ -19,7 +19,6 @@ import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.revisions.IRevisionRulerColumn;
 import org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension;
 import org.eclipse.jface.text.revisions.IRevisionRulerColumnExtension.RenderingMode;
 import org.eclipse.jface.text.revisions.RevisionInformation;
@@ -47,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.texteditor.PropertyEventDispatcher;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
@@ -66,12 +64,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * Forwarder for preference checks and ruler creation. Needed to maintain the forwarded APIs in
      * {@link AbstractDecoratedTextEditor}.
      */
-    public static interface ICompatibilityForwarder {
-        IVerticalRulerColumn createSTRulerColumn();
-
-
-    }
-
     public static final String ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.column"; //$NON-NLS-1$
 
     private static final String FG_COLOR_KEY = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER_COLOR;
@@ -80,7 +72,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     private final static String ST_KEY = "STRuler"; //$NON-NLS-1$
     private final static String REVISION_ASK_BEFORE_QUICKDIFF_SWITCH_KEY = AbstractDecoratedTextEditorPreferenceConstants.REVISION_ASK_BEFORE_QUICKDIFF_SWITCH;
 
-    private IVerticalRulerColumn fDelegate;
+    private STChangeRulerColumn fDelegate;
 
     /**
      * Preference dispatcher that registers a single listener so we don't have to manage every single preference
@@ -88,7 +80,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     private PropertyEventDispatcher fDispatcher;
     private ISourceViewer fViewer;
-    private ICompatibilityForwarder fForwarder;
 
     private Label labelColumn;
 
@@ -121,8 +112,8 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     }
 
     public ISTAnnotationColumn getAnnotationColumn(int line) {
-        if (fDelegate instanceof STChangeRulerColumn) {
-            return ((STChangeRulerColumn) fDelegate).getSTAnnotationColumn();
+        if (fDelegate != null) {
+            return fDelegate.getSTAnnotationColumn();
         }
         return null;
     }
@@ -156,8 +147,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public void setModel(IAnnotationModel model) {
-        if (getQuickDiffPreference())
+        if (getQuickDiffPreference()) {
             fDelegate.setModel(model);
+        }
     }
 
     /*
@@ -165,8 +157,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public int getLineOfLastMouseButtonActivity() {
-        if (fDelegate instanceof IVerticalRulerInfo)
-            ((IVerticalRulerInfo) fDelegate).getLineOfLastMouseButtonActivity();
+        if (fDelegate != null) {
+           fDelegate.getLineOfLastMouseButtonActivity();
+        }
         return -1;
     }
 
@@ -175,8 +168,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public int toDocumentLineNumber(int y_coordinate) {
-        if (fDelegate instanceof IVerticalRulerInfo)
-            return ((IVerticalRulerInfo) fDelegate).toDocumentLineNumber(y_coordinate);
+        if (fDelegate != null) {
+            return fDelegate.toDocumentLineNumber(y_coordinate);
+        }
         return -1;
     }
 
@@ -187,8 +181,8 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public void addVerticalRulerListener(IVerticalRulerListener listener) {
-        if (fDelegate instanceof IVerticalRulerInfoExtension)
-            ((IVerticalRulerInfoExtension) fDelegate).addVerticalRulerListener(listener);
+        if (fDelegate != null)
+            fDelegate.addVerticalRulerListener(listener);
     }
 
     /*
@@ -196,8 +190,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public IAnnotationHover getHover() {
-        if (fDelegate instanceof IVerticalRulerInfoExtension)
-            return ((IVerticalRulerInfoExtension) fDelegate).getHover();
+        if (fDelegate != null) {
+            return fDelegate.getHover();
+        }
         return null;
     }
 
@@ -206,8 +201,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public IAnnotationModel getModel() {
-        if (fDelegate instanceof IVerticalRulerInfoExtension)
-            return ((IVerticalRulerInfoExtension) fDelegate).getModel();
+        if (fDelegate != null) {
+            return fDelegate.getModel();
+        }
         return null;
     }
 
@@ -218,8 +214,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      */
     @Override
     public void removeVerticalRulerListener(IVerticalRulerListener listener) {
-        if (fDelegate instanceof IVerticalRulerInfoExtension)
-            ((IVerticalRulerInfoExtension) fDelegate).removeVerticalRulerListener(listener);
+        if (fDelegate != null) {
+        	fDelegate.removeVerticalRulerListener(listener);
+        }
     }
 
     /*
@@ -378,8 +375,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     private Map<Object, AnnotationPreference> getAnnotationPreferenceMap() {
         Map<Object, AnnotationPreference> annotationPrefs = new HashMap<Object, AnnotationPreference>();
-        MarkerAnnotationPreferences fAnnotationPreferences = EditorsPlugin.getDefault()
-                .getMarkerAnnotationPreferences();
+        MarkerAnnotationPreferences fAnnotationPreferences = new MarkerAnnotationPreferences();
         Iterator<?> iter = fAnnotationPreferences.getAnnotationPreferences().iterator();
         while (iter.hasNext()) {
             AnnotationPreference pref = (AnnotationPreference) iter.next();
@@ -410,49 +406,48 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
             ((STRulerColumn) column).setBackground(sharedColors.getColor(rgb));
     }
 
-    private void updateChangedColor(AnnotationPreference pref, IPreferenceStore store, IVerticalRulerColumn column) {
-        if (pref != null && column instanceof IChangeRulerColumn) {
+    private void updateChangedColor(AnnotationPreference pref, IPreferenceStore store, STChangeRulerColumn column) {
+        if (pref != null && column != null) {
             RGB rgb = getColorFromAnnotationPreference(store, pref);
-            ((IChangeRulerColumn) column).setChangedColor(getSharedColors().getColor(rgb));
+            column.setChangedColor(getSharedColors().getColor(rgb));
         }
     }
 
-    private void updateAddedColor(AnnotationPreference pref, IPreferenceStore store, IVerticalRulerColumn column) {
-        if (pref != null && column instanceof IChangeRulerColumn) {
+    private void updateAddedColor(AnnotationPreference pref, IPreferenceStore store, STChangeRulerColumn column) {
+        if (pref != null && column != null) {
             RGB rgb = getColorFromAnnotationPreference(store, pref);
-            ((IChangeRulerColumn) column).setAddedColor(getSharedColors().getColor(rgb));
+            column.setAddedColor(getSharedColors().getColor(rgb));
         }
     }
 
-    private void updateDeletedColor(AnnotationPreference pref, IPreferenceStore store, IVerticalRulerColumn column) {
-        if (pref != null && column instanceof IChangeRulerColumn) {
+    private void updateDeletedColor(AnnotationPreference pref, IPreferenceStore store, STChangeRulerColumn column) {
+        if (pref != null && column != null) {
             RGB rgb = getColorFromAnnotationPreference(store, pref);
-            ((IChangeRulerColumn) column).setDeletedColor(getSharedColors().getColor(rgb));
+            column.setDeletedColor(getSharedColors().getColor(rgb));
         }
     }
 
-    private void updateCharacterMode(IPreferenceStore store, IVerticalRulerColumn column) {
-        if (column instanceof STChangeRulerColumn) {
-            STChangeRulerColumn lncrc = (STChangeRulerColumn) column;
-            lncrc.setDisplayMode(store
+    private void updateCharacterMode(IPreferenceStore store, STChangeRulerColumn column) {
+        if (column != null) {
+            column.setDisplayMode(store
                     .getBoolean(AbstractDecoratedTextEditorPreferenceConstants.QUICK_DIFF_CHARACTER_MODE));
         }
     }
 
-    private void updateLineNumbersVisibility(IVerticalRulerColumn column) {
-        if (column instanceof STChangeRulerColumn) {
+    private void updateLineNumbersVisibility(STChangeRulerColumn column) {
+        if (column != null) {
             if (labelColumn != null) {
                 labelColumn.setVisible(getLineNumberPreference());
                 Label labelName = (Label) labelColumn.getParent().getChildren()[labelColumn.getParent().getChildren().length - 2];
                 labelName.setVisible(labelColumn.isVisible());
 
             }
-            ((STChangeRulerColumn) column).showLineNumbers(getLineNumberPreference());
+            column.showLineNumbers(getLineNumberPreference());
         }
     }
 
-    private void updateRevisionRenderingMode(IPreferenceStore store, IVerticalRulerColumn column) {
-        if (column instanceof IRevisionRulerColumnExtension) {
+    private void updateRevisionRenderingMode(IPreferenceStore store, STChangeRulerColumn column) {
+        if (column != null) {
             String option = store
                     .getString(AbstractDecoratedTextEditorPreferenceConstants.REVISION_RULER_RENDERING_MODE);
             RenderingMode[] modes = { IRevisionRulerColumnExtension.AUTHOR, IRevisionRulerColumnExtension.AGE,
@@ -466,30 +461,31 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
         }
     }
 
-    private void updateRevisionAuthorVisibility(IPreferenceStore store, IVerticalRulerColumn column) {
-        if (column instanceof IRevisionRulerColumnExtension) {
+    private void updateRevisionAuthorVisibility(IPreferenceStore store, STChangeRulerColumn column) {
+        if (column != null) {
             boolean show = store.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.REVISION_RULER_SHOW_AUTHOR);
-            ((IRevisionRulerColumnExtension) column).showRevisionAuthor(show);
+            column.showRevisionAuthor(show);
         }
     }
 
-    private void updateRevisionIdVisibility(IPreferenceStore store, IVerticalRulerColumn column) {
-        if (column instanceof IRevisionRulerColumnExtension) {
+    private void updateRevisionIdVisibility(IPreferenceStore store, STChangeRulerColumn column) {
+        if (column != null) {
             boolean show = store
                     .getBoolean(AbstractDecoratedTextEditorPreferenceConstants.REVISION_RULER_SHOW_REVISION);
-            ((IRevisionRulerColumnExtension) column).showRevisionId(show);
+            column.showRevisionId(show);
         }
     }
 
-    private void updateQuickDiffVisibility(IVerticalRulerColumn column) {
+    private void updateQuickDiffVisibility(STChangeRulerColumn column) {
         boolean show = getQuickDiffPreference();
         if (show == isShowingChangeInformation())
             return;
 
-        if (show)
+        if (show) {
             installChangeRulerModel(column);
-        else
+        } else {
             uninstallChangeRulerModel(column);
+        }
     }
 
     /**
@@ -627,8 +623,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
         modelExtension.addAnnotationModel(IChangeRulerColumn.QUICK_DIFF_MODEL_ID, newDiffer);
 
-        if (fDelegate instanceof IChangeRulerColumn)
-            ((IChangeRulerColumn) fDelegate).setModel(annotationModel); // picks up the new model attachment
+        if (fDelegate != null) {
+            fDelegate.setModel(annotationModel); // picks up the new model attachment
+        }
 
         return true;
     }
@@ -639,8 +636,8 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @param column
      *            the column to install the model on
      */
-    private void installChangeRulerModel(IVerticalRulerColumn column) {
-        if (column instanceof IChangeRulerColumn) {
+    private void installChangeRulerModel(STChangeRulerColumn column) {
+        if (column != null) {
             IAnnotationModel model = getAnnotationModelWithDiffer();
             ((IChangeRulerColumn) column).setModel(model);
             if (model != null) {
@@ -723,12 +720,14 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     private IAnnotationModel getDiffer() {
         // get annotation model extension
         ISourceViewer viewer = fViewer;
-        if (viewer == null)
+        if (viewer == null) {
             return null;
+        }
 
         IAnnotationModel m = viewer.getAnnotationModel();
-        if (m == null && fDelegate instanceof IChangeRulerColumn)
-            m = ((IChangeRulerColumn) fDelegate).getModel();
+        if (m == null && fDelegate != null) {
+            m = fDelegate.getModel();
+        }
 
         if (!(m instanceof IAnnotationModelExtension))
             return null;
@@ -740,15 +739,13 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     }
 
     /**
-     * Sets the forwarder. Used by {@link AbstractDecoratedTextEditor} to maintain the contract of its
+     * Sets the STRulerColumn. Used by {@link AbstractDecoratedTextEditor} to maintain the contract of its
      * {@link AbstractDecoratedTextEditor#createLineNumberRulerColumn} method.
      *
-     * @param forwarder
-     *            the forwarder
+     * @param rulerColumn The ruler column.
      */
-    public void setForwarder(ICompatibilityForwarder forwarder) {
-        fForwarder = forwarder;
-        fDelegate = forwarder.createSTRulerColumn();
+    public void setSTColumn(STChangeRulerColumn rulerColumn) {
+        fDelegate = rulerColumn;
     }
 
     /**
@@ -757,7 +754,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @param rulerColumn
      *            the ruler column to be initialized
      */
-    public void initializeSTRulerColumn(STRulerColumn rulerColumn) {
+    public void initializeSTRulerColumn(STChangeRulerColumn rulerColumn) {
         IPreferenceStore store = getPreferenceStore();
         if (store != null) {
             updateForegroundColor(store, rulerColumn);
@@ -774,7 +771,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return <code>true</code> if line numbers are shown, <code>false</code> otherwise
      */
     public boolean isShowingSTRuler() {
-        boolean b = fDelegate instanceof STRulerColumn && ((STChangeRulerColumn) fDelegate).isShowingSTRuler();
+        boolean b = fDelegate != null && fDelegate.isShowingSTRuler();
         return b;
     }
 
@@ -785,8 +782,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return <code>true</code> if change information is shown, <code>false</code> otherwise
      */
     public boolean isShowingChangeInformation() {
-        return fDelegate instanceof STChangeRulerColumn
-                && ((STChangeRulerColumn) fDelegate).isShowingChangeInformation();
+		return fDelegate != null && fDelegate.isShowingChangeInformation();
     }
 
     /**
@@ -798,19 +794,22 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      *            the id of the corresponding quick diff provider
      */
     public void showRevisionInformation(RevisionInformation info, String quickDiffProviderId) {
-        if (!ensureQuickDiffProvider(quickDiffProviderId))
+        if (!ensureQuickDiffProvider(quickDiffProviderId)) {
             return;
+        }
 
-        if (fDelegate instanceof IRevisionRulerColumn)
-            ((IRevisionRulerColumn) fDelegate).setRevisionInformation(info);
+        if (fDelegate != null) {
+            fDelegate.setRevisionInformation(info);
+        }
     }
 
     /**
      * Hides revision information.
      */
     public void hideRevisionInformation() {
-        if (fDelegate instanceof IRevisionRulerColumn)
-            ((IRevisionRulerColumn) fDelegate).setRevisionInformation(null);
+        if (fDelegate != null) {
+            fDelegate.setRevisionInformation(null);
+        }
     }
 
     /**
@@ -820,8 +819,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return <code>true</code> if revision information is shown, <code>false</code> otherwise
      */
     public boolean isShowingRevisionInformation() {
-        if (fDelegate instanceof STChangeRulerColumn)
-            return ((STChangeRulerColumn) fDelegate).isShowingRevisionInformation();
+        if (fDelegate != null) {
+        	return fDelegate.isShowingRevisionInformation();
+        }
         return false;
     }
 
@@ -831,8 +831,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
      * @return the revision selection provider
      */
     public ISelectionProvider getRevisionSelectionProvider() {
-        if (fDelegate instanceof IRevisionRulerColumnExtension)
-            return ((IRevisionRulerColumnExtension) fDelegate).getRevisionSelectionProvider();
+        if (fDelegate != null) {
+            return fDelegate.getRevisionSelectionProvider();
+        }
         return null;
     }
 
