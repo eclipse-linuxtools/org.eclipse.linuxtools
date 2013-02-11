@@ -101,7 +101,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
         /**
          * Creates a new filter iterator with the given specification.
-         * 
+         *
          * @param annotationType
          *            the annotation type
          * @param style
@@ -118,7 +118,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
         /**
          * Creates a new filter iterator with the given specification.
-         * 
+         *
          * @param annotationType
          *            the annotation type
          * @param style
@@ -214,7 +214,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
         /**
          * Sets the header color.
-         * 
+         *
          * @param color
          *            the header color
          */
@@ -234,7 +234,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
          */
         @Override
@@ -290,13 +290,13 @@ public class STOverviewRuler implements IOverviewRuler {
     private HeaderPainter fHeaderPainter;
     /**
      * The list of annotation types to be shown in this ruler.
-     * 
+     *
      * @since 3.0
      */
     private Set<Object> fConfiguredAnnotationTypes = new HashSet<Object>();
     /**
      * The list of annotation types to be shown in the header of this ruler.
-     * 
+     *
      * @since 3.0
      */
     private Set<Object> fConfiguredHeaderAnnotationTypes = new HashSet<Object>();
@@ -310,40 +310,40 @@ public class STOverviewRuler implements IOverviewRuler {
     private ISharedTextColors fSharedTextColors;
     /**
      * All available annotation types sorted by layer.
-     * 
+     *
      * @since 3.0
      */
     private List<Object> fAnnotationsSortedByLayer = new ArrayList<Object>();
     /**
      * All available layers sorted by layer. This list may contain duplicates.
-     * 
+     *
      * @since 3.0
      */
     private List<Integer> fLayersSortedByLayer = new ArrayList<Integer>();
     /**
      * Map of allowed annotation types. An allowed annotation type maps to <code>true</code>, a disallowed to
      * <code>false</code>.
-     * 
+     *
      * @since 3.0
      */
     private Map<Object, Boolean> fAllowedAnnotationTypes = new HashMap<Object, Boolean>();
     /**
      * Map of allowed header annotation types. An allowed annotation type maps to <code>true</code>, a disallowed to
      * <code>false</code>.
-     * 
+     *
      * @since 3.0
      */
     private Map<Object, Boolean> fAllowedHeaderAnnotationTypes = new HashMap<Object, Boolean>();
     /**
      * The cached annotations.
-     * 
+     *
      * @since 3.0
      */
     private List<Annotation> fCachedAnnotations = new ArrayList<Annotation>();
 
     /**
      * Constructs a overview ruler of the given width using the given annotation access and the given color manager.
-     * 
+     *
      * @param annotationAccess
      *            the annotation access
      * @param width
@@ -395,7 +395,7 @@ public class STOverviewRuler implements IOverviewRuler {
     @Override
     public Control createControl(Composite parent, ITextViewer textViewer) {
         fTextViewer = textViewer;
-        fHitDetectionCursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
+        fHitDetectionCursor = parent.getDisplay().getSystemCursor(SWT.CURSOR_HAND);
         fHeader = new Canvas(parent, SWT.NONE);
         fCanvas = new Canvas(parent, SWT.NO_BACKGROUND);
         fCanvas.addPaintListener(new PaintListener() {
@@ -443,10 +443,6 @@ public class STOverviewRuler implements IOverviewRuler {
             fBuffer.dispose();
             fBuffer = null;
         }
-        if (fHitDetectionCursor != null) {
-            fHitDetectionCursor.dispose();
-            fHitDetectionCursor = null;
-        }
         fConfiguredAnnotationTypes.clear();
         fAllowedAnnotationTypes.clear();
         fConfiguredHeaderAnnotationTypes.clear();
@@ -458,7 +454,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Double buffer drawing.
-     * 
+     *
      * @param dest
      *            the GC to draw into
      */
@@ -493,7 +489,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Draws this overview ruler.
-     * 
+     *
      * @param gc
      *            the GC to draw into
      */
@@ -587,7 +583,7 @@ public class STOverviewRuler implements IOverviewRuler {
     /**
      * Draws this overview ruler. Uses <code>ITextViewerExtension5</code> for its implementation. Will replace
      * <code>doPaint(GC)</code>.
-     * 
+     *
      * @param gc
      *            the GC to draw into
      */
@@ -726,7 +722,7 @@ public class STOverviewRuler implements IOverviewRuler {
     /**
      * Translates a given y-coordinate of this ruler into the corresponding document lines. The number of lines depends
      * on the concrete scaling given as the ration between the height of this ruler and the length of the document.
-     * 
+     *
      * @param y_coordinate
      *            the y-coordinate
      * @return the corresponding document lines
@@ -772,7 +768,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the position of the first annotation found in the given line range.
-     * 
+     *
      * @param lineNumbers
      *            the line range
      * @param ignoreSelectedAnnotation
@@ -831,7 +827,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the line which corresponds best to one of the underlying annotations at the given y-coordinate.
-     * 
+     *
      * @param lineNumbers
      *            the line numbers
      * @return the best matching line or <code>-1</code> if no such line can be found
@@ -852,7 +848,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Handles mouse clicks.
-     * 
+     *
      * @param event
      *            the mouse button down event
      */
@@ -871,7 +867,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Handles mouse moves.
-     * 
+     *
      * @param event
      *            the mouse move event
      */
@@ -948,7 +944,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns whether the given annotation type should be skipped by the drawing routine.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @return <code>true</code> if annotation of the given type should be skipped
@@ -959,7 +955,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns whether the given annotation type should be skipped by the drawing routine of the header.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @return <code>true</code> if annotation of the given type should be skipped
@@ -972,7 +968,7 @@ public class STOverviewRuler implements IOverviewRuler {
     /**
      * Returns whether the given annotation type is mapped to <code>true</code> in the given <code>allowed</code> map or
      * covered by the <code>configured</code> set.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @param allowed
@@ -996,7 +992,7 @@ public class STOverviewRuler implements IOverviewRuler {
      * Computes whether the annotations of the given type are covered by the given <code>configured</code> set. This is
      * the case if either the type of the annotation or any of its super types is contained in the
      * <code>configured</code> set.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @param configured
@@ -1020,7 +1016,7 @@ public class STOverviewRuler implements IOverviewRuler {
     /**
      * Returns a specification of a color that lies between the given foreground and background color using the given
      * scale factor.
-     * 
+     *
      * @param fg
      *            the foreground color
      * @param bg
@@ -1036,7 +1032,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the grey value in which the given color would be drawn in grey-scale.
-     * 
+     *
      * @param rgb
      *            the color
      * @return the grey-scale value
@@ -1049,7 +1045,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns whether the given color is dark or light depending on the colors grey-scale level.
-     * 
+     *
      * @param rgb
      *            the color
      * @return <code>true</code> if the color is dark, <code>false</code> if it is light
@@ -1060,7 +1056,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns a color based on the color configured for the given annotation type and the given scale factor.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @param scale
@@ -1096,7 +1092,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the color for the given annotation type
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @return the color
@@ -1124,7 +1120,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the stroke color for the given annotation type and characteristics.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @param temporary
@@ -1141,7 +1137,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Returns the fill color for the given annotation type and characteristics.
-     * 
+     *
      * @param annotationType
      *            the annotation type
      * @param temporary
@@ -1272,7 +1268,7 @@ public class STOverviewRuler implements IOverviewRuler {
 
     /**
      * Updates the tool tip text of the header of this ruler.
-     * 
+     *
      * @since 3.0
      */
     private void updateHeaderToolTipText() {
