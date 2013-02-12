@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ActivateGraphAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.ActivateGraphAction;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleTreeNode;

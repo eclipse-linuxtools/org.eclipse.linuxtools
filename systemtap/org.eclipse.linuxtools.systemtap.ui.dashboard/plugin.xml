@@ -105,7 +105,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ImportModuleAction"
 				icon="icons/actions/import_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/open.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ImportModuleLocationAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.ImportModuleLocationAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.ImportModuleAction"
 				style="push"
 				state="false"/>
@@ -128,7 +128,7 @@
 			<action
 				label="%action.stop.name"
 				tooltip="%action.stop.desc"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopModuleAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.StopModuleAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
 				icon="icons/actions/stop_script.gif"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopModuleAction"
@@ -143,7 +143,7 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.PauseModuleAction"
 				icon="icons/actions/pause_script.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.group"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.PauseModuleAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.PauseModuleAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.PauseModuleAction"
 				menubarPath="org.eclipse.ui.run/runGroup"
 				style="push"
@@ -151,7 +151,7 @@
 			<action
 				label="%action.run.name"
 				tooltip="%action.run.desc"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.RunModuleAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.RunModuleAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.RunModuleAction"
 				icon="icons/actions/start_script.gif"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.RunModuleAction"
@@ -215,14 +215,14 @@
 			objectClass="org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode">
 			<action
 				label="%action.activateGraph.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ActivateGraphAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.ActivateGraphAction"
 				icon="icons/misc/graph_act.gif"
 				menubarPath="build.ext"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.ActivateGraphAction"
 				style="push"/>
 			<action
 				label="%action.stopGraph.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopGraphAction"
+				class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.StopGraphAction"
 				icon="icons/misc/graph_dis.gif"
 				menubarPath="build.ext"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.StopGraphAction"

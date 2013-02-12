@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboard.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions;
 
 import java.util.ArrayList;
 
@@ -19,15 +19,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.hidden.GetSelectedModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleTreeNode;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IActionListener;
 import org.eclipse.ui.IViewActionDelegate;
@@ -37,11 +32,13 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This action is used to stop the selected dashboard module.  The graphs are all
- * closed, the process is killed, and the item is removed from tha ActiveModuleBrowserView.
+ * This action is used to pause the selected dashboard module.  This is only a fake pause.
+ * The graph is left open, and the SystemTap script is stopped.  The user can then start
+ * the script running again and have it output to the same graph.  This provides the illusion
+ * of being paused.
  * @author Ryan Morse
  */
-public class StopModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
+public class PauseModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
 	@Override
 	public void init(IViewPart view) {
 		this.view = view;
@@ -56,64 +53,22 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	}
 
 	/**
-	 * This is the main method of the class. It handles stopping of the module.
-	 * All of the graphs are closed, the process is killed, and the item
-	 * is removed from the ActiveModuleBrowserView.
+	 * This is the main method of the class. It handles the "pretend" pause of the module.  The stap process is
+	 * stopped but the graph is left open.
 	 */
 	@Override
 	public void run() {
-		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				TreeNode treenode = GetSelectedModule.getNode(view);
-				DashboardModule module = null;
-				if (treenode.getChildCount() == 0) {
-					module = (DashboardModule) treenode.getData();
-					stopmodule(module);
-				} else {
-					for (int j = 0; j < treenode.getChildCount(); j++) {
-						module = (DashboardModule) treenode.getChildAt(j)
-								.getData();
-						stopmodule(module);
-					}
-				}
-			}
-		});
-	}
-
-	private void stopmodule(DashboardModule module) {
+		DashboardModule module = GetSelectedModule.getModule(view);
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
 		ActiveModuleBrowserView ambv = (ActiveModuleBrowserView)ivp;
-		GraphTreeNode graphNode;
-		DashboardGraphData graphData;
-
-		if (ambv.isActive(module)) {
-			ActiveModuleTreeNode node = ambv.remove(module);
-			ActiveModuleData amd = (ActiveModuleData) node.getData();
-
-			ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().findView(DashboardView.ID);
-			DashboardView dv = (DashboardView) ivp;
-
-			for (int i = 0; i < node.getChildCount(); i++) {
-				graphNode = (GraphTreeNode) node.getChildAt(i);
-				graphData = (DashboardGraphData) graphNode.getData();
-				if (null != graphData.adapter) {
-					dv.removeGraph(graphData.adapter, module.getcategory());
-					graphData.adapter = null;
-				}
-			}
-
-			if (!amd.paused) {
-				if (amd.cmd.isRunning())
-					amd.cmd.stop();
-				amd.data = null;
-			}
-			dv.closeComposite(amd.module.category);
-			amd = null;
-			fireActionEvent();
+		if(ambv.isActive(module)) {
+			ActiveModuleData amd = ambv.pause(module);
+			if (amd.cmd.isRunning()) {
+			amd.cmd.stop();
+			amd.cmd.dispose(); }
+			amd.paused = true;
 		}
-
+		fireActionEvent();
 		setEnablement(false);
 		buildEnablementChecks();
 	}
@@ -145,6 +100,7 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 			ambv.getViewer().addSelectionChangedListener(activeModuleListener);
 
 			RunModuleAction.addActionListener(runListener);
+			StopModuleAction.addActionListener(stopListener);
 		}
 	}
 
@@ -162,8 +118,6 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 */
 	@Override
 	public void dispose() {
-		RunModuleAction.removeActionListener(runListener);
-
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(DashboardModuleBrowserView.ID);
 		final DashboardModuleBrowserView dmbv = (DashboardModuleBrowserView)ivp;
 		dmbv.getViewer().removeSelectionChangedListener(moduleListener);
@@ -172,34 +126,38 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 		final ActiveModuleBrowserView ambv = (ActiveModuleBrowserView)ivp;
 		ambv.getViewer().removeSelectionChangedListener(activeModuleListener);
 
+		RunModuleAction.removeActionListener(runListener);
+		StopModuleAction.removeActionListener(stopListener);
+
 		view = null;
 		act = null;
 	}
 
 	/**
-	 * Adds a new listener to the button to inform others when the stop button
+	 * Adds a new listener to the button to inform others when the pause button
 	 * is pressed.
-	 * @param listener The class interested in knowing when scripts are stopped
+	 * @param listener The class interested in knowing when scripts are paused
 	 */
 	public static void addActionListener(IActionListener listener) {
 		listeners.add(listener);
 	}
 
 	/**
-	 * Removes the listener from getting stop events.
-	 * @param listener The class that no longer should receive stop notices
+	 * Removes the listener from getting pause events.
+	 * @param listener The class that no longer should receive pause notices
 	 */
 	public static void removeActionListener(IActionListener listener) {
 		listeners.remove(listener);
 	}
 
 	/**
-	 * This method fires the event when a module is run to every listener
+	 * This method fires the event when a module is paused to every listener
 	 * that is registered.
 	 */
 	private static void fireActionEvent() {
-		for(int i=0; i<listeners.size(); i++)
-			listeners.get(i).handleActionEvent();
+		for(IActionListener listener:listeners) {
+			listener.handleActionEvent();
+		}
 	}
 
 	/**
@@ -213,13 +171,29 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	};
 
 	/**
-	 * Enables this action everytime an item in the ActiveModuleBrowserView
-	 * is selected.
+	 * Disables this action everytime a module is stopped.
+	 */
+	private final IActionListener stopListener = new IActionListener() {
+		@Override
+		public void handleActionEvent() {
+			setEnablement(false);
+		}
+	};
+
+	/**
+	 * This method checks to see if the newly selected item in the
+	 * ActiveModuleBrowserView is paused or not.  It will then set the
+	 * enablement based on whether or not it is already paused.
 	 */
 	private final ISelectionChangedListener activeModuleListener = new ISelectionChangedListener() {
 		@Override
 		public void selectionChanged(SelectionChangedEvent e) {
-			setEnablement(true);
+			TreeNode node = (TreeNode)((StructuredSelection)(e.getSelection())).getFirstElement();
+			if(((ActiveModuleData)node.getData()).paused) {
+				setEnablement(false);
+			} else {
+				setEnablement(true);
+			}
 		}
 	};
 
@@ -235,19 +209,20 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ActiveModuleBrowserView.ID);
 			ActiveModuleBrowserView amdv = (ActiveModuleBrowserView)ivp;
 			int childcount = node.getChildCount();
-			if(0 == childcount && amdv.isActive((DashboardModule)node.getData())) {
+			if(0 == childcount && amdv.isActive((DashboardModule)node.getData()) && !amdv.isPaused((DashboardModule)node.getData())) {
 				setEnablement(true);
 			} else if(childcount > 0) {
-				boolean active = false;
-
+				boolean pause = false;
 				for(int j=0; j<childcount; j++) {
-					if(amdv.isActive((DashboardModule)node.getChildAt(j).getData())) {
-						active = true;
-						break; }
+					if(amdv.isActive((DashboardModule)node.getChildAt(j).getData()) && !amdv.isPaused((DashboardModule)node.getChildAt(j).getData())) {
+						pause = true;
+						break;
+					}
 				}
-				if (active == true ) {
+				if (pause == true ) {
 					setEnablement(true);
 				}
+
 			} else {
 				setEnablement(false);
 			}

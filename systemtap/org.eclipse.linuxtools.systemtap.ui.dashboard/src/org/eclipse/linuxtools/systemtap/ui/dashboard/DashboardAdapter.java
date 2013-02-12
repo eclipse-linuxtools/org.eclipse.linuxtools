@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard;
 
-import org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopGraphAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.StopGraphAction;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
