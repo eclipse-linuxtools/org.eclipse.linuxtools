@@ -57,7 +57,7 @@ public class SourceDisassemblyView extends ViewPart {
 
 		SourceDisassemblyData data = PerfPlugin.getDefault().getSourceDisassemblyData();
 		if (data != null) {
-			setStyledText(data.getSourceDisassemblyText());
+			setStyledText(data.getPerfData());
 			setContentDescription(data.getTitle());
 		}
 	}

@@ -10,57 +10,28 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 /**
  * This class handles the execution of the source disassembly command
  * and stores the resulting data.
  */
-public class SourceDisassemblyData {
+public class SourceDisassemblyData extends AbstractDataManipulator {
 
-	private String sourceDisassemblyText;
-	private String title;
 	private IPath workingDir;
 
-	public SourceDisassemblyData (String title, IPath workingDir) {
-		this.title = title;
+	public SourceDisassemblyData(String title, IPath workingDir) {
+		super(title);
 		this.workingDir = workingDir;
 	}
 
+	@Override
 	public void parse() {
 		String [] cmd = getCommand(workingDir.toOSString());
 		performCommand(cmd);
 	}
 
-	public String getSourceDisassemblyText() {
-		return sourceDisassemblyText;
-	}
-
-	public String getTitle () {
-		return title;
-	}
-
-	private void performCommand(String[] cmd) {
-		try {
-			Process proc = RuntimeProcessFactory.getFactory().exec(cmd, null);
-			BufferedReader buff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			StringBuffer strBuff = new StringBuffer();
-			String line = ""; //$NON-NLS-1$
-			while ((line = buff.readLine()) != null) {
-				strBuff.append(line + "\n"); //$NON-NLS-1$
-			}
-			sourceDisassemblyText = strBuff.toString();
-		} catch (IOException e) {
-			sourceDisassemblyText = ""; //$NON-NLS-1$
-		}
-	}
-
-	private String [] getCommand(String workingDir) {
+	public String [] getCommand(String workingDir) {
 		return new String[] { "perf", "annotate", //$NON-NLS-1$ //$NON-NLS-2$
 				"-i", workingDir + "perf.data" }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
