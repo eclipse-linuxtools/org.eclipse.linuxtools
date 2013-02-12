@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.internal.gcov.view;
 import java.text.NumberFormat;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
-import org.eclipse.linuxtools.internal.gcov.model.CovFileTreeElement;
-import org.eclipse.linuxtools.internal.gcov.model.CovFunctionTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 
@@ -29,7 +27,7 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
 	public String getColumnHeaderText() {
 		return "Total Lines";
 	}
-	
+
 	private int getTotalLines(Object element) {
 	    if (element instanceof TreeElement) {
 	        return ((TreeElement) element).getTotalLines();
@@ -42,7 +40,7 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
 	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
 	 */
 	@Override
-	public String getValue(Object obj) {	
+	public String getValue(Object obj) {
 		int v = getTotalLines(obj);
 		if (v < 0) return ""; //$NON-NLS-1$
 		return NumberFormat.getInstance().format(v);
