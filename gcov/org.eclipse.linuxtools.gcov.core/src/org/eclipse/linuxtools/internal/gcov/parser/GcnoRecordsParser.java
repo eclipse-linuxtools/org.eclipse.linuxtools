@@ -20,7 +20,7 @@ import java.util.HashMap;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.utils.BEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.GcovStringReader;
 import org.eclipse.linuxtools.internal.gcov.utils.LEDataInputStream;

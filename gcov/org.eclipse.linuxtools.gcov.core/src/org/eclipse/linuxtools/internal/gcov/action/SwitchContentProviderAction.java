@@ -14,7 +14,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 
 
 	/**

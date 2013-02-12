@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.gcov.launch;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.gcov.launch.GcovLaunchPlugin;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class GcovLaunchShortcut extends ProfileLaunchShortcut {

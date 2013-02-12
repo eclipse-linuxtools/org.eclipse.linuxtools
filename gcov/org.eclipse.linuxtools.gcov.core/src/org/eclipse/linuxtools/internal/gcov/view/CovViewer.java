@@ -76,7 +76,7 @@ public class CovViewer extends AbstractSTTreeViewer {
 	 */
 	@Override
 	public IDialogSettings getDialogSettings() {
-		return org.eclipse.linuxtools.gcov.Activator.getDefault().getDialogSettings();
+		return org.eclipse.linuxtools.internal.gcov.Activator.getDefault().getDialogSettings();
 	}
 
 	/*

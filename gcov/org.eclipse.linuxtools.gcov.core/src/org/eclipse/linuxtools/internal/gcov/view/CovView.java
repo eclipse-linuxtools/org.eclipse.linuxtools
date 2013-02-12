@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.internal.gcov.parser.CovManager;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;

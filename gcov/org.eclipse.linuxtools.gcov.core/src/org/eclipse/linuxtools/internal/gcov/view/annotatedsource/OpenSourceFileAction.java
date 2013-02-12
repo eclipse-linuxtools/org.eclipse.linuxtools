@@ -27,7 +27,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.binutils.link2source.STLink2SourceSupport;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AbstractSTAnnotatedSourceEditorInput;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.actions.AbstractOpenSourceFileAction;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;

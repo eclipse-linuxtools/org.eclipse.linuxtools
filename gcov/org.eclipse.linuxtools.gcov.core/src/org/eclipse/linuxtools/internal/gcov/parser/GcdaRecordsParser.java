@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.utils.BEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.LEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.MasksGenerator;

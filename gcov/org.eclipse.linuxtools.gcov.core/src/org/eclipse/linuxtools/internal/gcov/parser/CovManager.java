@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.model.CovFileTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.CovFolderTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.CovFunctionTreeElement;
