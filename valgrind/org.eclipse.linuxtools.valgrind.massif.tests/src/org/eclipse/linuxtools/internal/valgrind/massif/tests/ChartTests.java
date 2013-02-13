@@ -62,7 +62,6 @@ public class ChartTests extends AbstractMassifTest {
 
 		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		assertTrue(part.getTitle().startsWith("Heap Chart - alloctest")); //$NON-NLS-1$
-//		assertEquals("Heap Chart - alloctest", part.getTitle()); //$NON-NLS-1$
 	}
 
 	public void testByteScalingKiB() throws Exception {

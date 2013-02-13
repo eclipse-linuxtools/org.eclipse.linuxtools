@@ -44,31 +44,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 		}
 		super.tearDown();
 	}
-	
-//	public void testExportNoLaunch() throws Exception {
-//		Display.getDefault().syncExec(new Runnable() {
-//
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				// No Valgrind launch to export
-//				IPath launchPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-//				launchPath = launchPath.append(".metadata/.plugins/org.eclipse.linuxtools.valgrind.launch"); //$NON-NLS-1$
-//				File launchDir = launchPath.toFile();
-//				if (launchDir.exists()) {
-//					File[] files = launchDir.listFiles();
-//					for (int i = 0; i < files.length; ++i) {
-//						files[i].delete();
-//					}
-//					launchDir.delete();
-//				}
-//				createWizard();
-//				
-//				assertNotNull(page.getErrorMessage());	
-//			}
-//			
-//		});
-//	}
-	
+
 	public void testExportBadPath() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
@@ -198,7 +174,6 @@ public class ExportWizardTest extends AbstractMassifTest {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
-				// TODO Auto-generated method stub
 				wizard = new ValgrindExportWizard();
 				wizard.init(PlatformUI.getWorkbench(), null);
 				

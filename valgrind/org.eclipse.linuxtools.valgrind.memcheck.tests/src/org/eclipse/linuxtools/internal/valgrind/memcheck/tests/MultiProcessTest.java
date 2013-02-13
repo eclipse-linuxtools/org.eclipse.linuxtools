@@ -15,7 +15,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
 public class MultiProcessTest extends AbstractMemcheckTest {
 	ICProject refProj;
@@ -38,8 +38,9 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		assertEquals(1, view.getMessages().length);
+		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
+		assertEquals(1, messages.length);
+		checkTestMessages(messages, "testNoExec"); //$NON-NLS-1$
 	}
 	
 	public void testExec() throws Exception {
@@ -48,7 +49,8 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		assertEquals(4, view.getMessages().length);
+		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
+		assertEquals(4, messages.length);
+		checkTestMessages(messages, "testExec"); //$NON-NLS-1$
 	}
 }
