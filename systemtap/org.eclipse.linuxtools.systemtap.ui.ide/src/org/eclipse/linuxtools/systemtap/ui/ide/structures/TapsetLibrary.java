@@ -34,6 +34,13 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public final class TapsetLibrary {
+
+	private static TreeNode functionTree = null;
+	private static TreeNode probeTree = null;
+
+	private static FunctionParser functionParser = null;
+	private static ProbeParser probeParser = null;
+
 	public static TreeNode getProbes() {
 		return probeTree;
 	}
@@ -50,7 +57,7 @@ public final class TapsetLibrary {
 	 * available.
 	 */
 	public static void init() {
-		if (null != stpp) {
+		if (null != functionParser && null != probeParser) {
 			return;
 		}
 
@@ -70,15 +77,17 @@ public final class TapsetLibrary {
 	 * to get the information directly from the files.
 	 */
 	private static void runStapParser() {
-		stpp = TapsetParser.getInstance();
-		stpp.addListener(completionListener);
-		stpp.schedule();
-		functionTree = stpp.getFunctions();
-		probeTree = stpp.getProbes();
+		functionParser = FunctionParser.getInstance();
+		functionParser.addListener(functionCompletionListener);
+		functionParser.schedule();
+
+		probeParser = ProbeParser.getInstance();
+		probeParser.addListener(probeCompletionListener);
+		probeParser.schedule();
 	}
 
 	public static boolean isFinishSuccessful(){
-		return stpp.isFinishSuccessful();
+		return functionParser.isFinishSuccessful() && probeParser.isFinishSuccessful();
 	}
 	/**
 	 * This method will get all of the tree information from
@@ -176,11 +185,17 @@ public final class TapsetLibrary {
 	 * @param listener the listener to be added
 	 * @return boolean indicating whether or not the listener was added
 	 */
-	public static boolean addListener(IUpdateListener listener) {
-		if(null == stpp)
+	public static boolean addFunctionListener(IUpdateListener listener) {
+		if(null == functionParser)
 			return false;
+		functionParser.addListener(listener);
+		return true;
+	}
 
-		stpp.addListener(listener);
+	public static boolean addProbeListener(IUpdateListener listener) {
+		if(null == probeParser)
+			return false;
+		probeParser.addListener(listener);
 		return true;
 	}
 
@@ -189,23 +204,26 @@ public final class TapsetLibrary {
 	 * @param listener The listener to be removed from the tapsetParser
 	 */
 	public static void removeUpdateListener(IUpdateListener listener) {
-		stpp.removeListener(listener);
+		functionParser.removeListener(listener);
 	}
 
-	/**
-	 * This class handles saving the results of the TapsetParser to
-	 * the TreeSettings.xml file.
-	 */
-	private static final IUpdateListener completionListener = new IUpdateListener() {
+	private static final IUpdateListener functionCompletionListener = new IUpdateListener() {
 		@Override
 		public void handleUpdateEvent() {
-			functionTree = stpp.getFunctions();
-			probeTree = stpp.getProbes();
-			if(stpp.isFinishSuccessful()){
-				TreeSettings.setTrees(functionTree, probeTree);
-				synchronized (stpp) {
-					stpp.notifyAll();
-				}
+			functionTree = functionParser.getFunctions();
+			TreeSettings.setTrees(functionTree, probeTree);
+			synchronized (functionParser) {
+				functionParser.notifyAll();
+			}
+		}
+	};
+
+	private static final IUpdateListener probeCompletionListener = new IUpdateListener() {
+		@Override
+		public void handleUpdateEvent() {
+			probeTree = probeParser.getProbes();
+			synchronized (probeParser) {
+				probeParser.notifyAll();
 			}
 		}
 	};
@@ -216,10 +234,19 @@ public final class TapsetLibrary {
 	 * @since 2.0
 	 */
 	public static void waitForInitialization() {
-		while (!stpp.isFinishSuccessful()){
+		while (!functionParser.isFinishSuccessful()){
 			try {
-				synchronized (stpp) {
-					stpp.wait(5000);
+				synchronized (functionParser) {
+					functionParser.wait(5000);
+				}
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
+		while (!probeParser.isFinishSuccessful()){
+			try {
+				synchronized (probeParser) {
+					probeParser.wait(5000);
 				}
 			} catch (InterruptedException e) {
 				break;
@@ -233,10 +260,10 @@ public final class TapsetLibrary {
 	 * @since 1.2
 	 */
 	public static void stop(){
-		if(null != stpp){
-			stpp.cancel();
+		if(null != functionParser){
+			functionParser.cancel();
 			try {
-				stpp.join();
+				functionParser.join();
 			} catch (InterruptedException e) {
 				// The current thread was interrupted while waiting
 				// for the parser thread to exit. Nothing to do
@@ -244,8 +271,4 @@ public final class TapsetLibrary {
 			}
 		}
 	}
-
-	private static TreeNode functionTree = null;
-	private static TreeNode probeTree = null;
-	private static TapsetParser stpp = null;
 }
