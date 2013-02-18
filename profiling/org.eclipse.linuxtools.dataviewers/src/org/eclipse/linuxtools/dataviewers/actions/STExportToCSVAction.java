@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersCSVExporter;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersImages;
@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * This action export the STViewers data to CSV format file
- * 
+ *
  */
 public class STExportToCSVAction extends Action {
 
@@ -41,7 +41,7 @@ public class STExportToCSVAction extends Action {
 
     /**
      * Constructor
-     * 
+     *
      * @param stViewer
      *            the stViewer to export
      */
@@ -56,15 +56,17 @@ public class STExportToCSVAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
-    public void run() {
+    @Override
+	public void run() {
         STDataViewersExportToCSVDialog dialog = new STDataViewersExportToCSVDialog(stViewer.getViewer().getControl()
                 .getShell(), exporter);
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
             Job exportToCSVJob = new Job("Export to CSV") {
-                public IStatus run(IProgressMonitor monitor) {
+                @Override
+				public IStatus run(IProgressMonitor monitor) {
                     exporter.export(monitor);
                     return Status.OK_STATUS;
                 }
@@ -81,7 +83,7 @@ public class STExportToCSVAction extends Action {
     }
 
     /**
-     * 
+     *
      * @return exporter
      */
     public STDataViewersCSVExporter getExporter() {

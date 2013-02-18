@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 
 /**
  * This action expands all the tree
- * 
+ *
  */
 public class STExpandAllTreeAction extends Action {
 
@@ -25,7 +25,7 @@ public class STExpandAllTreeAction extends Action {
 
     /**
      * Constructor
-     * 
+     *
      * @param stViewer
      *            the stViewer to expand
      */
@@ -37,10 +37,11 @@ public class STExpandAllTreeAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
-    public void run() {
+    @Override
+	public void run() {
         Object input = stViewer.getViewer().getInput();
         if (input != null) {
             stViewer.getViewer().expandAll();

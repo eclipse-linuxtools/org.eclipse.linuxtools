@@ -33,7 +33,7 @@ public abstract class STDataViewersHyperLinkDrawerField extends AbstractSTDataVi
 
     /**
      * Gets the HyperLink value for the given object, as a string
-     * 
+     *
      * @param obj
      * @return a String value
      */
@@ -42,7 +42,8 @@ public abstract class STDataViewersHyperLinkDrawerField extends AbstractSTDataVi
     /**
      * HyperLink drawer
      */
-    public void handleEvent(Event event) {
+    @Override
+	public void handleEvent(Event event) {
         Item item = (Item) event.item;
         String str = getHyperLink(item.getData());
         final TextStyle styledString = new TextStyle(event.gc.getFont(), null, null);

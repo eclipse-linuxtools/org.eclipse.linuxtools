@@ -55,25 +55,30 @@ public class STOwnerDrawLabelProvider extends OwnerDrawLabelProvider {
         return fields.getImage(element);
     }
 
-    public String getToolTipText(Object element) {
+    @Override
+	public String getToolTipText(Object element) {
         return fields.getToolTipText(element);
     }
 
-    public boolean useNativeToolTip(Object object) {
+    @Override
+	public boolean useNativeToolTip(Object object) {
         return true;
     }
 
-    protected void measure(Event event, Object element) {
+    @Override
+	protected void measure(Event event, Object element) {
 
     }
 
-    protected void paint(Event event, Object element) {
+    @Override
+	protected void paint(Event event, Object element) {
         if (fields.getSpecialDrawer(element) != null) {
             fields.getSpecialDrawer(element).handleEvent(event);
         }
     }
 
-    public void update(ViewerCell cell) {
+    @Override
+	public void update(ViewerCell cell) {
         if (fields.getSpecialDrawer(cell.getElement()) == null) {
             Object element = cell.getElement();
             cell.setText(getText(element));
@@ -83,7 +88,8 @@ public class STOwnerDrawLabelProvider extends OwnerDrawLabelProvider {
         }
     }
 
-    protected void erase(Event event, Object element) {
+    @Override
+	protected void erase(Event event, Object element) {
     }
 
 }

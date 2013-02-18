@@ -24,118 +24,131 @@ public abstract class AbstractSTDataViewersField implements ISTDataViewersField 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderImage()
      */
-    public Image getColumnHeaderImage() {
+    @Override
+	public Image getColumnHeaderImage() {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getDefaultDirection()
      */
-    public int getDefaultDirection() {
+    @Override
+	public int getDefaultDirection() {
         return STDataViewersComparator.ASCENDING;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getDescription()
      */
-    public String getDescription() {
+    @Override
+	public String getDescription() {
         return getColumnHeaderText();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getDescriptionImage()
      */
-    public Image getDescriptionImage() {
+    @Override
+	public Image getDescriptionImage() {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getImage(java.lang.Object)
      */
-    public Image getImage(Object obj) {
+    @Override
+	public Image getImage(Object obj) {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getPreferredWidth()
      */
-    public int getPreferredWidth() {
+    @Override
+	public int getPreferredWidth() {
         return 100;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#isShowing()
      */
-    public boolean isShowing() {
+    @Override
+	public boolean isShowing() {
         return this.showing;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#setShowing(boolean)
      */
-    public void setShowing(boolean showing) {
+    @Override
+	public void setShowing(boolean showing) {
         this.showing = showing;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getSpecialDrawer(java.lang.Object)
      */
-    public ISpecialDrawerListener getSpecialDrawer(Object element) {
+    @Override
+	public ISpecialDrawerListener getSpecialDrawer(Object element) {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getBackground(java.lang.Object)
      */
-    public Color getBackground(Object element) {
+    @Override
+	public Color getBackground(Object element) {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getForeground(java.lang.Object)
      */
-    public Color getForeground(Object element) {
+    @Override
+	public Color getForeground(Object element) {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getToolTipText(java.lang.Object)
      */
-    public String getToolTipText(Object element) {
+    @Override
+	public String getToolTipText(Object element) {
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderTooltip()
      */
-    public String getColumnHeaderTooltip() {
+    @Override
+	public String getColumnHeaderTooltip() {
         return getColumnHeaderText();
     }
 
@@ -144,11 +157,13 @@ public abstract class AbstractSTDataViewersField implements ISTDataViewersField 
         return getColumnHeaderText();
     }
 
-    public int getAlignment() {
+    @Override
+	public int getAlignment() {
         return SWT.NONE;
     }
 
-    public boolean isHyperLink(Object element) {
+    @Override
+	public boolean isHyperLink(Object element) {
         return false;
     }
 }

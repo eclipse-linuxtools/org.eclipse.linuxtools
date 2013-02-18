@@ -29,11 +29,13 @@ public class STHeaderListener implements SelectionListener {
         this.stViewer = stViewer;
     }
 
-    public void widgetDefaultSelected(SelectionEvent e) {
+    @Override
+	public void widgetDefaultSelected(SelectionEvent e) {
         widgetSelected(e);
     }
 
-    public void widgetSelected(SelectionEvent e) {
+    @Override
+	public void widgetSelected(SelectionEvent e) {
         final Item column = (Item) e.widget;
         final ISTDataViewersField field = (ISTDataViewersField) column.getData();
         resortTable(column, field);
@@ -41,7 +43,7 @@ public class STHeaderListener implements SelectionListener {
 
     /**
      * Resort the table based on field.
-     * 
+     *
      * @param column
      *            the column being updated
      * @param field
@@ -56,7 +58,8 @@ public class STHeaderListener implements SelectionListener {
             sorter.setTopPriority(column, field);
 
         BusyIndicator.showWhile(null, new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 stViewer.getViewer().refresh();
                 stViewer.updateDirectionIndicator(column);
             }

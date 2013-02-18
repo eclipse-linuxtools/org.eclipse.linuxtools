@@ -21,7 +21,8 @@ public class STDisposeListener implements DisposeListener {
         this.stViewer = stViewer;
     }
 
-    public void widgetDisposed(DisposeEvent e) {
+    @Override
+	public void widgetDisposed(DisposeEvent e) {
         stViewer.saveState();
     }
 

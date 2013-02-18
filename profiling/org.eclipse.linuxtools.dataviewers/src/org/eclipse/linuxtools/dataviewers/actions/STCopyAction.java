@@ -29,7 +29,7 @@ public class STCopyAction extends Action {
 
     /**
      * Constructor
-     * 
+     *
      * @param stViewer
      *            the stViewer to expand
      */
@@ -39,7 +39,8 @@ public class STCopyAction extends Action {
         this.stViewer = stViewer;
     }
 
-    public void run() {
+    @Override
+	public void run() {
         Clipboard cb = new Clipboard(Display.getDefault());
         IStructuredSelection selections = (IStructuredSelection) stViewer.getViewer().getSelection();
         Iterator<?> iterator = selections.iterator();

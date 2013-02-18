@@ -26,7 +26,7 @@ public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
 
     /**
      * Create a STDataViewersColumnLabelProvider on a field
-     * 
+     *
      * @param field
      */
     public STDataViewersColumnLabelProvider(Item column) {
@@ -45,25 +45,27 @@ public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
      */
-    public String getText(Object element) {
+    @Override
+	public String getText(Object element) {
         return fields.getValue(element);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ColumnLabelProvider#getImage(java.lang.Object)
      */
-    public Image getImage(Object element) {
+    @Override
+	public Image getImage(Object element) {
         return fields.getImage(element);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipText(java.lang.Object)
      */
     @Override
@@ -73,7 +75,7 @@ public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ColumnLabelProvider#getBackground(java.lang.Object)
      */
     @Override
@@ -83,7 +85,7 @@ public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ColumnLabelProvider#getForeground(java.lang.Object)
      */
     @Override
@@ -93,10 +95,11 @@ public class STDataViewersColumnLabelProvider extends ColumnLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellLabelProvider#useNativeToolTip(java.lang.Object)
      */
-    public boolean useNativeToolTip(Object object) {
+    @Override
+	public boolean useNativeToolTip(Object object) {
         return true;
     }
 

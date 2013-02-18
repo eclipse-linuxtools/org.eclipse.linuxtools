@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.TableItem;
  * This class implements an ISTFindReplaceTarget for an abstractSTTableViewer instance It use a representation of a
  * ViewerRow that is an instance of STTableViewerRow so that can be applied the "FIND algorithm" using the methods like:
  * getCell(...) getNeighbor(...) setBackground(...) ...
- * 
+ *
  */
 public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer implements ISTFindReplaceTarget {
     private final TableViewer _viewer;
@@ -60,7 +60,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#canPerformFind()
      */
     @Override
@@ -70,7 +70,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#findAndSelect(org.eclipse.jface.viewers.
      * ViewerCell, java.lang.String, boolean, boolean, boolean, boolean, boolean)
      */
@@ -83,7 +83,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelection(org.eclipse.jface.viewers.ViewerCell
      * )
@@ -101,7 +101,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getSelectionText(org.eclipse.jface.viewers
      * .ViewerCell)
@@ -119,7 +119,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#isEditable()
      */
     @Override
@@ -207,8 +207,8 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
             if (ok) {
                 _viewer.reveal(cell.getElement());
-                if (((TableViewer) _viewer).getTable().getSelectionCount() > 0) {
-                    TableViewer tv = (TableViewer) _viewer;
+                if (_viewer.getTable().getSelectionCount() > 0) {
+                    TableViewer tv = _viewer;
                     Table table = tv.getTable();
                     table.deselect(table.indexOf((TableItem) row.getItem()));
                 }
@@ -236,7 +236,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTableViewer#createTable(org.eclipse.swt.widgets.
      * Composite, int)
@@ -256,7 +256,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#setFindAction(org.eclipse.linuxtools.dataviewers
      * .findreplace.STFindReplaceAction)
@@ -268,7 +268,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#getFirstCell(org.eclipse.jface.viewers.ViewerCell
      * , int)
@@ -293,7 +293,7 @@ public abstract class STTableFindReplaceTarget extends AbstractSTTableViewer imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.ISTFindReplaceTarget#useSelectedLines(boolean)
      */
     @Override

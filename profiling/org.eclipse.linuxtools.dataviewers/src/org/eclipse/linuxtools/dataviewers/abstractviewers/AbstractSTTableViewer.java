@@ -245,5 +245,5 @@ public abstract class AbstractSTTableViewer extends AbstractSTViewer {
 	}
 
 
-	public void handleHyperlink(ISTDataViewersField field,Object data){};
+	public abstract void handleHyperlink(ISTDataViewersField field,Object data);
 }

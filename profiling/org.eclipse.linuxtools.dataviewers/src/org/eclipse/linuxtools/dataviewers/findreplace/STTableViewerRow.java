@@ -21,13 +21,13 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * This is a copy of TableViewerRow is the Table implementation of ViewerRow. It's useful to use some methods from
  * protected to public that in the original TableViewerRow can't be used
- * 
+ *
  */
 public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /**
      * Create a new instance of the receiver from item.
-     * 
+     *
      * @param item
      */
     public STTableViewerRow(TableItem item) {
@@ -36,7 +36,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getBounds()
      */
     @Override
@@ -46,7 +46,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getBounds(int)
      */
     @Override
@@ -56,7 +56,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getColumnCount()
      */
     @Override
@@ -66,7 +66,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getBackground(int)
      */
     @Override
@@ -76,7 +76,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getFont(int)
      */
     @Override
@@ -86,7 +86,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getForeground(int)
      */
     @Override
@@ -96,7 +96,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getImage(int)
      */
     @Override
@@ -106,7 +106,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getText(int)
      */
     @Override
@@ -116,7 +116,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#setBackground(int, org.eclipse.swt.graphics.Color)
      */
     @Override
@@ -126,7 +126,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#setFont(int, org.eclipse.swt.graphics.Font)
      */
     @Override
@@ -136,7 +136,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#setForeground(int, org.eclipse.swt.graphics.Color)
      */
     @Override
@@ -146,7 +146,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#setImage(int, org.eclipse.swt.graphics.Image)
      */
     @Override
@@ -159,7 +159,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#setText(int, java.lang.String)
      */
     @Override
@@ -169,7 +169,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#getControl()
      */
     @Override
@@ -179,7 +179,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.STViewerRow#getRowAbove()
      */
     @Override
@@ -193,7 +193,7 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.linuxtools.dataviewers.findreplace.STViewerRow#getRowBelow()
      */
     @Override
@@ -209,13 +209,14 @@ public class STTableViewerRow extends STViewerRow<TableItem> {
         return null;
     }
 
-    public TreePath getTreePath() {
+    @Override
+	public TreePath getTreePath() {
         return new TreePath(new Object[] { getItem().getData() });
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerRow#clone()
      */
     @Override

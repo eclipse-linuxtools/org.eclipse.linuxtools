@@ -33,7 +33,7 @@ import org.eclipse.ui.texteditor.ResourceAction;
  * <p>
  * This class may be instantiated; it is not intended to be subclassed.
  * </p>
- * 
+ *
  * @see ISTFindReplaceTarget
  */
 public class STFindReplaceAction extends ResourceAction implements IUpdate {
@@ -62,7 +62,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 
         /**
          * Creates a new find/replace dialog accessor anchored at the given part site.
-         * 
+         *
          * @param site
          *            the part site
          */
@@ -76,7 +76,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 
         /**
          * Creates a new find/replace dialog accessor anchored at the given shell.
-         * 
+         *
          * @param shell
          *            the shell if no site is used
          */
@@ -88,7 +88,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
 
         /**
          * Returns the find/replace dialog.
-         * 
+         *
          * @return the find/replace dialog
          */
         public STFindReplaceDialog getDialog() {
@@ -98,7 +98,8 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
         /*
          * @see IPartListener#partActivated(IWorkbenchPart)
          */
-        public void partActivated(IWorkbenchPart part) {
+        @Override
+		public void partActivated(IWorkbenchPart part) {
             ISTFindReplaceTarget target = part == null ? null : (ISTFindReplaceTarget) part
                     .getAdapter(ISTFindReplaceTarget.class);
             fPreviousPart = fPart;
@@ -122,7 +123,8 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
         /*
          * @see IPartListener#partClosed(IWorkbenchPart)
          */
-        public void partClosed(IWorkbenchPart part) {
+        @Override
+		public void partClosed(IWorkbenchPart part) {
 
             if (part == fPreviousPart) {
                 fPreviousPart = null;
@@ -136,7 +138,8 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
         /*
          * @see DisposeListener#widgetDisposed(DisposeEvent)
          */
-        public void widgetDisposed(DisposeEvent event) {
+        @Override
+		public void widgetDisposed(DisposeEvent event) {
 
             if (fgFindReplaceDialogStub == this)
                 fgFindReplaceDialogStub = null;
@@ -157,25 +160,28 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
         /*
          * @see IPartListener#partOpened(IWorkbenchPart)
          */
-        public void partOpened(IWorkbenchPart part) {
+        @Override
+		public void partOpened(IWorkbenchPart part) {
         }
 
         /*
          * @see IPartListener#partDeactivated(IWorkbenchPart)
          */
-        public void partDeactivated(IWorkbenchPart part) {
+        @Override
+		public void partDeactivated(IWorkbenchPart part) {
         }
 
         /*
          * @see IPartListener#partBroughtToTop(IWorkbenchPart)
          */
-        public void partBroughtToTop(IWorkbenchPart part) {
+        @Override
+		public void partBroughtToTop(IWorkbenchPart part) {
         }
 
         /**
          * Checks if the dialogs shell is the same as the given <code>shell</code> and if not clears the stub and closes
          * the dialog.
-         * 
+         *
          * @param shell
          *            the shell check
          */
@@ -222,7 +228,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
      * <p>
      * The action configures its visual representation from the given resource bundle.
      * </p>
-     * 
+     *
      * @param bundle
      *            the resource bundle
      * @param prefix
@@ -249,7 +255,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
      * <p>
      * The action configures its visual representation from the given resource bundle.
      * </p>
-     * 
+     *
      * @param bundle
      *            the resource bundle
      * @param prefix
@@ -260,7 +266,7 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
      * @param shell
      *            the shell
      * @see ResourceAction#ResourceAction(ResourceBundle, String)
-     * 
+     *
      */
     public STFindReplaceAction(Shell shell, ISTFindReplaceTarget target) {
         super(fgBundleForConstructedKeys, prefix);
@@ -275,7 +281,8 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
     /*
      * @see IAction#run()
      */
-    public void run() {
+    @Override
+	public void run() {
         if (fTarget == null) {
             return;
         }
@@ -316,7 +323,8 @@ public class STFindReplaceAction extends ResourceAction implements IUpdate {
     /*
      * @see IUpdate#update()
      */
-    public void update() {
+    @Override
+	public void update() {
         if (fShell == null) {
             if (fWorkbenchPart != null)
                 fTarget = (ISTFindReplaceTarget) fWorkbenchPart.getAdapter(ISTFindReplaceTarget.class);

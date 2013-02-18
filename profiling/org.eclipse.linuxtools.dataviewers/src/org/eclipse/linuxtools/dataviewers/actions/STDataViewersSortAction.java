@@ -31,7 +31,7 @@ public class STDataViewersSortAction extends Action {
 
     /**
      * Constructor
-     * 
+     *
      * @param view
      * @param dialog
      */
@@ -50,13 +50,15 @@ public class STDataViewersSortAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
-    public void run() {
+    @Override
+	public void run() {
         if (dialog.open() == Window.OK && dialog.isDirty()) {
             BusyIndicator.showWhile(null, new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     stViewer.setComparator(dialog.getSorter());
                 }
             });
@@ -66,7 +68,7 @@ public class STDataViewersSortAction extends Action {
 
     /**
      * Return a sort dialog for the receiver.
-     * 
+     *
      * @return TableSortDialog
      */
     protected STDataViewersSortDialog getSortDialog() {
