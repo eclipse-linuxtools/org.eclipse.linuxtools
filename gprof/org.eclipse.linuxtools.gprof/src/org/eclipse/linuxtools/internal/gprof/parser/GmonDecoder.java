@@ -22,25 +22,23 @@ import java.util.HashMap;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gprof.utils.LEDataInputStream;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.HistRoot;
 
-/** 
+/**
  * Parser of gmon file
  */
 public class GmonDecoder {
 
-	/** Histogram record type.  */ 
+	/** Histogram record type.  */
 	public static final int VPF_GMON_RECORD_TYPE_HISTOGRAM = 0;
 	/** Callgraph record type. */
 	public static final int VPF_GMON_RECORD_TYPE_CALLGRAPH = 1;
 	/** Unkwown record type. */
 	public static final int VPF_GMON_RECORD_TYPE_UNKNOWN   = -1;
-	
+
 	public static final int GMONVERSION = 0x00051879;
 
 	// header
@@ -56,28 +54,28 @@ public class GmonDecoder {
 	private final HistRoot rootNode = new HistRoot(this);
 	private String file;
 	private int tag = -1;
-	
+
 	private final HashMap<ISymbol, String> filenames = new HashMap<ISymbol, String>();
 	private IProject project;
-	
+
 	// for dump
 	private boolean shouldDump = false;
 
 
 	/**
 	 * Constructor
-	 * @param program 
-	 * @throws IOException 
+	 * @param program
+	 * @throws IOException
 	 */
 	public GmonDecoder(IBinaryObject program, IProject project) {
 		this(program, null, project);
 	}
-	
-	
+
+
 	/**
 	 * Constructor
-	 * @param program 
-	 * @throws IOException 
+	 * @param program
+	 * @throws IOException
 	 */
 	public GmonDecoder(IBinaryObject program, PrintStream ps, IProject project) {
 		this.program = program;
@@ -96,7 +94,7 @@ public class GmonDecoder {
 			callGraph = new CallGraphDecoder(this);
 		}
 	}
-	
+
 
 	/**
 	 * Reads the given file
@@ -123,7 +121,7 @@ public class GmonDecoder {
 					// normal. End of file reached.
 				}
 				this.callGraph.populate(rootNode);
-				this.histo.AssignSamplesSymbol();	
+				this.histo.AssignSamplesSymbol();
 			}
 			leStream.close();
 		} else {
@@ -142,7 +140,7 @@ public class GmonDecoder {
 					// normal. End of file reached.
 				}
 				this.callGraph.populate(rootNode);
-				this.histo.AssignSamplesSymbol();	
+				this.histo.AssignSamplesSymbol();
 			}
 			beStream.close();
 		}
@@ -169,14 +167,14 @@ public class GmonDecoder {
 	 * Read the whole content of the GMON file
 	 * The header should be read before calling this function.
 	 * @param stream
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void ReadGmonContent(DataInput stream) throws IOException
-	{  
+	{
 		do {
 			//int tag = -1;
 			tag = -1;
-			
+
 			try {
 				tag = stream.readByte();
 			} catch (EOFException _) {
@@ -193,26 +191,26 @@ public class GmonDecoder {
 			default:
 				throw new IOException("Error while reading GMON content : Found bad tag (file corrupted?) ");
 			}
-			
+
 			if (shouldDump == true)
 			 dumpGmonResult(ps==null?System.out:ps);
-						
+
 		} while (true);
 
 		this.callGraph.populate(rootNode);
-		this.histo.AssignSamplesSymbol();	
-	
+		this.histo.AssignSamplesSymbol();
+
 	}
 
-	
+
 	public void dumpGmonResult(PrintStream ps){
-		
+
 		ps.println("-- gmon Results --");
 		ps.println("cookie "+cookie);
 		ps.println("gmon_version "+gmon_version);
 		//ps.println("spare "+new String(spare));
 		ps.println("tag "+tag);
-		
+
 		switch (tag) {
 		case VPF_GMON_RECORD_TYPE_HISTOGRAM:
 			histo.printHistHeader(ps);
@@ -222,9 +220,9 @@ public class GmonDecoder {
 			break;
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @return the histogram decoder
 	 */
