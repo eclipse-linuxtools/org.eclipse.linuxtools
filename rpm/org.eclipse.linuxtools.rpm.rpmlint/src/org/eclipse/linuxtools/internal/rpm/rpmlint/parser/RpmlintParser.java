@@ -36,8 +36,8 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  *
  */
 public class RpmlintParser {
-	
-	
+
+
 	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -47,7 +47,7 @@ public class RpmlintParser {
 	private RpmlintParser() {
 		// Empty constructor for making it a singleton.
 	}
-	
+
 	/**
 	 * Returns a singleton version of the parser.
 	 * @return The parser.
@@ -58,24 +58,30 @@ public class RpmlintParser {
 		}
 		return rpmlintParser;
 	}
-		
+
 	/**
 	 * Parse visited resources.
 	 * @param visitedResources The list of resources to parse.
-	 * 
+	 *
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
 	public ArrayList<RpmlintItem> parseVisisted(ArrayList<String> visitedResources) {
-		if(visitedResources.isEmpty()) {
+		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
+				PreferenceConstants.P_RPMLINT_PATH);
+		/*
+		 * It's fine to fail silently if rpmlint is not installed as the actual user messages and etc. are displayed by the ui code and this is just
+		 * a guard if we have configuration changing or someone playing with the project files.
+		 */
+		if(visitedResources.isEmpty()|| !Utils.fileExist(rpmlintPath)) {
 			return new ArrayList<RpmlintItem>();
 		}
 		return parseRpmlintOutput(runRpmlintCommand(visitedResources));
 	}
-	
+
 	/**
 	 * Adds a rpmlint marker.
-	 * 
+	 *
 	 * @param file The file to create the marker for.
 	 * @param message The marker message.
 	 * @param lineNumber The line at which the marker appears.
@@ -103,10 +109,10 @@ public class RpmlintParser {
 			RpmlintLog.logError(e);
 		}
 	}
-	
+
 	/**
 	 * Adds a rpmlint marker.
-	 * 
+	 *
 	 * @param file The file to create the marker for.
 	 * @param message The marker message.
 	 * @param severity The marker seveirty.
@@ -133,10 +139,10 @@ public class RpmlintParser {
 			RpmlintLog.logError(e);
 		}
 	}
-	
+
 	/**
 	 * Clear the rpmlint specific markers.
-	 * 
+	 *
 	 * @param resource The resource for which to clean the marker.
 	 */
 	public void deleteMarkers(IResource resource) {
@@ -146,11 +152,11 @@ public class RpmlintParser {
 			RpmlintLog.logError(e);
 		}
 	}
-	
+
 	/**
 	 * Parse a given rpmlint <code>InputStream</code>
-	 * 
-	 * @param 
+	 *
+	 * @param
 	 * 		rpmlint <code>InputStream</code> to parse.
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
@@ -170,19 +176,19 @@ public class RpmlintParser {
 					lineItems = line.split(COLON, 4);
 					item.setFileName(lineItems[0]);
 					int lineNbr;
-					
-					
-					// FIXME: last rpmlint version (0.83) contain a summary 
-					// line at the bottom of it output, so if we 
-					// detected this line we can safely return rpmlintItems, 
-					// maybe we can find a better way to detect this line. 
+
+
+					// FIXME: last rpmlint version (0.83) contain a summary
+					// line at the bottom of it output, so if we
+					// detected this line we can safely return rpmlintItems,
+					// maybe we can find a better way to detect this line.
 					try {
 						Integer.parseInt(line.split(SPACE)[0]);
 						return rpmlintItems;
 					} catch (NumberFormatException e) {
 						// this line is not the summary
-					}					
-					
+					}
+
 					// TODO: ask rpmlint upstream to display always the same output.
 					// at the moment the line number is not always displayed.
 					// If the same output is always used, all the workarounds for the line number can be
@@ -190,15 +196,15 @@ public class RpmlintParser {
 					try {
 						lineNbr = Integer.parseInt(lineItems[1]);
 						item.setSeverity(lineItems[2]);
-						lineItems = lineItems[3].trim().split(SPACE, 2);						
+						lineItems = lineItems[3].trim().split(SPACE, 2);
 					} catch (NumberFormatException e) {
 						// No line number showed for this rpmlint warning.
 						lineItems = line.split(COLON, 3);
 						lineNbr = -1;
 						item.setSeverity(lineItems[1]);
 						lineItems = lineItems[2].trim().split(SPACE, 2);
-					} 
-					item.setLineNbr(lineNbr);					
+					}
+					item.setLineNbr(lineNbr);
 					item.setId(lineItems[0]);
 					if (lineItems.length > 1) {
 						// Maybe this error occur when rpmlint execute 'rpm -q --qf=
@@ -215,16 +221,16 @@ public class RpmlintParser {
 				} else {
 					description += line + '\n';
 				}
-				
+
 				if (line.equals(EMPTY_STRING)) {
 					if (item.getMessage() == null)
 						item.setMessage(description.substring(0, description.length() - 2));
 					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getRefferedContent());
-					if (useOfTabsAndSpaces != -1) 
+					if (useOfTabsAndSpaces != -1)
 						item.setLineNbr(useOfTabsAndSpaces);
 					rpmlintItems.add(item);
 					item = new RpmlintItem();
-					
+
 					// Reinitialize parser for the next item
 					isFirtItemLine=true;
 					description = EMPTY_STRING;
@@ -238,7 +244,7 @@ public class RpmlintParser {
 		}
 		return rpmlintItems;
 	}
-	
+
 	private RpmlintItem parseRpmOutput(RpmlintItem item, String line) {
 		String[] rpmErrorItems = line.split(COLON, 4);
 		if (item.getId().equalsIgnoreCase("specfile-error")) { //$NON-NLS-1$
@@ -262,13 +268,13 @@ public class RpmlintParser {
 		} catch (NumberFormatException e) {
 			return null;
 		}
-		
+
 		return item;
 	}
-	
+
 	/**
 	 * Run rpmlint command on given visitedResources.
-	 * 
+	 *
 	 * @param specContent
 	 *            the specfile content
 	 * @return the rpmlint command <code>InputStream</code>
@@ -293,14 +299,14 @@ public class RpmlintParser {
 		}
 		return in;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Return the line number for given specContent and strToFind, it returns -1
 	 * if the string to find is not found.
-	 * 
+	 *
 	 * @param specContent The content of the spec file.
-	 * 
+	 *
 	 * @param strToFind The string we are looking for.
 	 * @return the line number
 	 */
@@ -324,7 +330,7 @@ public class RpmlintParser {
 		}
 		return ret;
 	}
-	
+
 	private int getMixedUseOfTabsAndSpaces(String refferedContent){
 		int lineNbr = -1;
 		if (refferedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
@@ -342,5 +348,5 @@ public class RpmlintParser {
 		}
 		return lineNbr;
 	}
-	
+
 }
