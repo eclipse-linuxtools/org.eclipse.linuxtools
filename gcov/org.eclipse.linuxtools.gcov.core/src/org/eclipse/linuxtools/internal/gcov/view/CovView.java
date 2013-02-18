@@ -83,7 +83,6 @@ public class CovView extends AbstractSTDataView {
 	 */
 	@Override
 	protected void contributeToToolbar(IToolBarManager manager) {
-		super.contributeToToolbar(manager);
 		manager.add(new Separator());
 		manager.add(new Separator());
 		manager.add(folderAction);
