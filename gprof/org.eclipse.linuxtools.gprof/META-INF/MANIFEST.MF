@@ -11,8 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.debug.ui,
  org.eclipse.cdt.core,
- org.eclipse.cdt.launch,
- org.eclipse.cdt.debug.core,
  org.eclipse.linuxtools.dataviewers,
  org.eclipse.linuxtools.binutils,
  org.eclipse.linuxtools.dataviewers.charts
