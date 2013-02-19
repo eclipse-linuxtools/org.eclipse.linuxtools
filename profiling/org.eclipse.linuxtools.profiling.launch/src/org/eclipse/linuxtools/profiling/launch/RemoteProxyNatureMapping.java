@@ -19,6 +19,9 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 
+/**
+ * @since 2.0
+ */
 public class RemoteProxyNatureMapping {
 
 	String EXTENSION_POINT_ID = "RemoteProxyNatureMapping"; //$NON-NLS-1$

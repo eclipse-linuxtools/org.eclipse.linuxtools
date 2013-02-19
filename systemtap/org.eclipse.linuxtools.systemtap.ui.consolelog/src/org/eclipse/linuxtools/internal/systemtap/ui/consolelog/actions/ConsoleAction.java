@@ -9,7 +9,7 @@
  *     Roland Grunberg
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions;
 
 import java.net.URL;
 

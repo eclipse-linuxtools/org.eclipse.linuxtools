@@ -124,6 +124,9 @@ public class TreeNode {
 		display = null;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public TreeNode getChildByName(String name){
 		for (TreeNode child : children) {
 			if (child.toString().equals(name)) {

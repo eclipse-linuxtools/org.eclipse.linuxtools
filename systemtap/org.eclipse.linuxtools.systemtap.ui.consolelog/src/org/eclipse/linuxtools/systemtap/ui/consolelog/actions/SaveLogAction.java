@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
 import java.io.File;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
@@ -26,6 +27,9 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SaveLogAction extends ConsoleAction {
 
+	/**
+	 * @since 2.0
+	 */
 	public SaveLogAction(ScriptConsole fConsole) {
 		super(fConsole,
 				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/save_log.gif"), //$NON-NLS-1$

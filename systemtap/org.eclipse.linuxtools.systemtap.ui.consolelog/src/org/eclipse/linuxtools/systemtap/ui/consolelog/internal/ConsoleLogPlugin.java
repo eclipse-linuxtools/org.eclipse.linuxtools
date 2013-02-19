@@ -18,12 +18,15 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class ConsoleLogPlugin extends AbstractUIPlugin {
-	
+
+	/**
+	 * @since 2.0
+	 */
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.consolelog"; //$NON-NLS-1$
 
 	//The shared instance.
 	private static ConsoleLogPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -46,5 +49,5 @@ public class ConsoleLogPlugin extends AbstractUIPlugin {
 	public static ConsoleLogPlugin getDefault() {
 		return plugin;
 	}
-	
+
 }

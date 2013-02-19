@@ -31,8 +31,9 @@ public class LoggedCommand extends Command {
 	 * StreamGobbler.
 	 * @param cmd The entire command to run
 	 * @param envVars List of all environment variables to use
-	 * @param prompt The password promt for allowing the user to enter their password.
+	 * @param prompt The password prompt for allowing the user to enter their password.
 	 * @param monitorDelay the time between checking to see if the process finished
+	 * @since 2.0
 	 */
 	public LoggedCommand(String[] cmd, String[] envVars) {
 		super(cmd, envVars);
@@ -52,7 +53,7 @@ public class LoggedCommand extends Command {
 	}
 
 	/**
-	 * Saves the input stream data to a premanent file.  Any new data on the
+	 * Saves the input stream data to a permanent file.  Any new data on the
 	 * stream will automatically be saved to the file.
 	 * @param file The file to save the InputStream to.
 	 */
@@ -72,7 +73,7 @@ public class LoggedCommand extends Command {
 	}
 
 	/**
-	 * Dispoes of all internal references in this class.  Nothing should be called
+	 * Disposes of all internal references in this class.  Nothing should be called
 	 * after dispose.
 	 */
 	@Override

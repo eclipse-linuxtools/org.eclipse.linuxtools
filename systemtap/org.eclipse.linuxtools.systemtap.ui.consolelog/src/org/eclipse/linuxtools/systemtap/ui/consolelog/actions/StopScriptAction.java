@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
@@ -22,6 +23,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * A class that handles stopping the <code>ScriptConsole</code>.
  * @author Ryan Morse
+ * @since 2.0
  */
 public class StopScriptAction extends ConsoleAction implements ScriptConsoleObserver {
 
@@ -41,6 +43,9 @@ public class StopScriptAction extends ConsoleAction implements ScriptConsoleObse
 		});
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public StopScriptAction(ScriptConsole fConsole) {
 		super(fConsole,
 				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/stop_script.gif"), //$NON-NLS-1$
@@ -49,6 +54,9 @@ public class StopScriptAction extends ConsoleAction implements ScriptConsoleObse
 		console.addScriptConsoleObserver(this);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void runningStateChanged(boolean running) {
 		setEnabled(running);

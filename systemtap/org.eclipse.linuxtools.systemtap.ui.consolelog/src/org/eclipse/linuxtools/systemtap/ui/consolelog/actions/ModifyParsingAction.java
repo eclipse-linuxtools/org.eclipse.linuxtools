@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
@@ -33,6 +34,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * The action to allow users to change the parsing expression while a script is actively running.
  * @author Ryan Morse
+ * @since 2.0
  */
 public class ModifyParsingAction extends ConsoleAction {
 

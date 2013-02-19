@@ -31,10 +31,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.ClientSession;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.Subscription;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
@@ -63,33 +60,50 @@ import com.jcraft.jsch.JSchException;
 
 public class RunScriptAction extends Action implements IWorkbenchWindowActionDelegate {
 
-	protected boolean runLocal = true;
+	/**
+	 * @since 2.0
+	 */
 	protected boolean continueRun = true;
-	protected String fileName = null;
-	protected String tmpfileName = null;
-	protected String serverfileName = null;
-	protected IWorkbenchWindow fWindow;
-	private IAction act;
-	protected Subscription subscription;
-	protected int SCRIPT_ID;
-	protected ScriptConsole console;
-	protected IPath path;
 
+	/**
+	 * @since 2.0
+	 */
+	protected IWorkbenchWindow fWindow;
+
+	private boolean runLocal = true;
+	private String fileName = null;
+	private String tmpfileName = null;
+	private String serverfileName = null;
+	private IAction act;
+	private IPath path;
+
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void dispose() {
 		fWindow= null;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void init(IWorkbenchWindow window) {
 		fWindow= window;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void run(IAction action) {
 		run();
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public void setPath(IPath path){
 		this.path = path;
 	}
@@ -142,6 +156,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Once a console for running the script has been created this
 	 * function is called so that observers can be added for example
 	 * @param console
+	 * @since 2.0
 	 */
 	protected void scriptConsoleInitialized(ScriptConsole console){
 	}
@@ -225,6 +240,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * a stap command line that includes the tapsets specified in user preferences, a guru mode flag
 	 * if necessary, and the path to the script on disk.
 	 * @return The command to invoke to start the script running in stap.
+	 * @since 2.0
 	 */
 	protected String[] buildStandardScript() {
 	//FixMe: Take care of this in the next release. For now only the guru mode is sent
@@ -244,6 +260,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	/**
 	 * Adds the tapsets that the user has added in preferences to the input <code>ArrayList</code>
 	 * @param cmdList The list to add the user-specified tapset locations to.
+	 * @since 2.0
 	 */
 
 	protected void getImportedTapsets(ArrayList<String> cmdList) {
@@ -263,6 +280,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Checks the current script to determine if guru mode is required in order to run. This is determined
 	 * by the presence of embedded C.
 	 * @return True if the script contains embedded C code.
+	 * @since 2.0
 	 */
 	protected boolean isGuru() {
 		try {
@@ -303,19 +321,6 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		return false;
 	}
 
-	protected boolean createClientSession()
-	{
-		if (!ClientSession.isConnected() && new SelectServerDialog(fWindow.getShell()).open()) {
-			subscription = new Subscription(fileName,isGuru());
-			/*	if (ClientSession.isConnected())
-				{
-				console = ScriptConsole.getInstance(fileName, subscription);
-				console.run();
-				}*/
-		}
-		return true;
-	}
-
 	/**
 	 * Produces a <code>String[]</code> from the <code>ArrayList</code> passed in with stap inserted
 	 * as the first entry, and the filename as the last entry. Used to convert the arguments generated
@@ -323,6 +328,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * command line argument array that can be passed to <code>Runtime.exec</code>.
 	 * @param cmdList The list of arguments for stap for this script
 	 * @return An array suitable to pass to <code>Runtime.exec</code> to start stap on this file.
+	 * @since 2.0
 	 */
 	protected String[] finalizeScript(ArrayList<String> cmdList) {
 
@@ -377,6 +383,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void selectionChanged(IAction act, ISelection select) {
 		this.act = act;
@@ -393,6 +402,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		act.setEnabled(enabled);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public void setLocalScript(boolean enabled) {
 		runLocal = enabled;
 	}

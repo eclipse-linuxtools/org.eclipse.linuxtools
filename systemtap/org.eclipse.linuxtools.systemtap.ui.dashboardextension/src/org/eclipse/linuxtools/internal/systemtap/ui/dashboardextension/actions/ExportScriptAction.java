@@ -107,7 +107,7 @@ public class ExportScriptAction extends RunScriptAction {
 
 	/**
 	 * This method will check to make sure the exported module directory is valid.
-	 * If it isn't then the foleders will be created in order to make the directory
+	 * If it isn't then the folders will be created in order to make the directory
 	 * valid.
 	 */
 	private void validateDirectory() {
