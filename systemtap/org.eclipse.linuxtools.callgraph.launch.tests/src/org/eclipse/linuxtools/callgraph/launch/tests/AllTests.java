@@ -27,8 +27,6 @@ public class AllTests {
 		suite.addTestSuite(SystemTapCommandTest.class);
 		suite.addTestSuite(ConfigurationTest.class);
 		suite.addTestSuite(SystemTapCommandGeneratorTest.class);
-		if (TestConstants.canRunStap)
-			suite.addTestSuite(SystemTapCommandLineTest.class);
 		suite.addTestSuite(SystemTapTabTest.class);
 		suite.addTestSuite(LaunchShortcutsTest.class);
 		suite.addTestSuite(SystemTapErrorHandlerTest.class);
