@@ -18,11 +18,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 
 public class SystemTapScriptLaunchConfigurationDelegate implements
 		ILaunchConfigurationDelegate {
@@ -33,18 +32,17 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 
 		IPreferenceStore preferenceStore = ConsoleLogPlugin.getDefault().getPreferenceStore();
 
-		RunScriptAction action;
+		RunScriptHandler action;
 
 		boolean runWithChart = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.RUN_WITH_CHART, false);
 		if (runWithChart){
-			action = new RunScriptChartAction();
+			action = new RunScriptChartHandler();
 		}else{
-			action = new RunScriptAction();
+			action = new RunScriptHandler();
 		}
 
 		// Path
 		String path = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, ""); //$NON-NLS-1$
-		action.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		action.setPath(new Path(path));
 
 		// User Name
@@ -64,7 +62,7 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 		String hostName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, "localhost"); //$NON-NLS-1$
 		preferenceStore.setValue(ConsoleLogPreferenceConstants.HOST_NAME, hostName);
 
-		action.run();
+		action.execute(null);
 	}
 
 }

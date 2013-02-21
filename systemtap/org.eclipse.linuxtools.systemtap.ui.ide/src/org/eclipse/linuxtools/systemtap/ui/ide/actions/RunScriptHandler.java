@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -42,8 +42,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
 
@@ -55,51 +53,21 @@ import com.jcraft.jsch.JSchException;
  *    Ryan Morse - Original author.
  *    Red Hat Inc. - Copied most code from RunScriptAction here and made it into
  *                   base class for run actions.
- * @since 1.2
+ * @since 2.0
  */
 
-public class RunScriptAction extends Action implements IWorkbenchWindowActionDelegate {
+public class RunScriptHandler extends AbstractHandler {
 
 	/**
 	 * @since 2.0
 	 */
 	protected boolean continueRun = true;
-
-	/**
-	 * @since 2.0
-	 */
-	protected IWorkbenchWindow fWindow;
-
 	private boolean runLocal = true;
 	private String fileName = null;
 	private String tmpfileName = null;
 	private String serverfileName = null;
-	private IAction act;
 	private IPath path;
 
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void dispose() {
-		fWindow= null;
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void init(IWorkbenchWindow window) {
-		fWindow= window;
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void run(IAction action) {
-		run();
-	}
 
 	/**
 	 * @since 2.0
@@ -114,7 +82,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Finally, it gets an instance of <code>ScriptConsole</code> to run the script.
 	 */
 	@Override
-	public void run() {
+	public Object execute(ExecutionEvent event) {
 
 		if(isValid()) {
 			if(getRunLocal() == false) {
@@ -150,6 +118,8 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
             	});
             }
 		}
+
+		return null;
 	}
 
 	/**
@@ -172,7 +142,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		if (path != null){
 			return path.toOSString();
 		}
-		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+		IEditorPart ed = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if(ed.getEditorInput() instanceof PathEditorInput){
 			return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
 		} else {
@@ -189,7 +159,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		// If the path is not set this action will run the script from
 		// the active editor
 		if (this.path == null){
-			IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+			IEditorPart ed = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 			if(!isValidEditor(ed)){
 				return false;
 			}
@@ -202,7 +172,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	private boolean isValidEditor(IEditorPart ed) {
 		if(null == ed) {
 			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null); //$NON-NLS-1$
-			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Problem"), msg); //$NON-NLS-1$
+			MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("RunScriptAction.Problem"), msg); //$NON-NLS-1$
 			return false;
 		}
 
@@ -229,7 +199,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 
 		if(fileName.contains(IDESessionSettings.tapsetLocation)) {
 			String msg = MessageFormat.format(Localization.getString("RunScriptAction.TapsetDirectoryRun"),(Object []) null); //$NON-NLS-1$
-			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Error"), msg); //$NON-NLS-1$
+			MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("RunScriptAction.Error"), msg); //$NON-NLS-1$
 			return false;
 		}
 		return true;
@@ -383,23 +353,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
 	}
 
-	/**
-	 * @since 2.0
-	 */
 	@Override
-	public void selectionChanged(IAction act, ISelection select) {
-		this.act = act;
-		setEnablement(false);
-		buildEnablementChecks();
-	}
-
-	private void buildEnablementChecks() {
-		if(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof STPEditor)
-			setEnablement(true);
-	}
-
-	private void setEnablement(boolean enabled) {
-		act.setEnabled(enabled);
+	public boolean isEnabled() {
+		return (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof STPEditor);
 	}
 
 	/**
@@ -411,6 +367,18 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 
 	private boolean getRunLocal() {
 		return runLocal;
+	}
+
+	@Override
+	public void addHandlerListener(IHandlerListener handlerListener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeHandlerListener(IHandlerListener handlerListener) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

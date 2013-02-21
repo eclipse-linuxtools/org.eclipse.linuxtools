@@ -15,29 +15,25 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 
 public class SystemTapScriptLaunchShortcut implements ILaunchShortcut {
 
 	@Override
 	public void launch(IEditorPart editor, String mode) {
-		RunScriptAction action = new RunScriptAction();
-		action.init(editor.getSite().getWorkbenchWindow());
+		RunScriptHandler action = new RunScriptHandler();
 		action.setLocalScript(true);
-		action.run();
+		action.execute(null);
 	}
 
 	@Override
 	public void launch(ISelection selection, String mode) {
-		RunScriptAction action = new RunScriptAction();
+		RunScriptHandler action = new RunScriptHandler();
 		IPath path = ((IFile)((TreeSelection)selection).getFirstElement()).getLocation();
-
-		action.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		action.setPath(path);
 		action.setLocalScript(true);
-		action.run();
+		action.execute(null);
 	}
 
 }

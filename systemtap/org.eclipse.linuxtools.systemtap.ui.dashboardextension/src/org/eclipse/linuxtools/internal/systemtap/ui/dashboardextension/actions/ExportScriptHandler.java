@@ -35,7 +35,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFil
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction;
+import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
@@ -53,7 +53,7 @@ import org.eclipse.ui.XMLMemento;
  * dashboard for use at any time.
  * @author Ryan Morse
  */
-public class ExportScriptAction extends RunScriptAction {
+public class ExportScriptHandler extends RunScriptHandler {
 	/**
 	 * This method will bring up the export script dialog window for the user
 	 * to select what they want to new module to contain.  If the user enters
@@ -63,12 +63,11 @@ public class ExportScriptAction extends RunScriptAction {
 
 	private static String scriptFileName = "/script.stp"; //$NON-NLS-1$
 
-	@Override
 	public void run(IAction action) {
 		String script = getFilePath();
 		if(null == script || script.length() <= 0) {
 			String msg = MessageFormat.format(Localization.getString("ExportScriptAction.NoFileToExport"), (Object[])null); //$NON-NLS-1$
-			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ExportScriptAction.Error"), msg); //$NON-NLS-1$
+			MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("ExportScriptAction.Error"), msg); //$NON-NLS-1$
 		} else {
 			DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, script);
 			IWorkbench workbench = PlatformUI.getWorkbench();
@@ -85,7 +84,7 @@ public class ExportScriptAction extends RunScriptAction {
 			if(null == parser || null == dataSet)
 				return;
 
-			ExportScriptDialog exportDialog = new ExportScriptDialog(fWindow.getShell(), dataSet);
+			ExportScriptDialog exportDialog = new ExportScriptDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), dataSet);
 			exportDialog.create();
 
 			if(exportDialog.open() == Window.OK) {
