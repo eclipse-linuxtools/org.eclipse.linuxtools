@@ -28,6 +28,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.perf.model.PMCommand;
 import org.eclipse.linuxtools.internal.perf.model.PMDso;
@@ -381,11 +382,15 @@ public class PerfCore {
 		try {
 			if (workingDir==null) {
 				p = RuntimeProcessFactory.getFactory().exec(getReportString(config, perfDataLoc), project);
+				PerfPlugin.getDefault().setPerfProfileData(new Path(perfDataLoc));
+				PerfPlugin.getDefault().setWorkingDir(project.getLocation());
 			} else {
-				p = RuntimeProcessFactory.getFactory().exec(getReportString(config, workingDir.toOSString() + PerfPlugin.PERF_DEFAULT_DATA), project);
+				String defaultPerfDataLoc = workingDir.toOSString() + PerfPlugin.PERF_DEFAULT_DATA;
+				p = RuntimeProcessFactory.getFactory().exec(getReportString(config, defaultPerfDataLoc), project);
+				PerfPlugin.getDefault().setPerfProfileData(new Path(defaultPerfDataLoc));
+				PerfPlugin.getDefault().setWorkingDir(workingDir);
 			}
 
-			//			p.waitFor();
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			//spitting error stream moved to end of while loop, due to commenting of p.waitFor()
