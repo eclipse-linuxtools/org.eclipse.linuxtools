@@ -21,6 +21,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 /**
  * This class is responsible for creating and initializing UI for a {@link ScriptConsole}
+ * @since 2.0
  */
 public class ScriptConsolePageParticipant implements IConsolePageParticipant {
 

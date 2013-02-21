@@ -20,6 +20,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.ChartStr
  * Listens for data events and populates the internal <code>DataSet</code> with the data
  * that was received and matched the regExpr
  * @author Ryan Morse
+ * @since 2.0
  */
 public class ChartStreamDaemon2 extends ChartStreamDaemon {
 	public ChartStreamDaemon2(ScriptConsole console, IDataSet d, IDataSetParser p) {

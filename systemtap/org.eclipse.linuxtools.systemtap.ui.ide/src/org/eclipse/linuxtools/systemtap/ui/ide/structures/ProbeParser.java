@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 

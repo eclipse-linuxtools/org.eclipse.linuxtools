@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 
@@ -34,6 +35,7 @@ import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
  * is not a regular language, we can't create a nice lexor/parser combination
  * to do everything nicely.
  * @author Ryan Morse
+ * @since 2.0
  */
 public class FunctionParser extends TapsetParser {
 

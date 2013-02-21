@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.net.URI;
 import java.net.URISyntaxException;

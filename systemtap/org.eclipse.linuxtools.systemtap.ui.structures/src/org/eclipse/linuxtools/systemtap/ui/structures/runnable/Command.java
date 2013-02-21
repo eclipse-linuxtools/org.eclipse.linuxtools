@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 /**
  * A class to spawn a separate thread to run a <code>Process</code>.
  * @author Ryan Morse
+ * @since 2.0
  */
 public class Command implements Runnable {
 	/*
@@ -37,12 +38,38 @@ public class Command implements Runnable {
 	 */
 
 	/**
+	 * @since 2.0
+	 */
+	protected boolean stopped = false;
+	/**
+	 * @since 2.0
+	 */
+	protected StreamGobbler inputGobbler = null;
+	/**
+	 * @since 2.0
+	 */
+	protected StreamGobbler errorGobbler = null;
+
+	private boolean disposed = false;
+	private ArrayList<IGobblerListener> inputListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private ArrayList<IGobblerListener> errorListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private int returnVal = Integer.MAX_VALUE;
+
+	private String[] cmd;
+	private String[] envVars;
+	protected Process process;
+
+	public static final int ERROR_STREAM = 0;
+	public static final int INPUT_STREAM = 1;
+
+	/**
 	 * Spawns the new thread that this class will run in.  From the Runnable
 	 * interface spawning the new thread automatically calls the run() method.
 	 * This must be called by the implementing class in order to start the
 	 * StreamGobbler.
 	 * @param cmd The entire command to run
 	 * @param envVars List of all environment variables to use
+	 * @since 2.0
 	 */
 	public Command(String[] cmd, String[] envVars) {
 		this.cmd = cmd;
@@ -66,6 +93,7 @@ public class Command implements Runnable {
 	/**
 	 * Starts up the process that will execute the provided command and registers
 	 * the <code>StreamGobblers</code> with their respective streams.
+	 * @since 2.0
 	 */
 	protected IStatus init() {
 		try {
@@ -85,7 +113,7 @@ public class Command implements Runnable {
 	 * This transfers any listeners which may have been added
 	 * to the command before the process has been constructed
 	 * properly to the process itself.
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected void transferListeners(){
 		for(IGobblerListener listener :inputListeners) {
@@ -248,18 +276,4 @@ public class Command implements Runnable {
 		}
 	}
 
-	protected boolean stopped = false;
-	private boolean disposed = false;
-	protected StreamGobbler inputGobbler = null;
-	protected StreamGobbler errorGobbler = null;
-	private ArrayList<IGobblerListener> inputListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private ArrayList<IGobblerListener> errorListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private int returnVal = Integer.MAX_VALUE;
-
-	private String[] cmd;
-	private String[] envVars;
-	protected Process process;
-
-	public static final int ERROR_STREAM = 0;
-	public static final int INPUT_STREAM = 1;
 }

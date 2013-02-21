@@ -23,6 +23,9 @@ public class ScpExec extends LoggedCommand {
 	private Session session;
 	private Channel channel;
 
+	/**
+	 * @since 2.0
+	 */
 	public ScpExec(String cmds[]) {
 		super(cmds, null);
 		this.command = ""; //$NON-NLS-1$

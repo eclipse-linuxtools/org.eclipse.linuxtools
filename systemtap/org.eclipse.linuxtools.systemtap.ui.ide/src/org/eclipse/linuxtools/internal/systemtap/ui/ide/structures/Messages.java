@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import org.eclipse.osgi.util.NLS;
 

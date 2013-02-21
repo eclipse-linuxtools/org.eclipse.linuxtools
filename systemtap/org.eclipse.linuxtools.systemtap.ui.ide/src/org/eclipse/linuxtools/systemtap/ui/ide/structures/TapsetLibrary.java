@@ -18,6 +18,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
@@ -86,6 +87,9 @@ public final class TapsetLibrary {
 		probeParser.schedule();
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public static boolean isFinishSuccessful(){
 		return functionParser.isFinishSuccessful() && probeParser.isFinishSuccessful();
 	}
@@ -184,6 +188,7 @@ public final class TapsetLibrary {
 	 * Adds a new listener to the TapsetParser
 	 * @param listener the listener to be added
 	 * @return boolean indicating whether or not the listener was added
+	 * @since 2.0
 	 */
 	public static boolean addFunctionListener(IUpdateListener listener) {
 		if(null == functionParser)
@@ -192,6 +197,9 @@ public final class TapsetLibrary {
 		return true;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public static boolean addProbeListener(IUpdateListener listener) {
 		if(null == probeParser)
 			return false;
