@@ -241,14 +241,12 @@
 		point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension
 			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
 			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
 			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet"/>
 
 		</perspectiveExtension>
 		<perspectiveExtension
            targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-           <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
                         <view
                                 ratio="0.40f"
                                 relative="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
@@ -262,10 +260,6 @@
 			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
 			<perspectiveShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
 		</perspectiveExtension>
-		<perspectiveExtension
-           targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-           <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
-         </perspectiveExtension>
 	</extension>
  <extension
        point="org.eclipse.ui.newWizards">
