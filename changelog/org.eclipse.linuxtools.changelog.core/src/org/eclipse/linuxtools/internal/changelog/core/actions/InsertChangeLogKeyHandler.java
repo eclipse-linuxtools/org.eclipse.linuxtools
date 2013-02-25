@@ -21,8 +21,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 
@@ -164,6 +166,12 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	@Override
 	public boolean isEnabled() {
+		IEditorReference[] refs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
+		for (int i = 0; i < refs.length; ++i) {
+			IEditorReference ref = refs[i];
+			String id = ref.getId();
+			System.out.println(id);
+		}
 		return true;
 	}
 

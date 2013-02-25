@@ -163,7 +163,18 @@
              commandId="org.eclipse.linuxtools.changelog.core.preparechangelog2"/>
        <handler
              class="org.eclipse.linuxtools.internal.changelog.core.actions.InsertChangeLogKeyHandler"
-             commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"/>
+             commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand">
+         <enabledWhen>
+            <not>
+                <count value="0" />
+            </not>
+         </enabledWhen>
+         <activeWhen>
+            <with variable="activePart">
+                <instanceof value="org.eclipse.ui.IEditorPart" />
+            </with>
+         </activeWhen>
+       </handler>
        <handler
              class="org.eclipse.linuxtools.internal.changelog.core.actions.PrepareCommitHandler"
              commandId="org.eclipse.linuxtools.changelog.core.prepareCommit"/>
