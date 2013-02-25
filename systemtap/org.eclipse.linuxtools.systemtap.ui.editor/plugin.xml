@@ -30,12 +30,6 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"
 				style="push"
 				state="false"/>
-			<action
-				label=""
-				id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction"
-				class="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction"
-				definitionId="org.eclipse.ui.newWizard"
-				state="false"/>
 		</actionSet>
 	</extension>
 </plugin>
