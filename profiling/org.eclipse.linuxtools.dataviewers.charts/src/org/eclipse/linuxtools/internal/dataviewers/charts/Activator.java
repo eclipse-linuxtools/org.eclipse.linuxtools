@@ -8,7 +8,7 @@
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.dataviewers.charts;
+package org.eclipse.linuxtools.internal.dataviewers.charts;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;

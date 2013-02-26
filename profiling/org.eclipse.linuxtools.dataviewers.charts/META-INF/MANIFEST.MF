@@ -3,18 +3,15 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.dataviewers.charts;singleton:=true
 Bundle-Version: 4.1.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.dataviewers.charts.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.dataviewers.charts.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.dataviewers;bundle-version="4.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.dataviewers.charts,
- org.eclipse.linuxtools.dataviewers.charts.actions,
- org.eclipse.linuxtools.dataviewers.charts.dialogs,
- org.eclipse.linuxtools.dataviewers.charts.provider,
- org.eclipse.linuxtools.dataviewers.charts.view
+Export-Package: org.eclipse.linuxtools.dataviewers.charts.actions,
+ org.eclipse.linuxtools.dataviewers.charts.provider
 Import-Package: org.eclipse.linuxtools.dataviewers.piechart,
  org.swtchart
 Bundle-Localization: plugin

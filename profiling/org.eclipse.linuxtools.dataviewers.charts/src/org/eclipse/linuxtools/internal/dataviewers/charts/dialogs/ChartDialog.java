@@ -8,7 +8,7 @@
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.dataviewers.charts.dialogs;
+package org.eclipse.linuxtools.internal.dataviewers.charts.dialogs;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,10 +22,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
-import org.eclipse.linuxtools.dataviewers.charts.Activator;
-import org.eclipse.linuxtools.dataviewers.charts.ChartConstants;
 import org.eclipse.linuxtools.dataviewers.charts.provider.ChartFactory;
 import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
+import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
+import org.eclipse.linuxtools.internal.dataviewers.charts.ChartConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

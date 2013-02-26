@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
-import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
 import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
+import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;

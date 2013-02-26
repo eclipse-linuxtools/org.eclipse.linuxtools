@@ -8,7 +8,7 @@
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.dataviewers.charts.actions;
+package org.eclipse.linuxtools.internal.dataviewers.charts.actions;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +19,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.dataviewers.charts.Activator;
-import org.eclipse.linuxtools.dataviewers.charts.ChartConstants;
-import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
+import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
+import org.eclipse.linuxtools.internal.dataviewers.charts.ChartConstants;
+import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;

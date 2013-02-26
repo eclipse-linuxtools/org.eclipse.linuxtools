@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             category="org.eclipse.linuxtools.dataviewers.charts"
-            class="org.eclipse.linuxtools.dataviewers.charts.view.ChartView"
+            class="org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView"
             icon="icons/chart_icon.png"
             id="org.eclipse.linuxtools.dataviewers.charts.view"
             name="%chartview.name"

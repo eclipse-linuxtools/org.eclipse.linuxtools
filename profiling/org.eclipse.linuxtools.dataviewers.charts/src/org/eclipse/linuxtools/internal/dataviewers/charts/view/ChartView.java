@@ -8,13 +8,13 @@
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.dataviewers.charts.view;
+package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.dataviewers.charts.Activator;
-import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
+import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
+import org.eclipse.linuxtools.internal.dataviewers.charts.actions.SaveChartAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;

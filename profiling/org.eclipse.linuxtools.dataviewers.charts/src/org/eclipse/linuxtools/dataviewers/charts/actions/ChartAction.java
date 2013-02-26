@@ -15,14 +15,14 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
-import org.eclipse.linuxtools.dataviewers.charts.Activator;
-import org.eclipse.linuxtools.dataviewers.charts.dialogs.ChartDialog;
-import org.eclipse.linuxtools.dataviewers.charts.view.ChartView;
+import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
+import org.eclipse.linuxtools.internal.dataviewers.charts.dialogs.ChartDialog;
+import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * An action that open a chart dialog from an <code>AbstractSTViewer</code>.
- * 
+ *
  * @see AbstractSTViewer
  */
 public class ChartAction extends Action {
@@ -32,7 +32,7 @@ public class ChartAction extends Action {
 
     /**
      * The constructor.
-     * 
+     *
      * @param shell
      *            the shell used by the dialog
      * @param viewer
@@ -40,7 +40,7 @@ public class ChartAction extends Action {
      */
     public ChartAction(Shell shell, AbstractSTViewer viewer) {
         super("Create chart...", Activator.getImageDescriptor("icons/chart_icon.png"));
-        dialog = createDialog(shell, viewer);
+        dialog = new ChartDialog(shell, viewer);
         setEnabled(!viewer.getViewer().getSelection().isEmpty());
         viewer.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
@@ -52,7 +52,7 @@ public class ChartAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override
@@ -63,9 +63,5 @@ public class ChartAction extends Action {
             ChartView.createChartView(chart);
 
         }
-    }
-
-    protected ChartDialog createDialog(Shell shell, AbstractSTViewer viewer) {
-        return new ChartDialog(shell, viewer);
     }
 }
