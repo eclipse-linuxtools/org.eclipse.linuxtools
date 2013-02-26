@@ -43,20 +43,6 @@ public abstract class AbstractSTAnnotatedSourceEditorInput extends FileStoreEdit
      */
     public abstract Color getColor(int line);
 
-    public String getAnnotation(int line, ISTAnnotationColumn column) {
-        if (columns == null) {
-            columns = getColumns();
-        }
-        return column != null ? column.getAnnotation(line) : null;
-    }
-
-    public String getTooltip(int line, ISTAnnotationColumn column) {
-        if (columns == null) {
-            columns = getColumns();
-        }
-        return column != null ? column.getTooltip(line) : null;
-    }
-
     /**
      * gets the ISTAnnotationColumn objects list
      *
