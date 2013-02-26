@@ -289,8 +289,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
                 int b = color.getBlue();
                 if (r != 255 || g != 255 || b != 255) {
                     int offset = doc.getLineOffset(i);
-                    String type = STAnnotatedSourceEditorActivator.getUniqueIdentifier()
-                            + STAnnotatedSourceEditorActivator.getAnnotationType();
+                    String type = STAnnotatedSourceEditorActivator.ANNOTATION_TYPE;
                     Annotation annotation = new Annotation(type, true, "");
                     or.setAnnotationColor(annotation, color);
                     am.addAnnotation(annotation, new Position(offset));

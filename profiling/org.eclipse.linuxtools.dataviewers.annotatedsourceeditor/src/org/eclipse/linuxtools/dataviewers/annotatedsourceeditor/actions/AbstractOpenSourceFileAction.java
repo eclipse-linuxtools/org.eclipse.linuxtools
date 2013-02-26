@@ -63,7 +63,7 @@ public abstract class AbstractOpenSourceFileAction extends Action {
                         page.openEditor(input, EDITOR_ID, false);
                     }
                 } catch (Exception e) {
-                    Status s = new Status(IStatus.ERROR, STAnnotatedSourceEditorActivator.getUniqueIdentifier(),
+                    Status s = new Status(IStatus.ERROR, STAnnotatedSourceEditorActivator.PLUGIN_ID,
                             IStatus.ERROR, "Error when opening annotated source view", e);
                     STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
                 }

@@ -519,7 +519,7 @@ public class STOverviewRuler implements IOverviewRuler {
                 Color fill = null;
                 Color stroke = null;
                 FilterIterator e = new FilterIterator(annotationType, style[t]);
-                if (annotationType.toString().compareTo(getAnnotationTypeColoredLines()) != 0) {
+                if (annotationType.toString().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) != 0) {
                     fill = getFillColor(annotationType, style[t] == FilterIterator.TEMPORARY);
                     stroke = getStrokeColor(annotationType, style[t] == FilterIterator.TEMPORARY);
                 }
@@ -531,7 +531,7 @@ public class STOverviewRuler implements IOverviewRuler {
                     if (p == null || !p.overlapsWith(visible.getOffset(), visible.getLength()))
                         continue;
 
-                    if (a.getType().compareTo(getAnnotationTypeColoredLines()) == 0) {
+                    if (a.getType().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) == 0) {
                         fill = getFPFillColor(a, true);
                         stroke = getFPStrokeColor(a, false);
                     }
@@ -626,7 +626,7 @@ public class STOverviewRuler implements IOverviewRuler {
                 FilterIterator e = new FilterIterator(annotationType, style[t], fCachedAnnotations.iterator());
                 Color fill = null;
                 Color stroke = null;
-                if (annotationType.toString().compareTo(getAnnotationTypeColoredLines()) != 0) {
+                if (annotationType.toString().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) != 0) {
                     fill = getFillColor(annotationType, style[t] == FilterIterator.TEMPORARY);
                     stroke = getStrokeColor(annotationType, style[t] == FilterIterator.TEMPORARY);
                 }
@@ -641,7 +641,7 @@ public class STOverviewRuler implements IOverviewRuler {
                     if (widgetRegion == null)
                         continue;
 
-                    if (a.getType().compareTo(getAnnotationTypeColoredLines()) == 0) {
+                    if (a.getType().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) == 0) {
                         fill = getFPFillColor(a, true);
                         stroke = getFPStrokeColor(a, false);
                     }
@@ -1309,8 +1309,4 @@ public class STOverviewRuler implements IOverviewRuler {
             fHeader.setToolTipText(overview);
     }
 
-    private String getAnnotationTypeColoredLines() {
-        return (STAnnotatedSourceEditorActivator.getUniqueIdentifier() + STAnnotatedSourceEditorActivator
-                .getAnnotationType());
-    }
 }

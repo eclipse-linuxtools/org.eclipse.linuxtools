@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
-      
+
  **********************************************************************
  *********/
 package org.eclipse.linuxtools.dataviewers.annotatedsourceeditor;
@@ -22,22 +22,16 @@ import org.osgi.framework.BundleContext;
 public class STAnnotatedSourceEditorActivator extends AbstractUIPlugin {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor";
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor"; //$NON-NLS-1$
 
-    private static final String ANNOTATION_TYPE = ".coloredLines";
+    public static final String ANNOTATION_TYPE = PLUGIN_ID+".coloredLines"; //$NON-NLS-1$
 
     // The shared instance
     private static STAnnotatedSourceEditorActivator plugin;
 
-    /**
-     * The constructor
-     */
-    public STAnnotatedSourceEditorActivator() {
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
     @Override
@@ -49,7 +43,7 @@ public class STAnnotatedSourceEditorActivator extends AbstractUIPlugin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     @Override
@@ -60,19 +54,11 @@ public class STAnnotatedSourceEditorActivator extends AbstractUIPlugin {
 
     /**
      * Returns the shared instance
-     * 
+     *
      * @return the shared instance
      */
     public static STAnnotatedSourceEditorActivator getDefault() {
         return plugin;
-    }
-
-    public static String getAnnotationType() {
-        return ANNOTATION_TYPE;
-    }
-
-    public static String getUniqueIdentifier() {
-        return PLUGIN_ID;
     }
 
 }
