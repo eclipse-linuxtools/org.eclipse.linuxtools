@@ -26,6 +26,7 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.CompositeRuler;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IChangeRulerColumn;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISharedTextColors;
@@ -57,8 +58,6 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 	 * @since 4.2
 	 */
 	public final static String ST_RULER = "STRuler"; //$NON-NLS-1$
-
-    protected STContributedRulerColumn fAbstractSTRulerColumn;
 
     private STColumnSupport fColumnSupport;
 
@@ -277,7 +276,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 
     private void showLinesColored() {
         STOverviewRuler or = (STOverviewRuler) getOverviewRuler();
-        AnnotationModel am = (AnnotationModel) or.getModel();
+        IAnnotationModel am = or.getModel();
         IDocument doc = getSourceViewer().getDocument();
         int lines = doc.getNumberOfLines();
 
