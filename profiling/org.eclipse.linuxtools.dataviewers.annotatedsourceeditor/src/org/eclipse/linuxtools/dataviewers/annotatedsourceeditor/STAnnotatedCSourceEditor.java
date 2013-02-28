@@ -24,7 +24,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IChangeRulerColumn;
@@ -47,8 +46,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
-import org.eclipse.ui.texteditor.AnnotationPreference;
-import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
 import org.eclipse.ui.texteditor.rulers.IContributedRulerColumn;
 import org.eclipse.ui.texteditor.rulers.RulerColumnDescriptor;
 import org.eclipse.ui.texteditor.rulers.RulerColumnRegistry;
@@ -262,15 +259,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
 
     @Override
     protected IOverviewRuler createOverviewRuler(ISharedTextColors sharedColors) {
-        IOverviewRuler ruler = new STOverviewRuler(getAnnotationAccess(), VERTICAL_RULER_WIDTH, sharedColors);
-        MarkerAnnotationPreferences fAnnotationPreferences = getAnnotationPreferences();
-        Iterator<?> e = fAnnotationPreferences.getAnnotationPreferences().iterator();
-        while (e.hasNext()) {
-            AnnotationPreference preference = (AnnotationPreference) e.next();
-            if (preference.contributesToHeader())
-                ruler.addHeaderAnnotationType(preference.getAnnotationType());
-        }
-        return ruler;
+        return new STOverviewRuler(getAnnotationAccess(), VERTICAL_RULER_WIDTH, sharedColors);
 
     }
 
