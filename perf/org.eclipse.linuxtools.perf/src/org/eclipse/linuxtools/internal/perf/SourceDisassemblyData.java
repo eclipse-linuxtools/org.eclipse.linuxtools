@@ -28,10 +28,11 @@ public class SourceDisassemblyData extends AbstractDataManipulator {
 	@Override
 	public void parse() {
 		String [] cmd = getCommand(workingDir.toOSString());
-		performCommand(cmd);
+		// perf annotate prints the data to standard output
+		performCommand(cmd, 1);
 	}
 
-	public String [] getCommand(String workingDir) {
+	protected String [] getCommand(String workingDir) {
 		return new String[] { "perf", "annotate", //$NON-NLS-1$ //$NON-NLS-2$
 				"-i", workingDir + "perf.data" }; //$NON-NLS-1$ //$NON-NLS-2$
 	}

@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -53,6 +54,8 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Button _chkModuleSymbols;
 	protected Button _chkHideUnresolvedSymbols;
 	protected Button _chkShowSourceDisassembly;
+	protected Button _chkShowStat;
+	protected Spinner _statRunCount;
 	protected Exception ex;
 	
 	protected Composite top;
@@ -170,6 +173,35 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		_chkHideUnresolvedSymbols = _createCheckButton(p, PerfPlugin.STRINGS_HideUnresolvedSymbols);
 		_chkSourceLineNumbers = _createCheckButton(p, PerfPlugin.STRINGS_SourceLineNumbers);
 		_chkShowSourceDisassembly = _createCheckButton(p, PerfPlugin.STRINGS_ShowSourceDisassembly);
+
+		Composite showStatComp = new Composite(top, SWT.NONE);
+		layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		showStatComp.setLayout(layout);
+
+		_chkShowStat = _createCheckButton(showStatComp, PerfPlugin.STRINGS_ShowStat);
+		_chkShowStat.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent se) {
+				if (_chkShowStat.getSelection()) {
+					_statRunCount.setEnabled(true);
+				}else{
+					_statRunCount.setEnabled(false);
+				}
+			}
+		});
+		_statRunCount = new Spinner(showStatComp, SWT.BORDER);
+		_statRunCount.setEnabled(false);
+		_statRunCount.setMinimum(1);
+		_statRunCount.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+
 		_chkSourceLineNumbers.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent se) {
@@ -282,6 +314,14 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 			_chkModuleSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default));
 			_chkHideUnresolvedSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default));
 			_chkShowSourceDisassembly.setSelection(config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly, PerfPlugin.ATTR_ShowSourceDisassembly_default));
+			_chkShowStat.setSelection(config.getAttribute(PerfPlugin.ATTR_ShowStat, PerfPlugin.ATTR_ShowStat_default));
+			int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount, PerfPlugin.ATTR_StatRunCount_default);
+			_statRunCount.setSelection(runCount);
+			if (runCount == 1) {
+				_statRunCount.setEnabled(false);
+			} else {
+				_statRunCount.setEnabled(true);
+			}
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -299,6 +339,8 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, _chkModuleSymbols.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, _chkHideUnresolvedSymbols.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_ShowSourceDisassembly, _chkShowSourceDisassembly.getSelection());
+		wconfig.setAttribute(PerfPlugin.ATTR_ShowStat, _chkShowStat.getSelection());
+		wconfig.setAttribute(PerfPlugin.ATTR_StatRunCount, _statRunCount.getSelection());
 	}
 
 	@Override
@@ -311,6 +353,9 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default);
+		wconfig.setAttribute(PerfPlugin.ATTR_ShowSourceDisassembly, PerfPlugin.ATTR_ShowSourceDisassembly_default);
+		wconfig.setAttribute(PerfPlugin.ATTR_ShowStat, PerfPlugin.ATTR_ShowStat_default);
+		wconfig.setAttribute(PerfPlugin.ATTR_StatRunCount, PerfPlugin.ATTR_StatRunCount_default);
 	}
 
 }

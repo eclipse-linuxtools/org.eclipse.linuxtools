@@ -36,6 +36,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 	// View ID
 	public static final String VIEW_ID = "org.eclipse.linuxtools.perf.ui.ProfileView";
 	public static final String SOURCE_DISASSEMBLY_VIEW_ID = "org.eclipse.linuxtools.perf.ui.SourceDisassemblyView";
+	public static final String STAT_VIEW_ID = "org.eclipse.linuxtools.perf.ui.StatView";
 
 	// Launch Config ID
 	public static final String LAUNCHCONF_ID = "org.eclipse.linuxtools.perf.launch.profile";
@@ -59,6 +60,10 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final boolean ATTR_HideUnresolvedSymbols_default = true;
 	public static final String ATTR_ShowSourceDisassembly = "org.eclipse.linuxtools.internal.perf.attr.ShowSourceDisassembly";
 	public static final boolean ATTR_ShowSourceDisassembly_default = false;
+	public static final String ATTR_ShowStat = "org.eclipse.linuxtools.internal.perf.attr.ShowStat";
+	public static final boolean ATTR_ShowStat_default = false;
+	public static final String ATTR_StatRunCount = "org.eclipse.linuxtools.internal.perf.attr.StatRunCount";
+	public static final int ATTR_StatRunCount_default = 1;
 	
 	//Perf Events tab attribs.
 	public static final String ATTR_DefaultEvent = "org.eclipse.linuxtools.internal.perf.attr.DefaultEvent";
@@ -86,6 +91,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String STRINGS_UnfiledSymbols = "Unfiled Symbols";
 	public static final String STRINGS_MultipleFilesForSymbol = "Symbols conflicting in multiple files";
 	public static final String STRINGS_ShowSourceDisassembly = "Show Source Disassembly View";
+	public static final String STRINGS_ShowStat = "Show Stat View";
 	
 	public static final String PERF_COMMAND = "perf";
 	public static final String PERF_DEFAULT_DATA = "perf.data";
@@ -104,6 +110,9 @@ public class PerfPlugin extends AbstractUIPlugin {
 	// Source Disassembly Data
 	private SourceDisassemblyData sourceDisassemblyData;
 
+	// Stat Data
+	private StatData statData;
+
 	// Profile view
 	private PerfProfileView _ProfileView = null;
 
@@ -119,6 +128,10 @@ public class PerfPlugin extends AbstractUIPlugin {
 
 	public SourceDisassemblyData getSourceDisassemblyData () {
 		return sourceDisassemblyData;
+	}
+
+	public StatData getStatData () {
+		return statData;
 	}
 
 	public IPath getPerfProfileData() {
@@ -148,6 +161,10 @@ public class PerfPlugin extends AbstractUIPlugin {
 
 	public void setSourceDisassemblyData (SourceDisassemblyData sourceDisassemblyData) {
 		this.sourceDisassemblyData = sourceDisassemblyData;
+	}
+
+	public void setStatData (StatData statData) {
+		this.statData = statData;
 	}
 
 	public void setPerfProfileData(IPath perfProfileData) {

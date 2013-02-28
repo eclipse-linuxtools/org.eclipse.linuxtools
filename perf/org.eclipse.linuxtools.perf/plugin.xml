@@ -27,6 +27,14 @@
             id="org.eclipse.linuxtools.perf.ui.SourceDisassemblyView"
             name="Source Disassembly">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.perf.ui.StatView"
+            icon="icons/symbol.gif"
+            id="org.eclipse.linuxtools.perf.ui.StatView"
+            name="Stat">
+      </view>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
