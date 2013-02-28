@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 public class STOverviewRuler implements IOverviewRuler {
 
@@ -197,66 +196,7 @@ public class STOverviewRuler implements IOverviewRuler {
         }
     }
 
-    /**
-     * The painter of the overview ruler's header.
-     */
-    class HeaderPainter implements PaintListener {
 
-        private Color fIndicatorColor;
-        private final Color fSeparatorColor;
-
-        /**
-         * Creates a new header painter.
-         */
-        public HeaderPainter() {
-            fSeparatorColor = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
-        }
-
-        /**
-         * Sets the header color.
-         *
-         * @param color
-         *            the header color
-         */
-        public void setColor(Color color) {
-            fIndicatorColor = color;
-        }
-
-        private void drawBevelRect(GC gc, int x, int y, int w, int h, Color topLeft, Color bottomRight) {
-            gc.setForeground(topLeft == null ? fSeparatorColor : topLeft);
-            gc.drawLine(x, y, x + w - 1, y);
-            gc.drawLine(x, y, x, y + h - 1);
-
-            gc.setForeground(bottomRight == null ? fSeparatorColor : bottomRight);
-            gc.drawLine(x + w, y, x + w, y + h);
-            gc.drawLine(x, y + h, x + w, y + h);
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-         */
-        @Override
-        public void paintControl(PaintEvent e) {
-            Point s = fHeader.getSize();
-            if (fIndicatorColor != null) {
-                e.gc.setBackground(fIndicatorColor);
-                Rectangle r = new Rectangle(INSET, (s.y - (2 * ANNOTATION_HEIGHT)) / 2, s.x - (2 * INSET),
-                        2 * ANNOTATION_HEIGHT);
-                e.gc.fillRectangle(r);
-                Display d = fHeader.getDisplay();
-                if (d != null)
-                    // drawBevelRect(e.gc, r.x, r.y, r.width -1, r.height -1,
-                    // d.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW),
-                    // d.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-                    drawBevelRect(e.gc, r.x, r.y, r.width - 1, r.height - 1, null, null);
-            }
-            e.gc.setForeground(fSeparatorColor);
-            e.gc.setLineWidth(1);
-            e.gc.drawLine(0, s.y - 1, s.x - 1, s.y - 1);
-        }
-    }
 
     private static final int INSET = 2;
     private static final int ANNOTATION_HEIGHT = 1;
@@ -286,8 +226,6 @@ public class STOverviewRuler implements IOverviewRuler {
     private int fAnnotationHeight = -1;
     /** The annotation access */
     private IAnnotationAccess fAnnotationAccess;
-    /** The header painter */
-    private HeaderPainter fHeaderPainter;
     /**
      * The list of annotation types to be shown in this ruler.
      *
@@ -477,10 +415,7 @@ public class STOverviewRuler implements IOverviewRuler {
         try {
             gc.setBackground(fCanvas.getBackground());
             gc.fillRectangle(0, 0, size.x, size.y);
-            if (fTextViewer instanceof ITextViewerExtension5)
-                doPaint1(gc);
-            else
-                doPaint(gc);
+            doPaint(gc);
         } finally {
             gc.dispose();
         }
@@ -488,106 +423,11 @@ public class STOverviewRuler implements IOverviewRuler {
     }
 
     /**
-     * Draws this overview ruler.
-     *
+     * Draws this overview ruler. Uses <code>ITextViewerExtension5</code> for its implementation.
      * @param gc
      *            the GC to draw into
      */
     private void doPaint(GC gc) {
-        Rectangle r = new Rectangle(0, 0, 0, 0);
-        int yy, hh = ANNOTATION_HEIGHT;
-
-        IDocument document = fTextViewer.getDocument();
-        IRegion visible = fTextViewer.getVisibleRegion();
-
-        StyledText textWidget = fTextViewer.getTextWidget();
-        int maxLines = textWidget.getLineCount();
-
-        Point size = fCanvas.getSize();
-        int writable = JFaceTextUtil.computeLineHeight(textWidget, 0, maxLines, maxLines);
-
-        if (size.y > writable)
-            size.y = Math.max(writable - fHeader.getSize().y, 0);
-
-        for (Iterator<Object> iterator = fAnnotationsSortedByLayer.iterator(); iterator.hasNext();) {
-            Object annotationType = iterator.next();
-            if (skip(annotationType))
-                continue;
-
-            int[] style = new int[] { FilterIterator.PERSISTENT, FilterIterator.TEMPORARY };
-            for (int t = 0; t < style.length; t++) {
-                Color fill = null;
-                Color stroke = null;
-                FilterIterator e = new FilterIterator(annotationType, style[t]);
-                if (annotationType.toString().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) != 0) {
-                    fill = getFillColor(annotationType, style[t] == FilterIterator.TEMPORARY);
-                    stroke = getStrokeColor(annotationType, style[t] == FilterIterator.TEMPORARY);
-                }
-
-                while (e.hasNext()) {
-                    Annotation a = e.next();
-                    Position p = fModel.getPosition(a);
-
-                    if (p == null || !p.overlapsWith(visible.getOffset(), visible.getLength()))
-                        continue;
-
-                    if (a.getType().compareTo(STAnnotatedSourceEditorActivator.ANNOTATION_TYPE) == 0) {
-                        fill = getFPFillColor(a, true);
-                        stroke = getFPStrokeColor(a, false);
-                    }
-
-                    int annotationOffset = Math.max(p.getOffset(), visible.getOffset());
-                    int annotationEnd = Math.min(p.getOffset() + p.getLength(),
-                            visible.getOffset() + visible.getLength());
-                    int annotationLength = annotationEnd - annotationOffset;
-
-                    try {
-                        if (ANNOTATION_HEIGHT_SCALABLE) {
-                            int numbersOfLines = document.getNumberOfLines(annotationOffset, annotationLength);
-                            // don't count empty trailing lines
-                            IRegion lastLine = document.getLineInformationOfOffset(annotationOffset + annotationLength);
-                            if (lastLine.getOffset() == annotationOffset + annotationLength) {
-                                numbersOfLines -= 2;
-                                hh = (numbersOfLines * size.y) / maxLines + ANNOTATION_HEIGHT;
-                                if (hh < ANNOTATION_HEIGHT)
-                                    hh = ANNOTATION_HEIGHT;
-                            } else
-                                hh = ANNOTATION_HEIGHT;
-                        }
-                        fAnnotationHeight = hh;
-
-                        int startLine = textWidget.getLineAtOffset(annotationOffset - visible.getOffset());
-                        yy = Math.min((startLine * size.y) / maxLines, size.y - hh);
-
-                        if (fill != null) {
-                            gc.setBackground(fill);
-                            gc.fillRectangle(INSET, yy, size.x - (2 * INSET), hh);
-                        }
-
-                        if (stroke != null) {
-                            gc.setForeground(stroke);
-                            r.x = INSET;
-                            r.y = yy;
-                            r.width = size.x - (2 * INSET);
-                            r.height = hh;
-                            gc.setLineWidth(1);
-                            gc.drawRectangle(r);
-                        }
-                    } catch (BadLocationException x) {
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Draws this overview ruler. Uses <code>ITextViewerExtension5</code> for its implementation. Will replace
-     * <code>doPaint(GC)</code>.
-     *
-     * @param gc
-     *            the GC to draw into
-     */
-    private void doPaint1(GC gc) {
         Rectangle r = new Rectangle(0, 0, 0, 0);
         int yy, hh = ANNOTATION_HEIGHT;
 
@@ -597,9 +437,6 @@ public class STOverviewRuler implements IOverviewRuler {
 
         int maxLines = textWidget.getLineCount();
         Point size = fCanvas.getSize();
-        int writable = JFaceTextUtil.computeLineHeight(textWidget, 0, maxLines, maxLines);
-        if (size.y > writable)
-            size.y = Math.max(writable - fHeader.getSize().y, 0);
 
         fCachedAnnotations.clear();
         if (fModel != null) {
@@ -698,7 +535,6 @@ public class STOverviewRuler implements IOverviewRuler {
                     @Override
                     public void run() {
                         redraw();
-                        updateHeader();
                     }
                 });
             }
@@ -733,9 +569,6 @@ public class STOverviewRuler implements IOverviewRuler {
 
         int rulerLength = fCanvas.getSize().y;
         int writable = JFaceTextUtil.computeLineHeight(textWidget, 0, maxLines, maxLines);
-
-        if (rulerLength > writable)
-            rulerLength = Math.max(writable - fHeader.getSize().y, 0);
 
         if (y_coordinate >= writable || y_coordinate >= rulerLength)
             return new int[] { -1, -1 };
@@ -951,18 +784,6 @@ public class STOverviewRuler implements IOverviewRuler {
      */
     private boolean skip(Object annotationType) {
         return !contains(annotationType, fAllowedAnnotationTypes, fConfiguredAnnotationTypes);
-    }
-
-    /**
-     * Returns whether the given annotation type should be skipped by the drawing routine of the header.
-     *
-     * @param annotationType
-     *            the annotation type
-     * @return <code>true</code> if annotation of the given type should be skipped
-     * @since 3.0
-     */
-    private boolean skipInHeader(Object annotationType) {
-        return !contains(annotationType, fAllowedHeaderAnnotationTypes, fConfiguredHeaderAnnotationTypes);
     }
 
     /**
@@ -1224,89 +1045,4 @@ public class STOverviewRuler implements IOverviewRuler {
         fConfiguredHeaderAnnotationTypes.remove(annotationType);
         fAllowedHeaderAnnotationTypes.clear();
     }
-
-    /**
-     * Updates the header of this ruler.
-     */
-    private void updateHeader() {
-        if (fHeader == null || fHeader.isDisposed())
-            return;
-
-        Object colorType = null;
-        outer: for (int i = fAnnotationsSortedByLayer.size() - 1; i >= 0; i--) {
-            Object annotationType = fAnnotationsSortedByLayer.get(i);
-            if (skipInHeader(annotationType) || skip(annotationType))
-                continue;
-
-            for (FilterIterator e = new FilterIterator(annotationType, FilterIterator.PERSISTENT
-                    | FilterIterator.TEMPORARY | FilterIterator.IGNORE_BAGS); e.hasNext();) {
-                if (e.next() != null) {
-                    colorType = annotationType;
-                    break outer;
-                }
-            }
-        }
-
-        Color color = null;
-        if (colorType != null)
-            color = findColor(colorType);
-
-        if (color == null) {
-            if (fHeaderPainter != null)
-                fHeaderPainter.setColor(null);
-        } else {
-            if (fHeaderPainter == null) {
-                fHeaderPainter = new HeaderPainter();
-                fHeader.addPaintListener(fHeaderPainter);
-            }
-            fHeaderPainter.setColor(color);
-        }
-
-        fHeader.redraw();
-        updateHeaderToolTipText();
-    }
-
-    /**
-     * Updates the tool tip text of the header of this ruler.
-     *
-     * @since 3.0
-     */
-    private void updateHeaderToolTipText() {
-        if (fHeader == null || fHeader.isDisposed())
-            return;
-        fHeader.setToolTipText(null);
-        if (!(fAnnotationAccess instanceof IAnnotationAccessExtension))
-            return;
-
-        String overview = ""; //$NON-NLS-1$
-
-        for (int i = fAnnotationsSortedByLayer.size() - 1; i >= 0; i--) {
-            Object annotationType = fAnnotationsSortedByLayer.get(i);
-            if (skipInHeader(annotationType) || skip(annotationType))
-                continue;
-
-            int count = 0;
-            String annotationTypeLabel = null;
-
-            for (FilterIterator e = new FilterIterator(annotationType, FilterIterator.PERSISTENT
-                    | FilterIterator.TEMPORARY | FilterIterator.IGNORE_BAGS); e.hasNext();) {
-                Annotation annotation = e.next();
-                if (annotation != null) {
-                    if (annotationTypeLabel == null)
-                        annotationTypeLabel = ((IAnnotationAccessExtension) fAnnotationAccess).getTypeLabel(annotation);
-                    count++;
-                }
-            }
-
-            if (annotationTypeLabel != null) {
-                if (overview.length() > 0)
-                    overview += "\n"; //$NON-NLS-1$
-                overview += STJFaceTextMessages.getFormattedString(
-                        "OverviewRulerHeader.toolTipTextEntry", new Object[] { annotationTypeLabel, count }); //$NON-NLS-1$
-            }
-        }
-        if (overview.length() > 0)
-            fHeader.setToolTipText(overview);
-    }
-
 }
