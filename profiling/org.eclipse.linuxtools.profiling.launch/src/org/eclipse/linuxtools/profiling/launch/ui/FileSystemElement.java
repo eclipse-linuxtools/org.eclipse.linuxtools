@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.profiling.launch.ui;
 
 /**
- * @since 1.3
+ * @since 2.0
  */
 public class FileSystemElement {
 

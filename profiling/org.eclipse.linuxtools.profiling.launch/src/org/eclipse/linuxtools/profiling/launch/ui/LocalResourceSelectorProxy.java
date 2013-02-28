@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * @since 1.3
+ * @since 2.0
  */
 public class LocalResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 
