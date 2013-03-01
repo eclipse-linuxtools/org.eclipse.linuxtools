@@ -31,7 +31,7 @@ public class RpmConsole extends IOConsole {
 	 *            The RPM project to use.
 	 */
 	public RpmConsole(RPMProject rpmProject) {
-		super(ID, ID, null, true);
+		super(ID+'('+rpmProject.getSpecFile().getProject().getName()+')', ID, null, true);
 		this.rpmProject = rpmProject;
 	}
 

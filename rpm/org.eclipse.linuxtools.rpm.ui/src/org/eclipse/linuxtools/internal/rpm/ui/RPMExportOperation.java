@@ -94,10 +94,14 @@ public class RPMExportOperation extends Job {
 	private IOConsole findConsole() {
 		ConsolePlugin plugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = plugin.getConsoleManager();
-		IConsole[] existing = conMan.getConsoles();
-		for (int i = 0; i < existing.length; i++)
-			if (RpmConsole.ID.equals(existing[i].getName()))
-				return (RpmConsole) existing[i];
+		IConsole[] existingConsoles = conMan.getConsoles();
+		for (IConsole console: existingConsoles) {
+			if ((RpmConsole.ID+'('+rpmProject.getSpecFile().getProject().getName()+')').equals(console.getName())) {
+				RpmConsole myConsole = (RpmConsole) console;
+				myConsole.clearConsole();
+				return myConsole;
+			}
+		}
 		// no console found, so create a new one
 		RpmConsole myConsole = new RpmConsole(rpmProject);
 		conMan.addConsoles(new IConsole[] { myConsole });
