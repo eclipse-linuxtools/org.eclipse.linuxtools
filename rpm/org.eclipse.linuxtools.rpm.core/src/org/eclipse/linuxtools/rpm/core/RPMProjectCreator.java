@@ -62,10 +62,10 @@ public class RPMProjectCreator {
 	 * @param monitor
 	 *            Progress monitor to report back status.
 	 * @return The newly created project.
+	 * @throws CoreException 
 	 */
 	public IProject create(String projectName, IPath projectPath,
-			IProgressMonitor monitor) {
-		try {
+			IProgressMonitor monitor) throws CoreException {
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			IProject project = root.getProject(projectName);
 			IProjectDescription description = ResourcesPlugin.getWorkspace()
@@ -89,17 +89,11 @@ public class RPMProjectCreator {
 			monitor.worked(10);
 			project.open(monitor);
 			new RPMProject(project, layout);
-			if (projectPath.toString().indexOf(':') != -1) {
-				if (layout.equals(RPMProjectLayout.RPMBUILD)) {
+			if (projectPath.toString().indexOf(':') != -1 && layout.equals(RPMProjectLayout.RPMBUILD)) {
 					createDirsRemote(monitor, project, parsedIPathString);
-				}
 			} 
 			return project;
 
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private void createDirsRemote(IProgressMonitor monitor, IProject project,

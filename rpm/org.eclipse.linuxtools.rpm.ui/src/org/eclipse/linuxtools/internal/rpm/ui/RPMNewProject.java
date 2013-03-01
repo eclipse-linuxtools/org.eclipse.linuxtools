@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.rpm.ui;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -34,7 +35,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 		try {
 			WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 				@Override
-				protected void execute(IProgressMonitor monitor) {
+				protected void execute(IProgressMonitor monitor) throws CoreException {
 					createProject(monitor != null ? monitor
 							: new NullProgressMonitor());
 				}
@@ -60,7 +61,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 		addPage(namePage);
 	}
 
-	protected void createProject(IProgressMonitor monitor) {
+	protected void createProject(IProgressMonitor monitor) throws CoreException {
 		RPMProjectCreator rpmProjectCreator = new RPMProjectCreator(namePage.getSelectedLayout());
 		rpmProjectCreator.create(namePage.getProjectName(), namePage.getLocationPath(), monitor);
 	}
