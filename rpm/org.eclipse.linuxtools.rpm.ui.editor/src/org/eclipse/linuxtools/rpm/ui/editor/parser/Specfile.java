@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
 public class Specfile {
 
 	private SpecfilePreamble preamble;
-	
+
 	private SpecfilePackageContainer packages;
 
 	private List<SpecfileSection> sections;
@@ -42,9 +42,9 @@ public class Specfile {
 	private Map<Integer, SpecfileSource> sources;
 
 	private Map<Integer, SpecfileSource> patches;
-	
+
 	private List<SpecfileTag> buildRequires;
-	
+
 	private List<SpecfileTag> requires;
 
 	private IDocument document;
@@ -73,11 +73,11 @@ public class Specfile {
 		}
 		return null;
 	}
-	
+
 	public List<SpecfileSection> getComplexSections() {
 		return complexSections;
 	}
-	
+
 	public SpecfileSource getPatch(int number) {
 		return patches.get(number);
 	}
@@ -101,7 +101,7 @@ public class Specfile {
 	public void addComplexSection(SpecfileSection section) {
 		complexSections.add(section);
 	}
-	
+
 	public void addSource(SpecfileSource source) {
 		sources.put(Integer.valueOf(source.getNumber()), source);
 	}
@@ -112,7 +112,7 @@ public class Specfile {
 
     /**
      * Adds the given define to the map of defines for this specfile.
-     * 
+     *
      * @param define The define to add.
      */
     public void addDefine(SpecfileDefine define) {
@@ -123,15 +123,15 @@ public class Specfile {
     	}
 		defines.put(define.getName(), define);
 	}
-    
+
     public void addDefine(SpecfileTag tag) {
 		addDefine(new SpecfileDefine(tag));
 	}
-    
+
     public SpecfileDefine getDefine(String defineName) {
 		return defines.get(defineName.toLowerCase());
 	}
-	
+
 	public SpecfileDefine getDefine(String defineName, SpecfilePackage rpmPackage) {
 		return defines.get(UiUtils.getPackageDefineId(defineName, rpmPackage));
 	}
@@ -151,7 +151,7 @@ public class Specfile {
 		}
 		return "0"; //$NON-NLS-1$
 	}
-	
+
 	public String getBuildArch() {
 		SpecfileDefine define = getDefine(RpmTags.BUILD_ARCH.toLowerCase());
 		if (define != null){
@@ -181,10 +181,9 @@ public class Specfile {
 	}
 
 	public List<SpecfileDefine> getDefines() {
-		List<SpecfileDefine> definesList = new ArrayList<SpecfileDefine>(defines.values());
-		return definesList;
+		return new ArrayList<SpecfileDefine>(defines.values());
 	}
-	
+
 	public void organizePatches() {
 		List<SpecfileSource> patches = getPatches();
 		int newPatchNumber = 0;
@@ -210,8 +209,7 @@ public class Specfile {
 	public String getLine(int lineNumber) throws BadLocationException {
 		int offset = document.getLineOffset(lineNumber);
 		int length = getLineLength(lineNumber);
-		String lineContents = document.get(offset, length);
-		return lineContents;
+		return document.get(offset, length);
 	}
 
 	public IDocument getDocument() {
@@ -273,7 +271,7 @@ public class Specfile {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	public void modifyDefine(String defineName, String newValue) {
@@ -287,7 +285,7 @@ public class Specfile {
 			}
 		}
 	}
-	
+
 	public void modifyDefine(SpecfileTag define, String newValue) {
 		if (define != null) {
 			define.setValue(newValue);
@@ -305,7 +303,7 @@ public class Specfile {
 	public void addBuildRequire(SpecfileDefine buildRequire) {
 		buildRequires.add(buildRequire);
 	}
-	
+
 	/**
 	 * @param require the require to add
 	 */
@@ -323,5 +321,5 @@ public class Specfile {
 	public List<SpecfileTag> getRequires() {
 		return requires;
 	}
-	
+
 }

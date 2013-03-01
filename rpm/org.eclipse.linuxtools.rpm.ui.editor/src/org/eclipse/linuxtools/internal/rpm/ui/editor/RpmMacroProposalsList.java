@@ -22,9 +22,10 @@ import java.util.TreeMap;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
 /**
- * This class is used to retrieve and manage the RPM macro 
+ * This class is used to retrieve and manage the RPM macro
  * proposals list.
  *
  */
@@ -77,7 +78,7 @@ public class RpmMacroProposalsList {
 
 	/**
 	 * Add macro definition to the map
-	 * 
+	 *
 	 * @param filename
 	 *            macro file definition.
 	 */
@@ -141,7 +142,7 @@ public class RpmMacroProposalsList {
 
 	/**
 	 * Reverse a <code>String</code> array.
-	 * 
+	 *
 	 * @param stringArrayToReverse
 	 *            the string array to reverse.
 	 * @return the reversed <code>String</code> array.
@@ -161,7 +162,7 @@ public class RpmMacroProposalsList {
 
 	/**
 	 * Get proposals for a given prefix
-	 * 
+	 *
 	 * @param prefix The prefix to search.
 	 * @return a <code>Map</code> of proposals.
 	 */
@@ -174,13 +175,12 @@ public class RpmMacroProposalsList {
 			}
 		}
 		// Sort proposals
-		Map<String, String> sortedMap = new TreeMap<String, String>(proposalsMap);
-		return sortedMap;
+		return new TreeMap<String, String>(proposalsMap);
 	}
 
 	/**
 	 * Get the value for a given macro.
-	 * 
+	 *
 	 * @param key Key to retrieve value.
 	 * @return a string representation of the value
 	 */
@@ -192,28 +192,28 @@ public class RpmMacroProposalsList {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Find a key in the macroMap
-	 * 
+	 *
 	 * @param keyToFind The key to find.
 	 * @return return the value
 	 */
 	public boolean findKey(String keyToFind) {
 		return macroMap.containsKey(keyToFind);
 	}
-	
+
 	/**
 	 * Return the ouput of the <code>rpm --eval</code> command for a given
 	 * macro.
-	 *  
+	 *
 	 * @param macroName The macro name to eval.
 	 * @return the resolved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
 		String eval = EMPTY_STRING;
 		try {
-			eval = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
+			eval = Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 		}
@@ -222,7 +222,7 @@ public class RpmMacroProposalsList {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
