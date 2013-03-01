@@ -9,13 +9,13 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions;
 
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ConsoleAction;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;

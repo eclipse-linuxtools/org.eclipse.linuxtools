@@ -9,9 +9,8 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ConsoleAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
