@@ -647,7 +647,13 @@ public class PerfCore {
 						//if (PerfPlugin.DEBUG_ON) System.err.println("Parsed line ref without being in valid block, shouldn't happen.");
 						break;
 					} else {
-						currentSym.addPercent(Integer.parseInt(items[1]), percent);
+						int lineNum = -1;
+						try {
+							lineNum = Integer.parseInt(items[1]);
+						} catch (NumberFormatException e) {
+							// leave line number as -1
+						}
+						currentSym.addPercent(lineNum, percent);
 						// Symbol currently in 'Unfiled Symbols' but we now know the actual parent
 						if (currentSym.getParent().getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) {
 							currentSym.getParent().removeChild(currentSym);
