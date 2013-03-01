@@ -31,7 +31,6 @@ import org.eclipse.linuxtools.rpm.core.utils.Utils;
 public class RPM {
 
 	private List<String> macroDefines;
-	private String rpmCmd;
 
 	/**
 	 * Constructs a new RPM object.
@@ -42,7 +41,7 @@ public class RPM {
 	public RPM(IProjectConfiguration config) {
 		IEclipsePreferences node = DefaultScope.INSTANCE
 				.getNode(IRPMConstants.RPM_CORE_ID);
-		rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
+		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
 		macroDefines = new ArrayList<String>();
 
 		macroDefines.add(rpmCmd);
