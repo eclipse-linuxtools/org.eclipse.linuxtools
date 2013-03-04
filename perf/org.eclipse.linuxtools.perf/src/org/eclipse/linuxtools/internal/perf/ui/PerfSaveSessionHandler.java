@@ -11,86 +11,82 @@
 package org.eclipse.linuxtools.internal.perf.ui;
 
 import java.io.File;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
-import org.eclipse.swt.widgets.Display;
 
-public class PerfSaveSessionHandler implements IHandler {
+/**
+ * Handler for saving a perf profile session.
+ */
+public class PerfSaveSessionHandler extends AbstractSaveDataHandler {
+	private static String DATA_EXT = "data"; //$NON-NLS-1$
 
 	@Override
-	public Object execute(ExecutionEvent event) {
-		InputDialog dialog = new InputDialog(Display.getCurrent()
-				.getActiveShell(), Messages.PerfSaveSession_title,
-				Messages.PerfSaveSession_msg, "", new IInputValidator() {
+	public File saveData(String filename) {
+		// get paths
+		IPath newDataLoc = getNewDataLocation(filename, DATA_EXT);
+		IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
 
-					@Override
-					public String isValid(String newText) {
-						if ("".equals(newText)) {
-							return Messages.PerfSaveSession_invalid_filename_msg;
-						}
-						return null;
-					}
-				});
+		// get files
+		File newDataFile = new File(newDataLoc.toOSString());
+		File defaultDataFile = defaultDataLoc.toFile();
 
-		if (dialog.open() == Window.OK) {
-			String fileName = dialog.getValue();
-
-			// get paths
-			IPath curWorkingDirectory = PerfPlugin.getDefault().getWorkingDir();
-			IPath newDataLoc = curWorkingDirectory.append(fileName).addFileExtension("data"); //$NON-NLS-1$
-			IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
-
-			// get files
-			File newDataFile = newDataLoc.toFile();
-			File defaultDataFile = defaultDataLoc.toFile();
-
-			// rename default perf data file
-			if (defaultDataFile.renameTo(newDataFile)) {
+		if (canSave(newDataFile)) {
+			// copy default data into new location
+			try {
+				newDataFile.createNewFile();
+				copyFile(defaultDataFile, newDataFile);
 				PerfPlugin.getDefault().setPerfProfileData(newDataLoc);
-				PerfPlugin.getDefault().getProfileView().setContentDescription(newDataLoc.toOSString());
-			} else{
-				MessageDialog.openError(Display.getCurrent().getActiveShell(),
-						Messages.PerfSaveSession_no_data_found_title,
-						Messages.PerfSaveSession_no_data_found_msg);
+				PerfPlugin.getDefault().getProfileView()
+						.setContentDescription(newDataLoc.toOSString());
+
+				return newDataFile;
+			} catch (IOException e) {
+				openErroDialog(Messages.PerfSaveSession_failure_title,
+						Messages.PerfSaveSession_failure_msg,
+						newDataLoc.lastSegment());
 			}
 		}
-
 		return null;
+
 	}
 
 	@Override
-	public boolean isEnabled() {
+	public boolean verifyData() {
 		IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
-		IPath curWorkingDirectory = PerfPlugin.getDefault().getWorkingDir();
-		if (defaultDataLoc == null || curWorkingDirectory == null
-				|| defaultDataLoc.isEmpty() || curWorkingDirectory.isEmpty()) {
-			return false;
+		return defaultDataLoc != null && !defaultDataLoc.isEmpty();
+	}
+
+	private void copyFile(File src, File dest) {
+		InputStream destInput = null;
+		OutputStream srcOutput = null;
+		try {
+			destInput = new FileInputStream(src);
+			srcOutput = new FileOutputStream(dest);
+
+			byte[] buffer = new byte[1024];
+
+			int length;
+			while ((length = destInput.read(buffer)) != -1) {
+				srcOutput.write(buffer, 0, length);
+			}
+		} catch (FileNotFoundException e) {
+			openErroDialog(Messages.PerfSaveSession_failure_title,
+					Messages.PerfSaveSession_failure_msg,
+					dest.toString());
+		} catch (IOException e) {
+			openErroDialog(Messages.PerfSaveSession_failure_title,
+					Messages.PerfSaveSession_failure_msg,
+					dest.toString());
+		} finally {
+			closeResource(destInput, dest.getName());
+			closeResource(srcOutput, src.getName());
 		}
-		return true;
-	}
-
-	@Override
-	public boolean isHandled() {
-		return isEnabled();
-	}
-
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-	}
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-
-	}
-
-	@Override
-	public void dispose() {
 
 	}
 }

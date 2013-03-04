@@ -18,8 +18,14 @@ public class Messages extends NLS {
 	public static String PerfSaveSession_msg;
 	public static String PerfSaveSession_invalid_filename_title;
 	public static String PerfSaveSession_invalid_filename_msg;
-	public static String PerfSaveSession_no_data_found_title;
-	public static String PerfSaveSession_no_data_found_msg;
+	public static String PerfSaveSession_file_exists_title;
+	public static String PerfSaveSession_file_exists_msg;
+	public static String PerfSaveStat_error_title;
+	public static String PerfSaveStat_error_msg;
+	public static String PerfSaveSession_failure_title;
+	public static String PerfSaveSession_failure_msg;
+	public static String PerfResourceLeak_title;
+	public static String PerfResourceLeak_msg;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
