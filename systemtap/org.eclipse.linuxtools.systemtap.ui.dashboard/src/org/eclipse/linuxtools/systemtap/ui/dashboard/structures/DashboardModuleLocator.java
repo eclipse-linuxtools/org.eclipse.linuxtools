@@ -14,11 +14,10 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 import java.io.File;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import org.eclipse.linuxtools.systemtap.ui.structures.JarArchive;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.structures.JarArchive;
+import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 
 /**
@@ -47,20 +46,20 @@ public final class DashboardModuleLocator {
 			}
 			root.sortTree();
 		}
-        
+
 		return root;
 	}
-	
+
 	/**
 	 * This method gets all of the dashboard module directories from the user's
-	 * preferences and adds the default directores, then returns the entire list.
+	 * preferences and adds the default directories, then returns the entire list.
 	 * @return String array containing all of the directories with modules.
 	 */
 	public static String[] getModuleLocations() {
 		IPreferenceStore store = DashboardPlugin.getDefault().getPreferenceStore();
 
 		String locations = store.getString(DashboardPreferenceConstants.P_MODULE_FOLDERS);
-		
+
 		String[] folders = locations.split(File.pathSeparator);
 
 		String[] allFolders;
@@ -69,7 +68,7 @@ public final class DashboardModuleLocator {
 			System.arraycopy(folders, 0, allFolders, 2, folders.length);
 		} else
 			allFolders = new String[2];
-		
+
 		//This locates all the preexisting modules
 		if(new File(moduleStore).exists()) {
 			File f = new File(moduleLocation);
@@ -86,13 +85,13 @@ public final class DashboardModuleLocator {
 				allFolders[0] += "dashboard/modules/"; //$NON-NLS-1$
 			}
 		}
-		
+
 		allFolders[1] = SystemTapGUISettings.settingsFolder.getAbsolutePath();
 
 		return allFolders;
 	}
-	
+
 	public static final String moduleLocation = SystemTapGUISettings.installDirectory + "/.modules/"; //$NON-NLS-1$
 	public static final String moduleStore = SystemTapGUISettings.installDirectory + "/plugins/org.eclipse.linuxtools.systemtap.ui.dashboard_1.0.0.jar"; //$NON-NLS-1$
-	
+
 }

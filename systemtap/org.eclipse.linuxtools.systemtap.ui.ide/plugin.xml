@@ -35,6 +35,14 @@
         name="%view.probe.name"/>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.ui.workbench.file">
+          <separator
+                name="runGroup"
+                visible="true">
+          </separator>
+       </menuContribution>
        <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
            <command
                  commandId="org.eclipse.ui.navigate.collapseAll" />
@@ -49,7 +57,7 @@
        </menuContribution>
        <menuContribution
              allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file">
+             locationURI="toolbar:org.eclipse.ui.workbench.file?after=runGroup">
           <command
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
                 icon="icons/actions/run/run_exc.gif"

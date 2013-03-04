@@ -17,7 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-import org.eclipse.jface.action.IAction;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -63,7 +63,8 @@ public class ExportScriptHandler extends RunScriptHandler {
 
 	private static String scriptFileName = "/script.stp"; //$NON-NLS-1$
 
-	public void run(IAction action) {
+	@Override
+	public Object execute(ExecutionEvent event) {
 		String script = getFilePath();
 		if(null == script || script.length() <= 0) {
 			String msg = MessageFormat.format(Localization.getString("ExportScriptAction.NoFileToExport"), (Object[])null); //$NON-NLS-1$
@@ -82,7 +83,7 @@ public class ExportScriptHandler extends RunScriptHandler {
 			wizard.dispose();
 
 			if(null == parser || null == dataSet)
-				return;
+				return null;
 
 			ExportScriptDialog exportDialog = new ExportScriptDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), dataSet);
 			exportDialog.create();
@@ -102,6 +103,7 @@ public class ExportScriptHandler extends RunScriptHandler {
 				updateDashboard();
 			}
 		}
+		return null;
 	}
 
 	/**
