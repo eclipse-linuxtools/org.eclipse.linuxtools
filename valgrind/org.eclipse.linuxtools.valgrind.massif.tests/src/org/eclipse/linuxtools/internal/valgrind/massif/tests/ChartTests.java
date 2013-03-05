@@ -92,7 +92,7 @@ public class ChartTests extends AbstractMassifTest {
 		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (part instanceof ChartEditor) {
 			Chart control = ((ChartEditor) part).getControl();
-			ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().getSeries(Messages.getString("HeapChart.Total_Heap"));
+			ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().getSeries(Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$
 			Point p1 = lsTotal.getPixelCoordinates(4);
 
 			HeapChart heapChart = ((ChartEditorInput) ((ChartEditor)part).getEditorInput()).getChart();
@@ -111,7 +111,7 @@ public class ChartTests extends AbstractMassifTest {
 		doLaunch(config, "testChartCallback"); //$NON-NLS-1$
 
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		MassifSnapshot snapshot = view.getSnapshots()[7]; // peak		
+		MassifSnapshot snapshot = view.getSnapshots()[7]; // peak
 		assertTrue(snapshot.isDetailed());
 
 		Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();

@@ -23,7 +23,7 @@ public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 	public Bundle getBundle() {
 		return FrameworkUtil.getBundle(AbstractMemcheckTest.class);
 	}
-	
+
 	@Override
 	public String getToolID() {
 		return MemcheckPlugin.TOOL_ID;
@@ -47,7 +47,7 @@ public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 					ValgrindStackFrame stackFrameMsg = (ValgrindStackFrame) child;
 
 					// check expected error messages exist for basicTest (child process in multiProcTest)
-					if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ $NON-NLS-2$
+					if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
 							&& "test.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
 						assertTrue(stackFrameMsg.getLine() >= 15);
 						switch (stackFrameMsg.getLine()) {
@@ -66,7 +66,7 @@ public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 					}
 
 					// check expected error messages exist for parent process in multiProcTest
-					if (("testNoExec".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ $NON-NLS-2$
+					if (("testNoExec".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
 							&& "parent.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
 						assertEquals(8, stackFrameMsg.getLine());
 						assertTrue(child.getParent().getText().contains(lostBytesMsg));
