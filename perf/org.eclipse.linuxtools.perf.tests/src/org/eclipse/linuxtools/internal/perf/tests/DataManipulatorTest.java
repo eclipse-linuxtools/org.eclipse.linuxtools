@@ -19,24 +19,42 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
+import org.eclipse.linuxtools.internal.perf.StatData;
 
 public class DataManipulatorTest extends TestCase {
 
-	public void testEchoSourceDisassemblyData () {
-		IPath path = new Path("/a/b/c/"); //$NON-NLS-1$
+	public void testEchoSourceDisassemblyData() {
+		final IPath path = new Path("/a/b/c/"); //$NON-NLS-1$
+
 		StubSourceDisassemblyData sdData = new StubSourceDisassemblyData(
-				"test data", path); //$NON-NLS-1$
+				"disassembly data", path); //$NON-NLS-1$
 		sdData.parse();
 
-		String [] cmd = sdData.getCommand(path.toOSString());
-		String expected = ""; //$NON-NLS-1$
-		for (int i = 1; i < cmd.length; i++) {
-			expected += cmd[i] + " "; //$NON-NLS-1$
-		}
+		String expected = "perf annotate -i " + path.toOSString() + "perf.data"; //$NON-NLS-1$
 
-		assertEquals(expected.trim(), sdData.getPerfData().trim());
+		assertEquals(expected, sdData.getPerfData().trim());
 	}
 
+	public void testEchoStatData() {
+		final String binary = "a/b/c.out";
+		final String[] args = new String[] { "arg1", "arg2", "arg3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final int runCount = 3;
+
+		StubStatData sData = new StubStatData(
+				"stat data", binary, args, runCount); //$NON-NLS-1$
+		sData.parse();
+
+		String expected = "perf stat -r " + runCount + " " + binary; //$NON-NLS-1$
+		for (int i = 0; i < args.length; i++) {
+			expected += " " + args[i]; //$NON-NLS-1$
+		}
+
+		assertEquals(expected, sData.getPerfData().trim());
+	}
+
+	/**
+	 * Used for testing SourceDisassemblyData
+	 */
 	private class StubSourceDisassemblyData extends SourceDisassemblyData {
 
 		public StubSourceDisassemblyData(String title, IPath workingDir) {
@@ -44,12 +62,39 @@ public class DataManipulatorTest extends TestCase {
 		}
 
 		@Override
-		public String [] getCommand(String workingDir) {
-			List<String> ret = new ArrayList<String> ();
+		public String[] getCommand(String workingDir) {
+			List<String> ret = new ArrayList<String>();
 			// return the same command with 'echo' prepended
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(workingDir)));
-			return ret.toArray(new String [0]);
+			return ret.toArray(new String[0]);
+		}
+	}
+
+	/**
+	 * Used for testing StatData
+	 */
+	private class StubStatData extends StatData {
+
+		public StubStatData(String title, String cmd, String[] args,
+				int runCount) {
+			super(title, cmd, args, runCount);
+		}
+
+		@Override
+		public String[] getCommand(String command, String[] args) {
+			// return the same command with 'echo' prepended
+			List<String> ret = new ArrayList<String>();
+			ret.add("echo"); //$NON-NLS-1$
+			ret.addAll(Arrays.asList(super.getCommand(command, args)));
+			return ret.toArray(new String[0]);
+		}
+
+		@Override
+		public void parse() {
+			String[] cmd = getCommand(getProgram(), getArguments());
+			// echo will print to standard out
+			performCommand(cmd, 1);
 		}
 	}
 
