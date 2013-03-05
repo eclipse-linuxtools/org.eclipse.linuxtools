@@ -84,7 +84,7 @@ public class ProbeParser extends TapsetParser {
 	 * Returns a String containing all of the content from the probe
 	 * point list, including variables and their type.
 	 *
-	 * stap -v -p1 -L
+	 * stap -L
 	 * Will list all available probe points
 	 * @return the probe points consolidated into a single string
 	 */
@@ -92,7 +92,7 @@ public class ProbeParser extends TapsetParser {
 		String[] options;
 		if(null == script) {
 			script = "**"; //$NON-NLS-1$
-			options = new String[] {"-p1", "-v", "-L"};   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			options = new String[] {"-L"};   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		} else {
 			options = null;
 		}
@@ -101,7 +101,7 @@ public class ProbeParser extends TapsetParser {
 	}
 
 	/**
-	 * Parses the output generated from running stap -v -p1 -L. Pulls out all functions
+	 * Parses the output generated from running stap -L. Pulls out all functions
 	 * and probe aliases from the provided string. Populates the probe and function
 	 * trees.
 	 *
@@ -110,7 +110,7 @@ public class ProbeParser extends TapsetParser {
 	 *
 	 * FunctionTree organized as:
 	 *	Root->Files->Functions
-	 * @param s The entire output from running stap -v -p1 -L.
+	 * @param s The entire output from running stap -L.
 	 */
 	private void parseProbes(String s) {
 		String token = null;
