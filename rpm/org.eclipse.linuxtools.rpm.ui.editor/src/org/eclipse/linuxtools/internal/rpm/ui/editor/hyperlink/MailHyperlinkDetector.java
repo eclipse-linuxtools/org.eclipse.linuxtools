@@ -35,7 +35,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	private SpecfileEditor editor;
-	
+
 	/*
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
 	 *      org.eclipse.jface.text.IRegion, boolean)
@@ -78,20 +78,20 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 		if (startSeparator != -1) {
 			int endSeparator= line.indexOf('>');
-			
+
 			if (endSeparator < 5) {
 				return null;
 			}
-			
+
 			mail= line.substring(startSeparator + 1, endSeparator).trim();
 			mailLength= mail.length();
-			
+
 			// Some cleanups, maybe we can add more.
 			mail= mail.replaceAll("(?i) at ", "@"); //$NON-NLS-1$ //$NON-NLS-2$
 			mail= mail.replaceAll("(?i) dot ", "."); //$NON-NLS-1$ //$NON-NLS-2$
 			mail= mail.replaceAll("(?i)_at_", "@"); //$NON-NLS-1$ //$NON-NLS-2$
 			mail= mail.replaceAll("(?i)_dot_", "."); //$NON-NLS-1$ //$NON-NLS-2$
-			
+
 			mail= mail.replaceAll(" +", " "); //$NON-NLS-1$ //$NON-NLS-2$
 			if (mail.split(" ").length == 3) { //$NON-NLS-1$
 				if (mail.indexOf('@') == -1) {
@@ -99,7 +99,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 				}
 			}
 			mail= mail.replaceAll(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
-			
+
 		} else {
 
 			int offsetInLine= offset - lineInfo.getOffset();
@@ -164,16 +164,16 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 			if (mailLength == 0) {
 				return null;
 			}
-			
+
 			mail= line.substring(mailOffsetInLine, mailOffsetInLine + mailLength);
 		}
 
 		try {
 			// mail address contain at less one '@' and one '.' character.
 			if (!mail.contains("@") || !mail.contains(".")) { //$NON-NLS-1$ //$NON-NLS-2$
-				return null;			
+				return null;
 			}
-			
+
 			urlString= "mailto:" + mail; //$NON-NLS-1$
 			char separator= '?';
 			String subject= getSubject();
@@ -197,18 +197,18 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 		IRegion urlRegion= new Region(lineInfo.getOffset() + mailOffsetInLine, mailLength);
 		return new IHyperlink[] {new MailHyperlink(urlRegion, urlString)};
-	}	
+	}
 
 	private String getSubject() {
 		Specfile specfile= editor.getSpecfile();
 		return MessageFormat.format("[{0}.spec - {1}-{2}]", specfile.getName(), specfile.getVersion(), //$NON-NLS-1$
-				specfile.getRelease());		 
+				specfile.getRelease());
 	}
 
 	private String getBody() {
 		String body = null;
 		// Get current selection
-		IDocument document= editor.getSpecfileSourceViewer().getDocument();
+		IDocument document= (IDocument) editor.getAdapter(IDocument.class);
 		ISelection currentSelection= editor.getSpecfileSourceViewer().getSelection();
 		if (currentSelection instanceof ITextSelection) {
 			ITextSelection selection= (ITextSelection) currentSelection;

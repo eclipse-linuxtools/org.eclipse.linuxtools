@@ -33,12 +33,12 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
-		IDocument document = editor.getSpecfileSourceViewer().getDocument();
+		IDocument document = (IDocument) editor.getAdapter(IDocument.class);
 		ISelection currentSelection = editor.getSpecfileSourceViewer()
 				.getSelection();
 		if (currentSelection instanceof ITextSelection) {
@@ -52,7 +52,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 						selection.getOffset() + selection.getLength());
 				if (linesContentCommentChar(content)) {
 					if (selection.getStartLine() == selection.getEndLine()) {
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content; 
+						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content;
 					} else
 						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
@@ -75,7 +75,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 
 	/**
 	 * Check if all lines are commented
-	 * 
+	 *
 	 * @param content
 	 *            to check
 	 * @return true if all lines begin with '#' char
@@ -87,7 +87,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 		boolean ret = false;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START)) 
+				if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START))
 					ret = false;
 				else
 					return true;

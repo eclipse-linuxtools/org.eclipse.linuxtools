@@ -23,25 +23,26 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
 	private IDocument sDocument;
 	private IProgressMonitor sProgressMonitor;
 	private SpecfileFoldingStructureProvider sFoldingStructureProvider;
-	
+
 	SpecfileContentOutlinePage outline;
 	SpecfileEditor editor;
 	IDocumentProvider documentProvider;
 
 	public SpecfileReconcilingStrategy(SpecfileEditor editor) {
-		outline= (SpecfileContentOutlinePage) editor.getOutlinePage();
+		outline= (SpecfileContentOutlinePage) editor.getAdapter(IContentOutlinePage.class);
 		this.editor = editor;
 		documentProvider = editor.getDocumentProvider();
 		sFoldingStructureProvider= new SpecfileFoldingStructureProvider(editor);
 	}
 
-	
+
 	public void setDocument(IDocument document) {
 		sDocument= document;
 		sFoldingStructureProvider.setDocument(sDocument);
@@ -70,7 +71,7 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 			updateEditor();
 		}
 	}
-	
+
 	public void reconcile(IRegion partition) {
 		reconcile();
 	}

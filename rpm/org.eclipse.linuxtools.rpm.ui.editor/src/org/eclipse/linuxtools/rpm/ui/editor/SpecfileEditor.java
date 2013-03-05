@@ -95,7 +95,7 @@ public class SpecfileEditor extends TextEditor {
 
 	protected void validateAndMark() {
 		try {
-			IDocument document = getInputDocument();
+			IDocument document = getDocumentProvider().getDocument(input);
 			SpecfileErrorHandler specfileErrorHandler = new SpecfileErrorHandler(
 					getEditorInput(), document);
 			specfileErrorHandler.removeExistingMarkers();
@@ -125,14 +125,13 @@ public class SpecfileEditor extends TextEditor {
 		return null;
 	}
 
-	public IDocument getInputDocument() {
-		return getDocumentProvider().getDocument(input);
-	}
-
 	@Override
 	public Object getAdapter(Class required) {
 		if (IContentOutlinePage.class.equals(required)) {
 			return getOutlinePage();
+		}
+		if (IDocument.class.equals(required)) {
+			return getDocumentProvider().getDocument(input);
 		}
 		if (projectionSupport != null) {
 			Object adapter = projectionSupport.getAdapter(getSourceViewer(),
@@ -160,7 +159,7 @@ public class SpecfileEditor extends TextEditor {
 		return viewer;
 	}
 
-	public ContentOutlinePage getOutlinePage() {
+	private ContentOutlinePage getOutlinePage() {
 		if (outlinePage == null) {
 			outlinePage = new SpecfileContentOutlinePage(this);
 			if (getEditorInput() != null)

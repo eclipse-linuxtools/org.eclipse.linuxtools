@@ -46,12 +46,12 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
 /**
  * Content assist processor
- * 
+ *
  * @author Alphonse Van Assche
  *
  */
 public class SpecfileCompletionProcessor implements IContentAssistProcessor {
-	
+
 	private static final String SOURCE = "SOURCE"; //$NON-NLS-1$
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -82,9 +82,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private static final String TEMPLATE_ICON = "icons/template_obj.gif"; //$NON-NLS-1$
 
 	private static final String MACRO_ICON = "icons/macro_obj.gif"; //$NON-NLS-1$
-	
+
 	private static final String PATCH_ICON = "icons/macro_obj.gif"; //$NON-NLS-1$
-	
+
 	private static final String PACKAGE_ICON = "icons/rpm.gif"; //$NON-NLS-1$
 
 	private static final String PREAMBLE_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.preambleSection"; //$NON-NLS-1$
@@ -98,7 +98,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private static final String CHANGELOG_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.changelogSection"; //$NON-NLS-1$
 
 	private final SpecfileEditor editor;
-	
+
 	private static final Comparator<ICompletionProposal> PROPOSAL_COMPARATOR = new ProposalComparator();
 	private static final Comparator<TemplateProposal> TEMPLATE_PROPOSAL_COMPARATOR = new TemplateProposalComparator();
 
@@ -108,7 +108,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	public SpecfileCompletionProcessor(SpecfileEditor editor) {
 		this.editor = editor;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
 	 */
@@ -134,13 +134,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				region, specfile, prefix);
 		result.addAll(sourcesProposals);
 		// Get the current content type
-		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
+		String currentContentType = ((IDocument)editor.getAdapter(IDocument.class)).getDocumentPartitioner().getContentType(region.getOffset());
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)){
 			List<ICompletionProposal> patchesProposals = computePatchesProposals(
 					region, specfile, prefix);
 			result.addAll(patchesProposals);
 		}
-		
+
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
 			// don't show template in the RPM packages content type.
 			// (when the line begin with Requires, BuildRequires etc...)
@@ -149,7 +149,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			result.addAll(rpmPackageProposals);
 			result.addAll(rpmMacroProposals);
 		} else {
-			// don't show RPM packages proposals in all others content type. 
+			// don't show RPM packages proposals in all others content type.
 			List<? extends ICompletionProposal> templateProposals = computeTemplateProposals(
 					viewer, region, specfile, prefix);
 			result.addAll(templateProposals);
@@ -173,11 +173,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		return result
 				.toArray(new ICompletionProposal[result.size()]);
 	}
-	
+
 	/**
 	 * Compute the templates proposals, these proposals are contextual on sections.
 	 * Return an array of template proposals for the given viewer, region, specfile, prefix.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -187,7 +187,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 			  the specfile element
 	 * @param prefix
 	 * 			  the prefix string
-	 * @return 
+	 * @return
 	 *            a ICompletionProposal[]
 	 */
 	private List<? extends ICompletionProposal> computeTemplateProposals(ITextViewer viewer,
@@ -222,7 +222,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Compute RPM macro proposals, these proposals are usable in the whole document.
 	 * Return an array of RPM macro proposals for the given viewer, region, prefix.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -230,16 +230,16 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 *            is created
 	 * @param prefix
 	 * 			  the prefix string to find
-	 * @return 
+	 * @return
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeRpmMacroProposals(IRegion region, 
+	private List<ICompletionProposal> computeRpmMacroProposals(IRegion region,
 			Specfile specfile, String prefix) {
 		Map<String, String> rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
-		
+
 		// grab defines and put them into the proposals map
 		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
-		
+
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		if (rpmMacroProposalsMap != null) {
 			for (Map.Entry<String, String> entry : rpmMacroProposalsMap
@@ -256,11 +256,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		return proposals;
 	}
-	
+
 	/**
 	 * Compute patches proposals, these proposals are usable in the whole document.
 	 * Return an array of patches proposals for the given viewer, region, prefix.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -268,10 +268,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 *            is created
 	 * @param prefix
 	 * 			  the prefix string to find
-	 * @return 
+	 * @return
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computePatchesProposals(IRegion region, 
+	private List<ICompletionProposal> computePatchesProposals(IRegion region,
 			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
@@ -287,11 +287,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		return proposals;
 	}
-	
+
 	/**
 	 * Compute sources proposals, these proposals are usable in the whole document.
 	 * Return an array of sources proposals for the given viewer, region, prefix.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -299,10 +299,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 *            is created
 	 * @param prefix
 	 * 			  the prefix string to find
-	 * @return 
+	 * @return
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeSourcesProposals(IRegion region, 
+	private List<ICompletionProposal> computeSourcesProposals(IRegion region,
 			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
@@ -322,7 +322,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Compute RPM package proposals, these proposals are usable only in the preambule section.
 	 * Return an array of RPM macro proposals for the given viewer, region, specfile, prefix.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -330,10 +330,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 *            is created
 	 * @param prefix
 	 * 			  the prefix string
-	 * @return 
+	 * @return
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeRpmPackageProposals(IRegion region, 
+	private List<ICompletionProposal> computeRpmPackageProposals(IRegion region,
 			String prefix) {
 		List<String[]> rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
@@ -349,7 +349,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Collections.sort(proposals, PROPOSAL_COMPARATOR);
 		return proposals;
 	}
-	
+
 	private List<ICompletionProposal> computeRpmGroupProposals(IRegion region,
 			String prefix) {
 		List<String> rpmGroupProposalsList = Activator.getDefault()
@@ -368,7 +368,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	/**
 	 * Create a template context for the givens Specfile, offset.
-	 * 
+	 *
 	 * @param specfile
 	 *            the sepcfile element
 	 * @param offset
@@ -393,12 +393,12 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(CHANGELOG_SECTION_TEMPLATE);
 			}
-		
+
 	}
 
 	/**
 	 * Create a template context for the given Specfile and offset.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param region
@@ -419,7 +419,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get relevance on templates for the given template and prefix.
 	 * @param template
@@ -437,7 +437,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	/**
 	 * Get the prefix for a given viewer, offset.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param offset
@@ -463,10 +463,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			return EMPTY_STRING;
 		}
 	}
-	
+
 	/**
 	 * Get the prefix for a given viewer, offset.
-	 * 
+	 *
 	 * @param viewer
 	 *            the viewer for which the context is created
 	 * @param offset
@@ -496,13 +496,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get defines as a String key->value pair for a given specfile
 	 * and prefix.
-	 * 
+	 *
 	 * @param specfile
 	 *            to get defines from.
 	 * @param prefix
 	 *            used to find defines.
 	 * @return a <code>HashMap</code> of defines.
-	 * 
+	 *
 	 */
 	private Map<String, String> getDefines(Specfile specfile, String prefix) {
 		Collection<SpecfileDefine> defines = specfile.getDefines();
@@ -515,17 +515,17 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Get patches as a String key->value pair for a given specfile
 	 * and prefix.
-	 * 
+	 *
 	 * @param specfile
 	 *            to get defines from.
 	 * @param prefix
 	 *            used to find defines.
 	 * @return a <code>HashMap</code> of defines.
-	 * 
+	 *
 	 */
 	private Map<String, String> getPatches(Specfile specfile, String prefix) {
 		Collection<SpecfileSource> patches = specfile.getPatches();
@@ -540,17 +540,17 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Get sources as a String key->value pair for a given specfile
 	 * and prefix.
-	 * 
+	 *
 	 * @param specfile
 	 *            to get defines from.
 	 * @param prefix
 	 *            used to find defines.
 	 * @return a <code>HashMap</code> of defines.
-	 * 
+	 *
 	 */
 	private Map<String, String> getSources(Specfile specfile, String prefix) {
 		Collection<SpecfileSource> sources = specfile.getSources();
