@@ -82,7 +82,7 @@ public final class PreferenceConstants {
 
 	// macro
 	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE
-			+ ";/usr/lib/rpm/macros"; //$NON-NLS-1$
+			+ ";/usr/lib/rpm/macros;/etc/rpm"; //$NON-NLS-1$
 	// changelog
 	public static final String DP_CHANGELOG_LOCAL = "US"; //$NON-NLS-1$
 	public static final String DP_CHANGELOG_ENTRY_FORMAT = P_CHANGELOG_ENTRY_FORMAT_VERSIONED;
@@ -110,7 +110,7 @@ public final class PreferenceConstants {
 	public static final boolean DP_RPMINFO_SOURCERPM = true;
 
 	public static final long DP_RPM_LIST_LAST_BUILD = 0;
-	
+
 	private PreferenceConstants(){
 		super();
 	}
