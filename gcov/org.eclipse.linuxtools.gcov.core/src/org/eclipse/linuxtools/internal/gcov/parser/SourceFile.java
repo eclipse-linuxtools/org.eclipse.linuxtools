@@ -40,7 +40,7 @@ public class SourceFile implements Serializable {
 	
 	public void accumulateLineCounts() {
 		for (Line line : lines) {
-			if (line.isExists()) {
+			if (line.exists()) {
 				cvrge.incLinesInstrumented();
 				if (line.getCount() != 0)
 					cvrge.incLinesExecuted();

@@ -15,23 +15,14 @@ import java.io.Serializable;
 
 public class Line implements Serializable{
 
-	/**
-	 * 
-	 */
+	/**	 */
 	private static final long serialVersionUID = 8804878976767948267L;
 	private boolean exists = false;
 	private long count = 0;
 
-	/**
-	 * Constructor
-	 */
-	public Line() {
-	}
-	
-	
 	/*Getters & setters*/
 
-	public boolean isExists() {
+	public boolean exists() {
 		return exists;
 	}
 

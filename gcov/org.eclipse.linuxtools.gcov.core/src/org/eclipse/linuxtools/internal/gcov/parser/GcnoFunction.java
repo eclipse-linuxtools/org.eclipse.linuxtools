@@ -65,7 +65,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 					j++;
 				} else if ((fileSrc != null) && enc[k] < fileSrc.getLines().size()) {
 					Line line = fileSrc.getLines().get((int) enc[k]);
-					if (line.isExists() == false)
+					if (line.exists() == false)
 						cvrge.incLinesInstrumented();
 					if ((line.getCount() == 0) && (blk.getCount() != 0))
 						cvrge.incLinesExecuted();

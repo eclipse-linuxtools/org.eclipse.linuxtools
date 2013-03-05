@@ -51,7 +51,7 @@ AbstractSTAnnotatedSourceEditorInput {
 		if (index < lineCount){
 			ArrayList<Line> lines = sourceFile.getLines();
 			Line line = lines.get(index);
-			if (line.isExists()) {
+			if (line.exists()) {
 				long count = line.getCount();
 				if (count == 0) return display.getSystemColor(SWT.COLOR_RED);
 				if (count == sourceFile.getmaxLineCount()) return GREEN;
