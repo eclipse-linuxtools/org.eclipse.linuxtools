@@ -30,7 +30,7 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
-import org.eclipse.linuxtools.gprof.Activator;
+import org.eclipse.linuxtools.internal.gprof.Activator;
 import org.eclipse.linuxtools.internal.gprof.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.internal.gprof.action.SwitchSampleTimeAction;
 import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;

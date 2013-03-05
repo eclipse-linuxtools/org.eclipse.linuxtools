@@ -8,7 +8,7 @@
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.gprof;
+package org.eclipse.linuxtools.internal.gprof;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -24,12 +24,6 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -48,7 +42,7 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 	    plugin = null;
-	    super.stop(context);	
+	    super.stop(context);
 	}
 
 	/**
@@ -58,14 +52,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	/**
-	 * Returns the plugin unique identifier
-	 */
-	public static String getUniqueIdentifier()
-	{
-		return PLUGIN_ID;
 	}
 
 	/**

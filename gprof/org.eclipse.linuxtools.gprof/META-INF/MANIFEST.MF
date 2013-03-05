@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gprof;singleton:=true
 Bundle-Version: 4.0.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.gprof.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.gprof.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.variables,
@@ -17,5 +17,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.gprof,
+Export-Package: 
  org.eclipse.linuxtools.internal.gprof.view;x-friends:="org.eclipse.linuxtools.gprof.launch"
