@@ -23,12 +23,14 @@ public class StatData extends AbstractDataManipulator {
 	private String prog;
 	private String [] args;
 	private int runCount;
+	private String [] events;
 
-	public StatData(String title, String prog, String [] args, int runCount) {
+	public StatData(String title, String prog, String [] args, int runCount, String[] events) {
 		super(title);
 		this.prog = prog;
 		this.args = args;
 		this.runCount = runCount;
+		this.events = events;
 	}
 
 	@Override
@@ -44,6 +46,12 @@ public class StatData extends AbstractDataManipulator {
 		if (runCount > 1) {
 			ret.add("-r"); //$NON-NLS-1$
 			ret.add(String.valueOf(runCount));
+		}
+		if (events != null) {
+			for (String event : events) {
+				ret.add("-e"); //$NON-NLS-1$
+				ret.add(event);
+			}
 		}
 		ret.add(prog);
 		ret.addAll(Arrays.asList(args));

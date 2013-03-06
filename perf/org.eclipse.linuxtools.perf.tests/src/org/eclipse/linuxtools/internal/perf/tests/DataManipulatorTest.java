@@ -41,10 +41,33 @@ public class DataManipulatorTest extends TestCase {
 		final int runCount = 3;
 
 		StubStatData sData = new StubStatData(
-				"stat data", binary, args, runCount); //$NON-NLS-1$
+				"stat data", binary, args, runCount, null); //$NON-NLS-1$
 		sData.parse();
 
 		String expected = "perf stat -r " + runCount + " " + binary; //$NON-NLS-1$
+		for (int i = 0; i < args.length; i++) {
+			expected += " " + args[i]; //$NON-NLS-1$
+		}
+
+		assertEquals(expected, sData.getPerfData().trim());
+	}
+
+	public void testEchoStatDataEvents() {
+		final String binary = "a/b/c.out";
+		final String[] args = new String[] { "arg1", "arg2", "arg3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] events = new String[] { "event1", "event2", "event3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final int runCount = 3;
+
+		StubStatData sData = new StubStatData(
+				"stat data", binary, args, runCount, events); //$NON-NLS-1$
+		sData.parse();
+
+		String expected = "perf stat -r " + runCount; //$NON-NLS-1$
+		for(String event : events){
+			expected += " -e " + event; //$NON-NLS-1$
+		}
+
+		expected = expected + " " + binary; //$NON-NLS-1$
 		for (int i = 0; i < args.length; i++) {
 			expected += " " + args[i]; //$NON-NLS-1$
 		}
@@ -77,8 +100,8 @@ public class DataManipulatorTest extends TestCase {
 	private class StubStatData extends StatData {
 
 		public StubStatData(String title, String cmd, String[] args,
-				int runCount) {
-			super(title, cmd, args, runCount);
+				int runCount, String[] events) {
+			super(title, cmd, args, runCount, events);
 		}
 
 		@Override
