@@ -29,10 +29,6 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="M1+5"/>
 	</extension>
-	<extension
-		point="org.eclipse.ui.actionSets">
-	</extension>
-	
 
 	<extension
 		point="org.eclipse.ui.popupMenus">
