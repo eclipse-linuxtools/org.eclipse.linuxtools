@@ -87,15 +87,15 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 							+ " (" + runCount + " runs)" ); //$NON-NLS-1$ /$NON-NLS-2$
 
 			StatData sd = null;
+			Object[] configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default).toArray();
+			String[] statEvents  = new String[0];
+
 			if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
 				// gather selected events
-				Object[] configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default).toArray();
-				String[] statEvents = Arrays.asList(configEvents).toArray(new String[]{});
-
-				sd = new StatData(title, exePath.toOSString(), arguments, runCount, statEvents);
-			} else{
-				sd = new StatData(title, exePath.toOSString(), arguments, runCount, null);
+				statEvents = configEvents == null ? statEvents : Arrays.asList(configEvents).toArray(new String[]{});
 			}
+
+			sd = new StatData(title, exePath.toOSString(), arguments, runCount, statEvents);
 			sd.parse();
 			PerfPlugin.getDefault().setStatData(sd);
 			StatView.refreshView();
