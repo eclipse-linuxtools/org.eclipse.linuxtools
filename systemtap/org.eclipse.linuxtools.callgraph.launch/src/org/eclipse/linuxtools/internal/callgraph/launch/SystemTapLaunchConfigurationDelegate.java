@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.callgraph.launch;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -166,8 +167,18 @@ public class SystemTapLaunchConfigurationDelegate extends
 				PluginConstants.getDefaultOutput());
 		partialCommand += "-o " + outputPath; //$NON-NLS-1$
 
+		boolean fileExists;
+		try {
+			//Make sure the output file exists
+			File tempFile = new File(outputPath);
+			tempFile.delete();
+			fileExists = tempFile.createNewFile();
+		} catch (IOException e1) {
+			fileExists = false;
+		}
+
 		// check for cancellation
-		if ( !testOutput(outputPath) || monitor.isCanceled() ) {
+		if ( !fileExists || monitor.isCanceled() ) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.0"),  //$NON-NLS-1$
 					Messages.getString("SystemTapLaunchConfigurationDelegate.1"), Messages.getString("SystemTapLaunchConfigurationDelegate.2") + outputPath +  //$NON-NLS-1$ //$NON-NLS-2$
 					Messages.getString("SystemTapLaunchConfigurationDelegate.3")); //$NON-NLS-1$
@@ -241,8 +252,35 @@ public class SystemTapLaunchConfigurationDelegate extends
 			/*
 			 * Launch
 			 */
-			IProcess process = createProcess(config, launch);
 			
+			File workDir = getWorkingDirectory(config);
+			if (workDir == null) {
+				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			//Put command into a shell script
+			String cmd = generateCommand(config);
+			File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh");
+			String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
+			FileOutputStream out = null;
+			try {
+				out = new FileOutputStream(script);
+				out.write(data.getBytes());
+			} finally {
+				if (out != null) {
+					out.close();
+				}
+			}
+
+			String [] commandArray = new String [] {"sh", script.getAbsolutePath()}; //$NON-NLS-1$
+
+			Process subProcess = execute(commandArray, getEnvironment(config),
+					workDir, true);
+
+			IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
+			// set the command line used
+			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
+
 			monitor.worked(1);
 			
 			StreamListener s = new StreamListener();
@@ -348,7 +386,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 		return output;
 	}
-		
+
 	private static class StreamListener implements IStreamListener{
 		private int counter;
 		private BufferedWriter bw;
@@ -378,7 +416,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 	}
 
-	@Override
 	public String generateCommand(ILaunchConfiguration config) {
 		// Generate the command
 		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,

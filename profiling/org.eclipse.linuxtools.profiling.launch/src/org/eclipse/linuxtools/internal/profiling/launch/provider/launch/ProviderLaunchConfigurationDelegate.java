@@ -106,11 +106,6 @@ public class ProviderLaunchConfigurationDelegate extends
 	}
 
 	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		return null;
-	}
-
-	@Override
 	protected String getPluginID() {
 		return ProviderProfileConstants.PLUGIN_ID;
 	}

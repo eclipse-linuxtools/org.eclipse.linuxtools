@@ -218,10 +218,4 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		//		} 
 	}
 
-	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

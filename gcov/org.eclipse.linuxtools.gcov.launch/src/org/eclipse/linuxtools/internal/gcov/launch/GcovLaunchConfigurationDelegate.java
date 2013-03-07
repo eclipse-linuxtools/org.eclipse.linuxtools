@@ -153,8 +153,4 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 		return exePath;
 	}
 
-	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		return ""; //$NON-NLS-1$
-	}
 }

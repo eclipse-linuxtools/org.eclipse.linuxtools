@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.internal.callgraph.StapData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class StapTreeLabelProvider implements ILabelProvider {
 
@@ -23,9 +23,9 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	public Image getImage(Object element) {
 		Image im = null;
 		if ( ((StapData) element).isMarked()) {
-			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/public_co.gif"); //$NON-NLS-1$
+			im = AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, "/icons/public_co.gif").createImage(); //$NON-NLS-1$
 		} else {
-			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/compare_method.gif"); //$NON-NLS-1$
+			im = AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, "/icons/compare_method.gif").createImage(); //$NON-NLS-1$
 		}
 		return im;
 	}

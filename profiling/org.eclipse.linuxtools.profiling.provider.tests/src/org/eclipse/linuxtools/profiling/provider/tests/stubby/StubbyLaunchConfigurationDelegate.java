@@ -19,11 +19,6 @@ public class StubbyLaunchConfigurationDelegate extends
 		ProfileLaunchConfigurationDelegate {
 
 	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		return null;
-	}
-
-	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) {
 	}

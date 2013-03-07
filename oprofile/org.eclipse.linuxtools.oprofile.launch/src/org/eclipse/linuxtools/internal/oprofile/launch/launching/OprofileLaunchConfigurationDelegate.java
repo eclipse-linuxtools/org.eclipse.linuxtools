@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
@@ -119,6 +118,4 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
 	}
 
-	@Override
-	public String generateCommand(ILaunchConfiguration config) { return null; /* dont care */}
 }

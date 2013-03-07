@@ -276,11 +276,6 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 		return getPlugin().getValgrindCommand();
 	}
 
-	@Override
-	public String generateCommand(ILaunchConfiguration config) {
-		return getValgrindCommand().getCommandLine();
-	}
-	
 	protected ValgrindLaunchPlugin getPlugin() {
 		return ValgrindLaunchPlugin.getDefault();
 	}
