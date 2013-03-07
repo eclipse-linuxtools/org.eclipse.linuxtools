@@ -8,7 +8,7 @@
  * Contributors:
  *    Camilo Bernal <cabernal@redhat.com> - Initial Implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.perf.ui;
+package org.eclipse.linuxtools.internal.perf.handlers;
 
 import java.io.Closeable;
 import java.io.File;

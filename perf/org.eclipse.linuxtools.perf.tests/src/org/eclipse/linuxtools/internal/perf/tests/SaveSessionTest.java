@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.StatData;
-import org.eclipse.linuxtools.internal.perf.ui.AbstractSaveDataHandler;
-import org.eclipse.linuxtools.internal.perf.ui.PerfSaveSessionHandler;
-import org.eclipse.linuxtools.internal.perf.ui.PerfSaveStatsHandler;
+import org.eclipse.linuxtools.internal.perf.handlers.AbstractSaveDataHandler;
+import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveSessionHandler;
+import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
 
 import junit.framework.TestCase;
 

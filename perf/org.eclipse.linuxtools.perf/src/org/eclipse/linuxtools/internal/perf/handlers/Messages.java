@@ -8,12 +8,12 @@
  * Contributors:
  *    Red Hat initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.perf.ui;
+package org.eclipse.linuxtools.internal.perf.handlers;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.perf.ui.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.perf.handlers.messages"; //$NON-NLS-1$
 	public static String PerfSaveSession_title;
 	public static String PerfSaveSession_msg;
 	public static String PerfSaveSession_invalid_filename_title;
