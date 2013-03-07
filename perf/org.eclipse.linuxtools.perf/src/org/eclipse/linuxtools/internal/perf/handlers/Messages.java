@@ -26,6 +26,19 @@ public class Messages extends NLS {
 	public static String PerfSaveSession_failure_msg;
 	public static String PerfResourceLeak_title;
 	public static String PerfResourceLeak_msg;
+
+	public static String MsgClearSelection;
+	public static String MsgSelectionDiff;
+	public static String MsgSelectFiles;
+	public static String MsgError;
+	public static String MsgError_0;
+	public static String MsgError_1;
+	public static String MsgError_2;
+	public static String MsgWarning_0;
+	public static String MsgWarning_1;
+	public static String MsgConfirm_title;
+	public static String MsgConfirm_msg;
+	public static String ContentDescription_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

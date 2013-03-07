@@ -1,0 +1,7 @@
+      -4.0 cpu-clock              #   0.000        ( +-  0.54% )
+   -2000.0 page-faults            #  -0.310 M/sec  ( +-  0.02% )
+       0.0 context-switches       #  -0.130 K/sec  ( +- 36.34% )
+   -1000.0 minor-faults           #  -0.300 M/sec  ( +-  0.02% )
+       0.0 major-faults           #   0.000 K/sec  ( +-  0.00% )
+
+    -0.008 seconds time elapsed   #   0.000        ( +-  0.92% )

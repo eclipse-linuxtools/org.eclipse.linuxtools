@@ -24,7 +24,8 @@ import org.eclipse.linuxtools.internal.perf.PerfPlugin;
  * Handler for saving a perf profile session.
  */
 public class PerfSaveSessionHandler extends AbstractSaveDataHandler {
-	private static String DATA_EXT = "data"; //$NON-NLS-1$
+
+	public static final String DATA_EXT = "data"; //$NON-NLS-1$
 
 	@Override
 	public File saveData(String filename) {

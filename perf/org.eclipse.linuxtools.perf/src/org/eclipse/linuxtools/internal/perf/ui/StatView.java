@@ -20,7 +20,6 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -31,7 +30,6 @@ import org.eclipse.ui.part.ViewPart;
 public class StatView extends ViewPart {
 
 	private StyledText text;
-	private static int SECONDARY_ID = 0;
 
 	public StatView() {
 	}
@@ -61,7 +59,20 @@ public class StatView extends ViewPart {
 		// the default TextConsole font (we want monospaced)
 		text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
 	}
+	/**
+	 * Update to most recent statistics data.
+	 */
+	public void updateData(){
+		StatData data = PerfPlugin.getDefault().getStatData();
+		if (data != null) {
+			setStyledText(data.getPerfData());
+			setContentDescription(data.getTitle());
+		}
+	}
 
+	/**
+	 * Refresh perf statistics view.
+	 */
 	public static void refreshView () {
 		Display.getDefault().syncExec(new Runnable() {
 
@@ -69,10 +80,9 @@ public class StatView extends ViewPart {
 			public void run() {
 				try {
 					// A new view is created every time
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView(PerfPlugin.STAT_VIEW_ID,
-									Integer.toString(SECONDARY_ID++),
-									IWorkbenchPage.VIEW_CREATE);
+					StatView view = (StatView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+							.showView(PerfPlugin.STAT_VIEW_ID);
+					view.updateData();
 				} catch (PartInitException e) {
 					IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
 					PerfPlugin.getDefault().getLog().log(status);

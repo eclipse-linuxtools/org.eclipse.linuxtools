@@ -1,0 +1,9 @@
+ Performance counter stats for '/home/camilo/runtime-EclipseApplication/fib/Debug/fib' (5 runs):
+
+          4.781967 cpu-clock                                                     ( +-  0.17% )
+             1,164 page-faults               #    0.050 M/sec                    ( +-  0.01% )
+                 1 context-switches          #    0.007 K/sec                    ( +- 19.67% )
+             2,164 minor-faults              #    0.060 M/sec                    ( +-  0.01% )
+                 0 major-faults              #    0.000 K/sec                              
+
+       0.000964180 seconds time elapsed                                          ( +-  0.46% )

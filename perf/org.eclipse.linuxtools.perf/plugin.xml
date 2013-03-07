@@ -28,12 +28,20 @@
             name="Perf Source Disassembly">
       </view>
       <view
-            allowMultiple="true"
+            allowMultiple="false"
             category="org.eclipse.linuxtools.profiling.ui"
             class="org.eclipse.linuxtools.internal.perf.ui.StatView"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.ui.StatView"
             name="Perf Statistics">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.perf.ui.StatComparisonView"
+            icon="icons/symbol.gif"
+            id="org.eclipse.linuxtools.perf.ui.StatViewDiff"
+            name="Perf Statistics Comparison">
       </view>
    </extension>
    <extension
@@ -183,6 +191,12 @@
                label="Save Statistics"
                style="push">
          </command>
+         <command
+               commandId="org.eclipse.linuxtools.perf.StatDiff"
+               id="org.eclipse.linuxtools.perf.StatDiff"
+               label="Compare Statistics"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -196,6 +210,11 @@
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler"
             id="org.eclipse.linuxtools.perf.SaveStatData"
             name="Save Statistics">
+      </command>
+      <command
+            defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfStatsComparisonHandler"
+            id="org.eclipse.linuxtools.perf.StatDiff"
+            name="Compare Statistics">
       </command>
    </extension>   
 </plugin>
