@@ -71,6 +71,14 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		// Program args from launch config.
 		String arguments[] = getProgramArgumentsArray(config);
 
+		// Get working directory
+		File wd = getWorkingDirectory(config);
+		if (wd == null) {
+			wd = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		IPath workingDir = Path.fromOSString(wd.toURI().getPath());
+		PerfPlugin.getDefault().setWorkingDir(workingDir);
+
 		if (config.getAttribute(PerfPlugin.ATTR_ShowStat,
 				PerfPlugin.ATTR_ShowStat_default)) {
 
@@ -100,12 +108,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			PerfPlugin.getDefault().setStatData(sd);
 			StatView.refreshView();
 		} else {
-			//Get working directory
-			File wd = getWorkingDirectory( config );
-			if ( wd == null ) {
-				wd = new File( System.getProperty( "user.home", "." ) ); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
 			ArrayList<String> command = new ArrayList<String>();
 			// Get the base commandline string (with flags/options based on config)
 			command.addAll(Arrays.asList(PerfCore.getRecordString(config)));
@@ -164,8 +166,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 					}
 				}
 
-				//(Only for testing this line..) PerfCore.Report(config, null, null, null, "/home/thavidu/dev/eclipse-oprof2-workspace/org.eclipse.linuxtools.internal.perf.tests/resources/perf.data");
-				IPath workingDir = Path.fromOSString(wd.toURI().getPath());
 				PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
 				PerfCore.RefreshView(renderProcessLabel(exePath.toOSString()));
 
