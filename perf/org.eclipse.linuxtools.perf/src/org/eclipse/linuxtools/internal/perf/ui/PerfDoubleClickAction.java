@@ -28,12 +28,14 @@ import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.ui.PartInitException;
 
+/**
+ * Handle users clicking on model elements in the Perf Tree Viewer.
+ */
 public class PerfDoubleClickAction extends Action {
 	
 	private TreeViewer viewer;
 	
 	public PerfDoubleClickAction(TreeViewer v) {
-		super();
 		viewer = v;
 	}
 	@Override
@@ -41,37 +43,25 @@ public class PerfDoubleClickAction extends Action {
 		ISelection selection = viewer.getSelection();
 		Object obj = ((IStructuredSelection)selection).getFirstElement();
 
-		if (obj instanceof PMLineRef) {
-			//Open in editor
-			PMLineRef line = (PMLineRef) obj;
-			PMFile file = (PMFile) ((PMSymbol) line.getParent()).getParent();
-			try {
-				ProfileUIUtils.openEditorAndSelect(file.getPath(), Integer.parseInt(line.getName()));
-			} catch (PartInitException e) {
-				e.printStackTrace();
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		} else if (obj instanceof PMFile) {
-			PMFile file = (PMFile)obj;
-			try {
+		try {
+			if (obj instanceof PMLineRef) {
+				// Open in editor
+				PMLineRef line = (PMLineRef) obj;
+				PMFile file = (PMFile) ((PMSymbol) line.getParent()).getParent();
+				ProfileUIUtils.openEditorAndSelect(file.getPath(),Integer.parseInt(line.getName()));
+			} else if (obj instanceof PMFile) {
+				PMFile file = (PMFile) obj;
 				ProfileUIUtils.openEditorAndSelect(file.getName(), 1);
-			} catch (PartInitException e) {
-				e.printStackTrace();
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		} else if (obj instanceof PMSymbol) {
-			PMSymbol sym = (PMSymbol)obj;
-			PMFile file = (PMFile) sym.getParent();
-			PMDso dso = (PMDso) file.getParent();
+			} else if (obj instanceof PMSymbol) {
+				PMSymbol sym = (PMSymbol) obj;
+				PMFile file = (PMFile) sym.getParent();
+				PMDso dso = (PMDso) file.getParent();
 
-			if (file.getName().equals(PerfPlugin.STRINGS_UnfiledSymbols)) 
-				return; //Don't try to do anything if we don't know where or what the symbol is.
+				if (file.getName().equals(PerfPlugin.STRINGS_UnfiledSymbols))
+					return; // Don't try to do anything if we don't know where or what the symbol is.
 
-			String binaryPath = dso.getPath();
-			ICProject project;
-			try {
+				String binaryPath = dso.getPath();
+				ICProject project;
 				project = ProfileUIUtils.findCProjectWithAbsolutePath(binaryPath);
 				HashMap<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, sym.getFunctionName(), -1, file.getPath(), true);
 				boolean bFound = false;
@@ -82,11 +72,12 @@ public class PerfDoubleClickAction extends Action {
 				if (!bFound) {
 					ProfileUIUtils.openEditorAndSelect(file.getPath(), 1);
 				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (BadLocationException e) {
-				e.printStackTrace();
 			}
+		// if we encounter an exception, act as though no corresponding source exists
+		} catch (PartInitException e) {
+		} catch (NumberFormatException e) {
+		} catch (BadLocationException e) {
+		} catch (CoreException e) {
 		}
 	}
 

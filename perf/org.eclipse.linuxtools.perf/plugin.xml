@@ -25,7 +25,7 @@
             class="org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.ui.SourceDisassemblyView"
-            name="Source Disassembly">
+            name="Perf Source Disassembly">
       </view>
       <view
             allowMultiple="true"
@@ -33,7 +33,7 @@
             class="org.eclipse.linuxtools.internal.perf.ui.StatView"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.ui.StatView"
-            name="Stat">
+            name="Perf Statistics">
       </view>
    </extension>
    <extension
