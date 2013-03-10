@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Image;
  * <li>It allows a "custom rendering", for example if you want to display percentages as progress bars or to display
  * hyperlink as underlined text
  * </ul>
- * 
+ *
  * Three abstract implementations are available: {@link AbstractSTDataViewersField} for default rendering
  * {@link STAbstractPercentageDrawerField} for displaying percentages as progress bars
  * {@link STDataViewersHyperLinkDrawerField} for displaying hyperlinks as underlined text
@@ -39,39 +39,39 @@ public interface ISTDataViewersField {
     /**
      * @return String the description of the field.
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * @return the image associated with the description of the field or <code>null<code>.
      */
-    public Image getDescriptionImage();
+    Image getDescriptionImage();
 
     /**
      * @return The text to be displayed in the column header for this field.
      */
-    public String getColumnHeaderText();
+    String getColumnHeaderText();
 
     /**
      * @return The tooltip to be displayed in the column header for this field.
      */
-    public String getColumnHeaderTooltip();
+    String getColumnHeaderTooltip();
 
     /**
      * @return The image to be displayed in the column header for this field or <code>null<code>.
      */
-    public Image getColumnHeaderImage();
+    Image getColumnHeaderImage();
 
     /**
      * @param obj
      * @return The String value of the object for this particular field displayed to the user.
      */
-    public String getValue(Object obj);
+    String getValue(Object obj);
 
     /**
      * @param obj
      * @return The image value of the object for this particular field displayed to the user or <code>null<code>.
      */
-    public Image getImage(Object obj);
+    Image getImage(Object obj);
 
     /**
      * @param obj1
@@ -80,74 +80,74 @@ public interface ISTDataViewersField {
      *         <code>0</code> if the value of obj1 and the value of obj2 are equal for this field. <li>a positive number
      *         if the value of obj1 is greater than the value of obj2 for this field.
      */
-    public int compare(Object obj1, Object obj2);
+    int compare(Object obj1, Object obj2);
 
     /**
      * Get the default direction for the receiver. Return either {@link TableComparator#ASCENDING } or
      * {@link TableComparator#DESCENDING }
-     * 
+     *
      * @return int
      */
-    public int getDefaultDirection();
+    int getDefaultDirection();
 
     /**
      * Get the preferred width of the receiver.
-     * 
+     *
      * @return int
      */
-    public int getPreferredWidth();
+    int getPreferredWidth();
 
     /**
      * Return whether the receiver is showing or not.
-     * 
+     *
      * @return boolean
      */
-    public boolean isShowing();
+    boolean isShowing();
 
     /**
      * Set whether or not the receiver is showing.
-     * 
+     *
      * @param showing
      */
-    public void setShowing(boolean showing);
+    void setShowing(boolean showing);
 
     /**
      * Returns special drawer, typically used to: paint percentages paint hyperlink
-     * 
+     *
      * @return a special drawer
      */
-    public ISpecialDrawerListener getSpecialDrawer(Object element);
+    ISpecialDrawerListener getSpecialDrawer(Object element);
 
     /**
      * @param element
      * @return the tooltip to display this particular element.
      */
-    public String getToolTipText(Object element);
+    String getToolTipText(Object element);
 
     /**
      * @param element
      * @return the background color for the given element
      */
-    public Color getBackground(Object element);
+    Color getBackground(Object element);
 
     /**
      * @param element
      * @return the foreground color for the given element
      */
-    public Color getForeground(Object element);
+    Color getForeground(Object element);
 
     /**
      * Customize the horizontal alignment of the columns.
-     * 
+     *
      * @return one of: SWT.LEFT, SWT.RIGHT, SWT.CENTER, SWT.NONE Note that SWT.NONE is equivalent to SWT.LEFT
-     * 
+     *
      */
-    public int getAlignment();
+    int getAlignment();
 
     /**
      * Indicates if the given element is a hyperlink to something as a view, editor, dialog,etc...
-     * 
+     *
      */
-    public boolean isHyperLink(Object element);
+    boolean isHyperLink(Object element);
 
 }
