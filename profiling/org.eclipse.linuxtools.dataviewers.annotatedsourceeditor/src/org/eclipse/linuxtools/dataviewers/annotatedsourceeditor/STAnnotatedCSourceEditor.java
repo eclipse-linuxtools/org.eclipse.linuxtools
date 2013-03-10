@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
@@ -204,11 +203,6 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
             fInput = (AbstractSTAnnotatedSourceEditorInput) input;
             fListColumns = fInput.getColumns();
         }
-    }
-
-    protected boolean isSTRulerVisible() {
-        IPreferenceStore store = getPreferenceStore();
-        return store != null ? store.getBoolean(ST_RULER) : true;
     }
 
     private static class ToolTipSupport extends DefaultToolTip {
