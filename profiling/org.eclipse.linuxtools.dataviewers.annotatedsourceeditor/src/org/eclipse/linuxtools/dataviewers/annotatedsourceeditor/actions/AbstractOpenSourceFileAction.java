@@ -15,7 +15,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AbstractSTAnnotatedSourceEditorInput;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -24,6 +23,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 
 public abstract class AbstractOpenSourceFileAction extends Action {
     public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor";
@@ -81,7 +81,7 @@ public abstract class AbstractOpenSourceFileAction extends Action {
         msgBox.open();
     }
 
-    public abstract AbstractSTAnnotatedSourceEditorInput getInput(IFileStore fs);
+    public abstract FileStoreEditorInput getInput(IFileStore fs);
 
     public abstract IFileStore getFileStore();
 }

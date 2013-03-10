@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.gcov.view.annotatedsource;
 import java.util.ArrayList;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.AbstractSTAnnotatedSourceEditorInput;
+import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.IAnnotationEditorInput;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.ISTAnnotationColumn;
 import org.eclipse.linuxtools.internal.gcov.parser.Line;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
@@ -21,27 +21,27 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 
 
 
-public class STAnnotatedSourceEditorInput extends
-AbstractSTAnnotatedSourceEditorInput {
+public class AnnotatedSourceEditorInput extends FileStoreEditorInput implements IAnnotationEditorInput {
 
 	private final SourceFile sourceFile;
 	private final int lineCount;
-	private final ArrayList<ISTAnnotationColumn> columns = new ArrayList<ISTAnnotationColumn>();
+	private final ISTAnnotationColumn column;
 
 	public static final Color GREEN = new Color(PlatformUI.getWorkbench().getDisplay(), 0 ,128, 0);
 
 	// FIXME: dispose colors ?
 	private static final Color[] greenColors = new Color[129];
-	
-	
-	public STAnnotatedSourceEditorInput(IFileStore fileStore, SourceFile sourceFile){
+
+
+	public AnnotatedSourceEditorInput(IFileStore fileStore, SourceFile sourceFile){
 		super(fileStore);
-		this.sourceFile = sourceFile; 
+		this.sourceFile = sourceFile;
 		lineCount = sourceFile.getLines().size();
-		this.columns.add(new CoverageAnnotationColumn(sourceFile));
+		this.column = new CoverageAnnotationColumn(sourceFile);
 	}
 
 	@Override
@@ -63,11 +63,11 @@ AbstractSTAnnotatedSourceEditorInput {
 			}
 		}
 		return display.getSystemColor(SWT.COLOR_WHITE);
-	}	
+	}
 
 	@Override
-	public ArrayList<ISTAnnotationColumn> getColumns() {
-		return columns;
+	public ISTAnnotationColumn getColumn() {
+		return column;
 	}
 
 }
