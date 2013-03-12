@@ -32,6 +32,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CachegrindLabelProvider extends CellLabelProvider {
 
+	private static final String NAME_NOT_FOUND_SYMBOL = "???"; //$NON-NLS-1$
+
 	protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE) {
 		@Override
 		public int getTextFlags() {
@@ -98,5 +100,22 @@ public class CachegrindLabelProvider extends CellLabelProvider {
 
 	public CElementLabelProvider getCLabelProvider() {
 		return cLabelProvider;
+	}
+
+	@Override
+	public String getToolTipText(Object element) {
+		String tooltip = null;
+		if(element instanceof CachegrindFile){
+			if(((CachegrindFile)element).getName().contains(NAME_NOT_FOUND_SYMBOL)){
+				tooltip = Messages.getString("CachegrindViewPart.Tooltip_no_debug_info"); //$NON-NLS-1$
+			}
+		}
+
+		if(element instanceof CachegrindFunction){
+			if(((CachegrindFunction)element).getName().contains(NAME_NOT_FOUND_SYMBOL)){
+				tooltip = Messages.getString("CachegrindViewPart.Tooltip_no_debug_info"); //$NON-NLS-1$
+			}
+		}
+		return tooltip;
 	}
 }
