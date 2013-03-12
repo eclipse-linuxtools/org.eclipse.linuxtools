@@ -27,7 +27,7 @@ public class PMSymbol extends TreeParent {
 		return tmpName;
 	}
 
-	public PMSymbol(String symbolName, float pc, int samples) {
+	public PMSymbol(String symbolName, float pc, double samples) {
 		super(symbolName, pc, samples);
 	}
 
@@ -43,7 +43,7 @@ public class PMSymbol extends TreeParent {
 
 	@Override
 	public String toString() {
-		return getPercent() + "% (" + getNumberOfSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
+		return getPercent() + "% (" + getFormattedSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
 	}
 
 	public void markConflict() {

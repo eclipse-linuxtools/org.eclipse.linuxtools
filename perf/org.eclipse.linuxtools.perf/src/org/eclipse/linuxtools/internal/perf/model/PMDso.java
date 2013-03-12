@@ -43,7 +43,7 @@ public class PMDso extends TreeParent {
 	public String toString() {
 		String prefix = "";
 		if (getPercent() != -1)
-			prefix += getPercent() + "% (" + getNumberOfSamples() + " samples) in ";
+			prefix += getPercent() + "% (" + getFormattedSamples() + " samples) in ";
 		if (kernel == true)
 			prefix += "[k] ";
 		if (path != null) {
