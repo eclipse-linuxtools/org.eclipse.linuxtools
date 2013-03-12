@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -95,12 +96,12 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 							+ " (" + runCount + " runs)" ); //$NON-NLS-1$ /$NON-NLS-2$
 
 			StatData sd = null;
-			Object[] configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default).toArray();
-			String[] statEvents  = new String[0];
+			List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
+			String[] statEvents  = new String [] {};
 
 			if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
 				// gather selected events
-				statEvents = configEvents == null ? statEvents : Arrays.asList(configEvents).toArray(new String[]{});
+				statEvents = (configEvents == null) ? statEvents : configEvents.toArray(new String[]{});
 			}
 
 			sd = new StatData(title, exePath.toOSString(), arguments, runCount, statEvents);
