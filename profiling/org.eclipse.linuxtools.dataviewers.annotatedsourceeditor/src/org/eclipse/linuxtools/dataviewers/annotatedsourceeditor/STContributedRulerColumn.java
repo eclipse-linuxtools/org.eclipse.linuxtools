@@ -44,7 +44,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.internal.texteditor.PropertyEventDispatcher;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
@@ -81,8 +80,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     private PropertyEventDispatcher fDispatcher;
     private ISourceViewer fViewer;
 
-    private Label labelColumn;
-
     /*
      * @see
      * org.eclipse.jface.text.source.IVerticalRulerColumn#createControl(org.eclipse.jface.text.source.CompositeRuler,
@@ -97,10 +94,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
         initialize();
         Control control = fDelegate.createControl(parentRuler, parentControl);
         return control;
-    }
-
-    public void setLabelColumn(Label label) {
-        labelColumn = label;
     }
 
     /*
@@ -436,12 +429,6 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
 
     private void updateLineNumbersVisibility(STChangeRulerColumn column) {
         if (column != null) {
-            if (labelColumn != null) {
-                labelColumn.setVisible(getLineNumberPreference());
-                Label labelName = (Label) labelColumn.getParent().getChildren()[labelColumn.getParent().getChildren().length - 2];
-                labelName.setVisible(labelColumn.isVisible());
-
-            }
             column.showLineNumbers(getLineNumberPreference());
         }
     }
@@ -512,20 +499,9 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
         if (!setting)
             return false;
 
-        boolean modifiable;
-        ITextEditor editor = getEditor();
-        if (editor instanceof ITextEditorExtension2) {
-            ITextEditorExtension2 ext = (ITextEditorExtension2) editor;
-            modifiable = ext.isEditorInputModifiable();
-        } else if (editor instanceof ITextEditorExtension) {
-            ITextEditorExtension ext = (ITextEditorExtension) editor;
-            modifiable = ext.isEditorInputReadOnly();
-        } else if (editor != null) {
-            modifiable = editor.isEditable();
-        } else {
-            modifiable = true;
-        }
-        return modifiable;
+        // The column is used only in STAnnotatedCSourceEditor hence it can be safely assumed that we get ITextEditorExtension2
+        ITextEditorExtension2 editor = (ITextEditorExtension2)getEditor();
+        return editor.isEditorInputModifiable();
     }
 
     /**
