@@ -71,12 +71,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 
 		//ide.stap.stapoptions
-		for(int i=0; i<IDEPreferenceConstants.P_STAP.length; i++) {
-			store.setDefault(IDEPreferenceConstants.P_STAP[i][2], false);
+		for(int i=0; i<IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS.length; i++) {
+			store.setDefault(IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.KEY], false);
 		}
 
-		for(int i=0; i<IDEPreferenceConstants.P_STAP_OPTS.length; i++) {
-			store.setDefault(IDEPreferenceConstants.P_STAP_OPTS[i], ""); //$NON-NLS-1$
+		for(int i=0; i<IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
+			store.setDefault(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
 		}
 
 		//ide.editor.syntaxcoloring

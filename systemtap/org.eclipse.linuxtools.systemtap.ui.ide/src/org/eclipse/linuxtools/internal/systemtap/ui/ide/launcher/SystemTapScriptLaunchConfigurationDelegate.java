@@ -19,12 +19,15 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 
 public class SystemTapScriptLaunchConfigurationDelegate implements
 		ILaunchConfigurationDelegate {
+
+	static final String CONFIGURATION_TYPE = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"; //$NON-NLS-1$
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
@@ -43,7 +46,9 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 
 		// Path
 		String path = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, ""); //$NON-NLS-1$
-		action.setPath(new Path(path));
+		if (path != ""){
+			action.setPath(new Path(path));
+		}
 
 		// User Name
 		String userName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""); //$NON-NLS-1$
@@ -61,6 +66,33 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 		// Host Name.
 		String hostName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, "localhost"); //$NON-NLS-1$
 		preferenceStore.setValue(ConsoleLogPreferenceConstants.HOST_NAME, hostName);
+
+		String value = configuration.getAttribute(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
+		if (value != ""){ //$NON-NLS-1$
+			action.addComandLineOptions(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
+		}
+
+		// Add command line options
+		for(int i=0; i<IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS.length; i++) {
+			boolean flag = configuration.getAttribute(
+							IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.KEY],
+							false);
+			if (flag){
+				action.addComandLineOptions(IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.FLAG]);
+			}
+		}
+
+		for(int i=0; i<IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
+			value = configuration.getAttribute(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.KEY],""); //$NON-NLS-1$
+			if (value != ""){ //$NON-NLS-1$
+				action.addComandLineOptions(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
+			}
+		}
+
+		value = configuration.getAttribute(SystemTapScriptOptionsTab.MISC_COMMANDLINE_OPTIONS,""); //$NON-NLS-1$
+		if (value != ""){ //$NON-NLS-1$
+			action.addComandLineOptions(value);
+		}
 
 		action.execute(null);
 	}

@@ -67,7 +67,12 @@ public class RunScriptHandler extends AbstractHandler {
 	private String tmpfileName = null;
 	private String serverfileName = null;
 	private IPath path;
+	private ArrayList<String> cmdList;
 
+
+	public RunScriptHandler(){
+		this.cmdList = new ArrayList<String>();
+	}
 
 	/**
 	 * @since 2.0
@@ -206,6 +211,15 @@ public class RunScriptHandler extends AbstractHandler {
 	}
 
 	/**
+	 * Adds the given String to the list of commands to be
+	 * passed to systemtap when running the command
+	 * @param option
+	 */
+	public void addComandLineOptions(String option){
+		this.cmdList.add(option);
+	}
+
+	/**
 	 * The command line argument generation method used by <code>RunScriptAction</code>. This generates
 	 * a stap command line that includes the tapsets specified in user preferences, a guru mode flag
 	 * if necessary, and the path to the script on disk.
@@ -213,18 +227,12 @@ public class RunScriptHandler extends AbstractHandler {
 	 * @since 2.0
 	 */
 	protected String[] buildStandardScript() {
-	//FixMe: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList<String> cmdList = new ArrayList<String>();
-		String[] script;
-
 		getImportedTapsets(cmdList);
 
 		if(isGuru())
 			cmdList.add("-g"); //$NON-NLS-1$
 
-		script = finalizeScript(cmdList);
-
-		return script;
+		return finalizeScript(cmdList);
 	}
 
 	/**
