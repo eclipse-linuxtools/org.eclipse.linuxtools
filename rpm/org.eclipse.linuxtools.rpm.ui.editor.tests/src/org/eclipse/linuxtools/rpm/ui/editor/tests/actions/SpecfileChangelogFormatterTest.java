@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,6 +43,12 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 				.getActiveWorkbenchWindow().getActivePage(), testFile,
 				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		formatter = new SpecfileChangelogFormatter();
+	}
+
+	@Override
+	@After
+	public void tearDown () {
+		closeEditor(editor);
 	}
 
 	@Test

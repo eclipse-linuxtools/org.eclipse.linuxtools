@@ -31,6 +31,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.junit.After;
 import org.junit.Before;
@@ -63,6 +65,18 @@ public abstract class FileTestCase {
 	@After
 	public void tearDown() throws CoreException {
 		testProject.dispose();
+	}
+
+	public static void closeEditor(final IEditorPart editor) {
+		if (editor.getSite().getWorkbenchWindow().getActivePage() != null) {
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					// close editor
+					editor.getSite().getWorkbenchWindow().getActivePage()
+							.closeEditor(editor, false);
+				}
+			});
+		}
 	}
 
 	protected SpecfileTestFailure[] getFailures() {
