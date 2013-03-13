@@ -62,17 +62,6 @@
 		</objectContribution>
 	</extension>
 
-	<extension
-		point="org.eclipse.ui.perspectiveExtensions">
-		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.ExportScriptActionSet"/>
-		</perspectiveExtension>
-		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.CreateModuleActionSet"/>
-		</perspectiveExtension>
-	</extension>
  <extension
        point="org.eclipse.ui.menus">
     <menuContribution
@@ -92,6 +81,12 @@
              label="%action.createModule.name"
              style="push"
              tooltip="%action.createModule.desc">
+          <visibleWhen
+                checkEnabled="false">
+             <reference
+                   definitionId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.restriction">
+             </reference>
+          </visibleWhen>
        </command>
        <command
              commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.ExportScript"
@@ -99,7 +94,33 @@
              label="%action.exportScript.name"
              style="push"
              tooltip="%action.exportScript.desc">
+          <visibleWhen
+                checkEnabled="false">
+             <reference
+                   definitionId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.restriction">
+             </reference>
+          </visibleWhen>
        </command>
     </menuContribution>
+ </extension>
+ <extension
+       point="org.eclipse.core.expressions.definitions">
+    <definition
+          id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.restriction">
+       <with
+             variable="activeWorkbenchWindow.activePerspective">
+          <or>
+             <equals
+                   value="org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective">
+             </equals>
+             <equals
+                   value="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+             </equals>
+             <equals
+                   value="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
+             </equals>
+          </or>
+       </with>
+    </definition>
  </extension>
 </plugin>
