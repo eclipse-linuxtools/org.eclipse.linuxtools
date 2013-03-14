@@ -26,11 +26,13 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExceptionErrorDialog {
 
-	public static int openError(String title, Exception e){
-		Status status = new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, title, e);
+	public static int openError(String message, Exception e){
 		StringWriter writer = new StringWriter();
 		e.printStackTrace(new PrintWriter(writer));
-		return ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), title, writer.toString(), status);
+		Status status = new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.toString(), new Throwable(writer.toString()));
+		return ErrorDialog.openError(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell(), message,
+				message, status);
 	}
 
 }
