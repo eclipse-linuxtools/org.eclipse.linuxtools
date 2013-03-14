@@ -56,24 +56,12 @@ public class GcovTestCLibrary {
 			bot.sleep(1000);
 			bot.button("Apply").click();
 			bot.button("OK").click();
+
+			GcovTest.createProject(bot, PROJECT_NAME, PROJECT_TYPE);
+			GcovTest.populateProject(bot, PROJECT_NAME);
+			GcovTest.compileProject(bot, PROJECT_NAME);
 		}
 
-			@Test
-			public void createProject() {
-				GcovTest.createProject(bot, PROJECT_NAME, PROJECT_TYPE);
-			}
-
-			@Test
-			public void populateProject() throws Exception {
-				GcovTest.populateProject(bot, PROJECT_NAME);
-			}
-
-			@Test
-			public void compileProject() {
-				GcovTest.compileProject(bot, PROJECT_NAME);
-			}
-
-		
 			@Test
 			public void openGcovFileDetails() throws Exception {
 				GcovTest.openGcovFileDetails(bot, PROJECT_NAME, BIN_NAME);
