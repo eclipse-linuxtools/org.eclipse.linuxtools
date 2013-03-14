@@ -46,7 +46,7 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 
 		// Path
 		String path = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, ""); //$NON-NLS-1$
-		if (path != ""){
+		if (!path.isEmpty()){
 			action.setPath(new Path(path));
 		}
 
@@ -68,7 +68,7 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 		preferenceStore.setValue(ConsoleLogPreferenceConstants.HOST_NAME, hostName);
 
 		String value = configuration.getAttribute(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
-		if (value != ""){ //$NON-NLS-1$
+		if (!value.isEmpty()){
 			action.addComandLineOptions(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
 		}
 
@@ -84,13 +84,13 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 
 		for(int i=0; i<IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
 			value = configuration.getAttribute(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.KEY],""); //$NON-NLS-1$
-			if (value != ""){ //$NON-NLS-1$
+			if (!value.isEmpty()){
 				action.addComandLineOptions(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
 			}
 		}
 
 		value = configuration.getAttribute(SystemTapScriptOptionsTab.MISC_COMMANDLINE_OPTIONS,""); //$NON-NLS-1$
-		if (value != ""){ //$NON-NLS-1$
+		if (!value.isEmpty()){
 			action.addComandLineOptions(value);
 		}
 

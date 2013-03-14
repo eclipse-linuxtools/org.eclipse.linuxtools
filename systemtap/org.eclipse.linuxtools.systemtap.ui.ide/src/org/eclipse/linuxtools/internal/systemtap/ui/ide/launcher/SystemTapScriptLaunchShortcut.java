@@ -50,8 +50,9 @@ public class SystemTapScriptLaunchShortcut extends ProfileLaunchShortcut {
 
 	private void searchAndLaunch(String path){
 		ILaunchConfiguration configuration = findLaunchConfiguration(path);
-		if (configuration == null)
+		if (configuration == null){
 			return;
+		}
 		try {
 			configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
 		} catch (CoreException e) {
