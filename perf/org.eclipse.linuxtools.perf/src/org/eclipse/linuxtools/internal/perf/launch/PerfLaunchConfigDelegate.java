@@ -41,6 +41,7 @@ import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
+import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
 import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.linuxtools.internal.perf.ui.StatView;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
@@ -107,6 +108,23 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			sd = new StatData(title, exePath.toOSString(), arguments, runCount, statEvents);
 			sd.parse();
 			PerfPlugin.getDefault().setStatData(sd);
+
+			StringBuilder perfStatFile = new StringBuilder();
+			perfStatFile.append(PerfPlugin.PERF_COMMAND);
+			perfStatFile.append("."); //$NON-NLS-1$
+			perfStatFile.append(PerfSaveStatsHandler.DATA_EXT);
+
+			// perf.stat will be replaced by the most recent session
+			File latestStatData = new File(workingDir.append(
+					perfStatFile.toString()).toOSString());
+			if(latestStatData.exists()){
+				latestStatData.delete();
+			}
+
+			// keep track of most recent session in file perf.stat
+			PerfSaveStatsHandler saveStats = new PerfSaveStatsHandler();
+			saveStats.saveData(PerfPlugin.PERF_COMMAND);
+
 			StatView.refreshView();
 		} else {
 			ArrayList<String> command = new ArrayList<String>();

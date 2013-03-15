@@ -23,7 +23,7 @@ import org.eclipse.linuxtools.internal.perf.StatData;
  */
 public class PerfSaveStatsHandler extends AbstractSaveDataHandler {
 
-	private static String DATA_EXT = "stat"; //$NON-NLS-1$
+	public static String DATA_EXT = "stat"; //$NON-NLS-1$
 
 	@Override
 	public File saveData(String filename) {
