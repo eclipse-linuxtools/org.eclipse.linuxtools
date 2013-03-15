@@ -62,7 +62,7 @@ public class ManPage {
 	}
 
 	/**
-	 * Returns stripped representaton of the man page. Stripped parts are:
+	 * Returns stripped representation of the man page. Stripped parts are:
 	 * <ul>
 	 * <li>Header - all the parts before <b>NAME</b></li>
 	 * <li>Footer - all the parts from <b>AUTHOR</b> till the end</li>
@@ -71,18 +71,43 @@ public class ManPage {
 	 * @return The stripped html content of the man page.
 	 */
 	public StringBuilder getStrippedHtmlPage() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(rawContent);
-		if (sb.indexOf("<b>N</b>") != -1) { //$NON-NLS-1$
-			sb.delete(0, sb.indexOf("<b>N</b>")); //$NON-NLS-1$
-		}
-		if (sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>") != -1) { //$NON-NLS-1$
-			sb.delete(
-					sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"), //$NON-NLS-1$
-					sb.length());
-		}
+		StringBuilder sb = getStrippedPage();
 		sb.insert(0, "<pre>"); //$NON-NLS-1$
 		sb.append("</pre>"); //$NON-NLS-1$
 		return sb;
 	}
+
+	/**
+	 * Returns stripped representation of the man page in the format it was
+	 * received from executing man. Stripped parts are:
+	 * <ul>
+	 * <li>Header - all the parts before <b>NAME</b></li>
+	 * <li>Footer - all the parts from <b>AUTHOR</b> till the end</li>
+	 * </ul>
+	 *
+	 * @return The stripped plain text content of the man page.
+	 * @since 1.1
+	 */
+	public StringBuilder getStrippedPage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(rawContent);
+		// The raw content may or may not be HTML
+		if (sb.indexOf("<b>N</b>") != -1) { //$NON-NLS-1$
+			sb.delete(0, sb.indexOf("<b>N</b>")); //$NON-NLS-1$
+		} else if (sb.indexOf("NAME") != -1) { //$NON-NLS-1$
+			sb.delete(0, sb.indexOf("NAME")); //$NON-NLS-1$
+		}
+
+		if (sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>") != -1) { //$NON-NLS-1$
+			sb.delete(
+					sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"), //$NON-NLS-1$
+					sb.length());
+		} else if (sb.indexOf("AUTHOR") != -1) { //$NON-NLS-1$
+			sb.delete(sb.indexOf("AUTHOR"), //$NON-NLS-1$
+					sb.length());
+		}
+
+		return sb;
+	}
+
 }
