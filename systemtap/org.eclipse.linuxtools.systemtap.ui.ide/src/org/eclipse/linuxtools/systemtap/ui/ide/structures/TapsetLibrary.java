@@ -12,7 +12,12 @@
 package org.eclipse.linuxtools.systemtap.ui.ide.structures;
 
 import java.io.File;
+import java.util.HashMap;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
@@ -21,6 +26,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
+import org.eclipse.linuxtools.man.parser.ManPage;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
@@ -50,6 +56,21 @@ public final class TapsetLibrary {
 
 	public static TreeNode getFunctions() {
 		return functionTree;
+	}
+
+	private static HashMap<String, String> pages = new HashMap<String, String>();
+
+	/**
+	 * Returns the documentation for the given probe, function, or tapset.
+	 * @since 2.0
+	 */
+	public static synchronized String getDocumentation(String element) {
+		String documentation = pages.get(element);
+		if (documentation == null) {
+			documentation = (new ManPage(element)).getStrippedPage().toString();
+			pages.put(element, documentation);
+		}
+		return documentation;
 	}
 
 	/**
@@ -217,10 +238,39 @@ public final class TapsetLibrary {
 		functionParser.removeListener(listener);
 	}
 
+
+	private static Job cacheFunctionManpages = new Job(Localization.getString("TapsetLibrary.0")){ //$NON-NLS-1$
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			TreeNode node = functionParser.getFunctions();
+			int n = node.getChildCount();
+			for (int i = 0; i < n; i++) {
+				getDocumentation("function::" + (node.getChildAt(i).toString())); //$NON-NLS-1$
+			}
+
+			return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$;
+		}
+	};
+
+	private static Job cacheProbeManpages = new Job(Localization.getString("TapsetLibrary.1")){ //$NON-NLS-1$
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			TreeNode node = probeParser.getProbes();
+			int n = node.getChildCount();
+			for (int i = 0; i < n; i++) {
+				getDocumentation("tapset::" + (node.getChildAt(i).toString())); //$NON-NLS-1$
+				// No need to pre-cache probes; they can be fetched pretty quickly.
+			}
+
+			return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$;
+		}
+	};
+
 	private static final IUpdateListener functionCompletionListener = new IUpdateListener() {
 		@Override
 		public void handleUpdateEvent() {
 			functionTree = functionParser.getFunctions();
+			cacheFunctionManpages.schedule();
 			TreeSettings.setTrees(functionTree, probeTree);
 			synchronized (functionParser) {
 				functionParser.notifyAll();
@@ -232,6 +282,7 @@ public final class TapsetLibrary {
 		@Override
 		public void handleUpdateEvent() {
 			probeTree = probeParser.getProbes();
+			cacheProbeManpages.schedule();
 			synchronized (probeParser) {
 				probeParser.notifyAll();
 			}

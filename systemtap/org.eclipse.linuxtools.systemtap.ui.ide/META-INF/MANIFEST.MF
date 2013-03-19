@@ -25,6 +25,7 @@ Bundle-ActivationPolicy: lazy
 Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.cdt.core.model,
  org.eclipse.core.filesystem,
+ org.eclipse.linuxtools.man.parser,
  org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.graphing.views,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets,

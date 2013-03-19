@@ -24,6 +24,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 
 public class STPCompletionProcessor implements IContentAssistProcessor {
 
@@ -117,7 +118,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 							null,
 							completionData[i] + " - function", //$NON-NLS-1$
 							null,
-							null);
+							TapsetLibrary.getDocumentation("function::" + completionData[i])); //$NON-NLS-1$
 		}
 
 		return result;
@@ -174,7 +175,26 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 	private ICompletionProposal[] getProbeCompletionList(String prefix, int offset){
 		prefix = canonicalizePrefix(prefix);
 		String[] completionData = stpMetadataSingleton.getCompletionResults(prefix);
-		return buildCompletionList(offset, prefix.length(), completionData);
+
+		String manPrefix = "probe::"; //$NON-NLS-1$
+		if (prefix.indexOf('.') == -1){
+			manPrefix = "tapset::"; //$NON-NLS-1$
+		}
+
+		// Build proposals and submit
+		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
+		for (int i = 0; i < completionData.length; i++)
+			result[i] = new CompletionProposal(
+							completionData[i].substring(prefix.length()),
+							offset,
+							0,
+							completionData[i].length() - prefix.length(),
+							null,
+							completionData[i],
+							null,
+							TapsetLibrary.getDocumentation(manPrefix + completionData[i]));
+		return result;
+
 	}
 
 	/**
@@ -218,22 +238,6 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 		}
 
 		return prefix;
-	}
-
-	private ICompletionProposal[] buildCompletionList(int offset, int prefixLength,String[] completionData){
-		// Build proposals and submit
-		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
-		for (int i = 0; i < completionData.length; i++)
-			result[i] = new CompletionProposal(
-							completionData[i].substring(prefixLength),
-							offset,
-							0,
-							completionData[i].length() - prefixLength,
-							null,
-							completionData[i],
-							null,
-							null);
-		return result;
 	}
 
 	private ICompletionProposal[] getGlobalKeywordCompletion(String prefix, int offset) {
