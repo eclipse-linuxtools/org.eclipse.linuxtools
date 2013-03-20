@@ -263,6 +263,10 @@ public class Command implements Runnable {
 		if(!disposed) {
 			stop();
 			disposed = true;
+
+			inputListeners.clear();
+			errorListeners.clear();
+
 			inputListeners = null;
 			errorListeners = null;
 

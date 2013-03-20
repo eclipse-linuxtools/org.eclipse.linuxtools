@@ -148,11 +148,6 @@
 			description="%command.import.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"/>
-		<!--command
-			name="%command.runOptions.name"
-			description="%command.runOptions.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScriptOptions"/-->
 		<command
 			name="%command.run.name"
 			description="%command.run.desc"

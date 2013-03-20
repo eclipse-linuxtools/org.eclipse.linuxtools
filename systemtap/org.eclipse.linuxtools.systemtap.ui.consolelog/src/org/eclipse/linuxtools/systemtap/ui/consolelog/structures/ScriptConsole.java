@@ -280,16 +280,9 @@ public class ScriptConsole extends IOConsole {
 	 */
 	public synchronized void stop() {
 		  if(isRunning()) {
-			  // Remove the readers so the process is not blocked
-			  // on writing to console
-			  cmd.removeErrorStreamListener(errorDaemon);
-			  cmd.removeInputStreamListener(consoleDaemon);
-
 			  // Stop the underlying stap process
 			  this.stopCommand.run();
 
-			  // Stop the command
-			  cmd.stop();
               setName(Localization.getString("ScriptConsole.Terminated") + super.getName()); //$NON-NLS-1$
               notifyConsoleObservers(false);
 		}
