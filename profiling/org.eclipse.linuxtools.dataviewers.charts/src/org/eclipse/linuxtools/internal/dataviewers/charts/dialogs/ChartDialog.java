@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.swtchart.Chart;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -25,7 +24,7 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.charts.provider.ChartFactory;
 import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
-import org.eclipse.linuxtools.internal.dataviewers.charts.ChartConstants;
+import org.eclipse.linuxtools.internal.dataviewers.charts.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -41,11 +40,31 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.swtchart.Chart;
 
 /**
  * The dialog used to customize the chart before cerating it.
  */
 public class ChartDialog extends Dialog {
+
+    /** The section name of the viewer's dialog settings where the chart dialog save its state */
+    private static final String TAG_SECTION_CHARTS_STATE = "charts_section"; //$NON-NLS-1$
+    /**
+     * The key used by the column buttons to save their state. For example the button i will use the key
+     * <code>TAG_COLUMN_BUTTON_+i</code>
+     */
+    private static final String TAG_COLUMN_BUTTON_ = "COLUMN_BUTTON_"; //$NON-NLS-1$
+    /** The key used by the bar graph button to save its state */
+    private static final String TAG_BAR_GRAPH_BUTTON = "BAR_GRAPH_BUTTON"; //$NON-NLS-1$
+    /** The key used by the vertical bars button to save its state */
+    private static final String TAG_VERTICAL_BARS_BUTTON = "VERTICAL_BARS_BUTTON"; //$NON-NLS-1$
+
+    /** The default value of the column buttons */
+    private static final boolean DEFAULT_COLUMN_BUTTON = true;
+    /** The default value of the bar graph button */
+    private static final boolean DEFAULT_BAR_GRAPH_BUTTON = true;
+    /** The default value of the vertical bars button */
+    private static final boolean DEFAULT_VERTICAL_BARS_BUTTON = false;
 
     private final AbstractSTViewer stViewer;
     private Chart chart;
@@ -73,22 +92,22 @@ public class ChartDialog extends Dialog {
      */
     public void restoreState() {
         try {
-            IDialogSettings settings = stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
+            IDialogSettings settings = stViewer.getViewerSettings().getSection(TAG_SECTION_CHARTS_STATE);
             if (settings == null) {
-                settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
+                settings = stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
                 return;
             }
 
             for (int i = 0; i < columnButtons.size(); i++) {
-                boolean selected = Boolean.parseBoolean(settings.get(ChartConstants.TAG_COLUMN_BUTTON_ + i));
+                boolean selected = Boolean.parseBoolean(settings.get(TAG_COLUMN_BUTTON_ + i));
                 columnButtons.get(i).setSelection(selected);
             }
 
-            boolean barGraph = Boolean.parseBoolean(settings.get(ChartConstants.TAG_BAR_GRAPH_BUTTON));
+            boolean barGraph = Boolean.parseBoolean(settings.get(TAG_BAR_GRAPH_BUTTON));
             barGraphButton.setSelection(barGraph);
             pieChartButton.setSelection(!barGraph);
 
-            boolean vBars = Boolean.parseBoolean(settings.get(ChartConstants.TAG_VERTICAL_BARS_BUTTON));
+            boolean vBars = Boolean.parseBoolean(settings.get(TAG_VERTICAL_BARS_BUTTON));
             verticalBarsButton.setSelection(vBars);
             verticalBarsButton.setEnabled(barGraph);
         } catch (Exception e) {
@@ -100,21 +119,21 @@ public class ChartDialog extends Dialog {
      */
     public void saveState() {
         try {
-            IDialogSettings settings = stViewer.getViewerSettings().getSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
+            IDialogSettings settings = stViewer.getViewerSettings().getSection(TAG_SECTION_CHARTS_STATE);
             if (settings == null) {
-                settings = stViewer.getViewerSettings().addNewSection(ChartConstants.TAG_SECTION_CHARTS_STATE);
+                settings = stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
             }
 
             for (int i = 0; i < columnButtons.size(); i++) {
                 boolean selected = columnButtons.get(i).getSelection();
-                settings.put(ChartConstants.TAG_COLUMN_BUTTON_ + i, selected);
+                settings.put(TAG_COLUMN_BUTTON_ + i, selected);
             }
 
             boolean barGraph = barGraphButton.getSelection();
-            settings.put(ChartConstants.TAG_BAR_GRAPH_BUTTON, barGraph);
+            settings.put(TAG_BAR_GRAPH_BUTTON, barGraph);
 
             boolean vBars = verticalBarsButton.getSelection();
-            settings.put(ChartConstants.TAG_VERTICAL_BARS_BUTTON, vBars);
+            settings.put(TAG_VERTICAL_BARS_BUTTON, vBars);
         } catch (Exception e) {
         }
     }
@@ -127,7 +146,7 @@ public class ChartDialog extends Dialog {
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText("Create chart from selection...");
+        newShell.setText(Messages.ChartConstants_CREATE_NEW_CHART_FROM_SELECTION);
     }
 
     /*
@@ -183,10 +202,10 @@ public class ChartDialog extends Dialog {
         titleComp.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Label icon = new Label(titleComp, SWT.NONE);
-        icon.setImage(Activator.getImage("icons/chart_icon.png"));
+        icon.setImage(Activator.getImage("icons/chart_icon.png")); //$NON-NLS-1$
 
         Label label = new Label(titleComp, SWT.WRAP);
-        label.setText("Chart builder");
+        label.setText(Messages.ChartConstants_CHART_BUILDER);
         GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL
                 | GridData.VERTICAL_ALIGN_CENTER);
         data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
@@ -196,12 +215,12 @@ public class ChartDialog extends Dialog {
         data = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
         chartTypeGroup.setLayoutData(data);
         chartTypeGroup.setLayout(new GridLayout(2, false));
-        chartTypeGroup.setText("Select your chart type");
+        chartTypeGroup.setText(Messages.ChartConstants_SELECT_YOUR_CHART_TYPE);
 
         ValidateSelectionListener listener = new ValidateSelectionListener();
 
         barGraphButton = new Button(chartTypeGroup, SWT.RADIO);
-        barGraphButton.setText("Bar graph");
+        barGraphButton.setText(Messages.ChartConstants_BAR_GRAPH);
         barGraphButton.addSelectionListener(listener);
         barGraphButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -213,12 +232,12 @@ public class ChartDialog extends Dialog {
         barGraphButton.setLayoutData(data);
 
         verticalBarsButton = new Button(chartTypeGroup, SWT.CHECK);
-        verticalBarsButton.setText("Vertical bars");
+        verticalBarsButton.setText(Messages.ChartConstants_VERTICAL_BARS);
         data = new GridData();
         verticalBarsButton.setLayoutData(data);
 
         pieChartButton = new Button(chartTypeGroup, SWT.RADIO);
-        pieChartButton.setText("Pie chart");
+        pieChartButton.setText(Messages.ChartConstants_PIE_CHART);
         pieChartButton.addSelectionListener(listener);
         data = new GridData();
         data.horizontalSpan = 2;
@@ -228,7 +247,7 @@ public class ChartDialog extends Dialog {
         chartColumnGroup.setLayout(new GridLayout(1, true));
         data = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
         chartColumnGroup.setLayoutData(data);
-        chartColumnGroup.setText("Select the columns(s) to show");
+        chartColumnGroup.setText(Messages.ChartConstants_SELECT_COLUMNS_TO_SHOW);
 
         addColumnButtons(chartColumnGroup, listener);
 
@@ -248,11 +267,11 @@ public class ChartDialog extends Dialog {
      */
     private void setWidgetsValues() {
         // set default values
-        barGraphButton.setSelection(ChartConstants.DEFAULT_BAR_GRAPH_BUTTON);
+        barGraphButton.setSelection(DEFAULT_BAR_GRAPH_BUTTON);
         verticalBarsButton.setEnabled(barGraphButton.getSelection());
-        verticalBarsButton.setSelection(ChartConstants.DEFAULT_VERTICAL_BARS_BUTTON);
+        verticalBarsButton.setSelection(DEFAULT_VERTICAL_BARS_BUTTON);
         for (Button button : columnButtons) {
-            button.setSelection(ChartConstants.DEFAULT_COLUMN_BUTTON);
+            button.setSelection(DEFAULT_COLUMN_BUTTON);
         }
 
         // restore state if there is one saved
@@ -292,9 +311,9 @@ public class ChartDialog extends Dialog {
         buttonComposite.setLayout(l);
 
         final Button b1 = new Button(buttonComposite, SWT.PUSH);
-        b1.setText("Select all");
+        b1.setText(Messages.ChartConstants_SELECT_ALL);
         final Button b2 = new Button(buttonComposite, SWT.PUSH);
-        b2.setText("Deselect all");
+        b2.setText(Messages.ChartConstants_DESELECT_ALL);
         SelectionListener sl = new SelectionListener() {
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -341,7 +360,7 @@ public class ChartDialog extends Dialog {
         }
 
         if (selectedNum == 0) {
-            errorMessage = "No column selected";
+            errorMessage = Messages.ChartConstants_NO_COLUMN_SELECTED;
         }
         /*
          * else if (pieChartButton.getSelection() && selectedNum != 1) { errorMessage =
@@ -412,10 +431,10 @@ public class ChartDialog extends Dialog {
     }
 
     protected String getBarChartTitle() {
-        return "Bar Chart";
+        return Messages.ChartConstants_BAR_GRAPH;
     }
 
     protected String getPieChartTitle() {
-        return "Pie Chart";
+        return Messages.ChartConstants_PIE_CHART;
     }
 }

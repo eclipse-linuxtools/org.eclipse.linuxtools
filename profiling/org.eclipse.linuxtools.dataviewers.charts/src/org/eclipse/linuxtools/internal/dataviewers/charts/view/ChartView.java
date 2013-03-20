@@ -36,7 +36,7 @@ import org.swtchart.Chart;
 public class ChartView extends ViewPart {
 
     /** The primary id of this view */
-    public static final String VIEW_ID = "org.eclipse.linuxtools.dataviewers.charts.view";
+    public static final String VIEW_ID = "org.eclipse.linuxtools.dataviewers.charts.view"; //$NON-NLS-1$
 
     /** The current secondary id for these views */
     private static int SEC_ID = 0;
@@ -62,7 +62,7 @@ public class ChartView extends ViewPart {
                 try {
                     synchronized (lock) {
                         ChartView view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                                .getActivePage().showView(VIEW_ID, "" + (SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
+                                .getActivePage().showView(VIEW_ID, String.valueOf(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
                         view.setChart(chart);
 
                     }
@@ -82,22 +82,10 @@ public class ChartView extends ViewPart {
      */
     @Override
     public void createPartControl(Composite parent) {
-        try {
-            this.parent = parent;
-            // paintCanvas = new Canvas( parent, SWT.NONE );
-            // paintCanvas.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-            // paintCanvas.setBackground( Display.getDefault( )
-            // .getSystemColor( SWT.COLOR_WHITE ) );
-
-            createActions(parent);
-            IActionBars actionBars = getViewSite().getActionBars();
-            initToolBar(actionBars.getToolBarManager());
-
-        } catch (Throwable _) {
-            Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
-                    "Error when creating AWT Frame...", _);
-            Activator.getDefault().getLog().log(s);
-        }
+        this.parent = parent;
+        createActions(parent);
+        IActionBars actionBars = getViewSite().getActionBars();
+        initToolBar(actionBars.getToolBarManager());
     }
 
     protected void createActions(Composite parent) {
@@ -116,27 +104,9 @@ public class ChartView extends ViewPart {
      */
     @Override
     public void setFocus() {
-        if (parent != null) {
+        if (parent != null && !parent.isDisposed()) {
             parent.setFocus();
-        } else {
-            Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    "Error setting the focus to the chart view: main composite is not set!");
-            Activator.getDefault().getLog().log(s);
         }
-    }
-
-    /**
-     * Close this view <br/>
-     * <br/>
-     * <u><b>Note</b></u>: it uses the UI thread to get the workbench window. Then it closes the view.
-     */
-    public void closeView() {
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(ChartView.this);
-            }
-        });
     }
 
     /**
@@ -145,15 +115,7 @@ public class ChartView extends ViewPart {
      * @param chart
      */
     public void setChart(Chart chart) {
-        if (chart != null) {
-            saveChartAction.setChart(chart);
-
-        } else {
-            saveChartAction.setEnabled(false);
-            Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    "Error adding the chart to the chart view: SWT is not set!");
-            Activator.getDefault().getLog().log(s);
-        }
+        saveChartAction.setChart(chart);
     }
 
     @Override
