@@ -340,17 +340,21 @@ public class RunScriptHandler extends AbstractHandler {
 		}
 
 		// Make sure script name only contains underscores and/or alphanumeric characters.
-		Pattern validModName = Pattern.compile("^[a-z0-9_]+$"); //$NON-NLS-1$
+		Pattern validModName = Pattern.compile("^[a-z0-9_A-Z]+$"); //$NON-NLS-1$
 		Matcher modNameMatch = validModName.matcher(modname);
 		if (!modNameMatch.matches()) {
 			continueRun = false;
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
 
-			Shell parent = PlatformUI.getWorkbench().getDisplay()
-					.getActiveShell();
-			MessageDialog.openError(parent,
-					Messages.ScriptRunAction_InvalidScriptTitle,
-					Messages.ScriptRunAction_InvalidScriptTMessage);
-
+					Shell parent = PlatformUI.getWorkbench().getDisplay()
+							.getActiveShell();
+					MessageDialog.openError(parent,
+							Messages.ScriptRunAction_InvalidScriptTitle,
+							Messages.ScriptRunAction_InvalidScriptTMessage);
+				}
+			});
 			return new String[0];
 		}
 
