@@ -57,16 +57,20 @@ public class STPMetadataSingleton {
 
 		// Check to see if the proposal hint included a <tapset>.<partialprobe>
 		// or just a <probe>. (ie syscall. or syscall.re).
-		boolean tapsetAndProbeIncluded = isTapsetAndProbe(match);
+		boolean tapsetAndProbeIncluded = match.indexOf('.') >= 0;
 
 		TreeNode node = TapsetLibrary.getProbes();
+		if (node == null) {
+			return NO_MATCHES;
+		}
 
 		// If the result is a tapset and partial probe, get the tapset, then
 		// narrow down the list with partial probe matches.
 		if (tapsetAndProbeIncluded) {
 			node = node.getChildByName(getTapset(match));
-			if (node == null )
+			if (node == null) {
 				return NO_MATCHES;
+			}
 
 			// Now get the completions.
 			return getMatchingChildren(node, match);
@@ -94,17 +98,20 @@ public class STPMetadataSingleton {
 	 */
 	public String[] getProbeVariableCompletions(String probe, String prefix){
 		TreeNode node = TapsetLibrary.getProbes();
-		if (node == null )
+		if (node == null) {
 			return NO_MATCHES;
+		}
 
 		// Get the matching leaf node.
 		node = node.getChildByName(getTapset(probe));
-		if (node == null )
+		if (node == null) {
 			return NO_MATCHES;
+		}
 
 		node = node.getChildByName(probe);
-		if (node == null )
+		if (node == null) {
 			return NO_MATCHES;
+		}
 
 		// Get the completions.
 		return getMatchingChildren(node, prefix);
@@ -121,20 +128,6 @@ public class STPMetadataSingleton {
 		}
 
 		return matches.toArray(new String[0]);
-	}
-
-	/**
-	 * Given data, decide whether it is comprised of a <tapset>.<probe>
-	 * hint, or just a <tapset>.
-	 *
-	 * @param data - hint data
-	 * @return
-	 */
-	private boolean isTapsetAndProbe(String data) {
-		if (data.indexOf('.') >= 0)
-			return true;
-
-		return false;
 	}
 
 	/**
