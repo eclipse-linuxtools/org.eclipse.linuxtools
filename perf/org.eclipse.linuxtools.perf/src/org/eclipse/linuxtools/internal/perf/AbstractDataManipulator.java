@@ -38,23 +38,33 @@ public abstract class AbstractDataManipulator {
 	}
 
 	public void performCommand(String[] cmd, int fd) {
+		BufferedReader buff = null;
+		BufferedReader bufftmp = null;
+
 		try {
 			Process proc = RuntimeProcessFactory.getFactory().exec(cmd, null);
 
-			BufferedReader buff;
 			switch (fd) {
 			case 1:
 				buff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				bufftmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 				break;
 			case 2:
 				buff = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+				bufftmp = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				break;
 			default:
 				buff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				bufftmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 			}
 
 			StringBuffer strBuff = new StringBuffer();
 			String line = ""; //$NON-NLS-1$
+
+			// If the buffer is not being consumed, the other one may block.
+			while (bufftmp.readLine() != null) {
+			}
+
 			while ((line = buff.readLine()) != null) {
 				strBuff.append(line);
 				strBuff.append("\n"); //$NON-NLS-1$
@@ -62,6 +72,17 @@ public abstract class AbstractDataManipulator {
 			text = strBuff.toString();
 		} catch (IOException e) {
 			text = ""; //$NON-NLS-1$
+		} finally {
+			try {
+				if (buff != null) {
+					buff.close();
+				}
+				if (bufftmp != null) {
+					bufftmp.close();
+				}
+			} catch (IOException e) {
+				// continue
+			}
 		}
 	}
 
