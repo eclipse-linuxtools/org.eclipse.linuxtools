@@ -72,14 +72,14 @@ public class GprofProgramChecker implements STNMSymbolsHandler {
 
 	@Override
 	public void foundTextSymbol(String symbol, String address) {
-		if ("mcount".equals(symbol)
-				|| "_mcount".equals(symbol)
-				|| "__mcount".equals(symbol))
+		if ("mcount".equals(symbol) //$NON-NLS-1$
+				|| "_mcount".equals(symbol) //$NON-NLS-1$
+				|| "__mcount".equals(symbol)) //$NON-NLS-1$
 		{
 			mcountFound = true;
-		} else if ("mcleanup".equals(symbol)
-				|| "_mcleanup".equals(symbol)
-				|| "__mcleanup".equals(symbol))
+		} else if ("mcleanup".equals(symbol) //$NON-NLS-1$
+				|| "_mcleanup".equals(symbol) //$NON-NLS-1$
+				|| "__mcleanup".equals(symbol)) //$NON-NLS-1$
 		{
 			mcleanupFound = true;
 		}	
@@ -87,14 +87,14 @@ public class GprofProgramChecker implements STNMSymbolsHandler {
 
 	@Override
 	public void foundUndefSymbol(String symbol) {
-		if (symbol.startsWith("mcount@@GLIBC")
-				|| symbol.startsWith("_mcount@@GLIBC")
-				|| symbol.startsWith("__mcount@@GLIBC"))
+		if (symbol.startsWith("mcount@@GLIBC") //$NON-NLS-1$
+				|| symbol.startsWith("_mcount@@GLIBC") //$NON-NLS-1$
+				|| symbol.startsWith("__mcount@@GLIBC")) //$NON-NLS-1$
 		{
 			mcountFound = true;
-		} else if (symbol.startsWith("_mcleanup@@GLIBC")
-				|| symbol.startsWith("mcleanup@@GLIBC")
-				|| symbol.startsWith("__mcleanup@@GLIBC"))
+		} else if (symbol.startsWith("_mcleanup@@GLIBC") //$NON-NLS-1$
+				|| symbol.startsWith("mcleanup@@GLIBC") //$NON-NLS-1$
+				|| symbol.startsWith("__mcleanup@@GLIBC")) //$NON-NLS-1$
 		{
 			mcleanupFound = true;
 		}	

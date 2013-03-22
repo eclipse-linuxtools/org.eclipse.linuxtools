@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.gprof.view.fields;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
+import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.internal.gprof.parser.HistogramDecoder;
 import org.eclipse.linuxtools.internal.gprof.view.GmonView;
@@ -62,8 +63,8 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	 */
 	@Override
 	public String getColumnHeaderText() {
-		if (samples) return "Samples";
-		return "Time";
+		if (samples) return Messages.SampleProfField_SAMPLE_HDR;
+		return Messages.SampleProfField_TIME_HDR;
 	}
 	
 	/*
@@ -105,37 +106,37 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 		long ns = timeInNs%1000;
 		
 		long timeInUs = timeInNs/1000;
-		if (timeInUs == 0) return ns + "ns";
+		if (timeInUs == 0) return ns + "ns"; //$NON-NLS-1$
 		long us = timeInUs%1000;
 		
 		long timeInMs = timeInUs/1000;
 		if (timeInMs == 0) {
-			String ns_s = "" + ns;
-			while (ns_s.length() < 3) ns_s = "0" + ns_s;
-			return us + "." + ns_s + "us";
+			String ns_s = "" + ns; //$NON-NLS-1$
+			while (ns_s.length() < 3) ns_s = "0" + ns_s; //$NON-NLS-1$
+			return us + "." + ns_s + "us"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		long ms = timeInMs%1000;
 		
 		long timeInS = timeInMs/1000;
 		if (timeInS == 0) {
-			String us_s = "" + us;
-			while (us_s.length() < 3) us_s = "0" + us_s;
-			return ms + "." + us_s + "ms";
+			String us_s = "" + us; //$NON-NLS-1$
+			while (us_s.length() < 3) us_s = "0" + us_s; //$NON-NLS-1$
+			return ms + "." + us_s + "ms"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		long s = timeInS%60;
 		
 		long timeInMin = timeInS/60;
 		if (timeInMin == 0) {
-			String ms_s = "" + ms;
-			while (ms_s.length() < 3) ms_s = "0" + ms_s;
-			return s + "." + ms_s + "s";
+			String ms_s = "" + ms; //$NON-NLS-1$
+			while (ms_s.length() < 3) ms_s = "0" + ms_s; //$NON-NLS-1$
+			return s + "." + ms_s + "s"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		long min = timeInMin%60;
 		
 		long timeInHour = timeInMin/60;
-		if (timeInHour == 0) return min + "min " + s + "s";
+		if (timeInHour == 0) return min + "min " + s + "s"; //$NON-NLS-1$ //$NON-NLS-2$
 		
-		return timeInHour + "h " + min + "min";
+		return timeInHour + "h " + min + "min"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 
@@ -172,13 +173,13 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
 	@Override
 	public String getToolTipText(Object element) {
 		if (element instanceof HistRoot) {
-			return "total time spent in the program";
+			return Messages.SampleProfField_TOTAL_TIME_SPENT;
 		} else if (element instanceof HistFunction) {
-			return "time spent in this function";
+			return Messages.SampleProfField_TIME_SPENT_IN_FUNCTION;
 		} else if (element instanceof HistFile) {
-			return "time spent in this file";
+			return Messages.SampleProfField_TIME_SPENT_IN_FILE;
 		} else if (element instanceof HistLine) {
-			return "time spent at this location";
+			return Messages.SampleProfField_TIME_SPENT_AT_LOCATION;
 		}
 		return null;
 	}

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.gprof.view.fields;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
+import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.linuxtools.internal.gprof.view.GmonView;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
 import org.eclipse.swt.graphics.Color;
@@ -46,7 +47,7 @@ public class NameProfField extends AbstractSTDataViewersField {
 	 */
 	@Override
 	public String getColumnHeaderText() {
-		return "Name (location)";
+		return Messages.NameProfField_NAME_AND_LOCATION;
 	}
 
 	/*

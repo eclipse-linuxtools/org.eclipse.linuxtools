@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.internal.gprof.symbolManager.Bucket;
 import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphNode;
@@ -89,7 +90,7 @@ public class HistRoot extends AbstractTreeElement {
 	 */
 	@Override
 	public String getName() {
-		return "Summary";
+		return Messages.HistRoot_Summary;
 	}
 
 	/* 
