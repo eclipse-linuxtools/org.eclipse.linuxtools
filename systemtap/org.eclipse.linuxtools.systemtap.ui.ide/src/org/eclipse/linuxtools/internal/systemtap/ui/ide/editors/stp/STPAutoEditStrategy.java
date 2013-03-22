@@ -42,5 +42,6 @@ public class STPAutoEditStrategy extends
 			command.shiftsCaret = false;
 		}
 
+		super.customizeDocumentCommand(document, command);
 	}
 }
