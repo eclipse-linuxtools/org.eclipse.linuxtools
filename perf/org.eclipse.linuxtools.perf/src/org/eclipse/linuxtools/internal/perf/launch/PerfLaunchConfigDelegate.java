@@ -106,6 +106,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			}
 
 			sd = new StatData(title, exePath.toOSString(), arguments, runCount, statEvents);
+			sd.setLaunch(launch);
 			sd.parse();
 			PerfPlugin.getDefault().setStatData(sd);
 
