@@ -21,9 +21,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.ClientSession;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.Subscription;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
@@ -344,22 +342,12 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 		}
 	};
 
-	protected boolean createClientSession()
-	{
-		if (!ClientSession.isConnected() && new SelectServerDialog(fWindow.getShell()).open()) {
-			subscription = new Subscription(fileName,false);
-			if (ClientSession.isConnected()) {
-			}
-		}
-		return true;
-	}
-
 	private IViewPart view;
 	private static ArrayList<IActionListener> listeners = new ArrayList<IActionListener>();
 	private String fileName = null;
 	protected IWorkbenchWindow fWindow = null;
 	private IAction act;
-	protected Subscription subscription;
+
 	protected int SCRIPT_ID;
 	protected ScriptConsole console;
 }
