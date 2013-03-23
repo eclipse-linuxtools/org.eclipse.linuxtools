@@ -38,47 +38,72 @@ public abstract class AbstractDataManipulator {
 	}
 
 	public void performCommand(String[] cmd, int fd) {
-		BufferedReader buff = null;
-		BufferedReader bufftmp = null;
+		BufferedReader buffData = null;
+		BufferedReader buffTmp = null;
 
 		try {
 			Process proc = RuntimeProcessFactory.getFactory().exec(cmd, null);
+			StringBuffer strBuffData = new StringBuffer();
+			StringBuffer strBuffTmp = new StringBuffer();
+			String line = ""; //$NON-NLS-1$
 
 			switch (fd) {
 			case 1:
-				buff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-				bufftmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+				buffData = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				buffTmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+				// If the buffer is not being consumed, the other one may block.
+				while ((line = buffData.readLine()) != null) {
+					strBuffData.append(line);
+					strBuffData.append("\n"); //$NON-NLS-1$
+				}
+
+				while ((line = buffTmp.readLine()) != null) {
+					strBuffTmp.append(line);
+					strBuffTmp.append("\n"); //$NON-NLS-1$
+				}
 				break;
 			case 2:
-				buff = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-				bufftmp = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				buffData = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+				buffTmp = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+				// If the buffer is not being consumed, the other one may block.
+				while ((line = buffTmp.readLine()) != null) {
+					strBuffTmp.append(line);
+					strBuffTmp.append("\n"); //$NON-NLS-1$
+				}
+
+				while ((line = buffData.readLine()) != null) {
+					strBuffData.append(line);
+					strBuffData.append("\n"); //$NON-NLS-1$
+				}
 				break;
 			default:
-				buff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-				bufftmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+				buffData = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				buffTmp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+				// If the buffer is not being consumed, the other one may block.
+				while ((line = buffData.readLine()) != null) {
+					strBuffData.append(line);
+					strBuffData.append("\n"); //$NON-NLS-1$
+				}
+
+				while ((line = buffTmp.readLine()) != null) {
+					strBuffTmp.append(line);
+					strBuffTmp.append("\n"); //$NON-NLS-1$
+				}
 			}
 
-			StringBuffer strBuff = new StringBuffer();
-			String line = ""; //$NON-NLS-1$
-
-			// If the buffer is not being consumed, the other one may block.
-			while (bufftmp.readLine() != null) {
-			}
-
-			while ((line = buff.readLine()) != null) {
-				strBuff.append(line);
-				strBuff.append("\n"); //$NON-NLS-1$
-			}
-			text = strBuff.toString();
+			text = strBuffData.toString();
 		} catch (IOException e) {
 			text = ""; //$NON-NLS-1$
 		} finally {
 			try {
-				if (buff != null) {
-					buff.close();
+				if (buffData != null) {
+					buffData.close();
 				}
-				if (bufftmp != null) {
-					bufftmp.close();
+				if (buffTmp != null) {
+					buffTmp.close();
 				}
 			} catch (IOException e) {
 				// continue
