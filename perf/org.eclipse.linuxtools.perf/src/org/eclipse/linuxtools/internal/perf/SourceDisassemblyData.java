@@ -21,7 +21,7 @@ public class SourceDisassemblyData extends AbstractDataManipulator {
 	private IPath workingDir;
 
 	public SourceDisassemblyData(String title, IPath workingDir) {
-		super(title);
+		super(title, null);
 		this.workingDir = workingDir;
 	}
 

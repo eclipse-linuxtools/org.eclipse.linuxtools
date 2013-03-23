@@ -78,7 +78,7 @@ public class SaveSessionTest extends TestCase {
 		assertFalse(handler.verifyData());
 
 		PerfPlugin.getDefault().setStatData(
-				new StatData("title", "prog", new String[] {}, 1, null) { //$NON-NLS-1$ //$NON-NLS-2$
+				new StatData("title", null, "prog", new String[] {}, 1, null) { //$NON-NLS-1$ //$NON-NLS-2$
 					@Override
 					public String getPerfData() {
 						return PERF_STATS_FILE_PATH;

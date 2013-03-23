@@ -101,7 +101,7 @@ public class DataManipulatorTest extends TestCase {
 
 		public StubStatData(String title, String cmd, String[] args,
 				int runCount, String[] events) {
-			super(title, cmd, args, runCount, events);
+			super(title, null, cmd, args, runCount, events);
 		}
 
 		@Override
