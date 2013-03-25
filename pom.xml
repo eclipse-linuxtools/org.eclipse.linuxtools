@@ -57,8 +57,8 @@
 
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <tycho-version>0.16.0</tycho-version>
-    <tycho-extras-version>0.16.0</tycho-extras-version>
+    <tycho-version>0.17.0</tycho-version>
+    <tycho-extras-version>0.17.0</tycho-extras-version>
     <platform-version-name>juno</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
