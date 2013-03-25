@@ -24,15 +24,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = ConsoleLogPlugin.getDefault().getPreferenceStore();
 
 		//ide
-		store.setDefault(ConsoleLogPreferenceConstants.HOST_NAME, "localhost");
+		store.setDefault(ConsoleLogPreferenceConstants.HOST_NAME, "localhost"); //$NON-NLS-1$
 		store.setDefault(ConsoleLogPreferenceConstants.PORT_NUMBER, 22462);
 		store.setDefault(ConsoleLogPreferenceConstants.DB_COMMIT, false);
 		store.setDefault(ConsoleLogPreferenceConstants.SAVE_LENGTH, 5);
 		store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SERVER, false);
-		store.setDefault(ConsoleLogPreferenceConstants.SCP_USER, "guest");
-		store.setDefault(ConsoleLogPreferenceConstants.SCP_PASSWORD, "welcome");
+		store.setDefault(ConsoleLogPreferenceConstants.SCP_USER, "guest"); //$NON-NLS-1$
+		store.setDefault(ConsoleLogPreferenceConstants.SCP_PASSWORD, "welcome"); //$NON-NLS-1$
 		store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SCPUSER, false);
-		
-	
+
+
 		}
 }
