@@ -137,7 +137,8 @@ public abstract class AbstractDataManipulator {
 
 				// Find the console
 				for (IConsole x : existing) {
-					if (x.getName().contains(configName)) { //$NON-NLS-1$
+					if (x.getName().contains(configName) &&
+							x instanceof IOConsole) {
 						binaryOutCons = (IOConsole) x;
 					}
 				}
