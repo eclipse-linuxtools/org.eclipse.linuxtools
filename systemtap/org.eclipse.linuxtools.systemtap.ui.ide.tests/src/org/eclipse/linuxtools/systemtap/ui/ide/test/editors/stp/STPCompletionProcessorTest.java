@@ -112,6 +112,19 @@ public class STPCompletionProcessorTest {
 	}
 
 	@Test
+	public void testMultiProbeCompletion() throws BadLocationException {
+		assumeTrue(stapInstalled());
+		String prefix = "probe begin,e";
+		ICompletionProposal[] proposals = getCompletionsForPrefix(prefix);
+		assertTrue(proposalsContain(proposals, "end"));
+		assertTrue(proposalsContain(proposals, "error"));
+
+		prefix = "probe myBegin = b";
+		proposals = getCompletionsForPrefix(prefix);
+		assertTrue(proposalsContain(proposals, "begin"));
+	}
+
+	@Test
 	public void testGlobalInvalidCompletion() throws BadLocationException {
 		ICompletionProposal[] proposals = getCompletionsForPrefix("probe fake.fake");
 		assertTrue(proposals.length == 0);

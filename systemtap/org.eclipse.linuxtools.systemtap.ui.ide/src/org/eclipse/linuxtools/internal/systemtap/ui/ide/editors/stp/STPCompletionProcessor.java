@@ -43,6 +43,16 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 
 	private STPMetadataSingleton stpMetadataSingleton;
 
+	private static class Token{
+		String tokenString;
+		int offset;
+
+		public Token(String string, int n) {
+			this.tokenString = string;
+			this.offset = n;
+		}
+	}
+
 	public STPCompletionProcessor(){
 		this.stpMetadataSingleton = STPMetadataSingleton.getInstance();
 	}
@@ -73,7 +83,16 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 		// Get completion hint from document
 		try {
 			prefix = getPrefix(document, offset);
-			prePrefix = getPrecedingToken(document, prefix, offset);
+			Token previousToken = getPrecedingToken(document, offset - prefix.length() - 1);
+
+			while (previousToken.tokenString.equals("=") || //$NON-NLS-1$
+					previousToken.tokenString.equals(",") ){ //$NON-NLS-1$
+				previousToken = getPrecedingToken(document, previousToken.offset - 1);
+				previousToken = getPrecedingToken(document, previousToken.offset - 1);
+			}
+
+			prePrefix = previousToken.tokenString;
+
 		} catch (BadLocationException e) {
 			return NO_COMPLETIONS;
 		}
@@ -269,13 +288,24 @@ public class STPCompletionProcessor implements IContentAssistProcessor {
 	 * @return The preceding token.
 	 * @throws BadLocationException
 	 */
-	private String getPrecedingToken(IDocument doc, String prefix, int offset) throws BadLocationException{
+	private Token getPrecedingToken(IDocument doc, int offset) throws BadLocationException{
 		// Skip trailing space
-		int n = offset - prefix.length() - 1;
+		int n = offset;
 		while (n >= 0 && Character.isSpaceChar(doc.getChar(n))){
 			n--;
 		}
-		return getPrefix(doc, n + 1);
+
+		char c = doc.getChar(n);
+		if(isDelimiter(c)){
+			return new Token(Character.toString(c), n);
+		}
+
+		int end = n;
+		while (n >= 0 && !isDelimiter((doc.getChar(n)))){
+			n--;
+		}
+
+		return new Token(doc.get(n+1, end-n), n+1);
 	}
 
 	/**
