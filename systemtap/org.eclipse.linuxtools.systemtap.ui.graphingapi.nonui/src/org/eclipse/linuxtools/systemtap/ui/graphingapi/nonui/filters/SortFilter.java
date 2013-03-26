@@ -26,19 +26,19 @@ public class SortFilter implements IDataSetFilter {
 		this.column = column;
 		this.style = (ordering==ASCENDING ? ASCENDING : DESCENDING);
 	}
-	
+
 	/**
 	 * Apply the RangeFilter to the passed dataset.
-	 * 
+	 *
 	 * @param data The dataset to filter.
-	 * 
+	 *
 	 * @return The filtered dataset.
 	 */
 	@Override
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
-		
+
 		ArrayList<Object>[] newData = Copier.copy(data);
 		IndexedObject[] items = new IndexedObject[newData[0].size()];
 
@@ -49,9 +49,9 @@ public class SortFilter implements IDataSetFilter {
 			for(int i=0; i<newData[column].size(); i++)
 				items[i] = new IndexedObject(i, newData[column].get(i));
 		}
-		
+
 		Sort.quicksort(items, 0, items.length-1);
-		
+
 		for(int j, i=0; i<newData.length; i++) {
 			for(j=0; j<items.length; j++) {
 				if(DESCENDING == style)
@@ -64,28 +64,28 @@ public class SortFilter implements IDataSetFilter {
 		}
 		return newData;
 	}
-	
+
 	@Override
 	public String getID() {
 		return ID;
 	}
-	
+
 	/**
 	 * Preserve what filter was applied.
-	 * 
+	 *
 	 * @param parent Parent object of the new child Memento to create.
 	 */
 	@Override
 	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID);
-		child.putInteger("column", column);
-		child.putInteger("style", style);
+		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
+		child.putInteger("column", column); //$NON-NLS-1$
+		child.putInteger("style", style); //$NON-NLS-1$
 	}
 
 	private int column;
 	private int style;
-	
+
 	public static final int ASCENDING = 0;
 	public static final int DESCENDING = 1;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.SortFilter"; //$NON-NLS-1$
 }

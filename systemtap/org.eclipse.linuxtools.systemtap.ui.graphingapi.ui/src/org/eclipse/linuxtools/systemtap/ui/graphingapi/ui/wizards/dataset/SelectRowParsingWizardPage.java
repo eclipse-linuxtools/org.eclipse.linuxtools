@@ -30,10 +30,10 @@ import org.eclipse.ui.XMLMemento;
 
 public class SelectRowParsingWizardPage extends ParsingWizardPage {
 	public SelectRowParsingWizardPage() {
-		super("selectRowDataSetParsing");
-		setTitle(Localization.getString("SelectRowParsingWizardPage.SelectRowDataSetParsing"));
+		super("selectRowDataSetParsing"); //$NON-NLS-1$
+		setTitle(Localization.getString("SelectRowParsingWizardPage.SelectRowDataSetParsing")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
@@ -68,22 +68,22 @@ public class SelectRowParsingWizardPage extends ParsingWizardPage {
 
 			if(i>=children.length)	//Didn't find file
 				return false;
-			
+
 			if(0 != children[i].getString(IDataSetParser.XMLdataset).compareTo(RowDataSet.ID))
 				return false;
-			
+
 			IMemento[] children2 = children[i].getChildren(IDataSetParser.XMLColumn);
-			txtSeries.setText("" + children2.length);
+			txtSeries.setText("" + children2.length); //$NON-NLS-1$
 			for(int j=0; j<children2.length; j++)
 				txtRegExpr[j*COLUMNS].setText(children2[j].getString(IDataSetParser.XMLname));
 
 			children2 = children[i].getChildren(IDataSetParser.XMLSeries);
-			txtSeries.setText("" + children2.length);
+			txtSeries.setText("" + children2.length); //$NON-NLS-1$
 			for(int j=0; j<children2.length; j++) {
 				txtRegExpr[j*COLUMNS+1].setText(children2[j].getString(IDataSetParser.XMLparsingExpression));
 				txtRegExpr[j*COLUMNS+2].setText(children2[j].getString(IDataSetParser.XMLparsingSpacer));
 			}
-			
+
 			reader.close();
 		} catch(FileNotFoundException fnfe) {
 			return false;
@@ -92,10 +92,10 @@ public class SelectRowParsingWizardPage extends ParsingWizardPage {
 		} catch(IOException ioe) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	protected void copyExisting(IMemento oldMeta, IMemento newMeta) {
 		IMemento[] children = oldMeta.getChildren(IDataSetParser.XMLColumn);
@@ -111,7 +111,7 @@ public class SelectRowParsingWizardPage extends ParsingWizardPage {
 			child.putString(IDataSetParser.XMLparsingSpacer, memento.getString(IDataSetParser.XMLparsingSpacer));
 		}
 	}
-	
+
 	@Override
 	public boolean checkComplete() {
 		if(super.checkComplete()) {
@@ -125,7 +125,7 @@ public class SelectRowParsingWizardPage extends ParsingWizardPage {
 		wizard.dataSet = null;
 		return false;
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();

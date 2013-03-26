@@ -29,9 +29,9 @@ public class RangeFilter implements IDataSetFilter {
 
 	/**
 	 * Apply the RangeFilter to the passed dataset.
-	 * 
+	 *
 	 * @param data The dataset to filter.
-	 * 
+	 *
 	 * @return The filtered dataset.
 	 */
 	@Override
@@ -48,7 +48,7 @@ public class RangeFilter implements IDataSetFilter {
 		}
 		return newData;
 	}
-	
+
 	@Override
 	public String getID() {
 		return ID;
@@ -56,9 +56,9 @@ public class RangeFilter implements IDataSetFilter {
 
 	/**
 	 * Verify that the number passed is in the bounds of the created filter.
-	 * 
+	 *
 	 * @param num The number to verify.
-	 * 
+	 *
 	 * @return True if the number is within bounds.
 	 */
 	private boolean inBounds(Number num) {
@@ -73,7 +73,7 @@ public class RangeFilter implements IDataSetFilter {
 					return false;
 			}
 		}
-		
+
 		if(OUTSIDE_BOUNDS == (style & 1)) {
 			if(INCLUSIVE == (style & 2)) {
 				if(num.doubleValue() < upperBound.doubleValue()
@@ -85,32 +85,32 @@ public class RangeFilter implements IDataSetFilter {
 					return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Preserve what filter was applied.
-	 * 
+	 *
 	 * @param parent Parent object of the new child Memento to create.
 	 */
 	@Override
 	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID);
-		child.putInteger("column", column);
-		child.putString("low", lowerBound.toString());
-		child.putString("high", upperBound.toString());
-		child.putInteger("style", style);
+		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
+		child.putInteger("column", column); //$NON-NLS-1$
+		child.putString("low", lowerBound.toString()); //$NON-NLS-1$
+		child.putString("high", upperBound.toString()); //$NON-NLS-1$
+		child.putInteger("style", style); //$NON-NLS-1$
 	}
-	
+
 	private int column;
 	private Number upperBound;
 	private Number lowerBound;
 	private int style;
-	
+
 	public static final int INSIDE_BOUNDS = 0;
 	public static final int OUTSIDE_BOUNDS = 1;
 
 	public static final int INCLUSIVE = 2;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.RangeFilter"; //$NON-NLS-1$
 }

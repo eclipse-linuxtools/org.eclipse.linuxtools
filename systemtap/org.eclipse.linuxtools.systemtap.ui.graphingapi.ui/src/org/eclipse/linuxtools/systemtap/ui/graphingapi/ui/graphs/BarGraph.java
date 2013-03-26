@@ -40,7 +40,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 		fullUpdate = (adapter instanceof BlockAdapter) ? true : false;
 		handleUpdateEvent();
 	}
-	
+
 	/**
 	 * Paints all of the data elements to the screen
 	 */
@@ -62,7 +62,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 
 		double px, py;
 		double pw=0, ph;
-		
+
 		for(int j=0; j<elementList.length; j++) {
 			points = elementList[j].toArray(points);
 
@@ -75,22 +75,22 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 				px = super.getLocation().x + (((point.x * (elementList.length))-super.getLocalXMin()) * xSize) + super.getXPadding();
 				px = px + ((j - elementList.length/2) * (xSize * width));
 				pw = (xSize * width);
-	
+
 				py = super.getSize().y - super.getYPadding();
 				ph = ((super.getLocalYMax() - point.y) * ySize) + super.getYPadding()-py;
 				gc.fillGradientRectangle((int)(px), (int)py, (int)pw, (int)ph, true);
 			}
 		}
-		
+
 		gc.setForeground(temp);
 		gc.setBackground(temp1);
 	}
-	
+
 	@Override
 	public boolean isMultiGraph() {
 		return adapter.getSeriesCount() > 0;
 	}
-	
+
 	/**
 	 * Handles an update notification for new data in the Data Set. Causes the graph to add
 	 * all new samples to the graph, and then repaint itself.
@@ -116,7 +116,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 						elementList[i].clear();	//TODO: Only temparary
 						max = adapter.getYSeriesMax(i, removedItems, adapter.getRecordCount()).doubleValue() / 100;
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(adapter instanceof BlockAdapter ? j : NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(adapter instanceof BlockAdapter ? j : NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue() / max));
 						}
 					}
@@ -124,7 +124,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 					for(int j,i=0; i<adapter.getSeriesCount(); i++) {
 						elementList[i].clear();	//TODO: Only temparary
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(adapter instanceof BlockAdapter ? j : NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(adapter instanceof BlockAdapter ? j : NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue()));
 						}
 					}
@@ -133,9 +133,9 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 		});
 		this.repaint();
 	}
-	
+
 	private IAdapter adapter;
 	private boolean fullUpdate;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.bargraph";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.bargraph"; //$NON-NLS-1$
 	private static final double WIDTH_PERCENT = 0.8;
 }

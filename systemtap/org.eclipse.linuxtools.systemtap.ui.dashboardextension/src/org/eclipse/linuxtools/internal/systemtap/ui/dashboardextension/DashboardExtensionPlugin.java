@@ -54,7 +54,7 @@ public class DashboardExtensionPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.dashboardextension", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.dashboardextension", path); //$NON-NLS-1$
 	}
 
 }

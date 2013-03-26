@@ -25,10 +25,10 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public final class ZipArchive {
-	
+
 	/**
-	 * Zips files. 
-	 * 
+	 * Zips files.
+	 *
 	 * @param zipFileName The name of the zipped file you wish to make.
 	 * @param files The collection of files to zip.
 	 * @param names The names of the files you wish to zip.
@@ -54,8 +54,8 @@ public final class ZipArchive {
 
 	/**
 	 * Unzips files.
-	 * 
-	 * @param zipFileName The name of the file you wish to unzip. 
+	 *
+	 * @param zipFileName The name of the file you wish to unzip.
 	 * @param destination The location you wish to unzip files to.
 	 */
 	public static void unzipFiles(String zipFileName, String destination) {
@@ -72,7 +72,7 @@ public final class ZipArchive {
 					(new File(dirName)).mkdirs();
 				}
 
-				if (!zipEntryName.endsWith("/")) {
+				if (!zipEntryName.endsWith("/")) { //$NON-NLS-1$
 					OutputStream out = new FileOutputStream(destination + zipEntryName);
 					InputStream in = zf.getInputStream(zipEntry);
 
@@ -87,7 +87,7 @@ public final class ZipArchive {
 
 	/**
 	 * Compresses files.
-	 * 
+	 *
 	 * @param outFileName The new compressed file you wish to create.
 	 * @param inFileName The file you wish to compress.
 	 */
@@ -106,7 +106,7 @@ public final class ZipArchive {
 
 	/**
 	 * Uncompresses files.
-	 * 
+	 *
 	 * @param outFileName The new uncompressed file you wish to create.
 	 * @param inFileName The file you wish to uncompress.
 	 */
@@ -116,15 +116,15 @@ public final class ZipArchive {
 			FileOutputStream out = new FileOutputStream(outFileName);
 
 			transferData(in, out);
-			
+
 			in.close();
 			out.close();
 		} catch (IOException e) {}
 	}
-	
+
 	/**
 	 * Transfers data from one stream to another.
-	 * 
+	 *
 	 * @param in The source stream.
 	 * @param out The export stream.
 	 */
@@ -136,6 +136,6 @@ public final class ZipArchive {
 				out.write(buf, 0, len);
 		} catch (IOException e) {}
 	}
-	
+
 	private static final int BUFFER_SIZE = 1024;
 }

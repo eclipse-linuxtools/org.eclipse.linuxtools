@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters;
 
 import java.util.ArrayList;
 
-
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.GraphingAPINonUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.IDataAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
@@ -31,9 +30,9 @@ public class UniqueFilter implements IDataSetFilter {
 
 	/**
 	 * Verify that the number passed is in the bounds of the created filter.
-	 * 
+	 *
 	 * @param num The number to verify.
-	 * 
+	 *
 	 * @return True if the number is within bounds.
 	 */
 	@Override
@@ -45,7 +44,7 @@ public class UniqueFilter implements IDataSetFilter {
 		ArrayList<Object>[] aggregates = GraphingAPINonUIPlugin.createArrayList(newData.length, new Object());
 		for(int i=0; i<aggregates.length;i++)
 			aggregates[i] = new ArrayList<Object>();
-		
+
 		for(int k,j,i=newData[0].size()-1; i>=0; i--) {
 			for(j=i-1; j>=0; j--) {
 				if(newData[column].get(i).toString().equals(newData[column].get(j).toString())) {	//TODO: Find better equivilance method
@@ -71,43 +70,43 @@ public class UniqueFilter implements IDataSetFilter {
 		}
 		return newData;
 	}
-	
+
 	/**
 	 * Merges two passed columns into a StringBuilder object.
-	 * 
+	 *
 	 * @param col The columns to merge.
-	 * 
+	 *
 	 * @return The StringBuilder object made as a result of the merge.
 	 */
 	private String columnMerge(Object[] col) {
 		StringBuilder sb = new StringBuilder(col[0].toString());
 		for(int i=1; i<col.length; i++) {
 			if(sb.indexOf(col[i].toString()) < 0)
-				sb.append("/" + col[i].toString());
+				sb.append("/" + col[i].toString()); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public String getID() {
 		return ID;
 	}
-	
+
 	/**
 	 * Preserve what filter was applied.
-	 * 
+	 *
 	 * @param parent Parent object of the new child Memento to create.
 	 */
 	@Override
 	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID);
-		child.putInteger("column", column);
-		child.putString("aggregate", aggregate.getID());
-		child.putInteger("style", style);
+		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
+		child.putInteger("column", column); //$NON-NLS-1$
+		child.putString("aggregate", aggregate.getID()); //$NON-NLS-1$
+		child.putInteger("style", style); //$NON-NLS-1$
 	}
 
 	private int column;
 	private IDataAggregate aggregate;
 	private int style;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.UniqueFilter";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.UniqueFilter"; //$NON-NLS-1$
 }

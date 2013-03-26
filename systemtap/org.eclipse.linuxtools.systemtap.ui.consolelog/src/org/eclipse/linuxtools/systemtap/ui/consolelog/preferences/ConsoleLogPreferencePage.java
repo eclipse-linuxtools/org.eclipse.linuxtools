@@ -11,30 +11,33 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.preferences;
 
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class ConsoleLogPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public ConsoleLogPreferencePage() {
 		super(GRID);
 		setPreferenceStore(ConsoleLogPlugin.getDefault().getPreferenceStore());
-		setDescription("Preferences when accessing a remote server");
+		setDescription("Preferences when accessing a remote server"); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createFieldEditors() {
-		
+
 		addField(new StringFieldEditor(ConsoleLogPreferenceConstants.HOST_NAME,
 				"Host Name: ", getFieldEditorParent()));
-		
+
 		addField(new IntegerFieldEditor(ConsoleLogPreferenceConstants.PORT_NUMBER,
 				"Port: ", getFieldEditorParent()));
-		
+
 		addField(new StringFieldEditor(ConsoleLogPreferenceConstants.SCP_USER,
 				"User Name: ", getFieldEditorParent()));
-		
+
 		StringFieldEditor passwordField = new StringFieldEditor(
 				ConsoleLogPreferenceConstants.SCP_PASSWORD, "Password: ",
                 getFieldEditorParent());
@@ -43,7 +46,7 @@ public class ConsoleLogPreferencePage extends FieldEditorPreferencePage implemen
 
 		addField(new BooleanFieldEditor(ConsoleLogPreferenceConstants.REMEMBER_SERVER,
 				"Always connect to this host.", getFieldEditorParent()));
-		
+
 		addField(new IntegerFieldEditor(ConsoleLogPreferenceConstants.SAVE_LENGTH,
 				"Seconds to Save Data: ", getFieldEditorParent()));
 

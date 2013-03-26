@@ -14,31 +14,31 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
 
 public class SumAggregate implements IDataAggregate {
-	
+
 	/**
 	 * Ensure column isn't empty, then get the sum total of all the column's values.
-	 * 
+	 *
 	 * @param column The column to total.
-	 * 
+	 *
 	 * @return The sum total of all the column's values.
 	 */
 	@Override
 	public Number aggregate(Number[] column) {
 		if(column == null || column.length == 0)
 			return null;
-		
+
 		double num = 0;
-		
+
 		for(int i=0; i<column.length; i++)
 			num += column[i].doubleValue();
-		
+
 		return NumberType.getNumber(column[0], num);
 	}
-	
+
 	@Override
 	public String getID() {
 		return ID;
 	}
-	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.SumAggregate";
+
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.SumAggregate"; //$NON-NLS-1$
 }

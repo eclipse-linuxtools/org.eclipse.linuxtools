@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.ui;
 
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,7 +22,7 @@ public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 
 	//The shared instance.
 	private static GraphingAPIUIPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -54,6 +54,6 @@ public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.graphingapi.ui", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.graphingapi.ui", path); //$NON-NLS-1$
 	}
 }

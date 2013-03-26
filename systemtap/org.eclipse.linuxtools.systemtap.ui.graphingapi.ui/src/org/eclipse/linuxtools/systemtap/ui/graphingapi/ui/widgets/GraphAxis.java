@@ -39,11 +39,11 @@ public class GraphAxis implements IGraphPrimitive {
 	public void setTickCount(int count) {
 		tickCount = count;
 	}
-	
+
 	public int getType() {
 		return type;
 	}
-	
+
 	@Override
 	public boolean isVisible() {
 		return true;
@@ -59,7 +59,7 @@ public class GraphAxis implements IGraphPrimitive {
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public void calculateBounds() {
 		x1 = graph.getXPadding();
@@ -73,7 +73,7 @@ public class GraphAxis implements IGraphPrimitive {
 			x2 = graph.getSize().x-graph.getXPadding();
 			x2a = (int)locationX;
 			y2a = graph.getSize().y-graph.getYPadding();
-			
+
 			widthX = graph.getSize().x - (graph.getXPadding()<<1);
 			widthY = 0;
 			tickIncrament = ((graph.getLocalXMax()-graph.getLocalXMin())/(double)tickCount);
@@ -104,10 +104,10 @@ public class GraphAxis implements IGraphPrimitive {
 		int width = 0;
 		for(int i=0; i<s.length(); i++)
 			width += gc.getCharWidth(s.charAt(i));
-		
+
 		return width;
 	}
-	
+
 	/**
 	 * Draws the grid line for the given coordinates if grid lines are enabled.
 	 */
@@ -126,13 +126,13 @@ public class GraphAxis implements IGraphPrimitive {
 		int strWidth = stringWidth(gc, val);
 		int strHeight = gc.getFontMetrics().getHeight();
 		gc.drawLine(x, y, x+((HORIZONTAL==type) ? 0 : strWidth), y+((HORIZONTAL==type) ? -strHeight : 0));
-		
+
 		x -= (strWidth>>1);
 		if(x < 0)
 			x = 0;
 		else if(x > graph.getSize().x-strWidth)
 			x = graph.getSize().x-strWidth;
-		
+
 		y -= (strHeight>>1);
 		if(y < 0)
 			y = 0;
@@ -145,31 +145,31 @@ public class GraphAxis implements IGraphPrimitive {
 		//TODO: Implement this function.  Has to rotate text for vertical bars
 		//http://www.java2s.com/Code/Java/SWT-JFace-Eclipse/Rotateandflipanimage.htm
 	}
-	
+
 	/**
 	 * Converts units on the input value using SI prefixes (1 million becomes 1M, etc)
 	 */
 	protected String getLabel(double val, int range) {
 		int metric = 0;
-		String pattern=".0";
+		String pattern=".0"; //$NON-NLS-1$
 		range /= tickCount;
 		while(val > 1000) {
 			val /= 1000;
 			metric++;
-			
+
 			range /= 10;
 			if(range < 1)
-				pattern += "0";
+				pattern += "0"; //$NON-NLS-1$
 		}
 
 		DecimalFormat format = new DecimalFormat(pattern);
 		return format.format(val) + PREFIXES[metric];
 	}
-	
+
 	@Override
 	public void paint(GC gc) {
 		calculateBounds();
-		
+
 		Color foreground = gc.getForeground();
 		gc.setForeground(color);
 
@@ -192,7 +192,7 @@ public class GraphAxis implements IGraphPrimitive {
 	public static final int VERTICAL = 0;
 	public static final int HORIZONTAL = 1;
 	//kilo, mega, giga, tera, peta, exa, zetta, yotta
-	protected static final String[] PREFIXES = { "", Localization.getString("GraphAxis.Kilo"), Localization.getString("GraphAxis.Mega"), Localization.getString("GraphAxis.Giga"), Localization.getString("GraphAxis.Tera"), Localization.getString("GraphAxis.Peta"), Localization.getString("GraphAxis.Exa"), Localization.getString("GraphAxis.Zetta"), Localization.getString("GraphAxis.Yotta") } ;
+	protected static final String[] PREFIXES = { "", Localization.getString("GraphAxis.Kilo"), Localization.getString("GraphAxis.Mega"), Localization.getString("GraphAxis.Giga"), Localization.getString("GraphAxis.Tera"), Localization.getString("GraphAxis.Peta"), Localization.getString("GraphAxis.Exa"), Localization.getString("GraphAxis.Zetta"), Localization.getString("GraphAxis.Yotta") } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 
 	protected int type;
 	protected int tickCount;
@@ -200,7 +200,7 @@ public class GraphAxis implements IGraphPrimitive {
 	protected Color color;
 	@SuppressWarnings("unused")
 	private String title;
-	
+
 	protected int x1, y1, x2, y2;
 	protected int widthX, widthY, range, localMin;
 	protected double locationX, locationY, x2a, y2a, tickAmount, tickIncrament;

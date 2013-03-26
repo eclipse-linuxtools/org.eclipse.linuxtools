@@ -36,7 +36,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		this.adapter = adapter;
 		handleUpdateEvent();
 	}
-	
+
 	@Override
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
@@ -51,7 +51,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 
 		double px, py;
 		double px2, py2;
-		
+
 		for(int j=0; j<elementList.length; j++) {
 			points = elementList[j].toArray(points);
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
@@ -63,20 +63,20 @@ public class LineGraph extends AGraph implements IScrollGraph {
 				px = (point.x-super.getLocalXMin());
 				px *= xSize;
 				px += super.getXPadding();
-	
+
 				py = super.getLocalYMax() - point.y;
 				py *= ySize;
 				py += super.getYPadding();
-	
+
 				gc.drawLine((int)px, (int)py, (int)px2, (int)py2);
 				px2 = px;
 				py2 = py;
 			}
 		}
-		
+
 		gc.setForeground(temp);
 	}
-	
+
 	@Override
 	public boolean isMultiGraph() {
 		return adapter.getSeriesCount() > 0;
@@ -99,7 +99,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 						elementList[i].clear();	//TODO: Only temparary
 						max = adapter.getYSeriesMax(i, removedItems, adapter.getRecordCount()).doubleValue() / 100;
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue() / max));
 						}
 					}
@@ -107,7 +107,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 					for(int j,i=0; i<adapter.getSeriesCount(); i++) {
 						elementList[i].clear();	//TODO: Only temparary
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue()));
 						}
 					}
@@ -116,7 +116,7 @@ public class LineGraph extends AGraph implements IScrollGraph {
 		});
 		this.repaint();
 	}
-	
+
 	private ScrollAdapter adapter;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.linegraph";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.linegraph"; //$NON-NLS-1$
 }

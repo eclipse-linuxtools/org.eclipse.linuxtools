@@ -32,7 +32,7 @@ public class PieChart extends AChart implements IBlockGraph {
 		Object [][] l = adapter.getData();
 		String [] labels = new String[adapter.getRecordCount()];
 		Color[] colors = new Color[labels.length];
-		
+
 		for(int i=0; i<labels.length; i++) {
 			labels[i] = l[i][0].toString();
 			colors[i] = new Color(this.getDisplay(), IGraphColorConstants.COLORS[i]);
@@ -40,7 +40,7 @@ public class PieChart extends AChart implements IBlockGraph {
 
 		legend = new GraphLegend(this, labels, colors);
 	}
-	
+
 	@Override
 	public void paintElementList(GC gc) {
 		updateLegend(); //Make sure legend has current keys
@@ -51,7 +51,7 @@ public class PieChart extends AChart implements IBlockGraph {
 		int pw = Math.min(super.getSize().x - (super.getXPadding()<<1), super.getSize().y - (super.getYPadding()<<1));
 		int px = (super.getSize().x - super.getXPadding() - pw)>>1;
 		int py = (super.getSize().y - super.getYPadding() - pw)>>1;
-		
+
 		int angle1, angle0 = 0;
 		Number[] points = new Number[0];
 		points = elementList[0].toArray(points);
@@ -63,23 +63,23 @@ public class PieChart extends AChart implements IBlockGraph {
 			gc.fillArc(px, py, pw, pw, angle0, angle1);
 			angle0 += angle1;
 		}
-		
+
 		//If there is no data to display draw a crossed out circle
 		if(0 == points.length) {
 			gc.drawArc(px, py, pw, pw, 0, 360);
 			gc.drawLine(px, py, px+pw, py+pw);
 			gc.drawLine(px, py+pw, px+pw, py);
 		}
-		
+
 		gc.setForeground(temp);
 		gc.setBackground(temp1);
 	}
-	
+
 	@Override
 	public boolean isMultiGraph() {
 		return false;
 	}
-	
+
 	@Override
 	public void handleUpdateEvent() {
 		if(null == adapter) return;
@@ -90,7 +90,7 @@ public class PieChart extends AChart implements IBlockGraph {
 				Object[][] data;
 				elementList[0].clear();
 				data = adapter.getData();
-	
+
 				Number n;
 				sum = 0;
 				for(int i=0; i<data.length; i++) {
@@ -102,8 +102,8 @@ public class PieChart extends AChart implements IBlockGraph {
 		});
 		this.repaint();
 	}
-	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.piechart";
+
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.piechart"; //$NON-NLS-1$
 	private BlockAdapter adapter;
 	private double sum;
 	private static final int MAX_ANGLE = 360;

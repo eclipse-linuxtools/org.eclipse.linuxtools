@@ -36,8 +36,8 @@ public class ErrorStreamDaemon extends ConsoleStreamDaemon {
 	 */
 	@Override
 	protected void pushData() {
-		if(output.startsWith(Localization.getString("ErrorStreamDaemon.Password"))) {
-			output = output.substring(Localization.getString("ErrorStreamDaemon.Password").length());
+		if(output.startsWith(Localization.getString("ErrorStreamDaemon.Password"))) { //$NON-NLS-1$
+			output = output.substring(Localization.getString("ErrorStreamDaemon.Password").length()); //$NON-NLS-1$
 		}
 
 		super.pushData();

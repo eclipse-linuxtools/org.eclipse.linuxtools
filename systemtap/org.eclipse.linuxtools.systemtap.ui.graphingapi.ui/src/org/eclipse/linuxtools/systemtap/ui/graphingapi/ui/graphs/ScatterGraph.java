@@ -36,7 +36,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		this.adapter = adapter;
 		handleUpdateEvent();
 	}
-	
+
 	@Override
 	public void paintElementList(GC gc) {
 		DataPoint[] points = new DataPoint[0];
@@ -51,36 +51,36 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		ySize /= (super.getLocalHeight());
 
 		double px, py;
-		
+
 		for(int j=0; j<elementList.length; j++) {
 			points = elementList[j].toArray(points);
-	
+
 			c = new Color(getDisplay(), IGraphColorConstants.COLORS[j]);
 			gc.setForeground(c);
 			gc.setBackground(c);
-	
+
 			for(DataPoint point:points) {
 				px = (point.x-super.getLocalXMin());
 				px *= xSize;
 				px += super.getXPadding() - (DIAMETER>>1);
-	
+
 				py = super.getLocalYMax() - point.y;
 				py *= ySize;
 				py += super.getYPadding() - (DIAMETER>>1);
-	
+
 				gc.fillOval((int)px, (int)py, DIAMETER, DIAMETER);
 			}
 		}
-		
+
 		gc.setForeground(temp);
 		gc.setBackground(temp1);
 	}
-	
+
 	@Override
 	public boolean isMultiGraph() {
 		return adapter.getSeriesCount() > 0;
 	}
-	
+
 	/**
 	 * Updates the graph when the <code>IDataSet</code> has more data, adding the new samples to the graph.
 	 */
@@ -99,7 +99,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 						elementList[i].clear();	//TODO: Only temparary
 						max = adapter.getYSeriesMax(i, removedItems, adapter.getRecordCount()).doubleValue() / 100;
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue() / max));
 						}
 					}
@@ -107,7 +107,7 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 					for(int j,i=0; i<adapter.getSeriesCount(); i++) {
 						elementList[i].clear();	//TODO: Only temparary
 						for(j=0; j<data.length; j++) {
-							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(), 
+							elementList[i].add(new DataPoint(NumberType.obj2num(data[j][0]).doubleValue(),
 				  					  					NumberType.obj2num(data[j][i+1]).doubleValue()));
 						}
 					}
@@ -116,8 +116,8 @@ public class ScatterGraph extends AGraph implements IScrollGraph {
 		});
 		this.repaint();
 	}
-	
+
 	private ScrollAdapter adapter;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.scattergraph";
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.scattergraph"; //$NON-NLS-1$
 	private static final int DIAMETER = 5;
 }

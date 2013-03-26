@@ -60,11 +60,11 @@ public class GraphDisplaySet {
 		dataSet = data;
 		updater = new UpdateManager(delay);
 		createPartControl(parent);
-		
+
 		builders = new ArrayList<AbstractChartBuilder>();
 		tabListeners = new ArrayList<ITabListener>();
 	}
-	
+
 	/**
 	 * This method creates the framework for what will be displayed by this dialog box.
 	 * @param parent The composite that will contain all the elements from this dialog
@@ -114,12 +114,12 @@ public class GraphDisplaySet {
 
 		//This is a tab/button for opening new graphs
 		CTabItem newGraph = new CTabItem(folder, SWT.NONE);
-		newGraph.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GraphingPlugin.PLUGIN_ID, "icons/actions/new_wiz.gif").createImage());
-		newGraph.setToolTipText(Localization.getString("GraphDisplaySet.DataView"));
+		newGraph.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GraphingPlugin.PLUGIN_ID, "icons/actions/new_wiz.gif").createImage()); //$NON-NLS-1$
+		newGraph.setToolTipText(Localization.getString("GraphDisplaySet.DataView")); //$NON-NLS-1$
 
 		//Tab containing the data table
 		CTabItem item = new CTabItem(folder, SWT.NONE);
-		item.setText(Localization.getString("GraphDisplaySet.DataView"));
+		item.setText(Localization.getString("GraphDisplaySet.DataView")); //$NON-NLS-1$
 		Composite c = new Composite(folder, SWT.NONE);
 		GridLayout grid = new GridLayout();
 		grid.marginHeight = 0;
@@ -135,11 +135,11 @@ public class GraphDisplaySet {
 		folder.setSelection(item);
 		lastSelectedTab = 1;
 	}
-	
+
 	public IDataSet getDataSet() {
 		return dataSet;
 	}
-	
+
 	/**
 	 * Finds the graph that is open in the current tab
 	 * @return The graph that is currently visible on the screen
@@ -149,7 +149,7 @@ public class GraphDisplaySet {
 			return null;
 		return builders.get(folder.getSelectionIndex()-2);
 	}
-	
+
 	public void setFocus() {}
 
 	/**
@@ -169,7 +169,7 @@ public class GraphDisplaySet {
 		}
 		listener = null;
 	}
-	
+
 	/**
 	 * This class handles switching between tabs and creating new graphs.
 	 * When the user selects the first tab a new dialog is displayed for
@@ -197,10 +197,10 @@ public class GraphDisplaySet {
 					GraphComposite gc = new GraphComposite(folder, SWT.FILL, gd, dataSet);
 					gc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 					folder.setSelection(item);
-					
+
 					AbstractChartBuilder g = gc.getCanvas();
 					item.setControl(gc);
-					
+
 					if(null != g) {
 						if(null != updater)
 							updater.addUpdateListener(g);
@@ -214,25 +214,25 @@ public class GraphDisplaySet {
 			fireTabChangedEvent();
 		}
 	}
-	
+
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
-	
+
 	public void removeTabListener(ITabListener listener) {
 		tabListeners.remove(listener);
 	}
-	
+
 	private void fireTabCloseEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
 			(tabListeners.get(i)).tabClosed();
 	}
-	
+
 	private void fireTabOpenEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
 			(tabListeners.get(i)).tabOpened();
 	}
-	
+
 	private void fireTabChangedEvent() {
 		for(int i=0; i<tabListeners.size(); i++)
 			(tabListeners.get(i)).tabChanged();
@@ -244,6 +244,6 @@ public class GraphDisplaySet {
 	private ButtonClickListener listener;
 	private UpdateManager updater;
 	private ArrayList<ITabListener> tabListeners;
-	
+
 	private ArrayList<AbstractChartBuilder> builders;
 }

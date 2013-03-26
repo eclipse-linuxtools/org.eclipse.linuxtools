@@ -91,11 +91,11 @@ public class StapNewWizard extends Wizard implements INewWizard {
 		try {
 			getContainer().run(true, false, op);
 		} catch (InterruptedException e) {
-			MessageDialog.openError(getShell(), "Error", e.getLocalizedMessage());
+			MessageDialog.openError(getShell(), "Error", e.getLocalizedMessage()); //$NON-NLS-1$
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException.getMessage());
+			MessageDialog.openError(getShell(), "Error", realException.getMessage()); //$NON-NLS-1$
 			return false;
 		}
 		return true;

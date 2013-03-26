@@ -22,15 +22,15 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class IDESessionSettings {
-	public static String tapsetLocation = "";
-	
+	public static String tapsetLocation = ""; //$NON-NLS-1$
+
 	/**
 	 * Use {@link IDESessionSettings#setActiveSTPEditor(STPEditor)} and
-	 * {@link IDESessionSettings#getActiveSTPEditor()} 
+	 * {@link IDESessionSettings#getActiveSTPEditor()}
 	 */
 	private static STPEditor activeSTPEditor = null;
 	public static String password = null;
-	
+
 	/**
 	 * Returns the most recent active {@link STPEditor} script editor if one was
 	 * set. If one was not set and there is only one {@link STPEditor} script editor

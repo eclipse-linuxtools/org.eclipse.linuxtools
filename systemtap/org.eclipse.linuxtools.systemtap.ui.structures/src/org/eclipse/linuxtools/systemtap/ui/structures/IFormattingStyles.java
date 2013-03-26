@@ -21,9 +21,9 @@ public interface IFormattingStyles {
 	public static final int HEX			= 4;
 	public static final int OCTAL		= 5;
 	public static final int BINARY		= 6;
-	
-	public static String[] FORMAT_TITLES = {Localization.getString("IFormattingStyles.Unformatted"), Localization.getString("IFormattingStyles.String"), Localization.getString("IFormattingStyles.Date"), Localization.getString("IFormattingStyles.Double"), Localization.getString("IFormattingStyles.Hex"), Localization.getString("IFormattingStyles.Octal"), Localization.getString("IFormattingStyles.Binary")};
-	
+
+	public static String[] FORMAT_TITLES = {Localization.getString("IFormattingStyles.Unformatted"), Localization.getString("IFormattingStyles.String"), Localization.getString("IFormattingStyles.Date"), Localization.getString("IFormattingStyles.Double"), Localization.getString("IFormattingStyles.Hex"), Localization.getString("IFormattingStyles.Octal"), Localization.getString("IFormattingStyles.Binary")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+
 	public void setFormat(int format);
 	public String format(String s);
 	public int getFormat();

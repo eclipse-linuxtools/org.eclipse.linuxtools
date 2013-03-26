@@ -17,26 +17,26 @@ import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 
 
 public class ConditionalExpressionValidator implements IInputValidator {
-	
+
 	/**
 	 * Determines whether or not the string is valid within the contraints.
-	 * 
+	 *
 	 * @param s The string to check.
-	 * 
+	 *
 	 * @return The return message.
 	 */
 	 @Override
 	public String isValid(String s) {
 		if(null == s)
-			return Localization.getString("ConditionalExpressionValidator.NotNull");
-		if(!s.startsWith("if"))
-			return Localization.getString("ConditionalExpressionValidator.StartWithIf");
-		if(!s.contains("("))
-			return Localization.getString("ConditionalExpressionValidator.MustContain");
-		if(!s.endsWith(")"))
-			return Localization.getString("ConditionalExpressionValidator.MustEndWith");
+			return Localization.getString("ConditionalExpressionValidator.NotNull"); //$NON-NLS-1$
+		if(!s.startsWith("if")) //$NON-NLS-1$
+			return Localization.getString("ConditionalExpressionValidator.StartWithIf"); //$NON-NLS-1$
+		if(!s.contains("(")) //$NON-NLS-1$
+			return Localization.getString("ConditionalExpressionValidator.MustContain"); //$NON-NLS-1$
+		if(!s.endsWith(")")) //$NON-NLS-1$
+			return Localization.getString("ConditionalExpressionValidator.MustEndWith"); //$NON-NLS-1$
 		if(s.length() < 5)
-			return Localization.getString("ConditionalExpressionValidator.MustEnterSomething");
+			return Localization.getString("ConditionalExpressionValidator.MustEnterSomething"); //$NON-NLS-1$
 		return null;
 	}
 }

@@ -12,13 +12,13 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures;
 
 public final class NumberType {
-	
+
 	/**
 	 * Returns a new instance of the passed in num of type orig.
-	 * 
+	 *
 	 * @param orig The desired datatype.
 	 * @param num The number to replicate.
-	 * 
+	 *
 	 * @return The new cast number.
 	 */
 	public static Number getNumber(Number orig, double num) {
@@ -34,12 +34,12 @@ public final class NumberType {
 			return Short.valueOf((short)num);
 		return Integer.valueOf((int)num);
 	}
-	
+
 	/**
 	 * Takes an array of objects and returns an array of Numbers.
-	 * 
+	 *
 	 * @param o The array of objects to convert.
-	 * 
+	 *
 	 * @return The array of Numbers from o.
 	 */
 	public static Number[] obj2num(Object[] o) {
@@ -49,17 +49,17 @@ public final class NumberType {
 
 		return arr;
 	}
-	
+
 	/**
 	 * Takes an array of Numbers and returns an array of objects.
-	 * 
+	 *
 	 * @param o The array of Numbers to convert.
-	 * 
+	 *
 	 * @return The array of objects from o.
 	 */
 	public static Number obj2num(Object o) {
 		Number n = null;
-	
+
 		try {
 			n = cleanObj2Num(o);
 		} catch(NumberFormatException e ) {
@@ -67,13 +67,13 @@ public final class NumberType {
 		}
 		return n;
 	}
-	
+
 	/**
-	 * Returns an array of Numbers type if they are Numbers, otherwise, returns Doubles and Longs as appropriate 
+	 * Returns an array of Numbers type if they are Numbers, otherwise, returns Doubles and Longs as appropriate
 	 * based on whether or not it has a '.'
-	 * 
+	 *
 	 * @param o The object array to clean.
-	 * 
+	 *
 	 * @return The Number array cleaned.
 	 */
 	public static Number[] cleanObj2Num(Object[] o) {
@@ -85,18 +85,18 @@ public final class NumberType {
 	}
 
 	/**
-	 * Returns a Number type if its a Number, otherwise, returns Doubles and Longs as appropriate 
+	 * Returns a Number type if its a Number, otherwise, returns Doubles and Longs as appropriate
 	 * based on whether or not it has a '.'
-	 * 
+	 *
 	 * @param o The object to clean.
-	 * 
+	 *
 	 * @return The Number object cleaned.
 	 */
 	public static Number cleanObj2Num(Object o) {
 		if(o instanceof Number)
 			return (Number)o;
 		else {
-			if(o.toString().contains("."))
+			if(o.toString().contains(".")) //$NON-NLS-1$
 				return Double.valueOf(o.toString());
 			else
 				return Long.valueOf(o.toString());

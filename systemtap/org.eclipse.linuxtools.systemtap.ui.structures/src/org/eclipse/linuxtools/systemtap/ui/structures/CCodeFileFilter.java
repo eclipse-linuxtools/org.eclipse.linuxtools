@@ -29,7 +29,7 @@ public class CCodeFileFilter implements FileFilter {
 			return false;
 		return accept(f.getName(), f.isDirectory());
 	}
-	
+
 	/**
 	 * Checks a file type and only passes it (returns true) if it is either a directory, a .c, or a .h
 	 * file type.
@@ -49,6 +49,6 @@ public class CCodeFileFilter implements FileFilter {
 	}
 
 	public String getDescription() {
-		return ".c, .h files";
+		return ".c, .h files"; //$NON-NLS-1$
 	}
 }

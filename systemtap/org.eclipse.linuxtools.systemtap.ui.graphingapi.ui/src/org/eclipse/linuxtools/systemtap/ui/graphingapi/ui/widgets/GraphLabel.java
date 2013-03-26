@@ -31,7 +31,7 @@ public class GraphLabel implements IGraphPrimitive {
 		this.style = style;
 		this.parent = null;
 	}
-	
+
 	public GraphLabel(GraphCanvas canvas, String title, Point center, int size, int style) {
 		this(canvas, title, center, (float)size, style);
 	}
@@ -51,7 +51,7 @@ public class GraphLabel implements IGraphPrimitive {
 			width += gc.getCharWidth(title.charAt(i));
 		return width;
 	}
-	
+
 	@Override
 	public void calculateBounds() {
 		if(null != parent) {
@@ -63,25 +63,25 @@ public class GraphLabel implements IGraphPrimitive {
 			y = center.y - (height>>1);
 		}
 	}
-	
+
 	@Override
 	public boolean isVisible() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isUnder(Point loc) {
 		if(loc.x >= x && loc.y >= y && loc.x <= x+width && loc.y <=y+height)
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public void paint(GC gc) {
 		if(staticSize)
-			gc.setFont(new Font(canvas.getDisplay(), "Times", (int)size, style));
+			gc.setFont(new Font(canvas.getDisplay(), "Times", (int)size, style)); //$NON-NLS-1$
 		else
-			gc.setFont(new Font(canvas.getDisplay(), "Times", (int)(canvas.getSize().y * size), style));
+			gc.setFont(new Font(canvas.getDisplay(), "Times", (int)(canvas.getSize().y * size), style)); //$NON-NLS-1$
 
 		width = calculateSize(gc);
 		height = gc.getFontMetrics().getHeight();
@@ -90,17 +90,17 @@ public class GraphLabel implements IGraphPrimitive {
 		Color temp = gc.getForeground();
 		gc.setForeground(canvas.axisColor);
 		gc.drawText(title, x, y);
-		
+
 		gc.setForeground(temp);
 	}
-	
+
 	private GraphCanvas canvas;
 	private String title;
 	private int width;
 	private int height;
 	private Point center;
 	private Composite parent;
-	
+
 	private int x, y;
 	private float size;
 	private int style;

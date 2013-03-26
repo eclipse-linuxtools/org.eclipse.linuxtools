@@ -14,33 +14,33 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
 
 public class MaxAggregate implements IDataAggregate {
-	
+
 	/**
 	 * Ensure column isn't empty, then get the maximum of all the column's values.
-	 * 
+	 *
 	 * @param column The column to search.
-	 * 
+	 *
 	 * @return Maximum of all the column's values.
 	 */
 	@Override
 	public Number aggregate(Number[] column) {
 		if(column == null || column.length == 0)
 			return null;
-		
+
 		double num = Double.NEGATIVE_INFINITY;
-		
+
 		for(int i=0; i<column.length; i++) {
 			if(num < column[i].doubleValue())
 				num = column[i].doubleValue();
 		}
-		
+
 		return NumberType.getNumber(column[0], num);
 	}
-	
+
 	@Override
 	public String getID() {
 		return ID;
 	}
-	
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MaxAggregate";
+
+	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.MaxAggregate"; //$NON-NLS-1$
 }

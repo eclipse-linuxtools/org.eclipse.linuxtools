@@ -24,10 +24,10 @@ public class JarArchive {
 	public static void unjarFiles(String jarFileName, String destination) {
 		unjarFiles(jarFileName, destination, null);
 	}
-	
+
 	/**
 	 * Un-jars a specified file to a specified directory using a specificed path filter.
-	 * 
+	 *
 	 * @param jarFileName The file to extract.
 	 * @param destination Where to extract the files to.
 	 * @param pathFilter The path filter to apply.
@@ -46,13 +46,13 @@ public class JarArchive {
 						String dirName = jarEntryName.substring(0, lastDirSep);
 						(new File(destination + dirName)).mkdirs();
 					}
-	
-					if (!jarEntryName.endsWith("/")) {
+
+					if (!jarEntryName.endsWith("/")) { //$NON-NLS-1$
 						OutputStream out = new FileOutputStream(destination + jarEntryName);
 						InputStream in = jf.getInputStream(jarEntry);
-	
+
 						transferData(in, out);
-	
+
 						out.close();
 						in.close();
 					}
@@ -60,10 +60,10 @@ public class JarArchive {
 			}
 		} catch (IOException e) {}
 	}
-	
+
 	/**
 	 * Transfer data from one stream to another.
-	 * 
+	 *
 	 * @param in The stream to transfer from.
 	 * @param out The stream to transfer to.
 	 */
@@ -75,6 +75,6 @@ public class JarArchive {
 				out.write(buf, 0, len);
 		} catch (IOException e) {}
 	}
-	
+
 	private static final int BUFFER_SIZE = 1024;
 }
