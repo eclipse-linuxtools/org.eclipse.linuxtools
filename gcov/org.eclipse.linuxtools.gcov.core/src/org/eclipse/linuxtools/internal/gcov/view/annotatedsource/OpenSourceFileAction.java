@@ -65,9 +65,9 @@ public class OpenSourceFileAction {
 	}
 
 
-	private AnnotatedSourceEditorInput getInput(SourceFile sourceFile,
+	private GcovSourceEditorInput getInput(SourceFile sourceFile,
 			IFileStore fs) {
-		AnnotatedSourceEditorInput input = new AnnotatedSourceEditorInput(
+		GcovSourceEditorInput input = new GcovSourceEditorInput(
 				fs, sourceFile);
 		IWorkbenchPage p = CUIPlugin.getActivePage();
 		IEditorPart editorPart = p.findEditor(input);

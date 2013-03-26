@@ -34,6 +34,20 @@
             name="%gcovEditor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.linuxtools.internal.gcov.preferences.ColorPreferencePage"
+            id="org.eclipse.linuxtools.gcov.core.preferences.colors"
+            name="%colorprefpage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.gcov.preferences.ColorPreferencesInitializer">
+      </initializer>
+   </extension>
 
 
 </plugin>
