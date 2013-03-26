@@ -12,5 +12,5 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 
 public interface IErrorParser {
-	public String[][] parseOutput(String data);
+	String[][] parseOutput(String data);
 }
