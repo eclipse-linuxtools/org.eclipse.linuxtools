@@ -146,7 +146,7 @@ public class RemoteArgumentsTab extends AbstractLaunchConfigurationTab {
 
 	    protected String getAttributeValueFrom(Text text) {
 	        String content = text.getText().trim();
-	        content = content.replaceAll("\r\n", "\n");  // eliminate Windows \r line delimiter
+	        content = content.replaceAll("\r\n", "\n");  // eliminate Windows \r line delimiter //$NON-NLS-1$ //$NON-NLS-2$
 	        if (content.length() > 0) return content;
 	        return null;
 	    }

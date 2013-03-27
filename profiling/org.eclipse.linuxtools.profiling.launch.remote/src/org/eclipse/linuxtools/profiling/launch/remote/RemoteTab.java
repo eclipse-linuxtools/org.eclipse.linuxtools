@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@fedoraproject.org> - initial API and implementation
  *    Red Hat Inc. - modify code to be shared among tools
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.profiling.launch.remote;
 
 import org.eclipse.core.runtime.CoreException;
@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
-	
+
 	private TableViewer tableViewer;
 	private boolean isInitializing;
 	private IHost[] hosts;
@@ -73,7 +73,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 			}
 			return text;
 		}
-		
+
 	}
 
 	private class RemoteModelListener implements ISystemModelChangeListener {
@@ -87,7 +87,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 				}
 			});
 		}
-		
+
 	}
 
 	public RemoteTab(String name) {
@@ -97,21 +97,21 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		hosts = registry.getHosts();
 		registry.addSystemModelChangeListener(new RemoteModelListener());
 	}
-	
+
 	protected void localCreateControl(Composite top) {}
-	
+
 	public void createControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		top.setLayout(new GridLayout());
 		top.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		// Create Peers table
 		Label peersLabel = new Label(top, SWT.NONE);
 		peersLabel.setText(RemoteMessages.RemoteTab_label_hosts);
-		
+
 		tableViewer = new TableViewer(top, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-		
+
 		String[] titles = { RemoteMessages.RemoteTab_header_name, RemoteMessages.RemoteTab_header_hostname, RemoteMessages.RemoteTab_header_type };
 		int[] bounds = { 200, 100, 250, 100 };
 
@@ -125,7 +125,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		
+
 		tableViewer.setContentProvider(new ArrayContentProvider());
 		tableViewer.setLabelProvider(new RemoteSystemLabelProvider());
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -133,7 +133,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-		
+
 		while (!RSECorePlugin.isInitComplete(RSECorePlugin.INIT_ALL)) {
 			try {
 				RSECorePlugin.waitForInitCompletion();
@@ -145,9 +145,9 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
 		hosts = registry.getHosts();
 		tableViewer.setInput(hosts);
-		
+
 		localCreateControl(top);
-		
+
 		setControl(top);
 	}
 
@@ -163,7 +163,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 			String hostID = configuration.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
 			if (hostID != null) {
 				IHost[] hosts = (IHost[]) tableViewer.getInput();
-				
+
 				// Search for corresponding peer and select in table
 				for (int i = 0; i < hosts.length; i++) {
 					if (hosts[i].getName().equals(hostID)) {
@@ -189,34 +189,34 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 				configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, host.getName());
 		}
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		setErrorMessage(null);
 		boolean valid = false;
-		
+
 		ISelection selected = tableViewer.getSelection();
 		valid = selected != null && selected instanceof IStructuredSelection
 				&& !((IStructuredSelection) selected).isEmpty();
 		return valid;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	@Override
 	public Image getImage() {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/system_view.gif").createImage();
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/system_view.gif").createImage(); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected void updateLaunchConfigurationDialog() {
 		if (!isInitializing) {
 			super.updateLaunchConfigurationDialog();
-		}		
+		}
 	}
-	
+
 	private void refreshViewer() {
 		if (tableViewer != null && tableViewer.getContentProvider() != null) {
 			tableViewer.setInput(hosts);

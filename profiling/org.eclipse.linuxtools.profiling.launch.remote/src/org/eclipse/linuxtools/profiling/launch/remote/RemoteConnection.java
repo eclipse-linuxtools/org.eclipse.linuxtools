@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Red Hat Inc. - Initial implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.profiling.launch.remote;
 
 import java.io.File;
@@ -34,7 +34,8 @@ import org.eclipse.rse.subsystems.shells.core.subsystems.IRemoteCmdSubSystem;
 import org.eclipse.rse.subsystems.shells.core.subsystems.IRemoteCommandShell;
 
 public class RemoteConnection {
-	
+
+	private static final String UTF_8 = "UTF-8"; //$NON-NLS-1$
 	private ILaunchConfiguration config;
 	private IHost rseHost;
 	private IRemoteFileSubSystem fs;
@@ -48,10 +49,10 @@ public class RemoteConnection {
 
 	public RemoteConnection(String hostName) throws RemoteConnectionException {
 		this.config = null;
-		this.hostName = hostName; 
+		this.hostName = hostName;
 		initialize();
 	}
-	
+
 	// To run a remote command we use the RemoteCmdSubSystem, however,
 	// we cannot just call runCommand() on the subsystem as there is
 	// no way for us to tell when the command has completed.  To handle this,
@@ -60,7 +61,7 @@ public class RemoteConnection {
 	private static class RemoteCommand extends RemoteCommandShellOperation {
 
 		private boolean finished;
-		
+
 		public RemoteCommand(IRemoteCmdSubSystem cmdSubSystem, IRemoteFile pwd) {
 			super(cmdSubSystem, pwd);
 		}
@@ -68,7 +69,7 @@ public class RemoteConnection {
 		public boolean isFinished() {
 			return finished;
 		}
-		
+
 		@Override
 		public void handleCommandFinished(String cmd) {
 			finished = true;
@@ -78,7 +79,7 @@ public class RemoteConnection {
 		public void handleOutputChanged(String command, Object output) {
 			// do nothing
 		}
-		
+
 		@Override
 		public void finish() {
 			super.finish();
@@ -94,7 +95,7 @@ public class RemoteConnection {
 
 		}
 	}
-	
+
 	private void initialize() throws RemoteConnectionException {
 		try {
 			RSECorePlugin.waitForInitCompletion();
@@ -116,7 +117,7 @@ public class RemoteConnection {
 
 		if (hostName == null)
 			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
-		
+
 		IHost[] hosts = registry.getHosts();
 		for (int i = 0; i < hosts.length; ++i) {
 			IHost host = hosts[i];
@@ -125,10 +126,10 @@ public class RemoteConnection {
 				break;
 			}
 		}
-		
+
 		if (rseHost == null)
 			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
-		
+
 		// Get pertinent remote RSE services
 		ISubSystem[] subSystems = registry.getSubSystems(rseHost);
 		for (int i = 0; i < subSystems.length; ++i) {
@@ -139,7 +140,7 @@ public class RemoteConnection {
 				rcs = (IRemoteCmdSubSystem)subSystem;
 			}
 		}
-		
+
 		try {
 			fs.connect(new NullProgressMonitor(), false);
 		} catch (Exception e) {
@@ -147,24 +148,24 @@ public class RemoteConnection {
 		}
 
 	}
-	
+
 	/**
 	 * Return the id for this remote connection.
-	 * 
+	 *
 	 * @return id
 	 */
 	public String getId() {
 		return rseHost.getName();
 	}
-	
+
 	/***
 	 * Upload files to remote target directory.  This method is recursive.  If a local directory is
 	 * specified as the input, then all folders and files are uploaded to the remote target
-	 * directory.  The remote target directory must exist prior to calling this method or 
+	 * directory.  The remote target directory must exist prior to calling this method or
 	 * else failure will occur.
-	 * 
+	 *
 	 * A RemoteConnectionException is thrown on any failure condition.
-	 * 
+	 *
 	 * @param localPath - the local path to file
 	 * @param remotePath - the remote path
 	 * @param monitor - progress monitor
@@ -188,18 +189,18 @@ public class RemoteConnection {
 					}
 				}
 			} else {
-				fs.upload(f.getAbsolutePath().toString(), "UTF-8", remotePath.append(f.getName()).toString(), "UTF-8", monitor);
+				fs.upload(f.getAbsolutePath().toString(), UTF_8, remotePath.append(f.getName()).toString(), UTF_8, monitor);
 			}
 		} catch (SystemMessageException e1) {
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
-	
+
 
 	/**
 	 * Create a folder on the remote system.  A RemoteConnectionException is thrown if any failure
 	 * occurs.
-	 * 
+	 *
 	 * @param remoteFolderPath - path of the remote folder to create
 	 * @param monitor - progress monitor
 	 * @throws RemoteConnectionException
@@ -212,10 +213,10 @@ public class RemoteConnection {
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
-	
+
 	/**
 	 * Run a command on the remote system.
-	 * 
+	 *
 	 * @param command - the command to run remotely
 	 * @param remoteWorkingDir - the working directory on the remote system
 	 * @param monitor - progress monitor
@@ -232,7 +233,7 @@ public class RemoteConnection {
 				// wait until complete before continuing
 				Thread.sleep(100);
 			}
-			rc.finish(); 
+			rc.finish();
 			for (int i = 0; i < shell.getSize(); ++i) {
 				Object outputLine = shell.getOutputAt(i);
 				output.add(outputLine.toString());
@@ -242,12 +243,12 @@ public class RemoteConnection {
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
-	
+
 	/**
 	 * Remote delete function.  This method is recursive.  If a remote directory is specified,
 	 * the remote directory and all its contents are removed.  A RemoteConnectionException is
 	 * thrown if failure occurs for any reason.
-	 * 
+	 *
 	 * @param remotePath - the remote path of the file or folder to be deleted
 	 * @param monitor - progress monitor
 	 * @throws RemoteConnectionException
@@ -260,7 +261,7 @@ public class RemoteConnection {
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
-	
+
 	private void deleteRecursive(IRemoteFile rf, IProgressMonitor monitor) throws RemoteConnectionException {
 		try {
 			if (rf.isDirectory()) {
@@ -281,7 +282,7 @@ public class RemoteConnection {
 	 * is specified, all the contents of the folder are downloaded, including folders, and placed
 	 * under the directory specified by the localPath variable.  It is assumed that any remote non-binary
 	 * file is UTF-8.  A RemoteConnectionException is thrown if any failure occurs.
-	 * 
+	 *
 	 * @param remotePath - path to remote file or folder
 	 * @param localPath - local directory target
 	 * @param monitor - progress monitor
@@ -292,7 +293,6 @@ public class RemoteConnection {
 			IRemoteFile rf = fs.getRemoteFileObject(remotePath.toString(), monitor);
 			downloadRecursive(rf, localPath, monitor);
 		} catch (SystemMessageException e1) {
-			// TODO Auto-generated catch block
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 
@@ -313,13 +313,13 @@ public class RemoteConnection {
 					downloadRecursive(remotelogfile, dirPath, monitor);
 				}
 			} else {
-				fs.download(rf, localPath.append(rf.getName()).toString(), "UTF-8", monitor);
+				fs.download(rf, localPath.append(rf.getName()).toString(), UTF_8, monitor);
 			}
 		} catch (SystemMessageException e1) {
 			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
-	
-	
-	
+
+
+
 }
