@@ -40,7 +40,7 @@ public class SpecfilePackage extends SpecfileSection {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getPackageName();
@@ -50,15 +50,16 @@ public class SpecfilePackage extends SpecfileSection {
 		sections.add(section);
 	}
 
-	
+
 	public SpecfileSection[] getSections() {
 		SpecfileSection[] toReturn = new SpecfileSection[sections.size()];
 		return sections.toArray(toReturn);
 	}
 
 	public boolean hasChildren() {
-		if (sections != null && sections.size() > 0)
+		if (sections != null && sections.size() > 0) {
 			return true;
+		}
 		return false;
 	}
 
@@ -71,10 +72,10 @@ public class SpecfilePackage extends SpecfileSection {
 	public String getPackageName() {
 		return resolve(this.packageName);
 	}
-	
+
 	/**
-	 * Returns the full package name. 
-	 * 
+	 * Returns the full package name.
+	 *
 	 * @return The name of the package with the common part appended in front.
 	 */
 	public String getFullPackageName() {

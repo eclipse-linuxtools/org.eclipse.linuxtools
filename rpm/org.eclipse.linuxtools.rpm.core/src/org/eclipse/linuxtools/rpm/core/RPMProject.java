@@ -110,11 +110,11 @@ public class RPMProject {
 		try {
 			srpmFile.create(new FileInputStream(externalFile), false, null);
 		} catch (FileNotFoundException e) {
-			String throw_message = Messages
+			String throwMessage = Messages
 					.getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
 					rpmConfig.getSpecsFolder().getLocation().toOSString();
 			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-					throw_message, null);
+					throwMessage, e);
 			throw new CoreException(error);
 		}
 

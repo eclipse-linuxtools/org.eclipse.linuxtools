@@ -23,23 +23,23 @@ import org.eclipse.ui.ide.IDE;
 
 /**
  * Base class providing common functionality for rpmlint resolution.
- * 
+ *
  */
 public abstract class ARpmlintResolution implements IMarkerResolution2 {
 
-	
+
 	/**
-	 * No image for rpmlint resolutions for now. 
-	 * 
+	 * No image for rpmlint resolutions for now.
+	 *
 	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
 	 */
 	public Image getImage() {
 		return null;
 	}
-	
+
 	/**
 	 * Returns the SpecfileEditor for the given IMarker if any.
-	 * 
+	 *
 	 * @param marker The marker to use for retrieving the editor.
 	 * @return The SpecfileEditor this marker is from or null if it's not a SpecfileEditor.
 	 */
@@ -58,7 +58,6 @@ public abstract class ARpmlintResolution implements IMarkerResolution2 {
 		if (!(part instanceof SpecfileEditor)) {
 			return null;
 		}
-		SpecfileEditor editor = (SpecfileEditor) part;
-		return editor;
+		return (SpecfileEditor) part;
 	}
 }

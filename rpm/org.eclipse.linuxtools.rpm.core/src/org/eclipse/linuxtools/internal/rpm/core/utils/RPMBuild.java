@@ -60,8 +60,9 @@ public class RPMBuild {
 	public RPMBuild(IProjectConfiguration config) {
 		IEclipsePreferences node = DefaultScope.INSTANCE
 				.getNode(IRPMConstants.RPM_CORE_ID);
-		if (config.getBuildFolder().getLocation() == null)
+		if (config.getBuildFolder().getLocation() == null) {
 			mainFolder = config.getSourcesFolder().getLocationURI().toString();
+		}
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
 		macroDefines.addAll(Arrays.asList(tmpMacroDefines));

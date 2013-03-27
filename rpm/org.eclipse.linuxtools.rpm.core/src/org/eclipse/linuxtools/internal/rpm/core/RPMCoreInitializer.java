@@ -25,9 +25,9 @@ public class RPMCoreInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,IRPMConstants.RPM_CORE_ID);
-		String user_name = System.getProperty("user.name"); //$NON-NLS-1$
+		String userName = System.getProperty("user.name"); //$NON-NLS-1$
 		store.setDefault(IRPMConstants.RPM_DISPLAYED_LOG_NAME, ".logfilename_" //$NON-NLS-1$
-				+ user_name);
+				+ userName);
 		store.setDefault(IRPMConstants.RPM_LOG_NAME, "rpmbuild.log"); //$NON-NLS-1$
 
 		store.setDefault(IRPMConstants.RPM_CMD, "/bin/rpm"); //$NON-NLS-1$

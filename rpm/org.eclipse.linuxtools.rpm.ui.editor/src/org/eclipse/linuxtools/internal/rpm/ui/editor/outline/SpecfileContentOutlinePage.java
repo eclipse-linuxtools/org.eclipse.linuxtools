@@ -27,7 +27,7 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 
 	private ITextEditor editor;
 	private IEditorInput input;
-	
+
 	public SpecfileContentOutlinePage(SpecfileEditor editor) {
 		super();
 		this.editor = editor;
@@ -52,8 +52,9 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 					public void run() {
 						if (!control.isDisposed()) {
 							control.setRedraw(false);
-							if (input != null)
+							if (input != null) {
 								viewer.setInput(input);
+							}
 							viewer.expandAll();
 							control.setRedraw(true);
 						}
@@ -62,7 +63,7 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 			}
 		}
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 
@@ -73,10 +74,11 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 		viewer.setLabelProvider(new SpecfileLabelProvider());
 		viewer.addSelectionChangedListener(this);
 
-		if (input != null)
+		if (input != null) {
 			viewer.setInput(input);
+		}
 	}
-	
+
 	/*
 	 * Change in selection
 	 */
@@ -84,23 +86,19 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 	public void selectionChanged(SelectionChangedEvent event)
 	{
 		super.selectionChanged(event);
-		
+
 		//find out which item in tree viewer we have selected, and set highlight range accordingly
 		ISelection selection = event.getSelection();
-		if (selection.isEmpty())
+		if (selection.isEmpty()) {
 			editor.resetHighlightRange();
-		else
-		{
+		} else {
 			SpecfileElement element = (SpecfileElement) ((IStructuredSelection) selection)
-					.getFirstElement();		
-			
+					.getFirstElement();
+
 			int start = element.getLineStartPosition();
-			try
-			{
+			try	{
 				editor.setHighlightRange(start, 1, true);
-			}
-			catch (IllegalArgumentException e)
-			{
+			} catch (IllegalArgumentException e) {
 				editor.resetHighlightRange();
 			}
 		}
