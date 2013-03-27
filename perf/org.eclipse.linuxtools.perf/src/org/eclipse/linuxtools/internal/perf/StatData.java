@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
+
 /**
  * This class handles the execution of the perf stat command
  * and stores the resulting data.
@@ -65,6 +69,44 @@ public class StatData extends AbstractDataManipulator {
 
 	protected String [] getArguments () {
 		return args;
+	}
+
+	/**
+	 * Save latest perf stat result under $workingDirectory/perf.stat. If file
+	 * already exists rename it to perf.old.stat, in order to keep a reference
+	 * to the previous session and be consistent with the way perf handles perf
+	 * report data files.
+	 */
+	public void updateStatData() {
+
+		// build file name format
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(PerfPlugin.PERF_COMMAND);
+		stringBuilder.append("%s."); //$NON-NLS-1$
+		stringBuilder.append(PerfSaveStatsHandler.DATA_EXT);
+		String statNameFormat = stringBuilder.toString();
+
+		// get current stat file
+		Path workingDir = new Path(getWorkDir().getAbsolutePath());
+		String curStatName = String.format(statNameFormat, ""); //$NON-NLS-1$
+		IPath curStatPath = workingDir.append(curStatName);
+		File curStatFile = new File(curStatPath.toOSString());
+
+		if (curStatFile.exists()) {
+			// get previous stat file
+			String oldStatName = String.format(statNameFormat, ".old"); //$NON-NLS-1$
+			IPath oldStatPath = workingDir.append(oldStatName);
+			File oldStatFile = oldStatPath.toFile();
+
+			if (oldStatFile.exists()) {
+				oldStatFile.delete();
+			}
+
+			curStatFile.renameTo(oldStatFile);
+		}
+
+		PerfSaveStatsHandler saveStats = new PerfSaveStatsHandler();
+		saveStats.saveData(PerfPlugin.PERF_COMMAND);
 	}
 
 }

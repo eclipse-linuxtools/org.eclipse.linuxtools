@@ -48,6 +48,9 @@ public abstract class AbstractDataManipulator {
 		return text;
 	}
 
+	protected File getWorkDir(){
+		return workDir;
+	}
 	public String getTitle () {
 		return title;
 	}

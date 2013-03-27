@@ -22,6 +22,7 @@ package org.eclipse.linuxtools.internal.perf.launch;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,6 @@ import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
 import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.linuxtools.internal.perf.ui.StatView;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
@@ -62,16 +62,10 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		// check if Perf exists in $PATH
 		if (! PerfCore.checkPerfInPath()) {
-			IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
+			IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID,
+					Messages.PerfLaunchConfigDelegate_perf_not_found); //$NON-NLS-1$
 			throw new CoreException(status);
 		}
-
-		//Find the binary path
-		IPath exePath = CDebugUtils.verifyProgramPath( config );
-
-		// Build the commandline string to run perf recording the given project
-		// Program args from launch config.
-		String arguments[] = getProgramArgumentsArray(config);
 
 		// Get working directory
 		File wd = getWorkingDirectory(config);
@@ -83,51 +77,16 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 
 		if (config.getAttribute(PerfPlugin.ATTR_ShowStat,
 				PerfPlugin.ATTR_ShowStat_default)) {
-
-			int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount,
-					PerfPlugin.ATTR_StatRunCount_default);
-			StringBuffer args = new StringBuffer();
-			for (String arg : arguments) {
-				args.append(arg);
-				args.append(" "); //$NON-NLS-1$
-			}
-			String title = renderProcessLabel("Performance counter stats for "
-							+ exePath.toOSString()
-							+ " " + args.toString() //$NON-NLS-1$
-							+ " (" + runCount + " runs)" ); //$NON-NLS-1$ /$NON-NLS-2$
-
-			StatData sd = null;
-			List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
-			String[] statEvents  = new String [] {};
-
-			if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
-				// gather selected events
-				statEvents = (configEvents == null) ? statEvents : configEvents.toArray(new String[]{});
-			}
-
-			sd = new StatData(title, wd, exePath.toOSString(), arguments, runCount, statEvents);
-			sd.setLaunch(launch);
-			sd.parse();
-			PerfPlugin.getDefault().setStatData(sd);
-
-			StringBuilder perfStatFile = new StringBuilder();
-			perfStatFile.append(PerfPlugin.PERF_COMMAND);
-			perfStatFile.append("."); //$NON-NLS-1$
-			perfStatFile.append(PerfSaveStatsHandler.DATA_EXT);
-
-			// perf.stat will be replaced by the most recent session
-			File latestStatData = new File(workingDir.append(
-					perfStatFile.toString()).toOSString());
-			if(latestStatData.exists()){
-				latestStatData.delete();
-			}
-
-			// keep track of most recent session in file perf.stat
-			PerfSaveStatsHandler saveStats = new PerfSaveStatsHandler();
-			saveStats.saveData(PerfPlugin.PERF_COMMAND);
-
-			StatView.refreshView();
+			showStat(config, launch);
 		} else {
+
+			//Find the binary path
+			IPath exePath = CDebugUtils.verifyProgramPath( config );
+
+			// Build the commandline string to run perf recording the given project
+			// Program args from launch config.
+			String arguments[] = getProgramArgumentsArray(config);
+
 			ArrayList<String> command = new ArrayList<String>();
 			// Get the base commandline string (with flags/options based on config)
 			command.addAll(Arrays.asList(PerfCore.getRecordString(config)));
@@ -135,7 +94,8 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			command.add(exePath.toOSString());
 			command.addAll(Arrays.asList( arguments));
 			String[] commandArray = command.toArray(new String[] {});
-			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
+			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
+					ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 
 			Process process;
 			try {
@@ -156,7 +116,8 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 
 					// Find the console
 					for(IConsole x : existing) {
-						if (x.getName().contains(renderProcessLabel(commandArray[0]))) {
+						if (x.getName().contains(renderProcessLabel(commandArray[0]))
+								&& x instanceof IOConsole) {
 							binaryOutCons = (IOConsole)x;
 						}
 					}
@@ -174,12 +135,12 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 						print = new PrintStream(outputTo);
 
 						for (int i = 0; i < commandArray.length; i++) {
-							print.print(commandArray[i] + " ");
+							print.print(commandArray[i] + " "); //$NON-NLS-1$
 						}
 
 						// Print Message
 						print.println();
-						print.println("Analysing recorded perf.data, please wait...");
+						print.println(Messages.PerfLaunchConfigDelegate_analyzing);
 						// Possibly should pass this (the console reference) on to
 						// PerfCore.Report if theres anything we ever want to spit
 						// out to user.
@@ -191,11 +152,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 
 				if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
 						PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
-					String title = renderProcessLabel(workingDir + "perf.data"); //$NON-NLS-1$
-					SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir);
-					sdData.parse();
-					PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
-					SourceDisassemblyView.refreshView();
+					showSourceDisassembly(workingDir);
 				}
 
 			} catch (InterruptedException e) {
@@ -203,6 +160,68 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Show source disassembly view.
+	 * @param workingDir working directory.
+	 */
+	private void showSourceDisassembly(IPath workingDir) {
+		String title = renderProcessLabel(workingDir + "perf.data"); //$NON-NLS-1$
+		SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir);
+		sdData.parse();
+		PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
+		SourceDisassemblyView.refreshView();
+	}
+
+	/**
+	 * Show statistics view.
+	 * @param config launch configuration
+	 * @param launch launch
+	 * @throws CoreException
+	 */
+	private void showStat(ILaunchConfiguration config, ILaunch launch)
+			throws CoreException {
+		//Find the binary path
+		IPath exePath = CDebugUtils.verifyProgramPath( config );
+
+		// Build the command line string
+		String arguments[] = getProgramArgumentsArray(config);
+
+		// Get working directory
+		IPath workingDir = PerfPlugin.getDefault().getWorkingDir();
+		File wd = workingDir.toFile();
+
+		int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount,
+				PerfPlugin.ATTR_StatRunCount_default);
+		StringBuffer args = new StringBuffer();
+		for (String arg : arguments) {
+			args.append(arg);
+			args.append(" "); //$NON-NLS-1$
+		}
+
+		Object[] titleArgs = new Object[]{exePath.toOSString(), args.toString(), String.valueOf(runCount)};
+		String title = MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs);
+
+		@SuppressWarnings("unchecked")
+		List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
+				PerfPlugin.ATTR_SelectedEvents_default);
+
+		String[] statEvents  = new String [] {};
+
+		if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
+			// gather selected events
+			statEvents = (configEvents == null) ? statEvents : configEvents.toArray(new String[]{});
+		}
+
+		StatData sd = new StatData(title, wd, exePath.toOSString(), arguments, runCount, statEvents);
+		sd.setLaunch(launch);
+		sd.parse();
+		PerfPlugin.getDefault().setStatData(sd);
+
+		sd.updateStatData();
+
+		StatView.refreshView();
 	}
 
 }
