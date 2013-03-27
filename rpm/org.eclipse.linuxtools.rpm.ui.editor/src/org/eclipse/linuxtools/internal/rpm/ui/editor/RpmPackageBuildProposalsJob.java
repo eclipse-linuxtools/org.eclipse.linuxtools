@@ -24,9 +24,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
@@ -39,22 +40,14 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		this.addJobChangeListener(updateFinishedListener);
 	}
 
-	private static final String JOB_NAME = Messages.RpmPackageBuildProposalsJob_0;
-
 	private static RpmPackageBuildProposalsJob job = null;
-
-	private static final IEclipsePreferences PREFERENCES = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 
 	private Object updatingLock = false;
 	private boolean updating = false;
 
-	private IJobChangeListener updateFinishedListener = new IJobChangeListener(){
-		public void sleeping(IJobChangeEvent event) {}
-		public void scheduled(IJobChangeEvent event) {}
-		public void running(IJobChangeEvent event) {}
-		public void awake(IJobChangeEvent event) {}
-		public void aboutToRun(IJobChangeEvent event) {}
-		
+	private IJobChangeListener updateFinishedListener = new JobChangeAdapter(){
+
+		@Override
 		public void done(IJobChangeEvent event) {
 			synchronized (updatingLock) {
 				updating = false;
@@ -62,7 +55,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 			}
 		}
 	};
-	
+
 	/**
 	 * If the updates thread has not finished updating this function blocks
 	 * the current thread until that job is done.
@@ -70,17 +63,15 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	public static void waitForUpdates (){
 		if (job != null){
 			try {
-
 				synchronized (job.updatingLock){
 					if (job.updating){
-						job.updatingLock.wait();						
+						job.updatingLock.wait();
 					}
 				}
-
 			} catch (InterruptedException e) {}
 		}
 	}
-	
+
 	protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
 		public void preferenceChange(PreferenceChangeEvent event) {
 			if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
@@ -91,7 +82,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
@@ -101,7 +92,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
 	 */
 	@Override
@@ -117,15 +108,16 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		boolean runJob = false;
 		// Today's date
 		Date today = new Date();
-		if (PREFERENCES
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+		if (preferences
 				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, PreferenceConstants.DP_RPM_LIST_BACKGROUND_BUILD)) {
-			int period = PREFERENCES
+			int period = preferences
 					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
 			// each time that the plugin is loaded.
 			if (period == 1) {
 				runJob = true;
 			} else {
-				long lastBuildTime = PREFERENCES
+				long lastBuildTime = preferences
 						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, PreferenceConstants.DP_RPM_LIST_LAST_BUILD);
 				if (lastBuildTime == 0) {
 					runJob = true;
@@ -142,14 +134,14 @@ public final class RpmPackageBuildProposalsJob extends Job {
 			}
 			if (runJob) {
 				if (job == null) {
-					job = new RpmPackageBuildProposalsJob(JOB_NAME);
+					job = new RpmPackageBuildProposalsJob(Messages.RpmPackageBuildProposalsJob_0);
 					job.lockAndSchedule();
-					PREFERENCES.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
+					preferences.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 							.getTime());
 				} else {
 					job.cancel();
 					job.lockAndSchedule();
-					PREFERENCES.putLong(
+					preferences.putLong(
 							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 									.getTime());
 				}
@@ -162,7 +154,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		}
 	}
 
-	
+
 	/**
 	 * Puts the object in the updating state so that any objets
 	 * requesting information will be made to wait until the update
@@ -177,7 +169,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	/**
 	 * Retrieve the package list
-	 * 
+	 *
 	 * @param monitor
 	 *            to update
 	 * @return a <code>IStatus</code>
@@ -242,7 +234,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 			}
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
-			return null;
+			return Status.CANCEL_STATUS;
 		} finally {
 			monitor.done();
 		}
@@ -253,14 +245,15 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	/**
 	 * Enable and disable the property change listener.
-	 * 
+	 *
 	 * @param activated Flag indicating whether the listener to be enabled or disabled.
 	 */
 	public static void setPropertyChangeListener(boolean activated) {
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		if (activated) {
-			PREFERENCES.addPreferenceChangeListener(PROPERTY_LISTENER);
+			preferences.addPreferenceChangeListener(PROPERTY_LISTENER);
 		} else {
-			PREFERENCES.removePreferenceChangeListener(PROPERTY_LISTENER);
+			preferences.removePreferenceChangeListener(PROPERTY_LISTENER);
 		}
 	}
 
