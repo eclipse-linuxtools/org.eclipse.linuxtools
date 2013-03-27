@@ -33,12 +33,13 @@ public class SourceComparatorTest extends FileTestCase {
 		int i = 1;
 		for (SpecfileSource patch : patches) {
 			i++;
-			if (i == 2)
+			if (i == 2) {
 				assertEquals(2, patch.getNumber());
-			else if (i == 3)
+			} else if (i == 3) {
 				assertEquals(3, patch.getNumber());
-			else
+			} else {
 				fail();
+			}
 		}
 	}
 

@@ -24,10 +24,9 @@ import org.junit.Test;
  */
 public class HeaderRecognitionTest extends FileTestCase {
 
-	String testText;
 	@Test
 	public void testGetSimpleSectionName() {
-		testText = "%prep";
+		String testText = "%prep";
 		SpecfileElement element;
 
 		newFile(testText);
@@ -38,7 +37,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	}
 	@Test
 	public void testGetComplexSectionName1() {
-		testText = "%post";
+		String testText = "%post";
 		SpecfileElement element;
 
 		newFile(testText);
@@ -50,7 +49,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	}
 	@Test
 	public void testGetComplexSectionName2() {
-		testText = "%post -n";
+		String testText = "%post -n";
 		newFile(testText);
 		specfile = parser.parse(testDocument);
 
@@ -63,7 +62,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	}
 	@Test
 	public void testGetComplexSectionName3() {
-		testText = "%post -n name";
+		String testText = "%post -n name";
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
@@ -78,7 +77,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	public void testGetComplexSectionName4() {
 		// FIXME: check for rest of line when -p is implemented
 		// this should be an error case
-		testText = "%post -n name -p";
+		String testText = "%post -n name -p";
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
@@ -93,7 +92,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	public void testGetComplexSectionName5() {
 		// FIXME: check for rest of line when -p is implemented
 		// "blah bleh" should become the actual text of the section
-		testText = "%post -n name -p blah bleh";
+		String testText = "%post -n name -p blah bleh";
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
@@ -106,7 +105,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	}
 	@Test
 	public void testGetComplexSectionName6() {
-		testText = "%post -p blah bleh";
+		String testText = "%post -p blah bleh";
 		// FIXME: check for rest of line when -p is implemented
 		// "blah bleh" should become the actual text of the section
 
@@ -122,7 +121,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 	}
 	@Test
 	public void testGetComplexSectionName7() {
-		testText = "%post -n -p blah";
+		String testText = "%post -n -p blah";
 
 		newFile(testText);
 		specfile = parser.parse(testDocument);
@@ -134,45 +133,4 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
 	}
-
-	// public void testGetComplexSectionName8() {
-	// testText = "%files blah -f blah.list";
-	//
-	// SpecfileElement element;
-	// specfile = new Specfile("testspec");
-	// try {
-	// element = parser.parseLine(testText, specfile);
-	// fail();
-	// } catch (Exception e) {
-	// assertTrue(e.getMessage().startsWith(""));
-	// }
-	// }
-	//	 
-	// public void testGetComplexSectionName9() {
-	// testText = "%files blah blah -f blah.list";
-	//
-	// SpecfileElement element;
-	// specfile = new Specfile("testspec");
-	// try {
-	// element = parser.parseLine(testText, specfile);
-	// fail();
-	// } catch (Exception e) {
-	// assertTrue(e.getMessage().startsWith(""));
-	// }
-	// }
-	//	 
-	// public void testGetComplexSectionName10() {
-	// // FIXME: can you have multiple files lists?
-	// testText = "%files blah -f blah.list blah2.list";
-	//
-	// SpecfileElement element;
-	// specfile = new Specfile("testspec");
-	// try {
-	// element = parser.parseLine(testText, specfile);
-	// fail();
-	// } catch (Exception e) {
-	// assertTrue(e.getMessage().startsWith(""));
-	// }
-	// }
-
 }

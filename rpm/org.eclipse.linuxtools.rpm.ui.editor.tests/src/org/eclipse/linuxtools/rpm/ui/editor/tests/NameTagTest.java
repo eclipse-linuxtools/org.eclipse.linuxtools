@@ -18,11 +18,8 @@ import org.junit.Test;
 public class NameTagTest extends FileTestCase {
 	@Test
 	public void testResolvedNameTag() {
-
 		String testText = "%define blah notblah\nName: %{blah}";
-
 		newFile(testText);
-
 		assertEquals("notblah", specfile.getName());
 	}
 
@@ -61,7 +58,6 @@ public class NameTagTest extends FileTestCase {
 	@Test
 	public void testNullNameTag2() {
 		String testText = "Name: ";
-
 		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
@@ -73,7 +69,6 @@ public class NameTagTest extends FileTestCase {
 	@Test
 	public void testMultipleNamesTag() {
 		String testText = "Name: blah bleh";
-
 		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
@@ -85,7 +80,6 @@ public class NameTagTest extends FileTestCase {
 	@Test
 	public void testMultipleNamesTag2() {
 		String testText = "Name: 	blah bleh";
-
 		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());

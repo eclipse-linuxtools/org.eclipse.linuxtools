@@ -26,7 +26,6 @@ public class PatchApplicationTest extends FileTestCase {
 	public void testParsePatchApplication() {
 		String specText = "Patch3: somefilesomewhere.patch\n%patch3";
 		String testText = "%patch3";
-
 		newFile(specText);
 		SpecfileElement element = parser.parseLine(testText, specfile, 1);
 		assertEquals(SpecfilePatchMacro.class, element.getClass());
@@ -35,7 +34,6 @@ public class PatchApplicationTest extends FileTestCase {
 	@Test
 	public void testPatchLineNumber() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
-
 		newFile(specText);
 		SpecfileSource thisPatch = specfile.getPatch(3);
 		List<Integer> usedList = new ArrayList<Integer>(1);
@@ -46,7 +44,6 @@ public class PatchApplicationTest extends FileTestCase {
 	public void testMultiplePatchLineNumbers() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3"
 				+ "\n" + "blah" + "\n" + "%patch3";
-
 		newFile(specText);
 		SpecfileSource thisPatch = specfile.getPatch(3);
 		List<Integer> usedList = new ArrayList<Integer>(2);

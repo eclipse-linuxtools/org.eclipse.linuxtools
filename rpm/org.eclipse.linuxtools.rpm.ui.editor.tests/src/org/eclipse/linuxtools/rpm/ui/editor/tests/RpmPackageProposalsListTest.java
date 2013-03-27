@@ -11,24 +11,26 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.fail;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmPackageProposalsList;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.junit.Before;
+import org.junit.Test;
 
-public class RpmPackageProposalsListTest extends TestCase {
+public class RpmPackageProposalsListTest {
 
 	private RpmPackageProposalsList packageProposalsList;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() {
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
@@ -42,6 +44,7 @@ public class RpmPackageProposalsListTest extends TestCase {
 		packageProposalsList = new RpmPackageProposalsList();
 	}
 
+	@Test
 	public final void testGetProposals() {
 		List<String[]> proposals = packageProposalsList.getProposals("setup");
 		if (!(proposals.size() == 1)) {
@@ -49,6 +52,7 @@ public class RpmPackageProposalsListTest extends TestCase {
 		}
 	}
 
+	@Test
 	public final void testGetValue() {
 		if (Utils.fileExist("/bin/rpm")) {
 			if (!packageProposalsList.getValue("rpm").startsWith(
@@ -58,12 +62,14 @@ public class RpmPackageProposalsListTest extends TestCase {
 		}
 	}
 
+	@Test
 	public final void testGetValue2() {
 		if (packageProposalsList.getValue("test").indexOf("test") == -1) {
 			fail("getValue failed, test package info doesn't contain 'test'");
 		}
 	}
 
+	@Test
 	public final void testGetRpmInfo() {
 		if (Utils.fileExist("/bin/rpm")) {
 			if (!packageProposalsList.getRpmInfo("rpm").startsWith(
@@ -73,6 +79,7 @@ public class RpmPackageProposalsListTest extends TestCase {
 		}
 	}
 
+	@Test
 	public final void testGetRpmInfo2() {
 		if (packageProposalsList.getValue("test").indexOf("test") == -1) {
 			fail("getRpmInfo failed, test package info doesn't contain 'test'");

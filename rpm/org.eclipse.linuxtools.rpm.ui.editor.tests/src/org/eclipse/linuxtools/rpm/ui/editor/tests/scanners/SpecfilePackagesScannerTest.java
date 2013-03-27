@@ -97,32 +97,24 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 */
 	@Test
 	public void testPackage() {
-		try {
-			token = getToken(2);
-			assertTrue(token instanceof Token);
-			assertEquals(16, rulesBasedScanner.getTokenLength());
-			assertEquals(9, rulesBasedScanner.getTokenOffset());
-			ta = (TextAttribute) token.getData();
-			assertEquals((ta.getForeground()).getRGB(),
-					ISpecfileColorConstants.PACKAGES);
-		} catch (Exception e) {
-			fail();
-		}
+		token = getToken(2);
+		assertTrue(token instanceof Token);
+		assertEquals(16, rulesBasedScanner.getTokenLength());
+		assertEquals(9, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals((ta.getForeground()).getRGB(),
+				ISpecfileColorConstants.PACKAGES);
 	}
 
 	@Test
 	public void testMacro() {
-		try {
-			token = getToken(4);
-			assertTrue(token instanceof Token);
-			assertEquals(7, rulesBasedScanner.getTokenLength());
-			assertEquals(26, rulesBasedScanner.getTokenOffset());
-			ta = (TextAttribute) token.getData();
-			assertEquals((ta.getForeground()).getRGB(),
-					ISpecfileColorConstants.MACROS);
-		} catch (Exception e) {
-			fail();
-		}
+		token = getToken(4);
+		assertTrue(token instanceof Token);
+		assertEquals(7, rulesBasedScanner.getTokenLength());
+		assertEquals(26, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals((ta.getForeground()).getRGB(),
+				ISpecfileColorConstants.MACROS);
 	}
 	/**
 	 * Check that comments are not handle with the package scanner. See bug:

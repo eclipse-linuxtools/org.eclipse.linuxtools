@@ -21,22 +21,4 @@ public class LicenseTagTest extends FileTestCase {
 		newFile(testText);
 		assertEquals("EPL", specfile.getLicense());
 	}
-	// FIXME: investigate whether we should keep this or not
-	// See SpecfileParser at line 450
-	// public void testMultipleLicenseTag() {
-	// String testText = "License: Eclipse Public License";
-	// try {
-	// newFile(testText);
-	// IMarker marker= testProject.getFailureMarkers()[0];
-	// assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-	// assertEquals(31, marker.getAttribute(IMarker.CHAR_END, 0));
-	// assertEquals(IMarker.SEVERITY_WARNING,
-	// marker.getAttribute(IMarker.SEVERITY, -1));
-	// assertEquals("License should be an acronym.",
-	// marker.getAttribute(IMarker.MESSAGE, ""));
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// fail();
-	// }
-	// }
 }
