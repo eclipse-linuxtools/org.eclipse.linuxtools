@@ -4,16 +4,16 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.callgraph;
 
-public class CallGraphConstants {
-	
-	public static final String viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph"; //$NON-NLS-1$
-	
+public interface CallGraphConstants {
+
+	String VIEW_ID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
+	String PLUGIN_ID = "org.eclipse.linuxtools.callgraph"; //$NON-NLS-1$
+
 }

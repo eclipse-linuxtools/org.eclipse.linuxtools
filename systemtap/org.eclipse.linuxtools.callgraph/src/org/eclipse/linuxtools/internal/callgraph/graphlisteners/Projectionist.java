@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Display;
  */
 public class Projectionist extends Job {
 	private StapGraph graph;
-	private int frame_time = 2000;
+	private int frameTime = 2000;
 	private boolean pause;
 	private boolean busy;
-	
+
 
 	/**
 	 * @param name
@@ -37,7 +37,7 @@ public class Projectionist extends Job {
 	public Projectionist(String name, StapGraph graph, int time) {
 		super(name);
 		this.graph = graph;
-		this.frame_time = time;
+		this.frameTime = time;
 		pause = false;
 		busy = false;
 	}
@@ -55,11 +55,12 @@ public class Projectionist extends Job {
 				}
 				continue;
 			}
-			
-			if (pause)
+
+			if (pause) {
 				return Status.OK_STATUS;
-			
-			if (System.currentTimeMillis() - snapshot >= frame_time) {
+			}
+
+			if (System.currentTimeMillis() - snapshot >= frameTime) {
 				snapshot = System.currentTimeMillis();
 				busy = true;
 				Display.getDefault().asyncExec(new Runnable() {
@@ -69,7 +70,7 @@ public class Projectionist extends Job {
 						busy = false;
 					}
 				});
-				
+
 			} else {
 				try {
 					Thread.sleep(500);
@@ -81,10 +82,10 @@ public class Projectionist extends Job {
 				break;
 			}
 		}
-		
+
 		return Status.CANCEL_STATUS;
 	}
-	
+
 	/**
 	 * Projectionist will pause -- reschedule job to continue
 	 */

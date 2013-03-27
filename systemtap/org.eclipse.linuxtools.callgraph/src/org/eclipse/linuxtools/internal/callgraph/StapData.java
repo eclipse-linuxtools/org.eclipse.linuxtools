@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 /**
- * Contains information to populate StapNodes with 
+ * Contains information to populate StapNodes with
  *
  */
 public class StapData {
@@ -32,12 +32,12 @@ public class StapData {
     public List<Integer> children, collapsedChildren;
     private StapGraph graph;		//Store a reference to the parent graph
 
-	
+
 	/**
 	 * Initialize StapData object. This object is not intended to be called by users.
-	 * 
+	 *
 	 * @param graphModel StapGraph containing the StapNode that matches this StapData
-	 * @param style 
+	 * @param style
 	 * @param txt Text to be displayed when rendering the StapNode
 	 * @param time Time taken for this particular node to execute
 	 * @param called Number of times this particular node was called
@@ -45,7 +45,7 @@ public class StapData {
 	 * @param caller The parent of this node
 	 * @param isMarked
 	 */
-	public StapData(StapGraph graphModel, int style, String txt, 
+	public StapData(StapGraph graphModel, int style, String txt,
     		long time, int called, int currentID, int parent, boolean isMarked) {
         this.time = time;
         this.style = style;
@@ -64,29 +64,29 @@ public class StapData {
         this.levelOfRecursion = 0;
         this.marked = isMarked;
         this.uncollapsedPiece = -1;
-        
-        
+
+
     	//Add this data to the caller's list of IDs
 		if (this.parent != -1 && graphModel.getNodeData(this.parent) != null) {
 			graphModel.getNodeData(this.parent).addCallee(this.id);
 			this.levelOfRecursion = graphModel.getNodeData(this.parent).levelOfRecursion + 1;
 		}
-        
+
 		//---------------Recursion management
         //Insert new level if necessary
 		if (graphModel.levels.get(levelOfRecursion) == null)
 			graphModel.levels.put(levelOfRecursion, new ArrayList<Integer>());
         graphModel.levels.get(levelOfRecursion).add(this.id);
-        
+
 		//Keep track of the lowest level of recursion
 		if (levelOfRecursion > graphModel.getLowestLevelOfNodesAdded())
 			graphModel.setLowestLevelOfNodesAdded(levelOfRecursion);
     }
 
-    
+
     /**
      * Add the given id to the list of children, at the end.
-     * 
+     *
      * @param id
      * @return
      */
@@ -94,17 +94,17 @@ public class StapData {
     	children.add(id);
 		return id;
     }
-    
+
     /**
      * Creates a node in the given graphModel using this stapData
      * @param graphModel
      * @return the generated stapNode
      */
-    
+
     public StapNode makeNode(StapGraph graphModel) {
     	return new StapNode(graphModel, style, this);
     }
-    
+
     /**
      * Sort the list of callees according to time
      */
@@ -116,7 +116,7 @@ public class StapData {
     		if (tempList.get(graph.getNodeData(val).time) == null){
     			tempList.put(graph.getNodeData(val).time, new ArrayList<StapData>());
     		}
-    		
+
     		tempList.get(graph.getNodeData(val).time).add(graph.getNodeData(val));
     	}
 
@@ -129,10 +129,10 @@ public class StapData {
 			}
 			count++;
 		}
-		
+
     }
-    
-    
+
+
    /**
     * Indicate that this StapData is part of a collapsed node (will not be drawn in
     * uncollapsed mode)
@@ -142,15 +142,15 @@ public class StapData {
 		this.partOfCollapsedNode = partOfCollapsedNode;
 	}
 
-	
+
 	/**
 	 * Indicate that this StapData was marked by the user
 	 */
 	public void setMarked() {
 		marked = true;
 	}
-	
-	
+
+
 	/**
 	 * Check if this StapData is marked -- returns the result of
 	 * marked || markedMessage.length() > 0 (in case marked was not set)
@@ -160,7 +160,7 @@ public class StapData {
 		return marked || (markedMessage != null && markedMessage.length() > 0);
 	}
 
-	
+
 	public boolean isOnlyChildWithThisName() {
 		return onlyChildWithThisName;
 	}
@@ -176,7 +176,7 @@ public class StapData {
 	 * function will return graph.getEndTime() - time. In other words, getTime will assume
 	 * that only the start time has been recorded if time is abnormally large, and will compensate
 	 * by assuming that the node 'terminates' at the current endTime.
-	 * 
+	 *
 	 * @return long time
 	 */
 	public long getTime() {
@@ -189,7 +189,7 @@ public class StapData {
 
 	/**
 	 * Sets the time
-	 * 
+	 *
 	 * @param time
 	 */
 	public void setTime(long time) {
@@ -199,31 +199,34 @@ public class StapData {
 /**
  * Sets the message for this data object to the given string,
  * overwriting the current markedMessage. Sets marked to true.
- * 
+ *
  * Returns this.
  * @param message
  * @return this
  */
 	public StapData setMessage(String message) {
-		if (message == null || message.length() < 1)
+		if (message == null || message.length() < 1) {
 			return this;
+		}
 		this.markedMessage = message;
 		this.marked = true;
 		return this;
 	}
-	
-	
+
+
 	/**
 	 * Inserts the message after the current message. No spaces or newlines are appended.
 	 * @param message
 	 * @return
 	 */
 	public StapData insertMessage(String message) {
-		if (message == null || message.length() < 1)
+		if (message == null || message.length() < 1) {
 			return this;
+		}
 		String tmp = message;
-		if (this.markedMessage != null && this.markedMessage.length() > 0)
+		if (this.markedMessage != null && this.markedMessage.length() > 0) {
 			tmp = this.markedMessage + tmp;
+		}
 		this.markedMessage = tmp;
 		this.marked = true;
 		return this;
@@ -241,7 +244,7 @@ public class StapData {
     /**
      * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify, or check
      * isPartOfCollapseNode first. May return a negative number if invalid.
-     * 
+     *
      * @return The collapsed node this node is a part of (if any)
      */
     public int getPartOfCollapsedNode() {

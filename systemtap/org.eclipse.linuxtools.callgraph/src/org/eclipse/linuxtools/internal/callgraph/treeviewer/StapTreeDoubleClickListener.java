@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -35,9 +35,11 @@ public class StapTreeDoubleClickListener implements IDoubleClickListener {
 			return;
 		}
 		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-		if (selection.size() != 1) return;
-		
-		
+		if (selection.size() != 1) {
+			return;
+		}
+
+
 		//Expand the current node in the tree viewer and on the graph
         for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
         	StapData data = (StapData) iterator.next();
@@ -47,7 +49,7 @@ public class StapTreeDoubleClickListener implements IDoubleClickListener {
         	graph.draw(data.id);
         	graph.getNode(data.id).unhighlight();
         }
-        
+
         graph.setFocus();
 	}
 

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -24,12 +24,12 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * from scratch.
  */
 public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
-	
+
 	protected ArrayList<Long> list;
 	protected Long totalTime;
 	protected int graphWidth;
-	
-	
+
+
 	/**
 	 * Layout algorithm for the Aggregate View in Eclipse Callgraph, based on the GridLayoutAlgorithm in Zest.
 	 * @param styles
@@ -39,11 +39,12 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	 */
 	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width){
 		super(styles);
-		
+
 		list = new ArrayList<Long>();
-		for (Entry<String, Long> ent : entries)
+		for (Entry<String, Long> ent : entries) {
 			list.add(ent.getValue());
-		
+		}
+
 		this.totalTime = time;
 		this.graphWidth = width;
 	}
@@ -53,7 +54,7 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	 * of each node according to times called/total time
 	 */
 	@Override
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, 
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		final int minimumSize = 40;
 		double xcursor = 0.0;
@@ -65,7 +66,7 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
 
-			
+
 			sn.setSize(snWidth, snHeight);
 			if (xcursor + snWidth > graphWidth) {
 				//reaching the end of row, move to lower column

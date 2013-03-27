@@ -32,7 +32,7 @@ public class MouseListenerTest {
 		CallgraphView cView = (CallgraphView) ViewFactory.createView("org.eclipse.linuxtools.callgraph.callgraphview");
 
 		StapUIJob j = new StapUIJob("Test Graph UI Job", parse,
-				CallGraphConstants.viewID);
+				CallGraphConstants.VIEW_ID);
 		j.runInUIThread(new NullProgressMonitor());
 
 		StapGraphMouseListener mListener = cView.getGraph().getMouseListener();

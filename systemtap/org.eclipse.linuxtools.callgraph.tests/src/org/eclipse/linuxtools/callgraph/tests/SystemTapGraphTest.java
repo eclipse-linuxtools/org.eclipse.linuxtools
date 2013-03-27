@@ -36,9 +36,9 @@ public class SystemTapGraphTest {
 		parse.setSourcePath(Activator.getPluginLocation()+"eag.graph");
 		assertEquals(Status.OK_STATUS, parse.testRun(new NullProgressMonitor(), true));
 
-		StapUIJob j = new StapUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
+		StapUIJob j = new StapUIJob("Test Graph UI Job", parse, CallGraphConstants.VIEW_ID);
 		j.runInUIThread(new NullProgressMonitor());
-		CallgraphView cView = (CallgraphView)  ViewFactory.createView(CallGraphConstants.viewID);
+		CallgraphView cView = (CallgraphView)  ViewFactory.createView(CallGraphConstants.VIEW_ID);
 
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();
@@ -70,29 +70,29 @@ public class SystemTapGraphTest {
 				case 1:
 					break;
 				case 2:
-					act = cView.getView_refresh();
+					act = cView.getViewRefresh();
 					break;
 				case 3:
-					act = cView.getView_treeview();
+					act = cView.getViewTreeview();
 					break;
 				case 4:
-					act = cView.getView_aggregateview();
+					act = cView.getViewAggregateview();
 					break;
 				case 5:
-					act = cView.getView_levelview();
+					act = cView.getViewLevelview();
 					break;
 				case 6:
-					act = cView.getAnimation_fast();
+					act = cView.getAnimationFast();
 					break;
 				case 7:
 				case 8:
-					act = cView.getMode_collapsednodes();
+					act = cView.getModeCollapsednodes();
 					break;
 				case 9:
-					act = cView.getView_radialview();
+					act = cView.getViewRadialview();
 					break;
 				case 10:
-					act = cView.getMode_collapsednodes();
+					act = cView.getModeCollapsednodes();
 					break;
 				case 14:
 					String tempLocation = Activator.getPluginLocation()+"eag.graph2";
