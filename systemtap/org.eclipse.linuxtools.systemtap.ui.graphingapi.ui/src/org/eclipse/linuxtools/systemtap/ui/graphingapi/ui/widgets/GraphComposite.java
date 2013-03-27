@@ -50,10 +50,8 @@ public class GraphComposite extends Composite {
 
 		label = new Label(this, SWT.HORIZONTAL | SWT.BORDER | SWT.BOLD | SWT.CENTER);
 		scale = scales[7];
-		//label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
 		label.setText("-"); //$NON-NLS-1$
 		FormData data = new FormData();
-	//	data.top = new FormAttachment(0,0);
 		data.bottom = new FormAttachment(100,-4);
 		data.left = new FormAttachment(0, 2);
 		data.width = 15;
@@ -65,7 +63,7 @@ public class GraphComposite extends Composite {
 		zoomScale.setIncrement(1);
 		zoomScale.setPageIncrement(1);
 		zoomScale.setSelection(7);
-		zoomScale.setToolTipText("Increase/Decrease the no of X axis ticks");
+		zoomScale.setToolTipText("Increase/Decrease the no of X axis ticks"); //$NON-NLS-1$
 		data = new FormData();
 		data.left = new FormAttachment(label,2);
 		data.bottom = new FormAttachment(100, -4);
@@ -76,7 +74,6 @@ public class GraphComposite extends Composite {
 		pluslabel.setText("+"); //$NON-NLS-1$
 		pluslabel.setFont(new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD)); //$NON-NLS-1$
 		data = new FormData();
-//		data.top = new FormAttachment(0,0);
 		data.left = new FormAttachment(zoomScale,2);
 		data.bottom = new FormAttachment(100,-4);
 		data.width = 15;
@@ -86,7 +83,6 @@ public class GraphComposite extends Composite {
 		data = new FormData();
 		data.top = new FormAttachment(0,0);
 		data.bottom = new FormAttachment(label,-5);
-		//data.right = new FormAttachment(label,-10);
 		data.right = new FormAttachment(100,0);
 		data.left = new FormAttachment(0,0);
 		builder.build();
@@ -95,9 +91,6 @@ public class GraphComposite extends Composite {
 
 		builder.setLayoutData(data);
 
-		//builder.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-		//builder.setForeground(this.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-		//this.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		zoomScale.addSelectionListener(scaleListener);
 
 		//The scale zoom scrool doesn't make sense for charts without axis
@@ -121,11 +114,9 @@ public class GraphComposite extends Composite {
 
 		FormData data = new FormData();
 		data.top = new FormAttachment(0,0);
-		//data.bottom = new FormAttachment(100,0);
 		data.bottom = (withSidebar ? new FormAttachment(label,-7) : new FormAttachment(100, 0));
 		data.left = new FormAttachment(0,0);
 		data.right = new FormAttachment(100,0);
-//		data.right = (withSidebar ? new FormAttachment(label,-10) : new FormAttachment(100, 0));
 		builder.setLayoutData(data);
 
 		layout(true, true);
@@ -172,13 +163,6 @@ public class GraphComposite extends Composite {
 	/**
 	 * Returns the graph that is rendering to this composite.
 	 */
-/*	public IGraph getGraph() {
-		return graph;
-	}*/
-
-	/**
-	 * Returns the graph that is rendering to this composite.
-	 */
 	public AbstractChartBuilder getCanvas() {
 		return builder;
 	}
@@ -205,7 +189,7 @@ public class GraphComposite extends Composite {
 		super.dispose();
 	}
 
-	/*
+	/**
 	 * Listeners are below:
 	 * 	scaleListener - detects movement in the Scale widget and rescales the graph on change
 	 *  titleListener - A SelectionListener for the title button
@@ -222,9 +206,7 @@ public class GraphComposite extends Composite {
 			int index = scaler.getSelection();
 			if(scale != scales[index]) {
 				scale = scales[index];
-			//	label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
 				builder.setScale(scale);
-				//graph.setScale(scale);
 			}
 		}
 

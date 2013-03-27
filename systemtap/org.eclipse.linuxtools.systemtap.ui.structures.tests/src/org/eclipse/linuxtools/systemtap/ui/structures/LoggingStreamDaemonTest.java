@@ -40,7 +40,6 @@ public class LoggingStreamDaemonTest {
 
 		daemon.handleDataEvent("test");
 		assertTrue(daemon.saveLog(f));
-		//assertTrue("test".equals(daemon.getOutput()));
 		f.delete();
 		
 		f = new File("/root/");

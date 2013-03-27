@@ -118,7 +118,6 @@ public class CreateModuleHandler extends AbstractHandler {
 				buildArchive(archiveName, new File(script), meta);
 				cleanupFiles(new String[] { archiveName, meta.getAbsolutePath() });
 				updateDashboard();
-				// }
 			}
 		}
 		return null;
@@ -285,9 +284,6 @@ public class CreateModuleHandler extends AbstractHandler {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 			IViewPart ivp = p.findView(DashboardModuleBrowserView.ID);
 			((DashboardModuleBrowserView) ivp).refresh();
-
-			// p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID,
-			// PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		} catch (WorkbenchException we) {
 		}
 	}

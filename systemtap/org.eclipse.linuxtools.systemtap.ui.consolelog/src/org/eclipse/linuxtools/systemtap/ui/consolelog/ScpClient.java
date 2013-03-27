@@ -90,7 +90,7 @@ public class ScpClient {
 				int len = fis.read(buf, 0, buf.length);
 				if (len <= 0)
 					break;
-				out.write(buf, 0, len); // out.flush();
+				out.write(buf, 0, len);
 
 			}
 			fis.close();

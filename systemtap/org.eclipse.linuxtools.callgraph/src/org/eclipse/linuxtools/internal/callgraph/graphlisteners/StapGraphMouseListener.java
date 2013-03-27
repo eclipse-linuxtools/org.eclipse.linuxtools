@@ -24,13 +24,11 @@ import org.eclipse.zest.core.widgets.GraphNode;
 public class StapGraphMouseListener implements MouseListener {
 	private StapGraph graph;
 	private StapGraphMouseMoveListener listener;
-	private StapGraphFocusListener focus;
 	private StapGraphMouseExitListener exitListener;
 
 	public StapGraphMouseListener(StapGraph g) {
 		this.graph = g;
 		listener = new StapGraphMouseMoveListener(graph);
-		focus = new StapGraphFocusListener(listener);
 		exitListener = new StapGraphMouseExitListener(listener);
 	}
 

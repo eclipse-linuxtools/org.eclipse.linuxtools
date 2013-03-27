@@ -86,7 +86,7 @@ public class GraphAxis2 extends GraphAxis {
 		if(HIDE_GRID_LINES != (HIDE_GRID_LINES&type))
 			super.drawGridLine(gc, x1, y1, x2, y2);
 	}
-	
+
 	@Override
 	protected void drawTick(GC gc, int x, int y, String val) {
 		if(HIDE_TICKS != (HIDE_TICKS&type))
@@ -98,19 +98,12 @@ public class GraphAxis2 extends GraphAxis {
 		if(HIDE_TITLE != (HIDE_TITLE&type))
 			super.drawTitle(gc);
 	}
-	/*TODO: This should be reimplemented for viewing true values when normalized
-	protected String getLabel(double val, int range) {
-		if(UNNORMALIZED == (UNNORMALIZED&type))
-			val = graph.unscaleValue(val);
-		
-		return super.getLabel(val, range);
-	}
-	*/
+
 	public static final int ALIGN_LEFT = VERTICAL;			//0
 	public static final int ALIGN_TOP = HORIZONTAL;			//1
 	public static final int ALIGN_RIGHT = VERTICAL | 2;		//2
 	public static final int ALIGN_BOTTOM = HORIZONTAL | 2;	//3
-	
+
 	public static final int HIDE_GRID_LINES = 4;
 	public static final int HIDE_TITLE = 8;
 	public static final int HIDE_TICKS = 16;

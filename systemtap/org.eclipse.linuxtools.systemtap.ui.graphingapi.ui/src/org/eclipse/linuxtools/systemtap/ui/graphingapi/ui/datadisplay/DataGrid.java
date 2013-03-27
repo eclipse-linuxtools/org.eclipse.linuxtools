@@ -112,7 +112,6 @@ public class DataGrid implements IUpdateListener {
 		item.setText(Localization.getString("DataGrid.FormatAs")); //$NON-NLS-1$
 		item.setMenu(formatMenu);
 
-		//if(dataSet instanceof IFilteredDataSet) {
 			filterMenu = new Menu(menu);
 			item = new MenuItem(menu, SWT.CASCADE);
 			item.setText(Localization.getString("DataGrid.AddFilter")); //$NON-NLS-1$
@@ -131,7 +130,6 @@ public class DataGrid implements IUpdateListener {
 					item.addSelectionListener(new RemoveFilterSelection());
 				}
 			}
-		//}
 
 		item = new MenuItem(menu, SWT.CHECK);
 		item.setText(Localization.getString("DataGrid.ManualyResize")); //$NON-NLS-1$

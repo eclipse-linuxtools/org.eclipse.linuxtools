@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.preferences;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.preferences"; //$NON-NLS-1$
 	public static String ConsoleLogPreferencePage_AlwaysConnectToHost;
 	public static String ConsoleLogPreferencePage_Host;
 	public static String ConsoleLogPreferencePage_Password;

@@ -65,7 +65,6 @@ public class SystemTapCommandGenerator {
 		ArrayList<String> cmdList = new ArrayList<String>();
 		String[] script;
 
-		//getImportedTapsets(cmdList);
 		if (flags.length() > 0){
 			cmdList.add(flags);
 		}

@@ -32,7 +32,7 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 		topData = null;
 		dataCount = data.getRowCount();
 	}
-	
+
 	public FilteredTableDataSet(String[] titles) {
 		this(new TableDataSet(titles));
 	}
@@ -42,18 +42,18 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 	public void append(IDataEntry entry) {
 		original.append(entry);
 	}
-	
+
 	@Override
 	public boolean remove(IDataEntry entry) {
 		return original.remove(entry);
 	}
-	
+
 	@Override
 	public boolean remove(int entry) {
 		return original.remove(entry);
 	}
 	//End overwrite methods to insure data is removed from the original DataSet
-	
+
  	//Overwrite to ensure the data returned has all the filters applied
 	@Override
 	public Object[] getColumn(int col, int start, int end) {
@@ -66,7 +66,7 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 		rebuildDataSet();
 		return super.getRow(row);
 	}
-	
+
 	@Override
 	public int getRowCount() {
 		rebuildDataSet();
@@ -76,22 +76,16 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 	@Override
 	public Object[] getHistoricalData(String key, int col, int start, int end) {
 		return original.getHistoricalData(key, col, start, end);
-		//rebuildHistoricalDataSet();
-		//return super.getHistoricalData(key, col, start, end);
 	}
-	
+
 	@Override
 	public int getEntryCount() {
 		return original.getEntryCount();
-		//rebuildHistoricalDataSet();
-		//return super.getEntryCount();
 	}
-	
+
 	@Override
 	public IDataEntry getEntry(int entry) {
 		return original.getEntry(entry);
-		//rebuildHistoricalDataSet();
-		//return super.getEntry(entry);
 	}
 
 	@Override
@@ -107,19 +101,19 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 		filters.add(filter);
 		filtersChanged = true;
 	}
-	
+
 	@Override
 	public boolean removeFilter(IDataSetFilter filter) {
 		filtersChanged = filters.remove(filter);
 		return filtersChanged;
 	}
-	
+
 	@Override
 	public void clearFilters() {
 		filters.clear();
 		filtersChanged = true;
 	}
-	
+
 	@Override
 	public IDataSetFilter[] getFilters() {
 		IDataSetFilter[] f = new IDataSetFilter[filters.size()];
@@ -127,15 +121,15 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 		return f;
 	}
 	//End IFilteredDataSet Methods
-	
+
 	private void rebuildDataSet() {
 		IDataEntry top = original.getEntry(original.getEntryCount()-1);
-		
+
 		if(filtersChanged || dataCount != original.getRowCount() || topData != top || historical) {
 			dataCount = original.getRowCount();
 			topData = top;
 			historical = false;
-			
+
  			ArrayList<Object>[] filterData = getFilterData();
 			for(int i=0; i<filters.size(); i++)
 				filterData = filters.get(i).filter(filterData);
@@ -147,19 +141,19 @@ public class FilteredTableDataSet extends TableDataSet implements IFilteredDataS
 		ArrayList<Object>[] data = GraphingAPINonUIPlugin.createArrayList(original.getColCount(), new Object());
 		for(int i=0; i<data.length; i++)
 			data[i] = new ArrayList<Object>();
-		
+
 		Object[][] table = original.getData();
 		for(int j,i=0; i<original.getRowCount(); i++) {
 			for(j=0; j<data.length; j++)
 				data[j].add(table[i][j]);
 		}
-		
+
 		return data;
 	}
-	
+
 	private void setFilteredData(ArrayList<Object>[] data) {
 		this.data = new ArrayList<TableEntry>();
-		
+
 		TableEntry entry = new TableEntry();
 		Object[] row;
 		for(int j,i=0; i<data[0].size(); i++) {

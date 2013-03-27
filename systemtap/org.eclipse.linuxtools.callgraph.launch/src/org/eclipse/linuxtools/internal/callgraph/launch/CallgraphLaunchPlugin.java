@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -19,14 +19,14 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
- * 
+ *
  * This is more or less the default Eclipse plugin-wizard Activator.
  */
 public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	private static CallgraphLaunchPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -41,9 +41,9 @@ public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
+
 	}
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -55,8 +55,8 @@ public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	
-	
+
+
 	/**
 	 * Returns the shared instance
 	 *
@@ -81,30 +81,3 @@ public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
 }
-
-
-//public String getPluginLocation() {
-//Bundle bundle = getBundle();
-//
-//URL locationUrl = FileLocator.find(bundle,new Path("/"), null);
-//URL fileUrl = null;
-//try {
-//	fileUrl = FileLocator.toFileURL(locationUrl);
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//return fileUrl.getFile();
-//}
-
-//private void checkRun() {
-////Check if install script has been executed. Install script MUST delete the FirstRun file,
-////this will execute every time!
-//String firstRun = getPluginLocation() + "FirstRun";
-//File firstFile = new File(firstRun);
-//if (firstFile.exists()) {
-//	Shell sh = new Shell();
-//	String command = "./" + getPluginLocation() + "install.sh " + firstRun;
-//	InputDialog id = new InputDialog(sh, "First time startup", "Hi there! Looks like this is your first time running the SystemTap Eclipse plugin. In order for this plugin to work, you will first need to install SystemTap. Then please open a terminal and execute the following command. ", command, null);
-//	id.open();
-//}
-//}

@@ -13,10 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
-//import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
 
 /**
- * This is a basic structure to contain all the important information for a 
+ * This is a basic structure to contain all the important information for a
  * running Dashboard script.
  * @author Ryan Morse
  */
