@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IBlockDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
@@ -19,7 +21,7 @@ public class BlockAdapter implements IAdapter {
 	public BlockAdapter(IBlockDataSet data, int xSeries, int[] ySeries) {
 		this.data = data;
 		this.xSeries = xSeries;
-		this.ySeries = ySeries;
+		this.ySeries = Arrays.copyOf(ySeries, ySeries.length);
 	}
 
 	@Override

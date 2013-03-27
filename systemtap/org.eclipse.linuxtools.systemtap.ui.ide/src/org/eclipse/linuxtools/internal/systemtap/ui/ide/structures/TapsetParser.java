@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -52,7 +53,7 @@ public abstract class TapsetParser extends Job {
 
 	protected TapsetParser(String[] tapsets, String jobTitle) {
 		super(jobTitle);
-		this.tapsets = tapsets;
+		this.tapsets = Arrays.copyOf(tapsets, tapsets.length);
 		listeners = new ArrayList<IUpdateListener>();
 		cancelRequested = false;
 	}

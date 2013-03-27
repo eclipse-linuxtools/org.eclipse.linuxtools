@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.row;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,10 +23,10 @@ import org.eclipse.ui.IMemento;
 
 public class RowParser implements IDataSetParser {
 	public RowParser(String[] regEx) {
-		this.regEx = regEx;
+		this.regEx = Arrays.copyOf(regEx, regEx.length);
 		buildPattern();
 	}
-	
+
 	public RowParser(IMemento source) {
 		IMemento[] children = source.getChildren(IDataSetParser.XMLSeries);
 		regEx = new String[children.length<<1];
@@ -35,44 +36,44 @@ public class RowParser implements IDataSetParser {
 		}
 		buildPattern();
 	}
-	
+
 	private void buildPattern() {
 		StringBuilder wholeRegExpr = new StringBuilder();
 		for(int i=0; i<regEx.length; i++)
 			wholeRegExpr.append('(' + regEx[i] + ')');
 		wholePattern = Pattern.compile(wholeRegExpr.toString());
 	}
-	
+
 	@Override
 	public IDataEntry parse(StringBuilder s) {
 		if(null == s)
 			return null;
-		
+
 		RowEntry e = null;
 		Matcher wholeMatcher = wholePattern.matcher(s);
-		
+
 		if(wholeMatcher.find()) {
 			e = new RowEntry();
 			Object[] data = new Object[regEx.length>>1];
 
 			int group=0, j;
-			
+
 			for(int i=0; i<regEx.length; i++) {
 				group++;
 				for(j=0; j<regEx[i].length(); j++)
 					if(regEx[i].charAt(j) == ')')
 						group++;
-				
+
 				if(0 == (i&1))
 					data[i>>1] = wholeMatcher.group(group);
 			}
 			e.putRow(0, data);
 			s.delete(0, wholeMatcher.end());
 		}
-		
+
 		return e;
 	}
-	
+
 	@Override
 	public boolean saveXML(IMemento target) {
 		target.putString(IDataSetParser.XMLdataset, RowDataSet.ID);
@@ -84,7 +85,7 @@ public class RowParser implements IDataSetParser {
 		}
 		return true;
 	}
-	
+
 	private String[] regEx;
 	private Pattern wholePattern;
 }

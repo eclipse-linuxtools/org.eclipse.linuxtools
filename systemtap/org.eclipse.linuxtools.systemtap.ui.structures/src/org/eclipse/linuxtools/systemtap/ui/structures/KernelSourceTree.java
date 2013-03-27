@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.structures;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -61,7 +62,9 @@ public class KernelSourceTree {
 	 * @since 1.1
 	 */
 	public void buildKernelTree(URI locationURI, String[] excluded, IRemoteFileProxy proxy, IProgressMonitor monitor) {
-		this.excluded = excluded;
+		if (excluded != null){
+			this.excluded = Arrays.copyOf(excluded, excluded.length);
+		}
 		IFileStore fs = proxy.getResource(locationURI.getPath());
 		if (fs == null)
 			kernelTree = null;

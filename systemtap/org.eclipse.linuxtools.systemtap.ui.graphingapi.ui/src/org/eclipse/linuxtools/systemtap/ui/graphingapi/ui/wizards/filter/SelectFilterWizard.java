@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -24,7 +26,7 @@ import org.eclipse.ui.IWorkbench;
 public class SelectFilterWizard extends Wizard implements INewWizard {
 	public SelectFilterWizard(String[] series) {
 		filter = null;
-		this.series = series;
+		this.series = Arrays.copyOf(series, series.length);
 	}
 
 	@Override

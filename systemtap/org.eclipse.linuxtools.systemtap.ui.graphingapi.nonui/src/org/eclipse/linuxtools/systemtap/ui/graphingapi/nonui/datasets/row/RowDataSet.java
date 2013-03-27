@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
@@ -29,7 +30,9 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IHistorica
 public class RowDataSet implements IHistoricalDataSet {
 	//IDataSet Methods
 	public RowDataSet(String[] titles) {
-		this.titles = titles;
+		if (titles != null){
+			this.titles = Arrays.copyOf(titles, titles.length);
+		}
 		data = new ArrayList<IDataEntry>();
 	}
 
