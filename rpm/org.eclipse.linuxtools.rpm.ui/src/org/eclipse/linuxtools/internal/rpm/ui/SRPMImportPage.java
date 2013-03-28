@@ -126,11 +126,11 @@ public class SRPMImportPage extends WizardPage {
 			public void handleEvent(Event event) {
 				FileDialog srpmBrowseDialog = new FileDialog(getContainer()
 						.getShell(), SWT.OPEN);
-				String selectedSRPM_name = srpmBrowseDialog.open();
-				if (selectedSRPM_name != null) {
-					File testSRPMfilename = new File(selectedSRPM_name);
+				String selectedSRPMName = srpmBrowseDialog.open();
+				if (selectedSRPMName != null) {
+					File testSRPMfilename = new File(selectedSRPMName);
 					if (testSRPMfilename.isFile()) {
-						sourceSRPM.setText(selectedSRPM_name);
+						sourceSRPM.setText(selectedSRPMName);
 					}
 				}
 			}

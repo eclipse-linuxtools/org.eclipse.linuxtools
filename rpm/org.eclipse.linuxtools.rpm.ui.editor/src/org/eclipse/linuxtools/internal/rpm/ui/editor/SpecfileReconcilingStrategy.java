@@ -27,8 +27,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
-	private IDocument sDocument;
-	private IProgressMonitor sProgressMonitor;
 	private SpecfileFoldingStructureProvider sFoldingStructureProvider;
 
 	SpecfileContentOutlinePage outline;
@@ -44,13 +42,11 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 
 
 	public void setDocument(IDocument document) {
-		sDocument= document;
-		sFoldingStructureProvider.setDocument(sDocument);
+		sFoldingStructureProvider.setDocument(document);
 	}
 
 	public void setProgressMonitor(IProgressMonitor monitor) {
-		sProgressMonitor= monitor;
-		sFoldingStructureProvider.setProgressMonitor(sProgressMonitor);
+		sFoldingStructureProvider.setProgressMonitor(monitor);
 	}
 
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {

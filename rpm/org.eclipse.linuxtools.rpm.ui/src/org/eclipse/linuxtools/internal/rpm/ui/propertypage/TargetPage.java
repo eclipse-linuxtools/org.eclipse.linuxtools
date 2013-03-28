@@ -34,42 +34,42 @@ public class TargetPage extends AbstractRPMPropertyPage {
 
 		Label rpmArchLabel = new Label(composite, SWT.NONE);
 		rpmArchLabel.setText(Messages.getString("TargetPage.Architecture")); //$NON-NLS-1$
-		Label rpm_archText = new Label(composite, SWT.NONE);
-		rpm_archText.setLayoutData(gd);
+		Label rpmArchText = new Label(composite, SWT.NONE);
+		rpmArchText.setLayoutData(gd);
 
 		Label rpmPlatformLabel = new Label(composite, SWT.NONE);
 		rpmPlatformLabel.setText(Messages.getString("TargetPage.Platform")); //$NON-NLS-1$
-		Label rpm_platformText = new Label(composite, SWT.NONE);
-		rpm_platformText.setLayoutData(gd);
+		Label rpmPlatformText = new Label(composite, SWT.NONE);
+		rpmPlatformText.setLayoutData(gd);
 
 		Label rpmOSLabel = new Label(composite, SWT.NONE);
 		rpmOSLabel.setText(Messages.getString("TargetPage.OS")); //$NON-NLS-1$
-		Label rpm_osText = new Label(composite, SWT.NONE);
-		rpm_osText.setLayoutData(gd);
+		Label rpmOsText = new Label(composite, SWT.NONE);
+		rpmOsText.setLayoutData(gd);
 
 		Label rpmHostLabel = new Label(composite, SWT.NONE);
 		rpmHostLabel.setText(Messages.getString("TargetPage.BuildHost")); //$NON-NLS-1$
-		Label rpm_hostText = new Label(composite, SWT.NONE);
-		rpm_hostText.setLayoutData(gd);
+		Label rpmHostText = new Label(composite, SWT.NONE);
+		rpmHostText.setLayoutData(gd);
 
 		Label rpmTimeLabel = new Label(composite, SWT.NONE);
 		rpmTimeLabel.setText(Messages.getString("TargetPage.BuildTime")); //$NON-NLS-1$
-		Label rpm_timeText = new Label(composite, SWT.NONE);
-		rpm_timeText.setLayoutData(gd);
+		Label rpmTimeText = new Label(composite, SWT.NONE);
+		rpmTimeText.setLayoutData(gd);
 
 		// Populate RPM text fields
 		try {
 			IFile rpmFile = (IFile) getElement();
-			String rpm_arch = RPMQuery.getArch(rpmFile);
-			rpm_archText.setText(rpm_arch);
-			String rpm_platform = RPMQuery.getPlatform(rpmFile);
-			rpm_platformText.setText(rpm_platform);
-			String rpm_os = RPMQuery.getOS(rpmFile);
-			rpm_osText.setText(rpm_os);
-			String rpm_host = RPMQuery.getBuildHost(rpmFile);
-			rpm_hostText.setText(rpm_host);
-			String rpm_time = RPMQuery.getBuildTime(rpmFile);
-			rpm_timeText.setText(rpm_time);
+			String rpmArch = RPMQuery.getArch(rpmFile);
+			rpmArchText.setText(rpmArch);
+			String rpmPlatform = RPMQuery.getPlatform(rpmFile);
+			rpmPlatformText.setText(rpmPlatform);
+			String rpmOs = RPMQuery.getOS(rpmFile);
+			rpmOsText.setText(rpmOs);
+			String rpmHost = RPMQuery.getBuildHost(rpmFile);
+			rpmHostText.setText(rpmHost);
+			String rpmTime = RPMQuery.getBuildTime(rpmFile);
+			rpmTimeText.setText(rpmTime);
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
 					StatusManager.LOG | StatusManager.SHOW);

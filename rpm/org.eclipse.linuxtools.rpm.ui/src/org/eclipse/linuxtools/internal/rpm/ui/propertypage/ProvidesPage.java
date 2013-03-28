@@ -38,17 +38,17 @@ public class ProvidesPage extends AbstractRPMPropertyPage {
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
 		rpmDescriptionLabel.setText(Messages
 				.getString("ProvidesPage.Provides")); //$NON-NLS-1$
-		Text rpm_qlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
+		Text rpmQlText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
 				| SWT.V_SCROLL | SWT.WRAP);
 		GridData gdQL = new GridData();
 		gdQL.widthHint = convertWidthInCharsToPixels(QL_FIELD_WIDTH);
 		gdQL.heightHint = convertWidthInCharsToPixels(QL_FIELD_HEIGHT);
-		rpm_qlText.setLayoutData(gdQL);
+		rpmQlText.setLayoutData(gdQL);
 
 		// Populate RPM text fields
 		try {
 			String rpm_ql = RPMQuery.getProvides((IFile) getElement());
-			rpm_qlText.setText(rpm_ql);
+			rpmQlText.setText(rpm_ql);
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
 					StatusManager.LOG | StatusManager.SHOW);
