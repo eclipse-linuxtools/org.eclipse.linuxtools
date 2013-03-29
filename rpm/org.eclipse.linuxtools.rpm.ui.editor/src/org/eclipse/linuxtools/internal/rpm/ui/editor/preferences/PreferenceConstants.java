@@ -75,10 +75,8 @@ public final class PreferenceConstants {
 	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'"; //$NON-NLS-1$
 	public static final String DP_RPMTOOLS_YUM = "yum -C list all | grep - | cut -d \".\" -f 1"; //$NON-NLS-1$
 	public static final String DP_RPMTOOLS_URPM = "urpmq --list"; //$NON-NLS-1$
-	// public static final String DP_RPM_LIST_HIDE_PROPOSALS_WARNING = "false";
 	public static final boolean DP_RPM_LIST_BACKGROUND_BUILD = true;
 	public static final int DP_RPM_LIST_BUILD_PERIOD = 1;
-	// public static final String DP_RPM_LIST_LAST_BUILD = "";
 
 	// macro
 	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE

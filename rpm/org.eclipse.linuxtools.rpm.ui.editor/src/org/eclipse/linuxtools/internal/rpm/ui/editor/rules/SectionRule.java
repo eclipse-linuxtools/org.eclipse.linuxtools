@@ -85,7 +85,6 @@ public class SectionRule implements IPredicateRule {
 					nextHeaderBuffer.setLength(0);
 					readingEndSequence = true;
 				} else if (c == ICharacterScanner.EOF) {
-					
 					// we allow EOF as a valid ending to a section
 					break;
 				} else {
@@ -102,15 +101,13 @@ public class SectionRule implements IPredicateRule {
 
 					// we've found our terminating header
 					if (nextHeaderBuffer.toString().equals(tempSectionheader)) {
-
 						// exclude the terminating header from the partition
 						unreadBuffer(scanner, nextHeaderBuffer);
-
 						return token;
 					}
 				}
 			}
-			
+
 			// read the next char
 			c = scanner.read();
 			fBuffer.append((char) c);
@@ -128,13 +125,14 @@ public class SectionRule implements IPredicateRule {
 
 	/**
 	 * Returns the characters in the buffer to the scanner.
-	 * 
+	 *
 	 * @param scanner
 	 *            the scanner to be used
 	 */
 	protected void unreadBuffer(ICharacterScanner scanner, StringBuilder buffer) {
-		for (int i = buffer.length() - 1; i >= 0; i--)
+		for (int i = buffer.length() - 1; i >= 0; i--) {
 			scanner.unread();
+		}
 	}
 
 }

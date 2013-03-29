@@ -38,21 +38,20 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  */
 public class MainPreferencePage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
-	
+
 	private Combo combo;
-	
+
 	private int defaultItem;
-	
+
 	/**
 	 * default constructor
 	 */
 	public MainPreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		//setDescription("Main preference page for Specfile Plug-in editor");
 	}
 
-	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) { 
+	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) {
 		RadioGroupFieldEditor changelogEntryFormatRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT,
 				Messages.MainPreferencePage_2, 1, new String[][] {
@@ -60,8 +59,8 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 						{ Messages.MainPreferencePage_4, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR},
 						{ Messages.MainPreferencePage_5, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED }}, parent, true);
 		return changelogEntryFormatRadioGroupEditor;
-	}		
-	
+	}
+
 	private void createLocalesCombo(Composite parent) {
 		combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY |SWT.BEGINNING);
 		// populate the combo with all ISO countries
@@ -104,13 +103,13 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null); 
+				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null);
 			}
 		});
 		addField(changelogEntryFormatFieldEditor(parent));
 		Label labelLocal = new Label(parent, SWT.NONE);
 		labelLocal.setText(Messages.MainPreferencePage_1);
-		
+
 		labelLocal.setLayoutData(data);
 		createLocalesCombo(parent);
 		addField(new BooleanFieldEditor(PreferenceConstants.P_SPACES_FOR_TABS,
@@ -128,7 +127,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	public void init(IWorkbench workbench) {
 
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performDefaults()
 	 */
@@ -139,5 +138,5 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		getPreferenceStore().setValue(PreferenceConstants.P_CHANGELOG_LOCAL, PreferenceConstants.DP_CHANGELOG_LOCAL);
 		getPreferenceStore().setValue(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT, PreferenceConstants.DP_CHANGELOG_ENTRY_FORMAT);
 	}
-	
+
 }

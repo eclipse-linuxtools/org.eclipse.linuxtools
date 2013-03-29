@@ -64,26 +64,27 @@ public class VersionReleaseRule implements IPredicateRule {
 public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		// if the last token successfully read was not the fPreceedingToke fail
 		IToken lastToken = getLastToken();
-		
+
 		if (lastToken != fPreceedingToken	) {
 			return Token.UNDEFINED;
 		}
-		
+
 		fBuffer.setLength(0);
 		int state = STATE_START;
 		int c;
 		int numPreceedingBlanks = 0;
-		
+
 		do {
 			c = scanner.read();
 			fBuffer.append((char) c);
-			
+
 			// preceeding white space
 			if (state == STATE_START){
-				if (Character.isWhitespace((char) c) || c == '-')
+				if (Character.isWhitespace((char) c) || c == '-') {
 					numPreceedingBlanks++;
-				else
+				} else {
 					state++;
+				}
 			}
 			// version state (first part of version-release)
 			if (state == STATE_VERSION) {
@@ -105,7 +106,7 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 				if (c == ICharacterScanner.EOF || c == '\n'){
 					state = STATE_DONE;
 				}
-				
+
 				// if we encounter a space, we enter the optional trailing
 				// space section which we consider valid (but not part of the
 				// token) if and only if it is ended by and EOF or EOL
@@ -113,13 +114,12 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 					state++;
 					fWhiteSpaceBuffer.setLength(0);
 					fWhiteSpaceBuffer.append(c);
-				}
-				// allow digits, characters or '.' in the release
-				else if (! ( Character.isLetterOrDigit((char) c) || c == '.' || c == '_')){
+				} else if (! ( Character.isLetterOrDigit((char) c) || c == '.' || c == '_')){
+					// allow digits, characters or '.' in the release
 					unreadBuffer(scanner, fBuffer);
 					return Token.UNDEFINED;
 				}
-				
+
 			}
 			// whitespace state, we finished redeaing the ver-rel and are
 			// now looking for an EOF or EOL for success
@@ -137,13 +137,13 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 				else{ // white space, keep reading
 					fWhiteSpaceBuffer.append((char)c);
 				}
-				
+
 			}
 		} while (state != STATE_DONE);
-		
+
 		// we've gone through all states until we've reached STATE_DONE, success
 		return fToken;
-	}	
+	}
 
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner, false);
@@ -151,13 +151,14 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 
 	/**
 	 * Returns the characters in the buffer to the scanner.
-	 * 
+	 *
 	 * @param scanner
 	 *            the scanner to be used
 	 */
 	protected void unreadBuffer(ICharacterScanner scanner, StringBuilder buffer) {
-		for (int i = buffer.length() - 1; i >= 0; i--)
+		for (int i = buffer.length() - 1; i >= 0; i--) {
 			scanner.unread();
+		}
 	}
 
 	protected IToken getLastToken() {

@@ -74,7 +74,7 @@ public class StringWithEndingRule implements IRule {
 					c = scanner.read();
 				} while (c != ICharacterScanner.EOF
 						&& fDetector.isWordPart((char) c));
-				
+
 				if (c != ICharacterScanner.EOF && !fDetector.isEndingCharacter((char) c)) {
 					unreadBuffer(scanner);
 					return Token.UNDEFINED;
@@ -85,8 +85,9 @@ public class StringWithEndingRule implements IRule {
 
 		}
 
-		if (!fMandatoryEndSequence && fDetector.isEndingCharacter((char) c))
+		if (!fMandatoryEndSequence && fDetector.isEndingCharacter((char) c)) {
 			return token;
+		}
 		scanner.unread();
 
 		unreadBuffer(scanner);
@@ -95,13 +96,14 @@ public class StringWithEndingRule implements IRule {
 
 	/**
 	 * Returns the characters in the buffer to the scanner.
-	 * 
+	 *
 	 * @param scanner
 	 *            the scanner to be used
 	 */
 	protected void unreadBuffer(ICharacterScanner scanner) {
-		for (int i = fBuffer.length() - 1; i >= 0; i--)
+		for (int i = fBuffer.length() - 1; i >= 0; i--) {
 			scanner.unread();
+		}
 	}
 
 }

@@ -30,7 +30,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 
 public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
-												   
+
 	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation"; //$NON-NLS-1$
 
 	private final SpecfileEditor fEditor;
@@ -39,7 +39,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	/**
 	 * Creates a new instance on editor <code>specfileEditor</code>.
-	 * 
+	 *
 	 * @param specfileEditor The editor to mark occurrences on.
 	 */
 	public RpmMacroOccurrencesUpdater(SpecfileEditor specfileEditor) {
@@ -57,7 +57,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	/**
 	 * Updates the drawn annotations.
-	 * 
+	 *
 	 * @param viewer The viewer to get the document and annotation model from
 	 */
 	public void update(ISourceViewer viewer) {
@@ -80,14 +80,15 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
               		// If there's no such define we try to see if it corresponds to
             		// a Source or Patch declaration
             		String retrivedValue = SpecfileHover.getSourceOrPatchValue(spec, currentSelectedWord.toLowerCase());
-            		if (retrivedValue != null) 
+            		if (retrivedValue != null) {
             			word += retrivedValue;
-            		else {
+            		} else {
             			// If it does not correspond to a Patch or Source macro, try to find it
             			// in the macro proposals list.
             			retrivedValue = SpecfileHover.getMacroValueFromMacroList(currentSelectedWord);
-            			if (retrivedValue != null) 
+            			if (retrivedValue != null) {
             				word += retrivedValue;
+            			}
             		}
                 }
                 createNewAnnotations(currentSelectedWord, word, document, model);
@@ -99,7 +100,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	/**
 	 * Removes the previous set of annotations from the annotation model.
-	 * 
+	 *
 	 * @param model
 	 *            the annotation model
 	 */
@@ -112,10 +113,10 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	/**
 	 * Checks if <code>word</code> is an macro.
-	 * 
+	 *
 	 * @param word
 	 *            the word to check
-	 * 
+	 *
 	 * @return <code>true</code> if <code>word</code> is an macro,
 	 *         <code>false</code> otherwise
 	 */
@@ -128,23 +129,25 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 				}
 			}
 			if (Activator.getDefault().getRpmMacroList().getProposals(
-					"%" + word).size() > 0) //$NON-NLS-1$
+					"%" + word).size() > 0) {//$NON-NLS-1$
 				return true;
+			}
 		}
 		return false;
 	}
 
 	/**
 	 * Retrieves the macros from the editor's specfile.
-	 * 
+	 *
 	 * @return the macros from the editor's specfile
 	 */
 	private List<SpecfileDefine> getMacros() {
 		Specfile specfile = fEditor.getSpecfile();
 		if (specfile != null) {
 			List<SpecfileDefine> macros = specfile.getDefines();
-			if (macros != null)
+			if (macros != null) {
 				return macros;
+			}
 		}
 		return new ArrayList<SpecfileDefine>();
 	}
@@ -152,12 +155,12 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Returns <code>true</code> if <code>macro</code> equals the word
 	 * <code>current</code>.
-	 * 
+	 *
 	 * @param macro
 	 *            the <code>macro</code> to check
 	 * @param current
 	 *            the word to look for
-	 * 
+	 *
 	 * @return <code>true</code> if <code>macro</code> contains the word
 	 *         <code>current</code>,<code>false</code> if not
 	 */
@@ -167,7 +170,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	/**
 	 * Returns the word at the current selection / caret position.
-	 * 
+	 *
 	 * @param selection
 	 *            the selection
 	 * @param document
@@ -189,11 +192,13 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 			if (end != offset) {
 				word = ts.getText();
 			} else {
-				while (offset > 0 && isDefineChar(document.getChar(offset - 1)))
+				while (offset > 0 && isDefineChar(document.getChar(offset - 1))) {
 					offset--;
+				}
 				while (end < document.getLength()
-						&& isDefineChar(document.getChar(end)))
+						&& isDefineChar(document.getChar(end))) {
 					end++;
+				}
 
 				word = document.get(offset, end - offset);
 			}
@@ -211,7 +216,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 * Adds an annotation for every occurrence of <code>macro</code> in the
 	 * document. Also stores the created annotations in
 	 * <code>fOldAnnotations</code>.
-	 * 
+	 *
 	 * @param macro
 	 *            the word to look for
 	 * @param document

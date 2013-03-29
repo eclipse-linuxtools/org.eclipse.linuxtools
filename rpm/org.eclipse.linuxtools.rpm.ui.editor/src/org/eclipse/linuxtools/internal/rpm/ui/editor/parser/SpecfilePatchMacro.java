@@ -15,18 +15,10 @@ import java.text.MessageFormat;
 
 public class SpecfilePatchMacro extends SpecfileMacro {
 	private int patchNumber;
-	private int patchLevel;
-	// TODO:  add patchLevel functionality
+
 	public SpecfilePatchMacro(int patchNumber) {
 		super();
 		this.patchNumber = patchNumber;
-//		this.patchLevel = patchLevel;
-	}
-	public int getPatchLevel() {
-		return patchLevel;
-	}
-	public void setPatchLevel(int patchLevel) {
-		this.patchLevel = patchLevel;
 	}
 	public int getPatchNumber() {
 		return patchNumber;
@@ -36,6 +28,6 @@ public class SpecfilePatchMacro extends SpecfileMacro {
 	}
 	@Override
 	public String toString() {
-		return MessageFormat.format("patch #{0} at level {1}", patchNumber, patchLevel); //$NON-NLS-1$
+		return MessageFormat.format("patch #{0}", patchNumber); //$NON-NLS-1$
 	}
 }

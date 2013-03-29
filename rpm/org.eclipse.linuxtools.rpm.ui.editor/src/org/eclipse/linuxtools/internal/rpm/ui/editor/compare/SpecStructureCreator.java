@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -44,7 +44,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Structure creator making which structure is based on the following tree.
- * 
+ *
  * <pre>
  * ROOT_NODE
  * 		SECTIONS...N
@@ -139,8 +139,9 @@ public class SpecStructureCreator extends StructureCreator {
 	}
 
 	private IProgressMonitor beginWork(IProgressMonitor monitor) {
-		if (monitor == null)
+		if (monitor == null) {
 			return new NullProgressMonitor();
+		}
 		return new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN);
 	}
 
@@ -150,8 +151,9 @@ public class SpecStructureCreator extends StructureCreator {
 	}
 
 	private static String readString(InputStream is, String encoding) {
-		if (is == null)
+		if (is == null) {
 			return null;
+		}
 		BufferedReader reader = null;
 		try {
 			StringBuffer buffer = new StringBuffer();
@@ -159,8 +161,9 @@ public class SpecStructureCreator extends StructureCreator {
 			int read = 0;
 			reader = new BufferedReader(new InputStreamReader(is, encoding));
 
-			while ((read = reader.read(part)) != -1)
+			while ((read = reader.read(part)) != -1) {
 				buffer.append(part, 0, read);
+			}
 
 			return buffer.toString();
 
@@ -184,14 +187,12 @@ public class SpecStructureCreator extends StructureCreator {
 		if (is != null) {
 			String encoding = null;
 			if (sa instanceof IEncodedStreamContentAccessor) {
-				try {
-					encoding = ((IEncodedStreamContentAccessor) sa)
-							.getCharset();
-				} catch (Exception e) {
-				}
+				encoding = ((IEncodedStreamContentAccessor) sa)
+						.getCharset();
 			}
-			if (encoding == null)
+			if (encoding == null) {
 				encoding = ResourcesPlugin.getEncoding();
+			}
 			return readString(is, encoding);
 		}
 		return null;
@@ -214,10 +215,11 @@ public class SpecStructureCreator extends StructureCreator {
 			IProgressMonitor monitor) throws CoreException {
 
 		final boolean isEditable;
-		if (input instanceof IEditableContent)
+		if (input instanceof IEditableContent) {
 			isEditable = ((IEditableContent) input).isEditable();
-		else
+		} else {
 			isEditable = false;
+		}
 
 		DocumentRangeNode rootNode = new StructureRootNode(document, input,
 				this, adapter) {
