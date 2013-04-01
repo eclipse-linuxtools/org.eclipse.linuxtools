@@ -48,6 +48,9 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		}
 
 		Specfile spec = editor.getSpecfile();
+		if (spec == null) {
+			return null;
+		}
 
 		String currentSelection;
 		try {
