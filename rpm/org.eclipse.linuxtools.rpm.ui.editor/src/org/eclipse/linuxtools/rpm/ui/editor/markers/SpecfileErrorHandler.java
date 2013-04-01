@@ -32,23 +32,23 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
 public class SpecfileErrorHandler extends SpecfileMarkerHandler {
-	
+
 	public static final String SPECFILE_ERROR_MARKER_ID = Activator.PLUGIN_ID
 	+ ".specfileerror"; //$NON-NLS-1$
-	
+
 	public static final String ANNOTATION_ERROR = "org.eclipse.ui.workbench.texteditor.error"; //$NON-NLS-1$
 	public static final String ANNOTATION_WARNING = "org.eclipse.ui.workbench.texteditor.warning"; //$NON-NLS-1$
 	public static final String ANNOTATION_INFO = "org.eclipse.ui.workbench.texteditor.info"; //$NON-NLS-1$
-	
+
 	private Map<Position, Annotation> annotations = new HashMap<Position, Annotation>();
 	private AnnotationModel fAnnotationModel;
 	private IEditorInput input;
-	
+
 	public SpecfileErrorHandler(IEditorInput input, IDocument document) {
 		super(null, document);
 		this.input = input;
 	}
-	
+
 	private static class SpecfileAnnotation extends Annotation implements IQuickFixableAnnotation {
 		public SpecfileAnnotation(String annotationType, boolean persist, String message) {
 			super(annotationType, persist, message);
@@ -90,12 +90,12 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		}
 
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.cdt.autotools.ui.editors.IAutoconfErrorHandler#handleError(org.eclipse.linuxtools.cdt.autotools.core.ui.editors.parser.ParseException)
 	 */
 	public void handleError(SpecfileParseException e) {
-		
+
 		int lineNumber = e.getLineNumber();
 		int lineOffset = 0;
 		try {
@@ -103,21 +103,22 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		} catch (BadLocationException e2) {
 			// do nothing
 		}
-		
+
 		Integer charStart = Integer.valueOf(lineOffset + e.getStartColumn());
 		Integer charEnd = Integer.valueOf(lineOffset + e.getEndColumn());
 		String annotationType = ANNOTATION_INFO;
-		if (e.getSeverity() == IMarker.SEVERITY_ERROR)
+		if (e.getSeverity() == IMarker.SEVERITY_ERROR) {
 			annotationType = ANNOTATION_ERROR;
-		else if (e.getSeverity() == IMarker.SEVERITY_WARNING)
+		} else if (e.getSeverity() == IMarker.SEVERITY_WARNING) {
 			annotationType = ANNOTATION_WARNING;
+		}
 		Annotation annotation = new SpecfileAnnotation(annotationType, true, e.getLocalizedMessage());
 		Position p = new Position(charStart.intValue(),charEnd.intValue() - charStart.intValue());
 		fAnnotationModel.addAnnotation(annotation, p);
 		annotations.put(p, annotation);
 		return;
 	}
-	
+
 	public void removeAllExistingMarkers()
 	{
 		fAnnotationModel.removeAllAnnotations();
@@ -132,9 +133,9 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	private AnnotationModel getAnnotationModel() {
 		return (AnnotationModel)SpecfileEditor.getSpecfileDocumentProvider().getAnnotationModel(input);
 	}
-	
+
 	public void removeExistingMarkers(int offset, int length)
-	{	
+	{
 		fAnnotationModel = getAnnotationModel();
 		if (fAnnotationModel != null) {
 			Iterator<Annotation> i = fAnnotationModel.getAnnotationIterator();
@@ -152,7 +153,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 			}
 		}
 	}
-	
+
 	public SpecfileErrorHandler(IFile file, IDocument document)
 	{
 		this(new FileEditorInput(file), document);
@@ -162,10 +163,10 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	public void setFile(IFile file) {
 		input = new FileEditorInput(file);
 	}
-	
+
 	@Override
 	String getMarkerID() {
 		return SPECFILE_ERROR_MARKER_ID;
 	}
-	
+
 }

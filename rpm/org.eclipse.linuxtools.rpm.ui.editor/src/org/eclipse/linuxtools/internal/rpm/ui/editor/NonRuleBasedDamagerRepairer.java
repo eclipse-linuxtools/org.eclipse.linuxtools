@@ -30,7 +30,7 @@ public class NonRuleBasedDamagerRepairer
 	protected IDocument fDocument;
 	/** The default text attribute if non is returned as data by the current token */
 	protected TextAttribute fDefaultTextAttribute;
-	
+
 	/**
 	 * Constructor for NonRuleBasedDamagerRepairer.
 	 */
@@ -94,8 +94,9 @@ public class NonRuleBasedDamagerRepairer
 					&& end <= info.getOffset() + info.getLength()) {
 					// optimize the case of the same line
 					end = info.getOffset() + info.getLength();
-				} else
+				} else {
 					end = endOfLineOf(end);
+				}
 
 				end =
 					Math.min(

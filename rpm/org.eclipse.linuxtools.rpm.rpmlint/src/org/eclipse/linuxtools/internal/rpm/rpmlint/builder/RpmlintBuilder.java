@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.builder;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -55,7 +55,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -74,7 +74,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 			} else {
 				incrementalBuild(delta, monitor);
 			}
-		}			
+		}
 		return null;
 	}
 
@@ -84,7 +84,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		checkCancel(monitor);
 		monitor.worked(50);
 		monitor.setTaskName(Messages.RpmlintBuilder_1);
-		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
+		List<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				resourceVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
@@ -95,13 +95,13 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
 		monitor.setTaskName(Messages.RpmlintBuilder_1);
-		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
+		List<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
 
 	private void visitAndMarkRpmlintItems(IProgressMonitor monitor,
-			ArrayList<RpmlintItem> rpmlintItems) throws CoreException {
+			List<RpmlintItem> rpmlintItems) throws CoreException {
 		if (rpmlintItems.size() > 0) {
 			checkCancel(monitor);
 			monitor.worked(70);

@@ -43,49 +43,49 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 	}
 
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
-		if (hoverRegion == null || hoverRegion.getLength() == 0)
+		if (hoverRegion == null || hoverRegion.getLength() == 0) {
 			return null;
-		
+		}
+
 		Specfile spec = editor.getSpecfile();
-		
-		
+
 		String currentSelection;
 		try {
 			currentSelection = textViewer.getDocument().get(hoverRegion.getOffset() + 1, hoverRegion.getLength() - 1);
 		} catch (BadLocationException e) {
 			return null;
 		}
-		
-                
+
         // First we try to get a define based on the given name
 		SpecfileDefine define = spec.getDefine(currentSelection);
-		
+
         String value = currentSelection + ": "; //$NON-NLS-1$
-                
+
 		if (define != null) {
-                    value += define.getStringValue();
-                    return value;
-                }
-                
+			value += define.getStringValue();
+			return value;
+		}
+
 		String macroLower = currentSelection.toLowerCase();
 
 		// If there's no such define we try to see if it corresponds to
 		// a Source or Patch declaration
 		String retrivedValue = getSourceOrPatchValue(spec, macroLower);
-		if (retrivedValue != null) 
+		if (retrivedValue != null) {
 			return value += retrivedValue;
-		else {
+		} else {
 			// If it does not correspond to a Patch or Source macro, try to find it
 			// in the macro proposals list.
 			retrivedValue = getMacroValueFromMacroList(currentSelection);
-			if (retrivedValue != null) 
+			if (retrivedValue != null) {
 				return value += retrivedValue;
-			else {
+			} else {
 				// If it does not correspond to a macro in the list, try to find it
-				// in the RPM list. 
-				retrivedValue = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",EMPTY_STRING)); //$NON-NLS-1$ 
-				if (retrivedValue != null)
+				// in the RPM list.
+				retrivedValue = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",EMPTY_STRING)); //$NON-NLS-1$
+				if (retrivedValue != null) {
 					return retrivedValue;
+				}
 			}
 		}
        // We return null in other cases, so we don't show hover information
@@ -94,7 +94,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 	}
 
 	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
-		
+
 		if (textViewer != null) {
 			/*
 			 * If the hover offset falls within the selection range return the
@@ -103,9 +103,9 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			Point selectedRange = textViewer.getSelectedRange();
 			if (selectedRange.x >= 0 && selectedRange.y	 > 0
 					&& offset >= selectedRange.x
-					&& offset <= selectedRange.x + selectedRange.y)
+					&& offset <= selectedRange.x + selectedRange.y) {
 				return new Region(selectedRange.x, selectedRange.y);
-			else {
+			} else {
 				IRegion region = findWord(textViewer.getDocument(), offset);
 				if (region.equals(new Region(offset, 0))) {
 					region = findPackages(textViewer.getDocument(), offset);
@@ -123,8 +123,8 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			}
 		};
 	}
-	
-	
+
+
 	public static IRegion findWord(IDocument document, int offset) {
 		int start = -1;
 		int end = -1;
@@ -137,8 +137,9 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			while (pos >= 0) {
 				c = document.getChar(pos);
 				if (c == '%') {
-					if (document.getChar(pos + 1) == '{')
+					if (document.getChar(pos + 1) == '{') {
 						beginsWithBrace = true;
+					}
 					break;
 				}
 				else if (c == '\n' || c == '}'){
@@ -147,9 +148,10 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 				}
 				--pos;
 			}
-			
-			if (!beginsWithBrace)
+
+			if (!beginsWithBrace) {
 				--pos;
+			}
 
 			start = pos;
 
@@ -160,8 +162,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 				c = document.getChar(pos);
 				if (beginsWithBrace && (c == '}')) {
 					break;
-				}
-				else if (c == '\n' || c == '%' || c == '('){ // '(' is needed for the %deffatt( case
+				} else if (c == '\n' || c == '%' || c == '('){ // '(' is needed for the %deffatt( case
 					break;
 //					Do not return empty region here. We have a work.
 //					return new Region(offset, 0);
@@ -177,15 +178,16 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		}
 
 		if (start >= -1 && end > -1) {
-			if (start == offset)
+			if (start == offset) {
 				return new Region(start, end - start);
-			else
+			} else {
 				return new Region(start + 1, end - start - 1);
+			}
 		}
 
 		return null;
 	}
-	
+
 	public static IRegion findPackages(IDocument document, int offset) {
 		int start = -1;
 		int end = -1;
@@ -202,7 +204,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 					} else if (c == '\n'){
 						return new Region(offset, 0);
 					}
-				}  
+				}
 				--pos;
 			}
 			--pos;
@@ -213,8 +215,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 				c = document.getChar(pos);
 				if (beginsWithSpace && (!Character.isLetter(c) && !Character.isDigit(c) && c != '-')) {
 					break;
-				}
-				else if (c == '\n'){
+				} else if (c == '\n') {
 					return new Region(offset, 0);
 				}
 				++pos;
@@ -229,7 +230,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		}
 		return null;
 	}
-	
+
 	public static String getSourceOrPatchValue(Specfile spec, String patchOrSourceName) {
 		String value = null;
 		Pattern p = Pattern.compile("(source|patch)(\\d*)"); //$NON-NLS-1$
@@ -248,10 +249,11 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			}
 
 			if (number != -1) {
-				if (m.group(1).equals("source")) //$NON-NLS-1$
+				if (m.group(1).equals("source")) {//$NON-NLS-1$
 					source = spec.getSource(number);
-				else if (m.group(1).equals("patch")) //$NON-NLS-1$
+				} else if (m.group(1).equals("patch")) {//$NON-NLS-1$
 					source = spec.getPatch(number);
+				}
 
 				if (source != null) {
 					value = source.getFileName();
@@ -267,10 +269,11 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			String currentConfig = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
 			// Show content of the macro according with the configuration set
 			// in the macro preference page.
-			if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION))
+			if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION)) {
 				value = Activator.getDefault().getRpmMacroList().getValue(macroName);
-			else
+			} else {
 				value = RpmMacroProposalsList.getMacroEval("%" + macroName); //$NON-NLS-1$
+			}
 		}
 		return value;
 	}

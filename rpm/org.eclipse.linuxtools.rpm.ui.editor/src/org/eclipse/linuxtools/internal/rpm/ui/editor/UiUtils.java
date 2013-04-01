@@ -22,38 +22,40 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 
 /*
- * TODO Refract existing code to use the bellow methods so that we can easily 
+ * TODO Refract existing code to use the bellow methods so that we can easily
  * switch the way that we do some common operation.
  *
  */
 
 public class UiUtils {
-	
+
 	public static void pluginSanityCheck() throws IOException {
 		boolean exists = (new File(PreferenceConstants.RPMMACRO_FILE)).exists();
-	    // Check if ~/.rpmmacros exist, if the file don't exist we create 
+	    // Check if ~/.rpmmacros exist, if the file don't exist we create
 		// it with the appropriate command.
 		if (!exists && Utils.fileExist("/usr/bin/rpmdev-setuptree")) { //$NON-NLS-1$
 			org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToInputStream("rpmdev-setuptree"); //$NON-NLS-1$
 	    }
-		
+
 		// Check RPM tool preference.
 		String currentRpmTool = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
 		if (!Utils.fileExist("/usr/bin/yum")) { //$NON-NLS-1$
-			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM))
+			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM)) {
 				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
+			}
 		} else if (!Utils.fileExist("/usr/bin/urpmq")) { //$NON-NLS-1$
-			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM))
+			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM)) {
 				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
+			}
 		}
 	}
-	
-	
-		
+
+
+
 	/**
 	 * Resolve defines for a give string, if a define is not found or if
 	 * there is some other error, the original string is returned.
-	 * 
+	 *
 	 * @param stringToResolve The string to resolve.
 	 * @return resolved string
 	 */
@@ -65,24 +67,26 @@ public class UiUtils {
 			Matcher variableMatcher = variablePattern.matcher(stringToResolve);
 			while (variableMatcher.find()) {
 				define = specfile.getDefine(variableMatcher.group(1));
-				if (define != null)
+				if (define != null) {
 					stringToResolve = stringToResolve.replaceAll(variableMatcher.group(1), define.getStringValue());
-				else
+				} else {
 					return originalString;
+				}
 			}
-			if (!stringToResolve.equals(originalString))
+			if (!stringToResolve.equals(originalString)) {
 				stringToResolve = stringToResolve.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 			return stringToResolve;
 		} catch (Exception e) {
 			return originalString;
 		}
 	}
-	
+
 	public static String getPackageDefineId(SpecfileDefine define, SpecfilePackage rpmPackage){
 		return getPackageDefineId(define.getName(),rpmPackage);
 	}
-	
+
 	public static String getPackageDefineId(String defineName, SpecfilePackage rpmPackage){
-		return defineName.toLowerCase() + ":" + rpmPackage.getPackageName(); //$NON-NLS-1$
+		return defineName.toLowerCase() + ':' + rpmPackage.getPackageName();
 	}
 }

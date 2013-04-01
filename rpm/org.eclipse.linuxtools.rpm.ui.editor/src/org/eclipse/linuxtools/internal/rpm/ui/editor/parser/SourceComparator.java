@@ -18,15 +18,18 @@ public class SourceComparator implements Comparator<SpecfileSource>, Serializabl
 	private static final long serialVersionUID = 1L;
 
 	public int compare(SpecfileSource source0, SpecfileSource source1) {
-		if (source0 == null)
+		if (source0 == null) {
 			return -1;
-		if (source1 == null)
+		}
+		if (source1 == null) {
 			return 1;
-		if (source0.getNumber() < source1.getNumber())
+		}
+		if (source0.getNumber() < source1.getNumber()) {
 			return -1;
-		else if (source0.getNumber() == source1.getNumber())
+		} else if (source0.getNumber() == source1.getNumber()) {
 			return 0;
-		else
+		} else {
 			return 1;
+		}
 	}
 }

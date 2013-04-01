@@ -125,11 +125,12 @@ public final class RpmPackageBuildProposalsJob extends Job {
 					long interval = (today.getTime() - lastBuildTime)
 							/ (1000 * 60 * 60 * 24);
 					// run the job once a week
-					if (period == 2 && interval >= 7)
+					if (period == 2 && interval >= 7) {
 						runJob = true;
 					// run the job once a month
-					else if (period == 3 && interval >= 30)
+					} else if (period == 3 && interval >= 30) {
 						runJob = true;
+					}
 				}
 			}
 			if (runJob) {
