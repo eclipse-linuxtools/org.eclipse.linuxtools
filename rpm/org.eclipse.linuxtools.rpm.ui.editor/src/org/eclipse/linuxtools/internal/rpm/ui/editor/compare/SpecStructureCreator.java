@@ -33,8 +33,8 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
+import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfilePartitioner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
@@ -200,7 +200,7 @@ public class SpecStructureCreator extends StructureCreator {
 
 	@Override
 	protected IDocumentPartitioner getDocumentPartitioner() {
-		return new SpecfilePartitioner(new SpecfilePartitionScanner(),
+		return new FastPartitioner(new SpecfilePartitionScanner(),
 				SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
 	}
 

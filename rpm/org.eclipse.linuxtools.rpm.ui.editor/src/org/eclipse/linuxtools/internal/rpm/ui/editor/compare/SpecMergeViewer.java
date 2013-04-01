@@ -14,10 +14,10 @@ import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.contentmergeviewer.TextMergeViewer;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileConfiguration;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfilePartitioner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.swt.events.DisposeEvent;
@@ -49,7 +49,7 @@ public class SpecMergeViewer extends TextMergeViewer {
 
 	@Override
 	protected IDocumentPartitioner getDocumentPartitioner() {
-		return new SpecfilePartitioner(new SpecfilePartitionScanner(),
+		return new FastPartitioner(new SpecfilePartitionScanner(),
 				SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
 	}
 
