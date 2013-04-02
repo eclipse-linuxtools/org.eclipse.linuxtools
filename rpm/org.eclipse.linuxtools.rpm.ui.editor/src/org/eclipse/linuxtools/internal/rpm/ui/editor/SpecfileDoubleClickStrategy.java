@@ -24,8 +24,9 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 	public void doubleClicked(ITextViewer part) {
 		int pos = part.getSelectedRange().x;
 
-		if (pos < 0)
+		if (pos < 0) {
 			return;
+		}
 
 		fText = part;
 
@@ -46,12 +47,14 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 					pos -= 2;
 					continue;
 				}
-				if ( c == lTerminator || c == '\"')
+				if ( c == lTerminator || c == '\"') {
 					break;
+				}
 				--pos;
 			}
-			if (c != '\"')
+			if (c != '\"') {
 				return false;
+			}
 
 			startPos = pos;
 
@@ -61,8 +64,9 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 
 			while (pos < length) {
 				c = doc.getChar(pos);
-				if ( c == lTerminator || c == '\"' )
+				if ( c == lTerminator || c == '\"' ) {
 					break;
+				}
 				++pos;
 			}
 			if (c != '\"')
@@ -91,8 +95,9 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 
 			while (pos >= 0) {
 				c = doc.getChar(pos);
-				if (!Character.isJavaIdentifierPart(c))
+				if (!Character.isJavaIdentifierPart(c)) {
 					break;
+				}
 				--pos;
 			}
 
@@ -103,8 +108,9 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 
 			while (pos < length) {
 				c = doc.getChar(pos);
-				if (!Character.isJavaIdentifierPart(c))
+				if (!Character.isJavaIdentifierPart(c)) {
 					break;
+				}
 				++pos;
 			}
 

@@ -189,8 +189,9 @@ public final class RpmPackageBuildProposalsJob extends Job {
 						"/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
 				// backup pkg list file
 				File rpmListFile = new File(rpmListFilepath);
-				if (rpmListFile.exists())
+				if (rpmListFile.exists()) {
 					Utils.copyFile(new File(rpmListFilepath), bkupFile);
+				}
 
 				BufferedWriter out = new BufferedWriter(new FileWriter(
 						rpmListFile, false));

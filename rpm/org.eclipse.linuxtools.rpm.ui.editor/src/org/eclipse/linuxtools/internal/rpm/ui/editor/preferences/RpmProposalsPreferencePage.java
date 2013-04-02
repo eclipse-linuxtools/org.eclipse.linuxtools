@@ -51,14 +51,14 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
 	@Override
 	public void createFieldEditors() {
 		rpmtools = rpmtoolsRadioGroupFieldEditor();
-		addField(rpmtools);	
-		// FIXME: there is validations problem when a FileFieldEditor is used, so 
+		addField(rpmtools);
+		// FIXME: there is validations problem when a FileFieldEditor is used, so
 		// as a quick fix, StringFieldEditor is used.
 		StringFieldEditor rpmListFieldEditor = new StringFieldEditor(PreferenceConstants.P_RPM_LIST_FILEPATH,
 				Messages.RpmProposalsPreferencePage_0, getFieldEditorParent());
@@ -66,10 +66,10 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,Messages.RpmProposalsPreferencePage_1, getFieldEditorParent()));
 		addField(buildTimeListRateFieldEditor());
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -79,14 +79,14 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null); 
+				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null);
 			}
 		});
 		Composite fieldEditorComposite = (Composite) super
 				.createContents(parent);
 		return fieldEditorComposite;
 	}
-	
+
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
 		ArrayList<String[]> list = new ArrayList<String[]>();
 		list.add(new String[] { Messages.RpmProposalsPreferencePage_3,
@@ -94,13 +94,15 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		/*
 		 * Show only installed tools.
 		 * Don't forgot to add sanity check in UiUtils.pluginSanityCheck().
-		 */ 
-		if (Utils.fileExist("/usr/bin/yum"))  //$NON-NLS-1$
+		 */
+		if (Utils.fileExist("/usr/bin/yum")) { //$NON-NLS-1$
 			list.add(new String[] { Messages.RpmProposalsPreferencePage_4,
 					PreferenceConstants.DP_RPMTOOLS_YUM });
-		if (Utils.fileExist("/usr/bin/urpmq"))  //$NON-NLS-1$
+		}
+		if (Utils.fileExist("/usr/bin/urpmq")) { //$NON-NLS-1$
 			list.add(new String[] { Messages.RpmProposalsPreferencePage_5,
 					PreferenceConstants.DP_RPMTOOLS_URPM });
+		}
 
 		String[][] radioItems = new String[list.size()][2];
 		int pos = 0;
@@ -108,17 +110,17 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 			radioItems[pos][0] = item[0];
 			radioItems[pos][1] = item[1];
 			pos++;
-			
+
 		}
-	
+
 		RadioGroupFieldEditor rpmToolsRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CURRENT_RPMTOOLS,
 				Messages.RpmProposalsPreferencePage_6, 1, radioItems ,
 				getFieldEditorParent(), true);
 		return rpmToolsRadioGroupEditor;
 	}
-	
-	private FieldEditor buildTimeListRateFieldEditor() { 
+
+	private FieldEditor buildTimeListRateFieldEditor() {
 		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
 				Messages.RpmProposalsPreferencePage_7, 1, new String[][] {
@@ -130,7 +132,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {

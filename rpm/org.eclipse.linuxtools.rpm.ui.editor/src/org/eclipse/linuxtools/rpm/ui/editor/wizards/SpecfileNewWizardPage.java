@@ -163,8 +163,9 @@ public class SpecfileNewWizardPage extends WizardPage {
 						if (line.startsWith("Group:")) { //$NON-NLS-1$
 							String[] items = line.split(":", 2); //$NON-NLS-1$
 							String value = items[1].trim();
-							if (!value.equals("")) //$NON-NLS-1$
+							if (!value.equals("")) {//$NON-NLS-1$
 								groupCombo.setText(value);
+							}
 						}
 						if (line.startsWith("License:")) { //$NON-NLS-1$
 							setTemplateTagValue(licenseText, line);

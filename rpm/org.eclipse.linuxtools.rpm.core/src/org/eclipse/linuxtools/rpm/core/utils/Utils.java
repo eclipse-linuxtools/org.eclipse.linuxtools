@@ -165,10 +165,12 @@ public class Utils {
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
 		} finally {
-			if (inChannel != null)
+			if (inChannel != null) {
 				inChannel.close();
-			if (outChannel != null)
+			}
+			if (outChannel != null) {
 				outChannel.close();
+			}
 		}
 	}
 }

@@ -104,8 +104,9 @@ public class SpecfileParser {
 
 		// remove all existing markers, if a SpecfileErrorHandler is
 		// instantiated.
-		if (errorHandler != null)
+		if (errorHandler != null) {
 			errorHandler.removeExistingMarkers();
+		}
 		if (taskHandler != null) {
 			taskHandler.removeExistingMarkers();
 		}
@@ -189,8 +190,9 @@ public class SpecfileParser {
 	public SpecfileElement parseLine(String lineText, Specfile specfile,
 			int lineNumber) {
 
-		if (lineText.startsWith("%")) //$NON-NLS-1$
+		if (lineText.startsWith("%")) {//$NON-NLS-1$
 			return parseMacro(lineText, specfile, lineNumber);
+		}
 
 		for (String simpleDefinition : simpleDefinitions) {
 			if (lineText.startsWith(simpleDefinition + DEFINE_SEPARATOR)) {

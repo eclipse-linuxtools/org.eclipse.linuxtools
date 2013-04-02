@@ -223,11 +223,13 @@ public class RpmlintParser {
 				}
 
 				if (line.equals(EMPTY_STRING)) {
-					if (item.getMessage() == null)
+					if (item.getMessage() == null) {
 						item.setMessage(description.substring(0, description.length() - 2));
+					}
 					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getRefferedContent());
-					if (useOfTabsAndSpaces != -1)
+					if (useOfTabsAndSpaces != -1) {
 						item.setLineNbr(useOfTabsAndSpaces);
+					}
 					rpmlintItems.add(item);
 					item = new RpmlintItem();
 

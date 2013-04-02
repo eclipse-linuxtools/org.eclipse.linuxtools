@@ -108,16 +108,18 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 					word.substring(SOURCE_IDENTIFIER.length(),
 							word.length() - 1)).intValue();
 			SpecfileSource source = specfile.getSource(sourceNumber);
-			if (source != null)
+			if (source != null) {
 				return prepareHyperlink(lineInfo, line, word, source);
+			}
 		} else if (word.startsWith(PATCH_IDENTIFIER)) {
 
 			int sourceNumber = Integer.valueOf(
 					word.substring(PATCH_IDENTIFIER.length(), word.length()))
 					.intValue();
 			SpecfileSource source = specfile.getPatch(sourceNumber);
-			if (source != null)
+			if (source != null) {
 				return prepareHyperlink(lineInfo, line, word, source);
+			}
 		} else {
 			String defineName = getDefineName(word);
 			SpecfileDefine define = specfile.getDefine(defineName);

@@ -28,12 +28,12 @@ public class RpmlintItem {
 	private String refferedContent;
 
 	private String message;
-	
+
 	private String fileName;
 
 	/**
 	 * Returns the name of the file rpmlint gives warning for.
-	 * 
+	 *
 	 * @return The file name.
 	 */
 	public String getFileName() {
@@ -49,7 +49,7 @@ public class RpmlintItem {
 	}
 
 	/**
-	 * Returns the line number where the warning appears if rpmlint gives it. 
+	 * Returns the line number where the warning appears if rpmlint gives it.
 	 * @return The line number.
 	 */
 	public int getLineNbr() {
@@ -57,7 +57,7 @@ public class RpmlintItem {
 	}
 
 	/**
-	 * Sets the line number where the warning appears if rpmlint gives it. 
+	 * Sets the line number where the warning appears if rpmlint gives it.
 	 * @param lineNbr The line number.
 	 */
 	public void setLineNbr(int lineNbr) {
@@ -112,8 +112,9 @@ public class RpmlintItem {
 		for (int i = 0; i < sections.length; i++) {
 			if (refferedContent.startsWith(sections[i])) {
 				this.refferedContent = refferedContent.trim();
-				if (this.refferedContent.equals("")) //$NON-NLS-1$
+				if (this.refferedContent.equals("")) {//$NON-NLS-1$
 					this.refferedContent = sections[i];
+				}
 				i = sections.length;
 			} else {
 				this.refferedContent = refferedContent;
@@ -123,7 +124,7 @@ public class RpmlintItem {
 
 	/**
 	 * Returns the severity of the rpmlint item.
-	 * 
+	 *
 	 * @return The severity.
 	 */
 	public int getSeverity() {
@@ -132,7 +133,7 @@ public class RpmlintItem {
 
 	/**
 	 * Returns the severity of the rpmlint item.
-	 * 
+	 *
 	 * @param severity The severity of the rpmlint item.
 	 */
 	public void setSeverity(String severity) {
@@ -172,8 +173,8 @@ public class RpmlintItem {
 		stringBuilder.append("\nmessage: "); //$NON-NLS-1$
 		stringBuilder.append(this.getMessage());
 		stringBuilder.append("\n"); //$NON-NLS-1$
-		return stringBuilder.toString(); 
+		return stringBuilder.toString();
 	}
-	
-	
+
+
 }

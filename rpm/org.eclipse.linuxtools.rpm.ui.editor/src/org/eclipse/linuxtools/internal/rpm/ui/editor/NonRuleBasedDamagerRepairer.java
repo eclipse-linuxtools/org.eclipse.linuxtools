@@ -58,8 +58,9 @@ public class NonRuleBasedDamagerRepairer
 	protected int endOfLineOf(int offset) throws BadLocationException {
 
 		IRegion info = fDocument.getLineInformationOfOffset(offset);
-		if (offset <= info.getOffset() + info.getLength())
+		if (offset <= info.getOffset() + info.getLength()) {
 			return info.getOffset() + info.getLength();
+		}
 
 		int line = fDocument.getLineOfOffset(offset);
 		try {
@@ -137,7 +138,7 @@ public class NonRuleBasedDamagerRepairer
 		int offset,
 		int length,
 		TextAttribute attr) {
-		if (attr != null)
+		if (attr != null) {
 			presentation.addStyleRange(
 				new StyleRange(
 					offset,
@@ -145,5 +146,6 @@ public class NonRuleBasedDamagerRepairer
 					attr.getForeground(),
 					attr.getBackground(),
 					attr.getStyle()));
+		}
 	}
 }

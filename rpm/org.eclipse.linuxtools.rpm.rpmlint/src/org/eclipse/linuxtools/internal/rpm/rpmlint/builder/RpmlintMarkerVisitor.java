@@ -36,13 +36,13 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 public class RpmlintMarkerVisitor implements IResourceVisitor {
 
 	private List<RpmlintItem> rpmlintItems;
-	
+
 	private RpmlintBuilder builder;
-	
+
 	private boolean firstWarningInResource;
-	
+
 	/**
-	 * Creates a visitor for handling .rpm and .spec files and adding markers for rpmlint warnings/errors. 
+	 * Creates a visitor for handling .rpm and .spec files and adding markers for rpmlint warnings/errors.
 	 * @param builder The rpmlint project builder.
 	 * @param rpmlintItems The rpmlint identified warnings and errors.
 	 */
@@ -73,11 +73,12 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					if (item.getId().equals("configure-without-libdir-spec")) { //$NON-NLS-1$
 						item.setLineNbr(-1);
 						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "./configure"); //$NON-NLS-1$
-						if (lineNumber == -1)
+						if (lineNumber == -1) {
 							lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "%configure"); //$NON-NLS-1$
+						}
 						item.setLineNbr(lineNumber);
 					}
-					
+
 					lineNumber = item.getLineNbr();
 					if (lineNumber == -1) {
 						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, item.getRefferedContent());
@@ -87,7 +88,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					}
 					lineNumber -= 1;
 					// end workaround
-					
+
 					// BTW we mark specfile with the internal marker.
 					builder.getSpecfileParser().setErrorHandler(builder.getSpecfileErrorHandler(currentFile, specContent));
 					builder.getSpecfileParser().setTaskHandler(builder.getSpecfileTaskHandler(currentFile, specContent));
@@ -124,7 +125,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 		}
 		return true;
 	}
-	
+
 	private static int getLineOffset(IDocument document, int lineNumber) {
 		try {
 			return document.getLineOffset(lineNumber);
@@ -133,7 +134,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 			return 1;
 		}
 	}
-	
+
 	private static int getLineLength(IDocument document, int lineNumber) {
 		try {
 			return document.getLineLength(lineNumber);
@@ -142,7 +143,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 			return 1;
 		}
 	}
-	
+
 	private String fileToString(IFile file) {
 		String ret = "";  //$NON-NLS-1$
 		try {
@@ -159,5 +160,5 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 		}
 		return ret;
 	}
-	
+
 }

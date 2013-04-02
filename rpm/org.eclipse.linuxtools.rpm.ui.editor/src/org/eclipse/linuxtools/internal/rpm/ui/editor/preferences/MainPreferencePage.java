@@ -71,11 +71,13 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 				Locale currentLocale = new Locale(countries[i]);
 				combo.add(countries[i] + " - " + currentLocale.getDisplayLanguage()); //$NON-NLS-1$
 				// get index of the Locale store in the preferences
-				if (countries[i].equals(lastLocale))
+				if (countries[i].equals(lastLocale)) {
 					selectedItem = i;
+				}
 				// get the index of the default Locale
-				if (countries[i].equals(PreferenceConstants.DP_CHANGELOG_LOCAL))
+				if (countries[i].equals(PreferenceConstants.DP_CHANGELOG_LOCAL)) {
 					defaultItem = i;
+				}
 		}
 		combo.select(selectedItem);
 		// update preferences

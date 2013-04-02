@@ -29,7 +29,7 @@ public class SpecfileSource extends SpecfileElement {
 	public enum SourceType { SOURCE, PATCH}
 	SourceType sourceType;
 	List<Integer> linesUsed;
-	
+
 	public SourceType getSourceType() {
 		return sourceType;
 	}
@@ -65,15 +65,16 @@ public class SpecfileSource extends SpecfileElement {
 	}
 	@Override
 	public String toString() {
-		if (sourceType == SourceType.SOURCE)
+		if (sourceType == SourceType.SOURCE) {
 			return MessageFormat.format(
 					"Source #{0} (line #{1}, used on lines {2}) -> {3}", //$NON-NLS-1$
 					number, lineNumber, getLinesUsed(), fileName);
+		}
 		return MessageFormat.format(
 				"Patch #{0} (line #{1}, used on lines {2}) -> {3}", number, //$NON-NLS-1$
 				lineNumber, getLinesUsed(), fileName);
 	}
-	
+
 	// Note that changeReferences assumes that the number of the source/patch
 	// has *already been set*.  If this is not true, it will simply do nothing
 	public void changeReferences(int oldPatchNumber) {
@@ -111,9 +112,10 @@ public class SpecfileSource extends SpecfileElement {
 		try {
 			line = specfile.getLine(lineNumber);
 			Matcher patchMatcher = patchPattern.matcher(line);
-			if (!patchMatcher.find())
+			if (!patchMatcher.find()) {
 				// TODO: Maybe we can throw a exception here.
 				System.out.println(Messages.getString("SpecfileSource.2") + patchPattern.pattern()); //$NON-NLS-1$
+			}
 			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number)); //$NON-NLS-1$
 		} catch (BadLocationException e) {
 			SpecfileLog.logError(e);

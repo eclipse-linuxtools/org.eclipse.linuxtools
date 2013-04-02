@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
 /**
  * This class is used to retrieve and manage the RPM package proposals.
- * 
+ *
  */
 public class RpmPackageProposalsList {
 	private HashSet<String> list = new HashSet<String>();
@@ -80,7 +80,7 @@ public class RpmPackageProposalsList {
 			String message = Messages.RpmPackageProposalsList_0
 					+ rpmpkgsMaxProposals
 					+ Messages.RpmPackageProposalsList_1;
-			item[1] = message;				
+			item[1] = message;
 			if (item[0].startsWith(prefix)) {
 				proposalsList.add(item);
 			}
@@ -100,7 +100,7 @@ public class RpmPackageProposalsList {
 			return proposalsList;
 		}
 	}
-	
+
 	public String getValue(String key) {
 		for (String item :list){
 			if (item.equals(key.trim())) {
@@ -108,7 +108,7 @@ public class RpmPackageProposalsList {
 			}
 		}
 		return null;
-		
+
 	}
 
 	public String getRpmInfo(String pkgName) {
@@ -140,37 +140,51 @@ public class RpmPackageProposalsList {
 	}
 
 	private String getformattedRpmInformations() {
-		String formatedInfoString = ""; //$NON-NLS-1$
+		StringBuilder formatedInfoString = new StringBuilder();
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_NAME))
-			formatedInfoString += "<b>Name: </b>%{NAME}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VERSION))
-			formatedInfoString += "<b>Version: </b>%{VERSION}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_RELEASE))
-			formatedInfoString += "<b>Release: </b>%{Release}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SUMMARY))
-			formatedInfoString += "<b>Summary: </b>%{SUMMARY}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_LICENSE))
-			formatedInfoString += "<b>License: </b>%{LICENSE}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_GROUP))
-			formatedInfoString += "<b>Group: </b>%{GROUP}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_URL))
-			formatedInfoString += "<b>URL: </b>%{URL}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_INSTALLTIME))
-			formatedInfoString += "<b>Installation Date: </b>%{INSTALLTIME:date}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_DESCRIPTION))
-			formatedInfoString += "<b>Description: </b>%{DESCRIPTION}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_PACKAGER))
-			formatedInfoString += "<b>Packager: </b>%{PACKAGER}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VENDOR))
-			formatedInfoString += "<b>Vendor: </b>%{VENDOR}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SIZE))
-			formatedInfoString += "<b>Size: </b>%{SIZE} bytes<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_BUILDTIME))
-			formatedInfoString += "<b>Build Date: </b>%{BUILDTIME:date}<br>"; //$NON-NLS-1$
-		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SOURCERPM))
-			formatedInfoString += "<b>SRPM: </b>%{SOURCERPM}<br>"; //$NON-NLS-1$
-		return formatedInfoString;
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_NAME)) {
+			formatedInfoString.append("<b>Name: </b>%{NAME}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VERSION)) {
+			formatedInfoString.append("<b>Version: </b>%{VERSION}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_RELEASE)) {
+			formatedInfoString.append("<b>Release: </b>%{Release}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SUMMARY)) {
+			formatedInfoString.append("<b>Summary: </b>%{SUMMARY}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_LICENSE)) {
+			formatedInfoString.append("<b>License: </b>%{LICENSE}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_GROUP)) {
+			formatedInfoString.append("<b>Group: </b>%{GROUP}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_URL)) {
+			formatedInfoString.append("<b>URL: </b>%{URL}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_INSTALLTIME)) {
+			formatedInfoString.append("<b>Installation Date: </b>%{INSTALLTIME:date}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_DESCRIPTION)) {
+			formatedInfoString.append("<b>Description: </b>%{DESCRIPTION}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_PACKAGER)) {
+			formatedInfoString.append("<b>Packager: </b>%{PACKAGER}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VENDOR)) {
+			formatedInfoString.append("<b>Vendor: </b>%{VENDOR}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SIZE)) {
+			formatedInfoString.append("<b>Size: </b>%{SIZE} bytes<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_BUILDTIME)) {
+			formatedInfoString.append("<b>Build Date: </b>%{BUILDTIME:date}<br>"); //$NON-NLS-1$
+		}
+		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SOURCERPM)) {
+			formatedInfoString.append("<b>SRPM: </b>%{SOURCERPM}<br>"); //$NON-NLS-1$
+		}
+		return formatedInfoString.toString();
 
 	}
 

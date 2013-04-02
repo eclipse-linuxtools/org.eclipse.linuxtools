@@ -76,8 +76,9 @@ public class SpecfileEditor extends TextEditor {
 		super.doSetInput(newInput);
 		this.input = newInput;
 
-		if (outlinePage != null)
+		if (outlinePage != null) {
 			outlinePage.setInput(input);
+		}
 
 		validateAndMark();
 	}
@@ -89,8 +90,9 @@ public class SpecfileEditor extends TextEditor {
 		// we validate and mark document here
 		validateAndMark();
 
-		if (outlinePage != null)
+		if (outlinePage != null) {
 			outlinePage.update();
+		}
 	}
 
 	protected void validateAndMark() {
@@ -136,8 +138,9 @@ public class SpecfileEditor extends TextEditor {
 		if (projectionSupport != null) {
 			Object adapter = projectionSupport.getAdapter(getSourceViewer(),
 					required);
-			if (adapter != null)
+			if (adapter != null) {
 				return adapter;
+			}
 		}
 		return super.getAdapter(required);
 	}
@@ -162,8 +165,9 @@ public class SpecfileEditor extends TextEditor {
 	private ContentOutlinePage getOutlinePage() {
 		if (outlinePage == null) {
 			outlinePage = new SpecfileContentOutlinePage(this);
-			if (getEditorInput() != null)
+			if (getEditorInput() != null) {
 				outlinePage.setInput(getEditorInput());
+			}
 		}
 		return outlinePage;
 	}
@@ -184,8 +188,9 @@ public class SpecfileEditor extends TextEditor {
 	}
 
 	public static TextFileDocumentProvider getSpecfileDocumentProvider() {
-		if (fDocumentProvider == null)
+		if (fDocumentProvider == null) {
 			fDocumentProvider = new SpecfileDocumentProvider();
+		}
 		return fDocumentProvider;
 	}
 
@@ -213,8 +218,9 @@ public class SpecfileEditor extends TextEditor {
 				shell.getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						ISourceViewer viewer = getSourceViewer();
-						if (viewer != null)
+						if (viewer != null) {
 							fOccurrencesUpdater.update(viewer);
+						}
 					}
 				});
 			}
