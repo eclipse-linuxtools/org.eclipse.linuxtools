@@ -29,26 +29,29 @@ import org.eclipse.ui.IMemento;
 
 public final class DataSetFactory {
 	public static IDataSet createDataSet(String id, String[] labels) {
-		if(id.equals(RowDataSet.ID))
+		if(id.equals(RowDataSet.ID)) {
 			return new RowDataSet(labels);
-		else if(id.equals(TableDataSet.ID))
+		} else if(id.equals(TableDataSet.ID)) {
 			return new TableDataSet(labels);
+		}
 		return null;
 	}
 
 	public static IFilteredDataSet createFilteredDataSet(String id, String[] labels) {
-		if(id.equals(RowDataSet.ID))
+		if(id.equals(RowDataSet.ID)) {
 			return new FilteredRowDataSet(labels);
-		else if(id.equals(TableDataSet.ID))
+		} else if(id.equals(TableDataSet.ID)) {
 			return new FilteredTableDataSet(labels);
+		}
 		return new FilteredRowDataSet(labels);
 	}
 
 	public static IFilteredDataSet createFilteredDataSet(IDataSet set) {
-		if(set instanceof RowDataSet)
+		if(set instanceof RowDataSet) {
 			return new FilteredRowDataSet((RowDataSet)set);
-		else if(set instanceof TableDataSet)
+		} else if(set instanceof TableDataSet) {
 			return new FilteredTableDataSet((TableDataSet)set);
+		}
 		return null;
 	}
 
@@ -58,15 +61,17 @@ public final class DataSetFactory {
 
 	public static String getName(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
+		if(index >= 0) {
 			return names[index];
+		}
 		return null;
 	}
 
 	public static String getDescription(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
+		if(index >= 0) {
 			return descriptions[index];
+		}
 		return null;
 	}
 
@@ -74,34 +79,39 @@ public final class DataSetFactory {
 		ParsingWizardPage page = null;
 
 		int index = getIndex(id);
-		if(index >=0 && index < dataSetWizards.length)
+		if(index >=0 && index < dataSetWizards.length) {
 			return dataSetWizards[index];
+		}
 
 		return page;
 	}
 
 	public static IDataSetParser createParserXML(String id, IMemento source) {
-		if(id.equals(ids[0]))
+		if(id.equals(ids[0])) {
 			return new RowParser(source);
-		else if(id.equals(ids[1]))
+		} else if(id.equals(ids[1])) {
 			return new TableParser(source);
+		}
 
 		return null;
 	}
 
 	public static DataGrid getDataGrid(Composite composite, IDataSet set) {
-		if(set instanceof RowDataSet)
+		if(set instanceof RowDataSet) {
 			return new DataGrid(composite, set, DataGrid.NONE);
-		else if(set instanceof TableDataSet)
+		} else if(set instanceof TableDataSet) {
 			return new DataGrid(composite, set, DataGrid.FULL_UPDATE);
+		}
 
 		return null;
 	}
 
 	private static int getIndex(String id) {
-		for(int i=0; i<ids.length; i++)
-			if(id.equals(ids[i]))
+		for(int i=0; i<ids.length; i++) {
+			if(id.equals(ids[i])) {
 				return i;
+			}
+		}
 		return -1;
 	}
 

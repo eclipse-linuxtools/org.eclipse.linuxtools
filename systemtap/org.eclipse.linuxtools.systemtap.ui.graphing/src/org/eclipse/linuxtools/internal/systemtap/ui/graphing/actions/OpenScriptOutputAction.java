@@ -66,8 +66,11 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 	public void run(IAction act) {
 		File f = queryFile();
 
-		if(null == f) {
-		} else if(!f.exists()) {
+		if (f == null){
+			return;
+		}
+
+		if(!f.exists()) {
 			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileDNE")); //$NON-NLS-1$
 		} else if(!f.canRead()) {
 			displayError(Localization.getString("OpenScriptOutputAction.SelectedFileCanNotRead")); //$NON-NLS-1$

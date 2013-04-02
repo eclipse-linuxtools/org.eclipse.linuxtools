@@ -33,11 +33,11 @@ public class SelectDataSetWizardPage extends WizardPage {
 		dataSetID = ""; //$NON-NLS-1$
 		btnDataSets = null;
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		wizard = (DataSetWizard)super.getWizard();
-		
+
 		Composite comp = new Composite(parent, SWT.NULL);
 		GridData layoutData = new GridData(GridData.FILL_BOTH);
 		layoutData.grabExcessHorizontalSpace = true;
@@ -60,15 +60,15 @@ public class SelectDataSetWizardPage extends WizardPage {
 			separatorData.horizontalSpan=2;
 		    separator.setLayoutData(separatorData);
 		}
-		
+
 		setControl(comp);
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return !dataSetID.isEmpty();
 	}
-	
+
 	@Override
 	public IWizardPage getNextPage() {
 		return DataSetFactory.getParsingWizardPage(dataSetID);
@@ -77,12 +77,13 @@ public class SelectDataSetWizardPage extends WizardPage {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if(null != btnDataSets)
+		if(null != btnDataSets) {
 			for(int i=0; i<btnDataSets.length; i++) {
 				btnDataSets[i].removeSelectionListener(buttonListener);
 				btnDataSets[i].dispose();
 				btnDataSets[i] = null;
 			}
+		}
 		btnDataSets = null;
 	}
 
@@ -101,7 +102,7 @@ public class SelectDataSetWizardPage extends WizardPage {
 			}
 		}
 	};
-	
+
 	private Button[] btnDataSets;
 	private String dataSetID;
 	private DataSetWizard wizard;

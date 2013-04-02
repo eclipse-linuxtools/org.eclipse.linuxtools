@@ -57,8 +57,9 @@ public abstract class ParsingWizardPage extends WizardPage {
 		txtSeries.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(('0' > e.character || '9' < e.character) && 31 < e.character && 127 > e.character)
+				if(('0' > e.character || '9' < e.character) && 31 < e.character && 127 > e.character) {
 					e.doit = false;
+				}
 			}
 
 			@Override
@@ -94,20 +95,23 @@ public abstract class ParsingWizardPage extends WizardPage {
 			txtRegExpr[i] = new Text(cmpTextFields, SWT.BORDER);
 			txtRegExpr[i].setBounds(150*(i%COLUMNS), 30*(i/COLUMNS), 140, 25);
 
-			if(2 == i%COLUMNS)
+			if(2 == i%COLUMNS) {
 				txtRegExpr[i].setText("\\D+"); //$NON-NLS-1$
-			else if(1 == i%COLUMNS)
+			} else if(1 == i%COLUMNS)
+			 {
 				txtRegExpr[i].setText("\\d+"); //$NON-NLS-1$
+			}
 		}
 
 		readParsingExpression();
 
 		//Do this after readingParsingExpressions so events arn't fired
 		for(int i=0; i<txtRegExpr.length; i++) {
-			if(0 != i%COLUMNS)
+			if(0 != i%COLUMNS) {
 				txtRegExpr[i].addModifyListener(regExListener);
-			else
+			} else {
 				txtRegExpr[i].addModifyListener(textListener);
+			}
 		}
 
 		displayTextBoxes();
@@ -124,10 +128,11 @@ public abstract class ParsingWizardPage extends WizardPage {
 		series *= COLUMNS;
 
 		for(int i=0; i<txtRegExpr.length; i++) {
-			if(i < series)
+			if(i < series) {
 				txtRegExpr[i].setVisible(true);
-			else
+			} else {
 				txtRegExpr[i].setVisible(false);
+			}
 		}
 	}
 
@@ -135,9 +140,11 @@ public abstract class ParsingWizardPage extends WizardPage {
 		int series = Integer.parseInt(txtSeries.getText());
 		series *= COLUMNS;
 		StringBuilder s = new StringBuilder();
-		for(int i=0; i<series; i++)
-			if(0 != i%COLUMNS)
+		for(int i=0; i<series; i++) {
+			if(0 != i%COLUMNS) {
 				s.append(txtRegExpr[i].getText());
+			}
+		}
 		lblRegEx.setText(s.toString());
 	}
 
@@ -151,10 +158,11 @@ public abstract class ParsingWizardPage extends WizardPage {
 		if(null != txtRegExpr) {
 			for(int i=0; i<txtRegExpr.length; i++) {
 				if(null != txtRegExpr[i]) {
-					if(0 != i%COLUMNS)
+					if(0 != i%COLUMNS) {
 						txtRegExpr[i].removeModifyListener(regExListener);
-					else
+					} else {
 						txtRegExpr[i].removeModifyListener(textListener);
+					}
 					txtRegExpr[i].dispose();
 				}
 				txtRegExpr[i] = null;
