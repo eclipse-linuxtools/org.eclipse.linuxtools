@@ -82,7 +82,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			URI exeURI = new URI(configUtils.getExecutablePath());
 			String configWorkingDir = configUtils.getWorkingDirectory();
 			RemoteConnection exeRC = new RemoteConnection(exeURI);
-			monitor.worked(1);
 			String perfPathString = RuntimeProcessFactory.getFactory().whichCommand(PerfPlugin.PERF_COMMAND, project);
 			boolean copyExecutable = configUtils.getCopyExecutable();
 			if (copyExecutable) {
