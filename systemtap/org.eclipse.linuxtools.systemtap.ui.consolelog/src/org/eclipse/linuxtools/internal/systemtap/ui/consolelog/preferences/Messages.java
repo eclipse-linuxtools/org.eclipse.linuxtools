@@ -7,7 +7,7 @@
  * Contributors:
  *     Alexander Kurtakov - Initial API and implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.ui.consolelog.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
