@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.ui.StatComparisonView;
 
 /**
- * Command handler for comparins perf statistics files.
+ * Command handler for comparing perf statistics files.
  */
 public class PerfStatsComparisonHandler extends AbstractComparisonHandler {
 

@@ -14,6 +14,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.perf;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -102,6 +103,8 @@ public class PerfPlugin extends AbstractUIPlugin {
 	
 	public static final String PERF_COMMAND = "perf";
 	public static final String PERF_DEFAULT_DATA = "perf.data";
+	public static final String PERF_DEFAULT_STAT= "perf.stat";
+	public static final String PERF_DEAFULT_OLD_STAT = "perf.old.stat";
 	public static final boolean DEBUG_ON = false; //Spew debug messages or not.
 
 	
@@ -151,6 +154,21 @@ public class PerfPlugin extends AbstractUIPlugin {
 
 	public IPath getWorkingDir(){
 		return curWorkingDir;
+	}
+
+	/**
+	 * Get perf file with specified name under the current profiled project.
+	 *
+	 * @param fileName file name.
+	 * @return File corresponding to given file or null if no working directory
+	 *         has been set.
+	 */
+	public File getPerfFile(String fileName) {
+		if (curWorkingDir != null) {
+			IPath curStatPath = curWorkingDir.append(fileName);
+			return curStatPath.toFile();
+		}
+		return null;
 	}
 
 	/**
