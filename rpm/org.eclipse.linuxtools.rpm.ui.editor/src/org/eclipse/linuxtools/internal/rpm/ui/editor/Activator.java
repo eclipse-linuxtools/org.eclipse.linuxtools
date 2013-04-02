@@ -40,19 +40,19 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
+
 	private ContributionTemplateStore fTemplateStore;
 	private ContributionContextTypeRegistry fContextTypeRegistry;
-	
+
 	// RPM macros list
 	private RpmMacroProposalsList macrosList ;
-	
+
 	// RPM Groups
 	private List<String> rpmGroups = new ArrayList<String>() ;
-	
+
 	// RPM package list
 	public static RpmPackageProposalsList packagesList ;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -94,17 +94,6 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
-	
 	public TemplateStore getTemplateStore() {
 		if (fTemplateStore == null) {
 			fTemplateStore= new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), "templates"); //$NON-NLS-1$
@@ -122,8 +111,8 @@ public class Activator extends AbstractUIPlugin {
 		macrosList = new RpmMacroProposalsList();
 		return macrosList;
 	}
-	
-	
+
+
 	public RpmPackageProposalsList getRpmPackageList() {
 		if (packagesList == null){
 			packagesList = new RpmPackageProposalsList();
@@ -132,7 +121,7 @@ public class Activator extends AbstractUIPlugin {
 		}
 		return packagesList;
 	}
-	
+
 	public List<String> getRpmGroups() {
 		if (rpmGroups.isEmpty()) {
 			// FIXME: Can we assume that all distros place
@@ -188,10 +177,10 @@ public class Activator extends AbstractUIPlugin {
 		}
 		return fContextTypeRegistry;
 	}
-	
+
 	/**
 	 * Get a <code>Image</code> object for the given relative path.
-	 * 
+	 *
 	 * @param imageRelativePath	The relative path to the image.
 	 * @return
 	 * 		a <code>Image</code>
@@ -200,11 +189,11 @@ public class Activator extends AbstractUIPlugin {
 		ImageRegistry registry = getImageRegistry();
 		Image image = registry.get(imageRelativePath);
 		if (image == null) {
-			ImageDescriptor desc = getImageDescriptor(imageRelativePath);
+			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, imageRelativePath);
 			registry.put(imageRelativePath, desc);
 			image = registry.get(imageRelativePath);
 		}
 		return image;
 	}
-	
+
 }
