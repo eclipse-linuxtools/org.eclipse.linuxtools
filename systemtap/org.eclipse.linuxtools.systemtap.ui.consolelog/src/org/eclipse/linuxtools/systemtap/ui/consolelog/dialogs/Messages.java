@@ -16,7 +16,7 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.messages"; //$NON-NLS-1$
 	public static String SelectServerDialog_RemoteServerDetails;
 	public static String SelectServerDialog_Host;
 	public static String SelectServerDialog_User;
