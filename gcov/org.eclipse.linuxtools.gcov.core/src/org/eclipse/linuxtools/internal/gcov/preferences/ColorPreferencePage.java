@@ -17,6 +17,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@kalray.eu>
@@ -37,10 +38,10 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
     private BooleanFieldEditor fbfeUseColors;
 
     public ColorPreferencePage() {
-        super("Gcov preferences", Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/toggle.gif"), //$NON-NLS-2$
+        super(Messages.ColorPreferencePage_Title, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/toggle.gif"), //$NON-NLS-1$
                 FieldEditorPreferencePage.GRID);
         this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        this.setDescription("Gcov colors preferences\n(close and open the editors to get colors updated)");
+        this.setDescription(Messages.ColorPreferencePage_Description);
     }
 
     @Override
@@ -49,20 +50,20 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
 
     @Override
     protected void createFieldEditors() {
-        fbfeUseColors = new BooleanFieldEditor(PREFKEY_COV_USE_COLORS, "Colorize code in coverage results",
+        fbfeUseColors = new BooleanFieldEditor(PREFKEY_COV_USE_COLORS, Messages.ColorPreferencePage_ColorizeCode,
                 this.getFieldEditorParent());
         this.addField(fbfeUseColors);
-        fbfeUseGradient = new BooleanFieldEditor(PREFKEY_COV_USE_GRADIENT, "Use gradient in coverage results",
+        fbfeUseGradient = new BooleanFieldEditor(PREFKEY_COV_USE_GRADIENT, Messages.ColorPreferencePage_UseGradient,
                 this.getFieldEditorParent());
         this.addField(fbfeUseGradient);
 
-        fcfeMax = new ColorFieldEditor(PREFKEY_COV_MAX_COLOR, "Background color for covered lines (highest occurence)",
+        fcfeMax = new ColorFieldEditor(PREFKEY_COV_MAX_COLOR, Messages.ColorPreferencePage_BackColorHighest,
                 this.getFieldEditorParent());
         this.addField(fcfeMax);
-        fcfeMin = new ColorFieldEditor(PREFKEY_COV_MIN_COLOR, "Background color for covered lines (lowest occurence)",
+        fcfeMin = new ColorFieldEditor(PREFKEY_COV_MIN_COLOR, Messages.ColorPreferencePage_BackColorLowest,
                 this.getFieldEditorParent());
         this.addField(fcfeMin);
-        fcfeMno = new ColorFieldEditor(PREFKEY_COV_0_COLOR, "Background color for not covered lines",
+        fcfeMno = new ColorFieldEditor(PREFKEY_COV_0_COLOR, Messages.ColorPreferencePage_BackColorNotCovered,
                 this.getFieldEditorParent());
         this.addField(fcfeMno);
     }
@@ -78,7 +79,7 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.FieldEditorPreferencePage#initialize()
      */
     @Override
@@ -89,7 +90,7 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
      */
