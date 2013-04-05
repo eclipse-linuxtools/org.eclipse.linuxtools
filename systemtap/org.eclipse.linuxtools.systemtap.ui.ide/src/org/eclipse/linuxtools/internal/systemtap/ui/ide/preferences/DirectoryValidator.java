@@ -9,10 +9,9 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.structures.validators;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
 import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.linuxtools.internal.systemtap.ui.structures.Localization;
 
 
 
@@ -27,14 +26,18 @@ public class DirectoryValidator implements IInputValidator {
 	 */
 	@Override
 	public String isValid(String s) {
-		if(null == s)
-			return Localization.getString("DirectoryValidator.NotNull"); //$NON-NLS-1$
-		if(s.length() < 1)
-			return Localization.getString("DirectoryValidator.LongerFile"); //$NON-NLS-1$
-		if(!s.endsWith("/")) //$NON-NLS-1$
-			return Localization.getString("DirectoryValidator.MustEndWith"); //$NON-NLS-1$
-		if(s.contains("//")) //$NON-NLS-1$
-			return Localization.getString("DirectoryValidator.CanNotContain"); //$NON-NLS-1$
+		if(null == s) {
+			return Messages.DirectoryValidator_NotNull;
+		}
+		if(s.length() < 1) {
+			return Messages.DirectoryValidator_FolderName;
+		}
+		if(!s.endsWith("/")) {//$NON-NLS-1$
+			return Messages.DirectoryValidator_MustEnd;
+		}
+		if(s.contains("//")) {//$NON-NLS-1$
+			return Messages.DirectoryValidator_CanNotContain;
+		}
 		return null;
 	}
 }

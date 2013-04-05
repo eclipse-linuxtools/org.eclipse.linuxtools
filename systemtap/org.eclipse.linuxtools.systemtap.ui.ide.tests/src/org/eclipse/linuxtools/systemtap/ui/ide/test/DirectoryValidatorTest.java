@@ -1,8 +1,9 @@
-package org.eclipse.linuxtools.systemtap.ui.structures.validators;
+package org.eclipse.linuxtools.systemtap.ui.ide.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.DirectoryValidator;
 import org.junit.Test;
 
 public class DirectoryValidatorTest {

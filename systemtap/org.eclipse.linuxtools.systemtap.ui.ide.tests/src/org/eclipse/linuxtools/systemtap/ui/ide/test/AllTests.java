@@ -19,6 +19,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ StapErrorParserTest.class, TreeSettingsTest.class, STPCompletionProcessorTest.class })
+@SuiteClasses({ StapErrorParserTest.class, TreeSettingsTest.class,
+		STPCompletionProcessorTest.class,
+		ConditionalExpressionValidatorTest.class, DirectoryValidatorTest.class })
 public class AllTests {
 }
