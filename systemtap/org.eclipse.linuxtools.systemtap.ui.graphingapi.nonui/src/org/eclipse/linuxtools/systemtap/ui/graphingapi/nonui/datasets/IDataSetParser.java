@@ -15,16 +15,16 @@ import org.eclipse.ui.IMemento;
 
 
 public interface IDataSetParser {
-	public IDataEntry parse(StringBuilder entry);
-	public boolean saveXML(IMemento target);
+	IDataEntry parse(StringBuilder entry);
+	boolean saveXML(IMemento target);
 
-	public static final String XMLDataSetSettings = "DataSetSettings"; //$NON-NLS-1$
-	public static final String XMLparsingExpression = "parsingExpression"; //$NON-NLS-1$
-	public static final String XMLparsingSpacer = "parsingSpacer"; //$NON-NLS-1$
-	public static final String XMLColumn = "Column"; //$NON-NLS-1$
-	public static final String XMLdataset = "dataset"; //$NON-NLS-1$
-	public static final String XMLFile = "File"; //$NON-NLS-1$
-	public static final String XMLSeries = "Series"; //$NON-NLS-1$
-	public static final String XMLname = "name"; //$NON-NLS-1$
-	public static final String XMLDelimiter = "Delimiter"; //$NON-NLS-1$
+	String XMLDataSetSettings = "DataSetSettings"; //$NON-NLS-1$
+	String XMLparsingExpression = "parsingExpression"; //$NON-NLS-1$
+	String XMLparsingSpacer = "parsingSpacer"; //$NON-NLS-1$
+	String XMLColumn = "Column"; //$NON-NLS-1$
+	String XMLdataset = "dataset"; //$NON-NLS-1$
+	String XMLFile = "File"; //$NON-NLS-1$
+	String XMLSeries = "Series"; //$NON-NLS-1$
+	String XMLname = "name"; //$NON-NLS-1$
+	String XMLDelimiter = "Delimiter"; //$NON-NLS-1$
 }

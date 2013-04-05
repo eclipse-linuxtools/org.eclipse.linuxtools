@@ -12,10 +12,10 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets;
 
 public interface IHistoricalDataSet extends IDataSet {
-	public void append(IDataEntry entry);
-	public Object[] getHistoricalData(String key, int col);
-	public Object[] getHistoricalData(String key, int col, int start, int end);
-	public int getEntryCount();
-	public IDataEntry getEntry(int entry);
-	public boolean remove(int entry);
+	void append(IDataEntry entry);
+	Object[] getHistoricalData(String key, int col);
+	Object[] getHistoricalData(String key, int col, int start, int end);
+	int getEntryCount();
+	IDataEntry getEntry(int entry);
+	boolean remove(int entry);
 }

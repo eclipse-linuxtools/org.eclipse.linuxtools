@@ -12,14 +12,14 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets;
 
 public interface IDataEntry {
-	public int getRowCount();
-	public int getColCount();
-	public Object get(String key, int col);
-	public Object[] getRow(int row);
-	public Object[] getRow(String key);
-	public Object[] getColumn(int col);
-	public Object[][] getData();
-	public IDataEntry copy();
-	public void putRow(int row, Object[] data);
-	public boolean remove(int row);
+	int getRowCount();
+	int getColCount();
+	Object get(String key, int col);
+	Object[] getRow(int row);
+	Object[] getRow(String key);
+	Object[] getColumn(int col);
+	Object[][] getData();
+	IDataEntry copy();
+	void putRow(int row, Object[] data);
+	boolean remove(int row);
 }

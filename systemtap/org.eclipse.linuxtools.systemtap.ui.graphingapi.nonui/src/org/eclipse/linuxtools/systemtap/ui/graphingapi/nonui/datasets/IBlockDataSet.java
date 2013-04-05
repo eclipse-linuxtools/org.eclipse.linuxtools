@@ -12,5 +12,5 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets;
 
 public interface IBlockDataSet extends IDataSet {
-	public Object[][] getData();
+	Object[][] getData();
 }

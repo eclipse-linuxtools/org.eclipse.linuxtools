@@ -14,8 +14,8 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 
 public interface IFilteredDataSet extends IDataSet {
-	public void addFilter(IDataSetFilter filter);
-	public IDataSetFilter[] getFilters();
-	public void clearFilters();
-	public boolean removeFilter(IDataSetFilter filter);
+	void addFilter(IDataSetFilter filter);
+	IDataSetFilter[] getFilters();
+	void clearFilters();
+	boolean removeFilter(IDataSetFilter filter);
 }
