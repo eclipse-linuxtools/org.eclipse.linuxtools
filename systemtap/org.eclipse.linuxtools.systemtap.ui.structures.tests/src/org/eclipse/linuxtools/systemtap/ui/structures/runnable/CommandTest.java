@@ -55,13 +55,6 @@ public class CommandTest {
 	}
 
 	@Test
-	public void testStop() {
-		assertTrue("Running", tc.isRunning());
-		tc.stop();
-		assertFalse("Not running", tc.isRunning());
-	}
-
-	@Test
 	public void testGetReturnValue() {
 		assertEquals(Integer.MAX_VALUE, tc.getReturnValue());
 	}
@@ -74,8 +67,41 @@ public class CommandTest {
 	}
 
 	@Test
-	public void testDispose() {
+	public void testLoggedCommand() {
 		tc.dispose();
+
+		tc = new Command(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
+		tc.start();
+		assertTrue(tc.isRunning());
+		assertFalse(tc.isDisposed());
+		tc.stop();
+		assertFalse(tc.isRunning());
+		assertFalse(tc.isDisposed());
+		tc.dispose();
+
+		tc = new Command(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
+		tc.start();
+		assertTrue(tc.isRunning());
+		assertFalse(tc.isDisposed());
+		tc.stop();
+		assertFalse(tc.isRunning());
+		assertFalse(tc.isDisposed());
+		tc.dispose();
+	}
+
+	@Test
+	public void testStop() {
+		tc.start();
+		assertTrue(tc.isRunning());
+		tc.stop();
+		assertFalse(tc.isRunning());
+	}
+
+	@Test
+	public void testDispose() {
+		assertFalse(tc.isDisposed());
+		tc.dispose();
+		assertTrue(tc.isDisposed());
 	}
 
 	Command tc;

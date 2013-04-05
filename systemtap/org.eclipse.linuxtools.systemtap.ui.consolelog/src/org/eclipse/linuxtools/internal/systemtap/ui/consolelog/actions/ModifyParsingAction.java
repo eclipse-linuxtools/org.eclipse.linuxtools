@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetPa
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.ChartStreamDaemon;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -65,7 +65,7 @@ public class ModifyParsingAction extends ConsoleAction {
 		IDataSet dataSet = wizard.getDataSet();
 
 		if(null != parser && null != dataSet) {
-			LoggedCommand cmd = console.getCommand();
+			Command cmd = console.getCommand();
 
 			ArrayList<IGobblerListener> listeners = cmd.getInputStreamListeners();
 			ChartStreamDaemon2 daemon = null;

@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
 import org.eclipse.ui.PlatformUI;
 
@@ -18,7 +18,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-public class ScpExec extends LoggedCommand {
+public class ScpExec extends Command {
 
 	private Session session;
 	private Channel channel;

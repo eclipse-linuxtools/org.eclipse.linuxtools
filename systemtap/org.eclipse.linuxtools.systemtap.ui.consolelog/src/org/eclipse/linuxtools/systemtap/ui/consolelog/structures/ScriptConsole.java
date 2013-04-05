@@ -20,7 +20,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpExec;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.LoggedCommand;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
@@ -39,7 +39,7 @@ import org.eclipse.ui.console.IOConsole;
  */
 public class ScriptConsole extends IOConsole {
 
-	private LoggedCommand cmd;
+	private Command cmd;
 	private Runnable stopCommand;
 	private String moduleName;
 
@@ -189,7 +189,7 @@ public class ScriptConsole extends IOConsole {
 	 * @since 2.0
 	 */
 	public void runLocally(String[] command, String[] envVars, IErrorParser errorParser) {
-		cmd = new LoggedCommand(command, envVars);
+		cmd = new Command(command, envVars);
 		this.stopCommand = new Runnable() {
 			@Override
 			public void run() {
@@ -203,7 +203,7 @@ public class ScriptConsole extends IOConsole {
 		this.run(cmd, errorParser);
 	}
 
-	private void run(LoggedCommand cmd, IErrorParser errorParser){
+	private void run(Command cmd, IErrorParser errorParser){
 		createConsoleDaemon();
 		if (errorParser != null) {
 			createErrorDaemon(errorParser);
@@ -277,7 +277,7 @@ public class ScriptConsole extends IOConsole {
 	 * @return The <code>LoggedCommand</code> that is running in this console.
 	 * @since 2.0
 	 */
-	public LoggedCommand getCommand() {
+	public Command getCommand() {
 		return cmd;
 	}
 
