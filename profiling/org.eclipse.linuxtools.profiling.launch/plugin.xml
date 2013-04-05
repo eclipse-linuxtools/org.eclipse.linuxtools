@@ -436,14 +436,14 @@
        <!-- Profiling launch tabs-->
       <tab
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.mainTab"
-            group="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup"
+            group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%MainTab.name"
             class="org.eclipse.cdt.launch.ui.CMainTab">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
       </tab>
       <tab
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.argumentsTab"
-            group="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup"
+            group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%ArgumentsTab.name"
             class="org.eclipse.cdt.launch.ui.CArgumentsTab">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
@@ -451,7 +451,7 @@
       </tab>
       <tab
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.environmentTab"
-            group="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup"
+            group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%EnvironmentTab.name"
             class="org.eclipse.debug.ui.EnvironmentTab">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
@@ -459,7 +459,7 @@
       </tab>
       <tab
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.commonTab"
-            group="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup"
+            group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%CommonTab.name"
             class="org.eclipse.debug.ui.CommonTab">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
@@ -467,7 +467,7 @@
       </tab>
       <tab
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.profilingTab"
-            group="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup"
+            group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%ProfilerTab.name"
             class="org.eclipse.linuxtools.internal.profiling.launch.CProfilingOptionsTab">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
@@ -479,7 +479,7 @@
       <launchConfigurationTabGroup
             type="org.eclipse.cdt.launch.applicationLaunchType"
             class="org.eclipse.linuxtools.profiling.launch.PlaceHolderLaunchConfigurationTabGroup"
-            id="org.eclipse.linuxtools.profiling.launch.applicationProfileLaunchTabGroup">
+            id="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup">
          <launchMode mode="profile"/>
       </launchConfigurationTabGroup>
       </extension>
