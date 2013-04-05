@@ -200,7 +200,7 @@ public abstract class AbstractSTViewer {
      * @param manager
      */
     protected void updateForNewHideShowManager(STDataViewersHideShowManager manager) {
-        manager.updateColumns(getColumns());
+        manager.updateColumns();
     }
 
     // //////////////////

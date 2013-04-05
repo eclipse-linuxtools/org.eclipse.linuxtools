@@ -30,7 +30,6 @@ import org.eclipse.swt.graphics.Image;
  * <li>It allows a "custom rendering", for example if you want to display percentages as progress bars or to display
  * hyperlink as underlined text
  * </ul>
- *
  * Three abstract implementations are available: {@link AbstractSTDataViewersField} for default rendering
  * {@link STAbstractPercentageDrawerField} for displaying percentages as progress bars
  * {@link STDataViewersHyperLinkDrawerField} for displaying hyperlinks as underlined text
@@ -83,37 +82,26 @@ public interface ISTDataViewersField {
     int compare(Object obj1, Object obj2);
 
     /**
-     * Get the default direction for the receiver. Return either {@link TableComparator#ASCENDING } or
-     * {@link TableComparator#DESCENDING }
-     *
+     * Get the default direction for the receiver. Return either {@link STDataViewersComparator#ASCENDING } or
+     * {@link STDataViewersComparator#DESCENDING }
      * @return int
      */
     int getDefaultDirection();
 
     /**
      * Get the preferred width of the receiver.
-     *
      * @return int
      */
     int getPreferredWidth();
 
     /**
-     * Return whether the receiver is showing or not.
-     *
+     * Return whether the receiver is showing or not by default.
      * @return boolean
      */
-    boolean isShowing();
-
-    /**
-     * Set whether or not the receiver is showing.
-     *
-     * @param showing
-     */
-    void setShowing(boolean showing);
+    boolean isShowingByDefault();
 
     /**
      * Returns special drawer, typically used to: paint percentages paint hyperlink
-     *
      * @return a special drawer
      */
     ISpecialDrawerListener getSpecialDrawer(Object element);
@@ -138,15 +126,12 @@ public interface ISTDataViewersField {
 
     /**
      * Customize the horizontal alignment of the columns.
-     *
-     * @return one of: SWT.LEFT, SWT.RIGHT, SWT.CENTER, SWT.NONE Note that SWT.NONE is equivalent to SWT.LEFT
-     *
+     * @return one of: SWT.LEFT, SWT.RIGHT, SWT.CENTER, SWT.NONE. Note that SWT.NONE is equivalent to SWT.LEFT
      */
     int getAlignment();
 
     /**
      * Indicates if the given element is a hyperlink to something as a view, editor, dialog,etc...
-     *
      */
     boolean isHyperLink(Object element);
 
