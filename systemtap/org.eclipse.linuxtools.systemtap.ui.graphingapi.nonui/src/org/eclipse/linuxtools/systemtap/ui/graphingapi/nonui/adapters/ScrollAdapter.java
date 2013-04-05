@@ -26,44 +26,8 @@ public class ScrollAdapter implements IAdapter {
 	}
 
 	@Override
-	public Number getXMax() {
-		return getXMax(0, getRecordCount());
-	}
-
-	@Override
-	public Number getXMax(int start, int end) {
-		return getSeriesMax(xSeries, start, end);
-	}
-
-	@Override
-	public Number getYMax() {
-		return getYMax(0, getRecordCount());
-	}
-
-	@Override
-	public Number getYMax(int start, int end) {
-		Number max = new Double(Double.MIN_VALUE);
-		Number a;
-		for(int i=0; i<ySeries.length; i++) {
-			a = getSeriesMax(ySeries[i], start, end);
-			max = (max.doubleValue()) > a.doubleValue() ? max : a;
-		}
-		return max;
-	}
-
-	@Override
-	public Number getYSeriesMax(int y) {
-		return getYSeriesMax(y, 0, getRecordCount());
-	}
-
-	@Override
 	public Number getYSeriesMax(int y, int start, int end) {
 		return getSeriesMax(ySeries[y], start, end);
-	}
-
-	@Override
-	public Number getSeriesMax(int series) {
-		return getSeriesMax(series, 0, getRecordCount());
 	}
 
 	@Override
@@ -83,66 +47,6 @@ public class ScrollAdapter implements IAdapter {
 			} catch (NumberFormatException e) {}
 		}
 		return max;
-	}
-
-	@Override
-	public Number getXMin() {
-		return getXMin(0, getRecordCount());
-	}
-
-	@Override
-	public Number getXMin(int start, int end) {
-		return getSeriesMin(xSeries, start, end);
-	}
-
-	@Override
-	public Number getYMin() {
-		return getYMin(0, getRecordCount());
-	}
-
-	@Override
-	public Number getYMin(int start, int end) {
-		Number min = new Double(Double.MIN_VALUE);
-		Number a;
-		for(int i=0; i<ySeries.length; i++) {
-			a = getSeriesMin(ySeries[i], start, end);
-			min = (min.doubleValue()) < a.doubleValue() ? min : a;
-		}
-		return min;
-	}
-
-	@Override
-	public Number getYSeriesMin(int y) {
-		return getYSeriesMin(y, 0, getRecordCount());
-	}
-
-	@Override
-	public Number getYSeriesMin(int y, int start, int end) {
-		return getSeriesMin(ySeries[y], start, end);
-	}
-
-	@Override
-	public Number getSeriesMin(int series) {
-		return getSeriesMin(series, 0, getRecordCount());
-	}
-
-	@Override
-	public Number getSeriesMin(int series, int start, int end) {
-		if(start < 0 || end > data.getRowCount() || start > end)
-			return null;
-
-		Number min = new Double(Double.POSITIVE_INFINITY);
-		Number cur;
-
-		Object[] dataColumn = data.getHistoricalData(key, series, start, end);
-		for(int i=0; i<dataColumn.length; i++) {
-			try {
-				cur = new Double(Double.parseDouble(dataColumn[i].toString()));
-				if(min.doubleValue() > cur.doubleValue())
-					min = cur;
-			} catch (NumberFormatException e) {}
-		}
-		return min;
 	}
 
 	@Override
