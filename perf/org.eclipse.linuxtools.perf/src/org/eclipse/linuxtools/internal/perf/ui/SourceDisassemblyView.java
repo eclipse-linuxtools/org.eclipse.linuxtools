@@ -17,34 +17,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.FindReplaceAction;
 
 /**
  * A ViewPart to display the output from perf's source disassembly.
  */
-public class SourceDisassemblyView extends ViewPart {
+public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarget{
 
 	private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
 	private static final Color ORANGE = new Color(Display.getDefault(), 150, 100, 0);
 	private static final Color GREEN = new Color(Display.getDefault(), 0, 100, 0);
 	private static String ASM = "\\s+([0-9]+\\.[0-9]+ )?:\\s+[0-9a-f]+:\\s+[0-9a-z]+\\s+.*"; //$NON-NLS-1$
 	private static String CODE = "\\s+:\\s+.*"; //$NON-NLS-1$
+	private static String WORD_BOUNDARY = "\\b"; //$NON-NLS-1$'
 	private StyledText text;
 	private static int SECONDARY_ID = 0;
-
 	public SourceDisassemblyView() {
 	}
 
@@ -59,6 +64,7 @@ public class SourceDisassemblyView extends ViewPart {
 		if (data != null) {
 			setStyledText(data.getPerfData());
 			setContentDescription(data.getTitle());
+			setupFindDialog();
 		}
 	}
 
@@ -79,6 +85,7 @@ public class SourceDisassemblyView extends ViewPart {
 			if (Pattern.matches(ASM, line)) {
 				Matcher m = Pattern.compile(ASM).matcher(line);
 				if (m.matches() && m.group(1) != null) {
+
 					try {
 						float percent = Float.parseFloat(m.group(1).trim());
 						if (percent >= 20) {
@@ -117,6 +124,85 @@ public class SourceDisassemblyView extends ViewPart {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Create find dialog and set is as a toolbar action.
+	 */
+	public void setupFindDialog() {
+		FindReplaceAction findAction = new FindReplaceAction(
+				Platform.getResourceBundle(PerfPlugin.getDefault().getBundle()),
+				null, text.getShell(), this);
+		findAction.setImageDescriptor(PerfPlugin
+				.getImageDescriptor("icons/search.gif"));//$NON-NLS-1$
+		findAction.setToolTipText(PerfPlugin.STRINGS_SearchSourceDisassembly);
+		IActionBars bars = getViewSite().getActionBars();
+		bars.getToolBarManager().add(findAction);
+	}
+
+	@Override
+	public boolean canPerformFind() {
+		return text != null && !"".equals(text.getText());
+	}
+
+	@Override
+	public int findAndSelect(int widgetOffset, String findString,
+			boolean searchForward, boolean caseSensitive, boolean wholeWord) {
+		int matchIndex = -1;
+		String searchString = text.getText();
+		String findRegex = findString;
+
+		// offset is -1 when text boundaries are reached during a wrapped search
+		if (widgetOffset < 0) {
+			widgetOffset = searchForward ? 0 : searchString.length();
+		}
+
+		if (wholeWord) {
+			findRegex = WORD_BOUNDARY + findRegex + WORD_BOUNDARY;
+		}
+
+		int caseFlag = caseSensitive ? 0 : Pattern.CASE_INSENSITIVE;
+		Pattern pattern = Pattern.compile(findRegex, caseFlag);
+		Matcher matcher = pattern.matcher(searchString);
+
+		if (searchForward) {
+			matchIndex = matcher.find(widgetOffset) ? matcher.start() : -1;
+		} else {
+			// backward search from 0 to offset (exclusive)
+			matcher.region(0, widgetOffset);
+
+			// get start index of last match
+			while (matcher.find()) {
+				matchIndex = matcher.start();
+			}
+		}
+
+		// only select when a match has been found
+		if (matchIndex != -1) {
+			text.setSelection(matchIndex, matchIndex + findString.length());
+		}
+		return matchIndex;
+	}
+
+	@Override
+	public Point getSelection() {
+		Point selection = text.getSelection();
+		// selection point consists of starting point x and lenght y - x.
+		return new Point(selection.x, selection.y - selection.x);
+	}
+
+	@Override
+	public String getSelectionText() {
+		return text.getSelectionText();
+	}
+
+	@Override
+	public boolean isEditable() {
+		return false;
+	}
+
+	@Override
+	public void replaceSelection(String text) {
 	}
 
 }

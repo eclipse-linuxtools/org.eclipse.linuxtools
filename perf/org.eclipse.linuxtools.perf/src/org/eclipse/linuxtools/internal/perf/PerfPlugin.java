@@ -100,6 +100,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String STRINGS_MultipleFilesForSymbol = "Symbols conflicting in multiple files";
 	public static final String STRINGS_ShowSourceDisassembly = "Show Source Disassembly View";
 	public static final String STRINGS_ShowStat = "Show Stat View";
+	public static final String STRINGS_SearchSourceDisassembly = "Search Source Disassembly";
 	
 	public static final String PERF_COMMAND = "perf";
 	public static final String PERF_DEFAULT_DATA = "perf.data";
