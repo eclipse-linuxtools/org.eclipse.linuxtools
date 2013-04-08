@@ -18,6 +18,7 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.ide
 Import-Package: org.apache.log4j,
+ org.eclipse.linuxtools.systemtap.ui.tests,
  org.eclipse.swtbot.eclipse.finder,
  org.eclipse.swtbot.forms.finder,
  org.eclipse.swtbot.swt.finder,
