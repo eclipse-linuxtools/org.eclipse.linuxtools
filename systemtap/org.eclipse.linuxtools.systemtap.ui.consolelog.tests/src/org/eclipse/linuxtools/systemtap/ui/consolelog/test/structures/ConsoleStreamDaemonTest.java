@@ -15,9 +15,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ConsoleStreamDaemon;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.StreamGobbler;
 import org.junit.Before;
 import org.junit.Test;
 

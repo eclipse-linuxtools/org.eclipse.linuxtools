@@ -31,8 +31,8 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.KernelSourceTree;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.progress.UIJob;
 

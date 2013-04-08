@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 
 /**
  * This is a simple extension of TreeNode to allow for providing a popup menu

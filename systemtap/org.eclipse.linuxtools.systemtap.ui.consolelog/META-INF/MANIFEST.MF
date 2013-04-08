@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console;visibility:=reexport,
  org.eclipse.linuxtools.systemtap.ui.editor,
- org.eclipse.linuxtools.systemtap.ui.structures,
+ org.eclipse.linuxtools.systemtap.structures,
  com.jcraft.jsch;bundle-version="0.1.37"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

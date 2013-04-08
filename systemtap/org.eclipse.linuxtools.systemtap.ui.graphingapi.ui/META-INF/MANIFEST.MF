@@ -16,7 +16,7 @@ Export-Package:
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph
 Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;visibility:=reexport,
- org.eclipse.linuxtools.systemtap.ui.structures,
+ org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,

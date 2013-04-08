@@ -22,6 +22,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ExportScriptDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.dashboardextension.dialogs.ScriptDetails;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
@@ -35,8 +37,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetPa
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetWizard;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;

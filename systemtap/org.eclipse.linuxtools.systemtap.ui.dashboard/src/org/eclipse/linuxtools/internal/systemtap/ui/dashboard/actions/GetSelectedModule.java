@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ModuleTreeNode;

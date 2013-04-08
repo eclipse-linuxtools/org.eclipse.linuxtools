@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.listeners.IActionListener;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
@@ -32,8 +34,6 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserVi
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IActionListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewActionDelegate;

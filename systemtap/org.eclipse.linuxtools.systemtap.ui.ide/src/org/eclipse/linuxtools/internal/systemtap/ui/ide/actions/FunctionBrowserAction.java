@@ -19,9 +19,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.ExceptionErrorDialog;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
@@ -41,7 +41,7 @@ import org.eclipse.ui.PartInitException;
  * <code>TreeNode.isClickable</code>.
  * @author Henry Hughes
  * @author Ryan Morse
- * @see org.eclipse.linuxtools.systemtap.ui.structures.TreeNode#isClickable()
+ * @see org.eclipse.linuxtools.systemtap.structures.TreeNode#isClickable()
  * @see org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor#insertTextAtCurrent(String)
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.TreeExpandCollapseAction
  */

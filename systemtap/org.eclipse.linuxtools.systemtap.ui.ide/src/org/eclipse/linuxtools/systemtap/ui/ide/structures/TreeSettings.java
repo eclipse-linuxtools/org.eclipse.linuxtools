@@ -18,8 +18,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;

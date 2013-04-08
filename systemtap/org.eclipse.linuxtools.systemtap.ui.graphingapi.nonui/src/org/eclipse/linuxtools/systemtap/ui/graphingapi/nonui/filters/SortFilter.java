@@ -13,10 +13,10 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.systemtap.structures.Copier;
+import org.eclipse.linuxtools.systemtap.structures.IndexedObject;
+import org.eclipse.linuxtools.systemtap.structures.Sort;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
-import org.eclipse.linuxtools.systemtap.ui.structures.Copier;
-import org.eclipse.linuxtools.systemtap.ui.structures.IndexedObject;
-import org.eclipse.linuxtools.systemtap.ui.structures.Sort;
 import org.eclipse.ui.IMemento;
 
 

@@ -18,6 +18,8 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.structures.UpdateManager;
+import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
@@ -26,8 +28,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.SelectGraphWizard;
-import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.ITabListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;

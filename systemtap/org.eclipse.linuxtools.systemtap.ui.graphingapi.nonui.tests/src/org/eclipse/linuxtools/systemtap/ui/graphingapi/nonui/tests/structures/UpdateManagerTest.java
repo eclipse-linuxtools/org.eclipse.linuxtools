@@ -3,8 +3,8 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
+import org.eclipse.linuxtools.systemtap.structures.UpdateManager;
+import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.junit.Before;
 import org.junit.Test;
 

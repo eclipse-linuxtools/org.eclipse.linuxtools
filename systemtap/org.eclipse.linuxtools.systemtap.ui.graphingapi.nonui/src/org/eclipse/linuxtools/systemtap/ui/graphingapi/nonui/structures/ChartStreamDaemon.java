@@ -11,10 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures;
 
+import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
 
 
 

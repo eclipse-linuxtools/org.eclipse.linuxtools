@@ -15,8 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 

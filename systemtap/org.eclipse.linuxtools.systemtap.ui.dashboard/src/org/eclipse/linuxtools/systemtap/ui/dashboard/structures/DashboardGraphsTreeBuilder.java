@@ -14,8 +14,8 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.structures.ZipArchive;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+import org.eclipse.linuxtools.systemtap.structures.ZipArchive;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 
 /**

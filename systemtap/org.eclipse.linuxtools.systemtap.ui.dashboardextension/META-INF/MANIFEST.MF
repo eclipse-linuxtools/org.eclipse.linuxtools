@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
- org.eclipse.linuxtools.systemtap.ui.structures,
+ org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.linuxtools.systemtap.ui.dashboard,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
  org.eclipse.core.expressions

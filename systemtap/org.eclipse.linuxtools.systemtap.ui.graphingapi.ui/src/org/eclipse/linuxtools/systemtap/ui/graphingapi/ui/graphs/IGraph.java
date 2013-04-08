@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
+import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 
 
 

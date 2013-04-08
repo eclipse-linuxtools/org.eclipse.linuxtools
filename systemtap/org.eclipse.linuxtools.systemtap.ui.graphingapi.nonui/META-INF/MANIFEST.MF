@@ -15,6 +15,6 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.ui.structures
+ org.eclipse.linuxtools.systemtap.structures
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

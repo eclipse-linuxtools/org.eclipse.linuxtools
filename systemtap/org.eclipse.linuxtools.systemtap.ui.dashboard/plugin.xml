@@ -182,7 +182,7 @@
 		<objectContribution
 			adaptable="false"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboard.RunModuleMenu"
-			objectClass="org.eclipse.linuxtools.systemtap.ui.structures.TreeNode">
+			objectClass="org.eclipse.linuxtools.systemtap.structures.TreeNode">
 			<action
 				label="%action.stop.name"
 				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopModuleAction"

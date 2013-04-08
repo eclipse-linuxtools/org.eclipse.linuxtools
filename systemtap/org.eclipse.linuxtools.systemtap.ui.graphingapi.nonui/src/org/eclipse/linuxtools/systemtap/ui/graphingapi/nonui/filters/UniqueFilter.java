@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.graphingapi.nonui.GraphingAPINonUIPlugin;
+import org.eclipse.linuxtools.systemtap.structures.Copier;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates.IDataAggregate;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.NumberType;
-import org.eclipse.linuxtools.systemtap.ui.structures.Copier;
 import org.eclipse.ui.IMemento;
 
 

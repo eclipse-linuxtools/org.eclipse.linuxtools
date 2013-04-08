@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.dashboard;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.actions.StopGraphAction;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardGraphData;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
@@ -21,7 +22,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;

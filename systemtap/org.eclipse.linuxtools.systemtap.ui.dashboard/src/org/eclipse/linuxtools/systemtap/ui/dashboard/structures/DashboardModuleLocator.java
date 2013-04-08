@@ -14,10 +14,10 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 import java.io.File;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.systemtap.structures.JarArchive;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.structures.JarArchive;
-import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
 
 /**
