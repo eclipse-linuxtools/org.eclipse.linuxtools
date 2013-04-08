@@ -7,8 +7,7 @@ Bundle-Vendor: %bundleProvider
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.systemtap.ui.structures,
  org.eclipse.linuxtools.systemtap.ui.structures.listeners,
- org.eclipse.linuxtools.systemtap.ui.structures.runnable,
- org.eclipse.linuxtools.systemtap.ui.structures.ui
+ org.eclipse.linuxtools.systemtap.ui.structures.runnable
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.profiling.launch;bundle-version="0.11.0",

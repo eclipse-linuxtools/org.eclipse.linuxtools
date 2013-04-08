@@ -22,7 +22,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

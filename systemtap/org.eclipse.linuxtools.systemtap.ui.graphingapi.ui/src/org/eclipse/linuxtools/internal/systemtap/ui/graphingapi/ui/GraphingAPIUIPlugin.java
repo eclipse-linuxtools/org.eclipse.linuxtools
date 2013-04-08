@@ -20,6 +20,7 @@ import org.osgi.framework.BundleContext;
  */
 public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui"; //$NON-NLS-1$
 	//The shared instance.
 	private static GraphingAPIUIPlugin plugin;
 
@@ -54,6 +55,6 @@ public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.graphingapi.ui", path); //$NON-NLS-1$
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 }

@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.structures.ui.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.ResourceUtil;
 
