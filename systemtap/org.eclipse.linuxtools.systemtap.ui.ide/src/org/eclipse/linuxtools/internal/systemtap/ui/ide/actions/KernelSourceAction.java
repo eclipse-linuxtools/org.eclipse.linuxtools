@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.Action;
@@ -42,7 +42,7 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
  * @author Henry Hughes
  * @author Ryan Morse
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor
- * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.TreeExpandCollapseAction
+ * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.TreeExpandCollapseAction
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView
  */
 public class KernelSourceAction extends Action implements ISelectionListener, IDoubleClickListener {

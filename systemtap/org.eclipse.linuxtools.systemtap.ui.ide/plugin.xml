@@ -233,7 +233,7 @@
             id="org.eclipse.linuxtools.systemtap.ui.ide.actions">
          <action
                label="%action.addStapProbe.label"
-               class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.AddStapProbe"
+               class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.AddStapProbe"
                menubarPath="additions"
                id="org.eclipse.linuxtools.systemtap.ui.ide.AddStapProbe">
          </action>

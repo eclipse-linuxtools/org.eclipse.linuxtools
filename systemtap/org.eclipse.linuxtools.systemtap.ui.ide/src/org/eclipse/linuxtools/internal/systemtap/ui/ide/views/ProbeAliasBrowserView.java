@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.hidden.ProbeAliasAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ProbeAliasAction;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
