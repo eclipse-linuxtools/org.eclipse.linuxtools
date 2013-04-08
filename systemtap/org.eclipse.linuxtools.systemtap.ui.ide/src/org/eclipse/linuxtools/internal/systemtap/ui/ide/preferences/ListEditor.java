@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.structures.ui;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,10 +37,10 @@ public class ListEditor extends org.eclipse.jface.preference.ListEditor {
 	 */
 	 @Override
 	protected String createList(String[] items) {
-        StringBuffer path = new StringBuffer(""); //$NON-NLS-1$
+        StringBuffer path = new StringBuffer();
 
-        for (int i = 0; i < items.length; i++) {
-            path.append(items[i]);
+        for (String item: items) {
+            path.append(item);
             path.append(File.pathSeparator);
         }
         return path.toString();

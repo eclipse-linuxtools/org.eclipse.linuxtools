@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.systemtap.ui.structures.ui.ListEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
