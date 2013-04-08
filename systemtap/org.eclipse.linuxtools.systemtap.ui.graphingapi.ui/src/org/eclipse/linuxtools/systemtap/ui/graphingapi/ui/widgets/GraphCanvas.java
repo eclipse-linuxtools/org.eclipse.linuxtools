@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.ScrollBar;
  * The Graph Canvas class provides a Canvas type object that renders IGraphPrimitive objects on itself.
  * It is an implementation of the IWidgetContainer interface and can be used by Graph Primitives to scale
  * themselves.
- * 
+ *
  * This class is the parent class of the entire Graph system, all of the decendents from Graph are
  * based upon this class.
  * @author Henry Hughes
@@ -36,14 +36,14 @@ import org.eclipse.swt.widgets.ScrollBar;
 public class GraphCanvas extends Canvas {
 	/**
 	 * The default constructor for GraphCanvas. Creates a canvas of the appropriate size, then
-	 * sets the internal area rectangles, the internal padding and scaling levels, enables scrolling, 
+	 * sets the internal area rectangles, the internal padding and scaling levels, enables scrolling,
 	 * and sets the default axis color.
 	 * @param parent Parent composite for this canvas.
 	 * @param style SWT Style flags for this canvas (use SWT.NONE)
 	 */
 	public GraphCanvas(Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL | SWT.H_SCROLL);
-		
+
 		globalArea = new Rectangle(0, 0, 0, 0);
 		localArea = new Rectangle(0, 0, 0, 0);
 
@@ -63,7 +63,7 @@ public class GraphCanvas extends Canvas {
 					autoScroll = true;
 				else
 					autoScroll = false;
-				
+
 				setLocalArea(new Rectangle(hBar.getSelection(), localArea.y, localArea.width, localArea.height), true);
 				redraw();
 			}
@@ -79,15 +79,6 @@ public class GraphCanvas extends Canvas {
 			}
 		});
 
-	}
-	/**
-	 * An accessor to set both the X and Y padding widths simultaneously.
-	 * @param xpad X padding width.
-	 * @param ypad Y padding width.
-	 */
-	public void setPadding(int xpad, int ypad) {
-		setXPadding(xpad);
-		setYPadding(ypad);
 	}
 	/**
 	 * An accessor to set the X padding width. Padding is defined as pixels inside the bounds
@@ -113,9 +104,9 @@ public class GraphCanvas extends Canvas {
 	 * @return The Y padding width value, in pixels.
 	 */
 	public int getYPadding() { return ypad; }
-	
+
 	/**
-	 * The repaint method is called when the graph is out of date and needs to be redrawn. This is an 
+	 * The repaint method is called when the graph is out of date and needs to be redrawn. This is an
 	 * abstraction method around <code>Canvas.redraw</code> that synchronously executes the request
 	 * on the display thread, blocking the calling thread until the repaint is completed.
 	 */
@@ -127,7 +118,7 @@ public class GraphCanvas extends Canvas {
 			}
 		});
 	}
-	
+
 	/**
 	 * Returns the size of the graphing area of the canvas.
 	 */
@@ -138,28 +129,7 @@ public class GraphCanvas extends Canvas {
 		p.y -= hBar.getSize().y+5;
 		return p;
 	}
-	
-	/**
-	 * Returns the actual bounding area of the canvas, including the width of the scroll bars.
-	 */
-	public Point getTrueSize() {
-		return super.getSize();
-	}
-	
-	/**
-	 * Sets the scaling value for the canvas. This causes graph primitive sizes to change.
-	 * The default scaling value is 1.0, and the larger the scaling value, the larger the graph area's
-	 * numerical bounds are. For example, if the graph was set from 0 &lt; x &lt; 10, and the scaling value
-	 * is reset to 2.0, the new X range is from 0 &lt; x &lt 20.
-	 * @param s The new scaling value.
-	 */
-	public void setScale(double s) {
-		scale = s;
-		setLocalArea(localArea, true);
 
-		redraw();
-	}
-	
 	/**
 	 * Resets the canvas size to the specified area.
 	 */
@@ -171,21 +141,21 @@ public class GraphCanvas extends Canvas {
 		vBar.setMinimum(getGlobalYMin());
 		vBar.setMaximum (getGlobalYMax());
 	}
-	
+
 	/**
 	 * Sets the size of the graphing area to the specified area.
 	 */
 	public void setLocalArea(Rectangle area) {
 		setLocalArea(area, false);
 	}
-		
+
 	public void setLocalArea(Rectangle area, boolean force) {
 		if(autoScroll || force) {
 			localArea = area;
-			
+
 			hBar.setThumb (getLocalWidth());
 			vBar.setThumb (getLocalHeight());
-	
+
 			hBar.setIncrement(getLocalWidth()>>3);
 			hBar.setPageIncrement(getLocalWidth());
 			vBar.setIncrement(getLocalHeight()>>3);
@@ -196,15 +166,15 @@ public class GraphCanvas extends Canvas {
 			vBar.setSelection(getGlobalYMax() - Math.min(getLocalYMax(), getGlobalYMax()) + getGlobalYMin());
 		}
 	}
-	
+
 	public int getGlobalXMin() {
 		return globalArea.x;
 	}
-	
+
 	public int getLocalXMin() {
 		return localArea.x;
 	}
-	
+
 	public int getGlobalXMax() {
 		return globalArea.x+globalArea.width;
 	}
@@ -216,35 +186,27 @@ public class GraphCanvas extends Canvas {
 	public int getGlobalYMin() {
 		return globalArea.y;
 	}
-	
+
 	public int getLocalYMin() {
 		return localArea.y;
 	}
-	
+
 	public int getGlobalYMax() {
 		return globalArea.y+globalArea.height;
 	}
-	
+
 	public int getLocalYMax() {
 		return getLocalYMin() + getLocalHeight();
 	}
-	
-	public int getGlobalWidth() {
-		return globalArea.width;
-	}
-	
+
 	public int getLocalWidth() {
 		return (int)(localArea.width / scale);
-	}
-	
-	public int getGlobalHeight() {
-		return globalArea.height;
 	}
 
 	public int getLocalHeight() {
 		return (int)(localArea.height / scale);
 	}
-	
+
 	protected Color axisColor;
 	private int xpad, ypad;
 	private ScrollBar hBar, vBar;
