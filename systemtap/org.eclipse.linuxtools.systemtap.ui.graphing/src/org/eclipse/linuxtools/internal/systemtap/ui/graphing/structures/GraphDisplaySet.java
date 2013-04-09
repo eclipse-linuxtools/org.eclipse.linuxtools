@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphing.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.graphing.structures;
 
 import java.util.ArrayList;
 
@@ -53,6 +53,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author Ryan Morse
  */
 public class GraphDisplaySet {
+
 	public GraphDisplaySet(Composite parent, IDataSet data) {
 		IPreferenceStore p = GraphingPlugin.getDefault().getPreferenceStore();
 		int delay = p.getInt(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY);
@@ -105,8 +106,9 @@ public class GraphDisplaySet {
 			@Override
 			public void close(CTabFolderEvent e) {
 				int selected = folder.indexOf((CTabItem)e.item)-2;
-				if(null != updater)
+				if(null != updater) {
 					updater.removeUpdateListener(builders.get(selected));
+				}
 				builders.remove(selected);
 				fireTabCloseEvent();
 			}
@@ -128,8 +130,9 @@ public class GraphDisplaySet {
 
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		DataGrid table = DataSetFactory.getDataGrid(c, dataSet);
-		if(null != updater)
+		if(null != updater) {
 			updater.addUpdateListener(table);
+		}
 		table.getControl().setLayoutData(gd);
 		item.setControl(c);
 		folder.setSelection(item);
@@ -145,8 +148,9 @@ public class GraphDisplaySet {
 	 * @return The graph that is currently visible on the screen
 	 */
 	public AbstractChartBuilder getActiveGraph() {
-		if(0 == builders.size() || folder.getSelectionIndex() < 2)
+		if(0 == builders.size() || folder.getSelectionIndex() < 2) {
 			return null;
+		}
 		return builders.get(folder.getSelectionIndex()-2);
 	}
 
@@ -154,11 +158,12 @@ public class GraphDisplaySet {
 
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
-	 * to anyting in this class after calling the dispose method.
+	 * to anything in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		if(null != updater)
+		if(null != updater) {
 			updater.dispose();
+		}
 		updater = null;
 
 		dataSet = null;
@@ -202,8 +207,9 @@ public class GraphDisplaySet {
 					item.setControl(gc);
 
 					if(null != g) {
-						if(null != updater)
+						if(null != updater) {
 							updater.addUpdateListener(g);
+						}
 						builders.add(g);
 					}
 				}
@@ -219,23 +225,22 @@ public class GraphDisplaySet {
 		tabListeners.add(listener);
 	}
 
-	public void removeTabListener(ITabListener listener) {
-		tabListeners.remove(listener);
-	}
-
 	private void fireTabCloseEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
+		for(int i=0; i<tabListeners.size(); i++) {
 			(tabListeners.get(i)).tabClosed();
+		}
 	}
 
 	private void fireTabOpenEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
+		for(int i=0; i<tabListeners.size(); i++) {
 			(tabListeners.get(i)).tabOpened();
+		}
 	}
 
 	private void fireTabChangedEvent() {
-		for(int i=0; i<tabListeners.size(); i++)
+		for(int i=0; i<tabListeners.size(); i++) {
 			(tabListeners.get(i)).tabChanged();
+		}
 	}
 
 	private int lastSelectedTab;

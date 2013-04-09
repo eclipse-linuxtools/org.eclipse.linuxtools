@@ -16,10 +16,10 @@ import java.net.URISyntaxException;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -91,7 +91,9 @@ public class IDEPlugin extends AbstractUIPlugin {
 		String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
 		String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
 		if (path == null)
+		 {
 			path = ""; //$NON-NLS-1$
+		}
 		try {
 			URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
 			return uri;

@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,13 +23,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeParser;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
 import org.eclipse.linuxtools.man.parser.ManPage;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
+import org.eclipse.linuxtools.systemtap.ui.ide.structures.TreeSettings;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceConstants;
 import org.eclipse.ui.PlatformUI;
 
@@ -252,15 +250,6 @@ public final class TapsetLibrary {
 		probeParser.addListener(listener);
 		return true;
 	}
-
-	/**
-	 * Removes the provided listener from the tapsetParser.
-	 * @param listener The listener to be removed from the tapsetParser
-	 */
-	public static void removeUpdateListener(IUpdateListener listener) {
-		functionParser.removeListener(listener);
-	}
-
 
 	private static Job cacheFunctionManpages = new Job(Localization.getString("TapsetLibrary.0")){ //$NON-NLS-1$
 		private boolean cancelled;

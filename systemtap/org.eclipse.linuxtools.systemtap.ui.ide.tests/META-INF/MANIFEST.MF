@@ -13,7 +13,6 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
  org.eclipse.swtbot.eclipse.core,
  org.apache.log4j,
  org.eclipse.swtbot.go,
- org.eclipse.linuxtools.gcov.launch;bundle-version="1.0.0",
  org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="8.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.ide

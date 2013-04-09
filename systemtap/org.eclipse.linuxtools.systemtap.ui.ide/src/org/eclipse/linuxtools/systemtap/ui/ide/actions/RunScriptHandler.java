@@ -32,12 +32,12 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -182,8 +182,9 @@ public class RunScriptHandler extends AbstractHandler {
 			return false;
 		}
 
-		if(ed.isDirty())
+		if(ed.isDirty()) {
 			ed.doSave(new ProgressMonitorPart(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new FillLayout()));
+		}
 
 		return true;
 	}
@@ -231,7 +232,9 @@ public class RunScriptHandler extends AbstractHandler {
 		getImportedTapsets(cmdList);
 
 		if(isGuru())
+		 {
 			cmdList.add("-g"); //$NON-NLS-1$
+		}
 
 		return finalizeScript(cmdList);
 	}
@@ -273,9 +276,9 @@ public class RunScriptHandler extends AbstractHandler {
 			boolean inLineComment = false;
 			boolean inBlockComment = false;
 			while(-1 != (curr = fr.read())) {
-				if(!inLineComment && !inBlockComment && '%' == prev && '{' == curr)
+				if(!inLineComment && !inBlockComment && '%' == prev && '{' == curr) {
 					front = true;
-				else if(!inLineComment && !inBlockComment && '%' == prev && '}' == curr && front) {
+				} else if(!inLineComment && !inBlockComment && '%' == prev && '}' == curr && front) {
 					imbedded = true;
 					break;
 				} else if(!inBlockComment && (('/' == prev && '/' == curr) || '#' == curr)) {
@@ -290,8 +293,9 @@ public class RunScriptHandler extends AbstractHandler {
 				prev = curr;
 			}
 			fr.close();
-			if(imbedded)
+			if(imbedded) {
 				return true;
+			}
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
 		} catch (IOException ie) {
@@ -316,10 +320,11 @@ public class RunScriptHandler extends AbstractHandler {
 		script = new String[cmdList.size() + 4];
 		script[0] = "stap"; //$NON-NLS-1$
 
-		if(getRunLocal() == false)
+		if(getRunLocal() == false) {
 			script[script.length-1] = tmpfileName;
-		else
+		} else {
 			script[script.length-1] = fileName;
+		}
 
 		for(int i=0; i< cmdList.size(); i++) {
 			script[i+1] = cmdList.get(i).toString();

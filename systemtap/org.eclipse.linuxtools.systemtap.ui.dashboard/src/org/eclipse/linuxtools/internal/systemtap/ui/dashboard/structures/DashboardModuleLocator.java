@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboard.structures;
 
 import java.io.File;
 
@@ -66,8 +66,9 @@ public final class DashboardModuleLocator {
 		if(locations.length() > 0) {
 			allFolders = new String[folders.length + 2];
 			System.arraycopy(folders, 0, allFolders, 2, folders.length);
-		} else
+		} else {
 			allFolders = new String[2];
+		}
 
 		//This locates all the preexisting modules
 		if(new File(moduleStore).exists()) {

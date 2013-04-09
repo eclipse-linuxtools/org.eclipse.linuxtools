@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IActionListener;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.ActiveModuleData;
@@ -28,7 +29,6 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.GraphTreeNode;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -104,8 +104,9 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 			}
 
 			if (!amd.paused) {
-				if (amd.cmd.isRunning())
+				if (amd.cmd.isRunning()) {
 					amd.cmd.stop();
+				}
 				amd.data = null;
 			}
 			dv.closeComposite(amd.module.category);
@@ -197,8 +198,9 @@ public class StopModuleAction extends Action implements IViewActionDelegate, IWo
 	 * that is registered.
 	 */
 	private static void fireActionEvent() {
-		for(int i=0; i<listeners.size(); i++)
+		for(int i=0; i<listeners.size(); i++) {
 			listeners.get(i).handleActionEvent();
+		}
 	}
 
 	/**

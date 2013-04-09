@@ -9,10 +9,11 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboard;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboard;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.DashboardAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;

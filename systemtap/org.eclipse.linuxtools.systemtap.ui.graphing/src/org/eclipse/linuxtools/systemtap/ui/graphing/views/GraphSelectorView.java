@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphing.views;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -44,14 +44,15 @@ public class GraphSelectorView extends ViewPart {
 		displaySets = new ArrayList<GraphDisplaySet>();
 		tabListeners = new ArrayList<ITabListener>();
 	}
-	
+
 	/**
 	 * This method will create a new script set for the provided dataSet
-	 * The new script set will be given a new tab item at the end of 
+	 * The new script set will be given a new tab item at the end of
 	 * the list.
 	 * @param title The name to be shown on the new tab
 	 * @param dataSet The <code>IDataSet</code> for the new script set
 	 * @param cmd The running command that this script set represents.
+	 * @since 2.0
 	 */
 	public void createScriptSet(String title, IDataSet dataSet) {
 		CTabItem item;
@@ -66,7 +67,7 @@ public class GraphSelectorView extends ViewPart {
 		scriptFolder.setSelection(item);
 		fireTabOpenEvent();
 	}
-	
+
 	/**
 	 * This method creates the framework for what will be displayed by this dialog box.
 	 * @param parent The composite that will contain all the elements from this dialog
@@ -80,7 +81,7 @@ public class GraphSelectorView extends ViewPart {
 		data2.bottom = new FormAttachment(100, 0);
 		Composite cmpGraph = new Composite(parent, SWT.NONE);
 		cmpGraph.setLayoutData(data2);
-		
+
 		//This is for the tab view
 		cmpGraph.setLayout(new FormLayout());
 
@@ -98,7 +99,7 @@ public class GraphSelectorView extends ViewPart {
 				fireTabChangedEvent();
 			}
 		});
-		
+
 
 		scriptFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			@Override
@@ -109,42 +110,50 @@ public class GraphSelectorView extends ViewPart {
 		});
 
 	}
-	
+
 	/**
 	 * Finds and returns the active component inside of the active script set
 	 * @return The <code>GraphDisplaySet</code> that is currently active
+	 * @since 2.0
 	 */
 	public GraphDisplaySet getActiveDisplaySet() {
 		int index = scriptFolder.getSelectionIndex();
-		if(index >= 0 && index < displaySets.size())
+		if(index >= 0 && index < displaySets.size()) {
 			return displaySets.get(index);
-		else
+		} else {
 			return null;
+		}
 	}
-	
+
 	@Override
 	public void setFocus() {}
-	
+
+	/**
+	 * @since 2.0
+	 */
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
-	
+
+	/**
+	 * @since 2.0
+	 */
 	public void removeTabListener(ITabListener listener) {
 		tabListeners.remove(listener);
 	}
-	
+
 	private void fireTabCloseEvent() {
 		for(ITabListener tabListener:tabListeners) {
 			tabListener.tabClosed();
 		}
 	}
-	
+
 	private void fireTabOpenEvent() {
 		for(ITabListener tabListener:tabListeners) {
 			tabListener.tabOpened();
 		}
 	}
-	
+
 	private void fireTabChangedEvent() {
 		for(ITabListener tabListener:tabListeners) {
 			tabListener.tabChanged();
@@ -159,14 +168,16 @@ public class GraphSelectorView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 
-		if(null != scriptFolder)
+		if(null != scriptFolder) {
 			scriptFolder.dispose();
+		}
 		scriptFolder = null;
-		if(null != tabListeners)
+		if(null != tabListeners) {
 			tabListeners.removeAll(tabListeners);
+		}
 		tabListeners = null;
 	}
-	
+
 	private CTabFolder scriptFolder;
 	private ArrayList<GraphDisplaySet> displaySets;
 	private ArrayList<ITabListener> tabListeners;

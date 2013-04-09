@@ -9,17 +9,17 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.dashboard.views;
+package org.eclipse.linuxtools.internal.systemtap.ui.dashboard.views;
 
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.DashboardAdapter;
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.DashboardComposite;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.structures.UpdateManager;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardAdapter;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardComposite;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
 import org.eclipse.swt.SWT;
@@ -186,14 +186,6 @@ public class DashboardView extends ViewPart {
 			moduleNames.remove(index);
 			composites.remove(index);
 		}
-	}
-
-	public void addTabListener(ITabListener listener) {
-		tabListeners.add(listener);
-	}
-
-	public void removeTabListener(ITabListener listener) {
-		tabListeners.remove(listener);
 	}
 
 	private void fireTabCloseEvent() {

@@ -11,13 +11,13 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.DashboardAdapter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardAdapter;
 
 /**
- * This is a basic structure to contain all the important information for a 
+ * This is a basic structure to contain all the important information for a
  * a Dashboard graph.
  * @author Ryan Morse
  */

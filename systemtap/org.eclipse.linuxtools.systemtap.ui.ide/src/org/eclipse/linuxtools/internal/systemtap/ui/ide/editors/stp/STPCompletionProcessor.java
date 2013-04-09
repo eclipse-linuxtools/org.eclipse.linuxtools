@@ -26,7 +26,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 
 public class STPCompletionProcessor implements IContentAssistProcessor, ITextHover {
 

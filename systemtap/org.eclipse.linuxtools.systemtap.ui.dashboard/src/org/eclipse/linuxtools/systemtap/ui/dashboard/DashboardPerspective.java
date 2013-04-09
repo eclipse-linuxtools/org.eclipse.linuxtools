@@ -12,9 +12,9 @@
 package org.eclipse.linuxtools.systemtap.ui.dashboard;
 
 
+import org.eclipse.linuxtools.internal.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
-import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

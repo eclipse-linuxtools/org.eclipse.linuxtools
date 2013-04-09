@@ -15,8 +15,8 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 
 
 /**

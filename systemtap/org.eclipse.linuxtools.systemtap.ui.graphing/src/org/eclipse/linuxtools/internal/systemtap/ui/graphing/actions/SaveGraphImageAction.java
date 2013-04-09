@@ -16,10 +16,10 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -71,8 +71,9 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		}
 
 		String path = getFile();
-		if(null == path)
+		if(null == path) {
 			return;
+		}
 
 		save(image, path);
 	}
@@ -87,8 +88,9 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 		AbstractChartBuilder g = null;
 
 		GraphDisplaySet gds = ((GraphSelectorView)ivp).getActiveDisplaySet();
-		if(null != gds)
+		if(null != gds) {
 			g = gds.getActiveGraph();
+		}
 		return g;
 	}
 
@@ -162,8 +164,9 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 			gsv.addTabListener(new ITabListener() {
 				@Override
 				public void tabClosed() {
-					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
+					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph()) {
 						action.setEnabled(false);
+					}
 				}
 
 				@Override
@@ -171,32 +174,36 @@ public class SaveGraphImageAction extends Action implements IWorkbenchWindowActi
 					gsv.getActiveDisplaySet().addTabListener(new ITabListener() {
 						@Override
 						public void tabClosed() {
-							if(null == gsv.getActiveDisplaySet().getActiveGraph())
+							if(null == gsv.getActiveDisplaySet().getActiveGraph()) {
 								action.setEnabled(false);
+							}
 						}
 
 						@Override
 						public void tabOpened() {
-							if(null != gsv.getActiveDisplaySet().getActiveGraph())
+							if(null != gsv.getActiveDisplaySet().getActiveGraph()) {
 								action.setEnabled(true);
+							}
 						}
 
 						@Override
 						public void tabChanged() {
-							if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
+							if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph()) {
 								action.setEnabled(false);
-							else
+							} else {
 								action.setEnabled(true);
+							}
 						}
 					});
 				}
 
 				@Override
 				public void tabChanged() {
-					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph())
+					if(null == gsv.getActiveDisplaySet() || null == gsv.getActiveDisplaySet().getActiveGraph()) {
 						action.setEnabled(false);
-					else
+					} else {
 						action.setEnabled(true);
+					}
 				}
 			});
 		}
