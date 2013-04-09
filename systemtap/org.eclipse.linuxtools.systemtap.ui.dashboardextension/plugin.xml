@@ -43,22 +43,6 @@
 				menubarPath="file.ext"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.ViewScriptAction"
 				style="push"/>
-   <!--<action
-         class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.AddScriptAction"
-         icon="icons/actions/file_obj.gif"
-         id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.AddScriptAction"
-         label="%action.addScript.name"
-         menubarPath="file.ext"
-         style="push">
-   </action>-->
-   ,<!--<action
-         class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.DeleteScriptAction"
-         icon="icons/actions/file_obj.gif"
-         id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.DeleteScriptAction"
-         label="%action.deleteScript.name"
-         menubarPath="file.ext"
-         style="push">
-   </action>-->
 		</objectContribution>
 	</extension>
 

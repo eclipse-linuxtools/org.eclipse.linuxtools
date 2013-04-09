@@ -68,12 +68,6 @@
 			description="%command.run.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.dashboard.category.run"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.RunModuleAction"/>
-		<!--command
-			name="%command.new.name"
-			description="%command.new.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.dashboard.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.CreateModuleAction"/-->
-	
 		<category
 			name="%category.file.name"
 			description="%category.file.desc"
@@ -109,17 +103,6 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.ImportModuleAction"
 				style="push"
 				state="false"/>
-				<!--action
-				label="%action.new.name"
-				tooltip="%action.new.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.CreateModuleAction"
-				icon="icons/actions/import_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/open.ext"
-				menubarPath="file2/new.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.CreateModuleAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.CreateModuleAction"
-				style="push"
-				state="true"/-->
 		</actionSet>
 		<actionSet
 			label="%actionset.run.name"
@@ -175,38 +158,6 @@
 		point="org.eclipse.core.runtime.preferences">
 		<initializer class="org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.PreferenceInitializer"/>
 	</extension>
-
-
-	<!--<extension
-		point="org.eclipse.ui.popupMenus">
-		<objectContribution
-			adaptable="false"
-			id="org.eclipse.linuxtools.systemtap.ui.dashboard.RunModuleMenu"
-			objectClass="org.eclipse.linuxtools.systemtap.structures.TreeNode">
-			<action
-				label="%action.stop.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopModuleAction"
-				icon="icons/actions/stop_script.gif"
-				menubarPath="build.ext"
-				id="org.eclipse.linuxtools.systemtap.ui.dashboard.StopModuleAction"
-				style="push"/>
-			<action
-				label="%action.pause.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.PauseModuleAction"
-				icon="icons/actions/pause_script.gif"
-				menubarPath="build.ext"
-				id="org.eclipse.linuxtools.systemtap.ui.dashboard.PauseModuleAction"
-				style="push"/>
-			<action
-				label="%action.run.name"
-				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.RunModuleAction"
-				icon="icons/actions/start_script.gif"
-				menubarPath="build.ext"
-				id="org.eclipse.linuxtools.systemtap.ui.dashboard.RunModuleAction"
-				style="push"/>
-		</objectContribution>
-	</extension>-->
-
 	<extension
 		point="org.eclipse.ui.popupMenus">
 		<objectContribution
@@ -251,35 +202,4 @@
 			<perspectiveShortcut id="org.eclipse.linuxtools.systemtap.ui.dashboard.DashboardPerspective"/>
 		</perspectiveExtension>
 	</extension>
- <!-- <extension
-       point="org.eclipse.ui.menus">
-    <menuContribution
-          locationURI="toolbar:org.eclipse.ui.main.toolbar">
-       <toolbar
-             id="org.eclipse.linuxtools.systemtap.ui.dashboard.toolbar1">
-          <visibleWhen
-                checkEnabled="true">
-          </visibleWhen>
-         <command
-               commandId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.ImportModuleAction"
-               id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.ImportModuleAction"
-               label="a">
-            <visibleWhen>
-            </visibleWhen>
-         </command>
-		<command
-        commandId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
-        id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
-        label="b"/>
-		<command
-        commandId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
-        id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.PauseModuleAction"
-        label="c"/>
-		<command
-        commandId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
-        id="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.RunModuleAction"
-        label="d"/>
-       </toolbar>
-    </menuContribution>
- </extension> -->
 </plugin>
