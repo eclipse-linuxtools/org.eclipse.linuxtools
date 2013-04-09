@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphing.views;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.linuxtools.systemtap.ui.graphing.structures.GraphDisplaySet;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;

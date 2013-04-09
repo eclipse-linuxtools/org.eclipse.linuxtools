@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.linuxtools.systemtap.ui.dashboard,
- org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
+ org.eclipse.linuxtools.systemtap.graphingapi.ui,
  org.eclipse.core.expressions
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

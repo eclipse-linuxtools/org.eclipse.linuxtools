@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.IDataSetFilter;
+import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 
 /**
  * This is a basic structure to contain all the important information for a 

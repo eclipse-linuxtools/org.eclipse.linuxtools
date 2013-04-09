@@ -13,7 +13,7 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.dashboard,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.systemtap.structures,
- org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
+ org.eclipse.linuxtools.systemtap.graphingapi.ui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.consolelog
 Import-Package: com.jcraft.jsch;version="0.1.46",

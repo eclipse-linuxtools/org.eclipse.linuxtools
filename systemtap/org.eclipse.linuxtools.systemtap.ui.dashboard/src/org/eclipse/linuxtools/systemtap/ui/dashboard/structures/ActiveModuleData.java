@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
 
+import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 
 /**
  * This is a basic structure to contain all the important information for a

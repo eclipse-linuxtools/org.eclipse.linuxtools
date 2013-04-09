@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.graphing.structures,
  org.eclipse.linuxtools.systemtap.ui.graphing.views
-Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
+Require-Bundle: org.eclipse.linuxtools.systemtap.graphingapi.ui,
  org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.ui,
  org.eclipse.core.runtime,
