@@ -33,9 +33,6 @@ import org.eclipse.ui.part.ViewPart;
  * @author Ryan Morse
  */
 public abstract class GraphsView extends ViewPart {
-	public GraphsView() {
-		super();
-	}
 
 	/**
 	 * This class provides the framework for traversing the view's Tree structure.

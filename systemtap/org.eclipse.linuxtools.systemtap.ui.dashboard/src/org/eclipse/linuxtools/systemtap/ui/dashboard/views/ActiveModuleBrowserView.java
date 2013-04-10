@@ -40,9 +40,6 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class ActiveModuleBrowserView extends ModuleView {
-	public ActiveModuleBrowserView() {
-		super();
-	}
 
 	@Override
 	protected void generateModuleTree() {

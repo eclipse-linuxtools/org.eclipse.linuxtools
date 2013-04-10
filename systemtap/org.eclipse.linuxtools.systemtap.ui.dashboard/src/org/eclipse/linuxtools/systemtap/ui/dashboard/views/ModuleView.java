@@ -39,30 +39,27 @@ import org.eclipse.ui.part.ViewPart;
  * @author Ryan Morse
  */
 public abstract class ModuleView extends ViewPart {
-	public ModuleView() {
-		super();
-	}
-	
+
 	/**
 	 * This class provides the framework for traversing the view's Tree structure.
 	 */
 	private static class ViewContentProvider implements ITreeContentProvider {
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
-		
+
 		@Override
 		public void dispose() {}
-		
+
 		@Override
 		public Object[] getElements(Object parent) {
 			return getChildren(parent);
 		}
-		
+
 		@Override
 		public Object getParent(Object child) {
 			return null;
 		}
-		
+
 		@Override
 		public Object[] getChildren(Object par) {
 			TreeNode parent = ((TreeNode)par);
@@ -72,16 +69,16 @@ public abstract class ModuleView extends ViewPart {
 			for(int i=0; i<children.length; i++) {
 				children[i] = parent.getChildAt(i);
 			}
-			
+
 			return children;
 		}
-		
+
 		@Override
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode)parent).getChildCount() > 0;
 		}
 	}
-public class ViewLabelProvider extends LabelProvider 
+public class ViewLabelProvider extends LabelProvider
 	implements IFontProvider, IColorProvider{
 
 	FontRegistry registry = new FontRegistry();
@@ -94,7 +91,7 @@ public class ViewLabelProvider extends LabelProvider
 		img = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 		if (treeObj.getChildCount() == 0)
 			img = DashboardPlugin.getImageDescriptor("icons/misc/module_obj.gif").createImage(); //$NON-NLS-1$
-		
+
 		return img;
 	}
 
@@ -139,9 +136,9 @@ public class ViewLabelProvider extends LabelProvider
 	}
 
 }
-	
+
 	/**
-	 * This method creates the framework for the view.  It initializes the viewer, which 
+	 * This method creates the framework for the view.  It initializes the viewer, which
 	 * contains the TreeNode and handles how to display each entry.
 	 */
 	@Override
@@ -154,7 +151,7 @@ public class ViewLabelProvider extends LabelProvider
 		generateModuleTree();
 		makeActions();
 	}
-	
+
 	/**
 	 * This method is intented to provided the necessary information for generating everthing
 	 * that needs to be displayed in the tree viewer.
@@ -165,14 +162,14 @@ public class ViewLabelProvider extends LabelProvider
 	 * This method is intented to add new Actions to the view.
 	 */
 	protected void makeActions() {}
-	
+
 	/**
 	 * This method is intented to handle updating the view when items are added or removed.
 	 */
 	public void refresh() {
 		generateModuleTree();
 	}
-	
+
 	public TreeViewer getViewer() {
 		return viewer;
 	}
@@ -191,7 +188,7 @@ public class ViewLabelProvider extends LabelProvider
 		super.dispose();
 		viewer = null;
 	}
-	
+
 	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.dashboard.views.ModuleView"; //$NON-NLS-1$
 	protected TreeViewer viewer;
 }
