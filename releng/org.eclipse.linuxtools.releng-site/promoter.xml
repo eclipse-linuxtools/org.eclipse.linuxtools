@@ -27,17 +27,7 @@
 	<property name="build.root" value="${project.build.directory}" />
 	<antversion property="antversion" />
 
-	<target name="init">
-               <fail message="Please use at least ant 1.8.0. Modify your ANT_HOME path to point to a correct location">
-                       <condition>
-                               <not>
-                                       <contains string="${antversion}" substring="1.8" />
-                               </not>
-                       </condition>
-               </fail>
-	</target>
-
-	<target name="main" depends="init">
+	<target name="main">
 
 		<!-- publish p2 repository -->
 		<antcall target="-publish.build.repository" inheritall="true" />
