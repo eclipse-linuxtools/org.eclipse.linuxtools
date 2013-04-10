@@ -149,7 +149,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 							null,
 							completionData[i] + " - function", //$NON-NLS-1$
 							null,
-							TapsetLibrary.getDocumentation("function::" + completionData[i])); //$NON-NLS-1$
+							TapsetLibrary.getAndCacheDocumentation("function::" + completionData[i])); //$NON-NLS-1$
 		}
 
 		return result;
@@ -163,6 +163,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		int prefixLength = prefix.length();
 		for (int i = 0; i < completionData.length; i++){
 			int endIndex = completionData[i].indexOf(':');
+			String variableName = completionData[i].substring(0, endIndex);
 			result[i] = new CompletionProposal(
 							completionData[i].substring(prefixLength, endIndex),
 							offset,
@@ -171,7 +172,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 							null,
 							completionData[i] + " - variable", //$NON-NLS-1$
 							null,
-							null);
+							TapsetLibrary.getAndCacheDocumentation("probe::" + probe + "::" + variableName)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return result;
 	}
@@ -223,7 +224,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 							null,
 							completionData[i],
 							null,
-							TapsetLibrary.getDocumentation(manPrefix + completionData[i]));
+							TapsetLibrary.getAndCacheDocumentation(manPrefix + completionData[i]));
 		}
 		return result;
 
@@ -449,24 +450,30 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		try {
 			String keyword = textViewer.getDocument().get(hoverRegion.getOffset(), hoverRegion.getLength());
 
-			documentation = TapsetLibrary.getDocumentationNoCache("function::" + keyword); //$NON-NLS-1$
-			if (documentation != null){
+			documentation = TapsetLibrary.getDocumentation("function::" + keyword); //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
 				return documentation;
 			}
 
-			documentation = TapsetLibrary.getDocumentationNoCache("probe::" + keyword); //$NON-NLS-1$
-			if (documentation != null){
+			documentation = TapsetLibrary.getDocumentation("probe::" + keyword); //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
 				return documentation;
 			}
 
-			documentation = TapsetLibrary.getDocumentationNoCache("tapset::" + keyword); //$NON-NLS-1$
-			if (documentation != null){
+			documentation = TapsetLibrary.getDocumentation("tapset::" + keyword); //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
 				return documentation;
 			}
 
 			if (keyword.indexOf('.') > 0){
 				keyword = keyword.split("\\.")[0]; //$NON-NLS-1$
-				documentation = TapsetLibrary.getDocumentationNoCache("tapset::" + keyword); //$NON-NLS-1$
+				documentation = TapsetLibrary.getDocumentation("tapset::" + keyword); //$NON-NLS-1$
+			}
+
+			if (textViewer.getDocument().getPartition(hoverRegion.getOffset())
+					.getType() == STPPartitionScanner.STP_PROBE) {
+				String probe = getProbe(textViewer.getDocument(), hoverRegion.getOffset());
+				documentation = TapsetLibrary.getDocumentation("probe::" + probe + "::"+ keyword); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 		} catch (BadLocationException e) {
