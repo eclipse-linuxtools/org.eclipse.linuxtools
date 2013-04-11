@@ -32,6 +32,16 @@ public class TestCreateSystemtapScript {
 	public static void beforeClass() {
 		bot = new SWTWorkbenchBot();
 
+		// Dismiss "Systemtap not installed" dialog(s) if present.
+		try {
+			bot.shell("Cannot Run Systemtap").activate();
+			bot.button("OK").click();
+			bot.shell("Cannot Run Systemtap").activate();
+			bot.button("OK").click();
+		} catch (WidgetNotFoundException e) {
+			//ignore
+		}
+
 		try {
 			bot.viewByTitle("Welcome").close();
 			// hide Subclipse Usage stats popup if present/installed
