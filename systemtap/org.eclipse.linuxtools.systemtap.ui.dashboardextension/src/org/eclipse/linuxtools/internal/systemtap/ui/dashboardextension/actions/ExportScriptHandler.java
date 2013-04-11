@@ -210,14 +210,16 @@ public class ExportScriptHandler extends RunScriptHandler {
 	 * @param files A list of all of the file paths that should be removed
 	 */
 	private void cleanupFiles(String[] files) {
-		if(null == files)
+		if(null == files) {
 			return;
+		}
 
 		File f;
 		for(String fileName: files) {
 			f = new File(fileName);
-			if(f.exists())
+			if(f.exists()) {
 				f.delete();
+			}
 		}
 	}
 

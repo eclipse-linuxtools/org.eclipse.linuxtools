@@ -46,48 +46,49 @@ public class ViewScriptAction extends Action implements IViewActionDelegate {
 	public void init(IViewPart view) {
 		selectedItem = null;
 	}
-	
+
 	/**
 	 * This method will retreive the script from the selected module for the user
-	 * to see.  It will then create a new active editor in the IDE perspective and 
-	 * display the module in a temp file.  Users can then modify this script and 
+	 * to see.  It will then create a new active editor in the IDE perspective and
+	 * display the module in a temp file.  Users can then modify this script and
 	 * use the modified version as well as the original.
 	 * @param act An action representing the click event used to start this method.
 	 */
 	@Override
 	public void run(IAction act) {
 		DashboardModule data = (DashboardModule)selectedItem.getData();
-		
+
 		try {
 			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 
 			TempFileAction tfa = new TempFileAction();
 			tfa.run();
-			
+
 			IEditorPart edit = p.getActiveEditor();
-			
-			if(null != edit) {
-				if(edit instanceof SimpleEditor) {
-					SimpleEditor editor = (SimpleEditor)edit;
-					
-					//Copy the file just to ensure the user has to save their own copy if they want it
-					FileInputStream fin;		
-					try {
-					    fin = new FileInputStream(data.script);
-					    StringBuilder sb = new StringBuilder();
-					    
-					    int c;
-					    while((c = fin.read()) != -1)
-					    	sb.append((char)c);
-					    
-					    fin.close();		
-						editor.insertText(sb.toString());
-					} catch (IOException e) {}
+
+			if (edit instanceof SimpleEditor) {
+				SimpleEditor editor = (SimpleEditor) edit;
+
+				// Copy the file just to ensure the user has to save their own
+				// copy if they want it
+				FileInputStream fin;
+				try {
+					fin = new FileInputStream(data.script);
+					StringBuilder sb = new StringBuilder();
+
+					int c;
+					while ((c = fin.read()) != -1) {
+						sb.append((char) c);
+					}
+
+					fin.close();
+					editor.insertText(sb.toString());
+				} catch (IOException e) {
 				}
 			}
 		} catch(WorkbenchException we) {}
 	}
-	
+
 	/**
 	 * This method will update the selected item when a new item is selected.
 	 * @param action The action that fired this method.
@@ -109,6 +110,6 @@ public class ViewScriptAction extends Action implements IViewActionDelegate {
 		}
 		setEnabled(false);
 	}
-	
+
 	private ModuleTreeNode selectedItem;
 }
