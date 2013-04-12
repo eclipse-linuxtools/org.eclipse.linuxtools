@@ -22,4 +22,23 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools libstdc++ Libhover Plug-in</name>
+
+  <build>
+     <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
+     <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
