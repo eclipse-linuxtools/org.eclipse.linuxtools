@@ -16,10 +16,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry;
-
 import junit.framework.TestCase;
 
 public class StatsComparisonTest extends TestCase {
@@ -165,12 +163,32 @@ public class StatsComparisonTest extends TestCase {
 
 		diffData.runComparison();
 		String actualResult = diffData.getResult();
-		String[] actulResultLines = actualResult.split("\n");
+		String[] actualResultLines = actualResult.split("\n");
 
 		String curLine;
-		for (int i = 0; i < actulResultLines.length; i++) {
+		for (int i = 0; i < actualResultLines.length; i++) {
 			curLine = diffDataReader.readLine();
-			assertEquals(actulResultLines[i], curLine);
+
+			/**
+			 * Elapsed seconds are usually very close to zero, and thus prone to
+			 * some small formatting differences across systems. Total time
+			 * entry items are checked more thoroughly to avoid test failures.
+			 */
+			if (curLine.contains(PMStatEntry.TIME)) {
+				String expectedEntry = curLine.trim();
+				String actualEntry = actualResultLines[i].trim();
+
+				String expectedSamples = expectedEntry.substring(0, expectedEntry.indexOf(" "));
+				String expectedRest = expectedEntry.substring(expectedEntry.indexOf(" ") + 1);
+
+				String actualSamples = actualEntry.substring(0, actualEntry.indexOf(" "));
+				String actualRest = actualEntry.substring(actualEntry.indexOf(" ") + 1);
+
+				assertEquals(StatComparisonData.toFloat(actualSamples),
+						StatComparisonData.toFloat(expectedSamples));
+				assertEquals(actualRest, expectedRest);
+			}
+			assertEquals(actualResultLines[i], curLine);
 		}
 
 		diffDataReader.close();
