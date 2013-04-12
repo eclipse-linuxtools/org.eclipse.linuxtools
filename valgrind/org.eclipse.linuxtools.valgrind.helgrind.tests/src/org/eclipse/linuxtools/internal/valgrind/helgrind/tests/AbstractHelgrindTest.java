@@ -13,15 +13,8 @@ package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
 import org.eclipse.linuxtools.internal.valgrind.helgrind.HelgrindPlugin;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 public abstract class AbstractHelgrindTest extends AbstractValgrindTest {
-
-	@Override
-	protected Bundle getBundle() {
-		return FrameworkUtil.getBundle(AbstractHelgrindTest.class);
-	}
 
 	@Override
 	protected String getToolID() {

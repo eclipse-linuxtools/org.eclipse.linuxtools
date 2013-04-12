@@ -14,15 +14,8 @@ import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
-
-	@Override
-	public Bundle getBundle() {
-		return FrameworkUtil.getBundle(AbstractMemcheckTest.class);
-	}
 
 	@Override
 	public String getToolID() {

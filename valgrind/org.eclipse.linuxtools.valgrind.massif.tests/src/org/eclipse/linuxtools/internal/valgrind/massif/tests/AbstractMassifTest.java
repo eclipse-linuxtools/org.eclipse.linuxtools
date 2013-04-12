@@ -26,16 +26,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 
 public abstract class AbstractMassifTest extends AbstractValgrindTest {
-
-	@Override
-	protected Bundle getBundle() {
-		return FrameworkUtil.getBundle(AbstractMassifTest.class);
-	}
 
 	@Override
 	protected String getToolID() {
@@ -66,12 +59,12 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (editor instanceof ITextEditor) {
 			ITextEditor textEditor = (ITextEditor) editor;
-			
+
 			ISelection selection = textEditor.getSelectionProvider().getSelection();
 			if (selection instanceof TextSelection) {
 				TextSelection textSelection = (TextSelection) selection;
 				int line = textSelection.getStartLine() + 1; // zero-indexed
-				
+
 				assertEquals(node.getLine(), line);
 			}
 			else {
