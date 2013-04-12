@@ -12,7 +12,13 @@
             category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderPreferencesPage"
             id="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
-            name="%page.name">
+            name="%profiling.page.name">
+      </page>
+      <page
+            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
+            class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProfilingCategoriesPreferencesPage"
+            id="org.eclipse.linuxtools.profiling.provider.ProfilingCategoriesPreferencePage"
+            name="%categories.page.name">
       </page>
    </extension>
    <extension
@@ -102,7 +108,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
+            category="org.eclipse.linuxtools.profiling.provider.ProfilingCategoriesPreferencePage"
             id="org.eclipse.linuxtools.profiling.provider.TimingPreferencePage"
             name="%page.name.0">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
@@ -199,7 +205,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
+            category="org.eclipse.linuxtools.profiling.provider.ProfilingCategoriesPreferencePage"
             id="org.eclipse.linuxtools.profiling.provider.MemoryPreferencePage"
             name="%page.name.1">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
@@ -296,7 +302,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage"
+            category="org.eclipse.linuxtools.profiling.provider.ProfilingCategoriesPreferencePage"
             id="org.eclipse.linuxtools.profiling.provider.CoveragePreferencePage"
             name="%page.name.2">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">

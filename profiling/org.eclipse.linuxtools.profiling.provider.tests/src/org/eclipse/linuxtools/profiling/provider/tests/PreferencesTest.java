@@ -117,7 +117,7 @@ public class PreferencesTest extends AbstractTest{
 		shell.activate();
 
 		// Go to "Profiling Categories" preferences page.
-		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling Categories"); //$NON-NLS-1$ //$NON-NLS-2$
+		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling").expandNode("Categories"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertNotNull(treeItem);
 
 		// Select "Timing" category page.
