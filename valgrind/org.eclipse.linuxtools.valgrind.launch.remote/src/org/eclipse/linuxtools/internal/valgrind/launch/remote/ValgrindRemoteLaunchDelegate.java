@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@fedoraproject.org> - initial API and implementation
  *    Red Hat Inc. - rewrite to use RemoteConnection class
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.IOException;
@@ -31,8 +31,8 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurati
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
+import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
 import org.eclipse.linuxtools.profiling.launch.remote.RemoteConnection;
-import org.eclipse.linuxtools.profiling.launch.remote.RemoteConnectionException;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 
@@ -50,7 +50,7 @@ ValgrindLaunchConfigurationDelegate {
 		if (m == null) {
 			m = new NullProgressMonitor();
 		}
-		
+
 		// Clear process as we wait on it to be instantiated
 		process = null;
 
@@ -65,7 +65,7 @@ ValgrindLaunchConfigurationDelegate {
 
 		this.config = config;
 		this.launch = launch;
-		try {			
+		try {
 			// remove any output from previous run
 			ValgrindUIPlugin.getDefault().resetView();
 			// reset stored launch data
@@ -80,9 +80,9 @@ ValgrindLaunchConfigurationDelegate {
 			final IPath remoteDir = Path.fromOSString(config.getAttribute(ValgrindRemoteLaunchConstants.ATTR_REMOTE_DESTDIR, ValgrindRemoteLaunchConstants.DEFAULT_REMOTE_DESTDIR));
 
 			remoteBinFile = remoteDir.append(exePath.lastSegment());
-			
+
 			rc.upload(exePath, remoteDir, new SubProgressMonitor(monitor, 1));
-			
+
 			IPath remoteLogDir = Path.fromOSString(config.getAttribute(ValgrindRemoteLaunchConstants.ATTR_REMOTE_OUTPUTDIR, ValgrindRemoteLaunchConstants.DEFAULT_REMOTE_OUTPUTDIR));
 			outputPath = remoteLogDir.append("eclipse-valgrind-" + System.currentTimeMillis()); //$NON-NLS-1$
 
@@ -137,7 +137,7 @@ ValgrindLaunchConfigurationDelegate {
 
 			// remove remote log dir and all files under it
 			rc.delete(outputPath, new SubProgressMonitor(monitor, 1));
-			
+
 			if (returnValue != 0) {
 				StringBuffer buf = new StringBuffer();
 				for (int i = 0; i < commandOutput.size(); ++i) {
@@ -146,7 +146,7 @@ ValgrindLaunchConfigurationDelegate {
 				}
 				abort(buf.toString(), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 			}
-	
+
 			// store these for use by other classes
 			getPlugin().setCurrentLaunchConfiguration(config);
 			getPlugin().setCurrentLaunch(launch);
@@ -166,7 +166,7 @@ ValgrindLaunchConfigurationDelegate {
 
 			// pass off control to extender
 			dynamicDelegate.handleLaunch(config, launch, localOutputDir, monitor.newChild(2));
-			
+
 			// initialize tool-specific part of view
 			dynamicDelegate.initializeView(view.getDynamicView(), launchStr, monitor.newChild(1));
 
@@ -177,7 +177,7 @@ ValgrindLaunchConfigurationDelegate {
 			ValgrindUIPlugin.getDefault().showView();
 			monitor.worked(1);
 
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -205,5 +205,5 @@ ValgrindLaunchConfigurationDelegate {
 	public void onError(Throwable t) {
 		// for now do nothing
 	}
-	
+
 }

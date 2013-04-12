@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.profiling.launch.remote;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.profiling.launch.remote.ProfileRemoteLaunchPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,6 +16,7 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.cdt.launch.ui,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
- org.eclipse.debug.ui.sourcelookup
+ org.eclipse.debug.ui.sourcelookup,
+ org.eclipse.linuxtools.profiling.launch
 Export-Package: 
  org.eclipse.linuxtools.profiling.launch.remote

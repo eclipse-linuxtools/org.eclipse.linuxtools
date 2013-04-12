@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteCommandShellOperation;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteLaunchConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteMessages;
+import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
 import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.ISystemRegistry;
