@@ -56,60 +56,6 @@
           </execution>
         </executions>
       </plugin>
-      <!--
-           Clean out contents of backed up target folder.
-      -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>install</phase>
-            <configuration>
-              <executable>rm</executable>
-              <arguments>
-                <argument>-rf</argument>
-                <argument>${relengTargetDir}</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!--
-           Packaging type 'eclipse-repository' performs a clean on the
-           'initialize' phase. The maven-javadoc-plugin executes
-           'generate-sources', which will also trigger an 'initialize' (clean).
-
-           Copy the contents of our target folder to another location so
-           that it's available for later use.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-        <executions>
-          <execution>
-            <id>save-releng-target-dir</id>
-            <phase>install</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-	      <outputDirectory>${relengTargetDir}</outputDirectory>
-	      <resources>
-	        <resource>
-                    <directory>${project.build.directory}</directory>
-	        </resource>
-	      </resources>
-              <overwrite>true</overwrite>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
