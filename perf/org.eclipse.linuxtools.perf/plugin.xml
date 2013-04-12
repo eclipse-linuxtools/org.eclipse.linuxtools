@@ -112,7 +112,7 @@
             delegate="org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigDelegate"
             id="org.eclipse.linuxtools.perf.remote.launch.profile"
             modes="linuxtools"
-            name="Profile with Remote Perf"
+            name="Profile with Perf (Remote)"
             public="true"
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
