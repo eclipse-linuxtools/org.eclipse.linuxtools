@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM - initial API and implementation
  *
@@ -173,16 +173,20 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	}
 
 	protected double getDoubleValue(Object o) {
-		if (o instanceof Integer)
+		if (o instanceof Integer) {
 			return ((Integer)o).intValue();
-		if (o instanceof Double)
+		}
+		if (o instanceof Double) {
 			return ((Double)o).doubleValue();
+		}
 		return new Double(o.toString()).doubleValue();
 	}
 
 	@Override
 	public void handleUpdateEvent() {
-		repaint();
+		if (!chart.isDisposed()) {
+			repaint();
+		}
 	}
 
 	protected void repaint() {

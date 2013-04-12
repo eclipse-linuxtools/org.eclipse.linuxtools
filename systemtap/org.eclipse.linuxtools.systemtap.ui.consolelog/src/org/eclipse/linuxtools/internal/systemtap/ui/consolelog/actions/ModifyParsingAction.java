@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.ChartStreamDaemon;
@@ -83,8 +83,8 @@ public class ModifyParsingAction extends ConsoleAction {
 			} else
 				daemon.setParser(dataSet, parser);
 
-			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(GraphSelectorView.ID);
-			GraphSelectorView graphSelector = ((GraphSelectorView)ivp);
+			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(GraphSelectorEditor.ID);
+			GraphSelectorEditor graphSelector = ((GraphSelectorEditor)ivp);
 			String name = console.getName();
 			graphSelector.createScriptSet(name.substring(name.lastIndexOf('/')+1), dataSet);
 		}

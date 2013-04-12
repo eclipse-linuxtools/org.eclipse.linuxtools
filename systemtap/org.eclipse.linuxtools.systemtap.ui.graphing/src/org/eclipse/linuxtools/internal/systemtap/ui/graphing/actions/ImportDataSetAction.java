@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IViewPart;
@@ -88,8 +88,8 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 		//Create a new script set
 		try {
 			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			IViewPart ivp = p.findView(GraphSelectorView.ID);
-			((GraphSelectorView)ivp).createScriptSet(fileName, dataSet);
+			IViewPart ivp = p.findView(GraphSelectorEditor.ID);
+			((GraphSelectorEditor)ivp).createScriptSet(fileName, dataSet);
 		} catch(WorkbenchException we) {
 			ExceptionErrorDialog.openError(Localization.getString("ImportDataSetAction.UnableToImportDataSet"), we); //$NON-NLS-1$
 		}

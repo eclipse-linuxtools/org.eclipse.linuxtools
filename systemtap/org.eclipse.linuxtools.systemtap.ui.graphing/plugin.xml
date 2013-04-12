@@ -10,17 +10,6 @@
 			id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"/>
 	</extension>
 	
-	<extension
-		point="org.eclipse.ui.views">
-		<view
-        allowMultiple="false"
-        category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
-        icon="icons/views/selector_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
-        name="%view.graphSelector.name">
-		</view>
-	</extension>
 	
 	<extension
 		point="org.eclipse.ui.preferencePages">
@@ -143,4 +132,13 @@
                        
          </perspectiveExtension>
 	</extension>
+ <extension
+       point="org.eclipse.ui.editors">
+    <editor
+          class="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor"
+          default="false"
+          id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor"
+          name="Graphs">
+    </editor>
+ </extension>
 </plugin>

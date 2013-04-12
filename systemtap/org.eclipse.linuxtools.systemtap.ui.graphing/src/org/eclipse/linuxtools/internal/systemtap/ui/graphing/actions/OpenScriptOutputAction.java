@@ -30,7 +30,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDia
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetWizard;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IViewPart;
@@ -90,8 +90,8 @@ public class OpenScriptOutputAction extends Action implements IWorkbenchWindowAc
 
 				try {
 					IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-					IViewPart ivp = p.findView(GraphSelectorView.ID);
-					((GraphSelectorView)ivp).createScriptSet(f.getName(), dataSet);
+					IViewPart ivp = p.findView(GraphSelectorEditor.ID);
+					((GraphSelectorEditor)ivp).createScriptSet(f.getName(), dataSet);
 				} catch (WorkbenchException e) {
 					ExceptionErrorDialog.openError(Localization.getString("OpenScriptOutputAction.UnableToOpenDialogTitle"), e); //$NON-NLS-1$
 				}

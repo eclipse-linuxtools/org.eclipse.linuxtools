@@ -19,8 +19,9 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditorInput;
+import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.Messages;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.ui.IWorkbenchPage;
@@ -49,8 +50,9 @@ public class RunScriptChartHandler extends RunScriptHandler {
 	protected void scriptConsoleInitialized(ScriptConsole console){
 		console.getCommand().addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
 		try {
-			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			GraphSelectorView ivp = (GraphSelectorView)p.showView(GraphSelectorView.ID);
+			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+			GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(), GraphSelectorEditor.ID);
+
 			String name = console.getName();
 			ivp.createScriptSet(name.substring(name.lastIndexOf('/')+1), dataSet);
 

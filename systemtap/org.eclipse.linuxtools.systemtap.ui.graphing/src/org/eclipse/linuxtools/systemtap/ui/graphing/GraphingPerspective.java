@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.graphing;
 
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -31,12 +31,12 @@ public class GraphingPerspective implements IPerspectiveFactory {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
 		
-		layout.addStandaloneView(GraphSelectorView.ID, false, IPageLayout.TOP, .75f, editorArea);
+		layout.addStandaloneView(GraphSelectorEditor.ID, false, IPageLayout.TOP, .75f, editorArea);
 
-		layout.getViewLayout(GraphSelectorView.ID).setCloseable(false);
+		layout.getViewLayout(GraphSelectorEditor.ID).setCloseable(false);
 
 		//Add all perspectives to the MainMenu. Window->Show View
-		layout.addShowViewShortcut(GraphSelectorView.ID);
+		layout.addShowViewShortcut(GraphSelectorEditor.ID);
 
 		//Add a link to the perspective in the MainMenu.  Window->Open Perspective
 		layout.addPerspectiveShortcut(ID);
