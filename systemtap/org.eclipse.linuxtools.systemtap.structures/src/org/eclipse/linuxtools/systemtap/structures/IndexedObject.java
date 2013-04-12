@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.systemtap.structures;
 
 
-public class IndexedObject implements Comparable{
+public class IndexedObject implements Comparable<IndexedObject>{
 	public int index;
 	public Object val;
 
@@ -27,11 +27,10 @@ public class IndexedObject implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		if(o instanceof IndexedObject) {
+	public int compareTo(IndexedObject o) {
+		if(o != null) {
 			Comparable thisVal = (val instanceof Comparable) ? (Comparable)val : val.toString();
-			IndexedObject t = (IndexedObject)o;
-			Comparable otherVal = (t.val instanceof Comparable) ? (Comparable)t.val : t.val.toString();
+			Comparable otherVal = (o.val instanceof Comparable) ? (Comparable)o.val : o.val.toString();
 			return thisVal.compareTo(otherVal);
 		}
 		return 0;
