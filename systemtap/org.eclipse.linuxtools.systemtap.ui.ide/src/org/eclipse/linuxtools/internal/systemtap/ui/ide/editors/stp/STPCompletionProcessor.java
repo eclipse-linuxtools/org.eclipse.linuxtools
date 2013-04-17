@@ -369,7 +369,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	}
 
 	private boolean isTokenDelimiter(char c) {
-		if (Character.isSpaceChar(c)) {
+		if (Character.isWhitespace(c)) {
 			return true;
 		}
 
