@@ -14,6 +14,15 @@
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
       </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchDelegate"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
+            modes="linuxtools"
+            name="%launchConfigurationType.remote.name"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -23,6 +32,12 @@
             id="org.eclipse.linuxtools.valgrind.launch.valgrindTabGroup"
             type="org.eclipse.linuxtools.valgrind.launch.valgrindLaunch">
       </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.internal.valgrind.launch.ValgrindRemoteProxyLaunchConfigurationTabGroup"
+            description="%launchConfigurationTabGroup.remote.description"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.tabGroup"
+            type="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType">
+      </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -30,6 +45,11 @@
             configTypeID="org.eclipse.linuxtools.valgrind.launch.valgrindLaunch"
             icon="icons/valgrind-icon.png"
             id="org.eclipse.linuxtools.valgrind.launch.valgrindImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
+            icon="icons/valgrind-icon.png"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationTypeImage1">
       </launchConfigurationTypeImage>
    </extension>
    <extension
