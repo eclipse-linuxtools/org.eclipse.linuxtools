@@ -16,6 +16,21 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.messages"; //$NON-NLS-1$
+
+	public static String ParsingWizardPage_Title;
+	public static String ParsingWizardPage_Delimiter;
+	public static String ParsingWizardPage_NumberOfColumns;
+	public static String ParsingWizardPage_RegularExpression;
+
+	public static String SystemTapScriptGraphOptionsTab_0;
+	public static String SystemTapScriptGraphOptionsTab_1;
+	public static String SystemTapScriptGraphOptionsTab_2;
+	public static String SystemTapScriptGraphOptionsTab_3;
+	public static String SystemTapScriptGraphOptionsTab_4;
+	public static String SystemTapScriptGraphOptionsTab_5;
+	public static String SystemTapScriptGraphOptionsTab_6;
+	public static String SystemTapScriptGraphOptionsTab_7;
+
 	public static String SystemTapScriptLaunchConfigurationTab_0;
 	public static String SystemTapScriptLaunchConfigurationTab_1;
 	public static String SystemTapScriptLaunchConfigurationTab_2;

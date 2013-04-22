@@ -26,7 +26,9 @@ public class SystemTapScriptLaunchConfigurationTabGroup extends
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		AbstractLaunchConfigurationTab[] tabs = new AbstractLaunchConfigurationTab[] {
 				new SystemTapScriptLaunchConfigurationTab(),
-				new SystemTapScriptOptionsTab(), new CommonTab() };
+				new SystemTapScriptOptionsTab(),
+				new SystemTapScriptGraphOptionsTab(),
+				new CommonTab() };
 		setTabs(tabs);
 	}
 

@@ -11,20 +11,16 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingConstants;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetWizard;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
+import org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective;
+import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.Messages;
 import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
@@ -36,13 +32,17 @@ import org.eclipse.ui.WorkbenchException;
  */
 public class RunScriptChartHandler extends RunScriptHandler {
 
-	public RunScriptChartHandler() {
+	private IDataSet dataSet;
+	private IDataSetParser parser;
+
+	public RunScriptChartHandler(IDataSetParser parser, IDataSet dataSet) {
 		super();
+		this.parser = parser;
+		this.dataSet = dataSet;
 	}
 
 	@Override
 	protected void scriptConsoleInitialized(ScriptConsole console){
-		getChartingOptions();
 		console.getCommand().addInputStreamListener(new ChartStreamDaemon2(console, dataSet, parser));
 		try {
 			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(GraphingPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
@@ -53,30 +53,5 @@ public class RunScriptChartHandler extends RunScriptHandler {
 			ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
 		}
 	}
-
-	/**
-	 * This method is used to prompt the user for the parsing expression to be used in generating
-	 * the <code>DataSet</code> from the scripts output.
-	 */
-	protected void getChartingOptions() {
-		DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, getFilePath());
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		wizard.init(workbench, null);
-		WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
-		dialog.create();
-		dialog.open();
-		parser = wizard.getParser();
-
-		dataSet = wizard.getDataSet();
-
-		if(null == parser || null == dataSet)
-		{
-			continueRun = false;
-		}
-		wizard.dispose();
-	}
-
-	private IDataSet dataSet = null;
-	private IDataSetParser parser = null;
 
 }
