@@ -31,6 +31,11 @@ public class Messages extends NLS {
 	public static String SystemTapScriptGraphOptionsTab_6;
 	public static String SystemTapScriptGraphOptionsTab_7;
 
+	public static String SystemTapScriptGraphOptionsTab_AddGraphButton;
+	public static String SystemTapScriptGraphOptionsTab_AddGraphButtonToolTip;
+	public static String SystemTapScriptGraphOptionsTab_graphsTitle;
+	public static String SystemTapScriptGraphOptionsTab_RemoveGraphButtonLabel;
+
 	public static String SystemTapScriptLaunchConfigurationTab_0;
 	public static String SystemTapScriptLaunchConfigurationTab_1;
 	public static String SystemTapScriptLaunchConfigurationTab_2;

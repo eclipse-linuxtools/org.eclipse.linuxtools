@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.ui.graphing.views;
 
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.structures.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
+import org.eclipse.linuxtools.systemtap.ui.graphing.GraphDisplaySet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -162,7 +162,7 @@ public class GraphSelectorView extends ViewPart {
 
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
-	 * to anyting in this class after calling the dispose method.
+	 * to anything in this class after calling the dispose method.
 	 */
 	@Override
 	public void dispose() {

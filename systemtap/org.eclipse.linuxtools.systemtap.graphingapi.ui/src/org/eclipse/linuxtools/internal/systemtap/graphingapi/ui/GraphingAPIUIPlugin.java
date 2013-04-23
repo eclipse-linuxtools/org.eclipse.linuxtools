@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
  */
 public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.graphingapi.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui"; //$NON-NLS-1$
 	//The shared instance.
 	private static GraphingAPIUIPlugin plugin;
 

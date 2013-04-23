@@ -32,7 +32,6 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.swt.graphics.Image;
 
 
-
 public final class GraphFactory {
 	private static final String[] graphNames = new String[] {
 			Localization.getString("GraphFactory.ScatterGraph"), //$NON-NLS-1$
@@ -76,8 +75,9 @@ public final class GraphFactory {
 			ids.add(PieChartBuilder.ID);
 		}
 		if(data instanceof IBlockDataSet) {
-			if(!ids.contains(BarChartBuilder.ID))
+			if(!ids.contains(BarChartBuilder.ID)) {
 				ids.add(BarChartBuilder.ID);
+			}
 			ids.add(PieChartBuilder.ID);
 		}
 
@@ -87,28 +87,32 @@ public final class GraphFactory {
 
 	public static String getGraphName(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
+		if(index >= 0) {
 			return graphNames[index];
+		}
 		return null;
 	}
 
 	public static String getGraphDescription(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
+		if(index >= 0) {
 			return graphDescriptions[index];
+		}
 		return null;
 	}
 
 	public static Image getGraphImage(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
+		if(index >= 0) {
 			return graphImages[index];
+		}
 		return null;
 	}
 
 	public static boolean isMultiGraph(String id) {
-		if(id.equals(PieChart.ID))
+		if(id.equals(PieChart.ID)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -116,8 +120,9 @@ public final class GraphFactory {
 		switch(getIndex(graphID)) {
 			case 0:
 			case 1:
-				if(data instanceof IBlockDataSet)	//Has to be IHistoricalDataSet
+				if(data instanceof IBlockDataSet) {
 					return true;
+				}
 			default:
 				return false;
 		}
@@ -126,8 +131,9 @@ public final class GraphFactory {
 	public static boolean isKeyOptional(String graphID, IDataSet data) {
 		switch(getIndex(graphID)) {
 			case 2:
-				if(data instanceof IBlockDataSet)	//Has to be IHistoricalDataSet
+				if(data instanceof IBlockDataSet) {
 					return true;
+				}
 			default:
 				return false;
 		}
@@ -168,9 +174,11 @@ public final class GraphFactory {
 
 	private static int getIndex(String id) {
 
-		for(int i=0; i<graphIDs.length; i++)
-			if(id.equals(graphIDs[i]))
+		for(int i=0; i<graphIDs.length; i++) {
+			if(id.equals(graphIDs[i])) {
 				return i;
+			}
+		}
 		return -1;
 	}
 }

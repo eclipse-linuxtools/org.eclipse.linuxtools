@@ -19,7 +19,8 @@ Require-Bundle:
  org.eclipse.linuxtools.profiling.launch;bundle-version="0.11.0",
  org.eclipse.ui.ide,
  org.eclipse.debug.ui;bundle-version="3.8.0",
- org.eclipse.core.expressions;bundle-version="3.4.400"
+ org.eclipse.core.expressions;bundle-version="3.4.400",
+ org.eclipse.linuxtools.systemtap.graphingapi.ui
 Bundle-ActivationPolicy: lazy
 Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.cdt.core.model,
@@ -27,8 +28,12 @@ Import-Package: com.jcraft.jsch;version="0.1.46",
  org.eclipse.linuxtools.man.parser,
  org.eclipse.linuxtools.systemtap.graphingapi.core.datasets,
  org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row,
+ org.eclipse.linuxtools.systemtap.graphingapi.core.filters,
+ org.eclipse.linuxtools.systemtap.graphingapi.core.structures,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset,
+ org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.filter,
+ org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph,
  org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.linuxtools.systemtap.structures.listeners,
  org.eclipse.linuxtools.systemtap.ui.graphing,
