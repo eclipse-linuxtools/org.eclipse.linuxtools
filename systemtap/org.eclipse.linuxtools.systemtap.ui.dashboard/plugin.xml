@@ -31,7 +31,7 @@
 		<view
         allowMultiple="false"
         category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"
+        class="org.eclipse.linuxtools.internal.systemtap.ui.dashboard.views.DashboardView"
         icon="icons/views/dashboard_obj.gif"
         id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"
         name="%view.dashboard.name">
