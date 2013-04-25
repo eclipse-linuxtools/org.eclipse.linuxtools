@@ -2,43 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>GProf User Guide - Installation and Set-Up</title>
+		<title>GProf User Guide - Supported format</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
-				<th style="width: 100%" align="center" colspan="3">Installation and Set-Up</th>
+				<th style="width: 100%" align="center" colspan="3">Supported format</th>
 			</tr>
 			<tr>
 				<td style="width: 20%" align="left">
-					<a href="User-Guide.html" title="GProf User Guide">
+					<a href="Installation-and-Set-Up.html" title="Installation and Set-Up">
 						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Supported-format.html" title="Supported format">
+					<a href="Opening-gmon-out.html" title="Opening gmon.out">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 20%" align="left" valign="top">GProf User Guide</td>
+				<td style="width: 20%" align="left" valign="top">Installation and Set-Up</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Supported format</td>
+				<td style="width: 20%" align="right" valign="top">Opening gmon.out</td>
 			</tr>
 		</table><hr/>
-		<h1 id="Installation_and_Set-Up">Installation and Set-Up</h1>
-		<p>Gprof plugin depends on binutils (such as addr2line, c++filt and nm). Gprof can be used on any platform as soon as these binutils are in PATH. For example, you can use it on windows with cygwin. </p>
-		<p>First of all, the user has to compile the C/C++ program with profiling enabled using the -pg option prior to running the tool. </p>
-		<p>
-			<img border="0" src="images/Gprof-compile-step.png"/> 
-		</p><hr/>
+		<h1 id="Supported_format">Supported format</h1>
+		<p>Up to now, the Gprof plugin supports gmon files generated on:</p>
+		<ul>
+			<li>linux (ELF) 32 bits
+				<br/>
+			</li>
+			<li>linux (ELF) 64 bits </li>
+			<li>cygwin and BSD: support is not yet complete. See 
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=333984">https://bugs.eclipse.org/bugs/show_bug.cgi?id=333984</a> 
+			</li>
+			<li>powerpc: ongoing. See 
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=351355">https://bugs.eclipse.org/bugs/show_bug.cgi?id=351355</a>
+			</li>
+		</ul><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
-					<a href="User-Guide.html" title="GProf User Guide">
+					<a href="Installation-and-Set-Up.html" title="Installation and Set-Up">
 						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
@@ -48,15 +56,15 @@
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
-					<a href="Supported-format.html" title="Supported format">
+					<a href="Opening-gmon-out.html" title="Opening gmon.out">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 20%" align="left" valign="top">GProf User Guide</td>
+				<td style="width: 20%" align="left" valign="top">Installation and Set-Up</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Supported format</td>
+				<td style="width: 20%" align="right" valign="top">Opening gmon.out</td>
 			</tr>
 		</table>
 	</body>
