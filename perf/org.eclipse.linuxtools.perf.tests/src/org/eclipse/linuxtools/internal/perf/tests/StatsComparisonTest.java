@@ -187,8 +187,9 @@ public class StatsComparisonTest extends TestCase {
 				assertEquals(StatComparisonData.toFloat(actualSamples),
 						StatComparisonData.toFloat(expectedSamples));
 				assertEquals(actualRest, expectedRest);
+			} else {
+				assertEquals(actualResultLines[i], curLine);
 			}
-			assertEquals(actualResultLines[i], curLine);
 		}
 
 		diffDataReader.close();
