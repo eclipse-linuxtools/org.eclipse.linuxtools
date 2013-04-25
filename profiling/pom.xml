@@ -58,7 +58,6 @@
     <module>org.eclipse.linuxtools.profiling-feature</module>
     <module>org.eclipse.linuxtools.profiling.launch</module>
     <module>org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy</module>
-    <module>org.eclipse.linuxtools.profiling.launch.remote</module>
     <module>org.eclipse.linuxtools.profiling.provider.tests</module>
     <module>org.eclipse.linuxtools.profiling.remote-feature</module>
     <module>org.eclipse.linuxtools.profiling.tests</module>
