@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Perf User Guide - Sessions</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Sessions</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Perf-Views.html" title="Perf Views">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Perf Views</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Sessions">Sessions</h1>
+		<p>The perf plug-in allows you to store profiling sessions to keep track of a project's performance history. Furthermore, sessions allow the plug-in to provide a number of comparison features to investigate differences in performance.</p>
+		<h2 id="Saving_a_Session">Saving a Session</h2>
+		<p>Currently profile and statistics sessions can be saved by using the menu commands of the respective views. Note that if there has not been a profile or stat run, these commands will be disabled as there would be no data available to save.</p>
+		<p>
+			<img border="0" src="images/Save_prof.png"/>
+		</p>
+		<p>
+			<img border="0" src="images/Save_stats.png"/>
+		</p>
+		<p>These sessions will be located under the profiled project root with their user specified names.</p>
+		<p>
+			<img border="0" src="images/Session_loc.png"/>
+		</p>
+		<h2 id="Comparing_Sessions">Comparing Sessions</h2>
+		<p>Comparisons between sessions is supported by this plug-in, allowing for quick feedback about a program's performance. </p>
+		<h3 id="Manual_Comparison">Manual Comparison</h3>
+		<p>To start a manual comparison select the comparison menu command.</p>
+		<p>
+			<img border="0" src="images/Stat_diff_cmd.png"/>
+		</p>
+		<p>Select and confirm the sessions you wish compare from the project explorer.</p>
+		<p>
+			<img border="0" src="images/File_select.png"/>
+		</p>
+		<p>Depending on the type of comparison, the result will be displayed in a specific view.</p>
+		<p>
+			<img border="0" src="images/Stat_diff.png"/>
+		</p>
+		<h3 id="Automatic_comparison">Automatic comparison</h3>
+		<p>Automatic comparison actions auto-select the most recent profiling sessions and display their result as above. Note that this type of comparison will only be enabled after profiling your project at least two times to gather enough data to compare.</p>
+		<p>To start an automatic comparison simply select the "Compare Latest" menu action.</p>
+		<p>
+			<img border="0" src="images/Quick_stat_diff.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Perf-Views.html" title="Perf Views">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Perf User Guide">
+						<img alt="Perf User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Perf Views</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

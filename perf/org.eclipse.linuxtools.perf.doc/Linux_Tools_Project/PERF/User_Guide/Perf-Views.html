@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>Perf User Guide - Perf View</title>
+		<title>Perf User Guide - Perf Views</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
-				<th style="width: 100%" align="center" colspan="3">Perf View</th>
+				<th style="width: 100%" align="center" colspan="3">Perf Views</th>
 			</tr>
 			<tr>
 				<td style="width: 20%" align="left">
@@ -18,7 +18,7 @@
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Updating-This-Document.html" title="Updating This Document">
+					<a href="Sessions.html" title="Sessions">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
@@ -26,11 +26,13 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top">Profiling Configuration</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+				<td style="width: 20%" align="right" valign="top">Sessions</td>
 			</tr>
 		</table><hr/>
-		<h1 id="Perf_View">Perf View</h1>
-		<p>The Perf view is where all the profiling results can be easily read.</p>
+		<h1 id="Perf_Views">Perf Views</h1>
+		<p>A Perf view is where all the profiling results can be easily read. There are a few different views that may be activated depending on the kind of information a user is interested in.</p>
+		<h3 id="Perf_Tree_View">Perf Tree View</h3>
+		<p>The Perf Tree View stores profiling information in a tree-like hierarchy.</p>
 		<p>
 			<img border="0" src="images/Perf_view.png"/>
 		</p>
@@ -77,7 +79,19 @@
 					</li>
 				</ul>
 			</li>
-		</ul><hr/>
+		</ul>
+		<h3 id="Source_Disassembly_View">Source Disassembly View</h3>
+		<p>Display the source code of the targeted program alongside its assembly code. This also lists the percentage of samples collected at each instruction.</p>
+		<p>This option may be enabled from the launch configuration options for Perf.</p>
+		<p>
+			<img border="0" src="images/Perf_disassembly_view.png"/>
+		</p>
+		<h3 id="Stat_View">Stat View</h3>
+		<p>Display various event information about the execution of the targeted program.</p>
+		<p>This option may be enabled from the launch configuration options for Perf.</p>
+		<p>
+			<img border="0" src="images/Perf_stat_view.png"/>
+		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
@@ -91,7 +105,7 @@
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
-					<a href="Updating-This-Document.html" title="Updating This Document">
+					<a href="Sessions.html" title="Sessions">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
@@ -99,7 +113,7 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top">Profiling Configuration</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+				<td style="width: 20%" align="right" valign="top">Sessions</td>
 			</tr>
 		</table>
 	</body>
