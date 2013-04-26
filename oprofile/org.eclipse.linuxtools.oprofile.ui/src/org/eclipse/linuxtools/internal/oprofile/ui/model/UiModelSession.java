@@ -31,6 +31,11 @@ public class UiModelSession implements IUiModelElement {
 	//OProfile's default session name
 	private static final String DEFAULT_SESSION_NAME = "current"; //$NON-NLS-1$
 	
+	/**
+	 * Constructor to the UiModelSession class
+	 * @param parent The parent element
+	 * @param session Oprofile session node in the data model
+	 */
 	public UiModelSession(IUiModelElement parent, OpModelSession session) {
 		this.parent = parent;
 		this.session = session;
@@ -55,11 +60,18 @@ public class UiModelSession implements IUiModelElement {
 		return session.getName();
 	}
 	
+	/**
+	 * Check if this is Oprofile's default session name
+	 * @return true whether this is Oprofile's default session, false otherwise
+	 */
 	public boolean isDefaultSession() {
 		return session.getName().equalsIgnoreCase(DEFAULT_SESSION_NAME);
 	}
 
-	/** IUiModelElement functions **/
+	/** IUiModelElement functions 
+	 * Returns the text to display in the tree viewer as required by the label provider.
+	 * @return text Text string describing this element
+	 */
 	public String getLabelText() {
 		if (session.getName().equals(DEFAULT_SESSION_NAME)){
 			return OprofileUiMessages.getString("UiModelSession_current"); //$NON-NLS-1$
@@ -67,6 +79,10 @@ public class UiModelSession implements IUiModelElement {
 		return toString();
 	}
 
+	/**
+	 * Returns the children of this element.
+	 * @return An array of child elements
+	 */
 	public IUiModelElement[] getChildren() {
 		if (dependent != null) {
 			return new IUiModelElement[] {image, dependent};
@@ -75,14 +91,26 @@ public class UiModelSession implements IUiModelElement {
 		}
 	}
 
+	/**
+	 * Returns if the element has any children.
+	 * @return true if the element has children, false otherwise
+	 */
 	public boolean hasChildren() {
 		return (image != null);
 	}
 
+	/**
+	 * Returns the element's parent.
+	 * @return parent The parent element
+	 */
 	public IUiModelElement getParent() {
 		return parent;
 	}
 
+	/**
+	 * Returns the Image to display next to the text in the tree viewer.
+	 * @return an Image object of the icon
+	 */
 	public Image getLabelImage() {
 		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.SESSION_ICON).createImage();
 	}

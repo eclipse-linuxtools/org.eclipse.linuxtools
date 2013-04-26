@@ -29,6 +29,13 @@ public class UiModelImage implements IUiModelElement {
 	private int totalCount;				//total number of samples 
 	private int depCount;					//number of samples from dependent images
 
+	/**
+	 * Constructor to the UiModelImage class
+	 * @param parent The parent element
+	 * @param image The image node object in the data model
+	 * @param totalCount The total number of samples
+	 * @param depCount The number of samples from dependent images
+	 */
 	public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
 		this.parent = parent;
 		this.image = image;
@@ -37,7 +44,9 @@ public class UiModelImage implements IUiModelElement {
 		this.depCount = depCount;
 		refreshModel();
 	}
-
+	/**
+	 * Create the ui symbols from the data model.
+	 */
 	private void refreshModel() {
 		OpModelSymbol[] dataModelSymbols = image.getSymbols();
 		
@@ -68,6 +77,10 @@ public class UiModelImage implements IUiModelElement {
 		return toString();
 	}
 
+	/**
+	 * Returns the children of this element.
+	 * @return An array of child elements or null
+	 */
 	public IUiModelElement[] getChildren() {
 		IUiModelElement children[] = null;
 		
@@ -81,15 +94,26 @@ public class UiModelImage implements IUiModelElement {
 		
 		return children;
 	}
-
+	/**
+	 * Returns if the element has any children.
+	 * @return true if the element has children, false otherwise
+	 */
 	public boolean hasChildren() {
 		return (symbols == null || symbols.length == 0 ? false : true);
 	}
 
+	/**
+	 * Returns the element's parent.
+	 * @return parent The parent element or null
+	 */
 	public IUiModelElement getParent() {
 		return parent;
 	}
 
+	/**
+	 * Returns the Image to display next to the text in the tree viewer.
+	 * @return an Image object of the icon
+	 */
 	public Image getLabelImage() {
 		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.IMAGE_ICON).createImage();
 	}

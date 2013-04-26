@@ -70,8 +70,8 @@ public class UiModelSample implements IUiModelElement {
 	}
 
 	/**
-	 * Returns this element children
-	 * @return An array of IUiModelElements
+	 * Returns the children of this element.
+	 * @return An array of child elements or null
 	 */
 	public IUiModelElement[] getChildren() {
 		return null;
