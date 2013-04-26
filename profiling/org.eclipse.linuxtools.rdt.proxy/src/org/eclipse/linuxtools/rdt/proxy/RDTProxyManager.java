@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteProxyManager;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
+import org.eclipse.ptp.remote.core.RemoteServices;
 
 public class RDTProxyManager implements IRemoteProxyManager {
 
@@ -49,7 +49,7 @@ public class RDTProxyManager implements IRemoteProxyManager {
 
 	@Override
 	public String getOS(URI uri) {
-		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
+		IRemoteServices services = RemoteServices.getRemoteServices(uri);
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 		String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
 		if (os == null || os.length() == 0)

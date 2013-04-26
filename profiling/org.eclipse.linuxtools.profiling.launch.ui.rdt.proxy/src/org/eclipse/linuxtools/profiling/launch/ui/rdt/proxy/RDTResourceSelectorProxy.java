@@ -19,11 +19,11 @@ import org.eclipse.linuxtools.profiling.launch.ui.IRemoteResourceSelectorProxy;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteFileManager;
 import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
+import org.eclipse.ptp.remote.core.RemoteServices;
 import org.eclipse.ptp.remote.ui.IRemoteUIConstants;
 import org.eclipse.ptp.remote.ui.IRemoteUIFileManager;
 import org.eclipse.ptp.remote.ui.IRemoteUIServices;
-import org.eclipse.ptp.remote.ui.PTPRemoteUIPlugin;
+import org.eclipse.ptp.remote.ui.RemoteUIServices;
 import org.eclipse.swt.widgets.Shell;
 
 public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
@@ -54,10 +54,10 @@ public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 			schemeSwitch = true;
 		}
 		// If the user is switching schemes, start with an empty host and path
-		IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
-		services.initialize();
+		IRemoteServices services = RemoteServices.getRemoteServices(uri);
 
-		IRemoteUIServices uiServices = PTPRemoteUIPlugin.getDefault().getRemoteUIServices(services);
+		IRemoteUIServices uiServices = RemoteUIServices.getRemoteUIServices(services);
+
 		uiFileManager = uiServices.getUIFileManager();
 		uiFileManager.showConnections(true);
 		IRemoteConnection connection = null;

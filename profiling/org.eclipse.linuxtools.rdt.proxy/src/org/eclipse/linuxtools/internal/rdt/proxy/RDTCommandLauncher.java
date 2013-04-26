@@ -31,7 +31,7 @@ import org.eclipse.ptp.remote.core.IRemoteProcess;
 import org.eclipse.ptp.remote.core.IRemoteProcessBuilder;
 import org.eclipse.ptp.remote.core.IRemoteResource;
 import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.PTPRemoteCorePlugin;
+import org.eclipse.ptp.remote.core.RemoteServices;
 import org.eclipse.ptp.remote.core.RemoteProcessAdapter;
 
 /**
@@ -144,7 +144,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 			// add platform specific arguments (shell invocation)
 			fCommandArgs = constructCommandArray(commandPath.toOSString(), args);
 			fShowCommand = true;
-			IRemoteServices services = PTPRemoteCorePlugin.getDefault().getRemoteServices(uri);
+			IRemoteServices services = RemoteServices.getRemoteServices(uri);
 			IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 			IRemoteFileManager fm = services.getFileManager(connection);
 			IRemoteProcessBuilder builder = services.getProcessBuilder(connection, Arrays.asList(fCommandArgs));
