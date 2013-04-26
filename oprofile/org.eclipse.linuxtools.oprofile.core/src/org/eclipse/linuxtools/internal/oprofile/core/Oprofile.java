@@ -39,10 +39,14 @@ public class Oprofile
 		"/proc/sys/dev/oprofile/cpu_type"  //$NON-NLS-1$
 	};
 
-	// Oprofile information
+	/**
+	 *  Oprofile information
+	 */
 	private static OpInfo info;
 
-	// Make sure that oprofile is ready to go
+	/**
+	 *  Make sure that oprofile is ready to go
+	 */
 	static {
 		initializeOprofileModule();
 	}
@@ -73,6 +77,10 @@ public class Oprofile
 	// but it is the only way of knowing whether the module is loaded (and we can
 	// succesfully call into the oprofile wrapper library without causing it to print out
 	// a lot of warnings).
+	/**
+	 * Check whether oprofile kernel module is loaded
+	 * @return true if the module is loaded, otherwise false
+	 */
 	private static boolean isKernelModuleLoaded() {
 		IRemoteFileProxy proxy = null;
 		try {
@@ -90,7 +98,9 @@ public class Oprofile
 		return false;
 	}
 
-	// initialize oprofile module by calling `opcontrol --init`
+	/**
+	 *  Initialize oprofile module by calling <code>`opcontrol --init`</code>
+	 */
 	private static void initializeOprofile() {
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
@@ -100,7 +110,9 @@ public class Oprofile
 	}
 
 
-	// Initializes static data for oprofile.
+	/**
+	 *  Initializes static data for oprofile.
+	 */
 	private static void initializeOprofileCore () {
 		if (isKernelModuleLoaded()){
 			info = OpInfo.getInfo();
@@ -235,6 +247,7 @@ public class Oprofile
 	}
 
 	/**
+	 * Check if oprofile kernel module is loaded and update Oprofile's information.
 	 * @since 1.1
 	 */
 	public static void updateInfo(){
@@ -250,15 +263,24 @@ public class Oprofile
 	// is being profiled in order to get the path for the Linux Tools' binaries set for that project.
 	// For this reason the project property has to be set outside the Oprofile class
 	/**
+	 * OProfileProject class to set/get which project is being profiled
 	 * @since 1.1
 	 */
 	public static class OprofileProject {
 		private static IProject project;
 
+		/**
+		 * Set the project to be profiled
+		 * @param project
+		 */
 		public static void setProject(IProject project) {
 			OprofileProject.project = project;
 
 		}
+		/**
+		 * Get the project to be profiled
+		 * @return project
+		 */
 		public static IProject getProject() {
 			return project;
 		}

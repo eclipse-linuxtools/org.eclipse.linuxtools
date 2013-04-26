@@ -32,16 +32,20 @@ public class OpInfo {
 	public static final String DEFAULT_LOG_FILE = DefaultsProcessor.LOG_FILE;
 	public static final String DEFAULT_DUMP_STATUS = DefaultsProcessor.DUMP_STATUS;
 	
-	// A comparator class used when sorting events
-	// (sorting by event name)
+	/**
+	 *  A comparator class used when sorting events
+	 *  (sorting by event name)
+	 */
 	private static class SortEventComparator implements Comparator<OpEvent> {
 		public int compare(OpEvent o1, OpEvent o2) {
 			return o1.getText().compareTo(o2.getText());
 		}
 	}
 
-	// A comparator class used when searching events
-	// (searching by event name)
+	/**
+	 *  A comparator class used when searching events
+	 *  (searching by event name)
+	 */
 	private static class SearchEventComparator implements Comparator<Object> {
 		public int compare(Object a, Object b) {
 			String astr, bstr;
@@ -56,19 +60,29 @@ public class OpInfo {
 		}
 	}
 	
-	// The number of counters supported by this configuration
+	/**
+	 *  The number of counters supported by this configuration
+	 */
 	private int nrCounters;
 	
-	// A HashMap of Oprofile defaults
+	/**
+	 *  A HashMap of Oprofile defaults
+	 */
 	private HashMap<String,String> defaults;
 	
-	// The permanent list of events indexed by counter
+	/**
+	 *  The permanent list of events indexed by counter
+	 */
 	private OpEvent[][] eventList;
 	
-	// The CPU frequency of this CPU in MHz
+	/**
+	 *  The CPU frequency of this CPU in MHz
+	 */
 	private double cpuSpeed;
 	
-	// Whether or not oprofile is running in timer mode
+	/**
+	 *  Whether or not oprofile is running in timer mode
+	 */
 	private boolean timerMode;
 	
 	/**

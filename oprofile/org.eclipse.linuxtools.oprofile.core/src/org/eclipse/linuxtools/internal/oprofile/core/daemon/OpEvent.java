@@ -16,16 +16,24 @@ package org.eclipse.linuxtools.internal.oprofile.core.daemon;
  * A class which represents an Oprofile event
  */
 public class OpEvent {
-	// The Oprofile event name, i.e., "CPU_CLK_UNHALTED"
+	/**
+	 *  The Oprofile event name, i.e., "CPU_CLK_UNHALTED"
+	 */
 	private String name;
 	
-	 //  A description of the event
+	 /**
+	  *   A description of the event
+	  */
 	private String description;
 
-	// Unit masks for this event type
+	/**
+	 * Unit masks for this event type
+	 */
 	private OpUnitMask unitMask;
 	
-	// Minimum count
+	/**
+	 *  Minimum count
+	 */
 	private int minCount;
 	
 	/**

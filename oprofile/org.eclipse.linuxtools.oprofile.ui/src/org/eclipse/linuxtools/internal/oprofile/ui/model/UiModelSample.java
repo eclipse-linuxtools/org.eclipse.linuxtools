@@ -20,6 +20,12 @@ public class UiModelSample implements IUiModelElement {
 	private OpModelSample sample;			//the node in the data model
 	private int totalCount;				//total sample count for the parent session
 	
+	/**
+	 * Constructor to the UiModelSample class
+	 * @param parent The parent element
+	 * @param sample Oprofile sample node in the data model
+	 * @param totalCount The total sample count for the parent session
+	 */
 	public UiModelSample(IUiModelElement parent, OpModelSample sample, int totalCount) {
 		this.parent = parent;
 		this.sample = sample;
@@ -34,14 +40,26 @@ public class UiModelSample implements IUiModelElement {
 		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	/**
+	 * Return the sample line
+	 * @return the sample line
+	 */
 	public int getLine() {
 		return sample.getLine();
 	}
 	
+	/**
+	 * Return the path to the sample node
+	 * @return node path
+	 */
 	public String getFile(){
 		return sample.getFilePath();
 	}
 
+	/**
+	 * Returns the count percentage for the sample node
+	 * @return count percentage for the sample node
+	 */
 	public double getCountPercentage() {
 		return (double)sample.getCount() / (double)totalCount;
 	}
@@ -51,18 +69,33 @@ public class UiModelSample implements IUiModelElement {
 		return toString();
 	}
 
+	/**
+	 * Returns this element children
+	 * @return An array of IUiModelElements
+	 */
 	public IUiModelElement[] getChildren() {
 		return null;
 	}
-
+	/**
+	 * Returns if the element has any children.
+	 * @return true if the element has children, false otherwise
+	 */
 	public boolean hasChildren() {
 		return false;		//bottom level element
 	}
 
+	/**
+	 * Returns the element's parent.
+	 * @return parent The parent element
+	 */
 	public IUiModelElement getParent() {
 		return parent;
 	}
 
+	/**
+	 * Returns the Image to display next to the text in the tree viewer.
+	 * @return an Image object of the icon
+	 */
 	public Image getLabelImage() {
 		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.SAMPLE_ICON).createImage();
 	}

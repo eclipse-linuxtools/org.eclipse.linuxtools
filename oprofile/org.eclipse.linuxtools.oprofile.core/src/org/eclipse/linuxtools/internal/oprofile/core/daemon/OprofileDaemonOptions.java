@@ -17,19 +17,29 @@ package org.eclipse.linuxtools.internal.oprofile.core.daemon;
  * OProfile daemon.
  */
 public class OprofileDaemonOptions {
-	// Kernel image file
+	/**
+	 *  Kernel image file
+	 */
 	private String kernelImageFile;
 	
-	// Enable verbose logging?
+	/**
+	 *  Enable verbose logging
+	 */
 	private boolean verboseLogging;
 	
-	// How to separate profiles (mask)
+	/**
+	 *  How to separate profiles (mask)
+	 */
 	private int separateProfiles;
 	
-	// the image to profile
+	/**
+	 *  The image to profile
+	 */
 	private String binaryImage;
 	
-	//how many calls down to profile
+	/**
+	 * How many calls down to profile
+	 */
 	private int callgraphDepth;
 	
 	/**
@@ -49,6 +59,9 @@ public class OprofileDaemonOptions {
 	public static final int SEPARATE_THREAD = 4;
 	public static final int SEPARATE_CPU = 8;
 	
+	/**
+	 * Constructor
+	 */
 	public OprofileDaemonOptions() {
 		//defaults
 		kernelImageFile = ""; //$NON-NLS-1$

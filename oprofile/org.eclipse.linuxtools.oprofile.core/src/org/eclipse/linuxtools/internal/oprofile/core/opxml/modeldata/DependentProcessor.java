@@ -31,12 +31,17 @@ public class DependentProcessor extends XMLProcessor {
 	private static final String ATTR_IMAGENAME = "name"; //$NON-NLS-1$
 	private static final String ATTR_COUNT = "count"; //$NON-NLS-1$
 
-	//the current image being constructed
+	/**
+	 * the current image being constructed
+	 */
 	private OpModelImage image;
-	//a list of all the dependent images
+	/**
+	 * a list of all the dependent images
+	 */
 	private ArrayList<OpModelImage> imageList;
-
-	//processor used for symbols of an image
+	/**
+	 * processor used for symbols of an image
+	 */
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
 
 	@Override
@@ -44,7 +49,9 @@ public class DependentProcessor extends XMLProcessor {
 		image = new OpModelImage();
 		imageList = new ArrayList<OpModelImage>();
 	}
-
+	/**
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String)
+	 */
 	@Override
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {

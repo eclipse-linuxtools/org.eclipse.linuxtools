@@ -53,7 +53,7 @@ public interface IOpxmlProvider {
 	public IRunnableWithProgress checkEvents(int ctr, String event, int um, int[] eventValid);
 	
 	/**
-	 * Returns an /code>IRunnableWithProgress</code> that fetches the list of sessions
+	 * Returns an <code>IRunnableWithProgress</code> that fetches the list of sessions
 	 * @param info the <code>OpInfo</code> for oprofile
 	 * @param sessionList an <code>ArrayList</code> in which to return the list of sessions
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller

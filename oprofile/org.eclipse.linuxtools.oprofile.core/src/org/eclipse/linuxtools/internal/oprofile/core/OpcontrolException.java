@@ -13,11 +13,19 @@ package org.eclipse.linuxtools.internal.oprofile.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-
+/**
+* OpcontrolException class represents a failure
+* It extends super class CoreExceptions which contains a status object describing
+* the cause of the exception.
+*/
 public class OpcontrolException extends CoreException {
 	//without this there's a warning..
 	private static final long serialVersionUID = 8508930482724912901L;
 
+	/**
+	 * Constructor to this class
+	 * @param status The status object of this exception
+	 */
 	public OpcontrolException(IStatus status) {
 		super(status);
 	}

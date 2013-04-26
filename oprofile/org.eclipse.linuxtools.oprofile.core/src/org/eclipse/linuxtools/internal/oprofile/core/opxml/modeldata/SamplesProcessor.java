@@ -35,6 +35,9 @@ public class SamplesProcessor extends XMLProcessor {
 	//a list of all samples (for this symbol)
 	private ArrayList<OpModelSample> sampleList;
 
+	/**
+	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
+	 */
 	@Override
 	public void reset(Object callData) {
 		sample = new OpModelSample();
@@ -60,6 +63,10 @@ public class SamplesProcessor extends XMLProcessor {
 		}
 	}
 	
+	/**
+	 * Return oprofile samples
+	 * @return samples An array of oprofile samples
+	 */
 	public OpModelSample[] getSamples() {
 		OpModelSample[] samples = new OpModelSample[sampleList.size()];
 		sampleList.toArray(samples);

@@ -32,12 +32,16 @@ public class SymbolsProcessor extends XMLProcessor {
 	private static final String ATTR_COUNT = "count";	 //$NON-NLS-1$
 	private static final String ATTR_LINE = "line";	 //$NON-NLS-1$
 	
-	//the current symbol being constructed
+	/**
+	 * The current symbol being constructed
+	 */
 	private OpModelSymbol symbol;
 	//all the symbols in this <symbols> tag, to be returned to the calling ModelDataProcessor
 	private ArrayList<OpModelSymbol> symbols;
 	
-	//the processor used for individual samples
+	/**
+	 * The processor used for individual samples
+	 */
 	private SamplesProcessor samplesProcessor = new SamplesProcessor();
 	
 	
@@ -76,7 +80,10 @@ public class SymbolsProcessor extends XMLProcessor {
 		}
 	}
 	
-	//return all parsed samples
+	/**
+	 * Return all parsed samples
+	 * @return s the parsed symbols
+	 */
 	public OpModelSymbol[] getSymbols() {
 		OpModelSymbol [] s = new OpModelSymbol[symbols.size()];
 		symbols.toArray(s);

@@ -59,6 +59,10 @@ public class SessionManager {
 		write();
 	}
 	
+	/**
+	 * Session manager class constructor to manipulate the XML data 
+	 * @param file the xml file
+	 */
 	public SessionManager(File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -106,7 +110,11 @@ public class SessionManager {
 			}
 		}
 	}
-	
+	/**
+	 * Check if a session exists
+	 * @param sessionName the name of the session
+	 * @return true if the session exists, otherwise false
+	 */
 	public boolean existsSession (String sessionName){
 		return find (root, SESSION, NAME, sessionName) != null ? true : false;
  	}
@@ -183,6 +191,7 @@ public class SessionManager {
 	}
 	
 	/**
+	 * Return a list of the events run with the given session
 	 * @param sessionName the name of the session
 	 * @return A String ArrayList of event names that were run with the
 	 * given session.

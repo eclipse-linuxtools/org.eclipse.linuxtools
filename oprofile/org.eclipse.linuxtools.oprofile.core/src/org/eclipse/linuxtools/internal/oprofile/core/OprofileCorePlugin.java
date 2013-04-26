@@ -159,6 +159,12 @@ public class OprofileCorePlugin extends Plugin {
 		return opcontrolProvider;
 	}
 	
+	/**
+	 * Creates an error status object
+	 * @param errorClassString A string of the error class
+	 * @param e The type of exception
+	 * @return the status object of the error
+	 */
 	public static IStatus createErrorStatus(String errorClassString, Exception e) {
 		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage"); //$NON-NLS-1$
 
@@ -169,6 +175,11 @@ public class OprofileCorePlugin extends Plugin {
 		}
 	}
 	
+	/**
+	 * Shows an error Dialog
+	 * @param errorClassString A string of the error class
+	 * @param ex The type of exception
+	 */
 	public static void showErrorDialog(String errorClassString, CoreException ex) {
 		final IStatus status;
 		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title"); //$NON-NLS-1$
@@ -204,8 +215,8 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Log a string message with the given severity in the error log.
 	 * 
-	 * @param severity
-	 * @param msg
+	 * @param severity the severity of this exception
+	 * @param msg the string message to be logged
 	 */
 	public static void log(int severity, String msg) {
 	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, null));
@@ -214,9 +225,9 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Log an exception in the error log.
 	 * 
-	 * @param severity
-	 * @param msg
-	 * @param cause
+	 * @param severity the severity of this exception
+	 * @param msg The message to be logged
+	 * @param cause object representing the cause of this exception
 	 */
 	public static void log(int severity, String msg, Throwable cause) {
 	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, cause));

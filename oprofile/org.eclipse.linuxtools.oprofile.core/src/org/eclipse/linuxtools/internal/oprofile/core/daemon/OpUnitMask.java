@@ -58,20 +58,30 @@ public class OpUnitMask {
 	public static final int BITMASK = 3;
 
 
-	// The current value of this unitmask
+	/**
+	 *  The current value of this unitmask
+	 */
 	private int mask;
 
-	// The default mask provided by the oprofile library
+	/**
+	 *  The default mask provided by the oprofile library
+	 */
 	private int defaultMask;
 
-	// The type of this unitmask
+	/**
+	 *  The type of this unitmask
+	 */
 	private int maskType;
 
-	// Descriptions of the bits of this mask
+	/**
+	 *  Descriptions of the bits of this mask
+	 */
 	private String[] maskOptionDescriptions = new String[0];
 
-	// mask values -- now bit masks have distinct values (eg: an all of the
-	// above)
+	/**
+	 *  mask values -- now bit masks have distinct values (eg: an all of the above)
+	 */
+
 	private int[] maskOptionValues;
 
 	/**

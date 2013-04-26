@@ -24,7 +24,9 @@ import org.xml.sax.Attributes;
  */
 public class SessionsProcessor extends XMLProcessor {
 	public static class SessionInfo {
-		// A list of SessionEvents
+		/**
+		 *  A list of SessionEvents
+		 */
 		public ArrayList<OpModelEvent> list;
 		
 		public SessionInfo(ArrayList<OpModelEvent> list){
@@ -39,16 +41,22 @@ public class SessionsProcessor extends XMLProcessor {
 	public static final String EVENT_TAG = "event"; //$NON-NLS-1$
 	private static final String EVENT_NAME_ATTR = "name"; //$NON-NLS-1$
 	
-	// The current session being constructed
+	/**
+	 *  The current session being constructed
+	 */
 	private OpModelSession currentSession;
 	
-	// The current event being constructed
+	/**
+	 *  The current event being constructed
+	 */
 	private OpModelEvent currentEvent;
 	
-	// A list of all sessions
+	/**
+	 *  A list of all sessions
+	 */
 	private ArrayList<OpModelSession> sessionList;
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#startElement(java.lang.String, org.xml.sax.Attributes, java.lang.Object)
 	 */
 	@Override
@@ -65,7 +73,7 @@ public class SessionsProcessor extends XMLProcessor {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
 	 */
 	@Override
