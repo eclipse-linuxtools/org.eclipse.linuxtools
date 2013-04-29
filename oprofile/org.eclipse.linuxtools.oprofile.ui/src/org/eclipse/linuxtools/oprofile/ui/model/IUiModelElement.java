@@ -8,12 +8,13 @@
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
  *******************************************************************************/ 
-package org.eclipse.linuxtools.internal.oprofile.ui.model;
+package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.swt.graphics.Image;
 
 /**
  * Interface for all model elements to ease use with the tree viewer.
+ * @since 1.1
  */
 public interface IUiModelElement {
 	/**

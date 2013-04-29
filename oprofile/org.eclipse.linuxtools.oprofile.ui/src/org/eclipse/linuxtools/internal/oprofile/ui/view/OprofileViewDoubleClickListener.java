@@ -15,12 +15,12 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.IUiModelElement;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelEvent;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelImage;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSample;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSession;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSymbol;
+import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelEvent;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelImage;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelSample;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelSymbol;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.ui.PartInitException;
 

@@ -25,10 +25,10 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.IUiModelElement;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelError;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelRoot;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSession;
+import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelError;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 

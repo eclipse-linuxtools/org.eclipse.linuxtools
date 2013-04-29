@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelRoot;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;

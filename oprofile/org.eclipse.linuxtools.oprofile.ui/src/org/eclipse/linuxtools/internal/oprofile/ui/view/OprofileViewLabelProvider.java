@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.oprofile.ui.view;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.IUiModelElement;
+import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.swt.graphics.Image;
 
 /**

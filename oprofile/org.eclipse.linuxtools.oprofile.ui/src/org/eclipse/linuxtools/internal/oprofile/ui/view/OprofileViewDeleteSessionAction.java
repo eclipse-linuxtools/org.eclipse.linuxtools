@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
-import org.eclipse.linuxtools.internal.oprofile.ui.model.UiModelSession;
+import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 
 public class OprofileViewDeleteSessionAction extends Action {
 	
