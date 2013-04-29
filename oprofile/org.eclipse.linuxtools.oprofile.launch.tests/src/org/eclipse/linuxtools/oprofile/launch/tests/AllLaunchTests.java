@@ -20,11 +20,11 @@ public class AllLaunchTests {
 	public static Test suite() {
 		/**
 		 *  Java system properties.
-		 *  usage: -Dorg.eclipse.linuxtools.oprofile.launch.tests.runOprofile=<yes|no> [default: yes]
+		 *  usage: -Dorg.eclipse.linuxtools.oprofile.tests.runOprofile=<yes|no> [default: yes]
 		 *  if yes, will run the launch tests
 		 *     no, will skip the launch tests (they all require oprofile to be set up)
 		 */
-		String SYSTEM_PROPERTY_RUN_OPROFILE = "org.eclipse.linuxtools.oprofile.launch.tests.runOprofile"; //$NON-NLS-1$
+		String SYSTEM_PROPERTY_RUN_OPROFILE = "org.eclipse.linuxtools.oprofile.tests.runOprofile"; //$NON-NLS-1$
 		boolean RUN_OPROFILE = System.getProperty(SYSTEM_PROPERTY_RUN_OPROFILE, "yes").equals("yes"); //$NON-NLS-1$ //$NON-NLS-2$
 		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.launch.tests"); //$NON-NLS-1$
 		

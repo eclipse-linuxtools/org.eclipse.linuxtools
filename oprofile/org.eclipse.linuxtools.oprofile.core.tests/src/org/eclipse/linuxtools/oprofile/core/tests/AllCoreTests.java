@@ -19,11 +19,11 @@ public class AllCoreTests {
 		
 		/**
 		 *  Java system properties.
-		 *  usage: -Dorg.eclipse.linuxtools.oprofile.core.tests.runOprofile=<yes|no> [default: yes]
+		 *  usage: -Dorg.eclipse.linuxtools.oprofile.tests.runOprofile=<yes|no> [default: yes]
 		 *  if yes, will run the core tests
 		 *     no, will skip the core tests (they all require oOProfile to be set up)
 		 */
-		String SYSTEM_PROPERTY_RUN_OPROFILE = "org.eclipse.linuxtools.oprofile.core.tests.runOprofile"; //$NON-NLS-1$
+		String SYSTEM_PROPERTY_RUN_OPROFILE = "org.eclipse.linuxtools.oprofile.tests.runOprofile"; //$NON-NLS-1$
 		boolean RUN_OPROFILE = System.getProperty(SYSTEM_PROPERTY_RUN_OPROFILE, "yes").equals("yes"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.core.tests"); //$NON-NLS-1$
