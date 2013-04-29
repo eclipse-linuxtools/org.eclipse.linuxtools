@@ -342,7 +342,7 @@
             category="org.eclipse.cdt.ui.newui.Page_head_general"
             class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProfilingPropertyPage"
             id="org.eclipse.linuxtools.profiling.launch.provider.properties.page"
-            name="%page.name">
+            name="%profiling.property.page.name">
             <filter
                name="projectNature"
                value="org.eclipse.cdt.core.cnature" />
