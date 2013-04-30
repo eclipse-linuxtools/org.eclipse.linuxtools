@@ -4,11 +4,14 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.core.tests;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,12 +25,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,25 +42,25 @@ import org.xml.sax.SAXException;
  * The oprofile module must be loaded and the driver interface must be
  * available. ie. run opcontrol --init
  */
-public class TestCheckEventsPreParse extends TestCase {
+public class TestCheckEventsPreParse {
 
 	private static final String REL_PATH_TO_CHECKEVENT_BAD_COUNTER = "resources/test_check-event_invalid_counter.xml";
 	private static final String REL_PATH_TO_CHECKEVENT_BAD_UMASK = "resources/test_check-event_invalid_umask.xml";
 	private static final String REL_PATH_TO_CHECKEVENT_OK = "resources/test_check-event_ok.xml";
-	
+
 	// the values are checked for validity in the order they
 	// appear here (ctr, event, umask)
 	String ctr;
 	String event;
 	String umask;
 	CheckEventAdapter cea;
-	
+
 	/**
 	 * Set the counter, existing event and its default unit mask.
 	 */
-	@Override
+	@Before
 	public void setUp (){
-		
+
 		File devFile = new File(InfoAdapter.DEV_OPROFILE + "0");
 		if (devFile.exists()){
 			ctr = "0";
@@ -71,7 +74,7 @@ public class TestCheckEventsPreParse extends TestCase {
 			String cpuType = bi.readLine();
 			File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS);
 			File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS);
-			
+
 			eventReader = new BufferedReader(new FileReader(opArchEvents));
 			String line;
 			while ((line = eventReader.readLine()) != null){
@@ -79,12 +82,12 @@ public class TestCheckEventsPreParse extends TestCase {
 				if (line.contains("name:")){
 					int start = line.indexOf("name:") + 5;
 					int end = line.indexOf(" ", start);
-					
+
 					// get the string that references the unit mask type
 					start = line.indexOf("um:") + 3;
 					end = line.indexOf(" ", start);
 					String um = line.substring(start, end);
-					
+
 					BufferedReader unitMaskReader = null;
 					try {
 						unitMaskReader = new BufferedReader(new FileReader(
@@ -128,28 +131,28 @@ public class TestCheckEventsPreParse extends TestCase {
 			}
 		}
 	}
-	
-	
+
+	@Test
 	public void testBadCounter () {
 		ctr = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_COUNTER);
 	}
-	
+	@Test
 	public void testBadUnitMask (){
 		umask = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_UMASK);
 	}
-	
+	@Test
 	public void testOk (){
 		assertValidity(REL_PATH_TO_CHECKEVENT_OK);
 	}
-	
+
 	public void assertValidity (String path){
 		cea = new CheckEventAdapter(ctr, event, umask);
 		cea.process();
 		Document actualDocument = cea.getDocument();
 		Element actualRoot = (Element) actualDocument.getElementsByTagName(CheckEventAdapter.CHECK_EVENTS).item(0);
-		
+
 		Path filePath = new Path(path);
 		URL fileURL = FileLocator.find(FrameworkUtil.getBundle(this.getClass()), filePath, null);
 		Element expectedRoot = null;
@@ -162,7 +165,7 @@ public class TestCheckEventsPreParse extends TestCase {
 			builder = factory.newDocumentBuilder();
 			Document expectedDocument = builder.parse(inp);
 			expectedRoot = (Element) expectedDocument.getElementsByTagName(CheckEventAdapter.CHECK_EVENTS).item(0);
-			
+
 		} catch (FileNotFoundException e) {
 			fail("File was not found.");
 		} catch (IOException e) {
@@ -172,7 +175,7 @@ public class TestCheckEventsPreParse extends TestCase {
 		} catch (ParserConfigurationException e) {
 			fail("Failed to create a document builder.");
 		}
-		
+
 		Element expectedResultTag = (Element) expectedRoot.getElementsByTagName(CheckEventAdapter.RESULT).item(0);
 		Element actualResultTag = (Element) actualRoot.getElementsByTagName(CheckEventAdapter.RESULT).item(0);
 		assertEquals(expectedResultTag.getTextContent(), actualResultTag.getTextContent());

@@ -7,14 +7,15 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.core.tests;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.FileReader;
 
 import javax.xml.parsers.SAXParserFactory;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -23,11 +24,13 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataProcessor;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class TestModelDataParse extends TestCase {
+public class TestModelDataParse {
 	private static final String REL_PATH_TO_TEST_XML = "resources/test_model-data.xml"; //$NON-NLS-1$
 	private static final String REL_PATH_TO_TEST_XML_MULTI_IMAGE = "resources/test_model-data_multiple_image.xml"; //$NON-NLS-1$
 	private static final String IMAGE_OUTPUT = "/test/path/for/image, Count: 205000, Dependent Count: 5000\nSymbols: TestFunction1(int), File: /test/path/for/src/image.cpp, Count: 180000\n\tSample: Line #: 42, Count: 130000\n\tSample: Line #: 36, Count: 40000\n\tSample: Line #: 31, Count: 9999\n\tSample: Line #: 39, Count: 1\nSymbols: TestFunction2(int, int), File: /test/path/for/src/image2.cpp, Count: 20000\n\tSample: Line #: 94, Count: 19998\n\tSample: Line #: 12, Count: 1\n\tSample: Line #: 55, Count: 1\nDependent Image: /no-vmlinux, Count: 4400\nDependent Image: /lib64/ld-2.9.so, Count: 300\n\tSymbols: do_lookup_x, File: dl-lookup.c, Count: 299\n\t\tSample: Line #: 0, Count: 299\n\tSymbols: _dl_unload_cache, File: rawmemchr.c, Count: 1\n\t\tSample: Line #: 0, Count: 1\nDependent Image: /usr/lib64/libstdc++.so.6.0.10, Count: 160\nDependent Image: /lib64/libc-2.9.so, Count: 140\n\tSymbols: _IO_new_file_seekoff, File: , Count: 100\n\t\tSample: Line #: 0, Count: 100\n\tSymbols: bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*), File: , Count: 40\n\t\tSample: Line #: 0, Count: 40\n"; //$NON-NLS-1$
@@ -36,26 +39,22 @@ public class TestModelDataParse extends TestCase {
 	private OpModelImage parsedImage;
 	private OpModelImage parsedErrorImage;
 
-	public TestModelDataParse() {
-		super("test model-data parsers"); //$NON-NLS-1$
-	}
-	
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		/* this code mostly taken from OpxmlRunner */
 		XMLReader reader = null;
 		parsedImage = new OpModelImage();
 		ModelDataProcessor.CallData image = new ModelDataProcessor.CallData(parsedImage);
 		OprofileSAXHandler handler = OprofileSAXHandler.getInstance(image);
-		
+
 		// Create XMLReader
         SAXParserFactory factory = SAXParserFactory.newInstance();
 		reader = factory.newSAXParser().getXMLReader();
-		
+
 		// Set content/error handlers
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
-		
+
 		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 
@@ -63,20 +62,21 @@ public class TestModelDataParse extends TestCase {
 		parsedErrorImage = new OpModelImage();
 		ModelDataProcessor.CallData errorImage = new ModelDataProcessor.CallData(parsedErrorImage);
 		handler = OprofileSAXHandler.getInstance(errorImage);
-		
+
 		// Set content/error handlers
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
-		
+
 		filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(REL_PATH_TO_TEST_XML_MULTI_IMAGE), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
-	
+
+	@Test
 	public void testParse() {
 		//test attributes
 		assertEquals("/test/path/for/image", parsedImage.getName()); //$NON-NLS-1$
 		assertEquals(205000, parsedImage.getCount());
-		
+
 		//test symbols
 		OpModelSymbol[] symbols = parsedImage.getSymbols();
 		assertEquals(2, symbols.length);
@@ -87,7 +87,7 @@ public class TestModelDataParse extends TestCase {
 		assertEquals("TestFunction2(int, int)", sym2.getName()); //$NON-NLS-1$
 		assertEquals("/test/path/for/src/image2.cpp", sym2.getFilePath()); //$NON-NLS-1$
 		assertEquals(20000, sym2.getCount());
-		
+
 		//test samples
 		OpModelSample[] sym1_spls = sym1.getSamples(), sym2_spls = sym2.getSamples();
 		assertEquals(4, sym1_spls.length);
@@ -108,18 +108,18 @@ public class TestModelDataParse extends TestCase {
 		assertEquals(12, sym2_spl2.getLine());
 		assertEquals(1, sym2_spl3.getCount());
 		assertEquals(55, sym2_spl3.getLine());
-		
+
 		//test dependent images
 		assertEquals(true, parsedImage.hasDependents());
 		assertEquals(5000, parsedImage.getDepCount());
 		OpModelImage[] deps = parsedImage.getDependents();
 		assertEquals(4, deps.length);
 		OpModelImage dep1 = deps[0], dep2 = deps[1], dep3 = deps[2], dep4 = deps[3];
-		
+
 		assertEquals(false, dep1.hasDependents());
 		assertEquals("/no-vmlinux", dep1.getName()); //$NON-NLS-1$
 		assertEquals(4400, dep1.getCount());
-		
+
 		assertEquals(false, dep2.hasDependents());
 		OpModelSymbol[] dep2_syms = dep2.getSymbols();
 		assertEquals(2, dep2_syms.length);
@@ -144,7 +144,7 @@ public class TestModelDataParse extends TestCase {
 		assertEquals(false, dep3.hasDependents());
 		assertEquals("/usr/lib64/libstdc++.so.6.0.10", dep3.getName()); //$NON-NLS-1$
 		assertEquals(160, dep3.getCount());
-		
+
 		assertEquals(false, dep4.hasDependents());
 		OpModelSymbol[] dep4_syms = dep4.getSymbols();
 		assertEquals(2, dep4_syms.length);
@@ -165,15 +165,16 @@ public class TestModelDataParse extends TestCase {
 		assertEquals(40, dep4_sym2.getCount());
 		assertEquals(40, dep4_sym2_spl1.getCount());
 		assertEquals(0, dep4_sym2_spl1.getLine());
-		
-		
+
+
 		assertEquals(OpModelImage.IMAGE_PARSE_ERROR, parsedErrorImage.getCount());
 		assertEquals(0, parsedErrorImage.getDepCount());
 		assertNull(parsedErrorImage.getDependents());
 		assertNull(parsedErrorImage.getSymbols());
 		assertEquals("", parsedErrorImage.getName()); //$NON-NLS-1$
 	}
-	
+
+	@Test
 	public void testStringOutput() {
 		assertEquals(IMAGE_OUTPUT, parsedImage.toString());
 		assertEquals(IMAGE_OUTPUT_WITHTAB, parsedImage.toString("\t")); //$NON-NLS-1$
