@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.net.URL;
-
-import junit.framework.Assert;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -38,7 +39,7 @@ import org.osgi.framework.Bundle;
  */
 public class STJunitUtils {
 
-	
+
 	/**
 	 * Test CSV export of the given view
 	 * @param view
@@ -51,44 +52,7 @@ public class STJunitUtils {
 		// compare with ref
 		return compareCSVIgnoreEOL(dumpFullFileName, refFullFileName, true);
 	}
-	
-	/**
-	 * Utility method to compare files
-	 * @param dumpFile
-	 * @param refFile
-	 */
-	public static boolean compare(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
-		String message = "Comparing ref file ("+refFile+ ")and dump file (" + 
-		  dumpFile+")";
-		boolean equals = false;
-		System.out.println(message);
-		try {
-			InputStream is1 = new FileInputStream(dumpFile);
-			InputStream is2 = new FileInputStream(refFile);
-			equals = compare(is1, is2);
-			if (!equals) {
-				System.out.println(message +  "... FAILED");
-				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
-			}
-			else {
-				System.out.println(message +  "... successful");
-			}
-			// delete dump only for successful tests
-			if (equals && deleteDumpFileIfOk)  
-				new File(dumpFile).delete();
-		}catch (FileNotFoundException _) {
-			message += "... FAILED: One of these files may not exist";
-			System.out.println(message);
-			junit.framework.Assert.assertNull(message, _);
-		}
-		catch (Exception _) {
-			message += ": exception raised ... FAILED";
-			System.out.println(message);
-			junit.framework.Assert.assertNull(message, _);
-		}
-		return equals;
-	}
-	
+
 	/**
 	 * Utility method to compare files
 	 * @param dumpFile
@@ -96,15 +60,15 @@ public class STJunitUtils {
 	 * @return
 	 */
 	public static boolean compareIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
-		String message = "Comparing ref file ("+refFile+ ")and dump file (" + 
+		String message = "Comparing ref file ("+refFile+ ")and dump file (" +
 		  dumpFile+")";
-		boolean equals = false;		
+		boolean equals = false;
 		try {
 		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
 		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
 			do {
 				String line1 = is1.readLine();
-				String line2 = is2.readLine();				
+				String line2 = is2.readLine();
 				if (line1 == null) {
 					if (line2 == null) {
 						equals = true;
@@ -112,13 +76,13 @@ public class STJunitUtils {
 					break;
 				} else if (line2 == null || !line1.equals(line2)) {
 					break;
-				}				
+				}
 			} while (true);
-			
+
 			if (!equals) {
- 				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
+ 				assertEquals(message + ": not correspond ", true, false);
 			}
-			
+
 			is1.close();
 			is2.close();
 			// delete dump only for successful tests
@@ -127,15 +91,15 @@ public class STJunitUtils {
 			}
 		}catch (FileNotFoundException _) {
 			message += "... FAILED: One of these files may not exist";
-			junit.framework.Assert.assertNull(message, _);
+			assertNull(message, _);
 		}
 		catch (Exception _) {
 			message += ": exception raised ... FAILED";
-			junit.framework.Assert.assertNull(message, _);
+			assertNull(message, _);
 		}
 		return equals;
 	}
-	
+
 	/**
 	 * Utility method to compare exported CSV files
 	 * @param dumpFile
@@ -143,18 +107,18 @@ public class STJunitUtils {
 	 * @return
 	 */
 	public static boolean compareCSVIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
-		String message = "Comparing ref file ("+refFile+ ")and dump file (" + 
+		String message = "Comparing ref file ("+refFile+ ")and dump file (" +
 		  dumpFile+")";
 		boolean equals = false;
 		String str = "[in-charge]"; // this string can be dumped according to binutils version installed on local machine
-		
+
 		try {
 		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
 		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
 			do {
 				String line1 = is1.readLine();
 				String line2 = is2.readLine();
-				int length = str.length();				
+				int length = str.length();
 				if (line1 == null) {
 					if (line2 == null) {
 						equals = true;
@@ -172,7 +136,7 @@ public class STJunitUtils {
 						break;
 				} else if (line2 == null || !line1.equals(line2)) {
 					break;
-				} 				
+				}
 			} while (true);
 
 			is1.close();
@@ -187,7 +151,7 @@ public class STJunitUtils {
  				}
  				fr.close();
  				msg.append("\n=========  end dump file  =========\n");
- 				junit.framework.Assert.assertEquals(msg.toString(), true, false);
+ 				assertEquals(msg.toString(), true, false);
 			}
 
 			// delete dump only for successful tests
@@ -196,11 +160,11 @@ public class STJunitUtils {
 			}
 		}catch (FileNotFoundException _) {
 			message += "... FAILED: One of these files may not exist";
-			junit.framework.Assert.assertNull(message, _);
+			assertNull(message, _);
 		}
 		catch (Exception _) {
 			message += ": exception raised ... FAILED";
-			junit.framework.Assert.assertNull(message, _);
+			assertNull(message, _);
 		}
 		return equals;
 	}
@@ -244,7 +208,7 @@ public class STJunitUtils {
 		try {
 			url = FileLocator.toFileURL(url);
 		} catch (IOException e) {
-			Assert.assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
+			assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
 		}
 		String filename = url.getFile();
 		return filename;
@@ -254,7 +218,7 @@ public class STJunitUtils {
 	 * Utility method
 	 * @param pluginDirectory: the plugin where to look for directories
 	 * @param regexp: the regexp used for matching directories
-	 * @return the list of directories that belong to the pluginDirectory and 
+	 * @return the list of directories that belong to the pluginDirectory and
 	 * ends with the given extensionSuffix
 	 */
 	public static File[] getTestDirs(String pluginDirectory, final String regexp) {
@@ -270,8 +234,8 @@ public class STJunitUtils {
 			}
 		);
 
-		// test if there is any directory samples 
-		Assert.assertNotNull("No project files to test",testDirs);
+		// test if there is any directory samples
+		assertNotNull("No project files to test",testDirs);
 		return testDirs;
 	}
 }
