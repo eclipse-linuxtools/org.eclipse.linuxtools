@@ -23,6 +23,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.resources,
  org.eclipse.linuxtools.systemtap.graphingapi.core.datasets,
  org.eclipse.linuxtools.systemtap.graphingapi.core.structures,
+ org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset,
  org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.graphing,

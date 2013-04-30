@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IActionListener;
@@ -133,9 +134,9 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 				tmpfileName = "/tmp/" + serverfileName; //$NON-NLS-1$
 				scpclient.transfer(fileName, tmpfileName);
 			} catch (JSchException e) {
-				e.printStackTrace();
+				ExceptionErrorDialog.openError(Messages.RunModuleAction_connectionError, e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				ExceptionErrorDialog.openError(Messages.RunModuleAction_ioError, e);
 			}
 		}
 		String modname = serverfileName.substring(0, serverfileName.indexOf('.'));

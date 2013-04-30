@@ -8,19 +8,14 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * @since 2.0
- */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.messages"; //$NON-NLS-1$
-	public static String ProbeParser_errorInitializingStaticProbes;
-	public static String TapsetParser_CannotRunStapMessage;
-	public static String TapsetParser_CannotRunStapTitle;
-	public static String TapsetParser_ErrorRunningSystemtap;
+	public static String ConsoleStreamDaemon_errorWritingToConsole;
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.structures.messages"; //$NON-NLS-1$
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

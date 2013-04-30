@@ -31,6 +31,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
@@ -64,7 +65,11 @@ public class KernelBrowserView extends BrowserView {
 			KernelSourceTree kst = new KernelSourceTree();
 			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
 			if (remote) {
-				kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
+				try {
+					kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
+				} catch (CoreException e) {
+					ExceptionErrorDialog.openError(Localization.getString("KernelBrowserView.CouldNotInitializeTree"), e); //$NON-NLS-1$
+				}
 			} else {
 				kst.buildKernelTree(kernelSource, excluded);
 			}
@@ -146,8 +151,9 @@ public class KernelBrowserView extends BrowserView {
 					error = true;
 				} else {
 					proxy = RemoteProxyManager.getInstance().getFileProxy(kernelLocationURI);
-					if (!validateProxy(proxy, kernelSource))
+					if (!validateProxy(proxy, kernelSource)) {
 						error = true;
+					}
 				}
 			} catch (CoreException e2) {
 				error = true;

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
@@ -97,7 +98,7 @@ public class ScpExec extends Command {
 			}
 
 		} catch (JSchException e) {
-			e.printStackTrace();
+			ExceptionErrorDialog.openError(Messages.ScpExec_errorConnectingToServer, e);
 		}
 	}
 
@@ -118,10 +119,12 @@ public class ScpExec extends Command {
 		// 1 for error,
 		// 2 for fatal error,
 		// -1
-		if (b == 0)
+		if (b == 0) {
 			return b;
-		if (b == -1)
+		}
+		if (b == -1) {
 			return b;
+		}
 
 		if (b == 1 || b == 2) {
 			StringBuilder sb = new StringBuilder();

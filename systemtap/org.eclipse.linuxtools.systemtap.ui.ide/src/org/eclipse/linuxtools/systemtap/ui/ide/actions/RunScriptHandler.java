@@ -105,11 +105,11 @@ public class RunScriptHandler extends AbstractHandler {
 			        } catch (JSchException e) {
 						ErrorDialog.openError(PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getShell(),
-								Localization.getString("RunScriptHandler.1"), Localization.getString("RunScriptHandler.1"), //$NON-NLS-1$ //$NON-NLS-2$
-								new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Localization.getString("RunScriptHandler.2"))); //$NON-NLS-1$
+								Localization.getString("RunScriptHandler.serverError"), Localization.getString("RunScriptHandler.serverError"), //$NON-NLS-1$ //$NON-NLS-2$
+								new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Localization.getString("RunScriptHandler.checkCredentials"))); //$NON-NLS-1$
 						return null;
 					} catch (IOException e) {
-						ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.3"), e); //$NON-NLS-1$
+						ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.ioError"), e); //$NON-NLS-1$
 						return null;
 					}
 			}
@@ -271,9 +271,8 @@ public class RunScriptHandler extends AbstractHandler {
 	 * Checks the current script to determine if guru mode is required in order to run. This is determined
 	 * by the presence of embedded C.
 	 * @return True if the script contains embedded C code.
-	 * @since 2.0
 	 */
-	protected boolean isGuru() {
+	private boolean isGuru() {
 		try {
 			File f = new File(fileName);
 			FileReader fr = new FileReader(f);
@@ -306,9 +305,9 @@ public class RunScriptHandler extends AbstractHandler {
 				return true;
 			}
 		} catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
+			ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.couldNotOpenScriptFile"), fnfe); //$NON-NLS-1$
 		} catch (IOException ie) {
-			ie.printStackTrace();
+			ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.fileIOError"), ie); //$NON-NLS-1$
 		}
 		return false;
 	}
