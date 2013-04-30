@@ -10,25 +10,31 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry;
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class StatsComparisonTest extends TestCase {
+public class StatsComparisonTest {
 	PMStatEntry statEntry;
 	PMStatEntry statEntry2;
 	PMStatEntry statEntry3;
 	PMStatEntry statEntry4;
 	private static final String STAT_RES = "resources/stat-data/";
 
-	@Override
-	protected void setUp() {
+	@Before
+	public void setUp() {
 		String event = "event";
 		String units = "unit";
 		float samples = 1;
@@ -46,21 +52,24 @@ public class StatsComparisonTest extends TestCase {
 				deviation--, scaling);
 	}
 
+	@Test
 	public void testPMStatEntryGetters() {
 		assertEquals("event", statEntry.getEvent());
 		assertEquals("unit", statEntry.getUnits());
-		assertEquals((float)1, statEntry.getSamples());
-		assertEquals((float)2, statEntry.getMetrics());
-		assertEquals((float)3, statEntry.getDeviation());
-		assertEquals((float)4, statEntry.getScaling());
+		assertEquals(1, statEntry.getSamples(), 0);
+		assertEquals(2, statEntry.getMetrics(), 0);
+		assertEquals(3, statEntry.getDeviation(), 0);
+		assertEquals(4, statEntry.getScaling(), 0);
 	}
 
+	@Test
 	public void testPMStatEntryEquality() {
 		assertTrue(statEntry.equalEvents(statEntry3));
 		assertFalse(statEntry.equalEvents(statEntry4));
 		assertTrue(statEntry.equals(statEntry2));
 	}
 
+	@Test
 	public void testPMStatEntryArray() {
 		String[] expectedList = new String[] {
 				String.valueOf(statEntry.getSamples()), statEntry.getEvent(),
@@ -185,7 +194,7 @@ public class StatsComparisonTest extends TestCase {
 				String actualRest = actualEntry.substring(actualEntry.indexOf(" ") + 1);
 
 				assertEquals(StatComparisonData.toFloat(actualSamples),
-						StatComparisonData.toFloat(expectedSamples));
+						StatComparisonData.toFloat(expectedSamples), 0);
 				assertEquals(actualRest, expectedRest);
 			} else {
 				assertEquals(actualResultLines[i], curLine);

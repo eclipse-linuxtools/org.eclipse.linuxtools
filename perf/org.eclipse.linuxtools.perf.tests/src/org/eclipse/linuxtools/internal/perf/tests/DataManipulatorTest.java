@@ -10,19 +10,21 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
+import org.junit.Test;
 
-public class DataManipulatorTest extends TestCase {
+public class DataManipulatorTest {
 
+	@Test
 	public void testEchoSourceDisassemblyData() {
 		final IPath path = new Path("/a/b/c/"); //$NON-NLS-1$
 
@@ -34,7 +36,7 @@ public class DataManipulatorTest extends TestCase {
 
 		assertEquals(expected, sdData.getPerfData().trim());
 	}
-
+	@Test
 	public void testEchoStatData() {
 		final String binary = "a/b/c.out";
 		final String[] args = new String[] { "arg1", "arg2", "arg3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -51,7 +53,7 @@ public class DataManipulatorTest extends TestCase {
 
 		assertEquals(expected, sData.getPerfData().trim());
 	}
-
+	@Test
 	public void testEchoStatDataEvents() {
 		final String binary = "a/b/c.out";
 		final String[] args = new String[] { "arg1", "arg2", "arg3" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
