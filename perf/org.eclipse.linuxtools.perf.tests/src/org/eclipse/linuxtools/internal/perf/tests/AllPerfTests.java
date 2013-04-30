@@ -10,22 +10,13 @@
 *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	LaunchTabsTest.class,ModelTest.class,DataManipulatorTest.class,SaveSessionTest.class,StatsComparisonTest.class,LaunchTest.class
+})
 public class AllPerfTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.perf.tests"); //$NON-NLS-1$
-
-		suite.addTestSuite(LaunchTabsTest.class);
-		suite.addTestSuite(ModelTest.class);
-		suite.addTestSuite(DataManipulatorTest.class);
-		suite.addTestSuite(SaveSessionTest.class);
-		suite.addTestSuite(StatsComparisonTest.class);
-		suite.addTestSuite(LaunchTest.class);
-
-		return suite;
-	}
 
 }
