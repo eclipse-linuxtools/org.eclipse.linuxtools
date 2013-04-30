@@ -13,12 +13,12 @@
 
 package org.eclipse.linuxtools.internal.profiling.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import junit.framework.Assert;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -61,9 +61,9 @@ public class ResourceHelper {
 		java.io.File folder = new java.io.File(fullPath.toOSString());
 		if (!folder.exists()) {
 			boolean result = folder.mkdirs();
-			Assert.assertTrue(result);
+			assertTrue(result);
 		}
-		Assert.assertTrue(folder.exists());
+		assertTrue(folder.exists());
 
 		externalFilesCreated.add(fullPath.toOSString());
 		workspaceRoot.refreshLocal(IResource.DEPTH_INFINITE, NULL_MONITOR);
