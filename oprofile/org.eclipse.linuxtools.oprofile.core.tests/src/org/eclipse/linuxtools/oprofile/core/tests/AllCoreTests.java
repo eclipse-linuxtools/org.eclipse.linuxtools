@@ -10,22 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.core.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ TestModelDataParse.class, TestSessionsParse.class,
+		TestCheckEventsParse.class, TestInfoParse.class, TestDataModel.class,
+		TestDummy.class })
 public class AllCoreTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.core.tests"); //$NON-NLS-1$
-
-		suite.addTestSuite(TestModelDataParse.class);
-		suite.addTestSuite(TestSessionsParse.class);
-		suite.addTestSuite(TestCheckEventsParse.class);
-		suite.addTestSuite(TestInfoParse.class);
-		suite.addTestSuite(TestDataModel.class);
-		suite.addTestSuite(TestDummy.class);
-		
-		return suite;
-	}
-
 }
