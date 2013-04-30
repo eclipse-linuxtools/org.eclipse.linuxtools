@@ -22,7 +22,7 @@ import junit.framework.TestSuite;
 public class GprofBinaryTest extends TestCase {
 
 	private static final String GMON_DIRECTORY_SUFFIX = "_gprof_input";
-	private static final String GMON_BINARY_FILE = "a.out"; 
+	private static final String GMON_BINARY_FILE = "a.out";
 	public GprofBinaryTest() {
 	}
 
@@ -40,31 +40,18 @@ public class GprofBinaryTest extends TestCase {
 					}
 			);
 
-//			ats.addTest(
-//					new TestCase(dirName + ":GmonChecker") {
-//						public void runTest() throws Throwable {
-//							testInvalidBinary(dirName+"\\"+GMON_OUTPUT_FILE);
-//						}
-//					}
-//			);
-		}	
+		}
 		return ats;
 	}
 
 	public static void testValidBinary(String relativeBinaryPath) {
 		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeBinaryPath);
-		//Assert.assertEquals(true, GprofProgramChecker.isGProfCompatible(binary));
-		// enhance coverage: testing cache
-//		new File(binary).setLastModified(System.currentTimeMillis());
-//		Assert.assertEquals(true, GprofProgramChecker.isGProfCompatible(binary));
-
 	}
 
 	public static void testInvalidBinary(String relativeGmonPath) {
 		@SuppressWarnings("unused")
 		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeGmonPath);
-		//Assert.assertEquals(false, GprofProgramChecker.isGProfCompatible(binary));
 	}
 }
 

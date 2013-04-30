@@ -91,13 +91,9 @@ public class GprofLaunchTest extends AbstractTest {
 	}
 
 	@Test
-	public void testDelegateLaunch () {
-		try {
-			delegate = new GprofLaunchConfigurationDelegate();
-			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-		} catch (CoreException e) {
-			fail();
-		}
+	public void testDelegateLaunch() throws CoreException {
+		delegate = new GprofLaunchConfigurationDelegate();
+		delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 	}
 
 }

@@ -23,13 +23,10 @@ import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;
 
 
 public class GprofParserTest extends TestCase{
-	private static final String GMON_BINARY_FILE = "a.out"; 
-	private static final String GMON_OUTPUT_FILE = "gmon.out"; 
+	private static final String GMON_BINARY_FILE = "a.out";
+	private static final String GMON_OUTPUT_FILE = "gmon.out";
 	private static final String GMON_DIRECTORY_SUFFIX = "_gprof_input";
 
-	public GprofParserTest() {
-	}
-	
 	public static Test suite() {
 		TestSuite ats = new TestSuite("Test gmon Parser");
 		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
@@ -46,14 +43,14 @@ public class GprofParserTest extends TestCase{
 						}
 					}
 			);
-		}	
+		}
 		return ats;
 	}
-	
+
 	public static void testProcessGmonFile(File gmonFile, File binaryFile, File parserRefFile, File parserDumpFile) throws Exception {
 		IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(binaryFile.getAbsolutePath());
 		final GmonDecoder gmondecoder = new GmonDecoder(binary, new PrintStream(parserDumpFile), null);
-		gmondecoder.setShouldDump(true);	
+		gmondecoder.setShouldDump(true);
 		gmondecoder.read(gmonFile.getAbsolutePath());
 		STJunitUtils.compareIgnoreEOL(parserDumpFile.getAbsolutePath(), parserRefFile.getAbsolutePath(), true);
 	}

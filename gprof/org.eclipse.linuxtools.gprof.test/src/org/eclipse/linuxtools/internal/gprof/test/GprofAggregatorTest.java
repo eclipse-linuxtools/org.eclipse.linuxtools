@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.gprof.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import org.eclipse.linuxtools.internal.gprof.utils.Aggregator;
@@ -26,11 +27,8 @@ import junit.framework.TestSuite;
 public class GprofAggregatorTest extends TestCase {
 
 	private static final String GMON_DIRECTORY_SUFFIX = "_gprof_input";
-	private static final String GMON_BINARY_FILE = "a.out"; 
-	private static final String GMON_OUTPUT_FILE = "gmon.out"; 
-
-	public GprofAggregatorTest() {
-	}
+	private static final String GMON_BINARY_FILE = "a.out";
+	private static final String GMON_OUTPUT_FILE = "gmon.out";
 
 	public static Test suite() {
 		TestSuite ats = new TestSuite("Test Aggregation");
@@ -45,11 +43,11 @@ public class GprofAggregatorTest extends TestCase {
 						}
 					}
 			);
-		}	
+		}
 		return ats;
 	}
 
-	public static void testAggregation(String dir) throws Exception {
+	public static void testAggregation(String dir) throws IOException, InterruptedException  {
 		File directory = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir));
 		File gmonPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir+File.separator+GMON_OUTPUT_FILE));
 		File binaryPath = new File (STJunitUtils.getAbsolutePath("org.eclipse.linuxtools.gprof.test", dir+File.separator+GMON_BINARY_FILE));
@@ -63,10 +61,10 @@ public class GprofAggregatorTest extends TestCase {
 
 		String gprof2use="gprof";
 		File f = Aggregator.aggregate(gprof2use, binary, s, directory);
-		
+
 		Process p = Runtime.getRuntime().exec(new String[] {gprof2use, binary, f.getAbsolutePath()});
 		Process p2 = Runtime.getRuntime().exec(new String[] {gprof2use, binary, directory + File.separator + "gmon.sum.ref"});
-		
+
 		STJunitUtils.compare(p.getInputStream(), p2.getInputStream());
 		p.waitFor();
 		p2.waitFor();
