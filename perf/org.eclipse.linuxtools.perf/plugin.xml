@@ -43,6 +43,15 @@
             id="org.eclipse.linuxtools.perf.ui.StatViewDiff"
             name="Perf Statistics Comparison">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.perf.ui.ReportComparisonView"
+            icon="icons/symbol.gif"
+            id="org.eclipse.linuxtools.perf.ui.ReportViewDiff"
+            name="Perf Comparison"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
@@ -178,7 +187,13 @@
          <command
                commandId="org.eclipse.linuxtools.perf.SaveData"
                id="org.eclipse.linuxtools.perf.SaveCommand"
-               label="Save Current Session"
+               label="%perfSaveCurrentSession"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.linuxtools.perf.ReportDiff"
+               id="org.eclipse.linuxtools.perf.ReportDiff"
+               label="%perfCompareSessions"
                style="push">
          </command>
       </menuContribution>
@@ -188,19 +203,19 @@
          <command
                commandId="org.eclipse.linuxtools.perf.SaveStatData"
                id="org.eclipse.linuxtools.perf.SaveStatData"
-               label="Save Statistics"
+               label="%perfSaveStatistics"
                style="push">
          </command>
          <command
                commandId="org.eclipse.linuxtools.perf.StatDiff"
                id="org.eclipse.linuxtools.perf.StatDiff"
-               label="Compare Statistics"
+               label="%perfCompareStatistics"
                style="push">
          </command>
          <command
                commandId="org.eclipse.linuxtools.perf.QuickStatDiff"
                id="org.eclipse.linuxtools.perf.QuickStatDiff"
-               label="Compare Latest"
+               label="%perfCompareLatest"
                style="push">
          </command>
       </menuContribution>
@@ -210,22 +225,27 @@
       <command
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfSaveSessionHandler"
             id="org.eclipse.linuxtools.perf.SaveData"
-            name="Save Current Session">
+            name="%perfSaveCurrentSession">
       </command>
       <command
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler"
             id="org.eclipse.linuxtools.perf.SaveStatData"
-            name="Save Statistics">
+            name="%perfSaveStatistics">
       </command>
       <command
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfStatsComparisonHandler"
             id="org.eclipse.linuxtools.perf.StatDiff"
-            name="Compare Statistics">
+            name="%perfCompareStatistics">
+      </command>
+      <command
+            defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfComparisonHandler"
+            id="org.eclipse.linuxtools.perf.ReportDiff"
+            name="%perfCompareSessions">
       </command>
       <command
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfStatsQuickDiffHandler"
             id="org.eclipse.linuxtools.perf.QuickStatDiff"
-            name="Compare Latest">
+            name="%perfCompareLatest">
       </command>
    </extension>   
 </plugin>
