@@ -112,7 +112,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		launches.add(launch);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 
-		if (ValgrindTestsPlugin.GENERATE_FILES) {
+		if (ValgrindTestsPlugin.GENERATE_FILES && ValgrindTestsPlugin.versionSupported()) {
 			unbindLocation(pathToFiles);
 		}
 		return launch;
