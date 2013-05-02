@@ -286,6 +286,13 @@ public abstract class AbstractTest extends TestCase {
 	protected ILaunchConfiguration createConfiguration(IProject proj) throws CoreException {
 		String projectName = proj.getName();
 		String binPath = "";
+
+		ILaunchConfigurationType configType = getLaunchConfigType();
+		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
+				getLaunchManager()
+				.generateLaunchConfigurationName(
+						projectName));
+
 		if (proj.getLocation()==null) {
 			IFileStore fileStore = null;
 			try {
@@ -303,12 +310,8 @@ public abstract class AbstractTest extends TestCase {
 				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
 			}
 			binPath = bin.getProjectRelativePath().toString();
+			wc.setMappedResources(new IResource[] {bin, proj});
 		}
-		ILaunchConfigurationType configType = getLaunchConfigType();
-		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager()
-				.generateLaunchConfigurationName(
-						projectName));
 
 		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
 		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
