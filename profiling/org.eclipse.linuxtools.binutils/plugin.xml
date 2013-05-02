@@ -11,5 +11,19 @@
             name="%sourceNotFoundEditorName">
       </editor>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         <page
+            class="org.eclipse.linuxtools.internal.binutils.preferences.BinutilsPreferencePage"
+            id="org.eclipse.linuxtools.binutils.preferences"
+            name="%binutilsprefpage"
+            category="org.eclipse.linuxtools.profiling.provider.MainPreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.binutils.preferences.BinutilsPreferencesInitializer">
+      </initializer>
+   </extension>
 </plugin>
