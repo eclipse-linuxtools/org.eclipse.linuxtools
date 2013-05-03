@@ -42,8 +42,9 @@ public class FunctionParser extends TapsetParser {
 	static FunctionParser parser = null;
 
 	public static FunctionParser getInstance(){
-		if (parser != null)
+		if (parser != null) {
 			return parser;
+		}
 
 		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
 				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
@@ -84,6 +85,9 @@ public class FunctionParser extends TapsetParser {
 		TreeNode parent;
 		String script = "probe begin{}"; //$NON-NLS-1$
 		String result = runStap(new String[] {"-v", "-p1", "-e"}, script);   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		if (result == null) {
+			return;
+		}
 		StringTokenizer st = new StringTokenizer(result, "\n", false); //$NON-NLS-1$
 		st.nextToken(); //skip that stap command
 		String tok = ""; //$NON-NLS-1$

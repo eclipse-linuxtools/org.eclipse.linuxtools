@@ -99,7 +99,12 @@ public class ProbeParser extends TapsetParser {
 			options = null;
 		}
 
-		return runStap(options, script);
+		String s = runStap(options, script);
+		if (s == null) {
+			return ""; //$NON-NLS-1$
+		}
+
+		return s;
 	}
 
 	/**
