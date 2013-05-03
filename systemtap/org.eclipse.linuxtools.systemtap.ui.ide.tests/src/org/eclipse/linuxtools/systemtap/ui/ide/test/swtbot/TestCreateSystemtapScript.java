@@ -34,7 +34,7 @@ public class TestCreateSystemtapScript {
 
 	private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
 
-	private static class ShellIsClosed extends DefaultCondition{
+	private static class ShellIsClosed extends DefaultCondition {
 
 		private SWTBotShell shell;
 
@@ -52,6 +52,28 @@ public class TestCreateSystemtapScript {
 		public String getFailureMessage() {
 				return "Timed out waiting for " + shell + " to close."; //$NON-NLS-1$ //$NON-NLS-2$
 		}
+	}
+
+	private static class NodeAvaiable extends DefaultCondition {
+
+		private String node;
+		private SWTBotTreeItem parent;
+
+		NodeAvaiable(SWTBotTreeItem parent, String node){
+			this.node = node;
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean test() {
+			return this.parent.getNodes().contains(node);
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for " + node; //$NON-NLS-1$
+		}
+
 	}
 
 	@BeforeClass
@@ -107,8 +129,10 @@ public class TestCreateSystemtapScript {
 		SWTBotShell shell = bot.shell("New");
 		shell.activate();
 
-		SWTBotTreeItem node = bot.tree().expandNode("Systemtap").select("Systemtap Script");
+		SWTBotTreeItem node = bot.tree().expandNode("Systemtap");
 		assertNotNull(node);
+		bot.waitUntil(new NodeAvaiable(node, "Systemtap Script"));
+		node.select("Systemtap Script");
 
 		bot.button("Next >").click();
 
