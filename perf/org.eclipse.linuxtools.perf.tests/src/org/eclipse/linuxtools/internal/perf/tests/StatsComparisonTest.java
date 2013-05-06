@@ -82,6 +82,7 @@ public class StatsComparisonTest {
 		assertTrue(Arrays.equals(expectedList, actualList));
 	}
 
+	@Test
 	public void testPMStatEntryComparison() {
 		String expectedEvent = "event";
 		String expectedUnits = "unit";
@@ -101,6 +102,7 @@ public class StatsComparisonTest {
 
 	}
 
+	@Test
 	public void testStatDataCollection() {
 		File statData = new File(STAT_RES + "perf_simple.stat");
 
@@ -128,6 +130,7 @@ public class StatsComparisonTest {
 		}
 	}
 
+	@Test
 	public void testStatDataComparison() {
 		File oldStatData = new File(STAT_RES + "perf_old.stat");
 		File newStatData = new File(STAT_RES + "perf_new.stat");
@@ -160,6 +163,7 @@ public class StatsComparisonTest {
 		}
 	}
 
+	@Test
 	public void testStatComparisonResult() throws IOException {
 		File oldStatData = new File(STAT_RES + "perf_old.stat");
 		File newStatData = new File(STAT_RES + "perf_new.stat");
