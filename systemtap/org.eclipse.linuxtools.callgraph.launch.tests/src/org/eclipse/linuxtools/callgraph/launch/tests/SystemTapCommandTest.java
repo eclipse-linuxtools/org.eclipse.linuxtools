@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -15,33 +15,31 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.junit.Test;
 
-public class SystemTapCommandTest extends TestCase{
-	
-	
+public class SystemTapCommandTest {
+
+
 	/**
-	 * Tests if SystemTapCommand is properly obtaining output from the runtime process
+	 * Tests if SystemTapCommand is properly obtaining output from the runtime
+	 * process
+	 *
+	 * @throws FileNotFoundException
 	 */
-	public void testCommand() {
+	@Test
+	public void testCommand() throws FileNotFoundException {
 		//Set up variables
 		String testText = "CORRECT";
 		String tempLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()
-								+ "/DeleteThisScript.stp";		
-			
+								+ "/DeleteThisScript.stp";
+
 		//Create temporary file containing the test script
 		File temporaryScript = new File(tempLocation);
-		
-		try {
-			FileOutputStream output = new FileOutputStream(temporaryScript);
-			new PrintStream(output).println("probe begin { printf(\"" + testText + "\") exit() }");
 
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		
+		FileOutputStream output = new FileOutputStream(temporaryScript);
+		new PrintStream(output).println("probe begin { printf(\"" + testText + "\") exit() }");
+
 		//Cleanup
 		temporaryScript.delete();
 	}

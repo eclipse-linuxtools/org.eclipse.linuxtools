@@ -11,21 +11,25 @@
 
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
+import org.junit.Before;
+import org.junit.Test;
 
-public class SystemTapErrorHandlerTest extends TestCase {
+public class SystemTapErrorHandlerTest  {
 
 	private SystemTapErrorHandler errHandler;
 	private String errorString;
 
-	@Override
-	protected void setUp() {
+	@Before
+	public void setUp() {
 		errHandler = new SystemTapErrorHandler();
 	}
 
+	@Test
 	public void testErrorNotRecognized(){
 
 		errorString = "This error will not be caught \n" +
@@ -39,7 +43,7 @@ public class SystemTapErrorHandlerTest extends TestCase {
 		assertFalse(errHandler.isErrorRecognized());
 	}
 
-
+	@Test
 	public void testErrorRecognized(){
 
 		errorString = "As long as the word stapusr or stapdev is here, error is recognized";
@@ -49,7 +53,7 @@ public class SystemTapErrorHandlerTest extends TestCase {
 		assertTrue(errHandler.isErrorRecognized());
 	}
 
-
+	@Test
 	public void testUserGroupError(){
 
 		errorString = "ERROR: You are trying to run systemtap as a normal user.\n" +
@@ -62,7 +66,7 @@ public class SystemTapErrorHandlerTest extends TestCase {
 		assertTrue(errHandler.getErrorMessage().contains("Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap."));
 	}
 
-
+	@Test
 	public void testDebugInfoError(){
 
 		errorString = "missing [architecture] kernel/module debuginfo under '[kernel-build-tree]'";
@@ -73,7 +77,7 @@ public class SystemTapErrorHandlerTest extends TestCase {
 		assertTrue(errHandler.getErrorMessage().contains("No debuginfo could be found. Make sure you have yum-utils installed, and run debuginfo-install kernel as root."));
 	}
 
-
+	@Test
 	public void testUprobesError(){
 
 		errorString = "SystemTap's version of uprobes is out of date. As root, or a member of the 'root' group, run \"make -C /usr/local/share/systemtap/runtime/uprobes\".";
