@@ -10,48 +10,40 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.test;
 
-import java.io.File;
+import static org.eclipse.linuxtools.internal.gprof.test.STJunitUtils.BINARY_FILE;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.osgi.framework.FrameworkUtil;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+@RunWith(Parameterized.class)
+public class GprofBinaryTest {
 
-
-public class GprofBinaryTest extends TestCase {
-
-	private static final String GMON_DIRECTORY_SUFFIX = "_gprof_input";
-	private static final String GMON_BINARY_FILE = "a.out";
-	public GprofBinaryTest() {
-	}
-
-	public static Test suite() {
-		TestSuite ats = new TestSuite("Test Binary Consistency");
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
-		for (File testDir : testDirs) {
-			final String dirName = testDir.getName();
-			ats.addTest(
-					new TestCase(dirName + ":BinaryChecker") {
-						@Override
-						public void runTest() {
-							testValidBinary(dirName+File.separator+GMON_BINARY_FILE);
-						}
-					}
-			);
-
+	@Parameters
+    public static Collection<Object[]> data() {
+    	List<Object[]> params = new ArrayList<Object[]>();
+		for (File testDir : STJunitUtils.getTestDirs()) {
+			params.add(new Object[]{testDir.getName()+File.separator+BINARY_FILE});
 		}
-		return ats;
+		return params;
 	}
 
-	public static void testValidBinary(String relativeBinaryPath) {
-		@SuppressWarnings("unused")
-		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeBinaryPath);
+    private String path;
+    public GprofBinaryTest(String path){
+    	this.path = path;
+    }
+
+    @Test
+	public void testValidBinary() {
+		STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), path);
 	}
 
-	public static void testInvalidBinary(String relativeGmonPath) {
-		@SuppressWarnings("unused")
-		String binary = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), relativeGmonPath);
-	}
 }
 
