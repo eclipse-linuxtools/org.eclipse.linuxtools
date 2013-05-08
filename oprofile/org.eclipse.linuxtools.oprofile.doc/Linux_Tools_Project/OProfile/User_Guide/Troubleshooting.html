@@ -35,8 +35,7 @@
 		</p>
 		<h2 id="Install_Script_Errors">Install Script Errors</h2>
 		<p>This section describes different errors that could occur from running the install scripts (i.e. <code>
-			<i>install.sh</i></code>, <code>
-			<i>install-consolehelper.sh</i></code> or <code>
+			<i>install.sh</i></code> or <code>
 			<i>install-noconsolehelper.sh</i></code>) 
 		</p>
 		<h3 id="Error:_script_must_be_run_as_the_root_user">Error: script must be run as the root user</h3>
@@ -64,52 +63,21 @@
 		<p>You ran the <code>
 			<i>install.sh</i></code> script, but <code>pkexec</code> which is provided by PolicyKit was not installed on your system.
 			As described in 
-			<a href="Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</a>, if <code>PolicyKit</code> is not installed, then you can still choose from the other installation scripts : <code>
-			<i>install-consolehelper.sh</i></code> or <code>
-			<i>install-noconsolehelper.sh</i></code>.
-		</p>
-		<p>Solution: Run the <code>
-			<i>install-consolehelper.sh</i></code> script instead.
-		</p>
-		<h3 id="Error:_.2Fusr.2Fbin.2Fconsolehelper_does_not_exist.2C_run_install-noconsolehelper.sh_instead">Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead</h3>
-		<p>You ran the <code>
-			<i>install-consolehelper.sh</i></code> script, but <code>consolehelper</code> was not installed on your system.
-			As described in 
-			<a href="Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</a>, if <code>consolehelper</code> is not installed, then you will need to use a root authentication mode that uses the <code>sudo</code> mechanism.
+			<a href="Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</a>, if <code>PolicyKit</code> is not installed, then you can use the <code>
+			<i>install-noconsolehelper.sh</i></code> script.
 		</p>
 		<p>Solution: Run the <code>
 			<i>install-noconsolehelper.sh</i></code> script instead.
 		</p>
-		<h3 id="Error:_cannot_create_opcontrol_wrapper_in">Error: cannot create opcontrol wrapper in &lt;directory&gt;</h3>
-		<p>The <code>ln</code> command reports that the symlink could not be created. This can occur if the <code>
+		<h3 id="install.sh:_line_47:_opcontrol:_Permission_denied">install.sh: line 47: opcontrol: Permission denied</h3>
+		<p>The opcontrol wrapper file could not be created. This can occur if the <code>
 			<i>natives/linux/scripts</i></code> subdirectory is located on an NFS mount; the NFS server will not allow the local root user to create files in the directory.
 		</p>
-		<p>Solution: Before running the <code>
-			<i>install.sh</i></code> script, first create the symlink as a regular user by running the command <code>ln -s /usr/bin/consolehelper opcontrol</code>. Then, remove the following section from the <code>
-			<i>install.sh</i></code> script:
-		</p>
-		<pre>#create the sym link to consolehelper
-test -L ./opcontrol || { rm -f ./opcontrol &amp;&amp; ln -s /usr/bin/consolehelper opcontrol ; }
-if [ $? -ne 0 ]; then
-  echo Error: cannot create opcontrol wrapper in `pwd`
-  exit 1
-fi
+		<p>Solution: After seeing the error mentioned run the following commands from the commandline :</p>
+		<pre>echo '#!/bin/sh' &gt; opcontrol || exit 1
+echo 'exec pkexec /usr/bin/opcontrol ${1+"$@"}' &gt;&gt; opcontrol
+chmod +x ./opcontrol
 </pre>
-		<p>The <code>
-			<i>install-consolehelper.sh</i></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
-		</p>
-		<h3 id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing_.28Deprecated.29">Error: cannot find opxml binary, required plugin missing (Deprecated)</h3>
-		<p>
-			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
-		</p>
-		<p>This can occur if the native binary <code>
-			<i>opxml</i></code> is not found. This binary is required for proper operation of the oprofile plug-in version &lt; 0.7.0 plug-in. <code>opxml</code> is not required for oprofile &gt;= 0.7.0.
-		</p>
-		<p>Solution: If the <code>
-			<i>org.eclipse.linuxtools.oprofile.core.linux.{x86,x86_64,ppc}</i></code> directories exist (in the Eclipse <code>
-			<i>plugins</i></code> directory), refer to the 
-			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> section for instructions on rebuilding the binary and placing it in the proper directory. Otherwise, re-install the plug-in.
-		</p>
 		<h2 id="No_Samples_From_A_Profile">No Samples From A Profile</h2>
 		<p>It is possible for a profile run of a program to return no samples, resulting in no <code>current</code> session displayed. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </p>
 		<p>In addition, the 
@@ -138,129 +106,8 @@ fi
 		<p>If the OProfile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
 			<i>verbosity</i> option is set to <code>all</code>, which results in several hundred MiB of text in the log over several profile runs. If you do require all this data in the log file, do not launch the log reader. Delete or backup the log file before running the log reader again.
 		</p>
-		<h2 id="Errors_Related_to_opxml_.28Deprecated.29">Errors Related to opxml (Deprecated)</h2>
-		<p>
-			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
-		</p>
-		<p><code>opxml</code> is the native program that bridges OProfile and the OProfile plug-in for Eclipse. In some cases, some errors may be caused by problems with <code>opxml</code>. To verify if this is the case, run <code>opxml</code>.</p>
-		<p><code>opxml</code> is normally located in the Eclipse <code>
-			<i>plugins</i></code> directory, similar to the install scripts described in 
-			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>. However, depending on your platform, the location of <code>opxml</code> will be different. To determine what your platform is, run the following command at a terminal:
-		</p>
-		<pre> uname -m
-</pre>
-		<p>Depending on the output, locate the following directory in the same manner as 
-			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>, and change into that directory:
-		</p>
-		<table border="1">
-			<tr>
-				<th>Output from <code>uname -m</code></th>
-				<th>Directory to use in <code>find</code> command</th>
-				<th>Sub-directory to change to</th>
-			</tr>
-			<tr>
-				<td>i386, i468, i568, i686, x86</td>
-				<td>org.eclipse.linuxtools.oprofile.core.linux.x86</td>
-				<td>os/linux/x86</td>
-			</tr>
-			<tr>
-				<td>x86_64</td>
-				<td>org.eclipse.linuxtools.oprofile.core.linux.x86_64</td>
-				<td>os/linux/x86_64</td>
-			</tr>
-			<tr>
-				<td>ppc, ppc64</td>
-				<td>org.eclipse.linuxtools.oprofile.core.linux.ppc</td>
-				<td>os/linux/ppc</td>
-			</tr>
-		</table>
-		<p>For example, if you are running Eclipse on a 64bit machine (i.e. x86_64), you should run the following command to find the location of <code>opxml</code>:</p>
-		<pre> $ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core.linux.x86_64_*'
-</pre>
-		<p>This will display the following output (or similar):</p>
-		<pre> /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514
-</pre>
-		<p>Navigate into that directory:</p>
-		<pre> $ cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514/os/linux/x86_64
-</pre>
-		<p>Once you have navigated to the right directory, run the following command:</p>
-		<pre> ./opxml info
-</pre>
-		<p>Check that the paths in the <code>defaults</code> section are correct. If the output is similar to the output of the command <code>ophelp</code>, but formatted as XML, then this might not be the problem. However, if running <code>opxml</code> produces an error, it may be the root cause. A common error on some systems is that they use an older version of the C runtime libraries (i.e. <code>glibc</code>). Refer to 
-			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> for a solution to this error.
-		</p>
-		<p>In any case, if there is an error please look for an 
-			<a href="https://bugs.eclipse.org/bugs/buglist.cgi?query_format=advanced&amp;short_desc_type=allwordssubstr&amp;short_desc=&amp;classification=Technology&amp;product=Linux+Tools&amp;component=OProfile&amp;long_desc_type=allwordssubstr&amp;long_desc=&amp;bug_file_loc_type=allwordssubstr&amp;bug_file_loc=&amp;status_whiteboard_type=allwordssubstr&amp;status_whiteboard=&amp;keywords_type=allwords&amp;keywords=&amp;emailtype1=substring&amp;email1=&amp;emailtype2=substring&amp;email2=&amp;bugidtype=include&amp;bug_id=&amp;votes=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;cmdtype=doit&amp;order=Reuse+same+sort+as+last+time&amp;field0-0-0=noop&amp;type0-0-0=noop&amp;value0-0-0=">existing bug</a> or if one does not exist, 
-			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=&amp;version=0.2">file a new bug</a>.
-		</p>
-		<h2 id="Rebuilding_opxml_.28Deprecated.29">Rebuilding opxml (Deprecated)</h2>
-		<p>
-			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
-		</p>
-		<p>You will need to rebuild the <code>opxml</code> binary if running it returns an error similar to the following:</p>
-		<pre> opxml: /some/path/libc.so.6: version `GLIBC_2.8' not found (required by opxml)
-</pre>
-		<p>
-			<b>Warning:</b> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working OProfile plug-in installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
-		</p>
-		<p>To rebuild the <code>opxml</code> binary, perform the following steps</p>
-		<ol>
-			<li>Follow the exact same steps as 
-				<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>, except instead of changing to the <code>
-				<i>natives/linux/scripts</i></code> sub-directory, change to the <code>
-				<i>natives/linux/opxml</i></code> sub-directory of the core plugin. The source files for the <code>opxml</code> binary should be located here.
-			</li>
-			<li>Rebuilding <code>opxml</code> requires <code>make</code>, <code>g++</code>, the <code>libbfd</code> libraries and the OProfile development libraries. In Fedora, the <code>oprofile-devel</code> package contains the OProfile development libraries; for information about the OProfile development libraries in Ubuntu, refer to 
-				<a href="Troubleshooting.html#Ubuntu_-_Extra_Requirements">Ubuntu - Extra Requirements</a>.
-			</li>
-			<li>Run <code>make</code> to build the binary.</li>
-			<li>Run <code>make install</code> to install the binary into the correct plug-in directory.</li>
-			<li>Run <code>make clean</code> to remove the extra files created during the build process.</li>
-		</ol>
-		<h3 id="Ubuntu_-_Extra_Requirements">Ubuntu - Extra Requirements</h3>
-		<p>Ubuntu and other Debian-based systems do not provide the OProfile development libraries in their packaging management system, so we must build them by hand. To do so, perform the following steps:</p>
-		<ol>
-			<li>Install the packages <code>binutils-dev</code> and <code>libpopt-dev</code>.
-				<ul>
-					<li><code>sudo apt-get install binutils-dev libpopt-dev</code></li>
-				</ul>
-			</li>
-			<li>Download the OProfile source.
-				<ul>
-					<li><code>apt-get source oprofile</code></li>
-				</ul>
-			</li>
-			<li>Unpack the OProfile source tarball.
-				<ul>
-					<li><code>cd oprofile-0.9.3 ; tar -zxf oprofile_0.9.3-1.1ubuntu2.tar.gz</code></li>
-				</ul>
-			</li>
-			<li>Run the <code>configure</code> tool.
-				<ul>
-					<li><code>cd oprofile-0.9.3 ; ./configure --without-kernel-support</code></li>
-				</ul>
-			</li>
-			<li>Compile the required libraries.
-				<ul>
-					<li><code>make</code></li>
-				</ul>
-			</li>
-			<li>Move the libraries into the include path.
-				<ul>
-					<li><code>sudo mv libutil/op_types.h libop/op_sample_file.h libutil/op_list.h libop/op_events.h libop/op_cpu_type.h libop/op_config.h libdb/odb.h /usr/include</code></li>
-					<li><code>sudo mv libop/libop.a libdb/libodb.a /usr/lib</code></li>
-					<li><code>sudo mv libabi/libabi.a /usr/lib/libopabi.a</code></li>
-					<li><code>sudo mv libutil/libutil.a /usr/lib/liboputil.a</code></li>
-					<li><code>sudo mv libutil++/libutil++.a /usr/lib/liboputil++.a</code></li>
-				</ul>
-			</li>
-		</ol>
-		<p>The required libraries should now be in the proper place for compiling. Continue the steps in the 
-			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> section.
-		</p>
-		<p>
-			<b>Note:</b> The procedure for building the OProfile development libraries for Ubuntu (described in this section) was tested on Ubuntu 10.04 with Eclipse, the CDT, oprofile and all its dependencies already installed via <code>apt</code>.
-		</p><hr/>
+		<h2 id="Using_PolicyKit_with_X.2FVNC">Using PolicyKit with X/VNC</h2>
+		<p>When using an X/VNC viewer, PolicyKit may open the authentication dialog in the wrong display. If using this setup, please make sure to connect your VNC viewer to the main display.</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
