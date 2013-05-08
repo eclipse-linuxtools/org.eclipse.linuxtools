@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.docs;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Require-Bundle: org.eclipse.help
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
