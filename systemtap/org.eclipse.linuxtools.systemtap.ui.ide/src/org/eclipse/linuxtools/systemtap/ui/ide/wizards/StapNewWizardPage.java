@@ -87,7 +87,7 @@ public class StapNewWizardPage extends WizardPage {
 		new Label(container, SWT.NULL); // XXX just create a new layout with different width
 
 		label = new Label(container, SWT.NULL);
-		label.setText(resourceBundle.getString("StapNewWizardPage.Directory")); //$NON-NLS-1$
+		label.setText(resourceBundle.getString("StapNewWizardPage.Project")); //$NON-NLS-1$
 
 		containerText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -143,7 +143,7 @@ public class StapNewWizardPage extends WizardPage {
 	 */
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
-				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, ""); //$NON-NLS-1$
+				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false, resourceBundle.getString("StapNewWizardPage.SelectProjectMessage")); //$NON-NLS-1$
 		if (dialog.open() == Window.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
