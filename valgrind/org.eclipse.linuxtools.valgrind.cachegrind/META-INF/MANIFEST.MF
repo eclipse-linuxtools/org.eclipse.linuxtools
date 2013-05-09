@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.cachegrind;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.linuxtools.valgrind.core
+ org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

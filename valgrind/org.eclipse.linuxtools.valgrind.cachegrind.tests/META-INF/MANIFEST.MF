@@ -11,7 +11,6 @@ Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.valgrind.cachegrind
 Import-Package: 
  org.eclipse.debug.core.model,
- org.eclipse.linuxtools.internal.valgrind.core,
  org.eclipse.linuxtools.internal.valgrind.launch,
  org.eclipse.linuxtools.internal.valgrind.tests,
  org.eclipse.linuxtools.internal.valgrind.ui,

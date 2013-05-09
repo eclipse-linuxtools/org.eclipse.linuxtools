@@ -19,7 +19,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

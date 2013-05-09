@@ -16,7 +16,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 
 public class MultiProcessTest extends AbstractCachegrindTest {

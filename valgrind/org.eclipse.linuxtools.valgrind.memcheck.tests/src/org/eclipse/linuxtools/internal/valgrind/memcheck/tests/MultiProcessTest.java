@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 

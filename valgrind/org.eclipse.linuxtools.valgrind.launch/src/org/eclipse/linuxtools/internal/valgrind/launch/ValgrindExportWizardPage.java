@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

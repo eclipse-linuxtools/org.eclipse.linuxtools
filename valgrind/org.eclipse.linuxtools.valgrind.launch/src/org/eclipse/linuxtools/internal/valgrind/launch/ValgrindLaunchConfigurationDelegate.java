@@ -45,7 +45,6 @@ import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.linuxtools.internal.valgrind.core.CommandLineConstants;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCoreParser;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindError;

@@ -26,7 +26,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;

@@ -16,7 +16,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifOutput;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifPidMenuAction;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;

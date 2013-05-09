@@ -10,7 +10,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.valgrind.massif
 Import-Package: org.eclipse.cdt.core.model,
- org.eclipse.linuxtools.internal.valgrind.core,
  org.eclipse.linuxtools.internal.valgrind.launch,
  org.eclipse.linuxtools.internal.valgrind.tests,
  org.eclipse.linuxtools.internal.valgrind.ui,
