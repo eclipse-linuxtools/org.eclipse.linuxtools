@@ -25,6 +25,10 @@
   <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
   <packaging>eclipse-repository</packaging>
 
+  <properties>
+    <relengTargetDir>${basedir}/target_save</relengTargetDir>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -92,7 +96,7 @@
              <execution>
                <id>pack</id>
                <configuration>
-                 <inputFile>${project.build.directory}/org.eclipse.linuxtools.releng-site.zip</inputFile>
+                 <inputFile>${relengTargetDir}/org.eclipse.linuxtools.releng-site.zip</inputFile>
                </configuration>
                <phase>install</phase>
                <goals>
