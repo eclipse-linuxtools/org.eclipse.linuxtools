@@ -20,8 +20,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IFindReplaceTarget;
+import org.eclipse.linuxtools.internal.perf.IPerfData;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
-import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -61,7 +61,7 @@ public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarge
 		text = new StyledText(parent, SWT.WRAP | SWT.V_SCROLL);
 		text.setEditable(false);
 
-		SourceDisassemblyData data = PerfPlugin.getDefault().getSourceDisassemblyData();
+		IPerfData data = PerfPlugin.getDefault().getSourceDisassemblyData();
 		if (data != null) {
 			setStyledText(data.getPerfData());
 			setContentDescription(data.getTitle());

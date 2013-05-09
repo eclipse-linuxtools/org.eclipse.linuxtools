@@ -32,7 +32,7 @@ import org.eclipse.ui.console.IOConsole;
  * This class represents the general flow of a perf command being
  * set up, executed, and having its data collected.
  */
-public abstract class AbstractDataManipulator {
+public abstract class AbstractDataManipulator implements IPerfData {
 
 	private String text;
 	private String title;
@@ -44,6 +44,7 @@ public abstract class AbstractDataManipulator {
 		this.workDir = workDir;
 	}
 
+	@Override
 	public String getPerfData() {
 		return text;
 	}
@@ -51,6 +52,7 @@ public abstract class AbstractDataManipulator {
 	protected File getWorkDir(){
 		return workDir;
 	}
+	@Override
 	public String getTitle () {
 		return title;
 	}
