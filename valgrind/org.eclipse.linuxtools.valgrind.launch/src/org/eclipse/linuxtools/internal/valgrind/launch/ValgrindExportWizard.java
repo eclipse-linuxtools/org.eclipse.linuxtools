@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import java.io.File;
@@ -25,7 +25,6 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
@@ -40,7 +39,7 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 	public boolean performFinish() {
 		final File[] logs = exportPage.getSelectedFiles();
 		final IPath outputPath = exportPage.getOutputPath();
-		
+
 		IProgressService ps = PlatformUI.getWorkbench().getProgressService();
 		try {
 			ps.busyCursorWhile(new IRunnableWithProgress() {
@@ -59,12 +58,12 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 								File outLog = new File(outputDir, log.getName());
 								inChan = new FileInputStream(log).getChannel();
 								outChan = new FileOutputStream(outLog).getChannel();
-								
+
 								outChan.transferFrom(inChan, 0, inChan.size());
-								
+
 								inChan.close();
 								outChan.close();
-								
+
 								monitor.worked(1);
 							}
 						} catch (IOException e) {
@@ -88,7 +87,7 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 			});
 
 		} catch (InvocationTargetException e) {
-			IStatus status = new Status(IStatus.ERROR, PluginConstants.LAUNCH_PLUGIN_ID, Messages.getString("ValgrindExportWizard.Export_fail"), e); //$NON-NLS-1$
+			IStatus status = new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindExportWizard.Export_fail"), e); //$NON-NLS-1$
 			ErrorDialog.openError(getShell(), ExportWizardConstants.WIZARD_TITLE, null, status);
 			e.printStackTrace();
 			return false;

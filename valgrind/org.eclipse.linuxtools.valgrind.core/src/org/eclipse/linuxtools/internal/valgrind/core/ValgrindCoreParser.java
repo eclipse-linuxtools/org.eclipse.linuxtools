@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 

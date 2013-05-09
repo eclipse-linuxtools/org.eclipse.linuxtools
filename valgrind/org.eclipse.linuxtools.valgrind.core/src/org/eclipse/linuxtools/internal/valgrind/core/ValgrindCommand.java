@@ -18,6 +18,7 @@ import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
+import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 
 public class ValgrindCommand {
 	protected static final String WHICH_CMD = "which"; //$NON-NLS-1$

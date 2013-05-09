@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
@@ -42,11 +41,14 @@ import org.osgi.framework.Version;
 public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = PluginConstants.LAUNCH_PLUGIN_ID;
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch";
 	public static final String LAUNCH_ID = PLUGIN_ID + ".valgrindLaunch"; //$NON-NLS-1$
 	public static final String MARKER_TYPE = PLUGIN_ID + ".marker"; //$NON-NLS-1$
+	public static final String OUTPUT_DIR_EXT_ID = "outputDirectoryProviders"; //$NON-NLS-1$
 
 	// Extension point constants
+	public static final String TOOL_EXT_ID = "valgrindTools"; //$NON-NLS-1$
+	public static final String TOOL_EXT_DEFAULT = PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
 	protected static final String EXT_ELEMENT_TOOL = "tool"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_NAME = "name"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_ID = "id"; //$NON-NLS-1$
@@ -191,7 +193,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	public IValgrindOutputDirectoryProvider getOutputDirectoryProvider() throws CoreException {
 		IValgrindOutputDirectoryProvider provider = null;
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, PluginConstants.OUTPUT_DIR_EXT_ID);
+		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, OUTPUT_DIR_EXT_ID);
 
 		// if we find more than one provider just take the first one
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
@@ -251,7 +253,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	protected void initializeToolMap() {
 		toolMap = new HashMap<String, IConfigurationElement>();
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, PluginConstants.TOOL_EXT_ID);
+		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, ValgrindLaunchPlugin.TOOL_EXT_ID);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals(EXT_ELEMENT_TOOL)) {
