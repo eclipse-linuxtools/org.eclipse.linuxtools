@@ -80,7 +80,6 @@ public class ContextMenuHelper {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	private static MenuItem getMenuItem(final AbstractSWTBot<?> bot,
 			final String... texts) {
 		MenuItem theItem = null;
