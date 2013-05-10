@@ -64,12 +64,6 @@
                 label="%action.run.name"
                 style="push">
           </command>
-          <command
-                commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptWithChart"
-                icon="icons/actions/run/run_chart.gif"
-                label="%action.runChart.name"
-                style="push">
-          </command>
        </menuContribution>
     </extension>
 	
@@ -188,12 +182,6 @@
         description="%action.run.desc"
         id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
         name="%action.run.name">
-  </command>
-  <command
-        defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler"
-        description="%action.runChart.desc"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptWithChart"
-        name="%action.runChart.name">
   </command>
 	</extension>
 	<extension
