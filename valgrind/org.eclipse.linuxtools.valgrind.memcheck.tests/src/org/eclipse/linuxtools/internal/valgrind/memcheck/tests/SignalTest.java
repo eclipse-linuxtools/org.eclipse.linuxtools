@@ -16,23 +16,23 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
 public class SignalTest extends AbstractMemcheckTest {
-	
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("segvtest"); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+
 	public void testSegfaultHandle() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testSegfault"); //$NON-NLS-1$
-				
+
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IValgrindMessage[] messages = view.getMessages();
 		assertTrue(messages.length > 0);

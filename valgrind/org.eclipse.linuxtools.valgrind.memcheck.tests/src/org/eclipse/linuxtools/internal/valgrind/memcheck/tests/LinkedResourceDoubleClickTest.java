@@ -33,7 +33,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemcheckTest {	
+public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemcheckTest {
 	private ValgrindStackFrame frame;
 
 	public void testLinkedDoubleClickFile() throws Exception {
@@ -41,49 +41,43 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 		doLaunch(config, "testLinkedDoubleClickFile"); //$NON-NLS-1$
 
 		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+
+		IEditorPart editor = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		IEditorInput input = editor.getEditorInput();
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput fileInput = (IFileEditorInput) input;
-			IFolder srcFolder = proj.getProject().getFolder("src"); //$NON-NLS-1$
-			File expectedFile = new File(srcFolder.getLocation().toOSString(), frame.getFile());
-			File actualFile = fileInput.getFile().getLocation().toFile();
-			
-			assertTrue(fileInput.getFile().isLinked(IResource.CHECK_ANCESTORS));
-			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
-		}
-		else {
-			fail();
-		}
+		assertTrue("editor input must be file input",
+				input instanceof IFileEditorInput);
+		IFileEditorInput fileInput = (IFileEditorInput) input;
+		IFolder srcFolder = proj.getProject().getFolder("src"); //$NON-NLS-1$
+		File expectedFile = new File(srcFolder.getLocation().toOSString(),
+				frame.getFile());
+		File actualFile = fileInput.getFile().getLocation().toFile();
+
+		assertTrue(fileInput.getFile().isLinked(IResource.CHECK_ANCESTORS));
+		assertEquals(expectedFile.getCanonicalPath(),
+				actualFile.getCanonicalPath());
 	}
-	
+
 	public void testLinkedDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testLinkedDoubleClickLine"); //$NON-NLS-1$
 
 		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (editor instanceof ITextEditor) {
-			ITextEditor textEditor = (ITextEditor) editor;
-			
-			ISelection selection = textEditor.getSelectionProvider().getSelection();
-			if (selection instanceof TextSelection) {
-				TextSelection textSelection = (TextSelection) selection;
-				int line = textSelection.getStartLine() + 1; // zero-indexed
-				
-				assertEquals(frame.getLine(), line);
-			}
-			else {
-				fail();
-			}
-		}
-		else {
-			fail();
-		}
+
+		IEditorPart editor = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		assertTrue("editor must be text editor", editor instanceof ITextEditor);
+		ITextEditor textEditor = (ITextEditor) editor;
+
+		ISelection selection = textEditor.getSelectionProvider().getSelection();
+		assertTrue("selection must be text one",
+				selection instanceof TextSelection);
+		TextSelection textSelection = (TextSelection) selection;
+		int line = textSelection.getStartLine() + 1; // zero-indexed
+
+		assertEquals(frame.getLine(), line);
 	}
-	
+
 	private void doDoubleClick() {
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		CoreMessagesViewer viewer = view.getMessagesViewer();

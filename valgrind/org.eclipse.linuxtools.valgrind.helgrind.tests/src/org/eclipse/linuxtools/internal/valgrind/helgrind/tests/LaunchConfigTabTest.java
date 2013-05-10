@@ -26,11 +26,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 public class LaunchConfigTabTest extends AbstractHelgrindTest {
-	
+
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
 	protected ValgrindOptionsTab tab;
-	protected HelgrindToolPage dynamicTab; 
+	protected HelgrindToolPage dynamicTab;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -51,7 +51,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+
 	private ILaunchConfigurationWorkingCopy initConfig() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		tab.setDefaults(wc);
@@ -63,7 +63,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		this.dynamicTab = (HelgrindToolPage) dynamicTab;
 		return wc;
 	}
-	
+
 	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
 	throws Exception {
 		tab.performApply(wc);
@@ -72,98 +72,76 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		ILaunch launch = doLaunch(config, testName);
 		return launch;
 	}
-	
-	public void testDefaults() throws Exception {		
+
+	public void testDefaults() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--tool=helgrind")); //$NON-NLS-1$
-			assertFalse(cmd.contains("--xml=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("-q")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--track-lockorders=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--history-level=full")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--conflict-cache-size=1000000")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue("process array should not be empty", p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--tool=helgrind")); //$NON-NLS-1$
+		assertFalse(cmd.contains("--xml=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("-q")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--track-lockorders=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--history-level=full")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--conflict-cache-size=1000000")); //$NON-NLS-1$
 	}
-	
-	public void testTrackLockorders() throws Exception {		
+
+	public void testTrackLockorders() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getLockordersButton().setSelection(false);
 		tab.performApply(wc);
 		wc.doSave();
-		
+
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--track-lockorders=no")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue("process array should not be empty", p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--track-lockorders=no")); //$NON-NLS-1$
 	}
-	
-	public void testHistoryNone() throws Exception {		
+
+	public void testHistoryNone() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("none");
 		tab.performApply(wc);
 		wc.doSave();
-		
+
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--history-level=none")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue("process array should not be empty", p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--history-level=none")); //$NON-NLS-1$
 	}
-	
-	public void testHistoryApprox() throws Exception {		
+
+	public void testHistoryApprox() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("approx");
 		tab.performApply(wc);
 		wc.doSave();
-		
+
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--history-level=approx")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue("process array should not be empty", p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--history-level=approx")); //$NON-NLS-1$
 	}
-	
-	public void testConflictCacheSize() throws Exception {		
+
+	public void testConflictCacheSize() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		
+
 		dynamicTab.getCacheSizeSpinner().setSelection(123456);
 		tab.performApply(wc);
 		wc.doSave();
-		
+
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--conflict-cache-size=123456")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue("process array should not be empty", p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--conflict-cache-size=123456")); //$NON-NLS-1$
 	}
-	
-	
 }

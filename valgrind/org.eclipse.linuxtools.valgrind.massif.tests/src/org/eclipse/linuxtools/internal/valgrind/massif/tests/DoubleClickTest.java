@@ -31,7 +31,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$	
+		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -39,11 +39,11 @@ public class DoubleClickTest extends AbstractMassifTest {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+
 	private void doDoubleClick() {
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		MassifTreeViewer treeViewer = view.getTreeViewer();
-		
+
 		MassifSnapshot[] snapshots = view.getSnapshots();
 		node = snapshots[1].getRoot(); // first detailed
 		TreePath path = new TreePath(new Object[] { node });
@@ -51,17 +51,14 @@ public class DoubleClickTest extends AbstractMassifTest {
 			node = node.getChildren()[0];
 			path = path.createChildPath(node);
 		}
-		if (node.hasSourceFile()) {
-			treeViewer.getViewer().expandToLevel(node, AbstractTreeViewer.ALL_LEVELS);
-			TreeSelection selection = new TreeSelection(path);
-	
-			// do double click
-			IDoubleClickListener listener = treeViewer.getDoubleClickListener();
-			listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
-		}
-		else {
-			fail();
-		}
+		assertTrue(node.hasSourceFile());
+		treeViewer.getViewer().expandToLevel(node,
+				AbstractTreeViewer.ALL_LEVELS);
+		TreeSelection selection = new TreeSelection(path);
+
+		// do double click
+		IDoubleClickListener listener = treeViewer.getDoubleClickListener();
+		listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
 	}
 
 	public void testDoubleClickFile() throws Exception {
@@ -70,9 +67,9 @@ public class DoubleClickTest extends AbstractMassifTest {
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
 		wc.doSave();
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
-		
+
 		doDoubleClick();
-		
+
 		checkFile(proj.getProject(), node);
 	}
 
@@ -82,9 +79,9 @@ public class DoubleClickTest extends AbstractMassifTest {
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
 		wc.doSave();
 		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
-		
+
 		doDoubleClick();
-		
+
 		checkLine(node);
 	}
 }

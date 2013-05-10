@@ -30,23 +30,23 @@ public class MinVersionTest extends AbstractMemcheckTest {
 			 return "valgrind-3.2.1"; //$NON-NLS-1$
 		}
 	}
-	
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-		
+
 		saveVersion();
 	}
 
 	private void saveVersion() {
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(new ValgrindIncorrectVersion());
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
 		restoreVersion();
-		
+
 		deleteProject(proj);
 		super.tearDown();
 	}
@@ -54,29 +54,27 @@ public class MinVersionTest extends AbstractMemcheckTest {
 	private void restoreVersion() {
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(new ValgrindCommand());
 	}
-		
+
 	public void testLaunchBadVersion() throws Exception {
 		// Put this back so we can make a valid config
 		restoreVersion();
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		// For some reason we downgraded
 		saveVersion();
-		
-		CoreException ce = null;		
+
 		try {
 			doLaunch(config, "testDefaults"); //$NON-NLS-1$
 		} catch (CoreException e) {
-			ce = e;
+			assertNotNull(e);
 		}
-		
-		assertNotNull(ce);
+
 	}
-	
+
 	public void testTabsBadVersion() throws Exception {
 		Shell testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
 		ValgrindOptionsTab tab = new ValgrindOptionsTab();
-		
+
 		ILaunchConfiguration config = getLaunchConfigType().newInstance(null, getLaunchManager()
 				.generateLaunchConfigurationName(
 						proj.getProject().getName()));
@@ -85,10 +83,10 @@ public class MinVersionTest extends AbstractMemcheckTest {
 		tab.createControl(testShell);
 		tab.initializeFrom(config);
 		tab.performApply(wc);
-		
+
 		assertFalse(tab.isValid(config));
 		assertNotNull(tab.getErrorMessage());
-		
+
 		testShell.dispose();
 	}
 

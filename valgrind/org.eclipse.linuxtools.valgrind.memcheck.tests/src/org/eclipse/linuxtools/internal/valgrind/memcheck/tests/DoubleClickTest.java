@@ -79,73 +79,62 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
 		doDoubleClick();
-		
+
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		IEditorInput input = editor.getEditorInput();
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput fileInput = (IFileEditorInput) input;
-			File expectedFile = new File(proj.getProject().getLocation().toOSString(), frame.getFile());
-			File actualFile = fileInput.getFile().getLocation().toFile();
-			
-			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
-		}
-		else {
-			fail();
-		}
+
+		assertTrue("Input should be IFileEditorInput",
+				input instanceof IFileEditorInput);
+		IFileEditorInput fileInput = (IFileEditorInput) input;
+		File expectedFile = new File(proj.getProject().getLocation()
+				.toOSString(), frame.getFile());
+		File actualFile = fileInput.getFile().getLocation().toFile();
+
+		assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
 	}
-	
+
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
 
 		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (editor instanceof ITextEditor) {
-			ITextEditor textEditor = (ITextEditor) editor;
-			
-			ISelection selection = textEditor.getSelectionProvider().getSelection();
-			if (selection instanceof TextSelection) {
-				TextSelection textSelection = (TextSelection) selection;
-				int line = textSelection.getStartLine() + 1; // zero-indexed
-				
-				assertEquals(frame.getLine(), line);
-			}
-			else {
-				fail();
-			}
-		}
-		else {
-			fail();
-		}
+
+		IEditorPart editor = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		assertTrue("editor should be ITextEditor",
+				editor instanceof ITextEditor);
+		ITextEditor textEditor = (ITextEditor) editor;
+
+		ISelection selection = textEditor.getSelectionProvider().getSelection();
+		assertTrue("selection must be TextSelection",
+				selection instanceof TextSelection);
+		TextSelection textSelection = (TextSelection) selection;
+		int line = textSelection.getStartLine() + 1; // zero-indexed
+
+		assertEquals(frame.getLine(), line);
 	}
-	
+
 	public void testDoubleClickLaunchRemoved() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
-		
+
 		// Remove launch - tests #284919
 		DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
 
 		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (editor instanceof ITextEditor) {
-			ITextEditor textEditor = (ITextEditor) editor;
-			
-			ISelection selection = textEditor.getSelectionProvider().getSelection();
-			if (selection instanceof TextSelection) {
-				TextSelection textSelection = (TextSelection) selection;
-				int line = textSelection.getStartLine() + 1; // zero-indexed
-				
-				assertEquals(frame.getLine(), line);
-			}
-			else {
-				fail();
-			}
-		}
-		else {
-			fail();
-		}
+
+		IEditorPart editor = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		assertTrue("editor should be ITextEditor",
+				editor instanceof ITextEditor);
+		ITextEditor textEditor = (ITextEditor) editor;
+
+		ISelection selection = textEditor.getSelectionProvider().getSelection();
+		assertTrue("selection must be TextSelection",
+				selection instanceof TextSelection);
+		TextSelection textSelection = (TextSelection) selection;
+		int line = textSelection.getStartLine() + 1; // zero-indexed
+
+		assertEquals(frame.getLine(), line);
 	}
 }

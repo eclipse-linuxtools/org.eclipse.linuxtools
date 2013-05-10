@@ -27,40 +27,37 @@ public class ChartExportTest extends AbstractMassifTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
-		
+
 		pngPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
 		assertNotNull(pngPath);
 		pngPath = pngPath.append("alloctest").append("chart.png"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
 		File chartFile = pngPath.toFile();
 		if (chartFile.exists()) {
 			chartFile.delete();
 		}
-		
+
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+
 	public void testChartExportPNG() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
-		
+
 		IEditorInput input = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getEditorInput();
-		if (input instanceof ChartEditorInput) {
-			HeapChart chart = ((ChartEditorInput) input).getChart();
-			
-			ChartPNG png = new ChartPNG(chart);
-			png.renderPNG(pngPath);
-			
-			File chartFile = pngPath.toFile();
-			assertTrue(chartFile.exists());
-			assertTrue(chartFile.length() > 0);
-		} else {
-			fail();
-		}
+		assertTrue("input must be ChartEditorInput", input instanceof ChartEditorInput);
+		HeapChart chart = ((ChartEditorInput) input).getChart();
+
+		ChartPNG png = new ChartPNG(chart);
+		png.renderPNG(pngPath);
+
+		File chartFile = pngPath.toFile();
+		assertTrue(chartFile.exists());
+		assertTrue(chartFile.length() > 0);
 	}
-	
+
 }
