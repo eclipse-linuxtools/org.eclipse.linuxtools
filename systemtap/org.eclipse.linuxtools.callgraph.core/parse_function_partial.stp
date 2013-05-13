@@ -12,6 +12,12 @@ function callFunction(probefunc, tid) {
 	serial++
 }
 
+function returnFunction(probefunc, tid) {
+	finalTime = gettimeofday_ns()
+	printf(">%s,,%d,,%d\n", probefunc, finalTime, tid)
+}
+
+
 probe end {
 	printf("-%d\n",finalTime);
 	printf("+%d\n",finalTime - startTime);
