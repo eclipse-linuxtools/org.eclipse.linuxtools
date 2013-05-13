@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.rdt.proxy
+Bundle-Vendor: %provider
