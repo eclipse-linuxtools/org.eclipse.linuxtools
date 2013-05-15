@@ -14,9 +14,17 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -73,7 +81,6 @@ public class TestCreateSystemtapScript {
 		public String getFailureMessage() {
 			return "Timed out waiting for " + node; //$NON-NLS-1$
 		}
-
 	}
 
 	@BeforeClass
@@ -152,7 +159,60 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testCreateScript(){
-		createScript(bot, "testScript.stp");
+		String scriptName = "testScript.stp";
+		createScript(bot, scriptName);
+
+		// Write a script
+		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
+		editor.typeText(0, editor.getText().length(), "\nprobe begin{log(\"began");
+		editor.save();
+
+		// Focus on project explorer view.
+		bot.viewByTitle("Project Explorer").setFocus();
+		bot.activeShell();
+		SWTBotTree treeBot = bot.tree();
+		treeBot.setFocus();
+		SWTBotTreeItem node = treeBot.expandNode((SYSTEMTAP_PROJECT_NAME));
+		bot.waitUntil(new NodeAvaiable(node, scriptName));
+
+		treeBot.expandNode(SYSTEMTAP_PROJECT_NAME).expand().select(scriptName);
+
+		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, "Run As", "Run Configurations...");
+		click(menu);
+
+		SWTBotShell shell = bot.shell("Run Configurations");
+
+		SWTBotTree runConfigurationsTree = bot.tree();
+		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+
+		bot.button("Run").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+
+		SWTBotView console = bot.viewByTitle("Console");
+		console.setFocus();
+
+		try {
+			bot.button("Stop Script").click();
+		} catch (WidgetNotFoundException e) {
+			//ignore
+		}
+
+		assert(console.bot().label().getText().contains(scriptName));
+	}
+
+	public static void click(final MenuItem menuItem) {
+        final Event event = new Event();
+        event.time = (int) System.currentTimeMillis();
+        event.widget = menuItem;
+        event.display = menuItem.getDisplay();
+        event.type = SWT.Selection;
+
+        UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+                @Override
+                public void run() {
+                        menuItem.notifyListeners(SWT.Selection, event);
+                }
+        });
 	}
 
 }
