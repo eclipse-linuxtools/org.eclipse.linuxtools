@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.structures.StructuresPlugin;
@@ -90,14 +91,17 @@ public class Command implements Runnable {
 	/**
 	 * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
 	 * This must be called in order to get the process to start running.
+	 * @throws CoreException
 	 */
-	public void start() {
-		if(init().isOK()) {
+	public void start() throws CoreException {
+		IStatus status = init();
+		if(status.isOK()) {
 			Thread t = new Thread(this, cmd[0]);
 			t.start();
 		} else {
 			stop();
 			returnVal = Integer.MIN_VALUE;
+			throw new CoreException(status);
 		}
 	}
 
@@ -109,6 +113,10 @@ public class Command implements Runnable {
 	protected IStatus init() {
 		try {
 			process = SystemtapProcessFactory.exec(cmd, envVars);
+
+			if (process == null){
+				return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
+			}
 
 			errorGobbler = new StreamGobbler(process.getErrorStream());
 			inputGobbler = new StreamGobbler(process.getInputStream());

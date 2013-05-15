@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
-import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +71,7 @@ public class CommandTest extends SystemtapTest{
 	}
 
 	@Test
-	public void testLoggedCommand() {
+	public void testLoggedCommand() throws CoreException {
 		assumeTrue(stapInstalled);
 		tc.dispose();
 
@@ -95,7 +95,7 @@ public class CommandTest extends SystemtapTest{
 	}
 
 	@Test
-	public void testStop() {
+	public void testStop() throws CoreException {
 		assumeTrue(stapInstalled);
 		tc.start();
 		assertTrue(tc.isRunning());
