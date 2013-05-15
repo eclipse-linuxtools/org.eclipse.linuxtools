@@ -42,6 +42,8 @@ public class IDEPerspective implements IPerspectiveFactory {
 		browsers.addView(ProbeAliasBrowserView.ID);
 		browsers.addView(FunctionBrowserView.ID);
 		browsers.addView(KernelBrowserView.ID);
+		browsers.addView(IPageLayout.ID_PROJECT_EXPLORER);
+
 
 		layout.getViewLayout(ProbeAliasBrowserView.ID).setCloseable(false);
 		layout.getViewLayout(FunctionBrowserView.ID).setCloseable(false);
