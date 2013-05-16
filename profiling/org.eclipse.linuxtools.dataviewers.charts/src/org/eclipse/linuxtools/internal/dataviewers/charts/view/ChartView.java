@@ -25,13 +25,13 @@ import org.swtchart.Chart;
 
 /**
  * The chart view.
- * 
+ *
  * <br/>
  * This view is multiple and all the created chart will be displayed in an instance of this view. Each one will have a
  * primary id equals to ChartView.VIEW_ID and an integer (increased by 1 at each new view) for the secondary id.
- * 
+ *
  * @author Marzia Maugeri <marzia.maugeri@st.com>
- * 
+ *
  */
 public class ChartView extends ViewPart {
 
@@ -52,7 +52,7 @@ public class ChartView extends ViewPart {
      * <u><b>Note</b></u>: this method uses the UI thread to open the view and then it sets the input chart. The UI
      * thread execution is synchronized on internal Integer SEC_ID which is the secondary id of the chart view. Each new
      * chart view has a secondary id equal to SEC_ID++.
-     * 
+     *
      * @param chart
      */
     public static void createChartView(final Chart chart) {
@@ -77,7 +77,7 @@ public class ChartView extends ViewPart {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -99,7 +99,7 @@ public class ChartView extends ViewPart {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
      */
     @Override
@@ -111,16 +111,11 @@ public class ChartView extends ViewPart {
 
     /**
      * Set the chart in this view
-     * 
+     *
      * @param chart
      */
     public void setChart(Chart chart) {
         saveChartAction.setChart(chart);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     public Composite getParent() {

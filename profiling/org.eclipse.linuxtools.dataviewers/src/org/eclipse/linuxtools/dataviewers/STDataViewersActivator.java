@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.dataviewers;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -26,15 +25,9 @@ public class STDataViewersActivator extends AbstractUIPlugin {
     // The shared instance
     private static STDataViewersActivator plugin;
 
-    /**
-     * The constructor
-     */
-    public STDataViewersActivator() {
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
     @Override
@@ -45,7 +38,7 @@ public class STDataViewersActivator extends AbstractUIPlugin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     @Override
@@ -56,31 +49,11 @@ public class STDataViewersActivator extends AbstractUIPlugin {
 
     /**
      * Returns the shared instance
-     * 
+     *
      * @return the shared instance
      */
     public static STDataViewersActivator getDefault() {
         return plugin;
-    }
-
-    /**
-     * Gets the Plugin ID
-     * 
-     * @return "org.eclipse.linuxtools.dataviewers"
-     */
-    public static String getUniqueIdentifier() {
-        return PLUGIN_ID;
-    }
-
-    /**
-     * Returns an image descriptor for the image file at the given plug-in relative path
-     * 
-     * @param path
-     *            the path
-     * @return the image descriptor
-     */
-    public static ImageDescriptor getImageDescriptor(String path) {
-        return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
 }
