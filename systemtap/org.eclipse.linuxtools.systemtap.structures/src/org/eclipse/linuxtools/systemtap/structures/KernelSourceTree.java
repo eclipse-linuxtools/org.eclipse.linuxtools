@@ -54,7 +54,7 @@ public class KernelSourceTree {
 	/**
 	 * Builds the kernel tree from file parameter direct and stores the excluded string array.
 	 *
-	 * @param direct The file to include into the tree.
+	 * @param locationURI The URI to include into the tree.
 	 * @param excluded The string array to store as excluded.
 	 * @param proxy The proxy to be used to get the remote files
 	 * @param monitor a progress monitor for this operation. Can be null.

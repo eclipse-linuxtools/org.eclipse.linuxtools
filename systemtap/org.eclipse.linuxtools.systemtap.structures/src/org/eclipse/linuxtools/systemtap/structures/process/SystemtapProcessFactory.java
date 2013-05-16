@@ -24,7 +24,7 @@ import com.jcraft.jsch.Session;
 
 /**
  * The {@link SystemtapProcessFactory} is responsible for creating process
- * objects ({@link LocalSystemtapProcess} or {@link RemoteSystemtapProcess}).
+ * objects.
  * When executing systemtap operations you must always use this factory so that
  * mock objects can be provided during testing.
  */
@@ -37,7 +37,7 @@ public class SystemtapProcessFactory {
 	 *            arguments to run systemtap with.
 	 * @param envVars
 	 *            environment variables.
-	 * @return
+	 * @return The newly created process.
 	 * @throws IOException
 	 */
 	public static Process exec(String[] args, String[] envVars) throws IOException {
