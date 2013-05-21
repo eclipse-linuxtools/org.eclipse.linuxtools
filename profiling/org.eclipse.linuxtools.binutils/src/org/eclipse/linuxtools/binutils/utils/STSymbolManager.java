@@ -161,7 +161,7 @@ public class STSymbolManager {
     /**
      * Demangle the given symbol
      * @param symbol
-     * @return
+     * @return The demangled symbol.
      */
     public synchronized String demangle(ISymbol symbol, IProject project) {
         String cpu = symbol.getBinaryObject().getCPU();
@@ -173,7 +173,7 @@ public class STSymbolManager {
      * Demangle the given symbol
      * @param program
      * @param symbolName
-     * @return
+     * @return The demangled symbol.
      */
     public synchronized String demangle(IBinaryObject program, String symbolName, IProject project) {
         String cpu = program.getCPU();
@@ -445,7 +445,7 @@ public class STSymbolManager {
      * corresponding to the given path has been already built by eclipse, return it. Otherwise build a new
      * IBinaryObject, according to project preferences. Note that it may return null if the path is invalid, or is not a
      * valid binary file.
-     * @param path
+     * @param loc
      * @return a IBinaryObject
      */
     public IBinaryObject getBinaryObject(String loc) {
@@ -472,7 +472,7 @@ public class STSymbolManager {
      * IBinaryObject, according to project preferences. Note that it may return null if the path is invalid, or is not a
      * valid binary file.
      * @param path
-     * @param default parser
+     * @param defaultparser
      * @return a IBinaryObject
      */
     public IBinaryObject getBinaryObject(IPath path, IBinaryParser defaultparser) {

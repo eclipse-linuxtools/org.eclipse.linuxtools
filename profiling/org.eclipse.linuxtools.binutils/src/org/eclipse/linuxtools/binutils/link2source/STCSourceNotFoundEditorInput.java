@@ -20,7 +20,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Editor Input used for source not found
- * 
+ *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class STCSourceNotFoundEditorInput implements IEditorInput {
@@ -31,8 +31,8 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /**
      * Constructor
-     * 
-     * @param binaryPath
+     *
+     * @param project
      * @param sourcePath
      * @param lineNumber
      */
@@ -44,7 +44,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#exists()
      */
     @Override
@@ -54,7 +54,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
      */
     @Override
@@ -64,7 +64,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getName()
      */
     @Override
@@ -74,7 +74,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getPersistable()
      */
     @Override
@@ -84,7 +84,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
     @Override
@@ -94,7 +94,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
     @Override
@@ -126,7 +126,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -140,7 +140,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
