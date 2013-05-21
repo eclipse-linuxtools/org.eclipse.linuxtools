@@ -22,9 +22,9 @@ import org.eclipse.debug.core.model.IProcess;
 
 /**
  * Helper class for launching command line tools. Contains methods for creating a process and
- * one method for fetching from the console. 
- * 
- * 
+ * one method for fetching from the console.
+ *
+ *
  * @author chwang
  *
  */
@@ -33,7 +33,7 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 
 	/**
 	 * Executes a command array using pty
-	 * 
+	 *
 	 * @param commandArray -- Split a command string on the ' ' character
 	 * @param env -- Use <code>getEnvironment(ILaunchConfiguration)</code> in the AbstractCLaunchDelegate.
 	 * @param wd -- Working directory
@@ -60,16 +60,16 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 		}
 		return process;
 	}
-	
+
 
 
 	/**
 	 * Spawn a new IProcess using the Debug Plugin.
-	 * 
+	 *
 	 * @param launch
 	 * @param systemProcess
 	 * @param programName
-	 * @return
+	 * @return The newly created process.
 	 */
 	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
 			String programName) {

@@ -73,7 +73,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
 	/**
 	 * Locate a configuration to relaunch for the given type.  If one cannot be found, create one.
-	 * 
+	 *
 	 * @return a re-useable config or <code>null</code> if none
 	 */
 	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
@@ -97,7 +97,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-	
+
 		// If there are no existing configs associated with the IBinary, create one.
 		// If there is exactly one config associated with the IBinary, return it.
 		// Otherwise, if there is more than one config associated with the IBinary, prompt the
@@ -120,8 +120,8 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	 * Can return <code>getLaunchManager().getLaunchConfigurationType(String ID)</code>.
 	 * This String will be used to identify your configuration type to Eclipse, and should
 	 * be unique.
-	 * 
-	 * @return
+	 *
+	 * @return The launch configuration type.
 	 */
 	protected abstract ILaunchConfigurationType getLaunchConfigType();
 
@@ -130,7 +130,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	/**
 	 * Set default attributes for the given configuration.
 	 *
-	 * @param config
+	 * @param wc
 	 * @since 1.2
 	 */
 	public void setDefaultProfileLaunchShortcutAttributes(ILaunchConfigurationWorkingCopy wc){
@@ -161,14 +161,14 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 			String projectName = bin.getResource().getProjectRelativePath().toString();
 			ILaunchConfigurationType configType = getLaunchConfigType();
 			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, getLaunchManager().generateLaunchConfigurationName(bin.getElementName()));
-	
+
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, projectName);
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
 			wc.setMappedResources(new IResource[] {bin.getResource(), bin.getResource().getProject()});
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
-	
+
 			setDefaultProfileAttributes(wc);
-	
+
 			if (save){
 				config = wc.doSave();
 			} else {
@@ -211,7 +211,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 										if (cproject != null) {
 											try {
 												IBinary[] bins = cproject.getBinaryContainer().getBinaries();
-	
+
 												for (int j = 0; j < bins.length; j++) {
 													if (bins[j].isExecutable()) {
 														results.add(bins[j]);
@@ -242,7 +242,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 					return;
 				}
 				int count = results.size();
-				if (count == 0) {					
+				if (count == 0) {
 					handleFail(Messages.getString("ProfileLaunchShortcut.Binary_not_found")); //$NON-NLS-1$
 				} else if (count > 1) {
 					bin = chooseBinary(results, mode);
@@ -264,7 +264,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
 	/**
 	 * Prompts the user to select a  binary
-	 * 
+	 *
 	 * @return the selected binary or <code>null</code> if none.
 	 */
 	protected IBinary chooseBinary(List<IBinary> binList, String mode) {
@@ -280,7 +280,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				return super.getText(element);
 			}
 		};
-	
+
 		ILabelProvider qualifierLabelProvider = new CElementLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -295,7 +295,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				return super.getText(element);
 			}
 		};
-	
+
 		TwoPaneElementSelector dialog = new TwoPaneElementSelector(getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
 		dialog.setElements(binList.toArray());
 		dialog.setTitle(Messages.getString("ProfileLaunchShortcut.Profile")); //$NON-NLS-1$
@@ -306,7 +306,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		if (dialog.open() == Window.OK) {
 			return (IBinary) dialog.getFirstResult();
 		}
-	
+
 		return null;
 	}
 

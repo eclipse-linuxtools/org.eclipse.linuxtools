@@ -249,7 +249,7 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
 	/**
 	 * Get name of profiling type that used for this tab.
 	 *
-	 * @return String profiling name.
+	 * @param profilingType The type of profiling.
 	 */
 	private void setProfilingType(String profilingType) {
 		type = profilingType;
