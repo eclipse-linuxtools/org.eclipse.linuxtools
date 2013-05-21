@@ -52,7 +52,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Constructor
      *
-     * @param properties
+     * @param columns
      *            the columns properties of the viewer
      */
     public STDataViewersComparator(Item[] columns) {
@@ -62,9 +62,9 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Constructor
      *
-     * @param properties
-     * @param defaultPriorities
-     * @param defaultDirections
+     * @param columns
+     * @param priorities
+     * @param directions
      */
     public STDataViewersComparator(Item[] columns, int[] priorities, int[] directions) {
         this.columns = columns;
@@ -132,7 +132,8 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Sets the top-level sorter
      *
-     * @param property
+     * @param column
+     * @param field
      */
     public void setTopPriority(final Item column, final ISTDataViewersField field) {
         for (int i = 0; i < columns.length; i++) {
