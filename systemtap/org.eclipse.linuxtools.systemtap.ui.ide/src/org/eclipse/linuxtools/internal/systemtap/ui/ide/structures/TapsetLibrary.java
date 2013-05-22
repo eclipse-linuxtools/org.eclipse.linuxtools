@@ -379,5 +379,17 @@ public final class TapsetLibrary {
 				// continue stopping.
 			}
 		}
+		if(probeParser != null){
+			probeParser.cancel();
+			cacheProbeManpages.cancel();
+			try {
+				probeParser.join();
+			} catch (InterruptedException e) {
+				// The current thread was interrupted while waiting
+				// for the parser thread to exit. Nothing to do
+				// continue stopping.
+			}
+		}
+
 	}
 }

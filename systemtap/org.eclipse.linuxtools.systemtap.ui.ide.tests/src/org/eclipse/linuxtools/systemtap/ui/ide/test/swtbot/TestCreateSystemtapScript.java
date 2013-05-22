@@ -14,6 +14,9 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
@@ -80,6 +83,22 @@ public class TestCreateSystemtapScript {
 		@Override
 		public String getFailureMessage() {
 			return "Timed out waiting for " + node; //$NON-NLS-1$
+		}
+	}
+
+	private static class StapHasExited extends DefaultCondition{
+
+		@Override
+		public boolean test() throws IOException, InterruptedException {
+			Process process = RuntimeProcessFactory.getFactory().exec(
+					new String[] {"pgrep","stap"}, null); //$NON-NLS-1$
+			process.waitFor();
+			return (process.exitValue() != 0);
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for stap to exit";
 		}
 	}
 
@@ -165,6 +184,7 @@ public class TestCreateSystemtapScript {
 		// Write a script
 		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
 		editor.typeText(0, editor.getText().length(), "\nprobe begin{log(\"began");
+		editor.typeText(0, editor.getText().length() - 1, "; exit(");
 		editor.save();
 
 		// Focus on project explorer view.
@@ -190,14 +210,8 @@ public class TestCreateSystemtapScript {
 
 		SWTBotView console = bot.viewByTitle("Console");
 		console.setFocus();
-
-		try {
-			bot.button("Stop Script").click();
-		} catch (WidgetNotFoundException e) {
-			//ignore
-		}
-
 		assert(console.bot().label().getText().contains(scriptName));
+		bot.waitUntil(new StapHasExited(), 10000);
 	}
 
 	public static void click(final MenuItem menuItem) {
@@ -214,5 +228,4 @@ public class TestCreateSystemtapScript {
                 }
         });
 	}
-
 }
