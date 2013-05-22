@@ -15,9 +15,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.systemtap.structures.process.SystemtapMockProcess;
+import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFactory;
 import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +53,6 @@ public class CommandTest extends SystemtapTest{
 
 	@Test
 	public void testIsFinished() {
-		assumeTrue(stapInstalled);
 		assertTrue("Not finished", tc.isRunning());
 		tc.stop();
 		assertFalse("Finished", tc.isRunning());
@@ -72,22 +72,27 @@ public class CommandTest extends SystemtapTest{
 
 	@Test
 	public void testLoggedCommand() throws CoreException {
-		assumeTrue(stapInstalled);
 		tc.dispose();
 
+		SystemtapMockProcess process = new SystemtapMockProcess("stap -v -p1 -e probe nosuchfunc{}", "", true);
+		SystemtapProcessFactory.setMockStap(process);
 		tc = new Command(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
 		tc.start();
 		assertTrue(tc.isRunning());
 		assertFalse(tc.isDisposed());
+		process.stop();
 		tc.stop();
 		assertFalse(tc.isRunning());
 		assertFalse(tc.isDisposed());
 		tc.dispose();
 
+		process = new SystemtapMockProcess("stap -v -p1 -e probe nosuchfunc{}", "", true);
+		SystemtapProcessFactory.setMockStap(process);
 		tc = new Command(new String[] {"stap", "-v", "-p1", "-e", "probe nosuchfunc{}"}, null);
 		tc.start();
 		assertTrue(tc.isRunning());
 		assertFalse(tc.isDisposed());
+		process.stop();
 		tc.stop();
 		assertFalse(tc.isRunning());
 		assertFalse(tc.isDisposed());
@@ -96,7 +101,6 @@ public class CommandTest extends SystemtapTest{
 
 	@Test
 	public void testStop() throws CoreException {
-		assumeTrue(stapInstalled);
 		tc.start();
 		assertTrue(tc.isRunning());
 		tc.stop();
