@@ -24,10 +24,10 @@ import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -54,22 +54,19 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 			return null;
 		}
 
-		if (specfile == null) {
-			SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
-			if (a != null) {
-				specfile = a.getSpecfile();
-			} else {
-				return null;
-			}
-		}
-
 		IDocument document = textViewer.getDocument();
-
-		int offset = region.getOffset();
-
 		if (document == null) {
 			return null;
 		}
+
+		if (specfile == null) {
+			SpecfileParser parser = new SpecfileParser();
+			specfile = parser.parse(document);
+		}
+
+
+		int offset = region.getOffset();
+
 		IRegion lineInfo;
 		String line;
 		try {
