@@ -41,7 +41,7 @@ public class PMStatEntry {
 	public static final String DECIMAL = "\\d+[\\.\\,\\d]*"; //$NON-NLS-1$
 	public static final String PERCENTAGE = "(\\d+(\\.\\d+)?)\\%"; //$NON-NLS-1$
 	public static final String SAMPLES = "(" + DECIMAL + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-	public static final String EVENT = "(\\w+[\\-\\w]+)"; //$NON-NLS-1$
+	public static final String EVENT =  "(\\w+(\\-\\w+)*(:\\w+)?)";//$NON-NLS-1$
 	public static final String METRICS = "(" + DECIMAL + ")"; //$NON-NLS-1$//$NON-NLS-2$
 	public static final String UNITS = "([a-zA-Z\\/\\s\\%]*)"; //$NON-NLS-1$
 	public static final String DELTA = "(\\(\\s\\+\\-\\s*" + PERCENTAGE + "\\s\\))"; //$NON-NLS-1$ //$NON-NLS-2$
