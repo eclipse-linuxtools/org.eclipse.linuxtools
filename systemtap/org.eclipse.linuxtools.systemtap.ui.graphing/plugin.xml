@@ -2,16 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
 	<extension
-		point="org.eclipse.ui.perspectives">
-		<perspective
-			name="%perspective.graphing.name"
-			class="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"
-			icon="icons/perspective_obj.gif"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"/>
-	</extension>
-	
-	
-	<extension
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.graphing.name"
@@ -112,25 +102,6 @@
 				style="push"
 				state="false"/>
 		</actionSet>
-	</extension>
-	
-	<extension
-		point="org.eclipse.ui.perspectiveExtensions">
-		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingActionSet"/>
-		</perspectiveExtension>
-				<perspectiveExtension
-           targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-         
-                        <view
-                                ratio="0.60f"
-                                relative="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
-                                relationship="top"
-                                id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"/>
-                       
-         </perspectiveExtension>
 	</extension>
  <extension
        point="org.eclipse.ui.editors">
