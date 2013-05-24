@@ -7,18 +7,15 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
-import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
-import org.eclipse.linuxtools.profiling.launch.RemoteProxyCMainTab;
 
 /**
  * @since 1.1
@@ -31,16 +28,6 @@ public class ConfigUtils {
 
 	public ConfigUtils(ILaunchConfiguration config) {
 		this.config = config;
-	}
-
-	/**
-	 * Check if the copy local file is enabled.
-	 *
-	 * @throws CoreException
-	 *             if the copy fails or is cancelled
-	 */
-	public boolean getCopyExecutable(IProgressMonitor monitor) throws CoreException {
-		return getCopyExecutable();
 	}
 
 	/**
@@ -80,17 +67,6 @@ public class ConfigUtils {
 		String executablePath = config.getAttribute(
 				ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, EMPTY_STRING);
 		return executablePath;
-	}
-
-	/**
-	 * @param path
-	 * @oaram monitor
-	 * @return IPath of resource at the specified path
-	 * @since 5.0
-	 */
-	protected IPath verifyResource(String path,
-			IProgressMonitor monitor) {
-		return Path.fromOSString(path);
 	}
 
 	/**
@@ -171,11 +147,6 @@ public class ConfigUtils {
 		return project;
 	}
 
-
-	protected static IWorkspaceRoot getWorkspaceRoot() {
-		return ResourcesPlugin.getWorkspace().getRoot();
-	}
-
 	/**
 	 * Get the IProject object from the project name.
 	 *
@@ -184,7 +155,7 @@ public class ConfigUtils {
 	 * @return IProject resource
 	 */
 	public static IProject getProject(String project) {
-		return getWorkspaceRoot().getProject(project);
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(project);
 	}
 
 	/**
