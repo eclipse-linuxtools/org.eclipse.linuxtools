@@ -21,13 +21,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 
 public class SystemTapScriptLaunchConfigurationDelegate implements
 		ILaunchConfigurationDelegate {

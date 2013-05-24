@@ -8,7 +8,7 @@
  *     Jeff Briggs, Henry Hughes, Ryan Morse, Roland Grunberg, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,17 +31,17 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.StapErrorParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDESessionSettings;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;

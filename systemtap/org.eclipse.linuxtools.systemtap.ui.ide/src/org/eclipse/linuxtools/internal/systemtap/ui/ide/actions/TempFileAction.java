@@ -9,15 +9,15 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import java.io.IOException;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

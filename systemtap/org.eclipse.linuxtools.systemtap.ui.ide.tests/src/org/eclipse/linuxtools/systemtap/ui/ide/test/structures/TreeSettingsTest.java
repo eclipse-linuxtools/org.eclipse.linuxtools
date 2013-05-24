@@ -15,8 +15,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TreeSettings;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.TreeSettings;
 import org.junit.Before;
 import org.junit.Test;
 

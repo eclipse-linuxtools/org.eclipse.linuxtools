@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Inc. - Initial Wizard and related API
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.ui.ide.wizards;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +25,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -47,7 +47,7 @@ import org.eclipse.ui.ide.IDE;
 public class StapNewWizard extends Wizard implements INewWizard {
 	private StapNewWizardPage page;
 	private ISelection selection;
-	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.ui.ide.wizards.stap_strings"); //$NON-NLS-1$
+	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.internal.systemtap.ui.ide.wizards.stap_strings"); //$NON-NLS-1$
 
 	/**
 	 * Constructor for StapNewWizard.

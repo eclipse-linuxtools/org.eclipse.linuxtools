@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import java.util.LinkedList;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
@@ -21,9 +22,6 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.ChartStreamDaemon2;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.Messages;
-import org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;

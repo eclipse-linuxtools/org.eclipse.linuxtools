@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.StapErrorParser;
 import org.junit.Test;
 
 public class StapErrorParserTest {

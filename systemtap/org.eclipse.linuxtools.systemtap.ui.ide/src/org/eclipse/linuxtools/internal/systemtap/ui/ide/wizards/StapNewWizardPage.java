@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Inc. - Initial Wizard and related API
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.ui.ide.wizards;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.wizards;
 
 import java.util.ResourceBundle;
 
@@ -47,7 +47,7 @@ public class StapNewWizardPage extends WizardPage {
 
 	private ISelection selection;
 
-	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.systemtap.ui.ide.wizards.stap_strings"); //$NON-NLS-1$
+	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.internal.systemtap.ui.ide.wizards.stap_strings"); //$NON-NLS-1$
 
 	/**
 	 * Constructor for StapNewWizardPage.
