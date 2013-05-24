@@ -36,10 +36,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class BuildFunctionInfos {
-	
+
 	private Document document;
 	private LibHoverInfo hoverInfo = new LibHoverInfo();
-	
+
 	public BuildFunctionInfos(Document document) {
 		this.document = document;
 	}
@@ -61,7 +61,7 @@ public class BuildFunctionInfos {
             String function_node_rt_value = function_node_returntype_node.getNodeValue();
             f.setReturnType(function_node_rt_value);
         }		// returntype
-        
+
         NodeList function_node_kids = function_node.getChildNodes();
         for (int fnk = 0; fnk < function_node_kids.getLength(); fnk++) {
         	Node function_node_kid = function_node_kids.item(fnk);
@@ -87,7 +87,7 @@ public class BuildFunctionInfos {
                 }
                 f.setPrototype(prototype);
             }	// prototype
-            
+
             else if (function_node_kid_name.equals("headers")) { //$NON-NLS-1$
 
                 // headers
@@ -103,12 +103,12 @@ public class BuildFunctionInfos {
                     }
                 }
             }	// headers
-            
+
 
             else if (function_node_kid_name.equals("groupsynopsis")) { //$NON-NLS-1$
-            	
+
             	// group synopsis
-            	
+
             	NamedNodeMap attr = function_node_kid.getAttributes();
             	Node idnode = attr.getNamedItem("id"); //$NON-NLS-1$
             	String id = idnode.getNodeValue();
@@ -124,7 +124,7 @@ public class BuildFunctionInfos {
         			}
 				}
             }
-            
+
             else if (function_node_kid_name.equals("synopsis")) { //$NON-NLS-1$
 
                 // synopsis
@@ -167,7 +167,7 @@ public class BuildFunctionInfos {
 	}
 
 	/**
-	 * @param args[0] - URL or file name of xml document to parse
+	 * @param args args[0] - URL or file name of xml document to parse
 	 *        args[1] - file name to place resultant serialized LibHoverInfo
 	 */
 	public static void main(String[] args) {

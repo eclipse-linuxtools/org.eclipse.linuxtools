@@ -43,7 +43,7 @@ public class LibHoverLibrary {
 	private LibHoverInfo hoverInfo = new LibHoverInfo();
 	private boolean haveReadHoverInfo = false;
 
-	public LibHoverLibrary(String name, String location, String docs, 
+	public LibHoverLibrary(String name, String location, String docs,
 			String nameSpace, boolean isCPP) {
 		this.name = name;
 		this.location = location;
@@ -51,28 +51,28 @@ public class LibHoverLibrary {
 		this.isCPP = isCPP;
 		this.nameSpace = nameSpace;
 	}
-	
+
 	/**
 	 * Get the name of the library
-	 * 
+	 *
 	 * @return the name of the library
 	 */
-	public String getName() { 
-		return name; 
+	public String getName() {
+		return name;
 	}
-	
+
 	/**
 	 * Get the location of the library hover info (URL or file name)
-	 * 
+	 *
 	 * @return the URL or file name string for the library hover info location
 	 */
 	public String getLocation() {
 		return location;
 	}
-	
+
 	/**
 	 * Get the browser help documentation URL for this library
-	 * 
+	 *
 	 * @return the name of the help documentation URL
 	 */
 	public String getDocs() {
@@ -81,8 +81,8 @@ public class LibHoverLibrary {
 
 	/**
 	 * Set the browser help documentation URL for this library
-	 * 
-	 * @param the name of the help documentation URL
+	 *
+	 * @param docs The name of the help documentation URL
 	 */
 	public void setDocs(String docs) {
 		this.docs = docs;
@@ -90,7 +90,7 @@ public class LibHoverLibrary {
 
 	/**
 	 * Get the name space of the library hover extension
-	 * 
+	 *
 	 * @return the name space of the library extension
 	 */
 	public String getNameSpace() {
@@ -98,17 +98,17 @@ public class LibHoverLibrary {
 	}
 
 	/**
-	 * Set the name space of the extension used to specify this library
-	 * 
-	 * @param the name space string
+	 * Set the name space of the extension used to specify this library.
+	 *
+	 * @param nameSpace The name space string
 	 */
 	public void setNameSpace(String nameSpace) {
 		this.nameSpace = nameSpace;
 	}
-	
+
 	/**
 	 * Is this library a C++ library?
-	 * 
+	 *
 	 * @return true if C++ library, false otherwise
 	 */
 	public boolean isCPP() {
@@ -117,7 +117,7 @@ public class LibHoverLibrary {
 
 	/**
 	 * Get the library hover info for this library
-	 * 
+	 *
 	 * @return the library hover info for this library
 	 */
 	public synchronized LibHoverInfo getHoverInfo() {
@@ -171,19 +171,19 @@ public class LibHoverLibrary {
 		}
 		return hoverInfo;
 	}
-	
+
 	/**
 	 * Set the library hover info.
-	 * 
+	 *
 	 * @param hoverInfo the library hover info to set
 	 */
 	public synchronized void setHoverinfo(LibHoverInfo hoverInfo) {
 		this.hoverInfo = hoverInfo;
 	}
-	
+
 	/**
 	 * Fetch the class info for a given class.
-	 * 
+	 *
 	 * @param className the name of the class to fetch info for
 	 * @return ClassInfo or null if no class info can be found
 	 */
@@ -218,7 +218,7 @@ public class LibHoverLibrary {
 		// Otherwise no template, just fetch the class info directly.
 		return getHoverInfo().classes.get(className);
 	}
-	
+
 	private void resolveTemplateTypes(String className,
 			ArrayList<String> templateTypes, int index) {
 		int startIndex = index + 1;
@@ -249,7 +249,7 @@ public class LibHoverLibrary {
 
 	/**
 	 * Fetch the function info for a given function.
-	 * 
+	 *
 	 * @param name of function to find info for
 	 * @return FunctionInfo or null if no function info exists
 	 */
