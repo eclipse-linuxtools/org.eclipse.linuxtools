@@ -32,20 +32,20 @@ import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart & bar chart)
- * 
+ *
  * @author Marzia Maugeri <marzia.maugeri@st.com>
- * 
+ *
  */
 public class ChartFactory {
 
     /**
      * Produces a pie chart from the input objects.
-     * 
+     *
      * @param objects
      *            the input data
      * @param nameField
      *            the field used to get the labels of the objects (colored parts in the pie).
-     * @param valField
+     * @param valFields
      *            the field providing the values for the pie parts.
      * @return a new pie chart
      */
@@ -106,7 +106,7 @@ public class ChartFactory {
 
     /**
      * Produces a 2D bar chart from the input objects.
-     * 
+     *
      * @param objects
      *            the input data
      * @param nameField
