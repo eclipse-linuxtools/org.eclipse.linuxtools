@@ -2,46 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>GCov Plug-in User Guide - Opening gcov result</title>
+		<title>GCov Plug-in User Guide - Profiling Code Coverage</title>
 		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
-				<th style="width: 100%" align="center" colspan="3">Opening gcov result</th>
+				<th style="width: 100%" align="center" colspan="3">Profiling Code Coverage</th>
 			</tr>
 			<tr>
 				<td style="width: 20%" align="left">
-					<a href="Installation-and-Set-Up.html" title="Installation and Set-Up">
+					<a href="Opening-gcov-result.html" title="Opening gcov result">
 						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Profiling-Code-Coverage.html" title="Profiling Code Coverage">
+					<a href="Gcov-main-view.html" title="Gcov main view">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 20%" align="left" valign="top">Installation and Set-Up</td>
+				<td style="width: 20%" align="left" valign="top">Opening gcov result</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Profiling Code Coverage</td>
+				<td style="width: 20%" align="right" valign="top">Gcov main view</td>
 			</tr>
 		</table><hr/>
-		<h1 id="Opening_gcov_result">Opening gcov result</h1>
-		<p>Once the application is compiled and run is finished, several "gcno" and "gcda" files are generated under the project.</p>
+		<h1 id="Profiling_Code_Coverage">Profiling Code Coverage</h1>
+		<p>Another way to bring up the gcov view is to profile your executable using Profiling Tools-&gt;Profile Code Coverage.  This assumes that the executable has been set up to build with the proper compilation flags.</p>
 		<p>
-			<img border="0" src="images/Gcov-project-explorer.png"/>
+			<img border="0" src="images/LinuxToolsGcovProfilingTools.png"/>
 		</p>
-		<p>Double clicking on one of these files will open a dialog to select the associated binary.  The dialog allows you to display details only for the file that generated the associated "gcno"/"gcda" file or to display results for all "gcno"/"gcda" files which are part of source files used in a binary executable.</p>
+		<p>You can also specify the Gcov tool as the profiling tool of choice for Profile as...-&gt;Local C/C++ Application using the Profiler tab.</p>
 		<p>
-			<img border="0" src="images/Gcov-binary-file.png"/>
+			<img border="0" src="images/LinuxToolsProfileAsGcov.png"/>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
-					<a href="Installation-and-Set-Up.html" title="Installation and Set-Up">
+					<a href="Opening-gcov-result.html" title="Opening gcov result">
 						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
@@ -51,15 +51,15 @@
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
-					<a href="Profiling-Code-Coverage.html" title="Profiling Code Coverage">
+					<a href="Gcov-main-view.html" title="Gcov main view">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 20%" align="left" valign="top">Installation and Set-Up</td>
+				<td style="width: 20%" align="left" valign="top">Opening gcov result</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Profiling Code Coverage</td>
+				<td style="width: 20%" align="right" valign="top">Gcov main view</td>
 			</tr>
 		</table>
 	</body>

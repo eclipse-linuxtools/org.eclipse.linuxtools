@@ -30,8 +30,8 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Installation_and_Set-Up">Installation and Set-Up</h1>
-		<p>Gprof plugin depends on binutils (such as addr2line, c++filt and nm). Gprof can be used on any platform as soon as these binutils are in PATH. For example, you can use it on Windows with Cygwin.</p>
-		<p>First of all, the user has to compile the C/C++ program with profiling enabled using "-ftest-coverage -fprofile-arcs" options prior to running the tool. These two options must be passed to both the compiler and the linker (please refer to gcc documentation for further information)</p><hr/>
+		<p>Gcov plugin depends on binutils (such as addr2line, c++filt and nm). Gcov can be used on any platform as soon as these binutils are in PATH. For example, you can use it on Windows with Cygwin.</p>
+		<p>First of all, the user has to compile the C/C++ program with profiling enabled using "-ftest-coverage -fprofile-arcs" options prior to running the tool. These two options must be passed via the project properties to both the compiler (C/C++ Build-&gt;Settings-&gt;Tool Settings-&gt;GCC C Compiler-&gt;Miscellaneous-&gt;Other flags) and the linker (C/C++ Build-&gt;Settings-&gt;Tool Settings-&gt;GCC C Linker-&gt;Miscellaneous-&gt;Linker flags).  For a CDT Autotools project, there is a check-box found under the project properties (Autotools-&gt;Configure Settings-&gt;configure-&gt;Advanced-&gt;Gcov support).</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
