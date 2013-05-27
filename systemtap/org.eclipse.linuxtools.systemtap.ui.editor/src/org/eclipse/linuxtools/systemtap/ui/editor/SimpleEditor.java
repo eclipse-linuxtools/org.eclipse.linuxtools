@@ -78,8 +78,8 @@ public class SimpleEditor extends TextEditor {
 
 	/**
 	 * Jumps to the location in the IDocument.
-	 * @param line the line you wish to jump to
-	 * @param the character you wish to jump to
+	 * @param line The line you wish to jump to.
+	 * @param character The character you wish to jump to.
 	 */
 	public void jumpToLocation(int line, int character) {
 		IDocument doc = getSourceViewer().getDocument();

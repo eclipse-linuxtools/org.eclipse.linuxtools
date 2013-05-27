@@ -32,7 +32,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 
@@ -64,7 +63,6 @@ public class GraphSelectorEditor extends EditorPart {
 	 * the list.
 	 * @param title The name to be shown on the new tab
 	 * @param dataSet The <code>IDataSet</code> for the new script set
-	 * @param cmd The running command that this script set represents.
 	 * @since 2.0
 	 */
 	public void createScriptSet(String title, IDataSet dataSet) {
@@ -201,8 +199,7 @@ public class GraphSelectorEditor extends EditorPart {
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput input) {
 		setInput(input);
 		setSite(site);
 	}

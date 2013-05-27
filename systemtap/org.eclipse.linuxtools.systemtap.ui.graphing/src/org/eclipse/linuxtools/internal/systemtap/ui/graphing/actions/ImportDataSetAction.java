@@ -113,7 +113,6 @@ public class ImportDataSetAction extends Action implements IWorkbenchWindowActio
 	/**
 	 * This method will read out the labels and DataSet type from the file
 	 * @param f The file that was selected for reading.
-	 * @return An array of all of the labels found in the file
 	 */
 	private void readHeader(File f) {
 
