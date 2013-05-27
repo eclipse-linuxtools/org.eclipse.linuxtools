@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import org.eclipse.cdt.debug.ui.CDebugUIPlugin;
@@ -48,6 +48,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CoreMessagesViewer {
 
@@ -67,20 +68,20 @@ public class CoreMessagesViewer {
 	public ITreeContentProvider contentProvider;
 	public IAction expandAction;
 	public IAction collapseAction;
-	
+
 	private TreeViewer viewer;
 
 	public CoreMessagesViewer(Composite parent, int style) {
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
 		viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		if (imageRegistry.getDescriptor(VALGRIND_ERROR) == null) {
-			ImageDescriptor d = ValgrindUIPlugin.getImageDescriptor(VALGRIND_ERROR_IMAGE);
+			ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_ERROR_IMAGE);
 			if (d != null) {
 				imageRegistry.put(VALGRIND_ERROR, d);
 			}
 		}
 		if (imageRegistry.getDescriptor(VALGRIND_INFO) == null) {
-			ImageDescriptor d = ValgrindUIPlugin.getImageDescriptor(VALGRIND_INFO_IMAGE);
+			ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_INFO_IMAGE);
 			if (d != null) {
 				imageRegistry.put(VALGRIND_INFO, d);
 			}
@@ -144,7 +145,7 @@ public class CoreMessagesViewer {
 				if (element instanceof ValgrindStackFrame) {
 					ValgrindStackFrame frame = (ValgrindStackFrame) element;
 					ILaunch launch = frame.getLaunch();
-					ISourceLocator locator = launch.getSourceLocator();		
+					ISourceLocator locator = launch.getSourceLocator();
 					if (locator instanceof AbstractSourceLookupDirector) {
 						AbstractSourceLookupDirector director = (AbstractSourceLookupDirector) locator;
 						ISourceLookupParticipant[] participants = director.getParticipants();
@@ -167,7 +168,7 @@ public class CoreMessagesViewer {
 											sourceLocator.initializeFromMemento(memento);
 										}
 									}
-									
+
 									// replace old source locator
 									locator = sourceLocator;
 									launch.setSourceLocator(sourceLocator);
@@ -177,7 +178,7 @@ public class CoreMessagesViewer {
 							}
 						}
 					}
-					ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);				
+					ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);
 
 					try {
 						ProfileUIUtils.openEditorAndSelect(result, frame.getLine());
@@ -211,10 +212,10 @@ public class CoreMessagesViewer {
 					manager.add(expandAction);
 					manager.add(collapseAction);
 				}
-			}			
+			}
 		});
 
-		manager.setRemoveAllWhenShown(true);	
+		manager.setRemoveAllWhenShown(true);
 		Menu contextMenu = manager.createContextMenu(viewer.getTree());
 		viewer.getControl().setMenu(contextMenu);
 	}

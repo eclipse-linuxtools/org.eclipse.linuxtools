@@ -18,13 +18,10 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -51,12 +48,6 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	protected ValgrindViewPart view;
 	// The page containing the created Valgrind view
 	protected IWorkbenchPage activePage;
-
-	/**
-	 * The constructor
-	 */
-	public ValgrindUIPlugin() {
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -165,14 +156,6 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		return view;
 	}
 
-	public static Shell getActiveWorkbenchShell() {
-		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
-		if (window != null) {
-			return window.getShell();
-		}
-		return null;
-	}
-
 	protected void initializeToolMap() {
 		toolMap = new HashMap<String, IConfigurationElement>();
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, VIEW_EXT_ID);
@@ -185,17 +168,6 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path.
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 
 	protected HashMap<String, IConfigurationElement> getToolMap() {
