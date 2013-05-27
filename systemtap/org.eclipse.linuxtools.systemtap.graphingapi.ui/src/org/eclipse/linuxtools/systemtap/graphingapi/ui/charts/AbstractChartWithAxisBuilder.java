@@ -41,9 +41,6 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 
     /**
      * Constructor.
-     *
-     * @param dataSet
-     *            data for chart
      */
 
     public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {

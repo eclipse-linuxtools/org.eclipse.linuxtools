@@ -32,7 +32,7 @@ public class BarGraph extends AGraph implements IBlockGraph, IScrollGraph {
 	 * Default constructor for the bar graph.
 	 * @param title Title of the graph.
 	 * @param style Style code to use.
-	 * @param adapt Dataset Adapter for the graph.
+	 * @param adapter Dataset Adapter for the graph.
 	 */
 	public BarGraph(GraphComposite parent, int style, String title, IAdapter adapter) {
 		super(parent, style, title, adapter);

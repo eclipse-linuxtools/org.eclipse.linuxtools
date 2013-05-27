@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.ScrollBar;
  * based upon this class.
  * @author Henry Hughes
  * @author Ryan Morse
- * @see org.eclipse.linuxtools.systemtap.graphingapi.ui.graphs.Graph
+ * @see org.eclipse.linuxtools.systemtap.graphingapi.ui.graphs.AGraph
  *
  */
 public class GraphCanvas extends Canvas {
@@ -91,7 +91,7 @@ public class GraphCanvas extends Canvas {
 	 * An accessor to set the Y padding width. Padding is defined as pixels inside the bounds
 	 * of the drawable area that are left blank when rendering the graph. Valid values are integers
 	 * greater than 0. The canvas will silently ignore requests to set the padding width to <=0.
-	 * @param xpad New Y padding value.
+	 * @param ypad New Y padding value.
 	 */
 	public void setYPadding(int ypad) { this.ypad = ypad > 0 ? ypad : this.ypad; }
 	/**
