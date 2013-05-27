@@ -30,7 +30,7 @@ public class ChartStreamDaemon2 extends ChartStreamDaemon {
 	/**
 	 * Changes the internal <code>DataSet</code> and parsing expression.
 	 * @param d The new <code>DataSet</code> to store the parsed output.
-	 * @param regExpr String[] containing the RegEx patterns to match against.
+	 * @param p The data set parser.
 	 */
 	public void setParser(IDataSet d, IDataSetParser p) {
 		data = d;

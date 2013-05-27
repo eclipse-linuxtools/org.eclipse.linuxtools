@@ -31,7 +31,7 @@ public class UniqueFilter implements IDataSetFilter {
 	/**
 	 * Verify that the number passed is in the bounds of the created filter.
 	 *
-	 * @param num The number to verify.
+	 * @param data The data to verify.
 	 *
 	 * @return True if the number is within bounds.
 	 */
