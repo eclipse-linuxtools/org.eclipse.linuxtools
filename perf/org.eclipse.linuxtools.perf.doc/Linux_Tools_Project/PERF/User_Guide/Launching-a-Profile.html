@@ -33,13 +33,30 @@
 		<p>Perf plug-in provides useful profile information in a user-friendly interface, gathering the required information from the Perf command-line tool and hooking it into the Eclipse and CDT's facilities.</p>
 		<p>During a profile run, the Perf plug-in will start, stop and perform other Perf tasks in the background as needed, while the binary being profiled runs as normal.</p>
 		<h2 id="One-click_launch">One-click launch</h2>
-		<p>The Perf plug-in for Eclipse includes a one-click launch feature which profiles the binary with default options. To use the one-click launch, right click on the project, the binary or in an open editor for a source file belonging to that project. Then, navigate to Profile As and click Profile With Perf to start the launch.</p>
+		<p>The Perf plug-in for Eclipse includes a one-click launch feature which profiles the binary with default options. To use the one-click launch, right click on the project, the binary or in an open editor for a source file belonging to that project.Here there are two ways to start a launch:</p>
+		<p>Navigating to Profiling Tools and clicking Profile With Perf</p>
 		<p>
-			<img width="500" border="0" src="images/Perf_oneclicklaunch.png"/>
+			<img border="0" src="images/Perf_original_submenu.png"/>
+		</p>
+		<p>or navigating to Profiling Tools, clicking on Profile Timing and setting the timing tools to be Perf</p>
+		<p>
+			<img border="0" src="images/Callgraph_timing_submenu.png"/>
+		</p>
+		<p>To properly set the preferences you can go to C/C++-&gt;Profiling-&gt;Categories-&gt;Timing and set the default timing tool to be Perf.</p>
+		<p>
+			<img border="0" src="images/Perf_global_prefs.png"/>
+		</p>
+		<p>You can also set project specific preferences which override workspace preferences by using project Properties-&gt;C/C++ General-&gt;Profiling Categories-&gt;Timing. </p>
+		<p>
+			<img border="0" src="images/Perf_proj_prefs.png"/>
+		</p>
+		<p>You can also profile your application using Profile as...-&gt;Local C/C++ Application whereby you have set the profiling tool in the Profiler tab to be perf.</p>
+		<p>
+			<img border="0" src="images/Perf_tab.png"/>
 		</p>
 		<h2 id="Launching_a_Customized_Profile">Launching a Customized Profile</h2>
 		<p>The Perf plug-in allows you to configure a profile run using several options. These options are exposed via the launch configuration in a user-friendly manner, allowing for a more complex profile.</p>
-		<p>To customize a profile, right click on the project, the binary or in an open editor for a source file belonging to that project. Then, navigate to Profile As &gt; Profile Configurations... to open the Profile Configurations menu. Refer to the Profiling Configuration section for more information about configuring a profile.</p>
+		<p>To customize a profile, right click on the project, the binary or in an open editor for a source file belonging to that project. Then, navigate to Profiling Tools &gt; Profile Configurations... to open the Profile Configurations menu. Refer to the Profiling Configuration section for more information about configuring a profile.</p>
 		<p>After configuring a profile, click the Profile button to launch the profile.</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
