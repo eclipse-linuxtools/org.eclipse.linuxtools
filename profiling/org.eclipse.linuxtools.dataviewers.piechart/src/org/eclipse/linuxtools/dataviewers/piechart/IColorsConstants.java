@@ -16,7 +16,7 @@ public interface IColorsConstants {
     static final RGB[] COLORS = new RGB[] { new RGB(255, 0, 0), new RGB(0, 255, 0), new RGB(0, 0, 255),
             new RGB(255, 255, 0), new RGB(255, 0, 255), new RGB(0, 255, 255), new RGB(255, 255, 255),
             new RGB(0, 100, 205), new RGB(100, 205, 0), new RGB(205, 0, 100), new RGB(0, 0, 0), new RGB(100, 255, 255),
-            new RGB(255, 100, 255), new RGB(255, 255, 100), new RGB(255, 255, 255), new RGB(255, 255, 204),
+            new RGB(255, 100, 255), new RGB(255, 255, 100)/*, new RGB(255, 255, 255), new RGB(255, 255, 204),
             new RGB(255, 255, 153), new RGB(255, 255, 102), new RGB(255, 255, 51), new RGB(255, 255, 0),
             new RGB(255, 204, 255), new RGB(255, 204, 204), new RGB(255, 204, 153), new RGB(255, 204, 102),
             new RGB(255, 204, 51), new RGB(255, 204, 0), new RGB(255, 153, 255), new RGB(255, 153, 204),
@@ -60,7 +60,7 @@ public interface IColorsConstants {
             new RGB(51, 102, 255), new RGB(51, 102, 204), new RGB(51, 102, 153), new RGB(51, 102, 102),
             new RGB(51, 102, 51), new RGB(51, 102, 0), new RGB(51, 51, 255), new RGB(51, 51, 204),
             new RGB(51, 51, 153), new RGB(51, 51, 102), new RGB(51, 51, 51), new RGB(51, 51, 0), new RGB(51, 0, 255),
-            new RGB(51, 0, 204), new RGB(51, 0, 153), new RGB(51, 0, 102), new RGB(51, 0, 51), new RGB(51, 0, 0),
+            new RGB(51, 0, 204), new RGB(51, 0, 153), new RGB(51, 0, 102), new RGB(51, 0, 51), new RGB(51, 0, 0),*/
 
     };
 

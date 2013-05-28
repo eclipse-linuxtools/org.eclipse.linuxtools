@@ -70,7 +70,7 @@ public class PieChartPaintListener implements PaintListener {
             int incrementAngle = 0;
             int initialAngle = 90;
             for (int i = 0; i < nelemSeries; i++) {
-                gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
+                gc.setBackground(new Color(e.display, chart.colorList.get(i)));
 
                 if (i == (nelemSeries - 1))
                     sweepAngle = 360 - incrementAngle;
