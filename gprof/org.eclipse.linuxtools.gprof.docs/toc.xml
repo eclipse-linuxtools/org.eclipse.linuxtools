@@ -5,6 +5,7 @@
 		<topic href="Linux_Tools_Project/GProf/User_Guide/Installation-and-Set-Up.html" label="Installation and Set-Up"></topic>
 		<topic href="Linux_Tools_Project/GProf/User_Guide/Supported-format.html" label="Supported format"></topic>
 		<topic href="Linux_Tools_Project/GProf/User_Guide/Opening-gmon-out.html" label="Opening gmon.out"></topic>
+		<topic href="Linux_Tools_Project/GProf/User_Guide/Profiling-Using-GProf.html" label="Profiling Using GProf"></topic>
 		<topic href="Linux_Tools_Project/GProf/User_Guide/GProf-View.html" label="GProf View"></topic>
 		<topic href="Linux_Tools_Project/GProf/User_Guide/Troubleshooting.html" label="Troubleshooting"></topic>
 		<topic href="Linux_Tools_Project/GProf/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>

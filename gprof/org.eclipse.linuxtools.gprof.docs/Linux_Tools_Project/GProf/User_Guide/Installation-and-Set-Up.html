@@ -31,9 +31,9 @@
 		</table><hr/>
 		<h1 id="Installation_and_Set-Up">Installation and Set-Up</h1>
 		<p>Gprof plugin depends on binutils (such as addr2line, c++filt and nm). Gprof can be used on any platform as soon as these binutils are in PATH. For example, you can use it on windows with cygwin. </p>
-		<p>First of all, the user has to compile the C/C++ program with profiling enabled using the -pg option prior to running the tool. </p>
+		<p>First of all, the user has to compile the C/C++ program with profiling enabled using the -pg option prior to running the tool. This can be done via the project Properties-&gt;C/C++ Build-&gt;Settings-&gt;Tool Settings-&gt;GCC C Compiler-&gt;Debugging tab which has a check-box "Generate Gprof Information (-pg)".  A similar check-box can be used for CDT Autotools projects.  It is found under project Properties-&gt;Autotools-&gt;Configure Settings-&gt;configure-&gt;Advanced.</p>
 		<p>
-			<img border="0" src="images/Gprof-compile-step.png"/> 
+			<img border="0" src="images/LinuxtoolsGprofBuildConsole.png"/>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
