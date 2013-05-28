@@ -11,14 +11,12 @@
 package org.eclipse.linuxtools.dataviewers.actions;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersImages;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 import org.eclipse.linuxtools.dataviewers.dialogs.STDataViewersSortDialog;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * This action allows the user to sort the data in the viewer
@@ -35,16 +33,15 @@ public class STDataViewersSortAction extends Action {
      * @param stViewer
      */
     public STDataViewersSortAction(AbstractSTViewer stViewer) {
-        super(STDataViewersMessages.sortAction_title);
-        Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_SORT);
-        super.setImageDescriptor(ImageDescriptor.createFromImage(img));
-        super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
-        this.stViewer = stViewer;
+		super(STDataViewersMessages.sortAction_title, STDataViewersImages
+				.getImageDescriptor(STDataViewersImages.IMG_SORT));
+		super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
+		this.stViewer = stViewer;
 
-        // building a sort dialog
-        dialog = getSortDialog();
+		// building a sort dialog
+		dialog = getSortDialog();
 
-        setEnabled(true);
+		setEnabled(true);
     }
 
     /*

@@ -15,14 +15,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersCSVExporter;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersImages;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 import org.eclipse.linuxtools.dataviewers.dialogs.STDataViewersExportToCSVDialog;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * This action export the STViewers data to CSV format file
@@ -46,12 +44,12 @@ public class STExportToCSVAction extends Action {
      *            the stViewer to export
      */
     public STExportToCSVAction(AbstractSTViewer stViewer) {
-        super(STDataViewersMessages.exportToCSVAction_title);
-        Image img = STDataViewersImages.getImage(STDataViewersImages.IMG_EXPORT);
-        super.setImageDescriptor(ImageDescriptor.createFromImage(img));
+		super(STDataViewersMessages.exportToCSVAction_title,
+				STDataViewersImages
+						.getImageDescriptor(STDataViewersImages.IMG_EXPORT));
 
-        this.stViewer = stViewer;
-        this.exporter = new STDataViewersCSVExporter(stViewer);
+		this.stViewer = stViewer;
+		this.exporter = new STDataViewersCSVExporter(stViewer);
     }
 
     /*

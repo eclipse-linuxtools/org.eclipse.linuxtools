@@ -17,7 +17,6 @@ import java.util.HashMap;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -95,7 +94,7 @@ public class STDataViewersImages {
 
     /**
      * Declare an Image in the registry table.
-     * 
+     *
      * @param key
      *            The key to use when registering the image
      * @param path
@@ -111,7 +110,7 @@ public class STDataViewersImages {
 
     /**
      * Declare an Image in the registry table.
-     * 
+     *
      * @param key
      *            The key to use when registering the image
      * @param path
@@ -128,43 +127,24 @@ public class STDataViewersImages {
     }
 
     /**
-     * Returns the ImageRegistry.
-     */
-    public static ImageRegistry getImageRegistry() {
-        if (imageRegistry == null) {
-            initializeImageRegistry();
-        }
-        return imageRegistry;
-    }
-
-    /**
      * Initialize the image registry by declaring all of the required graphics. This involves creating JFace image
      * descriptors describing how to create/find the image should it be needed. The image is not actually allocated
      * until requested.
-     * 
+     *
      * Prefix conventions Wizard Banners WIZBAN_ Preference Banners PREF_BAN_ Property Page Banners PROPBAN_ Color
      * toolbar CTOOL_ Enable toolbar ETOOL_ Disable toolbar DTOOL_ Local enabled toolbar ELCL_ Local Disable toolbar
      * DLCL_ Object large OBJL_ Object small OBJS_ View VIEW_ Product images PROD_ Misc images MISC_
-     * 
+     *
      * Where are the images? The images (typically gifs) are found in the same location as this plugin class. This may
      * mean the same package directory as the package holding this class. The images are declared using this.getClass()
      * to ensure they are looked up via this plugin class.
-     * 
+     *
      * @see org.eclipse.jface.resource.ImageRegistry
      */
     public static ImageRegistry initializeImageRegistry() {
         imageDescriptors = new HashMap<String, ImageDescriptor>(30);
         declareImages();
         return imageRegistry;
-    }
-
-    /**
-     * Returns the <code>Image</code> identified by the given key, or <code>null</code> if it does not exist.
-     */
-    public static Image getImage(String key) {
-        if (imageDescriptors == null)
-            initializeImageRegistry();
-        return getImageRegistry().get(key);
     }
 
     /**
