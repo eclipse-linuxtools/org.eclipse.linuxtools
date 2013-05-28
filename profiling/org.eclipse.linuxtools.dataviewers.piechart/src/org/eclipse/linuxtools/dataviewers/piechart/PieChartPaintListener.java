@@ -16,7 +16,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
-
 import org.swtchart.ISeries;
 
 public class PieChartPaintListener implements PaintListener {
@@ -34,10 +33,11 @@ public class PieChartPaintListener implements PaintListener {
     public void paintControl(PaintEvent e) {
         GC gc = e.gc;
         Rectangle bounds;
-        if (plotArea == null)
-            bounds = gc.getClipping();
-        else
-            bounds = plotArea.getBounds();
+        if (plotArea == null) {
+			bounds = gc.getClipping();
+		} else {
+			bounds = plotArea.getBounds();
+		}
         double[][] series = this.getPieSeriesArray();
         int width = (bounds.width - bounds.x) / series.length;
         int x = bounds.x;
@@ -62,19 +62,19 @@ public class PieChartPaintListener implements PaintListener {
         int pieWidth = Math.min(bounds.width - X_GAP, bounds.height);
         int pieX = bounds.x + (bounds.width - pieWidth) / 2;
         int pieY = bounds.y + (bounds.height - pieWidth) / 2;
-        if (sumTotal == 0)
-            gc.drawOval(pieX, pieY, pieWidth, pieWidth);
-        else {
+        if (sumTotal == 0) {
+			gc.drawOval(pieX, pieY, pieWidth, pieWidth);
+		} else {
             double factor = 100 / sumTotal;
             int sweepAngle = 0;
             int incrementAngle = 0;
             int initialAngle = 90;
             for (int i = 0; i < nelemSeries; i++) {
-                gc.setBackground(new Color(e.display, IColorsConstants.COLORS[i]));
+                gc.setBackground(new Color(e.display, chart.sliceColor(i)));
 
-                if (i == (nelemSeries - 1))
-                    sweepAngle = 360 - incrementAngle;
-                else {
+                if (i == (nelemSeries - 1)) {
+					sweepAngle = 360 - incrementAngle;
+				} else {
                     double angle = series[i] * factor * 3.6;
                     sweepAngle = (int) Math.round(angle);
                 }
@@ -88,17 +88,19 @@ public class PieChartPaintListener implements PaintListener {
 
     private double[][] getPieSeriesArray() {
         ISeries series[] = this.chart.getSeriesSet().getSeries();
-        if (series == null || series.length == 0)
-            return new double[0][0];
+        if (series == null || series.length == 0) {
+			return new double[0][0];
+		}
         double result[][] = new double[series[0].getXSeries().length][series.length];
 
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {
                 double d[] = series[j].getXSeries();
-                if (d != null && d.length > 0)
-                    result[i][j] = d[i];
-                else
-                    result[i][j] = 0;
+                if (d != null && d.length > 0) {
+					result[i][j] = d[i];
+				} else {
+					result[i][j] = 0;
+				}
             }
         }
 
