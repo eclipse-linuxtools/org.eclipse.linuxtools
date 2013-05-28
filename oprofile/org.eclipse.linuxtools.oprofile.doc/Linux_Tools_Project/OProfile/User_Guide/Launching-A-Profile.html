@@ -40,17 +40,38 @@
 		<p>To use the one-click launch, right click on the 
 			<i>project</i>, the 
 			<i>binary</i> or in an 
-			<i>open editor</i> for a source file belonging to that project. Then, navigate to <u>Profile As</u> and click <u>Profile With OProfile</u> to start the launch.
+			<i>open editor</i> for a source file belonging to that project. Here there are two ways to start a launch:
+		</p>
+		<p>Navigating to <u>Profiling Tools</u> and clicking <u>Profile With OProfile</u></p>
+		<p>
+			<img border="0" src="images/Oprofile_original_submenu.png"/>
+		</p>
+		<p>or navigating to <u>Profiling Tools</u>, clicking on <u>Profile Timing</u> and setting the timing tools to be Oprofile.</p>
+		<p>
+			<img border="0" src="images/Callgraph_timing_submenu.png"/>
+		</p>
+		<p>To properly set the preferences you can go to 
+			<b>C/C++-&gt;Profiling-&gt;Categories-&gt;Timing</b> and set the default timing tool to be Oprofile.
 		</p>
 		<p>
-			<img border="0" src="images/Screenshot-one-click_launch.png"/>
+			<img border="0" src="images/Oprofile_global_prefs.png"/>
+		</p>
+		<p>Alternatively, you can set project specific preferences which override workspace preferences by using project 
+			<b>Properties-&gt;C/C++ General-&gt;Profiling Categories-&gt;Timing</b>. 
+		</p>
+		<p>
+			<img border="0" src="images/Oprofile_proj_prefs.png"/>
+		</p>
+		<p>You can also profile your application using Profile as...-&gt;Local C/C++ Application whereby you have set the profiling tool in the Profiler tab to be Oprofile. </p>
+		<p>
+			<img border="0" src="images/Oprofile_tab.png"/>
 		</p>
 		<h2 id="Launching_a_Customized_Profile">Launching a Customized Profile</h2>
 		<p>The OProfile plug-in allows you to configure a profile run using several available OProfile options. These options are exposed via the launch configuration in a user-friendly manner, allowing for a more complex profile. </p>
 		<p>To customize a profile, right click on the 
 			<i>project</i>, the 
 			<i>binary</i> or in an 
-			<i>open editor</i> for a source file belonging to that project. Then, navigate to <u>Profile As</u> &gt; <u>Profile Configurations...</u> to open the 
+			<i>open editor</i> for a source file belonging to that project. Then, navigate to <u>Profiling Tools</u> &gt; <u>Profile Configurations...</u> to open the 
 			<b>
 				<i>Profile Configurations</i>
 			</b> menu. Refer to the 
