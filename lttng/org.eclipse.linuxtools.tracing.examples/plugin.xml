@@ -11,5 +11,22 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.tracetype">
+      <type
+            event_type="org.eclipse.linuxtools.tmf.core.event.TmfEvent"
+            id="org.eclipse.linuxtools.tracing.examples.nexus"
+            isDirectory="false"
+            name="NexusLite Trace"
+            trace_type="org.eclipse.linuxtools.tracing.examples.trace.nexus.NexusTrace">
+      </type>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.ui.tracetypeui">
+      <type
+            icon="icons/jtypeassist_co.gif"
+            tracetype="org.eclipse.linuxtools.tracing.examples.nexus">
+      </type>
+   </extension>
 
 </plugin>
