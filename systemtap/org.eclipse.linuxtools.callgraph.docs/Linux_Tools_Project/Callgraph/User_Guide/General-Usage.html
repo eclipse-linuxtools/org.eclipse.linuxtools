@@ -30,11 +30,41 @@
 			</tr>
 		</table><hr/>
 		<h1 id="General_Usage">General Usage</h1>
-		<p>All the profiling plugins (including Eclipse Callgraph) are accessible from the C/C++ perspective. To start using Eclipse Callgraph, right-click on a project then navigate to  
-			<b>Profile As &gt; Function callgraph</b>. 
+		<p>All the profiling plugins (including Eclipse Callgraph) are accessible from the C/C++ perspective. There are two ways to start using Eclipse Callgraph via the 
+			<b>Profiling Tools</b> project menu:
+		</p>
+		<p>Using 
+			<b>Profiling Tools &gt; Function callgraph</b>
 <center>
 
-			<img border="0" src="images/Profile-screen.png"/>
+			<img border="0" src="images/Callgraph_orig_submenu.png"/>
+</center>
+		</p>
+		<p>or using 
+			<b>Profiling Tools &gt; Profile Timing</b> and setting the timing tool to be Callgraph.
+<center>
+
+			<img border="0" src="images/Callgraph_timing_submenu.png"/>
+</center>
+		</p>
+		<p>To properly set the preferences you can go to 
+			<b>C/C++-&gt;Profiling-&gt;Categories-&gt;Timing</b> and set the default timing tool to be Callgraph.
+<center>
+
+			<img border="0" src="images/Callgraph_global_preferences.png"/>
+</center>
+		</p>
+		<p>Alternatively, you can set project specific preferences which override workspace preferences by using project 
+			<b>Properties-&gt;C/C++ General-&gt;Profiling Categories-&gt;Timing</b>.
+<center>
+
+			<img border="0" src="images/Callgraph_proj_preferences.png"/>
+</center>
+		</p>
+		<p>You can also profile your application using Profile as...-&gt;Local C/C++ Application whereby you have set the profiling tool in the Profiler tab to be Callgraph.
+<center>
+
+			<img border="0" src="images/Callgraph_tab.png"/>
 </center>
 		</p>
 		<p>This will open a dialog from which you can select an executable to profile.
