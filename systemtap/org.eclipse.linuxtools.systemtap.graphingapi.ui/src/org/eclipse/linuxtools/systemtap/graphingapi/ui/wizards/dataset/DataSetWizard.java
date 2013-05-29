@@ -12,9 +12,6 @@
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -26,11 +23,8 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.XMLMemento;
 
 public class DataSetWizard extends Wizard implements INewWizard {
 	public DataSetWizard(File metaFile, String scriptFile) {
@@ -75,7 +69,6 @@ public class DataSetWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		writeParsingExpression();
 		return true;
 	}
 
@@ -85,71 +78,6 @@ public class DataSetWizard extends Wizard implements INewWizard {
 
 	public IDataSet getDataSet() {
 		return dataSet;
-	}
-
-	private boolean writeParsingExpression() {
-		XMLMemento data = copyExisting();
-		if(null == data) {
-			data = XMLMemento.createWriteRoot(IDataSetParser.XMLDataSetSettings);
-		}
-
-		try {
-			IMemento child = data.createChild(IDataSetParser.XMLFile, scriptFile);
-
-			saveColumns(child, dataSet.getTitles());
-			parser.saveXML(child);
-
-			FileWriter writer = new FileWriter(metaFile);
-			data.save(writer);
-			writer.close();
-		} catch(FileNotFoundException fnfe) {
-			return false;
-		} catch(IOException e) {
-			return false;
-		}
-
-		return true;
-	}
-
-	protected XMLMemento copyExisting() {
-		XMLMemento data = null;
-		try {
-			FileReader reader = new FileReader(metaFile);
-			if(!reader.ready()) {
-				reader.close();
-				return null;
-			}
-
-			data = XMLMemento.createReadRoot(reader, IDataSetParser.XMLDataSetSettings);
-			IMemento[] children = data.getChildren(IDataSetParser.XMLFile);
-
-			data = XMLMemento.createWriteRoot(IDataSetParser.XMLDataSetSettings);
-
-			IMemento child;
-			String dataSetID;
-			for(int i=0; i<children.length; i++) {
-				if(!scriptFile.equals(children[i].getID())) {
-					child = data.createChild(IDataSetParser.XMLFile, children[i].getID());
-					dataSetID = children[i].getString(IDataSetParser.XMLdataset);
-					child.putString(IDataSetParser.XMLdataset, dataSetID);
-
-					DataSetFactory.getParsingWizardPage(dataSetID).copyExisting(children[i], child);
-				}
-			}
-		} catch(FileNotFoundException fnfe) {
-		} catch(IOException ioe) {
-		} catch(WorkbenchException we) {}
-
-		return data;
-	}
-
-	protected boolean saveColumns(IMemento target, String[] columns) {
-		IMemento child;
-		for(String column: columns) {
-			child = target.createChild(IDataSetParser.XMLColumn);
-			child.putString(IDataSetParser.XMLname, column);
-		}
-		return true;
 	}
 
 	protected boolean openFile() {

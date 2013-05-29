@@ -11,20 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.graphingapi.core.datasets;
 
-import org.eclipse.ui.IMemento;
 
 
 public interface IDataSetParser {
 	IDataEntry parse(StringBuilder entry);
-	boolean saveXML(IMemento target);
-
-	String XMLDataSetSettings = "DataSetSettings"; //$NON-NLS-1$
-	String XMLparsingExpression = "parsingExpression"; //$NON-NLS-1$
-	String XMLparsingSpacer = "parsingSpacer"; //$NON-NLS-1$
-	String XMLColumn = "Column"; //$NON-NLS-1$
-	String XMLdataset = "dataset"; //$NON-NLS-1$
-	String XMLFile = "File"; //$NON-NLS-1$
-	String XMLSeries = "Series"; //$NON-NLS-1$
-	String XMLname = "name"; //$NON-NLS-1$
-	String XMLDelimiter = "Delimiter"; //$NON-NLS-1$
 }

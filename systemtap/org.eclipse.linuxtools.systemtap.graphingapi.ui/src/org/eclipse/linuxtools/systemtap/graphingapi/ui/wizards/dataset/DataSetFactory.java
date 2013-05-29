@@ -13,17 +13,13 @@ package org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset;
 
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.FilteredRowDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.FilteredTableDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.TableDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.TableParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.datadisplay.DataGrid;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IMemento;
 
 
 
@@ -84,16 +80,6 @@ public final class DataSetFactory {
 		}
 
 		return page;
-	}
-
-	public static IDataSetParser createParserXML(String id, IMemento source) {
-		if(id.equals(ids[0])) {
-			return new RowParser(source);
-		} else if(id.equals(ids[1])) {
-			return new TableParser(source);
-		}
-
-		return null;
 	}
 
 	public static DataGrid getDataGrid(Composite composite, IDataSet set) {
