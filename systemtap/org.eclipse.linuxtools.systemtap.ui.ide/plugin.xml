@@ -296,7 +296,7 @@
           id="org.eclipse.linuxtools.systemtap.ui.ide.property.systemtap"
           namespace="org.eclipse.linuxtools.systemtap.ui.ide.property"
           properties="systemtap"
-          type="java.util.Arrays$ArrayList">
+          type="java.lang.Object">
     </propertyTester>
  </extension>
  <extension

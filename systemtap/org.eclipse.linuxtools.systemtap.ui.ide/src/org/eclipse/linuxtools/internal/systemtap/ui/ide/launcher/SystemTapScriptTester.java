@@ -29,6 +29,10 @@ public class SystemTapScriptTester extends PropertyTester {
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
 
+		if (!(receiver instanceof AbstractList)){
+			return false;
+		}
+
 		@SuppressWarnings("unchecked")
 		AbstractList<Object> list = (AbstractList<Object>) receiver;
 		Object selectedObject = list.get(0);
