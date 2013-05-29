@@ -10,12 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.piechart;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -24,8 +20,6 @@ import org.swtchart.IBarSeries;
 import org.swtchart.ISeries;
 
 public class PieChart extends Chart {
-	
-	protected List<RGB> colorList = new ArrayList<RGB>();
 
     public PieChart(Composite parent, int style) {
         super(parent, style);
@@ -76,33 +70,7 @@ public class PieChart extends Chart {
             for (int j = 0; j < val[i].length; j++)
                 d[j] = val[i][j];
             s.setXSeries(d);
-            s.setBarColor(new Color(this.getDisplay(), sliceColor(i)));
+            s.setBarColor(new Color(this.getDisplay(), IColorsConstants.COLORS[i]));
         }
-    }
-    
-    private RGB sliceColor(int i) {
-    	if (colorList.size() > i) {
-    		return colorList.get(i);
-    	}
-    	
-    	RGB next;
-    	
-    	if (colorList.size() < IColorsConstants.COLORS.length) {
-    		next = IColorsConstants.COLORS[i];
-    	}
-    	else {
-    		RGB prev = colorList.get(colorList.size()-1);
-    		int mod = 192;
-    		int red = (int) (mod * Math.random());
-    		int green = (int) ((mod - red) * Math.random());
-    		int blue = mod - red - green;
-    		next = new RGB(0, 0, 0);
-    		next.red = (prev.red + red) % 256;
-    		next.green = (prev.green + green) % 256;
-    		next.blue = (prev.blue + blue) % 256;
-    	}
-    	
-    	colorList.add(next);
-    	return next;
     }
 }
