@@ -23,7 +23,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * Ruler action to toglle showing the annotation column.
  *
- * @since 4.2
+ * @since 5.0
  *
  */
 public class AnnotationColumnToggle extends AbstractRulerActionDelegate {

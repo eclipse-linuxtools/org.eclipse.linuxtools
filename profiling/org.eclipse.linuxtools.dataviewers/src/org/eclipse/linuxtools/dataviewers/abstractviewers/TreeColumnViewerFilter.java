@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * Note: content provider of the given TreeViewer must be a ITreeContentProvider
  *
  * @author Xavier Raynaud <xavier.raynaud@kalray.eu>
- * @since 4.1
+ * @since 5.0
  */
 public class TreeColumnViewerFilter extends ViewerFilter {
 

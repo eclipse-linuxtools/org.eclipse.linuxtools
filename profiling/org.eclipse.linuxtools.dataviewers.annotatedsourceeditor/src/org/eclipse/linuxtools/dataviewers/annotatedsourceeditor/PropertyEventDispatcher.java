@@ -22,6 +22,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
+/**
+ * @since 5.0
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public final class PropertyEventDispatcher {
     private final Map fHandlerMap = new HashMap();

@@ -12,6 +12,9 @@ package org.eclipse.linuxtools.dataviewers.annotatedsourceeditor;
 
 import org.eclipse.swt.graphics.Color;
 
+/**
+ * @since 5.0
+ */
 public interface IAnnotationProvider {
     /**
      * gets the background column of a editor line

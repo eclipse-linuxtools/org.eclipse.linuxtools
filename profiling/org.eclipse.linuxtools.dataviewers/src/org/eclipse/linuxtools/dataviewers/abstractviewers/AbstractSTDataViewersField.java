@@ -78,6 +78,9 @@ public abstract class AbstractSTDataViewersField implements ISTDataViewersField 
      * (non-Javadoc)
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#isShowingByDefault()
      */
+    /**
+	 * @since 5.0
+	 */
     @Override
     public boolean isShowingByDefault() {
         return true;

@@ -57,7 +57,7 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
      * @param style
      *            - the table style
      * @return a TreeViewer
-     * @since 4.1
+     * @since 5.0
      */
     @Override
     protected TreeViewer createViewer(Composite parent, int style) {
@@ -162,7 +162,7 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
      * (non-Javadoc)
      *
      * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer# getColumns()
-     * @since 4.1
+     * @since 5.0
      */
     @Override
     public TreeColumn[] getColumns() {

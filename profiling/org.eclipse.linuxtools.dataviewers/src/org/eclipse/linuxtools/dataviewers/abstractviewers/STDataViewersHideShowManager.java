@@ -188,6 +188,7 @@ public class STDataViewersHideShowManager {
 
     /**
      * Updates the columns width and status
+     * @since 5.0
      */
     public void updateColumns() {
         Item[] columns = stViewer.getColumns();

@@ -86,6 +86,9 @@ public class ProfileUIUtils {
 		}
 	}
 	
+	/**
+	 * @since 2.0
+	 */
 	public static void openEditorAndSelect(IFile file, int line) throws PartInitException, BadLocationException {
 		if (file.exists()) {
 			IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
