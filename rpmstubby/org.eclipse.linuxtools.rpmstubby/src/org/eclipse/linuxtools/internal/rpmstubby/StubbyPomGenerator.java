@@ -51,7 +51,6 @@ public class StubbyPomGenerator extends AbstractGenerator {
 			docbuilder = docfactory.newDocumentBuilder();
 			Document docroot = docbuilder.parse(pomFile.getContents());
 			model = new PomModel(docroot);
-
 		} catch (ParserConfigurationException e) {
 			StubbyLog.logError(e);
 		} catch (SAXException e) {
@@ -99,19 +98,13 @@ public class StubbyPomGenerator extends AbstractGenerator {
 			buffer.append("BuildRequires: mvn(" + entry.getKey() + ":"
 					+ entry.getValue() + ")\n");
 		}
-		for (Map.Entry<String, String> entry : model.getDependencies()
-				.entrySet()) {
-			buffer.append("Requires: mvn(" + entry.getKey() + ":"
-					+ entry.getValue() + ")\n");
-		}
+		buffer.append("BuildRequires: maven-local\n");
 	}
 
 	private void generateJavadocSubpackage(StringBuilder buffer) {
 		buffer.append("%package javadoc\n");
 		buffer.append("Group:          Documentation\n");
-		buffer.append("Summary:        Javadoc for %{name}\n");
-		buffer.append("Requires:       jpackage-utils\n\n");
-
+		buffer.append("Summary:        Javadoc for %{name}\n\n");
 		buffer.append("%description javadoc\n");
 		buffer.append("API documentation for %{name}.\n\n");
 
@@ -124,31 +117,13 @@ public class StubbyPomGenerator extends AbstractGenerator {
 
 	private void generateInstallSection(StringBuilder buffer) {
 		buffer.append("%install\n");
-		buffer.append("# jars\n");
-		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}\n");
-		buffer.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}.jar\n\n");
-
-		buffer.append("# poms\n");
-		buffer.append("install -d -m 755 %{buildroot}%{_mavenpomdir}\n");
-		buffer.append("install -pm 644 pom.xml \\\n");
-		buffer.append("    %{buildroot}%{_mavenpomdir}/JPP.%{name}.pom\n\n");
-
-		buffer.append("%add_maven_depmap JPP.%{name}.pom %{name}.jar\n\n");
-
-		buffer.append("# javadoc\n");
-		buffer.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}\n");
-		buffer.append("cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}/\n");
-		buffer.append("rm -rf target/site/api*\n\n");
+		buffer.append("%mvn_install\n\n");
 	}
 
 	private void generateFilesSections(StringBuilder buffer) {
-		buffer.append("%files\n");
-		buffer.append("%{_javadir}/*\n");
-		buffer.append("%{_mavenpomdir}/*\n");
-		buffer.append("%{_mavendepmapfragdir}/*\n\n");
-
-		buffer.append("%files javadoc\n");
-		buffer.append("%{_javadocdir}/%{name}\n\n");
+		buffer.append("%files -f .mfiles\n");
+		buffer.append("%dir %{_javadir}/%{name}\n\n");
+		buffer.append("%files javadoc -f .mfiles-javadoc\n\n");
 	}
 
 	private void generatePrepSection(StringBuilder buffer) {
@@ -158,9 +133,7 @@ public class StubbyPomGenerator extends AbstractGenerator {
 
 	private void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
-		buffer.append("mvn-rpmbuild \\\n");
-		buffer.append("        -e \\\n");
-		buffer.append("        install javadoc:javadoc\n\n");
+		buffer.append("%mvn_build\n\n");
 	}
 
 }
