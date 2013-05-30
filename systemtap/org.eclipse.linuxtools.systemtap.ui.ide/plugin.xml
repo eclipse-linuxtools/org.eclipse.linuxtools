@@ -275,16 +275,38 @@
           modes="run">
        <contextualLaunch>
           <enablement>
-             <with
-                   variable="selection">
-                <count
-                      value="1">
-                </count>
-                <test
-                      forcePluginActivation="true"
-                      property="org.eclipse.linuxtools.systemtap.ui.ide.property.systemtap">
-                </test>
-             </with>
+             <or>
+                <with
+                      variable="selection">
+                   <count
+                         value="1">
+                   </count>
+                   <iterate>
+                      <or>
+                         <and>
+                            <instanceof
+                                  value="org.eclipse.core.resources.IResource">
+                            </instanceof>
+                            <test
+                                  property="org.eclipse.core.resources.name"
+                                  value="*.stp">
+                            </test>
+                         </and>
+                         <and>
+                            <instanceof
+                                  value="org.eclipse.ui.IFileEditorInput">
+                            </instanceof>
+                            <with
+                                  variable="activeEditorId">
+                               <equals
+                                     value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
+                               </equals>
+                            </with>
+                         </and>
+                      </or>
+                   </iterate>
+                </with>
+             </or>
           </enablement>
        </contextualLaunch>
     </shortcut>
