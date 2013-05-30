@@ -15,16 +15,16 @@ import org.eclipse.swt.graphics.Color;
 public interface IAnnotationProvider {
     /**
      * gets the background column of a editor line
-     * 
+     *
      * @param line
-     * @return
+     * @return The color for the given line.
      */
     Color getColor(int line);
 
     /**
-     * gets the ISTAnnotationColumn objects list
-     * 
-     * @return
+     * Gets the ISTAnnotationColumn objects list.
+     *
+     * @return The annotation column.
      */
     ISTAnnotationColumn getColumn();
 
