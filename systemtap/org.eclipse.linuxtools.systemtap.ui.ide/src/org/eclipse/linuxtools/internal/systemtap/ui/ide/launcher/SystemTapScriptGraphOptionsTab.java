@@ -88,7 +88,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	private Button runWithChartCheckButton;
 
 	private Table graphsTable;
-	private Button addGraphButton, removeGraphButton;
+	private Button addGraphButton, editGraphButton, removeGraphButton;
 	private TableItem selectedTableItem;
 	private Group graphsGroup;
 
@@ -297,16 +297,22 @@ public class SystemTapScriptGraphOptionsTab extends
 		gridLayout.numColumns = 1;
 
 		buttonComposite.setLayout(gridLayout);
+		// Button to add a new graph
 		addGraphButton = new Button(buttonComposite, SWT.PUSH);
 		addGraphButton.setText(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
 		addGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_AddGraphButtonToolTip);
 		addGraphButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		// Button to edit an existing graph
+		editGraphButton = new Button(buttonComposite, SWT.PUSH);
+		editGraphButton.setText(Messages.SystemTapScriptGraphOptionsTab_EditGraphButton);
+		editGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_EditGraphButtonToolTip);
+		editGraphButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
 		// Button to remove the selected graph/filter
 		removeGraphButton = new Button(buttonComposite, SWT.PUSH);
-		removeGraphButton.setText("Remove"); //$NON-NLS-1$
-		removeGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButtonLabel);
-		removeGraphButton.setEnabled(false);
+		removeGraphButton.setText(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButton);
+		removeGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButtonToolTip);
 		removeGraphButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// Action to notify the buttons when to enable/disable themselves based
@@ -315,6 +321,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedTableItem = (TableItem) e.item;
+				editGraphButton.setEnabled(true);
 				removeGraphButton.setEnabled(true);
 			}
 		});
@@ -324,7 +331,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		addGraphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SelectGraphWizard wizard = new SelectGraphWizard(getDataset());
+				SelectGraphWizard wizard = new SelectGraphWizard(getDataset(), null);
 				IWorkbench workbench = PlatformUI.getWorkbench();
 				wizard.init(workbench, null);
 				WizardDialog dialog = new WizardDialog(workbench
@@ -344,11 +351,38 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 		});
 
+		// When button is clicked, brings up same wizard as the one for adding
+		// a graph. Data in the wizard is filled out to match the properties
+		// of the selected graph.
+		editGraphButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SelectGraphWizard wizard = new SelectGraphWizard(getDataset(),
+						(GraphData) selectedTableItem.getData());
+				IWorkbench workbench = PlatformUI.getWorkbench();
+				wizard.init(workbench, null);
+				WizardDialog dialog = new WizardDialog(workbench
+						.getActiveWorkbenchWindow().getShell(), wizard);
+				dialog.create();
+				dialog.open();
+
+				GraphData gd = wizard.getGraphData();
+
+				if (null != gd) {
+					selectedTableItem.setText(GraphFactory.getGraphName(gd.graphID) + ":" //$NON-NLS-1$
+							+ gd.title);
+					selectedTableItem.setData(gd);
+					updateLaunchConfigurationDialog();
+				}
+			}
+		});
+
 		// Removes the selected graph/filter from the table
 		removeGraphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedTableItem.dispose();
+				editGraphButton.setEnabled(false);
 				removeGraphButton.setEnabled(false);
 				updateLaunchConfigurationDialog();
 			}
@@ -530,7 +564,9 @@ public class SystemTapScriptGraphOptionsTab extends
 	private void setControlEnabled(Composite composite, boolean enabled){
 		composite.setEnabled(enabled);
 		for (Control child : composite.getChildren()) {
-			child.setEnabled(enabled);
+			if (child == removeGraphButton || child == editGraphButton) {
+				child.setEnabled(false);
+			}
 			if(child instanceof Composite){
 				setControlEnabled((Composite)child, enabled);
 			}
