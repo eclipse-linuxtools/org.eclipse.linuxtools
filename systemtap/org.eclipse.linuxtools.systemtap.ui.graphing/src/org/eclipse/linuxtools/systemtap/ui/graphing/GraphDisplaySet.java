@@ -188,7 +188,7 @@ public class GraphDisplaySet {
 
 			if(folder.getSelectionIndex() == 0) {
 				folder.setSelection(lastSelectedTab);
-				SelectGraphWizard wizard = new SelectGraphWizard(dataSet);
+				SelectGraphWizard wizard = new SelectGraphWizard(dataSet, null);
 				IWorkbench workbench = PlatformUI.getWorkbench();
 				wizard.init(workbench, null);
 				WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);

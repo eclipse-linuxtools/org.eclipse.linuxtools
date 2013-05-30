@@ -22,8 +22,16 @@ import org.eclipse.ui.IWorkbench;
 
 
 public class SelectGraphWizard extends Wizard implements INewWizard {
-	public SelectGraphWizard(IDataSet data) {
+	public SelectGraphWizard(IDataSet data, GraphData gdata) {
 		model = new GraphModel(data);
+		edit = (gdata != null);
+		if (edit) {
+			model.setGraph(gdata.graphID);
+			model.setKey(gdata.key);
+			model.setTitle(gdata.title);
+			model.setXSeries(gdata.xSeries);
+			model.setYSeries(gdata.ySeries);
+		}
 	}
 
 	@Override
@@ -32,7 +40,7 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		setWindowTitle(Localization.getString("SelectGraphWizard.CreateGraph")); //$NON-NLS-1$
+		setWindowTitle(Localization.getString(!edit ? "SelectGraphWizard.CreateGraph" : "SelectGraphWizard.EditGraph"));  //$NON-NLS-1$//$NON-NLS-2$
 		selectGraphPage = new SelectGraphWizardPage();
 		addPage(selectGraphPage);
 		selectSeriesPage = new SelectSeriesWizardPage();
@@ -62,6 +70,10 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 		return model.getGraphData();
 	}
 
+	public boolean isEditing() {
+		return edit;
+	}
+
 	@Override
 	public void dispose() {
 		if(null != selectGraphPage)
@@ -74,4 +86,5 @@ public class SelectGraphWizard extends Wizard implements INewWizard {
 	public SelectGraphWizardPage selectGraphPage;
 	public SelectSeriesWizardPage selectSeriesPage;
 	public GraphModel model;
+	private boolean edit;
 }
