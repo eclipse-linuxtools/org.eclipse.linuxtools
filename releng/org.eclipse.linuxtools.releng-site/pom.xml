@@ -145,12 +145,12 @@
                    <target>
                      <delete includeemptydirs="false">
                        <fileset
-                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-kepler">
                          <include name="**" />
                        </fileset>
                      </delete>
                      <copy includeemptydirs="false"
-                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-kepler">
                        <fileset dir="target/checksumFix">
                          <include name="**" />
                        </fileset>
