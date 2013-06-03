@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.tests.MockDataSet;
-import org.eclipse.ui.XMLMemento;
 import org.junit.Test;
 
 public class MatchFilterTest  {
@@ -55,7 +54,7 @@ public class MatchFilterTest  {
 		assertEquals(data[2].get(3), data2[2].get(1));
 		assertEquals(data[2].get(6), data2[2].get(2));
 		assertEquals(data[2].get(9), data2[2].get(3));
-		
+
 		filter = new MatchFilter(-1, "", MatchFilter.KEEP_MATCHING);
 		assertNull(filter.filter(data));
 	}
@@ -64,10 +63,5 @@ public class MatchFilterTest  {
 		MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
 		assertTrue(MatchFilter.ID.equals(filter.getID()));
 	}
-	@Test
-	public void testWriteXML() {
-		MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
-		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
+
 }

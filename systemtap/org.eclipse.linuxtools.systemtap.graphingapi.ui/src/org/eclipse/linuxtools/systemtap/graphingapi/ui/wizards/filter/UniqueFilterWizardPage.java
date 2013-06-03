@@ -95,12 +95,11 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 	@Override
 	protected void createFilter() {
 		int selected = cboColumn.getSelectionIndex();
-		int style = 0;
 		if(selected >=0 && selected < cboColumn.getItemCount()) {
 			if(null != aggregateID && aggregateID.length() > 0) {
 				((SelectFilterWizard) super.getWizard()).filter = new UniqueFilter(
 						selected,
-						AggregateFactory.createAggregate(aggregateID), style);
+						AggregateFactory.createAggregate(aggregateID));
 			}
 		}
 	}

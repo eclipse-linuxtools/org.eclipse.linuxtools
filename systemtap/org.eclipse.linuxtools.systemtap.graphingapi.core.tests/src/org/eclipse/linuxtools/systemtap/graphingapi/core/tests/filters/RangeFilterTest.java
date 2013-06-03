@@ -20,12 +20,11 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.tests.MockDataSet;
-import org.eclipse.ui.XMLMemento;
 import org.junit.Before;
 import org.junit.Test;
 
 public class RangeFilterTest {
-	
+
 	@Before
 	public void setUp() {
 		filter = new RangeFilter(0, 1, 2, RangeFilter.INSIDE_BOUNDS | RangeFilter.INCLUSIVE);
@@ -109,7 +108,7 @@ public class RangeFilterTest {
 		assertEquals(data[2].get(1), data2[2].get(0));
 		assertEquals(data[2].get(4), data2[2].get(1));
 		assertEquals(data[2].get(7), data2[2].get(2));
-		
+
 
 		filter = new RangeFilter(0, 0, 2, RangeFilter.OUTSIDE_BOUNDS);
 		data2 = filter.filter(data);
@@ -118,8 +117,8 @@ public class RangeFilterTest {
 		assertEquals(height, data[0].size());
 		assertEquals(width, data2.length);
 		assertEquals(0, data2[0].size());
-		
-		
+
+
 		filter = new RangeFilter(-1, 1, 3, 0);
 		assertNull(filter.filter(data));
 	}
@@ -127,10 +126,6 @@ public class RangeFilterTest {
 	public void testGetID() {
 		assertTrue(RangeFilter.ID.equals(filter.getID()));
 	}
-	@Test
-	public void testWriteXML() {
-		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
+
 	RangeFilter filter;
 }

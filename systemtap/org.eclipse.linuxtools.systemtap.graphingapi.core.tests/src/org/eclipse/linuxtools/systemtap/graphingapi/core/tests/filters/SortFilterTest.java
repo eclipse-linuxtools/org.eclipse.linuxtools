@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.SortFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.tests.MockDataSet;
-import org.eclipse.ui.XMLMemento;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +60,7 @@ public class SortFilterTest {
 		assertEquals(data[2].get(6), data2[2].get(2));
 		assertEquals(data[2].get(9), data2[2].get(3));
 
-		
+
 		filter = new SortFilter(0, SortFilter.DESCENDING);
 		data2 = filter.filter(data);
 
@@ -79,10 +78,10 @@ public class SortFilterTest {
 		assertEquals(data[2].get(5), data2[2].get(1));
 		assertEquals(data[2].get(8), data2[2].get(2));
 		assertEquals(data[2].get(9), data2[2].get(7));
-		
+
 		filter = new SortFilter(-1, 0);
 		assertNull(filter.filter(data));
-		
+
 		data[0].add("a");
 		data[0].add("a");
 		data[1].add("b");
@@ -94,10 +93,6 @@ public class SortFilterTest {
 	public void testGetID() {
 		assertTrue(SortFilter.ID.equals(filter.getID()));
 	}
-	@Test
-	public void testWriteXML() {
-		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
+
 	SortFilter filter;
 }

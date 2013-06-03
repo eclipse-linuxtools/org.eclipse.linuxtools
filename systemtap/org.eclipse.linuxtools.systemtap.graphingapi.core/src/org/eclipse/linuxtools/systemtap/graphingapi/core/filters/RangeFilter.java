@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.NumberType;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
-import org.eclipse.ui.IMemento;
 
 
 
@@ -87,20 +86,6 @@ public class RangeFilter implements IDataSetFilter {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Preserve what filter was applied.
-	 *
-	 * @param parent Parent object of the new child Memento to create.
-	 */
-	@Override
-	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
-		child.putInteger("column", column); //$NON-NLS-1$
-		child.putString("low", lowerBound.toString()); //$NON-NLS-1$
-		child.putString("high", upperBound.toString()); //$NON-NLS-1$
-		child.putInteger("style", style); //$NON-NLS-1$
 	}
 
 	private int column;
