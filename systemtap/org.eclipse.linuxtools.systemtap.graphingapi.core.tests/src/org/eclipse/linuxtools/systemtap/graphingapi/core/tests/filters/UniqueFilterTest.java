@@ -22,18 +22,17 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.aggregates.MaxAggregate
 import org.eclipse.linuxtools.systemtap.graphingapi.core.aggregates.SumAggregate;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.UniqueFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.tests.MockDataSet;
-import org.eclipse.ui.XMLMemento;
 import org.junit.Before;
 import org.junit.Test;
 
 public class UniqueFilterTest  {
 	@Before
 	public void setUp() {
-		filter = new UniqueFilter(0, new SumAggregate(), 0);
+		filter = new UniqueFilter(0, new SumAggregate());
 	}
 	@Test
 	public void testUniqueFilter() {
-		filter = new UniqueFilter(-1, new MaxAggregate(), 0);
+		filter = new UniqueFilter(-1, new MaxAggregate());
 		assertNotNull(filter);
 	}
 	@Test
@@ -47,7 +46,7 @@ public class UniqueFilterTest  {
 		assertEquals(height, data[0].size());
 
 		ArrayList<Object>[] data2 = filter.filter(data);
-		
+
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
 		assertEquals(width, data2.length);
@@ -59,29 +58,25 @@ public class UniqueFilterTest  {
 		assertEquals(0, ((Number)data2[2].get(0)).intValue());
 		assertEquals(3, ((Number)data2[2].get(1)).intValue());
 		assertEquals(8, ((Number)data2[2].get(2)).intValue());
-		
-		filter = new UniqueFilter(-1, new SumAggregate(), 0);
+
+		filter = new UniqueFilter(-1, new SumAggregate());
 		assertNull(filter.filter(null));
 
 		data = MockDataSet.createArrayList(2, new Object());
 		data[0] = new ArrayList<Object>();
 		data[1] = new ArrayList<Object>();
-		
+
 		data[0].add("a");
 		data[0].add("a");
 		data[1].add("b");
 		data[1].add("c");
-		filter = new UniqueFilter(0, new SumAggregate(), 0);
+		filter = new UniqueFilter(0, new SumAggregate());
 		assertNotNull(filter.filter(data));
 	}
 	@Test
 	public void testGetID() {
 		assertTrue(UniqueFilter.ID.equals(filter.getID()));
 	}
-	@Test
-	public void testWriteXML() {
-		filter.writeXML(XMLMemento.createWriteRoot("test"));
-	}
-	
+
 	UniqueFilter filter;
 }

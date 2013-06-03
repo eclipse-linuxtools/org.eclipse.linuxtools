@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core.filters;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.structures.Copier;
-import org.eclipse.ui.IMemento;
 
 
 
@@ -52,19 +51,6 @@ public class MatchFilter implements IDataSetFilter {
 	@Override
 	public String getID() {
 		return ID;
-	}
-
-	/**
-	 * Preserve what filter was applied.
-	 *
-	 * @param parent Parent object of the new child Memento to create.
-	 */
-	@Override
-	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
-		child.putInteger("column", column); //$NON-NLS-1$
-		child.putString("value", value.toString()); //$NON-NLS-1$
-		child.putInteger("style", style); //$NON-NLS-1$
 	}
 
 	private int column;

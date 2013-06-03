@@ -13,10 +13,7 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core.filters;
 
 import java.util.ArrayList;
 
-import org.eclipse.ui.IMemento;
-
 public interface IDataSetFilter {
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data);
 	public String getID();
-	public void writeXML(IMemento parent);
 }

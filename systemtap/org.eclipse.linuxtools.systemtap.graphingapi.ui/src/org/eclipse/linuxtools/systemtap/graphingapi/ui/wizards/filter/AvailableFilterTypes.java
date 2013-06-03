@@ -12,12 +12,10 @@
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.filter;
 
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.SortFilter;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.UniqueFilter;
-import org.eclipse.ui.IMemento;
 
 
 
@@ -71,43 +69,6 @@ public final class AvailableFilterTypes {
 		int index = getIndex(id);
 		if(index >= 0)
 			return filterDescriptions[index];
-		return null;
-	}
-
-	public static IDataSetFilter getDataSetFilter(IMemento xml) {
-		String id = xml.getID();
-		int column = xml.getInteger("column").intValue(); //$NON-NLS-1$
-		int style;
-
-		switch(getIndex(id)) {
-		case 0:
-			String val = xml.getString("value"); //$NON-NLS-1$
-			style = xml.getInteger("style").intValue(); //$NON-NLS-1$
-			return new MatchFilter(column, val, style);
-		case 1:
-			style = xml.getInteger("style").intValue(); //$NON-NLS-1$
-			String l = xml.getString("low"); //$NON-NLS-1$
-			String h = xml.getString("high"); //$NON-NLS-1$
-
-			Number low, high;
-			if(l.contains(".")) //$NON-NLS-1$
-				low = Double.valueOf(l);
-			else
-				low = Long.valueOf(l);
-			if(h.contains(".")) //$NON-NLS-1$
-				high = Double.valueOf(h);
-			else
-				high = Long.valueOf(h);
-
-			return new RangeFilter(column, low, high, style);
-		case 2:
-			style = xml.getInteger("style").intValue(); //$NON-NLS-1$
-			return new SortFilter(column, style);
-		case 3:
-			String agg = xml.getString("aggregate"); //$NON-NLS-1$
-			style = xml.getInteger("style").intValue(); //$NON-NLS-1$
-			return new UniqueFilter(column, AggregateFactory.createAggregate(agg), style);
-		}
 		return null;
 	}
 

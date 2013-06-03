@@ -17,15 +17,12 @@ import org.eclipse.linuxtools.internal.systemtap.graphingapi.core.GraphingAPINon
 import org.eclipse.linuxtools.systemtap.graphingapi.core.aggregates.IDataAggregate;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.NumberType;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
-import org.eclipse.ui.IMemento;
-
 
 
 public class UniqueFilter implements IDataSetFilter {
-	public UniqueFilter(int column, IDataAggregate aggregate, int style) {
+	public UniqueFilter(int column, IDataAggregate aggregate) {
 		this.column = column;
 		this.aggregate = aggregate;
-		this.style = style;
 	}
 
 	/**
@@ -92,21 +89,7 @@ public class UniqueFilter implements IDataSetFilter {
 		return ID;
 	}
 
-	/**
-	 * Preserve what filter was applied.
-	 *
-	 * @param parent Parent object of the new child Memento to create.
-	 */
-	@Override
-	public void writeXML(IMemento parent) {
-		IMemento child = parent.createChild("Filter", ID); //$NON-NLS-1$
-		child.putInteger("column", column); //$NON-NLS-1$
-		child.putString("aggregate", aggregate.getID()); //$NON-NLS-1$
-		child.putInteger("style", style); //$NON-NLS-1$
-	}
-
 	private int column;
 	private IDataAggregate aggregate;
-	private int style;
 	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.core.filters.UniqueFilter"; //$NON-NLS-1$
 }

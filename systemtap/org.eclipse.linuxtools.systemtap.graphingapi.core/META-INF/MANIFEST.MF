@@ -13,8 +13,8 @@ Export-Package: org.eclipse.linuxtools.systemtap.graphingapi.core,
  org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table,
  org.eclipse.linuxtools.systemtap.graphingapi.core.filters,
  org.eclipse.linuxtools.systemtap.graphingapi.core.structures
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.structures
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.linuxtools.systemtap.structures,
+ org.eclipse.swt
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
