@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.SelectGraphWizard;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.SelectGraphAndSeriesWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -336,7 +336,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		addGraphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SelectGraphWizard wizard = new SelectGraphWizard(getDataset(), null);
+				SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getDataset(), null);
 				IWorkbench workbench = PlatformUI.getWorkbench();
 				wizard.init(workbench, null);
 				WizardDialog dialog = new WizardDialog(workbench
@@ -376,7 +376,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		editGraphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SelectGraphWizard wizard = new SelectGraphWizard(getDataset(),
+				SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getDataset(),
 						(GraphData) selectedTableItem.getData());
 				IWorkbench workbench = PlatformUI.getWorkbench();
 				wizard.init(workbench, null);

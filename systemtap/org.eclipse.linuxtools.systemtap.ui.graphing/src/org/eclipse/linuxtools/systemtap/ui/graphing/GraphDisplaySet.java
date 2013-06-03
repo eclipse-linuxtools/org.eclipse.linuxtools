@@ -25,7 +25,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.datadisplay.DataGrid;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.SelectGraphWizard;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.SelectGraphAndSeriesWizard;
 import org.eclipse.linuxtools.systemtap.structures.UpdateManager;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.swt.SWT;
@@ -188,7 +188,7 @@ public class GraphDisplaySet {
 
 			if(folder.getSelectionIndex() == 0) {
 				folder.setSelection(lastSelectedTab);
-				SelectGraphWizard wizard = new SelectGraphWizard(dataSet, null);
+				SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(dataSet, null);
 				IWorkbench workbench = PlatformUI.getWorkbench();
 				wizard.init(workbench, null);
 				WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
