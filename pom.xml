@@ -59,7 +59,7 @@
     <mirror-repo-name>updates-nightly-kepler</mirror-repo-name>
     <tycho-version>0.17.0</tycho-version>
     <tycho-extras-version>0.17.0</tycho-extras-version>
-    <platform-version-name>juno</platform-version-name>
+    <platform-version-name>kepler</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit-site>
@@ -102,8 +102,8 @@
       </activation>
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/kepler</eclipse-site>
-        <platform-version>[4.2,)</platform-version>
-        <sdk-version>4.2</sdk-version>
+        <platform-version>[4.3,)</platform-version>
+        <sdk-version>4.3</sdk-version>
       </properties>
       <repositories>
         <repository>
