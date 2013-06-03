@@ -312,16 +312,6 @@
     </shortcut>
  </extension>
  <extension
-       point="org.eclipse.core.expressions.propertyTesters">
-    <propertyTester
-          class="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptTester"
-          id="org.eclipse.linuxtools.systemtap.ui.ide.property.systemtap"
-          namespace="org.eclipse.linuxtools.systemtap.ui.ide.property"
-          properties="systemtap"
-          type="java.lang.Object">
-    </propertyTester>
- </extension>
- <extension
        point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
           delegate="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunchConfigurationDelegate"
