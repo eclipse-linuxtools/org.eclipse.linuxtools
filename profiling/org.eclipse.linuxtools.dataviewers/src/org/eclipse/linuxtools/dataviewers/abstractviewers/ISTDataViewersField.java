@@ -97,6 +97,7 @@ public interface ISTDataViewersField {
     /**
      * Return whether the receiver is showing or not by default.
      * @return boolean
+     * @since 5.0
      */
     boolean isShowingByDefault();
 

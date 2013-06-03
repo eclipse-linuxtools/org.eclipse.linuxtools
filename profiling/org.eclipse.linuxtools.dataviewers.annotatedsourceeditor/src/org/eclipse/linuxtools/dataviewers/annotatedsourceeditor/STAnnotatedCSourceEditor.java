@@ -51,7 +51,7 @@ import org.eclipse.ui.texteditor.rulers.RulerColumnRegistry;
 
 public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundListener {
     /**
-     * @since 4.2
+     * @since 5.0
      */
     public final static String ST_RULER = "STRuler"; //$NON-NLS-1$
 
@@ -171,6 +171,9 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
         }
     }
 
+    /**
+	 * @since 5.0
+	 */
     protected STChangeRulerColumn createSTRulerColumn(ISTAnnotationColumn annotationColumn) {
         fSTChangeRulerColumn = new STChangeRulerColumn(getSharedColors(), annotationColumn);
         ((IChangeRulerColumn) fSTChangeRulerColumn).setHover(createChangeHover());

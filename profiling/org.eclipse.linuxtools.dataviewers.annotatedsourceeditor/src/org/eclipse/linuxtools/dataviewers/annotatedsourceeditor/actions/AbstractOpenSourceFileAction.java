@@ -81,6 +81,9 @@ public abstract class AbstractOpenSourceFileAction extends Action {
         msgBox.open();
     }
 
+    /**
+	 * @since 5.0
+	 */
     public abstract FileStoreEditorInput getInput(IFileStore fs);
 
     public abstract IFileStore getFileStore();

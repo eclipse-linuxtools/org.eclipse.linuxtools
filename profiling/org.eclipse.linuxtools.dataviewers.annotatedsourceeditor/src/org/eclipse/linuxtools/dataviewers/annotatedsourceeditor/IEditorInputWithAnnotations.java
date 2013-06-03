@@ -15,6 +15,7 @@ import org.eclipse.ui.IEditorInput;
 /**
  * 
  * @author Xavier Raynaud <xavier.raynaud@kalray.eu>
+ * @since 5.0
  */
 public interface IEditorInputWithAnnotations extends IEditorInput {
 
