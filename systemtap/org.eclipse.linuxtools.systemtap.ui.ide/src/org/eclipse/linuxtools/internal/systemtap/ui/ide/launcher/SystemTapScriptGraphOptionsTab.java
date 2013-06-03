@@ -88,7 +88,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	private Button runWithChartCheckButton;
 
 	private Table graphsTable;
-	private Button addGraphButton, editGraphButton, removeGraphButton;
+	private Button addGraphButton, duplicateGraphButton, editGraphButton, removeGraphButton;
 	private TableItem selectedTableItem;
 	private Group graphsGroup;
 
@@ -303,6 +303,12 @@ public class SystemTapScriptGraphOptionsTab extends
 		addGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_AddGraphButtonToolTip);
 		addGraphButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		// Button to copy an existing graph
+		duplicateGraphButton = new Button(buttonComposite, SWT.PUSH);
+		duplicateGraphButton.setText(Messages.SystemTapScriptGraphOptionsTab_DuplicateGraphButton);
+		duplicateGraphButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_DuplicateGraphButtonToolTip);
+		duplicateGraphButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
 		// Button to edit an existing graph
 		editGraphButton = new Button(buttonComposite, SWT.PUSH);
 		editGraphButton.setText(Messages.SystemTapScriptGraphOptionsTab_EditGraphButton);
@@ -321,8 +327,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedTableItem = (TableItem) e.item;
-				editGraphButton.setEnabled(true);
-				removeGraphButton.setEnabled(true);
+				setSelectionControlsEnabled(true);
 			}
 		});
 
@@ -348,6 +353,20 @@ public class SystemTapScriptGraphOptionsTab extends
 					item.setData(gd);
 					updateLaunchConfigurationDialog();
 				}
+			}
+		});
+
+		// Adds a new entry to the list of graphs that is a copy of the one selected.
+		duplicateGraphButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GraphData gd = (GraphData) selectedTableItem.getData();
+
+				TableItem item = new TableItem(graphsTable, SWT.NONE);
+				item.setText(GraphFactory.getGraphName(gd.graphID) + ":" //$NON-NLS-1$
+						+ gd.title);
+				item.setData(gd);
+				updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -382,8 +401,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedTableItem.dispose();
-				editGraphButton.setEnabled(false);
-				removeGraphButton.setEnabled(false);
+				setSelectionControlsEnabled(false);
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -558,18 +576,28 @@ public class SystemTapScriptGraphOptionsTab extends
 	private void setGraphingEnabled(boolean enabled){
 		this.setControlEnabled(outputParsingGroup, enabled);
 		this.setControlEnabled(graphsGroup, enabled);
+		// Disable buttons that rely on a selected graph if no graph is selected.
+		this.setSelectionControlsEnabled(selectedTableItem != null);
 		updateLaunchConfigurationDialog();
 	}
 
 	private void setControlEnabled(Composite composite, boolean enabled){
 		composite.setEnabled(enabled);
 		for (Control child : composite.getChildren()) {
-			if (child == removeGraphButton || child == editGraphButton) {
-				child.setEnabled(false);
-			}
+				child.setEnabled(enabled);
 			if(child instanceof Composite){
 				setControlEnabled((Composite)child, enabled);
 			}
 		}
+	}
+
+	/**
+	 * Call this to enable/disable all buttons whose actions depend on a selected graph.
+	 * @param enabled Set to true to enable the buttons; set to false to disable them.
+	 */
+	private void setSelectionControlsEnabled(boolean enabled) {
+		duplicateGraphButton.setEnabled(enabled);
+		editGraphButton.setEnabled(enabled);
+		removeGraphButton.setEnabled(enabled);
 	}
 }
