@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.internal.man.parser.ManParser;
 public class ManPage {
 
 	private StringBuilder rawContent;
+	private StringBuilder strippedTextPage;
 
 	/**
 	 * Creates the man page which includes retrieving the raw content and
@@ -110,4 +111,29 @@ public class ManPage {
 		return sb;
 	}
 
+	/**
+	 * Removes all HTML markings are returns a text only version.
+	 *
+	 * @return a text only version of the manpage
+	 */
+	public StringBuilder getStrippedTextPage() {
+		if (this.strippedTextPage == null) {
+			this.strippedTextPage = getStrippedPage();
+			int index = strippedTextPage.indexOf("<b>"); //$NON-NLS-1$
+			while (index != -1) {
+				strippedTextPage.replace(index, index + 3, ""); //$NON-NLS-1$
+				strippedTextPage.replace(index + 1, index + 5, ""); //$NON-NLS-1$
+				index = strippedTextPage.indexOf("<b>"); //$NON-NLS-1$
+			}
+
+			index = strippedTextPage.indexOf("<u>"); //$NON-NLS-1$
+			while (index != -1) {
+				strippedTextPage.replace(index, index + 3, ""); //$NON-NLS-1$
+				strippedTextPage.replace(index + 1, index + 5, ""); //$NON-NLS-1$
+				index = strippedTextPage.indexOf("<u>"); //$NON-NLS-1$
+			}
+		}
+
+		return strippedTextPage;
+	}
 }

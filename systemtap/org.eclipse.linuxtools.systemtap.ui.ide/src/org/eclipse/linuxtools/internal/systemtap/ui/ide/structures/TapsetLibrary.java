@@ -74,7 +74,7 @@ public final class TapsetLibrary {
 			}
 
 			// Otherwise, get the documentation for the requested element.
-			documentation = (new ManPage(element)).getStrippedPage().toString();
+			documentation = (new ManPage(element)).getStrippedTextPage().toString();
 
 			// If the requested element is a probe and a documentation page was
 			// found for it, parse the documentation for the variables if present.
