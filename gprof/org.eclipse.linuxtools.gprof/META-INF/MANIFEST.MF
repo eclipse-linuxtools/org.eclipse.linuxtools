@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gprof;singleton:=true
-Bundle-Version: 4.0.1.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.gprof.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime,
