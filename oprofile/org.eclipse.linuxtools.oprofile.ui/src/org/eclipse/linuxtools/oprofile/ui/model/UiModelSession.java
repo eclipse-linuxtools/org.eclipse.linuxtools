@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Image;
  *  for its parent event. Must have a child image. May also have dependent
  *  images, which are children of the Image in the data model, but are 
  *  displayed as children of the session in the view.
+ * @since 1.1
  */
 public class UiModelSession implements IUiModelElement {
 	private IUiModelElement parent;		//parent element

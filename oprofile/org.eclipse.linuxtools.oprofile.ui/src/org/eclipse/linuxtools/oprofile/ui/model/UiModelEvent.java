@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Top level elements displayed in the view -- events that oprofile 
  *  has profiled. Must have children sessions.
+ * @since 1.1
  */
 public class UiModelEvent implements IUiModelElement {
 	private IUiModelElement parent = null;		//parent node -- necessary?
