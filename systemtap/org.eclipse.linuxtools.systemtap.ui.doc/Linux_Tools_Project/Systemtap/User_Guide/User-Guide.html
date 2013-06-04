@@ -25,23 +25,13 @@
 				<td style="width: 20%" align="right" valign="top">SystemTap IDE</td>
 			</tr>
 		</table><hr/>
-		<p>{{#eclipseproject:tools.linuxtools}}</p>
 		<h1 id="Overview">Overview</h1>
 		<p>Welcome to the SystemTap plug-in Help pages. This section is intended to provide users with information and links about the SystemTap scripting language itself, in addition to a brief introduction to SystemTap plug-in's structure for new users and a brief explanation of SystemTap.</p>
-		<h2 id="SystemTap_Plugin_Design">SystemTap Plugin Design</h2>
-		<p>SystemTap plug-in was built with a modular goal in mind, namely, to provide the application as a series of plugins so that users may obtain just the ones they need without having to use a heavy-weight application should if they didn't need to. The most common example of this is to ship the Dashboard plugin independently, allowing non-SystemTap savvy users the ability to execute modules without having to write any scripts. The application in its complete state includes three perspective, each with a specific goal:</p>
-		<ul>
-			<li>
-				<b>IDE Perspective</b> - Contains script editor and Function, Kernel Source, and Probe Alias browsers to assist in the creation and editting of SystemTap scripts.
-			</li>
-			<li>
-				<b>Graphics Perspective</b> - Graphs data from SystemTap scripts in the desired graph form according to a regular expression passed to interpret the data.
-			</li>
-			<li>
-				<b>Dashboard Perspective</b> - Allows the execution of modules, which are scripts with associated metadata that open one or more graphs in a dashboard environment that update in real time.This perspective is still under development
-			</li>
-		</ul>
-		<p>Each perspective has full documentation associated with it and is packaged in the respective plugin.</p>
+		<h2 id="The_SystemTap_Plugin">The SystemTap Plugin</h2>
+		<p>The SystemTap Plugin is designed to help you create, edit, and run Systemtap scripts. It also provides the ability to graph the output of your scripts and run Systemtap scripts remotely.</p>
+		<p>It provides the 
+			<b>SystemTap IDE</b> perspective. When in this perspective you should be able to see the Probe view, the Function view, and the Project Explorer. You should also be able to create Systemtap Scripts.
+		</p>
 		<h2 id="Systemtap">Systemtap</h2>
 		<p>SystemTap provides free software (GPL) infrastructure to simplify the gathering of information about the running Linux kernel. This assists diagnosis of a performance or functional problem. SystemTap eliminates the need for the developer to go through the tedious and disruptive instrument, recompile, install, and reboot sequence that may be otherwise required to collect data.</p>
 		<p>SystemTap provides a simple command line interface and scripting language for writing instrumentation for a live running kernel. The internal tapset library as well as the published samples can be used to aid reuse and abstraction.</p>
