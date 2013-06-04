@@ -2,7 +2,7 @@
 <toc topic="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTap User Guide">
 	<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="SystemTap User Guide">
 		<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html" label="Overview">
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#SystemTap_Plugin_Design" label="SystemTap Plugin Design"></topic>
+			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#The_SystemTap_Plugin" label="The SystemTap Plugin"></topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Systemtap" label="Systemtap"></topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Installing" label="Installing">
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/User-Guide.html#Requirements" label="Requirements"></topic>
@@ -21,7 +21,7 @@
 				</topic>
 			</topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Concepts" label="Concepts">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#SystemTap_Perspectives" label="SystemTap Perspectives"></topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#SystemTap_IDE_Perspective" label="SystemTap IDE Perspective"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#STP_Editor" label="STP Editor"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Function_Browser" label="Function Browser"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Kernel_Browser" label="Kernel Browser"></topic>
@@ -38,7 +38,6 @@
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Editors" label="Editors"></topic>
 				</topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Menus" label="Menus">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#File" label="File"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Edit" label="Edit"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Navigate" label="Navigate"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Run" label="Run"></topic>
@@ -89,7 +88,7 @@
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Reference_2" label="Reference">
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Frequently_Asked_Questions_2" label="Frequently Asked Questions"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Menus_2" label="Menus">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#File_2" label="File"></topic>
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#File" label="File"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Run_2" label="Run"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Window_2" label="Window"></topic>
 				</topic>
@@ -127,7 +126,7 @@
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Reference_3" label="Reference">
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Frequently_Asked_Questions_3" label="Frequently Asked Questions"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Menus_3" label="Menus">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#File_3" label="File"></topic>
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#File_2" label="File"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Run_3" label="Run"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Window_3" label="Window"></topic>
 				</topic>

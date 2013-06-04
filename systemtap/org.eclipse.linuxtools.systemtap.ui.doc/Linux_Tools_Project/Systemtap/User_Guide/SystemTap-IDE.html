@@ -45,14 +45,11 @@
 			other editors built in (plain text and the C editor), however, they ultimately exist to facilitate the 
 			writing of Systemtap scripts.</p>
 		<p>In this lesson we will open a new Systemtap script file to familiarize ourselves with the IDE Perspective.
-			Start by opening the <u>F</u>ile menu and selecting <u>O</u>pen. A dialogue box will pop up and request the 
-			location of the file you want to open. We've included a folder called "examples" right in the tar ball. You 
-			may chose any of them to use; in this tutorial we will open top.stp. Go ahead and open the file.</p>
-		<p>
-			<img border="0" src="images/Editor.png"/>
-		</p>
-		<p>You'll see the file is loaded into the editor pane of Systemtap GUI. You'll also noticed different colored
-			text. Systemtap GUI supports syntax highlighting for the ease of the writer. Feel free to edit the file.</p>
+			If you don't already have a project you plan to put your new script in start by creating a new one. 
+			Select the <u>F</u>ile menu -&gt; New -&gt; Project -&gt; General -&gt; Project. Follow the wizard to create a new project.</p>
+		<p>Now you are ready to create the script. Select File -&gt; New -&gt; Other -&gt; Systemtap -&gt; Systemtap Script. Follow the wizard
+			to provide your script name and the project which will contain it (Use the project we created above).</p>
+		<p>This should open up a new editor with a small stub of a script.</p>
 		<p>At this point proceed to 
 			<a href="SystemTap-IDE.html#Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script </a> if you wish to learn how to write your 
 			own script file or 
@@ -61,13 +58,13 @@
 		<h4 id="Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script</h4>
 		<p>In this tutorial we will guide you through the process of writing your first Systemtap script. It is strongly recommended that you review the 
 			<b>Systemtap website's tutorial</b> - 
-			<a href="http://sourceware.org/systemtap/tutorial">http://sourceware.org/systemtap/tutorial</a> for up-to-date information on the latest version of Systemtap.  
+			<a href="http://sourceware.org/systemtap/tutorial">http://sourceware.org/systemtap/tutorial</a> for up-to-date information on the latest version of Systemtap. 
 		</p>
-		<p>Start by selecting <u>F</u>ile-&gt;<u>N</u>ew. Specify a file name of your choosing, but be sure that it ends with an .stp extension. Click ok. Your blank script should be present in the editor pane. </p>
+		<p>In the previous lesson we created a new script and opened it in the editor. </p>
 		<p>
 			<img border="0" src="images/Newfile.png"/> 
 		</p>
-		<p>Now type/copy the following: </p>
+		<p>Now try writing a new script or type/copy the following example: </p>
 		<pre> 
 	global read, write, start
 
@@ -84,8 +81,8 @@
 		write=0
 	}
 </pre>
-		<p> </p>
-		<p>Now to demonstrate the functionality of the Probe Alias browser we will have you complete the read probe yourself. Start by opening the syscall folder in the Probe Alias browser. If you do not have any content in the browser you are experiencing a problem with Systemtap installation and should refer to our 
+		<p> 
+			Now to demonstrate the functionality of the Probe Alias browser we will have you complete the read probe yourself. Start by opening the syscall folder in the Probe Alias browser. If you do not have any content in the browser you are experiencing a problem with Systemtap installation and should refer to our 
 			<a href="#Installation">Installation help page</a>. Ensure your cursor is located at the end of the file. Now scroll down and double click the read probe alias. Systemtap GUI will insert the skeleton probe at the point at which your cursor is at, and should look similar to the following: 
 		</p>
 		<pre>probe syscall.read
@@ -97,50 +94,89 @@
 
 }
 </pre>
-		<p> </p>
-		<p>Now insert the following line into the syscall.read probe: </p>
+		<p> 
+			Now insert the following line into the syscall.read probe: </p>
 		<pre>read += count
 </pre>
 		<p> 
-			You may remove the comment (/* ... */) if you wish. </p>
-		<p>This will count the number of bytes read and written each second and print it out. The begin probe executes first, by getting the time of day. The read and write probes increment each time the function is called. The timer probe prints the information every second. If you typed the script in manually you may have noticed that the editor provides code completion for probe alias. If you did not, type "syscall.". You'll see a box come up that you may use to select an item to complete your probe alias. </p>
+			You may remove the comment (/* ... */) if you wish This will count the number of bytes read and written each second and print it out. The begin probe executes first, by getting the time of day. The read and write probes increment each time the function is called. The timer probe prints the information every second. If you typed the script in manually you may have noticed that the editor provides code completion for probe alias. If you did not, type "syscall.". You'll see a box come up that you may use to select an item to complete your probe alias. </p>
+		<p>Another way to get assistance while writing a new probe is to press CTRL+Space at any point during editing. Doing so will provide autocompletion for partially spelled probe names, what variables and functions are available inside a probe and documentation where available. </p>
+		<p>
+			<img border="0" src="images/ContextAssist.png"/> 
+		</p>
 		<p>In 
-			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3</a> you will learn how to run Systemtap scripts in the IDE Perspective. 
+			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3</a> you will learn how to run Systemtap scripts in the IDE Perspective.
 		</p>
 		<h4 id="Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script</h4>
-		<p>In this lesson we will cover running your script. You may use either the example script you opened in Lesson 1 or the script you wrote in Lesson two. Select <u>R</u>un-&gt;<u>R</u>un. Enter the remote server details. You should receive output in the console similar to the following, which shows the reads and write per second.  </p>
-		<p>
-			<img border="0" src="images/IDEOutput.png"/>
+		<p>In this lesson we will cover running your script. You may use either the script you wrote in Lesson two or write a new one.</p>
+		<p>There are two ways to run a script. If you click on the run button in the tool bar that will run the current script as the current user on the local machine. For more control over running options you can create a Launch Configuration. To do so right click on the script editor or the script file in the Project Explorer then select 
+			<b>Run As -&gt; Run Configurations...</b>. Once the dialogue pops up double click on the SystemTap tree item and you should be presented with the following dialogue:
 		</p>
+		<p>
+			<img border="0" src="images/SystemTapRunConfiguration.png"/>
+		</p>
+		<p>Here you can enter remote host information, run as a different user, as well as various other options for running systemtap. Explore the various tabs and options. The tooltips should provide help in understanding what the various options do. When you are ready click Run to run your script.</p>
 		<p>Now we will demonstrate running Systemtap scripts with graphs. In order to run the chart example you'll need to use the code provided in 
-			<a href="SystemTap-IDE.html#Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script </a>;. To do this select 
-			<b><u>R</u>un-&gt;Run w/ <u>C</u>hart</b>. This feature will prompt the user for the number of columns for the chart, in addition to their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box. 
+			<a href="SystemTap-IDE.html#Lesson_2:_Writing_Your_First_Script">Lesson 2: Writing Your First Script </a>:
+		</p>
+		<pre> global read, write, start
+</pre>
+		<pre> probe begin {
+   start = gettimeofday_s()
+ }
+</pre>
+		<pre> probe syscall.write {
+   write += count
+ }
+</pre>
+		<pre> probe syscall.read {
+   read += count
+ }
+</pre>
+		<pre> probe timer.ms(1000) {
+   printf("%d\t%d\t%d\n", (gettimeofday_s()-start), read, write)
+   read=0
+   write=0
+ }
+</pre>
+		<p>To do this select 
+			<b>Run As -&gt; Run Configurations...</b> create a new SystemTap Launch Configuration as you did previously and switch to the graphing tab.
 		</p>
 		<p>
-			<img border="0" src="images/Chartbox1.png"/>
+			<img border="0" src="images/GraphingTab.png"/>
+		</p>
+		<p>Select 
+			<b>Graph the output of this script run</b> and enter the parsing information below. That is the the number of columns for the chart, their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box.
 		</p>
 		<p>For this example enter the following: </p>
 		<pre>	Columns: 3
 
 	TITLE	REGULAR EXPRESSION	DELIMITER
-	Time		\d+		.*			\D+
-	Read		\d+		.*			\D+
-	Write		\d+		.*			\D+
+	Time		\d+		\D+
+	Read		\d+		\D+
+	Write		\d+		\D+
 
 </pre>
-		<p>The title fields simply display the associated string in the column's header. After clicking OK the script will prompt you for details regarding the Remote Server. Provide the ip address of the remote server that is running the systemtapgui Server or the Data Management Daemon. The port is by default 22462. Enter a username and password.This will give the application permissions to run your script on the remote machine. You have the option of saving your password as well, however be warned this is currently NOT encrypted so this convenience runs at a risk. The username is also used to transfer the file to the remote system using SCP. If the same machine is used as both the server and the client enter 'localhost' for the Host field. When the script is executed the application will switch into the Graphing perspective. A Data View chart is populated with live data, in addition to the output in the console.  You should see a screen similar to the following: </p>
-		<p>
-			<img border="0" src="images/IDEGraphics.png"/>
+		<p>The title fields simply display the associated string in the column's header.</p>
+		<p>Now to add a graph using the parsed output click the 
+			<b>Add...</b> button in the 
+			<b>Graphs</b> section. Select line graph and click 
+			<b>Next</b>. You will be prompted to select a column of the X series and Y series; select "Time" "Read" and "Write" respectively. When the script is executed the 
+			<b>Graph Selector</b> view is opened and it will contain a Data View and the graphs you have created. The Data View chart is populated with live data, in addition to the output in the console.  You should see a screen similar to the following: 
 		</p>
-		<p>You will see that the data table poplulates from live data parsed from the console. Now we'll make a graph to briefly illustrate the Graphing perspective. Click the Create Graph button next to bring up the Select Chart dialogue.Select line graph. You will be prompted to select a column of the X series and Y series; select "Time" and "Write" respectively. After you click ok you should see the line graph as follows: </p>
 		<p>
-			<img border="0" src="images/IDEGraph.png"/>
+			<img border="0" src="images/SystemtapGraphView.png"/>
 		</p>
 		<p>Note that the multiple series graphs (Multi-Line, Multi-Bar, and Multi-Scatter) will request two Y series, Y1 and Y2. In the case of our example, these would be "Read" and "Write". Each series will be assigned a different color value for the purposes of differentiation and will be plotted both in respect to the specified X series.</p>
-		<p>Those are the basics behind running a script in Systemtap GUI. </p>
+		<p>If you click on 
+			<b>Data View</b> you will see that the data table poplulates from live data parsed from the console:
+		</p>
+		<p>
+			<img border="0" src="images/SystemtapGraphDataView.png"/>
+		</p>
+		<p>Those are the basics behind running a script in Systemtap GUI.</p>
 		<h2 id="Concepts">Concepts</h2>
-		<h3 id="SystemTap_Perspectives">SystemTap Perspectives</h3>
-		<p>SystemTap has three perspectives, each with its own purpose.</p>
+		<h3 id="SystemTap_IDE_Perspective">SystemTap IDE Perspective</h3>
 		<ul>
 			<li>
 				<img border="0" src="images/Ide.png"/> 
@@ -148,18 +184,7 @@
 				<a href="SystemTap-IDE.html#Function_Browser">Function Browser </a>, 
 				<a href="SystemTap-IDE.html#Kernel_Browser">Kernel Browser </a>, 
 				<a href="SystemTap-IDE.html#Probe_Alias_Browser">Probe Alias Browser </a>, and 
-				<a href="SystemTap-IDE.html#Views_and_Editors">Views and Editors </a>. The IDE Perspective contains the features necessary execute SystemTap scripts and the syntax highlighting and code
-			</li>
-		</ul>
-		<p>completion features that facilitate efficient development of scripts.</p>
-		<ul>
-			<li>
-				<img border="0" src="images/Graphing.png"/> 
-				<b>Graphing Perspective</b> - This perspective is invoked when the user calls the Run /w Chart option. It defaults to showing a data table containing the script results and is capable of producing six different chart types: Scatter Graph, Line Graph, Area Graph, Bar Graph, Pie Graph.
-			</li>
-			<li>
-				<img border="0" src="images/Dash.png"/>
-				<b>Dashboard Perspective</b> - This perspective is capable of storing meta-data related to each graph such as filters, aggregates, and display options in addition to showing a "dashboard" interface with multiple graphs updating simultaneously.
+				<a href="SystemTap-IDE.html#Views_and_Editors">Views and Editors </a>. The IDE Perspective contains the features necessary execute SystemTap scripts and the syntax highlighting and code completion features that facilitate efficient development of scripts.
 			</li>
 		</ul>
 		<h3 id="STP_Editor">STP Editor</h3>
@@ -224,7 +249,7 @@
 		<h2 id="Tasks">Tasks</h2>
 		<h3 id="Creating_SystemTap_Scripts">Creating SystemTap Scripts</h3>
 		<p>Create a SystemTap script by selecting 
-			<b><u>F</u>ile-&gt;<u>N</u>ew</b> in the IDE Perspective. You'll be prompted to enter a name for the file; 
+			<b>Select File -&gt; New -&gt; Other -&gt; Systemtap -&gt; Systemtap Script</b> in the IDE Perspective. You'll be prompted to enter a name for the file; 
 			<i>make sure that you use a .stp extension or else SystemTap GUI will not recognize the file as a SystemTap script and certain editor and run features will not be active.</i>
 		</p>
 		<p>Your new file will be open and ready for coding in the Editor pane.</p>
@@ -241,25 +266,16 @@
 		</p>
 		<p>There are certain features within the editor you may want to take advantage of:</p>
 		<ul>
-			<li>Syntax Highlighting - Certain code items are colored in .stp and .c files based on a set of rules and </li>
-		</ul>
-		<p>colors. You can turn this on or off and change the colors in 
-			<b><u>W</u>indow-&gt;<u>P</u>references</b>.
-		</p>
-		<ul>
-			<li>Code Assist - SystemTap GUI will attempt to finish your probe alias names based on what you have already</li>
-		</ul>
-		<p>typed. You can then select the appropriate probe alias or continue typing to filter the list down even more.
-			You can turn this feature on and off or set the speed on it in 
-			<b><u>W</u>indow-&gt;<u>P</u>references</b>.
-		</p>
-		<ul>
+			<li>Syntax Highlighting - Certain code items are colored in .stp and .c files based on a set of rules and  colors. You can turn this on or off and change the colors in 
+				<b><u>W</u>indow-&gt;<u>P</u>references</b>.
+			</li>
+			<li>Code Assist - SystemTap GUI will attempt to finish your probe alias names based on what you have already typed. You can then select the appropriate probe alias or continue typing to filter the list down even more. You can turn this feature on and off or set the speed on it in 
+				<b><u>W</u>indow-&gt;<u>P</u>references</b>.
+			</li>
 			<li>Run Support - See the 
-				<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a>
+				<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a> help page on a walk through use of the Run command. The Run command allows scripts to be executed directly through SystemTap GUI.
 			</li>
 		</ul>
-		<p>help page on a walk through use of the Run command. The Run command allows scripts to be executed directly
-			through SystemTap GUI.</p>
 		<p>See also: 
 			<a href="SystemTap-IDE.html#Menus">Menus </a>, 
 
@@ -268,11 +284,11 @@
 		</p>
 		<h3 id="Viewing_Data_Charts">Viewing Data Charts</h3>
 		<p>Viewing data charts from a SystemTap script is accomplished by running that script with the 
-			<b><u>R</u>un-&gt;<u>R</u>un w/ Chart</b> option. This is covered in the 
-			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a>. After running a script with the chart option, the user is taken into the Graphing Perspective and the Data Table is loaded by default. The data table immediately begins populating as it recieves input back through the console from the running SystemTap script.
+			<b>Graph the output of this script run</b> option. This is covered in the 
+			<a href="SystemTap-IDE.html#Lesson_3:_Running_Your_Script">Lesson 3: Running Your Script </a>. After running a script with the graphing option, the user is presented with the Graph Selector View and the Data Table is loaded by default. The data table immediately begins populating as it receives input back through the console from the running SystemTap script.
 		</p>
 		<p>
-			<img border="0" src="images/IDEGraphics.png"/>
+			<img border="0" src="images/SystemtapGraphDataView.png"/>
 		</p>
 		<h2 id="Reference">Reference</h2>
 		<h3 id="Views_and_Editors">Views and Editors</h3>
@@ -318,61 +334,6 @@
 		</ul>
 		<h3 id="Menus">Menus</h3>
 		<p>What follows is a comprehension list of the menu options available within the IDE Perspective of Systemtap GUI.</p>
-		<h4 id="File">File</h4>
-		<ul>
-			<li>
-				<b><u>N</u>ew File</b> - This option will bring up a dialog to create a new file. You may specify any location. Files ending in a .stp or .c extension will have syntax highlighting and code completion features as appropriate. (Shortcut: Crtl+L)
-			</li>
-		</ul>
-		<p>
-			<img border="0" src="images/Newbox1.png"/>
-		</p>
-		<ul>
-			<li>
-				<b><u>O</u>pen File</b> - This option will bring up a dialog to select a file to open.  Once a file is selected it will open in the editor window. (Shortcut: Crtl+O)
-			</li>
-		</ul>
-		<p>
-			<img border="0" src="images/Openbox1.png"/>
-		</p>
-		<ul>
-			<li>
-				<b><u>C</u>lose</b> - This option closes the file in the editor pane that currently has the focus. (Shortcut: Crtl+F4)
-			</li>
-			<li>
-				<b>C<u>l</u>ose All</b> - This option closes all files in the editor pane. (Shortcut: Shift+Crtl+F4)
-			</li>
-			<li>
-				<b><u>S</u>ave</b> - This option saves the file that currently has the focus. (Shortcut: Crtl+S)
-			</li>
-			<li>
-				<b>Save <u>A</u>s</b> - This option prompts the user for a new location and file name and saves the file that currently has the focus under that new name and location.
-			</li>
-			<li>
-				<b>Sav<u>e</u> All</b> - This option saves all files currently open in the editor pane. (Shortcut: Shift+Crtl+S)
-			</li>
-			<li>
-				<b>Rever<u>t</u></b> - This option discards changes to the file currently under the focus replaces it with the last saved version.
-			</li>
-			<li>
-				<b><u>P</u>rint</b> - This option prints the file in the editor pane currently holding the focus. (Shortcut: Crtl+P)
-			</li>
-			<li>
-				<b><u>E</u>xport Script</b> - This option prompts the user to enter metadata associated with the Systemtap script to be exported and used in the Dashboard perspective. See the 
-				<a href="SystemTap-Dashboard.html#Creating_Modules">Creating Modules guide</a> for instructions.
-			</li>
-			<li>
-				<b><u>I</u>mport Tapset</b> - This option allows you to include additional tapset directories when you run a script. (Shortcut: Crtl+I)
-			</li>
-		</ul>
-		<p>
-			<img border="0" src="images/Importbox1.png"/>
-		</p>
-		<ul>
-			<li>
-				<b>E<u>x</u>it</b> - Exits Systemtap GUI.
-			</li>
-		</ul>
 		<h4 id="Edit">Edit</h4>
 		<ul>
 			<li>
@@ -461,19 +422,6 @@
 		<p>
 			<img border="0" src="images/Consolebox1.png"/>
 		</p>
-		<ul>
-			<li>
-				<b><u>R</u>un w/Chart</b> - Available when a Systemtap script is loaded into the editor, this feature will prompt the user for the number of columns for the chart, in addition to their titles and regular expressions. The regular expressions are used to parse the console output for the script and determine the values of each column at a certain sample point. The combined regular expression is shown at the bottom of the dialogue box. The user has the option to use Command Line Options as well. When you click OK you will be prompted to enter the details of the remote machine running the systemtapgui server. When the script is executed the application will switch into the Graphing perspective. A Data View chart is populated with live data, in addition to the output in the console. More information regarding the Graphing perspective is available here.
-			</li>
-		</ul>
-		<p>
-			<img border="0" src="images/Chartbox1.png"/>
-		</p>
-		<ul>
-			<li>
-				<b><u>S</u>top</b> - This option terminates the script thread associated with whichever script currently has the focus. (Shortcut: Ctrl+F9)
-			</li>
-		</ul>
 		<h4 id="Window">Window</h4>
 		<ul>
 			<li>
@@ -517,24 +465,8 @@
 				<b>New File</b> - This button will bring up a dialog to create a new file.  When you click ok the file will be opened in the editor window.
 			</li>
 			<li>
-				<img border="0" src="images/Open_wiz.gif"/> 
-				<b>Open File</b> - This button will bring up a dialog to select a file to open.  Once a file is selected it will open in the editor window.
-			</li>
-			<li>
-				<img border="0" src="images/Import_wiz.gif"/> 
-				<b>Import Tapset</b> - This button allows you to include additional tapset directories when you run a script.
-			</li>
-			<li>
 				<img border="0" src="images/Run_exc.gif"/> 
 				<b>Run Script</b> - This will compile the open script and start running it.  All output will be sent to the console.  If there is an error in the script the error will be reported in the ErrorLog.
-			</li>
-			<li>
-				<img border="0" src="images/Run_chart.gif"/> 
-				<b>Run Script w/Chart</b> - This button is also like the standard Run Script button but will bring up a charting dialog box.  Once the formatting expressions have been entered it will change the current perspective to the graphing perspective.
-			</li>
-			<li>
-				<img border="0" src="images/Stop_obj.gif"/> 
-				<b>Stop Script</b> - This button will stop the currently active script from running.
 			</li>
 		</ul>
 		<h4 id="Perspective_Selector">Perspective Selector</h4>
@@ -542,10 +474,6 @@
 			<li>
 				<img border="0" src="images/Ide.png"/> 
 				<b>IDE Perspective</b> - This button brings you into the IDE Perspective, useful for writing and executing scripts.
-			</li>
-			<li>
-				<img border="0" src="images/Graphing.png"/> 
-				<b>Graphing Perspective</b> - This button brings you into the Graphing Perspective, useful for graphing scripts.
 			</li>
 		</ul>
 		<h3 id="Preferences">Preferences</h3>
