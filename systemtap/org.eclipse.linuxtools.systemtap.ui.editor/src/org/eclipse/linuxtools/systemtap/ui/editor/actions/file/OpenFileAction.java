@@ -33,10 +33,17 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * @since 2.0
+ */
 public class OpenFileAction extends Action implements IWorkbenchWindowActionDelegate {
 
 	private boolean successful;
 	private IAction action;
+
+	/**
+	 * @since 2.0
+	 */
 	protected IWorkbenchWindow window;
 
 	public OpenFileAction() {
@@ -115,17 +122,26 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 		return successful;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void selectionChanged(IAction act, ISelection select) {
 		action = act;
 		action.setEnabled(true);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@Override
 	public void dispose() {
 		window = null;
