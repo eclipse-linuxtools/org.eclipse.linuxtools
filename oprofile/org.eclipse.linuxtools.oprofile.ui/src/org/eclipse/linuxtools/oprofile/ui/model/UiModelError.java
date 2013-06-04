@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * This is an error element
+ * @since 1.1
  */
 public class UiModelError implements IUiModelElement {
 	public static final UiModelError NO_SAMPLES_ERROR = new UiModelError(OprofileUiMessages.getString("root.error.nosamples")); //$NON-NLS-1$

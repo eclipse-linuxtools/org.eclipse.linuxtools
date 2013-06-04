@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Convenience class for creating the UI model from the oprofile data model,
  *  via a single point of access.
+ * @since 1.1
  */
 public class UiModelRoot implements IUiModelElement {
 	private static UiModelRoot uiModelRoot = new UiModelRoot();	//singleton

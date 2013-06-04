@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Image;
  * May or may not have child symbols. Note that although the dependent
  * images are children of OpModelImages in the data model, for usability's
  * sake they are children of the parent session in the tree.
+ * @since 1.1
  */
 public class UiModelImage implements IUiModelElement {
 	private IUiModelElement parent;		//parent element, may be UiModelSession or UiModelDependent

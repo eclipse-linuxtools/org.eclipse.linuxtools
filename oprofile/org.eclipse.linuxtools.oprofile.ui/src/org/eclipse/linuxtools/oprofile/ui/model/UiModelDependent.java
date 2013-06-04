@@ -15,6 +15,9 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * @since 1.1
+ */
 public class UiModelDependent implements IUiModelElement {
 	private IUiModelElement parent;
 	private OpModelImage dataModelDependents[];

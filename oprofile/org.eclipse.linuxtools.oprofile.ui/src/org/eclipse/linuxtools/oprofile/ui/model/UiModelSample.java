@@ -15,6 +15,9 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * @since 1.1
+ */
 public class UiModelSample implements IUiModelElement {
 	private IUiModelElement parent;		//parent element
 	private OpModelSample sample;			//the node in the data model
