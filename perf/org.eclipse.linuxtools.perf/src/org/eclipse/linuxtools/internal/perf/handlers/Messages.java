@@ -39,6 +39,11 @@ public class Messages extends NLS {
 	public static String MsgConfirm_title;
 	public static String MsgConfirm_msg;
 	public static String ContentDescription_0;
+
+	public static String  PerfEditorLauncher_stat_title;
+	public static String PerfEditorLauncher_file_dne_error;
+	public static String PerfEditorLauncher_file_read_error;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

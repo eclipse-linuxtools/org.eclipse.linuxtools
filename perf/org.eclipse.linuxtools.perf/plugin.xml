@@ -164,6 +164,13 @@
             launcher="org.eclipse.linuxtools.internal.perf.launch.PerfOpenData"
             name="Perf Viewer">
       </editor>
+      <editor
+            default="true"
+            filenames="*.stat"
+            id="org.eclipse.linuxtools.perf.stat.launch"
+            launcher="org.eclipse.linuxtools.internal.perf.handlers.PerfStatDataOpenHandler"
+            name="Perf Statistics">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.linuxtools.profiling.launch.launchProvider">
