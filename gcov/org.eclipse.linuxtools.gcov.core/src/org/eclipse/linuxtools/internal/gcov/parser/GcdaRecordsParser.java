@@ -83,6 +83,15 @@ public class GcdaRecordsParser {
 			try {
 				// parse header
 				int tag = stream.readInt();
+
+				/*
+				 * Move on to the next tag if an unused level (tag == O) is encountered,
+				 * these do no have corresponding data lengths.
+				 */
+				if(tag == 0){
+					continue;
+				}
+
 				long length = (stream.readInt() &  MasksGenerator.UNSIGNED_INT_MASK);
 				// parse gcda data
 				switch (tag) {
