@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -43,10 +43,12 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegat
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
  * and schedules a job to finish generation of the command and execute.
- * 
+ *
  */
 public class SystemTapLaunchConfigurationDelegate extends
 		ProfileLaunchConfigurationDelegate {
+
+	private static final String [] escapableChars = new String []  {"(", ")", " "}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	private static final String TEMP_ERROR_OUTPUT =
 		PluginConstants.getDefaultOutput() + "stapTempError.error"; //$NON-NLS-1$
@@ -68,7 +70,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	protected String getPluginID() {
 		return null;
 	}
-	
+
 	/**
 	 * Sets strings to blank, booleans to false and everything else to null
 	 */
@@ -83,11 +85,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 		 useColour = false;
 		 binaryArguments = ""; //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
-		
+
 		if (m == null) {
 			m = new NullProgressMonitor();
 		}
@@ -99,13 +101,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (monitor.isCanceled()) {
 			return;
 		}
-		
+
 		/*
 		 * Set variables
 		 */
 		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,
-				LaunchConfigurationConstants.DEFAULT_USE_COLOUR))
-			useColour = true; 
+				LaunchConfigurationConstants.DEFAULT_USE_COLOUR)) {
+			useColour = true;
+		}
 		if (!config.getAttribute(LaunchConfigurationConstants.ARGUMENTS,
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS).equals(
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS)) {
@@ -153,21 +156,20 @@ public class SystemTapLaunchConfigurationDelegate extends
 				e1.printStackTrace();
 			}
 		}
-		
+
 		stap = config.getAttribute(LaunchConfigurationConstants.COMMAND,
 				PluginConstants.STAP_PATH);
 
 		/**
 		 * Generate partial command
 		 */
-		partialCommand = ConfigurationOptionsSetter.setOptions(config);  
+		partialCommand = ConfigurationOptionsSetter.setOptions(config);
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
 				PluginConstants.getDefaultOutput());
-		partialCommand += "-o " + outputPath; //$NON-NLS-1$
 
-		boolean fileExists;
+		boolean fileExists = true;
 		try {
 			//Make sure the output file exists
 			File tempFile = new File(outputPath);
@@ -188,19 +190,21 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		finishLaunch(launch, config, m, true);
 	}
-	
+
 	/**
 	 * Returns the current SystemTap command, or returns an error message.
 	 * @return
 	 */
 	public String getCommand() {
-		if (cmd.length() > 0)
+		if (cmd.length() > 0) {
 			return cmd;
-		else
+		}
+		else {
 			return Messages.getString("SystemTapLaunchConfigurationDelegate.NoCommand"); //$NON-NLS-1$
+		}
 	}
 
-	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, 
+	private void finishLaunch(ILaunch launch, ILaunchConfiguration config,
 			IProgressMonitor monitor, boolean retry) {
 
 		try {
@@ -212,16 +216,16 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, config);
-			
+
 			/*
-			 * Fetch a parser 
+			 * Fetch a parser
 			 */
-			String parserClass = config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
+			String parserClass = config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS,
 					LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
 			IExtensionRegistry reg = Platform.getExtensionRegistry();
 			IConfigurationElement[] extensions = reg
-					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
-							PluginConstants.PARSER_NAME, 
+					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE,
+							PluginConstants.PARSER_NAME,
 							parserClass);
 			if (extensions == null || extensions.length < 1) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
@@ -231,11 +235,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 				mess.schedule();
 				return;
 			}
-			
+
 			IConfigurationElement element = extensions[0];
-			SystemTapParser parser = 
+			SystemTapParser parser =
 				(SystemTapParser) element.createExecutableExtension(PluginConstants.ATTR_CLASS);
-			
+
 			//Set parser options
 			parser.setViewID(config.getAttribute(LaunchConfigurationConstants.VIEW_CLASS,
 					LaunchConfigurationConstants.VIEW_CLASS));
@@ -246,13 +250,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.DEFAULT_SECONDARY_VIEW_ID));
 
 			parser.setKillButtonEnabled(true);
-						
+
 			monitor.worked(1);
 
 			/*
 			 * Launch
 			 */
-			
+
 			File workDir = getWorkingDirectory(config);
 			if (workDir == null) {
 				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -260,7 +264,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			//Put command into a shell script
 			String cmd = generateCommand(config);
-			File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh");
+			File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh"); //$NON-NLS-1$ //$NON-NLS-2$
 			String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
 			FileOutputStream out = null;
 			try {
@@ -282,10 +286,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
 
 			monitor.worked(1);
-			
+
 			StreamListener s = new StreamListener();
 			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
-			
+
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 				if ((monitor != null && monitor.isCanceled()) || parser.isDone()) {
@@ -306,45 +310,46 @@ public class SystemTapLaunchConfigurationDelegate extends
 							Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"), //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"), //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.stapNotFound")); //$NON-NLS-1$
-					
+
 					errorDialog.schedule();
 				}else{
 					SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-					
+
 					//Prepare stap information
 					errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
-					
+
 					//Handle error from TEMP_ERROR_OUTPUT
 					errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT));
-					if ((monitor != null && monitor.isCanceled()))
+					if ((monitor != null && monitor.isCanceled())) {
 						return;
-					
+					}
+
 					errorHandler.finishHandling(monitor, scriptPath);
 					if (errorHandler.isErrorRecognized()) {
 						SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages(
 								Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 								Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 								errorHandler.getErrorMessage());
-						
+
 						errorDialog.schedule();
 					}
 				}
 				return;
 			}
-			
+
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
 				parser.setRealTime(true);
 			}
-			
+
 			parser.schedule();
 			monitor.worked(1);
-			
+
 			String message = generateErrorMessage(config.getName(), binaryArguments);
-			
+
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
 					(Helper.getConsoleByName(config.getName())), message);
 			dw.schedule();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -353,17 +358,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			e.printStackTrace();
 		} finally {
 			monitor.done();
-			
+
 		}
 	}
-	
+
 	private String generateErrorMessage(String configName, String binaryCommand) {
 		String output = ""; //$NON-NLS-1$
-		
+
 		if (binaryCommand == null || binaryCommand.length() < 0) {
 			output = PluginConstants.NEW_LINE +
 						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + 
+						PluginConstants.NEW_LINE +
 						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch10") //$NON-NLS-1$
 						+ configName + PluginConstants.NEW_LINE +
 						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch8") + //$NON-NLS-1$
@@ -371,9 +376,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 						"configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
 						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 		} else {
-			output = PluginConstants.NEW_LINE 
+			output = PluginConstants.NEW_LINE
 					+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-					+ PluginConstants.NEW_LINE 
+					+ PluginConstants.NEW_LINE
 					+ Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage1")  //$NON-NLS-1$
 					+ configName + PluginConstants.NEW_LINE +
 					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage2") //$NON-NLS-1$
@@ -383,14 +388,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage5") +  //$NON-NLS-1$
 					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 		}
-			
+
 		return output;
 	}
 
 	private static class StreamListener implements IStreamListener{
 		private int counter;
 		private BufferedWriter bw;
-		
+
 		public StreamListener() throws IOException {
 			File file = new File(TEMP_ERROR_OUTPUT);
 			file.delete();
@@ -398,14 +403,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			bw = Helper.setBufferedWriter(TEMP_ERROR_OUTPUT);
 			counter = 0;
 		}
-		
+
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
-				if (text.length() < 1) return;
+				if (text.length() < 1) {
+					return;
+				}
 				counter++;
-				if (counter < PluginConstants.MAX_ERRORS)
+				if (counter < PluginConstants.MAX_ERRORS) {
 					bw.append(text);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -418,8 +426,24 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 	public String generateCommand(ILaunchConfiguration config) {
 		// Generate the command
-		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
-				partialCommand, needsBinary, needsArguments, arguments, binaryArguments, stap);
+		cmd = SystemTapCommandGenerator.generateCommand(escapeSpecialCharacters(scriptPath), escapeSpecialCharacters(binaryPath),
+				partialCommand, needsBinary, needsArguments, escapeSpecialCharacters(arguments), binaryArguments, stap);
+		cmd += " >& " + escapeSpecialCharacters(outputPath); //$NON-NLS-1$
 		return cmd;
+	}
+
+	/**
+	 * Escapes special characters in the target string
+	 *
+	 * @param script the script to be executed by the shell.
+	 * @return the formatted string that will be executed.
+	 */
+	private String escapeSpecialCharacters(String str) {
+		// Modify script to catch escapable characters.
+		String res = str;
+		for (int i = 0; i < escapableChars.length; i++) {
+			res = res.replace(escapableChars[i], "\\" + escapableChars[i]); //$NON-NLS-1$
+		}
+		return res;
 	}
 }

@@ -33,9 +33,9 @@ public class ConfigurationTest extends AbstractStapTest{
 
 		String testCDirectives = "-DRandomjunk -DMoreJunk";
 		String testOutputPath = "/tmp/ThisFileDoesNothingDeleteIt";
-		String testBinaryPath = "More random junk";
+		String testBinaryPath = "/path/to/binary";
 		String testScriptPath = "/tmp/NotAScriptFile.stp";
-		String testArguments = "Nonexistent Arguments";
+		String testArguments = "/path/to/binary";
 		int testPid = 413;
 		int testBuffer = 100;
 		int testPass = 10;
@@ -86,9 +86,9 @@ public class ConfigurationTest extends AbstractStapTest{
 
 		assertEquals("stap -v -p" + testPass + " -k -g -P -u -w -b -t -s"
 				+ testBuffer + " -x" + testPid + " " + testCDirectives
-				+ " -F --skip-badvars --ignore-dwarf -q " + "-o "
-				+ testOutputPath + " -c '" + testBinaryPath + "' "
-				+ testScriptPath + " " + testArguments,
+				+ " -F --skip-badvars --ignore-dwarf -q " + " -c '" + testBinaryPath
+				+ "' " + testScriptPath + " --runtime=dyninst " + testArguments + " >& "
+				+ testOutputPath,
 				del.generateCommand(config));
 
 		killStap();

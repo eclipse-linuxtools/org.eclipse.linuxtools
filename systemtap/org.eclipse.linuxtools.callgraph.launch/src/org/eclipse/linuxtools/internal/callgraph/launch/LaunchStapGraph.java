@@ -70,17 +70,19 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		projectName = bin.getCProject().getElementName();
 
 		try {
-			if (wc == null)
+			if (wc == null) {
 				wc = createConfiguration(bin, name);
+			}
 			binaryPath = bin.getResource().getLocation().toString();
-			binaryPath = escapeSpecialCharacters(binaryPath);
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
 
-			if (writeFunctionListToScript(resourceToSearchFor) == null)
+			if (writeFunctionListToScript(resourceToSearchFor) == null) {
 				return;
-			if (funcs == null || funcs.length() < 0)
+			}
+			if (funcs == null || funcs.length() < 0) {
 				return;
+			}
 
 			needToGenerate = true;
 			finishLaunch(name, mode, wc);
@@ -110,7 +112,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + function + "\").call ? {	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc(),tid()) } 	}	probe process(@1).function(\"" + function + "\").return ? {		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc(),tid())	else { printf(\"?%d,,%s\\n\", tid(), user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String output = "probe process(@1).function(\"" + function + "\").call ? {	if ( ! isinstr(\"" + function + "\", \"___STAP_MARKER___\")) { callFunction(\"" + function + "\",tid()) } 	}	probe process(@1).function(\"" + function + "\").return ? {		if ( ! isinstr(\"" + function + "\", \"___STAP_MARKER___\")) returnFunction(\"" + function + "\",tid())	else { printf(\"?%d,,%s\\n\", tid(), user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		return output;
 	}
 
