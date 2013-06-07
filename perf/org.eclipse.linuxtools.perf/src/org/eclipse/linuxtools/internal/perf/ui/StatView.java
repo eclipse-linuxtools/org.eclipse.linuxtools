@@ -38,7 +38,7 @@ public class StatView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		parent.setLayoutData(new GridLayout(1, true));
 
-		text = new StyledText(parent, SWT.WRAP | SWT.V_SCROLL);
+		text = new StyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		text.setEditable(false);
 
 		IPerfData data = PerfPlugin.getDefault().getStatData();
