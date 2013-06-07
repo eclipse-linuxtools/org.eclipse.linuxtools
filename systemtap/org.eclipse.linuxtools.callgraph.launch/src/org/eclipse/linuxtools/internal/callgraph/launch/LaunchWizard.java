@@ -249,7 +249,6 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 			public void widgetSelected(SelectionEvent e) {
 					scriptPath = scriptLocation.getText();
 					binaryPath = binaryLocation.getText();
-					binaryPath = escapeSpecialCharacters(binaryPath);
 					arguments = argumentsLocation.getText();
 					ILaunchConfigurationWorkingCopy wc = createConfiguration(null, name);
 					try {

@@ -38,7 +38,7 @@ public class SystemTapCommandGenerator {
 		binaryPath = binPath;
 		scriptPath = scrPath;
 		isGuru = false;
-		arguments = arg;
+		arguments = "--runtime=dyninst " + arg; //$NON-NLS-1$
 		flags = opts;
 		binaryArguments = binArguments;
 		command = cmdTarget;
