@@ -41,7 +41,7 @@ public class STAnnotatedSourceEditorActivator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        EditorsUI.getPreferenceStore().setValue("STRuler", true);
+        EditorsUI.getPreferenceStore().setValue("STRuler", true); //$NON-NLS-1$
     }
 
     /*

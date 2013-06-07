@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -26,11 +27,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 
 public abstract class AbstractOpenSourceFileAction extends Action {
-    public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor";
+    public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor"; //$NON-NLS-1$
     private long ts;
 
     public AbstractOpenSourceFileAction(String filepath, long ts) {
-        super.setText("Open =>" + filepath);
+        super.setText(NLS.bind(Messages.OpenSourceFileAction_open_src_action_text, filepath));
         this.ts = ts;
     }
 
@@ -49,10 +50,7 @@ public abstract class AbstractOpenSourceFileAction extends Action {
                     MessageBox msg = new MessageBox(window.getShell(), SWT.ICON_WARNING | SWT.APPLICATION_MODAL
                             | SWT.YES | SWT.NO);
                     msg.setText(fileStore.toString());
-                    msg.setMessage("The file "
-                            + fileStore
-                            + " is newer than the analysis result, \n"
-                            + " if you continue opening it the visualization could result inconsistent. \n Do you want to continue?");
+                    msg.setMessage(NLS.bind(Messages.OpenSourceFileAction_warning_inconsistency, fileStore));
                 }
 
                 try {
@@ -64,11 +62,11 @@ public abstract class AbstractOpenSourceFileAction extends Action {
                     }
                 } catch (Exception e) {
                     Status s = new Status(IStatus.ERROR, STAnnotatedSourceEditorActivator.PLUGIN_ID,
-                            IStatus.ERROR, "Error when opening annotated source view", e);
+                            IStatus.ERROR, Messages.OpenSourceFileAction_view_error, e);
                     STAnnotatedSourceEditorActivator.getDefault().getLog().log(s);
                 }
             } else {
-                showMessage("The selected file does not exist: " + fileStore, window.getShell());
+				showMessage(NLS.bind(Messages.OpenSourceFileAction_file_dne,fileStore), window.getShell());
             }
         }
 
@@ -76,7 +74,7 @@ public abstract class AbstractOpenSourceFileAction extends Action {
 
     private void showMessage(String message, Shell shell) {
         MessageBox msgBox = new MessageBox(shell, SWT.ICON_ERROR);
-        msgBox.setText("Error");
+        msgBox.setText(Messages.OpenSourceFileAction_Error);
         msgBox.setMessage(message);
         msgBox.open();
     }
