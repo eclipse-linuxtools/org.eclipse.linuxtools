@@ -115,6 +115,7 @@ public class ManPage {
 	 * Removes all HTML markings are returns a text only version.
 	 *
 	 * @return a text only version of the manpage
+	 * @since 1.1
 	 */
 	public StringBuilder getStrippedTextPage() {
 		if (this.strippedTextPage == null) {
