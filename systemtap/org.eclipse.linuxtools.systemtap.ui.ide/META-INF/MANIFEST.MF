@@ -20,7 +20,7 @@ Require-Bundle:
  org.eclipse.linuxtools.systemtap.graphingapi.ui,
  org.eclipse.linuxtools.man.core;bundle-version="1.1"
 Bundle-ActivationPolicy: lazy
-Import-Package: com.jcraft.jsch;version="0.1.46",
+Import-Package: com.jcraft.jsch;version="0.1.37",
  org.eclipse.cdt.core.model,
  org.eclipse.core.filesystem,
  org.eclipse.linuxtools.systemtap.structures,

@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
-Import-Package: com.jcraft.jsch;version="0.1.46",
+Import-Package: com.jcraft.jsch;version="0.1.37",
  org.eclipse.linuxtools.tools.launch.core.factory
