@@ -68,7 +68,7 @@ public class UiUtils {
 			while (variableMatcher.find()) {
 				define = specfile.getDefine(variableMatcher.group(1));
 				if (define != null) {
-					stringToResolve = stringToResolve.replaceAll(variableMatcher.group(1), define.getStringValue());
+					stringToResolve = stringToResolve.replaceAll("\\b"+variableMatcher.group(1)+"\\b", define.getStringValue());
 				} else {
 					return originalString;
 				}
