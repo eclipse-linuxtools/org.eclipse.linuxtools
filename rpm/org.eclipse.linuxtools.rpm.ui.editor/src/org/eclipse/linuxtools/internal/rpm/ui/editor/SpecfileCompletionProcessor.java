@@ -458,7 +458,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		try {
 			while (i > 0) {
 				char ch = document.getChar(i - 1);
-				if (!Character.isLetterOrDigit(ch) && (ch != '%') && (ch != '_') && (ch != '-') && (ch != '{')) {
+				if (!Character.isLetterOrDigit(ch) && (ch != '%') && (ch != '_') && (ch != '-') && (ch != '{') && (ch != '.') && (ch != '+')) {
 					break;
 				}
 				i--;

@@ -32,7 +32,10 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 			+ "Source3: main.tar.gz";
 
 	private static final String BUILD_REQUIRES =  "BuildRequires: p";
-	
+
+	private static final String NON_ALPHA_DOT = "Requires: java-1.";
+	private static final String NON_ALPHA_PLUS = "Requires: libstdc+";
+
 	private SpecfileEditor initEditor(String contents) throws Exception {
 		newFile(contents);
 		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
@@ -105,5 +108,53 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 			previous = current;
 		}
 
+	}
+
+	@Test
+	public void testBRCompletionNonAlphaDot() throws Exception {
+		setPackageList(new String[]{"java-1.5.0-gcj", "java-1.7.0-openjdk", "java-1.7.0-openjdk-devel", "java-1.7.0-openjdk-javadoc"});
+		SpecfileEditor editor = initEditor(NON_ALPHA_DOT);
+		testProject.refresh();
+		// This is needed so the changes in the testFile are loaded in the
+		// editor
+		editor.doRevertToSaved();
+		SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
+				editor);
+		assertNotNull(complProcessor);
+		editor.getSpecfileSourceViewer().setSelectedRange(NON_ALPHA_DOT.length(), 0);
+		ICompletionProposal[] proposals = complProcessor
+				.computeCompletionProposals(editor.getSpecfileSourceViewer(), NON_ALPHA_DOT.length());
+		int sourceComplCount = 0;
+		for (int i = 0; i < proposals.length; i++) {
+			ICompletionProposal proposal = proposals[i];
+			if (proposal.getDisplayString().startsWith("java-1.")) {
+				++sourceComplCount;
+			}
+		}
+		assertEquals(4, sourceComplCount);
+	}
+
+	@Test
+	public void testBRCompletionNonAlphaPlus() throws Exception {
+		setPackageList(new String[]{"libstdc++", "libstdc++-devel"});
+		SpecfileEditor editor = initEditor(NON_ALPHA_PLUS);
+		testProject.refresh();
+		// This is needed so the changes in the testFile are loaded in the
+		// editor
+		editor.doRevertToSaved();
+		SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
+				editor);
+		assertNotNull(complProcessor);
+		editor.getSpecfileSourceViewer().setSelectedRange(NON_ALPHA_PLUS.length(), 0);
+		ICompletionProposal[] proposals = complProcessor
+				.computeCompletionProposals(editor.getSpecfileSourceViewer(), NON_ALPHA_PLUS.length());
+		int sourceComplCount = 0;
+		for (int i = 0; i < proposals.length; i++) {
+			ICompletionProposal proposal = proposals[i];
+			if (proposal.getDisplayString().startsWith("libstdc+")) {
+				++sourceComplCount;
+			}
+		}
+		assertEquals(2, sourceComplCount);
 	}
 }
