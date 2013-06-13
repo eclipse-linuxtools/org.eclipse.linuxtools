@@ -36,100 +36,92 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
 public class OpenSourceFileAction {
 
-	/**
-	 * Shared instance of this class
-	 */
-	public static final OpenSourceFileAction sharedInstance = new OpenSourceFileAction();
+    /**
+     * Shared instance of this class
+     */
+    public static final OpenSourceFileAction sharedInstance = new OpenSourceFileAction();
 
-	private OpenSourceFileAction() {
-	}
+    private OpenSourceFileAction() {
+    }
 
+    // FIXME: move this method in binutils plugin.
+    private IFileStore getFileStore(IProject project, IPath path) {
+        IEditorInput input = STLink2SourceSupport.sharedInstance.getEditorInput(path, project);
+        if (input instanceof IURIEditorInput) {
+            IURIEditorInput editorInput = (IURIEditorInput) input;
+            URI uri = editorInput.getURI();
+            try {
+                IFileStore fs = EFS.getStore(uri);
+                return fs;
+            } catch (CoreException _) {
+                return null;
+            }
+        }
+        return null;
+    }
 
-	// FIXME: move this method in binutils plugin.
-	private IFileStore getFileStore(IProject project, IPath path) {
-		IEditorInput input  = STLink2SourceSupport.sharedInstance.getEditorInput(path, project);
-		if (input instanceof IURIEditorInput) {
-			IURIEditorInput editorInput = (IURIEditorInput) input;
-			URI uri = editorInput.getURI();
-			try {
-				IFileStore fs = EFS.getStore(uri);
-				return fs;
-			} catch (CoreException _) {
-				return null;
-			}
-		}
-		return null;
-	}
+    private GcovSourceEditorInput getInput(SourceFile sourceFile, IFileStore fs) {
+        GcovSourceEditorInput input = new GcovSourceEditorInput(fs, sourceFile);
+        IWorkbenchPage p = CUIPlugin.getActivePage();
+        IEditorPart editorPart = p.findEditor(input);
+        if (editorPart != null)
+            p.closeEditor(editorPart, false);
+        return input;
+    }
 
+    public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, int lineNumber) {
+        if (sourceFile == null)
+            return;
+        String pathName = sourceFile.getName();
+        if (pathName == null)
+            return;
+        IPath path = new Path(pathName);
+        openAnnotatedSourceFile(project, binary, sourceFile, path, lineNumber);
+    }
 
-	private GcovSourceEditorInput getInput(SourceFile sourceFile,
-			IFileStore fs) {
-		GcovSourceEditorInput input = new GcovSourceEditorInput(
-				fs, sourceFile);
-		IWorkbenchPage p = CUIPlugin.getActivePage();
-		IEditorPart editorPart = p.findEditor(input);
-		if (editorPart != null)
-			p.closeEditor(editorPart, false);
-		return input;
-	}
-
-	public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, int lineNumber) {
-		if (sourceFile == null) return;
-		String pathName = sourceFile.getName();
-		if (pathName == null) return;
-		IPath path = new Path(pathName);
-		openAnnotatedSourceFile(project, binary, sourceFile, path, lineNumber);
-	}
-
-	public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, IPath realLocation, int lineNumber) {
-		IWorkbenchPage page = CUIPlugin.getActivePage();
-		if (page != null) {
-			IFileStore fs = getFileStore(project, realLocation);
-			if (fs == null && !realLocation.isAbsolute() && binary != null) {
-				IPath p = binary.getProjectRelativePath().removeLastSegments(1);
-				fs = getFileStore(project, p.append(realLocation));
-			}
-			if (fs == null) {
-				try {
-					page.openEditor(new STAnnotatedSourceNotFoundEditorInput(project,sourceFile,
-							realLocation, lineNumber),
-							STAnnotatedSourceNotFoundEditor.ID, true);
-				} catch (PartInitException e) {
-					Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							IStatus.ERROR, "Error when opening annotated source view",
-							e);
-					Activator.getDefault().getLog().log(s);
-				}
-			} else {
-				IEditorInput input = getInput(sourceFile, fs);
-				try {
-					IEditorPart editor = page.openEditor(input,
-							AbstractOpenSourceFileAction.EDITOR_ID, true);
-					if (lineNumber > 0 && editor instanceof ITextEditor) {
-						IDocumentProvider provider = ((ITextEditor) editor).getDocumentProvider();
-						IDocument document = provider.getDocument(editor.getEditorInput());
-						try {
-							int start = document.getLineOffset(lineNumber - 1);
-							((ITextEditor) editor).selectAndReveal(start, 0);
-						} catch (BadLocationException _) {
-							// ignore
-						}
-						IWorkbenchPage p = editor.getSite().getPage();
-						p.activate(editor);
-					}
-				} catch (PartInitException e) {
-					Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							IStatus.ERROR, "Error when opening annotated source view",
-							e);
-					Activator.getDefault().getLog().log(s);
-				}
-			}
-		}
-	}
-
-
+    public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, IPath realLocation,
+            int lineNumber) {
+        IWorkbenchPage page = CUIPlugin.getActivePage();
+        if (page != null) {
+            IFileStore fs = getFileStore(project, realLocation);
+            if (fs == null && !realLocation.isAbsolute() && binary != null) {
+                IPath p = binary.getProjectRelativePath().removeLastSegments(1);
+                fs = getFileStore(project, p.append(realLocation));
+            }
+            if (fs == null) {
+                try {
+                    page.openEditor(new STAnnotatedSourceNotFoundEditorInput(project, sourceFile, realLocation,
+                            lineNumber), STAnnotatedSourceNotFoundEditor.ID, true);
+                } catch (PartInitException e) {
+                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+                            Messages.OpenSourceFileAction_open_error, e);
+                    Activator.getDefault().getLog().log(s);
+                }
+            } else {
+                IEditorInput input = getInput(sourceFile, fs);
+                try {
+                    IEditorPart editor = page.openEditor(input, AbstractOpenSourceFileAction.EDITOR_ID, true);
+                    if (lineNumber > 0 && editor instanceof ITextEditor) {
+                        IDocumentProvider provider = ((ITextEditor) editor).getDocumentProvider();
+                        IDocument document = provider.getDocument(editor.getEditorInput());
+                        try {
+                            int start = document.getLineOffset(lineNumber - 1);
+                            ((ITextEditor) editor).selectAndReveal(start, 0);
+                        } catch (BadLocationException _) {
+                            // ignore
+                        }
+                        IWorkbenchPage p = editor.getSite().getPage();
+                        p.activate(editor);
+                    }
+                } catch (PartInitException e) {
+                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+                            Messages.OpenSourceFileAction_open_error, e);
+                    Activator.getDefault().getLog().log(s);
+                }
+            }
+        }
+    }
 
 }

@@ -15,60 +15,62 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 public class FieldName extends AbstractSTDataViewersField {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
-	 */
-	@Override
-	public String getColumnHeaderText() {
-		return "Name";
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
+     */
+    @Override
+    public String getColumnHeaderText() {
+        return Messages.FieldName_column_header;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
-	 */
-	@Override
-	public String getValue(Object obj) {
-	    if (obj instanceof TreeElement) {
-	        TreeElement e = (TreeElement) obj;
-	        String nm = e.getName();
-	        nm = nm.substring(nm.lastIndexOf('/')+1);
-	        nm = nm.substring(nm.lastIndexOf('\\')+1);
-	        return nm;
-	    }
-	    return ""; //$NON-NLS-1$
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
+     */
+    @Override
+    public String getValue(Object obj) {
+        if (obj instanceof TreeElement) {
+            TreeElement e = (TreeElement) obj;
+            String nm = e.getName();
+            nm = nm.substring(nm.lastIndexOf('/') + 1);
+            nm = nm.substring(nm.lastIndexOf('\\') + 1);
+            return nm;
+        }
+        return ""; //$NON-NLS-1$
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getToolTipText(java.lang.Object)
-	 */
-	@Override
-	public String getToolTipText(Object element) {
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getToolTipText(java.lang.Object)
+     */
+    @Override
+    public String getToolTipText(Object element) {
         if (element instanceof TreeElement) {
             TreeElement elem = (TreeElement) element;
             String s = elem.getName();
             return s;
         }
         return ""; //$NON-NLS-1$
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public int compare(Object obj1, Object obj2) {
-		String s1 = getValue(obj1);
-		String s2 = getValue(obj2);
-		if (s1 == null) {
-			if (s2 == null)
-				return 0;
-			return -1;
-		}
-		if (s2 == null)
-			return 1;
-		return s1.compareTo(s2);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object,
+     * java.lang.Object)
+     */
+    @Override
+    public int compare(Object obj1, Object obj2) {
+        String s1 = getValue(obj1);
+        String s2 = getValue(obj2);
+        if (s1 == null) {
+            if (s2 == null)
+                return 0;
+            return -1;
+        }
+        if (s2 == null)
+            return 1;
+        return s1.compareTo(s2);
+    }
 }

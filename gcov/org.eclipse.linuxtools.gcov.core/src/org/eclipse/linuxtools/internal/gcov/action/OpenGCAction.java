@@ -25,64 +25,59 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.gcov.dialog.OpenGCDialog;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorLauncher;
 import org.eclipse.ui.PlatformUI;
 
-
 /**
  * Action performed when user clicks on a gcda/gcno file
- *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class OpenGCAction implements IEditorLauncher {
 
-	@Override
-	public void open(IPath file) {
-		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		String extension = file.getFileExtension();
-		File gcno;
-		File gcda;
-		if ("gcno".equals(extension)) { //$NON-NLS-1$
-			IPath file2 = file.removeFileExtension().addFileExtension("gcda"); //$NON-NLS-1$
-			gcno = file.toFile();
-			gcda = file2.toFile();
-		} else if ("gcda".equals(extension)) { //$NON-NLS-1$
-			IPath file2 = file.removeFileExtension().addFileExtension("gcno"); //$NON-NLS-1$
-			gcda = file.toFile();
-			gcno = file2.toFile();
-			
-		} else {
-			// should never occurs
-			return;
-		}
+    @Override
+    public void open(IPath file) {
+        Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+        String extension = file.getFileExtension();
+        File gcno;
+        File gcda;
+        if ("gcno".equals(extension)) { //$NON-NLS-1$
+            IPath file2 = file.removeFileExtension().addFileExtension("gcda"); //$NON-NLS-1$
+            gcno = file.toFile();
+            gcda = file2.toFile();
+        } else if ("gcda".equals(extension)) { //$NON-NLS-1$
+            IPath file2 = file.removeFileExtension().addFileExtension("gcno"); //$NON-NLS-1$
+            gcda = file.toFile();
+            gcno = file2.toFile();
+        } else {
+            // should never occurs
+            return;
+        }
 
-		if (gcda == null || !gcda.isFile()) {
-			String msg = "File " + gcda + " does not exist.";
-			msg += "\nPlease run your application at least once.";
-			MessageDialog.openError(shell, "gcov Error", msg);
-			return;
-		}
-		if (gcno == null || !gcno.isFile()) {
-			String msg = "File " + gcno + " does not exist.";
-			msg += "\nPlease recompile your application.";
-			MessageDialog.openError(shell, "gcov Error", msg);
-			return;
-		}
-		
+        if (gcda == null || !gcda.isFile()) {
+            String msg = NLS.bind(Messages.OpenGCAction_file_dne_run, gcda);
+            MessageDialog.openError(shell, Messages.OpenGCAction_gcov_error, msg);
+            return;
+        }
+        if (gcno == null || !gcno.isFile()) {
+            String msg = NLS.bind(Messages.OpenGCAction_file_dne_compile, gcno);
+            MessageDialog.openError(shell, Messages.OpenGCAction_gcov_error, msg);
+            return;
+        }
 
-		String s = getDefaultBinary(file);
-		OpenGCDialog d = new OpenGCDialog(shell, s, file);
-		if (d.open() != Window.OK) {
-			return;
-		}
-		String binaryPath = d.getBinaryFile();
-		if (d.isCompleteCoverageResultWanted()) {
-			CovView.displayCovResults(binaryPath, gcda.getAbsolutePath());
-		} else {
-			CovView.displayCovDetailedResult(binaryPath, gcda.getAbsolutePath());
-		}
-	}
+        String s = getDefaultBinary(file);
+        OpenGCDialog d = new OpenGCDialog(shell, s, file);
+        if (d.open() != Window.OK) {
+            return;
+        }
+        String binaryPath = d.getBinaryFile();
+        if (d.isCompleteCoverageResultWanted()) {
+            CovView.displayCovResults(binaryPath, gcda.getAbsolutePath());
+        } else {
+            CovView.displayCovDetailedResult(binaryPath, gcda.getAbsolutePath());
+        }
+    }
 
     private String getDefaultBinary(IPath file) {
         IProject project = null;
@@ -104,5 +99,5 @@ public class OpenGCAction implements IEditorLauncher {
             }
         }
         return ""; //$NON-NLS-1$
-	}
+    }
 }

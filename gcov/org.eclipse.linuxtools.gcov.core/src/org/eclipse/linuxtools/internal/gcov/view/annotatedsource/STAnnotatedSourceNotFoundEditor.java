@@ -17,35 +17,31 @@ import org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.ui.IEditorInput;
 
-
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
- *
  */
-public class STAnnotatedSourceNotFoundEditor extends
-		STCSourceNotFoundEditor {
-	
-	public static final String ID = "org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor";
+public class STAnnotatedSourceNotFoundEditor extends STCSourceNotFoundEditor {
 
-	public STAnnotatedSourceNotFoundEditor() {
-		
-	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor#openSourceFileAtLocation(org.eclipse.core.resources.IProject, org.eclipse.core.runtime.IPath, int)
-	 */
-	@Override
-	protected void openSourceFileAtLocation(IProject project, IPath sourceLoc,
-			int lineNumber) {
-		IEditorInput input = this.getEditorInput();
-		if (input instanceof STAnnotatedSourceNotFoundEditorInput) {
-			STAnnotatedSourceNotFoundEditorInput editorInput = (STAnnotatedSourceNotFoundEditorInput) input;
-			SourceFile sf = editorInput.getSourceFile();
-			OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, null, sf, sourceLoc, lineNumber);
-		} else {
-			super.openSourceFileAtLocation(project, sourceLoc, lineNumber);
-		}
-	}
+    public static final String ID = "org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"; //$NON-NLS-1$
+
+    public STAnnotatedSourceNotFoundEditor() {
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor#openSourceFileAtLocation(org.eclipse.core
+     * .resources.IProject, org.eclipse.core.runtime.IPath, int)
+     */
+    @Override
+    protected void openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
+        IEditorInput input = this.getEditorInput();
+        if (input instanceof STAnnotatedSourceNotFoundEditorInput) {
+            STAnnotatedSourceNotFoundEditorInput editorInput = (STAnnotatedSourceNotFoundEditorInput) input;
+            SourceFile sf = editorInput.getSourceFile();
+            OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, null, sf, sourceLoc, lineNumber);
+        } else {
+            super.openSourceFileAtLocation(project, sourceLoc, lineNumber);
+        }
+    }
 }
