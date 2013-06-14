@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -88,6 +90,16 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 			e.printStackTrace();
 		}
 		return fileUrl.getFile();
+	}
+
+	/**
+	 * Log specified exception.
+	 * @param e Exception to log.
+	 */
+	public static void logException(Exception e) {
+		Status status = new Status(IStatus.ERROR, CallgraphCorePlugin.PLUGIN_ID,
+				e.getMessage());
+		CallgraphCorePlugin.getDefault().getLog().log(status);
 	}
 
 }

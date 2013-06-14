@@ -61,10 +61,8 @@ public class SystemTapGraphTest {
 			tasks.add("Reload file");
 			tasks.add("Maximize");
 
+			for (int taskNumber = 0; taskNumber < tasks.size(); taskNumber++) {
 
-		    int taskNumber = 0;
-			for (String task : tasks) {
-				taskNumber++;
 				Action act = null;
 				switch (taskNumber) {
 				case 1:

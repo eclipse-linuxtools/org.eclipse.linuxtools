@@ -306,46 +306,54 @@ public abstract class SystemTapView extends ViewPart {
      * @param sourcePath
      */
     public void saveData(String targetFile) {
-        try {
-            File file = new File(targetFile);
-            file.delete();
-            file.createNewFile();
+		try {
+			File file = new File(targetFile);
+			file.delete();
+			file.createNewFile();
 
-            File sFile = new File(sourcePath);
-            if (!sFile.exists()) {
-                return;
-            }
+			File sFile = new File(sourcePath);
+			if (!sFile.exists()) {
+				return;
+			}
 
-             FileChannel in = null;
-             FileChannel out = null;
+			FileInputStream fileIn = null;
+			FileOutputStream fileOut = null;
+			FileChannel channelIn = null;
+			FileChannel channelOut = null;
+			try {
+				fileIn = new FileInputStream(sFile);
+				fileOut = new FileOutputStream(file);
+				channelIn = fileIn.getChannel();
+				channelOut = fileOut.getChannel();
 
-             try {
-                  in = new FileInputStream(sFile).getChannel();
-                  out = new FileOutputStream(file).getChannel();
+				if (channelIn == null || channelOut == null) {
+					return;
+				}
 
-                  if (in == null || out == null) {
-                      return;
-                  }
+				long size = channelIn.size();
+				MappedByteBuffer buf = channelIn.map(
+						FileChannel.MapMode.READ_ONLY, 0, size);
 
-                  long size = in.size();
-                  MappedByteBuffer buf = in.map(FileChannel.MapMode.READ_ONLY, 0, size);
+				channelOut.write(buf);
 
-                  out.write(buf);
-
-             } finally {
-                  if (in != null) {
-                      in.close();
-                  }
-                  if (out != null) {
-                      out.close();
-                  }
-             }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			} finally {
+				if (channelIn != null) {
+					channelIn.close();
+				}
+				if (channelOut != null) {
+					channelOut.close();
+				}
+				if (fileIn != null) {
+					fileIn.close();
+				}
+				if (fileOut != null) {
+					fileOut.close();
+				}
+			}
+		} catch (IOException e) {
+			CallgraphCorePlugin.logException(e);
+		}
+	}
 
     public void setSourcePath(String file) {
         sourcePath = file;

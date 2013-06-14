@@ -38,9 +38,11 @@ public class SystemTapCommandTest {
 		File temporaryScript = new File(tempLocation);
 
 		FileOutputStream output = new FileOutputStream(temporaryScript);
-		new PrintStream(output).println("probe begin { printf(\"" + testText + "\") exit() }");
+		PrintStream printer = new PrintStream(output);
+		printer.println("probe begin { printf(\"" + testText + "\") exit() }");
 
 		//Cleanup
+		printer.close();
 		temporaryScript.delete();
 	}
 }

@@ -60,7 +60,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		try {
 			for (ICElement child : cont.getChildren()) {
 
-				if ((child instanceof ICElement)
+				if ((child != null)
 						&& SystemTapLaunchShortcut.validElement(child))
 					return true;
 				if ((child instanceof ICContainer)
