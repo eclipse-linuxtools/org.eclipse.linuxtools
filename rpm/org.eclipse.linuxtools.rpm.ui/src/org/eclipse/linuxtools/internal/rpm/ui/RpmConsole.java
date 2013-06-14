@@ -12,8 +12,11 @@ package org.eclipse.linuxtools.internal.rpm.ui;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.IOConsole;
-
+import org.eclipse.ui.console.MessageConsole;
 /**
  * RpmConsole is used to output rpm/rpmbuild output.
  * 
@@ -42,5 +45,32 @@ public class RpmConsole extends IOConsole {
 	 */
 	public IResource getSpecfile() {
 		return rpmProject.getSpecFile();
+	}
+
+	/**
+	 * Get the console.
+	 *
+	 * @param packageName The name of the package(RPM) this console will be for.
+	 * @return A console instance.
+	 */
+	public static IOConsole findConsole(String packageName) {
+		ConsolePlugin plugin = ConsolePlugin.getDefault();
+		IConsoleManager conMan = plugin.getConsoleManager();
+		String projectConsoleName = ID+'('+packageName+')';
+		IOConsole ret = null;
+		for (IConsole cons : ConsolePlugin.getDefault().getConsoleManager()
+				.getConsoles()) {
+			if (cons.getName().equals(projectConsoleName)) {
+				ret = (MessageConsole) cons;
+			}
+		}
+		// no existing console, create new one
+		if (ret == null) {
+			ret = new MessageConsole(ID+'('+packageName+')', null, null, true);
+		}
+		conMan.addConsoles(new IConsole[] { ret });
+		ret.clearConsole();
+		ret.activate();
+		return ret;
 	}
 }

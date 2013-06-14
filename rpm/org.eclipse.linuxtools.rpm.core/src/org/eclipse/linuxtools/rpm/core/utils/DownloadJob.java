@@ -8,7 +8,7 @@
  * Contributors:
  *      Alexander Kurtakov (Red Hat) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;
+package org.eclipse.linuxtools.rpm.core.utils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,50 +22,57 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.core.utils.Messages;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * Eclipse job to ease downloading remote files.
+ *
+ */
 public class DownloadJob extends Job {
 	private IFile file;
 	private URLConnection content;
-	private boolean fileOverride;
 
-	public DownloadJob(IFile file, URLConnection content, boolean override) {
-		super(NLS.bind(Messages.SourcesFileDownloadHyperlink_4, file.getName()));
+	/**
+	 * Creates the download job.
+	 * @param file The file to store the remote content.
+	 * @param content The URLConnection to the remote file.
+	 */
+	public DownloadJob(IFile file, URLConnection content) {
+		super(NLS.bind(Messages.DownloadJob_0, file.getName()));
 		this.file = file;
 		this.content = content;
-		this.fileOverride = override;
-	}
-
-	public DownloadJob(IFile file, URLConnection content) {
-		this(file, content, false);
 	}
 
 	@Override
 	public IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask(
-				NLS.bind(Messages.SourcesFileDownloadHyperlink_4,
+				NLS.bind(Messages.DownloadJob_0,
 						file.getName()), content.getContentLength());
 		try {
 			File tempFile = File.createTempFile(file.getName(), ""); //$NON-NLS-1$
 			FileOutputStream fos = new FileOutputStream(tempFile);
 			InputStream is = new BufferedInputStream(content.getInputStream());
 			int b;
+			byte buf[] = new byte[5 * 1024];
 			boolean canceled = false;
-			while ((b = is.read()) != -1) {
-				if (monitor.isCanceled()) {
-					canceled = true;
-					break;
+				while ((b = is.read(buf)) != -1) {
+					if (monitor.isCanceled()) {
+						canceled = true;
+						break;
+					}
+					fos.write(buf, 0 ,b);
+					monitor.worked(1);
 				}
-				fos.write(b);
-				monitor.worked(1);
-			}
 			is.close();
 			fos.close();
 			if (!canceled) {
-				if (fileOverride) {
+				// override the previous file if there is one
+				if (file.exists()) {
 					file.setContents(new FileInputStream(tempFile), true,
 							false, monitor);
 				} else {
@@ -75,10 +82,10 @@ public class DownloadJob extends Job {
 			}
 			tempFile.delete();
 		} catch (CoreException e) {
-			SpecfileLog.logError(e);
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		} catch (IOException e) {
-			SpecfileLog.logError(e);
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();
