@@ -7,12 +7,17 @@
  *
  * Contributors:
  *     Red Hat - Sami Wagiaalla
+ *     Red Hat - Andrew Ferrazzutti
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -22,8 +27,8 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.LineParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset.DataSetFactory;
@@ -44,7 +49,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
@@ -58,6 +62,8 @@ public class SystemTapScriptGraphOptionsTab extends
 	static final String RUN_WITH_CHART = "runWithChart"; //$NON-NLS-1$
 	static final String NUMBER_OF_COLUMNS = "numberOfColumns"; //$NON-NLS-1$
 	static final String REGEX_BOX = "regexBox_"; //$NON-NLS-1$
+	static final String REGULARE_EXPRESSION = "regularExpression"; //$NON-NLS-1$
+	static final String SAMPLE_OUTPUT = "sampleOutput"; //$NON-NLS-1$
 
 	private static final String NUMBER_OF_GRAPHS = "numberOfGraphs"; //$NON-NLS-1$
 	private static final String GRAPH_TITLE = "graphTitle"; //$NON-NLS-1$
@@ -66,22 +72,26 @@ public class SystemTapScriptGraphOptionsTab extends
 	private static final String GRAPH_ID = "graphID"; //$NON-NLS-1$
 	private static final String GRAPH_Y_SERIES_LENGTH = "graphYSeriesLength"; //$NON-NLS-1$
 	private static final String GRAPH_Y_SERIES = "graphYSeries"; //$NON-NLS-1$
+	protected Pattern pattern;
+	protected Matcher matcher;
 
 	private ModifyListener regExListener = new ModifyListener() {
 		@Override
-		public void modifyText(ModifyEvent e) {
+		public void modifyText(ModifyEvent event) {
+			refreshRegexRows();
 			updateLaunchConfigurationDialog();
-			refreshRegEx();
 		}
 	};
 
-	private static final int COLUMNS = 3;
-	private static final int MAX_SERIES = 24;
+	private ModifyListener columnNameListener = new ModifyListener() {
+		@Override
+		public void modifyText(ModifyEvent event) {
+			updateLaunchConfigurationDialog();
+		}
+	};
 
-	private Label lblRegEx;
+	private Text regularExpressionText;
 	private Composite textFieldsComposite;
-
-	private Spinner numberOfColumnsSpinner;
 
 	private ScrolledComposite regexTextScrolledComposite;
 	private Group outputParsingGroup;
@@ -91,22 +101,15 @@ public class SystemTapScriptGraphOptionsTab extends
 	private Button addGraphButton, duplicateGraphButton, editGraphButton, removeGraphButton;
 	private TableItem selectedTableItem;
 	private Group graphsGroup;
+	private Text sampleOutputText;
+	private int numberOfVisibleColumns = 0;
+	private boolean graphingEnabled = true;
+	private String regexErrorMessage;
+	private Stack<String> cachedNames = new Stack<String>();
 
 	public static IDataSetParser createDatasetParser(ILaunchConfiguration configuration) {
-		int n;
 		try {
-			n = configuration.getAttribute(NUMBER_OF_COLUMNS, 0);
-			ArrayList<String> regEx = new ArrayList<String>(n * (COLUMNS - 1));
-
-			for (int i = 0; i < (n * COLUMNS); i++) {
-				if (i % COLUMNS != 0) {
-					String text = configuration.getAttribute(REGEX_BOX + i,
-							(String) null);
-					regEx.add(text);
-				}
-			}
-
-			return new RowParser(regEx.toArray(new String[] {}));
+			return new LineParser(configuration.getAttribute(REGULARE_EXPRESSION, "").concat("\\n")); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (CoreException e) {
 			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_0, e);
 		}
@@ -119,12 +122,9 @@ public class SystemTapScriptGraphOptionsTab extends
 			n = configuration.getAttribute(NUMBER_OF_COLUMNS, 0);
 			ArrayList<String> labels = new ArrayList<String>(n);
 
-			for (int i = 0; i < (n * COLUMNS); i++) {
-				if (i % COLUMNS == 0) {
-					String text = configuration.getAttribute(REGEX_BOX + i,
-							(String) null);
-					labels.add(text);
-				}
+			for (int i = 0; i < n; i++) {
+				String text = configuration.getAttribute(REGEX_BOX + i, (String) null);
+				labels.add(text);
 			}
 
 			return DataSetFactory.createDataSet(RowDataSet.ID, labels.toArray(new String[] {}));
@@ -145,7 +145,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			graphData.xSeries = configuration.getAttribute(GRAPH_X_SERIES + i, 0);
 			graphData.graphID = configuration.getAttribute(GRAPH_ID + i, ""); //$NON-NLS-1$
 
-			int ySeriesLength = configuration.getAttribute(GRAPH_Y_SERIES_LENGTH, 0);
+			int ySeriesLength = configuration.getAttribute(GRAPH_Y_SERIES_LENGTH + i, 0);
 			int[] ySeries = new int[ySeriesLength];
 			for (int j = 0; j < ySeriesLength; j++) {
 				ySeries[j] = configuration.getAttribute(GRAPH_Y_SERIES + i + "_" + j, 0); //$NON-NLS-1$
@@ -201,27 +201,28 @@ public class SystemTapScriptGraphOptionsTab extends
 		GridLayout layout = new GridLayout();
 		parent.setLayout(layout);
 
-		Composite numberOfColumnsComposite = new Composite(parent, SWT.NONE);
 		GridLayout twoColumns = new GridLayout();
 		twoColumns.numColumns = 2;
-		numberOfColumnsComposite.setLayout(twoColumns);
 
-		Label lblSeries = new Label(numberOfColumnsComposite, SWT.NONE);
-		lblSeries.setText(Messages.ParsingWizardPage_NumberOfColumns);
+		Composite regexSummaryComposite = new Composite(parent, SWT.NONE);
+		regexSummaryComposite.setLayout(twoColumns);
+		regexSummaryComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		this.numberOfColumnsSpinner = new Spinner (numberOfColumnsComposite, SWT.BORDER);
-		numberOfColumnsSpinner.setMinimum(1);
-		numberOfColumnsSpinner.setMaximum(MAX_SERIES);
-		numberOfColumnsSpinner.setSelection(3);
-		numberOfColumnsSpinner.setIncrement(1);
-		numberOfColumnsSpinner.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				refreshRegexRows();
-				refreshRegEx();
-				updateLaunchConfigurationDialog();
-			}
-		});
+		Label regularExpressionLabel = new Label(regexSummaryComposite, SWT.NONE);
+		regularExpressionLabel.setText(Messages.ParsingWizardPage_RegularExpression + ":"); //$NON-NLS-1$
+		regularExpressionLabel.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_regexTooltip);
+		regularExpressionText = new Text(regexSummaryComposite, SWT.BORDER);
+		regularExpressionText.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_regexTooltip);
+		regularExpressionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		regularExpressionText.addModifyListener(regExListener);
+
+		Label sampleOutputLabel = new Label(regexSummaryComposite, SWT.NONE);
+		sampleOutputLabel.setText(Messages.SystemTapScriptGraphOptionsTab_sampleOutputLabel);
+		sampleOutputLabel.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_sampleOutputTooltip);
+		this.sampleOutputText = new Text(regexSummaryComposite, SWT.BORDER);
+		this.sampleOutputText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		this.sampleOutputText.addModifyListener(regExListener);
+		sampleOutputText.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_sampleOutputTooltip);
 
 		GridLayout threeColumnLayout = new GridLayout();
 		threeColumnLayout.numColumns = 3;
@@ -233,49 +234,38 @@ public class SystemTapScriptGraphOptionsTab extends
 		Label label = new Label(expressionTableLabels, SWT.NONE);
 		label.setText(Messages.ParsingWizardPage_Title);
 		label.setAlignment(SWT.CENTER);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.widthHint = 200;
+
+		label.setLayoutData(data);
 
 		label = new Label(expressionTableLabels, SWT.NONE);
-		label.setText(Messages.ParsingWizardPage_RegularExpression);
-		label.setAlignment(SWT.CENTER);
+		label.setText(Messages.SystemTapScriptGraphOptionsTab_extractedValueLabel);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		label = new Label(expressionTableLabels, SWT.NONE);
-		label.setText(Messages.ParsingWizardPage_Delimiter);
-		label.setAlignment(SWT.CENTER);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-
-		this.regexTextScrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		regexTextScrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		this.regexTextScrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
+		data = new GridData(SWT.FILL, SWT.FILL, true, false);
+		data.heightHint = 200;
+		regexTextScrolledComposite.setLayoutData(data);
 
 		textFieldsComposite = new Composite(regexTextScrolledComposite, SWT.NONE);
-		textFieldsComposite.setLayout(threeColumnLayout);
+		textFieldsComposite.setLayout(twoColumns);
 		textFieldsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		regexTextScrolledComposite.setContent(textFieldsComposite);
 		regexTextScrolledComposite.setExpandHorizontal(true);
-		regexTextScrolledComposite.setExpandVertical(true);
-
-		Composite regexSummaryComposite = new Composite(parent, SWT.NONE);
-		regexSummaryComposite.setLayout(twoColumns);
-
-		Label lblRegExTitle = new Label(regexSummaryComposite, SWT.NONE);
-		lblRegExTitle.setText(Messages.ParsingWizardPage_RegularExpression + ":"); //$NON-NLS-1$
-		lblRegEx = new Label(regexSummaryComposite, SWT.NONE);
-		lblRegEx.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		regexTextScrolledComposite.setExpandVertical(false);
 
 		refreshRegexRows();
 	}
 
 	private IDataSet getDataset() {
-		int n = this.numberOfColumnsSpinner.getSelection();
-		ArrayList<String> labels = new ArrayList<String>(n);
-		Control[] regExTexts = textFieldsComposite.getChildren();
+		Control[] textBoxes = this.textFieldsComposite.getChildren();
+		int numberOfColumns = textBoxes.length/2;
+		ArrayList<String> labels = new ArrayList<String>(numberOfColumns);
 
-		for (int i = 0; i < (n * COLUMNS); i++) {
-			if (i % COLUMNS == 0) {
-				String text = ((Text)regExTexts[i]).getText();
-				labels.add(text);
-			}
+		for (int i = 0; i < numberOfColumns; i++) {
+			String text = ((Text)textBoxes[i*2]).getText();
+			labels.add(text);
 		}
 		return DataSetFactory.createDataSet(RowDataSet.ID, labels.toArray(new String[] {}));
 	}
@@ -408,63 +398,73 @@ public class SystemTapScriptGraphOptionsTab extends
 	}
 
 	private void refreshRegexRows() {
-		int numberOfColumns = numberOfColumnsSpinner.getSelection();
-		int currentNumberOfColumns = textFieldsComposite.getChildren().length/3;
 
-		while (currentNumberOfColumns < numberOfColumns){
+		try{
+			pattern = Pattern.compile(regularExpressionText.getText());
+			matcher = pattern.matcher(sampleOutputText.getText());
+			this.regexErrorMessage = ""; //$NON-NLS-1$
+		}catch (PatternSyntaxException e){
+			this.regexErrorMessage = e.getMessage();
+			return;
+		}
+		if (regularExpressionText.getText().contains("()")){ //$NON-NLS-1$
+			this.regexErrorMessage = Messages.SystemTapScriptGraphOptionsTab_6;
+			return;
+		}
+
+		int desiredNumberOfColumns =  matcher.groupCount();
+
+		while (numberOfVisibleColumns < desiredNumberOfColumns){
 			addColumn();
-			currentNumberOfColumns++;
 		}
 
-		while (currentNumberOfColumns > numberOfColumns){
+		while (numberOfVisibleColumns > desiredNumberOfColumns){
 			removeColumn();
-			currentNumberOfColumns--;
 		}
 
-		refreshRegEx();
+		// Set values
+		Control[] children = textFieldsComposite.getChildren();
+		for (int i = 0; i < numberOfVisibleColumns; i++) {
+			if (!matcher.matches()){
+				((Label)children[i*2+1]).setText(""); //$NON-NLS-1$
+			} else {
+				((Label)children[i*2+1]).setText(" " +matcher.group(i+1)); //$NON-NLS-1$
+			}
+		}
+
 	}
 
 	private void addColumn(){
 		Text text = new Text(textFieldsComposite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		text.addModifyListener(regExListener);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.minimumWidth = 200;
+		data.widthHint = 200;
+		text.setLayoutData(data);
+		if (cachedNames.size() > 0) {
+			text.setText(cachedNames.pop());
+		}
+		text.addModifyListener(columnNameListener);
 
-		text = new Text(textFieldsComposite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		text.setText("\\d+"); //$NON-NLS-1$
-		text.addModifyListener(regExListener);
+		Label label = new Label(textFieldsComposite, SWT.BORDER);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		text = new Text(textFieldsComposite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		text.setText("\\D+"); //$NON-NLS-1$
-		text.addModifyListener(regExListener);
+		this.numberOfVisibleColumns++;
 
-		regexTextScrolledComposite.setMinSize(textFieldsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		textFieldsComposite.layout();
+		textFieldsComposite.pack();
 	}
 
 	private void removeColumn(){
 		Control[] children = textFieldsComposite.getChildren();
-		int i = children.length - 1;
-		children[i--].dispose();
-		children[i--].dispose();
-		children[i--].dispose();
+		int i = this.numberOfVisibleColumns*2 -1;
+		cachedNames.push(((Text)children[i-1]).getText());
+		children[i].dispose();
+		children[i-1].dispose();
 
-		regexTextScrolledComposite.setMinSize(textFieldsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		this.numberOfVisibleColumns--;
+
 		textFieldsComposite.layout();
-	}
-
-	private void refreshRegEx() {
-		int series = numberOfColumnsSpinner.getSelection();
-		series *= COLUMNS;
-		StringBuilder s = new StringBuilder();
-		for(int i=0; i<series; i++) {
-			if(0 != i%COLUMNS) {
-				s.append(((Text)textFieldsComposite.getChildren()[i]).getText());
-			}
-		}
-		lblRegEx.setText(s.toString());
-		lblRegEx.getParent().pack();
+		textFieldsComposite.pack();
 	}
 
 	public boolean canFlipToNextPage() {
@@ -474,8 +474,11 @@ public class SystemTapScriptGraphOptionsTab extends
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(RUN_WITH_CHART, false);
-		configuration.setAttribute(NUMBER_OF_COLUMNS, 3);
+		configuration.setAttribute(NUMBER_OF_COLUMNS, 0);
 		configuration.setAttribute(NUMBER_OF_GRAPHS, 0);
+		configuration.setAttribute(NUMBER_OF_GRAPHS, 0);
+		configuration.setAttribute(REGULARE_EXPRESSION, ""); //$NON-NLS-1$
+		configuration.setAttribute(SAMPLE_OUTPUT, ""); //$NON-NLS-1$
 	}
 
 	@Override
@@ -485,13 +488,16 @@ public class SystemTapScriptGraphOptionsTab extends
 			setGraphingEnabled(chart);
 			this.runWithChartCheckButton.setSelection(chart);
 
+			regularExpressionText.setText(configuration.getAttribute(REGULARE_EXPRESSION, "")); //$NON-NLS-1$
+			sampleOutputText.setText(configuration.getAttribute(SAMPLE_OUTPUT, "")); //$NON-NLS-1$
+
 			int n = configuration.getAttribute(NUMBER_OF_COLUMNS, 0);
-			numberOfColumnsSpinner.setSelection(n);
 			Control[] textBoxes = this.textFieldsComposite.getChildren();
-			for (int i = 0; i < textBoxes.length; i++) {
+
+			for (int i = 0; i < n && i*2 < textBoxes.length; i++) {
 				String text = configuration.getAttribute(REGEX_BOX+i, (String)null);
 				if (text != null) {
-					((Text)textBoxes[i]).setText(text);
+					((Text)textBoxes[i*2]).setText(text);
 				}
 			}
 
@@ -514,11 +520,15 @@ public class SystemTapScriptGraphOptionsTab extends
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(RUN_WITH_CHART, this.runWithChartCheckButton.getSelection());
 
-		int n = numberOfColumnsSpinner.getSelection();
-		configuration.setAttribute(NUMBER_OF_COLUMNS, n);
+		configuration.setAttribute(REGULARE_EXPRESSION, regularExpressionText.getText());
+		configuration.setAttribute(SAMPLE_OUTPUT, sampleOutputText.getText());
+
 		Control[] textBoxes = this.textFieldsComposite.getChildren();
-		for (int i = 0; i < textBoxes.length; i++) {
-			String text = ((Text)textBoxes[i]).getText();
+		int numberOfColumns = textBoxes.length/2;
+		configuration.setAttribute(NUMBER_OF_COLUMNS, numberOfColumns);
+
+		for (int i = 0; i < numberOfColumns; i++) {
+			String text = ((Text)textBoxes[i*2]).getText();
 			configuration.setAttribute(REGEX_BOX+i, text);
 		}
 
@@ -533,7 +543,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			configuration.setAttribute(GRAPH_X_SERIES + i, graphData.xSeries);
 			configuration.setAttribute(GRAPH_ID + i, graphData.graphID);
 
-			configuration.setAttribute(GRAPH_Y_SERIES_LENGTH, graphData.ySeries.length);
+			configuration.setAttribute(GRAPH_Y_SERIES_LENGTH + i, graphData.ySeries.length);
 			for (int j = 0; j < graphData.ySeries.length; j++) {
 				configuration.setAttribute(GRAPH_Y_SERIES + i + "_" + j, graphData.ySeries[j]); //$NON-NLS-1$
 			}
@@ -545,18 +555,13 @@ public class SystemTapScriptGraphOptionsTab extends
 		setErrorMessage(null);
 
 		// If graphic is disabled then everything is valid.
-		if (this.runWithChartCheckButton.getSelection() == false){
+		if (!this.graphingEnabled){
 			return true;
 		}
 
-		// Check that all regex boxes are filled in
-		int series = numberOfColumnsSpinner.getSelection();
-
-		for(int i=0; i<(series*COLUMNS); i++) {
-			if(((Text)textFieldsComposite.getChildren()[i]).getText().isEmpty()) {
-				setErrorMessage(Messages.SystemTapScriptGraphOptionsTab_6);
-				return false;
-			}
+		if (!this.regexErrorMessage.equals("")){ //$NON-NLS-1$
+			setErrorMessage(regexErrorMessage);
+			return false;
 		}
 
 		return true;
@@ -574,6 +579,10 @@ public class SystemTapScriptGraphOptionsTab extends
 	}
 
 	private void setGraphingEnabled(boolean enabled){
+		if (this.graphingEnabled == enabled){
+			return;
+		}
+		this.graphingEnabled = enabled;
 		this.setControlEnabled(outputParsingGroup, enabled);
 		this.setControlEnabled(graphsGroup, enabled);
 		// Disable buttons that rely on a selected graph if no graph is selected.
