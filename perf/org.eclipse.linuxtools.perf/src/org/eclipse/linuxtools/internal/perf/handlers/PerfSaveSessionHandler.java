@@ -11,12 +11,7 @@
 package org.eclipse.linuxtools.internal.perf.handlers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 
@@ -61,33 +56,5 @@ public class PerfSaveSessionHandler extends AbstractSaveDataHandler {
 	public boolean verifyData() {
 		IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
 		return defaultDataLoc != null && !defaultDataLoc.isEmpty();
-	}
-
-	private void copyFile(File src, File dest) {
-		InputStream destInput = null;
-		OutputStream srcOutput = null;
-		try {
-			destInput = new FileInputStream(src);
-			srcOutput = new FileOutputStream(dest);
-
-			byte[] buffer = new byte[1024];
-
-			int length;
-			while ((length = destInput.read(buffer)) != -1) {
-				srcOutput.write(buffer, 0, length);
-			}
-		} catch (FileNotFoundException e) {
-			openErroDialog(Messages.PerfSaveSession_failure_title,
-					Messages.PerfSaveSession_failure_msg,
-					dest.toString());
-		} catch (IOException e) {
-			openErroDialog(Messages.PerfSaveSession_failure_title,
-					Messages.PerfSaveSession_failure_msg,
-					dest.toString());
-		} finally {
-			closeResource(destInput, dest.getName());
-			closeResource(srcOutput, src.getName());
-		}
-
 	}
 }

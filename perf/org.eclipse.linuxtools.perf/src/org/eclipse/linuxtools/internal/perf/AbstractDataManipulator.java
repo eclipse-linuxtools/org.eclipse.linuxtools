@@ -34,7 +34,8 @@ import org.eclipse.ui.console.IOConsole;
  * This class represents the general flow of a perf command being
  * set up, executed, and having its data collected.
  */
-public abstract class AbstractDataManipulator implements IPerfData {
+public abstract class AbstractDataManipulator extends BaseDataManipulator implements
+		IPerfData {
 
 	private String text;
 	private String title;
@@ -128,19 +129,12 @@ public abstract class AbstractDataManipulator implements IPerfData {
 	 * @param buff BufferedReader to read from.
 	 * @param strBuff StringBuffer to write to.
 	 */
-	private void readStream(final BufferedReader buff, final StringBuffer strBuff) {
+	private void readStream(final BufferedReader buff,
+			final StringBuffer strBuff) {
 		Thread readThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String line;
-				try {
-					while ((line = buff.readLine()) != null) {
-						strBuff.append(line);
-						strBuff.append("\n"); //$NON-NLS-1$
-					}
-				} catch (IOException e) {
-					// continue
-				}
+				strBuff.append(getBufferContents(buff));
 			}
 		});
 		readThread.start();

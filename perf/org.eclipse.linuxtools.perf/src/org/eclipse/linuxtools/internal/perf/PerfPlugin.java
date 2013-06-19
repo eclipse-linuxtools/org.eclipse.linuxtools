@@ -17,7 +17,9 @@ package org.eclipse.linuxtools.internal.perf;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -137,6 +139,8 @@ public class PerfPlugin extends AbstractUIPlugin {
 	// Current report comparison data
 	private IPerfData reportDiffData;
 
+	private Map<String, String> dataCache = new HashMap<String, String>();
+
 	public TreeParent getModelRoot() {
 		return _modelRoot;
 	}
@@ -236,6 +240,37 @@ public class PerfPlugin extends AbstractUIPlugin {
 		this._ProfileView = profileView;
 	}
 	
+	/* Basic cache access methods. */
+
+	/**
+	 * Cache data with associated key.
+	 *
+	 * @param key String key to associate with data.
+	 * @param data String data to cache.
+	 */
+	public void cacheData(String key, String data) {
+		dataCache.put(key, data);
+	}
+
+	/**
+	 * Get cached data corresponding to specified key.
+	 *
+	 * @param key String key to corresponding cached data.
+	 * @return String cached data corresponding to specified key.
+	 */
+	public String getCachedData(String key) {
+		return dataCache.get(key);
+	}
+
+	/**
+	 * Remove data corresponding to specified key from cache.
+	 *
+	 * @param key String key of cached data to remove.
+	 */
+	public void removeCachedData(String key) {
+		dataCache.remove(key);
+	}
+
 	/**
 	 * The constructor
 	 */

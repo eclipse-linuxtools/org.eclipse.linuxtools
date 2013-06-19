@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ import org.eclipse.linuxtools.internal.perf.model.PMStatEntry.Type;
 /**
  * Class containing all functionality for comparting perf statistics data.
  */
-public class StatComparisonData implements IPerfData {
+public class StatComparisonData extends BaseDataManipulator implements IPerfData {
 	// Old stats file.
 	private File oldFile;
 
@@ -39,10 +40,14 @@ public class StatComparisonData implements IPerfData {
 	// Title for this comparison run.
 	private String title;
 
+	// Unique data identifier.
+	private String dataID;
+
 	public StatComparisonData(String title, File oldFile, File newFile) {
 		this.title = title;
 		this.oldFile = oldFile;
 		this.newFile = newFile;
+		this.dataID = String.valueOf(((new Date().getTime())));
 	}
 
 	@Override
@@ -53,6 +58,63 @@ public class StatComparisonData implements IPerfData {
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	/**
+	 * Get unique identifier for this data object.
+	 *
+	 * @return String unique identifier based on this object's creation time.
+	 */
+	public String getDataID(){
+		return dataID;
+	}
+
+	/**
+	 * Generate a unique identifier based on the given file. The generation is a
+	 * simple concatenation between the file path and the time of this object's
+	 * creation.
+	 *
+	 * @param file File to generate uniqure id from.
+	 * @return String unique id for specified file.
+	 */
+	public String generateFileID(File file) {
+		return file.getPath() + dataID;
+	}
+
+	/**
+	 * Get path to old perf data file.
+	 *
+	 * @return String path corresponding to old perf data.
+	 */
+	public String getOldDataPath() {
+		return oldFile.getPath();
+	}
+
+	/**
+	 * Get path to new perf data file.
+	 *
+	 * @return String path corresponding to new perf data.
+	 */
+	public String getNewDataPath() {
+		return newFile.getPath();
+	}
+
+	/**
+	 * Get a unique to for the old perf data file.
+	 *
+	 * @return String unique id.
+	 */
+	public String getOldDataID() {
+		return generateFileID(oldFile);
+	}
+
+	/**
+	 * Get a unique to for the old perf data file.
+	 *
+	 * @return String unique id.
+	 */
+	public String getNewDataID() {
+		return generateFileID(newFile);
 	}
 
 	/**
@@ -91,6 +153,7 @@ public class StatComparisonData implements IPerfData {
 	 * @return
 	 */
 	public ArrayList<PMStatEntry> getComparisonStats() {
+		cacheData();
 		ArrayList<PMStatEntry> oldStats = collectStats(oldFile);
 		ArrayList<PMStatEntry> newStats = collectStats(newFile);
 		ArrayList<PMStatEntry> result = new ArrayList<PMStatEntry>();
@@ -105,6 +168,24 @@ public class StatComparisonData implements IPerfData {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Save data contents in global cache.
+	 */
+	public void cacheData() {
+		PerfPlugin plugin = PerfPlugin.getDefault();
+		plugin.cacheData(getOldDataID(), fileToString(oldFile));
+		plugin.cacheData(getNewDataID(), fileToString(newFile));
+	}
+
+	/**
+	 * Remove data contents from global cache.
+	 */
+	public void clearCachedData() {
+		PerfPlugin plugin = PerfPlugin.getDefault();
+		plugin.removeCachedData(getNewDataID());
+		plugin.removeCachedData(getOldDataID());
 	}
 
 	/**
