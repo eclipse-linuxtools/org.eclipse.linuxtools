@@ -68,7 +68,7 @@ public class UiUtils {
 			while (variableMatcher.find()) {
 				define = specfile.getDefine(variableMatcher.group(1));
 				if (define != null) {
-					stringToResolve = stringToResolve.replaceAll("\\b"+variableMatcher.group(1)+"\\b", define.getStringValue());  //$NON-NLS-1$//$NON-NLS-2$
+					stringToResolve = stringToResolve.replaceAll("\\b"+variableMatcher.group(1)+"\\b", define.getStringValue()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					return originalString;
 				}
