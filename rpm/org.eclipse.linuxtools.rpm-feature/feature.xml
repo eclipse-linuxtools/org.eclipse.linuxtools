@@ -13,7 +13,9 @@
       id="org.eclipse.linuxtools.rpm"
       label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="%provider">
+      provider-name="%provider"
+      license-feature="org.eclipse.linuxtools.license.feature"
+      license-feature-version="1.0.0.qualifier">
 
    <description url="http://www.eclipse.org/linuxtools/projectPages/specfile/">
       %description
@@ -49,12 +51,13 @@
          version="0.0.0"
          unpack="false"/>
 
-     <plugin
+   <plugin
          id="org.eclipse.linuxtools.rpm.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
    <plugin
          id="org.eclipse.linuxtools.rpm.rpmlint"
          download-size="0"
