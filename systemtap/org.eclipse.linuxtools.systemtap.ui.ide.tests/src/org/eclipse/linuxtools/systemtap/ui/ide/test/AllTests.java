@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.ide.test;
 
 import org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp.STPCompletionProcessorTest;
+import org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp.STPToggleCommentTest;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.structures.StapErrorParserTest;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.structures.TreeSettingsTest;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot.TestCreateSystemtapScript;
@@ -21,7 +22,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ StapErrorParserTest.class, TreeSettingsTest.class,
-		STPCompletionProcessorTest.class, TestCreateSystemtapScript.class,
-		ConditionalExpressionValidatorTest.class, DirectoryValidatorTest.class })
+		STPCompletionProcessorTest.class, STPToggleCommentTest.class,
+		TestCreateSystemtapScript.class, ConditionalExpressionValidatorTest.class,
+		DirectoryValidatorTest.class })
 public class AllTests {
 }
