@@ -6,13 +6,17 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime,
+ org.eclipse.cdt.codan.ui.cxx
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.valgrind.ui
 Bundle-Localization: plugin
-Import-Package: org.eclipse.cdt.debug.ui,
+Import-Package: org.eclipse.cdt.core.dom.ast,
+ org.eclipse.cdt.core.model,
+ org.eclipse.cdt.debug.ui,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
  org.eclipse.debug.core.model,

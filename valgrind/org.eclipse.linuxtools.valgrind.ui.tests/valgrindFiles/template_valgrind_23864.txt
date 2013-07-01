@@ -1,0 +1,35 @@
+==23864== Mismatched free() / delete / delete []
+==23864==    at 0x402A92A: operator delete(void*) (vg_replace_malloc.c:480)
+==23864==    by 0x8048628: main (wrongDealloc.cpp:11)
+==23864==  Address 0x4322028 is 0 bytes inside a block of size 10 alloc'd
+==23864==    at 0x402BD74: malloc (vg_replace_malloc.c:270)
+==23864==    by 0x8048618: main (wrongDealloc.cpp:10)
+==23864== 
+==23864== Mismatched free() / delete / delete []
+==23864==    at 0x402A482: operator delete[](void*) (vg_replace_malloc.c:515)
+==23864==    by 0x804864B: main (wrongDealloc.cpp:14)
+==23864==  Address 0x4322068 is 0 bytes inside a block of size 50 alloc'd
+==23864==    at 0x402BD74: malloc (vg_replace_malloc.c:270)
+==23864==    by 0x8048634: main (wrongDealloc.cpp:13)
+==23864== 
+==23864== Mismatched free() / delete / delete []
+==23864==    at 0x402AD3D: free (vg_replace_malloc.c:446)
+==23864==    by 0x8048667: main (wrongDealloc.cpp:17)
+==23864==  Address 0x43220d0 is 0 bytes inside a block of size 1 alloc'd
+==23864==    at 0x402B87E: operator new(unsigned int) (vg_replace_malloc.c:292)
+==23864==    by 0x8048657: main (wrongDealloc.cpp:16)
+==23864== 
+==23864== Mismatched free() / delete / delete []
+==23864==    at 0x402AD3D: free (vg_replace_malloc.c:446)
+==23864==    by 0x8048683: main (wrongDealloc.cpp:20)
+==23864==  Address 0x4322108 is 0 bytes inside a block of size 5 alloc'd
+==23864==    at 0x402B22A: operator new[](unsigned int) (vg_replace_malloc.c:357)
+==23864==    by 0x8048673: main (wrongDealloc.cpp:19)
+==23864== 
+==23864== Mismatched free() / delete / delete []
+==23864==    at 0x402A92A: operator delete(void*) (vg_replace_malloc.c:480)
+==23864==    by 0x804869F: main (wrongDealloc.cpp:23)
+==23864==  Address 0x4322140 is 0 bytes inside a block of size 5 alloc'd
+==23864==    at 0x402B22A: operator new[](unsigned int) (vg_replace_malloc.c:357)
+==23864==    by 0x804868F: main (wrongDealloc.cpp:22)
+==23864== 

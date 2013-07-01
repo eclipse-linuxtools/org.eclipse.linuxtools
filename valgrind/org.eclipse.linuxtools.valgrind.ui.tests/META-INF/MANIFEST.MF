@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name.0
+Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.ui.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: %Bundle-Vendor.0
+Fragment-Host: org.eclipse.linuxtools.valgrind.ui
+Require-Bundle: org.junit;bundle-version="4.7.0",
+ org.eclipse.linuxtools.valgrind.memcheck,
+ org.eclipse.cdt.codan.ui.cxx
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Import-Package: org.eclipse.linuxtools.internal.valgrind.tests,
+ org.eclipse.linuxtools.profiling.tests
+
