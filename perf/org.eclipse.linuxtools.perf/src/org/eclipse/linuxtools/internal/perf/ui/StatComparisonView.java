@@ -223,7 +223,7 @@ public class StatComparisonView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 		// remove file contents from cache
-		if (diffData != null) {
+		if (diffData instanceof StatComparisonData) {
 			((StatComparisonData) diffData).clearCachedData();
 		}
 	}
