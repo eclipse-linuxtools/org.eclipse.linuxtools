@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
+import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Handler for saving a perf profile session.
@@ -38,8 +41,14 @@ public class PerfSaveSessionHandler extends AbstractSaveDataHandler {
 				newDataFile.createNewFile();
 				copyFile(defaultDataFile, newDataFile);
 				PerfPlugin.getDefault().setPerfProfileData(newDataLoc);
-				PerfPlugin.getDefault().getProfileView()
-						.setContentDescription(newDataLoc.toOSString());
+				try {
+					PerfProfileView view = (PerfProfileView) PlatformUI
+							.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage().showView(PerfPlugin.VIEW_ID);
+					view.setContentDescription(newDataLoc.toOSString());
+				} catch (PartInitException e) {
+					// fail silently
+				}
 
 				return newDataFile;
 			} catch (IOException e) {

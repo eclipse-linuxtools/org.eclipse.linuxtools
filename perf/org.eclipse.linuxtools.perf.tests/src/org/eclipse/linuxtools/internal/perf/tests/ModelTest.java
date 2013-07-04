@@ -39,7 +39,10 @@ import org.eclipse.linuxtools.internal.perf.model.PMFile;
 import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.linuxtools.internal.perf.ui.PerfDoubleClickAction;
+import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.FrameworkUtil;
 
 public class ModelTest extends AbstractTest {
@@ -119,15 +122,22 @@ public class ModelTest extends AbstractTest {
 		int numOfParents = getNumberOfParents(invisibleRoot) - 1;
 
 		// create a double click action to act on the tree viewer
-		TreeViewer tv = PerfPlugin.getDefault().getProfileView().getTreeViewer();
-		PerfDoubleClickAction dblClick = new PerfDoubleClickAction(tv);
+		try {
+			PerfProfileView view = (PerfProfileView) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage()
+					.showView(PerfPlugin.VIEW_ID);
+			TreeViewer tv = view.getTreeViewer();
+			PerfDoubleClickAction dblClick = new PerfDoubleClickAction(tv);
 
-		// double click every element
-		doubleClickAllChildren(invisibleRoot, tv, dblClick);
+			// double click every element
+			doubleClickAllChildren(invisibleRoot, tv, dblClick);
 
-		// If all elements are expanded, this is the number of elements
-		// in our model that have children.
-		assertEquals(numOfParents, tv.getExpandedElements().length);
+			// If all elements are expanded, this is the number of elements
+			// in our model that have children.
+			assertEquals(numOfParents, tv.getExpandedElements().length);
+		} catch (PartInitException e) {
+			fail("Failed to open the Profiling View.");
+		}
 	}
 
 	public void testParserMultiEvent() {

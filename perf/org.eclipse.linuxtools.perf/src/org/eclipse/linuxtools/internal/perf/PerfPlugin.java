@@ -124,9 +124,6 @@ public class PerfPlugin extends AbstractUIPlugin {
 	// Stat Data
 	private IPerfData statData;
 
-	// Profile view
-	private PerfProfileView _ProfileView = null;
-
 	// Current profile data
 	private IPath curProfileData;
 
@@ -223,21 +220,6 @@ public class PerfPlugin extends AbstractUIPlugin {
 
 	public void setWorkingDir(IPath workingDir){
 		curWorkingDir = workingDir;
-	}
-
-	public PerfProfileView getProfileView() {
-		if (_ProfileView == null) {
-			try {
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PerfPlugin.VIEW_ID);
-			} catch (PartInitException e2) {
-				e2.printStackTrace();
-			}
-		}
-		return _ProfileView;
-	}
-
-	public void setProfileView(PerfProfileView profileView) {
-		this._ProfileView = profileView;
 	}
 	
 	/* Basic cache access methods. */
