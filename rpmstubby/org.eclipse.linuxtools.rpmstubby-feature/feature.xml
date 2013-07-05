@@ -3,7 +3,9 @@
       id="org.eclipse.linuxtools.rpmstubby.feature"
       label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      license-feature="org.eclipse.linuxtools.license.feature"
+      license-feature-version="1.0.0.qualifier">
 
    <description url="http://www.eclipse.org/linuxtools/">
       %description
