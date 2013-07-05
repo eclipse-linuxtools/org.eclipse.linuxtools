@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.BadPartitioningException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -81,10 +83,25 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	public ICompletionProposal[] computeCompletionProposals(IDocument document, int offset){
 
 		ITypedRegion partition = null;
+		boolean useGlobal = false;
 
 		try {
-			partition = document.getPartition(offset);
+			partition =
+					((IDocumentExtension3) document).getPartition(STPProbeScanner.STP_PROBE_PARTITIONING, offset, false);
+			if (partition.getOffset() == offset) {
+				if (partition.getType() != IDocument.DEFAULT_CONTENT_TYPE && partition.getType() != STPProbeScanner.STP_PROBE) {
+					if (offset > 0) {
+						ITypedRegion prevPartition = 
+								((IDocumentExtension3) document).getPartition(STPProbeScanner.STP_PROBE_PARTITIONING, offset - 1, false);
+						useGlobal = prevPartition.getType() == IDocument.DEFAULT_CONTENT_TYPE;
+					} else {
+						useGlobal = true;
+					}
+				}
+			}
 		} catch (BadLocationException e1) {
+			return NO_COMPLETIONS;
+		} catch (BadPartitioningException e) {
 			return NO_COMPLETIONS;
 		}
 
@@ -112,14 +129,9 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			return getProbeCompletionList(prefix, offset);
 		}
 
-		// In the global scope return global keyword completion.
-		if (partition.getType() == IDocument.DEFAULT_CONTENT_TYPE ){
-			return getGlobalKeywordCompletion(prefix, offset);
-		}
-
 		// If inside a probe return probe variable completions and functions
 		// which can be called.
-		if (partition.getType() == STPPartitionScanner.STP_PROBE){
+		if (partition.getType() == STPProbeScanner.STP_PROBE) {
 			ICompletionProposal[] variableCompletions = getProbeVariableCompletions(document, offset, prefix);
 			ICompletionProposal[] functionCompletions = getFunctionCompletions(offset, prefix);
 
@@ -129,6 +141,9 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			completions.addAll(Arrays.asList(functionCompletions));
 
 			return completions.toArray(new ICompletionProposal[0]);
+		} else if (partition.getType() == IDocument.DEFAULT_CONTENT_TYPE || useGlobal) {
+			// In the global scope return global keyword completion.
+			return getGlobalKeywordCompletion(prefix, offset);
 		}
 
 		return NO_COMPLETIONS;
@@ -180,6 +195,8 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			return result;
 		} catch (BadLocationException e) {
 			return NO_COMPLETIONS;
+		} catch (BadPartitioningException e) {
+			return NO_COMPLETIONS;
 		}
 	}
 
@@ -191,11 +208,14 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	 * @param offset
 	 * @return the probe name
 	 * @throws BadLocationException
+	 * @throws BadPartitioningException 
 	 */
-	private String getProbe(IDocument document, int offset) throws BadLocationException{
+	private String getProbe(IDocument document, int offset) throws BadLocationException, BadPartitioningException{
 		String probePoint = null;
 
-		ITypedRegion partition = document.getPartition(offset);
+		ITypedRegion partition 
+		  = ((IDocumentExtension3)document).getPartition(STPProbeScanner.STP_PROBE_PARTITIONING,
+				  offset, false);
 		String probe = document.get(partition.getOffset(), partition.getLength());
 
 		// make sure that we are inside a probe
@@ -475,14 +495,19 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 				documentation = TapsetLibrary.getDocumentation("tapset::" + keyword); //$NON-NLS-1$
 			}
 
-			if (textViewer.getDocument().getPartition(hoverRegion.getOffset())
-					.getType() == STPPartitionScanner.STP_PROBE) {
+			IDocument document = textViewer.getDocument();
+			ITypedRegion partition = 
+					((IDocumentExtension3)document).getPartition(STPProbeScanner.STP_PROBE_PARTITIONING, 
+							hoverRegion.getOffset(), false);
+			if (partition.getType() == STPProbeScanner.STP_PROBE) {
 				String probe = getProbe(textViewer.getDocument(), hoverRegion.getOffset());
 				documentation = TapsetLibrary.getDocumentation("probe::" + probe + "::"+ keyword); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 		} catch (BadLocationException e) {
 			// Bad hover location; just ignore it.
+		} catch (BadPartitioningException e) {
+			// Bad hover scenario, just ignore it.
 		}
 
 		return documentation;

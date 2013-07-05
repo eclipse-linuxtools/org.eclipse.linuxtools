@@ -15,7 +15,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextSelection;
@@ -25,6 +24,7 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitionScanner;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
@@ -140,7 +140,7 @@ public class ToggleCommentHandler extends AbstractHandler {
 		try {
 			IRegion block = getTextBlockFromSelection(textSelection, document);
 			ITypedRegion[] regions = TextUtilities.computePartitioning(
-					document, IDocumentExtension3.DEFAULT_PARTITIONING,
+					document, STPPartitionScanner.STP_PARTITIONING,
 					block.getOffset(), block.getLength(), false);
 
 			int[] lines = new int[regions.length * 2]; // [startline, endline,
