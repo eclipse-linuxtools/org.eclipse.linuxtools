@@ -193,8 +193,7 @@ public class SpecfileParser {
 		} catch (CoreException e) {
 			SpecfileLog.logError(Messages.getString("SpecfileParseFile.2"), e); //$NON-NLS-1$
 		}
-		Specfile specfile = parser.parse(sb.toString());
-		return specfile;
+		return parser.parse(sb.toString());
 	}
 
 	private void generateTaskMarker(int lineNumber, String line) {

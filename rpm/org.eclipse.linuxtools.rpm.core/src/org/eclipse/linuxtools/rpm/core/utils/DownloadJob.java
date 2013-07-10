@@ -36,7 +36,8 @@ import org.eclipse.osgi.util.NLS;
 public class DownloadJob extends Job {
 	private IFile file;
 	private URLConnection content;
-
+	private static final int MULTIPLIER = 5;
+	private static final int KB = 1024;
 	/**
 	 * Creates the download job.
 	 * @param file The file to store the remote content.
@@ -58,7 +59,7 @@ public class DownloadJob extends Job {
 			FileOutputStream fos = new FileOutputStream(tempFile);
 			InputStream is = new BufferedInputStream(content.getInputStream());
 			int b;
-			byte buf[] = new byte[5 * 1024];
+			byte buf[] = new byte[MULTIPLIER * KB]; // 5kB buffer
 			boolean canceled = false;
 				while ((b = is.read(buf)) != -1) {
 					if (monitor.isCanceled()) {

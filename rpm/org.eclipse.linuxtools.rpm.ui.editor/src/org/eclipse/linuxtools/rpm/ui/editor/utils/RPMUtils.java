@@ -21,6 +21,11 @@ import org.eclipse.ui.PlatformUI;
 public class RPMUtils {
 
 	/**
+	 * Utility classes should not have a public or default constructor.
+	 */
+	private RPMUtils() {}
+
+	/**
 	 * Show an error dialog.
 	 *
 	 * @param shell A valid shell

@@ -33,6 +33,7 @@ import org.eclipse.linuxtools.rpm.core.utils.DownloadJob;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.utils.RPMUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -55,14 +56,14 @@ public class SpecfileEditorDownloadSourcesActionDelegate extends AbstractHandler
 		for (final SpecfileSource sourceurls : sourceURLList) {
 			try {
 				String rawURL = sourceurls.getFileName().toString();
-				String resolvedURL = UiUtils.resolveDefines(specfile, rawURL.toString());
+				String resolvedURL = UiUtils.resolveDefines(specfile, rawURL);
 				URL url = null;
 				try {
 					url = new URL(resolvedURL);
 				} catch(MalformedURLException e) {
-					SpecfileLog.logError(Messages.DownloadSources_malformedURL + resolvedURL, e);
+					SpecfileLog.logError(NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL), e);
 					RPMUtils.showErrorDialog(shell, "Error", //$NON-NLS-1$
-							Messages.DownloadSources_malformedURL + resolvedURL);
+							NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL));
 					return null;
 				}
 

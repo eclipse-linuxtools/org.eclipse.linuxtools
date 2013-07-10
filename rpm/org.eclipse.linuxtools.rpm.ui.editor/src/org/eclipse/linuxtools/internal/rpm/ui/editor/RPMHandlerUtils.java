@@ -37,6 +37,11 @@ import org.eclipse.ui.part.EditorPart;
 public class RPMHandlerUtils {
 
 	/**
+	 * Utility classes should not have a public or default constructor.
+	 */
+	private RPMHandlerUtils() {}
+
+	/**
 	 * Extract the IResource that was selected when the event was fired.
 	 * @param event The fired execution event.
 	 * @return The resource that was selected.
@@ -69,8 +74,7 @@ public class RPMHandlerUtils {
 				return (IResource) element;
 			} else if (element instanceof IAdaptable) {
 				IAdaptable adaptable = (IAdaptable) element;
-				Object adapted = adaptable.getAdapter(IResource.class);
-				return (IResource) adapted;
+				return (IResource) adaptable.getAdapter(IResource.class);
 			} else {
 				return null;
 			}
