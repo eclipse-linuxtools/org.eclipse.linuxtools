@@ -21,7 +21,6 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitionScanner;
@@ -79,8 +78,9 @@ public class ToggleCommentHandler extends AbstractHandler {
 		}
 
 		Display display = null;
-		if (shell != null && !shell.isDisposed())
+		if (shell != null && !shell.isDisposed()) {
 			display = shell.getDisplay();
+		}
 
 		BusyIndicator.showWhile(display, new Runnable() {
 			@Override
@@ -96,7 +96,7 @@ public class ToggleCommentHandler extends AbstractHandler {
 	 * Creates a region describing the text block (something that starts at the
 	 * beginning of a line) completely containing the current selection.
 	 *
-	 * Note, the implementation has to match {@link TextViewer}
+	 * Note, the implementation has to match org.eclipse.jface.text.TextViewer;
 	 * .getTextBlockFromSelection().
 	 *
 	 * @param selection The selection to use
@@ -166,10 +166,6 @@ public class ToggleCommentHandler extends AbstractHandler {
 				// the array.
 				lines[j + 1] = (lines[j] == -1 ? -1 : document
 						.getLineOfOffset(offset));
-
-				// We could count the number of lines that are selected in this
-				// region
-				// lineCount += lines[j + 1] - lines[j] + 1;
 
 				assert i < regions.length;
 				assert j < regions.length * 2;
