@@ -436,7 +436,7 @@ public final class IndentUtil {
 			ITypedRegion partition= TextUtilities.getPartition(document, STPPartitionScanner.STP_PARTITIONING, offset, true);
 			ITypedRegion startingPartition= TextUtilities.getPartition(document, STPPartitionScanner.STP_PARTITIONING, offset, false);
 			String type= partition.getType();
-			if (type.equals(STPPartitionScanner.STP_COMMENT)) {
+			if (type.equals(STPPartitionScanner.STP_MULTILINE_COMMENT)) {
 				indent= computeCommentIndent(document, line, scanner, startingPartition);
 			} else if (startingPartition.getType().equals(STPPartitionScanner.STP_CONDITIONAL)) {
 				indent= computePreprocessorIndent(document, line, startingPartition);

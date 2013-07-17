@@ -47,7 +47,7 @@ public class STPProbeScanner extends RuleBasedPartitionScanner {
                 new EndOfLineRule("#else", stpConditional), //$NON-NLS-1$
                 new EndOfLineRule("#endif", stpConditional), //$NON-NLS-1$
                 new EndOfLineRule("#define", stpConditional), //$NON-NLS-1$
-        		new SingleLineRule("\"", "\"", stpString, '\\'), //$NON-NLS-1$ //$NON-NLS-2$
+        		new SingleLineRule("\"", "\"", stpString, '\\', false, true), //$NON-NLS-1$ //$NON-NLS-2$
         		new SingleLineRule("'", "'", stpString, '\\'), //$NON-NLS-1$ //$NON-NLS-2$
                 new MultiLineRule("probe", "}", stpProbe), //$NON-NLS-1$ //$NON-NLS-2$
              });

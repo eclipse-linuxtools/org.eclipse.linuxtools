@@ -75,6 +75,16 @@
                 style="push">
           </command>
        </menuContribution>
+       <menuContribution
+             allPopups="false"
+             locationURI="popup:#TextEditorContext?after=additions">
+          <command
+                commandId="org.eclipse.linuxtools.systemtap.ui.ide.indent"
+                label="%command.indent.name"
+                mnemonic="%command.indent.mne"
+                style="push">
+          </command>
+       </menuContribution>
     </extension>
 	
 	<extension
@@ -162,8 +172,6 @@
 			description="%command.stop.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
 			id="org.eclipse.linuxtools.systemtap.ui.consolelog.commands.StopScript"/>
-		
-		
 		<command
 			name="%command.insertProbe.name"
 			description="%command.insertProbe.desc"
@@ -173,8 +181,7 @@
 			name="%command.insertFunction.name"
 			description="%command.insertFunction.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.functionaction"/>
-			
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.functionaction"/>	
 		<category
 			name="%category.file.name"
 			description="%category.file.desc"
@@ -187,23 +194,30 @@
 			name="%category.popup.name"
 			description="%category.popup.desc"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"/>
-  <command
-        defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler"
-        description="%action.run.desc"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
-        name="%action.run.name">
-  </command>
-  <command
-        categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
-        defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler"
-        description="%command.toggleComment.desc"
-        id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
-        name="%command.toggleComment.name">
-  </command>
-  <category
-        id="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
-        name="%editor.category.source.name">
-  </category>
+		<command
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler"
+        	description="%action.run.desc"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
+        	name="%action.run.name">
+ 		</command>
+		<category
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        	name="%editor.category.source.name">
+		</category>
+		<command
+        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler"
+        	description="%command.toggleComment.desc"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
+        	name="%command.toggleComment.name">
+		</command>
+		<command
+        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.IndentHandler"
+        	description="%command.indent.desc"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.indent"
+        	name="%command.indent.name">
+		</command>
 	</extension>
 	<extension
 		point="org.eclipse.ui.actionSets">
@@ -365,6 +379,12 @@
           contextId="org.eclipse.linuxtools.systemtap.ui.ide.context"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+/">
+    </key>
+    <key
+          commandId="org.eclipse.linuxtools.systemtap.ui.ide.indent"
+          contextId="org.eclipse.linuxtools.systemtap.ui.ide.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+I">
     </key>
  </extension>
  <extension

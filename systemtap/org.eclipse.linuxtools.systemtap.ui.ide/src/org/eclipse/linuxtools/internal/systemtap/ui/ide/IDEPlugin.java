@@ -50,6 +50,10 @@ public class IDEPlugin extends AbstractUIPlugin {
 		plugin = this;
 	}
 
+	public static String getPluginId() {
+		return PLUGIN_ID;
+	}
+	
 	/**
 	 * Called by the Eclipse Workbench at plugin activation time. Starts the plugin lifecycle.
 	 */

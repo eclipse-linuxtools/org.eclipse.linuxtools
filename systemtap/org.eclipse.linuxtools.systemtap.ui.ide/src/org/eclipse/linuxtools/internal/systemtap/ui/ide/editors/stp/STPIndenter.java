@@ -24,8 +24,11 @@ import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.BadPartitioningException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 
 /**
@@ -1041,10 +1044,25 @@ public final class STPIndenter {
 			return NOT_FOUND;
 
 		case STPSymbols.TokenEQUAL:
-			// indent assignments
+			// indent assignments, but don't do so if there is a String
+			// after the assignment because SystemTap doesn't require
+			// semi-colons to end lines and so this should be treated as
+			// a complete assignment.
+			pos = fPosition;
+			while (pos < offset) {
+				try {
+					ITypedRegion partition = ((IDocumentExtension3)fDocument).getPartition(STPPartitionScanner.STP_PARTITIONING, pos, danglingElse);
+					if (STPPartitionScanner.STP_STRING.equals(partition.getType()))
+						return skipToStatementStart(danglingElse, false);
+					pos = partition.getOffset() + partition.getLength();
+				} catch (BadLocationException e) {
+					break;
+				} catch (BadPartitioningException e) {
+					break;
+				}
+			}
 			fIndent= fPrefs.prefAssignmentIndent;
 			return fPosition;
-
 		case STPSymbols.TokenCOLON:
 			pos= fPosition;
 			if (looksLikeCaseStatement()) {
