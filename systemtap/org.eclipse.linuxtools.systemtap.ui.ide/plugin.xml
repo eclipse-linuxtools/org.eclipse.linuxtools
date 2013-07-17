@@ -194,11 +194,16 @@
         name="%action.run.name">
   </command>
   <command
+        categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
         defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler"
         description="%command.toggleComment.desc"
         id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
         name="%command.toggleComment.name">
   </command>
+  <category
+        id="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        name="%editor.category.source.name">
+  </category>
 	</extension>
 	<extension
 		point="org.eclipse.ui.actionSets">
@@ -357,9 +362,18 @@
        point="org.eclipse.ui.bindings">
     <key
           commandId="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
-          contextId="org.eclipse.ui.textEditorScope"
+          contextId="org.eclipse.linuxtools.systemtap.ui.ide.context"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+/">
+          sequence="M1+/">
     </key>
+ </extension>
+ <extension
+       point="org.eclipse.ui.contexts">
+    <context
+          description="%editor.context.desc"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.context"
+          name="%editor.context.name"
+          parentId="org.eclipse.ui.textEditorScope">
+    </context>
  </extension>
 </plugin>
