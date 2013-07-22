@@ -1123,7 +1123,8 @@ public final class STPIndenter {
 			if (skipScope(STPSymbols.TokenLPAREN, STPSymbols.TokenRPAREN)) {
 				int scope= fPosition;
 				nextToken();
-				if (fToken == STPSymbols.TokenIF || fToken == STPSymbols.TokenWHILE || fToken == STPSymbols.TokenFOR) {
+				if (fToken == STPSymbols.TokenIF || fToken == STPSymbols.TokenWHILE || fToken == STPSymbols.TokenFOR
+						|| fToken == STPSymbols.TokenFOREACH) {
 					fIndent= fPrefs.prefSimpleIndent;
 					return fPosition;
 				}
@@ -1155,6 +1156,16 @@ public final class STPIndenter {
 			// indent by list-indent.
 			return skipToPreviousListItemOrListStart();
 
+		case STPSymbols.TokenPLUS:
+		case STPSymbols.TokenMINUS:
+		case STPSymbols.TokenLESSTHAN:
+		case STPSymbols.TokenAGGREGATE:
+		case STPSymbols.TokenSHIFTRIGHT:
+		case STPSymbols.TokenSHIFTLEFT:
+		case STPSymbols.TokenOTHER:
+			// Math symbol, use skipToPreviousListItemOrListStart.
+			return skipToPreviousListItemOrListStart();
+			// Otherwise, fall-through
 		default:
 			// Inside whatever we don't know about: 
 			// C would treat this as a list, but in SystemTap we might just have a line that doesn't
@@ -1378,6 +1389,7 @@ public final class STPIndenter {
 				case STPSymbols.TokenDO:
 				case STPSymbols.TokenWHILE:
 				case STPSymbols.TokenFOR:
+				case STPSymbols.TokenFOREACH:
 				case STPSymbols.TokenTRY:
 					fIndent += fPrefs.prefIndentBracesForBlocks ? 1 : 0;
 					return fPosition;
@@ -1694,7 +1706,7 @@ public final class STPIndenter {
 				try {
 					int lineOffset= fDocument.getLineOffset(startLine);
 					int bound= Math.min(fDocument.getLength(), startPosition + 1);
-					if ((fToken == STPSymbols.TokenSEMICOLON || fToken == STPSymbols.TokenRBRACE ||
+					if ((fToken == STPSymbols.TokenSEMICOLON || fToken == STPSymbols.TokenRBRACE || fToken == STPSymbols.TokenIDENT ||
 							fToken == STPSymbols.TokenLBRACE && !looksLikeArrayInitializerIntro() && !looksLikeEnumDeclaration()) &&
 							continuationLineCandidate) {
 						fIndent = fPrefs.prefContinuationIndent;

@@ -363,7 +363,7 @@ public final class STPHeuristicScanner implements STPSymbols {
 					++fPos;
 					if (peekNextChar() == LANGLE) {
 						++fPos;
-						return TokenAggregate;
+						return TokenAGGREGATE;
 					}
 					return TokenSHIFTLEFT;
 				case EQUAL:

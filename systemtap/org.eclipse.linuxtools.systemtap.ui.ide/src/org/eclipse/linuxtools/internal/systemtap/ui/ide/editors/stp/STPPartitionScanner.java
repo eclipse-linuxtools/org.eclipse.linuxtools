@@ -89,11 +89,8 @@ public class STPPartitionScanner extends RuleBasedPartitionScanner {
                 new EndOfLineRule("#",  stpComment), //$NON-NLS-1$
 	            emptyCommentRule,
 	    		new SingleLineRule("\"", "\"", stpString, '\\', false, true), //$NON-NLS-1$ //$NON-NLS-2$
-                new EndOfLineRule("#if", stpConditional), //$NON-NLS-1$
-                new EndOfLineRule("#else", stpConditional), //$NON-NLS-1$
-                new EndOfLineRule("#endif", stpConditional), //$NON-NLS-1$
-                new EndOfLineRule("#define", stpConditional), //$NON-NLS-1$
-             });
+                new MultiLineRule("%(", "%)", stpConditional), //$NON-NLS-1$ //$NON-NLS-2$
+              });
 
 	}
 }

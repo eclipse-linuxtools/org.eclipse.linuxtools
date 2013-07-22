@@ -40,7 +40,7 @@ public interface STPSymbols {
 	int TokenDOUBLECOLON= 20;
 	int TokenSHIFTLEFT= 21;
 	int TokenPLUS= 22;
-	int TokenAggregate= 23;
+	int TokenAGGREGATE= 23;
 	int TokenIF= 109;
 	int TokenDO= 1010;
 	int TokenFOR= 1011;
