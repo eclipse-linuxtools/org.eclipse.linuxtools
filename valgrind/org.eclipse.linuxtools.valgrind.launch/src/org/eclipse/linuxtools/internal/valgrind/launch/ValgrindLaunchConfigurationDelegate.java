@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -188,6 +190,11 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 
 			// show view
 			ValgrindUIPlugin.getDefault().showView();
+
+			// set up resource listener for post-build events.
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(
+					new ProjectBuildListener(project), IResourceChangeEvent.POST_BUILD);
+
 			monitor.worked(1);				
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
@@ -381,5 +388,4 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 		root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE); //$NON-NLS-1$
 		return super.finalLaunchCheck(configuration, mode, monitor);
 	}
-
 }
