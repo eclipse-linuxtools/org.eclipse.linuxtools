@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -38,6 +42,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	 */
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
+		boolean patchExists = false;
 		if (region == null || textViewer == null) {
 			return null;
 		}
@@ -71,17 +76,25 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 					|| line.startsWith(PATCH_IDENTIFIER)) {
 				int delimiterIndex = line.indexOf(':') + 1;
 				String fileName = line.substring(delimiterIndex).trim();
+				patchExists = patchExists(original, fileName);
 				if (region.getOffset() > lineInfo.getOffset()
 						+ line.indexOf(fileName)) {
 					IRegion fileNameRegion = new Region(lineInfo.getOffset()
 							+ line.indexOf(fileName), fileName.length());
-					return new IHyperlink[] {
-							new SourcesFileHyperlink(original, UiUtils
-									.resolveDefines(editor.getSpecfile(),
-											fileName), fileNameRegion),
-							new SourcesFileDownloadHyperlink(original, UiUtils
-									.resolveDefines(editor.getSpecfile(),
-											fileName), fileNameRegion) };
+					if (line.startsWith(PATCH_IDENTIFIER) && !patchExists) {
+						return new IHyperlink[] {
+								new SourcesFileCreateHyperlink(original, UiUtils
+										.resolveDefines(editor.getSpecfile(),
+												fileName), fileNameRegion) };
+					} else {
+						return new IHyperlink[] {
+								new SourcesFileHyperlink(original, UiUtils
+										.resolveDefines(editor.getSpecfile(),
+												fileName), fileNameRegion),
+								new SourcesFileDownloadHyperlink(original, UiUtils
+										.resolveDefines(editor.getSpecfile(),
+												fileName), fileNameRegion) };
+					}
 				}
 			}
 		}
@@ -91,5 +104,32 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	
 	public void setEditor(SpecfileEditor editor) {
 		this.editor = editor;
+	}
+
+	/**
+	 * Helper method to check if the patch file exists within the
+	 * current project.
+	 *
+	 * @return True if the file exists
+	 */
+	private boolean patchExists(IFile original, String patchName) {
+		boolean rc = true;
+		IContainer container = original.getParent();
+		IResource resourceToOpen = container.findMember(patchName);
+		IFile file = null;
+
+		if (resourceToOpen == null) {
+			IResource sourcesFolder = container.getProject().findMember(
+					"SOURCES"); //$NON-NLS-1$
+			file = container.getFile(new Path(patchName));
+			if (sourcesFolder != null) {
+				file = ((IFolder) sourcesFolder).getFile(new Path(patchName));
+			}
+			if (!file.exists()) {
+				rc = false;
+			}
+		}
+
+		return rc;
 	}
 }

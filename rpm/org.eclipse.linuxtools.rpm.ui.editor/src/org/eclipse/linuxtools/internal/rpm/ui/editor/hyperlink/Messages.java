@@ -19,8 +19,10 @@ public final class Messages extends NLS {
 	public static String SourcesFileDownloadHyperlink_2;
 	public static String SourcesFileDownloadHyperlink_3;
 	public static String SourcesFileDownloadHyperlink_4;
+	public static String SourcesFileDownloadHyperlink_5;
 	public static String SourcesFileHyperlink_0;
 	public static String SourcesFileHyperlink_1;
+	public static String SourcesFileHyperlink_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
