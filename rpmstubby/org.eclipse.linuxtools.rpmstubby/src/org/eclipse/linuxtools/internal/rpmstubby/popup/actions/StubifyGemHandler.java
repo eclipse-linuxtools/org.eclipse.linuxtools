@@ -6,19 +6,21 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Neil Guzman - python, ruby implementation
+ *     Neil Guzman - python, ruby implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.rpmstubby.parser;
+package org.eclipse.linuxtools.internal.rpmstubby.popup.actions;
+
+import org.eclipse.linuxtools.rpmstubby.InputType;
 
 /**
- * Meta-Data tags common within the files
+ * Handler for the gemspec stubify command.
  *
  */
-@SuppressWarnings("javadoc")
-public interface CommonMetaData {
-	String NAME = "name";
-	String DESCRIPTION = "description";
-	String VERSION = "version";
-	String LICENSE = "license";
-	String URL = "url";
+public class StubifyGemHandler extends StubifyHandler {
+
+	@Override
+	protected InputType getInputType() {
+		return InputType.RUBY_GEM;
+	}
+
 }

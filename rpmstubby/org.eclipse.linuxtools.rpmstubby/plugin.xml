@@ -36,6 +36,12 @@
              id="rpmstubby.stubifyEgg"
              name="%action.label">
        </command>
+       <command
+             categoryId="rpmstubby.commands"
+             description="%action.label"
+             id="rpmstubby.stubifyGem"
+             name="%action.label">
+       </command>
        
  </extension>
  <extension
@@ -51,6 +57,10 @@
      <handler
            class="org.eclipse.linuxtools.internal.rpmstubby.popup.actions.StubifyEggHandler"
            commandId="rpmstubby.stubifyEgg">
+     </handler>
+     <handler
+           class="org.eclipse.linuxtools.internal.rpmstubby.popup.actions.StubifyGemHandler"
+           commandId="rpmstubby.stubifyGem">
      </handler>
  </extension>
   <extension
@@ -105,6 +115,24 @@
                         <test
                               property="org.eclipse.core.resources.name"
                               value="setup.py">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="rpmstubby.stubifyGem">
+            <visibleWhen>
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.gemspec">
                         </test>
                      </adapt>
                   </iterate>
