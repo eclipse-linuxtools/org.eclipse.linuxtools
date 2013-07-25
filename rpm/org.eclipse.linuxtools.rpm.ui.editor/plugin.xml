@@ -242,6 +242,16 @@
          	categoryId="rpmEditor.category"
             id="rpmEditor.showOutline.command"
             name="%command.name.1"/>
+         <command
+               categoryId="rpmEditor.category"
+               id="rpmEditor.downloadSources.command"
+               name="%command.name.2">
+         </command>
+         <command
+               categoryId="rpmEditor.category"
+               id="rpmEditor.prepareSources.command"
+               name="%command.name.3">
+         </command>
    </extension>
    <extension point="org.eclipse.ui.handlers">
     	<handler
@@ -253,6 +263,14 @@
    		<handler
          	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
          	commandId="rpmEditor.showOutline.command" />
+     <handler
+           class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorDownloadSourcesActionDelegate"
+           commandId="rpmEditor.downloadSources.command">
+     </handler>
+     <handler
+           class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorPrepareSourcesActionDelegate"
+           commandId="rpmEditor.prepareSources.command">
+     </handler>
    </extension>
    <!-- Key bindings -->
    <extension
@@ -272,6 +290,18 @@
            commandId="rpmEditor.showOutline.command"
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            commandId="rpmEditor.downloadSources.command"
+            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Shift+R D">
+      </key>
+      <key
+            commandId="rpmEditor.prepareSources.command"
+            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Shift+R P">
+      </key>
    </extension>
    <!-- Editor menu actions -->
    <extension
@@ -329,6 +359,58 @@
    				</iterate>
 			</visibleWhen>
                </command>
+         <command
+               commandId="rpmEditor.downloadSources.command"
+               label="%command.name.2"
+               tooltip="%command.name.2">
+            <visibleWhen>
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <or>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.spec">
+                        </test>
+                     </adapt>
+                     <with
+                           variable="activeEditorId">
+                        <equals
+                              value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                        </equals>
+                     </with>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="rpmEditor.prepareSources.command"
+               label="%command.name.3"
+               tooltip="%command.name.3">
+            <visibleWhen>
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <or>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.spec">
+                        </test>
+                     </adapt>
+                     <with
+                           variable="activeEditorId">
+                        <equals
+                              value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                        </equals>
+                     </with>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <!-- Compare support-->

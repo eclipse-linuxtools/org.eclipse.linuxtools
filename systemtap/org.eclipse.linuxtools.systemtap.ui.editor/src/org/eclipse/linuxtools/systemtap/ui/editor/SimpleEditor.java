@@ -37,7 +37,7 @@ public class SimpleEditor extends TextEditor {
 	public SimpleEditor() {
 		super();
 		// make sure we inherit all the text editing commands (delete line etc).
-		setKeyBindingScopes(new String[] { "org.eclipse.ui.textEditorScope" }); //$NON-NLS-1$
+		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.systemtap.ui.ide.context" }); //$NON-NLS-1$
 		internal_init();
 	}
 

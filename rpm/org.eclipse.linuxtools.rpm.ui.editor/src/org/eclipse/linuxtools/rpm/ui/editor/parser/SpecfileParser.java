@@ -27,14 +27,18 @@ import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRETRANS
 import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PREUN_SECTION;
 import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmSections.PRE_SECTION;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -166,6 +170,30 @@ public class SpecfileParser {
 			SpecfileLog.logError(e);
 		}
 		return specfile;
+	}
+
+	/**
+	 * Parse a File into a specfile
+	 *
+	 * @param file The File to be parsed
+	 * @return A Specfile object
+	 */
+	public Specfile parse(IFile file) {
+		SpecfileParser parser = new SpecfileParser();
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					file.getContents()));
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n"); //$NON-NLS-1$
+			}
+		} catch (IOException e) {
+			SpecfileLog.logError(Messages.getString("SpecfileParseFile.1"), e); //$NON-NLS-1$
+		} catch (CoreException e) {
+			SpecfileLog.logError(Messages.getString("SpecfileParseFile.2"), e); //$NON-NLS-1$
+		}
+		return parser.parse(sb.toString());
 	}
 
 	private void generateTaskMarker(int lineNumber, String line) {
