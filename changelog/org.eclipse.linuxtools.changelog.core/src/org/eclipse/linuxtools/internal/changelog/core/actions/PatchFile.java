@@ -12,6 +12,8 @@
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IResource;
@@ -25,7 +27,33 @@ import org.eclipse.core.runtime.IPath;
  */
 public class PatchFile {
 
-	private IStorage storage;
+	private class EmptyStorage implements IStorage {
+
+		public EmptyStorage() {
+		}
+
+		public InputStream getContents() {
+			return new ByteArrayInputStream(new byte[0]);
+		}
+
+		public IPath getFullPath() {
+			return null;
+		}
+
+		public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+			return null;
+		}
+
+		public String getName() {
+			return "__emptyStorage__";
+		}
+
+		public boolean isReadOnly() {
+			return true;
+		}
+	}
+	
+	private IStorage storage = new EmptyStorage();
 	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
 	
 	private boolean newfile = false;
