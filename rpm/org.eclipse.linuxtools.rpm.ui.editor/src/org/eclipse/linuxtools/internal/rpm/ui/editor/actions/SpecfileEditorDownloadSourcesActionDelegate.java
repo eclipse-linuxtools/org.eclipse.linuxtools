@@ -55,7 +55,7 @@ public class SpecfileEditorDownloadSourcesActionDelegate extends AbstractHandler
 		// currently stops immediately once an invalid source URL is encountered
 		for (final SpecfileSource sourceurls : sourceURLList) {
 			try {
-				String rawURL = sourceurls.getFileName().toString();
+				String rawURL = sourceurls.getFileName();
 				String resolvedURL = UiUtils.resolveDefines(specfile, rawURL);
 				URL url = null;
 				try {

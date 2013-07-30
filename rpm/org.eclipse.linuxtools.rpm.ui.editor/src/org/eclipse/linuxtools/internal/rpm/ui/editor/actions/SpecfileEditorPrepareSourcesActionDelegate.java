@@ -63,8 +63,7 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 			protected IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask(
 						NLS.bind(Messages.PrepareSources_prepareSources, rpj.getSpecFile().getName()), IProgressMonitor.UNKNOWN);
-				int offset = rpj.getSpecFile().getName().toString()
-						.lastIndexOf("."); //$NON-NLS-1$
+				int offset = rpj.getSpecFile().getName().lastIndexOf("."); //$NON-NLS-1$
 				MessageConsoleStream out = getConsole(
 						rpj.getSpecFile().getName().toString()
 								.substring(0, offset)).newMessageStream();
@@ -95,8 +94,7 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 				.getSources() : null;
 		for (final SpecfileSource sourceurls : sourceURLList) {
 			try {
-				String resolvedURL = UiUtils.resolveDefines(specfile,
-						sourceurls.getFileName().toString());
+				String resolvedURL = UiUtils.resolveDefines(specfile, sourceurls.getFileName());
 				URL url = null;
 				try {
 					url = new URL(resolvedURL);
