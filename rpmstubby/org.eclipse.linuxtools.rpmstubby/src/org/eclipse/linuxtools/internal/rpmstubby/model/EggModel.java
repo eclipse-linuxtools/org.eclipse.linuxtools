@@ -139,7 +139,7 @@ public class EggModel {
 	}
 
 	/**
-	 * The simple package name with "eclipse-" prepended to make better RPM package name.
+	 * The simple package name with "python-" prepended to make better RPM package name.
 	 *
 	 * @return The package
 	 */
@@ -152,9 +152,9 @@ public class EggModel {
 	}
 
 	/**
-	 * Returns the version as retrieved by /feature/@version xpath with .qualifier removed if any.
+	 * Returns the version
 	 *
-	 * @return The version of the feature.
+	 * @return The version
 	 */
 	public String getVersion() {
 		String version = getValue(CommonMetaData.VERSION);

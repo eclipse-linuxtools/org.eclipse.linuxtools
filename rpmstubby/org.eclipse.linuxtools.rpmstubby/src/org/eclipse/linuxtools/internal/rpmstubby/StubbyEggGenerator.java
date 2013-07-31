@@ -89,7 +89,7 @@ public class StubbyEggGenerator extends AbstractGenerator {
 		buffer.append("%else\n");
 		buffer.append("%{!?python_sitelib: %global python_sitelib %(%{__python} -c \"from distutils.sysconfig import get_python_lib; print (get_python_lib())\")}\n");
 		buffer.append("%endif\n\n");
-		buffer.append("%global srcname " + model.getPackageName().toLowerCase() +"\n\n");
+		buffer.append("%global srcname " + model.getSimplePackageName().toLowerCase() +"\n\n");
 	}
 
 	/**
