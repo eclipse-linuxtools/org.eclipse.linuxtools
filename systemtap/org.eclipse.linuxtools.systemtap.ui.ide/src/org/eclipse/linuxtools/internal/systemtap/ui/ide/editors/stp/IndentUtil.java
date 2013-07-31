@@ -27,7 +27,7 @@ import org.eclipse.jface.text.source.LineRange;
  * Utility that indents a number of lines in a document.
  */
 public final class IndentUtil {
-	
+
 	private static final String SLASHES= "//"; //$NON-NLS-1$
 
 	/**
@@ -53,7 +53,7 @@ public final class IndentUtil {
 			return hasChanged;
 		}
 	}
-	
+
 	private IndentUtil() {
 		// do not instantiate
 	}
@@ -62,7 +62,7 @@ public final class IndentUtil {
 	 * Indents the line range specified by <code>lines</code> in
 	 * <code>document</code>. The passed C project may be
 	 * <code>null</code>, it is used solely to obtain formatter preferences.
-	 * 
+	 *
 	 * @param document the document to be changed
 	 * @param lines the line range to be indented
 	 * @param project the C project to get the formatter preferences from, or
@@ -77,12 +77,12 @@ public final class IndentUtil {
 	 */
 	public static IndentResult indentLines(IDocument document, ILineRange lines, IProject project, IndentResult result) throws BadLocationException {
 		int numberOfLines= lines.getNumberOfLines();
-		
+
 		if (numberOfLines < 1)
 			return new IndentResult(null);
-		
+
 		result= reuseOrCreateToken(result, numberOfLines);
-		
+
 		STPHeuristicScanner scanner= new STPHeuristicScanner(document);
 		STPIndenter indenter= new STPIndenter(document, scanner, project);
 		boolean changed= false;
@@ -92,7 +92,7 @@ public final class IndentUtil {
 			changed |= indentLine(document, line, indenter, scanner, result.commentLinesAtColumnZero, i++, tabSize, indentInsideLineComments);
 		}
 		result.hasChanged= changed;
-		
+
 		return result;
 	}
 
@@ -111,10 +111,10 @@ public final class IndentUtil {
 			document.replace(offset, 0, indent);
 		}
 	}
-	
+
 	/**
 	 * Returns <code>true</code> if line comments at column 0 should be indented inside, <code>false</code> otherwise.
-	 * 
+	 *
 	 * @param project  the project to get project specific options from
 	 * @return <code>true</code> if line comments at column 0 should be indented inside, <code>false</code> otherwise.
 	 */
@@ -125,14 +125,13 @@ public final class IndentUtil {
 	/**
 	 * Returns the possibly <code>project</code>-specific core preference
 	 * defined under <code>key</code>.
-	 * 
+	 *
 	 * @param project the project to get the preference from, or
 	 *        <code>null</code> to get the global preference
 	 * @param key the key of the preference
 	 * @return the value of the preference
 	 */
 	private static String getCoreOption(IProject project, String key) {
-//		return project.getOption(key, true);
 		return "true";  //$NON-NLS-1$ // for now, just return true
 	}
 
@@ -143,7 +142,7 @@ public final class IndentUtil {
 	 * lines are adjusted accordingly. The passed C project may be
 	 * <code>null</code>, it is used solely to obtain formatter
 	 * preferences.
-	 * 
+	 *
 	 * @param document the document to be changed
 	 * @param lines the line range to be shifted
 	 * @param project the C project to get the formatter preferences
@@ -160,32 +159,32 @@ public final class IndentUtil {
 	 */
 	public static IndentResult shiftLines(IDocument document, ILineRange lines, IProject project, IndentResult result) throws BadLocationException {
 		int numberOfLines= lines.getNumberOfLines();
-		
+
 		if (numberOfLines < 1)
 			return new IndentResult(null);
-		
+
 		result= reuseOrCreateToken(result, numberOfLines);
 		result.hasChanged= false;
-		
+
 		STPHeuristicScanner scanner= new STPHeuristicScanner(document);
 		STPIndenter indenter= new STPIndenter(document, scanner, project);
-		
+
 		boolean indentInsideLineComments= indentInsideLineComments(project);
 		String current= getCurrentIndent(document, lines.getStartLine(), indentInsideLineComments);
 		StringBuilder correct= new StringBuilder(computeIndent(document, lines.getStartLine(), indenter, scanner));
-		
+
 		int tabSize= CodeFormatterUtil.getTabWidth(project);
 		StringBuilder addition= new StringBuilder();
 		int difference= subtractIndent(correct, current, addition, tabSize);
-		
+
 		if (difference == 0)
 			return result;
-			
+
 		if (result.leftmostLine == -1)
 			result.leftmostLine= getLeftMostLine(document, lines, tabSize, indentInsideLineComments);
-		
+
 		int maxReduction= computeVisualLength(getCurrentIndent(document, result.leftmostLine + lines.getStartLine(), indentInsideLineComments), tabSize);
-		
+
 		if (difference > 0) {
 			for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++)
 				addIndent(document, line, addition, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
@@ -194,11 +193,11 @@ public final class IndentUtil {
 			for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++)
 				cutIndent(document, line, reduction, tabSize, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
 		}
-				
+
 		result.hasChanged= true;
-		
+
 		return result;
-		
+
 	}
 
 	/**
@@ -269,7 +268,7 @@ public final class IndentUtil {
 			while (from < endOffset - 2 && document.get(from, 2).equals(SLASHES))
 				from += 2;
 		}
-	
+
 		int to= from;
 		while (toDelete > 0 && to < endOffset) {
 			char ch= document.getChar(to);
@@ -281,7 +280,7 @@ public final class IndentUtil {
 			else
 				break;
 		}
-		
+
 		if (endOffset > to + 1 && document.get(to, 2).equals(SLASHES))
 			commentLines[relative]= true;
 
@@ -369,7 +368,7 @@ public final class IndentUtil {
 			while (to < endOffset - 2 && document.get(to, 2).equals(SLASHES))
 				to += 2;
 		}
-		
+
 		while (to < endOffset) {
 			char ch= document.getChar(to);
 			if (!Character.isWhitespace(ch))
@@ -379,7 +378,7 @@ public final class IndentUtil {
 
 		return document.get(from, to - from);
 	}
-	
+
 	private static int getLeftMostLine(IDocument document, ILineRange lines, int tabSize, boolean indentInsideLineComments) throws BadLocationException {
 		int numberOfLines= lines.getNumberOfLines();
 		int first= lines.getStartLine();
@@ -407,11 +406,11 @@ public final class IndentUtil {
 		}
 		return token;
 	}
-	
+
 	/**
 	 * Indents a single line using the heuristic scanner. Multiline comments are
 	 * indented as specified by the <code>CCommentAutoIndentStrategy</code>.
-	 * 
+	 *
 	 * @param document the document
 	 * @param line the line to be indented
 	 * @param indenter the C indenter
@@ -430,7 +429,7 @@ public final class IndentUtil {
 		IRegion currentLine= document.getLineInformation(line);
 		final int offset= currentLine.getOffset();
 		int wsStart= offset; // where we start searching for non-WS; after the "//" in single line comments
-		
+
 		String indent= null;
 		if (offset < document.getLength()) {
 			ITypedRegion partition= TextUtilities.getPartition(document, STPPartitionScanner.STP_PARTITIONING, offset, true);
@@ -444,7 +443,7 @@ public final class IndentUtil {
 				return false;
 			}
 		}
-		
+
 		// standard C code indentation
 		if (indent == null) {
 			StringBuilder computed= indenter.computeIndentation(offset);
@@ -453,7 +452,7 @@ public final class IndentUtil {
 			else
 				indent= ""; //$NON-NLS-1$
 		}
-		
+
 		// change document:
 		// get current white space
 		int lineLength= currentLine.getLength();
@@ -462,7 +461,7 @@ public final class IndentUtil {
 			end= offset + lineLength;
 		int length= end - offset;
 		String currentIndent= document.get(offset, length);
-		
+
 		// memorize the fact that a line is a single line comment (but not at column 0) and should be treated like code
 		// as opposed to commented out code, which should keep its slashes at column 0
 		// if 'indentInsideLineComments' is false, all comment lines are indented with the code
@@ -472,19 +471,19 @@ public final class IndentUtil {
 				commentLines[lineIndex]= true;
 			}
 		}
-		
+
 		// only change the document if it is a real change
 		if (!indent.equals(currentIndent)) {
 			document.replace(offset, length, indent);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Computes and returns the indentation for a source line.
-	 * 
+	 *
 	 * @param document the document
 	 * @param line the line in document
 	 * @param indenter the C indenter
@@ -495,7 +494,7 @@ public final class IndentUtil {
 	public static String computeIndent(IDocument document, int line, STPIndenter indenter, STPHeuristicScanner scanner) throws BadLocationException {
 		IRegion currentLine= document.getLineInformation(line);
 		final int offset= currentLine.getOffset();
-		
+
 		String indent= null;
 		if (offset < document.getLength()) {
 			ITypedRegion partition= TextUtilities.getPartition(document, STPPartitionScanner.STP_PARTITIONING, offset, true);
@@ -507,7 +506,7 @@ public final class IndentUtil {
 				indent= computePreprocessorIndent(document, line, startingPartition);
 			}
 		}
-		
+
 		// standard C code indentation
 		if (indent == null) {
 			StringBuilder computed= indenter.computeIndentation(offset);
@@ -518,10 +517,10 @@ public final class IndentUtil {
 		}
 		return indent;
 	}
-	
+
 	/**
 	 * Computes and returns the indentation for a block comment line.
-	 * 
+	 *
 	 * @param document the document
 	 * @param line the line in document
 	 * @param scanner the scanner
@@ -532,7 +531,7 @@ public final class IndentUtil {
 	public static String computeCommentIndent(IDocument document, int line, STPHeuristicScanner scanner, ITypedRegion partition) throws BadLocationException {
 		if (line == 0) // impossible - the first line is never inside a comment
 			return null;
-		
+
 		// don't make any assumptions if the line does not start with \s*\* - it might be
 		// commented out code, for which we don't want to change the indent
 		final IRegion lineInfo= document.getLineInformation(line);
@@ -545,13 +544,13 @@ public final class IndentUtil {
 				return document.get(lineStart, lineLength);
 			return document.get(lineStart, nonWS - lineStart);
 		}
-		
+
 		// take the indent from the previous line and reuse
 		IRegion previousLine= document.getLineInformation(line - 1);
 		int previousLineStart= previousLine.getOffset();
 		int previousLineLength= previousLine.getLength();
 		int previousLineEnd= previousLineStart + previousLineLength;
-		
+
 		StringBuilder buf= new StringBuilder();
 		int previousLineNonWS= scanner.findNonWhitespaceForwardInAnyPartition(previousLineStart, previousLineEnd);
 		if (previousLineNonWS == STPHeuristicScanner.NOT_FOUND || document.getChar(previousLineNonWS) != '*') {
@@ -563,12 +562,12 @@ public final class IndentUtil {
 			previousLineNonWS= scanner.findNonWhitespaceForwardInAnyPartition(previousLineStart, previousLineEnd);
 			if (previousLineNonWS == STPHeuristicScanner.NOT_FOUND)
 				previousLineNonWS= previousLineEnd;
-			
+
 			// add the initial space
 			// TODO this may be controlled by a formatter preference in the future
 			buf.append(' ');
 		}
-		
+
 		String indentation= document.get(previousLineStart, previousLineNonWS - previousLineStart);
 		buf.insert(0, indentation);
 		return buf.toString();
@@ -576,7 +575,7 @@ public final class IndentUtil {
 
 	/**
 	 * Computes and returns the indentation for a preprocessor line.
-	 * 
+	 *
 	 * @param document the document
 	 * @param line the line in document
 	 * @param partition the comment partition
@@ -603,7 +602,7 @@ public final class IndentUtil {
 		int previousLineStart= previousLine.getOffset();
 		int previousLineLength= previousLine.getLength();
 		int previousLineEnd= previousLineStart + previousLineLength;
-		
+
 		int previousLineNonWS= ppScanner.findNonWhitespaceForwardInAnyPartition(previousLineStart, previousLineEnd);
 		String previousIndent= document.get(previousLineStart, previousLineNonWS - previousLineStart);
 		computed= new StringBuilder(previousIndent);

@@ -940,7 +940,6 @@ public final class STPHeuristicScanner implements STPSymbols {
 	public boolean isDefaultPartition(int position) {
 		String type = getPartition(position).getType();
 		return fPartition.equals(type);
-//				|| STPPartitionScanner.STP_PROBE.equals(type);
 	}
 
 	/**

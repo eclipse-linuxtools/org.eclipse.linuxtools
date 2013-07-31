@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 
 /**
  * Code formatter options.
- * 
+ *
  * @noextend This class is not intended to be subclassed by clients.
  * @since 5.4
  */
@@ -76,37 +76,18 @@ public class STPDefaultCodeFormatterOptions {
 	public int alignment_for_throws_clause_in_method_declaration;
 	public int alignment_for_constructor_initializer_list;
 
-//	public boolean align_type_members_on_columns;
-
 	public String brace_position_for_block;
 	public String brace_position_for_block_in_case;
-//	public String brace_position_for_enum_declaration;
 	public String brace_position_for_initializer_list;
 	public String brace_position_for_method_declaration;
 	public String brace_position_for_namespace_declaration;
 	public String brace_position_for_switch;
 	public String brace_position_for_type_declaration;
 
-//	public int blank_lines_after_includes;
-//	public int blank_lines_at_beginning_of_method_body;
-//	public int blank_lines_before_field;
-//	public int blank_lines_before_first_class_body_declaration;
-//	public int blank_lines_before_includes;
-//	public int blank_lines_before_member_type;
-//	public int blank_lines_before_method;
-//	public int blank_lines_before_new_chunk;
-//	public int blank_lines_between_type_declarations;
-	
-//	public boolean comment_clear_blank_lines;
-//	public boolean comment_format;
-//	public boolean comment_format_header;
-//	public boolean comment_format_html;
-//	public boolean comment_format_source;
-//	public int comment_line_length;
 	public int comment_min_distance_between_code_and_line_comment;
 	public boolean comment_preserve_white_space_between_code_and_line_comment;
 	public boolean never_indent_line_comments_on_first_column;
-	
+
 	public int continuation_indentation;
 	public int continuation_indentation_for_initializer_list;
 
@@ -133,8 +114,6 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean insert_new_line_before_while_in_do_statement;
 	public boolean insert_new_line_before_identifier_in_function_declaration;
 	public boolean insert_new_line_in_empty_block;
-//	public boolean insert_new_line_in_empty_method_body;
-//	public boolean insert_new_line_in_empty_type_declaration;
 	public boolean insert_space_after_assignment_operator;
 	public boolean insert_space_after_binary_operator;
 	public boolean insert_space_after_closing_angle_bracket_in_template_arguments;
@@ -145,11 +124,8 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean insert_space_after_colon_in_case;
 	public boolean insert_space_after_colon_in_conditional;
 	public boolean insert_space_after_colon_in_labeled_statement;
-//	public boolean insert_space_after_comma_in_allocation_expression;
 	public boolean insert_space_after_comma_in_initializer_list;
 	public boolean insert_space_after_comma_in_enum_declarations;
-//	public boolean insert_space_after_comma_in_for_increments;
-//	public boolean insert_space_after_comma_in_for_inits;
 	public boolean insert_space_after_comma_in_method_invocation_arguments;
 	public boolean insert_space_after_comma_in_method_declaration_parameters;
 	public boolean insert_space_after_comma_in_method_declaration_throws;
@@ -158,7 +134,6 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean insert_space_after_comma_in_base_types;
 	public boolean insert_space_after_comma_in_template_arguments;
 	public boolean insert_space_after_comma_in_template_parameters;
-//	public boolean insert_space_after_ellipsis;
 	public boolean insert_space_after_opening_angle_bracket_in_template_arguments;
 	public boolean insert_space_after_opening_angle_bracket_in_template_parameters;
 	public boolean insert_space_after_opening_bracket;
@@ -199,11 +174,8 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean insert_space_before_colon_in_conditional;
 	public boolean insert_space_before_colon_in_default;
 	public boolean insert_space_before_colon_in_labeled_statement;
-//	public boolean insert_space_before_comma_in_allocation_expression;
 	public boolean insert_space_before_comma_in_initializer_list;
 	public boolean insert_space_before_comma_in_enum_declarations;
-//	public boolean insert_space_before_comma_in_for_increments;
-//	public boolean insert_space_before_comma_in_for_inits;
 	public boolean insert_space_before_comma_in_method_invocation_arguments;
 	public boolean insert_space_before_comma_in_method_declaration_parameters;
 	public boolean insert_space_before_comma_in_method_declaration_throws;
@@ -212,8 +184,6 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean insert_space_before_comma_in_base_types;
 	public boolean insert_space_before_comma_in_template_arguments;
 	public boolean insert_space_before_comma_in_template_parameters;
-//	public boolean insert_space_before_ellipsis;
-//	public boolean insert_space_before_parenthesized_expression_in_return;
 	public boolean insert_space_before_opening_angle_bracket_in_template_arguments;
 	public boolean insert_space_before_opening_angle_bracket_in_template_parameters;
 	public boolean insert_space_before_opening_brace_in_initializer_list;
@@ -258,7 +228,7 @@ public class STPDefaultCodeFormatterOptions {
 	public boolean use_tabs_only_for_leading_indentations;
 	public int initial_indentation_level;
 	public String line_separator;
-	
+
 	private STPDefaultCodeFormatterOptions() {
 		// cannot be instantiated
 	}
@@ -275,7 +245,6 @@ public class STPDefaultCodeFormatterOptions {
 
 	public Map<String, String> getMap() {
 		Map<String, String> options = new HashMap<String, String>();
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_ALLOCATION_EXPRESSION, getAlignment(this.alignment_for_arguments_in_allocation_expression));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION, getAlignment(this.alignment_for_arguments_in_method_invocation));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ASSIGNMENT, getAlignment(this.alignment_for_assignment));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_BINARY_EXPRESSION, getAlignment(this.alignment_for_binary_expression));
@@ -289,34 +258,17 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_MEMBER_ACCESS, getAlignment(this.alignment_for_member_access));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_OVERLOADED_LEFT_SHIFT_CHAIN, getAlignment(this.alignment_for_overloaded_left_shift_chain));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION, getAlignment(this.alignment_for_parameters_in_method_declaration));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_SELECTOR_IN_METHOD_INVOCATION, getAlignment(this.alignment_for_selector_in_method_invocation));
+
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_BASE_CLAUSE_IN_TYPE_DECLARATION, getAlignment(this.alignment_for_base_clause_in_type_declaration));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_CONSTRUCTOR_INITIALIZER_LIST, getAlignment(this.alignment_for_constructor_initializer_list));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_THROWS_CLAUSE_IN_METHOD_DECLARATION, getAlignment(this.alignment_for_throws_clause_in_method_declaration));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGN_TYPE_MEMBERS_ON_COLUMNS, this.align_type_members_on_columns ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_AFTER_IMPORTS, Integer.toString(this.blank_lines_after_includes));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_FIELD, Integer.toString(this.blank_lines_before_field));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_FIRST_CLASS_BODY_DECLARATION, Integer.toString(this.blank_lines_before_first_class_body_declaration));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_IMPORTS, Integer.toString(this.blank_lines_before_includes));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_MEMBER_TYPE, Integer.toString(this.blank_lines_before_member_type));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_METHOD, Integer.toString(this.blank_lines_before_method));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_NEW_CHUNK, Integer.toString(this.blank_lines_before_new_chunk));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BETWEEN_TYPE_DECLARATIONS, Integer.toString(this.blank_lines_between_type_declarations));
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_AT_BEGINNING_OF_METHOD_BODY, Integer.toString(this.blank_lines_at_beginning_of_method_body));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_INITIALIZER_LIST, this.brace_position_for_initializer_list);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_BLOCK, this.brace_position_for_block);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_BLOCK_IN_CASE, this.brace_position_for_block_in_case);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_ENUM_DECLARATION, this.brace_position_for_enum_declaration);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_METHOD_DECLARATION, this.brace_position_for_method_declaration);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_TYPE_DECLARATION, this.brace_position_for_type_declaration);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_SWITCH, this.brace_position_for_switch);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_NAMESPACE_DECLARATION, this.brace_position_for_namespace_declaration);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_CLEAR_BLANK_LINES, this.comment_clear_blank_lines ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT, this.comment_format ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_HEADER, this.comment_format_header ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_HTML, this.comment_format_html ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_SOURCE, this.comment_format_source ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_LINE_LENGTH, Integer.toString(this.comment_line_length));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_MIN_DISTANCE_BETWEEN_CODE_AND_LINE_COMMENT, Integer.toString(this.comment_min_distance_between_code_and_line_comment));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_PRESERVE_WHITE_SPACE_BETWEEN_CODE_AND_LINE_COMMENT, this.comment_preserve_white_space_between_code_and_line_comment ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_NEVER_INDENT_LINE_COMMENTS_ON_FIRST_COLUMN, this.never_indent_line_comments_on_first_column ? STPDefaultCodeFormatterConstants.TRUE : STPDefaultCodeFormatterConstants.FALSE);
@@ -344,8 +296,6 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_BEFORE_WHILE_IN_DO_STATEMENT, this.insert_new_line_before_while_in_do_statement? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_BEFORE_IDENTIFIER_IN_FUNCTION_DECLARATION, this.insert_new_line_before_identifier_in_function_declaration? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_IN_EMPTY_BLOCK, this.insert_new_line_in_empty_block? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_IN_EMPTY_METHOD_BODY, this.insert_new_line_in_empty_method_body? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_IN_EMPTY_TYPE_DECLARATION, this.insert_new_line_in_empty_type_declaration? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR, this.insert_space_after_assignment_operator? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_BINARY_OPERATOR, this.insert_space_after_binary_operator? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_CLOSING_ANGLE_BRACKET_IN_TEMPLATE_ARGUMENTS, this.insert_space_after_closing_angle_bracket_in_template_arguments ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -356,11 +306,8 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COLON_IN_CASE, this.insert_space_after_colon_in_case ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COLON_IN_CONDITIONAL, this.insert_space_after_colon_in_conditional ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COLON_IN_LABELED_STATEMENT, this.insert_space_after_colon_in_labeled_statement? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_ALLOCATION_EXPRESSION, this.insert_space_after_comma_in_allocation_expression? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_INITIALIZER_LIST, this.insert_space_after_comma_in_initializer_list? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_ENUM_DECLARATIONS, this.insert_space_after_comma_in_enum_declarations ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INCREMENTS, this.insert_space_after_comma_in_for_increments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INITS, this.insert_space_after_comma_in_for_inits? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_METHOD_INVOCATION_ARGUMENTS, this.insert_space_after_comma_in_method_invocation_arguments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_METHOD_DECLARATION_PARAMETERS, this.insert_space_after_comma_in_method_declaration_parameters? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_METHOD_DECLARATION_THROWS, this.insert_space_after_comma_in_method_declaration_throws? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -369,7 +316,6 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_BASE_TYPES, this.insert_space_after_comma_in_base_types? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_TEMPLATE_ARGUMENTS, this.insert_space_after_comma_in_template_arguments ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_TEMPLATE_PARAMETERS, this.insert_space_after_comma_in_template_parameters ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_ELLIPSIS, this.insert_space_after_ellipsis ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_ANGLE_BRACKET_IN_TEMPLATE_ARGUMENTS, this.insert_space_after_opening_angle_bracket_in_template_arguments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_ANGLE_BRACKET_IN_TEMPLATE_PARAMETERS, this.insert_space_after_opening_angle_bracket_in_template_parameters? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_BRACKET, this.insert_space_after_opening_bracket? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -410,11 +356,8 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COLON_IN_CONDITIONAL, this.insert_space_before_colon_in_conditional? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COLON_IN_DEFAULT, this.insert_space_before_colon_in_default? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COLON_IN_LABELED_STATEMENT, this.insert_space_before_colon_in_labeled_statement? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_ALLOCATION_EXPRESSION, this.insert_space_before_comma_in_allocation_expression? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_INITIALIZER_LIST, this.insert_space_before_comma_in_initializer_list? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_ENUM_DECLARATIONS, this.insert_space_before_comma_in_enum_declarations? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INCREMENTS, this.insert_space_before_comma_in_for_increments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INITS, this.insert_space_before_comma_in_for_inits? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_METHOD_INVOCATION_ARGUMENTS, this.insert_space_before_comma_in_method_invocation_arguments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_METHOD_DECLARATION_PARAMETERS, this.insert_space_before_comma_in_method_declaration_parameters? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_METHOD_DECLARATION_THROWS, this.insert_space_before_comma_in_method_declaration_throws? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -423,7 +366,6 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_BASE_TYPES, this.insert_space_before_comma_in_base_types? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_TEMPLATE_ARGUMENTS, this.insert_space_before_comma_in_template_arguments ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_TEMPLATE_PARAMETERS, this.insert_space_before_comma_in_template_parameters? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_ELLIPSIS, this.insert_space_before_ellipsis ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_ANGLE_BRACKET_IN_TEMPLATE_ARGUMENTS, this.insert_space_before_opening_angle_bracket_in_template_arguments? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_ANGLE_BRACKET_IN_TEMPLATE_PARAMETERS, this.insert_space_before_opening_angle_bracket_in_template_parameters? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_BRACE_IN_INITIALIZER_LIST, this.insert_space_before_opening_brace_in_initializer_list? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -442,7 +384,6 @@ public class STPDefaultCodeFormatterOptions {
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_BRACE_IN_SWITCH, this.insert_space_before_opening_brace_in_switch? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_PAREN_IN_PARENTHESIZED_EXPRESSION, this.insert_space_before_opening_paren_in_parenthesized_expression? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_PAREN_IN_WHILE, this.insert_space_before_opening_paren_in_while? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
-//		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_PARENTHESIZED_EXPRESSION_IN_RETURN, this.insert_space_before_parenthesized_expression_in_return ? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_POSTFIX_OPERATOR, this.insert_space_before_postfix_operator? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_PREFIX_OPERATOR, this.insert_space_before_prefix_operator? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_QUESTION_IN_CONDITIONAL, this.insert_space_before_question_in_conditional? IDEPlugin.INSERT : IDEPlugin.DO_NOT_INSERT);
@@ -481,16 +422,6 @@ public class STPDefaultCodeFormatterOptions {
 	}
 
 	public void set(Map<String, String> settings) {
-//		final Object alignmentForArgumentsInAllocationExpressionOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_ALLOCATION_EXPRESSION);
-//		if (alignmentForArgumentsInAllocationExpressionOption != null) {
-//			try {
-//				this.alignment_for_arguments_in_allocation_expression = Integer.parseInt((String) alignmentForArgumentsInAllocationExpressionOption);
-//			} catch (NumberFormatException e) {
-//				this.alignment_for_arguments_in_allocation_expression = Alignment.M_COMPACT_SPLIT;
-//			} catch (ClassCastException e) {
-//				this.alignment_for_arguments_in_allocation_expression = Alignment.M_COMPACT_SPLIT;
-//			}
-//		}
 		final Object alignmentForArgumentsInMethodInvocationOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION);
 		if (alignmentForArgumentsInMethodInvocationOption != null) {
 			try {
@@ -651,100 +582,6 @@ public class STPDefaultCodeFormatterOptions {
 				this.alignment_for_throws_clause_in_method_declaration = STPAlignment.M_COMPACT_SPLIT;
 			}
 		}
-//		final Object alignTypeMembersOnColumnsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_ALIGN_TYPE_MEMBERS_ON_COLUMNS);
-//		if (alignTypeMembersOnColumnsOption != null) {
-//			this.align_type_members_on_columns = STPDefaultCodeFormatterConstants.TRUE.equals(alignTypeMembersOnColumnsOption);
-//		}
-//		final Object blankLinesAfterIncludesOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_AFTER_IMPORTS);
-//		if (blankLinesAfterIncludesOption != null) {
-//			try {
-//				this.blank_lines_after_includes = Integer.parseInt((String) blankLinesAfterIncludesOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_after_includes = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_after_includes = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeFieldOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_FIELD);
-//		if (blankLinesBeforeFieldOption != null) {
-//			try {
-//				this.blank_lines_before_field = Integer.parseInt((String) blankLinesBeforeFieldOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_field = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_field = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeFirstClassBodyDeclarationOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_FIRST_CLASS_BODY_DECLARATION);
-//		if (blankLinesBeforeFirstClassBodyDeclarationOption != null) {
-//			try {
-//				this.blank_lines_before_first_class_body_declaration = Integer.parseInt((String) blankLinesBeforeFirstClassBodyDeclarationOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_first_class_body_declaration = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_first_class_body_declaration = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeIncludesOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_IMPORTS);
-//		if (blankLinesBeforeIncludesOption != null) {
-//			try {
-//				this.blank_lines_before_includes = Integer.parseInt((String) blankLinesBeforeIncludesOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_includes = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_includes = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeMemberTypeOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_MEMBER_TYPE);
-//		if (blankLinesBeforeMemberTypeOption != null) {
-//			try {
-//				this.blank_lines_before_member_type = Integer.parseInt((String) blankLinesBeforeMemberTypeOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_member_type = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_member_type = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeMethodOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_METHOD);
-//		if (blankLinesBeforeMethodOption != null) {
-//			try {
-//				this.blank_lines_before_method = Integer.parseInt((String) blankLinesBeforeMethodOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_method = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_method = 0;
-//			}
-//		}
-//		final Object blankLinesBeforeNewChunkOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BEFORE_NEW_CHUNK);
-//		if (blankLinesBeforeNewChunkOption != null) {
-//			try {
-//				this.blank_lines_before_new_chunk = Integer.parseInt((String) blankLinesBeforeNewChunkOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_before_new_chunk = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_before_new_chunk = 0;
-//			}
-//		}
-//		final Object blankLinesBetweenTypeDeclarationsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_BETWEEN_TYPE_DECLARATIONS);
-//		if (blankLinesBetweenTypeDeclarationsOption != null) {
-//			try {
-//				this.blank_lines_between_type_declarations = Integer.parseInt((String) blankLinesBetweenTypeDeclarationsOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_between_type_declarations = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_between_type_declarations = 0;
-//			}
-//		}
-//		final Object blankLinesAtBeginningOfMethodBodyOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BLANK_LINES_AT_BEGINNING_OF_METHOD_BODY);
-//		if (blankLinesAtBeginningOfMethodBodyOption != null) {
-//			try {
-//				this.blank_lines_at_beginning_of_method_body = Integer.parseInt((String) blankLinesAtBeginningOfMethodBodyOption);
-//			} catch (NumberFormatException e) {
-//				this.blank_lines_at_beginning_of_method_body = 0;
-//			} catch (ClassCastException e) {
-//				this.blank_lines_at_beginning_of_method_body = 0;
-//			}
-//		}
 		final Object bracePositionForInitializerListOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_INITIALIZER_LIST);
 		if (bracePositionForInitializerListOption != null) {
 			try {
@@ -769,14 +606,6 @@ public class STPDefaultCodeFormatterOptions {
 				this.brace_position_for_block_in_case = STPDefaultCodeFormatterConstants.END_OF_LINE;
 			}
 		}
-//		final Object bracePositionForEnumDeclarationOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_ENUM_DECLARATION);
-//		if (bracePositionForEnumDeclarationOption != null) {
-//			try {
-//				this.brace_position_for_enum_declaration = (String) bracePositionForEnumDeclarationOption;
-//			} catch (ClassCastException e) {
-//				this.brace_position_for_enum_declaration = STPDefaultCodeFormatterConstants.END_OF_LINE;
-//			}
-//		}
 		final Object bracePositionForMethodDeclarationOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_METHOD_DECLARATION);
 		if (bracePositionForMethodDeclarationOption != null) {
 			try {
@@ -809,36 +638,6 @@ public class STPDefaultCodeFormatterOptions {
 				this.brace_position_for_namespace_declaration = STPDefaultCodeFormatterConstants.END_OF_LINE;
 			}
 		}
-//		final Object commentClearBlankLinesOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_CLEAR_BLANK_LINES);
-//		if (commentClearBlankLinesOption != null) {
-//			this.comment_clear_blank_lines = STPDefaultCodeFormatterConstants.TRUE.equals(commentClearBlankLinesOption);
-//		}
-//		final Object commentFormatOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT);
-//		if (commentFormatOption != null) {
-//			this.comment_format = STPDefaultCodeFormatterConstants.TRUE.equals(commentFormatOption);
-//		}
-//		final Object commentFormatHeaderOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_HEADER);
-//		if (commentFormatHeaderOption != null) {
-//			this.comment_format_header = STPDefaultCodeFormatterConstants.TRUE.equals(commentFormatHeaderOption);
-//		}
-//		final Object commentFormatHtmlOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_HTML);
-//		if (commentFormatHtmlOption != null) {
-//			this.comment_format_html = STPDefaultCodeFormatterConstants.TRUE.equals(commentFormatHtmlOption);
-//		}
-//		final Object commentFormatSourceOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_FORMAT_SOURCE);
-//		if (commentFormatSourceOption != null) {
-//			this.comment_format_source = STPDefaultCodeFormatterConstants.TRUE.equals(commentFormatSourceOption);
-//		}
-//		final Object commentLineLengthOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_LINE_LENGTH);
-//		if (commentLineLengthOption != null) {
-//			try {
-//				this.comment_line_length = Integer.parseInt((String) commentLineLengthOption);
-//			} catch (NumberFormatException e) {
-//				this.comment_line_length = 80;
-//			} catch (ClassCastException e) {
-//				this.comment_line_length = 80;
-//			}
-//		}
 		final Object commentMinDistanceBetweenCodeAndLineCommentOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_COMMENT_MIN_DISTANCE_BETWEEN_CODE_AND_LINE_COMMENT);
 		if (commentMinDistanceBetweenCodeAndLineCommentOption != null) {
 			try {
@@ -977,14 +776,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertNewLineInEmptyBlockOption != null) {
 			this.insert_new_line_in_empty_block = IDEPlugin.INSERT.equals(insertNewLineInEmptyBlockOption);
 		}
-//		final Object insertNewLineInEmptyMethodBodyOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_IN_EMPTY_METHOD_BODY);
-//		if (insertNewLineInEmptyMethodBodyOption != null) {
-//			this.insert_new_line_in_empty_method_body = IDEPlugin.INSERT.equals(insertNewLineInEmptyMethodBodyOption);
-//		}
-//		final Object insertNewLineInEmptyTypeDeclarationOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_NEW_LINE_IN_EMPTY_TYPE_DECLARATION);
-//		if (insertNewLineInEmptyTypeDeclarationOption != null) {
-//			this.insert_new_line_in_empty_type_declaration = IDEPlugin.INSERT.equals(insertNewLineInEmptyTypeDeclarationOption);
-//		}
 		final Object insertSpaceAfterAssignmentOperatorOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_ASSIGNMENT_OPERATOR);
 		if (insertSpaceAfterAssignmentOperatorOption != null) {
 			this.insert_space_after_assignment_operator = IDEPlugin.INSERT.equals(insertSpaceAfterAssignmentOperatorOption);
@@ -1025,10 +816,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceAfterColonInLabeledStatementOption != null) {
 			this.insert_space_after_colon_in_labeled_statement = IDEPlugin.INSERT.equals(insertSpaceAfterColonInLabeledStatementOption);
 		}
-//		final Object insertSpaceAfterCommaInAllocationExpressionOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_ALLOCATION_EXPRESSION);
-//		if (insertSpaceAfterCommaInAllocationExpressionOption != null) {
-//			this.insert_space_after_comma_in_allocation_expression = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInAllocationExpressionOption);
-//		}
 		final Object insertSpaceAfterCommaInInitializerListOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_INITIALIZER_LIST);
 		if (insertSpaceAfterCommaInInitializerListOption != null) {
 			this.insert_space_after_comma_in_initializer_list = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInInitializerListOption);
@@ -1037,14 +824,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceAfterCommaInEnumDeclarationsOption != null) {
 			this.insert_space_after_comma_in_enum_declarations = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInEnumDeclarationsOption);
 		}
-//		final Object insertSpaceAfterCommaInForInitsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INITS);
-//		if (insertSpaceAfterCommaInForInitsOption != null) {
-//			this.insert_space_after_comma_in_for_inits = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInForInitsOption);
-//		}
-//		final Object insertSpaceAfterCommaInForIncrementsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INCREMENTS);
-//		if (insertSpaceAfterCommaInForIncrementsOption != null) {
-//			this.insert_space_after_comma_in_for_increments = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInForIncrementsOption);
-//		}
 		final Object insertSpaceAfterCommaInMethodInvocationArgumentsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_METHOD_INVOCATION_ARGUMENTS);
 		if (insertSpaceAfterCommaInMethodInvocationArgumentsOption != null) {
 			this.insert_space_after_comma_in_method_invocation_arguments = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInMethodInvocationArgumentsOption);
@@ -1077,14 +856,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceAfterCommaInTemplateParametersOption != null) {
 			this.insert_space_after_comma_in_template_parameters = IDEPlugin.INSERT.equals(insertSpaceAfterCommaInTemplateParametersOption);
 		}
-//		final Object insertSpaceAfterEllipsisOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_ELLIPSIS);
-//		if (insertSpaceAfterEllipsisOption != null) {
-//			this.insert_space_after_ellipsis = IDEPlugin.INSERT.equals(insertSpaceAfterEllipsisOption);
-//		}
-//		final Object insertSpaceAfterOpeningAngleBracketInParameterizedTypeReferenceOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_ANGLE_BRACKET_IN_PARAMETERIZED_TYPE_REFERENCE);
-//		if (insertSpaceAfterOpeningAngleBracketInParameterizedTypeReferenceOption != null) {
-//			this.insert_space_after_opening_angle_bracket_in_parameterized_type_reference = IDEPlugin.INSERT.equals(insertSpaceAfterOpeningAngleBracketInParameterizedTypeReferenceOption);
-//		}
 		final Object insertSpaceAfterOpeningAngleBracketInTemplateArgumentsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_ANGLE_BRACKET_IN_TEMPLATE_ARGUMENTS);
 		if (insertSpaceAfterOpeningAngleBracketInTemplateArgumentsOption != null) {
 			this.insert_space_after_opening_angle_bracket_in_template_arguments = IDEPlugin.INSERT.equals(insertSpaceAfterOpeningAngleBracketInTemplateArgumentsOption);
@@ -1245,10 +1016,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceBeforeColonInLabeledStatementOption != null) {
 			this.insert_space_before_colon_in_labeled_statement = IDEPlugin.INSERT.equals(insertSpaceBeforeColonInLabeledStatementOption);
 		}
-//		final Object insertSpaceBeforeCommaInAllocationExpressionOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_ALLOCATION_EXPRESSION);
-//		if (insertSpaceBeforeCommaInAllocationExpressionOption != null) {
-//			this.insert_space_before_comma_in_allocation_expression = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInAllocationExpressionOption);
-//		}
 		final Object insertSpaceBeforeCommaInInitializerListOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_INITIALIZER_LIST);
 		if (insertSpaceBeforeCommaInInitializerListOption != null) {
 			this.insert_space_before_comma_in_initializer_list = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInInitializerListOption);
@@ -1257,14 +1024,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceBeforeCommaInEnumDeclarationsOption != null) {
 			this.insert_space_before_comma_in_enum_declarations = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInEnumDeclarationsOption);
 		}
-//		final Object insertSpaceBeforeCommaInForInitsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INITS);
-//		if (insertSpaceBeforeCommaInForInitsOption != null) {
-//			this.insert_space_before_comma_in_for_inits = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInForInitsOption);
-//		}
-//		final Object insertSpaceBeforeCommaInForIncrementsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INCREMENTS);
-//		if (insertSpaceBeforeCommaInForIncrementsOption != null) {
-//			this.insert_space_before_comma_in_for_increments = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInForIncrementsOption);
-//		}
 		final Object insertSpaceBeforeCommaInMethodInvocationArgumentsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_METHOD_INVOCATION_ARGUMENTS);
 		if (insertSpaceBeforeCommaInMethodInvocationArgumentsOption != null) {
 			this.insert_space_before_comma_in_method_invocation_arguments = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInMethodInvocationArgumentsOption);
@@ -1297,10 +1056,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceBeforeCommaInTemplateParametersOption != null) {
 			this.insert_space_before_comma_in_template_parameters = IDEPlugin.INSERT.equals(insertSpaceBeforeCommaInTemplateParametersOption);
 		}
-//		final Object insertSpaceBeforeEllipsisOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_ELLIPSIS);
-//		if (insertSpaceBeforeEllipsisOption != null) {
-//			this.insert_space_before_ellipsis = IDEPlugin.INSERT.equals(insertSpaceBeforeEllipsisOption);
-//		}
 		final Object insertSpaceBeforeOpeningAngleBrackerInTemplateArgumentsOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_OPENING_ANGLE_BRACKET_IN_TEMPLATE_ARGUMENTS);
 		if (insertSpaceBeforeOpeningAngleBrackerInTemplateArgumentsOption != null) {
 			this.insert_space_before_opening_angle_bracket_in_template_arguments = IDEPlugin.INSERT.equals(insertSpaceBeforeOpeningAngleBrackerInTemplateArgumentsOption);
@@ -1373,10 +1128,6 @@ public class STPDefaultCodeFormatterOptions {
 		if (insertSpaceBeforeOpeningParenInWhileOption != null) {
 			this.insert_space_before_opening_paren_in_while = IDEPlugin.INSERT.equals(insertSpaceBeforeOpeningParenInWhileOption);
 		}
-//		final Object insertSpaceBeforeParenthesizedExpressionInReturnOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_PARENTHESIZED_EXPRESSION_IN_RETURN);
-//		if (insertSpaceBeforeParenthesizedExpressionInReturnOption != null) {
-//			this.insert_space_before_parenthesized_expression_in_return = IDEPlugin.INSERT.equals(insertSpaceBeforeParenthesizedExpressionInReturnOption);
-//		}
 		final Object insertSpaceBeforePostfixOperatorOption = settings.get(STPDefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_POSTFIX_OPERATOR);
 		if (insertSpaceBeforePostfixOperatorOption != null) {
 			this.insert_space_before_postfix_operator = IDEPlugin.INSERT.equals(insertSpaceBeforePostfixOperatorOption);
@@ -1500,7 +1251,6 @@ public class STPDefaultCodeFormatterOptions {
 	}
 
 	public void setDefaultSettings() {
-//		this.alignment_for_arguments_in_allocation_expression = STPAlignment.M_COMPACT_SPLIT;
 		this.alignment_for_arguments_in_method_invocation = STPAlignment.M_COMPACT_SPLIT;
 		this.alignment_for_assignment = STPAlignment.M_COMPACT_SPLIT;
 		this.alignment_for_base_clause_in_type_declaration = STPAlignment.M_NEXT_PER_LINE_SPLIT;
@@ -1514,21 +1264,9 @@ public class STPDefaultCodeFormatterOptions {
 		this.alignment_for_member_access = STPAlignment.M_NO_ALIGNMENT;
 		this.alignment_for_overloaded_left_shift_chain = STPAlignment.M_COMPACT_SPLIT;
 		this.alignment_for_parameters_in_method_declaration = STPAlignment.M_COMPACT_SPLIT;
-//		this.alignment_for_selector_in_method_invocation = STPAlignment.M_COMPACT_SPLIT;
 		this.alignment_for_throws_clause_in_method_declaration = STPAlignment.M_COMPACT_SPLIT;
-//		this.align_type_members_on_columns = false;
-//		this.blank_lines_after_includes = 1;
-//		this.blank_lines_before_field = 1;
-//		this.blank_lines_before_first_class_body_declaration = 0;
-//		this.blank_lines_before_includes = 1;
-//		this.blank_lines_before_member_type = 1;
-//		this.blank_lines_before_method = 1;
-//		this.blank_lines_before_new_chunk = 1;
-//		this.blank_lines_between_type_declarations = 1;
-//		this.blank_lines_at_beginning_of_method_body = 0;
 		this.brace_position_for_block = STPDefaultCodeFormatterConstants.END_OF_LINE;
 		this.brace_position_for_block_in_case = STPDefaultCodeFormatterConstants.END_OF_LINE;
-//		this.brace_position_for_enum_declaration = STPDefaultCodeFormatterConstants.END_OF_LINE;
 		this.brace_position_for_initializer_list = STPDefaultCodeFormatterConstants.END_OF_LINE;
 		this.brace_position_for_method_declaration = STPDefaultCodeFormatterConstants.END_OF_LINE;
 		this.brace_position_for_namespace_declaration = STPDefaultCodeFormatterConstants.END_OF_LINE;
@@ -1537,22 +1275,11 @@ public class STPDefaultCodeFormatterOptions {
 		this.comment_min_distance_between_code_and_line_comment = 1;
 		this.comment_preserve_white_space_between_code_and_line_comment = true;
 		this.never_indent_line_comments_on_first_column = true;
-//		this.comment_clear_blank_lines = false;
-//		this.comment_format = true;
-//		this.comment_format_header = false;
-//		this.comment_format_html = true;
-//		this.comment_format_source = true;
-//		this.comment_indent_parameter_description = true;
-//		this.comment_indent_root_tags = true;
-//		this.comment_insert_empty_line_before_root_tags = true;
-//		this.comment_insert_new_line_for_parameter = true;
-//		this.comment_line_length = 80;
 		this.continuation_indentation = 2;
 		this.continuation_indentation_for_initializer_list = 2;
 		this.indent_statements_compare_to_block = true;
 		this.indent_statements_compare_to_body = true;
 		this.indent_body_declarations_compare_to_namespace_header = false;
-//		this.indent_body_declarations_compare_to_enum_declaration_header = true;
 		this.indent_body_declarations_compare_to_access_specifier = true;
 		this.indent_breaks_compare_to_cases = true;
 		this.indent_empty_lines = false;
@@ -1567,8 +1294,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_new_line_before_while_in_do_statement = false;
 		this.insert_new_line_before_identifier_in_function_declaration = false;
 		this.insert_new_line_in_empty_block = true;
-//		this.insert_new_line_in_empty_method_body = true;
-//		this.insert_new_line_in_empty_type_declaration = true;
 		this.insert_space_after_assignment_operator = true;
 		this.insert_space_after_binary_operator = true;
 		this.insert_space_after_closing_angle_bracket_in_template_arguments = true;
@@ -1579,7 +1304,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_space_after_colon_in_case = true;
 		this.insert_space_after_colon_in_conditional = true;
 		this.insert_space_after_colon_in_labeled_statement = true;
-//		this.insert_space_after_comma_in_allocation_expression = true;
 		this.insert_space_after_comma_in_initializer_list = true;
 		this.insert_space_after_comma_in_enum_declarations = true;
 		this.insert_space_after_comma_in_method_invocation_arguments = true;
@@ -1590,8 +1314,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_space_after_comma_in_base_types = true;
 		this.insert_space_after_comma_in_template_arguments = true;
 		this.insert_space_after_comma_in_template_parameters = true;
-//		this.insert_space_after_ellipsis = true;
-//		this.insert_space_after_opening_angle_bracket_in_parameterized_type_reference = false;
 		this.insert_space_after_opening_angle_bracket_in_template_arguments = false;
 		this.insert_space_after_opening_angle_bracket_in_template_parameters = false;
 		this.insert_space_after_opening_bracket = false;
@@ -1630,11 +1352,8 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_space_before_colon_in_conditional = true;
 		this.insert_space_before_colon_in_default = false;
 		this.insert_space_before_colon_in_labeled_statement = false;
-//		this.insert_space_before_comma_in_allocation_expression = false;
 		this.insert_space_before_comma_in_initializer_list = false;
 		this.insert_space_before_comma_in_enum_declarations = false;
-//		this.insert_space_before_comma_in_for_increments = false;
-//		this.insert_space_before_comma_in_for_inits = false;
 		this.insert_space_before_comma_in_method_invocation_arguments = false;
 		this.insert_space_before_comma_in_method_declaration_parameters = false;
 		this.insert_space_before_comma_in_method_declaration_throws = false;
@@ -1643,8 +1362,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_space_before_comma_in_base_types = false;
 		this.insert_space_before_comma_in_template_arguments = false;
 		this.insert_space_before_comma_in_template_parameters = false;
-//		this.insert_space_before_ellipsis = false;
-//		this.insert_space_before_parenthesized_expression_in_return = true;
 		this.insert_space_before_opening_angle_bracket_in_template_arguments = false;
 		this.insert_space_before_opening_angle_bracket_in_template_parameters = false;
 		this.insert_space_before_opening_brace_in_initializer_list = true;
@@ -1688,7 +1405,7 @@ public class STPDefaultCodeFormatterOptions {
 		this.tab_char = TAB;
 		this.use_tabs_only_for_leading_indentations = false;
 	}
-	
+
 	/**
 	 * Configure K&R style.
 	 * <p>Example:</p>
@@ -1708,7 +1425,7 @@ public class STPDefaultCodeFormatterOptions {
 	public void setKandRSettings() {
 		setDefaultSettings();
 	}
-	
+
 	/**
 	 * Configure BSD/Allman style.
 	 * <p>Example:</p>
@@ -1734,7 +1451,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.brace_position_for_initializer_list = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_block = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_block_in_case = STPDefaultCodeFormatterConstants.NEXT_LINE;
-//		this.brace_position_for_enum_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_method_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_type_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_namespace_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
@@ -1743,7 +1459,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.indent_statements_compare_to_block = true;
 		this.indent_statements_compare_to_body = true;
 		this.indent_body_declarations_compare_to_namespace_header = false;
-//		this.indent_body_declarations_compare_to_enum_declaration_header = true;
 		this.indent_breaks_compare_to_cases = true;
 		this.indent_empty_lines = false;
 		this.indent_switchstatements_compare_to_cases = true;
@@ -1755,9 +1470,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_new_line_before_closing_brace_in_initializer_list = false;
 		this.insert_new_line_before_else_in_if_statement = true;
 		this.insert_new_line_in_empty_block = true;
-//		this.insert_new_line_in_empty_enum_declaration = true;
-//		this.insert_new_line_in_empty_method_body = true;
-//		this.insert_new_line_in_empty_type_declaration = true;
 
 		this.compact_else_if = true;
 		this.keep_guardian_clause_on_one_line = false;
@@ -1799,7 +1511,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.brace_position_for_initializer_list = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
 		this.brace_position_for_block = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
 		this.brace_position_for_block_in_case = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
-//		this.brace_position_for_enum_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
 		this.brace_position_for_method_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_type_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
 		this.brace_position_for_namespace_declaration = STPDefaultCodeFormatterConstants.NEXT_LINE;
@@ -1808,7 +1519,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.indent_statements_compare_to_block = true;
 		this.indent_statements_compare_to_body = true;
 		this.indent_body_declarations_compare_to_namespace_header = true;
-//		this.indent_body_declarations_compare_to_enum_declaration_header = true;
 		this.indent_declaration_compare_to_template_header = true;
 		this.indent_breaks_compare_to_cases = true;
 		this.indent_empty_lines = false;
@@ -1825,9 +1535,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_new_line_before_identifier_in_function_declaration = true;
 		this.insert_new_line_before_while_in_do_statement = true;
 		this.insert_new_line_in_empty_block = true;
-//		this.insert_new_line_in_empty_enum_declaration = false;
-//		this.insert_new_line_in_empty_method_body = false;
-//		this.insert_new_line_in_empty_type_declaration = false;
 
 		this.insert_space_before_colon_in_base_clause = true;
 
@@ -1868,7 +1575,7 @@ public class STPDefaultCodeFormatterOptions {
 		setDefaultSettings();
 		this.alignment_for_expressions_in_initializer_list = STPAlignment.M_ONE_PER_LINE_SPLIT;
 		this.alignment_for_enumerator_list = STPAlignment.M_ONE_PER_LINE_SPLIT | STPAlignment.M_FORCE;
-		
+
 		this.brace_position_for_initializer_list = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
 		this.brace_position_for_block = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
 		this.brace_position_for_block_in_case = STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED;
@@ -1893,9 +1600,6 @@ public class STPDefaultCodeFormatterOptions {
 		this.insert_new_line_before_else_in_if_statement = true;
 		this.insert_new_line_before_while_in_do_statement = true;
 		this.insert_new_line_in_empty_block = true;
-//		this.insert_new_line_in_empty_enum_declaration = true;
-//		this.insert_new_line_in_empty_method_body = true;
-//		this.insert_new_line_in_empty_type_declaration = true;
 
 		this.compact_else_if = true;
 		this.keep_guardian_clause_on_one_line = false;

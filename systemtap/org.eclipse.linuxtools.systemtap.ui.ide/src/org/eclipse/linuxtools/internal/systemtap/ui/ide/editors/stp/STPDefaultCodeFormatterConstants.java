@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 
 /**
  * Constants used to set up the options of the code formatter.
- * 
+ *
  * @since 4.0
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
@@ -31,7 +31,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * <pre>
 	 * FORMATTER / Option for the language
 	 *     - option id:         "org.eclipse.cdt.core.formatter.language"
-	 *     - possible values:   object of class <code>ILanguage</code> or <code>null</code> 
+	 *     - possible values:   object of class <code>ILanguage</code> or <code>null</code>
 	 *     - default:           null
 	 * </pre>
 	 */
@@ -41,7 +41,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * <pre>
 	 * FORMATTER / Option for the current file
 	 *     - option id:         "org.eclipse.cdt.core.formatter.current_file"
-	 *     - possible values:   object of class <code>IFile</code> or <code>null</code> 
+	 *     - possible values:   object of class <code>IFile</code> or <code>null</code>
 	 *     - default:           null
 	 * </pre>
 	 */
@@ -51,7 +51,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * <pre>
 	 * FORMATTER / Option for the translation unit
 	 *     - option id:         "org.eclipse.cdt.core.formatter.current_translation_unit"
-	 *     - possible values:   object of class <code>ITranslationUnit</code> or <code>null</code> 
+	 *     - possible values:   object of class <code>ITranslationUnit</code> or <code>null</code>
 	 *     - default:           null
 	 * </pre>
 	 */
@@ -75,29 +75,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 */
 	public static final String FALSE = "false"; //$NON-NLS-1$
-	
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to align type members of a type declaration on column
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.formatter.align_type_members_on_columns"
-//	 *     - possible values:   { TRUE, FALSE }
-//	 *     - default:           FALSE
-//	 * </pre>
-//	 * @see #TRUE
-//	 * @see #FALSE
-//	 */
-//	public static final String FORMATTER_ALIGN_TYPE_MEMBERS_ON_COLUMNS = IDEPlugin.PLUGIN_ID + ".formatter.align_type_members_on_columns";	 //$NON-NLS-1$
-//
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option for alignment of arguments in allocation expression
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.alignment_for_arguments_in_allocation_expression"
-//	 *     - possible values:   values returned by <code>createAlignmentValue(boolean, int, int)</code> call
-//	 *     - default:           createAlignmentValue(false, WRAP_COMPACT, INDENT_DEFAULT)
-//	 * </pre>
-//	 * @see #createAlignmentValue(boolean, int, int)
-//	 */
-//	public static final String FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_ALLOCATION_EXPRESSION = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_arguments_in_allocation_expression";	 //$NON-NLS-1$
+
 	/**
 	 * <pre>
 	 * FORMATTER / Option for alignment of arguments in method invocation
@@ -170,7 +148,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 * @see #createAlignmentValue(boolean, int, int)
 	 */
-	public static final String FORMATTER_ALIGNMENT_FOR_DECLARATOR_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_declarator_list"; //$NON-NLS-1$	
+	public static final String FORMATTER_ALIGNMENT_FOR_DECLARATOR_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_declarator_list"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option for alignment of a enumerator list
@@ -180,7 +158,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 * @see #createAlignmentValue(boolean, int, int)
 	 */
-	public static final String FORMATTER_ALIGNMENT_FOR_ENUMERATOR_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_enumerator_list"; //$NON-NLS-1$	
+	public static final String FORMATTER_ALIGNMENT_FOR_ENUMERATOR_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_enumerator_list"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option for alignment of a expression list (except arguments in a method invocation)
@@ -190,7 +168,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 * @see #createAlignmentValue(boolean, int, int)
 	 */
-	public static final String FORMATTER_ALIGNMENT_FOR_EXPRESSION_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_expression_list"; //$NON-NLS-1$	
+	public static final String FORMATTER_ALIGNMENT_FOR_EXPRESSION_LIST = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_expression_list"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option for alignment of expressions in initializer list
@@ -234,16 +212,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #createAlignmentValue(boolean, int, int)
 	 */
 	public static final String FORMATTER_ALIGNMENT_FOR_PARAMETERS_IN_METHOD_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_parameters_in_method_declaration"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option for alignment of selector in method invocation
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.alignment_for_selector_in_method_invocation"
-//	 *     - possible values:   values returned by <code>createAlignmentValue(boolean, int, int)</code> call
-//	 *     - default:           createAlignmentValue(false, WRAP_COMPACT, INDENT_DEFAULT)
-//	 * </pre>
-//	 * @see #createAlignmentValue(boolean, int, int)
-//	 */
-//	public static final String FORMATTER_ALIGNMENT_FOR_SELECTOR_IN_METHOD_INVOCATION = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_selector_in_method_invocation";	 //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option for alignment of base-clause in type declaration
@@ -275,87 +243,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #createAlignmentValue(boolean, int, int)
 	 */
 	public static final String FORMATTER_ALIGNMENT_FOR_THROWS_CLAUSE_IN_METHOD_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.alignment_for_throws_clause_in_method_declaration";	 //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines after #include directive
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_after_includes"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_AFTER_INCLUDES = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_after_includes"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines at the beginning of the method body
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_AT_BEGINNING_OF_METHOD_BODY = IDEPlugin.PLUGIN_ID + ".formatter.number_of_blank_lines_at_beginning_of_method_body"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before a field declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_field"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_FIELD = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_field"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before the first class body declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_first_class_body_declaration"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_FIRST_CLASS_BODY_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_first_class_body_declaration"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before #include directive
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_includes"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_INCLUDES = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_includes"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before a member type declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_member_type"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_MEMBER_TYPE = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_member_type"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before a method declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_method"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_METHOD = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_method"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines before a new chunk
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_before_new_chunk"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BEFORE_NEW_CHUNK = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_before_new_chunk"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to add blank lines between type declarations
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.blank_lines_between_type_declarations"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "0"
-//	 * </pre>
-//	 */
-//	public static final String FORMATTER_BLANK_LINES_BETWEEN_TYPE_DECLARATIONS = IDEPlugin.PLUGIN_ID + ".formatter.blank_lines_between_type_declarations"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to position the braces of initializer list
@@ -396,19 +283,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #NEXT_LINE_ON_WRAP
 	 */
 	public static final String FORMATTER_BRACE_POSITION_FOR_BLOCK_IN_CASE = IDEPlugin.PLUGIN_ID + ".formatter.brace_position_for_block_in_case"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to position the braces of an enum declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.brace_position_for_enum_declaration"
-//	 *     - possible values:   { END_OF_LINE, NEXT_LINE, NEXT_LINE_SHIFTED, NEXT_LINE_ON_WRAP }
-//	 *     - default:           END_OF_LINE
-//	 * </pre>
-//	 * @see #END_OF_LINE
-//	 * @see #NEXT_LINE
-//	 * @see #NEXT_LINE_SHIFTED
-//	 * @see #NEXT_LINE_ON_WRAP
-//	 */
-//	public static final String FORMATTER_BRACE_POSITION_FOR_ENUM_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.brace_position_for_enum_declaration"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to position the braces of a method declaration
@@ -461,64 +335,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #NEXT_LINE_ON_WRAP
 	 */
 	public static final String FORMATTER_BRACE_POSITION_FOR_NAMESPACE_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.brace_position_for_namespace_declaration"; //$NON-NLS-1$
-
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to control whether blank lines are cleared inside comments
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.clear_blank_lines"
-//	 *     - possible values:   { TRUE, FALSE }
-//	 *     - default:           FALSE
-//	 * </pre>
-//	 * @see #TRUE
-//	 * @see #FALSE
-//	 */	
-//	public final static String FORMATTER_COMMENT_CLEAR_BLANK_LINES = IDEPlugin.PLUGIN_ID + ".formatter.comment.clear_blank_lines"; //$NON-NLS-1$
-//	
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to control whether comments are formatted
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.format_comments"
-//	 *     - possible values:   { TRUE, FALSE }
-//	 *     - default:           TRUE
-//	 * </pre>
-//	 * @see #TRUE
-//	 * @see #FALSE
-//	 */	
-//	public final static String FORMATTER_COMMENT_FORMAT = IDEPlugin.PLUGIN_ID + ".formatter.comment.format_comments"; //$NON-NLS-1$
-//
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to control whether the header comment of a C/C++ source file is formatted
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.format_header"
-//	 *     - possible values:   { TRUE, FALSE }
-//	 *     - default:           FALSE
-//	 * </pre>
-//	 * @see #TRUE
-//	 * @see #FALSE
-//	 */	
-//	public final static String FORMATTER_COMMENT_FORMAT_HEADER = IDEPlugin.PLUGIN_ID + ".formatter.comment.format_header"; //$NON-NLS-1$
-//
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to control whether code snippets are formatted in comments
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.format_source_code"
-//	 *     - possible values:   { TRUE, FALSE }
-//	 *     - default:           TRUE
-//	 * </pre>
-//	 * @see #TRUE
-//	 * @see #FALSE
-//	 */	
-//	public final static String FORMATTER_COMMENT_FORMAT_SOURCE = IDEPlugin.PLUGIN_ID + ".formatter.comment.format_source_code"; //$NON-NLS-1$
-//	
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to specify the line length for comments.
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.line_length"
-//	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-//	 *     - default:           "80"
-//	 * </pre>
-//	 */	
-//	public final static String FORMATTER_COMMENT_LINE_LENGTH = IDEPlugin.PLUGIN_ID + ".formatter.comment.line_length"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to specify the minimum distance between code and line comment.
@@ -527,7 +343,7 @@ public class STPDefaultCodeFormatterConstants {
 	 *     - default:           "1"
 	 * </pre>
 	 * @since 5.3
-	 */	
+	 */
 	public final static String FORMATTER_COMMENT_MIN_DISTANCE_BETWEEN_CODE_AND_LINE_COMMENT = IDEPlugin.PLUGIN_ID + ".formatter.comment.min_distance_between_code_and_line_comment"; //$NON-NLS-1$
 
 	/**
@@ -545,7 +361,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * <pre>
-	 * FORMATTER / Option to control whether comments starting from the beginning of line should stay that way and never be indented. 
+	 * FORMATTER / Option to control whether comments starting from the beginning of line should stay that way and never be indented.
 	 *     - option id:         "org.eclipse.cdt.core.formatter.comment.never_indent_line_comments_on_first_column"
 	 *     - possible values:   { TRUE, FALSE }
 	 *     - default:           TRUE
@@ -662,7 +478,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #TRUE
 	 * @see #FALSE
 	 */
-	public static final String FORMATTER_INDENT_EMPTY_LINES = IDEPlugin.PLUGIN_ID + ".formatter.indent_empty_lines"; //$NON-NLS-1$	
+	public static final String FORMATTER_INDENT_EMPTY_LINES = IDEPlugin.PLUGIN_ID + ".formatter.indent_empty_lines"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to indent inside line comments at column 0
@@ -673,7 +489,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see #TRUE
 	 * @see #FALSE
 	 */
-	public static final String FORMATTER_INDENT_INSIDE_LINE_COMMENTS = IDEPlugin.PLUGIN_ID + ".formatter.indent_inside_line_comments"; //$NON-NLS-1$	
+	public static final String FORMATTER_INDENT_INSIDE_LINE_COMMENTS = IDEPlugin.PLUGIN_ID + ".formatter.indent_inside_line_comments"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to indent statements inside a block
@@ -720,7 +536,7 @@ public class STPDefaultCodeFormatterConstants {
 	public static final String FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH = IDEPlugin.PLUGIN_ID + ".formatter.indent_switchstatements_compare_to_switch"; //$NON-NLS-1$
 	/**
 	 * <pre>
-	 * FORMATTER / Option to specify the equivalent number of spaces that represents one indentation 
+	 * FORMATTER / Option to specify the equivalent number of spaces that represents one indentation
 	 *     - option id:         "org.eclipse.cdt.core.formatter.indentation.size"
 	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
 	 *     - default:           "4"
@@ -841,39 +657,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_NEW_LINE_IN_EMPTY_BLOCK = IDEPlugin.PLUGIN_ID + ".formatter.insert_new_line_in_empty_block"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a new line in an empty enum declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_new_line_in_empty_enum_declaration"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_NEW_LINE_IN_EMPTY_ENUM_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.insert_new_line_in_empty_enum_declaration"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a new line in an empty method body
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_new_line_in_empty_method_body"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_NEW_LINE_IN_EMPTY_METHOD_BODY = IDEPlugin.PLUGIN_ID + ".formatter.insert_new_line_in_empty_method_body"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a new line in an empty type declaration
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_new_line_in_empty_type_declaration"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_NEW_LINE_IN_EMPTY_TYPE_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.insert_new_line_in_empty_type_declaration"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space after an assignment operator
@@ -1006,28 +789,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_ENUM_DECLARATIONS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_after_comma_in_enum_declarations"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space after the comma in the increments of a for statement
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_after_comma_in_for_increments"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INCREMENTS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_after_comma_in_for_increments"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space after the comma in the initializations of a for statement
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_after_comma_in_for_inits"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_FOR_INITS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_after_comma_in_for_inits"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space after the comma in the parameters of a method declaration
@@ -1116,17 +877,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_AFTER_COMMA_IN_TEMPLATE_PARAMETERS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_after_comma_in_template_parameters"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space after ellipsis
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_after_ellipsis"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_AFTER_ELLIPSIS  = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_after_ellipsis"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space after the opening angle bracket in template arguments
@@ -1569,17 +1319,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_BEFORE_COLON_IN_LABELED_STATEMENT = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_colon_in_labeled_statement"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space before comma in an allocation expression
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_before_comma_in_allocation_expression"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           DO_NOT_INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_ALLOCATION_EXPRESSION = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_comma_in_allocation_expression"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space before comma in an initializer list
@@ -1602,28 +1341,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_ENUM_DECLARATIONS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_comma_in_enum_declarations"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space before comma in the increments of a for statement
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_before_comma_in_for_increments"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           DO_NOT_INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INCREMENTS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_comma_in_for_increments"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space before comma in the initializations of a for statement
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_before_comma_in_for_inits"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           DO_NOT_INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_FOR_INITS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_comma_in_for_inits"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space before comma in the parameters of a method declaration
@@ -1712,17 +1429,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_BEFORE_COMMA_IN_TEMPLATE_PARAMETERS = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_comma_in_template_parameters"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space before ellipsis
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_before_ellipsis"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           DO_NOT_INSERT
-//	 * </pre>
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_BEFORE_ELLIPSIS  = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_ellipsis"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space before the opening angle bracket in template arguments
@@ -1922,18 +1628,6 @@ public class STPDefaultCodeFormatterConstants {
 	 * @see IDEPlugin#DO_NOT_INSERT
 	 */
 	public static final String FORMATTER_INSERT_SPACE_BEFORE_OPENING_PAREN_IN_WHILE = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_opening_paren_in_while"; //$NON-NLS-1$
-//	/**
-//	 * <pre>
-//	 * FORMATTER / Option to insert a space before parenthesized expression in return statement
-//	 *     - option id:         "org.eclipse.cdt.core.formatter.insert_space_before_parenthesized_expression_in_return"
-//	 *     - possible values:   { INSERT, DO_NOT_INSERT }
-//	 *     - default:           INSERT
-//	 * </pre>
-//	 * 
-//	 * @see IDEPlugin#INSERT
-//	 * @see IDEPlugin#DO_NOT_INSERT
-//	 */
-//	public static final String FORMATTER_INSERT_SPACE_BEFORE_PARENTHESIZED_EXPRESSION_IN_RETURN  = IDEPlugin.PLUGIN_ID + ".formatter.insert_space_before_parenthesized_expression_in_return"; //$NON-NLS-1$
 	/**
 	 * <pre>
 	 * FORMATTER / Option to insert a space before a postfix operator
@@ -2159,7 +1853,7 @@ public class STPDefaultCodeFormatterConstants {
 	 *     - default:           TAB
 	 * </pre>
 	 * More values may be added in the future.
-	 * 
+	 *
 	 * @see IDEPlugin#TAB
 	 * @see IDEPlugin#SPACE
 	 * @see #MIXED
@@ -2167,7 +1861,7 @@ public class STPDefaultCodeFormatterConstants {
 	public static final String FORMATTER_TAB_CHAR = IDEPlugin.PLUGIN_ID + ".formatter.tabulation.char"; //$NON-NLS-1$
 	/**
 	 * <pre>
-	 * FORMATTER / Option to specify the equivalent number of spaces that represents one tabulation 
+	 * FORMATTER / Option to specify the equivalent number of spaces that represents one tabulation
 	 *     - option id:         "org.eclipse.cdt.core.formatter.tabulation.size"
 	 *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
 	 *     - default:           "4"
@@ -2177,7 +1871,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * <pre>
-	 * FORMATTER / Option to use tabulations only for leading indentations 
+	 * FORMATTER / Option to use tabulations only for leading indentations
 	 *     - option id:         "org.eclipse.cdt.core.formatter.use_tabs_only_for_leading_indentations"
 	 *     - possible values:   { TRUE, FALSE }
 	 *     - default:           FALSE
@@ -2193,7 +1887,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 */
 	public static final int INDENT_BY_ONE= 2;
-	
+
 	/**
 	 * <pre>
 	 * FORMATTER / The wrapping is done by using the current indentation.
@@ -2206,7 +1900,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * </pre>
 	 */
 	public static final int INDENT_ON_COLUMN = 1;
-	
+
 	/**
 	 * <pre>
 	 * FORMATTER / Possible value for the option FORMATTER_TAB_CHAR
@@ -2307,15 +2001,15 @@ public class STPDefaultCodeFormatterConstants {
 	/**
 	 * Create a new alignment value according to the given values. This must be used to set up
 	 * the alignment options.
-	 * 
+	 *
 	 * @param forceSplit the given force value
 	 * @param wrapStyle the given wrapping style
 	 * @param indentStyle the given indent style
-	 * 
+	 *
 	 * @return the new alignment value
 	 */
 	public static String createAlignmentValue(boolean forceSplit, int wrapStyle, int indentStyle) {
-		int alignmentValue = 0; 
+		int alignmentValue = 0;
 		switch (wrapStyle) {
 			case WRAP_COMPACT:
 				alignmentValue |= STPAlignment.M_COMPACT_SPLIT;
@@ -2332,7 +2026,7 @@ public class STPDefaultCodeFormatterConstants {
 			case WRAP_ONE_PER_LINE:
 				alignmentValue |= STPAlignment.M_ONE_PER_LINE_SPLIT;
 				break;
-		}		
+		}
 		if (forceSplit) {
 			alignmentValue |= STPAlignment.M_FORCE;
 		}
@@ -2348,7 +2042,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * Returns the default formatter settings
-	 * 
+	 *
 	 * @return the default settings
 	 */
 	public static Map<String,String> getDefaultSettings() {
@@ -2357,7 +2051,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * Returns the K&R formatter settings
-	 * 
+	 *
 	 * @return the K&R settings
 	 */
 	public static Map<String,String> getKandRSettings() {
@@ -2366,7 +2060,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * Returns the Allman formatter settings
-	 * 
+	 *
 	 * @return the Allman settings
 	 */
 	public static Map<String,String> getAllmanSettings() {
@@ -2375,7 +2069,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * Returns the GNU formatter settings
-	 * 
+	 *
 	 * @return the GNU settings
 	 */
 	public static Map<String,String> getGNUSettings() {
@@ -2384,7 +2078,7 @@ public class STPDefaultCodeFormatterConstants {
 
 	/**
 	 * Returns the Whitesmiths formatter settings
-	 * 
+	 *
 	 * @return the Whitesmiths settings
 	 */
 	public static Map<String,String> getWhitesmithsSettings() {
@@ -2400,7 +2094,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @param value the given alignment value
 	 * @return the force value of the given alignment value
 	 * @see #createAlignmentValue(boolean, int, int)
-	 * @exception IllegalArgumentException if the given alignment value is null, or if it 
+	 * @exception IllegalArgumentException if the given alignment value is null, or if it
 	 * doesn't have a valid format.
 	 */
 	public static boolean getForceWrapping(String value) {
@@ -2414,7 +2108,7 @@ public class STPDefaultCodeFormatterConstants {
 			throw WRONG_ARGUMENT;
 		}
 	}
-	
+
 	/**
 	 * <p>Return the indentation style of the given alignment value.
 	 * The given alignment value should be created using the <code>createAlignmentValue(boolean, int, int)</code>
@@ -2424,7 +2118,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @param value the given alignment value
 	 * @return the indentation style of the given alignment value
 	 * @see #createAlignmentValue(boolean, int, int)
-	 * @exception IllegalArgumentException if the given alignment value is null, or if it 
+	 * @exception IllegalArgumentException if the given alignment value is null, or if it
 	 * doesn't have a valid format.
 	 */
 	public static int getIndentStyle(String value) {
@@ -2454,7 +2148,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @param value the given alignment value
 	 * @return the wrapping style of the given alignment value
 	 * @see #createAlignmentValue(boolean, int, int)
-	 * @exception IllegalArgumentException if the given alignment value is null, or if it 
+	 * @exception IllegalArgumentException if the given alignment value is null, or if it
 	 * doesn't have a valid format.
 	 */
 	public static int getWrappingStyle(String value) {
@@ -2491,7 +2185,7 @@ public class STPDefaultCodeFormatterConstants {
 	 * @param force the given force value
 	 * @return the new alignment value
 	 * @see #createAlignmentValue(boolean, int, int)
-	 * @exception IllegalArgumentException if the given alignment value is null, or if it 
+	 * @exception IllegalArgumentException if the given alignment value is null, or if it
 	 * doesn't have a valid format.
 	 */
 	public static String setForceWrapping(String value, boolean force) {
@@ -2508,9 +2202,9 @@ public class STPDefaultCodeFormatterConstants {
 			return String.valueOf(existingValue);
 		} catch (NumberFormatException e) {
 			throw WRONG_ARGUMENT;
-		}		
+		}
 	}
-	
+
 	/**
 	 * <p>Set the indentation style of the given alignment value and return the new value.
 	 * The given value should be created using the <code>createAlignmentValue(boolean, int, int)</code>
