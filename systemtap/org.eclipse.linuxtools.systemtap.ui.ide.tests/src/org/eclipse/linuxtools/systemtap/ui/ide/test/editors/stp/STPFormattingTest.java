@@ -422,4 +422,23 @@ public class STPFormattingTest extends SystemtapTest{
 		assertEquals("\t}", tester.getLine(1));
 		assertEquals("}", tester.getLine(2));
 	}
+	
+	@Test
+	public void testPasteAutoIndent() throws BadLocationException {
+		AutoEditTester tester = createAutoEditTester(); 
+		tester.type("probe end {\n"); //$NON-NLS-1$
+		tester.goTo(1, 0);
+		tester.paste("if (a == b) {\n" +
+				     "\tfor (x = 0; x < 3; ++x) {\n" +
+				     "\t\tz = 4;\n" +
+				     "\t}\n" +
+				     "}\n"); //$NON-NLS-1$
+		tester.goTo(1, 0);
+		assertEquals("\tif (a == b) {", tester.getLine(0)); //$NON-NLS-1$
+		assertEquals("\t\tfor (x = 0; x < 3; ++x) {", tester.getLine(1)); //$NON-NLS-1$
+		assertEquals("\t\t\tz = 4;", tester.getLine(2)); //$NON-NLS-1$
+		assertEquals("\t\t}", tester.getLine(3)); //$NON-NLS-1$
+		assertEquals("\t}", tester.getLine(4)); //$NON-NLS-1$
+	}
+	
 }
