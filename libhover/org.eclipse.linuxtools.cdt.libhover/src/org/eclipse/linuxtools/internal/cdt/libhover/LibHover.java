@@ -80,14 +80,14 @@ import org.eclipse.linuxtools.internal.cdt.libhover.preferences.PreferenceConsta
 
 
 public class LibHover implements ICHelpProvider {
-	
+
 	public final static String LIBHOVER_DOC_EXTENSION = LibhoverPlugin.PLUGIN_ID + ".library"; //$NON-NLS-1$
 
     // see comment in initialize()
     // private static String defaultSearchPath = null;
-    
+
 	private static ConcurrentHashMap<ICHelpBook, LibHoverLibrary> libraries = new ConcurrentHashMap<ICHelpBook, LibHoverLibrary>();
-	
+
     static final String  constructTypes[] = {
     	"dtype", //$NON-NLS-1$
     	"enum",  //$NON-NLS-1$
@@ -97,7 +97,7 @@ public class LibHover implements ICHelpProvider {
     	"type",  //$NON-NLS-1$
     	"union"  //$NON-NLS-1$
     };
-    
+
     static final int dtypeIndex         = 0;
     static final int enumIndex          = 1;
     static final int functionIndex      = 2;
@@ -113,7 +113,7 @@ public class LibHover implements ICHelpProvider {
     public static Collection<LibHoverLibrary> getLibraries() {
     	return libraries.values();
     }
-    
+
     public static void saveLibraries() {
     	// If user preference is to cache libhover data, then save any un-saved
     	// library hover data.
@@ -147,11 +147,10 @@ public class LibHover implements ICHelpProvider {
     		}
     	}
     }
-    
+
 	public static synchronized void getLibHoverDocs() {
 		if (docsFetched)
 			return;
-//		System.out.println("getlibhoverdocs");
 		libraries.clear();
 		helpBooks.clear();
 		helpBooksMap.clear();
@@ -192,7 +191,7 @@ public class LibHover implements ICHelpProvider {
 					HelpBook h = new HelpBook(name, type);
 					helpBooks.add(h);
 					helpBooksMap.put(name, h);
-					LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, nameSpace, 
+					LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, nameSpace,
 							"C++".equals(type)); //$NON-NLS-1$
 					libraries.put(h, l);
 				} else {
@@ -208,11 +207,11 @@ public class LibHover implements ICHelpProvider {
 	private static String getTransformedName(String name) {
 		return name.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	private static String getCleanName(String name) {
 		return name.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	private static void getCachedLibraries(IFileStore dir, String type) {
 		try {
 			boolean isCPP = type.equals("C++"); //$NON-NLS-1$
@@ -228,7 +227,7 @@ public class LibHover implements ICHelpProvider {
 						helpBooks.add(h);
 						helpBooksMap.put(name, h);
 						String location = file.toURI().toString();
-						LibHoverLibrary l = new LibHoverLibrary(name, location, null, null, isCPP); 
+						LibHoverLibrary l = new LibHoverLibrary(name, location, null, null, isCPP);
 						libraries.put(h, l);
 					}
 				}
@@ -238,17 +237,17 @@ public class LibHover implements ICHelpProvider {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void initialize() {
 		getLibHoverDocs();
 	}
-		
+
 	public ICHelpBook[] getCHelpBooks () {
 		ICHelpBook[] chelpbooks = new ICHelpBook[helpBooks.size()];
 		return helpBooks.toArray(chelpbooks);
 	}
-	
-	private class FunctionSummary implements IFunctionSummary, Comparable<FunctionSummary> {
+
+	private static class FunctionSummary implements IFunctionSummary, Comparable<FunctionSummary> {
 
         private String Name;
         private String NameSpace;
@@ -256,30 +255,28 @@ public class LibHover implements ICHelpProvider {
         private String Prototype;
         private String Summary;
         private boolean prototypeHasBrackets;
-        
-//        private String Synopsis;
+
         private class RequiredInclude implements IRequiredInclude {
         	private String include;
-        	
+
         	public RequiredInclude (String file) {
         		include = file;
         	}
-        	
+
         	public String getIncludeName() {
         		return include;
         	}
-        	
+
         	public boolean isStandard() {
         		return true;
         	}
         }
-        
+
 		public int compareTo (FunctionSummary x) {
 			FunctionSummary y = x;
 			return getName().compareTo(y.getName());
 		}
 
-//        private RequiredInclude Includes[];
         private ArrayList<RequiredInclude> Includes = new ArrayList<RequiredInclude>();
 
         private void setIncludeName (String iname) {
@@ -311,7 +308,7 @@ public class LibHover implements ICHelpProvider {
         public boolean prototypeHasBrackets()			{ return prototypeHasBrackets; }
         public void setPrototypeHasBrackets(boolean value)	{ prototypeHasBrackets = value; }
         public IFunctionPrototypeSummary getPrototype() { return new FunctionPrototypeSummary(); }
-        
+
         public IRequiredInclude[] getIncludes() {
         	IRequiredInclude[] includes = new IRequiredInclude[Includes.size()];
         	for (int i = 0; i < Includes.size(); ++i) {
@@ -319,18 +316,18 @@ public class LibHover implements ICHelpProvider {
         	}
         	return includes;
         }
-        
+
     }
-	
+
 	public boolean isCPPCharacter(int ch) {
-		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':'; 
+		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':';
 	}
 
-	private class EnclosingASTNameJob extends SharedASTJob {
+	private static class EnclosingASTNameJob extends SharedASTJob {
 		private int tlength;
 		private int toffset;
 		private IASTName result = null;
-		public EnclosingASTNameJob (ITranslationUnit t, 
+		public EnclosingASTNameJob (ITranslationUnit t,
 				int toffset, int tlength) {
 			super("EnclosingASTNameJob", t); //$NON-NLS-1$
 			this.toffset = toffset;
@@ -347,8 +344,8 @@ public class LibHover implements ICHelpProvider {
 			return result;
 		}
 	}
-	
-	public class ASTDeclarationFinderJob extends SharedASTJob {
+
+	public static class ASTDeclarationFinderJob extends SharedASTJob {
 		private IBinding binding;
 		private IASTName[] decls = null;
 		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
@@ -372,16 +369,16 @@ public class LibHover implements ICHelpProvider {
 
         f = null;
         ITranslationUnit t = context.getTranslationUnit();
-        
+
         String className = null;
         ICPPFunctionType methodType = null;
-        
+
         if (t.isCXXLanguage()) {
         	try {
         		if (context instanceof IHoverHelpInvocationContext) {
         			// We know the file offset of the member reference.
         			IRegion region = ((IHoverHelpInvocationContext)context).getHoverRegion();
-        			
+
         			// Now, let's find the declaration of the method.  We need to do this because we want the specific
         			// member prototype to go searching for.  There could be many members called "x" which have different
         			// documentation.
@@ -417,7 +414,7 @@ public class LibHover implements ICHelpProvider {
 				e.printStackTrace();
 			}
         }
-        	
+
         // Loop through all the documents we have and report first match.
         for (int i = 0; i < helpBooks.length; ++i) {
         	LibHoverLibrary l = libraries.get(helpBooks[i]);
@@ -432,7 +429,7 @@ public class LibHover implements ICHelpProvider {
         			return f;
         	}
         }
-        
+
         return null;
 	}
 
@@ -447,7 +444,7 @@ public class LibHover implements ICHelpProvider {
 				className += "::" + qualified[k]; //$NON-NLS-1$
 			}
 
-			// Check if we have an instance of a template class.	
+			// Check if we have an instance of a template class.
 			if (c instanceof ICPPTemplateInstance) {
 				ICPPTemplateInstance ti = (ICPPTemplateInstance)c;
 				// Get a map which tells us the values of the template
@@ -485,7 +482,7 @@ public class LibHover implements ICHelpProvider {
 		}
 		return className;
 	}
-	
+
 	private IFunctionSummary getFunctionSummary(LibHoverLibrary l, String name) {
 		FunctionInfo x = l.getFunctionInfo(name);
 		if (x != null) {
@@ -501,8 +498,8 @@ public class LibHover implements ICHelpProvider {
 		}
 		return null;
 	}
-	
-	private IFunctionSummary getMemberSummary(LibHoverLibrary l, String className, 
+
+	private IFunctionSummary getMemberSummary(LibHoverLibrary l, String className,
 			String memberName, ICPPFunctionType methodType) {
 
 		ArrayList<String> templateTypes = new ArrayList<String>();
@@ -519,10 +516,6 @@ public class LibHover implements ICHelpProvider {
 			} catch (Exception e) {
 				return null;
 			}
-//			for (int i = 0; i < args.length; ++i)
-//				System.out.println("args<" + i + "> is " + args[i].toString());
-//			System.out.println("return type is " + returnType.toString());
-			
 		}
 		MemberInfo member = info.getMember(memberName);
 		if (member != null) {
@@ -539,14 +532,13 @@ public class LibHover implements ICHelpProvider {
 			} else {
 				m = member;
 			}
-			
+
 			if (m != null) {
 				// FIXME: do some work to determine parameters and return type.
 				FunctionSummary f = new FunctionSummary();
 				f.ReturnType = m.getReturnType();
 				f.Prototype = m.getPrototype();
 				f.Summary = m.getDescription();
-//				String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
 				f.Name = className + "::" + memberName; //$NON-NLS-1$
 				String[] templateParms = info.getTemplateParms();
 				for (int i = 0; i < templateTypes.size(); ++i) {
@@ -573,8 +565,8 @@ public class LibHover implements ICHelpProvider {
 		}
 		return null;
 	}
-     
- 	
+
+
 	private boolean isParmMatch(MemberInfo m, String[] args, ArrayList<String> templateTypes, ClassInfo info) {
 		String[] memberParms = m.getParamTypes();
 		String className = info.getClassName();
@@ -667,8 +659,8 @@ public class LibHover implements ICHelpProvider {
 		}
 		return summaries;
 	}
-	
-	private class HelpResource implements IHelpResource {
+
+	private static class HelpResource implements IHelpResource {
 		private String href;
 		private String label;
 		public HelpResource(String href, String label) {
@@ -682,18 +674,18 @@ public class LibHover implements ICHelpProvider {
 			return label;
 		}
 	}
-	
-	private class HelpResourceDescriptor implements ICHelpResourceDescriptor {
+
+	private static class HelpResourceDescriptor implements ICHelpResourceDescriptor {
 		private ICHelpBook helpbook;
-		
+
 		public HelpResourceDescriptor(ICHelpBook helpbook) {
 			this.helpbook = helpbook;
 		}
-		
+
 		public ICHelpBook getCHelpBook() {
 			return helpbook;
 		}
-		
+
 		public IHelpResource[] getHelpResources() {
 			LibHoverLibrary l = libraries.get(helpbook);
 			if (l != null) {
@@ -704,7 +696,7 @@ public class LibHover implements ICHelpProvider {
 			return null;
 		}
 	}
-	
+
 	public ICHelpResourceDescriptor[] getHelpResources(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
 		for (int i = 0; i < helpBooks.length; ++i) {
 			IFunctionSummary fs = getFunctionInfo(context, new ICHelpBook[]{helpBooks[i]}, name);
