@@ -130,7 +130,7 @@ public class StubbyEggGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generatePrepSection(StringBuilder buffer) {
+	private static void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n");
 		buffer.append("%setup -q -n %{srcname}-%{version} #You may need to update this according to your Source0\n\n");
 
@@ -145,7 +145,7 @@ public class StubbyEggGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generateBuildSection(StringBuilder buffer) {
+	private static void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
 		buffer.append("%{__python} setup.py build\n\n");
 
@@ -161,7 +161,7 @@ public class StubbyEggGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generateInstallSection(StringBuilder buffer) {
+	private static void generateInstallSection(StringBuilder buffer) {
 		buffer.append("%install\n");
 
 		buffer.append("%if 0%{?with_python3}\n");
@@ -188,13 +188,5 @@ public class StubbyEggGenerator extends AbstractGenerator {
 		buffer.append("%endif # with_python3\n\n\n");
 	}
 
-	/**
-	 * Generate changelog
-	 *
-	 * @param buffer Buffer to write content to
-	 */
-	private void generateChangelog(StringBuilder buffer) {
-		buffer.append("%changelog\n");
-		buffer.append("#FIXME\n");
-	}
+
 }

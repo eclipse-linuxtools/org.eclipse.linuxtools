@@ -31,7 +31,7 @@ import org.eclipse.ui.ide.IDE;
 
 /**
  * Abstract class holding the common part of generators.
- * 
+ *
  */
 public abstract class AbstractGenerator {
 
@@ -49,7 +49,9 @@ public abstract class AbstractGenerator {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(projectName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
-			logCoreException("Project \"" + projectName + "\" does not exist.");
+			IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
+					IStatus.OK, "Project \"" + projectName + "\" does not exist.", null);
+			StubbyLog.logError(new CoreException(status));
 		}
 		IContainer container = (IContainer) resource;
 		final IFile file = container.getFile(new Path(specfileName));
@@ -81,15 +83,19 @@ public abstract class AbstractGenerator {
 
 	/**
 	 * The method that returns the string representation of the spec file.
-	 * 
+	 *
 	 * @return The specfile.
 	 */
 	public abstract String generateSpecfile();
 
-	private void logCoreException(String message) {
-		IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
-				IStatus.OK, message, null);
-		StubbyLog.logError(new CoreException(status));
+	/**
+	 * Generate changelog
+	 *
+	 * @param buffer Buffer to write content to
+	 */
+	protected static void generateChangelog(StringBuilder buffer) {
+		buffer.append("%changelog\n");
+		buffer.append("#FIXME\n");
 	}
 
 }

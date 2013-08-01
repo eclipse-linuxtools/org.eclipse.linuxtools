@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Generator for RPM specfile from maven pom.xml.
- * 
+ *
  */
 public class StubbyPomGenerator extends AbstractGenerator {
 
@@ -33,7 +33,7 @@ public class StubbyPomGenerator extends AbstractGenerator {
 
 	/**
 	 * Creates the generator by parsing the pom.xml file.
-	 * 
+	 *
 	 * @param pomFile
 	 *            The pom.xml file to generate specfile for.
 	 */
@@ -64,7 +64,7 @@ public class StubbyPomGenerator extends AbstractGenerator {
 
 	/**
 	 * Generates a RPM specfile based on the parsed data from the pom file.
-	 * 
+	 *
 	 * @return The generated specfile.
 	 */
 	@Override
@@ -101,7 +101,7 @@ public class StubbyPomGenerator extends AbstractGenerator {
 		buffer.append("BuildRequires: maven-local\n");
 	}
 
-	private void generateJavadocSubpackage(StringBuilder buffer) {
+	private static void generateJavadocSubpackage(StringBuilder buffer) {
 		buffer.append("%package javadoc\n");
 		buffer.append("Group:          Documentation\n");
 		buffer.append("Summary:        Javadoc for %{name}\n\n");
@@ -110,28 +110,23 @@ public class StubbyPomGenerator extends AbstractGenerator {
 
 	}
 
-	private void generateChangelog(StringBuilder buffer) {
-		buffer.append("%changelog\n\n");
-		buffer.append("#FIXME\n");
-	}
-
-	private void generateInstallSection(StringBuilder buffer) {
+	private static void generateInstallSection(StringBuilder buffer) {
 		buffer.append("%install\n");
 		buffer.append("%mvn_install\n\n");
 	}
 
-	private void generateFilesSections(StringBuilder buffer) {
+	private static void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files -f .mfiles\n");
 		buffer.append("%dir %{_javadir}/%{name}\n\n");
 		buffer.append("%files javadoc -f .mfiles-javadoc\n\n");
 	}
 
-	private void generatePrepSection(StringBuilder buffer) {
+	private static void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n");
 		buffer.append("%setup -q #You may need to update this according to your Source0\n\n");
 	}
 
-	private void generateBuildSection(StringBuilder buffer) {
+	private static void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
 		buffer.append("%mvn_build\n\n");
 	}

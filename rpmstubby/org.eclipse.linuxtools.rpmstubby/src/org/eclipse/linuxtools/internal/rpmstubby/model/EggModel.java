@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.internal.rpmstubby.parser.ValidLicenses;
  */
 public class EggModel {
 
-	private static final String[] validLicenses = {
+	private static final String[] VALID_LICENSES = {
 		ValidLicenses.GPL,
 		ValidLicenses.ARTISTIC,
 		ValidLicenses.MIT,
@@ -90,17 +90,6 @@ public class EggModel {
 	}
 
 	/**
-	 * Get the list of values from one of the setup options
-	 * that stores a list of strings
-	 *
-	 * @param option The option from the setup(...) function to get value of
-	 * @return The list of values of the option
-	 */
-	private List<String> getValueList(String option) {
-		return pyEggParser.getValueList(option);
-	}
-
-	/**
 	 * Get the values from the classifiers option and
 	 * check to see if the keyword is in one of them
 	 *
@@ -109,7 +98,7 @@ public class EggModel {
 	 */
 	private String getClassifiersList(String keyword) {
 		String rc = "";
-		List<String> list = getValueList(CLASSIFIERS);
+		List<String> list = pyEggParser.getValueList(CLASSIFIERS);
 
 		for (String str : list) {
 			if (str.toLowerCase().contains(keyword)) {
@@ -126,7 +115,7 @@ public class EggModel {
 	 * @return The values within install_requires
 	 */
 	public List<String> getInstallRequiresList() {
-		return getValueList(INSTALL_REQUIRES);
+		return pyEggParser.getValueList(INSTALL_REQUIRES);
 	}
 
 	/**
@@ -195,7 +184,7 @@ public class EggModel {
 		String rawLicense = getClassifiersList(CommonMetaData.LICENSE).toLowerCase();
 		String license = "";
 
-		for (String valid : validLicenses) {
+		for (String valid : VALID_LICENSES) {
 			if (rawLicense.contains(valid.toLowerCase())) {
 					license += valid + ", ";
 			}

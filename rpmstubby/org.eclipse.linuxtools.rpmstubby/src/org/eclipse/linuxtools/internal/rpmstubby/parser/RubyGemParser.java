@@ -32,7 +32,7 @@ public class RubyGemParser {
 
 	private IFile file;
 	private String gemVariable;
-	private Map<String, ArrayList<String>> mSetupDefinitions;
+	private Map<String, List<String>> mSetupDefinitions;
 	private Map<String, ArrayList<String>> mSetupDependencies;
 
 	private static final String SETUP_START = "^gem[:\\.]{1,2}specification[:\\.]{1,2}new(\\s+)?do(\\s+)?\\|(\\s+)?(\\w+)(\\s+)?\\|";
@@ -42,9 +42,9 @@ public class RubyGemParser {
 	private static final String GENERIC_LIST = "(?:\\S+)(?:\\s+)??"; 													// test, test2 | test test2
 
 	private static final String REPLACE_ME = "(%REPLACE_ME)";
-	private String SIMPLE_DEFINE = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?=(?!=)(\\s+)?(.*)"; 		// gem.variable = ...
-	private String SIMPLE_FUNCTION = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(?:\\((.*)\\))(.*)?"; 	// gem.variable(...)
-	private String GENERIC_DEFINE = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(.*)"; 					// gem.variable...
+	private String simpleDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?=(?!=)(\\s+)?(.*)"; 		// gem.variable = ...
+	private String genericDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(.*)"; 					// gem.variable...
+	private String simpleFunctionRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(?:\\((.*)\\))(.*)?"; 	// gem.variable(...)
 
 	/**
 	 * Initialize
@@ -55,7 +55,7 @@ public class RubyGemParser {
 	 * @throws CoreException File is not valid
 	 */
 	public RubyGemParser(IFile file) throws IOException, CoreException {
-		mSetupDefinitions = new HashMap<String, ArrayList<String>>();
+		mSetupDefinitions = new HashMap<String, List<String>>();
 		mSetupDependencies = new HashMap<String, ArrayList<String>>();
 		if (file.getContents().available() <= 0) {
 			return;
@@ -134,11 +134,11 @@ public class RubyGemParser {
 	 *            The line to parse
 	 */
 	private void parseLine(String str) {
-		if (str.matches(SIMPLE_DEFINE)) {
+		if (str.matches(simpleDefineRx)) {
 			parseSimpleDefine(str);
-		} else if (str.matches(SIMPLE_FUNCTION)) {
+		} else if (str.matches(simpleFunctionRx)) {
 			parseSimpleFunction(str);
-		} else if (str.matches(GENERIC_DEFINE)) {
+		} else if (str.matches(genericDefineRx)) {
 			parseGenericOption(str);
 		}
 	}
@@ -150,7 +150,7 @@ public class RubyGemParser {
 	 *            The string parse
 	 * @return A list of objects that was found
 	 */
-	private List<String> parseValue(String str) {
+	private static List<String> parseValue(String str) {
 		List<String> rc = new ArrayList<String>();
 		String temp = str.trim();
 		Pattern pattern = null;
@@ -190,7 +190,7 @@ public class RubyGemParser {
 	 *            The string to parse into a list
 	 * @return A list containing the found values
 	 */
-	private List<String> parseList(String str) {
+	private static List<String> parseList(String str) {
 		List<String> rc = new ArrayList<String>();
 		String temp = str.trim();
 		Pattern pattern = isPatternFoundList(str);
@@ -217,8 +217,8 @@ public class RubyGemParser {
 	 *            The string containing the list
 	 * @return The pattern of the string
 	 */
-	private Pattern isPatternFoundList(String str) {
-		Pattern rc = Pattern.compile("");;
+	private static Pattern isPatternFoundList(String str) {
+		Pattern rc = Pattern.compile("");
 		Pattern pattern = Pattern.compile(STRING_LIST,
 				Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(str);
@@ -240,7 +240,7 @@ public class RubyGemParser {
 	 *            The string containing the list
 	 * @return The pattern of the string
 	 */
-	private Pattern isGenericFoundList(String str) {
+	private static Pattern isGenericFoundList(String str) {
 		Pattern rc = Pattern.compile("");
 		Pattern pattern = Pattern.compile(GENERIC_LIST,
 				Pattern.CASE_INSENSITIVE);
@@ -262,13 +262,13 @@ public class RubyGemParser {
 	 */
 	private void parseSimpleDefine(String str) {
 		String temp = str.trim();
-		Pattern pattern = Pattern.compile(SIMPLE_DEFINE,
+		Pattern pattern = Pattern.compile(simpleDefineRx,
 				Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(temp);
 
 		if (variableMatcher.find()) {
 			String optionName = variableMatcher.group(2);
-			ArrayList<String> value = (ArrayList<String>) parseValue(variableMatcher
+			List<String> value = parseValue(variableMatcher
 					.group(5));
 			if (!value.isEmpty()) {
 				mSetupDefinitions.put(optionName, value);
@@ -285,7 +285,7 @@ public class RubyGemParser {
 	 */
 	private void parseSimpleFunction(String str) {
 		String temp = str.trim();
-		Pattern pattern = Pattern.compile(SIMPLE_FUNCTION,
+		Pattern pattern = Pattern.compile(simpleFunctionRx,
 				Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(temp);
 
@@ -313,7 +313,7 @@ public class RubyGemParser {
 	 */
 	private void parseGenericOption(String str) {
 		String temp = str.trim();
-		Pattern pattern = Pattern.compile(GENERIC_DEFINE,
+		Pattern pattern = Pattern.compile(genericDefineRx,
 				Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(temp);
 
@@ -366,7 +366,7 @@ public class RubyGemParser {
 	 */
 	private boolean isLineValidOption(String line) {
 		boolean rc = false;
-		Pattern pattern = Pattern.compile(GENERIC_DEFINE,
+		Pattern pattern = Pattern.compile(genericDefineRx,
 				Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(line);
 
@@ -418,7 +418,7 @@ public class RubyGemParser {
 	 * @return The position of the end of the specification
 	 * @throws IOException
 	 */
-	private long findEnd(RandomAccessFile raf, long startPos)
+	private static long findEnd(RandomAccessFile raf, long startPos)
 			throws IOException {
 		long rc = -1;
 		Pattern pattern = Pattern.compile("^end", Pattern.CASE_INSENSITIVE);
@@ -445,9 +445,9 @@ public class RubyGemParser {
 	private void setGemVariable(String str) {
 		if (gemVariable.isEmpty()) {
 			gemVariable = str.trim();
-			SIMPLE_DEFINE = SIMPLE_DEFINE.replace(REPLACE_ME, gemVariable);
-			SIMPLE_FUNCTION = SIMPLE_FUNCTION.replace(REPLACE_ME, gemVariable);
-			GENERIC_DEFINE = GENERIC_DEFINE.replace(REPLACE_ME, gemVariable);
+			simpleDefineRx = simpleDefineRx.replace(REPLACE_ME, gemVariable);
+			simpleFunctionRx = simpleFunctionRx.replace(REPLACE_ME, gemVariable);
+			genericDefineRx = genericDefineRx.replace(REPLACE_ME, gemVariable);
 		}
 	}
 }

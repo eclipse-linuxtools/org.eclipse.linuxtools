@@ -117,7 +117,7 @@ public class StubbyGemGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generatePrepSection(StringBuilder buffer) {
+	private static void generatePrepSection(StringBuilder buffer) {
 		buffer.append("%prep\n");
 		buffer.append("gem unpack %{SOURCE0}\n");
 		buffer.append("%setup -q -D -T -n %{gem_name}-%{version} #You may need to update this according to your Source0\n\n");
@@ -130,7 +130,7 @@ public class StubbyGemGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generateBuildSection(StringBuilder buffer) {
+	private static void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
 		buffer.append("gem build %{gem_name}.gemspec\n\n");
 
@@ -151,7 +151,7 @@ public class StubbyGemGenerator extends AbstractGenerator {
 		buffer.append("cp -a ./%{_bindir}/* %{buildroot}%{_bindir}\n\n");
 
 		List<String> requirePaths = model.getRequirePaths();
-		if (requirePaths != null && requirePaths.size() > 0) {
+		if (!requirePaths.isEmpty()) {
 			buffer.append("mkdir -p %{buildroot}%{gem_extdir_mri}/"+ requirePaths.get(0) +"\n");
 			buffer.append("mv %{buildroot}%{gem_instdir}/"+requirePaths.get(0)+"/shared_object.so %{buildroot}%{gem_extdir_mri}/"+ requirePaths.get(0)+"/\n\n");
 		}
@@ -164,7 +164,7 @@ public class StubbyGemGenerator extends AbstractGenerator {
 	 *
 	 * @param buffer Buffer to write content to
 	 */
-	private void generateFilesSections(StringBuilder buffer) {
+	private static void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files\n");
 		buffer.append("%dir %{gem_instdir}\n");
 		buffer.append("%{gem_libdir}\n");
@@ -174,13 +174,4 @@ public class StubbyGemGenerator extends AbstractGenerator {
 		buffer.append("%doc %{gem_docdir}\n\n\n");
 	}
 
-	/**
-	 * Generate changelog
-	 *
-	 * @param buffer Buffer to write content to
-	 */
-	private void generateChangelog(StringBuilder buffer) {
-		buffer.append("%changelog\n");
-		buffer.append("#FIXME\n");
-	}
 }
