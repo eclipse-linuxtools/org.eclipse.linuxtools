@@ -97,7 +97,7 @@ public class FunctionParser extends TapsetParser {
 		Pattern underscorep = Pattern.compile("^function _.*"); //remove any lines that "^function _" //$NON-NLS-1$
 		Pattern allCaps = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
-			tok = st.nextToken().toString();
+			tok = st.nextToken();
 			Matcher m = p.matcher(tok);
 			while(m.find()) {
 				// this gives us function foo (bar, bar)

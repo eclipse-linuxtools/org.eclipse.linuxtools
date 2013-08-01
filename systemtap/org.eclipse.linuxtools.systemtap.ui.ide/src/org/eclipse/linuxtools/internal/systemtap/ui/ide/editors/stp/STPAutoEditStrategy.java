@@ -300,7 +300,7 @@ public class STPAutoEditStrategy extends
 					String indent = getIndentOfLine(doc, refLine);
 
 					if (indent != null) {
-						c.text = indent.toString() + "else"; //$NON-NLS-1$
+						c.text = indent + "else"; //$NON-NLS-1$
 						c.length += c.offset - lineOffset;
 						c.offset = lineOffset;
 					}

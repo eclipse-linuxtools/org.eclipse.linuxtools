@@ -334,7 +334,7 @@ public class RunScriptHandler extends AbstractHandler {
 		}
 
 		for(int i=0; i< cmdList.size(); i++) {
-			script[i+1] = cmdList.get(i).toString();
+			script[i+1] = cmdList.get(i);
 		}
 		script[script.length-3]="-m"; //$NON-NLS-1$
 
