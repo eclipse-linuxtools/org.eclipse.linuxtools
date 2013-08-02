@@ -38,7 +38,7 @@ public class Scanner extends SimpleScanner {
 
 	/**
 	 * Set the source text as character array.
-	 * 
+	 *
 	 * @param source  the source text
 	 */
 	public void setSource(char[] source) {
@@ -111,7 +111,7 @@ public class Scanner extends SimpleScanner {
 	/**
 	 * Move to next character iff it is equal to the given expected character.
 	 * If the characters do not match, the scanner does not move forward.
-	 * 
+	 *
 	 * @param c the expected character
 	 * @return <code>true</code> if the next character was the expected character
 	 */
@@ -134,7 +134,7 @@ public class Scanner extends SimpleScanner {
 
 	/**
 	 * Set current scanner offset to given offset.
-	 * 
+	 *
 	 * @param nextCharacterStart  the desired scanner offset
 	 */
 	public void setCurrentPosition(int nextCharacterStart) {
@@ -149,14 +149,14 @@ public class Scanner extends SimpleScanner {
 			// no-op
 		} else if (diff > fTokenBuffer.length()) {
 			resetTo(nextCharacterStart, source.length);
-		} else /* if (diff <= fTokenBuffer.length()) */ {
+		} else {
 			while (diff > 0) {
 				if (fTokenBuffer.length() > 0) {
 					ungetChar(fTokenBuffer.charAt(fTokenBuffer.length() - 1));
 				}
 				--diff;
 			}
-		}			
+		}
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class Scanner extends SimpleScanner {
 
 	/**
 	 * Get the next token as token type constant.
-	 * 
+	 *
 	 * @return the next token type
 	 */
 	public int getNextToken() {
@@ -198,27 +198,27 @@ public class Scanner extends SimpleScanner {
 		if (middleLength > -1) {
 			middle = new char[middleLength];
 			System.arraycopy(
-				this.source, 
-				this.startPosition, 
-				middle, 
-				0, 
+				this.source,
+				this.startPosition,
+				middle,
+				0,
 				middleLength);
 		} else {
 			middle = new char[0];
 		}
-		
+
 		char end[] = new char[this.source.length - (this.getCurrentPosition() - 1)];
 		System.arraycopy(
-			this.source, 
-			(this.getCurrentPosition() - 1) + 1, 
-			end, 
-			0, 
+			this.source,
+			(this.getCurrentPosition() - 1) + 1,
+			end,
+			0,
 			this.source.length - (this.getCurrentPosition() - 1) - 1);
-		
+
 		return new String(front)
 			+ "\n===============================\nStarts here -->" //$NON-NLS-1$
 			+ new String(middle)
 			+ "<-- Ends here\n===============================\n" //$NON-NLS-1$
-			+ new String(end); 
+			+ new String(end);
 	}
 }

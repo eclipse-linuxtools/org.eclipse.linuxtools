@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 /**
  * Alignment management
- * 
+ *
  * @since 4.0
  */
 public class STPAlignment {
@@ -40,16 +40,16 @@ public class STPAlignment {
 
 	/** Link to the enclosing alignment. */
 	public STPAlignment enclosing;
-	 
+
 	/** Start location of this alignment. */
 	public STPLocation location;
 
 	/**
 	 * Tail formatter is an encapsulation mechanism for formatting of the trailing text that should
-	 * be kept together with the last element of a list. 
+	 * be kept together with the last element of a list.
 	 */
 	public Runnable tailFormatter;
-	
+
 	// Indentation management
 	public int fragmentIndex;
 	public int fragmentCount;
@@ -69,7 +69,7 @@ public class STPAlignment {
 	public int currentFragmentStartLine;
 
 	public final STPScribe scribe;
-	
+
 	/*
 	 * Alignment modes
 	 */
@@ -78,7 +78,7 @@ public class STPAlignment {
 	public static final int	M_INDENT_BY_ONE = 4; // if bit set, broken fragments will be indented one level below current (not using continuation indentation)
 
 	// Split modes can be combined either with M_FORCE or M_INDENT_ON_COLUMN
-	
+
 	/** foobar(#fragment1, #fragment2, <ul>
 	 *  <li>    #fragment3, #fragment4 </li>
 	 * </ul>
@@ -121,7 +121,7 @@ public class STPAlignment {
 
 	//64+32
 	//64+32+16
-	
+
 	// Mode controlling column alignments
 	/**
 	 * <table BORDER COLS=4 WIDTH="100%" >
@@ -131,23 +131,23 @@ public class STPAlignment {
 	 * </table>
 	 */
 	public static final int M_MULTICOLUMN = 256; // fragments are on same line, but multiple line of fragments will be aligned vertically
-	
+
 	public static final int M_NO_ALIGNMENT = 0;
-	
+
 	public int mode;
-	
+
 	public static final int SPLIT_MASK = M_ONE_PER_LINE_SPLIT | M_NEXT_SHIFTED_SPLIT | M_COMPACT_SPLIT | M_COMPACT_FIRST_BREAK_SPLIT | M_NEXT_PER_LINE_SPLIT;
 
 	// Alignment tie-break rules - when split is needed, will decide whether innermost/outermost alignment is to be chosen
 	public static final int R_OUTERMOST = 1;
 	public static final int R_INNERMOST = 2;
 	public int tieBreakRule;
-	
+
 	// Alignment effects on a per fragment basis
 	public static final int BREAK_NOT_ALLOWED = -1;
 	public static final int NONE = 0;
 	public static final int BREAK = 2;
-	
+
 	// Chunk kind
 	public static final int CHUNK_FIELD = 1;
 	public static final int CHUNK_METHOD = 2;
@@ -174,7 +174,7 @@ public class STPAlignment {
 		if (currentColumn == 1) {
 		    currentColumn = this.location.outputIndentationLevel + 1;
 		}
-		
+
 		// Initialize the break indentation level, using modes and continuationIndentationLevel
 		// preference.
 		final int indentSize = this.scribe.indentationSize;
@@ -206,11 +206,11 @@ public class STPAlignment {
 			couldBreak();
 		}
 	}
-	
+
 	public boolean checkChunkStart(int kind, int startIndex, int sourceRestart) {
 		if (this.chunkKind != kind) {
 			this.chunkKind = kind;
-			
+
 			// When redoing same chunk alignment, must not reset
 			if (startIndex != this.chunkStartIndex) {
 				this.chunkStartIndex = startIndex;
@@ -237,10 +237,6 @@ public class STPAlignment {
 			}
 			// Backtrack only once all fragments got checked
 			if (this.needRedoColumnAlignment && this.fragmentIndex == this.fragmentCount - 1) { // alignment too small
-//				if (CodeFormatterVisitor.DEBUG) {
-//					System.out.println("ALIGNMENT TOO SMALL");
-//					System.out.println(this);
-//				}
 				this.needRedoColumnAlignment = false;
 				int relativeDepth = 0;
 				STPAlignment targetAlignment = this.scribe.memberAlignment;
@@ -254,7 +250,7 @@ public class STPAlignment {
 			}
 		}
 	}
-		
+
 	public boolean couldBreak() {
 		int i;
 		switch (mode & SPLIT_MASK) {
@@ -308,7 +304,7 @@ public class STPAlignment {
 						this.fragmentIndentations[i] = this.breakIndentationLevel;
 						return wasSplit = true;
 					}
-				} while ((this.fragmentBreaks[i] != BREAK || (this.mode & M_INDENT_ON_COLUMN) != 0) && --i >= 0); 
+				} while ((this.fragmentBreaks[i] != BREAK || (this.mode & M_INDENT_ON_COLUMN) != 0) && --i >= 0);
 				break;
 
 			/*  # aligned fragment
@@ -329,7 +325,7 @@ public class STPAlignment {
 					return wasSplit = true;
 				}
 				break;
-				
+
 			/*  # aligned fragment
 			 *  foo(
 			 *      #AAAAA,
@@ -384,11 +380,11 @@ public class STPAlignment {
 			}
 		}
 	}
-	
+
 	public STPAlignment getAlignment(String targetName) {
 		if (targetName.equals(this.name)) return this;
 		if (this.enclosing == null) return null;
-		
+
 		return this.enclosing.getAlignment(targetName);
 	}
 
@@ -463,7 +459,7 @@ public class STPAlignment {
 	public void toFragmentsString(StringBuffer buffer) {
 		// default implementation
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer(10);
@@ -496,7 +492,7 @@ public class STPAlignment {
 		buffer.append('\n');
 		return buffer.toString();
 	}
-	
+
 	public void update() {
 		for (int i = 1; i < this.fragmentCount; i++) {
 		    if (this.fragmentBreaks[i] == BREAK) {

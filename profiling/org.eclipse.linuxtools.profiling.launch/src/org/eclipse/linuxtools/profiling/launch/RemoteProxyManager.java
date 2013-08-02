@@ -29,14 +29,23 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 public class RemoteProxyManager implements IRemoteProxyManager {
 	
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
-	private static final String LOCALSCHEME = "file"; //$NON-NLS-1$
+	/**
+	 * @since 2.1
+	 */
+	protected static final String LOCALSCHEME = "file"; //$NON-NLS-1$
 
 	private static RemoteProxyManager manager;
 	private LocalFileProxy lfp;
-	private RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
+	/**
+	 * @since 2.1
+	 */
+	protected RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
 	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<String, IRemoteProxyManager>();
 	
-	private RemoteProxyManager() {
+	/**
+	 * @since 2.1
+	 */
+	protected RemoteProxyManager() {
 		// do nothing
 	}
 	
@@ -51,8 +60,10 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 			lfp = new LocalFileProxy(uri);
 		return lfp;
 	}
-	
-	private IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
+	/**
+	 * @since 2.1
+	 */
+	protected IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
 		IRemoteProxyManager remoteManager = remoteManagers.get(schemeId);
 		if (remoteManager == null) {
 			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, IRemoteProxyManager.EXTENSION_POINT_ID);
@@ -143,4 +154,6 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		URI projectURI = project.getLocationURI();
 		return getOS(projectURI);
 	}
+
+
 }

@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 /**
  * Generates the RPM specfile and the fetch script based on the feature and user
  * preferences.
- * 
+ *
  */
 public class StubbyGenerator extends AbstractGenerator {
 
@@ -38,7 +38,7 @@ public class StubbyGenerator extends AbstractGenerator {
 
 	/**
 	 * Creates the specfile and fetch script generator for the given packages.
-	 * 
+	 *
 	 * @param featureFile
 	 *            The feature.xml file to generate from.
 	 */
@@ -82,7 +82,7 @@ public class StubbyGenerator extends AbstractGenerator {
 
 	/**
 	 * Generates a RPM specfile based on the parsed data from the pom file.
-	 * 
+	 *
 	 * @return The generated specfile.
 	 */
 	@Override
@@ -112,7 +112,7 @@ public class StubbyGenerator extends AbstractGenerator {
 		return buffer.toString();
 	}
 
-	private void generateRequires(StringBuilder buffer) {
+	private static void generateRequires(StringBuilder buffer) {
 		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
 		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
 
@@ -142,7 +142,7 @@ public class StubbyGenerator extends AbstractGenerator {
 		buffer.append("\n");
 	}
 
-	private void generatePrepSection(StringBuilder buffer) {
+	private static void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n");
 		buffer.append("#FIXME Replace FIXME with the root directory name in Source0\n");
 		buffer.append("%setup -q -n FIXME\n\n");
@@ -158,7 +158,7 @@ public class StubbyGenerator extends AbstractGenerator {
 	/**
 	 * Returns the last meaningful part of the feature id before the feature
 	 * substring.
-	 * 
+	 *
 	 * @param packageName
 	 *            The feature id from which to extract the name.
 	 * @return The part of the feature id to be used for package name.
@@ -171,10 +171,4 @@ public class StubbyGenerator extends AbstractGenerator {
 		}
 		return "eclipse-" + name;
 	}
-
-	private void generateChangelog(StringBuilder buffer) {
-		buffer.append("%changelog\n\n");
-		buffer.append("#FIXME\n");
-	}
-
 }

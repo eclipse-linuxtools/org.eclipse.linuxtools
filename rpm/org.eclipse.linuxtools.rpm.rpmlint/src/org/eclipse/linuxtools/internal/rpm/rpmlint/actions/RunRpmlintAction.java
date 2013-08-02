@@ -70,7 +70,7 @@ public class RunRpmlintAction extends AbstractHandler{
 				if (editorInput instanceof IFileEditorInput) {
 					runRpmlint(((IFileEditorInput) editorInput).getFile().getLocation().toString());
 				} else if (editorInput instanceof IURIEditorInput) {
-					runRpmlint(((IURIEditorInput) editorInput).getURI().getPath().toString());
+					runRpmlint(((IURIEditorInput) editorInput).getURI().getPath());
 				}
 			}
 		}

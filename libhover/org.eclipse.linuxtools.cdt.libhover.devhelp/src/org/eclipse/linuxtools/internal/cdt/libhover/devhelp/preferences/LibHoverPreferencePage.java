@@ -49,10 +49,10 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
  * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
+ * is contributed to the Preferences dialog. By
  * subclassing <samp>FieldEditorPreferencePage</samp>, we
  * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
+ * us to create a page that is small and knows how to
  * save, restore and apply itself.
  * <p>
  * This page is used to modify preferences only. They
@@ -64,19 +64,19 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class LibHoverPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
-	
+
 	private final static String DEVHELP_DIR = "Libhover.Devhelp.Directory"; //$NON-NLS-1$
 	private final static String GENERATE = "Libhover.Devhelp.Generate.lbl"; //$NON-NLS-1$
 	private final static String REGENERATE_MSG = "Libhover.Devhelp.Regenerate.msg"; //$NON-NLS-1$
 	private final static String TITLE = "Libhover.Devhelp.Preference.title"; //$NON-NLS-1$
 
 	private Button generateButton;
-	
+
 	public LibHoverPreferencePage() {
 		super(GRID);
 		setPreferenceStore(DevHelpPlugin.getDefault().getPreferenceStore());
 	}
-	
+
 	private static class DevhelpStringFieldEditor extends DirectoryFieldEditor {
 		public DevhelpStringFieldEditor(String name, String labelText,
 				Composite parent) {
@@ -85,7 +85,7 @@ public class LibHoverPreferencePage
 		}
 
 	}
-	
+
 	private synchronized void regenerate() {
 		generateButton.setEnabled(false);
 		Job k = new Job(LibHoverMessages.getString(REGENERATE_MSG)) {
@@ -94,7 +94,7 @@ public class LibHoverPreferencePage
 			protected IStatus run(IProgressMonitor monitor) {
 				// TODO Auto-generated method stub
 				IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
-				ParseDevHelp.DevHelpParser p =  
+				ParseDevHelp.DevHelpParser p =
 					new ParseDevHelp.DevHelpParser(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY));
 				LibHoverInfo hover = p.parse(monitor);
 				// Update the devhelp library info if it is on library list
@@ -123,11 +123,11 @@ public class LibHoverPreferencePage
 					monitor.done();
 					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 				}
-				
-				
+
+
 				return Status.OK_STATUS;
 			}
-			
+
 		};
 		k.setUser(true);
 		k.addJobChangeListener(new JobChangeAdapter() {
@@ -136,18 +136,14 @@ public class LibHoverPreferencePage
 				Display.getDefault().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						try {
-							generateButton.setEnabled(true);
-						} catch (Exception e) {
-							// do nothing
-						}
+						generateButton.setEnabled(true);
 					}
 				});
 			}
 		});
 		k.schedule();
 	}
-    
+
 	@Override
 	protected void contributeButtons(Composite parent) {
 		((GridLayout) parent.getLayout()).numColumns++;
@@ -175,7 +171,7 @@ public class LibHoverPreferencePage
 
 		generateButton.setLayoutData(gd);
     }
-	
+
 	/**
 	 * Creates the field editors. Field editors are abstractions of
 	 * the common GUI blocks needed to manipulate various types
@@ -186,20 +182,14 @@ public class LibHoverPreferencePage
 	public void createFieldEditors() {
 		addField(
 				new LabelFieldEditor(
-						getFieldEditorParent(), 
+						getFieldEditorParent(),
 						LibHoverMessages.getString(TITLE)));
 		addField(
 				new DevhelpStringFieldEditor(
 						PreferenceConstants.DEVHELP_DIRECTORY,
 						LibHoverMessages.getString(DEVHELP_DIR),
 						getFieldEditorParent()));
-//		addField(
-//				new GenerateDevHelp(
-//						PreferenceConstants.DUMMY_CONSTANT,
-//						LibHoverMessages.getString(DEVHELP_REGENERATE),
-//						getFieldEditorParent()));
-						
-						
+
 
 	}
 
@@ -209,5 +199,5 @@ public class LibHoverPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
 	}
-	
+
 }

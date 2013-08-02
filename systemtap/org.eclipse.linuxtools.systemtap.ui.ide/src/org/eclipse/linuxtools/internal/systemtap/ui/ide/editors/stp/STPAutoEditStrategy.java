@@ -36,12 +36,12 @@ public class STPAutoEditStrategy extends
 
 	private String fPartitioning;
 	private IProject fProject;
-	
+
 	public STPAutoEditStrategy(String fPartitioning, IProject project) {
 		this.fPartitioning = fPartitioning;
 		this.fProject = project;
 	}
-	
+
 	/**
 	 * Returns the block balance, i.e. zero if the blocks are balanced at
 	 * <code>offset</code>, a negative number if there are more closing than opening
@@ -74,12 +74,12 @@ public class STPAutoEditStrategy extends
 				return 1;
 		}
 	}
-	
+
 	@Override
 	public void customizeDocumentCommand(IDocument document,
 			DocumentCommand command) {
 		boolean modified = false;
-		boolean isNewLine= command.length == 0 && command.text != null 
+		boolean isNewLine= command.length == 0 && command.text != null
 				&& isLineDelimiter(document, command.text);
 		if (isNewLine) {
 			smartIndentAfterNewLine(document, command);
@@ -107,7 +107,7 @@ public class STPAutoEditStrategy extends
 
 		super.customizeDocumentCommand(document, command);
 	}
-	
+
 	private boolean inStringOrComment(IDocument d, DocumentCommand c) {
 		int docLength = d.getLength();
 		if (c.offset == -1 || docLength == 0)
@@ -115,7 +115,7 @@ public class STPAutoEditStrategy extends
 		try {
 			ITypedRegion partition= TextUtilities.getPartition(d, fPartitioning, c.offset, false);
 			String partitionType = partition.getType();
-			if (c.offset > 0 && 
+			if (c.offset > 0 &&
 					(STPPartitionScanner.STP_COMMENT.equals(partitionType)
 							|| STPPartitionScanner.STP_MULTILINE_COMMENT.equals(partitionType)
 							|| STPPartitionScanner.STP_STRING.equals(partitionType))) {
@@ -165,14 +165,14 @@ public class STPAutoEditStrategy extends
 				}
 			}
 			return inString || inChar || inComment;
-			
+
 		} catch (BadLocationException e) {
 			IDEPlugin.log(e);
 		}
-		return false; 
+		return false;
 	}
 
-	
+
 	private void smartIndentAfterNewLine(IDocument d, DocumentCommand c) {
 		int docLength = d.getLength();
 		if (c.offset == -1 || docLength == 0)
@@ -300,7 +300,7 @@ public class STPAutoEditStrategy extends
 					String indent = getIndentOfLine(doc, refLine);
 
 					if (indent != null) {
-						c.text = indent.toString() + "else"; //$NON-NLS-1$
+						c.text = indent + "else"; //$NON-NLS-1$
 						c.length += c.offset - lineOffset;
 						c.offset = lineOffset;
 					}
@@ -397,7 +397,7 @@ public class STPAutoEditStrategy extends
 
 		return -1;
 	}
-	
+
 	/**
 	 * Finds a closing parenthesis to the left of <code>position</code> in document, where that parenthesis is only
 	 * separated by whitespace from <code>position</code>. If no such parenthesis can be found, <code>position</code> is returned.
@@ -414,7 +414,7 @@ public class STPAutoEditStrategy extends
 			return scanner.getPosition() + 1;
 		return position;
 	}
-	
+
 	private boolean isClosedBrace(IDocument document, int offset, int length) {
 		return getBlockBalance(document, offset, fPartitioning) <= 0;
 	}
@@ -430,9 +430,6 @@ public class STPAutoEditStrategy extends
 			case 'e':
 				smartIndentUponE(document, command);
 				break;
-//			case ':':
-//				smartIndentAfterColumn(document, command);
-//				break;
 			case '#':
 				smartIndentAfterHash(document, command);
 				break;
@@ -452,7 +449,7 @@ public class STPAutoEditStrategy extends
 	 * A closing char (e.g. right paren ')') is being inserted.  If one already exists
 	 * at current location in the document, skip over it and don't do an
 	 * insert.
-	 * 
+	 *
 	 * @param d - document
 	 * @param c - insert text
 	 * @param ch - closing char being inserted
@@ -496,7 +493,7 @@ public class STPAutoEditStrategy extends
 			IDEPlugin.log(e);
 		}
 	}
-	
+
 	private void smartIndentAfterOpeningBracket(IDocument d, DocumentCommand c) {
 		if (c.offset < 1 || d.getLength() == 0)
 			return;
@@ -538,14 +535,14 @@ public class STPAutoEditStrategy extends
 			IDEPlugin.log(e);
 		}
 	}
-	
+
 	private boolean isLineDelimiter(IDocument document, String text) {
 		String[] delimiters = document.getLegalLineDelimiters();
 		if (delimiters != null)
 			return TextUtilities.equals(delimiters, text) > -1;
 			return false;
 	}
-	
+
 	private int getBracketCount(IDocument d, int start, int end, boolean ignoreCloseBrackets) throws BadLocationException {
 		int bracketcount = 0;
 		while (start < end) {
@@ -598,8 +595,8 @@ public class STPAutoEditStrategy extends
 		}
 		return bracketcount;
 	}
-	
-	
+
+
 	// ----------- bracket counting ------------------------------------------------------
 
 	private int getCommentEnd(IDocument d, int pos, int end) throws BadLocationException {
@@ -624,7 +621,7 @@ public class STPAutoEditStrategy extends
 		}
 		return ""; //$NON-NLS-1$
 	}
-	
+
 	private int getStringEnd(IDocument d, int pos, int end, char ch) throws BadLocationException {
 		while (pos < end) {
 			char curr = d.getChar(pos);
@@ -684,7 +681,7 @@ public class STPAutoEditStrategy extends
 	 */
 	private static void installPartitioner(Document document) {
 		String[] types= new String[] {
-				IDocument.DEFAULT_CONTENT_TYPE, 
+				IDocument.DEFAULT_CONTENT_TYPE,
 				STPPartitionScanner.STP_COMMENT,
 				STPPartitionScanner.STP_CONDITIONAL,
 		};
@@ -701,7 +698,7 @@ public class STPAutoEditStrategy extends
 	private static void removePartitioner(Document document) {
 		document.setDocumentPartitioner(STPPartitionScanner.STP_PARTITIONING, null);
 	}
-	
+
 	private void smartPaste(IDocument document, DocumentCommand command) {
 		int newOffset= command.offset;
 		int newLength= command.length;
@@ -1011,7 +1008,7 @@ public class STPAutoEditStrategy extends
     					return firstPeer;
     				firstPeer= peer;
     				break; // keep searching
-    				
+
     			case STPSymbols.TokenCASE:
     			case STPSymbols.TokenDEFAULT:
     			    {
@@ -1034,7 +1031,7 @@ public class STPAutoEditStrategy extends
 						firstPeer= peer;
 					}
     				break; // keep searching
-    				
+
     			case STPSymbols.TokenEOF:
     				return firstPeer;
     			default:

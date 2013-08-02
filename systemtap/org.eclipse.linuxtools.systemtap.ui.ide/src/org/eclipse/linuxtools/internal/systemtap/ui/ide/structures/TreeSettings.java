@@ -203,7 +203,7 @@ public final class TreeSettings {
 				child.putString("definition", "<null>"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				child.putString(
-						"definition", ((TreeDefinitionNode) tree).getDefinition().toString()); //$NON-NLS-1$
+						"definition", ((TreeDefinitionNode) tree).getDefinition()); //$NON-NLS-1$
 			}
 		}
 

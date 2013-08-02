@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat Inc. and others.
+ * Copyright (c) 2013 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,14 @@
  *
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
+ *     Neil Guzman        - python, ruby implementation
  *******************************************************************************/
 
 package org.eclipse.linuxtools.rpmstubby;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.linuxtools.internal.rpmstubby.StubbyEggGenerator;
+import org.eclipse.linuxtools.internal.rpmstubby.StubbyGemGenerator;
 import org.eclipse.linuxtools.internal.rpmstubby.StubbyGenerator;
 import org.eclipse.linuxtools.internal.rpmstubby.StubbyPomGenerator;
 
@@ -46,6 +49,12 @@ public class Generator {
 			break;
 		case MAVEN_POM:
 			new StubbyPomGenerator(file).writeContent();
+			break;
+		case PYTHON_EGG:
+			new StubbyEggGenerator(file).writeContent();
+			break;
+		case RUBY_GEM:
+			new StubbyGemGenerator(file).writeContent();
 			break;
 		default:
 			break;

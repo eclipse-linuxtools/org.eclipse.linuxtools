@@ -11,19 +11,24 @@
 package org.eclipse.linuxtools.rdt.proxy;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.linuxtools.profiling.launch.IRemoteProxyManager;
 import org.eclipse.ptp.remote.core.IRemoteConnection;
 import org.eclipse.ptp.remote.core.IRemoteServices;
 import org.eclipse.ptp.remote.core.RemoteServices;
+import org.eclipse.ptp.remote.core.exception.RemoteConnectionException;
 
-public class RDTProxyManager implements IRemoteProxyManager {
+public class RDTProxyManager implements IRemoteEnvProxyManager {
 
 	public final static String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
 	
@@ -62,6 +67,26 @@ public class RDTProxyManager implements IRemoteProxyManager {
 	public String getOS(IProject project) {
 		URI uri = project.getLocationURI();
 		return getOS(uri);
+	}
+
+	public Map<String, String> getEnv(URI uri) throws CoreException {
+		IRemoteServices services = RemoteServices.getRemoteServices(uri);
+		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+		if(!connection.isOpen()) {
+			try {
+				connection.open(null);
+			} catch (RemoteConnectionException e) {
+				Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
+				Activator.getDefault().getLog().log(status);
+				return Collections.emptyMap();
+			}
+		}
+		return connection.getEnv();
+	}
+
+	public Map<String, String> getEnv(IProject project) throws CoreException {
+		URI uri = project.getLocationURI();
+		return getEnv(uri);
 	}
 
 }

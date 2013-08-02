@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
+ *     Neil Guzman        - python, ruby implementation
  *******************************************************************************/
 
 package org.eclipse.linuxtools.rpmstubby;
@@ -20,7 +21,11 @@ public enum InputType {
 	/** Eclipse feature.xml file. */
 	ECLIPSE_FEATURE("feature.xml"),
 	/** Maven pom.xml file. */
-	MAVEN_POM("pom.xml");
+	MAVEN_POM("pom.xml"),
+	/** Python Egg setup.py file */
+	PYTHON_EGG("setup.py"),
+	/** Ruby *.gemspec file */
+	RUBY_GEM("*.gemspec");
 
 	private String fileNamePattern;
 

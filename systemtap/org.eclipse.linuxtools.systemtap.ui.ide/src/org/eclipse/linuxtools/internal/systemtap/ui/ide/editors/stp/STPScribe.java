@@ -25,7 +25,7 @@ import org.eclipse.text.edits.TextEdit;
 
 /**
  * This class is responsible for dumping formatted source.
- * 
+ *
  * @since 4.0
  */
 public class STPScribe {
@@ -44,7 +44,7 @@ public class STPScribe {
 	public STPAlignment currentAlignment;
 	public STPAlignment memberAlignment;
 	public AlignmentException currentAlignmentException;
-	
+
 	/** @see Alignment#tailFormatter */
 	private Runnable tailFormatter;
 
@@ -221,7 +221,7 @@ public class STPScribe {
 
 	/**
 	 * Trims redundant prefix from a replacement edit and, if there is anything left, appends
-	 * the replacement edit to the edits array.   
+	 * the replacement edit to the edits array.
 	 */
 	private void appendOptimizedReplaceEdit(int offset, int length, CharSequence replacement) {
 		int replacementLength = replacement.length();
@@ -546,10 +546,10 @@ public class STPScribe {
 				if (currentAlignment != null && !formatBrace) {
 					indentationLevel = currentAlignment.breakIndentationLevel;
 				}
-				
+
 				// Set the flag to indicate that a specific indentation is currently in used
 				preserveLineBreakIndentation = true;
-				
+
 				// Print the computed indentation in the buffer
 				printIndentationIfNecessary(tempBuffer);
 
@@ -1057,7 +1057,7 @@ public class STPScribe {
 
 	/**
 	 * Prints comment at the current position.
-	 * 
+	 *
 	 * @return {@code true} if a writespace character was encountered preceding the next token,
 	 */
 	public boolean printComment(int trailing) {
@@ -1172,7 +1172,7 @@ public class STPScribe {
 						}
 						scanner.resetTo(currentTokenStartPosition, scannerEndPosition);
 						return hasWhitespace;
-					} 
+					}
 					// If one or several new lines are consumed, following comments
 					// cannot be considered as trailing ones.
 					if (lines >= 1) {
@@ -1261,12 +1261,8 @@ public class STPScribe {
 			case Token.tPREPROCESSOR_INCLUDE:
 				if (column != 1)
 					printNewLine(scanner.getCurrentTokenStartPosition());
-				if (lines >= 1) {
-					if (lines > 1) {
-						preserveEmptyLines(lines - 1, scanner.getCurrentTokenStartPosition());
-					} else if (lines == 1) {
-						// printNewLine(scanner.getCurrentTokenStartPosition());
-					}
+				if (lines > 1) {
+					 preserveEmptyLines(lines - 1, scanner.getCurrentTokenStartPosition());
 				}
 				whiteSpaces= CharArrayUtils.EMPTY_CHAR_ARRAY;
 				hasWhitespace= false;
@@ -1349,7 +1345,7 @@ public class STPScribe {
 				}
     		}
     	}
-    	
+
 		// Prepare white space before the comment.
 		StringBuilder whitespace = null;
 		if (!lastLineComment.contiguous && commentIndentationLevel != indentationLevel &&
@@ -1386,12 +1382,12 @@ public class STPScribe {
 			lastLineComment.indentation = commentIndent;
 
 	    	int previousStart = currentTokenStartPosition;
-	
+
 	    	int indent = commentIndent;
 	    	loop: while (nextCharacterStart <= currentTokenEndPosition &&
 	    			(currentCharacter = scanner.getNextChar()) != -1) {
 	    		nextCharacterStart = scanner.getCurrentPosition();
-	
+
 	    		switch (currentCharacter) {
 				case '\r':
 				case '\n':
@@ -1592,7 +1588,7 @@ public class STPScribe {
 			// Ensure that the scribe is at the beginning of a new line
 			// only if no specific indentation has been previously set.
 			if (!preserveLineBreakIndentation) {
-				column = 1; 
+				column = 1;
 			}
 			preserveLineBreakIndentation = false;
 			return;
@@ -1912,7 +1908,7 @@ public class STPScribe {
 	 * Skips to the next occurrence of the given token type.
 	 * If successful, the next token will be the expected token,
 	 * otherwise the scanner position is left unchanged.
-	 * 
+	 *
 	 * @param expectedTokenType
 	 * @return  <code>true</code> if a matching token was skipped to
 	 */
@@ -1935,7 +1931,7 @@ public class STPScribe {
 	 * Searches for the next occurrence of the given token type.
 	 * If successful, returns the offset of the found token, otherwise -1.
 	 * The scanner position is left unchanged.
-	 * 
+	 *
 	 * @param tokenType type of the token to look for
 	 * @return the position of the matching token, if found, otherwise -1.
 	 */
@@ -1947,7 +1943,7 @@ public class STPScribe {
 	 * Searches for the next occurrence of the given token type.
 	 * If successful, returns the offset of the found token, otherwise -1.
 	 * The scanner position is left unchanged.
-	 * 
+	 *
 	 * @param tokenType type of the token to look for
 	 * @param endPosition end position limiting the search
 	 * @return the position of the matching token, if found, otherwise -1.
@@ -2017,7 +2013,7 @@ public class STPScribe {
 	 * Searches for the next occurrence of the given token type.
 	 * If successful, returns the offset of the found token, otherwise -1.
 	 * The scanner position is left unchanged.
-	 * 
+	 *
 	 * @param tokenType type of the token to look for
 	 * @param startPosition position where to start the search
 	 * @param endPosition end position limiting the search

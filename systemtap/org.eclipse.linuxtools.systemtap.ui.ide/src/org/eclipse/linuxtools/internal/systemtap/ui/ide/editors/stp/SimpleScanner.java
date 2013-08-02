@@ -122,7 +122,7 @@ public class SimpleScanner {
 
 	private int getChar(boolean insideString) {
 	    int c = EOFCHAR;
-	    
+
 	    if (fContext.undoStackSize() != 0) {
 	        c = fContext.popUndo();
 	    } else {
@@ -132,9 +132,9 @@ public class SimpleScanner {
 	            c = EOFCHAR;
 	        }
 	    }
-	    
+
 	    fTokenBuffer.append((char) c);
-	    
+
 	    if (!insideString && c == '\\') {
 	        c = getChar(false);
 	        if (c == '\r') {
@@ -153,7 +153,7 @@ public class SimpleScanner {
 	        	c = '\\';
 	        }
 	    }
-	    
+
 	    return c;
 	}
 
@@ -221,10 +221,10 @@ public class SimpleScanner {
 
 	public Token nextToken() {
 	    fTokenBuffer.setLength(0);
-	
+
 	    boolean madeMistake = false;
 	    int c = getChar();
-	
+
 	    while (c != EOFCHAR) {
 	        if (fPreprocessorToken != 0) {
 	            Token token= continuePPDirective(c);
@@ -232,7 +232,7 @@ public class SimpleScanner {
 	                return token;
 	            }
 	        }
-	        
+
 	        if ((c == ' ') || (c == '\r') || (c == '\t') || (c == '\n')) {
 	            do {
 	                c = getChar();
@@ -252,7 +252,7 @@ public class SimpleScanner {
                     madeMistake = true;
                     continue;
                 }
-	
+
 	            matchStringLiteral();
 	            return newToken(Token.tLSTRING);
 	        } else if (c == 'R' && !madeMistake) {
@@ -265,14 +265,14 @@ public class SimpleScanner {
                     madeMistake = true;
                     continue;
                 }
-	
+
 	            matchRawStringLiteral();
 	            return newToken(Token.tRSTRING);
 	        } else if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == '_') || (c > 255 && Character.isUnicodeIdentifierStart(c))) {
 	            madeMistake = false;
-	
+
 	            c = getChar();
-	
+
 	            while (((c >= 'a') && (c <= 'z'))
 	                || ((c >= 'A') && (c <= 'Z'))
 	                || ((c >= '0') && (c <= '9'))
@@ -280,34 +280,34 @@ public class SimpleScanner {
 	                || (c > 255 && Character.isUnicodeIdentifierPart(c))) {
 	                c = getChar();
 	            }
-	
+
 	            ungetChar(c);
-	
+
 	            String ident = fTokenBuffer.toString();
-	
+
 	            Object tokenTypeObject;
-	
+
 	            tokenTypeObject = fgKeywords.get(ident);
-	
+
 	            int tokenType = Token.tIDENTIFIER;
 	            if (tokenTypeObject != null)
 	                tokenType = ((Integer)tokenTypeObject).intValue();
-	
+
 	            return newToken(tokenType);
 	        } else if ((c >= '0') && (c <= '9') || c == '.') {
 	            boolean hex = false;
 	            boolean floatingPoint = c == '.';
 	            boolean firstCharZero = c == '0';
-	            
+
 	            c = getChar();
-	
+
                 if (firstCharZero && c == 'x') {
 	                hex = true;
 	                c = getChar();
 	            }
-	
+
                 int digits= 0;
-                
+
 	            while ((c >= '0' && c <= '9') || (hex && ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')))) {
 	            	++digits;
 	                c = getChar();
@@ -376,17 +376,17 @@ public class SimpleScanner {
 	            			c = getChar();
 	            	}
 	            }
-	
+
 	            ungetChar(c);
-	
+
 	            int tokenType;
 	            String result = fTokenBuffer.toString();
-	
+
 	            if (floatingPoint && result.equals(".")) //$NON-NLS-1$
 	                tokenType = Token.tDOT;
 	            else
 	                tokenType = floatingPoint ? Token.tFLOATINGPT : Token.tINTEGER;
-	
+
 	            return newToken(tokenType);
 	        } else if (c == '#') {
 	            return matchPPDirective();
@@ -395,7 +395,7 @@ public class SimpleScanner {
 	            case '\'':
 					matchCharLiteral();
 	                return newToken(Token.tCHAR);
-	
+
 	            case ':':
 	                c = getChar();
 	                if (c == ':') {
@@ -601,7 +601,7 @@ public class SimpleScanner {
 	            // throw EOF;
 	        }
 	    }
-	
+
 	    // we're done
 	    // throw EOF;
 	    return null;
@@ -634,7 +634,7 @@ public class SimpleScanner {
 	    // string
 	    boolean escaped= false;
 	    int c = getChar(true);
-	
+
 	    LOOP: for (;;) {
 	        if (c == EOFCHAR)
 	            break;
@@ -699,7 +699,7 @@ public class SimpleScanner {
 
 	/**
 	 * Matches a preprocessor directive.
-	 * 
+	 *
 	 * @return a preprocessor token
 	 */
 	private Token matchPPDirective() {
@@ -724,7 +724,7 @@ public class SimpleScanner {
 	                }
 	                matchCharLiteral();
 	                return newToken(Token.tCHAR);
-	                    
+
 	            case '"':
 	                if (fTokenBuffer.length() > 1) {
 	                    if (fPreprocessorToken==0) {
@@ -846,7 +846,7 @@ public class SimpleScanner {
 	    while (state != 2 && c != EOFCHAR) {
 	        if (c == '\n')
 	            encounteredNewline = true;
-	
+
 	        switch (state) {
 	            case 0 :
 	                if (c == '*')
