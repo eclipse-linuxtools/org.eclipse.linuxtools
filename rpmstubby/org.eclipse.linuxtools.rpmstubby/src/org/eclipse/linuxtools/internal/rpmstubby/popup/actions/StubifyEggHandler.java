@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Neil Guzman - python implementation
+ *     Neil Guzman - python implementation (B#350065)
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby.popup.actions;
 

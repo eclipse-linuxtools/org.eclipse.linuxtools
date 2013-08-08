@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Neil Guzman - python, ruby implementation
+ *    Neil Guzman - python, ruby, perl implementation (B#350065,B#350066)
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby.parser;
 
