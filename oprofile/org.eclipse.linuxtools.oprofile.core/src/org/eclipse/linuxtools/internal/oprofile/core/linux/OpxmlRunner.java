@@ -29,11 +29,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.internal.oprofile.core.OpxmlException;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
@@ -278,8 +280,9 @@ public class OpxmlRunner {
 
 		ArrayList<String> cmd = new ArrayList<String>();
 		cmd.add("opreport"); //$NON-NLS-1$
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY))
+			cmd.add(1,"--session-dir=" + Oprofile.OprofileProject.getProject().getLocationURI().getPath() + IPath.SEPARATOR + "oprofile_data"); //$NON-NLS-1$ //$NON-NLS-2$
 		Collections.addAll(cmd, args);
-
 		Process p = null;
 		try {
 			p = RuntimeProcessFactory.getFactory().exec(cmd.toArray(new String[0]), Oprofile.OprofileProject.getProject());

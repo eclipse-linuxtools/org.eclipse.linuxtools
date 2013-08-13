@@ -18,8 +18,10 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -33,6 +35,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
@@ -49,6 +52,10 @@ import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 	protected ILaunchConfiguration config;
+	private String OPROFILE_DATA = "oprofile_data"; //$NON-NLS-1$
+	private String SESSION_DIR = "--session-dir="; //$NON-NLS-1$
+	private String EVENTS = "--events="; //$NON-NLS-1$
+	private String APPEND = "--append"; //$NON-NLS-1$
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
@@ -61,10 +68,10 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
+		ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
 		if (!config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
 			//get the events to profile from the counters
 			OprofileCounter[] counters = oprofileCounters(config);
-			ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
 
 			for (int i = 0; i < counters.length; ++i) {
 				if (counters[i].getEnabled())
@@ -75,31 +82,72 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			events.toArray(daemonEvents);
 		}
 
-		if (!preExec(options, daemonEvents, launch)) return;
-
 		/*
 		 * this code written by QNX Software Systems and others and was
 		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
 		 */
-		//set up and launch the local c/c++ program
-		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(oprofileProject());
-		IPath workingDirPath = new Path(oprofileWorkingDirURI(config).getPath());
 
-		String arguments[] = getProgramArgumentsArray( config );
+		if (!preExec(options, daemonEvents, launch)) return;
 		Process process = null;
-		for(int i = 0; i < options.getExecutionsNumber(); i++){
-			process = launcher.execute(exePath, arguments, getEnvironment(config), workingDirPath, monitor);
-			DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
-			try{
-				process.waitFor();
-			} catch (InterruptedException e){
-				process.destroy();
-				Status status = new Status(IStatus.ERROR, OprofileLaunchPlugin.PLUGIN_ID, OprofileLaunchMessages.getString("oprofilelaunch.error.interrupted_error.status_message"));
-				throw new CoreException(status);
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
+			String arguments[] = getProgramArgumentsArray( config );
+			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(oprofileProject());
+			IPath workingDirPath = new Path(oprofileWorkingDirURI(config).getPath());
+			for(int i = 0; i < options.getExecutionsNumber(); i++){
+				process = launcher.execute(exePath, arguments, getEnvironment(config), workingDirPath, monitor);
+				DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
+				try{
+					process.waitFor();
+				} catch (InterruptedException e){
+					process.destroy();
+					Status status = new Status(IStatus.ERROR, OprofileLaunchPlugin.PLUGIN_ID, OprofileLaunchMessages.getString("oprofilelaunch.error.interrupted_error.status_message"));
+					throw new CoreException(status);
+				}
 			}
 		}
 
+		// Executing operf with the default or specified events,
+		// outputing the profiling data to the project dir/OPROFILE_DATA
+
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+			String eventsString=EVENTS;
+			for (int i=0;i<events.size();i++) {
+				eventsString+=events.get(i).getEvent().getText() + ":" + events.get(i).getEvent().getMinCount() + ","; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			ArrayList<String> argArray = new ArrayList<String>(Arrays.asList(getProgramArgumentsArray( config )));
+			IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(oprofileProject());
+			IPath workingDirPath = new Path(oprofileWorkingDirURI(config).getPath());
+			IFolder dataFolder = Oprofile.OprofileProject.getProject().getFolder(OPROFILE_DATA);
+			if(!dataFolder.exists()) {
+				dataFolder.create(false, true, null);
+			}
+			argArray.add(0, exePath.toOSString());
+			if (events.size()>0)
+				argArray.add(0,eventsString);
+			argArray.add(0, SESSION_DIR + oprofileWorkingDirURI(config).getPath() + IPath.SEPARATOR + OPROFILE_DATA);
+
+			for(int i = 0; i < options.getExecutionsNumber(); i++){
+				if (i!=0) argArray.add(APPEND);
+				String[] arguments = new String[argArray.size()];
+				arguments = argArray.toArray(arguments);
+				process = launcher.execute(Path.fromOSString(OprofileProject.OPERF_BINARY), arguments, getEnvironment(config), workingDirPath, monitor);
+				DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
+
+				try{
+					process.waitFor();
+				} catch (InterruptedException e){
+					process.destroy();
+					Status status = new Status(IStatus.ERROR, OprofileLaunchPlugin.PLUGIN_ID, OprofileLaunchMessages.getString("oprofilelaunch.error.interrupted_error.status_message"));
+					throw new CoreException(status);
+				}
+			}
+
+
+		}
+
 		postExec(options, daemonEvents, process);
+
 	}
 
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);
@@ -203,13 +251,13 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		}
 		return null;
 	}
-	 /**
-	  *
-	  * @param config
-	  * @return
-	  * @throws CoreException
-	  * @since 1.1
-	  */
+	/**
+	 *
+	 * @param config
+	 * @return
+	 * @throws CoreException
+	 * @since 1.1
+	 */
 	protected IPath getExePath(ILaunchConfiguration config) throws CoreException{
 		IPath exePath = CDebugUtils.verifyProgramPath( config );
 

@@ -20,12 +20,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,7 +48,9 @@ import org.eclipse.swt.widgets.Text;
  * This tab is used by the launcher to configure global oprofile run options.
  */
 public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
+
 	protected Text kernelImageFileText;
+	protected CCombo controlCombo;
 
 	protected Button checkSeparateLibrary;
 	protected Button checkSeparateKernel;
@@ -73,12 +77,19 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	public void initializeFrom(ILaunchConfiguration config) {
 		options.loadConfiguration(config);
-		
+		try {
+			if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$ 
+				controlCombo.setEnabled(false);
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		controlCombo.setText(options.getOprofileComboText());
 		kernelImageFileText.setText(options.getKernelImageFile());
 		executionsSpinner.setSelection(options.getExecutionsNumber());
-		
+
 		int separate = options.getSeparateSamples();
-		
+
 		if (separate == OprofileDaemonOptions.SEPARATE_NONE) {
 			checkSeparateLibrary.setSelection(false);
 			checkSeparateKernel.setSelection(false);
@@ -95,7 +106,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		options = new LaunchOptions();
 		options.saveConfiguration(config);
 	}
-	
+
 	@Override
 	public Image getImage() {
 		return OprofileLaunchPlugin.getImageDescriptor(OprofileLaunchPlugin.ICON_GLOBAL_TAB).createImage();
@@ -121,6 +132,26 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		p.setLayout(layout);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		p.setLayoutData(data);
+
+		Label l2 = new Label(p, SWT.NONE);
+		l2.setText(OprofileLaunchMessages.getString("tab.global.select")); //$NON-NLS-1$
+		data = new GridData();
+		data.horizontalSpan = 2;
+		l2.setLayoutData(data);
+
+		controlCombo = new CCombo(p, SWT.DROP_DOWN|SWT.READ_ONLY|SWT.BORDER);
+		controlCombo.setItems(new String[]{OprofileProject.OPERF_BINARY, OprofileProject.OPCONTROL_BINARY});
+		controlCombo.select(0);
+		controlCombo.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent mev) {
+				OprofileProject.setProfilingBinary(controlCombo.getText());
+				options.setOprofileComboText(controlCombo.getText());
+				updateLaunchConfigurationDialog();	
+			}
+		});
+		data = new GridData();
+		data.horizontalSpan = 2;
+		controlCombo.setLayoutData(data);
 
 		Label l = new Label(p, SWT.NONE);
 		l.setText(OprofileLaunchMessages.getString("tab.global.kernelImage.label.text")); //$NON-NLS-1$
@@ -199,7 +230,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	private void handleCheckSelected(Button button) {
 		int oldSeparate = options.getSeparateSamples();
 		int newSeparate = oldSeparate;		//initalize
-		
+
 		if (button == checkSeparateLibrary) {
 			if (button.getSelection()) {
 				newSeparate = oldSeparate | OprofileDaemonOptions.SEPARATE_LIBRARY;
@@ -213,7 +244,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 				newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_KERNEL;
 			}
 		}
-		
+
 		options.setSeparateSamples(newSeparate);
 
 		updateLaunchConfigurationDialog();
@@ -275,13 +306,13 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 				MessageBox mb = new MessageBox(shell, SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
 				mb.setMessage(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.error.kernelDoesNotExist.text")); 	//$NON-NLS-1$
 				switch (mb.open()) {
-					case SWT.RETRY:
-						// Ok, it's recursive, but it shouldn't matter
-						showFileDialog(shell);
-						break;
-					default:
-					case SWT.CANCEL:
-						break;
+				case SWT.RETRY:
+					// Ok, it's recursive, but it shouldn't matter
+					showFileDialog(shell);
+					break;
+				default:
+				case SWT.CANCEL:
+					break;
 				}
 			} else {
 				kernelImageFileText.setText(newKernel);
