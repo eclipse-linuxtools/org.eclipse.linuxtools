@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,13 +31,12 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 	@Before
 	public void init() throws CoreException {
 		super.setUp();
+		String testText = "Source0: test.zip\nPatch0: test.patch\n";
+		newFile(testText);
 	}
 
 	@Test
 	public void testDetectHyperlinks() throws PartInitException {
-		String testText = "Source0: test.zip\n";
-		newFile(testText);
-
 		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage(), testFile,
 				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
@@ -57,6 +56,24 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 		returned = elementDetector.detectHyperlinks(
 				editor.getSpecfileSourceViewer(), region, false);
 		assertNull(returned);
+	}
+
+	@Test
+	public void testDetectNoPatchInProject() throws PartInitException {
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), testFile,
+				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+
+		editor = (SpecfileEditor) openEditor;
+		editor.doRevertToSaved();
+		SourcesFileHyperlinkDetector elementDetector = new SourcesFileHyperlinkDetector();
+		elementDetector.setEditor(editor);
+		// test patch element
+		IRegion region = new Region(27, 0);
+		IHyperlink[] returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
+		// 1 = Create test.patch because test.patch doesn't exist in current project
+		assertEquals(1, returned.length);
 	}
 
 	@Test

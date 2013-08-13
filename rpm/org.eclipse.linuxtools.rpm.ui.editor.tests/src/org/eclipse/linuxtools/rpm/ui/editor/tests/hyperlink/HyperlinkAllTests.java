@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ MailHyperlinkDetectorTest.class,
 		SourcesFileHyperlinkDetectorTest.class,
 		SpecfileElementHyperlinkDetectorTest.class,
-		URLHyperlinkWithMacroDetectorTest.class })
+		URLHyperlinkWithMacroDetectorTest.class,
+		SourcesFileCreateHyperlinkTest.class })
 public class HyperlinkAllTests {
 }

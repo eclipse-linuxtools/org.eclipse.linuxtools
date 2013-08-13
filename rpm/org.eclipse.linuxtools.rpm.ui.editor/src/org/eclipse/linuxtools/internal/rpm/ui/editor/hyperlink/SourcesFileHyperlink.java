@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkText()
 	 */
 	public String getHyperlinkText() {
-		return Messages.SourcesFileHyperlink_0 + fileName;
+		return Messages.SourcesFileHyperlink_0 + ' ' + fileName;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 	public void open() {
 		IContainer container = original.getParent();
 		IResource resourceToOpen = container.findMember(fileName);
-		if (resourceToOpen == null || !resourceToOpen.exists()) {
+		if (resourceToOpen == null) {
 			IResource sourcesFolder = container.getParent().findMember(
 					"SOURCES"); //$NON-NLS-1$
 			resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
