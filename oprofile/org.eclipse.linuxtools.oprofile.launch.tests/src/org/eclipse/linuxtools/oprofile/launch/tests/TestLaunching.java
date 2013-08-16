@@ -18,6 +18,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileSetupTab;
@@ -77,7 +78,7 @@ public class TestLaunching extends AbstractTest {
 		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
 		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-
+		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
@@ -109,6 +110,7 @@ public class TestLaunching extends AbstractTest {
 		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
+		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertFalse(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
