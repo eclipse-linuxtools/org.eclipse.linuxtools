@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.swtbot.tests;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
+import org.eclipse.ui.IViewReference;
+import org.hamcrest.Matcher;
 
 /**
  * Specialized abstract SWTBot test for views containing
@@ -23,7 +27,9 @@ public abstract class AbstractStyledTextViewTest extends AbstractSWTBotTest {
 	@Override
 	protected void testPerfView() {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		SWTBotView view = bot.viewByTitle(getViewId());
+
+		Matcher<IViewReference> withPartName = withPartName(getViewId());
+		SWTBotView view = bot.view(withPartName);
 		assertNotNull(view);
 
 		view.setFocus();
