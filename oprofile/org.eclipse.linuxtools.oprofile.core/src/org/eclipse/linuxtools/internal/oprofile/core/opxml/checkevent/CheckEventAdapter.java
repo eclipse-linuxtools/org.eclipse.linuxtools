@@ -129,8 +129,8 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	}
 
 	/**
-	 * Check if /dev/oprofile/N exists where N is the counter selected
-	 * @return true if /dev/oprofile/N exists, and false otherwise.
+	 * Check if the system path at which the counter is defined exists
+	 * @return true if the system path corresponding to the counter exists, and false otherwise.
 	 */
 	private boolean isValidCounter() {
 		/*
@@ -138,6 +138,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 		 * hard-coded in a list. This method may not be entirely correct,
 		 * although much simpler.
 		 */
+
 		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
 			IRemoteFileProxy proxy = null;
 			try {
@@ -145,12 +146,14 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
-			IFileStore fileStore = proxy.getResource(InfoAdapter.DEV_OPROFILE + cpuCounter);
-			if (! fileStore.fetchInfo().exists()){
-				return false;
+			for (String path : InfoAdapter.COUNTER_PATHS) {
+				IFileStore fileStore = proxy.getResource(path + cpuCounter);
+				if (fileStore.fetchInfo().exists()){
+					return true;
+				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private void createXML() {

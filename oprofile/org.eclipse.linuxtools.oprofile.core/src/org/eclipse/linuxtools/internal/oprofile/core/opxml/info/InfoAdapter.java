@@ -84,6 +84,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	public static final String CPUTYPE = DEV_OPROFILE + "cpu_type"; //$NON-NLS-1$
 	public static final String OP_SHARE = "/usr/share/oprofile/"; //$NON-NLS-1$
 	public static final String EVENTS = "events"; //$NON-NLS-1$
+	public static final String [] COUNTER_PATHS = new String [] { DEV_OPROFILE, DEV_OPROFILE + "stats/cpu" }; //$NON-NLS-1$
 	
 	public static final String SAMPLE_DIR_VAL = "/var/lib/oprofile/samples/"; //$NON-NLS-1$
 	public static final String LOCK_FILE_VAL = "/var/lib/oprofile/lock"; //$NON-NLS-1$
@@ -338,6 +339,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 		 * module was not initialized.
 		 * TODO: Make possible to select more than one event in a tab.
 		 */
+
 		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
 			return 1;
 		}
@@ -346,10 +348,18 @@ public class InfoAdapter extends AbstractDataAdapter{
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+
+		boolean exists = false;
 		final int MAXCPUS = Integer.MAX_VALUE;
 		for (int i = 0; i < MAXCPUS; i++){
-			IFileStore fileStore = proxy.getResource(DEV_OPROFILE + i);
-			if(!fileStore.fetchInfo().exists()){
+			exists = false;
+			for (String path : COUNTER_PATHS) {
+				IFileStore fileStore = proxy.getResource(path + i);
+				if(fileStore.fetchInfo().exists()){
+					exists = true;
+				}
+			}
+			if (!exists) {
 				return i;
 			}
 		}
