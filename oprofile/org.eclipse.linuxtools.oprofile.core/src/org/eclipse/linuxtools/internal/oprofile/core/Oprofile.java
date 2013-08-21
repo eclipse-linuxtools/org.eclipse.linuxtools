@@ -273,7 +273,7 @@ public class Oprofile
 		private static IProject project;
 		public final static String OPERF_BINARY = "operf"; //$NON-NLS-1$
 		public final static String OPCONTROL_BINARY = "opcontrol"; //$NON-NLS-1$
-		private static String binary = OPERF_BINARY;
+		private static String binary = OPCONTROL_BINARY;
 
 
 		/**
