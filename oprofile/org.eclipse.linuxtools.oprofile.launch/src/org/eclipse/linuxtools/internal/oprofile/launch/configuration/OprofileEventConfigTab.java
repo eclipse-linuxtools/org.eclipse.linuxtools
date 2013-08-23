@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 
 /**
@@ -79,6 +80,10 @@ public class OprofileEventConfigTab extends AbstractEventConfigTab {
 
 	@Override
 	protected boolean hasPermissions(IProject project) {
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+			return true;
+		}
+
 		Boolean perms = getPermissions();
 		try{
 			if (perms == null){
