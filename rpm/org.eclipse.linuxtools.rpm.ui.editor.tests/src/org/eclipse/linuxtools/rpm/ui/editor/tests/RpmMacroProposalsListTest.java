@@ -35,6 +35,17 @@ public class RpmMacroProposalsListTest {
 		if (!macroProposalsList.findKey("%_libdir"))
 			fail("buildMacroList faild, %_libdir macro was not found!");
 	}
+	
+	/**
+	 * Configure is the most common macro that is multi-line so it tests our parsing of multiline macros.
+	 */
+	@Test
+	public final void buildMacroListMultiLineMacro() {
+		macroProposalsList.buildMacroList();
+		if (!macroProposalsList.findKey("%configure")) {
+			fail("buildMacroList faild, %configure macro was not found!");
+		}
+	}
 
 	@Test
 	public final void testGetProposals() {
