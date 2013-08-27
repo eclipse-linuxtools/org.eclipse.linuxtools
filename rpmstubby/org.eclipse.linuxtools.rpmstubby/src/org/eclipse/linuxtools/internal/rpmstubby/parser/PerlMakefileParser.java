@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -334,10 +335,10 @@ public class PerlMakefileParser {
 	 */
 	private void resolveVariables(Map<String, String> variables) {
 		String tempVal = "";
-		for (String key : variables.keySet()) {
-			tempVal = variables.get(key);
+		for (Entry<String,String> entry : variables.entrySet()) {
+			tempVal = entry.getValue();
 			if (mVariableDefinitions.containsKey(tempVal)) {
-				variables.put(key, mVariableDefinitions.get(tempVal));
+				variables.put(entry.getKey(), mVariableDefinitions.get(tempVal));
 			}
 		}
 	}
@@ -389,8 +390,8 @@ public class PerlMakefileParser {
 	 */
 	private static void cleanupVariables(Map<String, String> variables) {
 		String val = "";
-		for (String key : variables.keySet()) {
-			val = cleanUpString(removeVariableSigils(variables.get(key)))
+		for (Entry<String,String> entry : variables.entrySet()) {
+			val = cleanUpString(removeVariableSigils(entry.getValue()))
 					.trim();
 			if (val.startsWith("(") || val.startsWith("[")
 					|| val.startsWith("{")) {
@@ -400,7 +401,7 @@ public class PerlMakefileParser {
 				val = val.substring(0, val.length() - 1);
 			}
 			val = cleanUpString(val);
-			variables.put(key, val);
+			variables.put(entry.getKey(), val);
 		}
 	}
 
