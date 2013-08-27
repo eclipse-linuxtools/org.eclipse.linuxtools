@@ -34,13 +34,13 @@ import org.w3c.dom.NodeList;
  * that data to modify it into the format expected by the SAX parser.
  */
 public class CheckEventAdapter extends AbstractDataAdapter {
-	
+
 	public static final String CHECK_EVENTS = "check-events"; //$NON-NLS-1$
 	public static final String RESULT = "result"; //$NON-NLS-1$
 	public static final String UNIT_MASKS = "unit_masks"; //$NON-NLS-1$
 	public static final String UNIT_MASK = "unit_mask"; //$NON-NLS-1$
 	public static final String MASK = "mask"; //$NON-NLS-1$
-	
+
 	private Element event; // the element corresponding to the event id
 	private String eventName; // the id corresponding to the event
 	private String unitMask; // the unit mask for the event
@@ -48,12 +48,12 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	private Document resultDoc; // the document to hold the generated xml
 	private Element resultRoot; // the root corresponding to the generated xml
 	private String returnCode; // the return code to be used in the generated xml
-	
+
 	public CheckEventAdapter(String ctr, String event, String umask) {
 		cpuCounter = ctr;
 		eventName = event;
 		unitMask = umask;
-		
+
 		this.event = EventIdCache.getInstance().getElementWithName(eventName);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -76,12 +76,12 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			returnCode = "invalid-counter"; //$NON-NLS-1$
 			return;
 		}
-		
+
 		if (! isValidUnitMask()){
 			returnCode = "invalid-um"; //$NON-NLS-1$
 			return;
 		}
-		
+
 		returnCode = "ok"; //$NON-NLS-1
 	}
 
@@ -93,13 +93,13 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	private boolean isValidUnitMask() {
 		TreeSet<Integer> bitMaskSet = new TreeSet<Integer> ();
 		Element unitMasksTag = (Element) event.getElementsByTagName(UNIT_MASKS).item(0);
-		
+
 		if (unitMasksTag == null){
 			return true;
 		}
-		
+
 		NodeList unitMasksList = unitMasksTag.getElementsByTagName(UNIT_MASK);
-		
+
 		// type:exclusive unit mask support
 		for (int i = 0; i < unitMasksList.getLength(); i++){
 			Element unitMaskElem = (Element) unitMasksList.item(i);
@@ -109,7 +109,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			}
 			bitMaskSet.add(Integer.parseInt(val));
 		}
-		
+
 		// type:bitmask unit mask support
 		String unitMaskType = EventIdCache.getInstance().getUnitMaskType(eventName);
 		if (unitMaskType.equals("bitmask")){ //$NON-NLS-1$
@@ -124,7 +124,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			}
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -142,12 +142,12 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			IRemoteFileProxy proxy = null;
 			try {
 				proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+				IFileStore fileStore = proxy.getResource(InfoAdapter.DEV_OPROFILE + cpuCounter);
+				if (! fileStore.fetchInfo().exists()){
+					return false;
+				}
 			} catch (CoreException e) {
 				e.printStackTrace();
-			}
-			IFileStore fileStore = proxy.getResource(InfoAdapter.DEV_OPROFILE + cpuCounter);
-			if (! fileStore.fetchInfo().exists()){
-				return false;
 			}
 		}
 		return true;
@@ -165,5 +165,5 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	public Document getDocument() {
 		return resultDoc;
 	}
-	
+
 }
