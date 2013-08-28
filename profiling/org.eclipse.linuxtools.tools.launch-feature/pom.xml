@@ -21,7 +21,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>Linux Tools Valgrind Tools Integration Feature</name>
+  <name>Linux Tools Launch Framework Feature</name>
   
   <build>
     <plugins>
