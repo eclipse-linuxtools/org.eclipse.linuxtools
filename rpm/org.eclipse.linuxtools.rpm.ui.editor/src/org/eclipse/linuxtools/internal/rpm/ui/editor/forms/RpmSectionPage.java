@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.forms;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Text;
@@ -47,11 +45,6 @@ public class RpmSectionPage extends FormPage {
 		toolkit.createLabel(form.getBody(), rpmSection);
 		final Text text = toolkit.createText(form.getBody(), section.getContents(),
 				SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
-		text.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				section.setContents(text.getText());
-			}
-		});
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true;

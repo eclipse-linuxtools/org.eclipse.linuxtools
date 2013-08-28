@@ -76,9 +76,4 @@ public class SpecfileSection extends SpecfileElement {
 		return ""; //$NON-NLS-1$
 	}
 
-	public void setContents(String newContent) {
-		// TODO Modify document to change the contents
-		
-	}
-
 }
