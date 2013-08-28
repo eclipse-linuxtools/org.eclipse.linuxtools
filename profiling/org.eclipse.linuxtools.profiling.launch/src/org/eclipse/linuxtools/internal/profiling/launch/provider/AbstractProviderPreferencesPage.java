@@ -41,6 +41,7 @@ public class AbstractProviderPreferencesPage extends
 	// Profiling type
 	private String type;
 
+	@Override
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) {
 		Hashtable<String, String> parameters = (Hashtable<String, String>) data;
@@ -58,6 +59,7 @@ public class AbstractProviderPreferencesPage extends
 		super(GRID);
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 			final IPreferenceStore store = new ScopedPreferenceStore(
 					ConfigurationScope.INSTANCE, ProviderProfileConstants.PLUGIN_ID);

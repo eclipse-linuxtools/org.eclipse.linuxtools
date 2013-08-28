@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.profiling.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 
 public class RemoteProxyManager implements IRemoteProxyManager {
-	
+
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 	/**
 	 * @since 2.1
@@ -41,20 +41,20 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	 */
 	protected RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
 	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<String, IRemoteProxyManager>();
-	
+
 	/**
 	 * @since 2.1
 	 */
 	protected RemoteProxyManager() {
 		// do nothing
 	}
-	
+
 	public static RemoteProxyManager getInstance() {
 		if (manager == null)
 			manager = new RemoteProxyManager();
 		return manager;
 	}
-	
+
 	LocalFileProxy getLocalFileProxy(URI uri) {
 		if (lfp == null)
 			lfp = new LocalFileProxy(uri);
@@ -85,6 +85,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return remoteManager;
 	}
 
+	@Override
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
@@ -98,6 +99,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return getLocalFileProxy(uri);
 	}
 
+	@Override
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
 		if (project == null) {
 			return getLocalFileProxy(null);
@@ -112,6 +114,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return getFileProxy(projectURI);
 	}
 
+	@Override
 	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
@@ -122,6 +125,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return new LocalLauncher();
 	}
 
+	@Override
 	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
 		if (project == null){
 			return new LocalLauncher();
@@ -135,6 +139,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return getLauncher(projectURI);
 	}
 
+	@Override
 	public String getOS(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
@@ -145,6 +150,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return Platform.getOS();
 	}
 
+	@Override
 	public String getOS(IProject project) throws CoreException {
 		String scheme = mapping.getSchemeFromNature(project);
 		if (scheme!=null) {

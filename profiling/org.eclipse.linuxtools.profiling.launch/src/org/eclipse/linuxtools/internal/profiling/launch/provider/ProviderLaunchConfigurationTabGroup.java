@@ -27,6 +27,7 @@ public class ProviderLaunchConfigurationTabGroup extends
 	// Profiling type name to be displayed.
 	private String name;
 
+	@Override
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) {
 		Map<String, String> parameters = (Map<String, String>) data;

@@ -152,7 +152,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
             });
         }
         projectSettingsGroup.addDisposeListener(new DisposeListener() {
-            public void widgetDisposed(DisposeEvent event) {
+            @Override
+			public void widgetDisposed(DisposeEvent event) {
                 projectSettingsGroup = null;
                 radioButtons = null;
             }

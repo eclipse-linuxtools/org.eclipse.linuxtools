@@ -54,10 +54,12 @@ import org.eclipse.ui.dialogs.TwoPaneElementSelector;
 
 public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
+	@Override
 	public void launch(IEditorPart editor, String mode) {
 		searchAndLaunch(new Object[] { editor.getEditorInput() }, mode);
 	}
 
+	@Override
 	public void launch(ISelection selection, String mode) {
 		if (selection instanceof IStructuredSelection) {
 			searchAndLaunch(((IStructuredSelection) selection).toArray(), mode);
@@ -198,6 +200,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				final List<IBinary> results = new ArrayList<IBinary>();
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(getActiveWorkbenchShell());
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
+					@Override
 					public void run(IProgressMonitor pm) throws InterruptedException {
 						int nElements = elements.length;
 						pm.beginTask(Messages.getString("ProfileLaunchShortcut.Looking_for_executables"), nElements); //$NON-NLS-1$

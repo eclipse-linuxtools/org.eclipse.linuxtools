@@ -245,6 +245,7 @@ public class ProviderFramework {
 		}
 
 		Collections.sort(configList, new Comparator<IConfigurationElement>() {
+			@Override
 			public int compare(IConfigurationElement c1,
 					IConfigurationElement c2) {
 				int p1, p2;

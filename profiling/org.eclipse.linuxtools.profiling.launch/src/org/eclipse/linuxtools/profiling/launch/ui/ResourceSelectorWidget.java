@@ -205,6 +205,7 @@ public class ResourceSelectorWidget {
 			 *
 			 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
 			 */
+			@Override
 			public void modifyText(ModifyEvent e) {
 				updateFilesystemSelector(uriField.getText());
 			}

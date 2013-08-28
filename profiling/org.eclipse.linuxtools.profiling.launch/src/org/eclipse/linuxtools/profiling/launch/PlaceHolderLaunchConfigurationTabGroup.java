@@ -26,6 +26,7 @@ public class PlaceHolderLaunchConfigurationTabGroup extends AbstractLaunchConfig
     /* (non-Javadoc)
      * @see org.eclipse.debug.ui.ILaunchConfigurationTabGroup#createTabs(org.eclipse.debug.ui.ILaunchConfigurationDialog, java.lang.String)
      */
+	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
         setTabs(new ILaunchConfigurationTab[0]);
     }

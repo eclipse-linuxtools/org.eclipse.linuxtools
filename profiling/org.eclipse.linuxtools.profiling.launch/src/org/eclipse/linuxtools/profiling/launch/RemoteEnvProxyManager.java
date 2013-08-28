@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class RemoteEnvProxyManager extends RemoteProxyManager implements IRemoteEnvProxyManager {
 
+	@Override
 	public Map<String, String> getEnv(IProject project) throws CoreException {
 		String scheme = mapping.getSchemeFromNature(project);
 		if (scheme!=null) {
@@ -35,6 +36,7 @@ public class RemoteEnvProxyManager extends RemoteProxyManager implements IRemote
 		return getEnv(projectURI);
 	}
 
+	@Override
 	public Map<String, String> getEnv(URI uri) throws CoreException {
 		String scheme = uri.getScheme();
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
