@@ -31,7 +31,7 @@ import org.eclipse.ptp.remote.core.exception.RemoteConnectionException;
 public class RDTProxyManager implements IRemoteEnvProxyManager {
 
 	public final static String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
-	
+
 	@Override
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
 		return new RDTFileProxy(uri);
@@ -69,7 +69,8 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
 		return getOS(uri);
 	}
 
-	public Map<String, String> getEnv(URI uri) throws CoreException {
+	@Override
+	public Map<String, String> getEnv(URI uri) {
 		IRemoteServices services = RemoteServices.getRemoteServices(uri);
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 		if(!connection.isOpen()) {
@@ -84,7 +85,8 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
 		return connection.getEnv();
 	}
 
-	public Map<String, String> getEnv(IProject project) throws CoreException {
+	@Override
+	public Map<String, String> getEnv(IProject project) {
 		URI uri = project.getLocationURI();
 		return getEnv(uri);
 	}
