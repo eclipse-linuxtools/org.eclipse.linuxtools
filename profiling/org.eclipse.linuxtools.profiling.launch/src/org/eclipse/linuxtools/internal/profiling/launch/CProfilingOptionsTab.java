@@ -49,7 +49,7 @@ public class CProfilingOptionsTab extends AbstractProfilingOptionsTab {
 			String[] categories = ProviderFramework.getProviderCategories();
 			if (categories.length == 0) {
 				setErrorMessage(Messages.ProfilingTab_no_profilers_installed);
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 			for (String category : categories) {
 				// Give precedence to timing category if present

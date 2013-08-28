@@ -33,10 +33,10 @@ public class AbstractProviderPreferencesPage extends
 		FieldEditorPreferencePage implements IWorkbenchPreferencePage, IExecutableExtension {
 
 	// Launch provider extension point tool information attribute
-	private static final String PROVIDER_ATT_INFO = "information";
+	private static final String PROVIDER_ATT_INFO = "information"; //$NON-NLS-1$
 
 	// Launch provider extension point tool description attribute
-	private static final String PROVIDER_ATT_DESC = "description";
+	private static final String PROVIDER_ATT_DESC = "description"; //$NON-NLS-1$
 
 	// Profiling type
 	private String type;
@@ -48,7 +48,7 @@ public class AbstractProviderPreferencesPage extends
 				.get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);
 
 		if (profilingType == null) {
-			profilingType = "";
+			profilingType = ""; //$NON-NLS-1$
 		}
 
 		setProfilingType(profilingType);
@@ -98,8 +98,8 @@ public class AbstractProviderPreferencesPage extends
 			String toolName = entry.getKey();
 
 			// Append tool description to tool name if available.
-			if (toolDescription != null && !toolDescription.equals("")) {
-				toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$
+			if (toolDescription != null && !toolDescription.equals("")) { //$NON-NLS-1$
+				toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 
 			providerList[i][0] = toolName;
@@ -126,7 +126,7 @@ public class AbstractProviderPreferencesPage extends
 			// Set tool tip description text.
 			String toolDescription = ProviderFramework.getToolInformationFromId(curProviderId,
 					PROVIDER_ATT_INFO);
-			if (toolDescription != null && !toolDescription.equals("")) {
+			if (toolDescription != null && !toolDescription.equals("")) { //$NON-NLS-1$
 				control.setToolTipText(toolDescription);
 			}
 		}
@@ -134,13 +134,13 @@ public class AbstractProviderPreferencesPage extends
 
 	/**
 	 * Return the help context id to use if the help button is pushed.
-	 * 
+	 *
 	 * @return the help context id
 	 */
 	private String getHelpContextId() {
 		return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
 	}
- 
+
 	/**
 	 * Set profiling type.
 	 *

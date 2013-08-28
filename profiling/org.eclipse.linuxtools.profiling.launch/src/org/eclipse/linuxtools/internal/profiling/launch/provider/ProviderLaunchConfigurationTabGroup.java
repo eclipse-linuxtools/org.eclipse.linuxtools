@@ -36,10 +36,10 @@ public class ProviderLaunchConfigurationTabGroup extends
 				.get(ProviderProfileConstants.INIT_DATA_NAME_KEY);
 
 		if (profilingType == null) {
-			profilingType = "";
+			profilingType = ""; //$NON-NLS-1$
 		}
 		if (profilingTypeName == null) {
-			profilingTypeName = "";
+			profilingTypeName = ""; //$NON-NLS-1$
 		}
 
 		setProfilingType(profilingType);

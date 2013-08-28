@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
  */
 public class ConfigUtils {
 
-	private final static String EMPTY_STRING = "";
+	private final static String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private ILaunchConfiguration config;
 
@@ -135,13 +135,13 @@ public class ConfigUtils {
 		String proName = getProjectName(configuration);
 		if (proName == null) {
 			throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-					"Messages.AbstractParallelLaunchConfigurationDelegate_Project_not_specified"));
+					"Messages.AbstractParallelLaunchConfigurationDelegate_Project_not_specified")); //$NON-NLS-1$
 		}
 
 		IProject project = getProject(proName);
 		if (project == null || !project.exists() || !project.isOpen()) {
 			throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-					"Messages.AbstractParallelLaunchConfigurationDelegate_Project_does_not_exist_or_is_not_a_project"));
+					"Messages.AbstractParallelLaunchConfigurationDelegate_Project_does_not_exist_or_is_not_a_project")); //$NON-NLS-1$
 		}
 
 		return project;
