@@ -7,12 +7,11 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -21,19 +20,21 @@ import org.eclipse.ui.PlatformUI;
 
 public class ExportHandler extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	@Override
+	public Object execute(ExecutionEvent event) {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 				IWorkbenchWizard wizard = new ValgrindExportWizard();
 				wizard.init(PlatformUI.getWorkbench(), null);
-				
+
 				WizardDialog dialog = new WizardDialog(parent, wizard);
 				dialog.open();
-			}							
+			}
 		});
-		
+
 		return null;
-	}	
+	}
 
 }

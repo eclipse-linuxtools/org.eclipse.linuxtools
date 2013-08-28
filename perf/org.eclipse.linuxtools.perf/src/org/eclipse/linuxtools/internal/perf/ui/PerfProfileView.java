@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.ui;
 
 import org.eclipse.jface.action.Action;
@@ -43,7 +43,7 @@ public class PerfProfileView extends ViewPart {
 	private TreeViewer viewer;
 	private DrillDownAdapter drillDownAdapter;
 	private Action doubleClickAction;
-	
+
 	static class NameSorter extends ViewerSorter {
 		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
@@ -61,24 +61,24 @@ public class PerfProfileView extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		drillDownAdapter = new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new PerfViewContentProvider());
-		
+
 		viewer.setLabelProvider(new PerfViewLabelProvider());
 		viewer.setSorter(new NameSorter());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer"); //$NON-NLS-1$
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
 	}
-	
+
 	public void refreshModel() {
 		viewer.setInput(PerfPlugin.getDefault().getModelRoot());
 		viewer.refresh();
 	}
 
 	private void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			@Override
@@ -105,7 +105,7 @@ public class PerfProfileView extends ViewPart {
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
-	
+
 	private void fillLocalToolBar(IToolBarManager manager) {
 		drillDownAdapter.addNavigationActions(manager);
 	}
@@ -123,7 +123,7 @@ public class PerfProfileView extends ViewPart {
 	public TreeViewer getTreeViewer () {
 		return viewer;
 	}
-	
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */

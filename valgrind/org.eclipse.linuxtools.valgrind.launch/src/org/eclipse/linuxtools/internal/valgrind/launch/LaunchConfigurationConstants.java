@@ -39,7 +39,7 @@ public final class LaunchConfigurationConstants {
 	// 3.6.0 specific
 	public static final String ATTR_GENERAL_DSYMUTIL = PLUGIN_ID + ".GENERAL_DSYMUTIL"; //$NON-NLS-1$
 
-	public static final String DEFAULT_TOOL = PLUGIN_ID + ".memcheck";;
+	public static final String DEFAULT_TOOL = PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
 
 	public static final boolean DEFAULT_GENERAL_TRACECHILD = false;
 	public static final boolean DEFAULT_GENERAL_CHILDSILENT = true; // necessary for parsing

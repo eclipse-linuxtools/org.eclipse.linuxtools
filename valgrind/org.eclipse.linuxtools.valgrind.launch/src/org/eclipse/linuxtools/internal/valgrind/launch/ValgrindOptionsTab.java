@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  * Martin Oberhuber (Wind River) - [354342] make valgrind version changeable
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import java.util.Arrays;
@@ -93,24 +93,24 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 	protected boolean isInitializing = false;
 	protected boolean initDefaults = false;
-	
+
 	protected Exception ex;
-	
+
 	/**
 	 * @since 1.2
 	 */
 	protected boolean noToolCombo;
-	
+
 	private Version valgrindVersion;
 	private boolean checkVersion;
-	
+
 	public ValgrindOptionsTab() {
 		this(true);
 	}
-	
+
 	public ValgrindOptionsTab(boolean checkVersion) {
 		this.checkVersion = checkVersion;
-	}	
+	}
 
 	/**
 	 * Set the version of Valgrind that the Launch UI shall use.
@@ -121,7 +121,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	public void setValgrindVersion(Version v) {
 		valgrindVersion = v;
 	}
-	
+
 	/**
 	 * Return the version of Valgrind that the Launch UI is being configured against
 	 * @return the valgrind version, or <code>null</code> if no version has been detected or set.
@@ -129,7 +129,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	public Version getValgrindVersion() {
 		return valgrindVersion;
 	}
-	
+
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
@@ -137,11 +137,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		}
 	};
 	protected ModifyListener modifyListener = new ModifyListener() {
+		@Override
 		public void modifyText(ModifyEvent e) {
-			updateLaunchConfigurationDialog();	
-		}			
+			updateLaunchConfigurationDialog();
+		}
 	};
-	
+
+	@Override
 	public void createControl(Composite parent) {
 		// Check for exception
 		if (ex != null) {
@@ -151,9 +153,9 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		scrollTop.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		scrollTop.setExpandVertical(true);
 		scrollTop.setExpandHorizontal(true);
-		
+
 		setControl(scrollTop);
-		
+
 		top = new Composite(scrollTop, SWT.NONE);
 		top.setLayout(new GridLayout());
 
@@ -183,18 +185,18 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		createErrorOptions(generalTop);
 
 		generalTab.setControl(generalTop);
-		
+
 		TabItem suppTab = new TabItem(optionsFolder, SWT.NONE);
 		suppTab.setText(Messages.getString("ValgrindOptionsTab.Suppressions")); //$NON-NLS-1$
-		
+
 		Composite suppTop = new Composite(optionsFolder, SWT.NONE);
 		suppTop.setLayout(new GridLayout());
 		suppTop.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		createSuppressionsOption(suppTop);
-		
+
 		suppTab.setControl(suppTop);
-		
+
 		toolTab = new TabItem(optionsFolder, SWT.NONE);
 		toolTab.setText(Messages.getString("ValgrindOptionsTab.Tool")); //$NON-NLS-1$
 
@@ -203,10 +205,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTabHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		toolTab.setControl(dynamicTabHolder);
-		
+
 		scrollTop.setContent(top);
 		recomputeSize();
-		
+
 		updateLaunchConfigurationDialog();
 	}
 
@@ -231,6 +233,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		toolsCombo.setItems(names);
 
 		toolsCombo.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				// user selected change, set defaults in new tool
 				if (!isInitializing) {
@@ -240,7 +243,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 					handleToolChanged();
 					updateLaunchConfigurationDialog();
 				}
-			}			
+			}
 		});
 	}
 
@@ -248,7 +251,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		if (str.length() > 0) {
 			char[] buf = str.toCharArray();
 			buf[0] = Character.toUpperCase(buf[0]);
-			
+
 			str = String.valueOf(buf);
 		}
 		return str;
@@ -322,9 +325,9 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		maxStackFrameLabel.setText(Messages.getString("ValgrindOptionsTab.max_size_of_stack_frame")); //$NON-NLS-1$
 		maxStackFrameSpinner = new Spinner(maxStackFrameTop, SWT.BORDER);
 		maxStackFrameSpinner.setMaximum(Integer.MAX_VALUE);
-		maxStackFrameSpinner.addModifyListener(modifyListener);	
+		maxStackFrameSpinner.addModifyListener(modifyListener);
 		maxStackFrameSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		//Option only visible for valgrind > 3.4.0
 		mainStackSizeTop = new Composite(errorTop, SWT.NONE);
 		GridLayout mainStackSizeLayout = new GridLayout(2, false);
@@ -344,7 +347,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		mainStackSizeSpinner.addModifyListener(modifyListener);
 		mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		mainStackSizeTop.setVisible(false);
-		
+
 		//Option only visible for valgrind > 3.6.0
 		dSymUtilButton = new Button(errorTop, SWT.CHECK);
 		dSymUtilButton.setText(Messages.getString("ValgrindOptionsTab.dsymutil")); //$NON-NLS-1$
@@ -366,16 +369,16 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	protected void createSuppressionsOption(Composite top) {
-		Composite browseTop = new Composite(top, SWT.BORDER);		
+		Composite browseTop = new Composite(top, SWT.BORDER);
 		browseTop.setLayout(new GridLayout(2, false));
 		GridData browseData = new GridData(GridData.FILL_BOTH);
 		browseTop.setLayoutData(browseData);
 
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
 		suppFileLabel.setText(Messages.getString("ValgrindOptionsTab.suppressions_file")); //$NON-NLS-1$
-		
+
 		createVerticalSpacer(browseTop, 1);
-		
+
 		suppFileList = new List(browseTop, SWT.BORDER);
 		suppFileList.setLayoutData(new GridData(GridData.FILL_BOTH));
 
@@ -384,7 +387,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		buttonLayout.marginWidth = buttonLayout.marginHeight = 0;
 		buttonTop.setLayout(buttonLayout);
 		buttonTop.setLayoutData(new GridData(SWT.CENTER, SWT.BEGINNING, false, false));
-		
+
 		Button workspaceBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Workspace"), null);  //$NON-NLS-1$
 		workspaceBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -392,7 +395,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 				dialog.setTitle(Messages.getString("ValgrindOptionsTab.Select_a_Resource"));  //$NON-NLS-1$
 				dialog.setMessage(Messages.getString("ValgrindOptionsTab.Select_a_Suppressions_File"));  //$NON-NLS-1$
-				dialog.setInput(ResourcesPlugin.getWorkspace().getRoot()); 
+				dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
 				dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					IResource resource = (IResource) dialog.getFirstResult();
@@ -446,14 +449,14 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			// user changed tool, not just restoring state
 			if (initDefaults) {
 				dynamicTab.setDefaults(launchConfigurationWorkingCopy);
-			}						
+			}
 			initDefaults = false;
 			dynamicTab.initializeFrom(launchConfigurationWorkingCopy);
-			
+
 			// change name of tool TabItem
 			toolTab.setText(dynamicTab.getName());
 			optionsFolder.layout(true);
-			
+
 			// adjust minimum size for ScrolledComposite
 			recomputeSize();
 		} catch (CoreException e) {
@@ -465,7 +468,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		for (Control child : dynamicTabHolder.getChildren()) {
 			child.dispose();
 		}
-		
+
 		loadDynamicTab();
 		if (dynamicTab == null) {
 			throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
@@ -474,13 +477,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTab.setValgrindVersion(valgrindVersion);
 		dynamicTab.createControl(dynamicTabHolder);
 
-		dynamicTabHolder.layout(true);		
+		dynamicTabHolder.layout(true);
 	}
 
 	private void loadDynamicTab() throws CoreException {
-		 dynamicTab = getPlugin().getToolPage(tool);		
+		 dynamicTab = getPlugin().getToolPage(tool);
 	}
-	
+
 	public IValgrindToolPage getDynamicTab() {
 		return dynamicTab;
 	}
@@ -489,6 +492,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return ValgrindLaunchPlugin.getDefault();
 	}
 
+	@Override
 	public String getName() {
 		return Messages.getString("ValgrindOptionsTab.Valgrind_Options"); //$NON-NLS-1$
 	}
@@ -498,6 +502,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindLaunchPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage(); //$NON-NLS-1$
 	}
 
+	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		getControl().setRedraw(false);
@@ -536,7 +541,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 			handleToolChanged();
-			
+
 			traceChildrenButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, LaunchConfigurationConstants.DEFAULT_GENERAL_TRACECHILD));
 			runFreeresButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, LaunchConfigurationConstants.DEFAULT_GENERAL_FREERES));
 			demangleButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, LaunchConfigurationConstants.DEFAULT_GENERAL_DEMANGLE));
@@ -546,14 +551,14 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			maxStackFrameSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 			java.util.List<?> suppFiles = configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES);
 			suppFileList.setItems(suppFiles.toArray(new String[suppFiles.size()]));
-			
+
 			// 3.4.0 specific
 			if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				mainStackSizeButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL));
 				mainStackSizeSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
 				checkMainStackEnablement();
 			}
-			
+
 			// 3.6.0 specific
 			if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
 				dSymUtilButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL));
@@ -599,9 +604,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return result;
 	}
 
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, tool);
-		
+
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, traceChildrenButton.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, runFreeresButton.getSelection());
 
@@ -617,23 +623,24 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, mainStackSizeButton.getSelection());
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
 		}
-		
+
 		// 3.6.0 specific
 		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, dSymUtilButton.getSelection());
 		}
-		
+
 		if (dynamicTab != null) {
 			dynamicTab.performApply(configuration);
 		}
 	}
 
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		launchConfigurationWorkingCopy = configuration;
-		
+
 		if (noToolCombo)
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, tool);
-		else	
+		else
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, LaunchConfigurationConstants.DEFAULT_GENERAL_TRACECHILD);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, LaunchConfigurationConstants.DEFAULT_GENERAL_FREERES);
@@ -650,12 +657,12 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);
 		}
-		
+
 		// 3.6.0 specific
 		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL);
 		}
-		
+
 		if (dynamicTab != null) {
 			dynamicTab.setDefaults(configuration);
 			initDefaults = false;
@@ -681,13 +688,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected void updateLaunchConfigurationDialog() {
 		if (!isInitializing) {
 			super.updateLaunchConfigurationDialog();
-		}		
+		}
 	}
 
 	private void checkMainStackEnablement() {
 		mainStackSizeSpinner.setEnabled(mainStackSizeButton.getSelection());
 	}
-	
+
 	public Button getTraceChildrenButton() {
 		return traceChildrenButton;
 	}

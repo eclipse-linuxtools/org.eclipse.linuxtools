@@ -69,6 +69,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 
 	protected static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter LOG_FILTER = new FileFilter() {
+		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(CommandLineConstants.LOG_PREFIX);
 		}
@@ -384,7 +385,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 			String mode, IProgressMonitor monitor) throws CoreException {
 		//Delete our own problem markers
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE); //$NON-NLS-1$
+		root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 		return super.finalLaunchCheck(configuration, mode, monitor);
 	}
 }
