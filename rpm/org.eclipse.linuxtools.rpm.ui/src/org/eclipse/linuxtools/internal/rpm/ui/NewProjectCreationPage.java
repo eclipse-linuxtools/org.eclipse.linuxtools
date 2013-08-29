@@ -37,7 +37,7 @@ import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 
 	private ComboViewer typeCombo;
-	private final WorkingSetGroup workingSetGroup;
+	private final WorkingSetGroup wsGroup;
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
 
@@ -47,7 +47,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	 */
 	public NewProjectCreationPage(String pageName) {
 		super(pageName);
-		workingSetGroup = new WorkingSetGroup();
+		wsGroup = new WorkingSetGroup();
 		setWorkingSets(EMPTY_WORKING_SET_ARRAY);
 	}
 
@@ -80,7 +80,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 		typeCombo.setInput(RPMProjectLayout.values());
 		typeCombo.getCombo().select(0);
 		// Working set controls
-		Control workingSetControl = workingSetGroup.createControl(control);
+		Control workingSetControl = wsGroup.createControl(control);
 		workingSetControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
@@ -101,7 +101,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	 * @return the selected working sets to which the new project should be added
 	 */
 	public IWorkingSet[] getWorkingSets() {
-		return workingSetGroup.getSelectedWorkingSets();
+		return wsGroup.getSelectedWorkingSets();
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	 */
 	public void setWorkingSets(IWorkingSet[] workingSets) {
 		if (workingSets == null) {
-			workingSetGroup.setWorkingSets(EMPTY_WORKING_SET_ARRAY);
+			wsGroup.setWorkingSets(EMPTY_WORKING_SET_ARRAY);
 		}
-		workingSetGroup.setWorkingSets(workingSets);
+		wsGroup.setWorkingSets(workingSets);
 	}
 
 	/**
@@ -121,27 +121,32 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	 * current selection.
 	 */
 	private IWorkingSet[] getSelectedWorkingSet(IStructuredSelection selection) {
-		if (!(selection instanceof ITreeSelection))
+		if (!(selection instanceof ITreeSelection)) {
 			return EMPTY_WORKING_SET_ARRAY;
+		}
 
 		ITreeSelection treeSelection = (ITreeSelection) selection;
-		if (treeSelection.isEmpty())
+		if (treeSelection.isEmpty()) {
 			return EMPTY_WORKING_SET_ARRAY;
+		}
 
 		List<?> elements= treeSelection.toList();
 		if (elements.size() == 1) {
 			Object element = elements.get(0);
 			TreePath[] paths = treeSelection.getPathsFor(element);
-			if (paths.length != 1 || paths[0].getSegmentCount() == 0)
+			if (paths.length != 1 || paths[0].getSegmentCount() == 0) {
 				return EMPTY_WORKING_SET_ARRAY;
+			}
 
 			Object candidate = paths[0].getSegment(0);
-			if (!(candidate instanceof IWorkingSet))
+			if (!(candidate instanceof IWorkingSet)) {
 				return EMPTY_WORKING_SET_ARRAY;
+			}
 
 			IWorkingSet workingSetCandidate = (IWorkingSet) candidate;
-			if (!workingSetCandidate.isAggregateWorkingSet())
+			if (!workingSetCandidate.isAggregateWorkingSet()) {
 				return new IWorkingSet[] { workingSetCandidate };
+			}
 
 			return EMPTY_WORKING_SET_ARRAY;
 		}
@@ -163,7 +168,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	/**
 	 * Little class to encapsulate the working set group of controls.
 	 */
-	private final class WorkingSetGroup {
+	private static final class WorkingSetGroup {
 
 		private WorkingSetConfigurationBlock workingSetBlock;
 
