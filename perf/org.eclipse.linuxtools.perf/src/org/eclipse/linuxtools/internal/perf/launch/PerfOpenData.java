@@ -50,7 +50,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
                                 projectName = project.getName();
                                 URI fileURI = ((IFile)element).getLocationURI();
                                 ILaunchConfiguration config = createDefaultConfiguration(projectName);
-                                PerfCore.Report(config, null, null, null, fileURI.getPath().toString(), null);
+                                PerfCore.Report(config, null, null, null, fileURI.getPath(), null);
                                 PerfCore.RefreshView(fileURI.toString());
                         }
                 }
@@ -93,7 +93,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
 			config = wc;
 
 		} catch (CoreException e) {
-			e.printStackTrace();
+			PerfCore.logException(e);
 		}
 		return config;
 	}
