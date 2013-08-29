@@ -30,9 +30,9 @@ public class RPMCoreInitializer extends AbstractPreferenceInitializer {
 				+ userName);
 		store.setDefault(IRPMConstants.RPM_LOG_NAME, "rpmbuild.log"); //$NON-NLS-1$
 
-		store.setDefault(IRPMConstants.RPM_CMD, "/bin/rpm"); //$NON-NLS-1$
-		store.setDefault(IRPMConstants.RPMBUILD_CMD, "/usr/bin/rpmbuild"); //$NON-NLS-1$
-		store.setDefault(IRPMConstants.DIFF_CMD, "/usr/bin/diff"); //$NON-NLS-1$
+		store.setDefault(IRPMConstants.RPM_CMD, "rpm"); //$NON-NLS-1$
+		store.setDefault(IRPMConstants.RPMBUILD_CMD, "rpmbuild"); //$NON-NLS-1$
+		store.setDefault(IRPMConstants.DIFF_CMD, "diff"); //$NON-NLS-1$
 	}
 
 }

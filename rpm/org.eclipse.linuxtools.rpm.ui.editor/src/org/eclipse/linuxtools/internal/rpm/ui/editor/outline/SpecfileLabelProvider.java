@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -31,7 +32,8 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	private static final String SECTION_ICON="icons/section_obj.gif"; //$NON-NLS-1$
 	private static final String PACKAGES_ICON="icons/packages_obj.gif"; //$NON-NLS-1$
 	private static final String PACKAGE_ICON="icons/package_obj.gif"; //$NON-NLS-1$
-	
+	private IProject project;
+
 	public void addListener(ILabelProviderListener listener) {
 	}
 
@@ -78,11 +80,18 @@ public class SpecfileLabelProvider implements ILabelProvider {
 			} else if (element instanceof SpecfilePackage) {
 				str = ((SpecfilePackage) element).getName();
 			}
-			str = RPMQuery.eval(str).trim();
+			str = RPMQuery.eval(project, str).trim();
 		} catch (CoreException e) {
 			SpecfileLog.logError("Within Project Outline, unable to evaluate " + str, e); //$NON-NLS-1$
 		}
 		return str;
 	}
 
+	/**
+	 * Sets IProject
+	 * @since 2.1
+	 */
+	protected void setProject(IProject project) {
+		this.project=project;
+	}
 }
