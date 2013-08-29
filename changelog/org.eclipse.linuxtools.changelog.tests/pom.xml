@@ -38,11 +38,11 @@
           <testClass>org.eclipse.linuxtools.changelog.core.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <product>org.eclipse.sdk.ide</product>
+          <product>org.eclipse.platform.ide</product>
           <dependencies>
             <dependency>
               <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.sdk.feature.group</artifactId>
+              <artifactId>org.eclipse.platform.feature.group</artifactId>
               <version>${sdk-version}</version>
             </dependency>
             <dependency>

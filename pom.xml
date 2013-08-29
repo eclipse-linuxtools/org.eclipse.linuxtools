@@ -149,11 +149,11 @@
               <dependencies>
                 <dependency>
                   <type>p2-installable-unit</type>
-                  <artifactId>org.eclipse.sdk.feature.group</artifactId>
+                  <artifactId>org.eclipse.platform.feature.group</artifactId>
                   <version>${sdk-version}</version>
                 </dependency>
               </dependencies>
-              <product>org.eclipse.sdk.ide</product>
+              <product>org.eclipse.platform.ide</product>
 	      <argLine>-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Declipse.valgrind.tests.runValgrind=no -Dorg.eclipse.swt.browser.UseWebKitGTK=true</argLine>
 	    </configuration>
 	  </plugin>
@@ -277,11 +277,11 @@
             <dependencies>
                <dependency>
                  <type>p2-installable-unit</type>
-                 <artifactId>org.eclipse.sdk.feature.group</artifactId>
+                 <artifactId>org.eclipse.platform.feature.group</artifactId>
                  <version>${sdk-version}</version>
                </dependency>
             </dependencies>
-            <product>org.eclipse.sdk.ide</product>
+            <product>org.eclipse.platform.ide</product>
  	    <argLine>${tycho.testArgLine} -Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</argLine> 
 	  </configuration>
 	</plugin>
