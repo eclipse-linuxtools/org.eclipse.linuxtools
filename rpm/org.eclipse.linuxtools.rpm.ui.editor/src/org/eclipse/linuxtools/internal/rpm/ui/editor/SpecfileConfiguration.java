@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009, 2010 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,12 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultLineTracker;
@@ -27,7 +31,9 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
+import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
@@ -35,6 +41,7 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
@@ -42,7 +49,10 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionS
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
+import org.eclipse.ui.texteditor.HyperlinkDetectorDescriptor;
+import org.eclipse.ui.texteditor.HyperlinkDetectorRegistry;
 
 public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private SpecfileDoubleClickStrategy doubleClickStrategy;
@@ -220,7 +230,36 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		if (sourceViewer == null) {
 			return null;
 		}
-		return getRegisteredHyperlinkDetectors(sourceViewer);
+		Map<?, ?> targets = getHyperlinkDetectorTargets(sourceViewer);
+		HyperlinkDetectorRegistry hlDetectorRegistry = EditorsUI.getHyperlinkDetectorRegistry();
+		HyperlinkDetectorDescriptor[] hlDetectorDescriptor = hlDetectorRegistry.getHyperlinkDetectorDescriptors();
+		List<IHyperlinkDetector> tempHDList = new ArrayList<IHyperlinkDetector>();
+
+		for (Map.Entry<?, ?> entry : targets.entrySet()) {
+			for (HyperlinkDetectorDescriptor hdd : hlDetectorDescriptor) {
+				try {
+					AbstractHyperlinkDetector ahld = hdd.createHyperlinkDetector();
+					// filter using target id and not instance of URLHyperlinkDetector
+					// so that an option to open url with unresolved macros won't show
+					// however, allow URLHyperlinkWithMacroDetector
+					if (hdd.getTargetId().equals(entry.getKey()) &&
+							(!(ahld instanceof URLHyperlinkDetector) || ahld instanceof URLHyperlinkWithMacroDetector)) {
+						ahld.setContext((IAdaptable)entry.getValue());
+						tempHDList.add(ahld);
+					}
+				} catch (CoreException e) {
+					SpecfileLog.logError(e);
+				}
+			}
+		}
+
+		if (!tempHDList.isEmpty()) {
+			IHyperlinkDetector[] rc = new IHyperlinkDetector[tempHDList.size()];
+			rc = tempHDList.toArray(rc);
+			return rc;
+		} else {
+			return null;
+		}
 	}
 
 	/* (non-Javadoc)
