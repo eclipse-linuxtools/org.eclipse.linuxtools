@@ -63,7 +63,7 @@
   <pluginRepositories>
     <pluginRepository>
       <id>repo.eclipse.org</id>
-      <url>http://repo.eclipse.org/nexus/content/groups/releases/</url>
+      <url>http://repo.eclipse.org/content/groups/releases/</url>
     </pluginRepository>
   </pluginRepositories>
   <repositories>
