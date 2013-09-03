@@ -28,7 +28,7 @@ public class ProviderProfileConstants {
 	/**
 	 * Project attribute to indicate project is overriding settings
 	 */
-	public static final String USE_PROJECT_SETTINGS = "use_project";
+	public static final String USE_PROJECT_SETTINGS = "use_project"; //$NON-NLS-1$
 
 	/**
 	 * Key to acquire the extension point class parameter containing the

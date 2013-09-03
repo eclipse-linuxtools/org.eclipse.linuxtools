@@ -35,13 +35,13 @@ public class ProviderLaunchConfigurationDelegate extends
 		if (config != null) {
 			// get provider id from configuration.
 			String providerId = config.getAttribute(
-					ProviderProfileConstants.PROVIDER_CONFIG_ATT, "");
+					ProviderProfileConstants.PROVIDER_CONFIG_ATT, ""); //$NON-NLS-1$
 			String providerToolName = config.getAttribute(
-					ProviderProfileConstants.PROVIDER_CONFIG_TOOLNAME_ATT, "");
+					ProviderProfileConstants.PROVIDER_CONFIG_TOOLNAME_ATT, ""); //$NON-NLS-1$
 
-			if (providerId == null || "".equals(providerId)) {
-				String cProjectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "");
-				if (cProjectName != null && !cProjectName.equals("")) {
+			if (providerId == null || providerId.isEmpty()) {
+				String cProjectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, ""); //$NON-NLS-1$
+				if (cProjectName != null && !cProjectName.isEmpty()) {
 					// We have a previously created C/C++ run/debug configuration and now Linux Tools
 					// profiling framework has been added.  Find a suitable default provider id to use
 					// and perform initialization prior to profiling.
@@ -88,7 +88,7 @@ public class ProviderLaunchConfigurationDelegate extends
 			if (delegate != null) {
 				delegate.launch(config, mode, launch, monitor);
 			} else {
-				String message = "".equals(providerToolName) ?
+				String message = providerToolName.isEmpty() ?
 						NLS.bind(Messages.ProviderProfilerMissing_msg_0, providerId)
 						: NLS.bind(Messages.ProviderProfilerMissing_msg_1, providerToolName);
 				infoDialog(Messages.ProviderProfilerMissing_title_0, message);
@@ -99,10 +99,11 @@ public class ProviderLaunchConfigurationDelegate extends
 	// Display an information dialog to denote there are no profiling plug-ins installed.
 	private void infoDialog(final String title, final String message) {
 		ProfileLaunchPlugin.getShell().getDisplay().asyncExec( new Runnable() {
+			@Override
 			public void run() {
 				MessageDialog.openInformation(ProfileLaunchPlugin.getShell(), title, message);
 			}
-		});	
+		});
 	}
 
 	@Override

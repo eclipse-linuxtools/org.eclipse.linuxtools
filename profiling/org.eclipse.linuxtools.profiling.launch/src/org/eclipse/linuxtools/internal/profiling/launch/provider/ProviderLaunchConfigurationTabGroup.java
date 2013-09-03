@@ -27,6 +27,7 @@ public class ProviderLaunchConfigurationTabGroup extends
 	// Profiling type name to be displayed.
 	private String name;
 
+	@Override
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) {
 		Map<String, String> parameters = (Map<String, String>) data;
@@ -36,10 +37,10 @@ public class ProviderLaunchConfigurationTabGroup extends
 				.get(ProviderProfileConstants.INIT_DATA_NAME_KEY);
 
 		if (profilingType == null) {
-			profilingType = "";
+			profilingType = ""; //$NON-NLS-1$
 		}
 		if (profilingTypeName == null) {
-			profilingTypeName = "";
+			profilingTypeName = ""; //$NON-NLS-1$
 		}
 
 		setProfilingType(profilingType);

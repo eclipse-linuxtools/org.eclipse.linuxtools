@@ -88,7 +88,6 @@ public class STPCompletionProcessorTest extends SystemtapTest{
 				.computeCompletionProposals(testDocument,
 						offset);
 
-		printProposals(proposals);
 		assertTrue(proposalsContain(proposals, "probe "));
 		assertTrue(proposalsContain(proposals, "global "));
 		assertTrue(proposalsContain(proposals, "function "));
@@ -213,8 +212,6 @@ public class STPCompletionProcessorTest extends SystemtapTest{
 		STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
 		completionProcessor.waitForInitialization();
 
-		System.out.println(testDocument.get());
-		
 		ICompletionProposal[] proposals = completionProcessor
 				.computeCompletionProposals(testDocument,
 						offset);
@@ -253,11 +250,5 @@ public class STPCompletionProcessorTest extends SystemtapTest{
 			}
 		}
 		return false;
-	}
-	
-	private void printProposals(ICompletionProposal[] proposals){
-		for (ICompletionProposal p : proposals) {
-			System.out.println(p.getDisplayString());
-		}
 	}
 }

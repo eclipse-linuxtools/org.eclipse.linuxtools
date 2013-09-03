@@ -80,7 +80,7 @@ public class PerfStatDataOpenHandler implements IEditorLauncher {
 				try {
 					fileReader.close();
 				} catch (IOException e) {
-					PerfPlugin.getDefault().openError(e, "");
+					PerfPlugin.getDefault().openError(e, ""); //$NON-NLS-1$
 				}
 			}
 		}

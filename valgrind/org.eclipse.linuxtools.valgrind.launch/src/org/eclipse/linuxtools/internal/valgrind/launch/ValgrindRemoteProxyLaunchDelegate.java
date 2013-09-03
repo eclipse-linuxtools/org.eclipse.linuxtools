@@ -61,7 +61,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		super();
 	}
 
-	private final static String VERSION_OPT = "--version";
+	private static final String VERSION_OPT = "--version";
 
 	private String whichVersion(IProject project) {
 		String cmdArray[] = new String[2];
@@ -305,17 +305,17 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		String projectName = configUtils.getProjectName();
 		IProject project = ConfigUtils.getProject(projectName);
 		URI projectURI = project.getLocationURI();
-		
+
 		String host = projectURI.getHost();
-		
+
 		// Host might be null since it's not needed for a well-formed URI. Try authority instead
 		if(host == null){
 			host = projectURI.getAuthority();
 		}
-		
+
 		// If authority is also null, use a generic name
 		String location;
-		
+
 		if(host == null){
 			location = "remote host";
 		} else {

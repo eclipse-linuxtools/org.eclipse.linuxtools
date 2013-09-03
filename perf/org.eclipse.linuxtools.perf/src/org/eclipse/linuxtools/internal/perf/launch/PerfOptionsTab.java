@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
+ *    Kent Sebastian <ksebasti@redhat.com> -
  *    Thavidu Ranatunga (IBM) - derived from
  *       org.eclipse.linuxtools.oprofile.launch.configuration.OprofileSetupTab
  *******************************************************************************/
@@ -55,10 +55,10 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Button chkShowSourceDisassembly;
 	protected Button chkShowStat;
 	protected Spinner statRunCount;
-	
+
 	protected Composite top;
 	protected ScrolledComposite scrollTop;
-	
+
 	/**
 	 * @see ILaunchConfigurationTab#getImage()
 	 */
@@ -66,7 +66,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	public Image getImage() {
 		return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		if (txtKernelLocation != null) {
@@ -78,7 +78,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		scrollTop = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -104,7 +104,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		kernelComp.setLayoutData(data);
 
 		Label kernelLabel = new Label(kernelComp, SWT.NONE);
-		kernelLabel.setText(PerfPlugin.STRINGS_Kernel_Location); //$NON-NLS-1$
+		kernelLabel.setText(PerfPlugin.STRINGS_Kernel_Location);
 		data = new GridData();
 		data.horizontalSpan = 2;
 		kernelLabel.setLayoutData(data);
@@ -136,7 +136,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		chkBoxLayout.marginHeight = 0;
 		chkBoxLayout.marginWidth = 0;
 		chkBoxComp.setLayout(chkBoxLayout);
-		
+
 		chkRecordVerbose = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_Record_Verbose);
 		chkModuleSymbols = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_ModuleSymbols);
 		chkHideUnresolvedSymbols = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_HideUnresolvedSymbols);
@@ -188,7 +188,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		scrollTop.setMinSize(point);
 	}
 
-	// Helper function for creating buttons. 
+	// Helper function for creating buttons.
 	private Button createCheckButtonHelper(Composite parent, String label) {
 		final Button b = new Button(parent, SWT.CHECK);
 		b.setText(label);
@@ -292,7 +292,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 			chkRecordVerbose.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default));
 			chkSourceLineNumbers.setSelection(config.getAttribute(PerfPlugin.ATTR_SourceLineNumbers, PerfPlugin.ATTR_SourceLineNumbers_default));
 			chkKernelSourceLineNumbers.setSelection(config.getAttribute(PerfPlugin.ATTR_Kernel_SourceLineNumbers, PerfPlugin.ATTR_Kernel_SourceLineNumbers_default));
-			
+
 			chkMultiplexEvents.setSelection(config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default));
 			chkModuleSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default));
 			chkHideUnresolvedSymbols.setSelection(config.getAttribute(PerfPlugin.ATTR_HideUnresolvedSymbols, PerfPlugin.ATTR_HideUnresolvedSymbols_default));
@@ -303,7 +303,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 			handleShowStatSelection();
 		} catch (CoreException e) {
 			// do nothing
-		}		
+		}
 	}
 
 	@Override

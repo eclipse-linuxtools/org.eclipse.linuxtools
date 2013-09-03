@@ -102,50 +102,56 @@ public class GmonDecoder {
      * @throws IOException
      */
     public void read(String file) throws IOException {
-        this.file = file;
-        DataInputStream beStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-        if (program.isLittleEndian()) {
-            LEDataInputStream leStream = new LEDataInputStream(beStream);
-            leStream.mark(1000);
-            boolean gmonType = readHeader(leStream);
-            if (gmonType)
-                ReadGmonContent(leStream);
-            else {
-                leStream.reset();
-                histo.decodeOldHeader(leStream);
-                histo.decodeHistRecord(leStream);
-                try {
-                    do {
-                        this.callGraph.decodeCallGraphRecord(leStream, true);
-                    } while (true);
-                } catch (EOFException _) {
-                    // normal. End of file reached.
-                }
-                this.callGraph.populate(rootNode);
-                this.histo.AssignSamplesSymbol();
-            }
-            leStream.close();
-        } else {
-            beStream.mark(1000);
-            boolean gmonType = readHeader(beStream);
-            if (gmonType)
-                ReadGmonContent(beStream);
-            else {
-                beStream.reset();
-                histo.decodeOldHeader(beStream);
-                histo.decodeHistRecord(beStream);
-                try {
-                    do {
-                        this.callGraph.decodeCallGraphRecord(beStream, true);
-                    } while (true);
-                } catch (EOFException _) {
-                    // normal. End of file reached.
-                }
-                this.callGraph.populate(rootNode);
-                this.histo.AssignSamplesSymbol();
-            }
-            beStream.close();
-        }
+    	this.file = file;
+    	DataInputStream beStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+    	if (program.isLittleEndian()) {
+    		LEDataInputStream leStream = new LEDataInputStream(beStream);
+    		try {
+    			leStream.mark(1000);
+    			boolean gmonType = readHeader(leStream);
+    			if (gmonType)
+    				ReadGmonContent(leStream);
+    			else {
+    				leStream.reset();
+    				histo.decodeOldHeader(leStream);
+    				histo.decodeHistRecord(leStream);
+    				try {
+    					do {
+    						this.callGraph.decodeCallGraphRecord(leStream, true);
+    					} while (true);
+    				} catch (EOFException _) {
+    					// normal. End of file reached.
+    				}
+    				this.callGraph.populate(rootNode);
+    				this.histo.AssignSamplesSymbol();
+    			}
+    		} finally {
+    			leStream.close();
+    		}
+    	} else {
+    		try {
+    			beStream.mark(1000);
+    			boolean gmonType = readHeader(beStream);
+    			if (gmonType)
+    				ReadGmonContent(beStream);
+    			else {
+    				beStream.reset();
+    				histo.decodeOldHeader(beStream);
+    				histo.decodeHistRecord(beStream);
+    				try {
+    					do {
+    						this.callGraph.decodeCallGraphRecord(beStream, true);
+    					} while (true);
+    				} catch (EOFException _) {
+    					// normal. End of file reached.
+    				}
+    				this.callGraph.populate(rootNode);
+    				this.histo.AssignSamplesSymbol();
+    			}
+    		} finally {
+    			beStream.close();
+    		}
+    	}
     }
 
     /**

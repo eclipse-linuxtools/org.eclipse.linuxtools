@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -232,9 +233,9 @@ public class PythonEggParser {
 	 * @param options The options to be resolved within the setup() function
 	 */
 	private static void resolveVariables(Map<String, String> variables, Map<String, String> options) {
-		for (String key : options.keySet()) {
-			if (variables.containsKey(options.get(key))) {
-				options.put(key, variables.get(options.get(key)));
+		for (Entry<String, String> entry : options.entrySet()) {
+			if (variables.containsKey(entry.getValue())) {
+				options.put(entry.getKey(), variables.get(entry.getValue()));
 			}
 		}
 	}

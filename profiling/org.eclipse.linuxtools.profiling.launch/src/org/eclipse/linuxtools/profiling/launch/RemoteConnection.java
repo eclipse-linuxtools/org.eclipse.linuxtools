@@ -236,7 +236,7 @@ public class RemoteConnection {
 		String envLines[] = getLines(stdout.toString());
 		// Skip the first line, which is just env command being issued
 		for (int idx = 1; idx < envLines.length; idx++) {
-			String keyAndVal[] = envLines[idx].split("=", 2);
+			String keyAndVal[] = envLines[idx].split("=", 2); //$NON-NLS-1$
 			// If there's a full "<env_var>=<value>|<null>" expression, add this var to the map
 			// Note: <value> may be an empty string.
 			if (keyAndVal.length == 2)
@@ -257,7 +257,7 @@ public class RemoteConnection {
 		String envArray[] = new String[envMap.size()];
 		int idx = 0;
 		for (Map.Entry<String, String> entry : envMap.entrySet()) {
-			envArray[idx++] = entry.getKey() + "=" + entry.getValue();
+			envArray[idx++] = entry.getKey() + "=" + entry.getValue(); //$NON-NLS-1$
 		}
 		return envArray;
 	}

@@ -39,16 +39,16 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
-	
+
 	protected abstract String getType();
 	protected abstract String getPrefPageId();
 
 	// Launch provider extension point tool information attribute
-	private static final String PROVIDER_ATT_INFO = "information";
+	private static final String PROVIDER_ATT_INFO = "information"; //$NON-NLS-1$
 
 	// Launch provider extension point tool description attribute
-	private static final String PROVIDER_ATT_DESC = "description";
-	
+	private static final String PROVIDER_ATT_DESC = "description"; //$NON-NLS-1$
+
 	private Link fLink;
 	private Button useProjectSetting;
 	private ScopedPreferenceStore preferenceStore;
@@ -59,13 +59,13 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 	@Override
 	protected void createControls(final Composite parent) {
 		super.createControls(parent);
-		
+
 		usercomp.setLayout(new GridLayout(2, true));
-		
+
 		// Get the property provider (project, file, folder) and fine the project.
 		IResource resource = (IResource)page.getElement().getAdapter(IResource.class);
 		IProject project = resource.getProject();
-		
+
 		// Create the preference store to use
 		ProjectScope ps = new ProjectScope(project);
 		ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
@@ -96,7 +96,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 				PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open();
 			}
 		});
-		
+
 
 		HashMap<String, String> map = ProviderFramework
 				.getProviderNamesForType(getType());
@@ -110,15 +110,15 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 			String toolName = entry.getKey();
 
 			// Append tool description to tool name if available.
-			if (toolDescription != null && !toolDescription.equals("")) {
-				toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$
+			if (toolDescription != null && !toolDescription.isEmpty()) {
+				toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 
 			providerList[i][0] = toolName;
 			providerList[i][1] = toolId;
 			i++;
 		}
-		
+
 		projectSettingsGroup = new Group(usercomp, SWT.NONE);
 		projectSettingsGroup.setFont(parent.getFont());
 		projectSettingsGroup.setText(Messages.ProviderPreferencesPage_1);
@@ -138,7 +138,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 			// Set tool tip description text.
 			String toolInfo = ProviderFramework.getToolInformationFromId(curProviderId,
 					PROVIDER_ATT_INFO);
-			if (toolInfo != null && !toolInfo.equals("")) {
+			if (toolInfo != null && !toolInfo.isEmpty()) {
 				radio.setToolTipText(toolInfo);
 			}
 			radio.setText(labelAndValue[0]);
@@ -152,7 +152,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
             });
         }
         projectSettingsGroup.addDisposeListener(new DisposeListener() {
-            public void widgetDisposed(DisposeEvent event) {
+            @Override
+			public void widgetDisposed(DisposeEvent event) {
                 projectSettingsGroup = null;
                 radioButtons = null;
             }
@@ -161,13 +162,13 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 		updateValue(getPreferenceStore().getString(ProviderProfileConstants.PREFS_KEY + getType()));
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
 	}
-	
+
 	private void setButtonsEnabled(boolean value) {
         for (int j = 0; j < radioButtons.length; j++) {
         	radioButtons[j].setEnabled(value);
         }
 	}
-	
+
 	private void updateOptionsEnable() {
 		if (useProjectSetting.getSelection() == true) {
 			projectSettingsGroup.setEnabled(true);
@@ -186,7 +187,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 			updateValue(getPreferenceStore().getDefaultString(ProviderProfileConstants.PREFS_KEY + getType()));
 		updateOptionsEnable();
 	}
-	
+
 	@Override
 	public void performOK() {
 		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
@@ -201,11 +202,11 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 	private ScopedPreferenceStore getPreferenceStore() {
 		return preferenceStore;
 	}
-	
+
 	private void setPreferenceStore(ScopedPreferenceStore store) {
 		preferenceStore = store;
 	}
-	
+
 	@Override
 	protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
 		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
@@ -252,21 +253,21 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         }
         return;
     }
-    
+
 	@Override
 	public String getHelpContextId() {
 		return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
 	}
-   
+
 	// This page can be displayed for project only
 	@Override
 	public boolean canBeVisible() {
 		return page.isForProject() || page.isForPrefs();
 	}
-    
+
 	@Override
 	protected void updateButtons() {/* Empty block */}
-	
+
 	@Override
 	protected void updateData(ICResourceDescription cfg) {/* Empty block */}
 

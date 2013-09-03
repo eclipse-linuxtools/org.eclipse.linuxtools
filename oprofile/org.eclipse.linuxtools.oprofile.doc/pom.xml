@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-oprofile-parent</artifactId>
     <groupId>org.eclipse.linuxtools.oprofile</groupId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.oprofile.doc</artifactId>

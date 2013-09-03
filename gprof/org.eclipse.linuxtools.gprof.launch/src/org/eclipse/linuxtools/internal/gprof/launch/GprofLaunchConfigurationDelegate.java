@@ -55,7 +55,6 @@ public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfiguration
 		//set up and launch the local c/c++ program
 		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(getProject());
 
-		URI workingDirURI = getProject().getLocationURI();
 		File workDir = getWorkingDirectory(config);
 		if (workDir == null) {
 			workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -170,8 +169,7 @@ public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfiguration
 
 	protected IProject getProject(){
 		try{
-			IProject project = CDebugUtils.verifyCProject(config).getProject();
-			return project;
+			return CDebugUtils.verifyCProject(config).getProject();
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -186,9 +184,7 @@ public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfiguration
 	  * @since 1.1
 	  */
 	protected IPath getExePath(ILaunchConfiguration config) throws CoreException{
-		IPath exePath = CDebugUtils.verifyProgramPath( config );
-
-		return exePath;
+		return CDebugUtils.verifyProgramPath( config );
 	}
 
 }

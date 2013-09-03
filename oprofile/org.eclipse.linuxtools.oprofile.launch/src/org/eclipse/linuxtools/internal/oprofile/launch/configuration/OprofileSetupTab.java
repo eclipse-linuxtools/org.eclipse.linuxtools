@@ -61,6 +61,8 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	private IRemoteFileProxy proxy;
 
+	protected Label kernelLabel;
+
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
 	}
@@ -85,6 +87,18 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 			e.printStackTrace();
 		}
 		controlCombo.setText(options.getOprofileComboText());
+
+		if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
+			checkSeparateLibrary.setEnabled(false);
+			checkSeparateKernel.setEnabled(false);
+			kernelImageFileText.setEnabled(false);
+			kernelLabel.setEnabled(false);
+		} else {
+			checkSeparateLibrary.setEnabled(true);
+			checkSeparateKernel.setEnabled(true);
+			kernelImageFileText.setEnabled(true);
+			kernelLabel.setEnabled(true);
+		}
 		kernelImageFileText.setText(options.getKernelImageFile());
 		executionsSpinner.setSelection(options.getExecutionsNumber());
 
@@ -146,6 +160,17 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 			public void modifyText(ModifyEvent mev) {
 				OprofileProject.setProfilingBinary(controlCombo.getText());
 				options.setOprofileComboText(controlCombo.getText());
+				if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
+					checkSeparateLibrary.setEnabled(false);
+					checkSeparateKernel.setEnabled(false);
+					kernelImageFileText.setEnabled(false);
+					kernelLabel.setEnabled(false);
+				} else {
+					checkSeparateLibrary.setEnabled(true);
+					checkSeparateKernel.setEnabled(true);
+					kernelImageFileText.setEnabled(true);
+					kernelLabel.setEnabled(true);
+				}
 				updateLaunchConfigurationDialog();	
 			}
 		});
@@ -153,11 +178,12 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		data.horizontalSpan = 2;
 		controlCombo.setLayoutData(data);
 
-		Label l = new Label(p, SWT.NONE);
-		l.setText(OprofileLaunchMessages.getString("tab.global.kernelImage.label.text")); //$NON-NLS-1$
+		kernelLabel = new Label(p, SWT.NONE);
+		kernelLabel.setText(OprofileLaunchMessages.getString("tab.global.kernelImage.label.text")); //$NON-NLS-1$
+		kernelLabel.setEnabled(false);
 		data = new GridData();
 		data.horizontalSpan = 2;
-		l.setLayoutData(data);
+		kernelLabel.setLayoutData(data);
 
 		kernelImageFileText = new Text(p, SWT.SINGLE | SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);

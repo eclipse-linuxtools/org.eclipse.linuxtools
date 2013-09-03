@@ -59,26 +59,32 @@ public class CApplicationLaunchShortcut implements ILaunchShortcut2 {
 		return proxy;
 	}
 
+	@Override
 	public void launch(ISelection selection, String mode) {
 		getProxy().launch(selection, mode);
 	}
 
+	@Override
 	public void launch(IEditorPart editor, String mode) {
 		getProxy().launch(editor, mode);
 	}
 
+	@Override
 	public ILaunchConfiguration[] getLaunchConfigurations(ISelection selection) {
 		return getProxy().getLaunchConfigurations(selection);
 	}
 
+	@Override
 	public ILaunchConfiguration[] getLaunchConfigurations(IEditorPart editorpart) {
 		return getProxy().getLaunchConfigurations(editorpart);
 	}
 
+	@Override
 	public IResource getLaunchableResource(ISelection selection) {
 		return getProxy().getLaunchableResource(selection);
 	}
 
+	@Override
 	public IResource getLaunchableResource(IEditorPart editorpart) {
 		return getProxy().getLaunchableResource(editorpart);
 	}

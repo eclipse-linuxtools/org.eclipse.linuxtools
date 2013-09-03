@@ -18,7 +18,7 @@ import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 
-/*
+/**
  * Create process using org.eclipse.cdt.utils.spawner.ProcessFactory and
  * prepends the 'Linux tools path' project property to the environment
  * PATH.
@@ -30,8 +30,9 @@ public class CdtSpawnerProcessFactory extends LinuxtoolsProcessFactory {
 	private static CdtSpawnerProcessFactory instance = null;
 
 	public static CdtSpawnerProcessFactory getFactory() {
-		if (instance == null)
+		if (instance == null) {
 			instance = new CdtSpawnerProcessFactory();
+		}
 		return instance;
 	}
 

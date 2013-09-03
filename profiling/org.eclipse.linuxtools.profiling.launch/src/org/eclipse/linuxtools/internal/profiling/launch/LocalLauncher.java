@@ -21,11 +21,12 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 public class LocalLauncher implements IRemoteCommandLauncher {
 
 	private CommandLauncher launcher;
-	
+
 	public LocalLauncher() {
 		launcher = new CommandLauncher();
 	}
-	
+
+	@Override
 	public Process execute(IPath commandPath, String[] args, String[] env,
 			IPath changeToDirectory, IProgressMonitor monitor)
 			throws CoreException {
@@ -34,11 +35,13 @@ public class LocalLauncher implements IRemoteCommandLauncher {
 		return p;
 	}
 
+	@Override
 	public int waitAndRead(OutputStream output, OutputStream err,
 			IProgressMonitor monitor) {
 		return launcher.waitAndRead(output, err, monitor);
 	}
-	
+
+	@Override
 	public String getErrorMessage() {
 		return launcher.getErrorMessage();
 	}

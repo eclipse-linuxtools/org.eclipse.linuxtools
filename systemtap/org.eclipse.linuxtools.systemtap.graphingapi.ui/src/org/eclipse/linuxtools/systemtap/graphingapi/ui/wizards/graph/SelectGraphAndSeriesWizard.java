@@ -21,6 +21,9 @@ import org.eclipse.ui.IWorkbench;
 
 
 
+/**
+ * @since 2.1
+ */
 public class SelectGraphAndSeriesWizard extends Wizard implements INewWizard {
 	public SelectGraphAndSeriesWizard(IDataSet data, GraphData gdata) {
 		model = new GraphModel(data);

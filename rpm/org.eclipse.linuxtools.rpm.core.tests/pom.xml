@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-rpm-parent</artifactId>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpm.core.tests</artifactId>
@@ -38,7 +38,7 @@
           <testClass>org.eclipse.linuxtools.rpm.core.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <product>org.eclipse.sdk.ide</product>
+          <product>org.eclipse.platform.ide</product>
         </configuration>
       </plugin>
      </plugins>

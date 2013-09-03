@@ -30,6 +30,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @since 2.1
+ */
 public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listener {
 	public SelectGraphAndSeriesWizardPage() {
 		super("selectGraphAndSeries"); //$NON-NLS-1$
