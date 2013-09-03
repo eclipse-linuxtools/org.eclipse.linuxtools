@@ -38,7 +38,6 @@
       <import plugin="org.eclipse.cdt.launch"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import feature="org.eclipse.cdt" version="7.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
