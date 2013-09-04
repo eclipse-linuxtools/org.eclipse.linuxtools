@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -23,6 +23,7 @@ public final class Messages extends NLS {
 	public static String SourcesFileHyperlink_0;
 	public static String SourcesFileHyperlink_1;
 	public static String SourcesFileHyperlink_2;
+	public static String SourcesFileHyperlink_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
