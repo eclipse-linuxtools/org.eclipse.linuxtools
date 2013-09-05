@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapCommandGenerator;
+import org.junit.Test;
 
 public class SystemTapCommandGeneratorTest extends AbstractStapTest{
 
@@ -22,6 +25,7 @@ public class SystemTapCommandGeneratorTest extends AbstractStapTest{
 	private String location = file.getAbsolutePath() + "/";
 	SystemTapCommandGenerator stapgen = new SystemTapCommandGenerator();
 
+	@Test
 	public void testExecutionWithScriptAndBinaryAndArgument(){
 
 		String binaryFilePath = location + "factorial";
@@ -37,7 +41,7 @@ public class SystemTapCommandGeneratorTest extends AbstractStapTest{
 		killStap();
 		// END
 	}
-
+	@Test
 	public void testScriptExecution(){
 
 		String scriptPath = location + "simple.stp";
@@ -49,7 +53,7 @@ public class SystemTapCommandGeneratorTest extends AbstractStapTest{
 		assertEquals("stap " + scriptPath, cmd);
 		// END
 	}
-
+	@Test
 	public void testExecutionWithScriptAndBinary() {
 
 		// RUN

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -43,15 +45,17 @@ import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class ModelTest extends AbstractTest {
 	protected ILaunchConfiguration config;
 	protected Stack<Class<?>> stack;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
 
@@ -61,10 +65,9 @@ public class ModelTest extends AbstractTest {
 		stack.addAll(Arrays.asList(klassList));
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
-		super.tearDown();
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class ModelTest extends AbstractTest {
 		eventsTab.setDefaults(wc);
 		optionsTab.setDefaults(wc);
 	}
-
+	@Test
 	public void testModelDefaultGenericStructure() {
 		TreeParent invisibleRoot = buildModel(
 				"resources/defaultevent-data/perf.data",
@@ -89,7 +92,7 @@ public class ModelTest extends AbstractTest {
 
 		checkChildrenStructure(invisibleRoot, stack);
 	}
-
+	@Test
 	public void testModelMultiEventGenericStructure() {
 		TreeParent invisibleRoot = buildModel(
 				"resources/multievent-data/perf.data",
@@ -98,7 +101,7 @@ public class ModelTest extends AbstractTest {
 
 		checkChildrenStructure(invisibleRoot, stack);
 	}
-
+	@Test
 	public void testPercentages() {
 		TreeParent invisibleRoot = buildModel(
 				"resources/defaultevent-data/perf.data",
@@ -107,7 +110,7 @@ public class ModelTest extends AbstractTest {
 
 		checkChildrenPercentages(invisibleRoot, invisibleRoot.getPercent());
 	}
-
+	@Test
 	public void testDoubleClickAction () {
 		TreeParent invisibleRoot = buildModel(
 				"resources/defaultevent-data/perf.data",
@@ -139,7 +142,7 @@ public class ModelTest extends AbstractTest {
 			fail("Failed to open the Profiling View.");
 		}
 	}
-
+	@Test
 	public void testParserMultiEvent() {
 		TreeParent invisibleRoot = buildModel(
 				"resources/multievent-data/perf.data",
@@ -199,7 +202,7 @@ public class ModelTest extends AbstractTest {
 
 		}
 	}
-
+	@Test
 	public void testParserDefaultEvent() {
 		TreeParent invisibleRoot = buildModel(
 				"resources/defaultevent-data/perf.data",
@@ -253,7 +256,7 @@ public class ModelTest extends AbstractTest {
 			}
 		}
 	}
-
+	@Test
 	public void testParseAnnotation() {
 		BufferedReader input = null;
 
@@ -313,7 +316,7 @@ public class ModelTest extends AbstractTest {
 			}
 		}
 	}
-
+	@Test
 	public void testAnnotateString(){
 		ILaunchConfigurationWorkingCopy tempConfig = null;
 		try {
@@ -346,7 +349,7 @@ public class ModelTest extends AbstractTest {
 			assertTrue(annotateString[i].equals(expectedString[i]));
 		}
 	}
-
+	@Test
 	public void testRecordString() {
 		ILaunchConfigurationWorkingCopy tempConfig = null;
 		try {
@@ -388,7 +391,7 @@ public class ModelTest extends AbstractTest {
 			assertTrue(recordString[i].equals(expectedString[i]));
 		}
 	}
-
+	@Test
 	public void testReportString(){ILaunchConfigurationWorkingCopy tempConfig = null;
 		try {
 			tempConfig = config.copy("test-config");
@@ -520,7 +523,7 @@ public class ModelTest extends AbstractTest {
 			error = new BufferedReader(new FileReader(perfErrorDataLoc));
 		} catch (IOException e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage());
 		}
 
 		PerfCore.parseReport(config, null, null, perfDataLoc, null,

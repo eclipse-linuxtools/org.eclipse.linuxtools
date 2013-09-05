@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
+import static org.junit.Assert.*;
+
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -35,22 +37,27 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.swtchart.Chart;
 import org.swtchart.ILineSeries;
 
 public class ChartTests extends AbstractMassifTest {
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-
+	@Test
 	public void testEditorName() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testEditorName"); //$NON-NLS-1$
@@ -63,23 +70,23 @@ public class ChartTests extends AbstractMassifTest {
 		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		assertTrue(part.getTitle().startsWith("Heap Chart - alloctest")); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testByteScalingKiB() throws Exception {
 		byteScalingHelper(1, 1, 1024 * 10, "testByteScalingKiB"); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testByteScalingMiB() throws Exception {
 		byteScalingHelper(2, 1, 1024 * 1024 * 10, "testByteScalingMiB"); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testByteScalingGiB() throws Exception {
 		byteScalingHelper(3, 1024, 1024 * 1024 * 10, "testByteScalingGiB"); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testByteScalingTiB() throws Exception {
 		byteScalingHelper(4, 1024 * 1024, 1024 * 1024 *10, "testByteScalingTiB"); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testChartCallback() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testChartCallback"); //$NON-NLS-1$
@@ -105,7 +112,7 @@ public class ChartTests extends AbstractMassifTest {
 			fail();
 		}
 	}
-
+	@Test
 	public void testChartLocationsDialog() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testChartCallback"); //$NON-NLS-1$

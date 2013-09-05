@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,9 +27,10 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.junit.Test;
 
 public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest {
-	
+	@Test
 	public void testLinkedMarkers() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testLinkedMarkers"); //$NON-NLS-1$

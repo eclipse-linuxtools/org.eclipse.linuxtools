@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
 import org.eclipse.debug.core.DebugPlugin;
@@ -32,12 +34,16 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DoubleClickTest extends AbstractMemcheckTest {
 	private ValgrindStackFrame frame;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
@@ -69,11 +75,12 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-
+	@Test
 	public void testDoubleClickFile() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
@@ -92,7 +99,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 
 		assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
 	}
-
+	@Test
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
@@ -113,7 +120,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 
 		assertEquals(frame.getLine(), line);
 	}
-
+	@Test
 	public void testDoubleClickLaunchRemoved() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$

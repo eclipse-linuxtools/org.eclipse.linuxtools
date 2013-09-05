@@ -11,13 +11,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.tests;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import junit.framework.TestCase;
+
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexManager;
@@ -27,6 +31,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
 import org.eclipse.cdt.utils.EFSExtensionManager;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.internal.filesystem.local.LocalFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -59,10 +64,9 @@ import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.osgi.framework.Bundle;
-import org.eclipse.core.internal.filesystem.local.LocalFile;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractTest extends TestCase {
+public abstract class AbstractTest {
 	private static final String BIN_DIR = "Debug"; //$NON-NLS-1$
 	private static final String IMPORTED_SOURCE_FILE = "primeTest.c"; //$NON-NLS-1$
 	protected ICProject proj;
@@ -73,7 +77,7 @@ public abstract class AbstractTest extends TestCase {
 
 	/**
 	 * Create a CDT project outside the default workspace.
-	 * 
+	 *
 	 * @param bundle			The plug-in bundle.
 	 * @param projname			The name of the project.
 	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
@@ -155,7 +159,7 @@ public abstract class AbstractTest extends TestCase {
 
 	/**
 	 * Create and build a project outside the default workspace
-	 * 
+	 *
 	 * @param bundle			The plug-in bundle.
 	 * @param projname			The name of the project.
 	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
@@ -223,7 +227,7 @@ public abstract class AbstractTest extends TestCase {
 			fail(NLS.bind(Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
 		}
 
-		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {		
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
@@ -253,7 +257,7 @@ public abstract class AbstractTest extends TestCase {
 		ImportOperation op = new ImportOperation(project.getFullPath(), testDir, FileSystemStructureProvider.INSTANCE, new IOverwriteQuery() {
 			public String queryOverwrite(String pathString) {
 				return ALL;
-			}			
+			}
 		});
 		op.setCreateContainerStructure(false);
 		op.run(null);
@@ -279,7 +283,7 @@ public abstract class AbstractTest extends TestCase {
 		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) {
 				CProjectHelper.delete(cproject);
-			}			
+			}
 		}, null);
 	}
 

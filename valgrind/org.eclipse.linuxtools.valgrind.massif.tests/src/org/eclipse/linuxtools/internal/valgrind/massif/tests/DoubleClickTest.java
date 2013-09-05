@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -24,18 +26,23 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifTreeViewer;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DoubleClickTest extends AbstractMassifTest {
 	private MassifHeapTreeNode node;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
@@ -60,7 +67,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 		IDoubleClickListener listener = treeViewer.getDoubleClickListener();
 		listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
 	}
-
+	@Test
 	public void testDoubleClickFile() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
@@ -72,7 +79,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 
 		checkFile(proj.getProject(), node);
 	}
-
+	@Test
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();

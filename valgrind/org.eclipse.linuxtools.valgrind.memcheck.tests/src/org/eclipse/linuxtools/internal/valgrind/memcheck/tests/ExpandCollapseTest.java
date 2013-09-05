@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -19,32 +22,37 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ExpandCollapseTest extends AbstractMemcheckTest {
-	
+
 	protected CoreMessagesViewer viewer;
 	protected Menu contextMenu;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+	@Test
 	public void testExpand() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
-		
+
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		viewer = view.getMessagesViewer();
 		contextMenu = viewer.getTreeViewer().getTree().getMenu();
-		
+
 		// Select first error and expand it
 		IValgrindMessage[] messages = (IValgrindMessage[]) viewer.getTreeViewer().getInput();
 		IValgrindMessage element = messages[0];
@@ -52,14 +60,14 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 		viewer.getTreeViewer().setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(0).notifyListeners(SWT.Selection, null);
-		
+
 		checkExpanded(element, true);
 	}
-	
+	@Test
 	public void testCollapse() throws Exception {
 		// Expand the element first
 		testExpand();
-		
+
 		// Then collapse it
 		IValgrindMessage[] messages = (IValgrindMessage[]) viewer.getTreeViewer().getInput();
 		IValgrindMessage element = messages[0];
@@ -67,7 +75,7 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 		viewer.getTreeViewer().setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(1).notifyListeners(SWT.Selection, null);
-		
+
 		checkExpanded(element, false);
 	}
 

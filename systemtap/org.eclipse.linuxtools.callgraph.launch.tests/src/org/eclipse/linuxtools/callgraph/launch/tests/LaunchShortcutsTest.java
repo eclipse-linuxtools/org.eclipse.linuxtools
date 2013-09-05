@@ -14,6 +14,9 @@ import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class LaunchShortcutsTest extends AbstractStapTest{
 
@@ -23,18 +26,20 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 	 */
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
 
-
+	@Test
 	public void testLaunchCallGraph() throws CModelException {
 			SystemTapUIErrorMessages.setActive(false);
 

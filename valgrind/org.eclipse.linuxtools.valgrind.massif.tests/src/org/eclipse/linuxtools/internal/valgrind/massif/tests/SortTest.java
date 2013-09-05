@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.TableViewer;
@@ -20,11 +24,15 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class SortTest extends AbstractMassifTest {
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -36,31 +44,32 @@ public class SortTest extends AbstractMassifTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-
+	@Test
 	public void testSortSnapshots() {
 		checkSortColumn(0);
 	}
-
+	@Test
 	public void testSortTime() {
 		checkSortColumn(1);
 	}
-
+	@Test
 	public void testSortTotal() {
 		checkSortColumn(2);
 	}
-
+	@Test
 	public void testSortUseful() {
 		checkSortColumn(3);
 	}
-
+	@Test
 	public void testSortExtra() {
 		checkSortColumn(4);
 	}
-
+	@Test
 	public void testSortStacks() {
 		checkSortColumn(5);
 	}

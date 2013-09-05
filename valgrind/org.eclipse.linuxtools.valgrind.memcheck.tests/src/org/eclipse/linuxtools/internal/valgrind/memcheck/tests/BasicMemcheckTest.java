@@ -7,27 +7,34 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
+
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class BasicMemcheckTest extends AbstractMemcheckTest {
-	
+
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
-	
+
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+	@Test
 	public void testNumErrors() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumErrors"); //$NON-NLS-1$

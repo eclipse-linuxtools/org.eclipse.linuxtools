@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,6 +28,9 @@ import org.eclipse.linuxtools.internal.perf.remote.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class LaunchRemoteTest extends AbstractRemoteTest {
@@ -42,8 +47,8 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 	private final String PROJECT_NAME = "fibTest"; //$NON-NLS-1$
 	private final String SOURCE_FILE = "fib.cpp"; //$NON-NLS-1$
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		if ((!(AbstractRemoteTest.USERNAME.equals("")))) {
 			project = createRemoteExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
 					PROJECT_NAME, EXTERNAL_PROJECT_PATH, SOURCE_FILE);
@@ -56,9 +61,9 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 		}
 	}
 
-	@Override
-	protected void tearDown() {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) 
+	@After
+	public void tearDown() {
+		if (!(AbstractRemoteTest.USERNAME.equals("")))
 			deleteResource(CONNECTION_DIR);
 	}
 
@@ -76,17 +81,18 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 		optionsTab.setDefaults(wc);
 	}
 
+	@Test
 	public void testDefaultRun () {
 		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
 			try {
 				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 			} catch (Exception e) {
 				e.printStackTrace();
-				fail();
+				fail(e.getMessage());
 			}
 		}
 	}
-
+	@Test
 	public void testClockEventRun () {
 		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
 			try {
@@ -96,7 +102,7 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 				wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
 				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 			} catch (Exception e) {
-				fail();
+				fail(e.getMessage());
 			}
 		}
 	}

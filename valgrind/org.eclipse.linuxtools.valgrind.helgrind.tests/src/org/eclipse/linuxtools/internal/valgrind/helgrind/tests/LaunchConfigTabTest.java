@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,6 +26,9 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
@@ -33,7 +38,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 	protected HelgrindToolPage dynamicTab;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
@@ -45,7 +51,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -72,7 +79,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		ILaunch launch = doLaunch(config, testName);
 		return launch;
 	}
-
+	@Test
 	public void testDefaults() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
@@ -87,7 +94,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertTrue(cmd.contains("--history-level=full")); //$NON-NLS-1$
 		assertTrue(cmd.contains("--conflict-cache-size=1000000")); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testTrackLockorders() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getLockordersButton().setSelection(false);
@@ -101,7 +108,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertEquals(0, p[0].getExitValue());
 		assertTrue(cmd.contains("--track-lockorders=no")); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testHistoryNone() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("none");
@@ -115,7 +122,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertEquals(0, p[0].getExitValue());
 		assertTrue(cmd.contains("--history-level=none")); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testHistoryApprox() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("approx");
@@ -129,7 +136,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertEquals(0, p[0].getExitValue());
 		assertTrue(cmd.contains("--history-level=approx")); //$NON-NLS-1$
 	}
-
+	@Test
 	public void testConflictCacheSize() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
