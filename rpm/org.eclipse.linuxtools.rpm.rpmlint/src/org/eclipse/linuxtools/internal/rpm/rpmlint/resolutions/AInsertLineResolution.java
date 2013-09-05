@@ -22,8 +22,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
  */
 public abstract class AInsertLineResolution extends ARpmlintResolution {
 
-	protected int markerLine;
-
 	/**
 	 * Returns the line to be inserted for the fix.
 	 * Note: If there are some whitespace requirements for this line(e.g. an empty line after it)
@@ -47,7 +45,6 @@ public abstract class AInsertLineResolution extends ARpmlintResolution {
 	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
 	 */
 	public void run(IMarker marker) {
-		markerLine = marker.getAttribute(IMarker.LINE_NUMBER, 0);
 		SpecfileEditor editor = getEditor(marker);
 		if (editor == null) {
 			return;
