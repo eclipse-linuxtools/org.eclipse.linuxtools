@@ -161,7 +161,7 @@ public class RpmlintParser {
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
-	private ArrayList<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
+	private List<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
 		RpmlintItem item =  new RpmlintItem();
 		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
 		LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));

@@ -29,11 +29,11 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * Detects values for Patch and Source definitions.
- * 
+ *
  */
 public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 
-	SpecfileEditor editor;
+	private SpecfileEditor editor;
 	private static final String PATCH_IDENTIFIER = "Patch"; //$NON-NLS-1$
 	private static final String SOURCE_IDENTIFIER = "Source"; //$NON-NLS-1$
 
@@ -47,7 +47,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 		if (region == null || textViewer == null) {
 			return null;
 		}
-		
+
 		if (editor == null) {
 			editor = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
 			if (editor == null) {
@@ -102,7 +102,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 
 		return null;
 	}
-	
+
 	public void setEditor(SpecfileEditor editor) {
 		this.editor = editor;
 	}

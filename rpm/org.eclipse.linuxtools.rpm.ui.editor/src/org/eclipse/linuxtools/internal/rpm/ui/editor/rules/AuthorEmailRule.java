@@ -22,7 +22,7 @@ public class AuthorEmailRule implements IPredicateRule {
 	private StringBuilder fBuffer = new StringBuilder();
 
 	/** The success token */
-	IToken token;
+	private IToken token;
 
 	protected static final char START_CHAR = '<';
 

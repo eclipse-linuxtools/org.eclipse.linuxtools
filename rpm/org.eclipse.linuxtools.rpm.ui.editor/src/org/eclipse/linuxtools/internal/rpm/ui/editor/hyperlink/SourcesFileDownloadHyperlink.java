@@ -27,14 +27,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 
 public class SourcesFileDownloadHyperlink implements IHyperlink {
-	String fileName;
-	IFile original;
-	IRegion region;
+	private String fileName;
+	private IFile original;
+	private IRegion region;
 
 	/**
 	 * Creates hyperlink for the following file name, region and file whether
 	 * the file name is found.
-	 * 
+	 *
 	 * @param original
 	 *            The file where the reference to this file name is.
 	 * @param fileName
@@ -73,7 +73,7 @@ public class SourcesFileDownloadHyperlink implements IHyperlink {
 	/**
 	 * Tries to open the given file name looking for it in the current directory
 	 * and in ../SOURCES.
-	 * 
+	 *
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
 	 */
 	public void open() {

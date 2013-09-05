@@ -31,14 +31,14 @@ import org.eclipse.ui.ide.IDE;
  */
 public class SourcesFileHyperlink implements IHyperlink {
 
-	String fileName;
-	IFile original;
-	IRegion region;
+	private String fileName;
+	private IFile original;
+	private IRegion region;
 
 	/**
 	 * Creates hyperlink for the following file name, region and file whether
 	 * the file name is found.
-	 * 
+	 *
 	 * @param original The file where the reference to this file name is.
 	 * @param fileName The name of the file to open.
 	 * @param region The hyperlink region.
@@ -73,7 +73,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 	/**
 	 * Tries to open the given file name looking for it in the current directory
 	 * and in ../SOURCES.
-	 * 
+	 *
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
 	 */
 	public void open() {

@@ -26,13 +26,13 @@ public class VersionReleaseRule implements IPredicateRule {
 	private StringBuilder fWhiteSpaceBuffer = new StringBuilder();
 
 	/** The success token */
-	IToken fToken;
+	private IToken fToken;
 
 	/** The token that has to preceed this token */
-	IToken fPreceedingToken;
+	private IToken fPreceedingToken;
 
 	/** Where we can find out what the preceeding token was */
-	SpecfileChangelogScanner fChangelogScanner;
+	private SpecfileChangelogScanner fChangelogScanner;
 
 	protected static final char CHARS_SEPERATOR = '-';
 
@@ -61,11 +61,11 @@ public class VersionReleaseRule implements IPredicateRule {
 		return fToken;
 	}
 
-public IToken evaluate(ICharacterScanner scanner, boolean resume) {
+	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		// if the last token successfully read was not the fPreceedingToke fail
 		IToken lastToken = getLastToken();
 
-		if (lastToken != fPreceedingToken	) {
+		if (lastToken != fPreceedingToken) {
 			return Token.UNDEFINED;
 		}
 
@@ -79,7 +79,7 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 			fBuffer.append((char) c);
 
 			// preceeding white space
-			if (state == STATE_START){
+			if (state == STATE_START) {
 				if (Character.isWhitespace((char) c) || c == '-') {
 					numPreceedingBlanks++;
 				} else {
@@ -90,31 +90,33 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 			if (state == STATE_VERSION) {
 				// if we've read some semblance of a version and we've reached
 				// the separator character
-				if (fBuffer.length() > numPreceedingBlanks && c == CHARS_SEPERATOR){
+				if (fBuffer.length() > numPreceedingBlanks
+						&& c == CHARS_SEPERATOR) {
 					state++;
 				}
 				// otherwise we allow only digits, letters, underscores, ':' or
 				// '.' in the version
-				else if (!(Character.isLetterOrDigit((char) c) || c == '.' || c == '_' || c == ':')) {
+				else if (!(Character.isLetterOrDigit((char) c) || c == '.'
+						|| c == '_' || c == ':')) {
 					unreadBuffer(scanner, fBuffer);
 					return Token.UNDEFINED;
 				}
 			}
 			// release state (second part of version-release)
-			else if (state == STATE_RELEASE){
+			else if (state == STATE_RELEASE) {
 				// an EOF or EOL indicates success
-				if (c == ICharacterScanner.EOF || c == '\n'){
+				if (c == ICharacterScanner.EOF || c == '\n') {
 					state = STATE_DONE;
 				}
 
 				// if we encounter a space, we enter the optional trailing
 				// space section which we consider valid (but not part of the
 				// token) if and only if it is ended by and EOF or EOL
-				else if (Character.isWhitespace((char) c)){
+				else if (Character.isWhitespace((char) c)) {
 					state++;
 					fWhiteSpaceBuffer.setLength(0);
 					fWhiteSpaceBuffer.append(c);
-				} else if (! ( Character.isLetterOrDigit((char) c) || c == '.' || c == '_')){
+				} else if (!(Character.isLetterOrDigit((char) c) || c == '.' || c == '_')) {
 					// allow digits, characters or '.' in the release
 					unreadBuffer(scanner, fBuffer);
 					return Token.UNDEFINED;
@@ -125,17 +127,16 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 			// now looking for an EOF or EOL for success
 			else if (state == STATE_TRAIL) {
 				// success, unwind the whitespace
-				if (c == ICharacterScanner.EOF || c == '\n'){
+				if (c == ICharacterScanner.EOF || c == '\n') {
 					unreadBuffer(scanner, fWhiteSpaceBuffer);
 					state++;
 				} // some other illegal token after ver-rel unwind the whole
 					// deal
-				else if (!Character.isWhitespace((char) c)){
+				else if (!Character.isWhitespace((char) c)) {
 					unreadBuffer(scanner, fBuffer);
 					return Token.UNDEFINED;
-				}
-				else{ // white space, keep reading
-					fWhiteSpaceBuffer.append((char)c);
+				} else { // white space, keep reading
+					fWhiteSpaceBuffer.append((char) c);
 				}
 
 			}

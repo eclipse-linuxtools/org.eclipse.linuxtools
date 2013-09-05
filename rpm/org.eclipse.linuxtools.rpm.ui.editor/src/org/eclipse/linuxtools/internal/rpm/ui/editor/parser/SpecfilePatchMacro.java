@@ -20,12 +20,15 @@ public class SpecfilePatchMacro extends SpecfileMacro {
 		super();
 		this.patchNumber = patchNumber;
 	}
+
 	public int getPatchNumber() {
 		return patchNumber;
 	}
+
 	public void setPatchNumber(int patchNumber) {
 		this.patchNumber = patchNumber;
 	}
+
 	@Override
 	public String toString() {
 		return MessageFormat.format("patch #{0}", patchNumber); //$NON-NLS-1$

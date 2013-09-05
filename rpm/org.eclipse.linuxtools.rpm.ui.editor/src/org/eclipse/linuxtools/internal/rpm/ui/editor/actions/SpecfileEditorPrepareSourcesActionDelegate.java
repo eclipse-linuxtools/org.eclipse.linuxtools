@@ -56,8 +56,9 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 		final IFile workFile = (IFile) rpj.getSpecFile();
 		final Specfile specfile = specparser.parse(workFile);
 
-		if (!DownloadFile(shell, rpj, specfile))
+		if (!downloadFile(shell, rpj, specfile)) {
 			return null;
+		}
 
 		Job job = new Job("Preparing sources") { //$NON-NLS-1$
 			@Override
@@ -89,7 +90,7 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 		return null;
 	}
 
-	public boolean DownloadFile(Shell shell, RPMProject rpj, Specfile specfile) {
+	public boolean downloadFile(Shell shell, RPMProject rpj, Specfile specfile) {
 		// retrieve source(s) from specfile
 		final List<SpecfileSource> sourceURLList = specfile != null ? (List<SpecfileSource>) specfile
 				.getSources() : null;

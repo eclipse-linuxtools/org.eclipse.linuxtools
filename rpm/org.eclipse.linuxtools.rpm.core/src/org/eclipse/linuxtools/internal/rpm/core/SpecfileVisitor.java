@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.rpm.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -22,7 +23,7 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class SpecfileVisitor implements IResourceVisitor {
 
-	private ArrayList<IResource> paths = new ArrayList<IResource>();
+	private List<IResource> paths = new ArrayList<IResource>();
 
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource.getType() == IResource.FILE
@@ -38,7 +39,7 @@ public class SpecfileVisitor implements IResourceVisitor {
 	 * 
 	 * @return The found spec files.
 	 */
-	public ArrayList<IResource> getSpecFiles() {
+	public List<IResource> getSpecFiles() {
 		return paths;
 	}
 }

@@ -23,46 +23,60 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 
 public class SpecfileSource extends SpecfileElement {
-	int number;
-	int lineNumber = -1;
-	String fileName;
-	public enum SourceType { SOURCE, PATCH}
-	SourceType sourceType;
-	List<Integer> linesUsed;
+	private int number;
+	private int lineNumber = -1;
+	private String fileName;
+
+	public enum SourceType {
+		SOURCE, PATCH
+	}
+
+	private SourceType sourceType;
+	private List<Integer> linesUsed;
 
 	public SourceType getSourceType() {
 		return sourceType;
 	}
+
 	public void setSourceType(SourceType sourceType) {
 		this.sourceType = sourceType;
 	}
+
 	public SpecfileSource(int number, String fileName) {
 		super("source"); //$NON-NLS-1$
 		this.number = number;
 		this.fileName = fileName;
 		this.linesUsed = new ArrayList<Integer>();
 	}
+
 	public String getFileName() {
 		return resolve(fileName);
 	}
+
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+
 	public int getNumber() {
 		return number;
 	}
+
 	public void setNumber(int number) {
 		this.number = number;
 	}
+
 	public void addLineUsed(int lineNumber) {
 		linesUsed.add(Integer.valueOf(lineNumber));
 	}
+
 	public void removeLineUsed(int lineNumber) {
 		linesUsed.remove(Integer.valueOf(lineNumber));
 	}
+
 	public List<Integer> getLinesUsed() {
 		return linesUsed;
 	}
+
 	@Override
 	public String toString() {
 		if (sourceType == SourceType.SOURCE) {
@@ -76,30 +90,36 @@ public class SpecfileSource extends SpecfileElement {
 	}
 
 	// Note that changeReferences assumes that the number of the source/patch
-	// has *already been set*.  If this is not true, it will simply do nothing
+	// has *already been set*. If this is not true, it will simply do nothing
 	public void changeReferences(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
 		Pattern patchPattern;
 		if (oldPatchNumber == 0) {
-			patchPattern = Pattern.compile("%patch" + oldPatchNumber + "|%patch"); //$NON-NLS-1$ //$NON-NLS-2$
+			patchPattern = Pattern
+					.compile("%patch" + oldPatchNumber + "|%patch"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			patchPattern = Pattern.compile("%patch" + oldPatchNumber); //$NON-NLS-1$
 		}
-		for (int lineNumber: getLinesUsed()){
+		for (int lineNumber : getLinesUsed()) {
 			String line;
 			try {
 				line = specfile.getLine(lineNumber);
 				Matcher patchMatcher = patchPattern.matcher(line);
 				if (!patchMatcher.find()) {
-					System.out.println(Messages.getString("SpecfileSource.0") + patchPattern.pattern()); //$NON-NLS-1$
-//					throw new BadLocationException("can't match " + patchPattern);
+					System.out
+							.println(Messages.getString("SpecfileSource.0") + patchPattern.pattern()); //$NON-NLS-1$
+					// throw new BadLocationException("can't match " +
+					// patchPattern);
 				}
-				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), Messages.getString("SpecfileSource.1") + number)); //$NON-NLS-1$
+				specfile.changeLine(lineNumber, line.replaceAll(
+						patchPattern.pattern(),
+						Messages.getString("SpecfileSource.1") + number)); //$NON-NLS-1$
 			} catch (BadLocationException e) {
 				SpecfileLog.logError(e);
 			}
 		}
 	}
+
 	public void changeDeclaration(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
 		Pattern patchPattern;
@@ -114,17 +134,21 @@ public class SpecfileSource extends SpecfileElement {
 			Matcher patchMatcher = patchPattern.matcher(line);
 			if (!patchMatcher.find()) {
 				// TODO: Maybe we can throw a exception here.
-				System.out.println(Messages.getString("SpecfileSource.2") + patchPattern.pattern()); //$NON-NLS-1$
+				System.out
+						.println(Messages.getString("SpecfileSource.2") + patchPattern.pattern()); //$NON-NLS-1$
 			}
-			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number)); //$NON-NLS-1$
+			specfile.changeLine(lineNumber,
+					line.replaceAll(patchPattern.pattern(), "Patch" + number)); //$NON-NLS-1$
 		} catch (BadLocationException e) {
 			SpecfileLog.logError(e);
 		}
 	}
+
 	@Override
 	public int getLineNumber() {
 		return lineNumber;
 	}
+
 	@Override
 	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
