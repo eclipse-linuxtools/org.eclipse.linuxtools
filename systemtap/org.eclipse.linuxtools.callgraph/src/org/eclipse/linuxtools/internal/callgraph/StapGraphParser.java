@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * This class is used only in the case that we are rendering a graph
- * using GEF (specifically Zest).  
+ * using GEF (specifically Zest).
  *
  * After a stap command is sent to be executed, and after data is stored
  * into some temporary file, the data must be parsed to be used. This class
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
  * also starts the job responsible for taking the parsed data and rendering it.
  */
 public class StapGraphParser extends SystemTapParser {
-	
+
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, HashMap<Integer, ArrayList<Integer>>> neighbourMaps;
@@ -53,19 +53,19 @@ public class StapGraphParser extends SystemTapParser {
 	public  HashMap<Integer, Integer> lastFunctionMap;
 	public ICProject project;
 	private static final String DELIM = ",,"; //$NON-NLS-1$
-	
+
 	private boolean encounteredMain = false;
 	private ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
-	
+
 	private  HashMap<Integer, ArrayList<String>> nameMaps;
 	private  HashMap<Integer, ArrayList<Integer>> idMaps;
-	private boolean skippedDirectives = false; 			
+	private boolean skippedDirectives = false;
 	private int firstNode = -1;
-	
+
 	public long startTime = -1;
-	
+
 	public String text;
-	
+
 	@Override
 	protected void initialize() {
 		//INITIALIZE MAPS
@@ -83,8 +83,8 @@ public class StapGraphParser extends SystemTapParser {
 		project = null;
 		startTime = -1;
 	}
-	
-	
+
+
 	@Override
 	public IStatus nonRealTimeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -99,21 +99,21 @@ public class StapGraphParser extends SystemTapParser {
 		nameMaps.clear();
 		idMaps.clear();
 		encounteredMain = false;
-		skippedDirectives = false; 			
+		skippedDirectives = false;
 		firstNode = -1;
 		startTime = -1;
-		
+
 		BufferedReader buff = null;
 		try {
 			buff = new BufferedReader(new FileReader(sourcePath));
 		} catch (FileNotFoundException e1) {
 			Display.getDefault().asyncExec(new Runnable() {
-				
+
 				@Override
 				public void run(){
 					MessageDialog.openError(new Shell(), Messages.getString("StapGraphParser.FileNotFound"),  //$NON-NLS-1$
 							Messages.getString("StapGraphParser.CouldNotOpen") + sourcePath); //$NON-NLS-1$
-					
+
 				}
 			});
 			return Status.CANCEL_STATUS;
@@ -122,10 +122,10 @@ public class StapGraphParser extends SystemTapParser {
 		return realTimeParsing();
 	}
 
-	
+
 	private void parseEnd() {
 
-		
+
 		//CHECK FOR EXIT() CALL
 		for (int key : idMaps.keySet()) {
 			ArrayList<Integer> idList = idMaps.get(key);
@@ -141,19 +141,19 @@ public class StapGraphParser extends SystemTapParser {
 					long cumulativeTime = aggregateTimeMap.get(name) + endingTimeInNS;
 					aggregateTimeMap.put(name, cumulativeTime);
 				}
-				
+
 				lastFunctionCalled = val;
 			}
 			String tmp = markedMap.get(lastFunctionCalled);
 			if (tmp == null) tmp = ""; //$NON-NLS-1$
-			markedMap.put(lastFunctionCalled, 
+			markedMap.put(lastFunctionCalled,
 					tmp + "\n" + Messages.getString("StapGraphParser.Term")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		}
-		
+
 		//timecheck is true if the total execution time is less than 10ms
 		//and the first function is more than 1% off from the total time.
-		boolean timeCheck = totalTime < 50000000 && 
+		boolean timeCheck = totalTime < 50000000 &&
 							(((float)timeMap.get(firstNode)/totalTime) > 1.01 ||
 							((float)timeMap.get(firstNode)/totalTime) < 0.99);
 
@@ -170,21 +170,21 @@ public class StapGraphParser extends SystemTapParser {
 				markedMessage += Messages.getString("StapGraphParser.CDirectives"); //$NON-NLS-1$
 			if (timeCheck)
 				markedMessage += Messages.getString("StapGraphParser.TooFast"); //$NON-NLS-1$
-			
+
 			markedMessage += Messages.getString("StapGraphParser.TimeForThisNode"); //$NON-NLS-1$
-			
+
 			markedMap.put(firstNode, markedMessage);
 		}
 	}
-	
+
 	private void parseMarked(String msg) {
 		/*
 		 * Append message
 		 */
-		String[] parsed = msg.split(",,", 2);
-		
+		String[] parsed = msg.split(",,", 2); //$NON-NLS-1$
+
 		int key = Integer.parseInt(parsed[0]);
-		
+
 		ArrayList<Integer> idList = idMaps.get(key);
 		if (idList == null || msg.length() < 1 || idList.size() < 1)
 			return;
@@ -194,7 +194,7 @@ public class StapGraphParser extends SystemTapParser {
 		}
 		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + parsed[1]); //$NON-NLS-1$
 	}
-	
+
 	private IStatus parse(String s) {
 
 		try {
@@ -203,10 +203,10 @@ public class StapGraphParser extends SystemTapParser {
 		switch (s.charAt(0)) {
 			case '<' :
 				/*
-				 * 
+				 *
 				 * Open tag -- function call
-				 * 
-				 * 
+				 *
+				 *
 				 */
 				String[] args = s.substring(1, s.length()).split(DELIM);
 				// args[0] = name
@@ -216,44 +216,44 @@ public class StapGraphParser extends SystemTapParser {
 				long time = Long.parseLong(args[2]);
 				int tid = Integer.parseInt(args[3]);
 				String name = args[0];
-				
+
 				//If we haven't encountered a main function yet and the name isn't clean,
 				//and the name contains "__", then this is probably a C directive
 				if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
 					skippedDirectives = true;
 					break;
 				}
-				
+
 				ArrayList<String> nameList = nameMaps.get(tid);
 				if (nameList == null) {
 					nameList = new ArrayList<String>();
 				}
-				
+
 				ArrayList<Integer> idList = idMaps.get(tid);
 				if (idList == null) {
 					idList = new ArrayList<Integer>();
 				}
-				
+
 				HashMap<Integer, ArrayList<Integer>> outNeighbours = neighbourMaps.get(tid);
 				if (outNeighbours == null) {
 					outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
 				}
-				
+
 				if (startTime < 1) {
 					startTime = time;
 				}
 				endingTimeInNS=time;
-				
+
 				name = cleanFunctionName(name);
 				if (name.equals("main")) //$NON-NLS-1$
 					encounteredMain = true;
 				if (firstNode == -1) {
 					firstNode = id;
 				}
-				
+
 				serialMap.put(id, name);
 				timeMap.put(id, time);
-				
+
 				if (aggregateTimeMap.get(name) == null){
 					aggregateTimeMap.put(name, (long) 0);
 				}
@@ -261,73 +261,73 @@ public class StapGraphParser extends SystemTapParser {
 				//IF THERE ARE PREVIOUS FUNCTIONS WITH THE SAME NAME
 				//WE ARE IN ONE OF THEM SO DO NOT ADD TO CUMULATIVE TIME
 
-				
+
 				if (nameList.indexOf(name) == -1) {
 					long cumulativeTime = aggregateTimeMap.get(name) - time;
 					aggregateTimeMap.put(name, cumulativeTime);
 					shouldGetEndingTimeForID.add(id);
 				}
-				
-				
+
+
 				if (countMap.get(name) == null){
 					countMap.put(name, 0);
 				}
 				countMap.put(name, countMap.get(name) + 1);
-				
+
 				nameList.add(name);
 				idList.add(id);
-				
+
 
 				if (outNeighbours.get(id) == null){
 					outNeighbours.put(id, new ArrayList<Integer>());
 				}
-				
+
 				if (idList.size() > 1) {
 					int parentID = idList.get(idList.size() - 2);
 					outNeighbours.get(parentID).add(id);
 				}
-				
-				
+
+
 				callOrderList.add(id);
 				lastFunctionMap.put(tid,id);
-				
+
 				neighbourMaps.put(tid, outNeighbours);
 				nameMaps.put(tid, nameList);
 				idMaps.put(tid, idList);
 
 				break;
 			case '>' :
-				
+
 				/*
-				 * 
+				 *
 				 * Close tag -- Function return
-				 * 
+				 *
 				 */
-				
+
 				args = s.substring(1, s.length()).split(DELIM);
 				//args[0] = name
 				//args[1] = time of event
 				name = args[0];
 				tid = Integer.parseInt(args[2]);
-				
+
 				nameList = nameMaps.get(tid);
 				if (nameList == null) {
 					nameList = new ArrayList<String>();
 				}
-				
+
 				idList = idMaps.get(tid);
 				if (idList == null) {
 					idList = new ArrayList<Integer>();
 				}
-				
-				
+
+
 				//If we haven't encountered a main function yet and the name isn't clean,
 				//and the name contains "__", then this is probably a C directive
 				if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
-					skippedDirectives = true;							
+					skippedDirectives = true;
 					break;
 				}
-				
+
 				name = cleanFunctionName(name);
 				int lastOccurance = nameList.lastIndexOf(name);
 				if (lastOccurance < 0) {
@@ -338,40 +338,40 @@ public class StapGraphParser extends SystemTapParser {
 				nameList.remove(lastOccurance);
 				id = idList.remove(lastOccurance);
 
-				
+
 				if (timeMap.get(id) == null) {
 					parsingError(Messages.getString("StapGraphParser.NoStartTime") + name); //$NON-NLS-1$
 					return Status.CANCEL_STATUS;
-				}		
+				}
 				endingTimeInNS=Long.parseLong(args[1]);
 				time = endingTimeInNS - timeMap.get(id);
 				timeMap.put(id, time);
 				if (id == firstNode)
 					showTime(id, time);
-				
-				
+
+
 				//IF AN ID IS IN THIS ARRAY IT IS BECAUSE WE NEED THE ENDING TIME
 				// TO BE ADDED TO THE CUMULATIVE TIME FOR FUNCTIONS OF THIS NAME
 				if (shouldGetEndingTimeForID.contains(id)){
 					long cumulativeTime = aggregateTimeMap.get(name) + Long.parseLong(args[1]);
 					aggregateTimeMap.put(name, cumulativeTime);
 				}
-				
+
 				nameMaps.put(tid, nameList);
 				idMaps.put(tid, idList);
 				break;
-			default : 
+			default :
 				/*
-				 * 
+				 *
 				 * Anything else -- error
-				 * 
+				 *
 				 */
-				
+
 //					parsingError(Messages.getString("StapGraphParser.14") + s.charAt(0) + //$NON-NLS-1$
 //							Messages.getString("StapGraphParser.15") ); //$NON-NLS-1$
 				return Status.CANCEL_STATUS;
-			
-		} 
+
+		}
 		} catch (NumberFormatException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages
 					(Messages.getString("StapGraphParser.BadSymbol"),  //$NON-NLS-1$
@@ -379,19 +379,19 @@ public class StapGraphParser extends SystemTapParser {
 					Messages.getString("StapGraphParser.BadSymbolMsg1") + //$NON-NLS-1$
 					Messages.getString("StapGraphParser.BadSymbolMsg2")); //$NON-NLS-1$
 			mess.schedule();
-			
+
 			return Status.CANCEL_STATUS;
 		}
 		return Status.OK_STATUS;
 	}
 
-	
+
 	private IStatus parseDotFile() {
 		if (!(internalData instanceof BufferedReader))
 			return Status.CANCEL_STATUS;
 
 		BufferedReader buff = (BufferedReader) internalData;
-		
+
 		HashMap <Integer, ArrayList<Integer>> outNeighbours= new HashMap<Integer, ArrayList<Integer>>();
 		ArrayList<String> nameList = new ArrayList<String>();
 		ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -406,7 +406,7 @@ public class StapGraphParser extends SystemTapParser {
 					return Status.CANCEL_STATUS;
 				if (line.length() < 1)
 					continue;
-				
+
 				String[] args = new String[2];
 				args = line.split(" ", 2); //$NON-NLS-1$
 				if (args[0].contains("->")) { //$NON-NLS-1$
@@ -421,20 +421,20 @@ public class StapGraphParser extends SystemTapParser {
 						called = Integer.parseInt(args[1].substring(index1 + 2,index2));
 					} catch (NumberFormatException e) {
 						SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
-								Messages.getString("StapGraphParser.idOrLabel"), Messages.getString("StapGraphParser.idOrLabel"),  //$NON-NLS-1$ //$NON-NLS-2$ 
+								Messages.getString("StapGraphParser.idOrLabel"), Messages.getString("StapGraphParser.idOrLabel"),  //$NON-NLS-1$ //$NON-NLS-2$
 								Messages.getString("StapGraphParser.nonNumericLabel")); //$NON-NLS-1$
 						m.schedule();
 						return Status.CANCEL_STATUS;
 					}
-					
+
 					//Set neighbour
 					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
 					if (tmpList == null)
 						tmpList = new ArrayList<Integer>();
-					
+
 					for (int i = 0; i < called; i++)
 						tmpList.add(ids[1]);
-					
+
 					outNeighbours.put(ids[0], tmpList);
 				} else {
 					//node
@@ -447,8 +447,8 @@ public class StapGraphParser extends SystemTapParser {
 						String name = args[1].substring(index + 2, args[1].indexOf(" ", index)); //$NON-NLS-1$
 						double dtime = 0.0;
 						dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%"))); //$NON-NLS-1$ //$NON-NLS-2$
-						long time = (long) (dtime*100); 
-	
+						long time = (long) (dtime*100);
+
 						nameList.add(name);
 						idList.add(id);
 						timeMap.put(id, time);
@@ -457,7 +457,7 @@ public class StapGraphParser extends SystemTapParser {
 							countMap.put(name, 0);
 						}
 						countMap.put(name, countMap.get(name) + 1);
-						
+
 						long cumulativeTime = (aggregateTimeMap.get(name) != null ? aggregateTimeMap.get(name) : 0) + time;
 						aggregateTimeMap.put(name, cumulativeTime);
 					} catch (NumberFormatException e) {
@@ -467,10 +467,10 @@ public class StapGraphParser extends SystemTapParser {
 						m.schedule();
 						return Status.CANCEL_STATUS;
 					}
-					
+
 				}
-				
-				
+
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -513,12 +513,12 @@ public class StapGraphParser extends SystemTapParser {
 					return parseDotFile();
 				}
 				first = false;
-				
-				draw = true; 
+
+				draw = true;
 				if (line.equals("PROBE_BEGIN")) { //$NON-NLS-1$
 					buff.mark(100);
 					String tmp = buff.readLine();
-					
+
 					if (tmp != null && tmp.length() > 0) {
 						char tchar = tmp.charAt(0);
 						if (tchar != '-' && tchar != '+' && tchar != '?' && tchar != '>' && tchar != '<')
@@ -526,7 +526,7 @@ public class StapGraphParser extends SystemTapParser {
 						else
 							buff.reset();
 					}
-					
+
 				} else if (line.charAt(0) == '-') {
 					endingTimeInNS = Long.parseLong(line.substring(1));
 				} else if (line.charAt(0) == '+') {
@@ -561,7 +561,7 @@ public class StapGraphParser extends SystemTapParser {
 	private void showTime(int id, long time) {
 		String tmp = markedMap.get(id);
 		if (tmp == null) tmp = ""; //$NON-NLS-1$
-		markedMap.put(id, tmp + 
+		markedMap.put(id, tmp +
 				Messages.getString("StapGraphParser.ActualTime") + time/1000000  //$NON-NLS-1$
 				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$
 	}

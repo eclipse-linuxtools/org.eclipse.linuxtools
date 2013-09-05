@@ -215,7 +215,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 
 			if (results.length == 0){
 				results = new IValgrindMessage[1];
-				results[0] = new ValgrindInfo(null, Messages.getString("ValgrindOutputView.No_output"), launch);
+				results[0] = new ValgrindInfo(null, Messages.getString("ValgrindOutputView.No_output"), launch); //$NON-NLS-1$
 			}
 			messages.addAll(Arrays.asList(results));
 			createMarkers(results);

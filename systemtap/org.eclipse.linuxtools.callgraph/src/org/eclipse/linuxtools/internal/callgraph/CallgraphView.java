@@ -679,7 +679,7 @@ public class CallgraphView extends SystemTapView {
 	public void stapPermissionError() {
 		Process p = null;
 		try {
-			p = new ProcessBuilder("/usr/bin/bash", "-c", "whoami").start();
+			p = new ProcessBuilder("/usr/bin/bash", "-c", "whoami").start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

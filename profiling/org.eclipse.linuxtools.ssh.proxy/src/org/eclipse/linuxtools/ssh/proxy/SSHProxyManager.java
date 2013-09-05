@@ -85,7 +85,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 	public Map<String, String> getEnv(URI uri) throws CoreException {
 		Map<String, String> env = Collections.emptyMap();
 		SSHCommandLauncher cmdLauncher = new SSHCommandLauncher(uri);
-		Process p = cmdLauncher.execute(new Path("/bin/env"), new String[] {}, new String[] {}, null, null);
+		Process p = cmdLauncher.execute(new Path("/bin/env"), new String[] {}, new String[] {}, null, null); //$NON-NLS-1$
 		BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String errorLine;
@@ -113,7 +113,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 		 *
 		 * TODO: implement a parser for function declarations so that they do not need to be excluded
 		 */
-		Pattern variablePattern = Pattern.compile("^(.+)=([^\\(\\)\\s{].*|)$");
+		Pattern variablePattern = Pattern.compile("^(.+)=([^\\(\\)\\s{].*|)$"); //$NON-NLS-1$
 		Matcher m;
 		try {
 			String readLine = reader.readLine();

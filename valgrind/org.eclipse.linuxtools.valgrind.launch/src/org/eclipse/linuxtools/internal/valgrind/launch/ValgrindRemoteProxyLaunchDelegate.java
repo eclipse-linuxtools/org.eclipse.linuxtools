@@ -61,7 +61,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		super();
 	}
 
-	private static final String VERSION_OPT = "--version";
+	private static final String VERSION_OPT = "--version"; //$NON-NLS-1$
 
 	private String whichVersion(IProject project) {
 		String cmdArray[] = new String[2];
@@ -82,7 +82,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		}
 	}
 
-	private static final String VERSION_PREFIX = "valgrind-";
+	private static final String VERSION_PREFIX = "valgrind-"; //$NON-NLS-1$
 	private static final char VERSION_DELIMITER = '-';
 	private static final Version MIN_VER = ValgrindLaunchPlugin.VER_3_3_0;
 
@@ -125,7 +125,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		process = null;
 
 		SubMonitor monitor = SubMonitor.convert(m,
-				Messages.getString("ValgrindRemoteLaunchDelegate.task_name"), 10);
+				Messages.getString("ValgrindRemoteLaunchDelegate.task_name"), 10); //$NON-NLS-1$
 		// check for cancellation
 		if (monitor.isCanceled()) {
 			return;
@@ -186,7 +186,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 				workingDir = workingDirRFP.getResource(workingDirURI.getPath());
 			}
 
-			IPath remoteLogDir = Path.fromOSString("/tmp/");
+			IPath remoteLogDir = Path.fromOSString("/tmp/"); //$NON-NLS-1$
 			outputPath = remoteLogDir.append("eclipse-valgrind-" + System.currentTimeMillis()); //$NON-NLS-1$
 
 			exeRC.createFolder(outputPath, new SubProgressMonitor(monitor, 1));
@@ -199,7 +199,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 				createDirectory(localOutputDir);
 			} catch (IOException e2) {
 				throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, IStatus.OK,
-						Messages.getString(""), e2));
+						"", e2)); //$NON-NLS-1$
 			}
 
 			// tool that was launched
