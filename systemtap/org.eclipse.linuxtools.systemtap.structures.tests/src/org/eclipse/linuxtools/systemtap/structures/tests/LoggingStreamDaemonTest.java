@@ -9,7 +9,7 @@
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -35,7 +35,7 @@ public class LoggingStreamDaemonTest {
 	public void testHandleDataEvent() {
 		daemon.handleDataEvent("test");
 	}
-	
+
 	@Test
 	public void testGetOutput() {
 		assertTrue("".equals(daemon.getOutput()));
@@ -43,7 +43,7 @@ public class LoggingStreamDaemonTest {
 		daemon.handleDataEvent("test");
 		assertTrue("test".equals(daemon.getOutput()));
 	}
-	
+
 	@Test
 	public void testSaveLog() {
 		File f = new File("/tmp/loggingstreamdaemon.test");
@@ -53,17 +53,17 @@ public class LoggingStreamDaemonTest {
 		daemon.handleDataEvent("test");
 		assertTrue(daemon.saveLog(f));
 		f.delete();
-		
+
 		f = new File("/root/");
 		assertFalse(daemon.saveLog(f));
 		f.delete();
 	}
-	
+
 	@Test
 	public void testDispose() {
 		daemon.dispose();
 		assertNull(daemon.getOutput());
 	}
-	
-	LoggingStreamDaemon daemon;
+
+	private LoggingStreamDaemon daemon;
 }

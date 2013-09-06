@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +32,7 @@ public class StringFormatterTest {
 		formatter = new StringFormatter();
 		assertNotNull(formatter);
 	}
-	
+
 	@Test
 	public void testGetFormat() {
 		formatter.setFormat(IFormattingStyles.UNFORMATED);
@@ -56,34 +56,34 @@ public class StringFormatterTest {
 		formatter.setFormat(IFormattingStyles.DATE);
 		assertEquals(IFormattingStyles.DATE, formatter.getFormat());
 	}
-	
+
 	public void testSetFormat() {
 		formatter.setFormat(IFormattingStyles.BINARY);
 		assertNotNull(formatter);
 	}
-	
+
 	public void testFormat() {
 		formatter.setFormat(IFormattingStyles.BINARY);
 		assertTrue("0x1000".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.HEX);
 		assertTrue("0x8".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.OCTAL);
 		assertTrue("0x10".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.STRING);
 		assertTrue("8".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.UNFORMATED);
 		assertTrue("8".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.DATE);
 		assertTrue("Dec 31, 1969 4:00:00 PM".equals(formatter.format("8")));
-		
+
 		formatter.setFormat(IFormattingStyles.DOUBLE);
 		assertTrue("8.0".equals(formatter.format("8")));
 	}
 
-	StringFormatter formatter;
+	private StringFormatter formatter;
 }

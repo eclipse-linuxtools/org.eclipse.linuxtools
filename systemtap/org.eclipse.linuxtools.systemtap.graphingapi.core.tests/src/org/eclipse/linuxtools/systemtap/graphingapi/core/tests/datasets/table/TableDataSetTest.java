@@ -46,7 +46,7 @@ public class TableDataSetTest {
 		data.setData(entry);
 		assertEquals(3, data.getEntryCount());
 	}
-	
+
 	@Test
 	public void testAppend() {
 		assertEquals(2, data.getEntryCount());
@@ -71,15 +71,15 @@ public class TableDataSetTest {
 		assertNull(data.getColumn(1, 3, 1));
 		assertNull(data.getColumn(1, -2, 1));
 		assertNull(data.getColumn(1, 0, 20));
-		
+
 		Object[] col = data.getColumn(0);
 		assertEquals(1, col.length);
 		assertSame("4", col[0]);
-		
+
 		col = data.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(1, col.length);
 		assertEquals("1", col[0].toString());
-		
+
 		col = data.getColumn(1, 0, 1);
 		assertEquals(1, col.length);
 		assertSame("5", col[0]);
@@ -90,7 +90,7 @@ public class TableDataSetTest {
 		assertNull(data.getRow(10));
 
 		assertNull(data.getRow(1));
-		
+
 		Object[] row = data.getRow(0);
 		assertEquals(3, row.length);
 		assertSame("5", row[1]);
@@ -102,7 +102,7 @@ public class TableDataSetTest {
 	@Test
 	public void testGetColCount() {
 		assertEquals(3, data.getColCount());
-		
+
 		assertEquals(0, new TableDataSet(null).getColCount());
 	}
 	@Test
@@ -114,7 +114,7 @@ public class TableDataSetTest {
 		assertEquals(TableDataSet.ID, data.getID());
 	}
 	//End IDataSet Methods
-	
+
 	//IHistoricalDataSet Methods
 	@Test
 	public void testGetHistoricalData() {
@@ -126,17 +126,17 @@ public class TableDataSetTest {
 		assertNull(data.getHistoricalData(null, 1, 3, 1));
 		assertNull(data.getHistoricalData(null, 1, -2, 1));
 		assertNull(data.getHistoricalData(null, 1, 0, 20));
-		
+
 		Object[] col = data.getHistoricalData(null, 0);
 		assertEquals(2, col.length);
 		assertEquals("0", col[0].toString());
 		assertEquals("0", col[1].toString());
-		
+
 		col = data.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
-		
+
 		col = data.getHistoricalData("4", 1, 1, 2);
 		assertEquals(1, col.length);
 		assertSame("5", col[0]);
@@ -172,7 +172,7 @@ public class TableDataSetTest {
 		assertEquals(1, d.length);
 		assertEquals("6", d[0][2]);
 	}
-	
-	TableDataSet data;
-	TableEntry entry0;
+
+	private TableDataSet data;
+	private TableEntry entry0;
 }

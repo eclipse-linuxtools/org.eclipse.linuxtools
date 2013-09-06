@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -56,25 +56,25 @@ public class TreeDefinitionNodeTest {
 		assertNotSame("Correct definition", d2, t.getDefinition());
 		assertEquals("Correct definition2", d2, ((TreeDefinitionNode)t.getChildAt(0)).getDefinition());
 	}
-	
+
 	@Test
 	public void testSetDefinition() {
 		String s1 = "/user/share/systemtap";
 		t.setDefinition(s1);
 		assertEquals("Replaced definition", s1, t.getDefinition());
 	}
-	
+
 	@Test
 	public void testDispose() {
 		assertNotNull(t.getDefinition());
 		t.dispose();
 		assertNull(t.getDefinition());
 	}
-	
-	TreeDefinitionNode t;
-	TreeDefinitionNode child;
-	Object data;
-	String data2;
-	String s, s2;
-	String d, d2;
+
+	private TreeDefinitionNode t;
+	private TreeDefinitionNode child;
+	private Object data;
+	private String data2;
+	private String s, s2;
+	private String d, d2;
 }
