@@ -133,7 +133,7 @@ public class TestCheckEventsPreParse {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testBadCounter () {
 		ctr = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_COUNTER);
