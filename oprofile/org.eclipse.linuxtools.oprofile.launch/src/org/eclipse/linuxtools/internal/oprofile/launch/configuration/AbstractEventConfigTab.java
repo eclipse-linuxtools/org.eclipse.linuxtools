@@ -30,15 +30,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
-import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
-import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -62,7 +59,6 @@ AbstractLaunchConfigurationTab {
 	protected Button defaultEventCheck;
 	protected OprofileCounter[] counters = null;
 	protected CounterSubTab[] counterSubTabs;
-	private Boolean hasPermissions = null;
 	private Composite top;
 
 	/**
@@ -104,23 +100,6 @@ AbstractLaunchConfigurationTab {
 	}
 
 	/**
-	 * Disposes all widgets and creates the timer mode Event tab
-	 * @since 1.1
-	 * @param top
-	 */
-	private void createTimerModeTab(Composite top){
-		Control[] children = top.getChildren();
-		for (Control control : children) {
-			control.dispose();
-		}
-		counterSubTabs = null;
-		defaultEventCheck = null;
-
-		Label timerModeLabel = new Label(top, SWT.LEFT);
-		timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
-	}
-
-	/**
 	 * @since 1.1
 	 */
 	private Composite getTabFolderComposite(){
@@ -140,20 +119,11 @@ AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration config) {
-		setPermissions(null);
 
 		IProject previousProject = getOprofileProject();
 		IProject project = getProject(config);
 		setOprofileProject(project);
 
-		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
-			if(!hasPermissions(project)){
-				OpcontrolException e = new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolSudo", null));
-				OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
-				createTimerModeTab(top);
-				return;
-			}
-		}
 		updateOprofileInfo();
 
 		String previousHost = null;
@@ -229,12 +199,6 @@ AbstractLaunchConfigurationTab {
 		IProject project = getProject(config);
 		setOprofileProject(project);
 
-		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
-			if(!hasPermissions(project)){
-				return false;
-			}
-		}
-
 		if (getOprofileTimerMode() || counterSubTabs == null) {
 			return true;		//no options to check for validity
 		} else {
@@ -304,11 +268,6 @@ AbstractLaunchConfigurationTab {
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		IProject project = getProject(config);
-		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
-			if (!hasPermissions(project)) {
-				return;
-			}
-		}
 		if (getOprofileTimerMode() || counterSubTabs == null) {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 		} else {
@@ -326,13 +285,6 @@ AbstractLaunchConfigurationTab {
 		boolean useDefault = true;
 		IProject project = getProject(config);
 		setOprofileProject(project);
-		if(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
-			if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
-				if(!hasPermissions(project)){
-					return;
-				}
-			}
-		}
 
 		counters = getOprofileCounters(config);
 
@@ -393,24 +345,6 @@ AbstractLaunchConfigurationTab {
 	 * @return true if valid config, false otherwise
 	 */
 	protected abstract boolean checkEventSetupValidity(int counter, String name, int maskValue);
-
-	protected Boolean getPermissions(){
-		return hasPermissions;
-	}
-
-	/**
-	 * Checks if user has permission to run remote opcontrol as root.
-	 * @param project
-	 */
-	protected abstract boolean hasPermissions(IProject project);
-
-	/**
-	 * Sets user opcontrol permissions.
-	 * @param bool
-	 */
-	protected void setPermissions(Boolean bool){
-		hasPermissions = bool;
-	};
 
 	/**
 	 *
