@@ -35,7 +35,7 @@
             <exclude>**/Test*.class</exclude>
           </excludes>
           <testSuite>org.eclipse.linuxtools.systemtap.structures.tests</testSuite>
-          <testClass>org.eclipse.linuxtools.systemtap.structures.AllTests</testClass>
+          <testClass>org.eclipse.linuxtools.systemtap.structures.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
