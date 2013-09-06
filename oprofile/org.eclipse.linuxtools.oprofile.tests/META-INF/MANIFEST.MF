@@ -4,7 +4,7 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.linuxtools.internal.oprofile.core.opxml,
  org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata,
  org.eclipse.linuxtools.internal.oprofile.core.model

@@ -37,8 +37,8 @@ import org.osgi.framework.FrameworkUtil;
 
 public class TestManualLaunching extends AbstractTest {
 
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
+	private ILaunchConfiguration config;
+	private Shell testShell;
 
 	@Before
 	public void setUp() throws Exception {
@@ -76,15 +76,15 @@ public class TestManualLaunching extends AbstractTest {
 		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertTrue(options.getBinaryImage().isEmpty());
+		assertTrue(options.getKernelImageFile().isEmpty());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertFalse(delegate._options.getBinaryImage().isEmpty());
+		assertTrue(delegate._options.getKernelImageFile().isEmpty());
 		assertEquals(0, delegate._options.getCallgraphDepth());
 		assertFalse(delegate._options.getVerboseLogging());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
@@ -107,15 +107,15 @@ public class TestManualLaunching extends AbstractTest {
 		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertTrue(options.getBinaryImage().isEmpty());
+		assertTrue(options.getKernelImageFile().isEmpty());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertFalse(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertFalse(delegate._options.getBinaryImage().isEmpty());
+		assertTrue(delegate._options.getKernelImageFile().isEmpty());
 		assertEquals(0, delegate._options.getCallgraphDepth());
 		assertFalse(delegate._options.getVerboseLogging());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());

@@ -106,8 +106,8 @@ public class TestLaunchingExternalProject extends AbstractTest {
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 
 		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertTrue(options.getBinaryImage().isEmpty());
+		assertTrue(options.getKernelImageFile().isEmpty());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
 		OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
