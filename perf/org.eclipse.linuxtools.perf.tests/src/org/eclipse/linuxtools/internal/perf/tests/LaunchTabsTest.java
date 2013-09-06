@@ -78,7 +78,7 @@ public class LaunchTabsTest extends AbstractTest {
 		protected Button getChkModuleSymbols() { return chkModuleSymbols; }
 		protected Button getChkHideUnresolvedSymbols() { return chkHideUnresolvedSymbols; }
 	}
-
+	@Test
 	public void testOptionsTab() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		TestOptionsTab tab = new TestOptionsTab();

@@ -14,6 +14,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.TableViewer;
@@ -27,8 +30,24 @@ import org.eclipse.swt.widgets.TableItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class SortTest extends AbstractMassifTest {
+
+	private int column;
+
+	public SortTest(int number) {
+		this.column = number;
+	}
+
+	@Parameters
+	public static Collection<Object[]> data() {
+		return Arrays.asList(new Object[][] {
+		{ 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+	}
 
 	@Override
 	@Before
@@ -49,32 +68,9 @@ public class SortTest extends AbstractMassifTest {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	@Test
-	public void testSortSnapshots() {
-		checkSortColumn(0);
-	}
-	@Test
-	public void testSortTime() {
-		checkSortColumn(1);
-	}
-	@Test
-	public void testSortTotal() {
-		checkSortColumn(2);
-	}
-	@Test
-	public void testSortUseful() {
-		checkSortColumn(3);
-	}
-	@Test
-	public void testSortExtra() {
-		checkSortColumn(4);
-	}
-	@Test
-	public void testSortStacks() {
-		checkSortColumn(5);
-	}
 
-	private void checkSortColumn(int column) {
+	@Test
+	public void checkSortColumn() {
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
 				.getView().getDynamicView();
 		TableViewer viewer = view.getTableViewer();
@@ -101,22 +97,30 @@ public class SortTest extends AbstractMassifTest {
 
 			switch (column) {
 			case 0:
-				assertTrue(ascending ? first.getNumber() <= second.getNumber() : first.getNumber() >= second.getNumber());
+				assertTrue(ascending ? first.getNumber() <= second.getNumber()
+						: first.getNumber() >= second.getNumber());
 				break;
 			case 1:
-				assertTrue(ascending ? first.getTime() <= second.getTime() : first.getTime() >= second.getTime());
+				assertTrue(ascending ? first.getTime() <= second.getTime()
+						: first.getTime() >= second.getTime());
 				break;
 			case 2:
-				assertTrue(ascending ? first.getTotal() <= second.getTotal() : first.getTotal() >= second.getTotal());
+				assertTrue(ascending ? first.getTotal() <= second.getTotal()
+						: first.getTotal() >= second.getTotal());
 				break;
 			case 3:
-				assertTrue(ascending ? first.getHeapBytes() <= second.getHeapBytes() : first.getHeapBytes() >= second.getHeapBytes());
+				assertTrue(ascending ? first.getHeapBytes() <= second
+						.getHeapBytes() : first.getHeapBytes() >= second
+						.getHeapBytes());
 				break;
 			case 4:
-				assertTrue(ascending ? first.getHeapExtra() <= second.getHeapExtra() : first.getHeapExtra() >= second.getHeapExtra());
+				assertTrue(ascending ? first.getHeapExtra() <= second
+						.getHeapExtra() : first.getHeapExtra() >= second
+						.getHeapExtra());
 				break;
 			case 5:
-				assertTrue(ascending ? first.getStacks() <= second.getStacks() : first.getStacks() >= second.getStacks());
+				assertTrue(ascending ? first.getStacks() <= second.getStacks()
+						: first.getStacks() >= second.getStacks());
 				break;
 			default:
 				fail();

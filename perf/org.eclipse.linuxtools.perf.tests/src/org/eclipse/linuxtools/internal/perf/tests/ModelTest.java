@@ -51,8 +51,8 @@ import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class ModelTest extends AbstractTest {
-	protected ILaunchConfiguration config;
-	protected Stack<Class<?>> stack;
+	private ILaunchConfiguration config;
+	private Stack<Class<?>> stack;
 
 	@Before
 	public void setUp() throws Exception {
@@ -225,7 +225,7 @@ public class ModelTest extends AbstractTest {
 				"ld-2.14.90.so", "perf" };
 		checkCommadLabels(cmdLabels, cmd);
 	}
-
+	@Test
 	public void testParseEventList() {
 		BufferedReader input = null;
 		try {
@@ -431,7 +431,7 @@ public class ModelTest extends AbstractTest {
 	 * @param sum the expected sum of the percentages of this root's
 	 * immediate children
 	 */
-	public void checkChildrenPercentages (TreeParent root, float sum) {
+	private void checkChildrenPercentages (TreeParent root, float sum) {
 		float actualSum = 0;
 		// If a root has no children we're done
 		if (root.getChildren().length != 0) {
@@ -452,7 +452,7 @@ public class ModelTest extends AbstractTest {
 	 * @param root some element that will serve as the root
 	 * @param stack a stack of classes
 	 */
-	public void checkChildrenStructure (TreeParent root, Stack<Class<?>> stack){
+	private void checkChildrenStructure (TreeParent root, Stack<Class<?>> stack){
 		if (stack.isEmpty()){
 			return;
 		}else{
@@ -512,7 +512,7 @@ public class ModelTest extends AbstractTest {
 	 * @param perfErrorDataLoc location of error log file
 	 * @return tree model based on perf data report.
 	 */
-	public TreeParent buildModel(String perfDataLoc, String perfTextDataLoc,
+	private TreeParent buildModel(String perfDataLoc, String perfTextDataLoc,
 			String perfErrorDataLoc) {
 		TreeParent invisibleRoot = new TreeParent("");
 		BufferedReader input = null;
@@ -537,7 +537,7 @@ public class ModelTest extends AbstractTest {
 	 * @param cmdLabels list of command labels
 	 * @param cmd root of tree model
 	 */
-	public void checkCommadLabels(String[] cmdLabels, TreeParent cmd) {
+	private void checkCommadLabels(String[] cmdLabels, TreeParent cmd) {
 		List<String> cmdList = new ArrayList<String>(Arrays.asList(cmdLabels));
 
 		for (TreeParent dso : cmd.getChildren()) {

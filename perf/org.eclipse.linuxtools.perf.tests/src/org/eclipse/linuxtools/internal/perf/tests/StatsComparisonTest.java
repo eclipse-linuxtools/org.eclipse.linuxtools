@@ -31,11 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class StatsComparisonTest {
-	PMStatEntry statEntry;
-	PMStatEntry statEntry2;
-	PMStatEntry statEntry3;
-	PMStatEntry statEntry4;
-	public static final String STAT_RES = "resources/stat-data/";
+	private PMStatEntry statEntry;
+	private PMStatEntry statEntry2;
+	private PMStatEntry statEntry3;
+	private PMStatEntry statEntry4;
+	private static final String STAT_RES = "resources/stat-data/";
 
 	@Before
 	public void setUp() {

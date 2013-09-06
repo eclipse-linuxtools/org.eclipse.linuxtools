@@ -119,7 +119,7 @@ public class DataManipulatorTest {
 	/**
 	 * Used for testing SourceDisassemblyData
 	 */
-	private class StubSourceDisassemblyData extends SourceDisassemblyData {
+	private static class StubSourceDisassemblyData extends SourceDisassemblyData {
 
 		public StubSourceDisassemblyData(String title, IPath workingDir) {
 			super(title, workingDir);
@@ -138,7 +138,7 @@ public class DataManipulatorTest {
 	/**
 	 * Used for testing StatData
 	 */
-	private class StubStatData extends StatData {
+	private static class StubStatData extends StatData {
 
 		public StubStatData(String title, String cmd, String[] args,
 				int runCount, String[] events) {
@@ -165,11 +165,10 @@ public class DataManipulatorTest {
 	/**
 	 * Used for testing ReportComparisonData
 	 */
-	private class StubReportDiffData extends ReportComparisonData{
+	private static class StubReportDiffData extends ReportComparisonData{
 
 		public StubReportDiffData(String title, File oldFile, File newFile) {
 			super(title, oldFile, newFile);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

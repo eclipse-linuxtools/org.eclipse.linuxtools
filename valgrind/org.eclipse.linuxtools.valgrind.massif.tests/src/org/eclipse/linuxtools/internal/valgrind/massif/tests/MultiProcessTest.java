@@ -124,28 +124,28 @@ public class MultiProcessTest extends AbstractMassifTest {
 		// check initial state
 		assertTrue(firstPid.getAction().isChecked());
 		assertFalse(secondPid.getAction().isChecked());
-		assertEquals(output.getSnapshots(pids[0]), dynamicView.getSnapshots());
+		assertArrayEquals(output.getSnapshots(pids[0]), dynamicView.getSnapshots());
 
 		// select second pid
 		selectItem(pidMenu, 1);
 
 		assertFalse(firstPid.getAction().isChecked());
 		assertTrue(secondPid.getAction().isChecked());
-		assertEquals(output.getSnapshots(pids[1]), dynamicView.getSnapshots());
+		assertArrayEquals(output.getSnapshots(pids[1]), dynamicView.getSnapshots());
 
 		// select second pid again
 		selectItem(pidMenu, 1);
 
 		assertFalse(firstPid.getAction().isChecked());
 		assertTrue(secondPid.getAction().isChecked());
-		assertEquals(output.getSnapshots(pids[1]), dynamicView.getSnapshots());
+		assertArrayEquals(output.getSnapshots(pids[1]), dynamicView.getSnapshots());
 
 		// select first pid
 		selectItem(pidMenu, 0);
 
 		assertTrue(firstPid.getAction().isChecked());
 		assertFalse(secondPid.getAction().isChecked());
-		assertEquals(output.getSnapshots(pids[0]), dynamicView.getSnapshots());
+		assertArrayEquals(output.getSnapshots(pids[0]), dynamicView.getSnapshots());
 	}
 
 	private void selectItem(Menu pidMenu, int index) {
