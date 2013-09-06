@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
@@ -31,10 +32,11 @@ public class SignalTest extends AbstractMemcheckTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
+
 	@Test
 	public void testSegfaultHandle() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());

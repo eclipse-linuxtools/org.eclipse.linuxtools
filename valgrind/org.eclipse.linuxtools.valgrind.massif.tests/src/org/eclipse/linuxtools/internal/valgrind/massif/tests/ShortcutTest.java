@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -38,24 +39,28 @@ public class ShortcutTest extends AbstractMassifTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
+
 	@Test
-	public void testShortcutSelection() throws Exception {
+	public void testShortcutSelection() throws CoreException {
 		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
 
-		shortcut.launch(new StructuredSelection(proj.getProject()), ILaunchManager.PROFILE_MODE);
+		shortcut.launch(new StructuredSelection(proj.getProject()),
+				ILaunchManager.PROFILE_MODE);
 		ILaunchConfiguration config = shortcut.getConfig();
 
 		compareWithDefaults(config);
 	}
+
 	@Test
-	public void testShortcutEditor() throws Exception {
+	public void testShortcutEditor() throws CoreException {
 		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
 
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
 		IFile file = proj.getProject().getFile("test.c"); //$NON-NLS-1$
 		IEditorPart editor = IDE.openEditor(page, file);
 
@@ -66,12 +71,14 @@ public class ShortcutTest extends AbstractMassifTest {
 
 		compareWithDefaults(config);
 	}
+
 	@Test
-	public void testShortcutExistingConfig() throws Exception {
+	public void testShortcutExistingConfig() throws CoreException {
 		ILaunchConfiguration prev = createConfiguration(proj.getProject());
 
 		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
-		shortcut.launch(new StructuredSelection(proj.getProject()), ILaunchManager.PROFILE_MODE);
+		shortcut.launch(new StructuredSelection(proj.getProject()),
+				ILaunchManager.PROFILE_MODE);
 		ILaunchConfiguration current = shortcut.getConfig();
 
 		assertEquals(prev, current);

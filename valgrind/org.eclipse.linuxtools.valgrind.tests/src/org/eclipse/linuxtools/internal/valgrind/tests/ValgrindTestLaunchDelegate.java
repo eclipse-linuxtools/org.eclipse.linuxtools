@@ -20,16 +20,16 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 
-public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDelegate {
+public class ValgrindTestLaunchDelegate extends
+		ValgrindLaunchConfigurationDelegate {
 
 	protected static final String ERROR_CODE_FILE = ".errorCode"; //$NON-NLS-1$
-	
+
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
 			return new ValgrindStubCommand();
-		}
-		else {
+		} else {
 			return super.getValgrindCommand();
 		}
 	}
@@ -40,15 +40,15 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 			super.createDirectory(path);
 		}
 	}
-	
+
 	@Override
 	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
 			String programName) {
 		IProcess process;
 		if (ValgrindTestsPlugin.RUN_VALGRIND) {
-			process = super.createNewProcess(launch, systemProcess, programName);
-		}
-		else {
+			process = super
+					.createNewProcess(launch, systemProcess, programName);
+		} else {
 			process = new ValgrindStubProcess(launch, programName);
 		}
 		return process;
@@ -56,10 +56,11 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 
 	@Override
 	protected void setOutputPath(ILaunchConfiguration config, IPath outputPath)
-	throws CoreException {
-		if (!ValgrindTestsPlugin.GENERATE_FILES && ValgrindTestsPlugin.RUN_VALGRIND) {
+			throws CoreException {
+		if (!ValgrindTestsPlugin.GENERATE_FILES
+				&& ValgrindTestsPlugin.RUN_VALGRIND) {
 			super.setOutputPath(config, outputPath);
 		}
 	}
-	
+
 }

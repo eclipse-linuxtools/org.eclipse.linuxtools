@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -42,7 +43,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}

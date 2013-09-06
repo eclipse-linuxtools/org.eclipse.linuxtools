@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -39,7 +40,7 @@ public class ShortcutTest extends AbstractMemcheckTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}

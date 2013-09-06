@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
@@ -35,7 +36,7 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		deleteProject(refProj);
 		super.tearDown();

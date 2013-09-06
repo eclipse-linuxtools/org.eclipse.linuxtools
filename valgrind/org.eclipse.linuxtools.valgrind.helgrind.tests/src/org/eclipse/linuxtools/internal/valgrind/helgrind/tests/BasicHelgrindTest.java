@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.launch.Messages;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
@@ -31,12 +35,12 @@ public class BasicHelgrindTest extends AbstractHelgrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
 	@Test
-	public void testNumErrors() throws Exception {
+	public void testNumErrors() throws CoreException, URISyntaxException, IOException   {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testHelgrindGeneric"); //$NON-NLS-1$
 

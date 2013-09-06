@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
@@ -31,7 +32,7 @@ public class BasicMassifTest extends AbstractMassifTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}

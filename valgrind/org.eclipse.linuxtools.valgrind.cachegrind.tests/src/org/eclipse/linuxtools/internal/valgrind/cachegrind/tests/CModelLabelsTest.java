@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.cdt.core.model.IMethod;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.ui.CElementLabelProvider;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.TreePath;
@@ -44,7 +46,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
@@ -118,7 +120,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 		checkLabelProvider(func, file);
 	}
 
-	private void checkLabelProvider(CachegrindFile file) {
+	private static void checkLabelProvider(CachegrindFile file) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer viewer = view.getViewer();
 
@@ -126,7 +128,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 		checkLabelProvider(viewer, path, file);
 	}
 
-	private void checkLabelProvider(CachegrindFunction func, CachegrindFile file) {
+	private static void checkLabelProvider(CachegrindFunction func, CachegrindFile file) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer viewer = view.getViewer();
 
@@ -134,7 +136,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 		checkLabelProvider(viewer, path, func);
 	}
 
-	private void checkLabelProvider(TreeViewer viewer, TreePath path, ICachegrindElement element) {
+	private static void checkLabelProvider(TreeViewer viewer, TreePath path, ICachegrindElement element) {
 		// expand only the interesting item
 		viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
 		TreeSelection selection = new TreeSelection(path);

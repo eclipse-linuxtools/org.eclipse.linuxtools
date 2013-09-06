@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
@@ -30,16 +31,18 @@ public class BasicMemcheckTest extends AbstractMemcheckTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
+
 	@Test
 	public void testNumErrors() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumErrors"); //$NON-NLS-1$
 
-		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
+		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView()
+				.getMessages();
 		assertEquals(3, messages.length);
 		checkTestMessages(messages, "testNumErrors"); //$NON-NLS-1$
 	}

@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -34,41 +39,50 @@ public class TreeTest extends AbstractMassifTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
+
 	@Test
-	public void testTreeNodes() throws Exception {
+	public void testTreeNodes() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
 		wc.doSave();
 		doLaunch(config, "testTreeNodes"); //$NON-NLS-1$
 
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
+				.getView().getDynamicView();
 		TreeViewer treeViewer = view.getTreeViewer().getViewer();
 
 		MassifSnapshot[] snapshots = view.getSnapshots();
-		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer.getInput();
+		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer
+				.getInput();
 		for (int i = 0; i < nodes.length; i++) {
 			// every odd snapshot should be detailed with --detailed-freq=2
 			// and thus in the tree
 			assertEquals(snapshots[2 * i + 1].getRoot(), nodes[i]);
 		}
 	}
+
 	@Test
-	public void testNoDetailed() throws Exception {
+	public void testNoDetailed() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 12); // > #snapshots
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 12); // >
+																				// #snapshots
 		wc.doSave();
 		doLaunch(config, "testNoDetailed"); //$NON-NLS-1$
 
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
+				.getView().getDynamicView();
 		TreeViewer treeViewer = view.getTreeViewer().getViewer();
 
-		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer.getInput();
+		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer
+				.getInput();
 
 		assertNotNull(nodes);
 		assertEquals(1, nodes.length); // should always contain peak

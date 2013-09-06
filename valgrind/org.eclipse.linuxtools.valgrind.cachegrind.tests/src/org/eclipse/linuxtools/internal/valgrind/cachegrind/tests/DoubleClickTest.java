@@ -16,6 +16,7 @@ import java.io.File;
 
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -51,12 +52,12 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
 
-	private void doDoubleClick(TreePath path) {
+	private static void doDoubleClick(TreePath path) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer treeViewer = view.getViewer();
 

@@ -10,10 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -29,9 +35,9 @@ import org.junit.Test;
 
 public class ExportWizardTest extends AbstractMassifTest {
 
-	protected ValgrindExportWizard wizard;
-	protected WizardDialog dialog;
-	protected ValgrindExportWizardPage page;
+	private ValgrindExportWizard wizard;
+	private WizardDialog dialog;
+	private ValgrindExportWizardPage page;
 
 	@Override
 	@Before
@@ -42,17 +48,18 @@ public class ExportWizardTest extends AbstractMassifTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
-
 		// close dialog just in case
 		if (dialog != null) {
 			dialog.close();
 		}
 		super.tearDown();
 	}
+
 	@Test
-	public void testExportBadPath() throws Exception {
+	public void testExportBadPath() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 
@@ -68,8 +75,10 @@ public class ExportWizardTest extends AbstractMassifTest {
 		assertFalse(page.isPageComplete());
 		assertFalse(wizard.canFinish());
 	}
+
 	@Test
-	public void testExportNotDir() throws Exception {
+	public void testExportNotDir() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 
@@ -88,8 +97,10 @@ public class ExportWizardTest extends AbstractMassifTest {
 		assertFalse(page.isPageComplete());
 		assertFalse(wizard.canFinish());
 	}
+
 	@Test
-	public void testExportBoth() throws Exception {
+	public void testExportBoth() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 
@@ -114,8 +125,10 @@ public class ExportWizardTest extends AbstractMassifTest {
 			assertTrue(copy.exists());
 		}
 	}
+
 	@Test
-	public void testExportOne() throws Exception {
+	public void testExportOne() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 
@@ -147,8 +160,10 @@ public class ExportWizardTest extends AbstractMassifTest {
 		File copy = new File(pathToFiles.toFile(), unselectedFile.getName());
 		assertFalse(copy.exists());
 	}
+
 	@Test
-	public void testExportNone() throws Exception {
+	public void testExportNone() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 
@@ -179,12 +194,13 @@ public class ExportWizardTest extends AbstractMassifTest {
 
 	protected void createWizard() {
 		Display.getDefault().syncExec(new Runnable() {
-
+			@Override
 			public void run() {
 				wizard = new ValgrindExportWizard();
 				wizard.init(PlatformUI.getWorkbench(), null);
 
-				dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
+				dialog = new WizardDialog(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(), wizard);
 				dialog.setBlockOnOpen(false);
 				dialog.open();
 

@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -33,10 +35,10 @@ import org.junit.Test;
 
 public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
-	protected ValgrindOptionsTab tab;
-	protected CachegrindToolPage dynamicTab;
+	private ILaunchConfiguration config;
+	private Shell testShell;
+	private ValgrindOptionsTab tab;
+	private CachegrindToolPage dynamicTab;
 
 	@Override
 	@Before
@@ -53,7 +55,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -72,13 +74,11 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		return wc;
 	}
 
-	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
-	throws Exception {
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc,
+			String testName) throws Exception {
 		tab.performApply(wc);
 		config = wc.doSave();
-
-		ILaunch launch = doLaunch(config, testName);
-		return launch;
+		return doLaunch(config, testName);
 	}
 	@Test
 	public void testDefaults() throws Exception {

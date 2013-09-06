@@ -39,12 +39,12 @@ public class ShortcutTest extends AbstractHelgrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
 	@Test
-	public void testShortcutSelection() throws Exception {
+	public void testShortcutSelection() throws CoreException  {
 		ValgrindTestHelgrindLaunchShortcut shortcut = new ValgrindTestHelgrindLaunchShortcut();
 
 		shortcut.launch(new StructuredSelection(proj.getProject()), ILaunchManager.PROFILE_MODE);
@@ -53,7 +53,7 @@ public class ShortcutTest extends AbstractHelgrindTest {
 		compareWithDefaults(config);
 	}
 	@Test
-	public void testShortcutEditor() throws Exception {
+	public void testShortcutEditor() throws CoreException {
 		ValgrindTestHelgrindLaunchShortcut shortcut = new ValgrindTestHelgrindLaunchShortcut();
 
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -68,7 +68,7 @@ public class ShortcutTest extends AbstractHelgrindTest {
 		compareWithDefaults(config);
 	}
 	@Test
-	public void testShortcutExistingConfig() throws Exception {
+	public void testShortcutExistingConfig() throws CoreException {
 		ILaunchConfiguration prev = createConfiguration(proj.getProject());
 
 		ValgrindTestHelgrindLaunchShortcut shortcut = new ValgrindTestHelgrindLaunchShortcut();

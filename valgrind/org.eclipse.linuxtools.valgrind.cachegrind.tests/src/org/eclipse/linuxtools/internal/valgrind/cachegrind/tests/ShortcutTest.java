@@ -11,7 +11,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -39,24 +40,28 @@ public class ShortcutTest extends AbstractCachegrindTest {
 
 	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
+
 	@Test
 	public void testShortcutSelection() throws Exception {
 		ValgrindTestCachegrindLaunchShortcut shortcut = new ValgrindTestCachegrindLaunchShortcut();
 
-		shortcut.launch(new StructuredSelection(proj.getProject()), ILaunchManager.PROFILE_MODE);
+		shortcut.launch(new StructuredSelection(proj.getProject()),
+				ILaunchManager.PROFILE_MODE);
 		ILaunchConfiguration config = shortcut.getConfig();
 
 		compareWithDefaults(config);
 	}
+
 	@Test
 	public void testShortcutEditor() throws Exception {
 		ValgrindTestCachegrindLaunchShortcut shortcut = new ValgrindTestCachegrindLaunchShortcut();
 
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
 		IFile file = proj.getProject().getFile("test.c"); //$NON-NLS-1$
 		IEditorPart editor = IDE.openEditor(page, file);
 
@@ -67,12 +72,14 @@ public class ShortcutTest extends AbstractCachegrindTest {
 
 		compareWithDefaults(config);
 	}
+
 	@Test
 	public void testShortcutExistingConfig() throws Exception {
 		ILaunchConfiguration prev = createConfiguration(proj.getProject());
 
 		ValgrindTestCachegrindLaunchShortcut shortcut = new ValgrindTestCachegrindLaunchShortcut();
-		shortcut.launch(new StructuredSelection(proj.getProject()), ILaunchManager.PROFILE_MODE);
+		shortcut.launch(new StructuredSelection(proj.getProject()),
+				ILaunchManager.PROFILE_MODE);
 		ILaunchConfiguration current = shortcut.getConfig();
 
 		assertEquals(prev, current);
