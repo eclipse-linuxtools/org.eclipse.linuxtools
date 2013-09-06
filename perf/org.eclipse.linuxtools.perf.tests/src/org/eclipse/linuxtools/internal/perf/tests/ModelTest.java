@@ -197,7 +197,7 @@ public class ModelTest extends AbstractTest {
 						"libc-2.14.90.so" };
 				checkCommadLabels(cmdLabels, cmd);
 			} else if ("major-faults".equals(cur)) {
-				assertTrue(!event.hasChildren());
+				assertFalse(event.hasChildren());
 			}
 
 		}
@@ -316,114 +316,66 @@ public class ModelTest extends AbstractTest {
 			}
 		}
 	}
+
 	@Test
-	public void testAnnotateString(){
-		ILaunchConfigurationWorkingCopy tempConfig = null;
-		try {
-			tempConfig = config.copy("test-config");
-			tempConfig.setAttribute(PerfPlugin.ATTR_Kernel_Location,
-					"/boot/kernel");
-			tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
-		} catch (CoreException e) {
-			fail();
-		}
+	public void testAnnotateString() throws CoreException {
+		ILaunchConfigurationWorkingCopy tempConfig = config.copy("test-config");
+		tempConfig
+				.setAttribute(PerfPlugin.ATTR_Kernel_Location, "/boot/kernel");
+		tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
 
 		String[] annotateString = PerfCore.getAnnotateString(tempConfig, "dso",
 				"symbol", "resources/defaultevent-data/perf.data", false);
 
 		String[] expectedString = new String[] { PerfPlugin.PERF_COMMAND,
-				"annotate",
-				"-d",
-				"dso",
-				"-s",
-				"symbol",
-				"-l",
-				"-P",
-				"--vmlinux",
-				"/boot/kernel",
-				"-m",
-				"-i",
+				"annotate", "-d", "dso", "-s", "symbol", "-l", "-P",
+				"--vmlinux", "/boot/kernel", "-m", "-i",
 				"resources/defaultevent-data/perf.data" };
 
-		for (int i = 0; i < annotateString.length; i++) {
-			assertTrue(annotateString[i].equals(expectedString[i]));
-		}
+		assertArrayEquals(expectedString, annotateString);
 	}
+
 	@Test
-	public void testRecordString() {
-		ILaunchConfigurationWorkingCopy tempConfig = null;
-		try {
-			tempConfig = config.copy("test-config");
-			tempConfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, true);
-			tempConfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, true);
-			tempConfig.setAttribute(PerfPlugin.ATTR_Multiplex, true);
+	public void testRecordString() throws CoreException {
+		ILaunchConfigurationWorkingCopy tempConfig = config.copy("test-config");
+		tempConfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, true);
+		tempConfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, true);
+		tempConfig.setAttribute(PerfPlugin.ATTR_Multiplex, true);
 
-			ArrayList<String> selectedEvents = new ArrayList<String>();
-			selectedEvents.add("cpu-cycles");
-			selectedEvents.add("cache-misses");
-			selectedEvents.add("cpu-clock");
-			tempConfig.setAttribute(PerfPlugin.ATTR_SelectedEvents,	selectedEvents);
+		ArrayList<String> selectedEvents = new ArrayList<String>();
+		selectedEvents.add("cpu-cycles");
+		selectedEvents.add("cache-misses");
+		selectedEvents.add("cpu-clock");
+		tempConfig.setAttribute(PerfPlugin.ATTR_SelectedEvents, selectedEvents);
 
-			tempConfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
-
-		} catch (CoreException e) {
-			fail();
-		}
+		tempConfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
 
 		String[] recordString = PerfCore.getRecordString(tempConfig);
 		assertNotNull(recordString);
 
-		String[] expectedString = { PerfPlugin.PERF_COMMAND,
-				"record",
-				"-f",
-				"-r",
-				"-v",
-				"-M",
-				"-e",
-				"cpu-cycles",
-				"-e",
-				"cache-misses",
-				"-e",
-				"cpu-clock" };
-		assertTrue(recordString.length == expectedString.length);
-
-		for (int i = 0; i < recordString.length; i++) {
-			assertTrue(recordString[i].equals(expectedString[i]));
-		}
+		String[] expectedString = { PerfPlugin.PERF_COMMAND, "record", "-f",
+				"-r", "-v", "-M", "-e", "cpu-cycles", "-e", "cache-misses",
+				"-e", "cpu-clock" };
+		assertArrayEquals(expectedString, recordString);
 	}
+
 	@Test
-	public void testReportString(){ILaunchConfigurationWorkingCopy tempConfig = null;
-		try {
-			tempConfig = config.copy("test-config");
-			tempConfig.setAttribute(PerfPlugin.ATTR_Kernel_Location,
-					"/boot/kernel");
-			tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
-		} catch (CoreException e) {
-			fail();
-		}
+	public void testReportString() throws CoreException {
+		ILaunchConfigurationWorkingCopy tempConfig = null;
+		tempConfig = config.copy("test-config");
+		tempConfig
+				.setAttribute(PerfPlugin.ATTR_Kernel_Location, "/boot/kernel");
+		tempConfig.setAttribute(PerfPlugin.ATTR_ModuleSymbols, true);
 
 		String[] reportString = PerfCore.getReportString(tempConfig,
 				"resources/defaultevent-data/perf.data");
 		assertNotNull(reportString);
 
-		String[] expectedString = { PerfPlugin.PERF_COMMAND,
-				"report",
-				"--sort",
-				"comm,dso,sym",
-				"-n",
-				"-t",
-				"" + (char) 1,
-				"--vmlinux",
-				"/boot/kernel",
-				"-m",
-				"-i",
+		String[] expectedString = { PerfPlugin.PERF_COMMAND, "report",
+				"--sort", "comm,dso,sym", "-n", "-t", "" + (char) 1,
+				"--vmlinux", "/boot/kernel", "-m", "-i",
 				"resources/defaultevent-data/perf.data" };
-		assertTrue(reportString.length == expectedString.length);
-
-		for (int i = 0; i < reportString.length; i++) {
-			assertTrue(reportString[i].equals(expectedString[i]));
-		}
-
+		assertArrayEquals(expectedString, reportString);
 	}
 
 	/**
@@ -453,9 +405,7 @@ public class ModelTest extends AbstractTest {
 	 * @param stack a stack of classes
 	 */
 	private void checkChildrenStructure (TreeParent root, Stack<Class<?>> stack){
-		if (stack.isEmpty()){
-			return;
-		}else{
+		if (!stack.isEmpty()){
 			// children of root must be instances of the top class on the stack
 			Class<?> klass = stack.pop();
 			for (TreeParent tp : root.getChildren()){

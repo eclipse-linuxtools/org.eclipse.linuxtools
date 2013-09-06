@@ -10,8 +10,6 @@
 *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -73,27 +71,21 @@ public class LaunchTest extends AbstractTest {
 	}
 
 	@Test
-	public void testDefaultRun () {
+	public void testDefaultRun() throws CoreException {
 		if (PerfCore.checkPerfInPath()) {
-			try {
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (CoreException e) {
-				fail(e.getMessage());
-			}
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
+
 	@Test
-	public void testClockEventRun () {
+	public void testClockEventRun() throws CoreException {
 		if (PerfCore.checkPerfInPath()) {
-			try {
-				ArrayList<String> list = new ArrayList<String>();
-				list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
-				wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
-				wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (CoreException e) {
-				fail(e.getMessage());
-			}
+			ArrayList<String> list = new ArrayList<String>();
+			list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
+					"cycles" }));
+			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+			wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
 

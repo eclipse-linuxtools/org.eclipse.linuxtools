@@ -53,8 +53,8 @@ public class DataManipulatorTest {
 		sData.parse();
 
 		String expected = "perf stat -r " + runCount + " " + binary; //$NON-NLS-1$
-		for (int i = 0; i < args.length; i++) {
-			expected += " " + args[i]; //$NON-NLS-1$
+		for (String i:args) {
+			expected += " " + i; //$NON-NLS-1$
 		}
 
 		assertEquals(expected, sData.getPerfData().trim());
@@ -76,8 +76,8 @@ public class DataManipulatorTest {
 		}
 
 		expected = expected + " " + binary; //$NON-NLS-1$
-		for (int i = 0; i < args.length; i++) {
-			expected += " " + args[i]; //$NON-NLS-1$
+		for (String i : args) {
+			expected += " " + i; //$NON-NLS-1$
 		}
 
 		assertEquals(expected, sData.getPerfData().trim());
@@ -131,7 +131,7 @@ public class DataManipulatorTest {
 			// return the same command with 'echo' prepended
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(workingDir)));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class DataManipulatorTest {
 			List<String> ret = new ArrayList<String>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(command, args)));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 
 		@Override
@@ -177,7 +177,7 @@ public class DataManipulatorTest {
 			List<String> ret = new ArrayList<String>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand()));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 
 	}

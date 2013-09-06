@@ -11,12 +11,11 @@
 
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -35,10 +34,10 @@ import org.osgi.framework.FrameworkUtil;
 
 public class LaunchRemoteTest extends AbstractRemoteTest {
 
-	protected ILaunchConfiguration config;
-	protected PerfLaunchConfigDelegate delegate;
-	protected ILaunch launch;
-	protected ILaunchConfigurationWorkingCopy wc;
+	private ILaunchConfiguration config;
+	private PerfLaunchConfigDelegate delegate;
+	private ILaunch launch;
+	private ILaunchConfigurationWorkingCopy wc;
 	private IProject project;
 
 	private final String CONNECTION_NAME = "localhost"; //$NON-NLS-1$
@@ -49,7 +48,7 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 
 	@Before
 	public void setUp() throws Exception {
-		if ((!(AbstractRemoteTest.USERNAME.equals("")))) {
+		if ((!(AbstractRemoteTest.USERNAME.isEmpty()))) {
 			project = createRemoteExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
 					PROJECT_NAME, EXTERNAL_PROJECT_PATH, SOURCE_FILE);
 
@@ -63,8 +62,9 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 
 	@After
 	public void tearDown() {
-		if (!(AbstractRemoteTest.USERNAME.equals("")))
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
 			deleteResource(CONNECTION_DIR);
+		}
 	}
 
 	@Override
@@ -82,28 +82,21 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 	}
 
 	@Test
-	public void testDefaultRun () {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
-			try {
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-				fail(e.getMessage());
-			}
+	public void testDefaultRun() throws CoreException {
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
+
 	@Test
-	public void testClockEventRun () {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
-			try {
-				ArrayList<String> list = new ArrayList<String>();
-				list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
-				wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
-				wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (Exception e) {
-				fail(e.getMessage());
-			}
+	public void testClockEventRun() throws CoreException {
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
+			ArrayList<String> list = new ArrayList<String>();
+			list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
+					"cycles" }));
+			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+			wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
 

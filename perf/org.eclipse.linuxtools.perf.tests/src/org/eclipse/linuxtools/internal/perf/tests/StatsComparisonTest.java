@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +22,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.eclipse.linuxtools.internal.perf.BaseDataManipulator;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
@@ -83,7 +83,7 @@ public class StatsComparisonTest {
 		String[] actualList = statEntry.toStringArray();
 
 		// test string array representation
-		assertTrue(Arrays.equals(expectedList, actualList));
+		assertArrayEquals(expectedList, actualList);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class StatsComparisonTest {
 		PMStatEntry actualDiff = statEntry.compare(statEntry2);
 
 		// test stat entry comparison
-		assertTrue(expectedDiff.equals(actualDiff));
+		assertEquals(expectedDiff,actualDiff);
 
 	}
 

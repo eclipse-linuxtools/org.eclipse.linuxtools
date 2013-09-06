@@ -36,8 +36,8 @@ import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class LaunchTabsTest extends AbstractTest {
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
+	private ILaunchConfiguration config;
+	private Shell testShell;
 
 	@Before
 	public void setUp() throws Exception {
