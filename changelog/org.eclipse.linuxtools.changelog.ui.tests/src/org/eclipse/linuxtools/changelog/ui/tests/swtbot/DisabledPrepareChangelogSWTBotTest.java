@@ -8,14 +8,14 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -32,18 +32,18 @@ import org.junit.runner.RunWith;
 
 
 /**
- * 
+ *
  * UI test for "Prepare ChangeLog" when project not shared.
  *
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class DisabledPrepareChangelogSWTBotTest {
- 
+
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
 	private final String projectName = "not-shared";
 	private ChangeLogTestProject project;
- 
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		// delay click speed
@@ -61,12 +61,12 @@ public class DisabledPrepareChangelogSWTBotTest {
 		ProjectExplorer.openView();
 		projectExplorerViewTree = ProjectExplorer.getTree();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		project = new ChangeLogTestProject(projectName);
 	}
- 
+
 	@After
 	public void tearDown() throws Exception {
 		this.project.getTestProject().delete(true, null);
@@ -75,19 +75,19 @@ public class DisabledPrepareChangelogSWTBotTest {
 	/**
 	 * If the project is not shared by any CVS or SVN team provider, "Prepare ChangeLog"
 	 * should be disabled.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
 	public void cannotPrepareChangeLogOnNonCVSOrSVNProject() throws Exception {
 		assertNull(project.getTestProject().findMember(new Path("/ChangeLog")));
-		
+
 		final String changeLogContent = "2010-12-08  Will Probe  <will@example.com>\n\n" +
 			"\t* path/to/some/non-existing/file.c: New file.\n";
 		project.addFileToProject("/", "ChangeLog", new ByteArrayInputStream(changeLogContent.getBytes()));
-		
+
 		assertNotNull(project.getTestProject().findMember(new Path("/ChangeLog")));
-		
+
 		// select ChangeLog file
 		String teamProviderString = "n/a";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, projectName, teamProviderString);
@@ -103,5 +103,5 @@ public class DisabledPrepareChangelogSWTBotTest {
 		}
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 	}
- 
+
 }

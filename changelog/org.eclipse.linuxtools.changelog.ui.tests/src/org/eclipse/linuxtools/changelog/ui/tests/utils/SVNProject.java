@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.ui.tests.swtbot.PrepareChangelogSWTBotTest;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -33,11 +33,11 @@ public class SVNProject {
 	private String repoURL;
 	private String projectName;
 	private IProject project; // available after checkout
-	
+
 	public SVNProject(SWTWorkbenchBot bot) {
 		this.bot = bot;
 	}
-	
+
 	/**
 	 * @return the repoURL
 	 */
@@ -92,31 +92,31 @@ public class SVNProject {
 			throw new IllegalStateException();
 		}
 		bot.menu("File").menu("Import...").click();
-		 
+
 		SWTBotShell shell = bot.shell("Import");
 		shell.activate();
 		bot.tree().expandNode("SVN").select("Checkout Projects from SVN");
 		bot.button("Next >").click();
-		
+
 		// create new repo
 		shell = bot.shell("Checkout from SVN");
 		shell.activate();
 		bot.button("Next >").click();
-		
+
 		shell = bot.shell("Checkout from SVN");
 		shell.activate();
 		// Enter url
 		bot.comboBoxWithLabelInGroup("Url:", "Location").setText(repoURL);
 		bot.button("Next >").click();
-		
+
 		// the next few operation can take quite a while, adjust
 		// timout accordingly.
 		long oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
-		
+
 		bot.waitUntil(Conditions.shellIsActive("Progress Information"));
 		shell = bot.shell("Progress Information");
-		bot.waitUntil(Conditions.shellCloses(shell));		
+		bot.waitUntil(Conditions.shellCloses(shell));
 		bot.waitUntil(Conditions.shellIsActive("Checkout from SVN"));
 		shell = bot.shell("Checkout from SVN");
 		bot.waitUntil(new TreeItemAppearsCondition(repoURL, projectName));
@@ -130,10 +130,10 @@ public class SVNProject {
 		bot.waitUntil(Conditions.shellCloses(svnCheckoutPopup));
 		// need a little delay
 		bot.waitUntil(new SVNProjectCreatedCondition(projectName));
-		
+
 		// Set timout back what it was.
 		SWTBotPreferences.TIMEOUT = oldTimeout;
-		
+
 		// A quick sanity check
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject changelogTestsProject = (IProject)wsRoot.findMember(new Path(projectName));
@@ -148,7 +148,7 @@ public class SVNProject {
 		assertNotNull(manifest);
 		return changelogTestsProject;
 	}
-	
+
 	/**
 	 *  Discard the automatically created SVN repo URL from the list.
 	 */

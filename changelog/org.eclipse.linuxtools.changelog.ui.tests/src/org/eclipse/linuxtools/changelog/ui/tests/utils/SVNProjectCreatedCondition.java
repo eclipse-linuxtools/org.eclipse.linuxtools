@@ -23,24 +23,28 @@ import org.eclipse.swtbot.swt.finder.waits.ICondition;
 public class SVNProjectCreatedCondition implements ICondition {
 
 	private String projectName;
-	
+
 	public SVNProjectCreatedCondition(String projectName) {
 		this.projectName = projectName;
 	}
-	
-	public boolean test() throws Exception {
+
+	@Override
+	public boolean test() {
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = (IProject)wsRoot.findMember(new Path(projectName));
-		if (project == null)
+		if (project == null) {
 			return false;
-		else
+		} else {
 			return true;
+		}
 	}
 
+	@Override
 	public void init(SWTBot bot) {
 		// no initialization; don't need bot
 	}
 
+	@Override
 	public String getFailureMessage() {
 		return null;
 	}

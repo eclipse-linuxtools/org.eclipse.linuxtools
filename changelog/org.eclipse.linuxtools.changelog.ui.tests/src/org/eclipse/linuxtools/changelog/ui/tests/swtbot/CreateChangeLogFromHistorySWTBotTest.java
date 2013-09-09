@@ -40,7 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import static org.hamcrest.core.AllOf.allOf;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
@@ -54,7 +54,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class CreateChangeLogFromHistorySWTBotTest {
- 
+
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
 	private IProject  project;
@@ -64,7 +64,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 	// An available SVN repo
 	private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
 		"org.eclipse.linuxtools/changelog/trunk";
- 
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		// delay click speed
@@ -82,7 +82,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		ProjectExplorer.openView();
 		projectExplorerViewTree = ProjectExplorer.getTree();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		// Do an SVN checkout of the changelog.tests plugin
@@ -91,7 +91,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		bot.waitUntil(new SVNProjectCreatedCondition(PROJECT_NAME));
 		ProjectExplorer.openView();
 	}
- 
+
 	@After
 	public void tearDown() throws Exception {
 		this.project.delete(true, null);
@@ -105,7 +105,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 
 	/**
 	 * Create changelog from SVN history (commit messages).
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "unchecked" })
@@ -120,7 +120,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
 		changeLogItem.select();
-		
+
 		// open history for ChangeLog file
 		clickOnShowHistory(projectExplorerViewTree);
 		SWTBot historyViewBot = bot.viewByTitle("History").bot();
@@ -131,27 +131,27 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		SWTBotTable historyTable = historyViewBot.table();
 		historyTable.select(0); // select the first row
-		
+
 		// right-click => Generate Changelog...
 		clickOnGenerateChangeLog(historyTable);
 		bot.waitUntil(Conditions.shellIsActive("Generate ChangeLog"));
 		SWTBotShell shell = bot.shell("Generate ChangeLog");
-		
+
 		SWTBot generateChangelogBot = shell.bot();
 		generateChangelogBot.radio("Clipboard").click();
 		generateChangelogBot.button("OK").click();
-		
+
 		// create and open a new file for pasting
 		String pasteFile = "newFile";
 		IFile newFile = project.getFile(new Path(pasteFile));
 		newFile.create(new ByteArrayInputStream("".getBytes()) /* empty content */, false, null);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		assertNotNull(project.findMember(new Path(pasteFile)));
-		
+
 		ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME,
 				teamProviderString).expandNode(pasteFile).select().doubleClick();
-		Matcher<?> editorMatcher = Matchers.allOf(
+		Matcher<?> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName(pasteFile)
 				);
@@ -161,7 +161,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		SWTBotEditor swtBoteditor = bot.activeEditor();
 		assertEquals(pasteFile, swtBoteditor.getTitle());
 		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
-		
+
 		// go to beginning of editor
 		eclipseEditor.selectRange(0, 0, 0);
 		// paste
@@ -177,11 +177,11 @@ public class CreateChangeLogFromHistorySWTBotTest {
 //		System.out.println(text);
 //		assertTrue(actualThirdLineContent.contains("\t* "));
 	}
-	
+
 	/**
 	 * Helper method for right-clicking => Generate ChangeLog in History
 	 * view table.
-	 * 
+	 *
 	 * Pre: History view table row selected.
 	 */
 	private void clickOnGenerateChangeLog(SWTBotTable table) {
@@ -190,12 +190,12 @@ public class CreateChangeLogFromHistorySWTBotTest {
 	}
 
 	/**
-	 * Helper method for right-click => Team => Show History. 
+	 * Helper method for right-click => Team => Show History.
 	 */
 	private void clickOnShowHistory(SWTBotTree tree) {
 		String menuItem = "Team";
 		String subMenuItem = "Show History";
 		ContextMenuHelper.clickContextMenu(tree, menuItem, subMenuItem);
 	}
- 
+
 }

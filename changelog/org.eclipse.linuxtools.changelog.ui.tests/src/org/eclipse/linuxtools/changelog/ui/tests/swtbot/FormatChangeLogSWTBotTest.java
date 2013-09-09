@@ -8,6 +8,7 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -17,7 +18,7 @@ import java.io.ByteArrayInputStream;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorerTreeItemAppearsCondition;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -32,7 +33,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
@@ -46,13 +46,13 @@ import org.junit.runner.RunWith;
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class FormatChangeLogSWTBotTest {
- 
+
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
 	private ChangeLogTestProject project;
 	// The name of the test project, we create
 	private final String PROJECT_NAME = "org.eclipse.linuxtools.changelog.ui.formattestproject";
- 
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		// delay click speed
@@ -70,13 +70,13 @@ public class FormatChangeLogSWTBotTest {
 		ProjectExplorer.openView();
 		projectExplorerViewTree = ProjectExplorer.getTree();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		project = new ChangeLogTestProject(PROJECT_NAME);
 		ProjectExplorer.openView();
 	}
- 
+
 	@After
 	public void tearDown() throws Exception {
 		this.project.getTestProject().delete(true, null);
@@ -84,7 +84,7 @@ public class FormatChangeLogSWTBotTest {
 
 	/**
 	 * Simple test for ChangeLog formatting.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "unchecked" })
@@ -104,7 +104,7 @@ public class FormatChangeLogSWTBotTest {
 			"\t* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ProjectExplorerTreeItemAppearsCondition.java: New file.\n";
 		project.addFileToProject("/", "ChangeLog", new ByteArrayInputStream(changelogContent.getBytes()));
 		assertNotNull(project.getTestProject().findMember(new Path("/ChangeLog")));
-		
+
 		// select ChangeLog file
 		String teamProviderString = "n/a";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
@@ -114,25 +114,25 @@ public class FormatChangeLogSWTBotTest {
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
 		changeLogItem.doubleClick(); // should open ChangeLog file
-		
+
 		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
 		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = Matchers.allOf(
+		Matcher<?> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("ChangeLog")
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));		
+		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
 		SWTBotEditor swtBoteditor = bot.activeEditor();
 		assertEquals("ChangeLog", swtBoteditor.getTitle());
-		
+
 		SWTBotEclipseEditor swtBotEclipseEditor = swtBoteditor.toTextEditor();
-		
+
 		// Add two extra lines after the first date line
 		swtBotEclipseEditor.insertText(1, 0, "\n\n");
 		// Should have 3 empty lines between date-line and first file entry
 		swtBotEclipseEditor.selectRange(1, 0, 3);
-		
+
 		// format: ESC CTRL+F
 		swtBotEclipseEditor.pressShortcut(Keystrokes.ESC);
 		swtBotEclipseEditor.pressShortcut(Keystrokes.CTRL, KeyStroke.getInstance("F"));
@@ -143,5 +143,5 @@ public class FormatChangeLogSWTBotTest {
 		assertEquals("", secondLine);
 		assertTrue(!"".equals(thirdLine));
 	}
- 
+
 }
