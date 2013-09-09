@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -23,10 +23,10 @@ import org.eclipse.ui.PlatformUI;
  * Class to create / manipulate Views
  */
 public class ViewFactory {
-	
+
 	private static ArrayList<IViewPart> views;
 	private static SystemTapView newView;
-	
+
 	/**
 	 * Create a view of type designated by the viewID argument
 	 * @param viewID : A string corresponding to a type of View
@@ -44,7 +44,7 @@ public class ViewFactory {
 					if (!(view instanceof SystemTapView)) {
 						return;
 					}
-					
+
 					newView = ((SystemTapView) view);
 					newView.setViewID();
 				} catch (PartInitException e) {
@@ -56,7 +56,7 @@ public class ViewFactory {
 		addView(newView);
 		return newView;
 	}
-	
+
 	/**
 	 * Create a view of type designated by the viewID argument
 	 * @param viewID : A string corresponding to a type of View
@@ -64,7 +64,7 @@ public class ViewFactory {
 	 */
 	public static SystemTapView createView(final String viewID, final String secondaryID) {
 		Display.getDefault().syncExec(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -80,12 +80,12 @@ public class ViewFactory {
 				}
 			}
 		});
-		
+
 		addView(newView);
 		return newView;
 	}
 
-	
+
 	/**
 	 * Adds a view to the factory's list of active SystemTapViews.
 	 */
@@ -95,25 +95,4 @@ public class ViewFactory {
 		}
 		views.add(view);
 	}
-	
-	/**
-	 * Returns the first view added to the views list that is of type SystemTapView.
-	 */
-	public static IViewPart getView() {
-		for (IViewPart view : views) {
-			if (view instanceof SystemTapView) {
-				return view;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the list of views
-	 * @return
-	 */
-	public static SystemTapView[] getViews() {
-		return views.toArray(new SystemTapView[views.size()]);
-	}
-	
 }
