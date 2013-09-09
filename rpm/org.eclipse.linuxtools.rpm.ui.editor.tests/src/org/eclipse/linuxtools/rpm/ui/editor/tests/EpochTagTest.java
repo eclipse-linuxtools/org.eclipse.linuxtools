@@ -36,7 +36,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testNullEpochTag() {
 		String testText = "Epoch:";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(6, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure
@@ -49,7 +49,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testNullEpochTag2() {
 		String testText = "Epoch:	";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(7, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure
@@ -62,7 +62,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testMultipleEpochsTag() {
 		String testText = "Epoch: 1 2";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(10, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure
@@ -75,7 +75,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testMultipleEpochsTag2() {
 		String testText = "Epoch: 	1 2";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(11, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure
@@ -88,7 +88,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testNonIntegerEpoch() {
 		String testText = "Epoch: blah";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(11, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure
@@ -101,7 +101,7 @@ public class EpochTagTest extends FileTestCase {
 	public void testNonIntegerEpoch2() {
 		String testText = "Epoch:	blah";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(11, failure.getPosition().getLength());
 		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure

@@ -42,7 +42,7 @@ public class VersionTagTest extends FileTestCase {
 		String testText = "Version: ";
 		newFile(testText);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Version declaration without value.", failure
@@ -55,7 +55,7 @@ public class VersionTagTest extends FileTestCase {
 
 		newFile(testText);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Version declaration without value.", failure
@@ -67,7 +67,7 @@ public class VersionTagTest extends FileTestCase {
 		String testText = "Version: blah bleh";
 		newFile(testText);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Version cannot have multiple values.", failure
@@ -80,7 +80,7 @@ public class VersionTagTest extends FileTestCase {
 
 		newFile(testText);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Version cannot have multiple values.", failure
