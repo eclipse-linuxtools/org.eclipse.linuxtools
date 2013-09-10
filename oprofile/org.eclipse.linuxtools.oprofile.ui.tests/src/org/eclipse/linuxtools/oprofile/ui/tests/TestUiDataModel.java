@@ -100,8 +100,8 @@ public class TestUiDataModel {
 		assertNull(events[1].getParent());		//events are top level tree elements
 		assertNotNull(events[1].getLabelImage());
 
-		assertEquals("", events[2].toString()); //$NON-NLS-1$
-		assertEquals("", events[2].getLabelText()); //$NON-NLS-1$
+		assertTrue(events[2].toString().isEmpty());
+		assertTrue(events[2].getLabelText().isEmpty());
 		assertFalse(events[2].hasChildren());
 		assertNull(events[2].getParent());		//events are top level tree elements
 		assertNotNull(events[2].getLabelImage());
@@ -476,7 +476,7 @@ public class TestUiDataModel {
 		assertNotNull(e1_s1_i1_s2_samples[0]);
 		assertNotNull(e1_s1_i1_s2_samples[1]);
 		assertNotNull(e1_s1_i1_s2_samples[2]);
-//
+
 		assertNotNull(e2_s1_i1_s1_samples[0]);
 		assertNotNull(e2_s1_i1_s1_samples[1]);
 		assertNotNull(e2_s1_i1_s1_samples[2]);
@@ -491,7 +491,7 @@ public class TestUiDataModel {
 		assertNotNull(e2_s2_i1_s2_samples[0]);
 		assertNotNull(e2_s2_i1_s2_samples[1]);
 		assertNotNull(e2_s2_i1_s2_samples[2]);
-//
+
 		assertNotNull(e1_s1_i1_s1_samples[0].toString());
 		assertNotNull(e1_s1_i1_s1_samples[0].getLabelText());
 		assertEquals(42, ((UiModelSample)e1_s1_i1_s1_samples[0]).getLine());

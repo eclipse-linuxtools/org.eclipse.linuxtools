@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,16 +28,20 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
-	protected ValgrindOptionsTab tab;
-	protected HelgrindToolPage dynamicTab;
+	private ILaunchConfiguration config;
+	private Shell testShell;
+	private ValgrindOptionsTab tab;
+	private HelgrindToolPage dynamicTab;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
@@ -45,7 +53,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -64,8 +73,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		return wc;
 	}
 
-	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
-	throws Exception {
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc,
+			String testName) throws CoreException, URISyntaxException, IOException  {
 		tab.performApply(wc);
 		config = wc.doSave();
 
@@ -73,7 +82,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		return launch;
 	}
 
-	public void testDefaults() throws Exception {
+	@Test
+	public void testDefaults() throws CoreException, URISyntaxException, IOException   {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
@@ -88,7 +98,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertTrue(cmd.contains("--conflict-cache-size=1000000")); //$NON-NLS-1$
 	}
 
-	public void testTrackLockorders() throws Exception {
+	@Test
+	public void testTrackLockorders() throws CoreException, URISyntaxException, IOException  {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getLockordersButton().setSelection(false);
 		tab.performApply(wc);
@@ -102,7 +113,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertTrue(cmd.contains("--track-lockorders=no")); //$NON-NLS-1$
 	}
 
-	public void testHistoryNone() throws Exception {
+	@Test
+	public void testHistoryNone() throws CoreException, URISyntaxException, IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("none");
 		tab.performApply(wc);
@@ -116,7 +128,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertTrue(cmd.contains("--history-level=none")); //$NON-NLS-1$
 	}
 
-	public void testHistoryApprox() throws Exception {
+	@Test
+	public void testHistoryApprox() throws CoreException, URISyntaxException, IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHistoryCombo().setText("approx");
 		tab.performApply(wc);
@@ -130,7 +143,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		assertTrue(cmd.contains("--history-level=approx")); //$NON-NLS-1$
 	}
 
-	public void testConflictCacheSize() throws Exception {
+	@Test
+	public void testConflictCacheSize() throws CoreException, URISyntaxException, IOException  {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
 		dynamicTab.getCacheSizeSpinner().setSelection(123456);

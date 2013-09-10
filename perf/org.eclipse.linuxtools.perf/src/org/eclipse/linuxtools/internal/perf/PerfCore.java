@@ -55,14 +55,14 @@ public class PerfCore {
 		try {
 			while (( line = br.readLine()) != null){
 				strBuf.append(line);
-				strBuf.append("\n");
+				strBuf.append("\n"); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
 			logException(e);
 		}
 		String str = strBuf.toString();
-		if (!str.trim().equals("") && print != null) {
-				print.println(blockTitle + ": \n" +str + "\n END OF " + blockTitle);
+		if (!str.trim().isEmpty() && print != null) {
+				print.println(blockTitle + ": \n" +str + "\n END OF " + blockTitle); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return str;
 	}
@@ -84,7 +84,7 @@ public class PerfCore {
 
 		// local projects have null hosts
 		if(projectHost == null){
-			projectHost = "local";
+			projectHost = "local"; //$NON-NLS-1$
 		}
 
 		eventList = eventsHostMap.get(projectHost);
@@ -105,11 +105,11 @@ public class PerfCore {
 	private static String getHostName(ILaunchConfiguration config){
 		String projectName = null;
 		try {
-			projectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+			projectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
 		} catch (CoreException e) {
 			return null;
 		}
-		if (projectName.equals("")) {
+		if (projectName.isEmpty()) {
 			return null;
 		}
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
@@ -128,7 +128,7 @@ public class PerfCore {
 			try {
 				String projectName = configUtils.getProjectName();
 				// an empty string is not a legal path to file argument for ConfigUtils.getProject
-				if (projectName != null && !projectName.equals("")) {
+				if (projectName != null && !projectName.isEmpty()) {
 					return ConfigUtils.getProject(projectName);
 				}
 			} catch (CoreException e1) {
@@ -156,7 +156,7 @@ public class PerfCore {
 		try {
 			// Execute "perf list" to get list of all symbolic event types.
 			// Alternatively can try with -i flag.
-			p = RuntimeProcessFactory.getFactory().exec(new String[] {PerfPlugin.PERF_COMMAND, "list"}, project); //(char 1 as -t is a custom field seperator
+			p = RuntimeProcessFactory.getFactory().exec(new String[] {PerfPlugin.PERF_COMMAND, "list"}, project); //(char 1 as -t is a custom field seperator //$NON-NLS-1$
 
 			/*
 			 * Old versions of Perf will send events list to stderr instead of stdout
@@ -166,7 +166,7 @@ public class PerfCore {
 
 		} catch( IOException e ) {
 			logException(e);
-		} 
+		}
 		return parseEventList(input);
 	}
 
@@ -176,7 +176,7 @@ public class PerfCore {
 		try {
 			// Process list of events. Each line is of the form <event>\s+<category>.
 			while (( line = input.readLine()) != null){
-				if (line.contains("[")) {
+				if (line.contains("[")) { //$NON-NLS-1$
 					String event;
 					String category;
 					if (line.contains(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
@@ -187,10 +187,10 @@ public class PerfCore {
 						event = line.substring(1,line.indexOf('[', 0)).trim();
 					} else {
 						event = line.substring(1,line.indexOf('[', 0)).trim();
-						if (event.contains("OR")) {
-							event = event.split("OR")[0]; //filter out the abbreviations.
+						if (event.contains("OR")) { //$NON-NLS-1$
+							event = event.split("OR")[0]; //filter out the abbreviations. //$NON-NLS-1$
 						}
-						category = line.replaceFirst(".*\\[(.+)\\]", "$1").trim();
+						category = line.replaceFirst(".*\\[(.+)\\]", "$1").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					ArrayList<String> categoryEvents = events.get(category);
 					if (categoryEvents == null) {
@@ -222,7 +222,7 @@ public class PerfCore {
 
 		if (workingDir == null) {
 			try {
-				p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project);
+				p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
 			} catch (IOException e) {
 				logException(e);
 			}
@@ -230,7 +230,7 @@ public class PerfCore {
 			try {
 				proxy = RemoteProxyManager.getInstance().getFileProxy(new URI(workingDir.toOSString()));
 				workingDirFileStore = proxy.getResource(workingDir.toOSString());
-				p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, environ, workingDirFileStore, project);
+				p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, environ, workingDirFileStore, project); //$NON-NLS-1$
 			} catch (IOException e) {
 				logException(e);
 			} catch (CoreException e) {
@@ -238,7 +238,7 @@ public class PerfCore {
 			} catch (URISyntaxException e) {
 				logException(e);
 			}
-		}			
+		}
 
 		BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		return spitStream(input, "Perf --version", null);
@@ -246,24 +246,24 @@ public class PerfCore {
 
 	public static boolean checkPerfInPath()
 	{
-		try 
+		try
 		{
-			Process p = Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"});
+			Process p = Runtime.getRuntime().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}); //$NON-NLS-1$
 			return (p != null);
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			return false;
 		}
 	}
 
 	public static boolean checkRemotePerfInPath(IProject project) {
-		try 
+		try
 		{
-			Process p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project);
+			Process p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
 			return (p != null);
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			logException(e);
 			return false;
@@ -272,7 +272,7 @@ public class PerfCore {
 
 	//Generates a perf record command string with the options set in the given config. (If null uses default).
 	public static String [] getRecordString(ILaunchConfiguration config) {
-		String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record", "-f"};
+		String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record", "-f"}; //$NON-NLS-1$ //$NON-NLS-2$
 		if (config == null) {
 			return base;
 		} else {
@@ -280,41 +280,41 @@ public class PerfCore {
 			newCommand.addAll(Arrays.asList(base));
 			try {
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default))
-					newCommand.add("-r");
+					newCommand.add("-r"); //$NON-NLS-1$
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default))
-					newCommand.add("-v");
+					newCommand.add("-v"); //$NON-NLS-1$
 				if (config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default))
-					newCommand.add("-M");
+					newCommand.add("-M"); //$NON-NLS-1$
 				List<?> selE = config.getAttribute(PerfPlugin.ATTR_SelectedEvents, PerfPlugin.ATTR_SelectedEvents_default);
-				if (!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default) 
-						&& selE != null) {					
+				if (!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)
+						&& selE != null) {
 					for(Object e : selE) {
-						newCommand.add("-e");
+						newCommand.add("-e"); //$NON-NLS-1$
 						newCommand.add((String)e);
 					}
 				}
-			} catch (CoreException e) { }			
+			} catch (CoreException e) { }
 			return newCommand.toArray(new String[] {});
 		}
 	}
 
 	public static String[] getReportString(ILaunchConfiguration config, String perfDataLoc) {
 		ArrayList<String> base = new ArrayList<String>();
-		base.addAll(Arrays.asList(new String [] {PerfPlugin.PERF_COMMAND, "report", "--sort", "comm,dso,sym", "-n", "-t", "" + (char)1 }));//(char 1 as -t is a custom field seperator)
+		base.addAll(Arrays.asList(new String [] {PerfPlugin.PERF_COMMAND, "report", "--sort", "comm,dso,sym", "-n", "-t", "" + (char)1 }));//(char 1 as -t is a custom field seperator) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		if (config != null) {
 			try {
 				String kernelLoc = config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
 				if (kernelLoc != PerfPlugin.ATTR_Kernel_Location_default) {
-					base.add("--vmlinux");
+					base.add("--vmlinux"); //$NON-NLS-1$
 					base.add(kernelLoc);
 				}
 				if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default))
-					base.add("-m");
+					base.add("-m"); //$NON-NLS-1$
 
 				/*
 				 * danielhb, 12/14/2011 - some systems, like ubuntu and sles, does not have
 				 * the -U option. The binary fails to execute in those systems when this
-				 * option is enabled. 
+				 * option is enabled.
 				 * I'm disabling it to make the plug-in runnable for them. This
 				 * will probably need to be revisited in the future, probably when this
 				 * flag is implemented by the Perf binary of those systems.
@@ -324,10 +324,10 @@ public class PerfCore {
 					base.add("-U");
 				 */
 				if (perfDataLoc != null) {
-					base.add("-i");
+					base.add("-i"); //$NON-NLS-1$
 					base.add(perfDataLoc);
 				}
-			} catch (CoreException e) { }			
+			} catch (CoreException e) { }
 		}
 		return base.toArray( new String[base.size()] );
 	}
@@ -335,24 +335,24 @@ public class PerfCore {
 	public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
 		ArrayList<String> base = new ArrayList<String>();
 		if (OldPerfVersion) {
-			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) );
+			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} else {
-			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) );
+			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		}
 		if (config != null) {
 			try {
 				String kernelLoc = config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
 				if (kernelLoc != PerfPlugin.ATTR_Kernel_Location_default) {
-					base.add("--vmlinux");
+					base.add("--vmlinux"); //$NON-NLS-1$
 					base.add(kernelLoc);
 				}
 				if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default))
-					base.add("-m");
+					base.add("-m"); //$NON-NLS-1$
 				if (perfDataLoc != null) {
-					base.add("-i");
+					base.add("-i"); //$NON-NLS-1$
 					base.add(perfDataLoc);
 				}
-			} catch (CoreException e) { }			
+			} catch (CoreException e) { }
 		}
 
 		//(Annotate string per symbol)
@@ -398,7 +398,7 @@ public class PerfCore {
 			//spitting error stream moved to end of while loop, due to commenting of p.waitFor()
 		} catch( IOException e ) {
 			logException(e);
-		} 
+		}
 
 
 		PerfCore.parseRemoteReport(config, workingDir, monitor, perfDataLoc, print,
@@ -453,25 +453,25 @@ public class PerfCore {
 					return;
 				}
 				// line containing report information
-				if ((line.startsWith("#"))) {
-					if (line.contains("Events:") || line.contains("Samples:")) {
-						String[] tmp = line.trim().split(" ");
+				if ((line.startsWith("#"))) { //$NON-NLS-1$
+					if (line.contains("Events:") || line.contains("Samples:")) { //$NON-NLS-1$ //$NON-NLS-2$
+						String[] tmp = line.trim().split(" "); //$NON-NLS-1$
 						String event = tmp[tmp.length - 1];
 						// In this case, the event name is single quoted
-						if (line.contains("Samples:")){
+						if (line.contains("Samples:")){ //$NON-NLS-1$
 							event = event.substring(1, event.length() -1);
 						}
 						currentEvent = new PMEvent(event);
 						invisibleRoot.addChild(currentEvent);
 						currentCommand = null;
 						currentDso = null;
-					} else if (line.contains("Samples:")) { //"samples" was used instead of events in an older version, some incompatibilities may arise.
+					} else if (line.contains("Samples:")) { //"samples" was used instead of events in an older version, some incompatibilities may arise. //$NON-NLS-1$
 						if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
 						invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results."));
 					}
 					// contains profiled information
 				} else {
-					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +"
+					items = line.trim().split(""+(char)1); // using custom field separator. for default whitespace use " +" //$NON-NLS-1$
 					if (items.length != 5) {
 						continue;
 					}
@@ -479,8 +479,8 @@ public class PerfCore {
 					samples = Double.parseDouble(items[1].trim()); //samples column
 					comm = items[2].trim(); //command column
 					dso = items[3].trim(); //dso column
-					symbol = items[4].trim(); //symbol column 
-					kernelFlag = (""+symbol.charAt(1)).equals("k");			
+					symbol = items[4].trim(); //symbol column
+					kernelFlag = (""+symbol.charAt(1)).equals("k"); //$NON-NLS-1$ //$NON-NLS-2$
 
 					// initialize current command if it doesn't exist
 					if ((currentCommand == null) || (!currentCommand.getName().equals(comm))) {
@@ -539,7 +539,7 @@ public class PerfCore {
 				for (TreeParent cmd : ev.getChildren()) {
 					if (!(cmd instanceof PMCommand)) continue;
 					for (TreeParent d : cmd.getChildren()) {
-						if (!(d instanceof PMDso)) continue;					
+						if (!(d instanceof PMDso)) continue;
 						currentDso = (PMDso)d;
 						if ((!Kernel_SourceLineNumbers) && currentDso.isKernelDso()) continue;
 						for (TreeParent s : currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols).getChildren()) {
@@ -615,19 +615,19 @@ public class PerfCore {
 
 		try {
 			while (( line = input.readLine()) != null){
-				if (line.startsWith("Sorted summary for file")) {
+				if (line.startsWith("Sorted summary for file")) { //$NON-NLS-1$
 					grabBlock = true;
-					dsoName = line.replace("Sorted summary for file ","");
+					dsoName = line.replace("Sorted summary for file ",""); //$NON-NLS-1$ //$NON-NLS-2$
 					blockStarted = false;
-					if ((workingDir != null) && (dsoName.startsWith("./"))) {
-						if (workingDir.toOSString().endsWith("/")) {
+					if ((workingDir != null) && (dsoName.startsWith("./"))) { //$NON-NLS-1$
+						if (workingDir.toOSString().endsWith("/")) { //$NON-NLS-1$
 							dsoName = workingDir.toOSString() + dsoName.substring(2); // path already ends with '/', so trim './'
 						} else {
 							dsoName = workingDir.toOSString() + dsoName.substring(1); // path doesn't have '/', so trim just the '.'
 						}
 					}
 					currentDso.setPath(dsoName);
-				} else if (line.startsWith("---")) {
+				} else if (line.startsWith("---")) { //$NON-NLS-1$
 					if (blockStarted) {
 						blockStarted = false;
 						grabBlock = false;
@@ -636,13 +636,13 @@ public class PerfCore {
 					}
 				} else if (grabBlock && blockStarted) {
 					//process the line.
-					items = line.trim().split(" +");
+					items = line.trim().split(" +"); //$NON-NLS-1$
 					if (items.length != 2) {
 						continue;
 					}
 					percent = Float.parseFloat(items[0]);
 					lineRef = items[1];
-					items = lineRef.split(":");
+					items = lineRef.split(":"); //$NON-NLS-1$
 					if (currentDso == null) {
 						//if (PerfPlugin.DEBUG_ON) System.err.println("Parsed line ref without being in valid block, shouldn't happen.");
 						break;

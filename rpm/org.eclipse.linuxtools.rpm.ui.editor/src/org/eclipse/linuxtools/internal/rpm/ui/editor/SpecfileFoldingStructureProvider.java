@@ -35,6 +35,7 @@ public class SpecfileFoldingStructureProvider {
 
 
 	private static class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
+		@Override
 		public int compare(SpecfileElement element1, SpecfileElement element2) {
 			Integer lineNbr1 = element1.getLineNumber();
 			Integer lineNbr2 = element2.getLineNumber();

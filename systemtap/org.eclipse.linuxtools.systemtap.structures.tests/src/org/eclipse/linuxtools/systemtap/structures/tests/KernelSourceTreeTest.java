@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -32,7 +32,7 @@ public class KernelSourceTreeTest {
 	public void testGetTree() {
 		assertNull("Inital tree is null", kst.getTree());
 	}
-	
+
 	@Test
 	public void testBuildKernelTree() {
 		TreeNode t;
@@ -41,19 +41,19 @@ public class KernelSourceTreeTest {
 		String[] excluded = null;
 		kst.buildKernelTree(direct, excluded);
 		assertNull("Null directory", kst.getTree());
-		
+
 		direct = "";	//Empty string for directory
 		kst.buildKernelTree(direct, excluded);
 		assertNull("Empty string directory", kst.getTree());
-		
+
 		direct = "/noSuchDirectory/";	//Missing folder
 		kst.buildKernelTree(direct, excluded);
 		assertEquals("Missing directory", 0, kst.getTree().getChildCount());
-		
+
 		direct = "/root/";	//Inaccessible
 		kst.buildKernelTree(direct, excluded);
 		assertEquals("Inaccessable directory", 0, kst.getTree().getChildCount());
-		
+
 		direct = "/bin/";	//No .c or .h files
 		kst.buildKernelTree(direct, excluded);
 		t = kst.getTree();
@@ -65,10 +65,10 @@ public class KernelSourceTreeTest {
 		direct = "/tmp/";	//No .c or .h files
 		kst.buildKernelTree(direct, excluded);
 	}
-	
+
 	public void testDispose() {
 		kst.dispose();
 	}
-	
-	KernelSourceTree kst;
+
+	private KernelSourceTree kst;
 }

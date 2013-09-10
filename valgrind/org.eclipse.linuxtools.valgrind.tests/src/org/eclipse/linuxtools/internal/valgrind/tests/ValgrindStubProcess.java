@@ -22,53 +22,63 @@ public class ValgrindStubProcess implements IProcess {
 	protected ILaunch launch;
 	protected String label;
 	protected IStreamsProxy streamsProxy;
-	
+
 	public ValgrindStubProcess(ILaunch launch, String label) {
 		attributes = new HashMap<String, String>();
 		streamsProxy = new ValgrindStubStreamsProxy();
 		this.launch = launch;
 		this.label = label;
-		
+
 		launch.addProcess(this);
 	}
 
+	@Override
 	public String getAttribute(String key) {
 		return attributes.get(key);
 	}
 
+	@Override
 	public int getExitValue() {
 		return 0;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
 
+	@Override
 	public ILaunch getLaunch() {
 		return launch;
 	}
 
+	@Override
 	public IStreamsProxy getStreamsProxy() {
 		return streamsProxy;
 	}
 
+	@Override
 	public void setAttribute(String key, String value) {
 		attributes.put(key, value);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}
 
+	@Override
 	public boolean canTerminate() {
 		return true;
 	}
 
+	@Override
 	public boolean isTerminated() {
 		return true;
 	}
 
+	@Override
 	public void terminate() {
 	}
 

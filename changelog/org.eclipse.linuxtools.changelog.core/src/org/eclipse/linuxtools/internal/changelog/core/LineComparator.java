@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006, 2007 IBM Corporation and others.
+ * Copyright (c) 2004, 2006, 2007, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Red Hat Inc. - copied to changelog plugin
+ *     Red Hat Inc. - copied to changelog plugin and maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core;
 
@@ -40,20 +40,20 @@ public class LineComparator implements IRangeComparator {
     private static class TrailingLineFeedDetector extends FilterInputStream {
 
     	boolean trailingLF = false;
-    	
+
 		protected TrailingLineFeedDetector(InputStream in) {
 			super(in);
 		}
-		
+
 		@Override
 		public int read() throws IOException {
 			int c = super.read();
 			trailingLF = isLineFeed(c);
 			return c;
 		}
-		
+
 	    /*
-	     * We don't need to override read(byte[] buffer) as the javadoc of 
+	     * We don't need to override read(byte[] buffer) as the javadoc of
 	     * FilterInputStream states that it will call read(byte[] buffer, int off, int len)
 	     */
 		@Override
@@ -71,13 +71,13 @@ public class LineComparator implements IRangeComparator {
 		private boolean isLineFeed(int c) {
 			return c != -1 && c == '\n';
 		}
-		
+
 		public boolean hadTrailingLineFeed() {
 			return trailingLF;
 		}
-    	
+
     }
-    
+
     public static LineComparator create(IStorage storage, String outputEncoding) throws CoreException, UnsupportedEncodingException {
     	InputStream is = new BufferedInputStream(storage.getContents());
     	try {
@@ -91,7 +91,7 @@ public class LineComparator implements IRangeComparator {
 			}
 		}
     }
-    
+
 	private static String getEncoding(IStorage storage, String outputEncoding) throws CoreException {
 		if (storage instanceof IEncodedStorage) {
 			IEncodedStorage es = (IEncodedStorage) storage;
@@ -101,9 +101,9 @@ public class LineComparator implements IRangeComparator {
 		}
 		return outputEncoding;
 	}
-	
+
     public LineComparator(InputStream is, String encoding) throws UnsupportedEncodingException {
-        
+
         TrailingLineFeedDetector trailingLineFeedDetector = new TrailingLineFeedDetector(is);
 		BufferedReader br = new BufferedReader(new InputStreamReader(trailingLineFeedDetector, encoding));
         String line;
@@ -134,14 +134,16 @@ public class LineComparator implements IRangeComparator {
     /* (non-Javadoc)
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#getRangeCount()
      */
-    public int getRangeCount() {
+    @Override
+	public int getRangeCount() {
         return fLines.length;
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#rangesEqual(int, org.eclipse.compare.rangedifferencer.IRangeComparator, int)
      */
-    public boolean rangesEqual(int thisIndex, IRangeComparator other,
+    @Override
+	public boolean rangesEqual(int thisIndex, IRangeComparator other,
             int otherIndex) {
         String s1 = fLines[thisIndex];
         String s2 = ((LineComparator) other).fLines[otherIndex];
@@ -151,7 +153,8 @@ public class LineComparator implements IRangeComparator {
     /* (non-Javadoc)
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#skipRangeComparison(int, int, org.eclipse.compare.rangedifferencer.IRangeComparator)
      */
-    public boolean skipRangeComparison(int length, int maxLength, IRangeComparator other) {
+    @Override
+	public boolean skipRangeComparison(int length, int maxLength, IRangeComparator other) {
         return false;
     }
 }

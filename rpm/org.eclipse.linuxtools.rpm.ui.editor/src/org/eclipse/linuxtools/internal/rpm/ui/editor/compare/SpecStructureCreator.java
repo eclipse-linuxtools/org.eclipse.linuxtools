@@ -64,19 +64,23 @@ public class SpecStructureCreator extends StructureCreator {
 			}
 		}
 
+		@Override
 		public String getName() {
 			return this.getId();
 		}
 
+		@Override
 		public String getType() {
 			return "spec"; //$NON-NLS-1$
 		}
 
+		@Override
 		public Image getImage() {
 			return CompareUI.getImage(getType());
 		}
 	}
 
+	@Override
 	public String getName() {
 		return Messages.SpecStructureCreator_0;
 	}
@@ -86,6 +90,7 @@ public class SpecStructureCreator extends StructureCreator {
 		return null;
 	}
 
+	@Override
 	public String getContents(Object node, boolean ignoreWhitespace) {
 		if (node instanceof IStreamContentAccessor) {
 			IStreamContentAccessor sca = (IStreamContentAccessor) node;

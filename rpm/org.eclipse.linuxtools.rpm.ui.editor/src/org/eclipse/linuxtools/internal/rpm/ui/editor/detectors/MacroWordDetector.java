@@ -15,10 +15,12 @@ import org.eclipse.jface.text.rules.IWordDetector;
 
 public class MacroWordDetector implements IWordDetector {
 
+	@Override
 	public boolean isWordPart(char c) {
 		return (Character.isLetterOrDigit(c) || c == '%' || c == '{' || c == '}' || c == '_') ;
 	}
 
+	@Override
 	public boolean isWordStart(char c) {
 		return (c == '%');
 	}

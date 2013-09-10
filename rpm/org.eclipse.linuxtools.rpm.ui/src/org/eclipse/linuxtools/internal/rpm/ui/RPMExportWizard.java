@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004-2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 	 *      Basic constructor. Don't do much, just print out debug, and set
 	 *      progress monitor status to true
 	 */
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
 		setNeedsProgressMonitor(true);
 		setWindowTitle(Messages.getString("RPMExportWizard.Export_an_SRPM")); //$NON-NLS-1$

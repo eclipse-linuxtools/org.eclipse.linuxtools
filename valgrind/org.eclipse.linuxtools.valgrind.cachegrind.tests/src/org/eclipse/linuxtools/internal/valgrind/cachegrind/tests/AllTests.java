@@ -18,5 +18,5 @@ import org.junit.runners.Suite;
 		DoubleClickTest.class, LaunchConfigTabTest.class,
 		MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class })
 public class AllTests {
-	
+// suite class
 }

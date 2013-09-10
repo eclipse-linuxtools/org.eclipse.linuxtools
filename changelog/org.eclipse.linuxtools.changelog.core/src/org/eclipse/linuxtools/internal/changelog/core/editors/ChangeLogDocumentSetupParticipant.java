@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 public class ChangeLogDocumentSetupParticipant implements
 		IDocumentSetupParticipant, IDocumentListener {
 
+	@Override
 	public void setup(IDocument document) {
 		IExtensionPoint editorExtensions = null;
 		IEditorChangeLogContrib editorContrib = null;
@@ -45,7 +46,7 @@ public class ChangeLogDocumentSetupParticipant implements
 			IConfigurationElement[] elements = editorExtensions
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
-				if (elements[i].getName().equals("editor") // $NON-NLS-1$ 
+				if (elements[i].getName().equals("editor") // $NON-NLS-1$
 						&& (elements[i].getAttribute("name").equals(pref_Editor))) { //$NON-NLS-1$
 
 					try {
@@ -65,18 +66,20 @@ public class ChangeLogDocumentSetupParticipant implements
 			}
 		}
 	}
-	
+
 	/*
 	 * @see IDocumentListener#documentAboutToBeChanged(DocumentEvent)
 	 */
 
+	@Override
 	public void documentAboutToBeChanged(DocumentEvent e) {
 		// do nothing
 	}
-	
+
 	/*
 	 * @see IDocumentListener#documentChanged(DocumentEvent)
 	 */
+	@Override
 	public void documentChanged(DocumentEvent e) {
 		// do nothing
 	}

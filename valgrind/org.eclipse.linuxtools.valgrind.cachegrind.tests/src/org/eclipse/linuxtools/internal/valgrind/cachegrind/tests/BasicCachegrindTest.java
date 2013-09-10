@@ -10,51 +10,66 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class BasicCachegrindTest extends AbstractCachegrindTest {
-	
+
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
-	
+
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+
+	@Test
 	public void testNumPIDs() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumPIDs"); //$NON-NLS-1$
-		
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+				.getDefault().getView().getDynamicView();
 		assertEquals(1, view.getOutputs().length);
 	}
-	
+
+	@Test
 	public void testFileNames() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testFileNames"); //$NON-NLS-1$
-		
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+				.getDefault().getView().getDynamicView();
 		CachegrindOutput output = view.getOutputs()[0];
 		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
 		assertNotNull(file);
 		file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
 		assertNotNull(file);
 	}
-	
+
+	@Test
 	public void testNumFunctions() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumFunctions"); //$NON-NLS-1$
-		
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+				.getDefault().getView().getDynamicView();
 		CachegrindOutput output = view.getOutputs()[0];
 		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
 		assertNotNull(file);

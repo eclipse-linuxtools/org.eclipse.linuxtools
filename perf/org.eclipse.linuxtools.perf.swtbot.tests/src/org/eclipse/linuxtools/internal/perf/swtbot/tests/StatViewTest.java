@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.swtbot.tests;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.ui.StatView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;

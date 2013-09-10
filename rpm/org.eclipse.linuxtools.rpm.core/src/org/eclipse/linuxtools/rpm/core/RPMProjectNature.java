@@ -60,16 +60,20 @@ public class RPMProjectNature implements IProjectNature {
 		project.setDescription(description, monitor);
 	}
 
-	public void configure() throws CoreException {
+	@Override
+	public void configure() {
 	}
 
-	public void deconfigure() throws CoreException {
+	@Override
+	public void deconfigure() {
 	}
 
+	@Override
 	public IProject getProject() {
 		return project;
 	}
 
+	@Override
 	public void setProject(IProject project) {
 		this.project = project;
 	}

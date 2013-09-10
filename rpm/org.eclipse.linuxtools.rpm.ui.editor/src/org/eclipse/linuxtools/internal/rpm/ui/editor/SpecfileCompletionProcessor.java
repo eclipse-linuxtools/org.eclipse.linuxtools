@@ -63,7 +63,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private static final class TemplateProposalComparator implements Comparator<TemplateProposal>, Serializable {
 		private static final long serialVersionUID = 1L;
-
+		@Override
 		public int compare(TemplateProposal t1, TemplateProposal t2) {
 			return (t2.getRelevance() - t1.getRelevance());
 		}
@@ -74,7 +74,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @author Sami Wagiaalla
 	 */
 	private static final class ProposalComparator implements Comparator<ICompletionProposal>{
-
+		@Override
 		public int compare(ICompletionProposal a, ICompletionProposal b){
 			return a.getDisplayString().compareToIgnoreCase(b.getDisplayString());
 		}
@@ -113,6 +113,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
 	 */
+	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
 		List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -581,6 +582,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
 	 */
+	@Override
 	public IContextInformation[] computeContextInformation(ITextViewer viewer,
 			int offset) {
 		return null;
@@ -589,6 +591,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
 	 */
+	@Override
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		return null;
 	}
@@ -596,6 +599,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationAutoActivationCharacters()
 	 */
+	@Override
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
@@ -603,6 +607,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
 	 */
+	@Override
 	public String getErrorMessage() {
 		return null;
 	}
@@ -610,6 +615,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
 	 */
+	@Override
 	public IContextInformationValidator getContextInformationValidator() {
 		return null;
 	}

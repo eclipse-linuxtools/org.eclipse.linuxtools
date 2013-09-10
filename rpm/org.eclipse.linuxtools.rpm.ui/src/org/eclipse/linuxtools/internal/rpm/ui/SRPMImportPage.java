@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004-2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,7 @@ public class SRPMImportPage extends WizardPage {
 				.getString("SRPMImportPage.Select_project_to_import")); //$NON-NLS-1$
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		// Set Page complete to false. Don't allow the user to execute wizard
 		// until we have all the required data
@@ -108,6 +109,7 @@ public class SRPMImportPage extends WizardPage {
 		gridData.grabExcessHorizontalSpace = true;
 		sourceSRPM.setLayoutData(gridData);
 		sourceSRPM.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				boolean validSRPM = canFinish();
 				if (validSRPM) {
@@ -123,6 +125,7 @@ public class SRPMImportPage extends WizardPage {
 				.getString("SRPMImportPage.toolTip_Open_file_navigator")); //$NON-NLS-1$
 		srpmBrowse.setText(Messages.getString("RPMPage.Browse")); //$NON-NLS-1$
 		srpmBrowse.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				FileDialog srpmBrowseDialog = new FileDialog(getContainer()
 						.getShell(), SWT.OPEN);

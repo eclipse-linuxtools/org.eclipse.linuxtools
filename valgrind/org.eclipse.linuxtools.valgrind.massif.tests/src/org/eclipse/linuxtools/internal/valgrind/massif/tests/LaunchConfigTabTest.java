@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
@@ -25,16 +31,20 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class LaunchConfigTabTest extends AbstractMassifTest {
 
-	protected ValgrindOptionsTab tab;
-	protected MassifToolPage dynamicTab;
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
+	private ValgrindOptionsTab tab;
+	private MassifToolPage dynamicTab;
+	private ILaunchConfiguration config;
+	private Shell testShell;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -46,7 +56,8 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -65,8 +76,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		return wc;
 	}
 
-	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
-	throws Exception {
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc,
+			String testName) throws URISyntaxException, IOException,
+			CoreException {
 		tab.performApply(wc);
 		config = wc.doSave();
 
@@ -74,7 +86,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		return launch;
 	}
 
-	public void testDefaults() throws Exception {
+	@Test
+	public void testDefaults() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
@@ -106,7 +120,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertFalse(cmd.contains("--alignment=")); //$NON-NLS-1$
 	}
 
-	public void testHeap() throws Exception {
+	@Test
+	public void testHeap() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHeapButton().setSelection(false);
 		ILaunch launch = saveAndLaunch(wc, "testHeap"); //$NON-NLS-1$
@@ -117,7 +133,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--heap=no")); //$NON-NLS-1$
 	}
 
-	public void testHeapAdmin() throws Exception {
+	@Test
+	public void testHeapAdmin() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getHeapAdminSpinner().setSelection(30);
 		ILaunch launch = saveAndLaunch(wc, "testHeapAdmin"); //$NON-NLS-1$
@@ -128,7 +146,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--heap-admin=30")); //$NON-NLS-1$
 	}
 
-	public void testStacks() throws Exception {
+	@Test
+	public void testStacks() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getStacksButton().setSelection(true);
 		ILaunch launch = saveAndLaunch(wc, "testStacks"); //$NON-NLS-1$
@@ -139,7 +159,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--stacks=yes")); //$NON-NLS-1$
 	}
 
-	public void testDepth() throws Exception {
+	@Test
+	public void testDepth() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getDepthSpinner().setSelection(50);
 		ILaunch launch = saveAndLaunch(wc, "testDepth"); //$NON-NLS-1$
@@ -150,7 +172,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--depth=50")); //$NON-NLS-1$
 	}
 
-	public void testAllocFn() throws Exception {
+	@Test
+	public void testAllocFn() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getAllocFnList().add("foo"); //$NON-NLS-1$
 		ILaunch launch = saveAndLaunch(wc, "testAllocFn"); //$NON-NLS-1$
@@ -161,7 +185,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--alloc-fn=foo")); //$NON-NLS-1$
 	}
 
-	public void testAllocFnMultiple() throws Exception {
+	@Test
+	public void testAllocFnMultiple() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getAllocFnList().add("foo"); //$NON-NLS-1$
 		dynamicTab.getAllocFnList().add("bar"); //$NON-NLS-1$
@@ -174,7 +200,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--alloc-fn=bar")); //$NON-NLS-1$
 	}
 
-	public void testAllocFnSpace() throws Exception {
+	@Test
+	public void testAllocFnSpace() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getAllocFnList().add("operator new(unsigned)"); //$NON-NLS-1$
 		ILaunch launch = saveAndLaunch(wc, "testAllocFnSpace"); //$NON-NLS-1$
@@ -185,7 +213,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--alloc-fn=operator new(unsigned)")); //$NON-NLS-1$
 	}
 
-	public void testThreshold() throws Exception {
+	@Test
+	public void testThreshold() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getThresholdSpinner().setSelection(20);
 		ILaunch launch = saveAndLaunch(wc, "testThreshold"); //$NON-NLS-1$
@@ -196,7 +226,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--threshold=2.0")); //$NON-NLS-1$
 	}
 
-	public void testPeakInaccuracy() throws Exception {
+	@Test
+	public void testPeakInaccuracy() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getPeakInaccuracySpinner().setSelection(0);
 		ILaunch launch = saveAndLaunch(wc, "testPeakInaccuracy"); //$NON-NLS-1$
@@ -207,7 +239,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--peak-inaccuracy=0.0")); //$NON-NLS-1$
 	}
 
-	public void testTimeUnitBytes() throws Exception {
+	@Test
+	public void testTimeUnitBytes() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String[] items = dynamicTab.getTimeUnitCombo().getItems();
 		int ix = -1;
@@ -225,7 +259,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--time-unit=B")); //$NON-NLS-1$
 	}
 
-	public void testTimeUnitMilliseconds() throws Exception {
+	@Test
+	public void testTimeUnitMilliseconds() throws CoreException,
+			URISyntaxException, IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String[] items = dynamicTab.getTimeUnitCombo().getItems();
 		int ix = -1;
@@ -243,7 +279,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--time-unit=ms")); //$NON-NLS-1$
 	}
 
-	public void testDetailedFreq() throws Exception {
+	@Test
+	public void testDetailedFreq() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getDetailedFreqSpinner().setSelection(1);
 		ILaunch launch = saveAndLaunch(wc, "testDetailedFreq"); //$NON-NLS-1$
@@ -254,7 +292,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--detailed-freq=1")); //$NON-NLS-1$
 	}
 
-	public void testMaxSnapshots() throws Exception {
+	@Test
+	public void testMaxSnapshots() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getMaxSnapshotsSpinner().setSelection(200);
 		ILaunch launch = saveAndLaunch(wc, "testMaxSpapshots"); //$NON-NLS-1$
@@ -265,7 +305,9 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--max-snapshots=200")); //$NON-NLS-1$
 	}
 
-	public void testAlignment() throws Exception {
+	@Test
+	public void testAlignment() throws CoreException, URISyntaxException,
+			IOException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
 		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());
@@ -287,7 +329,8 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		assertTrue(cmd.contains("--alignment=512")); //$NON-NLS-1$
 	}
 
-	public void testAlignmentBad() throws Exception {
+	@Test
+	public void testAlignmentBad() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
 		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());

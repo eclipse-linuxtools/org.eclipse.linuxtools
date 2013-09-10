@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * Copyright (c) 2005, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -182,6 +182,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getBuildFolder()
 	 */
+	@Override
 	public IFolder getBuildFolder() {
 		return buildFolder;
 	}
@@ -189,6 +190,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getRpmsFolder()
 	 */
+	@Override
 	public IFolder getRpmsFolder() {
 		return rpmsFolder;
 	}
@@ -196,6 +198,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSourcesFolder()
 	 */
+	@Override
 	public IFolder getSourcesFolder() {
 		return sourcesFolder;
 	}
@@ -203,6 +206,7 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSpecsFolder()
 	 */
+	@Override
 	public IFolder getSpecsFolder() {
 		return specsFolder;
 	}
@@ -210,10 +214,12 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSrpmsFolder()
 	 */
+	@Override
 	public IFolder getSrpmsFolder() {
 		return srpmsFolder;
 	}
 
+	@Override
 	public List<String> getConfigDefines() {
 		return configDefines;
 	}

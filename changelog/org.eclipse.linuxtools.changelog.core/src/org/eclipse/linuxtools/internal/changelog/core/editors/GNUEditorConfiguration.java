@@ -32,7 +32,7 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 /**
  * GNU format ChangeLog editor configuration.
- * 
+ *
  * @author klee (Kyu Lee)
  */
 public class GNUEditorConfiguration extends TextSourceViewerConfiguration implements
@@ -57,13 +57,14 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 	/**
 	 * Sets TextEditor that this configuration is going to be applied.
 	 */
+	@Override
 	public void setTextEditor(TextEditor editor) {
 		parentEditor = editor;
 	}
 
 	/**
 	 * Get configured content types.
-	 * 
+	 *
 	 * @return array of configured content types.
 	 */
 	@Override
@@ -84,21 +85,15 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 
 	/**
 	 * Detects hyperlinks in GNU formatted changelogs.
-	 * 
+	 *
 	 * @return link detector for GNU format.
 	 */
 	@Override
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
-		
+
 		return getRegisteredHyperlinkDetectors(sourceViewer);
-//		if (linkDetector == null) {
-//			linkDetector = new GNUHyperlinkDetector(sourceViewer, parentEditor);
-//
-//		}
-//
-//		return new IHyperlinkDetector[] { linkDetector };
 	}
 
 	/*
@@ -108,30 +103,30 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 	public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
 		return CHANGELOG_PARTITIONING;
 	}
-	
+
 	/**
 	 * Set content formatter. For ChangeLog, it just wraps lines.
 	 */
 	@Override
 	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
-		
+
 		ContentFormatter cf = new ContentFormatter();
-		
+
 		// no partitions
 		cf.enablePartitionAwareFormatting(false);
-		
+
 		ChangeLogFormattingStrategy cfs = new ChangeLogFormattingStrategy();
-		
+
 		cf.setFormattingStrategy(cfs, IDocument.DEFAULT_CONTENT_TYPE);
-		
-		
+
+
 		return cf;
 	}
-	
+
 
 	/**
 	 * Highlights GNU format changelog syntaxes.
-	 * 
+	 *
 	 * @return reconciler for GNU format changelog.
 	 */
 	@Override
@@ -146,19 +141,20 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 		dr= new GNUFileEntryDamagerRepairer(getChangeLogFileScanner());
 		reconciler.setDamager(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
 		reconciler.setRepairer(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
-	
+
 		dr= new MultilineRuleDamagerRepairer(getChangeLogFileScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
-		
+
 		return reconciler;
 	}
 
 	/**
 	 * Perform documentation setup to set up partitioning.
-	 * 
+	 *
 	 * @param document to set up partitioning on.
 	 */
+	@Override
 	public void setup(IDocument document) {
 		FastPartitioner partitioner =
 			new FastPartitioner(
@@ -172,9 +168,9 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 			document.setDocumentPartitioner(partitioner);
 		}
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override 
+	@Override
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
 		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
 		targets.put("org.eclipse.changelog.editor.target", parentEditor); //$NON-NLS-1$

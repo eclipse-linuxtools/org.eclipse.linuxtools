@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007, 2013 Alphonse Van Assche.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.rpmstubby.model.FeatureModel;
+import org.eclipse.linuxtools.rpmstubby.RPMStubbyUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -35,6 +36,7 @@ public class StubbyGenerator extends AbstractGenerator {
 
 	private FeatureModel model;
 	private IFile featureFile;
+	private boolean pomExists;
 
 	/**
 	 * Creates the specfile and fetch script generator for the given packages.
@@ -47,6 +49,7 @@ public class StubbyGenerator extends AbstractGenerator {
 		parse(featureFile);
 		specfileName = model.getPackageName().toLowerCase() + ".spec";
 		projectName = featureFile.getProject().getName();
+		pomExists = new RPMStubbyUtils().findPom(featureFile.getParent().getLocation());
 	}
 
 	private void parse(IFile featureFile) {
@@ -88,7 +91,6 @@ public class StubbyGenerator extends AbstractGenerator {
 	@Override
 	public String generateSpecfile() {
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("%global eclipse_base   %{_libdir}/eclipse\n");
 		buffer.append("%global install_loc    %{_datadir}/eclipse/dropins/"
 				+ model.getSimplePackageName() + "\n\n");
 		buffer.append("Name:           " + model.getPackageName().toLowerCase()
@@ -100,9 +102,9 @@ public class StubbyGenerator extends AbstractGenerator {
 		buffer.append("License:        " + model.getLicense() + "\n");
 		buffer.append("URL:            " + model.getURL() + "\n");
 		buffer.append("Source0:        #FIXME\n");
-		buffer.append("BuildArch: noarch\n\n");
+		buffer.append("BuildArch:      noarch\n\n");
 		generateRequires(buffer);
-		buffer.append("\n%description\n" + model.getDescription() + "\n");
+		buffer.append("%description\n" + model.getDescription() + "\n");
 		generatePrepSection(buffer);
 		generateBuildSection(buffer);
 		generateInstallSection(buffer);
@@ -112,19 +114,25 @@ public class StubbyGenerator extends AbstractGenerator {
 		return buffer.toString();
 	}
 
-	private static void generateRequires(StringBuilder buffer) {
-		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
-		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
-
+	private void generateRequires(StringBuilder buffer) {
+		buffer.append("Requires:       eclipse-platform >= 3.4.0\n");
+		buffer.append("BuildRequires:  maven-local\n");
+		buffer.append("\n\n");
 	}
 
 	private void generateInstallSection(StringBuilder buffer) {
 		buffer.append("%install\n");
-		buffer.append("install -d -m 755 %{buildroot}%{install_loc}\n\n");
-		buffer.append("%{__unzip} -q -d %{buildroot}%{install_loc} \\\n");
-		buffer.append("     build/rpmBuild/" + model.getFeatureId()
-				+ ".zip \n\n");
-
+		if (!pomExists) {
+			generateTempPom(buffer);
+		}
+		buffer.append("mvn-rpmbuild ");
+		if (!pomExists) {
+			buffer.append("-f temp/pom.xml ");
+		}
+		buffer.append("org.fedoraproject:feclipse-maven-plugin:install \\" + "\n");
+		buffer.append("\t" + "-DsourceRepo=#FIXME \\" + "\n");
+		buffer.append("\t" + "-DtargetLocation=%{buildroot}%{install_loc}/eclipse" + "\n");
+		buffer.append("\n\n");
 	}
 
 	private void generateFilesSections(StringBuilder buffer) {
@@ -139,19 +147,25 @@ public class StubbyGenerator extends AbstractGenerator {
 				buffer.append("%doc " + docsRoot + "/" + file + "\n");
 			}
 		}
-		buffer.append("\n");
+		buffer.append("\n\n");
 	}
 
 	private static void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n");
-		buffer.append("#FIXME Replace FIXME with the root directory name in Source0\n");
-		buffer.append("%setup -q -n FIXME\n\n");
+		buffer.append("%setup -q #You may need to update this according to your Source0\n");
+		buffer.append("\n\n");
 	}
 
 	private void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
-		buffer.append("%{eclipse_base}/buildscripts/pdebuild -f ").append(
-				model.getFeatureId());
+		if (!pomExists) {
+			generateTempPom(buffer);
+		}
+		buffer.append("mvn-rpmbuild ");
+		if (!pomExists) {
+			buffer.append("-f temp/pom.xml ");
+		}
+		buffer.append("install\n");
 		buffer.append("\n\n");
 	}
 
@@ -170,5 +184,20 @@ public class StubbyGenerator extends AbstractGenerator {
 			name = packageItems[packageItems.length - 2];
 		}
 		return "eclipse-" + name;
+	}
+
+	private static void generateTempPom(StringBuilder buffer) {
+		buffer.append("mkdir temp\n");
+		buffer.append("pushd temp\n");
+		buffer.append("cat > pom.xml << EOF\n");
+		buffer.append("<project>\n");
+		buffer.append("    <modelVersion>4.0.0</modelVersion>\n");
+		buffer.append("    <name>Maven Default Project</name>\n");
+		buffer.append("    <groupId>org.fedoraproject</groupId>\n");
+		buffer.append("    <artifactId>dummy</artifactId>\n");
+		buffer.append("    <version>1.0.0</version>\n");
+		buffer.append("</project>\n");
+		buffer.append("EOF\n");
+		buffer.append("popd\n");
 	}
 }

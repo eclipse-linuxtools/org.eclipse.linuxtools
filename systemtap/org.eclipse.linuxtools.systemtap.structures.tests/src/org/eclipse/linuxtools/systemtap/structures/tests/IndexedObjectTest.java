@@ -9,7 +9,7 @@
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,14 +26,14 @@ public class IndexedObjectTest{
 		two = new IndexedObject(2, "two");
 		three = new IndexedObject(3, "three");
 	}
-	
+
 	@Test
 	public void testToString() {
 		assertEquals("one", one.toString());
 		assertEquals("two", two.toString());
 		assertEquals("three", three.toString());
 	}
-	
+
 	@Test
 	public void testCompareTo() {
 		assertEquals(0, one.compareTo(one));
@@ -41,6 +41,6 @@ public class IndexedObjectTest{
 		assertTrue(1 <= three.compareTo(one));
 		assertEquals(0, one.compareTo(null));
 	}
-	
-	IndexedObject one, two, three;
+
+	private IndexedObject one, two, three;
 }

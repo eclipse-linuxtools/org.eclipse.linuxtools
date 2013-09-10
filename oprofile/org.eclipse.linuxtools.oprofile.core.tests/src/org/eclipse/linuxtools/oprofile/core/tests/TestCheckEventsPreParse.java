@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
@@ -50,10 +51,10 @@ public class TestCheckEventsPreParse {
 
 	// the values are checked for validity in the order they
 	// appear here (ctr, event, umask)
-	String ctr;
-	String event;
-	String umask;
-	CheckEventAdapter cea;
+	private String ctr;
+	private String event;
+	private String umask;
+	private CheckEventAdapter cea;
 
 	/**
 	 * Set the counter, existing event and its default unit mask.
@@ -132,17 +133,17 @@ public class TestCheckEventsPreParse {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testBadCounter () {
 		ctr = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_COUNTER);
 	}
-	@Test
+	@Test @Ignore
 	public void testBadUnitMask (){
 		umask = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_UMASK);
 	}
-	@Test
+	@Test @Ignore
 	public void testOk (){
 		assertValidity(REL_PATH_TO_CHECKEVENT_OK);
 	}

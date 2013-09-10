@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.oprofile.launch.tests;
 
+import static org.junit.Assert.*;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -28,27 +30,28 @@ import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class TestManualLaunching extends AbstractTest {
-	
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+
+	private ILaunchConfiguration config;
+	private Shell testShell;
+
+	@Before
+	public void setUp() throws Exception {
 		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "sleepTest"); //$NON-NLS-1$
 		config = createConfiguration(proj.getProject());
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		testShell.dispose();
 		deleteProject(proj);
-		super.tearDown();
 	}
 
 	@Override
@@ -64,33 +67,33 @@ public class TestManualLaunching extends AbstractTest {
 		configTab.setDefaults(wc);
 		setupTab.setDefaults(wc);
 	}
-	
+	@Test
 	public void testDefaultLaunch() throws CoreException {
 		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-		
+
 		LaunchTestingOptions options = new LaunchTestingOptions();
 		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertTrue(options.getBinaryImage().isEmpty());
+		assertTrue(options.getKernelImageFile().isEmpty());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertFalse(delegate._options.getBinaryImage().isEmpty());
+		assertTrue(delegate._options.getKernelImageFile().isEmpty());
 		assertEquals(0, delegate._options.getCallgraphDepth());
 		assertFalse(delegate._options.getVerboseLogging());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
 	}
-	
+	@Test
 	public void testEventLaunch() throws CoreException {
 		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-		
+
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
 		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(0), true);
@@ -104,15 +107,15 @@ public class TestManualLaunching extends AbstractTest {
 		options.setOprofileProject(proj.getProject());
 		options.loadConfiguration(config);
 		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertTrue(options.getBinaryImage().isEmpty());
+		assertTrue(options.getKernelImageFile().isEmpty());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
 		assertFalse(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertFalse(delegate._options.getBinaryImage().isEmpty());
+		assertTrue(delegate._options.getKernelImageFile().isEmpty());
 		assertEquals(0, delegate._options.getCallgraphDepth());
 		assertFalse(delegate._options.getVerboseLogging());
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());

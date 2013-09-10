@@ -53,7 +53,7 @@ IWorkbenchPreferencePage{
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME, Messages.RpmInformationsPreferencePage_4, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM, Messages.RpmInformationsPreferencePage_5, getFieldEditorParent()));
 		}
-		
+
 		private FieldEditor maxProposalsIntegerFieldEditor() {
 			IntegerFieldEditor maxProposalsFieldEditor = new IntegerFieldEditor(
 					PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS,
@@ -66,7 +66,8 @@ IWorkbenchPreferencePage{
 		/* (non-Javadoc)
 		 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 		 */
+		@Override
 		public void init(IWorkbench workbench) {
 		}
-		
+
 }

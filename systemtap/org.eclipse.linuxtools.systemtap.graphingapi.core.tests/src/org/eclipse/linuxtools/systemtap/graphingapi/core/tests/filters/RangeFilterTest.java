@@ -127,5 +127,5 @@ public class RangeFilterTest {
 		assertTrue(RangeFilter.ID.equals(filter.getID()));
 	}
 
-	RangeFilter filter;
+	private RangeFilter filter;
 }

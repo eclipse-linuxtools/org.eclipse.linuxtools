@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		 * {@inheritDoc}
 		 *
 		 */
+		@Override
 		public void setQuickFixable(boolean state) {
 			fIsQuickFixable= state;
 			fIsQuickFixableStateSet= true;
@@ -76,6 +77,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		 * {@inheritDoc}
 		 *
 		 */
+		@Override
 		public boolean isQuickFixableStateSet() {
 			return fIsQuickFixableStateSet;
 		}
@@ -84,6 +86,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		 * {@inheritDoc}
 		 *
 		 */
+		@Override
 		public boolean isQuickFixable() {
 			Assert.isTrue(isQuickFixableStateSet());
 			return fIsQuickFixable;

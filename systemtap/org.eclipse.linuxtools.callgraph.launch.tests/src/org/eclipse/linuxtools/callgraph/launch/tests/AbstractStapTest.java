@@ -24,6 +24,8 @@ import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.osgi.framework.FrameworkUtil;
 
 public class AbstractStapTest extends AbstractTest {
@@ -54,18 +56,16 @@ public class AbstractStapTest extends AbstractTest {
 
 	private List<ILaunch> launches;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		launches = new ArrayList<ILaunch>();
-		super.setUp();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		if (launches.size() > 0) {
 			DebugPlugin.getDefault().getLaunchManager().removeLaunches(launches.toArray(new ILaunch[launches.size()]));
 			launches.clear();
 		}
-		super.tearDown();
 	}
 }

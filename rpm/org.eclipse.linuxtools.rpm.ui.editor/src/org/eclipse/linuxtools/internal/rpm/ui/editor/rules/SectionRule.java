@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,13 +25,13 @@ public class SectionRule implements IPredicateRule {
 	private StringBuilder nextHeaderBuffer = new StringBuilder();
 
 	/** The success token */
-	IToken token;
+	private IToken token;
 
 	/** The beginning token, represents a section of the spec file */
-	String startingHeader;
+	private String startingHeader;
 
 	/** A list of possible ending section headers */
-	String[] endingHeaders;
+	private String[] endingHeaders;
 
 	public SectionRule(String startingHeader, String[] endingHeaders,
 			IToken token) {
@@ -40,10 +40,12 @@ public class SectionRule implements IPredicateRule {
 		this.token = token;
 	}
 
+	@Override
 	public IToken getSuccessToken() {
 		return token;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		/* whether we think we're reading the ending sequence, i.e. the next
 		 * section heading
@@ -119,6 +121,7 @@ public class SectionRule implements IPredicateRule {
 		return token;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner, false);
 	}

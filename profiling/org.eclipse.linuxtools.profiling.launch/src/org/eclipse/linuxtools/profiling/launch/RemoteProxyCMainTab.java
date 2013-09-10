@@ -614,7 +614,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 			if (!exePath.isAbsolute() && exeURI != null && !exeURI.isAbsolute()) {
 				URI projectURI = project.getLocationURI();
 				exeURI = new URI(projectURI.getScheme(),
-						projectURI.getAuthority(), projectURI.getRawPath() + "/"
+						projectURI.getAuthority(), projectURI.getRawPath() + '/'
 								+ exePath.toString(), EMPTY_STRING);
 			}
 			if (exeURI != null) {
@@ -710,7 +710,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 			if (!exePath.isAbsolute() && exeURI != null && !exeURI.isAbsolute()) {
 				URI projectURI = project.getLocationURI();
 				exeURI = new URI(projectURI.getScheme(),
-						projectURI.getAuthority(), projectURI.getRawPath() + "/"
+						projectURI.getAuthority(), projectURI.getRawPath() + '/'
 								+ exePath.toString(), EMPTY_STRING);
 			}
 			if (exeURI != null) {
@@ -809,7 +809,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 			if (!wdPath.isAbsolute() && wdURI != null && !wdURI.isAbsolute()) {
 				URI projectURI = project.getLocationURI();
 				wdURI = new URI(projectURI.getScheme(),
-						projectURI.getAuthority(), projectURI.getRawPath() + "/"
+						projectURI.getAuthority(), projectURI.getRawPath() + '/'
 								+ wdPath.toString(), EMPTY_STRING);
 			}
 			if (wdURI != null) {

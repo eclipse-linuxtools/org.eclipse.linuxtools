@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004-2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	/**
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
 		setWindowTitle(Messages.getString("SRPMImportwizard.Import_an_SRPM")); //$NON-NLS-1$
 		setNeedsProgressMonitor(true);

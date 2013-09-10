@@ -41,7 +41,7 @@ public class ReleaseTagTest extends FileTestCase {
 	public void testNullReleaseTag() {
 		String testText = "Release:	";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Release declaration without value.", failure
@@ -52,7 +52,7 @@ public class ReleaseTagTest extends FileTestCase {
 	public void testNullReleaseTag2() {
 		String testText = "Release:		";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Release declaration without value.", failure
@@ -63,7 +63,7 @@ public class ReleaseTagTest extends FileTestCase {
 	public void testMultipleReleasesTag() {
 		String testText = "Release: blah bleh";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Release cannot have multiple values.", failure
@@ -74,7 +74,7 @@ public class ReleaseTagTest extends FileTestCase {
 	public void testMultipleReleasesTag2() {
 		String testText = "Release: 	blah bleh";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Release cannot have multiple values.", failure

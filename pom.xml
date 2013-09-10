@@ -59,6 +59,7 @@
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <pluginRepositories>
     <pluginRepository>
@@ -146,10 +147,25 @@
 	      <argLine>-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Declipse.valgrind.tests.runValgrind=no -Dorg.eclipse.swt.browser.UseWebKitGTK=true</argLine>
 	    </configuration>
 	  </plugin>
+          <plugin>
+            <groupId>org.eclipse.cbi.maven.plugins</groupId>
+            <artifactId>eclipse-jarsigner-plugin</artifactId>
+            <version>1.0.4</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
+
 
   <modules>
     <module>changelog</module>

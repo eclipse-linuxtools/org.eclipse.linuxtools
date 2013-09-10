@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures.runnable;
+package org.eclipse.linuxtools.systemtap.structures.tests.runnable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 import org.junit.Before;
 import org.junit.Test;

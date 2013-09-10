@@ -35,11 +35,12 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class PrepareChangelogKeyHandler extends AbstractHandler {
-	
+
+	@Override
 	public Object execute(ExecutionEvent event) {
 
 		IStructuredSelection tempResult = null;
-		
+
 		// try getting currently selected project
 			IWorkbenchPage ref = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
 			IWorkbenchPart part = HandlerUtil.getActivePart(event);
@@ -72,7 +73,7 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
 				}
 			}
 			if (tempResult == null) {
-			    // We don't have an obvious project match in the current active view.  
+			    // We don't have an obvious project match in the current active view.
 				// Let's search all open views for the Synchronize View which is our first
 				// choice to fall back on.
 				for (IViewReference view: ref.getViewReferences()) {
@@ -103,10 +104,10 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
 
 		// If we can't find the project directly, let the user know.
 		if (tempResult == null) {
-			MessageDialog.openInformation(getActiveWorkbenchShell(), Messages.getString("ChangeLog.PrepareChangeLog"), // $NON-NLS-1$, 
+			MessageDialog.openInformation(getActiveWorkbenchShell(), Messages.getString("ChangeLog.PrepareChangeLog"), // $NON-NLS-1$,
 					Messages.getString("PrepareChangeLog.InfoNoProjectFound")); // $NON-NLS-1$
 			return null;
-		} 
+		}
 
 		final IStructuredSelection result = tempResult;
 		IAction exampleAction = new PrepareChangeLogAction() {

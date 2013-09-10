@@ -9,10 +9,10 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.structures;
+package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import org.eclipse.linuxtools.systemtap.structures.runnable.CommandTest;
-import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobblerTest;
+import org.eclipse.linuxtools.systemtap.structures.tests.runnable.CommandTest;
+import org.eclipse.linuxtools.systemtap.structures.tests.runnable.StreamGobblerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

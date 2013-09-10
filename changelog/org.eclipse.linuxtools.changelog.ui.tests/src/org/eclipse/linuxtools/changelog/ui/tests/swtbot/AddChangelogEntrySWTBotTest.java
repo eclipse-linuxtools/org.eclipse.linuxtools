@@ -7,7 +7,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
-import static org.junit.Assert.*;
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,7 +21,7 @@ import java.io.InputStream;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -36,9 +42,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.hamcrest.Matchers.allOf;
-
 
 /**
  * UI tests for "ChangeLog Entry" (CTRL+ALT+C).
@@ -46,14 +49,14 @@ import static org.hamcrest.Matchers.allOf;
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class AddChangelogEntrySWTBotTest {
- 
+
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
 	private ChangeLogTestProject  project;
 	private static final String OFFSET_MARKER = "<-- SELECT -->";
 	// The name of the test project, we create
 	private final String PROJECT_NAME = "changelog-java-project";
- 
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		// delay click speed; with this turned on things get flaky
@@ -71,14 +74,14 @@ public class AddChangelogEntrySWTBotTest {
 		ProjectExplorer.openView();
 		projectExplorerViewTree = ProjectExplorer.getTree();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		// Create an empty test project
 		project = new ChangeLogTestProject(PROJECT_NAME);
 		project.addJavaNature(); // make it a Java project
 	}
- 
+
 	@After
 	public void tearDown() throws Exception {
 		this.project.getTestProject().delete(true, null);
@@ -88,7 +91,7 @@ public class AddChangelogEntrySWTBotTest {
 	 * ChangeLog editor should pop-up if inside an active editor
 	 * and a ChangeLog file exists in the project. Tests the CTRL+ALT+c
 	 * shortcut.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -108,7 +111,7 @@ public class AddChangelogEntrySWTBotTest {
 		InputStream newFileInputStream = new ByteArrayInputStream(
 				sourceCode.getBytes());
 		project.addFileToProject("/src", "JavaTest.java", newFileInputStream);
-		
+
 		// Add a changelog file
 		newFileInputStream = new ByteArrayInputStream(
 				"".getBytes());
@@ -118,10 +121,10 @@ public class AddChangelogEntrySWTBotTest {
 			"/src/JavaTest.java")));
 		assertNotNull(project.getTestProject().findMember( new Path(
 		"/ChangeLog")));
-		
+
 		// Open JavaTest.java in an editor
 		projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src").expandNode("JavaTest.java").doubleClick();
-		
+
 		Matcher<?> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("JavaTest.java")
@@ -131,7 +134,7 @@ public class AddChangelogEntrySWTBotTest {
 		SWTBotEditor swtBoteditor = bot.editorByTitle("JavaTest.java");
 		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
 		eclipseEditor.selectLine(getLineOfOffsetMarker(sourceCode));
-		
+
 		// Press: CTRL + ALT + c
 		eclipseEditor.pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("C"));
 		// Wait for ChangeLog editor to open
@@ -139,7 +142,7 @@ public class AddChangelogEntrySWTBotTest {
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("ChangeLog")
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));		
+		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
 		swtBoteditor = bot.activeEditor();
 		swtBoteditor.save(); // save to avoid "save changes"-pop-up
 		assertEquals("ChangeLog", swtBoteditor.getTitle());
@@ -147,12 +150,12 @@ public class AddChangelogEntrySWTBotTest {
 		// make sure expected entry has been added.
 		assertTrue(eclipseEditor.getText().contains("\t* src/JavaTest.java (main):"));
 	}
-	
+
 	/**
 	 * ChangeLog editor should pop-up if inside an active editor
 	 * and a ChangeLog file exists in the project. Tests the "Edit" => "ChangeLog Entry"
 	 * menu item.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -172,7 +175,7 @@ public class AddChangelogEntrySWTBotTest {
 		InputStream newFileInputStream = new ByteArrayInputStream(
 				sourceCode.getBytes());
 		project.addFileToProject("/src", "JavaTest.java", newFileInputStream);
-		
+
 		// Add a changelog file
 		newFileInputStream = new ByteArrayInputStream(
 				"".getBytes());
@@ -182,14 +185,11 @@ public class AddChangelogEntrySWTBotTest {
 			"/src/JavaTest.java")));
 		assertNotNull(project.getTestProject().findMember( new Path(
 		"/ChangeLog")));
-		
+
 		// Open JavaTest.java in an editor
 		SWTBotTreeItem projectItem = projectExplorerViewTree.expandNode(PROJECT_NAME);
-//		for (SWTBotTreeItem i: projectItem.getItems()) {
-//			System.out.println(i.getText());
-//		}
 		projectItem.expandNode("src").expandNode("JavaTest.java").doubleClick();
-		
+
 		Matcher<?> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("JavaTest.java")
@@ -199,7 +199,7 @@ public class AddChangelogEntrySWTBotTest {
 		SWTBotEditor swtBoteditor = bot.editorByTitle("JavaTest.java");
 		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
 		eclipseEditor.selectLine(getLineOfOffsetMarker(sourceCode));
-		
+
 		// Click menu item.
 		bot.menu("Edit").menu("ChangeLog Entry").click();
 		// Wait for ChangeLog editor to open
@@ -215,10 +215,10 @@ public class AddChangelogEntrySWTBotTest {
 		// make sure expected entry has been added.
 		assertTrue(eclipseEditor.getText().contains("\t* src/JavaTest.java (main):"));
 	}
-	
+
 	/**
 	 * FIXME: Disable menu item instead of showing it and doing nothing.
-	 * 
+	 *
 	 * This test throws WidgetNotFountException (i.e. shouldn't open any editor).
 	 */
 	 @Test(expected=WidgetNotFoundException.class)
@@ -231,7 +231,7 @@ public class AddChangelogEntrySWTBotTest {
 		}
 		assertNotNull(project.getTestProject().findMember( new Path("/src/dummy")));
 		// Make sure we are in the project explorer view and no editors are open
-		closeAllEditors();
+		bot.closeAllEditors();
 		projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src");
 		// Try to create ChangeLog
 		bot.menu("Edit").menu("ChangeLog Entry").click();
@@ -241,7 +241,7 @@ public class AddChangelogEntrySWTBotTest {
 		bot.activeEditor();
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 	}
-	
+
 	/**
 	 * @param The source text.
 	 * @return The index of the first line containing the OFFSET_MARKER string in sourceCode.
@@ -259,20 +259,4 @@ public class AddChangelogEntrySWTBotTest {
 		}
 		return offset;
 	}
-	
-	/**
-	 * Close all active editors.
-	 */
-	private void closeAllEditors() {
-		SWTBotEditor currEditor;
-		try {
-			do {
-				currEditor = bot.activeEditor();
-				currEditor.close();
-			} while (currEditor != null);
-		} catch (WidgetNotFoundException e) {
-			// all closed
-		}
-	}
- 
 }

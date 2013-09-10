@@ -53,8 +53,8 @@ public class DataManipulatorTest {
 		sData.parse();
 
 		String expected = "perf stat -r " + runCount + " " + binary; //$NON-NLS-1$
-		for (int i = 0; i < args.length; i++) {
-			expected += " " + args[i]; //$NON-NLS-1$
+		for (String i:args) {
+			expected += " " + i; //$NON-NLS-1$
 		}
 
 		assertEquals(expected, sData.getPerfData().trim());
@@ -76,8 +76,8 @@ public class DataManipulatorTest {
 		}
 
 		expected = expected + " " + binary; //$NON-NLS-1$
-		for (int i = 0; i < args.length; i++) {
-			expected += " " + args[i]; //$NON-NLS-1$
+		for (String i : args) {
+			expected += " " + i; //$NON-NLS-1$
 		}
 
 		assertEquals(expected, sData.getPerfData().trim());
@@ -119,7 +119,7 @@ public class DataManipulatorTest {
 	/**
 	 * Used for testing SourceDisassemblyData
 	 */
-	private class StubSourceDisassemblyData extends SourceDisassemblyData {
+	private static class StubSourceDisassemblyData extends SourceDisassemblyData {
 
 		public StubSourceDisassemblyData(String title, IPath workingDir) {
 			super(title, workingDir);
@@ -131,14 +131,14 @@ public class DataManipulatorTest {
 			// return the same command with 'echo' prepended
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(workingDir)));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 	}
 
 	/**
 	 * Used for testing StatData
 	 */
-	private class StubStatData extends StatData {
+	private static class StubStatData extends StatData {
 
 		public StubStatData(String title, String cmd, String[] args,
 				int runCount, String[] events) {
@@ -151,7 +151,7 @@ public class DataManipulatorTest {
 			List<String> ret = new ArrayList<String>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(command, args)));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 
 		@Override
@@ -165,11 +165,10 @@ public class DataManipulatorTest {
 	/**
 	 * Used for testing ReportComparisonData
 	 */
-	private class StubReportDiffData extends ReportComparisonData{
+	private static class StubReportDiffData extends ReportComparisonData{
 
 		public StubReportDiffData(String title, File oldFile, File newFile) {
 			super(title, oldFile, newFile);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -178,7 +177,7 @@ public class DataManipulatorTest {
 			List<String> ret = new ArrayList<String>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand()));
-			return ret.toArray(new String[0]);
+			return ret.toArray(new String[ret.size()]);
 		}
 
 	}

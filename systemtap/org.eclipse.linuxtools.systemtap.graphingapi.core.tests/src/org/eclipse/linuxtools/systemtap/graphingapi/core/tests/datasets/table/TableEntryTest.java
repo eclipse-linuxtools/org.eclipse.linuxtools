@@ -33,27 +33,27 @@ public class TableEntryTest {
 		data = new Integer[] {5, 1, 3};
 		entry.add(data);
 	}
-	
+
 	@Test
 	public void testGetRowCount() {
 		TableEntry entry2 = new TableEntry();
 		assertEquals(0, entry2.getRowCount());
-		
+
 		entry2 = new TableEntry();
 		entry2.putRow(0, null);
 		assertEquals(0, entry2.getRowCount());
-		
+
 		assertEquals(2, entry.getRowCount());
 	}
 	@Test
 	public void testGetColCount() {
 		TableEntry entry2 = new TableEntry();
 		assertEquals(0, entry2.getColCount());
-		
+
 		entry2 = new TableEntry();
 		entry2.putRow(0, null);
 		assertEquals(0, entry2.getColCount());
-		
+
 		assertEquals(3, entry.getColCount());
 	}
 	@Test
@@ -90,15 +90,15 @@ public class TableEntryTest {
 	@Test
 	public void testPutRow() {
 		Integer[] data2 = new Integer[] {2, 5};
-		
+
 		//Can't add to -1 position
 		entry.putRow(-1, data2);
 		assertEquals(2, entry.getRowCount());
-		
+
 		//Cant add wrong sized array
 		entry.putRow(10, data2);
 		assertEquals(2, entry.getRowCount());
-		
+
 		entry.putRow(0, data2);
 		assertEquals(2, entry.getRowCount());
 
@@ -130,7 +130,7 @@ public class TableEntryTest {
 		assertTrue(entry.remove(0));
 		assertEquals(1, entry.getRowCount());
 	}
-	
-	TableEntry entry;
-	Integer[] data;
+
+	private TableEntry entry;
+	private Integer[] data;
 }

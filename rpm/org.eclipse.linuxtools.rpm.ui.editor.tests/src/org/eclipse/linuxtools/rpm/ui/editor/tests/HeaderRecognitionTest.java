@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * @author overholt
- * 
+ *
  */
 public class HeaderRecognitionTest extends FileTestCase {
 
@@ -53,7 +53,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		newFile(testText);
 		specfile = parser.parse(testDocument);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals("No package name after -n in post section.",
 				failure.getAnnotation().getText());
@@ -126,7 +126,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		newFile(testText);
 		specfile = parser.parse(testDocument);
 
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals("Package name must not start with '-': -p.",
 				failure.getAnnotation().getText());

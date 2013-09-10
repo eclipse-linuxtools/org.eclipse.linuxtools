@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005, 2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -99,6 +99,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 	 *      box
 	 * 
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 
@@ -150,10 +151,12 @@ public class RPMExportPage extends WizardPage implements Listener {
 				.getString("RPMExportPage.toolTip_Export_Source")); //$NON-NLS-1$
 
 		SelectionListener listener = new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleEvent(null);
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				handleEvent(null);
 			}
@@ -184,6 +187,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 		return true;
 	}
 
+	@Override
 	public void handleEvent(Event e) {
 		setPageComplete(canFinish());
 	}

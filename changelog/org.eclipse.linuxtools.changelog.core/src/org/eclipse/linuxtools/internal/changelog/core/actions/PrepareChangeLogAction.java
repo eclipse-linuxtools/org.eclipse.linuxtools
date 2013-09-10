@@ -72,24 +72,24 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * Action handler for prepare changelog.
- * 
+ *
  * @author klee
- * 
+ *
  */
 public class PrepareChangeLogAction extends ChangeLogAction {
 
-	protected IProject currentProject;	
+	protected IProject currentProject;
 	/**
 	 * Provides IDocument given editor input
-	 * 
+	 *
 	 * @author klee
-	 * 
+	 *
 	 */
 
 	protected boolean changeLogModified = false;
 	protected boolean newEntryWritten = false;
 	protected boolean createChangeLog = true;
-	
+
 	private static class MyDocumentProvider extends FileDocumentProvider {
 
 		@Override
@@ -125,7 +125,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// return empty string if function parser for editorName is not present
 		if (parser==null)
 			return "";
-		
+
 		try {
 			return parser.parseCurrentFunction(input, offset);
 		} catch (CoreException e) {
@@ -142,8 +142,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	protected void doRun() {
 		IRunnableWithProgress code = new IRunnableWithProgress() {
 
-			public void run(IProgressMonitor monitor)
-					throws InvocationTargetException, InterruptedException {
+			@Override
+			public void run(IProgressMonitor monitor) {
 				monitor.beginTask(Messages.getString("ChangeLog.PrepareChangeLog"), 1000); // $NON-NLS-1$
 				prepareChangeLog(monitor);
 				monitor.done();
@@ -267,17 +267,17 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// Do nothing if error occurs
 		}
 	}
-	
+
 	private void prepareChangeLog(IProgressMonitor monitor) {
 
 		Object element = selected.getFirstElement();
-		
+
 		IResource resource = null;
 		Vector<PatchFile> newList = new Vector<PatchFile>();
 		Vector<PatchFile> removeList = new Vector<PatchFile>();
 		Vector<PatchFile> changeList = new Vector<PatchFile>();
 		int totalChanges = 0;
-		
+
 		if (element instanceof IResource) {
 			resource = (IResource)element;
 		} else if (element instanceof ISynchronizeModelElement) {
@@ -343,12 +343,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				}
 			}
 		}
-		
+
 		if (totalChanges == 0)
 			return; // nothing to parse
-		
+
 		PatchFile[] patchFileInfoList = new PatchFile[totalChanges];
-	
+
 		// Group like changes together and sort them by path name.
 		// We want removed files, then new files, then changed files.
 		// To get this, we put them in the array in reverse order.
@@ -365,7 +365,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			}
 			index += size;
 		}
-		
+
 		if (newList.size() > 0) {
 			Collections.sort(newList, new PatchFileComparator());
 			int size = newList.size();
@@ -373,14 +373,14 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				patchFileInfoList[index+(size-i-1)] = newList.get(i);
 			index += size;
 		}
-		
+
 		if (removeList.size() > 0) {
 			Collections.sort(removeList, new PatchFileComparator());
 			int size = removeList.size();
 			for (int i = 0; i < size; ++i)
 				patchFileInfoList[index+(size-i-1)] = removeList.get(i);
 		}
-	
+
 		// now, find out modified functions/classes.
 		// try to use the the extension point. so it can be extended easily
 		// for all files in patch file info list, get function guesses of each
@@ -402,7 +402,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	public void outputMultipleEntryChangeLog(PatchFile pf, String[] functionGuess) {
 
 		String defaultContent = null;
-		
+
 		if (pf.isNewfile())
 			defaultContent = Messages.getString("ChangeLog.NewFile"); // $NON-NLS-1$
 		else if (pf.isRemovedFile())
@@ -410,7 +410,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		IPath entryPath = pf.getPath();
 		String entryFileName = entryPath.toOSString();
-		
+
 		ChangeLogWriter clw = new ChangeLogWriter();
 
 		// load settings from extensions + user pref.
@@ -418,7 +418,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		// get file path from target file
 		clw.setEntryFilePath(entryPath.toOSString());
-		
+
 		if (defaultContent != null)
 			clw.setDefaultContent(defaultContent);
 
@@ -431,14 +431,14 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// current active editor part, otherwise, we must find the external
 		// ChangeLog file.
 		IEditorPart changelog = null;
-	
+
 		// Before accessing the getFormatterConfigElement, the getFormatContibutor
 		// method must be called to initialize.
-		extensionManager.getFormatterContributor(clw.getEntryFilePath(), 
+		extensionManager.getFormatterContributor(clw.getEntryFilePath(),
 				pref_Formatter);
 		IConfigurationElement formatterConfigElement = extensionManager
         .getFormatterConfigElement();
-		
+
 		if (formatterConfigElement.getAttribute("inFile").toLowerCase().equals( //$NON-NLS-1$
 		    "true")) { //$NON-NLS-1$
 			try {
@@ -484,7 +484,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 		// select changelog
 		clw.setChangelog(changelog);
-		
+
 		// write to changelog
 		IFormatterChangeLogContrib formatter = clw.getFormatter();
 		clw.setDateLine(formatter.formatDateLine(pref_AuthorName,
@@ -518,21 +518,21 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	/**
 	 * Guesses the function effected/modified by the patch from local file(newer
 	 * file).
-	 * 
+	 *
 	 * @param patchFileInfo
 	 *            patch file
 	 * @return array of unique function names
 	 */
 	private String[] guessFunctionNames(PatchFile patchFileInfo) {
 
-		
+
 		// if this file is new file or removed file, do not guess function files
-		// TODO: create an option to include function names on 
+		// TODO: create an option to include function names on
 		// new files or not
 		if (patchFileInfo.isNewfile() || patchFileInfo.isRemovedFile()) {
 			return new String[]{""};
 		}
-		
+
 		String[] fnames = new String[0];
 		String editorName = ""; // $NON-NLS-1$
 
@@ -552,7 +552,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// get editor input for target file
 
 		IFileEditorInput fei =  new FileEditorInput((IFile)patchFileInfo.getResource());
-		
+
 		SourceEditorInput sei = new SourceEditorInput(patchFileInfo.getStorage());
 
 		MyDocumentProvider mdp = new MyDocumentProvider();
@@ -598,7 +598,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// dump all unique func. guesses in the order found
 			fnames = new String[nameList.size()];
 			fnames = nameList.toArray(fnames);
-		
+
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,

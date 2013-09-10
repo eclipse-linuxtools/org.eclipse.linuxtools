@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -27,6 +27,7 @@ public class NoExecutableWizardPage extends WizardPage {
 				"/icons/rpm.gif")); //$NON-NLS-1$
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		final Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -48,7 +49,7 @@ public class NoExecutableWizardPage extends WizardPage {
 	public boolean isPageComplete() {
 		return false;
 	}
-	
-	
+
+
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004-2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,6 +70,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	 *
 	 * Perform the import of  SRPM import. Call the build class incrementally
 	 */
+	@Override
 	public void run(IProgressMonitor progressMonitor) {
 		// Total number of work steps needed
 		int totalWork = 3;

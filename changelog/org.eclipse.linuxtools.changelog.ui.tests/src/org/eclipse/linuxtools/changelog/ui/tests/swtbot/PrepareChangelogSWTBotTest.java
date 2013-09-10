@@ -8,6 +8,7 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +36,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
@@ -43,16 +43,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 /**
- * 
+ *
  * UI tests for "Prepare ChangeLog" (CTRL+ALT+P) and the clipboard magic
  * (CTRL+ALT+V).
  *
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class PrepareChangelogSWTBotTest {
- 
+
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
 	private SVNProject subversionProject;
@@ -62,7 +61,7 @@ public class PrepareChangelogSWTBotTest {
 	// An available SVN repo
 	private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
 		"org.eclipse.linuxtools/changelog/trunk";
- 
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		// delay click speed
@@ -80,7 +79,7 @@ public class PrepareChangelogSWTBotTest {
 		ProjectExplorer.openView();
 		projectExplorerViewTree = ProjectExplorer.getTree();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		// Do an SVN checkout of the changelog.tests plugin
@@ -89,7 +88,7 @@ public class PrepareChangelogSWTBotTest {
 		bot.waitUntil(new SVNProjectCreatedCondition(PROJECT_NAME));
 		ProjectExplorer.openView();
 	}
- 
+
 	@After
 	public void tearDown() throws Exception {
 		this.project.delete(true, null);
@@ -103,7 +102,7 @@ public class PrepareChangelogSWTBotTest {
 
 	/**
 	 * Basic prepare changelog test.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -115,24 +114,24 @@ public class PrepareChangelogSWTBotTest {
 		// delete it
 		manifest.delete(true, null);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		// select ChangeLog file
 		String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
 		SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
 		changeLogItem.select();
 		bot.menu("Prepare ChangeLog").click(); // Should be unique
-		
+
 		long oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
 		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = Matchers.allOf(
+		Matcher<?> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("ChangeLog")
 				);
 		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
 		SWTBotPreferences.TIMEOUT = oldTimeout;
-		
+
 		SWTBotEditor swtBoteditor = bot.activeEditor();
 		swtBoteditor.save(); // save to avoid "save changes"-pop-up
 		assertEquals("ChangeLog", swtBoteditor.getTitle());
@@ -140,14 +139,13 @@ public class PrepareChangelogSWTBotTest {
 		// make sure expected entry has been added.
 		assertTrue(matchHead(eclipseEditor.getText(), "\t* META-INF/MANIFEST.MF:", 3));
 	}
-	
+
 	/**
 	 * Should be able to save changes to ChangeLog file in clipboard.
 	 * Tests CTRL + ALT + V functionality.
-	 * 
+	 *
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void canPrepareChangeLogAndSaveChangesInChangeLogFileToClipboard() throws Exception {
 		// Find manifest file
@@ -156,7 +154,7 @@ public class PrepareChangelogSWTBotTest {
 		// delete it
 		manifest.delete(true, null);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		// select ChangeLog file
 		String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
@@ -168,15 +166,15 @@ public class PrepareChangelogSWTBotTest {
 		changeLogItem.select();
 		// CTRL + ALT + P
 		bot.activeShell().pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("P"));
-		
+
 		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
 		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = Matchers.allOf(
+		Matcher<IEditorReference> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("ChangeLog")
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));		
+		bot.waitUntil(Conditions.waitForEditor(editorMatcher));
 		SWTBotEditor swtBoteditor = bot.activeEditor();
 		swtBoteditor.save(); // save to avoid "save changes"-pop-up
 		assertEquals("ChangeLog", swtBoteditor.getTitle());
@@ -184,32 +182,32 @@ public class PrepareChangelogSWTBotTest {
 		// make sure expected entry has been added.
 		assertTrue(matchHead(eclipseEditor.getText(), "\t* META-INF/MANIFEST.MF:", 3));
 		eclipseEditor.selectLine(0); // select first line
-		final String expectedFirstLineContent = eclipseEditor.getSelection();  
-		
+		final String expectedFirstLineContent = eclipseEditor.getSelection();
+
 		// save changes to clipboard: CTRL + ALT + V
 		eclipseEditor.pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("V"));
-		
+
 		// create and open a new file for pasting
 		String pasteFile = "newFile";
 		IFile newFile = project.getFile(new Path(pasteFile));
 		newFile.create(new ByteArrayInputStream("".getBytes()) /* empty content */, false, null);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		assertNotNull(project.findMember(new Path(pasteFile)));
-		
+
 		ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME,
 				teamProviderString).expandNode(pasteFile).select().doubleClick();
 		//bot.activeShell().pressShortcut(Keystrokes.F3); // open file
-		editorMatcher = Matchers.allOf(
+		editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName(pasteFile)
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
+		bot.waitUntil(Conditions.waitForEditor(editorMatcher));
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		swtBoteditor = bot.activeEditor();
 		assertEquals(pasteFile, swtBoteditor.getTitle());
 		eclipseEditor = swtBoteditor.toTextEditor();
-		
+
 		// go to beginning of editor
 		eclipseEditor.selectRange(0, 0, 0);
 		// paste
@@ -221,16 +219,16 @@ public class PrepareChangelogSWTBotTest {
 		final String actualFirstLineContent = eclipseEditor.getSelection();
 		assertEquals(expectedFirstLineContent, actualFirstLineContent);
 	}
-	
+
 	/**
 	 * Determine if first <code>i</code> lines in <code>text</code> contain
 	 * the string <code>matchText</code>.
-	 * 
+	 *
 	 * @param text The text to compare to.
 	 * @param matchText The match string to look for.
 	 * @param i The number of lines in text to consider.
 	 * @return
-	 * 
+	 *
 	 * @throws IllegalArgumentException if <code>i</code> is invalid.
 	 */
 	private boolean matchHead(String text, String matchText, int i) throws IllegalArgumentException {
@@ -249,5 +247,5 @@ public class PrepareChangelogSWTBotTest {
 		}
 		return false; // no match
 	}
- 
+
 }

@@ -17,10 +17,10 @@ public class PMSymbol extends TreeParent {
 
 	public String getFunctionName() {
 		String tmpName = getName();
-		if (tmpName.startsWith("[")) { // filer out the "[.] "
+		if (tmpName.startsWith("[")) { // filer out the "[.] " //$NON-NLS-1$
 			tmpName = tmpName.substring(4);
 		}
-		int argloc = tmpName.indexOf("("); // and the (....
+		int argloc = tmpName.indexOf("("); // and the (.... //$NON-NLS-1$
 		if (argloc != -1) {
 			tmpName = tmpName.substring(0,argloc);
 		}

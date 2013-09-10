@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.builder;
 
@@ -25,9 +26,10 @@ public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
 	/**
 	 * Removes all rpmlint markers for spec and rpm files.
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
+	@Override
 	public boolean visit(IResource resource) throws CoreException {
 		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
 				|| Activator.RPMFILE_EXTENSION.equals(resource

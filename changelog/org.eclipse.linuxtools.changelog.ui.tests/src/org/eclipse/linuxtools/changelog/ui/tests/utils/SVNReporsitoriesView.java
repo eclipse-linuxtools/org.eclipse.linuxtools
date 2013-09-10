@@ -16,13 +16,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * SWTBot abstraction for the SVNRepositoriesView.
  */
 public class SVNReporsitoriesView {
-	
+
 	private SWTWorkbenchBot bot;
-	
+
 	public SVNReporsitoriesView(SWTWorkbenchBot bot) {
 		this.bot = bot;
 	}
-	
+
 	/**
 	 * Open the SVNRepositoriesView
 	 */
@@ -34,11 +34,11 @@ public class SVNReporsitoriesView {
 		bot.button("OK").click();
 		return this;
 	}
-	
+
 	/**
 	 * Select repository
 	 */
-	public void discardRepository(String repo) throws Exception {
+	public void discardRepository(String repo) {
 		SWTBotView svnRepoView = bot.viewByTitle("SVN Repositories");
 		svnRepoView.show();
 		svnRepoView.setFocus();
@@ -46,14 +46,14 @@ public class SVNReporsitoriesView {
 		tree.select(repo);
 		clickOnDiscardRepo(tree); // discard
 	}
-	
+
 	/**
 	 * Context menu click helper. Click on "Add to existing sources".
-	 * 
+	 *
 	 * @param Tree of Package Explorer view.
 	 * @throws Exception
 	 */
-	private void clickOnDiscardRepo(SWTBotTree svnReposTree) throws Exception {
+	private void clickOnDiscardRepo(SWTBotTree svnReposTree) {
 		String menuItem = "Discard location";
 		ContextMenuHelper.clickContextMenu(svnReposTree, menuItem);
 	}

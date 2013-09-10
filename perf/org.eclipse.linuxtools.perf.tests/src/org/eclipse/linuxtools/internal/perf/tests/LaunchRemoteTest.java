@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -26,14 +27,17 @@ import org.eclipse.linuxtools.internal.perf.remote.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class LaunchRemoteTest extends AbstractRemoteTest {
 
-	protected ILaunchConfiguration config;
-	protected PerfLaunchConfigDelegate delegate;
-	protected ILaunch launch;
-	protected ILaunchConfigurationWorkingCopy wc;
+	private ILaunchConfiguration config;
+	private PerfLaunchConfigDelegate delegate;
+	private ILaunch launch;
+	private ILaunchConfigurationWorkingCopy wc;
 	private IProject project;
 
 	private final String CONNECTION_NAME = "localhost"; //$NON-NLS-1$
@@ -42,9 +46,9 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 	private final String PROJECT_NAME = "fibTest"; //$NON-NLS-1$
 	private final String SOURCE_FILE = "fib.cpp"; //$NON-NLS-1$
 
-	@Override
-	protected void setUp() throws Exception {
-		if ((!(AbstractRemoteTest.USERNAME.equals("")))) {
+	@Before
+	public void setUp() throws Exception {
+		if ((!(AbstractRemoteTest.USERNAME.isEmpty()))) {
 			project = createRemoteExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
 					PROJECT_NAME, EXTERNAL_PROJECT_PATH, SOURCE_FILE);
 
@@ -56,10 +60,11 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 		}
 	}
 
-	@Override
-	protected void tearDown() {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) 
+	@After
+	public void tearDown() {
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
 			deleteResource(CONNECTION_DIR);
+		}
 	}
 
 	@Override
@@ -76,28 +81,22 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 		optionsTab.setDefaults(wc);
 	}
 
-	public void testDefaultRun () {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
-			try {
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-				fail();
-			}
+	@Test
+	public void testDefaultRun() throws CoreException {
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
 
-	public void testClockEventRun () {
-		if (!(AbstractRemoteTest.USERNAME.equals(""))) {
-			try {
-				ArrayList<String> list = new ArrayList<String>();
-				list.addAll(Arrays.asList(new String [] {"cpu-clock", "task-clock", "cycles"}));
-				wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
-				wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
-				delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
-			} catch (Exception e) {
-				fail();
-			}
+	@Test
+	public void testClockEventRun() throws CoreException {
+		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
+			ArrayList<String> list = new ArrayList<String>();
+			list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
+					"cycles" }));
+			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
+			wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
+			delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
 		}
 	}
 

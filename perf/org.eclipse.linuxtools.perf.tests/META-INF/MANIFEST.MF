@@ -6,8 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Fragment-Host: org.eclipse.linuxtools.perf
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: 
  org.junit,
- org.eclipse.linuxtools.profiling.tests,
- org.eclipse.linuxtools.rdt.proxy
+ org.eclipse.linuxtools.profiling.tests
 Bundle-Vendor: %provider

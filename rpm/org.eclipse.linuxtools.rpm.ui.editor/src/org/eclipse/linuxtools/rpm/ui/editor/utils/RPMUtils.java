@@ -35,6 +35,7 @@ public class RPMUtils {
 	public static void showErrorDialog(final Shell shell,
 			final String title, final String message) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				MessageDialog.openError(shell, title, message);
 			}

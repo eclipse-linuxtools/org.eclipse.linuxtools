@@ -23,22 +23,25 @@ public class GNUFileEntryRule implements IPredicateRule {
 	 * specified.
 	 */
 	protected IToken fileToken;
-	
+
 	protected IWordDetector fDetector = new IWordDetector() {
 
+		@Override
 		public boolean isWordPart(char c) {
 			return Character.isJavaIdentifierPart(c) || c == '/' || c == '.' || c == '-';
 		}
 
+		@Override
 		public boolean isWordStart(char c) {
 			return Character.isJavaIdentifierPart(c) || c == '/' || c == '.';
 		}
-		
+
 	};
 
 	private boolean started = false;
-	
+
 	private IWhitespaceDetector fWsDetector = new IWhitespaceDetector() {
+		@Override
 		public boolean isWhitespace(char character) {
 			return Character.isWhitespace(character);
 		}
@@ -59,10 +62,12 @@ public class GNUFileEntryRule implements IPredicateRule {
 		this.fileToken = fileToken;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner, false);
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		int c = scanner.read();
 		fBuffer.setLength(0);
@@ -87,7 +92,7 @@ public class GNUFileEntryRule implements IPredicateRule {
 		}
 
 		boolean haveFilePart = false;
-		
+
 		while (c != ICharacterScanner.EOF) {
 			if (fDetector.isWordPart((char) c)) {
 				fBuffer.append((char) c);
@@ -121,7 +126,7 @@ public class GNUFileEntryRule implements IPredicateRule {
 
 	/**
 	 * Returns the characters in the buffer to the scanner.
-	 * 
+	 *
 	 * @param scanner
 	 *            the scanner to be used
 	 */
@@ -131,6 +136,7 @@ public class GNUFileEntryRule implements IPredicateRule {
 		started = false;
 	}
 
+	@Override
 	public IToken getSuccessToken() {
 		return fileToken;
 	}

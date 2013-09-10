@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -20,32 +24,37 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.ICachegrindElem
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ExpandCollapseTest extends AbstractCachegrindTest {
 
-	protected TreeViewer viewer;
-	protected Menu contextMenu;
+	private TreeViewer viewer;
+	private Menu contextMenu;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
-	
+	@Test
 	public void testExpand() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
-		
+
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		viewer = view.getViewer();
 		contextMenu = viewer.getTree().getMenu();
-		
+
 		// Select first snapshot and expand it
 		CachegrindOutput[] outputs = (CachegrindOutput[]) viewer.getInput();
 		CachegrindOutput output = outputs[0];
@@ -53,14 +62,14 @@ public class ExpandCollapseTest extends AbstractCachegrindTest {
 		viewer.setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(0).notifyListeners(SWT.Selection, null);
-		
+
 		checkExpanded(output, true);
 	}
-	
+	@Test
 	public void testCollapse() throws Exception {
 		// Expand the element first
 		testExpand();
-		
+
 		// Then collapse it
 		CachegrindOutput[] outputs = (CachegrindOutput[]) viewer.getInput();
 		CachegrindOutput output = outputs[0];
@@ -68,7 +77,7 @@ public class ExpandCollapseTest extends AbstractCachegrindTest {
 		viewer.setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(1).notifyListeners(SWT.Selection, null);
-		
+
 		checkExpanded(output, false);
 	}
 
@@ -86,5 +95,5 @@ public class ExpandCollapseTest extends AbstractCachegrindTest {
 			}
 		}
 	}
-	
+
 }

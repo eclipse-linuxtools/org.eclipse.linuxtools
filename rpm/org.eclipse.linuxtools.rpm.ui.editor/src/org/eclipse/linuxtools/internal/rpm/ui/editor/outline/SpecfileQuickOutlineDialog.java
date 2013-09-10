@@ -65,7 +65,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 	public void dispose() {
 		close();
 	}
-	
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		createUIWidgetTreeViewer(parent);
@@ -100,6 +100,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 			}
 		});
 		filterText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				String filterTextInput = ((Text) e.widget).getText()
 						.toLowerCase();
@@ -160,7 +161,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 		editor.setHighlightRange(curElement.getLineStartPosition(), 1, true);
 	}
 
-	
+
 	private Object getSelectedElement() {
 		if (treeViewer == null) {
 			return null;

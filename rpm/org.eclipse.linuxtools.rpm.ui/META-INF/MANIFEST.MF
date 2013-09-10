@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.jface.text,
  org.eclipse.core.runtime,

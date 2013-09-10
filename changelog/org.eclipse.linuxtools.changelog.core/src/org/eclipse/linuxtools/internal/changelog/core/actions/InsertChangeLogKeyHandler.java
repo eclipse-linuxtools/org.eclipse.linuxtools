@@ -50,7 +50,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		else
 			return "";
 	}
-	
+
 	private String returnQualifedEditor(Class<?> ClassName) {
 		return ClassName.toString().substring(
 				ClassName.getPackage().toString().length() - 1,
@@ -102,6 +102,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	}
 
+	@Override
 	public Object execute(ExecutionEvent event) {
 
 		currentEditor = HandlerUtil.getActiveEditor(event);
@@ -160,6 +161,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		return null;
 	}
 
+	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
 
 	}
@@ -180,23 +182,28 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		return true;
 	}
 
+	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
 
 	}
 
+	@Override
 	public void dispose() {
 
 	}
 
+	@Override
 	public void init(IWorkbenchWindow window) {
 
 	}
 
+	@Override
 	public void run(IAction action) {
 
 			execute(null);
 	}
 
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 
 	}

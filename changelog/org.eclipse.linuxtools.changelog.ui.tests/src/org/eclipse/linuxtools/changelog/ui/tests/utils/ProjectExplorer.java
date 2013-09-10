@@ -12,8 +12,8 @@ import java.util.StringTokenizer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -22,29 +22,29 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
  *
  */
 public class ProjectExplorer {
-	
+
 	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	
+
 	/**
 	 * Opens the Project Explorer view.
 	 */
 	public static void openView() throws Exception {
 		bot.menu("Window").menu("Show View").menu("Project Explorer").click();
 	}
-	
+
 	/**
 	 * Assumes Project Explorer view is shown.
-	 * 
+	 *
 	 * @return The tree of the Project Explorer view
 	 */
 	public static SWTBotTree getTree() {
 		SWTBotView projectExplorer = bot.viewByTitle("Project Explorer");
 		projectExplorer.show();
 		Composite projectExplorerComposite = (Composite) projectExplorer.getWidget();
-		Tree swtTree = (Tree) bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class), projectExplorerComposite);
+		Tree swtTree = bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class), projectExplorerComposite);
 		return new SWTBotTree(swtTree);
 	}
-	
+
 	/**
 	 * @param projectItem The tree item corresponding to the project.
 	 * @param name
@@ -64,14 +64,14 @@ public class ProjectExplorer {
 				} else if (itemText.equals(file)) {
 					return item;
 				}
-			}	
+			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Expand the given project (optionally stripping off the team provider bits)
-	 * 
+	 *
 	 * @param projectName
 	 * @param teamProviderString
 	 * @return

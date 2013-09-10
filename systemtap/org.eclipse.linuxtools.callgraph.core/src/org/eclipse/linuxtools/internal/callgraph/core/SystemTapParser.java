@@ -134,12 +134,12 @@ public abstract class SystemTapParser extends Job {
 		// Create a UIJob to handle the rest
 		if (viewID != null && viewID.length() > 0) {
 			try {
-			StapUIJob uijob = new StapUIJob(Messages
-					.getString("StapGraphParser.JobName"), this, viewID); //$NON-NLS-1$
-			uijob.schedule();
-			uijob.join();
-			view = uijob.getViewer();
-			return true;
+				StapUIJob uijob = new StapUIJob(
+						Messages.getString("StapGraphParser.JobName"), this, viewID); //$NON-NLS-1$
+				uijob.schedule();
+				uijob.join();
+				view = uijob.getViewer();
+				return true;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

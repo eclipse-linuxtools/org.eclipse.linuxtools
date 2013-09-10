@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class FilteredTableDataSetTest {
-	
+
 	@Before
 	public void setUp() {
 		data = new TableDataSet(new String[] {"a", "b", "c"});
@@ -43,11 +43,11 @@ public class FilteredTableDataSetTest {
 		assertNotNull(fds);
 		assertNotNull(fds.getTitles());
 	}
-	
+
 	@Test
 	public void testAppend() {
 		TableEntry entry;
-		
+
 		entry = new TableEntry();
 		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
@@ -82,7 +82,7 @@ public class FilteredTableDataSetTest {
 		TableEntry entry= new TableEntry();
 		entry.add(new String[] {"1", "2", "3"});
 		data.append(entry);
-		
+
 		entry = (TableEntry)data.getEntry(0);
 		assertEquals(1, dataSet.getEntryCount());
 		assertTrue(dataSet.remove(entry));
@@ -99,7 +99,7 @@ public class FilteredTableDataSetTest {
 		entry = new TableEntry();
 		entry.putRow(0, new String[] {"4", "5", "6"});
 		dataSet.setData(entry);
-		
+
 		assertNull(dataSet.getHistoricalData(null, -3));
 		assertNull(dataSet.getHistoricalData(null, 10));
 
@@ -108,22 +108,22 @@ public class FilteredTableDataSetTest {
 		assertNull(dataSet.getHistoricalData(null, 1, 3, 1));
 		assertNull(dataSet.getHistoricalData(null, 1, -2, 1));
 		assertNull(dataSet.getHistoricalData(null, 1, 0, 20));
-		
+
 		Object[] col = dataSet.getHistoricalData(null, 0);
 		assertEquals(2, col.length);
 		assertEquals("0", col[0].toString());
 		assertEquals("0", col[1].toString());
-		
+
 		col = dataSet.getHistoricalData(null, IDataSet.COL_ROW_NUM);
 		assertEquals(2, col.length);
 		assertEquals("1", col[0].toString());
 		assertEquals("2", col[1].toString());
-		
+
 		col = dataSet.getHistoricalData("4", 1, 1, 2);
 		assertEquals(1, col.length);
 		assertSame("5", col[0]);
 	}
-	
+
 	@Test
 	public void testGetEntryCount() {
 		assertEquals(0, dataSet.getEntryCount());
@@ -138,13 +138,13 @@ public class FilteredTableDataSetTest {
 		TableEntry entry= new TableEntry();
 		entry.add(new String[] {"1", "2", "3"});
 		data.append(entry);
-		
+
 		Object[][] d = dataSet.getData();
 		assertNotNull(d);
 		assertEquals(1, d.length);
 		assertEquals("3", d[0][2]);
 	}
-	
+
  	//Overwrite to ensure the data returned has all the filters applied
 	@Test
 	public void testGetColumn() {
@@ -160,15 +160,15 @@ public class FilteredTableDataSetTest {
 		assertNull(dataSet.getColumn(1, 3, 1));
 		assertNull(dataSet.getColumn(1, -2, 1));
 		assertNull(dataSet.getColumn(1, 0, 20));
-		
+
 		Object[] col = dataSet.getColumn(0);
 		assertEquals(1, col.length);
 		assertSame("1", col[0]);
-		
+
 		col = dataSet.getColumn(IDataSet.COL_ROW_NUM);
 		assertEquals(1, col.length);
 		assertEquals("1", col[0].toString());
-		
+
 		col = dataSet.getColumn(1, 0, 1);
 		assertEquals(1, col.length);
 		assertSame("2", col[0]);
@@ -176,7 +176,7 @@ public class FilteredTableDataSetTest {
 	@Test
 	public void testAddFilter() {
 		TableEntry entry;
-		
+
 		entry = new TableEntry();
 		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
@@ -192,12 +192,12 @@ public class FilteredTableDataSetTest {
 		entry = new TableEntry();
 		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
-		
+
 		dataSet.addFilter(new RangeFilter(0, 3, 4, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 		assertEquals(0, dataSet.getRowCount());
 		dataSet.clearFilters();
 		dataSet.addFilter(new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
-		
+
 		assertEquals(1, dataSet.getRowCount());
 		Object[] row = dataSet.getRow(0);
 		assertEquals(5, ((Integer)row[0]).intValue());
@@ -206,7 +206,7 @@ public class FilteredTableDataSetTest {
 	@Test
 	public void testRemoveFilter() {
 		TableEntry entry;
-		
+
 		entry = new TableEntry();
 		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
@@ -222,7 +222,7 @@ public class FilteredTableDataSetTest {
 		entry = new TableEntry();
 		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
-		
+
 		RangeFilter filter = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		dataSet.addFilter(filter);
 		dataSet.addFilter(new SortFilter(2, SortFilter.ASCENDING));
@@ -236,7 +236,7 @@ public class FilteredTableDataSetTest {
 	@Test
 	public void testClearFilters() {
 		TableEntry entry;
-		
+
 		entry = new TableEntry();
 		entry.add(new Integer[] {3, 2, 5});
 		dataSet.append(entry);
@@ -252,13 +252,13 @@ public class FilteredTableDataSetTest {
 		entry = new TableEntry();
 		entry.add(new Integer[] {5, 2, 2});
 		dataSet.append(entry);
-		
+
 		dataSet.addFilter(new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS));
 		dataSet.addFilter(new SortFilter(2, SortFilter.ASCENDING));
 
 		assertEquals(2, dataSet.getFilters().length);
 		dataSet.clearFilters();
-		
+
 		assertEquals(1, dataSet.getRowCount());
 		Object[] row = dataSet.getRow(0);
 		assertEquals(5, ((Integer)row[0]).intValue());
@@ -271,14 +271,14 @@ public class FilteredTableDataSetTest {
 
 		RangeFilter filter1 = new RangeFilter(0, 3, 5, RangeFilter.INCLUSIVE | RangeFilter.INSIDE_BOUNDS);
 		SortFilter filter2 = new SortFilter(2, SortFilter.ASCENDING);
-		
+
 		dataSet.addFilter(filter1);
 		dataSet.addFilter(filter2);
-		
+
 		IDataSetFilter[] filters = dataSet.getFilters();
 		assertEquals(2, filters.length);
 	}
-	
-	FilteredTableDataSet dataSet;
-	TableDataSet data;
+
+	private FilteredTableDataSet dataSet;
+	private TableDataSet data;
 }

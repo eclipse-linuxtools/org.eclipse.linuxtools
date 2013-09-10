@@ -15,6 +15,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -230,6 +231,7 @@ public class PreferencesTest extends AbstractTest{
 	 */
 	public static void deselectSelectionByName(final String name, final SWTWorkbenchBot bot) {
 		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
 			public void run() {
 				@SuppressWarnings("unchecked")
 				Matcher<Widget> matcher = allOf(widgetOfType(Button.class),
@@ -244,7 +246,7 @@ public class PreferencesTest extends AbstractTest{
 
 	/**
 	 * Click specfied menu item.
-	 * 
+	 *
 	 * @param menuItem
 	 *            menu item to click
 	 */
@@ -256,6 +258,7 @@ public class PreferencesTest extends AbstractTest{
 		event.type = SWT.Selection;
 
 		UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+			@Override
 			public void run() {
 				menuItem.notifyListeners(SWT.Selection, event);
 			}

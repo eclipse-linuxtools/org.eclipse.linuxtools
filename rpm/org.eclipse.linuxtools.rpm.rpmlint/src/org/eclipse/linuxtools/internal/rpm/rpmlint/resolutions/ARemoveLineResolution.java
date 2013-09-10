@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
 
@@ -24,6 +25,7 @@ public abstract class ARemoveLineResolution extends ARpmlintResolution {
 	/**
 	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
 	 */
+	@Override
 	public void run(IMarker marker) {
 
 		SpecfileEditor editor = getEditor(marker);

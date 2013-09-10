@@ -29,15 +29,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 
-	SpecfileEditor editor;
-
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
+		SpecfileEditor editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
 		IDocument document = (IDocument) editor.getAdapter(IDocument.class);
 		ISelection currentSelection = editor.getSpecfileSourceViewer()
 				.getSelection();

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
-
 import org.eclipse.linuxtools.internal.valgrind.helgrind.HelgrindPlugin;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 

@@ -30,18 +30,18 @@ import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
  * IAutoEditStrategy related tests
  */
 public class AbstractAutoEditTest extends SystemtapTest {
-	
+
 	private String name;
-	
+
 	protected AbstractAutoEditTest(String name) {
 		super();
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Helper class to test the auto-edit strategies on a document.
 	 * Split out from CAutoIndentTest.
@@ -84,7 +84,7 @@ public class AbstractAutoEditTest extends SystemtapTest {
 			}
 			return this;
 		}
-		
+
 		public void type(String text) throws BadLocationException {
 			for (int i = 0; i < text.length(); ++i) {
 				type(text.charAt(i));
@@ -133,7 +133,7 @@ public class AbstractAutoEditTest extends SystemtapTest {
 				backspace();
 			}
 		}
-		
+
 		public void backspace() throws BadLocationException {
 			TestDocumentCommand command = new TestDocumentCommand(fCaretOffset - 1, 1, ""); //$NON-NLS-1$
 			customizeDocumentCommand(command);
@@ -152,17 +152,17 @@ public class AbstractAutoEditTest extends SystemtapTest {
 				fCaretOffset = fDoc.getLength();
 			return fCaretOffset;
 		}
-		
+
 		/**
 		 * Moves caret right or left by the given number of characters.
-		 * 
+		 *
 		 * @param shift Move distance.
 		 * @return New caret offset.
 		 */
 		public int moveCaret(int shift) {
 			return setCaretOffset(fCaretOffset + shift);
 		}
-		
+
 		public int goTo(int line) throws BadLocationException {
 			fCaretOffset = fDoc.getLineOffset(line);
 			return fCaretOffset;
@@ -188,11 +188,11 @@ public class AbstractAutoEditTest extends SystemtapTest {
 		public char getChar() throws BadLocationException {
 			return getChar(0);
 		}
-		
+
 		public char getChar(int i) throws BadLocationException {
 			return fDoc.getChar(fCaretOffset+i);
 		}
-		
+
 		public String getLine() throws BadLocationException {
 			return getLine(0);
 		}
@@ -206,7 +206,7 @@ public class AbstractAutoEditTest extends SystemtapTest {
 			return TextUtilities.getContentType(fDoc, fPartitioning, offset, false); //TRUE??
 		}
 	}
-	
+
 	/**
 	 * A DocumentCommand with public constructor and exec method.
 	 */
@@ -236,22 +236,4 @@ public class AbstractAutoEditTest extends SystemtapTest {
 						offset + (text == null ? 0 : text.length());
 		}
 	}
-	
-//	protected CharSequence[] getTestContents() {
-//		try {
-//			return TestSourceReader.getContentsForTest(CTestPlugin.getDefault().getBundle(), "ui", this.getClass(), getName(), 2);
-//		} catch (IOException e) {
-//			fail(e.getMessage());
-//		}
-//		return null;
-//	}
-//	
-//	protected CharSequence[] getTestContents1() {
-//		try {
-//			return TestSourceReader.getContentsForTest(CTestPlugin.getDefault().getBundle(), "ui", this.getClass(), getName(), 1);
-//		} catch (IOException e) {
-//			fail(e.getMessage());
-//		}
-//		return null;
-//	}
 }

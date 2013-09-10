@@ -36,23 +36,25 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * @author pmuldoon (Phil Muldoon)
  */
 public class GNUFormat implements IFormatterChangeLogContrib {
-	
+
 	final String line_sep = System.getProperty("line.separator"); //$NON-NLS-1$
-	
+
 	final static String TAB = "\t"; // $NON-NLS-1$
-	
-	
+
+
+	@Override
 	public String formatDateLine(String authorName, String authorEmail) {
 		String detail = returnDate() + "  " + //$NON-NLS-1$
 		authorName + "  " + "<" + authorEmail + ">" + line_sep + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		line_sep;
 		return detail;
 	}
-	
-	
+
+
+	@Override
 	public String mergeChangelog(String dateLine, String functionGuess,String defaultContent,
 			IEditorPart changelog, String changeLogLocation, String fileLocation) {
-		
+
 		String fileDetail = formatFileDetail(changeLogLocation, fileLocation);
 		IDocument changelog_doc = getDocument(changelog);
 		String function = formatFunction(functionGuess);
@@ -60,8 +62,8 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		boolean forceNewEntry = false;
 		String functionSpacer = " "; // $NON-NLS-1$
 		if (function.equals(": ")) // $NON-NLS-1$
-			functionSpacer = ""; // $NON-NLS-1$ 
-		
+			functionSpacer = ""; // $NON-NLS-1$
+
 		/* Fix Bz #366854.  Make sure that forceNewEntry is used only
 		 * once and then cleared even when the ChangeLog is empty to start with.
 		 */
@@ -70,9 +72,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			forceNewEntry = editor.isForceNewLogEntry();
 			editor.setForceNewLogEntry(false);
 		}
-		
+
 		if (changelog_doc.getLength() > 0) {
-			
+
 			int offset_start = findChangeLogEntry(changelog_doc, dateLine);
 			int offset_end = dateLine.length();
 			boolean foundFunction = false;
@@ -82,12 +84,12 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			//written to a new entry again.
 			if (forceNewEntry)
 				offset_start = -1;
-			
+
 			if (offset_start != -1) {
 				int nextChangeEntry = findChangeLogPattern(changelog_doc,
 						offset_start + dateLine.length());
 				int functLogEntry = offset_start + dateLine.length();
-				
+
 				while (functLogEntry < nextChangeEntry) {
 					int line_length = 0;
 					String entry = ""; // $NON-NLS-1$
@@ -137,7 +139,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 							functLogEntry = nextFunctLoc + foundFunc + 1;
 							break;
 						}
-						
+
 					}
 					try {
 						functLogEntry += changelog_doc
@@ -160,7 +162,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					}
 					functLogEntry++;
 				}
-				
+
 				if (offset_start != -1) {
 					if (foundFunction) {
 						try {
@@ -191,38 +193,38 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
+
 						ITextEditor edit = (ITextEditor) changelog;
 						edit.selectAndReveal(offset_end + fileDetail.length()
 								+ function.length() +functionSpacer.length()*2 + 3 + defaultContent.length(), 0);
 						multipleEntrySuccess = true;
 					}
-					
+
 				}
 			}
 		}
-		
+
 		if (!multipleEntrySuccess) {
 			try {
 				if (changelog_doc.getLength() > 0)
 					changelog_doc.replace(0, 0, "\n\n"); //$NON-NLS-1$
 				changelog_doc.replace(0, 0, dateLine + TAB + "* " + fileDetail // $NON-NLS-1$
 						+ functionSpacer+function+functionSpacer+defaultContent);
-				
+
 				ITextEditor edit = (ITextEditor) changelog;
 				edit.selectAndReveal(dateLine.length() + fileDetail.length()
 						+ function.length() + functionSpacer.length()*2 + 3 + defaultContent.length(), 0);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
-				
+
 			}
-			
+
 		}
-		
+
 		return ""; // $NON-NLS-1$
-		
+
 	}
-	
+
 	/**
 	 * Remove any empty lines (i.e. lines only containing whitespace) between
 	 * <code>offset</code> and index backed-up until a '\n' preceded by some non-whitespace
@@ -230,7 +232,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	 * consider the following string "(main): Removed.\n\t\ \n\n\t\n" and
 	 * <code>offset</code> pointing to the last '\n'. This string would be
 	 * changed to: "(main): Removed.\n\n".
-	 * 
+	 *
 	 * @param changelog_doc
 	 * @param offset
 	 * @return The new offset.
@@ -271,7 +273,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	private IWorkspaceRoot getWorkspaceRoot() {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
-	
+
 	private String formatFileDetail(String changeLogLocation,
 			String editorFileLocation) {
 		// Format Path. Is a full path specified, or just file name?
@@ -285,7 +287,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					+ WorkspaceRoot.length(), changeLogLocation.length());
 		} else
 			changeLogLocNoRoot = changeLogLocation;
-		
+
 		if (editorFileLocation.lastIndexOf(WorkspaceRoot) >= 0) {
 			editorFileLocNoRoot = editorFileLocation.substring(
 					editorFileLocation.lastIndexOf(WorkspaceRoot),
@@ -293,12 +295,12 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					+ WorkspaceRoot.length());
 		} else
 			editorFileLocNoRoot = editorFileLocation;
-		
+
 		File changelogLocation = new File(changeLogLocNoRoot);
 		File fileLocation = new File(editorFileLocNoRoot);
 		File reversePath = fileLocation.getParentFile();
 		String reversePathb = ""; // $NON-NLS-1$
-		
+
 		while (reversePath.getParentFile() != null) {
 			if (reversePath.compareTo(changelogLocation.getParentFile()) == 0)
 				break;
@@ -310,7 +312,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					fileLocation.toString().length());
 		return reversePathb;
 	}
-	
+
 	private int findChangeLogPattern(IDocument changelog_doc, int startOffset) {
 		// find the "pattern" of a changelog entry. Not a specific one,
 		// but one that "looks" like an entry
@@ -334,19 +336,19 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				ChangelogPlugin.getDefault().getLog().log(
 						new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 								.getMessage(), e
-								
+
 						));
 			}
-			
+
 		}
 		return nextEntry;
 	}
-	
+
 	private boolean matchDatePattern(String text) {
-		
+
 		// Set up patterns for looking for the next date in the changelog
 		SimpleDateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd"); // $NON-NLS-1$
-		
+
 		// Try to find next Date bounded changelog entry by parsing date patterns
 		// First start with an ISO date
 		try {
@@ -356,10 +358,10 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		} catch (ParseException e) {
 			// We don't really care on exception; it just means it could not parse a date on that line
 		}
-		
+
 		return false;
 	}
-	
+
 	private int findChangeLogEntry(IDocument changelog_doc, String entry) {
 		FindReplaceDocumentAdapter findDocumentAptd = new FindReplaceDocumentAdapter(
 				changelog_doc);
@@ -370,7 +372,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e
-							
+
 					));
 			return -1;
 		}
@@ -382,28 +384,28 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		else
 			return -1;
 	}
-	
+
 	private String formatFunction(String function) {
-		
+
 		// If Function Guess is true, and Function Guess has found something
 		if (function.length() > 0)
 			return "(" + function + "):"; // $NON-NLS-1$ // $NON-NLS-2$
 		else
 			return ": "; //$NON-NLS-1$
-		
+
 	}
-	
+
 	public IDocument getDocument(IEditorPart currentEditor) {
 		AbstractTextEditor castEditor = (AbstractTextEditor) currentEditor;
 		IDocumentProvider provider = castEditor.getDocumentProvider();
-		
+
 		return provider.getDocument(castEditor.getEditorInput());
 	}
-	
+
 	private String returnDate() {
 		SimpleDateFormat date_Format;
 		date_Format = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		return date_Format.format(new Date());
 	}
-	
+
 }

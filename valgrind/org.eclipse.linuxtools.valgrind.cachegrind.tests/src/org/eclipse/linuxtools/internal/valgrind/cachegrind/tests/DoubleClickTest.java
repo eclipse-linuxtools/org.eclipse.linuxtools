@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -35,21 +38,26 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DoubleClickTest extends AbstractCachegrindTest {
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$	
+		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();
 	}
 
-	private void doDoubleClick(TreePath path) {
+	private static void doDoubleClick(TreePath path) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer treeViewer = view.getViewer();
 
@@ -60,7 +68,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 		IDoubleClickListener listener = view.getDoubleClickListener();
 		listener.doubleClick(new DoubleClickEvent(treeViewer, selection));
 	}
-
+	@Test
 	public void testDoubleClickFile() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
@@ -74,7 +82,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 		checkFile(file);
 	}
-	
+	@Test
 	public void testDoubleClickFunction() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
@@ -89,18 +97,18 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 		// check file in editor
 		IEditorPart editor = checkFile(file);
-		
+
 		// check line number
 		ITextEditor textEditor = (ITextEditor) editor;
-			
+
 		ISelection selection = textEditor.getSelectionProvider().getSelection();
 		TextSelection textSelection = (TextSelection) selection;
 		int line = textSelection.getStartLine() + 1; // zero-indexed
-				
+
 		int expectedLine = ((IFunction) func.getModel()).getSourceRange().getStartLine();
 		assertEquals(expectedLine, line);
 	}
-	
+	@Test
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
@@ -116,14 +124,14 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 		// check file in editor
 		IEditorPart editor = checkFile(file);
-		
+
 		// check line number
 		ITextEditor textEditor = (ITextEditor) editor;
-			
+
 		ISelection selection = textEditor.getSelectionProvider().getSelection();
 		TextSelection textSelection = (TextSelection) selection;
 		int actualLine = textSelection.getStartLine() + 1; // zero-indexed
-				
+
 		assertEquals(line.getLine(), actualLine);
 	}
 

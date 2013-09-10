@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -23,9 +23,9 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		
+
 		ArrayList<Object> output = new ArrayList<Object>();
-		
+
 		if (parentElement instanceof ICContainer) {
 			try {
 				Object[] list =((ICContainer) parentElement).getChildren();
@@ -38,8 +38,8 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 						if (SystemTapLaunchShortcut.validElement(el))
 							output.add(el);
 					}
-					
-					
+
+
 				}
 
 				return output.toArray();
@@ -71,15 +71,16 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		} catch (CModelException e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
-		
+
 	}
-	
+
 	@Override
 	public Object getParent(Object element) {
-		if (element instanceof ICElement)
+		if (element instanceof ICElement) {
 			return ((ICElement)element).getAncestor(ICElement.C_CCONTAINER);
+		}
 		return null;
 	}
 
@@ -104,34 +105,35 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 					try {
 						ICElement[] array = ((ICContainer) element).getChildren();
 						ArrayList<ICElement> output = new ArrayList<ICElement>();
-						
+
 						for (ICElement item : array) {
 							if ((item instanceof ICContainer)
 									&& checkForValidChildren((ICContainer) item)) {
 								output.add(item);
 							}
 
-							if (SystemTapLaunchShortcut.validElement(item))
+							if (SystemTapLaunchShortcut.validElement(item)) {
 								output.add(item);
+							}
 						}
 						return output.toArray();
 					} catch (CModelException e) {
 						e.printStackTrace();
-					}		
+					}
 		}
 		return null;
 	}
 
 	@Override
 	public void dispose() {
-		
+
 	}
 
 	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {		
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 
-	
+
 	public Object[] findElements(Object inputElement) {
 		ArrayList<Object> output = new ArrayList<Object>();
 
@@ -144,5 +146,5 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 			}
 		}
 		return output.toArray();
-	} 
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,21 +18,16 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.detectors.IStrictWordDetector;
 
 public class StringWithEndingRule implements IRule {
-	/**
-	 * The default token to be returned on success and if nothing else has been
-	 * specified.
-	 */
-	protected IToken fDefaultToken;
 
-	protected IToken token;
+	private IToken token;
 
-	protected IStrictWordDetector fDetector;
+	private IStrictWordDetector fDetector;
 
 	/** The column constraint */
-	protected int fColumn = UNDEFINED;
+	private int fColumn = UNDEFINED;
 
 	/** Internal setting for the un-initialized column constraint */
-	protected static final int UNDEFINED = -1;
+	private static final int UNDEFINED = -1;
 
 	/** Buffer used for pattern detection */
 	private StringBuilder fBuffer = new StringBuilder();
@@ -49,10 +44,9 @@ public class StringWithEndingRule implements IRule {
 		fDetector = trailingCharDetector;
 		fStartingSequence = startingSequence;
 		fMandatoryEndSequence = endSequenceRequired;
-		fDefaultToken = Token.UNDEFINED;
-
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		int c = scanner.read();
 		fBuffer.setLength(0);

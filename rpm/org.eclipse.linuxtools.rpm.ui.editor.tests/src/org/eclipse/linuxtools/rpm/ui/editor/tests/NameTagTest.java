@@ -48,7 +48,7 @@ public class NameTagTest extends FileTestCase {
 	public void testNullNameTag() {
 		String testText = "Name:	";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Name declaration without value.", failure.getAnnotation()
@@ -59,7 +59,7 @@ public class NameTagTest extends FileTestCase {
 	public void testNullNameTag2() {
 		String testText = "Name: ";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Name declaration without value.", failure.getAnnotation()
@@ -70,7 +70,7 @@ public class NameTagTest extends FileTestCase {
 	public void testMultipleNamesTag() {
 		String testText = "Name: blah bleh";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Name cannot have multiple values.", failure
@@ -81,7 +81,7 @@ public class NameTagTest extends FileTestCase {
 	public void testMultipleNamesTag2() {
 		String testText = "Name: 	blah bleh";
 		newFile(testText);
-		SpecfileTestFailure failure = getFailures()[0];
+		SpecfileTestFailure failure = getFailures().get(0);
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(), failure.getPosition().getLength());
 		assertEquals("Name cannot have multiple values.", failure

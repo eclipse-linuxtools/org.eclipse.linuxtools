@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
@@ -35,18 +40,20 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.Version;
 
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
-	protected ValgrindOptionsTab tab;
-	protected MemcheckToolPage dynamicTab;
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
+	private ValgrindOptionsTab tab;
+	private MemcheckToolPage dynamicTab;
+	private ILaunchConfiguration config;
+	private Shell testShell;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUpProject() throws Exception {
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
 		config = createConfiguration(proj.getProject());
@@ -56,8 +63,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		tab = new ValgrindOptionsTab();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void cleanup() throws Exception {
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -76,229 +83,209 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		return wc;
 	}
 
-	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
-	throws Exception {
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc,
+			String testName) throws Exception {
 		tab.performApply(wc);
 		config = wc.doSave();
 
-		ILaunch launch = doLaunch(config, testName);
-		return launch;
+		return doLaunch(config, testName);
 	}
 
+	@Test
 	public void testDefaults() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--tool=memcheck")); //$NON-NLS-1$
-			assertTrue(cmd.contains("-q")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--trace-children=no")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--child-silent-after-fork=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--demangle=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--num-callers=12")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--error-limit=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--show-below-main=no")); //$NON-NLS-1$
-			assertFalse(cmd.contains("--suppressions=")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--max-stackframe=2000000")); //$NON-NLS-1$
-			assertFalse(cmd.contains("--alignment=")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--run-libc-freeres=yes")); //$NON-NLS-1$
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--tool=memcheck")); //$NON-NLS-1$
+		assertTrue(cmd.contains("-q")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--trace-children=no")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--child-silent-after-fork=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--demangle=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--num-callers=12")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--error-limit=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--show-below-main=no")); //$NON-NLS-1$
+		assertFalse(cmd.contains("--suppressions=")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--max-stackframe=2000000")); //$NON-NLS-1$
+		assertFalse(cmd.contains("--alignment=")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--run-libc-freeres=yes")); //$NON-NLS-1$
 
-			assertTrue(cmd.contains("--leak-check=yes")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--show-reachable=no")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--leak-resolution=high")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--freelist-vol=10000000")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--workaround-gcc296-bugs=no")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--partial-loads-ok=no")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--undef-value-errors=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--leak-check=yes")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--show-reachable=no")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--leak-resolution=high")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--freelist-vol=10000000")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--workaround-gcc296-bugs=no")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--partial-loads-ok=no")); //$NON-NLS-1$
+		assertTrue(cmd.contains("--undef-value-errors=yes")); //$NON-NLS-1$
 
-			// 3.4.0 specific
-			IProject project = CDebugUtils.verifyCProject(wc).getProject();
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				assertFalse(cmd.contains("--track-origins")); //$NON-NLS-1$
-			}
-			assertFalse(cmd.contains("--main-stacksize")); //$NON-NLS-1$
+		// 3.4.0 specific
+		IProject project = CDebugUtils.verifyCProject(wc).getProject();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(
+				project);
+		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			assertFalse(cmd.contains("--track-origins")); //$NON-NLS-1$
 		}
-		else {
-			fail();
-		}
+		assertFalse(cmd.contains("--main-stacksize")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testWSSuppresions() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String text = "${workspace_loc:/basicTest/testsuppfile.supp}"; //$NON-NLS-1$
 		tab.getSuppFileList().add(text);
 		ILaunch launch = saveAndLaunch(wc, "testWSSuppresions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
-			assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		IPath suppPath = ResourcesPlugin
+				.getWorkspace()
+				.getRoot()
+				.findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
+		assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testSuppressions() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
+		IPath suppPath = ResourcesPlugin
+				.getWorkspace()
+				.getRoot()
+				.findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
 		tab.getSuppFileList().add(suppPath.toOSString());
 		ILaunch launch = saveAndLaunch(wc, "testSuppressions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testSuppressionsMultiple() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
-		IPath suppPath2 = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile2.supp")).getLocation(); //$NON-NLS-1$
+		IPath suppPath = ResourcesPlugin
+				.getWorkspace()
+				.getRoot()
+				.findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
+		IPath suppPath2 = ResourcesPlugin
+				.getWorkspace()
+				.getRoot()
+				.findMember(new Path("basicTest/testsuppfile2.supp")).getLocation(); //$NON-NLS-1$
 		tab.getSuppFileList().add(suppPath.toOSString());
 		tab.getSuppFileList().add(suppPath2.toOSString());
 		ILaunch launch = saveAndLaunch(wc, "testSuppressionsMultiple"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
-			assertTrue(cmd.contains("--suppressions=" + suppPath2.toOSString())); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
+		assertTrue(cmd.contains("--suppressions=" + suppPath2.toOSString())); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testSuppressionsSpaces() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/test suppfile.supp")).getLocation(); //$NON-NLS-1$
+		IPath suppPath = ResourcesPlugin
+				.getWorkspace()
+				.getRoot()
+				.findMember(new Path("basicTest/test suppfile.supp")).getLocation(); //$NON-NLS-1$
 		tab.getSuppFileList().add(suppPath.toOSString());
 		ILaunch launch = saveAndLaunch(wc, "testSuppressionsSpaces"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testTraceChildren() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getTraceChildrenButton().setSelection(true);
 		ILaunch launch = saveAndLaunch(wc, "testTraceChildren"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--trace-children=yes")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--trace-children=yes")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testDemangle() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getDemangleButton().setSelection(false);
 		ILaunch launch = saveAndLaunch(wc, "testDemangle"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--demangle=no")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--demangle=no")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testNumCallers() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getNumCallersSpinner().setSelection(24);
 		ILaunch launch = saveAndLaunch(wc, "testNumCallers"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--num-callers=24")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--num-callers=24")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testErrorLimit() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getErrorLimitButton().setSelection(false);
 		ILaunch launch = saveAndLaunch(wc, "testErrorLimit"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--error-limit=no")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--error-limit=no")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testShowBelowMain() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getShowBelowMainButton().setSelection(true);
 		ILaunch launch = saveAndLaunch(wc, "testShowBelowMain"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--show-below-main=yes")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--show-below-main=yes")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testMaxStackframe() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getMaxStackFrameSpinner().setSelection(50000000);
 		ILaunch launch = saveAndLaunch(wc, "testMaxStackframe"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--max-stackframe=50000000")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--max-stackframe=50000000")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testRunFreeRes() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getRunFreeresButton().setSelection(false);
 		ILaunch launch = saveAndLaunch(wc, "testRunFreeRes"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertEquals(0, p[0].getExitValue());
-			assertTrue(cmd.contains("--run-libc-freeres=no")); //$NON-NLS-1$
-		}
-		else {
-			fail();
-		}
+		assertTrue(p.length > 0);
+		String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+		assertEquals(0, p[0].getExitValue());
+		assertTrue(cmd.contains("--run-libc-freeres=no")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testAlignment() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
@@ -321,6 +308,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--alignment=512")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testAlignmentBad() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 
@@ -336,6 +324,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertFalse(tab.isValid(config));
 	}
 
+	@Test
 	public void testNoLeakCheck() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getLeakCheckButton().setSelection(false);
@@ -347,6 +336,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--leak-check=no")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testShowReachable() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getShowReachableButton().setSelection(true);
@@ -358,6 +348,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--show-reachable=yes")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testLeakResolutionMed() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String[] opts = dynamicTab.getLeakResCombo().getItems();
@@ -372,6 +363,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--leak-resolution=med")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testLeakResolutionHigh() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String[] opts = dynamicTab.getLeakResCombo().getItems();
@@ -386,6 +378,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--leak-resolution=high")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testFreeListVol() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getFreelistSpinner().setSelection(2000000);
@@ -397,6 +390,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--freelist-vol=2000000")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testWorkaroundGCCBugs() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getGccWorkaroundButton().setSelection(true);
@@ -408,6 +402,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--workaround-gcc296-bugs=yes")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testPartialLoads() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getPartialLoadsButton().setSelection(true);
@@ -419,6 +414,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--partial-loads-ok=yes")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testUndefValueErrors() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getUndefValueButton().setSelection(false);
@@ -430,6 +426,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertTrue(cmd.contains("--undef-value-errors=no")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testMainStackSize() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IProject project = CDebugUtils.verifyCProject(wc).getProject();
@@ -453,6 +450,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		}
 	}
 
+	@Test
 	public void testTrackOrigins() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IProject project = CDebugUtils.verifyCProject(config).getProject();
@@ -471,10 +469,12 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		}
 	}
 
+	@Test
 	public void testTrackOriginsValidity() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IProject project = CDebugUtils.verifyCProject(config).getProject();
-		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(
+				project);
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			dynamicTab.getTrackOriginsButton().setSelection(true);
 			tab.performApply(wc);
@@ -485,6 +485,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		}
 	}
 
+	@Test
 	public void testValgrindError() throws Exception {
 		String notExistentFile = "DOES NOT EXIST"; //$NON-NLS-1$
 		ILaunchConfigurationWorkingCopy wc = initConfig();

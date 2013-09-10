@@ -25,6 +25,7 @@ public class StubbyTimingLaunchConfigurationDelegate extends
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) {
 		Display.getDefault().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();

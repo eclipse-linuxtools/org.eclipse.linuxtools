@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartEditorInput;
@@ -20,11 +24,16 @@ import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartPNG;
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.HeapChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ChartExportTest extends AbstractMassifTest {
 	private IPath pngPath;
+
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -34,7 +43,8 @@ public class ChartExportTest extends AbstractMassifTest {
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws CoreException {
 		File chartFile = pngPath.toFile();
 		if (chartFile.exists()) {
 			chartFile.delete();
@@ -44,12 +54,16 @@ public class ChartExportTest extends AbstractMassifTest {
 		super.tearDown();
 	}
 
+	@Test
 	public void testChartExportPNG() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 
-		IEditorInput input = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().getEditorInput();
-		assertTrue("input must be ChartEditorInput", input instanceof ChartEditorInput);
+		IEditorInput input = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActiveEditor()
+				.getEditorInput();
+		assertTrue("input must be ChartEditorInput",
+				input instanceof ChartEditorInput);
 		HeapChart chart = ((ChartEditorInput) input).getChart();
 
 		ChartPNG png = new ChartPNG(chart);

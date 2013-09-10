@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate;
+import org.junit.Test;
 
 public class ConfigurationTest extends AbstractStapTest{
 
@@ -27,6 +30,7 @@ public class ConfigurationTest extends AbstractStapTest{
 	 * Activates all options!
 	 * @throws CoreException
 	 */
+	@Test
 	public void testConfig() throws CoreException {
 
 		LaunchStapGraph shortcut = new LaunchStapGraph();
