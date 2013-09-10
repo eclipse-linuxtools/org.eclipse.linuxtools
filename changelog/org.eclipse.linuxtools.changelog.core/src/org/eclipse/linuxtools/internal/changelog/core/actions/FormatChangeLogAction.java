@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.changelog.core.actions;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor;
@@ -22,7 +21,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class FormatChangeLogAction extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	@Override
+	public Object execute(ExecutionEvent event) {
 		ChangeLogEditor editor = (ChangeLogEditor) HandlerUtil.getActiveEditor(event);
 		if (editor == null)
 			return null;
@@ -32,7 +32,7 @@ public class FormatChangeLogAction extends AbstractHandler {
 			srcViewer.doOperation(ISourceViewer.FORMAT);
 
 		}
-		
+
 		return null;
 	}
 

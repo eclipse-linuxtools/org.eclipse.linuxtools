@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Igor Fedorenko <igorfie@yahoo.com> - 
+ *     Igor Fedorenko <igorfie@yahoo.com> -
  *     		Fix for Bug 136921 [IDE] New File dialog locks for 20 seconds
  *	   Red Hat Inc. - modified this file to work with ChangeLog Plugin
  *******************************************************************************/
@@ -77,7 +77,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates a new instance of the widget.
-	 * 
+	 *
 	 * @param parent
 	 *            The parent widget of the group.
 	 * @param listener
@@ -94,7 +94,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates a new instance of the widget.
-	 * 
+	 *
 	 * @param parent
 	 *            The parent widget of the group.
 	 * @param listener
@@ -113,7 +113,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates a new instance of the widget.
-	 * 
+	 *
 	 * @param parent
 	 *            The parent widget of the group.
 	 * @param listener
@@ -137,7 +137,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates a new instance of the widget.
-	 * 
+	 *
 	 * @param parent
 	 *            The parent widget of the group.
 	 * @param listener
@@ -175,7 +175,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	/**
 	 * The container selection has changed in the tree view. Update the
 	 * container name field value and notify all listeners.
-	 * 
+	 *
 	 * @param container
 	 *            The container that changed
 	 */
@@ -204,7 +204,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates the contents of the composite.
-	 * 
+	 *
 	 * @param message message
 	 */
 	public void createContents(String message) {
@@ -214,7 +214,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Creates the contents of the composite.
-	 * 
+	 *
 	 * @param message message
 	 * @param heightHint height hint for the drill down composite
 	 * @param widthHint specifies the perfered width in pixels
@@ -247,7 +247,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Returns a new drill down viewer for this dialog.
-	 * 
+	 *
 	 * @param heightHint
 	 *            height hint for the drill down composite
 	 */
@@ -270,6 +270,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 		treeViewer.setComparator(new ViewerComparator());
 		treeViewer.setUseHashlookup(true);
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
@@ -278,6 +279,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 			}
 		});
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				ISelection selection = event.getSelection();
 				if (selection instanceof IStructuredSelection) {
@@ -308,7 +310,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	 * Returns the currently entered container name. Null if the field is empty.
 	 * Note that the container may not exist yet if the user entered a new
 	 * container name in the field.
-	 * 
+	 *
 	 * @return IPath
 	 */
 	public IPath getContainerFullPath() {
@@ -341,7 +343,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 
 	/**
 	 * Sets the selected existing container.
-	 * 
+	 *
 	 * @param container container to set
 	 */
 	public void setSelectedContainer(IContainer container) {

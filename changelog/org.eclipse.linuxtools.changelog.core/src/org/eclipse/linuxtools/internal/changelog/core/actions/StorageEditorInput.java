@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Wind River Systems - initial API and implementation
  *******************************************************************************/
@@ -37,6 +37,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/**
 	 * @see IStorageEditorInput#getStorage()
 	 */
+	@Override
 	public IStorage getStorage() {
 		return fStorage;
 	}
@@ -53,6 +54,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/**
 	 * @see IStorageEditorInput#getImageDescriptor()
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return null;
 	}
@@ -60,6 +62,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/**
 	 * @see IStorageEditorInput#getName()
 	 */
+	@Override
 	public String getName() {
 		return getStorage().getName();
 	}
@@ -67,6 +70,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/**
 	 * @see IStorageEditorInput#getPersistable()
 	 */
+	@Override
 	public IPersistableElement getPersistable() {
 		return null;
 	}
@@ -74,6 +78,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/**
 	 * @see IStorageEditorInput#getToolTipText()
 	 */
+	@Override
 	public String getToolTipText() {
 		return getStorage().getFullPath().toOSString();
 	}
@@ -105,6 +110,7 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
+	@Override
 	@SuppressWarnings({ "rawtypes" })
     public Object getAdapter(Class adapter) {
 		return null;

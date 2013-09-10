@@ -19,9 +19,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Hyperlink that opens up editor for a file.
- * 
+ *
  * @author klee (Kyu Lee)
- * 
+ *
  */
 public class FileHyperlink implements IHyperlink {
 
@@ -34,28 +34,28 @@ public class FileHyperlink implements IHyperlink {
 		region = regionIn;
 	}
 
+	@Override
 	public IRegion getHyperlinkRegion() {
 		return region;
 	}
 
+	@Override
 	public String getTypeLabel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public String getHyperlinkText() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
 	 * Opens the hyperlink in new editor window.
 	 */
+	@Override
 	public void open() {
 		IWorkbench ws = PlatformUI.getWorkbench();
-
 		try {
-
 			org.eclipse.ui.ide.IDE.openEditor(ws.getActiveWorkbenchWindow()
 					.getActivePage(), fileLoc, true);
 		} catch (PartInitException e) {

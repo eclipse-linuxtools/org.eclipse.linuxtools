@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation, fixes. 
+ *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation, fixes.
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.parsers;
 
@@ -51,13 +51,14 @@ public class CParser implements IParserChangeLogContrib {
 	/**
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorInput, int)
 	 */
+	@Override
 	public String parseCurrentFunction(IEditorInput input, int offset)
 			throws CoreException {
 
 		String currentElementName;
 
 		if (input instanceof IFileEditorInput) {
-			// Get the working copy and connect to input.		
+			// Get the working copy and connect to input.
 			IWorkingCopyManager manager = CUIPlugin.getDefault()
 			.getWorkingCopyManager();
 			manager.connect(input);
@@ -92,7 +93,7 @@ public class CParser implements IParserChangeLogContrib {
 			case ICElement.C_MODEL:
 				return "";
 
-				// So it's not a method, field, function, or model. Where are we?			
+				// So it's not a method, field, function, or model. Where are we?
 			default:
 				ICElement tmpMethodType;
 				if (((tmpMethodType = method.getAncestor(ICElement.C_FUNCTION)) == null)
@@ -133,7 +134,7 @@ public class CParser implements IParserChangeLogContrib {
 			IStorageEditorInput sei = (IStorageEditorInput)input;
 			// don't follow inclusions
 			IncludeFileContentProvider contentProvider = IncludeFileContentProvider.getEmptyFilesProvider();
-			
+
 			// empty scanner info
 			IScannerInfo scanInfo= new ScannerInfo();
 			IStorage ancestorStorage = sei.getStorage();
@@ -155,13 +156,13 @@ public class CParser implements IParserChangeLogContrib {
 			} catch (IOException e) {
 				// do nothing
 			}
-			
+
 			FileContent content = FileContent.create("<text>", data.toCharArray()); //$NON-NLS-1$
-			
+
 			// determine the language
 			boolean isSource[]= {false};
 			ILanguage language= GPPLanguage.getDefault();
-			
+
 			try {
 				IASTTranslationUnit ast;
 				int options= isSource[0] ? ILanguage.OPTION_IS_SOURCE_UNIT : 0;
@@ -185,16 +186,17 @@ public class CParser implements IParserChangeLogContrib {
 
 			return currentElementName;
 		}
-		
+
 		return "";
 	}
 
 	/**
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
 	 */
+	@Override
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 
-		// Check for correct editor type		
+		// Check for correct editor type
 		if (!(editor instanceof AbstractTextEditor))
 			return "";
 
@@ -208,5 +210,5 @@ public class CParser implements IParserChangeLogContrib {
 		return parseCurrentFunction(input, selection.getOffset());
 	}
 
-	
+
 }

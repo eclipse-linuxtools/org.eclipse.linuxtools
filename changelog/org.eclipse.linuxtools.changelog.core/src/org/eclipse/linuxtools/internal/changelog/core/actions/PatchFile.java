@@ -32,22 +32,27 @@ public class PatchFile {
 		public EmptyStorage() {
 		}
 
+		@Override
 		public InputStream getContents() {
 			return new ByteArrayInputStream(new byte[0]);
 		}
 
+		@Override
 		public IPath getFullPath() {
 			return null;
 		}
 
+		@Override
 		public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 			return null;
 		}
 
+		@Override
 		public String getName() {
 			return "__emptyStorage__";
 		}
 
+		@Override
 		public boolean isReadOnly() {
 			return true;
 		}

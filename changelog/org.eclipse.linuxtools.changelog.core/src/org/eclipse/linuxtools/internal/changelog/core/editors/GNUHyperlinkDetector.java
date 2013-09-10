@@ -34,7 +34,7 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * 
+ *
  * @author klee (Kyu Lee)
  */
 public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
@@ -43,19 +43,19 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	public GNUHyperlinkDetector() {
 	}
-	
+
 	/**
 	 * Creates a new URL hyperlink detector for GNU Format changelogs.
-	 * 
+	 *
 	 * NOTE: It assumes that the path this ChangeLog is in, is root
 	 * directory of path names in this ChangeLog.
-	 * 
+	 *
 	 * ex) ChangeLog is in /some/project and in ChangeLog, path names are like
 	 * abc/file.java ghi/file2.java
-	 * 
+	 *
 	 * then absolute path of file.java and file2.java are
 	 * /some/project/abc/file.java and /some/project/ghi/file2.java
-	 * 
+	 *
 	 * @param textViewer The text viewer in which to detect the hyperlink.
 	 */
 	public GNUHyperlinkDetector(ITextViewer textViewer, TextEditor editor) {
@@ -68,6 +68,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 	/**
 	 * Detector using RuleBasedScanner.
 	 */
+	@Override
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
 		if (documentLocation == null) {
@@ -128,7 +129,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 			Region pathRegion = null;
 
 			int lineOffset = 0;
-			
+
 			// cut "* " if necessary
 			if (line.startsWith("* ")) {
 				lineOffset = 2;
@@ -145,8 +146,8 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 				pathRegion = new Region(tokenRegion.getOffset() + lineOffset, line
 						.length());
 //			}
-			
-			
+
+
 			if (documentLocation == null)
 				return null;
 
@@ -170,7 +171,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	/**
 	 * Get current directory that ChangeLog is in.
-	 * 
+	 *
 	 * @param currentEditor
 	 * @return path that this ChangeLog is in
 	 */
