@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -216,6 +216,7 @@ public class SpecfileEditor extends TextEditor {
 			Shell shell = getSite().getShell();
 			if (!(shell == null || shell.isDisposed())) {
 				shell.getDisplay().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						ISourceViewer viewer = getSourceViewer();
 						if (viewer != null) {

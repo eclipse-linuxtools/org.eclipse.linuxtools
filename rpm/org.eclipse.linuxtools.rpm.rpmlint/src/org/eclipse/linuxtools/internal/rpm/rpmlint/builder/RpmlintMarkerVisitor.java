@@ -1,6 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
- * Copyright (c) 2011 Red Hat Inc.
+ * Copyright (c) 2007, 2013 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,6 +55,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	/**
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
+	@Override
 	public boolean visit(IResource resource) throws CoreException {
 		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
 			firstWarningInResource = true;

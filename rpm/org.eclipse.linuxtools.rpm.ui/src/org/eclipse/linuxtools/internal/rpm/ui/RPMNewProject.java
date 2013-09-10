@@ -52,6 +52,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 		return true;
 	}
 
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		super.addPages();
 		namePage = new NewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$

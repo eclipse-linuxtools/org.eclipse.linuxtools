@@ -40,18 +40,22 @@ public class SpecfileElementHyperlink implements IHyperlink {
 		this.file = file;
 	}
 
+	@Override
 	public IRegion getHyperlinkRegion() {
 		return region;
 	}
 
+	@Override
 	public String getHyperlinkText() {
 		return null;
 	}
 
+	@Override
 	public String getTypeLabel() {
 		return null;
 	}
 
+	@Override
 	public void open() {
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();

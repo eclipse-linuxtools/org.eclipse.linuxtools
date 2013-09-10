@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.builder;
 
@@ -26,6 +27,7 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 	/**
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 	 */
+	@Override
 	public boolean visit(IResourceDelta delta) {
 		IResource resource = delta.getResource();
 		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())

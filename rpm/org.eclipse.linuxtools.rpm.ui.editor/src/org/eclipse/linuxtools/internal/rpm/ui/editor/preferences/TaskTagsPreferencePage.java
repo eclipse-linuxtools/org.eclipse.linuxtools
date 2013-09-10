@@ -27,6 +27,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -45,6 +45,7 @@ public class RpmTagText {
 		}
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				specfile.modifyDefine(rpmTag, text.getText());
 			}
@@ -62,6 +63,7 @@ public class RpmTagText {
 		}
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				specfile.modifyDefine(rpmTag, rpmPackage, text.getText());
 			}
@@ -75,6 +77,7 @@ public class RpmTagText {
 		text.setText(require.getStringValue());
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				 specfile.modifyDefine(require, text.getText());
 			}

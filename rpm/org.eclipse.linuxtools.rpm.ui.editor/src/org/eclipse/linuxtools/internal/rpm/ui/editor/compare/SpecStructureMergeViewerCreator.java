@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * ViewerCreator which creates a StructureDiffViewer with a
  * SpecStructureCreator.
- * 
+ *
  */
 public class SpecStructureMergeViewerCreator implements IViewerCreator {
 
@@ -27,6 +27,7 @@ public class SpecStructureMergeViewerCreator implements IViewerCreator {
 	 * @see org.eclipse.compare.IViewerCreator#createViewer(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.compare.CompareConfiguration)
 	 */
+	@Override
 	public Viewer createViewer(Composite parent, CompareConfiguration config) {
 		StructureDiffViewer diffViewer = new StructureDiffViewer(parent, config);
 		diffViewer.setStructureCreator(new SpecStructureCreator());

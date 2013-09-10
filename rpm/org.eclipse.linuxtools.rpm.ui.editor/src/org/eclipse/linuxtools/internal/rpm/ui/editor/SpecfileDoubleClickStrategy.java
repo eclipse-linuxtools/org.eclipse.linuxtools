@@ -21,6 +21,7 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 	//lTerminator should be either '\r' or '\n' depending on the OS
 	final char lTerminator = System.getProperty("line.separator").charAt(0); //$NON-NLS-1$
 
+	@Override
 	public void doubleClicked(ITextViewer part) {
 		int pos = part.getSelectedRange().x;
 

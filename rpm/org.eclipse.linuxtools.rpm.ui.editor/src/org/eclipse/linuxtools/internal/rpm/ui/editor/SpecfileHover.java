@@ -42,6 +42,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		this.editor = editor;
 	}
 
+	@Override
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		if (hoverRegion == null || hoverRegion.getLength() == 0) {
 			return null;
@@ -95,6 +96,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
        return null;
 	}
 
+	@Override
 	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
 
 		if (textViewer != null) {
@@ -118,8 +120,10 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		return null;
 	}
 
+	@Override
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
+			@Override
 			public IInformationControl createInformationControl(Shell parent) {
 				return new DefaultInformationControl(parent, false);
 			}

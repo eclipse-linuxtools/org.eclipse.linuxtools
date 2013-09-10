@@ -34,6 +34,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 	 *
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		SpecfileEditor editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
 		IDocument document = (IDocument) editor.getAdapter(IDocument.class);

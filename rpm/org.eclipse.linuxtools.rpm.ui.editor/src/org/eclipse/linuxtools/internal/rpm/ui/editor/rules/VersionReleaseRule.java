@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,10 +57,12 @@ public class VersionReleaseRule implements IPredicateRule {
 		fChangelogScanner = scanner;
 	}
 
+	@Override
 	public IToken getSuccessToken() {
 		return fToken;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		// if the last token successfully read was not the fPreceedingToke fail
 		IToken lastToken = getLastToken();
@@ -146,6 +148,7 @@ public class VersionReleaseRule implements IPredicateRule {
 		return fToken;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner, false);
 	}

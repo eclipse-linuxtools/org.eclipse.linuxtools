@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,26 +70,32 @@ public class FlatBuildConfiguration implements IProjectConfiguration {
 		}
 	}
 
+	@Override
 	public IContainer getBuildFolder() {
 		return project;
 	}
 
+	@Override
 	public IContainer getRpmsFolder() {
 		return project;
 	}
 
+	@Override
 	public IContainer getSourcesFolder() {
 		return project;
 	}
 
+	@Override
 	public IContainer getSpecsFolder() {
 		return project;
 	}
 
+	@Override
 	public IContainer getSrpmsFolder() {
 		return project;
 	}
 
+	@Override
 	public List<String> getConfigDefines() {
 		return configDefines;
 	}

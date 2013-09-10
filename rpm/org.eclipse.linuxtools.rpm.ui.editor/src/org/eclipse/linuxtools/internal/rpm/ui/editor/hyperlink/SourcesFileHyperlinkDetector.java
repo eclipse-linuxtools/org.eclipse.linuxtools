@@ -41,6 +41,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
 	 *      org.eclipse.jface.text.IRegion, boolean)
 	 */
+	@Override
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
 		boolean patchExists = false;

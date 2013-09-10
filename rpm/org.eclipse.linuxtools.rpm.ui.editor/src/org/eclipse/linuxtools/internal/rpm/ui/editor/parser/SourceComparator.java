@@ -18,6 +18,7 @@ public class SourceComparator implements Comparator<SpecfileSource>,
 		Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	public int compare(SpecfileSource source0, SpecfileSource source1) {
 		if (source0 == null) {
 			return -1;

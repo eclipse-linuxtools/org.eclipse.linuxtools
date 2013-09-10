@@ -41,18 +41,22 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 	}
 
 
+	@Override
 	public void setDocument(IDocument document) {
 		sFoldingStructureProvider.setDocument(document);
 	}
 
+	@Override
 	public void setProgressMonitor(IProgressMonitor monitor) {
 		sFoldingStructureProvider.setProgressMonitor(monitor);
 	}
 
+	@Override
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		reconcile();
 	}
 
+	@Override
 	public void initialReconcile() {
 		reconcile();
 	}
@@ -68,6 +72,7 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 		}
 	}
 
+	@Override
 	public void reconcile(IRegion partition) {
 		reconcile();
 	}
@@ -76,6 +81,7 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 		Shell shell= editor.getSite().getShell();
 		if (!(shell == null || shell.isDisposed())) {
 			shell.getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					editor.setSpecfile(editor.getParser().parse(documentProvider
 							.getDocument(editor.getEditorInput())));

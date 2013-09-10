@@ -30,7 +30,8 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 	private Specfile specfile;
 	private SpecfileEditor specEditor;
 	protected static final String SECTION_POSITIONS = "section_positions"; //$NON-NLS-1$
-	protected IPositionUpdater positionUpdater = new DefaultPositionUpdater(SECTION_POSITIONS);
+	protected IPositionUpdater positionUpdater = new DefaultPositionUpdater(
+			SECTION_POSITIONS);
 
 	public SpecfileContentProvider(ITextEditor editor) {
 		if (editor instanceof SpecfileEditor) {
@@ -40,31 +41,26 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 		this.documentProvider = editor.getDocumentProvider();
 	}
 
+	@Override
 	public void dispose() {
 	}
 
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (oldInput != null)
-		{
+		if (oldInput != null) {
 			IDocument document = documentProvider.getDocument(oldInput);
-			if (document != null)
-			{
-				try
-				{
+			if (document != null) {
+				try {
 					document.removePositionCategory(SECTION_POSITIONS);
-				}
-				catch (BadPositionCategoryException x)
-				{
+				} catch (BadPositionCategoryException x) {
 				}
 				document.removePositionUpdater(positionUpdater);
 			}
 		}
 
-		if (newInput != null)
-		{
+		if (newInput != null) {
 			IDocument document = documentProvider.getDocument(newInput);
-			if (document != null)
-			{
+			if (document != null) {
 				document.addPositionCategory(SECTION_POSITIONS);
 				document.addPositionUpdater(positionUpdater);
 				if (specEditor != null) {
@@ -74,6 +70,7 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 		}
 	}
 
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement == specfile) {
 			int elmsSize = 1 + 1 + specfile.getSections().size();
@@ -81,9 +78,9 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 			elms[0] = specfile.getPreamble();
 			Object[] sections = specfile.getSections().toArray();
 			for (int i = 0; i < sections.length; i++) {
-				 elms[i + 1] = sections[i];
+				elms[i + 1] = sections[i];
 			}
-			elms[elmsSize-1] = specfile.getPackages();
+			elms[elmsSize - 1] = specfile.getPackages();
 			return elms;
 		} else if (parentElement instanceof SpecfilePackageContainer) {
 			return ((SpecfilePackageContainer) parentElement).getPackages();
@@ -93,10 +90,12 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 		return new Object[0];
 	}
 
+	@Override
 	public Object getParent(Object element) {
 		return null;
 	}
 
+	@Override
 	public boolean hasChildren(Object element) {
 		if (element == specfile) {
 			return true;
@@ -108,6 +107,7 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 		return false;
 	}
 
+	@Override
 	public Object[] getElements(Object inputElement) {
 		return this.getChildren(specfile);
 	}

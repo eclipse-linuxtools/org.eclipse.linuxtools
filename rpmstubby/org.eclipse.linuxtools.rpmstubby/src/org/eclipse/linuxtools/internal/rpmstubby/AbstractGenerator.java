@@ -76,6 +76,7 @@ public abstract class AbstractGenerator {
 			StubbyLog.logError(e);
 		}
 		Display.getCurrent().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						IWorkbenchPage page = PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage();

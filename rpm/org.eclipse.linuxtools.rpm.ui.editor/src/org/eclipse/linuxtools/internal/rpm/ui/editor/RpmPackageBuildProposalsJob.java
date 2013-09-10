@@ -73,6 +73,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	}
 
 	protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
+		@Override
 		public void preferenceChange(PreferenceChangeEvent event) {
 			if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
 				update();
