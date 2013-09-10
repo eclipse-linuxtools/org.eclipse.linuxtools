@@ -78,11 +78,14 @@ public abstract class AbstractTest {
 	/**
 	 * Create a CDT project outside the default workspace.
 	 *
-	 * @param bundle			The plug-in bundle.
-	 * @param projname			The name of the project.
-	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
-	 * 							outside the workspace.
-	 * @return					A new external CDT project.
+	 * @param bundle
+	 *            The plug-in bundle.
+	 * @param projname
+	 *            The name of the project.
+	 * @param absProjectPath
+	 *            Absolute path to the directory to which the project should be
+	 *            mapped outside the workspace.
+	 * @return A new external CDT project.
 	 * @throws CoreException
 	 * @throws URISyntaxException
 	 * @throws IOException
@@ -91,8 +94,8 @@ public abstract class AbstractTest {
 	 */
 	protected IProject createExternalProject(Bundle bundle,
 			final String projname, final Path absProjectPath)
-					throws CoreException, URISyntaxException, IOException,
-					InvocationTargetException, InterruptedException {
+			throws CoreException, URISyntaxException, IOException,
+			InvocationTargetException, InterruptedException {
 
 		IProject externalProject;
 		// Turn off auto-building
@@ -114,8 +117,10 @@ public abstract class AbstractTest {
 		externalProject.open(null);
 
 		try {
-			// CDT opens the Project with BACKGROUND_REFRESH enabled which causes the
-			// refresh manager to refresh the project 200ms later. This Job interferes
+			// CDT opens the Project with BACKGROUND_REFRESH enabled which
+			// causes the
+			// refresh manager to refresh the project 200ms later. This Job
+			// interferes
 			// with the resource change handler firing see: bug 271264
 			Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
 		} catch (Exception e) {
@@ -130,10 +135,11 @@ public abstract class AbstractTest {
 		ImportOperation op = new ImportOperation(externalProject.getFullPath(),
 				testDir, FileSystemStructureProvider.INSTANCE,
 				new IOverwriteQuery() {
-			public String queryOverwrite(String pathString) {
-				return ALL;
-			}
-		});
+					@Override
+					public String queryOverwrite(String pathString) {
+						return ALL;
+					}
+				});
 		op.setCreateContainerStructure(false);
 		op.run(null);
 
@@ -142,7 +148,8 @@ public abstract class AbstractTest {
 			throw new CoreException(status);
 		}
 		// Make sure import went well
-		assertNotNull(externalProject.findMember(new Path(IMPORTED_SOURCE_FILE)));
+		assertNotNull(externalProject
+				.findMember(new Path(IMPORTED_SOURCE_FILE)));
 
 		// Index the project
 		IIndexManager indexMgr = CCorePlugin.getIndexManager();
@@ -160,11 +167,14 @@ public abstract class AbstractTest {
 	/**
 	 * Create and build a project outside the default workspace
 	 *
-	 * @param bundle			The plug-in bundle.
-	 * @param projname			The name of the project.
-	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
-	 * 							outside the workspace.
-	 * @return					A new external CDT project with binaries built.
+	 * @param bundle
+	 *            The plug-in bundle.
+	 * @param projname
+	 *            The name of the project.
+	 * @param absProjectPath
+	 *            Absolute path to the directory to which the project should be
+	 *            mapped outside the workspace.
+	 * @return A new external CDT project with binaries built.
 	 * @throws CoreException
 	 * @throws URISyntaxException
 	 * @throws IOException
@@ -188,7 +198,8 @@ public abstract class AbstractTest {
 		return proj;
 	}
 
-	// Wrapper to allow ICProject parameters, since buildProject doesn't really use
+	// Wrapper to allow ICProject parameters, since buildProject doesn't really
+	// use
 	// ICProject specifics.
 	protected void buildProject(ICProject project) throws CoreException {
 		buildProject(project.getProject());
@@ -202,12 +213,13 @@ public abstract class AbstractTest {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					curProject.build(
-							IncrementalProjectBuilder.FULL_BUILD, null);
+					curProject
+							.build(IncrementalProjectBuilder.FULL_BUILD, null);
 				} catch (CoreException e) {
 					fail(e.getStatus().getMessage());
 				} catch (OperationCanceledException e) {
-					fail(NLS.bind(Messages.getString("AbstractTest.Build_cancelled"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
+					fail(NLS.bind(
+							Messages.getString("AbstractTest.Build_cancelled"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
 				}
 				return Status.OK_STATUS;
 			}
@@ -219,15 +231,18 @@ public abstract class AbstractTest {
 		try {
 			buildJob.join();
 		} catch (InterruptedException e) {
-			fail(NLS.bind(Messages.getString("AbstractTest.Build_interrupted"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
+			fail(NLS.bind(
+					Messages.getString("AbstractTest.Build_interrupted"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
 		}
 
 		IStatus status = buildJob.getResult();
 		if (status.getCode() != IStatus.OK) {
-			fail(NLS.bind(Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
+			fail(NLS.bind(
+					Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
 		}
 
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			@Override
 			public void run(IProgressMonitor monitor) throws CoreException {
 				curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
@@ -246,7 +261,8 @@ public abstract class AbstractTest {
 		wsp.setDescription(desc);
 
 		ICProject proj = CProjectHelper.createCProject(projname, BIN_DIR);
-		URL location = FileLocator.find(bundle, new Path("resources/" + projname), null); //$NON-NLS-1$
+		URL location = FileLocator.find(bundle, new Path(
+				"resources/" + projname), null); //$NON-NLS-1$
 		File testDir = new File(FileLocator.toFileURL(location).toURI());
 
 		IProject project = proj.getProject();
@@ -254,11 +270,14 @@ public abstract class AbstractTest {
 		ManagedCProjectNature.addManagedNature(project, null);
 		ScannerConfigNature.addScannerConfigNature(project);
 
-		ImportOperation op = new ImportOperation(project.getFullPath(), testDir, FileSystemStructureProvider.INSTANCE, new IOverwriteQuery() {
-			public String queryOverwrite(String pathString) {
-				return ALL;
-			}
-		});
+		ImportOperation op = new ImportOperation(project.getFullPath(),
+				testDir, FileSystemStructureProvider.INSTANCE,
+				new IOverwriteQuery() {
+					@Override
+					public String queryOverwrite(String pathString) {
+						return ALL;
+					}
+				});
 		op.setCreateContainerStructure(false);
 		op.run(null);
 
@@ -270,7 +289,8 @@ public abstract class AbstractTest {
 		// Index the project
 		IIndexManager indexManager = CCorePlugin.getIndexManager();
 		indexManager.reindex(proj);
-		indexManager.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+		indexManager.joinIndexer(IIndexManager.FOREVER,
+				new NullProgressMonitor());
 
 		// These natures must be enabled at this point to continue
 		assertTrue(project.isNatureEnabled(ScannerConfigNature.NATURE_ID));
@@ -281,57 +301,69 @@ public abstract class AbstractTest {
 
 	protected void deleteProject(final ICProject cproject) throws CoreException {
 		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+			@Override
 			public void run(IProgressMonitor monitor) {
 				CProjectHelper.delete(cproject);
 			}
 		}, null);
 	}
 
-	protected ILaunchConfiguration createConfiguration(IProject proj) throws CoreException {
+	protected ILaunchConfiguration createConfiguration(IProject proj)
+			throws CoreException {
 		String projectName = proj.getName();
 		String binPath = "";
 
 		ILaunchConfigurationType configType = getLaunchConfigType();
-		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager()
-				.generateLaunchConfigurationName(
-						projectName));
+		ILaunchConfigurationWorkingCopy wc = configType
+				.newInstance(null, getLaunchManager()
+						.generateLaunchConfigurationName(projectName));
 
-		if (proj.getLocation()==null) {
+		if (proj.getLocation() == null) {
 			IFileStore fileStore = null;
 			try {
-				fileStore = EFS.getStore(new URI(proj.getLocationURI() + BIN_DIR + IPath.SEPARATOR + projectName));
+				fileStore = EFS.getStore(new URI(proj.getLocationURI()
+						+ BIN_DIR + IPath.SEPARATOR + projectName));
 			} catch (URISyntaxException e) {
-				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
+				fail(NLS.bind(
+						Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
 			}
 			if ((fileStore instanceof LocalFile)) {
-				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
+				fail(NLS.bind(
+						Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
 			}
-			binPath = EFSExtensionManager.getDefault().getPathFromURI(proj.getLocationURI())+ BIN_DIR + IPath.SEPARATOR + proj.getName();
+			binPath = EFSExtensionManager.getDefault().getPathFromURI(
+					proj.getLocationURI())
+					+ BIN_DIR + IPath.SEPARATOR + proj.getName();
 		} else {
-			IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
+			IResource bin = proj.findMember(new Path(BIN_DIR)
+					.append(projectName));
 			if (bin == null) {
-				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
+				fail(NLS.bind(
+						Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
 			}
 			binPath = bin.getProjectRelativePath().toString();
-			wc.setMappedResources(new IResource[] {bin, proj});
+			wc.setMappedResources(new IResource[] { bin, proj });
 		}
 
-		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
-		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
-		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
+		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,
+				binPath);
+		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				projectName);
+		wc.setAttribute(
+				ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
+				(String) null);
 
 		// Make launch run in foreground
 		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
 
 		setProfileAttributes(wc);
 
-		ILaunchConfiguration config = wc.doSave();
-		return config;
+		return wc.doSave();
 	}
 
 	protected abstract ILaunchConfigurationType getLaunchConfigType();
 
-	protected abstract void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException;
+	protected abstract void setProfileAttributes(
+			ILaunchConfigurationWorkingCopy wc) throws CoreException;
 
 }

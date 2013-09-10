@@ -231,6 +231,7 @@ public class PreferencesTest extends AbstractTest{
 	 */
 	public static void deselectSelectionByName(final String name, final SWTWorkbenchBot bot) {
 		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
 			public void run() {
 				@SuppressWarnings("unchecked")
 				Matcher<Widget> matcher = allOf(widgetOfType(Button.class),
@@ -257,6 +258,7 @@ public class PreferencesTest extends AbstractTest{
 		event.type = SWT.Selection;
 
 		UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+			@Override
 			public void run() {
 				menuItem.notifyListeners(SWT.Selection, event);
 			}
