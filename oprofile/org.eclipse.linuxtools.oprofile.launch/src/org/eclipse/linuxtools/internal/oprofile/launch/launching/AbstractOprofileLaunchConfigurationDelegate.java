@@ -67,6 +67,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		options.loadConfiguration(config);
 		IPath exePath = getExePath(config);
 		options.setBinaryImage(exePath.toOSString());
+		Oprofile.OprofileProject.setProfilingBinary(options.getOprofileComboText());
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
