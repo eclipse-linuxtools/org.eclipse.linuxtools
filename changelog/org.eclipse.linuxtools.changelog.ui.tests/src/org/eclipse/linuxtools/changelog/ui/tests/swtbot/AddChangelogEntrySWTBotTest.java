@@ -188,9 +188,6 @@ public class AddChangelogEntrySWTBotTest {
 
 		// Open JavaTest.java in an editor
 		SWTBotTreeItem projectItem = projectExplorerViewTree.expandNode(PROJECT_NAME);
-//		for (SWTBotTreeItem i: projectItem.getItems()) {
-//			System.out.println(i.getText());
-//		}
 		projectItem.expandNode("src").expandNode("JavaTest.java").doubleClick();
 
 		Matcher<?> editorMatcher = allOf(
@@ -234,7 +231,7 @@ public class AddChangelogEntrySWTBotTest {
 		}
 		assertNotNull(project.getTestProject().findMember( new Path("/src/dummy")));
 		// Make sure we are in the project explorer view and no editors are open
-		closeAllEditors();
+		bot.closeAllEditors();
 		projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src");
 		// Try to create ChangeLog
 		bot.menu("Edit").menu("ChangeLog Entry").click();
@@ -262,20 +259,4 @@ public class AddChangelogEntrySWTBotTest {
 		}
 		return offset;
 	}
-
-	/**
-	 * Close all active editors.
-	 */
-	private void closeAllEditors() {
-		SWTBotEditor currEditor;
-		try {
-			do {
-				currEditor = bot.activeEditor();
-				currEditor.close();
-			} while (currEditor != null);
-		} catch (WidgetNotFoundException e) {
-			// all closed
-		}
-	}
-
 }

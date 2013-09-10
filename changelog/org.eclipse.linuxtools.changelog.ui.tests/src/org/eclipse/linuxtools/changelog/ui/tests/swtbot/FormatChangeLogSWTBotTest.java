@@ -87,7 +87,6 @@ public class FormatChangeLogSWTBotTest {
 	 *
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void canFormatChangeLogFile() throws Exception {
 		// add a ChangeLog file
@@ -118,11 +117,11 @@ public class FormatChangeLogSWTBotTest {
 		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
 		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = allOf(
+		Matcher<IEditorReference> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName("ChangeLog")
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
+		bot.waitUntil(Conditions.waitForEditor(editorMatcher));
 		SWTBotEditor swtBoteditor = bot.activeEditor();
 		assertEquals("ChangeLog", swtBoteditor.getTitle());
 
@@ -140,8 +139,8 @@ public class FormatChangeLogSWTBotTest {
 		String secondLine = swtBotEclipseEditor.getTextOnLine(1);
 		String thirdLine = swtBotEclipseEditor.getTextOnLine(2);
 		// FIXME: These assertions are lame.
-		assertEquals("", secondLine);
-		assertTrue(!"".equals(thirdLine));
+		assertTrue(secondLine.isEmpty());
+		assertTrue(!thirdLine.isEmpty());
 	}
 
 }

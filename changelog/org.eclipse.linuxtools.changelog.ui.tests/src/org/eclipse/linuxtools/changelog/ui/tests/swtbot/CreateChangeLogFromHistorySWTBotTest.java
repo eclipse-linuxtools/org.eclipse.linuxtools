@@ -8,6 +8,7 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +41,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
-import static org.hamcrest.core.AllOf.allOf;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
@@ -108,7 +108,6 @@ public class CreateChangeLogFromHistorySWTBotTest {
 	 *
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void canPrepareChangeLogFromSVNHistory() throws Exception {
 		// select ChangeLog file
@@ -151,11 +150,11 @@ public class CreateChangeLogFromHistorySWTBotTest {
 
 		ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME,
 				teamProviderString).expandNode(pasteFile).select().doubleClick();
-		Matcher<?> editorMatcher = allOf(
+		Matcher<IEditorReference> editorMatcher = allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName(pasteFile)
 				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
+		bot.waitUntil(Conditions.waitForEditor(editorMatcher));
 		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		SWTBotEditor swtBoteditor = bot.activeEditor();
@@ -170,12 +169,6 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		// make sure some changelog like text was pasted
 		String text = eclipseEditor.getText();
 		assertTrue(!text.equals(""));
-		// FIXME: Add a better assertion. Not sure what would be a good one.
-//		eclipseEditor.selectLine(2); // select third line
-//		final String actualThirdLineContent = eclipseEditor.getSelection();
-//		System.out.println(actualThirdLineContent);
-//		System.out.println(text);
-//		assertTrue(actualThirdLineContent.contains("\t* "));
 	}
 
 	/**

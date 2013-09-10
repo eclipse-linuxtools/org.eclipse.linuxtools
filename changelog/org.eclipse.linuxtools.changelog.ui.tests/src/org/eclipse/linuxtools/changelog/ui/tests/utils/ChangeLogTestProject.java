@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.JavaCore;
 
 /**
  * Test fixture for the changelog plug-in tests.
- * 
+ *
  * Functionality:
  *  - Create a new project in the current workspace
  *
@@ -33,17 +33,17 @@ import org.eclipse.jdt.core.JavaCore;
 public class ChangeLogTestProject {
 
 	private IProject testProject;
-	
+
 	/**
 	 * Create a new ChangelogTestProject
-	 * 
+	 *
 	 * @param projectName The name of the project to be created.
 	 * @throws Exception
 	 */
 	public ChangeLogTestProject(String projectName) throws Exception {
 		testProject = createNewProject(projectName);
 	}
-	
+
 	/**
 	 * @return the testProject
 	 */
@@ -57,22 +57,22 @@ public class ChangeLogTestProject {
 	public void setTestProject(IProject testProject) {
 		this.testProject = testProject;
 	}
-	
+
 	/**
 	 * Adds a file to this project at the specified <code>path</code>
 	 * and the provided <code>filename</code>. If segments of <code>path</code>
 	 * do not exist, they will be created.
-	 * 
+	 *
 	 * @param destPath The path relative to the project (use '/' as path separator).
 	 * @param filename The name of the to be created file
 	 * @param fileInputStream A stream to the new files content.
 	 */
 	public IFile addFileToProject(String destPath, String filename, InputStream fileInputStream) throws CoreException {
 		String[] pathSegments = destPath.split("/");
-		
+
 		IContainer parent = this.testProject;
 		for (String segment: pathSegments) {
-			if (segment.equals("")) {
+			if (segment.isEmpty()) {
 				continue; // ignore
 			}
 			IResource segmentResource = parent.findMember(new Path(IPath.SEPARATOR + segment));
@@ -92,13 +92,13 @@ public class ChangeLogTestProject {
 			throw new IllegalStateException("fileInputStream must not be null");
 		}
 		newFile.create(fileInputStream, false, null);
-		
+
 		// refresh project
 		this.testProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		return newFile;
 	}
-	
+
 	/**
 	 * Add the Java nature to this project. I.e. make it a Java project.
 	 */
@@ -115,13 +115,13 @@ public class ChangeLogTestProject {
 
 	/**
 	 * Add the C nature to this project. I.e. make it a C project.
-	 * @throws CoreException 
+	 * @throws CoreException
 	 */
 	public void addCNature() throws CoreException {
 		this.testProject = CCorePlugin.getDefault().createCDTProject(
 				testProject.getDescription(), testProject, null);
 	}
-	
+
 	/**
 	 * Add the C++ nature to this project. I.e. make it a C++ project.
 	 * @throws CoreException
@@ -133,7 +133,7 @@ public class ChangeLogTestProject {
 
 	/**
 	 * Create a new Eclipse project in the current workspace
-	 * 
+	 *
 	 * @param name
 	 * @throws CoreException if project creation fails for some reason.
 	 * @return The newly created project.
