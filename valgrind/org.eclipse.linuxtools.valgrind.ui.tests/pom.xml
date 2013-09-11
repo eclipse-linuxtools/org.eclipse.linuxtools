@@ -33,7 +33,7 @@
           <testClass>org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <product>org.eclipse.sdk.ide</product>
+          <product>org.eclipse.product.ide</product>
         </configuration>
       </plugin>
     </plugins>
