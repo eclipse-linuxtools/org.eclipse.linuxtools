@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
+ *    Kent Sebastian <ksebasti@redhat.com> -
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
@@ -63,6 +63,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	protected Label kernelLabel;
 
+	@Override
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
 	}
@@ -73,14 +74,16 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		return b;
 	}
 
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		options.saveConfiguration(config);
 	}
 
+	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 		options.loadConfiguration(config);
 		try {
-			if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$ 
+			if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
 				controlCombo.setEnabled(false);
 			}
 		} catch (CoreException e) {
@@ -116,6 +119,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		options = new LaunchOptions();
 		options.saveConfiguration(config);
@@ -126,6 +130,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		return OprofileLaunchPlugin.getImageDescriptor(OprofileLaunchPlugin.ICON_GLOBAL_TAB).createImage();
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		options = new LaunchOptions();
 
@@ -157,6 +162,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		controlCombo.setItems(new String[]{OprofileProject.OPERF_BINARY, OprofileProject.OPCONTROL_BINARY});
 		controlCombo.select(0);
 		controlCombo.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent mev) {
 				OprofileProject.setProfilingBinary(controlCombo.getText());
 				options.setOprofileComboText(controlCombo.getText());
@@ -171,7 +177,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 					kernelImageFileText.setEnabled(true);
 					kernelLabel.setEnabled(true);
 				}
-				updateLaunchConfigurationDialog();	
+				updateLaunchConfigurationDialog();
 			}
 		});
 		data = new GridData();
@@ -189,6 +195,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		kernelImageFileText.setLayoutData(data);
 		kernelImageFileText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent mev) {
 				handleKernelImageFileTextModify(kernelImageFileText);
 			};
@@ -224,11 +231,12 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		GridLayout gridLayout = new GridLayout(2, false);
 		executionsComposite.setLayout(gridLayout);
 		Label executionsLabel = new Label(executionsComposite, SWT.LEFT);
-		executionsLabel.setText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.text")); //$NON-NLS-1
+		executionsLabel.setText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.text")); //$NON-NLS-1$
 		executionsLabel.setToolTipText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.tooltip")); //$NON-NLS-1$
 		executionsSpinner = new Spinner(executionsComposite, SWT.BORDER);
 		executionsSpinner.setMinimum(1);
 		executionsSpinner.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				options.setExecutionsNumber(executionsSpinner.getSelection());
 				updateLaunchConfigurationDialog();
@@ -252,7 +260,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		return b;
 	}
 
-	//sets the proper separation mask for sample separation 
+	//sets the proper separation mask for sample separation
 	private void handleCheckSelected(Button button) {
 		int oldSeparate = options.getSeparateSamples();
 		int newSeparate = oldSeparate;		//initalize

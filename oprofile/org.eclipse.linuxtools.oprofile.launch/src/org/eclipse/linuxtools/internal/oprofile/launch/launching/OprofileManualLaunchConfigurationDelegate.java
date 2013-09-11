@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +52,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, Process process) {
 		final LaunchOptions fOptions = options;
 		final OprofileDaemonEvent[] fDaemonEvents = daemonEvents;
-		Display.getDefault().syncExec(new Runnable() { 
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				//TODO: have a initialization dialog to do reset and setupDaemon?
 				// using a progress dialog, can't abort the launch if there's an exception..
@@ -66,10 +67,10 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 					return; // dont open the dialog
 				}
-				
+
 				//manual oprofile control dialog
 				final OprofiledControlDialog dlg = new OprofiledControlDialog();
-				
+
 				// This was earlier in an if (!fLaunch.isTerminated()) {} block. From a
 				// usability perspective I think it's better to show the oprofile control
 				// dialog regardless, since it might not show up at all if the launch
@@ -80,7 +81,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 
 				//progress dialog for ensuring the daemon is shut down
 				IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					@Override
+					public void run(IProgressMonitor monitor) {
 						monitor.beginTask(OprofileLaunchMessages.getString("oprofiledcontroldialog.post.stopdaemon"), 1); //$NON-NLS-1$
 						try {
 							oprofileShutdown();
@@ -101,7 +103,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			}
 		});
 	}
-	
+
 	/**
 	 * A custom dialog box to control the oprofile daemon.
 	 */
@@ -112,23 +114,23 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 		private Button resetSessionButton;
 		private Button saveSessionButton;
 		private List feedbackList;
-		
+
 		public OprofiledControlDialog () {
 			super(new Shell(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()), OprofileLaunchMessages.getString("oprofiledcontroldialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
-		
+
 			//override styles; makes the dialog non-modal
 			setShellStyle(SWT.CLOSE | SWT.TITLE );
 		}
-		
+
 		@Override
 	    protected Control createCustomArea(Composite parent) {
 			Composite area = new Composite(parent, 0);
 			Layout layout = new GridLayout(5, true);
 			GridData gd = new GridData();
-			
+
 			area.setLayout(layout);
 			area.setLayoutData(gd);
-			
+
 			startDaemonButton = new Button(area, SWT.PUSH);
 			startDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			startDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.startdaemon")); //$NON-NLS-1$
@@ -149,7 +151,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					}
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.startdaemon")); //$NON-NLS-1$
 				}});
-			
+
 			stopDaemonButton = new Button(area, SWT.PUSH);
 			stopDaemonButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			stopDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.stopdaemon")); //$NON-NLS-1$
@@ -168,7 +170,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					}
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.stopdaemon")); //$NON-NLS-1$
 				}});
-			
+
 			saveSessionButton = new Button(area, SWT.PUSH);
 			saveSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			saveSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.savesession")); //$NON-NLS-1$
@@ -180,7 +182,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					OprofileViewSaveDefaultSessionAction hack = new OprofileViewSaveDefaultSessionAction();
 					hack.run();
 				}});
-			
+
 			resetSessionButton = new Button(area, SWT.PUSH);
 			resetSessionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			resetSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.resetsession")); //$NON-NLS-1$
@@ -198,7 +200,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					refreshOprofileView();	//without refresh can lead to inconsistencies for save session
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.reset")); //$NON-NLS-1$
 				}});
-			
+
 			refreshViewButton = new Button(area, SWT.PUSH);
 			refreshViewButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			refreshViewButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.refreshview")); //$NON-NLS-1$
@@ -215,16 +217,16 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 					refreshOprofileView();
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.refreshed")); //$NON-NLS-1$
 				}});
-			
+
 
 			List feedback = new List(area, SWT.READ_ONLY | SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
 			feedback.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 			feedback.add(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.init")); //$NON-NLS-1$
 			feedbackList = feedback;
-			
+
 	        return area;
 	    }
-		
+
 		//helper function
 		private void disableAllButtons() {
 			startDaemonButton.setEnabled(false);
@@ -233,7 +235,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 			resetSessionButton.setEnabled(false);
 			saveSessionButton.setEnabled(false);
 		}
-		
+
 		//a little hack to get the list to auto scroll to the newly added item
 		private void addToFeedbackList(String s) {
 			feedbackList.add(s,0);
