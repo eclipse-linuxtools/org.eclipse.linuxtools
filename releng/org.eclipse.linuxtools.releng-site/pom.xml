@@ -49,7 +49,7 @@
                      </delete>
                      <copy includeemptydirs="false"
                        todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
-                       <fileset dir="target_save/repository">
+                       <fileset dir="target/repository">
                          <include name="**" />
                        </fileset>
                      </copy>
