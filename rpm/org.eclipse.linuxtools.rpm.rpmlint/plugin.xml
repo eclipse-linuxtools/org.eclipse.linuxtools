@@ -49,7 +49,7 @@
    <extension
          point="org.eclipse.ui.menus">
          <menuContribution
-            locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup">
+            locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup?before=org.eclipse.linuxtools.rpm.ui.miscsep">
          <command
                commandId="rpmlint.toggleRpmlint.command"
                label="%addremovewarnings.name" >

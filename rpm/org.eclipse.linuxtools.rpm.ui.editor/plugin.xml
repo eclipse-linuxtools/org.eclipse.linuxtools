@@ -307,58 +307,7 @@
    <extension
          point="org.eclipse.ui.menus">
          <menuContribution
-            locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup">
-         <command
-               commandId="rpmEditor.toggleComment.command"
-               label="%command.label"
-               tooltip="%command.tooltip">
-               <visibleWhen>
-				  <iterate operator="or" ifEmpty="false">
-   					 <or>
-     					 <adapt type="org.eclipse.core.resources.IResource">
-         			        <test property="org.eclipse.core.resources.name" value="*.spec"/> 
-      					</adapt>
-    					<with variable="activeEditorId">
-	       					<equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
-      					</with>
-    				</or>
-   				</iterate>
-			</visibleWhen>
-               </command>
-         <command
-               commandId="rpmEditor.organizePatches.command"
-               label="%command.label.0"
-               tooltip="%command.tooltip.0">
-               <visibleWhen>
-				  <iterate operator="or" ifEmpty="false">
-   					 <or>
-     					 <adapt type="org.eclipse.core.resources.IResource">
-         			        <test property="org.eclipse.core.resources.name" value="*.spec"/> 
-      					</adapt>
-    					<with variable="activeEditorId">
-	       					<equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
-      					</with>
-    				</or>
-   				</iterate>
-			</visibleWhen>
-               </command>
-         <command
-               commandId="rpmEditor.showOutline.command"
-               label="%command.label.1"
-               tooltip="%command.tooltip.1">
-               <visibleWhen>
-				  <iterate operator="or" ifEmpty="false">
-   					 <or>
-     					 <adapt type="org.eclipse.core.resources.IResource">
-         			        <test property="org.eclipse.core.resources.name" value="*.spec"/> 
-      					</adapt>
-    					<with variable="activeEditorId">
-	       					<equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
-      					</with>
-    				</or>
-   				</iterate>
-			</visibleWhen>
-               </command>
+            locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup?before=org.eclipse.linuxtools.rpm.ui.sourcesep">
          <command
                commandId="rpmEditor.downloadSources.command"
                label="%command.name.2"
@@ -412,6 +361,87 @@
             </visibleWhen>
          </command>
       </menuContribution>
+         <menuContribution
+               locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup?before=org.eclipse.linuxtools.rpm.ui.miscsep">
+            <command
+                  commandId="rpmEditor.toggleComment.command"
+                  label="%command.label"
+                  tooltip="%command.tooltip">
+               <visibleWhen>
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <or>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <test
+                                 property="org.eclipse.core.resources.name"
+                                 value="*.spec">
+                           </test>
+                        </adapt>
+                        <with
+                              variable="activeEditorId">
+                           <equals
+                                 value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                           </equals>
+                        </with>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="rpmEditor.organizePatches.command"
+                  label="%command.label.0"
+                  tooltip="%command.tooltip.0">
+               <visibleWhen>
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <or>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <test
+                                 property="org.eclipse.core.resources.name"
+                                 value="*.spec">
+                           </test>
+                        </adapt>
+                        <with
+                              variable="activeEditorId">
+                           <equals
+                                 value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                           </equals>
+                        </with>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="rpmEditor.showOutline.command"
+                  label="%command.label.1"
+                  tooltip="%command.tooltip.1">
+               <visibleWhen>
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <or>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <test
+                                 property="org.eclipse.core.resources.name"
+                                 value="*.spec">
+                           </test>
+                        </adapt>
+                        <with
+                              variable="activeEditorId">
+                           <equals
+                                 value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                           </equals>
+                        </with>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menuContribution>
    </extension>
    <!-- Compare support-->
    <extension point="org.eclipse.compare.contentMergeViewers">

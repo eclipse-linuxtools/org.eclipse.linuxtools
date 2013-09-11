@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
+import org.eclipse.linuxtools.rpm.ui.RPMExportOperation;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -45,7 +46,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 	public boolean performFinish() {
 		// Create a new instance of the RPMExportOperation runnable
 		final RPMExportOperation rpmExport = new RPMExportOperation(mainPage
-				.getSelectedRPMProject(), mainPage.getExportType());
+				.getSelectedRPMProject(), mainPage.getExportType().toString());
 		// Run the export
 		rpmExport.setUser(true);
 		rpmExport.schedule();
