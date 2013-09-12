@@ -24,7 +24,7 @@
          point="org.eclipse.ui.editors">
       <editor
             name="%editor.name"
-            extensions="spec"
+            extensions="spec,spec2"
             icon="icons/rpm.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
@@ -94,8 +94,8 @@
    <extension
          point="org.eclipse.ui.editors.documentProviders">
       <provider
-      		extensions="spec"
             class="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileDocumentProvider"
+            extensions="spec,spec2"
             id="org.eclipse.linuxtools.rpm.ui.editor.specfileDocumentProvider">
       </provider>
    </extension>
@@ -447,7 +447,7 @@
    <extension point="org.eclipse.compare.contentMergeViewers">
 	  <viewer
 		id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
-		extensions="spec"
+		extensions="spec,spec2"
 		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecMergeViewerCreator">
 	  </viewer>
    </extension>

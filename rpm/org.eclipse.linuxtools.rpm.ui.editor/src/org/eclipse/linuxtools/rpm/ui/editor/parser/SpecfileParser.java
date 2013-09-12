@@ -161,6 +161,17 @@ public class SpecfileParser {
 						}
 					}
 				}
+
+				// sets the last SpecfileSection's end line to that of the end of
+				// the end of the specfileDocument.
+				// SpecfileParser#parseMacro will handle correcting the end line
+				// if the last SpecfileSection was not truly the last 1
+				// This is for the purpose of making DocumentRangeNode work
+				if (lastSection != null) {
+					lastSection.setSectionEndLine(specfileDocument
+							.getNumberOfLines() - 1);
+				}
+
 				// The +1 is for the line delimiter. FIXME: will we end up off
 				// by one on the last line?
 				lineStartPosition += line.length() + 1;

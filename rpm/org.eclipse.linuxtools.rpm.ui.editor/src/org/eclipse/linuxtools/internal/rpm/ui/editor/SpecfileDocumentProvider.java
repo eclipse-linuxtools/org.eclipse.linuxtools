@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -108,18 +108,22 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 					try {
 						input.close();
 					} catch (IOException e) {
+						SpecfileLog.logError(e);
 					}
 				}
 			}
 		}
 		return super.canSaveDocument(element);
 	}
+
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProvider#createSaveOperation(java.lang.Object, org.eclipse.jface.text.IDocument, boolean)
 	 */
+
 	@Override
 	protected DocumentProviderOperation createSaveOperation(final Object element, final IDocument document, final boolean overwrite) throws CoreException {
 		final DocumentProviderOperation saveOperation = super.createSaveOperation(element, document, overwrite);
+
 		if (element instanceof IURIEditorInput) {
 			return new DocumentProviderOperation() {
 				/*
@@ -148,6 +152,7 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 				}
 			};
 		}
+
 		return saveOperation;
 	}
 }

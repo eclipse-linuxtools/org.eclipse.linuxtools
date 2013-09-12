@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,11 @@ public class SpecMergeViewer extends TextMergeViewer {
 	protected IDocumentPartitioner getDocumentPartitioner() {
 		return new FastPartitioner(new SpecfilePartitionScanner(),
 				SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
+	}
+
+	@Override
+	protected String getDocumentPartitioning() {
+		return SpecfilePartitionScanner.SPEC_FILE_PARTITIONING;
 	}
 
 	@Override
