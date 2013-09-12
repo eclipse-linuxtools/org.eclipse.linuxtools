@@ -55,8 +55,7 @@ public abstract class AbstractValgrindMarkerResolution extends AbstractCodanCMar
 	protected IASTTranslationUnit getASTTranslationUnit(IMarker marker){
 		ITranslationUnit tu = getTranslationUnitViaEditor(marker);
 		try {
-			IASTTranslationUnit ast = tu.getAST();
-			return ast;
+			return tu.getAST();
 		} catch (CoreException e) {
 			return null;
 		}

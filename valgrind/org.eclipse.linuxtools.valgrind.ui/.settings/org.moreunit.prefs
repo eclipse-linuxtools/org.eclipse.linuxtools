@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+org.moreunit.package_suffix=tests
+org.moreunit.preferences.version=2
+org.moreunit.unitsourcefolder=org.eclipse.linuxtools.valgrind.ui\:src\:org.eclipse.linuxtools.valgrind.ui.tests\:lib64/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.102.0.v20130729-1832\#org.eclipse.linuxtools.valgrind.ui\:src\:org.eclipse.linuxtools.valgrind.ui.tests\:src
+org.moreunit.useprojectsettings=true
