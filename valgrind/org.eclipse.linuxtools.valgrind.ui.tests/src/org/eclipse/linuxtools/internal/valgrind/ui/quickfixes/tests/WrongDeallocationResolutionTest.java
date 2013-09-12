@@ -169,7 +169,7 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 
 			if (line1 > line2) {
 				return 1;
-			} else if (line2 < line1) {
+			} else if (line2 > line1) {
 				return -1;
 			}
 			return 0;

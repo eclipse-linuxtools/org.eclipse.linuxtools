@@ -32,4 +32,4 @@
 ==23864==  Address 0x4322140 is 0 bytes inside a block of size 5 alloc'd
 ==23864==    at 0x402B22A: operator new[](unsigned int) (vg_replace_malloc.c:357)
 ==23864==    by 0x804868F: main (wrongDealloc.cpp:22)
-==23864== 
+==23864==
