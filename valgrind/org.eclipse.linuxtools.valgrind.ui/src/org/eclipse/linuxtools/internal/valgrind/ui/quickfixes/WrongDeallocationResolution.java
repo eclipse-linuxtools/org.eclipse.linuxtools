@@ -93,11 +93,6 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 			String title = Messages.getString("ValgrindMemcheckQuickFixes.Valgrind_error_title"); //$NON-NLS-1$
 			String message = Messages.getString("ValgrindMemcheckQuickFixes.Error_applying_quickfix"); //$NON-NLS-1$
 			showErrorMessage(title, message, status);
-		} catch (ValgrindMessagesException e){
-			Status status = new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, Messages.getString("ValgrindMemcheckQuickFixes.Error_finding_messages"), null); //$NON-NLS-1$
-			String title = Messages.getString("ValgrindMemcheckQuickFixes.Valgrind_error_title"); //$NON-NLS-1$
-			String message = Messages.getString("ValgrindMemcheckQuickFixes.Error_applying_quickfix"); //$NON-NLS-1$
-			showErrorMessage(title, message, status);
 		}
 	}
 
@@ -142,7 +137,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @throws BadLocationException
 	 * @throws ValgrindMessagesException
 	 */
-	private String getAllocFunction(IMarker marker, IDocument document) throws BadLocationException, ValgrindMessagesException {
+	private String getAllocFunction(IMarker marker, IDocument document) throws BadLocationException {
 		IValgrindMessage allocMessage = null;
 		String file = marker.getResource().getName();
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, 0);
@@ -184,22 +179,19 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @param text the {@link String} to match the Valgrind messages' descriptions
 	 * @return
 	 */
-	private IValgrindMessage[] getMessagesByText(String text) throws ValgrindMessagesException{
+	private IValgrindMessage[] getMessagesByText(String text) {
 		ValgrindViewPart valgrindView = ValgrindUIPlugin.getDefault().getView();
 		ArrayList<IValgrindMessage> foundMessages = new ArrayList<IValgrindMessage>();
 
-		if(valgrindView == null){
-			throw new ValgrindMessagesException();
-		}
-		IValgrindMessage[] messages = valgrindView.getMessages();
+		if(valgrindView != null){
+			IValgrindMessage[] messages = valgrindView.getMessages();
 
-		if(messages == null || messages.length == 0){
-			throw new ValgrindMessagesException();
-		}
-
-		for (IValgrindMessage message : messages) {
-			if(message.getText().contains(text)){
-				foundMessages.add(message);
+			if(messages != null && messages.length != 0){
+				for (IValgrindMessage message : messages) {
+					if(message.getText().contains(text)){
+						foundMessages.add(message);
+					}
+				}
 			}
 		}
 		IValgrindMessage[] foundMessagesArray = new IValgrindMessage[foundMessages.size()];
@@ -230,7 +222,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @param marker the marker to which the ValgrindMessage relates
 	 * @return {@link ValgrindMessage} that represents the {@link IMarker}
 	 */
-	private IValgrindMessage getMessage(IMarker marker) throws ValgrindMessagesException{
+	private IValgrindMessage getMessage(IMarker marker) {
 		IValgrindMessage message = null;
 		String file = marker.getResource().getName();
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, 0);
