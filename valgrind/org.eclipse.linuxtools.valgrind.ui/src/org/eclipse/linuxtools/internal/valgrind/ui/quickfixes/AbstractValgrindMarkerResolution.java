@@ -29,28 +29,14 @@ import org.eclipse.jface.text.IDocument;
  */
 public abstract class AbstractValgrindMarkerResolution extends AbstractCodanCMarkerResolution {
 
-	protected IMarker marker;
-	protected IDocument document;
-	protected IASTTranslationUnit ast;
-	protected IASTNode node;
-
-	public AbstractValgrindMarkerResolution(IMarker marker) {
-		super();
-		this.marker = marker;
-		this.ast = getASTTranslationUnit(marker);
-		this.document = openDocument(marker);
-	}
-
-	public abstract String getLabel();
-
 	/**
 	 * Returns the enclosed AST node in the given marker.
 	 * @param marker The {@link IMarker} containing the {@link IASTNode}
 	 * @return the enclosed {@link IASTNode}
 	 */
-	protected IASTNode getIASTNode(IMarker marker){
+	protected IASTNode getIASTNode(IMarker marker, IDocument document){
 		int offset = this.getOffset(marker, document);
-		int length = this.getLength(marker);
+		int length = this.getLength(marker, document);
 
 		IASTNode node = null;
 		IASTTranslationUnit ast = getASTTranslationUnit(marker);
@@ -82,11 +68,12 @@ public abstract class AbstractValgrindMarkerResolution extends AbstractCodanCMar
 	 * @param marker {@link IMarker} from which the length will be obtained
 	 * @return length of the code enclosed in the {@link IMarker}
 	 */
-	protected int getLength(IMarker marker) {
+	protected int getLength(IMarker marker, IDocument document) {
 		int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
 		int charEnd = marker.getAttribute(IMarker.CHAR_END, -1);
-		if (charEnd != -1 && charStart != -1)
+		if (charEnd != -1 && charStart != -1) {
 			return charEnd - charStart;
+		}
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, -1) -1;
 		try {
 			return document.getLineLength(line);

@@ -30,7 +30,7 @@ import org.osgi.framework.BundleContext;
 public class ValgrindUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.ui";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.ui"; //$NON-NLS-1$
 	public static final String TOOLBAR_LOC_GROUP_ID = "toolbarLocal"; //$NON-NLS-1$
 	public static final String TOOLBAR_EXT_GROUP_ID = "toolbarExtensions"; //$NON-NLS-1$
 
@@ -80,6 +80,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 
 	public void createView(final String contentDescription, final String toolID) {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -105,6 +106,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	 */
 	public void showView() {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					activePage.showView(ValgrindUIConstants.VIEW_ID);
@@ -121,6 +123,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	public void refreshView() {
 		if (view != null) {
 			Display.getDefault().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					view.refreshView();
 				}
@@ -134,6 +137,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	public void resetView() {
 		if (view != null) {
 			Display.getDefault().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					try {
 						view.createDynamicContent(Messages.getString("ValgrindViewPart.No_Valgrind_output"), null); //$NON-NLS-1$

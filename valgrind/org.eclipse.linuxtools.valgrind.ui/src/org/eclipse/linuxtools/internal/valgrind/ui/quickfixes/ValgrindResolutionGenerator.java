@@ -22,23 +22,20 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
  * @author rafaelmt
  */
 public class ValgrindResolutionGenerator implements IMarkerResolutionGenerator2 {
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
+	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
-		String message = marker.getAttribute(IMarker.MESSAGE, EMPTY_STRING );
+		String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 		if(message.contains(Messages.getString("ValgrindMemcheckQuickFixes.Wrong_dealloc_message"))){ //$NON-NLS-1$
-			return new IMarkerResolution[]{new WrongDeallocationResolution(marker)};
+			return new IMarkerResolution[]{new WrongDeallocationResolution()};
 		} else {
 			return new IMarkerResolution[0];
 		}
 	}
 
+	@Override
 	public boolean hasResolutions(IMarker marker) {
-		String message = marker.getAttribute(IMarker.MESSAGE, EMPTY_STRING );
-		if(message.contains(Messages.getString("ValgrindMemcheckQuickFixes.Wrong_dealloc_message"))){ //$NON-NLS-1$
-			return true;
-		} else {
-			return false;
-		}
+		String message = marker.getAttribute(IMarker.MESSAGE, "" ); //$NON-NLS-1$
+		return message.contains(Messages.getString("ValgrindMemcheckQuickFixes.Wrong_dealloc_message")) ? true: false; //$NON-NLS-1$
 	}
 }

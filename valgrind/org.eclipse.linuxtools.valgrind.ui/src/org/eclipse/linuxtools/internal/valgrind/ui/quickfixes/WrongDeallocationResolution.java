@@ -46,34 +46,29 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	private int allocOffset;
 	private int allocLength;
 
-	public WrongDeallocationResolution(IMarker marker) {
-		super(marker);
-	}
-
 	@Override
 	public void apply(IMarker marker, IDocument document) {
-		this.document = document;
 		try {
-			IASTNode astNode = getIASTNode(marker);
+			IASTNode astNode = getIASTNode(marker, document);
 			if(astNode != null) {
 				int nodeLength = astNode.getFileLocation().getNodeLength();
 				int nodeOffset = astNode.getFileLocation().getNodeOffset();
 				String content = document.get(nodeOffset, nodeLength);
 				if(content.contains(DELETE)){
-					String allocFunction = getAllocFunction(marker);
+					String allocFunction = getAllocFunction(marker, document);
 					if(allocFunction.contains(NEW)){
 						content = document.get(nodeOffset, nodeLength).replace(DELETE, DELETE + "[]"); //$NON-NLS-1$
 						document.replace(nodeOffset, nodeLength, content);
 					} else {
-						addParentheses(astNode);
+						addParentheses(astNode, document);
 						if(content.contains("[")){ //$NON-NLS-1$
-							removeBrackets(astNode);
+							removeBrackets(astNode, document);
 						}
 						content = document.get(nodeOffset, nodeLength).replace(DELETE, FREE);
 						document.replace(nodeOffset, nodeLength, content);
 					}
 				} else if(content.contains(FREE)){
-					if(getAllocFunction(marker).contains("[")){ //$NON-NLS-1$
+					if(getAllocFunction(marker, document).contains("[")){ //$NON-NLS-1$
 						content = content.concat("[]"); //$NON-NLS-1$
 					}
 					content = content.replace(FREE, DELETE);
@@ -127,14 +122,14 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @param node {@link IASTNode} containing the function call
 	 * @throws BadLocationException
 	 */
-	private void addParentheses(IASTNode node) throws BadLocationException{
+	private void addParentheses(IASTNode node, IDocument document) throws BadLocationException{
 		IASTNode[] children = node.getChildren();
 		if(children.length > 0 && !children[0].getRawSignature().contains("(")) { //$NON-NLS-1$
 			IASTNode childNode = children[0];
 			int childNodeLength = childNode.getFileLocation().getNodeLength();
 			int childNodeOffset = childNode.getFileLocation().getNodeOffset();
 			String childContent = document.get(childNodeOffset, childNodeLength);
-			String newChild = "(".concat(childContent).concat(")");  //$NON-NLS-2$
+			String newChild = "(".concat(childContent).concat(")");   //$NON-NLS-1$//$NON-NLS-2$
 			// Skewed 1 char to left to remove space before parentheses
 			document.replace(childNodeOffset - 1, childNodeLength + 1, newChild);
 		}
@@ -147,7 +142,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @throws BadLocationException
 	 * @throws ValgrindMessagesException
 	 */
-	private String getAllocFunction(IMarker marker) throws BadLocationException, ValgrindMessagesException {
+	private String getAllocFunction(IMarker marker, IDocument document) throws BadLocationException, ValgrindMessagesException {
 		IValgrindMessage allocMessage = null;
 		String file = marker.getResource().getName();
 		int line = marker.getAttribute(IMarker.LINE_NUMBER, 0);
@@ -161,7 +156,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 				allocMessage = getStackBottom(getNestedStack(wrongDeallocMessage));
 			}
 		}
-		if(allocMessage != null && allocMessage instanceof ValgrindStackFrame){
+		if(allocMessage instanceof ValgrindStackFrame){
 			allocLine = ((ValgrindStackFrame)allocMessage).getLine() - 1;
 			allocOffset = document.getLineOffset(allocLine);
 			allocLength = document.getLineLength(allocLine);
@@ -175,11 +170,11 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @param node {@link IASTNode} from which the brackets will be removed
 	 * @throws BadLocationException
 	 */
-	private void removeBrackets(IASTNode node) throws BadLocationException{
+	private void removeBrackets(IASTNode node, IDocument document) throws BadLocationException{
 		int nodeLength = node.getFileLocation().getNodeLength();
 		int nodeOffset = node.getFileLocation().getNodeOffset();
 		String content = document.get(nodeOffset, nodeLength);
-		String newContent = content.replace("[","").replace("]",""); //$NON-NLS-4$
+		String newContent = content.replace("[","").replace("]","");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 		document.replace(nodeOffset, nodeLength, newContent);
 	}
 
