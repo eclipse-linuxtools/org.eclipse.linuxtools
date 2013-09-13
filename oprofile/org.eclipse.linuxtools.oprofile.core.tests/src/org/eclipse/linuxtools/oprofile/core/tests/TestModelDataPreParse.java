@@ -103,7 +103,7 @@ public class TestModelDataPreParse {
 		}
 	}
 
-	@Test @Ignore
+	@Test
 	public void testBasic (){
 		final String [] imageAttrs = new String [] {ModelDataAdapter.NAME, ModelDataAdapter.COUNT};
 		final String [] symbolAttrs = new String [] {ModelDataAdapter.NAME, ModelDataAdapter.FILE, ModelDataAdapter.COUNT};

@@ -2,636 +2,400 @@
 <model-data>
 	<image name="/home/rgrunber/runtime-EclipseApplication/archer/gdb/gdb" count="176">
 		<symbols>
-			<symbol name="d_demangle" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/d-lang.c" count="26">
+			<symbol name="d_demangle" file="??" count="26">
+				<sample>
+					<count>26</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="gnu_special" file="??" count="9">
+				<sample>
+					<count>9</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="htab_hash_string" file="??" count="9">
+				<sample>
+					<count>9</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="add_minsym_to_hash_table" file="??" count="7">
+				<sample>
+					<count>7</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="bfd_elf_string_from_elf_section" file="??" count="7">
+				<sample>
+					<count>7</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="internal_cplus_demangle" file="??" count="7">
+				<sample>
+					<count>7</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="bfd_elf32_swap_symbol_in" file="??" count="6">
 				<sample>
 					<count>6</count>
-					<line>158</line>
-				</sample>
-				<sample>
-					<count>4</count>
-					<line>140</line>
-				</sample>
-				<sample>
-					<count>4</count>
-					<line>152</line>
-				</sample>
-				<sample>
-					<count>4</count>
-					<line>154</line>
-				</sample>
-				<sample>
-					<count>3</count>
-					<line>160</line>
-				</sample>
-				<sample>
-					<count>2</count>
-					<line>156</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>133</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>150</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>164</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="gnu_special" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./cplus-dem.c" count="9">
+			<symbol name="eq_demangled_name_entry" file="??" count="6">
 				<sample>
-					<count>4</count>
-					<line>2995</line>
-				</sample>
-				<sample>
-					<count>2</count>
-					<line>3023</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>2860</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>3041</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>3051</line>
+					<count>6</count>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="htab_hash_string" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./hashtab.c" count="9">
+			<symbol name="find_methods" file="??" count="6">
+				<sample>
+					<count>6</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="prim_record_minimal_symbol_full" file="??" count="6">
+				<sample>
+					<count>6</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="symbol_set_names" file="??" count="6">
+				<sample>
+					<count>6</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="bfd_elf32_slurp_symbol_table" file="??" count="5">
 				<sample>
 					<count>5</count>
-					<line>847</line>
-				</sample>
-				<sample>
-					<count>3</count>
-					<line>848</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>851</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="add_minsym_to_hash_table" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="7">
-				<sample>
-					<count>5</count>
-					<line>106</line>
-				</sample>
-				<sample>
-					<count>2</count>
-					<line>107</line>
-				</sample>
-			</symbol>
-			<symbol name="bfd_elf_string_from_elf_section" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/elf.c" count="7">
-				<sample>
-					<count>3</count>
-					<line>314</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>320</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>325</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>329</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>341</line>
-				</sample>
-			</symbol>
-			<symbol name="internal_cplus_demangle" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./cplus-dem.c" count="7">
-				<sample>
-					<count>2</count>
-					<line>2651</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1135</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>2661</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>2684</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>2705</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>2733</line>
-				</sample>
-			</symbol>
-			<symbol name="bfd_elf32_swap_symbol_in" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/elfcode.h" count="6">
-				<sample>
-					<count>2</count>
-					<line>181</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>178</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>187</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>188</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>191</line>
-				</sample>
-			</symbol>
-			<symbol name="eq_demangled_name_entry" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="6">
-				<sample>
-					<count>3</count>
-					<line>439</line>
-				</sample>
-				<sample>
-					<count>2</count>
-					<line>443</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>444</line>
-				</sample>
-			</symbol>
-			<symbol name="find_methods" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/objc-lang.c" count="6">
+			<symbol name="cplus_demangle" file="??" count="4">
 				<sample>
 					<count>4</count>
-					<line>1195</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1182</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1187</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="prim_record_minimal_symbol_full" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="6">
+			<symbol name="htab_find_slot_with_hash" file="??" count="4">
+				<sample>
+					<count>4</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="compare_minimal_symbols" file="??" count="3">
+				<sample>
+					<count>3</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="d_demangle_callback" file="??" count="3">
+				<sample>
+					<count>3</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="elf_symtab_read" file="??" count="3">
+				<sample>
+					<count>3</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="obsavestring" file="??" count="3">
+				<sample>
+					<count>3</count>
+					<line>0</line>
+				</sample>
+			</symbol>
+			<symbol name="bfd_bread" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>841</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>812</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>828</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>848</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>866</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="symbol_set_names" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="6">
+			<symbol name="bfd_getl16" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>514</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>483</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>494</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>500</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>658</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_elf32_slurp_symbol_table" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/elfcode.h" count="5">
-				<sample>
-					<count>1</count>
-					<line>1266</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1276</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1278</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1331</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>1332</line>
-				</sample>
-			</symbol>
-			<symbol name="cplus_demangle" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./cplus-dem.c" count="4">
+			<symbol name="bfd_section_from_elf_index" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>850</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>859</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>863</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="htab_find_slot_with_hash" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./hashtab.c" count="4">
+			<symbol name="find_pc_partial_function" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>257</line>
+					<line>0</line>
 				</sample>
+			</symbol>
+			<symbol name="get_objfile_arch" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>664</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="compare_minimal_symbols" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="3">
+			<symbol name="htab_expand" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>892</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>922</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="d_demangle_callback" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./cp-demangle.c" count="3">
+			<symbol name="regcache_raw_supply" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>4790</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>4854</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="elf_symtab_read" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/elfread.c" count="3">
-				<sample>
-					<count>1</count>
-					<line>396</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>522</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>551</line>
-				</sample>
-			</symbol>
-			<symbol name="obsavestring" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symfile.c" count="3">
+			<symbol name="symbol_init_language_specific" file="??" count="2">
 				<sample>
 					<count>2</count>
-					<line>200</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>210</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_bread" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/bfdio.c" count="2">
+			<symbol name="_initialize_mi_cmds" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>175</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>180</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_getl16" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/libbfd.c" count="2">
+			<symbol name="add_cmd" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>558</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>559</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_section_from_elf_index" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/elf.c" count="2">
+			<symbol name="allocate_bp_location" file="??" count="1">
 				<sample>
-					<count>2</count>
-					<line>1973</line>
+					<count>1</count>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="find_pc_partial_function" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/blockframe.c" count="2">
+			<symbol name="bfd_elf32_object_p" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>190</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>327</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="get_objfile_arch" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/objfiles.c" count="2">
+			<symbol name="bfd_getl32" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>283</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>285</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="htab_expand" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./hashtab.c" count="2">
+			<symbol name="bfd_section_hash_newfunc" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>282</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>497</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="regcache_raw_supply" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/regcache.c" count="2">
+			<symbol name="build_minimal_symbol_hash_tables" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>884</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>897</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="symbol_init_language_specific" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="2">
+			<symbol name="core_addr_identity" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>398</line>
-				</sample>
-				<sample>
-					<count>1</count>
-					<line>404</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_initialize_mi_cmds" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/./mi/mi-cmds.c" count="1">
+			<symbol name="cpname_lex" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>230</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="add_cmd" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/./cli/cli-decode.c" count="1">
+			<symbol name="dwarf2_frame_cache" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>178</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="allocate_bp_location" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/breakpoint.c" count="1">
+			<symbol name="exceptions_state_mc_action_iter_1" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>5337</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_elf32_object_p" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/elfcode.h" count="1">
+			<symbol name="find_and_open_source" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>888</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_getl32" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/libbfd.c" count="1">
+			<symbol name="find_charset_names" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>608</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="bfd_section_hash_newfunc" file="/home/rgrunber/runtime-EclipseApplication/archer/bfd/section.c" count="1">
+			<symbol name="find_function_start_sal" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>745</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="build_minimal_symbol_hash_tables" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="1">
+			<symbol name="find_pc_section" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1035</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="core_addr_identity" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/arch-utils.c" count="1">
+			<symbol name="forget_types" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>155</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="cpname_lex" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/cp-name-parser.y" count="1">
+			<symbol name="gdbarch_has_global_breakpoints" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1909</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="dwarf2_frame_cache" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/dwarf2-frame.c" count="1">
+			<symbol name="gdbarch_smash_text_address" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1035</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="exceptions_state_mc_action_iter_1" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/exceptions.c" count="1">
+			<symbol name="hex_string" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>210</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="find_and_open_source" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/source.c" count="1">
+			<symbol name="htab_find_slot" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1042</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="find_charset_names" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/charset.c" count="1">
+			<symbol name="htab_find_with_hash" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>862</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="find_function_start_sal" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="1">
+			<symbol name="linux_nat_wait" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>2433</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="find_pc_section" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/objfiles.c" count="1">
+			<symbol name="linux_nat_xfer_partial" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1319</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="forget_types" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./cplus-dem.c" count="1">
+			<symbol name="lookup_minimal_symbol_by_pc_section_1" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>4271</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="gdbarch_has_global_breakpoints" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/gdbarch.c" count="1">
+			<symbol name="lookup_minimal_symbol_text" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>3649</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="gdbarch_smash_text_address" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/gdbarch.c" count="1">
+			<symbol name="make_cleanup" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>2720</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="hex_string" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/utils.c" count="1">
+			<symbol name="objc_demangle" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>3053</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="htab_find_slot" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./hashtab.c" count="1">
+			<symbol name="prefixify_expression" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>711</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="htab_find_with_hash" file="/home/rgrunber/runtime-EclipseApplication/archer/libiberty/./hashtab.c" count="1">
+			<symbol name="process_next_line" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>618</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="linux_nat_wait" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/linux-nat.c" count="1">
+			<symbol name="qsort_cmp" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>3148</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="linux_nat_xfer_partial" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/linux-nat.c" count="1">
+			<symbol name="read_psymtabs_with_filename" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>3998</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="lookup_minimal_symbol_by_pc_section_1" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="1">
+			<symbol name="symbol_natural_name" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>618</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="lookup_minimal_symbol_text" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/minsyms.c" count="1">
+			<symbol name="symbol_set_demangled_name" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>335</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="make_cleanup" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/utils.c" count="1">
+			<symbol name="target_read_memory" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>207</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="objc_demangle" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/objc-lang.c" count="1">
+			<symbol name="target_xfer_partial" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>221</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="prefixify_expression" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/parse.c" count="1">
+			<symbol name="tdesc_gdb_type" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>762</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="process_next_line" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/./cli/cli-script.c" count="1">
+			<symbol name="tilde_expand" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>934</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="qsort_cmp" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/objfiles.c" count="1">
+			<symbol name="update_global_location_list" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>1024</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="read_psymtabs_with_filename" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/psymtab.c" count="1">
+			<symbol name="update_solib_list" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>859</line>
+					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="symbol_natural_name" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="1">
+			<symbol name="xmalloc" file="??" count="1">
 				<sample>
 					<count>1</count>
-					<line>706</line>
-				</sample>
-			</symbol>
-			<symbol name="symbol_set_demangled_name" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/symtab.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>367</line>
-				</sample>
-			</symbol>
-			<symbol name="target_read_memory" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/target.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>1557</line>
-				</sample>
-			</symbol>
-			<symbol name="target_xfer_partial" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/target.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>1404</line>
-				</sample>
-			</symbol>
-			<symbol name="tdesc_gdb_type" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/target-descriptions.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>541</line>
-				</sample>
-			</symbol>
-			<symbol name="tilde_expand" file="/home/rgrunber/runtime-EclipseApplication/archer/readline/./tilde.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>147</line>
-				</sample>
-			</symbol>
-			<symbol name="update_global_location_list" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/breakpoint.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>9456</line>
-				</sample>
-			</symbol>
-			<symbol name="update_solib_list" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/solib.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>825</line>
-				</sample>
-			</symbol>
-			<symbol name="xmalloc" file="/home/rgrunber/runtime-EclipseApplication/archer/gdb/utils.c" count="1">
-				<sample>
-					<count>1</count>
-					<line>1411</line>
+					<line>0</line>
 				</sample>
 			</symbol>
 		</symbols>
