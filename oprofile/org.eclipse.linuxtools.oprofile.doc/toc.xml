@@ -14,6 +14,7 @@
 			<topic href="Linux_Tools_Project/OProfile/User_Guide/Launching-A-Profile.html#Manual_Profile" label="Manual Profile"></topic>
 		</topic>
 		<topic href="Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html" label="Profiling Configuration">
+			<topic href="Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html#Operf_vs_Opcontrol" label="Operf vs Opcontrol"></topic>
 			<topic href="Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html#Global_Settings" label="Global Settings"></topic>
 			<topic href="Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html#Event_Configuration" label="Event Configuration">
 				<topic href="Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html#Timer_Interrupt_Mode" label="Timer Interrupt Mode"></topic>

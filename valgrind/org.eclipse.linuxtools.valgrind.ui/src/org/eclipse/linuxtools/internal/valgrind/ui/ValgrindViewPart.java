@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
@@ -49,15 +49,15 @@ public class ValgrindViewPart extends ViewPart {
 
 		pageBook = new PageBook(parent, SWT.NONE);
 		pageBook.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		messagesViewer = new CoreMessagesViewer(pageBook, SWT.NONE);
-		
+
 		dynamicViewHolder = new Composite(pageBook, SWT.NONE);
 		GridLayout dynamicViewLayout = new GridLayout();
 		dynamicViewLayout.marginWidth = dynamicViewLayout.marginHeight = 0;
 		dynamicViewHolder.setLayout(dynamicViewLayout);
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-	
+
 		showCoreAction = new Action(Messages.getString("ValgrindViewPart.Show_Core_Action"), IAction.AS_RADIO_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -70,7 +70,7 @@ public class ValgrindViewPart extends ViewPart {
 				showToolPage();
 			}
 		};
-		
+
 		ValgrindUIPlugin.getDefault().setView(this);
 	}
 
@@ -81,26 +81,26 @@ public class ValgrindViewPart extends ViewPart {
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
 		ToolBar tb = ((ToolBarManager) toolbar).getControl();
 		if (tb == null || tb.isDisposed()) {
-			throw new CoreException(new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, "Toolbar is disposed"));
+			throw new CoreException(new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, "Toolbar is disposed")); //$NON-NLS-1$
 		}
-		
+
 		if (dynamicActions != null) {
 			for (ActionContributionItem item : dynamicActions) {
 				toolbar.remove(item);
 			}
 		}
-		
+
 		// remove old view controls
 		if (dynamicView != null) {
 			dynamicView.dispose();
 		}
-	
+
 		// remove old messages
 		if (messages != null){
 			messagesViewer.getTreeViewer().setInput(null);
 			messages = null;
 		}
-		
+
 		for (Control child : dynamicViewHolder.getChildren()) {
 			if (!child.isDisposed()) {
 				child.dispose();
@@ -132,10 +132,10 @@ public class ValgrindViewPart extends ViewPart {
 		hasDynamicContent = dynamicViewHolder.getChildren().length > 0;
 		if (hasDynamicContent) {
 			menu.add(showCoreAction);
-			menu.add(showToolAction);			
-		}		
-		
-		menu.update(true);		
+			menu.add(showToolAction);
+		}
+
+		menu.update(true);
 		toolbar.update(true);
 		// Update to notify the workbench items have been changed
 		getViewSite().getActionBars().updateActionBars();
@@ -147,11 +147,11 @@ public class ValgrindViewPart extends ViewPart {
 	public void setMessages(IValgrindMessage[] messages) {
 		this.messages = messages;
 	}
-	
+
 	public IValgrindMessage[] getMessages() {
 		return messages;
 	}
-	
+
 	@Override
 	public void setFocus() {
 		if (dynamicView != null) {
@@ -162,7 +162,7 @@ public class ValgrindViewPart extends ViewPart {
 	public void refreshView() {
 		if (messages != null && messages.length > 0) {
 			messagesViewer.getTreeViewer().setInput(messages);
-			
+
 			// decide which page to show
 			if (hasDynamicContent && messages[0] instanceof ValgrindInfo) {
 				// no valgrind messages to show
@@ -184,10 +184,10 @@ public class ValgrindViewPart extends ViewPart {
 		if (dynamicView != null) {
 			dynamicView.dispose();
 		}
-		
+
 		// Unset this view in the UI plugin
 		ValgrindUIPlugin.getDefault().setView(null);
-		
+
 		super.dispose();
 	}
 
@@ -198,13 +198,13 @@ public class ValgrindViewPart extends ViewPart {
 	public CoreMessagesViewer getMessagesViewer() {
 		return messagesViewer;
 	}
-	
+
 	private void showCorePage() {
 		pageBook.showPage(messagesViewer.getTreeViewer().getControl());
 		showCoreAction.setChecked(true);
 		showToolAction.setChecked(false);
 	}
-	
+
 	private void showToolPage() {
 		pageBook.showPage(dynamicViewHolder);
 		showToolAction.setChecked(true);

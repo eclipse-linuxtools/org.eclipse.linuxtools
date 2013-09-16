@@ -59,6 +59,7 @@
     <module>org.eclipse.linuxtools.valgrind.remote-feature</module>
     <module>org.eclipse.linuxtools.valgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.ui</module>
+    <module>org.eclipse.linuxtools.valgrind.ui.tests</module>
     <module>org.eclipse.linuxtools.valgrind.ui.editor</module>
     <module>org.eclipse.linuxtools.valgrind-feature</module>
   </modules>

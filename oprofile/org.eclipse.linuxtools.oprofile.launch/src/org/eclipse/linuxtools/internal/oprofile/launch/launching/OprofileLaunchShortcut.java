@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import org.eclipse.cdt.core.model.IBinary;
@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
-		
+
 		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
 	}
 
@@ -35,7 +35,7 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 	 * Default settings for the OProfile-specific option tabs.
 	 */
 	@Override
-	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
+	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		//default global setup options
 		LaunchOptions options = new LaunchOptions();
 		options.saveConfiguration(wc);
@@ -50,7 +50,7 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 	@Override
 	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
 		ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
-		
+
 		try {
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
@@ -58,7 +58,7 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		
+
 		return config;
 	}
 }

@@ -40,6 +40,9 @@
 			<img border="0" src="images/Screenshot-installscript_error_dialog.png"/>
 		</p>
 		<p>As the dialog suggests, you must run the supplied install script; this script will allow the OProfile plug-in to perform OProfile tasks as root (since OProfile cannot be run as an unprivileged user). The steps below are the same as the dialog but described in more detail.</p>
+		<p>To avoid having to perform the installation setup users can create a launch configuration for their project that uses 'operf' instead of 'opcontrol'. Simply navigate to either the Profiling/Profiling Tools launch configuration dialog and create an OProfile launch configuration. Select the OProfile 
+			<a href="Profiling-Configuration.html#Global_Settings">Global Settings</a> tab, and select 'operf' from the 'Profile With' combo box. In future releases, 'operf' will become the default option.
+		</p>
 		<h2 id="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</h2>
 		<p>Open up a terminal and locate the 
 			<i><code>natives/linux/scripts</code></i> subdirectory, which is found in the 

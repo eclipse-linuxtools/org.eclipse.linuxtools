@@ -25,6 +25,44 @@
   <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
   <packaging>eclipse-repository</packaging>
 
+  <profiles>
+     <profile>
+     <id>build-server</id>
+     <build>
+        <plugins>
+           <plugin>
+             <artifactId>maven-antrun-plugin</artifactId>
+             <executions>
+               <execution>
+                 <id>deploy</id>
+                 <phase>install</phase>
+                 <goals>
+                   <goal>run</goal>
+                 </goals>
+                 <configuration>
+                   <target>
+                    <delete includeemptydirs="false">
+                       <fileset
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                         <include name="**" />
+                       </fileset>
+                     </delete>
+                     <copy includeemptydirs="false"
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                       <fileset dir="target/repository">
+                         <include name="**" />
+                       </fileset>
+                     </copy>
+                   </target>
+                 </configuration>
+               </execution>
+             </executions>
+           </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <plugins>
       <plugin>

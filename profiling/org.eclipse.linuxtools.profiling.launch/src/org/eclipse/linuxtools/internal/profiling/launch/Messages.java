@@ -10,9 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.profiling.launch;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
@@ -23,24 +20,22 @@ public class Messages extends NLS {
 	public static String ProfilingTab_specified_providerid_not_installed;
 	public static String ProfilingTab_specified_profiler_not_installed;
 	public static String ProfilingTab_providerid_not_found;
-
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
-
-
-	private Messages() {
-	}
+	public static String ProfileLaunchShortcut_Binaries;
+	public static String ProfileLaunchShortcut_Binary_not_found;
+	public static String ProfileLaunchShortcut_Choose_a_launch_configuration;
+	public static String ProfileLaunchShortcut_Choose_a_local_application;
+	public static String ProfileLaunchShortcut_Launch_Configuration_Selection;
+	public static String ProfileLaunchShortcut_Looking_for_executables;
+	public static String ProfileLaunchShortcut_no_project_selected;
+	public static String ProfileLaunchShortcut_Profile;
+	public static String ProfileLaunchShortcut_Qualifier;
+	public static String ProfileLaunchShortcut_Launcher;
 
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
+	private Messages() {
 	}
 }

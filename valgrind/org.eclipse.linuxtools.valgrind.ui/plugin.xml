@@ -58,14 +58,14 @@
       		annotationType="org.eclipse.linuxtools.valgrind.annotation.error"
             label="%marker.editor.error"
             icon="icons/valgrind-error.png"
-            quickFixIcon="icons/valgrind_error.png"
+            quickFixIcon="icons/valgrind-error.png"
             presentationLayer="6">
       </specification>
             <specification
       		annotationType="org.eclipse.linuxtools.valgrind.annotation.warning"
             label="%marker.editor.warning"
             icon="icons/valgrind-warning.png"
-            quickFixIcon="icons/valgrind_warning.png"
+            quickFixIcon="icons/valgrind-warning.png"
             presentationLayer="5">
       </specification>
             <specification
@@ -75,5 +75,12 @@
             presentationLayer="4">
       </specification>
          </extension>
+   <extension
+        point="org.eclipse.ui.ide.markerResolution">
+     <markerResolutionGenerator
+           class="org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.ValgrindResolutionGenerator"
+           markerType="org.eclipse.linuxtools.valgrind.launch.marker">
+     </markerResolutionGenerator>
+  </extension>
 
 </plugin>
