@@ -31,7 +31,7 @@
 		</table><hr/>
 		<h1 id="Profiling_Configuration">Profiling Configuration</h1>
 		<p>OProfile has many configuration options, the amount of which can be overwhelming. For more information about these options, refer to 
-			<a href="http://oprofile.sourceforge.net/doc/controlling.html">http://oprofile.sourceforge.net/doc/controlling.html</a>. The 
+			<a href="http://oprofile.sourceforge.net/doc/controlling-daemon.html">http://oprofile.sourceforge.net/doc/controlling-daemon.html</a>. The 
 			<b>
 				<i>Profile Configurations</i>
 			</b> menu provided by the OProfile plug-in aims to make relevant, commonly-used OProfile configuration options easily accessible to users of all experience levels. Currently, the 
@@ -41,15 +41,23 @@
 			<a href="Profiling-Configuration.html#Global_Settings">Global Settings</a> and 
 			<a href="Profiling-Configuration.html#Event_Configuration">Event Configuration</a>.
 		</p>
+		<p>Since Linux Tools 2.1, the Oprofile plug-in supports opcontrol and operf as profiling tools. Both of them are explained as follows.</p>
+		<h2 id="Operf_vs_Opcontrol">Operf vs Opcontrol</h2>
+		<p>Legacy OProfile consists of the opcontrol shell script for configuring, starting, and stopping a profiling session. To this purpose, a kernel driver (usually built as a kernel module) is used for collecting samples, which are recorded into sample files. A disadvantage of this mode is the necessity of elevated user privileges to run opcontrol.</p>
+		<p>Operf was designed to be used in place of opcontrol for profiling. It uses the Linux Performance Events Subsystem, and therefore, does not require the use of the opcontrol daemon or any elevated privileges. The use of operf and opcontrol are mutually exclusive.</p>
 		<h2 id="Global_Settings">Global Settings</h2>
 		<p>The 
 			<b>
 				<i>Global Settings</i>
-			</b> tab configures how the OProfile daemon gathers profiling information. Each option is described below.
+			</b> tab configures which profiling binary is going to be used (operf or opcontrol) and how the OProfile daemon gathers profiling information. Each option is described below.
 		</p>
 		<p>
 			<img border="0" src="images/Oprofile_global_config.png"/>
 		</p>
+		<dl>
+			<dt>Profile with</dt>
+			<dd>user can select opcontrol or operf as profiling tools.</dd>
+		</dl>
 		<dl>
 			<dt>Kernel Image File (optional)</dt>
 			<dd>To collect more detailed information about the operation of a program in the Linux kernel, use the <u>Browse</u> button specify the location of your running kernel's 
@@ -65,12 +73,12 @@
 		</dl>
 		<dl>
 			<dt>Include dependent shared libraries</dt>
-			<dd>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</dd>
+			<dd>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results. This is performed by default when using operf.</dd>
 		</dl>
 		<dl>
 			<dt>Include dependent kernel modules</dt>
 			<dd>This option will make OProfile include samples related to running in the kernel. If the 
-				<i><code>vmlinux</code></i> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>.
+				<i><code>vmlinux</code></i> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>. Operf by default separates kernel samples per application.
 			</dd>
 		</dl>
 		<p>The differences between the options are illustrated in the following OProfile view screenshot:</p>
