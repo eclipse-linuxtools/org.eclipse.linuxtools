@@ -200,7 +200,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
 					public void run(IProgressMonitor pm) throws InterruptedException {
 						int nElements = elements.length;
-						pm.beginTask(Messages.getString("ProfileLaunchShortcut.Looking_for_executables"), nElements); //$NON-NLS-1$
+						pm.beginTask(Messages.ProfileLaunchShortcut_Looking_for_executables, nElements);
 						try {
 							IProgressMonitor sub = new SubProgressMonitor(pm, 1);
 							for (int i = 0; i < nElements; i++) {
@@ -243,7 +243,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				}
 				int count = results.size();
 				if (count == 0) {
-					handleFail(Messages.getString("ProfileLaunchShortcut.Binary_not_found")); //$NON-NLS-1$
+					handleFail(Messages.ProfileLaunchShortcut_Binary_not_found);
 				} else if (count > 1) {
 					bin = chooseBinary(results, mode);
 				} else {
@@ -254,12 +254,12 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 				launch(bin, mode);
 			}
 		} else {
-			handleFail(Messages.getString("ProfileLaunchShortcut.no_project_selected")); //$NON-NLS-1$
+			handleFail(Messages.ProfileLaunchShortcut_no_project_selected);
 		}
 	}
 
 	protected void handleFail(String message) {
-		MessageDialog.openError(getActiveWorkbenchShell(), Messages.getString("ProfileLaunchShortcut.Launcher"), message); //$NON-NLS-1$
+		MessageDialog.openError(getActiveWorkbenchShell(), Messages.ProfileLaunchShortcut_Launcher, message);
 	}
 
 	/**
@@ -298,10 +298,10 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
 		TwoPaneElementSelector dialog = new TwoPaneElementSelector(getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
 		dialog.setElements(binList.toArray());
-		dialog.setTitle(Messages.getString("ProfileLaunchShortcut.Profile")); //$NON-NLS-1$
-		dialog.setMessage(Messages.getString("ProfileLaunchShortcut.Choose_a_local_application")); //$NON-NLS-1$
-		dialog.setUpperListLabel(Messages.getString("ProfileLaunchShortcut.Binaries")); //$NON-NLS-1$
-		dialog.setLowerListLabel(Messages.getString("ProfileLaunchShortcut.Qualifier")); //$NON-NLS-1$
+		dialog.setTitle(Messages.ProfileLaunchShortcut_Profile);
+		dialog.setMessage(Messages.ProfileLaunchShortcut_Choose_a_local_application);
+		dialog.setUpperListLabel(Messages.ProfileLaunchShortcut_Binaries);
+		dialog.setLowerListLabel(Messages.ProfileLaunchShortcut_Qualifier);
 		dialog.setMultipleSelection(false);
 		if (dialog.open() == Window.OK) {
 			return (IBinary) dialog.getFirstResult();
@@ -319,8 +319,8 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getActiveWorkbenchShell(), labelProvider);
 		dialog.setElements(configList.toArray());
-		dialog.setTitle(Messages.getString("ProfileLaunchShortcut.Launch_Configuration_Selection"));  //$NON-NLS-1$
-		dialog.setMessage(Messages.getString("ProfileLaunchShortcut.Choose_a_launch_configuration"));  //$NON-NLS-1$
+		dialog.setTitle(Messages.ProfileLaunchShortcut_Launch_Configuration_Selection);
+		dialog.setMessage(Messages.ProfileLaunchShortcut_Choose_a_launch_configuration);
 		dialog.setMultipleSelection(false);
 		int result = dialog.open();
 		labelProvider.dispose();
