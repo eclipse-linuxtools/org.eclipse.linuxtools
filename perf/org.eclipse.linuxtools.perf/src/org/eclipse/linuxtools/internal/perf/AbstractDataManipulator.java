@@ -11,20 +11,25 @@
 package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
+import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -35,17 +40,23 @@ import org.eclipse.ui.console.IOConsole;
  * set up, executed, and having its data collected.
  */
 public abstract class AbstractDataManipulator extends BaseDataManipulator implements
-		IPerfData {
+IPerfData {
 
 	private String text;
 	private String title;
-	private File workDir;
 	private ILaunch launch;
+	private IPath pathWorkDir;
 	private List<Thread> threads;
+	private IProject project;
 
-	AbstractDataManipulator (String title, File workDir) {
+	AbstractDataManipulator (String title, IPath pathWorkDir, IProject project) {
+		this(title, pathWorkDir);
+		this.project=project;
+	}
+
+	AbstractDataManipulator (String title, IPath pathWorkDir) {
 		this.title = title;
-		this.workDir = workDir;
+		this.pathWorkDir=pathWorkDir;
 		threads = new ArrayList<Thread>();
 	}
 
@@ -54,9 +65,10 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator implem
 		return text;
 	}
 
-	protected File getWorkDir(){
-		return workDir;
+	protected IPath getWorkDir(){
+		return pathWorkDir;
 	}
+
 	@Override
 	public String getTitle () {
 		return title;
@@ -69,17 +81,21 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator implem
 	public void performCommand(String[] cmd, int fd) {
 		BufferedReader buffData = null;
 		BufferedReader buffTemp = null;
-
+		URI pathWorkDirURI = null;
 		try {
 
-			Process proc;
-			if (workDir != null) {
-				Path path = new Path(workDir.getAbsolutePath());
-				IFileStore workDirStore = EFS.getLocalFileSystem().getStore(path);
-				proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, null);
-			} else {
-				proc = RuntimeProcessFactory.getFactory().exec(cmd, null);
+			Process proc = null;
+			RemoteConnection exeRC = null;
+			try {
+				pathWorkDirURI = new URI(pathWorkDir.toOSString());
+				exeRC = new RemoteConnection(pathWorkDirURI);
+			} catch (RemoteConnectionException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+			} catch (URISyntaxException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
 			}
+			IFileStore workDirStore = exeRC.getRmtFileProxy().getResource(pathWorkDirURI.getPath());
+			proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, project);
 			StringBuffer data = new StringBuffer();
 			StringBuffer temp = new StringBuffer();
 
@@ -98,13 +114,10 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator implem
 				readStream(buffData, data);
 				readStream(buffTemp, temp);
 				break;
-				}
-
+			}
 			joinAll();
 			text = data.toString();
 			printToConsole(proc, temp.toString());
-
-
 		} catch (IOException e) {
 			text = ""; //$NON-NLS-1$
 		} catch (InterruptedException e){

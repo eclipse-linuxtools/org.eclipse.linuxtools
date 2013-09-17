@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf;
 
-import java.io.File;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 
 /**
  * Class for handling launch of perf diff command and storing of
@@ -18,11 +19,11 @@ import java.io.File;
  */
 public class ReportComparisonData extends AbstractDataManipulator {
 
-	private File oldFile;
-	private File newFile;
+	private IPath oldFile;
+	private IPath newFile;
 
-	public ReportComparisonData(String title, File oldFile, File newFile) {
-		super(title, null);
+	public ReportComparisonData(String title, IPath oldFile, IPath newFile, IProject project) {
+		super(title, newFile.removeLastSegments(1), project);
 		this.oldFile = oldFile;
 		this.newFile = newFile;
 	}
@@ -40,8 +41,8 @@ public class ReportComparisonData extends AbstractDataManipulator {
 	protected String[] getCommand() {
 		return new String[] { PerfPlugin.PERF_COMMAND,
 				"diff", //$NON-NLS-1$
-				oldFile.getAbsolutePath(),
-				newFile.getAbsolutePath() };
+				oldFile.toOSString(),
+				newFile.toOSString() };
 	}
 
 }

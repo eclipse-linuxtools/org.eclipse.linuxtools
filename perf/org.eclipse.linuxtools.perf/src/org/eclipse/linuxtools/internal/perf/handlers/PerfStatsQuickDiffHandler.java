@@ -10,16 +10,23 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.handlers;
 
-import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.ui.StatComparisonView;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Command handler for quick comparison between current and previous sessions.
@@ -30,11 +37,11 @@ public class PerfStatsQuickDiffHandler implements IHandler {
 
 		// get default files
 		PerfPlugin plugin = PerfPlugin.getDefault();
-		File curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
-		File prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
+		IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
+		IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
 
 		String title = MessageFormat.format(Messages.ContentDescription_0,
-				new Object[] { prevStatData.getName(), curStatData.getName() });
+				new Object[] { prevStatData.toOSString(), curStatData.toOSString() });
 
 		// create comparison data and run comparison
 		StatComparisonData diffData = new StatComparisonData(title,
@@ -52,10 +59,24 @@ public class PerfStatsQuickDiffHandler implements IHandler {
 	public boolean isEnabled() {
 		PerfPlugin plugin = PerfPlugin.getDefault();
 		IPath workingDir = plugin.getWorkingDir();
+		URI curStatDataURI = null;
+		URI prevStatDataURI = null;
 		if (workingDir != null) {
-			File curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
-			File prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
-			return (curStatData.exists() && prevStatData.exists());
+			IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
+			IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
+			IRemoteFileProxy proxy = null;
+			try {
+				curStatDataURI = new URI(curStatData.toPortableString());
+				prevStatDataURI = new URI(prevStatData.toPortableString());
+				proxy = RemoteProxyManager.getInstance().getFileProxy(curStatDataURI);
+			} catch (URISyntaxException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+			} catch (CoreException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+			}
+			IFileStore curFileStore = proxy.getResource(curStatDataURI.getPath());
+			IFileStore prevFileStore = proxy.getResource(prevStatDataURI.getPath());
+			return (curFileStore.fetchInfo().exists() && prevFileStore.fetchInfo().exists());
 		}
 		return false;
 	}

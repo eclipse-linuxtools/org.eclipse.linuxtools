@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.perf.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,14 +84,14 @@ public class DataManipulatorTest {
 
 	@Test
 	public void testEchoReportDiffData() {
-		File oldData = new File("perf.old.data"); //$NON-NLS-1$
-		File newData = new File("perf.data"); //$NON-NLS-1$
+		IPath oldData = Path.fromOSString("perf.old.data"); //$NON-NLS-1$
+		IPath newData = Path.fromOSString("perf.data"); //$NON-NLS-1$
 		StubReportDiffData diffData = new StubReportDiffData("title", //$NON-NLS-1$
 				oldData, newData);
 		diffData.parse();
 
-		String expected = "perf diff " + oldData.getAbsolutePath()  //$NON-NLS-1$
-				+ " " + newData.getAbsolutePath();  //$NON-NLS-1$
+		String expected = "perf diff " + oldData.toOSString()  //$NON-NLS-1$
+				+ " " + newData.toOSString();  //$NON-NLS-1$
 
 		assertEquals(expected, diffData.getPerfData().trim());
 	}
@@ -142,7 +141,7 @@ public class DataManipulatorTest {
 
 		public StubStatData(String title, String cmd, String[] args,
 				int runCount, String[] events) {
-			super(title, null, cmd, args, runCount, events);
+			super(title, Path.fromOSString(""), cmd, args, runCount, events);
 		}
 
 		@Override
@@ -167,8 +166,8 @@ public class DataManipulatorTest {
 	 */
 	private static class StubReportDiffData extends ReportComparisonData{
 
-		public StubReportDiffData(String title, File oldFile, File newFile) {
-			super(title, oldFile, newFile);
+		public StubReportDiffData(String title, IPath oldFile, IPath newFile) {
+			super(title, oldFile, newFile, null);
 		}
 
 		@Override

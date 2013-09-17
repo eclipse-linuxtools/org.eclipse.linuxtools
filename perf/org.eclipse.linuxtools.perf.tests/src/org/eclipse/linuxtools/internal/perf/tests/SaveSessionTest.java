@@ -37,11 +37,12 @@ public class SaveSessionTest {
 	private static final String PERF_STATS_FILE_PATH = "stat_data"; //$NON-NLS-1$
 	private static final String DATA_FILE_NAME = "data"; //$NON-NLS-1$
 	private static final String DATA_FILE_EXT = "ext"; //$NON-NLS-1$
-	private ArrayList<File> testFiles = new ArrayList<File>();
+	private ArrayList<IPath> testFiles = new ArrayList<IPath>();
 
 	@After
 	public void tearDown(){
-		for (File file : testFiles) {
+		for (IPath f : testFiles) {
+			File file = f.toFile();
 			if(!file.delete()){
 				fail();
 			}
@@ -51,7 +52,7 @@ public class SaveSessionTest {
 	@Test
 	public void testGenericHandler() {
 		GenericSaveDataHandler handler = new GenericSaveDataHandler();
-		assertTrue(handler.canSave(new File(DATA_FILE_PATH)));
+		assertTrue(handler.canSave(Path.fromOSString(DATA_FILE_PATH)));
 		assertEquals(WORKING_DIR, handler.getWorkingDir().toOSString());
 
 		IPath path = handler.getNewDataLocation(DATA_FILE_NAME, DATA_FILE_EXT);
@@ -72,9 +73,9 @@ public class SaveSessionTest {
 				new Path(PERF_DATA_FILE_PATH));
 		assertTrue(handler.verifyData());
 
-		File data = handler.saveData(DATA_FILE_NAME);
+		IPath data = handler.saveData(DATA_FILE_NAME);
 		assertNotNull(data);
-		assertTrue(!data.canWrite());
+		assertTrue(!data.toFile().canWrite());
 		testFiles.add(data);
 
 	}
@@ -96,9 +97,9 @@ public class SaveSessionTest {
 				});
 		assertTrue(handler.verifyData());
 
-		File stats = handler.saveData(DATA_FILE_NAME);
+		IPath stats = handler.saveData(DATA_FILE_NAME);
 		assertNotNull(stats);
-		assertTrue(!stats.canWrite());
+		assertTrue(!stats.toFile().canWrite());
 
 		testFiles.add(stats);
 	}
@@ -110,7 +111,7 @@ public class SaveSessionTest {
 		}
 
 		@Override
-		public File saveData(String filename) {
+		public IPath saveData(String filename) {
 			return null;
 		}
 
