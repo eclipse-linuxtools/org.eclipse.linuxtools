@@ -18,7 +18,8 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 
 /**
- * A DataSetParser for parsing a preconstructed single-line regex string.
+ * A DataSetParser for parsing a string, line-by-line, with a preconstructed
+ * single-line regex string.
  * 
  * @author aferrazz
  * @since 1.1
@@ -26,7 +27,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser
  */
 public class LineParser implements IDataSetParser {
 	public LineParser(String regEx) {
-		wholePattern = Pattern.compile(regEx);
+		wholePattern = Pattern.compile(regEx, Pattern.MULTILINE);
 	}
 
 	@Override
