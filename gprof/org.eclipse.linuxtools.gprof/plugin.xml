@@ -16,7 +16,7 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            category="org.eclipse.linuxtools.gprof"
+            category="org.eclipse.linuxtools.profiling.ui"
             class="org.eclipse.linuxtools.internal.gprof.view.GmonView"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.view"
@@ -26,10 +26,6 @@
             %gprofDescription
          </description>
       </view>
-      <category
-            id="org.eclipse.linuxtools.gprof"
-            name="%gprofCategory">
-      </category>
    </extension>
 
 </plugin>
