@@ -94,7 +94,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 				return manager.getFileProxy(uri);
 			else
 				throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-							IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
+						IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
 		}
 		return getLocalFileProxy(uri);
 	}
@@ -120,7 +120,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
-		       return manager.getLauncher(uri);
+				return manager.getLauncher(uri);
 		}
 		return new LocalLauncher();
 	}
@@ -145,7 +145,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		if (scheme != null && !scheme.equals(LOCALSCHEME)){
 			IRemoteProxyManager manager = getRemoteManager(scheme);
 			if (manager != null)
-			  return manager.getOS(uri);
+				return manager.getOS(uri);
 		}
 		return Platform.getOS();
 	}
@@ -161,5 +161,22 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 		return getOS(projectURI);
 	}
 
+	/**
+	 * This method gets the proper remote project location
+	 * of pure remote and sync projects. Synchronized projects
+	 * have a cached path and a remote one, and this method
+	 * returns the remote one.
+	 * @return string containing the project location
+	 * @since 2.2
+	 */
+	public String getRemoteProjectLocation(IProject project) throws CoreException {
+		if(project != null){
+			IRemoteFileProxy remoteFileProxy = null;
+			remoteFileProxy = getFileProxy(project);
+			URI workingDirURI = remoteFileProxy.getWorkingDir();
+			return workingDirURI.toString();
+		}
+		return null;
+	}
 
 }
