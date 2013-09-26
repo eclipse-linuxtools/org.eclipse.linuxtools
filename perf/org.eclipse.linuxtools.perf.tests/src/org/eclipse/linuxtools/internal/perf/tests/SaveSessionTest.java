@@ -74,6 +74,7 @@ public class SaveSessionTest {
 
 		File data = handler.saveData(DATA_FILE_NAME);
 		assertNotNull(data);
+		assertTrue(!data.canWrite());
 		testFiles.add(data);
 
 	}
@@ -97,6 +98,7 @@ public class SaveSessionTest {
 
 		File stats = handler.saveData(DATA_FILE_NAME);
 		assertNotNull(stats);
+		assertTrue(!stats.canWrite());
 
 		testFiles.add(stats);
 	}

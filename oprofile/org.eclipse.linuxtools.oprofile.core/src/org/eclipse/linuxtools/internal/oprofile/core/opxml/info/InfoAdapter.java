@@ -104,11 +104,15 @@ public class InfoAdapter extends AbstractDataAdapter{
 				createDOM(null);
 			}else{
 				Process p = RuntimeProcessFactory.getFactory().exec("ophelp -X", Oprofile.OprofileProject.getProject());
-				InputStream is = p.getInputStream();
-				createDOM(is);
+				if (p != null) {
+					InputStream is = p.getInputStream();
+					createDOM(is);
+				} else {
+					createDOM(null);
+				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			createDOM(null);
 		}
 	}
 

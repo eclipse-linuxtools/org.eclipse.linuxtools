@@ -3,13 +3,9 @@
 <plugin>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="org.eclipse.linuxtools.gcov"
-            name="%gcovCategory">
-      </category>
       <view
             allowMultiple="true"
-            category="org.eclipse.linuxtools.gcov"
+            category="org.eclipse.linuxtools.profiling.ui"
             class="org.eclipse.linuxtools.internal.gcov.view.CovView"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gcov.view"
