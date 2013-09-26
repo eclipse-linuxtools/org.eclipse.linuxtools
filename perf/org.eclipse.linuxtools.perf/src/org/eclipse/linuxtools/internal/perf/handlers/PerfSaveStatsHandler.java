@@ -39,6 +39,7 @@ public class PerfSaveStatsHandler extends AbstractSaveDataHandler {
 				FileWriter fw = new FileWriter(statsData.getAbsoluteFile());
 				bw = new BufferedWriter(fw);
 				bw.write(statData.getPerfData());
+				statsData.setReadOnly();
 				return statsData;
 			} catch (IOException e) {
 				openErroDialog(Messages.PerfSaveStat_error_title,
