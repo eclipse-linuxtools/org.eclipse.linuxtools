@@ -109,7 +109,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 	public static IDataSetParser createDatasetParser(ILaunchConfiguration configuration) {
 		try {
-			return new LineParser(configuration.getAttribute(REGULARE_EXPRESSION, "").concat("\\n")); //$NON-NLS-1$ //$NON-NLS-2$
+			return new LineParser("^" + configuration.getAttribute(REGULARE_EXPRESSION, "") + "$"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} catch (CoreException e) {
 			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_0, e);
 		}
