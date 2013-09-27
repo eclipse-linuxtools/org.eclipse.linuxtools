@@ -286,7 +286,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
 		}
 		Object[] titleArgs = new Object[]{binURI.getPath(), args.toString(), String.valueOf(runCount)};
-		String title = MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs);
+		String title = renderProcessLabel(MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs));
 
 		@SuppressWarnings("unchecked")
 		List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
