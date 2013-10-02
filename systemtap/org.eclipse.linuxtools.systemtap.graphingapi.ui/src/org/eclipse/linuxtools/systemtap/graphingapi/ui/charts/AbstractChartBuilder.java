@@ -46,18 +46,18 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	protected int xseries;
 	protected int[] yseries;
 
-	protected static final Color WHITE = new Color(Display.getDefault(), 255, 255, 255);
-	protected static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
-	protected static final Color RED = new Color(Display.getDefault(), 255, 0, 0);
+	protected static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
+	protected static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+	protected static final Color RED = Display.getDefault().getSystemColor(SWT.COLOR_RED);
 
 	protected static final Color[] COLORS = {
-												new Color(Display.getDefault(), 255, 0, 0),
-												new Color(Display.getDefault(), 0, 255, 0),
-												new Color(Display.getDefault(), 0, 0, 255),
-												new Color(Display.getDefault(), 255, 255, 0),
-												new Color(Display.getDefault(), 255, 0, 255),
-												new Color(Display.getDefault(), 0, 255, 255),
-												new Color(Display.getDefault(), 0, 0, 0),
+												RED,
+												Display.getDefault().getSystemColor(SWT.COLOR_GREEN),
+												Display.getDefault().getSystemColor(SWT.COLOR_BLUE),
+												Display.getDefault().getSystemColor(SWT.COLOR_YELLOW),
+												Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA),
+												Display.getDefault().getSystemColor(SWT.COLOR_CYAN),
+												BLACK,
 												new Color(Display.getDefault(), 64, 128, 128),
 												new Color(Display.getDefault(), 255, 165, 0),
 												new Color(Display.getDefault(), 128, 128, 128),
