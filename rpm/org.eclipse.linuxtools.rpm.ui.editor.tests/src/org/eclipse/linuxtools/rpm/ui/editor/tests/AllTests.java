@@ -11,10 +11,10 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.linuxtools.rpm.ui.editor.tests.actions.ActionsAllTests;
-import org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink.HyperlinkAllTests;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.actions.tests.ActionsAllTests;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.tests.HyperlinkAllTests;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.tests.ScannersAllTests;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.parser.ParserAllTests;
-import org.eclipse.linuxtools.rpm.ui.editor.tests.scanners.ScannersAllTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
