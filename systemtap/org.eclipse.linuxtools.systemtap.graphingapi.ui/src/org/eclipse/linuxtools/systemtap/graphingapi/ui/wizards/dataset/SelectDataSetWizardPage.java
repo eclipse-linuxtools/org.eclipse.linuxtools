@@ -25,7 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 
-
+/**
+ * @deprecated The means of creating/editing graph configurations has
+ * deviated significantly from this implementation.
+ * TODO remove in 3.0
+ */
+@Deprecated
 public class SelectDataSetWizardPage extends WizardPage {
 	public SelectDataSetWizardPage() {
 		super("selectDataSetType"); //$NON-NLS-1$

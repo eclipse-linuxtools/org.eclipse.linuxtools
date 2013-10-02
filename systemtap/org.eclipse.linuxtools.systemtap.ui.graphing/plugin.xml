@@ -18,40 +18,10 @@
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
-			name="%command.open.name"
-			description="%command.open.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.OpenScriptOutput"/>
-		<command
-			name="%command.export.name"
-			description="%command.export.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ExportDataSet"/>
-		<command
 			name="%command.save.name"
 			description="%command.save.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
 			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.SaveGraphImage"/>
-		<command
-			name="%command.import.name"
-			description="%command.import.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ImportDataSet"/>
-			
-		<category
-			name="%category.file.name"
-			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"/>
-			 <command
-                        name="%action.modifyParsing.name"
-                        description="%action.modifyParsing.desc"
-                        categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.edit"
-                        id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ModifyParsing"/>
-
-                <category
-                        name="%category.edit.name"
-                        description="%category.edit.desc"
-                        id="org.eclipse.linuxtools.systemtap.ui.graphing.category.edit"/>
 	</extension>
 	
 	
@@ -69,36 +39,6 @@
 				toolbarPath="org.eclipse.ui.workbench.file/save.ext"
 				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.SaveGraphImageAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.SaveGraphImage"
-				style="push"
-				state="false"/>
-			<action
-				label="%action.export.name"
-				tooltip="%action.export.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ExportDataSet"
-				icon="icons/actions/export_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/export.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.ExportDataSetAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ExportDataSet"
-				style="push"
-				state="false"/>
-			<action
-				label="%action.import.name"
-				tooltip="%action.import.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ImportDataSet"
-				icon="icons/actions/import_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/import.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.ImportDataSetAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ImportDataSet"
-				style="push"
-				state="false"/>
-			<action
-				label="%action.open.name"
-				tooltip="%action.open.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.OpenScriptOutput"
-				icon="icons/actions/open_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/new.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions.OpenScriptOutputAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.OpenScriptOutput"
 				style="push"
 				state="false"/>
 		</actionSet>

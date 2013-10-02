@@ -48,7 +48,7 @@ public class LineParser implements IDataSetParser {
 				data[i] = wholeMatcher.group(i+1);
 			}
 			e.putRow(0, data);
-			s.delete(0, wholeMatcher.end());
+			s.delete(0, s.length());
 		}
 
 		return e;

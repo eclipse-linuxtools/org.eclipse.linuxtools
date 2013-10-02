@@ -24,7 +24,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 
-
+/**
+ * @deprecated The means of creating/editing graph configurations has
+ * deviated significantly from this implementation.
+ * TODO remove in 3.0
+ */
+@Deprecated
 public abstract class ParsingWizardPage extends WizardPage {
 	public ParsingWizardPage(String title) {
 		super(title);

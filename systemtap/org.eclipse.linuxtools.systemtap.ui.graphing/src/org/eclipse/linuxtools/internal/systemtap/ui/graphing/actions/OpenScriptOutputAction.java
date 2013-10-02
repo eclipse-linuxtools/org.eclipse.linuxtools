@@ -45,7 +45,10 @@ import org.eclipse.ui.PlatformUI;
  * It will act just like the user is running a script with graphing, but will
  * not cause update events.
  * @author Ryan Morse
+ * @deprecated
+ * TODO remove in 3.0
  */
+@Deprecated
 public class OpenScriptOutputAction extends Action implements IWorkbenchWindowActionDelegate {
 	@Override
 	public void init(IWorkbenchWindow window) {
