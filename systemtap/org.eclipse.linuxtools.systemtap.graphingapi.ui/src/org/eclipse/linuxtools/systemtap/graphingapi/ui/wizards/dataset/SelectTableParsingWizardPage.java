@@ -23,6 +23,12 @@ import org.eclipse.swt.widgets.Text;
 
 
 
+/**
+ * @deprecated The means of creating/editing graph configurations has
+ * deviated significantly from this implementation.
+ * TODO remove in 3.0
+ */
+@Deprecated
 public class SelectTableParsingWizardPage extends ParsingWizardPage {
 	public SelectTableParsingWizardPage() {
 		super("selectTableDataSetParsing"); //$NON-NLS-1$

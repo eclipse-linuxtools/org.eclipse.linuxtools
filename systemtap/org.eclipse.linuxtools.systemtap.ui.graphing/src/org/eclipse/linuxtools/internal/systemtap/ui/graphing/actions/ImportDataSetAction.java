@@ -40,7 +40,10 @@ import org.eclipse.ui.PlatformUI;
  * It allows users to bring up data from previous runs of stap so they can
  * see old data.  Importing DataSets is no different then a script live and getting data.
  * @author Ryan Morse
+ * @deprecated
+ * TODO remove in 3.0
  */
+@Deprecated
 public class ImportDataSetAction extends Action implements IWorkbenchWindowActionDelegate {
 	@Override
 	public void init(IWorkbenchWindow window) {

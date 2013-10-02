@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.actions.ModifyParsingAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
@@ -21,10 +22,14 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.ChartStreamD
  * that was received and matched the regExpr
  * @author Ryan Morse
  * @since 2.0
+ * @deprecated
+ * TODO Unless {@link ModifyParsingAction} is restored, drop this class by 3.0.
  */
+@Deprecated
 public class ChartStreamDaemon2 extends ChartStreamDaemon {
 	public ChartStreamDaemon2(ScriptConsole console, IDataSet d, IDataSetParser p) {
 		super(d, p);
+		this.console = console;
 	}
 
 	/**

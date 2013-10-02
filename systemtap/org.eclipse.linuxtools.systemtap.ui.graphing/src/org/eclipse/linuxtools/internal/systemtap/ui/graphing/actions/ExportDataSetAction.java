@@ -32,7 +32,10 @@ import org.eclipse.ui.PlatformUI;
  * This action handles exporting all of the data that was collected for the DataSet.  It
  * exports everything as a table, that can easily be read back in at a later time.
  * @author Ryan Morse
+ * @deprecated
+ * TODO remove in 3.0
  */
+@Deprecated
 public class ExportDataSetAction extends Action implements IWorkbenchWindowActionDelegate {
 	@Override
 	public void init(IWorkbenchWindow window) {
