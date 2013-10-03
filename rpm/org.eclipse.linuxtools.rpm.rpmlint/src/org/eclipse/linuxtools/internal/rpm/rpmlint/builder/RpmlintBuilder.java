@@ -24,7 +24,8 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.parser.RpmlintParser;
 
 /**
- * Project builder responsible for invoking rpmlint and processing it's response.
+ * Project builder responsible for invoking rpmlint and processing it's
+ * response.
  */
 public class RpmlintBuilder extends IncrementalProjectBuilder {
 
@@ -36,23 +37,24 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 	/**
 	 * ID for this builder.
 	 */
-	public static final String BUILDER_ID = Activator.PLUGIN_ID + ".rpmlintBuilder"; //$NON-NLS-1$
+	public static final String BUILDER_ID = Activator.PLUGIN_ID
+			+ ".rpmlintBuilder"; //$NON-NLS-1$
 
 	/**
 	 * ID for rpmlint marker problems.
 	 */
-	public static final String MARKER_ID = Activator.PLUGIN_ID +  ".rpmlintProblem"; //$NON-NLS-1$
-
+	public static final String MARKER_ID = Activator.PLUGIN_ID
+			+ ".rpmlintProblem"; //$NON-NLS-1$
 
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
-	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
+	 * java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor)
-			throws CoreException {
+	protected IProject[] build(int kind, Map<String, String> args,
+			IProgressMonitor monitor) throws CoreException {
 		// TODO: handle the monitor in a more clean way.
 		monitor.beginTask(Messages.RpmlintBuilder_0, MAX_WORKS);
 		monitor.worked(20);
@@ -75,8 +77,8 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		checkCancel(monitor);
 		monitor.worked(50);
 		monitor.setTaskName(Messages.RpmlintBuilder_1);
-		List<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
-				resourceVisitor.getVisitedPaths());
+		List<RpmlintItem> rpmlintItems = RpmlintParser
+				.parseVisisted(resourceVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
 
@@ -86,8 +88,8 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
 		monitor.setTaskName(Messages.RpmlintBuilder_1);
-		List<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
-				deltaVisitor.getVisitedPaths());
+		List<RpmlintItem> rpmlintItems = RpmlintParser
+				.parseVisisted(deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
 
@@ -102,7 +104,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	protected void checkCancel(IProgressMonitor monitor) {
+	private static void checkCancel(IProgressMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}

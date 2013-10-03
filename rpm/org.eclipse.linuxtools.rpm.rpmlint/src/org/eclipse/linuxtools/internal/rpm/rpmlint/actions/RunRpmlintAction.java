@@ -79,7 +79,7 @@ public class RunRpmlintAction extends AbstractHandler{
 
 	}
 
-	private void runRpmlint(String location) {
+	private static void runRpmlint(String location) {
 		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
 				PreferenceConstants.P_RPMLINT_PATH);
 		try {
@@ -111,7 +111,7 @@ public class RunRpmlintAction extends AbstractHandler{
 		}
 	}
 
-	private MessageConsole findConsole(String name) {
+	private static MessageConsole findConsole(String name) {
 		ConsolePlugin plugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = plugin.getConsoleManager();
 		IConsole[] existing = conMan.getConsoles();

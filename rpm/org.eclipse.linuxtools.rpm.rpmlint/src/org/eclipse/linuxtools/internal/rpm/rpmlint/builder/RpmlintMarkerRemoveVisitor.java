@@ -34,7 +34,7 @@ public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
 				|| Activator.RPMFILE_EXTENSION.equals(resource
 						.getFileExtension())) {
-			RpmlintParser.getInstance().deleteMarkers(resource);
+			RpmlintParser.deleteMarkers(resource);
 			// remove internal marks
 			resource.deleteMarkers(
 					SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false,

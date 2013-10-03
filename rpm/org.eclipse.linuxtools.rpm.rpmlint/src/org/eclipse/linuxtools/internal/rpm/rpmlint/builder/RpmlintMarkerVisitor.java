@@ -69,7 +69,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 							resource.getLocation().toOSString())) {
 						IFile currentFile = ((IFile) resource);
 						if (firstWarningInResource) {
-							RpmlintParser.getInstance().deleteMarkers(resource);
+							RpmlintParser.deleteMarkers(resource);
 							// remove internal marks on the current resource
 							currentFile
 									.deleteMarkers(
@@ -85,11 +85,9 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 						if (item.getId()
 								.equals("configure-without-libdir-spec")) { //$NON-NLS-1$
 							item.setLineNbr(-1);
-							lineNumber = RpmlintParser.getInstance()
-									.getRealLineNbr(specContent, "./configure"); //$NON-NLS-1$
+							lineNumber = RpmlintParser.getRealLineNbr(specContent, "./configure"); //$NON-NLS-1$
 							if (lineNumber == -1) {
-								lineNumber = RpmlintParser.getInstance()
-										.getRealLineNbr(specContent,
+								lineNumber = RpmlintParser.getRealLineNbr(specContent,
 												"%configure"); //$NON-NLS-1$
 							}
 							item.setLineNbr(lineNumber);
@@ -97,8 +95,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 
 						lineNumber = item.getLineNbr();
 						if (lineNumber == -1) {
-							lineNumber = RpmlintParser.getInstance()
-									.getRealLineNbr(specContent,
+							lineNumber = RpmlintParser.getRealLineNbr(specContent,
 											item.getRefferedContent());
 							if (lineNumber == -1) {
 								lineNumber = 1;
@@ -118,7 +115,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 						int charStart = getLineOffset(document, lineNumber);
 						int charEnd = charStart
 								+ getLineLength(document, lineNumber);
-						RpmlintParser.getInstance().addMarker(currentFile,
+						RpmlintParser.addMarker(currentFile,
 								item.getId() + ": " //$NON-NLS-1$
 										+ item.getMessage(), lineNumber,
 								charStart, charEnd, item.getSeverity(),
@@ -131,7 +128,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 				for (RpmlintItem item : rpmlintItems) {
 					IFile currentFile = ((IFile) resource);
 					if (firstWarningInResource) {
-						RpmlintParser.getInstance().deleteMarkers(resource);
+						RpmlintParser.deleteMarkers(resource);
 						// remove internal marks on the current resource
 						currentFile.deleteMarkers(
 								SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID,
@@ -139,7 +136,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 						firstWarningInResource = false;
 					}
 
-					RpmlintParser.getInstance().addMarker(currentFile,
+					RpmlintParser.addMarker(currentFile,
 							item.getId() + ": " //$NON-NLS-1$
 									+ item.getMessage(), item.getSeverity(),
 							item.getId(), item.getRefferedContent());
@@ -191,7 +188,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 		}
 	}
 
-	private String fileToString(IFile file) {
+	private static String fileToString(IFile file) {
 		String ret = ""; //$NON-NLS-1$
 		try {
 			InputStream in = file.getContents();
