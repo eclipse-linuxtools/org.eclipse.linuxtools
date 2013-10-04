@@ -122,7 +122,9 @@
               locationURI="popup:org.eclipse.linuxtools.rpm.ui.popup?before=org.eclipse.linuxtools.rpm.ui.buildsep">
            <command
                  commandId="rpmEditor.build.command"
+                 icon="icons/rpmBuildSRPM_16x16_toolbarIcon.PNG"
                  label="%command.name.0"
+                 mnemonic="S"
                  tooltip="%command.name.0">
               <visibleWhen>
                  <iterate
@@ -152,7 +154,9 @@
            </command>
            <command
                  commandId="rpmEditor.build.command"
+                 icon="icons/rpmBuildRPMS_16x16_toolbarIcon.PNG"
                  label="%command.name.1"
+                 mnemonic="R"
                  tooltip="%command.name.1">
               <visibleWhen>
                  <iterate
@@ -182,7 +186,9 @@
            </command>
            <command
                  commandId="rpmEditor.build.command"
+                 icon="icons/rpmBuildAll_16x16_toolbarIcon.PNG"
                  label="%command.name.2"
+                 mnemonic="A"
                  tooltip="%command.name.2">
               <visibleWhen>
                  <iterate
@@ -220,7 +226,7 @@
         <commandParameter
               id="buildType"
               name="buildType"
-              optional="true">
+              optional="false">
         </commandParameter>
      </command>
   </extension>
@@ -231,5 +237,83 @@
            commandId="rpmEditor.build.command">
      </handler>
   </extension>
- 
+  <extension
+        name="RPM Toolbar"
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           allPopups="false"
+           locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+        <toolbar
+              id="org.eclipse.linuxtools.rpm.ui.rpmBuildMenu"
+              label="%toolbar.name">
+           <command
+                 commandId="rpmEditor.build.command"
+                 icon="icons/rpmBuildAll_16x16_toolbarIcon.PNG"
+                 label="%toolbar.name"
+                 style="pulldown">
+              <visibleWhen>
+                 <iterate
+                       ifEmpty="false"
+                       operator="or">
+                    <or>
+                       <adapt
+                             type="org.eclipse.core.resources.IResource">
+                          <test
+                                property="org.eclipse.core.resources.name"
+                                value="*.spec">
+                          </test>
+                       </adapt>
+                       <with
+                             variable="activeEditorId">
+                          <equals
+                                value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                          </equals>
+                       </with>
+                    </or>
+                 </iterate>
+              </visibleWhen>
+              <parameter
+                    name="buildType"
+                    value="ALL">
+              </parameter>
+           </command>
+        </toolbar>
+     </menuContribution>
+     <menuContribution
+           locationURI="menu:rpmEditor.build.command">
+        <command
+              commandId="rpmEditor.build.command"
+              icon="icons/rpmBuildSRPM_16x16_toolbarIcon.PNG"
+              label="%command.name.0"
+              mnemonic="S"
+              tooltip="%command.name.0">
+           <parameter
+                 name="buildType"
+                 value="SOURCE">
+           </parameter>
+        </command>
+        <command
+              commandId="rpmEditor.build.command"
+              icon="icons/rpmBuildRPMS_16x16_toolbarIcon.PNG"
+              label="%command.name.1"
+              mnemonic="R"
+              tooltip="%command.name.1">
+           <parameter
+                 name="buildType"
+                 value="BINARY">
+           </parameter>
+        </command>
+        <command
+              commandId="rpmEditor.build.command"
+              icon="icons/rpmBuildAll_16x16_toolbarIcon.PNG"
+              label="%command.name.2"
+              mnemonic="A"
+              tooltip="%command.name.2">
+           <parameter
+                 name="buildType"
+                 value="ALL">
+           </parameter>
+        </command>
+     </menuContribution>
+  </extension>
 </plugin>
