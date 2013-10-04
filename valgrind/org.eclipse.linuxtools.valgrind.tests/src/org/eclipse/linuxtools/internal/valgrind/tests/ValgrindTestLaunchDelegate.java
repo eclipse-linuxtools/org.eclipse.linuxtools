@@ -23,8 +23,6 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurati
 public class ValgrindTestLaunchDelegate extends
 		ValgrindLaunchConfigurationDelegate {
 
-	protected static final String ERROR_CODE_FILE = ".errorCode"; //$NON-NLS-1$
-
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
