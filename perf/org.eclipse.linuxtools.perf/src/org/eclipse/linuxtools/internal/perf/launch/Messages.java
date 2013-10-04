@@ -14,6 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.perf.launch.messages"; //$NON-NLS-1$
+	public static String MsgProxyError;
 	public static String PerfLaunchConfigDelegate_perf_not_found;
 	public static String PerfLaunchConfigDelegate_analyzing;
 	public static String PerfLaunchConfigDelegate_stat_title;

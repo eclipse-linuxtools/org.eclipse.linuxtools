@@ -37,43 +37,29 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  */
 public class RpmlintParser {
 
-
 	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	private static RpmlintParser rpmlintParser;
-
-	// default constructor
-	private RpmlintParser() {
-		// Empty constructor for making it a singleton.
-	}
-
-	/**
-	 * Returns a singleton version of the parser.
-	 * @return The parser.
-	 */
-	public static RpmlintParser getInstance() {
-		if (rpmlintParser == null) {
-			rpmlintParser = new RpmlintParser();
-		}
-		return rpmlintParser;
-	}
 
 	/**
 	 * Parse visited resources.
-	 * @param visitedResources The list of resources to parse.
 	 *
-	 * @return
-	 * 		a <code>RpmlintItem</code> ArrayList.
+	 * @param visitedResources
+	 *            The list of resources to parse.
+	 *
+	 * @return a <code>RpmlintItem</code> ArrayList.
 	 */
-	public List<RpmlintItem> parseVisisted(List<String> visitedResources) {
-		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
-				PreferenceConstants.P_RPMLINT_PATH);
+	public static List<RpmlintItem> parseVisisted(List<String> visitedResources) {
+		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				Activator.PLUGIN_ID)
+				.getString(PreferenceConstants.P_RPMLINT_PATH);
 		/*
-		 * It's fine to fail silently if rpmlint is not installed as the actual user messages and etc. are displayed by the ui code and this is just
-		 * a guard if we have configuration changing or someone playing with the project files.
+		 * It's fine to fail silently if rpmlint is not installed as the actual
+		 * user messages and etc. are displayed by the ui code and this is just
+		 * a guard if we have configuration changing or someone playing with the
+		 * project files.
 		 */
-		if(visitedResources.isEmpty()|| !Utils.fileExist(rpmlintPath)) {
+		if (visitedResources.isEmpty() || !Utils.fileExist(rpmlintPath)) {
 			return new ArrayList<RpmlintItem>();
 		}
 		return parseRpmlintOutput(runRpmlintCommand(visitedResources));
@@ -82,28 +68,40 @@ public class RpmlintParser {
 	/**
 	 * Adds a rpmlint marker.
 	 *
-	 * @param file The file to create the marker for.
-	 * @param message The marker message.
-	 * @param lineNumber The line at which the marker appears.
-	 * @param charStart The index of the starting char for the marker.
-	 * @param charEnd The index of the ending char for the marker.
-	 * @param severity The marker seveirty.
-	 * @param rpmlintID The id of the rpmlint warning/error.
-	 * @param rpmlintrefferedContent Additional content reffered by the marker.
+	 * @param file
+	 *            The file to create the marker for.
+	 * @param message
+	 *            The marker message.
+	 * @param lineNumber
+	 *            The line at which the marker appears.
+	 * @param charStart
+	 *            The index of the starting char for the marker.
+	 * @param charEnd
+	 *            The index of the ending char for the marker.
+	 * @param severity
+	 *            The marker seveirty.
+	 * @param rpmlintID
+	 *            The id of the rpmlint warning/error.
+	 * @param rpmlintrefferedContent
+	 *            Additional content reffered by the marker.
 	 */
-	public void addMarker(IFile file, String message, int lineNumber, int charStart, int charEnd,
-			int severity, String rpmlintID, String rpmlintrefferedContent) {
+	public static void addMarker(IFile file, String message, int lineNumber,
+			int charStart, int charEnd, int severity, String rpmlintID,
+			String rpmlintrefferedContent) {
 		try {
-			IMarker marker = file
-					.createMarker(RpmlintBuilder.MARKER_ID);
+			IMarker marker = file.createMarker(RpmlintBuilder.MARKER_ID);
 			marker.setAttribute(IMarker.LOCATION, file.getFullPath().toString());
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 			marker.setAttribute(IMarker.CHAR_START, charStart);
 			marker.setAttribute(IMarker.CHAR_END, charEnd);
-			marker.setAttribute(RpmlintMarkerResolutionGenerator.RPMLINT_ERROR_ID, rpmlintID);
-			marker.setAttribute(RpmlintMarkerResolutionGenerator.RPMLINT_REFFERED_CONTENT, rpmlintrefferedContent);
+			marker.setAttribute(
+					RpmlintMarkerResolutionGenerator.RPMLINT_ERROR_ID,
+					rpmlintID);
+			marker.setAttribute(
+					RpmlintMarkerResolutionGenerator.RPMLINT_REFFERED_CONTENT,
+					rpmlintrefferedContent);
 
 		} catch (CoreException e) {
 			RpmlintLog.logError(e);
@@ -113,19 +111,22 @@ public class RpmlintParser {
 	/**
 	 * Adds a rpmlint marker.
 	 *
-	 * @param file The file to create the marker for.
-	 * @param message The marker message.
-	 * @param severity The marker seveirty.
-	 * @param rpmlintID The id of the rpmlint warning/error.
-	 * @param rpmlintrefferedContent Additional content reffered by the marker.
+	 * @param file
+	 *            The file to create the marker for.
+	 * @param message
+	 *            The marker message.
+	 * @param severity
+	 *            The marker seveirty.
+	 * @param rpmlintID
+	 *            The id of the rpmlint warning/error.
+	 * @param rpmlintrefferedContent
+	 *            Additional content reffered by the marker.
 	 */
-	public void addMarker(IFile file, String message, int severity,
+	public static void addMarker(IFile file, String message, int severity,
 			String rpmlintID, String rpmlintrefferedContent) {
 		try {
 			IMarker marker = file.createMarker(RpmlintBuilder.MARKER_ID);
-			marker
-					.setAttribute(IMarker.LOCATION, file.getFullPath()
-							.toString());
+			marker.setAttribute(IMarker.LOCATION, file.getFullPath().toString());
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			marker.setAttribute(
@@ -143,11 +144,13 @@ public class RpmlintParser {
 	/**
 	 * Clear the rpmlint specific markers.
 	 *
-	 * @param resource The resource for which to clean the marker.
+	 * @param resource
+	 *            The resource for which to clean the marker.
 	 */
-	public void deleteMarkers(IResource resource) {
+	public static void deleteMarkers(IResource resource) {
 		try {
-			resource.deleteMarkers(RpmlintBuilder.MARKER_ID, false, IResource.DEPTH_ZERO);
+			resource.deleteMarkers(RpmlintBuilder.MARKER_ID, false,
+					IResource.DEPTH_ZERO);
 		} catch (CoreException e) {
 			RpmlintLog.logError(e);
 		}
@@ -156,15 +159,15 @@ public class RpmlintParser {
 	/**
 	 * Parse a given rpmlint <code>InputStream</code>
 	 *
-	 * @param
-	 * 		rpmlint <code>InputStream</code> to parse.
-	 * @return
-	 * 		a <code>RpmlintItem</code> ArrayList.
+	 * @param rpmlint
+	 *            <code>InputStream</code> to parse.
+	 * @return a <code>RpmlintItem</code> ArrayList.
 	 */
-	private List<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
-		RpmlintItem item =  new RpmlintItem();
+	private static List<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
+		RpmlintItem item = new RpmlintItem();
 		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
-		LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
+		LineNumberReader reader = new LineNumberReader(
+				new InputStreamReader(in));
 		String line;
 		boolean isFirtItemLine = true;
 		String[] lineItems;
@@ -177,7 +180,6 @@ public class RpmlintParser {
 					item.setFileName(lineItems[0]);
 					int lineNbr;
 
-
 					// FIXME: last rpmlint version (0.83) contain a summary
 					// line at the bottom of it output, so if we
 					// detected this line we can safely return rpmlintItems,
@@ -189,9 +191,11 @@ public class RpmlintParser {
 						// this line is not the summary
 					}
 
-					// TODO: ask rpmlint upstream to display always the same output.
+					// TODO: ask rpmlint upstream to display always the same
+					// output.
 					// at the moment the line number is not always displayed.
-					// If the same output is always used, all the workarounds for the line number can be
+					// If the same output is always used, all the workarounds
+					// for the line number can be
 					// removed.
 					try {
 						lineNbr = Integer.parseInt(lineItems[1]);
@@ -207,9 +211,10 @@ public class RpmlintParser {
 					item.setLineNbr(lineNbr);
 					item.setId(lineItems[0]);
 					if (lineItems.length > 1) {
-						// Maybe this error occur when rpmlint execute 'rpm -q --qf=
+						// Maybe this error occur when rpmlint execute 'rpm -q
+						// --qf=
 						// --specfile file.spec' command
-						RpmlintItem tmpItem = parseRpmOutput(item, lineItems[1]) ;
+						RpmlintItem tmpItem = parseRpmOutput(item, lineItems[1]);
 						if (tmpItem == null) {
 							item.setRefferedContent(lineItems[1]);
 						} else {
@@ -224,9 +229,11 @@ public class RpmlintParser {
 
 				if (line.equals(EMPTY_STRING)) {
 					if (item.getMessage() == null) {
-						item.setMessage(description.substring(0, description.length() - 2));
+						item.setMessage(description.substring(0,
+								description.length() - 2));
 					}
-					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getRefferedContent());
+					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item
+							.getRefferedContent());
 					if (useOfTabsAndSpaces != -1) {
 						item.setLineNbr(useOfTabsAndSpaces);
 					}
@@ -234,7 +241,7 @@ public class RpmlintParser {
 					item = new RpmlintItem();
 
 					// Reinitialize parser for the next item
-					isFirtItemLine=true;
+					isFirtItemLine = true;
 					description = EMPTY_STRING;
 				}
 
@@ -247,7 +254,7 @@ public class RpmlintParser {
 		return rpmlintItems;
 	}
 
-	private RpmlintItem parseRpmOutput(RpmlintItem item, String line) {
+	private static RpmlintItem parseRpmOutput(RpmlintItem item, String line) {
 		String[] rpmErrorItems = line.split(COLON, 4);
 		if (item.getId().equalsIgnoreCase("specfile-error")) { //$NON-NLS-1$
 			// set severity
@@ -258,8 +265,8 @@ public class RpmlintParser {
 		// set line number
 		try {
 			if (rpmErrorItems[1].matches(" line [0-9]+$")) { //$NON-NLS-1$
-				item.setLineNbr(Integer.parseInt(
-						rpmErrorItems[1].replace(" line ", ""))); //$NON-NLS-1$ //$NON-NLS-2$
+				item.setLineNbr(Integer.parseInt(rpmErrorItems[1].replace(
+						" line ", ""))); //$NON-NLS-1$ //$NON-NLS-2$
 				item.setMessage(rpmErrorItems[2]);
 				item.setRefferedContent(rpmErrorItems[3]);
 			} else {
@@ -282,21 +289,24 @@ public class RpmlintParser {
 	 * @return the rpmlint command <code>InputStream</code>
 	 * @throws IOException
 	 */
-	private BufferedInputStream runRpmlintCommand(List<String> visitedResources) {
+	private static BufferedInputStream runRpmlintCommand(
+			List<String> visitedResources) {
 		BufferedInputStream in = null;
 		int i = 2;
 		String[] cmd = new String[visitedResources.size() + i];
-		cmd[0] = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
-				PreferenceConstants.P_RPMLINT_PATH);
+		cmd[0] = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				Activator.PLUGIN_ID)
+				.getString(PreferenceConstants.P_RPMLINT_PATH);
 		cmd[1] = "-i"; //$NON-NLS-1$
-		for(String resource: visitedResources){
+		for (String resource : visitedResources) {
 			cmd[i] = resource;
 			i++;
 		}
 		try {
 			in = Utils.runCommandToInputStream(cmd);
 		} catch (IOException e) {
-			// FIXME: rpmlint is not installed in the default place -> ask user to open the prefs page.
+			// FIXME: rpmlint is not installed in the default place -> ask user
+			// to open the prefs page.
 			RpmlintLog.logError(e);
 		}
 		return in;
@@ -307,12 +317,14 @@ public class RpmlintParser {
 	 * Return the line number for given specContent and strToFind, it returns -1
 	 * if the string to find is not found.
 	 *
-	 * @param specContent The content of the spec file.
+	 * @param specContent
+	 *            The content of the spec file.
 	 *
-	 * @param strToFind The string we are looking for.
+	 * @param strToFind
+	 *            The string we are looking for.
 	 * @return the line number
 	 */
-	public int getRealLineNbr(String specContent, String strToFind) {
+	public static int getRealLineNbr(String specContent, String strToFind) {
 		int ret = -1;
 		if (strToFind.equals(EMPTY_STRING)) {
 			return ret;
@@ -333,7 +345,7 @@ public class RpmlintParser {
 		return ret;
 	}
 
-	private int getMixedUseOfTabsAndSpaces(String refferedContent){
+	private static int getMixedUseOfTabsAndSpaces(String refferedContent) {
 		int lineNbr = -1;
 		if (refferedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
 			String tabsAndSpacesPref = new ScopedPreferenceStore(

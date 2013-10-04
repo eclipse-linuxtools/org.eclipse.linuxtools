@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,16 +8,13 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ MailHyperlinkDetectorTest.class,
-		SourcesFileHyperlinkDetectorTest.class,
-		SpecfileElementHyperlinkDetectorTest.class,
-		URLHyperlinkWithMacroDetectorTest.class,
-		SourcesFileCreateHyperlinkTest.class })
-public class HyperlinkAllTests {
+@Suite.SuiteClasses({ SpecfileChangelogScannerTest.class,
+		SpecfilePackagesScannerTest.class, SpecfileScannerTest.class })
+public class ScannersAllTests {
 }

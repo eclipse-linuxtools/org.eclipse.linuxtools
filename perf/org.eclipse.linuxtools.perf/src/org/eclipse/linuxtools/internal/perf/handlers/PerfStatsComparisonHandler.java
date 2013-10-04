@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.handlers;
 
-import java.io.File;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.ui.StatComparisonView;
@@ -35,8 +35,8 @@ public class PerfStatsComparisonHandler extends AbstractComparisonHandler {
 				new Object[] { oldData.getName(), newData.getName() });
 
 		// get corresponding files
-		File oldDatum = oldData.getLocation().toFile();
-		File newDatum = newData.getLocation().toFile();
+		IPath oldDatum = oldData.getFullPath();
+		IPath newDatum = newData.getFullPath();
 
 		// create comparison data and run comparison.
 		StatComparisonData diffData = new StatComparisonData(title, oldDatum, newDatum);

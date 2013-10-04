@@ -100,7 +100,7 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 * @param marker the marker to check
 	 * @return the rpmlint error id or <code>""</code> if none
 	 */
-	private String getRpmlintErrorId(IMarker marker) {
+	private static String getRpmlintErrorId(IMarker marker) {
 		return marker.getAttribute(RPMLINT_ERROR_ID, ""); //$NON-NLS-1$
 	}
 

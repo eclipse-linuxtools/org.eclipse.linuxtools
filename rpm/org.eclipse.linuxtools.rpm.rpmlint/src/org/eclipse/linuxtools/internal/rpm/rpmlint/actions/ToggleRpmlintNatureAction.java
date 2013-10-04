@@ -68,7 +68,7 @@ public class ToggleRpmlintNatureAction extends AbstractHandler {
 	 * @param project
 	 *            to have sample nature added or removed
 	 */
-	private void toggleNature(IProject project) {
+	private static void toggleNature(IProject project) {
 		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
 				PreferenceConstants.P_RPMLINT_PATH);
 		if(!Utils.fileExist(rpmlintPath)) {

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
+package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.tests;
 
 import static org.junit.Assert.assertNotNull;
 

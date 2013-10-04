@@ -7,15 +7,13 @@
  *
  * Contributors:
  *    Red Hat - initial API and implementation
- *    Neil Guzman - create patches hyperlink (B#413508)
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;
 
-import org.eclipse.core.resources.IContainer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -25,6 +23,7 @@ import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.utils.RPMUtils;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
@@ -36,6 +35,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	private SpecfileEditor editor;
 	private static final String PATCH_IDENTIFIER = "Patch"; //$NON-NLS-1$
 	private static final String SOURCE_IDENTIFIER = "Source"; //$NON-NLS-1$
+	private static final String URL_IDENTIFIER = "URL"; //$NON-NLS-1$
 
 	/**
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
@@ -44,7 +44,6 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	@Override
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
-		boolean patchExists = false;
 		if (region == null || textViewer == null) {
 			return null;
 		}
@@ -71,67 +70,47 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 		} catch (BadLocationException ex) {
 			return null;
 		}
+		List<IHyperlink> tempHList = new ArrayList<IHyperlink>();
+		// !! it feels like there is duplicate code, fix that !!
 		if (editor.getEditorInput() instanceof FileEditorInput) {
 			IFile original = ((FileEditorInput) editor.getEditorInput())
 					.getFile();
 			if (line.startsWith(SOURCE_IDENTIFIER)
-					|| line.startsWith(PATCH_IDENTIFIER)) {
+					|| line.startsWith(PATCH_IDENTIFIER)
+					|| line.startsWith(URL_IDENTIFIER)) {
 				int delimiterIndex = line.indexOf(':') + 1;
-				String fileName = line.substring(delimiterIndex).trim();
-				patchExists = patchExists(original, fileName);
+				String identifierValue = line.substring(delimiterIndex).trim();
+				boolean validURL = RPMUtils.isValidUrl(identifierValue);
+				// if valid URL, get its file name; else make file name the original identifier value
+				String fileName = validURL ? RPMUtils.getURLFilename(identifierValue) : identifierValue;
+				String resolvedFileName = UiUtils.resolveDefines(editor.getSpecfile(), fileName);
+				boolean fileExists = RPMUtils.fileExistsInSources(original, resolvedFileName);
 				if (region.getOffset() > lineInfo.getOffset()
-						+ line.indexOf(fileName)) {
+						+ line.indexOf(identifierValue)) {
 					IRegion fileNameRegion = new Region(lineInfo.getOffset()
-							+ line.indexOf(fileName), fileName.length());
-					if (line.startsWith(PATCH_IDENTIFIER) && !patchExists) {
-						return new IHyperlink[] {
-								new SourcesFileCreateHyperlink(original, UiUtils
-										.resolveDefines(editor.getSpecfile(),
-												fileName), fileNameRegion) };
+							+ line.indexOf(identifierValue), identifierValue.length());
+					if (fileExists) {
+						// add "Open" file option
+						tempHList.add(new SourcesFileHyperlink(original, resolvedFileName, fileNameRegion));
 					} else {
-						return new IHyperlink[] {
-								new SourcesFileHyperlink(original, UiUtils
-										.resolveDefines(editor.getSpecfile(),
-												fileName), fileNameRegion),
-								new SourcesFileDownloadHyperlink(original, UiUtils
-										.resolveDefines(editor.getSpecfile(),
-												fileName), fileNameRegion) };
+						if (line.startsWith(PATCH_IDENTIFIER) && !identifierValue.endsWith("/")) { //$NON-NLS-1$
+							// add "Create" patch option using filename
+							tempHList.add(new SourcesFileCreateHyperlink(original, resolvedFileName, fileNameRegion));
+						}
+					}
+					// if valid URL and has a valid file
+					if (validURL && !identifierValue.endsWith("/")) { //$NON-NLS-1$
+						// add "Download" option
+						tempHList.add(new SourcesFileDownloadHyperlink(original, UiUtils.resolveDefines(editor.getSpecfile(), identifierValue), fileNameRegion));
 					}
 				}
 			}
 		}
 
-		return null;
+		return tempHList.isEmpty() ? null : tempHList.toArray(new IHyperlink[tempHList.size()]);
 	}
 
 	public void setEditor(SpecfileEditor editor) {
 		this.editor = editor;
-	}
-
-	/**
-	 * Helper method to check if the patch file exists within the
-	 * current project.
-	 *
-	 * @return True if the file exists
-	 */
-	private boolean patchExists(IFile original, String patchName) {
-		boolean rc = true;
-		IContainer container = original.getParent();
-		IResource resourceToOpen = container.findMember(patchName);
-		IFile file = null;
-
-		if (resourceToOpen == null) {
-			IResource sourcesFolder = container.getProject().findMember(
-					"SOURCES"); //$NON-NLS-1$
-			file = container.getFile(new Path(patchName));
-			if (sourcesFolder != null) {
-				file = ((IFolder) sourcesFolder).getFile(new Path(patchName));
-			}
-			if (!file.exists()) {
-				rc = false;
-			}
-		}
-
-		return rc;
 	}
 }

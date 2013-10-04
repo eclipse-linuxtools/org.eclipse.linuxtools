@@ -10,29 +10,37 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf;
 
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.perf.handlers.Messages;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry.Type;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /**
  * Class containing all functionality for comparting perf statistics data.
  */
 public class StatComparisonData extends BaseDataManipulator implements IPerfData {
 	// Old stats file.
-	private File oldFile;
+	private IPath oldFile;
 
 	// New stats file.
-	private File newFile;
+	private IPath newFile;
 
 	// Comparison result string.
 	private String result = ""; //$NON-NLS-1$
@@ -43,7 +51,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	// Unique data identifier.
 	private String dataID;
 
-	public StatComparisonData(String title, File oldFile, File newFile) {
+	public StatComparisonData(String title, IPath oldFile, IPath newFile) {
 		this.title = title;
 		this.oldFile = oldFile;
 		this.newFile = newFile;
@@ -77,8 +85,8 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @param file File to generate uniqure id from.
 	 * @return String unique id for specified file.
 	 */
-	public String generateFileID(File file) {
-		return file.getPath() + dataID;
+	public String generateFileID(IPath file) {
+		return file.toOSString() + dataID;
 	}
 
 	/**
@@ -87,7 +95,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @return String path corresponding to old perf data.
 	 */
 	public String getOldDataPath() {
-		return oldFile.getPath();
+		return oldFile.toPortableString();
 	}
 
 	/**
@@ -96,7 +104,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @return String path corresponding to new perf data.
 	 */
 	public String getNewDataPath() {
-		return newFile.getPath();
+		return newFile.toOSString();
 	}
 
 	/**
@@ -175,8 +183,8 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 */
 	public void cacheData() {
 		PerfPlugin plugin = PerfPlugin.getDefault();
-		plugin.cacheData(getOldDataID(), fileToString(oldFile));
-		plugin.cacheData(getNewDataID(), fileToString(newFile));
+		plugin.cacheData(getOldDataID(), fileToString(oldFile.toFile()));
+		plugin.cacheData(getNewDataID(), fileToString(newFile.toFile()));
 	}
 
 	/**
@@ -194,11 +202,16 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @param file file to collect from
 	 * @return List containing statistics entries from the given file.
 	 */
-	public static ArrayList<PMStatEntry> collectStats(File statFile) {
+	public static ArrayList<PMStatEntry> collectStats(IPath file) {
 		ArrayList<PMStatEntry> result = new ArrayList<PMStatEntry>();
 		BufferedReader statReader = null;
+		URI fileURI = null;
 		try {
-			statReader = new BufferedReader(new FileReader(statFile));
+			fileURI = new URI(file.toPortableString());
+			IRemoteFileProxy proxy = null;
+			proxy = RemoteProxyManager.getInstance().getFileProxy(fileURI);
+			IFileStore newDataFileStore = proxy.getResource(fileURI.getPath());
+			statReader = new BufferedReader(new InputStreamReader(newDataFileStore.openInputStream(EFS.NONE, null)));
 
 			// pattern for a valid perf stat entry
 			Pattern entryPattern = Pattern.compile(PMStatEntry.getString(Type.ENTRY_PATTERN));
@@ -252,6 +265,10 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 		} catch (FileNotFoundException e) {
 			PerfPlugin.getDefault().openError(e, Messages.MsgError);
 		} catch (IOException e) {
+			PerfPlugin.getDefault().openError(e, Messages.MsgError);
+		} catch (CoreException e) {
+			PerfPlugin.getDefault().openError(e, Messages.MsgError);
+		} catch (URISyntaxException e) {
 			PerfPlugin.getDefault().openError(e, Messages.MsgError);
 		} finally {
 			try {
