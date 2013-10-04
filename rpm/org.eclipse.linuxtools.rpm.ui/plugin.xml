@@ -12,25 +12,6 @@
 
 <plugin>
    <extension
-         point="org.eclipse.ui.exportWizards">
-      <category
-            id="org.eclipse.linuxtools.rpm.ui"
-            name="%category.name.0">
-      </category>
-      <wizard
-            name="%wizard.name.0"
-            icon="icons/rpm.gif"
-            class="org.eclipse.linuxtools.internal.rpm.ui.RPMExportWizard"
-            category="org.eclipse.linuxtools.rpm.ui"
-            id="org.eclipse.linuxtools.rpm.ui.RPMExportWizard">
-         <description>
-            %wizard.description.0
-         </description>
-         <selection
-               class="org.eclipse.core.resources.IResource" />
-      </wizard>
-   </extension>
-   <extension
          point="org.eclipse.ui.importWizards">
       <category
             id="org.eclipse.linuxtools.rpm.ui"
