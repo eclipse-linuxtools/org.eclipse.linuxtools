@@ -25,7 +25,7 @@ import org.osgi.framework.FrameworkUtil;
 
 /**
  * Job for handling rpm exports.
- * @since 1.0.0
+ * @since 1.1
  */
 public class RPMExportOperation extends Job {
 	private RPMProject rpmProject;
