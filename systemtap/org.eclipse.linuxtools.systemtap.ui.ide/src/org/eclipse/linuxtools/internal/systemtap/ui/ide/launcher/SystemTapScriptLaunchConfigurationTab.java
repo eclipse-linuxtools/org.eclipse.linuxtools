@@ -72,7 +72,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 	 * @return The path of the chosen script the Run Configuration will be applied to,
 	 * or <code>null</code> if no file exists at the given path.
 	 */
-	private IPath getScriptPath() {
+	IPath getScriptPath() {
 		IPath scriptPath = new Path(scriptPathText.getText());
 		return scriptPath.toFile().exists() ? scriptPath : null;
 	}

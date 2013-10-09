@@ -169,7 +169,6 @@ public class TestCreateSystemtapScript {
 	}
 
 	public static void createScript(SWTWorkbenchBot bot, String scriptName) {
-
 		SWTBotMenu fileMenu = bot.menu("File");
 		SWTBotMenu newMenu = fileMenu.menu("New");
 		SWTBotMenu projectMenu = newMenu.menu("Other...");
@@ -223,7 +222,7 @@ public class TestCreateSystemtapScript {
 			SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 			console.setFocus();
 			assertTrue(console.bot().label().getText().contains(scriptName));
-			bot.waitUntil(new StapHasExited(), 10000);
+			bot.waitUntil(new StapHasExited()); // The script should end on its own
 		} else {
 			bot.button("Close").click();
 			bot.waitUntil(new ShellIsClosed(shell));
@@ -371,7 +370,8 @@ public class TestCreateSystemtapScript {
 				+ "\nglobal i,j,k"
 				+ "\nprobe begin{i=0;j=0;k=0}"
 				+ "\nprobe timer.ms(100){printf(\"Value:%d %d\\n\",i,j);i++;j+=2}"
-				+ "\nprobe timer.ms(250){printf(\"Other:%d %d\\n\",i,k);k++}");
+				+ "\nprobe timer.ms(250){printf(\"Other:%d %d\\n\",i,k);k++}"
+				+ "\nprobe timer.ms(1000){exit()}");
 		editor.save();
 
 		String val0 = "i";
@@ -472,8 +472,7 @@ public class TestCreateSystemtapScript {
 		bot.sleep(2500); // Let the script run for a moment
 		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 		console.setFocus();
-		console.toolbarButton("Stop Script").click(); // Stop the script manually
-		bot.waitUntil(new StapHasExited(), 10000);
+		bot.waitUntil(new StapHasExited()); // The script should end on its own
 
 		bot.sleep(1000); // Give time for the table to be fully constructed
 		SWTBotEditor graphDisplay = bot.activeEditor();
@@ -497,6 +496,68 @@ public class TestCreateSystemtapScript {
 		assertEquals(val2, colNames.get(2));
 		assertEquals("10", dataTable.cell(3, 1));
 		assertEquals("3", dataTable.cell(3, 2));
+	}
+
+	@Test
+	public void testGenerateFromPrintf() {
+		String scriptName = "testGenerates.stp";
+		createScript(bot, scriptName);
+
+		// Write a script
+		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
+		editor.setText("#!/usr/bin/env stap"
+				+ "\nglobal i,j,k,a"
+				+ "\nprobe begin{i=0;j=5;k=20;a=65}"
+				+ "\n#probe begin{printf(\"%1b%1b%1blo %1b%1brld\\n\", 72,101,108,87,111)}"
+				+ "\nprobe timer.ms(100){printf(\"%5i|\\n%10.5d|\\n%-10.5i|\\n%05c\\n\",i,j,k,a);i++;j+=5;k+=20;a++}"
+				+ "\n//printf(\"this is a comment\\n\");"
+				+ "\n/*printf(\"this is a...\\n\");"
+				+ "\nprintf(\"...multiline comment\\n\");*/"
+				+ "\nprobe begin{b = sprintf(\"Here\"); printf(\"-->%s<--\\n\", b)}"
+				+ "\nprobe timer.ms(100){printf(\"%x - %#x - %#X\\n\",i,i,i);}"
+				+ "\nprobe timer.ms(100){printf(\"%o - %#o\\n\",i,i);}"
+				+ "\nprobe begin{printf(\"%1b-\\\\n-%p\\n\", 65, 0x8000000002345678)}");
+		editor.save();
+
+		openRunConfigurations(scriptName);
+		SWTBotShell shell = bot.shell("Run Configurations");
+		shell.setFocus();
+		SWTBotTree runConfigurationsTree = bot.tree();
+		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+
+		// Select the "Graphing" tab.
+		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
+		tab.activate();
+
+		// Generate regexs.
+		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		bot.button(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsButton).click();
+
+		SWTBotShell shell2 = bot.shell(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle);
+		shell2.setFocus();
+		bot.button("Yes").click();
+		bot.waitUntil(new ShellIsClosed(shell2));
+		shell.setFocus();
+
+		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
+		assertEquals(9, combo.itemCount()); // One extra entry for "Add New Regex"
+
+		String[] expectedRegexs = new String[]{
+				" {0,4}(-?\\d+)\\|",
+				" {0,9}(-?\\d+)\\|",
+				"(-?\\d+) {0,9}\\|",
+				" {0,4}(.)",
+				"-->(.+)<--",
+				"([a-f0-9]+) - (0x[a-f0-9]+) - (0X[A-F0-9]+)",
+				"(\\d+) - (0\\d+)",
+				"(.)-\\\\n-(0x[a-f0-9]+)",
+				Messages.SystemTapScriptGraphOptionsTab_regexAddNew
+		};
+		for (int i = 0, n = combo.itemCount(); i < n; i++) {
+			assertEquals(expectedRegexs[i], combo.items()[i]);
+		}
+		bot.button("Apply").click();
+		bot.button("Close").click();
 	}
 
 	private void openRunConfigurations(String scriptName) {
