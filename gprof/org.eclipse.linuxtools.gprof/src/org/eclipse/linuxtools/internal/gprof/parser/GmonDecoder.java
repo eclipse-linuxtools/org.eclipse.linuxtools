@@ -14,9 +14,12 @@ import java.io.BufferedInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
@@ -271,6 +274,13 @@ public class GmonDecoder {
     public String getGmonFile() {
         return file;
     }
+
+    /**
+     * @return the modification timestamp of (last) parsed gmon file
+     */
+	public String getGmonFileTimeStamp() {
+		return DateFormat.getInstance().format(new Date(new File(file).lastModified()));
+	}
 
     public String getFileName(ISymbol s) {
         String ret = filenames.get(s);
