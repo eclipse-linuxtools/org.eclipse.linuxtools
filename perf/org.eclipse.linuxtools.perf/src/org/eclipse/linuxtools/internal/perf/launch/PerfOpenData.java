@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.net.URI;
+import java.sql.Date;
+import java.text.DateFormat;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IFile;
@@ -46,19 +48,22 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
                 if(selection instanceof ITreeSelection){
                         Object element = ((ITreeSelection)selection).getFirstElement();
                         if(element instanceof IFile){
-                                IProject project = ((IFile)element).getProject();
+                                IFile eFile = (IFile) element;
+                                IProject project = eFile.getProject();
                                 projectName = project.getName();
                                 URI fileURI = ((IFile)element).getLocationURI();
                                 ILaunchConfiguration config = createDefaultConfiguration(projectName);
                                 PerfCore.Report(config, null, null, null, fileURI.getPath(), null);
-                                PerfCore.RefreshView(fileURI.toString());
+                                String timestamp = DateFormat.getInstance().format(new Date(eFile.getLocalTimeStamp()));
+                                PerfCore.RefreshView(fileURI.toString() + " (" + timestamp + ")"); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                 }
         } else {
-                projectName = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject().getName();
+                projectName = location.getProject().getName();
                 ILaunchConfiguration config = createDefaultConfiguration(projectName);
                 PerfCore.Report(config, null, null, null, file.toOSString(), null);
-                PerfCore.RefreshView(file.toOSString());
+                String timestamp = DateFormat.getInstance().format(new Date(location.getLocalTimeStamp()));
+                PerfCore.RefreshView(file.toOSString() + " (" + timestamp + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
