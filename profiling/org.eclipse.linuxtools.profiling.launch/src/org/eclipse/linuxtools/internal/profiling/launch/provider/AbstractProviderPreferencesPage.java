@@ -85,8 +85,10 @@ public class AbstractProviderPreferencesPage extends
 	protected void createFieldEditors() {
 		String providerId = ProviderFramework.getHighestProviderId(type);
 
-		getPreferenceStore().setDefault(
-				ProviderProfileConstants.PREFS_KEY + type, providerId);
+		if (providerId != null) {
+			getPreferenceStore().setDefault(
+					ProviderProfileConstants.PREFS_KEY + type, providerId);
+		}
 
 		HashMap<String, String> map = ProviderFramework
 				.getProviderNamesForType(type);
