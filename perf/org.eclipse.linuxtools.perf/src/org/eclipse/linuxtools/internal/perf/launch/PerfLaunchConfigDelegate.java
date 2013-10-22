@@ -49,6 +49,7 @@ import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.IOConsole;
+import org.osgi.framework.Version;
 
 public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
 
@@ -89,7 +90,8 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 
 			ArrayList<String> command = new ArrayList<String>();
 			// Get the base commandline string (with flags/options based on config)
-			command.addAll(Arrays.asList(PerfCore.getRecordString(config)));
+			Version perfVersion = PerfCore.getPerfVersion(config, null, workingDir);
+			command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion)));
 			// Add the path to the executable
 			command.add(exePath.toOSString());
 			command.addAll(Arrays.asList( arguments));
