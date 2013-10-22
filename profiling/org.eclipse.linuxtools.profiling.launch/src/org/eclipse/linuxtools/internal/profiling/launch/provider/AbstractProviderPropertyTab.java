@@ -73,8 +73,6 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 		setPreferenceStore(scoped);
 
 		getPreferenceStore().setDefault(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), false);
-		getPreferenceStore().setDefault(ProviderProfileConstants.PREFS_KEY + getType(),
-				ProviderFramework.getHighestProviderId(getType()));
 
 		useProjectSetting = new Button(usercomp, SWT.CHECK);
 		useProjectSetting.setText(Messages.UseProjectSetting_0);
@@ -86,6 +84,13 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 				updateOptionsEnable();
 			}
 		});
+
+		String highestProviderId = ProviderFramework.getHighestProviderId(getType());
+		if (highestProviderId != null) {
+			getPreferenceStore().setDefault(ProviderProfileConstants.PREFS_KEY + getType(), highestProviderId);
+		} else {
+			useProjectSetting.setEnabled(false);
+		}
 
 		fLink= new Link(usercomp, SWT.NULL);
 		fLink.setText(Messages.PreferenceLink_0);
