@@ -160,7 +160,8 @@ public class Command implements Runnable {
 
 	/**
 	 * Stops the process from running and stops the <code>StreamGobblers</code> from monitering
-	 * the dead process and unregisters the StreamListener.
+	 * the dead process and unregisters the StreamListener. Also wakes up any threads waiting
+	 * on this command.
 	 */
 	public synchronized void stop() {
 		if(!stopped) {
@@ -182,6 +183,7 @@ public class Command implements Runnable {
 			}
 			removeInputStreamListener(logger);
 			stopped = true;
+			notifyAll(); // Wake up threads waiting for this command to stop.
 		}
 	}
 
