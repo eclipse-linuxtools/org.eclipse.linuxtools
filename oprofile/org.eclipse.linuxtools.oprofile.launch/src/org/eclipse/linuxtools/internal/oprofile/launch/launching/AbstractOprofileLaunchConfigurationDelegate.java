@@ -111,8 +111,8 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 		// Executing operf with the default or specified events,
 		// outputing the profiling data to the project dir/OPROFILE_DATA
-
 		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+
 			String eventsString=EVENTS;
 			for (int i=0;i<events.size();i++) {
 				eventsString+=events.get(i).getEvent().getText() + ":" + events.get(i).getEvent().getMinCount() + ","; //$NON-NLS-1$ //$NON-NLS-2$
@@ -246,7 +246,18 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	 * @throws OpcontrolException
 	 */
 	protected boolean oprofileStatus() throws OpcontrolException {
-		return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+			try {
+				Process p = RuntimeProcessFactory.getFactory().exec(
+						new String [] {"operf", "--version"}, //$NON-NLS-1$ //$NON-NLS-2$
+						OprofileProject.getProject());
+				return (p != null);
+			} catch (IOException e) {
+				return false;
+			}
+		} else {
+			return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
+		}
 	}
 
 	protected IProject getProject(){

@@ -12,6 +12,7 @@
 
 package org.eclipse.linuxtools.internal.oprofile.core;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventsProcessor;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 
 /**
@@ -125,9 +127,23 @@ public class Oprofile
 	 * @return the number of counters
 	 */
 	public static int getNumberOfCounters() {
+		// If using opcontrol, we need kernel module loaded to use any counters
 		if (!isKernelModuleLoaded() && OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)){
 			return 0;
 		}
+
+		// If operf is not found, set no counters
+		try {
+			Process p = RuntimeProcessFactory.getFactory().exec(
+					new String [] {"operf", "--version"}, //$NON-NLS-1$ //$NON-NLS-2$
+					OprofileProject.getProject());
+			if (p == null) {
+				return 0;
+			}
+		} catch (IOException e) {
+			return 0;
+		}
+
 		return info.getNrCounters();
 	}
 
