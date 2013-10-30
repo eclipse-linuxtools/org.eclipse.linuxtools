@@ -65,6 +65,7 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.osgi.framework.Version;
 
 public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
 
@@ -134,7 +135,8 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				//Build the commandline string to run perf recording the given project
 				String arguments[] = getProgramArgumentsArray( config ); //Program args from launch config.
 				ArrayList<String> command = new ArrayList<String>( 4 + arguments.length );
-				command.addAll(Arrays.asList(PerfCore.getRecordString(config))); //Get the base commandline string (with flags/options based on config)
+				Version perfVersion = PerfCore.getPerfVersion(config, null, workingDirPath);
+				command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion))); //Get the base commandline string (with flags/options based on config)
 				command.add( remoteBinFile.toOSString() ); // Add the path to the executable
 				command.set(0, perfPathString);
 				command.add(2,OUTPUT_STR + configWorkingDir + PerfPlugin.PERF_DEFAULT_DATA);

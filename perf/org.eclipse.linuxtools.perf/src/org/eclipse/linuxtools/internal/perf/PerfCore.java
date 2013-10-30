@@ -46,8 +46,10 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Version;
 
 public class PerfCore {
+
 	public static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
 
 		StringBuffer strBuf = new StringBuffer();
@@ -214,7 +216,7 @@ public class PerfCore {
 	}
 
 	//Gets the current version of perf
-	public static String getPerfVersion(ILaunchConfiguration config, String[] environ, IPath workingDir) {
+	public static Version getPerfVersion(ILaunchConfiguration config, String[] environ, IPath workingDir) {
 		IProject project = getProject(config);
 		Process p = null;
 		IRemoteFileProxy proxy = null;
@@ -240,8 +242,18 @@ public class PerfCore {
 			}
 		}
 
+		if (p == null) {
+			return null;
+		}
+
 		BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		return spitStream(input, "Perf --version", null);
+		String perfVersion = spitStream(input, "Perf --version", null);
+		int index = perfVersion.indexOf('-');
+		if (index > 0) {
+			perfVersion = perfVersion.substring(0, index);
+		}
+		perfVersion = perfVersion.replace("perf version", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+		return new Version(perfVersion);
 	}
 
 	public static boolean checkPerfInPath()
@@ -271,14 +283,18 @@ public class PerfCore {
 	}
 
 	//Generates a perf record command string with the options set in the given config. (If null uses default).
-	public static String [] getRecordString(ILaunchConfiguration config) {
-		String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record", "-f"}; //$NON-NLS-1$ //$NON-NLS-2$
+	public static String [] getRecordString(ILaunchConfiguration config, Version perfVersion) {
+		String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record"}; //$NON-NLS-1$
 		if (config == null) {
 			return base;
 		} else {
 			ArrayList<String> newCommand = new ArrayList<String>();
 			newCommand.addAll(Arrays.asList(base));
 			try {
+				if (new Version(3, 11, 0).compareTo(perfVersion) > 0) {
+					// Removed as of 4a4d371a4dfbd3b84a7eab8d535d4c7c3647b09e from perf upstream (kernel)
+					newCommand.add("-f"); //$NON-NLS-1$
+				}
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default))
 					newCommand.add("-r"); //$NON-NLS-1$
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default))
@@ -366,8 +382,9 @@ public class PerfCore {
 		IProject project = getProject(config);
 		TreeParent invisibleRoot = PerfPlugin.getDefault().clearModelRoot();
 
+		Version perfVersion = getPerfVersion(config, environ, workingDir);
 		boolean OldPerfVersion = false;
-		if (getPerfVersion(config, environ, workingDir).contains("perf version 0.0.2.PERF")) {
+		if (new Version(0, 0, 2).compareTo(perfVersion) > 0) {
 			OldPerfVersion = true;
 			if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
 		}
