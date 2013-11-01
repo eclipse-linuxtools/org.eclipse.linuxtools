@@ -10,41 +10,50 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.ui;
 
-import java.sql.Timestamp;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.compare.CompareConfiguration;
+import org.eclipse.compare.CompareUI;
+import org.eclipse.compare.IEncodedStreamContentAccessor;
+import org.eclipse.compare.ResourceNode;
+import org.eclipse.compare.structuremergeviewer.Differencer;
+import org.eclipse.compare.structuremergeviewer.ICompareInput;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.perf.IPerfData;
-import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDiffMenuAction;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDiffMenuAction.Type;
+import org.eclipse.linuxtools.internal.perf.handlers.Messages;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 
 /**
  * Perf Statistics Comparison view
  */
-public class StatComparisonView extends ViewPart {
+public class StatComparisonView extends Viewer {
 
 	// color values constasts
 	private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
@@ -54,43 +63,46 @@ public class StatComparisonView extends ViewPart {
 	private static String OCCURRENCE = "\\s*(\\-?+" //$NON-NLS-1$
 			+ PMStatEntry.DECIMAL + ").*"; //$NON-NLS-1$
 
+	private Composite fComposite;
+	private ICompareInput fInput;
 	private StyledText text;
-	private IPerfData diffData;
-	private String timestamp;
-	private static int SECONDARY_ID = 0;
+	private Label reverseLabel;
+	private boolean reverse;
 
-	public StatComparisonView() {
-	}
+	public StatComparisonView(Composite parent, CompareConfiguration config) {
+		fComposite = new Composite(parent, SWT.NONE);
+		fComposite.setLayout(new GridLayout(2, false));
+		fComposite.setData(CompareUI.COMPARE_VIEWER_TITLE, Messages.StatComparisonView_label);
 
-	@Override
-	public void createPartControl(Composite parent) {
-		parent.setLayoutData(new GridLayout(1, true));
+		reverseLabel = new Label(fComposite, SWT.NONE);
+		reverseLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+		reverseLabel.setText(Messages.StatComparisonView_reversedLabel);
+		reverseLabel.setVisible(false);
 
-		text = new StyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		final Button reverse = new Button(fComposite, SWT.TOGGLE);
+		reverse.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_SYNCED));
+		reverse.setToolTipText(Messages.StatComparisonView_reverseToolTip);
+		reverse.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		reverse.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				toggleReverse();
+				setInput(fInput);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+
+		text = new StyledText(fComposite, SWT.V_SCROLL | SWT.H_SCROLL);
+		text.setAlwaysShowScrollBars(false);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gd.horizontalSpan = 2;
+		text.setLayoutData(gd);
 		text.setEditable(false);
-		timestamp = getTimestamp();
 
-		IPerfData statsDiff = PerfPlugin.getDefault()
-				.getStatDiffData();
-		if (statsDiff != null) {
-			diffData = statsDiff;
-			updateData(statsDiff, true);
-		}
-
-		fillToolbarActions();
-	}
-
-	@Override
-	public void setFocus() {
-		return;
-	}
-
-	/**
-	 * Get perf data associated with the current view.
-	 * @return IPerfData data associated with this view.
-	 */
-	public IPerfData getDiffData(){
-		return diffData;
 	}
 
 	/**
@@ -100,13 +112,17 @@ public class StatComparisonView extends ViewPart {
 	 * @param input text to display
 	 */
 	private void setStyledText(String input) {
-		setBasicStyledText(input);
+		text.setText(input);
+		text.setAlignment(SWT.LEFT);
+		// set default TextConsole font (monospaced).
+		text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
+
 		List<StyleRange> styles = new ArrayList<StyleRange>();
 		int ptr = 0;
 
 		String[] lines = input.split("\n"); //$NON-NLS-1$
 
-		for(String line : lines){
+		for (String line : lines) {
 			if (Pattern.matches(OCCURRENCE, line)) {
 				Matcher m = Pattern.compile(OCCURRENCE).matcher(line);
 				if (m.matches() && m.group(1) != null) {
@@ -132,99 +148,109 @@ public class StatComparisonView extends ViewPart {
 		text.setStyleRanges(styles.toArray(new StyleRange[0]));
 	}
 
-	private void setBasicStyledText(String input){
-		text.setText(input);
-		text.setAlignment(SWT.LEFT);
-		// set default TextConsole font (monospaced).
-		text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
-	}
-
-	/**
-	 * Create toolbar actions associated with this view.
-	 */
-	private void fillToolbarActions() {
-		// create [Old] [New] [Diff] actions.
-		IActionBars bars = getViewSite().getActionBars();
-		for (Type type : PerfStatDiffMenuAction.Type.values()) {
-			bars.getToolBarManager().add(
-					new PerfStatDiffMenuAction(type, getViewSite().getSecondaryId()));
-		}
-	}
-
 	/**
 	 * Update contents of current view, replacing the containing data and text styling.
 	 *
 	 * @param data IPerfData data replacement.
-	 * @param style boolean true if styling is to be applied, false otherwise.
 	 */
-	public void updateData(IPerfData data, boolean style){
-		if(data != null){
-			if (style) {
-				setStyledText(data.getPerfData());
-			} else {
-				setBasicStyledText(data.getPerfData());
-			}
-			setContentDescription(data.getTitle() + timestamp);
+	public void updateData(IPerfData data) {
+		if (data != null) {
+			setStyledText(data.getPerfData());
 		}
-	}
-
-	/**
-	 * Get current timestamp.
-	 * @return String current timestamp.
-	 */
-	public String getTimestamp(){
-		Date date = new Date();
-		Timestamp timestamp = new Timestamp(date.getTime());
-		return " [" + timestamp.toString() + "]";  //$NON-NLS-1$//$NON-NLS-2$
-	}
-
-	/**
-	 * Utility method to get an instance of a {@link StatComparisonView} by
-	 * providing the secondary identifier.
-	 *
-	 * @param sID String secondary identifier.
-	 * @return IViewPart {@link StatComparisonView} associated with the
-	 *         specified secondary identifier.
-	 */
-	public static IViewPart getView(final String sID) {
-		final AtomicReference<IViewPart> viewRef = new AtomicReference<IViewPart>();
-
-		Display.getDefault().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					IViewPart view = PlatformUI
-							.getWorkbench()
-							.getActiveWorkbenchWindow()
-							.getActivePage()
-							.showView(PerfPlugin.STAT_DIFF_VIEW_ID,
-									sID,
-									IWorkbenchPage.VIEW_CREATE);
-					viewRef.set(view);
-				} catch (PartInitException e) {
-					IStatus status = new Status(IStatus.ERROR,
-							PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-					PerfPlugin.getDefault().getLog().log(status);
-				}
-			}
-		});
-		return viewRef.get();
-	}
-
-	/**
-	 * Create new view.
-	 */
-	public static void refreshView() {
-		getView(Integer.toString(SECONDARY_ID++));
 	}
 
 	@Override
-	public void dispose() {
-		super.dispose();
-		// remove file contents from cache
-		if (diffData instanceof StatComparisonData) {
-			((StatComparisonData) diffData).clearCachedData();
+	public Control getControl() {
+		return fComposite;
+	}
+
+	@Override
+	public Object getInput() {
+		return fInput;
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return null;
+	}
+
+	@Override
+	public void refresh() {
+	}
+
+	@Override
+	public void setInput(Object input) {
+		if (input instanceof ICompareInput) {
+			fInput = (ICompareInput) input;
+
+			if (fInput.getAncestor() != null ||
+					(fInput.getKind() & Differencer.DIRECTION_MASK) != 0) {
+				setStyledText(Messages.CompUnsupported);
+			} else {
+				// get corresponding files
+				IPath oldDatum;
+				IPath newDatum;
+
+				if (fInput.getLeft() instanceof ResourceNode) {
+					ResourceNode left = (ResourceNode) fInput.getLeft();
+					oldDatum = left.getResource().getLocation();
+				} else {
+					IEncodedStreamContentAccessor lStream = (IEncodedStreamContentAccessor) fInput.getLeft();
+					oldDatum = generateTempFile(lStream);
+				}
+
+				if (fInput.getRight() instanceof ResourceNode) {
+					ResourceNode right = (ResourceNode) fInput.getRight();
+					newDatum = right.getResource().getLocation();
+				} else {
+					IEncodedStreamContentAccessor rStream = (IEncodedStreamContentAccessor) fInput.getRight();
+					newDatum = generateTempFile(rStream);
+				}
+
+				String title = MessageFormat.format(Messages.ContentDescription_0,
+						new Object[] { oldDatum.toFile().getName(), newDatum.toFile().getName() });
+
+				// create comparison data and run comparison.
+				StatComparisonData diffData;
+				if (reverse) {
+					diffData = new StatComparisonData(title, newDatum, oldDatum);
+				} else {
+					diffData = new StatComparisonData(title, oldDatum, newDatum);
+				}
+				diffData.runComparison();
+				updateData(diffData);
+			}
+
+		}
+
+		fComposite.layout();
+	}
+
+	private IPath generateTempFile(IEncodedStreamContentAccessor stream) {
+		try {
+			Path tmpFile = Files.createTempFile("perf-stat-", ".stat"); //$NON-NLS-1$ //$NON-NLS-2$
+			tmpFile.toFile().delete();
+			Files.copy(stream.getContents(), tmpFile);
+			return new org.eclipse.core.runtime.Path(tmpFile.toString());
+		} catch (IOException e) {
+			return null;
+		} catch (CoreException e) {
+			return null;
 		}
 	}
+
+	@Override
+	public void setSelection(ISelection selection, boolean reveal) {
+	}
+
+	private void toggleReverse () {
+		if (reverse) {
+			reverse = false;
+			reverseLabel.setVisible(false);
+		} else {
+			reverse = true;
+			reverseLabel.setVisible(true);
+		}
+	}
+
 }

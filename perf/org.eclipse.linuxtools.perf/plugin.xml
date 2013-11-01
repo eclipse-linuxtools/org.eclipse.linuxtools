@@ -38,14 +38,6 @@
       <view
             allowMultiple="true"
             category="org.eclipse.linuxtools.profiling.ui"
-            class="org.eclipse.linuxtools.internal.perf.ui.StatComparisonView"
-            icon="icons/symbol.gif"
-            id="org.eclipse.linuxtools.perf.ui.StatViewDiff"
-            name="Perf Statistics Comparison">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.eclipse.linuxtools.profiling.ui"
             class="org.eclipse.linuxtools.internal.perf.ui.ReportComparisonView"
             icon="icons/symbol.gif"
             id="org.eclipse.linuxtools.perf.ui.ReportViewDiff"
@@ -159,17 +151,21 @@
          point="org.eclipse.ui.editors">
       <editor
             default="true"
-            filenames="*.data, *.data.old"
             id="org.eclipse.linuxtools.perf.editor"
             launcher="org.eclipse.linuxtools.internal.perf.launch.PerfOpenData"
-            name="Perf Viewer">
+            name="%perfReportViewName">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.linuxtools.perf.report.content-type">
+         </contentTypeBinding>
       </editor>
       <editor
             default="true"
-            filenames="*.stat"
             id="org.eclipse.linuxtools.perf.stat.launch"
             launcher="org.eclipse.linuxtools.internal.perf.handlers.PerfStatDataOpenHandler"
-            name="Perf Statistics">
+            name="%perfStatViewName">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.linuxtools.perf.stat.content-type">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension
@@ -197,12 +193,6 @@
                label="%perfSaveCurrentSession"
                style="push">
          </command>
-         <command
-               commandId="org.eclipse.linuxtools.perf.ReportDiff"
-               id="org.eclipse.linuxtools.perf.ReportDiff"
-               label="%perfCompareSessions"
-               style="push">
-         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -211,12 +201,6 @@
                commandId="org.eclipse.linuxtools.perf.SaveStatData"
                id="org.eclipse.linuxtools.perf.SaveStatData"
                label="%perfSaveStatistics"
-               style="push">
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.perf.StatDiff"
-               id="org.eclipse.linuxtools.perf.StatDiff"
-               label="%perfCompareStatistics"
                style="push">
          </command>
          <command
@@ -240,19 +224,56 @@
             name="%perfSaveStatistics">
       </command>
       <command
-            defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfStatsComparisonHandler"
-            id="org.eclipse.linuxtools.perf.StatDiff"
-            name="%perfCompareStatistics">
-      </command>
-      <command
-            defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfComparisonHandler"
-            id="org.eclipse.linuxtools.perf.ReportDiff"
-            name="%perfCompareSessions">
-      </command>
-      <command
             defaultHandler="org.eclipse.linuxtools.internal.perf.handlers.PerfStatsQuickDiffHandler"
             id="org.eclipse.linuxtools.perf.QuickStatDiff"
             name="%perfCompareLatest">
       </command>
-   </extension>   
+      <!--
+      Expose org.eclipse.team.internal.ui.actions.CompareAction so that it may
+      executed programmatically using the ICommandService API. We need to do it
+      this way to avoid using the internal class while passing the ExecutionEvent.
+      -->
+      <command
+            defaultHandler="org.eclipse.team.internal.ui.actions.CompareAction"
+            id="org.eclipse.linuxtools.perf.CompareAction"
+            name="Perf Compare Action">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.compare.contentMergeViewers">
+      <viewer
+            class="org.eclipse.linuxtools.internal.perf.ui.StatComparisonViewCreator"
+            id="org.eclipse.linuxtools.perf.statdiff"
+            label="%perfStatCompare.label">
+      </viewer>
+      <viewer
+            class="org.eclipse.linuxtools.internal.perf.ui.ReportComparisonViewCreator"
+            id="org.eclipse.linuxtools.perf.reportdiff"
+            label="%perfReportCompare.label">
+      </viewer>
+      <contentTypeBinding
+            contentMergeViewerId="org.eclipse.linuxtools.perf.statdiff"
+            contentTypeId="org.eclipse.linuxtools.perf.stat.content-type">
+      </contentTypeBinding>
+      <contentTypeBinding
+            contentMergeViewerId="org.eclipse.linuxtools.perf.reportdiff"
+            contentTypeId="org.eclipse.linuxtools.perf.report.content-type">
+      </contentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="stat"
+            id="org.eclipse.linuxtools.perf.stat.content-type"
+            name="%perfStatData.name"
+            priority="normal">
+      </content-type>
+      <content-type
+            file-extensions="data"
+            file-names="perf.data.old"
+            id="org.eclipse.linuxtools.perf.report.content-type"
+            name="%perfReportData.name"
+            priority="normal">
+      </content-type>
+   </extension>
 </plugin>

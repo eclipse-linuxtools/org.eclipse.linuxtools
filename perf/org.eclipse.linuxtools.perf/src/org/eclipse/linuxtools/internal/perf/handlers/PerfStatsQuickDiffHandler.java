@@ -12,21 +12,26 @@ package org.eclipse.linuxtools.internal.perf.handlers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.MessageFormat;
 
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
-import org.eclipse.linuxtools.internal.perf.StatComparisonData;
-import org.eclipse.linuxtools.internal.perf.ui.StatComparisonView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.ISources;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 
 /**
  * Command handler for quick comparison between current and previous sessions.
@@ -34,24 +39,25 @@ import org.eclipse.swt.widgets.Display;
 public class PerfStatsQuickDiffHandler implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) {
-
 		// get default files
 		PerfPlugin plugin = PerfPlugin.getDefault();
 		IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
 		IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
 
-		String title = MessageFormat.format(Messages.ContentDescription_0,
-				new Object[] { prevStatData.toOSString(), curStatData.toOSString() });
+		IResource curStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(curStatData);
+		IResource prevStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(prevStatData);
 
-		// create comparison data and run comparison
-		StatComparisonData diffData = new StatComparisonData(title,
-				prevStatData, curStatData);
-		diffData.runComparison();
+		// Inject our own selections into the context
+		IEvaluationContext ctx = (IEvaluationContext) event.getApplicationContext();
+		ctx.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME,
+				new StructuredSelection(new IResource [] {prevStatFile, curStatFile}));
 
-		// set comparison data and fill view
-		plugin.setStatDiffData(diffData);
-		StatComparisonView.refreshView();
-
+		ICommandService cmdService = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+		Command cmd = cmdService.getCommand("org.eclipse.linuxtools.perf.CompareAction"); //$NON-NLS-1$
+		try {
+			cmd.executeWithChecks(event);
+		} catch (Exception e) {
+		}
 		return null;
 	}
 
