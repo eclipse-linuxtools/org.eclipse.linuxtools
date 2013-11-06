@@ -25,7 +25,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 /**
  * A class designated to handle the tasks of a specfile.
  *
- * @since 1.2.0
+ * @since 1.2
  */
 public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	public static final String SPECFILE_TASK_MARKER_ID = Activator.PLUGIN_ID
@@ -47,7 +47,7 @@ public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	 * @param file The FileEditorInput to get the file from.
 	 * @param document The specfile document.
 	 *
-	 * @since 1.2.0
+	 * @since 1.2
 	 */
 	public SpecfileTaskHandler(FileEditorInput file, IDocument document) {
 		this(file.getFile(), document);
