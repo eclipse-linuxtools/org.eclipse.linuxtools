@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2013 STMicroelectronics.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *   Red Hat Inc. - fix for bug 418264
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.view;
 
@@ -23,6 +24,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ColorRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView;
@@ -60,21 +63,21 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GmonView extends AbstractSTDataView {
 
-    public static final String ID = "org.eclipse.linuxtools.gprof.view"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.gprof.view"; //$NON-NLS-1$
 
-    /** WHITE color */
-    public static final Color WHITE = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WHITE);
-    /** GREEN1 color : for children category */
-    public static final Color GREEN1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 255, 207);
-    /** GREEN2 color : for children */
-    public static final Color GREEN2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 255, 175);
-    /** BLUE1 color : for parent category */
-    public static final Color BLUE1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 207, 255);
-    /** BLUE2 color : for parents */
-    public static final Color BLUE2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 175, 255);
+	/** WHITE color */
+	public static final Color DEFAULT_BG = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+	/** GREEN1 color : for children category */
+	public static final Color GREEN1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 255, 207);
+	/** GREEN2 color : for children */
+	public static final Color GREEN2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 255, 175);
+	/** BLUE1 color : for parent category */
+	public static final Color BLUE1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 207, 255);
+	/** BLUE2 color : for parents */
+	public static final Color BLUE2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 175, 255);
 
-    public static final int CALL_GRAPH_MODE = 0;
-    public static final int SAMPLE_MODE = 1;
+	public static final int CALL_GRAPH_MODE = 0;
+	public static final int SAMPLE_MODE = 1;
 
     private Label label;
     private Text fFilterText;
@@ -100,20 +103,24 @@ public class GmonView extends AbstractSTDataView {
 
     @Override
     protected void createTitle(Composite parent) {
-        label = new Label(parent, SWT.WRAP);
-        GridData data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 1, 1);
-        label.setLayoutData(data);
-        fFilterText = new Text(parent, SWT.BORDER | SWT.SINGLE | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
-        fFilterText.setMessage(Messages.GmonView_type_filter_text);
-        fFilterText.setToolTipText(Messages.GmonView_filter_by_name);
-        fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        fFilterText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                String text = fFilterText.getText();
-                fViewerFilter.setMatchingText(text);
-            }
-        });
+    	ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
+    	Color background = colorRegistry.get("org.eclipse.ui.workbench.INACTIVE_TAB_BG_START"); //$NON-NLS-1$
+    	label = new Label(parent, SWT.WRAP);
+    	if (background != null)
+    		label.setBackground(background);
+    	GridData data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 1, 1);
+    	label.setLayoutData(data);
+    	fFilterText = new Text(parent, SWT.BORDER | SWT.SINGLE | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
+    	fFilterText.setMessage(Messages.GmonView_type_filter_text);
+    	fFilterText.setToolTipText(Messages.GmonView_filter_by_name);
+    	fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    	fFilterText.addModifyListener(new ModifyListener() {
+    		@Override
+    		public void modifyText(ModifyEvent e) {
+    			String text = fFilterText.getText();
+    			fViewerFilter.setMatchingText(text);
+    		}
+    	});
     }
 
     /*
@@ -160,23 +167,37 @@ public class GmonView extends AbstractSTDataView {
      * I do not know where to put this static method. It is used by all ProfFields
      */
     public static Color getBackground(Object element) {
-        if (element instanceof CGCategory) {
-            CGCategory cat = (CGCategory) element;
-            if (CGCategory.CHILDREN.equals(cat.category)) {
-                return GmonView.BLUE1;
-            } else {
-                return GmonView.GREEN1;
-            }
-        } else if (element instanceof CGArc) {
-            CGArc arc = (CGArc) element;
-            CGCategory cat = (CGCategory) arc.getParent();
-            if (CGCategory.CHILDREN.equals(cat.category)) {
-                return GmonView.BLUE2;
-            } else {
-                return GmonView.GREEN2;
-            }
-        }
-        return GmonView.WHITE;
+    	ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
+
+    	// FIXME: Not sure if color1-color4 are ever used...picked colors found in JFacesResources ColorRegistry
+    	// not tied to any particular language (e.g. didn't choose CDT or Java colors)
+    	// Color5 seems to work ok as bg in the one dark theme I tried (Nissl-Adwaita-dark-4) and as well
+    	// in default light adwaita, but it is much simpler to just return null and let the table color default
+    	// appropriately.
+    	Color color1 = colorRegistry.get("org.eclipse.ui.editors.currentLineColor"); //$NON-NLS-1$
+    	Color color2 = colorRegistry.get("org.eclipse.ui.workbench.INACTIVE_TAB_BG_START"); //$NON-NLS-1$
+    	Color color3 = colorRegistry.get("org.eclipse.ui.workbench.ACTIVE_NOFOCUS_TAB_BG_END"); //$NON-NLS-1$
+    	Color color4 = colorRegistry.get("org.eclipse.ui.workbench.ACTIVE_TAB_BG_END"); //$NON-NLS-1$
+    	//        Color color5 = colorRegistry.get("org.eclipse.ui.workbench.INACTIVE_TAB_BG_START"); //$NON-NLS-1$
+
+    	if (element instanceof CGCategory) {
+    		CGCategory cat = (CGCategory) element;
+    		if (CGCategory.CHILDREN.equals(cat.category)) {
+    			return color1 == null ? BLUE1 : color1;
+    		} else {
+    			return color2 == null ? GREEN1 : color2;
+    		}
+    	} else if (element instanceof CGArc) {
+    		CGArc arc = (CGArc) element;
+    		CGCategory cat = (CGCategory) arc.getParent();
+    		if (CGCategory.CHILDREN.equals(cat.category)) {
+    			return color3 == null ? BLUE2 : color3;
+    		} else {
+    			return color4 == null ? GREEN2 : color4;
+    		}
+    	}
+    	return null; // default background
+    	//        return color5 == null ? DEFAULT_BG : color5;
     }
 
     public Label getLabel() {
