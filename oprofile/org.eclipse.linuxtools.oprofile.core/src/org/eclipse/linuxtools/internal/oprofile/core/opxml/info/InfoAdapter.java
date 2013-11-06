@@ -182,7 +182,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 			return;
 		}
 		createHeaders();
-		if (!hasTimerSupport()){
+		if (!hasTimerSupport() && oldRoot != null){
 			createXML();
 		}
 	}

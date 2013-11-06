@@ -35,7 +35,7 @@ public class StopScriptAction extends ConsoleAction implements ScriptConsoleObse
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				if(null != console && console.isRunning()){
+				if(null != console){
 					console.stop();
 				}
 			}

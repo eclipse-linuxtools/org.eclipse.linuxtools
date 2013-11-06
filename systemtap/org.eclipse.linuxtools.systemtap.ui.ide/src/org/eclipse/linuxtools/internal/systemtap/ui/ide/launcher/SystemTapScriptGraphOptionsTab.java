@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,6 +63,8 @@ public class SystemTapScriptGraphOptionsTab extends
 	static final String RUN_WITH_CHART = "runWithChart"; //$NON-NLS-1$
 	static final String NUMBER_OF_COLUMNS = "numberOfColumns"; //$NON-NLS-1$
 	static final String REGEX_BOX = "regexBox_"; //$NON-NLS-1$
+	static final String NUMBER_OF_EXTRAS = "numberOfExtras"; //$NON-NLS-1$
+	static final String EXTRA_BOX = "extraBox_"; //$NON-NLS-1$
 	static final String REGULARE_EXPRESSION = "regularExpression"; //$NON-NLS-1$
 	static final String SAMPLE_OUTPUT = "sampleOutput"; //$NON-NLS-1$
 
@@ -106,6 +109,9 @@ public class SystemTapScriptGraphOptionsTab extends
 	private boolean graphingEnabled = true;
 	private String regexErrorMessage;
 	private Stack<String> cachedNames = new Stack<String>();
+	private List<TableItem> badGraphs = new LinkedList<TableItem>();
+	private int oldNumColumns;
+	private int oldNumExtras;
 
 	public static IDataSetParser createDatasetParser(ILaunchConfiguration configuration) {
 		try {
@@ -356,6 +362,10 @@ public class SystemTapScriptGraphOptionsTab extends
 				item.setText(GraphFactory.getGraphName(gd.graphID) + ":" //$NON-NLS-1$
 						+ gd.title);
 				item.setData(gd);
+				if (badGraphs.contains(selectedTableItem)) {
+					badGraphs.add(item);
+					markGraphTableItem(item, true);
+				}
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -381,6 +391,9 @@ public class SystemTapScriptGraphOptionsTab extends
 					selectedTableItem.setText(GraphFactory.getGraphName(gd.graphID) + ":" //$NON-NLS-1$
 							+ gd.title);
 					selectedTableItem.setData(gd);
+					if (badGraphs.contains(selectedTableItem)){
+						findBadGraphs(selectedTableItem);
+					}
 					updateLaunchConfigurationDialog();
 				}
 			}
@@ -390,6 +403,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		removeGraphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				badGraphs.remove(selectedTableItem);
 				selectedTableItem.dispose();
 				setSelectionControlsEnabled(false);
 				updateLaunchConfigurationDialog();
@@ -449,6 +463,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		this.numberOfVisibleColumns++;
+		findBadGraphs();
 
 		textFieldsComposite.layout();
 		textFieldsComposite.pack();
@@ -462,9 +477,51 @@ public class SystemTapScriptGraphOptionsTab extends
 		children[i-1].dispose();
 
 		this.numberOfVisibleColumns--;
+		findBadGraphs();
 
 		textFieldsComposite.layout();
 		textFieldsComposite.pack();
+	}
+
+	private void findBadGraphs(){
+		findBadGraphs(null);
+	}
+
+	private void findBadGraphs(TableItem itemToCheck){
+		TableItem[] items = {itemToCheck};
+		if (itemToCheck == null) {
+			items = graphsTable.getItems();
+		}
+		if (items.length == 0){
+			badGraphs.clear();
+			return;
+		}
+		for (TableItem item : items){
+			GraphData gd = (GraphData) item.getData();
+			boolean removed = false;
+			if (gd.xSeries >= this.numberOfVisibleColumns){
+				removed = true;
+			}
+			for (int s = 0; s < gd.ySeries.length && !removed; s++){
+				if (gd.ySeries[s] >= this.numberOfVisibleColumns){
+					removed = true;
+				}
+			}
+
+			if (removed){
+				if (!badGraphs.contains(item)){
+					badGraphs.add(item);
+					markGraphTableItem(item, true);
+				}
+			}else if (badGraphs.contains(item)){
+				badGraphs.remove(item);
+				markGraphTableItem(item, false);
+			}
+		}
+	}
+
+	private void markGraphTableItem(TableItem item, boolean bad){
+		item.setForeground(item.getDisplay().getSystemColor(bad ? SWT.COLOR_RED : SWT.COLOR_BLACK));
 	}
 
 	public boolean canFlipToNextPage() {
@@ -491,24 +548,33 @@ public class SystemTapScriptGraphOptionsTab extends
 			regularExpressionText.setText(configuration.getAttribute(REGULARE_EXPRESSION, "")); //$NON-NLS-1$
 			sampleOutputText.setText(configuration.getAttribute(SAMPLE_OUTPUT, "")); //$NON-NLS-1$
 
-			int n = configuration.getAttribute(NUMBER_OF_COLUMNS, 0);
+			oldNumColumns = configuration.getAttribute(NUMBER_OF_COLUMNS, 0);
 			Control[] textBoxes = this.textFieldsComposite.getChildren();
 
-			for (int i = 0; i < n && i*2 < textBoxes.length; i++) {
+			for (int i = 0; i < oldNumColumns && i*2 < textBoxes.length; i++) {
 				String text = configuration.getAttribute(REGEX_BOX+i, (String)null);
 				if (text != null) {
 					((Text)textBoxes[i*2]).setText(text);
 				}
 			}
 
+			cachedNames.clear();
+			oldNumExtras = configuration.getAttribute(NUMBER_OF_EXTRAS, 0);
+			for (int i = oldNumExtras-1; i >= 0; i--) {
+				cachedNames.push(configuration.getAttribute(EXTRA_BOX+i, "")); //$NON-NLS-1$
+			}
+
 			// Add graphs
 			graphsTable.removeAll();
+			badGraphs.clear();
 			LinkedList<GraphData> graphs = createGraphsFromConfiguration(configuration);
 			for (GraphData graphData : graphs) {
 				TableItem item = new TableItem(graphsTable, SWT.NONE);
 				item.setText(GraphFactory.getGraphName(graphData.graphID) + ":" //$NON-NLS-1$
 						+ graphData.title);
+				item.setForeground(item.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 				item.setData(graphData);
+				findBadGraphs(item);
 			}
 
 		} catch (CoreException e) {
@@ -531,6 +597,21 @@ public class SystemTapScriptGraphOptionsTab extends
 			String text = ((Text)textBoxes[i*2]).getText();
 			configuration.setAttribute(REGEX_BOX+i, text);
 		}
+		//clear what's unused
+		for (int i = numberOfColumns; i < oldNumColumns; i++) {
+			configuration.setAttribute(REGEX_BOX+i, (String) null);
+		}
+		oldNumColumns = numberOfColumns;
+
+		int numberOfExtras = (badGraphs.size() == 0) ? 0 : cachedNames.size();
+		configuration.setAttribute(NUMBER_OF_EXTRAS, numberOfExtras);
+		for (int i = 0; i < numberOfExtras; i++) {
+			configuration.setAttribute(EXTRA_BOX+i, cachedNames.get(i));
+		}
+		for (int i = numberOfExtras; i < oldNumExtras; i++) {
+			configuration.setAttribute(EXTRA_BOX+i, (String) null);
+		}
+		oldNumExtras = numberOfExtras;
 
 		// Save graphs.
 		TableItem[] list = this.graphsTable.getItems();
@@ -548,6 +629,8 @@ public class SystemTapScriptGraphOptionsTab extends
 				configuration.setAttribute(GRAPH_Y_SERIES + i + "_" + j, graphData.ySeries[j]); //$NON-NLS-1$
 			}
 		}
+
+		addGraphButton.setEnabled(numberOfColumns > 0);
 	}
 
 	@Override
@@ -561,6 +644,14 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		if (!this.regexErrorMessage.equals("")){ //$NON-NLS-1$
 			setErrorMessage(regexErrorMessage);
+			return false;
+		}
+		if (this.numberOfVisibleColumns == 0){
+			setErrorMessage(Messages.SystemTapScriptGraphOptionsTab_9);
+			return false;
+		}
+		if (badGraphs.size() > 0){
+			setErrorMessage(Messages.SystemTapScriptGraphOptionsTab_8);
 			return false;
 		}
 
