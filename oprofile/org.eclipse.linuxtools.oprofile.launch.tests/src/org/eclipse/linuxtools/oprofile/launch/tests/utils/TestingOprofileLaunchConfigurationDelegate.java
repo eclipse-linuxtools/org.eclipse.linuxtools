@@ -49,7 +49,7 @@ public final class TestingOprofileLaunchConfigurationDelegate extends
 
 	@Override
 	protected boolean oprofileStatus() {
-		return true;
+		return false;
 	}
 
 	@Override

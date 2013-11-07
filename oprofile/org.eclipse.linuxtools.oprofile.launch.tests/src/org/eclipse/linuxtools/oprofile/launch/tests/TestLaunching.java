@@ -81,13 +81,6 @@ public class TestLaunching extends AbstractTest {
 		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-		assertTrue(delegate.eventsIsNull);
-		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertTrue(delegate._options.getKernelImageFile().isEmpty());
-		assertEquals(0, delegate._options.getCallgraphDepth());
-		assertFalse(delegate._options.getVerboseLogging());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
 	}
 	@Test
 	public void testEventLaunch() throws CoreException {
@@ -113,12 +106,5 @@ public class TestLaunching extends AbstractTest {
 
 		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-		assertFalse(delegate.eventsIsNull);
-		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertTrue(delegate._options.getKernelImageFile().isEmpty());
-		assertEquals(0, delegate._options.getCallgraphDepth());
-		assertFalse(delegate._options.getVerboseLogging());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
 	}
 }
