@@ -60,7 +60,13 @@ public class ChartFactory {
 
             view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .showView(ChartView.VIEW_ID, String.valueOf(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
-            PieChart chart = new PieChart(view.getParent(), SWT.NONE);
+
+            String[] pieChartNames = new String [valFields.size()];
+            for (int i = 0; i < valFields.size(); i++) {
+                pieChartNames[i] = valFields.get(i).getColumnHeaderText();
+            }
+
+            PieChart chart = new PieChart(view.getParent(), SWT.NONE, pieChartNames);
 
             chart.setBackground(WHITE);
             chart.setBackgroundInPlotArea(GRAD);
@@ -74,11 +80,6 @@ public class ChartFactory {
             for (int i = 0; i < objects.length; i++) {
                 valueLabels[i] = nameField.getValue(objects[i]);
             }
-
-            /*
-             * String [] pieChartNames = new String [valFields.size()]; for (int i = 0; i < valFields.size(); i++) {
-             * pieChartNames[i] = valFields.get(i).getColumnHeaderText(); }
-             */
 
             // pie chart data is grouped by columns
             // row size is the number of pie charts

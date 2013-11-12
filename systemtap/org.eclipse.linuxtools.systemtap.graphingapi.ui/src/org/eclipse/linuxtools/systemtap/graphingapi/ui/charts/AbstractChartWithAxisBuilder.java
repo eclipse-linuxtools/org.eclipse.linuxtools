@@ -95,32 +95,56 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 			return;
 
 		int totalMaxItems = (int)Math.round(this.maxItems * scale);
-		int start = 0, len = Math.min(totalMaxItems, data.length);
+		int start = 0, len = Math.min(totalMaxItems, data.length), leny = data[0].length-1;
 		if (totalMaxItems < data.length) {
 			start = data.length - totalMaxItems;
 		}
 
-		double[] valx = new double[len];
-		double[][] valy = new double[data[0].length-1][len];
+		Double[] all_valx = new Double[len];
+		Double[][] all_valy = new Double[leny][len];
 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
-		for (int i = 0; i < valx.length; i++)
-			for (int j = 0; j < data[start + i].length; j++) {
-				if (j == 0)
-					valx[i] = getDoubleValue(data[start + i][j]);
-				else
-					valy[j-1][i] = getDoubleValue(data[start + i][j]);
+		for (int i = 0; i < len; i++) {
+			for (int j = 0; j < leny + 1; j++) {
+				Double val = getDoubleValue(data[start + i][j]);
+				if (j == 0) {
+					if (val != null) {
+						all_valx[i] = val;
+					} else {
+						break;
+					}
+				} else if (val != null) {
+					all_valy[j-1][i] = val;
+				}
 			}
+		}
 
-		for (int i = 0; i < valy.length; i++) {
+		for (int i = 0; i < leny; i++) {
 			ISeries series;
 			if (i >= allSeries.length) {
 				series = createChartISeries(i);
 			} else {
 				series = chart.getSeriesSet().getSeries()[i];
 			}
-			series.setXSeries(valx);
-			series.setYSeries(valy[i]);
+
+			double[] valx = new double[len];
+			double[] valy = new double[len];
+			int len_trim = 0;
+			for (int j = 0; j < len; j++) {
+				if (all_valx[j] != null && all_valy[i][j] != null) {
+					valx[len_trim] = all_valx[j].doubleValue();
+					valy[len_trim] = all_valy[i][j].doubleValue();
+					len_trim++;
+				}
+			}
+			double[] valx_trim = new double[len_trim];
+			double[] valy_trim = new double[len_trim];
+			for (int j = 0; j < len_trim; j++) {
+				valx_trim[j] = valx[j];
+				valy_trim[j] = valy[j];
+			}
+			series.setXSeries(valx_trim);
+			series.setYSeries(valy_trim);
 		}
 
 		chart.getAxisSet().adjustRange();
