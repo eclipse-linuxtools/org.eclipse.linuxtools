@@ -291,8 +291,12 @@ public class DataGrid implements IUpdateListener {
 					os = filteredDataSet.getRow(i);
 
 					item.setText(0, "" + i); //$NON-NLS-1$
-					for(j=0; j<os.length; j++)
-						item.setText(j+1, columnFormat[j].format(os[j].toString()));
+					for(j=0; j<os.length; j++) {
+						//Ignore null items
+						if (os[j] != null) {
+							item.setText(j+1, columnFormat[j].format(os[j].toString()));
+						}
+					}
 				}
 
 				if(FULL_UPDATE != (style & FULL_UPDATE)) {
