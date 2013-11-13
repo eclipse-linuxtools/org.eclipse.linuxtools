@@ -11,14 +11,14 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfilePreamble;
-import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
@@ -68,29 +68,24 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	@Override
 	public String getText(Object element) {
 		String str = ""; //$NON-NLS-1$
-		try {
-			if (element instanceof SpecfileSection) {
-				SpecfileSection specfileSection = (SpecfileSection) element;
-				str = specfileSection.toString();
-			} else if (element instanceof Specfile) {
-				str = ((Specfile) element).getName();
-			} else if (element instanceof SpecfilePackageContainer) {
-				str = Messages.SpecfileLabelProvider_0;
-			} else if (element instanceof SpecfilePreamble){
-				str = Messages.SpecfileLabelProvider_1;
-			} else if (element instanceof SpecfileElement) {
-				SpecfileElement specfileElement = (SpecfileElement) element;
-				str = specfileElement.getName();
-			} else if (element instanceof String) {
-				str = (String) element;
-			} else if (element instanceof SpecfilePackage) {
-				str = ((SpecfilePackage) element).getName();
-			}
-			str = RPMQuery.eval(project, str).trim();
-		} catch (CoreException e) {
-			SpecfileLog.logError("Within Project Outline, unable to evaluate " + str, e); //$NON-NLS-1$
+		if (element instanceof SpecfileSection) {
+			SpecfileSection specfileSection = (SpecfileSection) element;
+			str = specfileSection.toString();
+		} else if (element instanceof Specfile) {
+			str = ((Specfile) element).getName();
+		} else if (element instanceof SpecfilePackageContainer) {
+			str = Messages.SpecfileLabelProvider_0;
+		} else if (element instanceof SpecfilePreamble){
+			str = Messages.SpecfileLabelProvider_1;
+		} else if (element instanceof SpecfileElement) {
+			SpecfileElement specfileElement = (SpecfileElement) element;
+			str = specfileElement.getName();
+		} else if (element instanceof String) {
+			str = (String) element;
+		} else if (element instanceof SpecfilePackage) {
+			str = ((SpecfilePackage) element).getName();
 		}
-		return str;
+		return filterMacros(str.trim());
 	}
 
 	/**
@@ -100,4 +95,23 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	protected void setProject(IProject project) {
 		this.project=project;
 	}
+
+	/**
+	 * Remove any unresolved macros from the string. These are
+	 * macros that follow the format %{?...} (e.g. %{?scl_prefix}).
+	 *
+	 * @param text The text to filter macros out from.
+	 * @return A string without unresolved macros.
+	 *
+	 * @since 2.1
+	 */
+	private String filterMacros(String text) {
+		Pattern variablePattern = Pattern.compile("%\\{\\?\\w+\\}"); //$NON-NLS-1$
+		Matcher variableMatcher = variablePattern.matcher(text);
+		while (variableMatcher.find()) {
+				text = text.replace(variableMatcher.group(0), ""); //$NON-NLS-1$
+		}
+		return text;
+	}
+
 }

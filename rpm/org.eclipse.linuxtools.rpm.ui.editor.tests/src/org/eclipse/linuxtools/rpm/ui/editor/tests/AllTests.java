@@ -25,6 +25,6 @@ import org.junit.runners.Suite;
 		LinePositionTest.class, RpmMacroProposalsListTest.class,
 		RpmPackageProposalsListTest.class, ActionsAllTests.class,
 		ScannersAllTests.class, ParserAllTests.class, HyperlinkAllTests.class,
-		SpecfileCompletionProcessorTest.class })
+		SpecfileCompletionProcessorTest.class, LabelProviderTest.class })
 public class AllTests {
 }
