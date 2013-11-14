@@ -28,6 +28,11 @@ public interface ICreaterepoConstants {
 	String REPO_FILE_EXTENSION = "repo"; //$NON-NLS-1$
 
 	/**
+	 * The file extension of RPM files.
+	 */
+	String RPM_FILE_EXTENSION = "rpm"; 	//$NON-NLS-1$
+
+	/**
 	 * An empty string.
 	 */
 	String EMPTY_STRING = ""; //$NON-NLS-1$

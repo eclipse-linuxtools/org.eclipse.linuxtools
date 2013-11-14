@@ -26,8 +26,6 @@ public final class Messages {
 	public static String CreaterepoWizard_openFileOnCreation;
 	/****/
 	public static String CreaterepoWizard_errorOpeningNewlyCreatedFile;
-	/****/
-	public static String CreaterepoWizard_errorCreatingFolder;
 
 	// CreaterepoNewWizardPageOne
 	/****/
@@ -57,21 +55,37 @@ public final class Messages {
 	/****/
 	public static String CreaterepoNewWizardPageTwo_errorURL;
 
-	// CreaterepoProjectCreator
+	// RepoFormEditor
 	/****/
-	public static String CreaterepoProjectCreator_errorSettingProjectLocation;
+	public static String RepoFormEditor_errorInitializingForm;
+	/****/
+	public static String RepoFormEditor_errorInitializingProject;
 
-	// CreaterepoProject
+	// ImportRPMsPage
 	/****/
-	public static String CreaterepoProject_executeCreaterepo;
+	public static String ImportRPMsPage_title;
 	/****/
-	public static String CreaterepoProject_consoleName;
+	public static String ImportRPMsPage_formHeaderText;
 	/****/
-	public static String CreaterepoProject_errorExecuting;
+	public static String ImportRPMsPage_sectionTitle;
 	/****/
-	public static String CreaterepoProject_errorSettingPreferences;
+	public static String ImportRPMsPage_sectionInstruction;
 	/****/
-	public static String CreaterepoProject_errorGettingFile;
+	public static String ImportRPMsPage_buttonImportRPMs;
+	/****/
+	public static String ImportRPMsPage_buttonRemoveRPMs;
+	/****/
+	public static String ImportRPMsPage_buttonDeleteRPMs;
+	/****/
+	public static String ImportRPMsPage_buttonCreateRepo;
+	/****/
+	public static String ImportRPMsPage_errorRefreshingTree;
+
+	// MainOverviewPage
+	/****/
+	public static String MainOverviewPage_title;
+	/****/
+	public static String MainOverviewPage_formHeaderText;
 
 	static {
 		// initialize resource bundle

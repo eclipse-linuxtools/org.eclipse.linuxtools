@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.createrepo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -92,6 +95,25 @@ public class CreaterepoProject {
 	 */
 	public IFile getRepoFile() {
 		return repoFile;
+	}
+
+	/**
+	 * Get the RPMs in the project.
+	 *
+	 * @return A list of RPMs located within the project.
+	 * @throws CoreException Thrown when unable to look into the project.
+	 */
+	public List<IResource> getRPMs() throws CoreException {
+		List<IResource> rpms = new ArrayList<IResource>();
+		if (getProject().members().length > 0) {
+			for (IResource child : getContentFolder().members()) {
+				String extension = child.getFileExtension();
+				if (extension != null && extension.equals(ICreaterepoConstants.RPM_FILE_EXTENSION)) {
+					rpms.add(child);
+				}
+			}
+		}
+		return rpms;
 	}
 
 }

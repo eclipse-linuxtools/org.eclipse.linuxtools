@@ -9,6 +9,9 @@ Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.101",
- org.eclipse.ui.ide;bundle-version="3.9.1"
+ org.eclipse.ui.ide;bundle-version="3.9.1",
+ org.eclipse.ui.editors;bundle-version="3.8.100",
+ org.eclipse.ui.forms;bundle-version="3.6.1",
+ org.eclipse.ui.console;bundle-version="3.5.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
