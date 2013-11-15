@@ -75,17 +75,31 @@ public final class Messages {
 	/****/
 	public static String ImportRPMsPage_buttonRemoveRPMs;
 	/****/
-	public static String ImportRPMsPage_buttonDeleteRPMs;
-	/****/
 	public static String ImportRPMsPage_buttonCreateRepo;
 	/****/
 	public static String ImportRPMsPage_errorRefreshingTree;
 
-	// MainOverviewPage
+	// MetadataPage
 	/****/
-	public static String MainOverviewPage_title;
+	public static String MetadataPage_title;
 	/****/
-	public static String MainOverviewPage_formHeaderText;
+	public static String MetadataPage_formHeaderText;
+	/****/
+	public static String MetadataPage_sectionTitleRevision;
+	/****/
+	public static String MetadataPage_sectionInstructionRevision;
+	/****/
+	public static String MetadataPage_labelRevision;
+	/****/
+	public static String MetadataPage_sectionTitleTags;
+	/****/
+	public static String MetadataPage_sectionInstructionTags;
+	/****/
+	public static String MetadataPage_buttonAddTag;
+	/****/
+	public static String MetadataPage_buttonEditTag;
+	/****/
+	public static String MetadataPage_buttonRemoveTag;
 
 	static {
 		// initialize resource bundle

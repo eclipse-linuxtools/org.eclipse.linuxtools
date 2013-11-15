@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.form;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,8 +21,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -35,32 +32,24 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.menus.IMenuService;
 
 /**
- * This page will allow the user to import RPMs from either the
- * file system or the workspace. The RPMs imported will be the
- * RPMs used when executing the createrepo command.
+ * This page will allow the user to view/edit some of the repo
+ * xml metadata (i.e., repo, revision, etc.).
  */
-public class ImportRPMsPage extends FormPage {
-
-	private CreaterepoProject project;
+public class MetadataPage extends FormPage {
 
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
+	private Text revisionTxt;
+	private Tree tagsTree;
 	private Composite buttonList;
-	private Tree tree;
 
-	private static final String MENU_URI = "toolbar:formsToolbar"; //$NON-NLS-1$
+	private static final String MENU_URI = "toolbar:formsToolbar"; 	//$NON-NLS-1$
 	private static final String HEADER_ICON = "/icons/repository_rep.gif"; //$NON-NLS-1$
 
-	/**
-	 * Default constructor.
-	 *
-	 * @param editor The editor.
-	 * @param project The project.
-	 */
-	public ImportRPMsPage(FormEditor editor, CreaterepoProject project) {
-		super(editor, Messages.ImportRPMsPage_title, Messages.ImportRPMsPage_title);
-		this.project = project;
+	/** Default constructor. */
+	public MetadataPage(FormEditor editor) {
+		super(editor, Messages.MetadataPage_title, Messages.MetadataPage_title);
 	}
 
 	/*
@@ -75,7 +64,7 @@ public class ImportRPMsPage extends FormPage {
 		GridData data = new GridData();
 		toolkit = managedForm.getToolkit();
 		form = managedForm.getForm();
-		form.setText(Messages.ImportRPMsPage_formHeaderText);
+		form.setText(Messages.MetadataPage_formHeaderText);
 		form.setImage(Activator.getImageDescriptor(HEADER_ICON).createImage());
 		ToolBarManager toolbarManager = (ToolBarManager) form.getToolBarManager();
 		toolkit.decorateFormHeading(form.getForm());
@@ -85,45 +74,69 @@ public class ImportRPMsPage extends FormPage {
 		menuService.populateContributionManager(toolbarManager, MENU_URI);
 		toolbarManager.update(true);
 
-		layout = new GridLayout(2, true);
+		layout = new GridLayout();
 		layout.marginWidth = 6; layout.marginHeight = 12;
 		form.getBody().setLayout(layout);
 
-		// Section and its client area to manage importing the RPMs
-		Section rpmSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
+		//--------------------------------- REVISION SECTION START ----------
+		// Section and its client area to manage updating revision info
+		Section revSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
 				| Section.TITLE_BAR);
 		layout = new GridLayout();
-		rpmSection.setText(Messages.ImportRPMsPage_sectionTitle);
-		rpmSection.setDescription(Messages.ImportRPMsPage_sectionInstruction);
-		rpmSection.setLayoutData(expandComposite());
+		data = new GridData();
+		data.verticalAlignment = GridData.FILL;
+		data.horizontalAlignment = GridData.FILL;
+		data.grabExcessHorizontalSpace = true;
+		revSection.setText(Messages.MetadataPage_sectionTitleRevision);
+		revSection.setDescription(Messages.MetadataPage_sectionInstructionRevision);
+		revSection.setLayoutData(data);
 
-		// the client area containing the tree + buttons
-		Composite sectionClient = toolkit.createComposite(rpmSection);
+		// the client area containing the editing fields
+		Composite sectionClient = toolkit.createComposite(revSection);
 		layout = new GridLayout(2, false);
 		layout.marginWidth = 1; layout.marginHeight = 7;
 		sectionClient.setLayout(layout);
-		tree = toolkit.createTree(sectionClient, SWT.BORDER | SWT.MULTI | SWT.HORIZONTAL
-				| SWT.VERTICAL | SWT.LEFT_TO_RIGHT | SWT.SMOOTH);
-		tree.setLayoutData(expandComposite());
 
-		buttonList = toolkit.createComposite(sectionClient);
+		revisionTxt = createTextFieldWithLabel(sectionClient, Messages.MetadataPage_labelRevision);
+		revSection.setClient(sectionClient);
+		//---------- REVISION SECTION END
+
+		//--------------------------------- TAGS SECTION START ----------
+		// Section and its client area to manage tags
+		Section tagSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
+				| Section.TITLE_BAR);
+		layout = new GridLayout();
+		tagSection.setText(Messages.MetadataPage_sectionTitleTags);
+		tagSection.setDescription(Messages.MetadataPage_sectionInstructionTags);
+		tagSection.setLayoutData(expandComposite());
+
+		// the client area containing the tags
+		Composite sectionClientTags = toolkit.createComposite(tagSection);
+		layout = new GridLayout(2, false);
+		layout.marginWidth = 1; layout.marginHeight = 7;
+		sectionClientTags.setLayout(layout);
+
+		// TODO: create custom tree to handle tags in specific categories (distro, content, repo)
+		tagsTree = toolkit.createTree(sectionClientTags, SWT.BORDER | SWT.MULTI | SWT.HORIZONTAL
+				| SWT.VERTICAL | SWT.LEFT_TO_RIGHT | SWT.SMOOTH);
+		tagsTree.setLayoutData(expandComposite());
+
+		// everything to do with the buttons
+		buttonList = toolkit.createComposite(sectionClientTags);
 		layout = new GridLayout();
 		data = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
 		layout.marginWidth = 0; layout.marginHeight = 0;
 		buttonList.setLayout(layout);
 		buttonList.setLayoutData(data);
+		createPushButton(buttonList, Messages.MetadataPage_buttonAddTag,
+				toolkit).addSelectionListener(new AddTagButtonListener());
+		createPushButton(buttonList, Messages.MetadataPage_buttonEditTag,
+				toolkit).addSelectionListener(new EditTagButtonListener());
+		createPushButton(buttonList, Messages.MetadataPage_buttonRemoveTag,
+				toolkit).addSelectionListener(new RemoveTagButtonListener());
+		tagSection.setClient(sectionClientTags);
+		//---------- TAGS SECTION END
 
-		createPushButton(buttonList, Messages.ImportRPMsPage_buttonImportRPMs,
-				toolkit).addSelectionListener(new ImportButtonListener());
-		createPushButton(buttonList, Messages.ImportRPMsPage_buttonRemoveRPMs,
-				toolkit).addSelectionListener(new RemoveButtonListener());
-		createSpace(buttonList);
-
-		createPushButton(buttonList, Messages.ImportRPMsPage_buttonCreateRepo,
-				toolkit).addSelectionListener(new CreaterepoButtonListener());
-
-		refreshTree();
-		rpmSection.setClient(sectionClient);
 		managedForm.refresh();
 	}
 
@@ -137,11 +150,10 @@ public class ImportRPMsPage extends FormPage {
 		GridData data = new GridData();
 		data.verticalAlignment = GridData.FILL;
 		data.horizontalAlignment = GridData.FILL;
-		data.grabExcessVerticalSpace = true;
 		data.grabExcessHorizontalSpace = true;
+		data.grabExcessVerticalSpace = true;
 		return data;
 	}
-
 	/**
 	 * Create a push style button.
 	 *
@@ -160,64 +172,38 @@ public class ImportRPMsPage extends FormPage {
 	}
 
 	/**
-	 * Create space between composites, such as buttons within a button list.
+	 * Create a text field with a label.
 	 *
-	 * @param parent The composite to attach a space to.
+	 * @param parent The parent of the text field and label.
+	 * @param labelName The name on the label.
+	 * @return The newly created text field.
 	 */
-	private void createSpace(Composite parent) {
-		new Label(buttonList, SWT.NONE).setLayoutData(new GridData(0,0));
+	protected Text createTextFieldWithLabel(Composite parent, String labelName) {
+		GridData layoutData = new GridData();
+		// create the label
+		Label respositoryBaseURLLbl = new Label(parent, SWT.NONE);
+		respositoryBaseURLLbl.setText(labelName);
+		layoutData = new GridData();
+		layoutData.horizontalAlignment = GridData.BEGINNING;
+		layoutData.verticalAlignment = GridData.CENTER;
+		// create the text field
+		Text textField = new Text(parent, SWT.SINGLE);
+		layoutData = new GridData();
+		layoutData.horizontalIndent = 50;
+		layoutData.grabExcessHorizontalSpace = true;
+		layoutData.horizontalAlignment = GridData.FILL;
+		layoutData.verticalAlignment = GridData.CENTER;
+		// achieve flat look (don't put SWT.BORDER)
+		textField.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		toolkit.paintBordersFor(parent);
+		textField.setLayoutData(layoutData);
+		return textField;
 	}
 
 	/**
-	 * On creating the form content the tree will be populated with
-	 * RPMs found in the root of the current project.
-	 *
-	 * @throws CoreException Thrown when getting rpms from project fails.
+	 * Handle the add button execution on the Metadata page.
 	 */
-	private void refreshTree() {
-		tree.removeAll();
-		try {
-			for (IResource rpm : project.getRPMs()) {
-				addItemToTree(rpm.getName());
-			}
-		} catch (CoreException e) {
-			Activator.logError(Messages.ImportRPMsPage_errorRefreshingTree, e);
-		}
-		tree.setFocus();
-	}
-
-	/**
-	 * Add a new item to the tree if it does not yet exist. A null or empty
-	 * string will be ignored.
-	 *
-	 * @param itemName The name of the new item.
-	 * @return True if it does not exist and has been added, false otherwise.
-	 */
-	private boolean addItemToTree(String itemName) {
-		boolean exists = false;
-		if (itemName == null || itemName.isEmpty())
-			return false;
-		// check to see if the tree item exists in the tree
-		if (tree.getItemCount() > 0) {
-			for (TreeItem item : tree.getItems()) {
-				if (item.getText().equals(itemName)) {
-					exists = true;
-				}
-			}
-		}
-		// if the tree item doesnt exists or the tree is empty
-		if (!exists || tree.getItemCount() == 0) {
-			TreeItem treeItem = new TreeItem(tree, SWT.NONE);
-			treeItem.setText(itemName);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Handle the import button execution on the Import RPMs page.
-	 */
-	public class ImportButtonListener extends SelectionAdapter {
+	public class AddTagButtonListener extends SelectionAdapter {
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
@@ -234,9 +220,9 @@ public class ImportRPMsPage extends FormPage {
 	}
 
 	/**
-	 * Handle the remove button execution on the Import RPMs page.
+	 * Handle the edit button execution on the Metadata page.
 	 */
-	public class RemoveButtonListener extends SelectionAdapter {
+	public class EditTagButtonListener extends SelectionAdapter {
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
@@ -253,9 +239,9 @@ public class ImportRPMsPage extends FormPage {
 	}
 
 	/**
-	 * Handle the createrepo button execution on the Import RPMs page.
+	 * Handle the remove button execution on the Metadata page.
 	 */
-	public class CreaterepoButtonListener extends SelectionAdapter {
+	public class RemoveTagButtonListener extends SelectionAdapter {
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
