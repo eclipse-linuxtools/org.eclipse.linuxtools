@@ -14,12 +14,16 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
@@ -30,10 +34,36 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 
-public class SystemTapScriptLaunchConfigurationDelegate implements
-		ILaunchConfigurationDelegate {
+public class SystemTapScriptLaunchConfigurationDelegate extends
+		LaunchConfigurationDelegate {
 
 	static final String CONFIGURATION_TYPE = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"; //$NON-NLS-1$
+
+	private IProject[] scriptProject = new IProject[1];
+
+	/**
+	 * Keep a reference to the target running script's parent project, so only that project
+	 * will be saved when the script is run.
+	 */
+    @Override
+    protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) {
+        return scriptProject;
+    }
+
+	@Override
+	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+		// Find the parent project of the target script.
+		IPath path = Path.fromOSString(configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, (String)null));
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+		IProject project = file == null ? null : file.getProject();
+
+		// Only save the target script's project if a project is found.
+		if (project != null) {
+			scriptProject[0] = project;
+			return super.preLaunchCheck(configuration, mode, monitor);
+		}
+		return true;
+	}
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
