@@ -11,11 +11,12 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -33,23 +34,28 @@ public class SystemTapScriptLaunchShortcut extends ProfileLaunchShortcut {
 
 	@Override
 	public void launch(IEditorPart editor, String mode) {
-		String path = ""; //$NON-NLS-1$
+		String path;
+		String project = null;
 		if(editor.getEditorInput() instanceof PathEditorInput){
 			path = ((PathEditorInput)editor.getEditorInput()).getPath().toString();
 		} else {
-			path = ResourceUtil.getFile(editor.getEditorInput()).getLocation().toString();
+			IFile file = ResourceUtil.getFile(editor.getEditorInput());
+			path = file.getLocation().toString();
+			project = file.getProject().getName();
 		}
-		this.searchAndLaunch(path);
+		this.searchAndLaunch(path, project);
 	}
 
 	@Override
 	public void launch(ISelection selection, String mode) {
-		IPath path = ((IFile)((TreeSelection)selection).getFirstElement()).getLocation();
-		this.searchAndLaunch(path.toOSString());
+		IFile file = (IFile)((TreeSelection)selection).getFirstElement();
+		String path = file.getLocation().toOSString();
+		String project = file.getProject().getName();
+		this.searchAndLaunch(path, project);
 	}
 
-	private void searchAndLaunch(String path){
-		ILaunchConfiguration configuration = findLaunchConfiguration(path);
+	private void searchAndLaunch(String path, String project){
+		ILaunchConfiguration configuration = findLaunchConfiguration(path, project);
 		if (configuration == null){
 			return;
 		}
@@ -61,31 +67,44 @@ public class SystemTapScriptLaunchShortcut extends ProfileLaunchShortcut {
 
 	}
 
-	protected ILaunchConfiguration findLaunchConfiguration(String scriptPath) {
+	protected ILaunchConfiguration findLaunchConfiguration(String scriptPath, String scriptProject) {
 		ILaunchConfiguration configuration = null;
-		ArrayList<ILaunchConfiguration> candidateConfiguraions = new ArrayList<ILaunchConfiguration>();
+		ArrayList<ILaunchConfiguration> candidateConfigurations = new ArrayList<ILaunchConfiguration>();
 		try {
-			ILaunchConfiguration[] configs = DebugPlugin.getDefault()
-					.getLaunchManager()
+			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+			ILaunchConfiguration[] configs = launchManager
 					.getLaunchConfigurations(getLaunchConfigType());
 
 			for (ILaunchConfiguration config: configs){
 				if (config.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, "").equals(scriptPath)){ //$NON-NLS-1$
-					candidateConfiguraions.add(config);
+					candidateConfigurations.add(config);
 				}
 			}
 
-			int candidateCount = candidateConfiguraions.size();
+			int candidateCount = candidateConfigurations.size();
 			if (candidateCount == 0) {
+				LinkedList<String> configNames = new LinkedList<String>();
+				configs = launchManager.getLaunchConfigurations();
+				for (ILaunchConfiguration config : configs) {
+					configNames.add(config.getName());
+				}
+				String configName = (scriptProject == null ? "" : scriptProject + " ") //$NON-NLS-1$ //$NON-NLS-2$
+						+ Path.fromOSString(scriptPath).lastSegment();
+				String wcName = configName;
+				int conflict_index, conflict_count = 0;
+				while ((conflict_index = configNames.indexOf(wcName)) != -1) {
+					wcName = configName.concat(String.format(" (%d)", ++conflict_count)); //$NON-NLS-1$
+					configNames.remove(conflict_index);
+				}
+
 				ILaunchConfigurationType type = getLaunchConfigType();
-				configuration = type.newInstance(null, "Default"); //$NON-NLS-1$
-				ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
+				ILaunchConfigurationWorkingCopy wc = type.newInstance(null, wcName);
 				wc.setAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, scriptPath);
 				configuration = wc.doSave();
 			} else if (candidateCount == 1) {
-				configuration = candidateConfiguraions.get(0);
+				configuration = candidateConfigurations.get(0);
 			} else {
-				configuration = chooseConfiguration(candidateConfiguraions,
+				configuration = chooseConfiguration(candidateConfigurations,
 						ILaunchManager.RUN_MODE);
 			}
 		} catch (CoreException e) {
