@@ -35,7 +35,7 @@
              <executions>
                <execution>
                  <id>deploy</id>
-                 <phase>install</phase>
+                 <phase>verify</phase>
                  <goals>
                    <goal>run</goal>
                  </goals>
@@ -80,7 +80,7 @@
 	<executions>
           <execution>
             <id>default-archive-repository</id>
-            <phase>install</phase>
+            <phase>verify</phase>
             <goals>
               <goal>archive-repository</goal>
             </goals>

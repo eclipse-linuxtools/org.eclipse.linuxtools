@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?><!--
-    Copyright (c) 2009 Red Hat, Inc.
+    Copyright (c) 2009, 2013 Red Hat, Inc.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -23,4 +23,29 @@
 		<initializer
 			class="org.eclipse.linuxtools.internal.rpm.core.RPMCoreInitializer" />
 	</extension>
+<extension
+      point="org.eclipse.core.expressions.definitions">
+   <definition
+         id="org.eclipse.linuxtools.rpm.core.rpmfile">
+      <iterate
+            ifEmpty="false">
+         <or>
+            <adapt
+                  type="org.eclipse.core.resources.IProject">
+               <test
+                     property="org.eclipse.core.resources.projectNature"
+                     value="org.eclipse.linuxtools.rpm.core.rpmnature">
+               </test>
+            </adapt>
+            <adapt
+                  type="org.eclipse.core.resources.IResource">
+               <test
+                     property="org.eclipse.core.resources.name"
+                     value="*.spec">
+               </test>
+            </adapt>
+         </or>
+      </iterate>
+   </definition>
+</extension>
 </plugin>

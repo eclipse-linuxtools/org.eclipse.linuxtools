@@ -24,25 +24,6 @@
       <update label="Linux Tools Update Site" url="http://download.eclipse.org/linuxtools/update"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.forms"/>
-      <import plugin="org.eclipse.core.resources" version="3.4.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.editors" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.console" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.help"/>
-      <import plugin="org.eclipse.help.base"/>
-      <import plugin="org.eclipse.help.ui"/>
-      <import plugin="org.eclipse.help.webapp"/>
-      <import plugin="org.eclipse.core.filesystem"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.linuxtools.ssh.proxy"/>
-   </requires>
-
    <plugin
          id="org.eclipse.linuxtools.systemtap.ui.consolelog"
          download-size="0"
