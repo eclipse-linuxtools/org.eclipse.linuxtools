@@ -146,7 +146,7 @@ public class MetadataPage extends FormPage {
 	 *
 	 * @return The created GridData.
 	 */
-	private GridData expandComposite() {
+	private static GridData expandComposite() {
 		GridData data = new GridData();
 		data.verticalAlignment = GridData.FILL;
 		data.horizontalAlignment = GridData.FILL;
