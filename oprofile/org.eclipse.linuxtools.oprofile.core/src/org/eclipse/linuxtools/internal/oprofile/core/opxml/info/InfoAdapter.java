@@ -227,6 +227,9 @@ public class InfoAdapter extends AbstractDataAdapter{
 		newRoot.appendChild(timerModeTag);
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	public static void setOprofileDir (String dir) {
 		DEV_OPROFILE = dir;
 		CPUTYPE = DEV_OPROFILE + "cpu_type";
@@ -466,6 +469,9 @@ public class InfoAdapter extends AbstractDataAdapter{
 		return newDoc;
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	public void setEventIdCacheDoc (Element elem) {
 		EventIdCache.getInstance().setCacheDoc(elem);
 	}

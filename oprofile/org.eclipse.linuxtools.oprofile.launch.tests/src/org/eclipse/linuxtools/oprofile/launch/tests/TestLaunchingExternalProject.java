@@ -112,9 +112,5 @@ public class TestLaunchingExternalProject extends AbstractTest {
 
 		OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-		assertTrue(delegate.eventsIsNull);
-		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + IPath.SEPARATOR + "Debug" + IPath.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage()); //$NON-NLS-1$
 	}
 }

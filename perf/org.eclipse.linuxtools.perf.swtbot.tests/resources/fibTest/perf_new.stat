@@ -1,0 +1,17 @@
+
+ Performance counter stats for 'Debug/fibTest 20':
+
+          1.154783 task-clock                #    0.793 CPUs utilized          
+                 0 context-switches          #    0.000 K/sec                  
+                 0 cpu-migrations            #    0.000 K/sec                  
+               318 page-faults               #    0.275 M/sec                  
+         2,098,002 cycles                    #    1.817 GHz                    
+         1,432,750 stalled-cycles-frontend   #   68.29% frontend cycles idle   
+           951,437 stalled-cycles-backend    #   45.35% backend  cycles idle   
+         2,412,878 instructions              #    1.15  insns per cycle        
+                                             #    0.59  stalled cycles per insn
+           438,832 branches                  #  380.013 M/sec                  
+             8,441 branch-misses             #    1.92% of all branches         [12.97%]
+
+       0.001456361 seconds time elapsed
+

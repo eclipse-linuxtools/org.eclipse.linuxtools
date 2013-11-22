@@ -30,6 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,6 +136,28 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
 		}
 
 		testPerfView();
+	}
+
+	/**
+	 * Compare The selected items in PROJ_NAME with each other
+	 * @param The name of a tree item to select
+	 * @param The name of a second tree item to select
+	 */
+	public void compareWithEachOther (String first, String second ) {
+		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+		// Focus on project explorer view.
+		bot.viewByTitle("Project Explorer").bot();
+		bot.activeShell();
+		SWTBotTree treeBot = bot.tree();
+		treeBot.setFocus();
+
+		// Refresh and Select
+		SWTBotTreeItem proj = treeBot.expandNode(PROJ_NAME);
+		proj.contextMenu("Refresh").click();
+		proj.select(new String [] {first, second});
+
+		// Workaround for context menu on multiple selections
+		click(ContextMenuHelper.contextMenu(treeBot, "Compare With", "Each Other"));
 	}
 
 	/**

@@ -36,7 +36,7 @@ public class LaunchOptions {
 
 	public LaunchOptions() {
 		options = new OprofileDaemonOptions();
-		oprofileComboText = OprofileProject.OPCONTROL_BINARY;
+		oprofileComboText = OprofileProject.OPERF_BINARY;
 		executionsNumber = 1;
 	}
 
@@ -102,7 +102,7 @@ public class LaunchOptions {
 			options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
 			options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
 			setExecutionsNumber(config.getAttribute(OprofileLaunchPlugin.ATTR_EXECUTIONS_NUMBER, 1));
-			setOprofileComboText(config.getAttribute(OprofileLaunchPlugin.ATTR_OPROFILE_COMBO_TEXT, OprofileProject.OPCONTROL_BINARY));
+			setOprofileComboText(config.getAttribute(OprofileLaunchPlugin.ATTR_OPROFILE_COMBO_TEXT, OprofileProject.OPERF_BINARY));
 		} catch (CoreException e) {
 		}
 	}

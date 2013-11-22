@@ -22,9 +22,6 @@ import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.ReportComparisonData;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDiffMenuAction;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDiffMenuAction.PerfCachedData;
-import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDiffMenuAction.Type;
 import org.junit.Test;
 
 public class DataManipulatorTest {
@@ -94,25 +91,6 @@ public class DataManipulatorTest {
 				+ " " + newData.toOSString();  //$NON-NLS-1$
 
 		assertEquals(expected, diffData.getPerfData().trim());
-	}
-
-	@Test
-	public void testPerfDataFile() {
-		String dataTitle = "title";
-		String dataID = "id";
-		String data = "perf stat data stub file\n";
-
-		PerfStatDiffMenuAction action = new PerfStatDiffMenuAction(Type.PERF_DIFF, "0");
-		PerfCachedData dataFile = action.new PerfCachedData(dataID, dataTitle);
-
-		// put test data on cache
-		PerfPlugin.getDefault().cacheData("id", data);
-
-		assertEquals("title", dataFile.getTitle());
-		assertEquals(data, dataFile.getPerfData());
-
-		// remove test data from cache
-		PerfPlugin.getDefault().removeCachedData("id");
 	}
 
 	/**

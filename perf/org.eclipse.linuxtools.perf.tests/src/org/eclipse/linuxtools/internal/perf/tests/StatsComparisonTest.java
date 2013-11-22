@@ -153,30 +153,6 @@ public class StatsComparisonTest {
 	}
 
 	@Test
-	public void testStatDataComparisonCaching() {
-		IPath oldStatData = Path.fromOSString(STAT_RES + "perf_old.stat");
-		IPath newStatData = Path.fromOSString(STAT_RES + "perf_new.stat");
-		StatComparisonData diffData = new StatComparisonData("title",
-				oldStatData, newStatData);
-		diffData.cacheData();
-
-		PerfPlugin plugin = PerfPlugin.getDefault();
-		BaseDataManipulator dataMan = new BaseDataManipulator();
-
-		// check data was cached
-		assertEquals(dataMan.fileToString(oldStatData.toFile()),
-				plugin.getCachedData(diffData.getOldDataID()));
-		assertEquals(dataMan.fileToString(newStatData.toFile()),
-				plugin.getCachedData(diffData.getNewDataID()));
-
-		diffData.clearCachedData();
-
-		// check cached data was cleared
-		assertNull(plugin.getCachedData(diffData.getOldDataID()));
-		assertNull(plugin.getCachedData(diffData.getNewDataID()));
-	}
-
-	@Test
 	public void testStatDataComparison() {
 		IPath oldStatData = Path.fromOSString(STAT_RES + "perf_old.stat");
 		IPath newStatData = Path.fromOSString(STAT_RES + "perf_new.stat");
