@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpUnitMask;
@@ -229,7 +230,8 @@ AbstractLaunchConfigurationTab {
 					counters[i].loadConfiguration(config);
 
 					for (CounterSubTab counterSubTab : counterSubTabs){
-						if(counterSubTab.enabledCheck.getSelection() && counterSubTab.eventList.getList().getSelectionIndex() == -1){
+						int nr = counterSubTab.counter.getNumber();
+						if(counterSubTab.enabledCheck.getSelection() && config.getAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(nr), 0) == 0){
 							valid = false;
 						}
 					}
@@ -237,22 +239,25 @@ AbstractLaunchConfigurationTab {
 					if (counters[i].getEnabled()) {
 						++numEnabledEvents;
 
-						if (counters[i].getEvent() == null) {
-							valid = false;
-							break;
-						}
+						for (OpEvent event : counters[i].getEvents()) {
+							if (event == null) {
+								valid = false;
+								break;
+							}
 
-						// First check min count
-						int min = counters[i].getEvent().getMinCount();
-						if (counters[i].getCount() < min) {
-							valid = false;
-							break;
-						}
+							// First check min count
+							int min = event.getMinCount();
+							if (counters[i].getCount() < min) {
+								valid = false;
+								break;
+							}
 
-						// Next ask oprofile if it is valid
-						if (!checkEventSetupValidity(counters[i].getNumber(), counters[i].getEvent().getText(), counters[i].getEvent().getUnitMask().getMaskValue())) {
-							valid = false;
-							break;
+							// Next ask oprofile if it is valid
+							if (!checkEventSetupValidity(
+									counters[i].getNumber(), event.getText(), event.getUnitMask().getMaskValue())) {
+								valid = false;
+								break;
+							}
 						}
 					}
 				}
@@ -564,7 +569,13 @@ AbstractLaunchConfigurationTab {
 				}
 			});
 
-			eventList = new ListViewer(parent, SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+			int options =  SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER;
+			if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+				options |= SWT.MULTI;
+			} else {
+				options |= SWT.SINGLE;
+			}
+			eventList = new ListViewer(parent, options);
 			eventList.getList().setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
 
 			eventList.setLabelProvider(new ILabelProvider(){
@@ -712,18 +723,18 @@ AbstractLaunchConfigurationTab {
 			boolean enabled = counter.getEnabled();
 			enabledCheck.setSelection(enabled);
 
-			if (counter.getEvent() == null) {
+			if (counter.getEvents().length == 0 || counter.getEvents()[0] == null) {
 				// Default to first in list
-				counter.setEvent(counter.getValidEvents()[0]);
+				counter.setEvents(new OpEvent [] {counter.getValidEvents()[0]});
 			}
 
 			//load default states
 			profileKernelCheck.setSelection(counter.getProfileKernel());
 			profileUserCheck.setSelection(counter.getProfileUser());
 			countText.setText(Integer.toString(counter.getCount()));
-			eventDescText.setText(counter.getEvent().getTextDescription());
-			unitMaskViewer.displayEvent(counter.getEvent());
-			eventList.setSelection(new StructuredSelection(counter.getEvent()));
+			eventDescText.setText(counter.getEvents()[0].getTextDescription());
+			unitMaskViewer.displayEvent(counter.getEvents()[0]);
+			eventList.setSelection(new StructuredSelection(counter.getEvents()));
 		}
 
 		/**
@@ -768,21 +779,33 @@ AbstractLaunchConfigurationTab {
 		 * and updates the UnitMask and event description text box.
 		 */
 		private void handleEventListSelectionChange() {
-			int index = eventList.getList().getSelectionIndex();
-			if (index != -1){
-				OpEvent event = (OpEvent) eventList.getElementAt(index);
-				counter.setEvent(event);
-				eventDescText.setText(event.getTextDescription());
-				unitMaskViewer.displayEvent(event);
+			int [] indices = eventList.getList().getSelectionIndices();
+			if (indices.length != 0) {
+				ArrayList<OpEvent> tmp = new ArrayList<OpEvent> ();
+				for (int index : indices) {
+					OpEvent event = (OpEvent) eventList.getElementAt(index);
+					tmp.add(event);
+					eventDescText.setText(event.getTextDescription());
+					unitMaskViewer.displayEvent(event);
+				}
 
-				// Check the min count to update the error message (events can have
+				// Check the min count to update the error message (events
+				// can have
 				// different minimum reset counts)
-				int min = counter.getEvent().getMinCount();
-				if ((counter.getCount() < min) && (!defaultEventCheck.getSelection())){
+				int min = Integer.MIN_VALUE;
+				for (OpEvent ev : tmp) {
+					// We want the largest of the min values
+					if (ev.getMinCount() > min) {
+						min = ev.getMinCount();
+					}
+				}
+				if ((counter.getCount() < min)
+						&& (!defaultEventCheck.getSelection())) {
 					setErrorMessage(getMinCountErrorMessage(min));
 				}
+
+				counter.setEvents(tmp.toArray(new OpEvent[0]));
 			} else {
-				counter.setEvent(null);
 				eventDescText.setText(""); //$NON-NLS-1$
 				if(unitMaskViewer != null){
 					unitMaskViewer.displayEvent(null);
@@ -821,7 +844,13 @@ AbstractLaunchConfigurationTab {
 				counter.setCount(count);
 
 				// Check minimum count
-				int min = counter.getEvent().getMinCount();
+				int min = Integer.MIN_VALUE;
+				for (OpEvent event : counter.getEvents()) {
+					// We want the largest of the min values
+					if (event != null && event.getMinCount() > min) {
+						min = event.getMinCount();
+					}
+				}
 				if ((count < min) && (!defaultEventCheck.getSelection())) {
 					errorMessage = getMinCountErrorMessage(min);
 				}

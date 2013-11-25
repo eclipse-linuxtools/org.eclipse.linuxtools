@@ -13,6 +13,8 @@
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -38,8 +40,8 @@ public class OprofileCounter {
 	// Is this counter enabled?
 	private boolean _enabled;
 	
-	// The event to collect on this counter
-	private OprofileDaemonEvent daemonEvent;
+	// The event(s) to collect on this counter
+	private OprofileDaemonEvent[] daemonEvent;
 	
 	// List of valid events on this counter
 	private OpEvent[] eventList = null;
@@ -61,7 +63,7 @@ public class OprofileCounter {
 		number = nr;
 		_enabled = false;
 		eventList = events;
-		daemonEvent = new OprofileDaemonEvent();
+		daemonEvent = new OprofileDaemonEvent [] {new OprofileDaemonEvent()};
 	}
 
 	/**
@@ -93,8 +95,20 @@ public class OprofileCounter {
 	 * Method setEvent.
 	 * @param event	the event for this counter
 	 */
-	public void setEvent(OpEvent event) {
-		daemonEvent.setEvent(event);
+	public void setEvents(OpEvent [] events) {
+		OprofileDaemonEvent [] newDaemonEvent = new OprofileDaemonEvent[events.length];
+		for (int i = 0; i < events.length; i++) {
+			if (i > daemonEvent.length - 1) {
+				OprofileDaemonEvent de = new OprofileDaemonEvent();
+				de.setEvent(events[i]);
+				de.setResetCount(daemonEvent[0].getResetCount());
+				newDaemonEvent[i] = de;
+			} else {
+				daemonEvent[i].setEvent(events[i]);
+				newDaemonEvent[i] = daemonEvent[i];
+			}
+		}
+		daemonEvent = newDaemonEvent;
 	}
 	
 	/**
@@ -102,7 +116,9 @@ public class OprofileCounter {
 	 * @param profileKernel	whether this counter should count kernel events
 	 */
 	public void setProfileKernel(boolean profileKernel) {
-		daemonEvent.setProfileKernel(profileKernel);
+		for (int i = 0; i < daemonEvent.length; i++) {
+			daemonEvent[i].setProfileKernel(profileKernel);
+		}
 	}
 	
 	/**
@@ -110,7 +126,9 @@ public class OprofileCounter {
 	 * @param profileUser	whether this counter should count user events
 	 */
 	public void setProfileUser(boolean profileUser) {
-		daemonEvent.setProfileUser(profileUser);
+		for (int i = 0; i < daemonEvent.length; i++) {
+			daemonEvent[i].setProfileUser(profileUser);
+		}
 	}
 	
 	/**
@@ -118,7 +136,9 @@ public class OprofileCounter {
 	 * @param count	the number of events between samples for this counter
 	 */
 	public void setCount(int count) {
-		daemonEvent.setResetCount(count);
+		for (int i = 0; i < daemonEvent.length; i++) {
+			daemonEvent[i].setResetCount(count);
+		}
 	}
 	
 	/**
@@ -128,13 +148,17 @@ public class OprofileCounter {
 	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(number), _enabled);
-		if (daemonEvent.getEvent() != null) {
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number), daemonEvent.getEvent().getText());
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), daemonEvent.getEvent().getUnitMask().getMaskValue());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(number), daemonEvent.length);
+
+		for (int i = 0; i < daemonEvent.length; i++) {
+			if (daemonEvent[i].getEvent() != null) {
+				config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number, i), daemonEvent[i].getEvent().getText());
+				config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), daemonEvent[i].getEvent().getUnitMask().getMaskValue());
+			}
+			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), daemonEvent[i].getProfileKernel());
+			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), daemonEvent[i].getProfileUser());
+			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), daemonEvent[i].getResetCount());
 		}
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), daemonEvent.getProfileKernel());
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), daemonEvent.getProfileUser());
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), daemonEvent.getResetCount());
 	}
 	
 	/**
@@ -144,29 +168,33 @@ public class OprofileCounter {
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
 			_enabled = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(number), false);
+			int numEvents = config.getAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(number), 1);
+			daemonEvent = new OprofileDaemonEvent[numEvents];
 
-			String str = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number), ""); //$NON-NLS-1$
-			daemonEvent.setEvent(_eventFromString(str));
+			for (int i = 0; i < numEvents; i++) {
+				String str = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number, i), ""); //$NON-NLS-1$
+				int maskValue = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), OpUnitMask.SET_DEFAULT_MASK);
 
-			if (daemonEvent.getEvent() == null) {
-				return;
+				daemonEvent[i] = new OprofileDaemonEvent();
+				daemonEvent[i].setEvent(_eventFromString(str));
+
+				if (daemonEvent[i].getEvent() == null) {
+					continue;
+				}
+
+				daemonEvent[i].getEvent().getUnitMask().setMaskValue(maskValue);
+				daemonEvent[i].setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), false));
+				daemonEvent[i].setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), false));
+
+				daemonEvent[i].setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), OprofileDaemonEvent.COUNT_UNINITIALIZED));
 			}
-			
-			
-			int maskValue =  config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), OpUnitMask.SET_DEFAULT_MASK);
-			daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);
-			
-			daemonEvent.setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), false));
-			daemonEvent.setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), false));
-			
-			daemonEvent.setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), OprofileDaemonEvent.COUNT_UNINITIALIZED));
 		} catch (CoreException ce) {
 			
 		}
 	}
 	
 	public OpUnitMask getUnitMask() {
-		OpEvent event = daemonEvent.getEvent();
+		OpEvent event = daemonEvent[0].getEvent();
 		
 		if (event != null) {
 			return event.getUnitMask();
@@ -204,8 +232,12 @@ public class OprofileCounter {
 	 * Method getEvent.
 	 * @return the event for this counter
 	 */
-	public OpEvent getEvent() {
-		return daemonEvent.getEvent();
+	public OpEvent [] getEvents() {
+		List<OpEvent> res = new ArrayList<OpEvent> ();
+		for (OprofileDaemonEvent de : daemonEvent) {
+			res.add(de.getEvent());
+		}
+		return res.toArray(new OpEvent[0]);
 	}
 	
 	/**
@@ -213,7 +245,7 @@ public class OprofileCounter {
 	 * @return whether this counter is counting kernel events
 	 */
 	public boolean getProfileKernel() {
-		return daemonEvent.getProfileKernel();
+		return daemonEvent[0].getProfileKernel();
 	}
 	
 	/**
@@ -221,7 +253,7 @@ public class OprofileCounter {
 	 * @return whether this counter is counting user events
 	 */
 	public boolean getProfileUser() {
-		return daemonEvent.getProfileUser();
+		return daemonEvent[0].getProfileUser();
 	}
 
 	/**
@@ -229,7 +261,7 @@ public class OprofileCounter {
 	 * @return the number of events between samples for this counter
 	 */
 	public int getCount() {
-		return daemonEvent.getResetCount();
+		return daemonEvent[0].getResetCount();
 	}
 	
 	/**
@@ -245,7 +277,7 @@ public class OprofileCounter {
 	 * <B>Not</B> valid if this counter is not enabled!
 	 * @return the OprofileDaemonEvent
 	 */
-	public OprofileDaemonEvent getDaemonEvent() {
+	public OprofileDaemonEvent [] getDaemonEvents() {
 		return daemonEvent;
 	}
 

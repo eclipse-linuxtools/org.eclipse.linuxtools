@@ -77,8 +77,10 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			OprofileCounter[] counters = oprofileCounters(config);
 
 			for (int i = 0; i < counters.length; ++i) {
-				if (counters[i].getEnabled())
-					events.add(counters[i].getDaemonEvent());
+				if (counters[i].getEnabled()) {
+					OprofileDaemonEvent[] counterEvents  = counters[i].getDaemonEvents();
+					events.addAll(Arrays.asList(counterEvents));
+				}
 			}
 
 			daemonEvents = new OprofileDaemonEvent[events.size()];
