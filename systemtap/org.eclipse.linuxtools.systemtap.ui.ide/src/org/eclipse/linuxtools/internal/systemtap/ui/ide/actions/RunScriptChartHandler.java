@@ -54,8 +54,11 @@ public class RunScriptChartHandler extends RunScriptHandler {
 			console.getCommand().addInputStreamListener(new ChartStreamDaemon(dataSets.get(i), parsers.get(i)));
 		}
 		try {
+			String name = console.getName();
+			String title = name.substring(name.lastIndexOf('/')+1);
+
 			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(), GraphSelectorEditor.ID);
+			GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
 
 			String scriptName = console.getName();
 			ivp.createScriptSets(scriptName, names, dataSets);
