@@ -34,13 +34,24 @@ public class CreaterepoProject {
 	private IProgressMonitor monitor;
 
 	/**
-	 * Default constructor.
+	 * Constructor without repo file.
 	 *
 	 * @param project The project.
 	 * @throws CoreException Thrown when unable to initialize project.
 	 */
 	public CreaterepoProject(IProject project) throws CoreException {
+		this(project, null);
+	}
+
+	/**
+	 * Default constructor.
+	 *
+	 * @param project The project.
+	 * @throws CoreException Thrown when unable to initialize project.
+	 */
+	public CreaterepoProject(IProject project, IFile repoFile) throws CoreException {
 		this.project = project;
+		this.repoFile = repoFile;
 		monitor = new NullProgressMonitor();
 		intitialize();
 		// if something is deleted from the project while outside of eclipse,
@@ -59,14 +70,15 @@ public class CreaterepoProject {
 		if (!content.exists()) {
 			content.create(false, true, monitor);
 		}
-		// tries to check if a .repo file already exists in the project
-		for (IResource child : getProject().members()) {
-			String extension = child.getFileExtension();
-			if (extension != null && extension.equals(ICreaterepoConstants.REPO_FILE_EXTENSION)) {
-				// assumes that there will only be 1 .repo file in the folder
-				repoFile = (IFile) child;
+		if (repoFile == null) {
+			for (IResource child : getProject().members()) {
+				String extension = child.getFileExtension();
+				if (extension != null && extension.equals(ICreaterepoConstants.REPO_FILE_EXTENSION)) {
+					// assumes that there will only be 1 .repo file in the folder
+					repoFile = (IFile) child;
+				}
+				// if no repo file then keep it null
 			}
-			// if no repo file then keep it null
 		}
 	}
 

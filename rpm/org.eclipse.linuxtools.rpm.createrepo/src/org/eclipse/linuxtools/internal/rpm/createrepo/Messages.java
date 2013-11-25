@@ -101,6 +101,10 @@ public final class Messages {
 	/****/
 	public static String MetadataPage_buttonRemoveTag;
 
+	// CreaterepoResourceChangeListener
+	/****/
+	public static String CreaterepoResourceChangeListener_errorGettingResource;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
