@@ -10,12 +10,22 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.form;
 
+import java.io.File;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
+import org.eclipse.linuxtools.rpm.createrepo.CreaterepoUtils;
+import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,9 +33,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -219,19 +234,35 @@ public class ImportRPMsPage extends FormPage {
 	 * Handle the import button execution on the Import RPMs page.
 	 */
 	public class ImportButtonListener extends SelectionAdapter {
+		private final String[] EXTENSION_FILTERS = {"*." + ICreaterepoConstants.RPM_FILE_EXTENSION}; //$NON-NLS-1$
+
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetSelected(SelectionEvent e) { }
+		public void widgetSelected(SelectionEvent e) {
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			Shell shell = workbench.getModalDialogShellProvider().getShell();
+			FileDialog fileDialog = new FileDialog(shell, SWT.SINGLE);
+			fileDialog.setFilterExtensions(EXTENSION_FILTERS);
+			if (fileDialog.open() != null) {
+				File externalFile = new File(fileDialog.getFilterPath(), fileDialog.getFileName());
+				try {
+					project.importRPM(externalFile);
+					refreshTree();
+				} catch (CoreException e1) {
+					Activator.logError(Messages.ImportButtonListener_error, e1);
+				}
+			}
+		}
 
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
 	}
 
 	/**
@@ -243,14 +274,42 @@ public class ImportRPMsPage extends FormPage {
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetSelected(SelectionEvent e) { }
+		public void widgetSelected(SelectionEvent e) {
+			TreeItem[] selection = tree.getSelection();
+			try {
+				List<IResource> rpms = project.getRPMs();
+				if (selection.length > 0 && !rpms.isEmpty()) {
+					for (IResource resource : rpms) {
+						for (TreeItem treeItem : selection) {
+							deleteIfEquals(resource, treeItem);
+						}
+					}
+				}
+				refreshTree();
+			} catch (CoreException e1) {
+				Activator.logError(Messages.RemoveButtonListener_error, e1);
+			}
+		}
 
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
+
+		/**
+         * Delete the resource if the tree item has the same name as it.
+         *
+         * @param resource The resource in the project (the RPM).
+         * @param treeItem The RPM in the tree.
+         * @throws CoreException Thrown when deleting fails.
+         */
+		private void deleteIfEquals(IResource resource, TreeItem treeItem) throws CoreException {
+            if (resource.getName().equals(treeItem.getText())) {
+                resource.delete(false, new NullProgressMonitor());
+            }
+        }
 	}
 
 	/**
@@ -262,14 +321,32 @@ public class ImportRPMsPage extends FormPage {
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetSelected(SelectionEvent e) { }
+		public void widgetSelected(SelectionEvent e) {
+			Job executeCreaterepo = new Job(Messages.Createrepo_jobName) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						monitor.beginTask(Messages.CreaterepoProject_executeCreaterepo, IProgressMonitor.UNKNOWN);
+						MessageConsoleStream os = CreaterepoUtils.findConsole(Messages.CreaterepoProject_consoleName)
+								.newMessageStream();
+						String message = "Createrepo functionality to be implemented when clicking this button"; //$NON-NLS-1$
+						os.print(message);
+						return new Status(IStatus.OK, Activator.PLUGIN_ID, message);
+					} finally {
+						monitor.done();
+					}
+				}
+			};
+			executeCreaterepo.setUser(true);
+			executeCreaterepo.schedule();
+		}
 
 		/*
 		 * (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
 	}
 
 }

@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -81,7 +82,7 @@ public class MetadataPage extends FormPage {
 		//--------------------------------- REVISION SECTION START ----------
 		// Section and its client area to manage updating revision info
 		Section revSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
-				| Section.TITLE_BAR);
+				| ExpandableComposite.TITLE_BAR);
 		layout = new GridLayout();
 		data = new GridData();
 		data.verticalAlignment = GridData.FILL;
@@ -104,7 +105,7 @@ public class MetadataPage extends FormPage {
 		//--------------------------------- TAGS SECTION START ----------
 		// Section and its client area to manage tags
 		Section tagSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
-				| Section.TITLE_BAR);
+				| ExpandableComposite.TITLE_BAR);
 		layout = new GridLayout();
 		tagSection.setText(Messages.MetadataPage_sectionTitleTags);
 		tagSection.setDescription(Messages.MetadataPage_sectionInstructionTags);
@@ -216,7 +217,7 @@ public class MetadataPage extends FormPage {
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
 	}
 
 	/**
@@ -235,7 +236,7 @@ public class MetadataPage extends FormPage {
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
 	}
 
 	/**
@@ -254,7 +255,7 @@ public class MetadataPage extends FormPage {
 		 * @see org.eclipse.swt.events.SelectionAdapter#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) { }
+		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
 	}
 
 }
