@@ -63,6 +63,9 @@
                 icon="icons/actions/run/run_exc.gif"
                 label="%action.run.name"
                 style="push">
+             <visibleWhen
+                   checkEnabled="true">
+             </visibleWhen>
           </command>
        </menuContribution>
        <menuContribution
@@ -269,6 +272,7 @@
 			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
 			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
 			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet"/>
+			<actionSet id="org.eclipse.debug.ui.launchActionSet"/>
 
 		</perspectiveExtension>
 		<perspectiveExtension
@@ -306,7 +310,9 @@
     <shortcut
           class="org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunchShortcut"
           id="org.eclipse.linuxtools.systemtap.ui.ide.StapLaunchShortcut"
-          label="Systemtap Script"
+          label="%launch.run.name"
+          description="%launch.run.desc"
+          icon="icons/smileytap_small.gif"
           modes="run">
        <contextualLaunch>
           <enablement>
