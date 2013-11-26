@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Text;
 import org.swtchart.Chart;
 
 /**
- * The dialog used to customize the chart before cerating it.
+ * The dialog used to customize the chart before creating it.
  */
 public class ChartDialog extends Dialog {
 

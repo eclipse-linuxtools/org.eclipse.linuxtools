@@ -107,9 +107,11 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
 	 */
 	protected void createProject(IProgressMonitor monitor) {
 		try {
+			String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
+					REPO_FILE_EXTENSION);
 			// create the project
 			project = CreaterepoProjectCreator.create(pageOne.getProjectName(),
-					pageOne.getLocationPath(), monitor);
+					pageOne.getLocationPath(), fileName, monitor);
 			// get a handle on the content folder
 			IFolder folder = project
 					.getFolder(ICreaterepoConstants.CONTENT_FOLDER);
@@ -117,8 +119,6 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
 				folder.create(false, true, monitor);
 			}
 			// get a handle on the .repo file
-			String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
-					REPO_FILE_EXTENSION);
 			final IFile file = project.getFile(fileName);
 			final String repoFileContents = initializeRepoContents(pageTwo.getRepositoryID(),
 					pageTwo.getRepositoryName(), pageTwo.getRepositoryURL());

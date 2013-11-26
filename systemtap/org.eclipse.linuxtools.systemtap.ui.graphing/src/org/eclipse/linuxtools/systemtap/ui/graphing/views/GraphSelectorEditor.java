@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.ui.graphing.views;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.systemtap.ui.graphing.views.Messages;
@@ -64,7 +65,10 @@ public class GraphSelectorEditor extends EditorPart {
 	 * @param title The name to be shown on the new tab
 	 * @param dataSet The <code>IDataSet</code> for the new script set
 	 * @since 2.0
+	 * @deprecated See {@link GraphSelectorEditor#createScriptSets}
+	 * TODO drop in 3.0
 	 */
+	@Deprecated
 	public void createScriptSet(String title, IDataSet dataSet) {
 		CTabItem item;
 
@@ -78,6 +82,39 @@ public class GraphSelectorEditor extends EditorPart {
 		scriptFolder.setSelection(item);
 		fireTabOpenEvent();
 		this.setPartName(NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, title));
+	}
+
+	/**
+	 * This method will create a new script set for each of the provided dataSets.
+	 * Each new script set will be given a new tab item at the end of the list.
+	 * @param scriptName The full name of the script that is being monitored.
+	 * @param titles The names to be shown on each new tab
+	 * @param dataSets The <code>IDataSet</code>s for each new script set
+	 * @since 2.2
+	 */
+	public void createScriptSets(String scriptName, List<String> titles, List<IDataSet> dataSets) {
+		CTabItem item = null;
+
+		for (int i = 0, n = titles.size(); i < n; i++) {
+			item = new CTabItem(scriptFolder, SWT.CLOSE);
+			item.setText(titles.get(i));
+			Composite parent = new Composite(scriptFolder, SWT.NONE);
+			GraphDisplaySet gds = new GraphDisplaySet(parent, dataSets.get(i));
+			displaySets.add(gds);
+			item.setControl(parent);
+		}
+
+		scriptFolder.setSelection(item); // Choose the last created item.
+		fireTabOpenEvent();
+		this.setPartName(NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptName.substring(scriptName.lastIndexOf('/')+1)));
+	}
+
+	/**
+	 * @return The current number of script sets (one for each regular expression being watched).
+	 * @since 2.2
+	 */
+	public int numberOfScriptSets() {
+		return displaySets.size();
 	}
 
 	/**
@@ -129,7 +166,17 @@ public class GraphSelectorEditor extends EditorPart {
 	 * @since 2.0
 	 */
 	public GraphDisplaySet getActiveDisplaySet() {
-		int index = scriptFolder.getSelectionIndex();
+		return getDisplaySet(scriptFolder.getSelectionIndex());
+	}
+
+	/**
+	 * Finds and returns the component of the provided index.
+	 * @param index The index of the GraphDisplaySet to return
+	 * @return The <code>GraphDisplaySet</code> of the provided
+	 * index, or null if the index is out of range.
+	 * @since 2.2
+	 */
+	public GraphDisplaySet getDisplaySet(int index) {
 		if(index >= 0 && index < displaySets.size()) {
 			return displaySets.get(index);
 		} else {

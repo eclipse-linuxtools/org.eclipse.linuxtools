@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,11 +44,15 @@ public class SystemTapScriptLaunchConfigurationDelegate implements
 		RunScriptHandler action;
 
 		boolean runWithChart = configuration.getAttribute(SystemTapScriptGraphOptionsTab.RUN_WITH_CHART, false);
-		if (runWithChart){
-			IDataSet dataSet = SystemTapScriptGraphOptionsTab.createDataset(configuration);
-			IDataSetParser parser = SystemTapScriptGraphOptionsTab.createDatasetParser(configuration);
-			LinkedList<GraphData> graphs = SystemTapScriptGraphOptionsTab.createGraphsFromConfiguration(configuration);
-			action = new RunScriptChartHandler(parser, dataSet, graphs);
+		// If runWithChart is true there must be at least one graph, but this isn't guaranteed
+		// to be true for outdated Launch Configurations. So for safety, make sure there are graphs.
+		int numGraphs = configuration.getAttribute(SystemTapScriptGraphOptionsTab.NUMBER_OF_REGEXS, 0);
+		if (runWithChart && numGraphs > 0){
+			List<IDataSetParser> parsers = SystemTapScriptGraphOptionsTab.createDatasetParsers(configuration);
+			List<IDataSet> dataSets = SystemTapScriptGraphOptionsTab.createDataset(configuration);
+			List<String> names = SystemTapScriptGraphOptionsTab.createDatasetNames(configuration);
+			List<LinkedList<GraphData>> graphs = SystemTapScriptGraphOptionsTab.createGraphsFromConfiguration(configuration);
+			action = new RunScriptChartHandler(parsers, dataSets, names, graphs);
 		}else{
 			action = new RunScriptHandler();
 		}

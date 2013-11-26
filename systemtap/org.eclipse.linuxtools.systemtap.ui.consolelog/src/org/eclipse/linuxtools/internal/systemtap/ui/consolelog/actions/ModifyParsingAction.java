@@ -35,7 +35,11 @@ import org.eclipse.ui.PlatformUI;
  * The action to allow users to change the parsing expression while a script is actively running.
  * @author Ryan Morse
  * @since 2.0
+ * @deprecated
+ * TODO By 3.0, this action is to either be removed or made compatible with
+ * the graphing API in place.
  */
+@Deprecated
 public class ModifyParsingAction extends ConsoleAction {
 
 	public ModifyParsingAction(ScriptConsole fConsole) {

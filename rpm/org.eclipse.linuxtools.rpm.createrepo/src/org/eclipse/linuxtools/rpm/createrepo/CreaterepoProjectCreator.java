@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.createrepo;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -35,7 +39,7 @@ public class CreaterepoProjectCreator {
 	 * @throws CoreException Thrown when creating a project fails.
 	 */
 	public static IProject create(String projectName, IPath locationPath,
-			IProgressMonitor monitor) throws CoreException {
+			String repoName, IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
 		IProjectDescription description = ResourcesPlugin.getWorkspace()
@@ -45,7 +49,12 @@ public class CreaterepoProjectCreator {
 		}
 		project.create(description, monitor);
 		project.open(monitor);
-		new CreaterepoProject(project);
+		IFile repoFile = project.getFile(repoName);
+		InputStream stream = new ByteArrayInputStream(ICreaterepoConstants.EMPTY_STRING.getBytes());
+		if (!repoFile.exists()) {
+			repoFile.create(stream, true, monitor);
+		}
+		new CreaterepoProject(project, repoFile);
 		return project;
 	}
 

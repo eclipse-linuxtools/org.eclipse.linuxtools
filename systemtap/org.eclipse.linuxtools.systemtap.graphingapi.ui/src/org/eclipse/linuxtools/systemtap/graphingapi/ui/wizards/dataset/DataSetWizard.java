@@ -26,6 +26,12 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
+/**
+ * @deprecated The means of creating/editing graph configurations has
+ * deviated significantly from this implementation.
+ * TODO remove in 3.0
+ */
+@Deprecated
 public class DataSetWizard extends Wizard implements INewWizard {
 	public DataSetWizard(File metaFile, String scriptFile) {
 		this.metaFile = metaFile;

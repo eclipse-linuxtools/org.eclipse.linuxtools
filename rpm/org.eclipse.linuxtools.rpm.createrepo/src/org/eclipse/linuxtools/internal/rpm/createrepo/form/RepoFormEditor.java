@@ -11,10 +11,13 @@
 package org.eclipse.linuxtools.internal.rpm.createrepo.form;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
+import org.eclipse.linuxtools.internal.rpm.createrepo.listener.CreaterepoResourceChangeListener;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -31,8 +34,11 @@ import org.eclipse.ui.ide.ResourceUtil;
  */
 public class RepoFormEditor extends FormEditor {
 
+	public static final String EDITOR_ID = "org.eclipse.linuxtools.rpm.createrepo.repoEditor"; //$NON-NLS-1$
+
 	private CreaterepoProject project;
 	private TextEditor editor;
+	private IResourceChangeListener resourceChangeListener;
 
 	/*
 	 * (non-Javadoc)
@@ -44,10 +50,22 @@ public class RepoFormEditor extends FormEditor {
 		IFile file = ResourceUtil.getFile(input);
 		setPartName(file.getName());
 		try {
-			project = new CreaterepoProject(file.getProject());
+			project = new CreaterepoProject(file.getProject(), file);
 		} catch (CoreException e) {
 			Activator.logError(Messages.RepoFormEditor_errorInitializingProject, e);
 		}
+		resourceChangeListener = new CreaterepoResourceChangeListener(project);
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
+	 */
+	@Override
+	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+		super.dispose();
 	}
 
 	/*
