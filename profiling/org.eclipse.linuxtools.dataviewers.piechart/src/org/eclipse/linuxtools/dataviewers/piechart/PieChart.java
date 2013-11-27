@@ -26,10 +26,23 @@ public class PieChart extends Chart {
 
 	protected List<RGB> colorList = new ArrayList<RGB>();
 
+	/**
+	 * A PieChart with no titles given to its pies.
+	 * @param parent
+	 * @param style
+	 */
     public PieChart(Composite parent, int style) {
         this(parent, style, new String[0]);
     }
 
+    /**
+     * A PieChart with titles given to each pie it draws.
+     * @param parent The parent composite.
+     * @param style The style of the parent composite.
+     * @param labels The title of each pie chart that is to be drawn.
+     * A null / not present title indicates no title.
+     * @since 1.1
+     */
     public PieChart(Composite parent, int style, String labels[]) {
         super(parent, style);
         Control plotArea = null;
@@ -51,8 +64,9 @@ public class PieChart extends Chart {
 		}
     }
 
-    /*
+    /**
      * Add data to this Pie Chart. A single pie Chart will be drawn with the data provided.
+     * @deprecated see {@link #addPieChartSeries(String[], double[][])}
      */
     @Deprecated
     public void addPieChartSeries(String labels[], double val[]) {
@@ -66,11 +80,12 @@ public class PieChart extends Chart {
         addPieChartSeries(labels, newVal);
     }
 
-    /*
+    /**
      * Add data to this Pie Chart. We'll build one pie chart for each value in the array provided. The val matrix must
      * have an array of an array of values. Ex. labels = {'a', 'b'} val = {{1,2,3}, {4,5,6}} This will create 3 pie
      * charts. For the first one, 'a' will be 1 and 'b' will be 4. For the second chart 'a' will be 2 and 'b' will be 5.
      * For the third 'a' will be 3 and 'b' will be 6.
+     * @param labels The titles of each series. (These are not the same as titles given to pies.)
      */
     public void addPieChartSeries(String labels[], double val[][]) {
         for (ISeries s : this.getSeriesSet().getSeries()) {

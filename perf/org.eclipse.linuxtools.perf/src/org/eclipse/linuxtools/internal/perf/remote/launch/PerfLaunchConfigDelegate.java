@@ -128,7 +128,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				}
 				IPath remoteBinFile = Path.fromOSString(exeURI.getPath());
 				IFileStore workingDir;
-				URI workingDirURI = new URI(configUtils.getWorkingDirectory());
+				URI workingDirURI = new URI(RemoteProxyManager.getInstance().getRemoteProjectLocation(project));
 				RemoteConnection workingDirRC = new RemoteConnection(workingDirURI);
 				IRemoteFileProxy workingDirRFP = workingDirRC.getRmtFileProxy();
 				workingDir = workingDirRFP.getResource(workingDirURI.getPath());

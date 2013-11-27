@@ -32,10 +32,22 @@ public class PieChartPaintListener implements PaintListener {
     protected static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
     protected static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 
+    /**
+     * Draws pie charts with no titles given to each pie.
+     * @param chart
+     * @param plotArea
+     */
     public PieChartPaintListener(PieChart chart, Control plotArea) {
         this(chart, plotArea, new String[0]);
     }
 
+    /**
+     * Handles drawing & updating of a PieChart, with titles given to each of its pies.
+     * @param chart The PieChart to draw & update.
+     * @param plotArea The area in which to draw the pies.
+     * @param seriesNames The titles given to individual pies.
+     * @since 1.1
+     */
     public PieChartPaintListener(PieChart chart, Control plotArea, String[] seriesNames) {
         this.chart = chart;
         this.plotArea = plotArea;
