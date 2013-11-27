@@ -62,7 +62,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		// check if Perf exists in $PATH
-		if (! PerfCore.checkPerfInPath()) {
+		if (! PerfCore.checkPerfInPath(null)) {
 			IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID,
 					Messages.PerfLaunchConfigDelegate_perf_not_found);
 			throw new CoreException(status);
@@ -90,7 +90,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 
 			ArrayList<String> command = new ArrayList<String>();
 			// Get the base commandline string (with flags/options based on config)
-			Version perfVersion = PerfCore.getPerfVersion(config, null, workingDir);
+			Version perfVersion = PerfCore.getPerfVersion(config);
 			command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion)));
 			// Add the path to the executable
 			command.add(exePath.toOSString());

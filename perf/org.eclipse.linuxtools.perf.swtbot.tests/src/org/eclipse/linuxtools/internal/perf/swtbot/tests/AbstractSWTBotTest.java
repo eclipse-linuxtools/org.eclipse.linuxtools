@@ -127,7 +127,7 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
 
 		bot.button("Apply").click();
 
-		if (PerfCore.checkPerfInPath()) {
+		if (PerfCore.checkPerfInPath(null)) {
 			bot.button("Profile").click();
 
 		} else {
