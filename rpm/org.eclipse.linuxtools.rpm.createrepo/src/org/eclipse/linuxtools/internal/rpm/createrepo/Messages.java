@@ -90,6 +90,8 @@ public final class Messages {
 	public static String ImportRPMsPage_buttonCreateRepo;
 	/****/
 	public static String ImportRPMsPage_errorRefreshingTree;
+	/****/
+	public static String ImportRPMsPage_errorResourceChanged;
 
 	// ImportRPMsPage$ImportButtonListener
 	/****/

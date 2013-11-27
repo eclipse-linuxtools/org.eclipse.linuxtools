@@ -14,7 +14,13 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -38,6 +44,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -55,7 +63,7 @@ import org.eclipse.ui.menus.IMenuService;
  * file system or the workspace. The RPMs imported will be the
  * RPMs used when executing the createrepo command.
  */
-public class ImportRPMsPage extends FormPage {
+public class ImportRPMsPage extends FormPage implements IResourceChangeListener {
 
 	private CreaterepoProject project;
 
@@ -77,6 +85,28 @@ public class ImportRPMsPage extends FormPage {
 	public ImportRPMsPage(FormEditor editor, CreaterepoProject project) {
 		super(editor, Messages.ImportRPMsPage_title, Messages.ImportRPMsPage_title);
 		this.project = project;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.forms.editor.FormPage#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+	 */
+	@Override
+	public void init(IEditorSite site, IEditorInput input) {
+		super.init(site, input);
+		// add the resource change listener
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+	 */
+	@Override
+	public void dispose() {
+		// remove the resource change listener
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		super.dispose();
 	}
 
 	/*
@@ -347,6 +377,75 @@ public class ImportRPMsPage extends FormPage {
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {/* not implemented */}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
+	 */
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		// might have to place the delete/close events to RepoMetadataFormEditor to
+		// occur for all the pages
+		switch (event.getType()) {
+		case IResourceChangeEvent.POST_CHANGE:
+			try {
+				IPath projectPath = project.getContentFolder().getFullPath();
+				IResourceDelta delta = event.getDelta().findMember(projectPath);
+				// delta is only null when nothing changed within the project's
+				// content folder
+				if (delta != null) {
+					delta.accept(new CreaterepoDeltaVisitor());
+				}
+			} catch (CoreException e) {
+				Activator.logError(Messages.ImportRPMsPage_errorResourceChanged, e);
+			}
+			break;
+		}
+	}
+
+	/**
+	 * Class to control what to do if something happens in the workspace.
+	 */
+	class CreaterepoDeltaVisitor implements IResourceDeltaVisitor {
+		/*
+		 * (non-Javadoc)
+		 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
+		 */
+		@Override
+		public boolean visit(IResourceDelta delta) {
+			// exit if the project is being removed or closed
+			if (delta.getKind() == IResourceDelta.REMOVED ||
+					(delta.getFlags() | delta.getKind()) == (IResourceDelta.OPEN | IResourceDelta.CHANGED)) {
+				return false;
+			}
+			// get the files that were removed and exit if nothing was removed
+			IResourceDelta[] removedFiles = delta.getAffectedChildren(IResourceDelta.REMOVED);
+			if (removedFiles.length <= 0) {
+				return false;
+			}
+			// check if at least 1 of the files removed is an RPM and break out if so
+			boolean rpmsDeleted = false;
+			for (IResourceDelta resourceDelta : removedFiles) {
+				String extension = resourceDelta.getResource().getFileExtension();
+				if (extension != null && extension.equals(ICreaterepoConstants.RPM_FILE_EXTENSION)) {
+					rpmsDeleted = true;
+					break;
+				}
+			}
+			// exit if none of the removed files is an RPM; no need to update list
+			if (!rpmsDeleted) {
+				return false;
+			}
+			// deals with updating the UI of the page
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					refreshTree();
+				}
+			});
+			return false;
+		}
 	}
 
 }
