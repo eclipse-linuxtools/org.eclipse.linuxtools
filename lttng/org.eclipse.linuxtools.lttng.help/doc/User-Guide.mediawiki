@@ -596,7 +596,7 @@ The large (full) histogram, at the bottom, shows the event distribution over the
 
 The smaller (zoom) histogram, on top right, corresponds to the current zoom window, a sub-range of the event set.
 
-The x-axis of each histogram corresponds to the events timestamps. The start time and end time of the histogram range is displayed. The y-axis shows the maximum number of events in the corresponding histogram bars.
+The x-axis of each histogram corresponds to the event timestamps. The start time and end time of the histogram range is displayed. The y-axis shows the maximum number of events in the corresponding histogram bars.
 
 The vertical blue line(s) show the current selection time (or range). If applicable, the region in the selection range will be shaded.
 
@@ -612,7 +612,10 @@ The mouse can be used to control the histogram:
 * '''Right-drag''': Set the zoom window
 * '''Shift-right-click or drag''': Extend or shrink the zoom window (full histogram only)
 
-Hovering the mouse over an histogram bar pops up an information window that displays the start/end time of the corresponding bar as well as the number of events (and lost events) it represents. If the mouse is over the selection range, the selection span in seconds is displayed.
+* '''Mouse wheel up''': Zoom in
+* '''Mouse wheel down''': Zoom out
+
+Hovering the mouse over an histogram bar pops up an information window that displays the start/end time of the corresponding bar, as well as the number of events (and lost events) it represents. If the mouse is over the selection range, the selection span in seconds is displayed.
 
 In each histogram, the following keys are handled:
 
