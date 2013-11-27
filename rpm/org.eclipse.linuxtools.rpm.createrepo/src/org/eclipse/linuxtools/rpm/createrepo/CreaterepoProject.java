@@ -20,12 +20,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.osgi.framework.FrameworkUtil;
 
@@ -34,6 +37,8 @@ import org.osgi.framework.FrameworkUtil;
  * createrepo command.
  */
 public class CreaterepoProject {
+
+	private IEclipsePreferences projectPreferences;
 
 	private IProject project;
 	private IFolder content;
@@ -61,6 +66,7 @@ public class CreaterepoProject {
 		this.project = project;
 		this.repoFile = repoFile;
 		monitor = new NullProgressMonitor();
+		projectPreferences = new ProjectScope(project.getProject()).getNode(Activator.PLUGIN_ID);
 		intitialize();
 		// if something is deleted from the project while outside of eclipse,
 		// the tree/preferences will be updated accordingly after refreshing
@@ -169,6 +175,15 @@ public class CreaterepoProject {
 			}
 		}
 		return rpms;
+	}
+
+	/**
+	 * Get the eclipse preferences of this project.
+	 *
+	 * @return The eclipse preferences for the project.
+	 */
+	public IEclipsePreferences getEclipsePreferences() {
+		return projectPreferences;
 	}
 
 }

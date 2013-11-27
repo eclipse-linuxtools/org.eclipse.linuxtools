@@ -127,7 +127,7 @@ public class RepoFormEditor extends FormEditor {
 	 */
 	void createPage1() {
 		try {
-			FormPage composite = new MetadataPage(this);
+			FormPage composite = new MetadataPage(this, project);
 			addPage(composite);
 		} catch (PartInitException e) {
 			Activator.logError(Messages.RepoFormEditor_errorInitializingForm, e);
