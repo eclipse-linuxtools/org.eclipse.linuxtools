@@ -89,6 +89,7 @@ public class Messages extends NLS {
 	public static String SystemTapScriptLaunchError_graph;
 	public static String SystemTapScriptLaunchError_fileNotFound;
 	public static String SystemTapScriptLaunchError_fileNotStp;
+	public static String SystemTapScriptLaunchError_waitForConsoles;
 
 	static {
 		// initialize resource bundle

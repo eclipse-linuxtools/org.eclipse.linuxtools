@@ -363,6 +363,13 @@
     </launchConfigurationType>
  </extension>
  <extension
+       point="org.eclipse.debug.core.processFactories">
+   <processFactory
+           id="org.eclipse.linuxtools.systemtap.ui.ide.SystemTapRuntimeProcessFactory"
+           class="org.eclipse.linuxtools.systemtap.structures.process.SystemTapRuntimeProcessFactory">
+   </processFactory>
+ </extension>
+ <extension
        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
     <launchConfigurationTypeImage
           configTypeID="org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"

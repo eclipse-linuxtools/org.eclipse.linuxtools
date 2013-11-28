@@ -24,8 +24,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
@@ -34,6 +37,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.structures.process.SystemTapRuntimeProcessFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 
@@ -48,13 +52,24 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 	 * Keep a reference to the target running script's parent project, so only that project
 	 * will be saved when the script is run.
 	 */
-    @Override
-    protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) {
-        return scriptProject;
-    }
+	@Override
+	protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) {
+		return scriptProject;
+	}
+
+	@Override
+	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) {
+		return new SystemTapScriptLaunch(configuration, mode);
+	}
 
 	@Override
 	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+		// Force the configuration to use the proper Process Factory.
+		if (!configuration.getAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "").equals(SystemTapRuntimeProcessFactory.PROCESS_FACTORY_ID)) { //$NON-NLS-1$
+			ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
+			wc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, SystemTapRuntimeProcessFactory.PROCESS_FACTORY_ID);
+			wc.doSave();
+		}
 		// Find the parent project of the target script.
 		IPath path = Path.fromOSString(configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, (String)null));
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
@@ -74,6 +89,18 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+
+		// Wait for other stap launches' consoles to be initiated before starting a new launch.
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		for (ILaunch olaunch : manager.getLaunches()) {
+			if (olaunch.equals(launch)) {
+				continue;
+			}
+			if (olaunch instanceof SystemTapScriptLaunch && ((SystemTapScriptLaunch) olaunch).getConsole() == null) {
+				throw new CoreException(new Status(IStatus.ERROR, getPluginID(),
+						Messages.SystemTapScriptLaunchError_waitForConsoles));
+			}
+		}
 
 		if (!SystemTapScriptGraphOptionsTab.isValidLaunch(configuration)) {
 			throw new CoreException(new Status(IStatus.ERROR, getPluginID(), Messages.SystemTapScriptLaunchError_graph));
@@ -154,6 +181,7 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 			action.addComandLineOptions(value);
 		}
 
+		action.setLaunch((SystemTapScriptLaunch) launch);
 		action.execute(null);
 	}
 

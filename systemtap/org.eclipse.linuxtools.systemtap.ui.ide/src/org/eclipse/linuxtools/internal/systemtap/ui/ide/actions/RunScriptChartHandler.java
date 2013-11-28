@@ -71,6 +71,7 @@ public class RunScriptChartHandler extends RunScriptHandler {
 		} catch(WorkbenchException we) {
 			ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
 		}
+		super.scriptConsoleInitialized(console);
 	}
 
 }

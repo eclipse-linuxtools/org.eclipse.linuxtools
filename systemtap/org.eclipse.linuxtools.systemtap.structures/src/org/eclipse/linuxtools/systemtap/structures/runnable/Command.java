@@ -208,7 +208,7 @@ public class Command implements Runnable {
 	}
 
 	/**
-	 * Method to check whether or not the process in running.
+	 * Method to check whether or not the process is running.
 	 * @return The execution status.
 	 */
 	public boolean isRunning() {
@@ -352,6 +352,14 @@ public class Command implements Runnable {
 			errorGobbler = null;
 			logger.dispose();
 		}
+	}
+
+	/**
+	 * @return The process of this command.
+	 * @since 2.2
+	 */
+	public Process getProcess() {
+		return process;
 	}
 
 }

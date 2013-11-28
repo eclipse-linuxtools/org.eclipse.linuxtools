@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.structures;singleton:=true
-Bundle-Version: 2.1.0.qualifier
+Bundle-Version: 2.2.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.systemtap.structures,
@@ -16,4 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Import-Package: com.jcraft.jsch;version="0.1.37",
+ org.eclipse.debug.core,
+ org.eclipse.debug.core.model,
  org.eclipse.linuxtools.tools.launch.core.factory
