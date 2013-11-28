@@ -15,7 +15,7 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="org.eclipse.linuxtools.rpm.createrepo"
-            name="%category.name">
+            name="%main.name">
       </category>
       <wizard
             category="org.eclipse.linuxtools.rpm.createrepo"
@@ -75,5 +75,25 @@
             class="org.eclipse.linuxtools.internal.rpm.createrepo.handler.CreaterepoExecuteCommandHandler"
             commandId="org.eclipse.linuxtools.rpm.createrepo.executeCommand">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPreferencePage"
+            id="org.eclipse.linuxtools.rpm.createrepo.preferences"
+            name="%main.name">
+      </page>
+      <page
+            category="org.eclipse.linuxtools.rpm.createrepo.preferences"
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoDeltaPreferencePage"
+            id="org.eclipse.linuxtools.rpm.createrepo.preferences.delta"
+            name="%delta.preference.name">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.preferences.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPreferenceInitializer">
+      </initializer>
    </extension>
 </plugin>

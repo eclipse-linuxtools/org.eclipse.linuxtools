@@ -133,6 +133,48 @@ public final class Messages {
 	/****/
 	public static String CreaterepoResourceChangeListener_errorGettingResource;
 
+	// CreaterepoPreferencePage
+	/****/
+	public static String CreaterepoPreferencePage_description;
+	/****/
+	public static String CreaterepoPreferencePage_generalGroupLabel;
+	/****/
+	public static String CreaterepoPreferencePage_booleanChecksumName;
+	/****/
+	public static String CreaterepoPreferencePage_booleanGenerateSQLDB;
+	/****/
+	public static String CreaterepoPreferencePage_booleanIgnoreSymlinks;
+	/****/
+	public static String CreaterepoPreferencePage_booleanPrettyXML;
+	/****/
+	public static String CreaterepoPreferencePage_numWorkers;
+	/****/
+	public static String CreaterepoPreferencePage_updateGroupLabel;
+	/****/
+	public static String CreaterepoPreferencePage_booleanCheckTS;
+	/****/
+	public static String CreaterepoPreferencePage_checkTSNote;
+	/****/
+	public static String CreaterepoPreferencePage_changelogGroupLabel;
+	/****/
+	public static String CreaterepoPreferencePage_numChangelogLimit;
+	/****/
+	public static String CreaterepoPreferencePage_checksumGroupLabel;
+	/****/
+	public static String CreaterepoPreferencePage_compressionGroupLabel;
+
+	// CreaterepoDeltaPreferencePage
+	/****/
+	public static String CreaterepoDeltaPreferencePage_description;
+	/****/
+	public static String CreaterepoDeltaPreferencePage_groupLabel;
+	/****/
+	public static String CreaterepoDeltaPreferencePage_booleanEnableLabel;
+	/****/
+	public static String CreaterepoDeltaPreferencePage_maxNumberOfDeltas;
+	/****/
+	public static String CreaterepoDeltaPreferencePage_maxDeltaSize;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
