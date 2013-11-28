@@ -333,12 +333,17 @@
                                   value="*.stp">
                             </test>
                          </and>
-                         <with
-                               variable="activeEditorId">
-                            <equals
-                                  value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
-                            </equals>
-                         </with>
+                         <and>
+                            <instanceof
+                                  value="org.eclipse.ui.IPathEditorInput">
+                            </instanceof>
+                            <with
+                                  variable="activeEditorId">
+                               <equals
+                                     value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
+                               </equals>
+                            </with>
+                         </and>
                       </or>
                    </iterate>
                 </with>
