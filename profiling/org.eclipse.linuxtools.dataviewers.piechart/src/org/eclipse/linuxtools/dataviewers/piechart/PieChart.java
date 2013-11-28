@@ -30,7 +30,9 @@ public class PieChart extends Chart {
 	 * A PieChart with no titles given to its pies.
 	 * @param parent
 	 * @param style
+	 * @deprecated See {@link #PieChart(Composite, int, String[])}
 	 */
+	@Deprecated
     public PieChart(Composite parent, int style) {
         this(parent, style, new String[0]);
     }
@@ -39,22 +41,26 @@ public class PieChart extends Chart {
      * A PieChart with titles given to each pie it draws.
      * @param parent The parent composite.
      * @param style The style of the parent composite.
-     * @param labels The title of each pie chart that is to be drawn.
+     * @param labels An array containing the legend title (index 0) and
+     * the title of each pie chart that is to be drawn (index >=1).
      * A null / not present title indicates no title.
      * @since 1.1
      */
     public PieChart(Composite parent, int style, String labels[]) {
         super(parent, style);
         Control plotArea = null;
+        Control legendArea = null;
         for (Control child : getChildren()) {
             if (child.getClass().getName().equals("org.swtchart.internal.axis.AxisTitle")) { //$NON-NLS-1$
 				child.setVisible(false); // Don't show original Plot Area and axis
 			} else if (child.getClass().getName().equals("org.swtchart.internal.PlotArea")) { //$NON-NLS-1$
                 child.setVisible(false); // Don't show original Plot Area and axis
                 plotArea = child;
+            } else if (child.getClass().getName().equals("org.swtchart.internal.Legend")) { //$NON-NLS-1$
+                legendArea = child;
             }
         }
-        this.addPaintListener(new PieChartPaintListener(this, plotArea, labels));
+        this.addPaintListener(new PieChartPaintListener(this, plotArea, legendArea, labels));
     }
 
     @Override

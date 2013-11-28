@@ -12,6 +12,9 @@
  */
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.swt.widgets.Composite;
@@ -28,12 +31,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 
 	@Override
 	protected void createChart() {
-		String[] allNames = adapter.getLabels();
-		String[] ySeriesNames = new String[allNames.length - 1];
-		for (int i = 0; i < ySeriesNames.length; i++) {
-			ySeriesNames[i] = allNames[i+1];
-		}
-		this.chart = new PieChart(this, getStyle(), ySeriesNames);
+		this.chart = new PieChart(this, getStyle(), adapter.getLabels());
 	}
 
 	@Override
@@ -89,8 +87,21 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 			}
 		}
 
-		((PieChart)this.chart).addPieChartSeries(labels_trim, values_trim);
+		// Give duplicate labels unique names.
+		Set<String> labels_unique = new LinkedHashSet<String>();
+		for (String label : labels_trim) {
+			int count = 1;
+			while (!labels_unique.add(makeCountedLabel(label, count))) {
+				count++;
+			}
+		}
+
+		((PieChart)this.chart).addPieChartSeries(labels_unique.toArray(new String[labels_trim.length]), values_trim);
 		chart.redraw();
+	}
+
+	private String makeCountedLabel(String original, int count) {
+		return count <= 1 ? original : original.concat(String.format(" (%d)", count)); //$NON-NLS-1$
 	}
 
 	@Override

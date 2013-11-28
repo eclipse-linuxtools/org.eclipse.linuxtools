@@ -26,6 +26,7 @@ public class PieChartPaintListener implements PaintListener {
 
     private PieChart chart;
     private Control plotArea;
+    private Control legendArea;
     private String[] seriesNames;
     private static final int X_GAP = 10;
 
@@ -36,21 +37,28 @@ public class PieChartPaintListener implements PaintListener {
      * Draws pie charts with no titles given to each pie.
      * @param chart
      * @param plotArea
+     * @deprecated See {@link #PieChartPaintListener(PieChart, Control, Control, String[])}
      */
+    @Deprecated
     public PieChartPaintListener(PieChart chart, Control plotArea) {
-        this(chart, plotArea, new String[0]);
+        this(chart, plotArea, null, new String[0]);
     }
 
     /**
-     * Handles drawing & updating of a PieChart, with titles given to each of its pies.
+     * Handles drawing & updating of a PieChart, with titles given to its legend and
+     * to each of its pies.
      * @param chart The PieChart to draw & update.
      * @param plotArea The area in which to draw the pies.
-     * @param seriesNames The titles given to individual pies.
+     * @param legendArea The area in which the legend is drawn, which is needed to
+     * properly position the legend title (if it is provided). Note that this class
+     * does not handle drawing of the legend itself.
+     * @param seriesNames The titles given to the legend & individual pies.
      * @since 1.1
      */
-    public PieChartPaintListener(PieChart chart, Control plotArea, String[] seriesNames) {
+    public PieChartPaintListener(PieChart chart, Control plotArea, Control legendArea, String[] seriesNames) {
         this.chart = chart;
         this.plotArea = plotArea;
+        this.legendArea = legendArea;
         this.seriesNames = seriesNames;
     }
 
@@ -71,16 +79,28 @@ public class PieChartPaintListener implements PaintListener {
             gc.setFont(font);
             String text = "No data"; //$NON-NLS-1$
             Point textSize = e.gc.textExtent(text);
-            gc.drawText(text, (allBounds.width - textSize.x) / 2, (allBounds.height -  textSize.y) / 2);
+            gc.drawText(text, (allBounds.width - textSize.x) / 2, (allBounds.height - textSize.y) / 2);
             font.dispose();
             return;
         }
         int width = (bounds.width - bounds.x) / series.length;
         int x = bounds.x;
 
+        if (legendArea != null && seriesNames.length > 1) {
+            Rectangle legendBounds = legendArea.getBounds();
+            Font font = new Font(Display.getDefault(), "Arial", 10, SWT.BOLD); //$NON-NLS-1$
+            gc.setForeground(BLACK);
+            gc.setFont(font);
+            String text = seriesNames[0];
+            Point textSize = e.gc.textExtent(text);
+            gc.drawText(text, legendBounds.x + (legendBounds.width - textSize.x) / 2, legendBounds.y - textSize.y);
+            font.dispose();
+        }
+
         for (int i = 0; i < series.length; i++) {
             double[] s = series[i];
-            drawPieChart(e, i, s, new Rectangle(x, bounds.y, width, bounds.height));
+            // Offset chartnum by +1 to account for the legend title at seriesNames[0].
+            drawPieChart(e, i + 1, s, new Rectangle(x, bounds.y, width, bounds.height));
             x += width;
         }
     }
@@ -122,7 +142,7 @@ public class PieChartPaintListener implements PaintListener {
             }
         }
         if (chartnum < seriesNames.length) {
-            Font font = new Font(Display.getDefault(), "Arial", 15, SWT.BOLD); //$NON-NLS-1$
+            Font font = new Font(Display.getDefault(), "Arial", 12, SWT.BOLD); //$NON-NLS-1$
             gc.setForeground(BLACK);
             gc.setBackground(WHITE);
             gc.setFont(font);
