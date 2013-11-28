@@ -87,7 +87,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			this.configUtils = new ConfigUtils(config);
 			project = ConfigUtils.getProject(configUtils.getProjectName());
 			// check if Perf exists in $PATH
-			if (! PerfCore.checkRemotePerfInPath(project)) 
+			if (! PerfCore.checkPerfInPath(project))
 			{
 				IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
 				throw new CoreException(status);
@@ -135,7 +135,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				//Build the commandline string to run perf recording the given project
 				String arguments[] = getProgramArgumentsArray( config ); //Program args from launch config.
 				ArrayList<String> command = new ArrayList<String>( 4 + arguments.length );
-				Version perfVersion = PerfCore.getPerfVersion(config, null, workingDirPath);
+				Version perfVersion = PerfCore.getPerfVersion(config);
 				command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion))); //Get the base commandline string (with flags/options based on config)
 				command.add( remoteBinFile.toOSString() ); // Add the path to the executable
 				command.set(0, perfPathString);
@@ -212,12 +212,11 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 					print.println("Analysing recorded perf.data, please wait..."); //$NON-NLS-1$
 					//Possibly should pass this (the console reference) on to PerfCore.Report if theres anything we ever want to spit out to user.
 				}
-				PerfCore.Report(config, getEnvironment(config), Path.fromOSString(configWorkingDir + IPath.SEPARATOR), monitor, null, print);
+				PerfCore.Report(config, getEnvironment(config), Path.fromOSString(configWorkingDir), monitor, null, print);
 
-				IPath perfData = PerfPlugin.getDefault().getPerfProfileData();
 				URI perfDataURI = null;
 				IRemoteFileProxy proxy = null;
-				perfDataURI = new URI(perfData.toPortableString());
+				perfDataURI = new URI(RemoteProxyManager.getInstance().getRemoteProjectLocation(project) + PerfPlugin.PERF_DEFAULT_DATA);
 				proxy = RemoteProxyManager.getInstance().getFileProxy(perfDataURI);
 				IFileStore perfDataFileStore = proxy.getResource(perfDataURI.getPath());
 				IFileInfo info = perfDataFileStore.fetchInfo();
@@ -227,7 +226,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				PerfCore.RefreshView(renderProcessLabel(exeURI.getPath()));
 				if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
 						PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
-					showSourceDisassembly(Path.fromOSString(configWorkingDir));
+					showSourceDisassembly(Path.fromPortableString(workingDirURI.toString() + IPath.SEPARATOR));
 				}
 
 			}
@@ -241,10 +240,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			e.printStackTrace();
 			abort(e.getLocalizedMessage(), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
-		//		} catch (InterruptedException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		} 
 	}
 
 	/**
@@ -252,7 +247,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 	 * @param workingDir working directory.
 	 */
 	private void showSourceDisassembly(IPath workingDir) {
-		String title = renderProcessLabel(workingDir.toOSString() + "perf.data"); //$NON-NLS-1$
+		String title = renderProcessLabel(workingDir.toPortableString() + PerfPlugin.PERF_DEFAULT_DATA);
 		SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir, project);
 		sdData.parse();
 		PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
