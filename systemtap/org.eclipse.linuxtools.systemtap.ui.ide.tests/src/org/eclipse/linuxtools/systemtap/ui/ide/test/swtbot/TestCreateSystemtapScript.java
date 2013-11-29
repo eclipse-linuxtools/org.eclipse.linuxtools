@@ -523,7 +523,7 @@ public class TestCreateSystemtapScript {
 		assertEquals(title, text.getText());
 
 		SWTBotCombo combo_x = bot.comboBoxWithLabel("X Series:");
-		assertEquals(3, combo_x.itemCount()); // X Series includes "Row ID" as a selection
+		assertEquals(3, combo_x.itemCount()); // X Series includes "Row Num" as a selection
 		SWTBotCombo combo_y0 = bot.comboBoxWithLabel("Y Series 0:");
 		assertEquals(2, combo_y0.itemCount()); // Y Series 0 only includes series entries
 		combo_y0.setSelection(0);
