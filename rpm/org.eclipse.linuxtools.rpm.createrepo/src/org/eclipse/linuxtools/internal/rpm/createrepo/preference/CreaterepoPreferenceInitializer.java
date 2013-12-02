@@ -42,11 +42,6 @@ public class CreaterepoPreferenceInitializer extends
 		node.put(CreaterepoPreferenceConstants.PREF_CHECKSUM, CreaterepoPreferenceConstants.DEFAULT_CHECKSUM);
 		node.put(CreaterepoPreferenceConstants.PREF_COMPRESSION_TYPE, CreaterepoPreferenceConstants.DEFAULT_COMPRESS_TYPE);
 
-		// CreaterepoDeltaPreferencePage
-		node.putBoolean(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE, CreaterepoPreferenceConstants.DEFAULT_DELTA_ENABLE);
-		node.putInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS, CreaterepoPreferenceConstants.DEFAULT_NUM_DELTAS);
-		node.putInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE, CreaterepoPreferenceConstants.DEFAULT_MAX_DELTA_SIZE);
-
 		// default preferences
 		IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
 		// CreaterepoPreferencePage
@@ -60,7 +55,10 @@ public class CreaterepoPreferenceInitializer extends
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_CHECKSUM, CreaterepoPreferenceConstants.DEFAULT_CHECKSUM);
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_COMPRESSION_TYPE, CreaterepoPreferenceConstants.DEFAULT_COMPRESS_TYPE);
 
-		// CreaterepoDeltaPreferencePage
+		// CreaterepoGeneralPropertyPage
+		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED, CreaterepoPreferenceConstants.DEFAULT_GENERAL_ENABLED);
+
+		// CreaterepoDeltaPropertyPage
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE, CreaterepoPreferenceConstants.DEFAULT_DELTA_ENABLE);
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_NUM_DELTAS, CreaterepoPreferenceConstants.DEFAULT_NUM_DELTAS);
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE, CreaterepoPreferenceConstants.DEFAULT_MAX_DELTA_SIZE);

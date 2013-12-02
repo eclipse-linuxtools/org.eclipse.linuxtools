@@ -83,17 +83,71 @@
             id="org.eclipse.linuxtools.rpm.createrepo.preferences"
             name="%main.name">
       </page>
-      <page
-            category="org.eclipse.linuxtools.rpm.createrepo.preferences"
-            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoDeltaPreferencePage"
-            id="org.eclipse.linuxtools.rpm.createrepo.preferences.delta"
-            name="%delta.preference.name">
-      </page>
    </extension>
    <extension
          point="org.eclipse.equinox.preferences.preferences">
       <initializer
             class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         id="createreponature"
+         name="%nature.name"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoGeneralPropertyPage"
+            id="org.eclipse.linuxtools.rpm.createrepo.CreaterepoGeneralPropertyPage"
+            name="%main.name">
+         <enabledWhen>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="org.eclipse.linuxtools.rpm.createrepo.createreponature">
+                  </test>
+               </adapt>
+               <adapt
+                     type="org.eclipse.core.resources.IResource">
+                  <test
+                        property="org.eclipse.core.resources.name"
+                        value="*.repo">
+                  </test>
+               </adapt>
+            </or>
+         </enabledWhen>
+      </page>
+      <page
+            category="org.eclipse.linuxtools.rpm.createrepo.CreaterepoGeneralPropertyPage"
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoDeltaPropertyPage"
+            id="org.eclipse.linuxtools.rpm.createrepo.CreaterepoDeltaPropertyPage"
+            name="%delta.preference.name">
+         <enabledWhen>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="org.eclipse.linuxtools.rpm.createrepo.createreponature">
+                  </test>
+               </adapt>
+               <adapt
+                     type="org.eclipse.core.resources.IResource">
+                  <test
+                        property="org.eclipse.core.resources.name"
+                        value="*.repo">
+                  </test>
+               </adapt>
+            </or>
+         </enabledWhen>
+      </page>
    </extension>
 </plugin>

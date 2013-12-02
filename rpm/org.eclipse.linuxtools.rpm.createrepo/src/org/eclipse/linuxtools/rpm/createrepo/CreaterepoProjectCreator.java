@@ -47,6 +47,7 @@ public class CreaterepoProjectCreator {
 		if (!Platform.getLocation().equals(locationPath)) {
 			description.setLocation(locationPath);
 		}
+		description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
 		project.create(description, monitor);
 		project.open(monitor);
 		IFile repoFile = project.getFile(repoName);

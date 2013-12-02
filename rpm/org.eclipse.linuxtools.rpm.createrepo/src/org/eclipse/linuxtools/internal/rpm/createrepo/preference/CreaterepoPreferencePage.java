@@ -162,6 +162,7 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
 		// don't generate repo metadata, if their timestamps are newer than its rpms
 		ifeChangelogLimit = new IntegerFieldEditor(CreaterepoPreferenceConstants.PREF_CHANGELOG_LIMIT,
 				Messages.CreaterepoPreferencePage_numChangelogLimit, changelogGroup);
+		ifeChangelogLimit.setValidRange(0, Integer.MAX_VALUE);
 		ifeChangelogLimit.load();
 		ifeChangelogLimit.setPropertyChangeListener(this);
 		addField(ifeChangelogLimit);
