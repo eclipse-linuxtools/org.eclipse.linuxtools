@@ -632,6 +632,7 @@ public class SystemTapScriptGraphOptionsTab extends
 					badGraphs.remove(old_gd);
 					setUpGraphTableItem(selectedTableItem, gd, false);
 					graphsData.set(graphsTable.indexOf(selectedTableItem), gd);
+					checkErrors(selectedRegex);
 					updateLaunchConfigurationDialog();
 				}
 			}
@@ -646,6 +647,7 @@ public class SystemTapScriptGraphOptionsTab extends
 				badGraphs.remove(gd);
 				selectedTableItem.dispose();
 				setSelectionControlsEnabled(false);
+				checkErrors(selectedRegex);
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -787,7 +789,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param regex The regular expression to check for validity.
 	 * @return <code>null</code> if the regular expression is valid, or an error message.
 	 */
-	private String checkRegex(String regex) {
+	private static String checkRegex(String regex) {
 		//TODO may add more invalid regexs here, each with its own error message.
 		if (regex.contains("()")){ //$NON-NLS-1$
 			return Messages.SystemTapScriptGraphOptionsTab_6;
@@ -1010,7 +1012,7 @@ public class SystemTapScriptGraphOptionsTab extends
 				setUpGraphTableItem(item, graphData, true);
 			}
 
-			updateRegexSelection(0, true); // Handles all remaining updates.
+			updateRegexSelection(defaultSelectedRegex, true); // Handles all remaining updates.
 			checkAllOtherErrors();
 
 		} catch (CoreException e) {
@@ -1144,14 +1146,30 @@ public class SystemTapScriptGraphOptionsTab extends
 			if (i == selectedRegex) {
 				continue;
 			}
-
-			String error = findBadGraphs(i);
-			if (error == null) {
-				error = checkRegex(regularExpressionCombo.getItem(i));
-			}
-
-			regexErrorMessages.set(i, error);
+			checkErrors(i);
 		}
+	}
+
+	/**
+	 * Checks the regular expression of the provided index for errors.
+	 * Sets the associated error message to contain relevant error information.
+	 * @param i The index of the regular expression to check for errors.
+	 */
+	private void checkErrors(int i) {
+		String regex = regularExpressionCombo.getItem(i);
+		try {
+			Pattern.compile(regex);
+		} catch (PatternSyntaxException e) {
+			regexErrorMessages.set(i, e.getMessage());
+			return;
+		}
+
+		String error = findBadGraphs(i);
+		if (error == null) {
+			error = checkRegex(regex);
+		}
+
+		regexErrorMessages.set(i, error);
 	}
 
 	@Override
@@ -1163,11 +1181,58 @@ public class SystemTapScriptGraphOptionsTab extends
 			return true;
 		}
 
-		for (int i = 0, n = getNumberOfRegexs(); i < n; i++) {
-			String regexErrorMessage = regexErrorMessages.get(i);
+		for (int r = 0, n = getNumberOfRegexs(); r < n; r++) {
+			String regexErrorMessage = regexErrorMessages.get(r);
 			if (regexErrorMessage != null){
-				setErrorMessage(String.format("Expression \"%s\": %s", regularExpressionCombo.getItems()[i], regexErrorMessage)); //$NON-NLS-1$
+				setErrorMessage(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_regexErrorMsgFormat,
+						regularExpressionCombo.getItems()[r], regexErrorMessage));
 				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Checks if a launch configuration's Systemtap Graphing settings are valid.
+	 * @param launchConfig The launch configuration to check for graph validity.
+	 * @return <code>true</code> if the launch settings are valid, or <code>false</code> if
+	 * its graph settings are invalid in some way.
+	 */
+	public static boolean isValidLaunch(ILaunchConfiguration launchConfig) throws CoreException {
+		// If graphic is disabled then everything is valid.
+		if (!launchConfig.getAttribute(RUN_WITH_CHART, false)){
+			return true;
+		}
+
+		for (int r = 0, n = launchConfig.getAttribute(NUMBER_OF_REGEXS, 1); r < n; r++) {
+			// Check for any invalid regexs.
+			String regex = launchConfig.getAttribute(REGULAR_EXPRESSION + r, (String) null);
+			if (regex == null || checkRegex(regex) != null) {
+				return false;
+			}
+			try {
+				Pattern.compile(regex);
+			} catch (PatternSyntaxException e) {
+				return false;
+			}
+
+			// If graphs are plotted but no data is captured by one of them, report this as a problem.
+			int numberOfColumns = launchConfig.getAttribute(NUMBER_OF_COLUMNS + r, 0);
+			if (numberOfColumns == 0) {
+				return false;
+			}
+
+			// Check for graphs that are missing required data.
+			for (int i = 0, g = launchConfig.getAttribute(NUMBER_OF_GRAPHS + r, 0); i < g; i++) {
+				if (launchConfig.getAttribute(get2DConfigData(GRAPH_X_SERIES, r, i), 0) >= numberOfColumns) {
+					return false;
+				}
+				for (int j = 0, y = launchConfig.getAttribute(get2DConfigData(GRAPH_Y_SERIES_LENGTH, r, i), 0); j < y; j++) {
+					if (launchConfig.getAttribute(get2DConfigData(GRAPH_Y_SERIES, r, i + "_" + j), 0) >= numberOfColumns) { //$NON-NLS-1$
+						return false;
+					}
+				}
 			}
 		}
 

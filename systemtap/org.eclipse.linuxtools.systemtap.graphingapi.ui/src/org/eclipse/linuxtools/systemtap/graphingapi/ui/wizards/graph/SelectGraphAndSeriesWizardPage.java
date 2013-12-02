@@ -263,10 +263,15 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 
 		for(int j,i=0; i<cboYItems.length; i++) {
 			if(cboYItems[i].isVisible() && !deleted[i+1]) {
+
+				// Find duplicates by comparing selection indices. Every combo has an
+				// extra selection before column names (Row Num or NA), except Y-series 0.
+				int offset = (i == 0 ? 1 : 0);
+
 				for(j=i+1; j<cboYItems.length; j++) {
 					try {
-						if(!deleted[j+1] && cboYItems[j].isVisible() && cboYItems[i].getItem(cboYItems[i].getSelectionIndex())
-								.equals(cboYItems[j].getItem(cboYItems[j].getSelectionIndex()))) {
+						if(!deleted[j+1] && cboYItems[j].isVisible()
+									&& cboYItems[i].getSelectionIndex() + offset == cboYItems[j].getSelectionIndex()) {
 								markAsDuplicate(cboYItems[i], true);
 								markAsDuplicate(cboYItems[j], true);
 								foundDuplicate = true;
@@ -275,8 +280,13 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 						// If a cboYItem has no item selected, don't mark any duplicates. Ignore.
 					}
 				}
+
+				if (deleted[0]) {
+					continue;
+				}
 				try {
-					if(!deleted[0] && cboYItems[i].getItem(cboYItems[i].getSelectionIndex()).equals(cboXItem.getItem(cboXItem.getSelectionIndex()))) {
+					int selection = cboYItems[i].getSelectionIndex() + offset;
+					if(selection != 0 && selection == cboXItem.getSelectionIndex()) {
 						markAsDuplicate(cboYItems[i], true);
 						markAsDuplicate(cboXItem, true);
 						foundDuplicate = true;

@@ -285,7 +285,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 
 		IPath scriptPath = getScriptPath();
 		if (scriptPath == null) {
-			setErrorMessage(MessageFormat.format(Messages.SystemTapScriptLaunchConfigurationTab_couldNotFindFile, scriptPathText.getText()));
+			setErrorMessage(MessageFormat.format(Messages.SystemTapScriptLaunchConfigurationTab_fileNotFound, scriptPathText.getText()));
 			return false;
 		}
 		String extension = scriptPath.getFileExtension();
