@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String SystemTapScriptGraphOptionsTab_RemoveGraphButtonToolTip;
 	public static String SystemTapScriptGraphOptionsTab_invalidGraph;
 
+	public static String SystemTapScriptGraphOptionsTab_regexErrorMsgFormat;
 	public static String SystemTapScriptGraphOptionsTab_regexLabel;
 	public static String SystemTapScriptGraphOptionsTab_regexTooltip;
 	public static String SystemTapScriptGraphOptionsTab_regexAddNew;
@@ -74,7 +75,7 @@ public class Messages extends NLS {
 	public static String SystemTapScriptLaunchConfigurationTab_runWithChart;
 	public static String SystemTapScriptLaunchShortcut_couldNotFindConfig;
 	public static String SystemTapScriptLaunchShortcut_couldNotLaunchScript;
-	public static String SystemTapScriptLaunchConfigurationTab_couldNotFindFile;
+	public static String SystemTapScriptLaunchConfigurationTab_fileNotFound;
 	public static String SystemTapScriptLaunchConfigurationTab_fileNotStp;
 	public static String SystemTapScriptOptionsTab_0;
 	public static String SystemTapScriptOptionsTab_1;
@@ -84,6 +85,10 @@ public class Messages extends NLS {
 	public static String SystemTapScriptOptionsTab_5;
 	public static String SystemTapScriptOptionsTab_initializeConfigurationFailed;
 	public static String SystemTapScriptOptionsTab_targetToolTip;
+
+	public static String SystemTapScriptLaunchError_graph;
+	public static String SystemTapScriptLaunchError_fileNotFound;
+	public static String SystemTapScriptLaunchError_fileNotStp;
 
 	static {
 		// initialize resource bundle
