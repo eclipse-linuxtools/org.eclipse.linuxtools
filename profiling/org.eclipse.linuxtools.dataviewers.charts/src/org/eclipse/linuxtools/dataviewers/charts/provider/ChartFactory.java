@@ -60,13 +60,7 @@ public class ChartFactory {
 
             view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .showView(ChartView.VIEW_ID, String.valueOf(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
-
-            String[] pieChartNames = new String [valFields.size()];
-            for (int i = 0; i < valFields.size(); i++) {
-                pieChartNames[i] = valFields.get(i).getColumnHeaderText();
-            }
-
-            PieChart chart = new PieChart(view.getParent(), SWT.NONE, pieChartNames);
+            PieChart chart = new PieChart(view.getParent(), SWT.NONE);
 
             chart.setBackground(WHITE);
             chart.setBackgroundInPlotArea(GRAD);

@@ -20,81 +20,79 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.swtchart.IBarSeries;
 import org.swtchart.ISeries;
+import org.swtchart.Range;
 
 public class PieChartPaintListener implements PaintListener {
 
     private PieChart chart;
     private Control plotArea;
-    private Control legendArea;
+    private double[][] seriesValues;
     private String[] seriesNames;
     private static final int X_GAP = 10;
 
     private static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
     private static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+    private static final String FONT = "Arial"; //$NON-NLS-1$
 
     /**
      * Handles drawing & updating of a PieChart, with titles given to its legend and
-     * to each of its pies.
+     * to each of its pies. Pies will be drawn in the given chart's plot area.
      * @param chart The PieChart to draw & update.
-     * @param plotArea The area in which to draw the pies.
-     * @param legendArea The area in which the legend is drawn, which is needed to
-     * properly position the legend title (if it is provided). Note that this class
-     * does not handle drawing of the legend itself.
-     * @param seriesNames The titles given to the legend & individual pies.
      * @since 2.0
      */
-    public PieChartPaintListener(PieChart chart, Control plotArea, Control legendArea, String[] seriesNames) {
+    public PieChartPaintListener(PieChart chart) {
         this.chart = chart;
-        this.plotArea = plotArea;
-        this.legendArea = legendArea;
-        this.seriesNames = seriesNames;
+        this.plotArea = chart.getPlotArea();
     }
 
     @Override
     public void paintControl(PaintEvent e) {
         GC gc = e.gc;
         Rectangle bounds;
-        if (plotArea == null) {
-			bounds = gc.getClipping();
-		} else {
-			bounds = plotArea.getBounds();
-		}
-        double[][] series = this.getPieSeriesArray();
-        if (series.length == 0) {
-            Rectangle allBounds = chart.getBounds();
-            Font font = new Font(Display.getDefault(), "Arial", 15, SWT.BOLD); //$NON-NLS-1$
+        this.getPieSeriesArray();
+        if (seriesValues.length == 0) {
+            bounds = gc.getClipping();
+            Font font = new Font(Display.getDefault(), FONT, 15, SWT.BOLD);
             gc.setForeground(BLACK);
             gc.setFont(font);
             String text = "No data"; //$NON-NLS-1$
             Point textSize = e.gc.textExtent(text);
-            gc.drawText(text, (allBounds.width - textSize.x) / 2, (allBounds.height - textSize.y) / 2);
+            gc.drawText(text, (bounds.width - textSize.x) / 2, (bounds.height - textSize.y) / 2);
             font.dispose();
             return;
         }
-        int width = (bounds.width - bounds.x) / series.length;
+        bounds = plotArea.getBounds();
+        setTitleBounds(bounds);
+        int width = bounds.width / seriesValues.length;
         int x = bounds.x;
 
-        if (legendArea != null && seriesNames.length > 1) {
-            Rectangle legendBounds = legendArea.getBounds();
-            Font font = new Font(Display.getDefault(), "Arial", 10, SWT.BOLD); //$NON-NLS-1$
+        if (chart.getLegend().isVisible()) {
+            Rectangle legendBounds = ((Control) chart.getLegend()).getBounds();
+            Font font = new Font(Display.getDefault(), FONT, 10, SWT.BOLD);
             gc.setForeground(BLACK);
             gc.setFont(font);
-            String text = seriesNames[0];
+            String text = chart.getAxisSet().getXAxis(0).getTitle().getText();
             Point textSize = e.gc.textExtent(text);
             gc.drawText(text, legendBounds.x + (legendBounds.width - textSize.x) / 2, legendBounds.y - textSize.y);
             font.dispose();
         }
 
-        for (int i = 0; i < series.length; i++) {
-            double[] s = series[i];
-            // Offset chartnum by +1 to account for the legend title at seriesNames[0].
-            drawPieChart(e, i + 1, s, new Rectangle(x, bounds.y, width, bounds.height));
+        for (int i = 0; i < seriesValues.length; i++) {
+            drawPieChart(e, i, new Rectangle(x, bounds.y, width, bounds.height));
             x += width;
         }
     }
 
-    private void drawPieChart(PaintEvent e, int chartnum, double series[], Rectangle bounds) {
+    private void setTitleBounds(Rectangle bounds) {
+        Control title = (Control) chart.getTitle();
+        Rectangle titleBounds = title.getBounds();
+        title.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title.getLocation().y));
+    }
+
+    private void drawPieChart(PaintEvent e, int chartnum, Rectangle bounds) {
+        double series[] = seriesValues[chartnum];
         int nelemSeries = series.length;
         double sumTotal = 0;
 
@@ -116,7 +114,7 @@ public class PieChartPaintListener implements PaintListener {
             int incrementAngle = 0;
             int initialAngle = 90;
             for (int i = 0; i < nelemSeries; i++) {
-                gc.setBackground(new Color(e.display, chart.sliceColor(i)));
+                gc.setBackground(((IBarSeries) chart.getSeriesSet().getSeries()[i]).getBarColor());
 
                 if (i == (nelemSeries - 1)) {
 					sweepAngle = 360 - incrementAngle;
@@ -130,36 +128,44 @@ public class PieChartPaintListener implements PaintListener {
                 initialAngle += (-sweepAngle);
             }
         }
-        if (chartnum < seriesNames.length) {
-            Font font = new Font(Display.getDefault(), "Arial", 12, SWT.BOLD); //$NON-NLS-1$
-            gc.setForeground(BLACK);
-            gc.setBackground(WHITE);
-            gc.setFont(font);
-            String text = seriesNames[chartnum];
-            Point textSize = e.gc.textExtent(text);
-            gc.drawText(text, pieX + (pieWidth - textSize.x) / 2, pieY + pieWidth + textSize.y);
-            font.dispose();
-        }
+
+        Font font = new Font(Display.getDefault(), FONT, 12, SWT.BOLD);
+        gc.setForeground(BLACK);
+        gc.setBackground(WHITE);
+        gc.setFont(font);
+        String text = seriesNames[chartnum];
+        Point textSize = e.gc.textExtent(text);
+        gc.drawText(text, pieX + (pieWidth - textSize.x) / 2, pieY + pieWidth + textSize.y);
+        font.dispose();
     }
 
-    private double[][] getPieSeriesArray() {
+    private void getPieSeriesArray() {
         ISeries series[] = this.chart.getSeriesSet().getSeries();
         if (series == null || series.length == 0) {
-			return new double[0][0];
+            seriesValues = new double[0][0];
+            seriesNames = new String[0];
+		    return;
 		}
-        double result[][] = new double[series[0].getXSeries().length][series.length];
+        String names[] = this.chart.getAxisSet().getXAxis(0).getCategorySeries();
+        Range range = chart.getAxisSet().getXAxis(0).getRange();
+        int itemRange = (int) range.upper - (int) range.lower + 1;
+        int itemOffset = (int) range.lower;
+        seriesValues = new double[itemRange][series.length];
+        seriesNames = new String[itemRange];
 
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[i].length; j++) {
+        for (int i = 0; i < seriesValues.length; i++) {
+            seriesNames[i] = names[i + itemOffset];
+            for (int j = 0; j < seriesValues[i].length; j++) {
                 double d[] = series[j].getXSeries();
                 if (d != null && d.length > 0) {
-					result[i][j] = d[i];
-				} else {
-					result[i][j] = 0;
-				}
+                    seriesValues[i][j] = d[i + itemOffset];
+                } else {
+                    seriesValues[i][j] = 0;
+                }
             }
         }
 
-        return result;
+        return;
     }
+
 }

@@ -40,6 +40,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -235,8 +236,14 @@ public class GraphDisplaySet {
 	public void addGraph(GraphData gd) {
 		CTabItem item = new CTabItem(folder, SWT.CLOSE);
 		item.setText(GraphFactory.getGraphName(gd.graphID));
-		GraphComposite gc = new GraphComposite(folder, SWT.FILL, gd, dataSet);
+		final GraphComposite gc = new GraphComposite(folder, SWT.FILL, gd, dataSet);
 		gc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		gc.addCheckOption("Legend", new SelectionAdapter() { //$NON-NLS-1$
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				gc.setLegendVisible(((Button)e.getSource()).getSelection());
+			}
+		});
 		folder.setSelection(item);
 
 		AbstractChartBuilder g = gc.getCanvas();

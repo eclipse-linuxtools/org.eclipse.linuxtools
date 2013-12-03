@@ -29,7 +29,11 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.graphs.PieChart;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphComposite;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphContinuousXControl;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphContinuousYControl;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphDiscreteXControl;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 
 
 public final class GraphFactory {
@@ -170,6 +174,28 @@ public final class GraphFactory {
 				break;
 		}
 		return builder;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public static final Composite createGraphXControl(GraphComposite comp, int style) {
+		AbstractChartBuilder builder = comp.getCanvas();
+		if (builder instanceof BarChartBuilder || builder instanceof PieChartBuilder) {
+			return new GraphDiscreteXControl(comp, style);
+		}
+		return new GraphContinuousXControl(comp, style);
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public static final Composite createGraphYControl(GraphComposite comp, int style) {
+		AbstractChartBuilder builder = comp.getCanvas();
+		if (builder instanceof PieChartBuilder) {
+			return null;
+		}
+		return new GraphContinuousYControl(comp, style);
 	}
 
 	private static int getIndex(String id) {

@@ -12,6 +12,10 @@
  */
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
@@ -38,6 +42,18 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	protected final static String FONT_NAME = "MS Sans Serif"; //$NON-NLS-1$
 	protected int maxItems;
 	protected double scale = 1.0;
+	/**
+	 * @since 3.0
+	 */
+	protected double scaleY = 1.0;
+	/**
+	 * @since 3.0
+	 */
+	protected double scroll = 1.0;
+	/**
+	 * @since 3.0
+	 */
+	protected double scrollY = 1.0;
 
 	/**
 	 * Provides data for chart.
@@ -71,6 +87,8 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 * Chart title.
 	 */
 	protected String title = null;
+
+	private ArrayList<IUpdateListener> listeners = new ArrayList<IUpdateListener>();
 
 	public abstract void updateDataSet();
 
@@ -165,8 +183,88 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	}
 
 	public void setScale(double scale) {
-		this.scale = scale;
+		if (scale < 0) {
+			this.scale = 0;
+		} else if (scale > 1) {
+			this.scale = 1;
+		} else {
+			this.scale = scale;
+		}
 		handleUpdateEvent();
+	}
+
+	/**
+	 * @since 3.0
+	 * @return The current horizontal scale of the chart.
+	 */
+	public double getScale() {
+		return this.scale;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public void setScaleY(double scale) {
+		if (scale < 0) {
+			this.scaleY = 0;
+		} else if (scale > 1) {
+			this.scaleY = 1;
+		} else {
+			this.scaleY = scale;
+		}
+		handleUpdateEvent();
+	}
+
+	/**
+	 * @since 3.0
+	 * @return The current vertical scale of the chart.
+	 */
+	public double getScaleY() {
+		return this.scaleY;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public void setScroll(double scroll) {
+		if (scroll < 0) {
+			this.scroll = 0;
+		} else if (scroll > 1) {
+			this.scroll = 1;
+		} else {
+			this.scroll = scroll;
+		}
+		handleUpdateEvent();
+	}
+
+	/**
+	 * @since 3.0
+	 * @return The current horizontal scroll of the chart.
+	 */
+	public double getScroll() {
+		return this.scroll;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public void setScrollY(double scroll) {
+		if (scroll < 0) {
+			this.scrollY = 0;
+		} else if (scroll > 1) {
+			this.scrollY = 1;
+		} else {
+			this.scrollY = scroll;
+		}
+		handleUpdateEvent();
+	}
+
+	/**
+	 * @since 3.0
+	 * @return The current vertical scroll of the chart.
+	 */
+	public double getScrollY() {
+		return this.scrollY;
 	}
 
 	/**
@@ -191,9 +289,23 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 
 	@Override
 	public void handleUpdateEvent() {
-		if (!chart.isDisposed()) {
+		if (chart != null && !chart.isDisposed()) {
 			repaint();
 		}
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public void addUpdateListener(IUpdateListener l) {
+		listeners.add(l);
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public boolean removeUpdateListener(IUpdateListener l) {
+		return listeners.remove(l);
 	}
 
 	protected void repaint() {
@@ -202,9 +314,33 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 			public void run() {
 				if (!chart.isDisposed()) {
 					updateDataSet();
+					for (IUpdateListener l : listeners) {
+						l.handleUpdateEvent();
+					}
 				}
             }
 		});
+	}
+
+	/**
+	 * Given an array of label strings, returns a new array in which all duplicate labels
+	 * have been given unique names.
+	 * @return A new array containing unique label names.
+	 * @since 3.0
+	 */
+	protected String[] getUniqueNames(String[] labels) {
+		Set<String> labels_unique = new LinkedHashSet<String>();
+		for (String label : labels) {
+			int count = 1;
+			while (!labels_unique.add(makeCountedLabel(label, count))) {
+				count++;
+			}
+		}
+		return labels_unique.toArray(new String[labels.length]);
+	}
+
+	private String makeCountedLabel(String original, int count) {
+		return count <= 1 ? original : original.concat(String.format(" (%d)", count)); //$NON-NLS-1$
 	}
 
 }
