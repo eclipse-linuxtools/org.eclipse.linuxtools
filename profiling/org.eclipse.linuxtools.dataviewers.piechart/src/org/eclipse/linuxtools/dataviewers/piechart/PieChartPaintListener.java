@@ -36,6 +36,10 @@ public class PieChartPaintListener implements PaintListener {
     private static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
     private static final String FONT = "Arial"; //$NON-NLS-1$
 
+    private Point[] pieCenters;
+    private int[][] pieSliceAngles;
+    private int pieWidth;
+
     /**
      * Handles drawing & updating of a PieChart, with titles given to its legend and
      * to each of its pies. Pies will be drawn in the given chart's plot area.
@@ -52,6 +56,8 @@ public class PieChartPaintListener implements PaintListener {
         GC gc = e.gc;
         Rectangle bounds;
         this.getPieSeriesArray();
+        pieCenters = new Point[seriesValues.length];
+        pieSliceAngles = new int[seriesValues.length][];
         if (seriesValues.length == 0) {
             bounds = gc.getClipping();
             Font font = new Font(Display.getDefault(), FONT, 15, SWT.BOLD);
@@ -79,6 +85,7 @@ public class PieChartPaintListener implements PaintListener {
             font.dispose();
         }
 
+        pieWidth = Math.min(width - X_GAP, bounds.height);
         for (int i = 0; i < seriesValues.length; i++) {
             drawPieChart(e, i, new Rectangle(x, bounds.y, width, bounds.height));
             x += width;
@@ -96,6 +103,7 @@ public class PieChartPaintListener implements PaintListener {
         int nelemSeries = series.length;
         double sumTotal = 0;
 
+        pieSliceAngles[chartnum] = new int[nelemSeries - 1]; // Don't need first angle; it's always 0
         for (int i = 0; i < nelemSeries; i++) {
             sumTotal += series[i];
         }
@@ -103,9 +111,9 @@ public class PieChartPaintListener implements PaintListener {
         GC gc = e.gc;
         gc.setLineWidth(1);
 
-        int pieWidth = Math.min(bounds.width - X_GAP, bounds.height);
         int pieX = bounds.x + (bounds.width - pieWidth) / 2;
         int pieY = bounds.y + (bounds.height - pieWidth) / 2;
+        pieCenters[chartnum] = new Point(pieX + pieWidth / 2, pieY + pieWidth / 2);
         if (sumTotal == 0) {
 			gc.drawOval(pieX, pieY, pieWidth, pieWidth);
 		} else {
@@ -114,6 +122,11 @@ public class PieChartPaintListener implements PaintListener {
             int incrementAngle = 0;
             int initialAngle = 90;
             for (int i = 0; i < nelemSeries; i++) {
+                // Stored angles increase in clockwise direction from 0 degrees at 12:00
+                if (i > 0) {
+                    pieSliceAngles[chartnum][i - 1] = 90 - initialAngle;
+                }
+
                 gc.setBackground(((IBarSeries) chart.getSeriesSet().getSeries()[i]).getBarColor());
 
                 if (i == (nelemSeries - 1)) {
@@ -127,6 +140,7 @@ public class PieChartPaintListener implements PaintListener {
                 incrementAngle += sweepAngle;
                 initialAngle += (-sweepAngle);
             }
+            gc.drawLine(pieCenters[chartnum].x, pieCenters[chartnum].y, pieCenters[chartnum].x, pieCenters[chartnum].y - pieWidth / 2);
         }
 
         Font font = new Font(Display.getDefault(), FONT, 12, SWT.BOLD);
@@ -168,4 +182,39 @@ public class PieChartPaintListener implements PaintListener {
         return;
     }
 
+    /**
+     * Given a set of 2D pixel coordinates (typically those of a mouse cursor), return the
+     * index of the given pie's slice that those coordinates reside in.
+     * @param pieIndex The index of the pie to get the slice of.
+     * @param x The x-coordinate to test.
+     * @param y The y-coordinate to test.
+     * @return The slice that contains the point with coordinates (x,y).
+     * @since 2.0
+     */
+    public int getSliceIndexFromPosition(int chartnum, int x, int y) {
+        Range range = chart.getAxisSet().getXAxis(0).getRange();
+        chartnum -= (int) range.lower;
+        if (chartnum >= pieCenters.length || chartnum < 0) {
+            return -1;
+        }
+        // Only continue if the point is inside the pie circle
+        double rad = Math.sqrt(Math.pow(pieCenters[chartnum].x - x, 2) + Math.pow(pieCenters[chartnum].y - y, 2));
+        if (2 * rad > pieWidth) {
+            return -1;
+        }
+        // Angle is relative to 12:00 position, increases clockwise
+        double angle = Math.acos((pieCenters[chartnum].y - y) / rad) / Math.PI * 180.0;
+        if (x - pieCenters[chartnum].x < 0) {
+            angle = 360 - angle;
+        }
+        if (pieSliceAngles[chartnum].length == 0 || angle < pieSliceAngles[chartnum][0]) {
+            return 0;
+        }
+        for (int s = 0; s < pieSliceAngles[chartnum].length - 1; s++) {
+            if (pieSliceAngles[chartnum][s] <= angle && angle < pieSliceAngles[chartnum][s+1]) {
+                return s + 1;
+            }
+        }
+        return pieSliceAngles[chartnum].length;
+    }
 }

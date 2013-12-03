@@ -29,10 +29,14 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.LineChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
@@ -57,10 +61,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.swtchart.Chart;
 import org.swtchart.IAxis;
+import org.swtchart.ISeries;
 import org.swtchart.Range;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
@@ -112,6 +119,27 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
+	private static class ConsoleIsReady extends DefaultCondition {
+
+		private String scriptName;
+		public ConsoleIsReady(String scriptName) {
+			this.scriptName = scriptName;
+		}
+
+		@Override
+		public boolean test() {
+			SWTBotView console = TestCreateSystemtapScript.bot.viewById("org.eclipse.ui.console.ConsoleView");
+			console.setFocus();
+			return console.bot().label().getText().contains(scriptName);
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for console to appear";
+		}
+
+	}
+
 	private static class StapHasExited extends DefaultCondition {
 
 		@Override
@@ -129,7 +157,7 @@ public class TestCreateSystemtapScript {
 
 	private static class TableHasUpdated extends DefaultCondition {
 
-		private SWTBotEditor graphEditor;
+		private String scriptName;
 		private int graphSetNum;
 		private int expectedRows;
 		/**
@@ -140,23 +168,56 @@ public class TestCreateSystemtapScript {
 		 * @param graphSetNum Which graph set to focus on & watch for updates.
 		 * @param expectedRows How many entries/rows are expected to be in the table when it's fully updated.
 		 */
-		public TableHasUpdated(SWTBotEditor graphEditor, int graphSetNum, int expectedRows) {
-			this.graphEditor = graphEditor;
+		public TableHasUpdated(String scriptName, int graphSetNum, int expectedRows) {
+			this.scriptName = scriptName;
 			this.graphSetNum = graphSetNum;
 			this.expectedRows = expectedRows;
 		}
 		@Override
 		public boolean test() {
+			SWTBotEditor graphEditor = TestCreateSystemtapScript.bot.editorByTitle(scriptName.concat(" Graphs"));
 			graphEditor.setFocus();
 			graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, graphSetNum)).activate();
 			graphEditor.bot().cTabItem("Data View").activate();
-			return bot.table(0).rowCount() == expectedRows;
+			return bot.table(0).rowCount() >= expectedRows;
 		}
 
 		@Override
 		public String getFailureMessage() {
 			return "Timed out waiting for data table to update";
 		}
+	}
+
+	private static class ChartHasUpdated extends DefaultCondition {
+
+		private Chart chart;
+		int oldCount;
+		int expectedCount;
+		/**
+		 * Wait for the provided chart to become updated. The chart is considered
+		 * to be updated once a new point is added to one of its series sets.
+		 * @param chart The chart to watch for an update.
+		 * @param expectedCount The expected number of series points. Set to -1 to instead
+		 * check for when there are more points than there were at the beginning.
+		 */
+		public ChartHasUpdated(Chart chart, int expectedCount) {
+			this.chart = chart;
+			ISeries[] seriesSet = chart.getSeriesSet().getSeries();
+			this.oldCount = seriesSet.length > 0 ? seriesSet[0].getXSeries().length : 0;
+			this.expectedCount = expectedCount;
+		}
+		@Override
+		public boolean test() {
+			ISeries[] seriesSet = chart.getSeriesSet().getSeries();
+			int newCount = seriesSet.length > 0 ? seriesSet[0].getXSeries().length : 0;
+			return expectedCount < 0 ? newCount > oldCount : newCount == expectedCount;
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for chart to update";
+		}
+
 	}
 
 	@BeforeClass
@@ -221,6 +282,14 @@ public class TestCreateSystemtapScript {
 		bot.closeAllEditors();
 	}
 
+	@AfterClass
+	public static void finalCleanUp() {
+		if (ScriptConsole.anyRunning()) {
+			ScriptConsole.stopAll();
+			bot.waitUntil(new StapHasExited());
+		}
+	}
+
 	public static void createScript(SWTWorkbenchBot bot, String scriptName) {
 		SWTBotMenu fileMenu = bot.menu("File");
 		SWTBotMenu newMenu = fileMenu.menu("New");
@@ -249,12 +318,32 @@ public class TestCreateSystemtapScript {
 		assertEquals(scriptName, bot.activeEditor().getTitle());
 	}
 
+	private SWTBotShell prepareScript(String scriptName, String scriptContents) {
+		createScript(bot, scriptName);
+		if (scriptContents != null) {
+			SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
+			editor.setText(scriptContents);
+			editor.save();
+		}
+
+		openRunConfigurations(scriptName);
+		SWTBotShell shell = bot.shell("Run Configurations");
+		shell.setFocus();
+		SWTBotTree runConfigurationsTree = bot.tree();
+		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+
+		// Select the "Graphing" tab and enable output graphing.
+		bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7).activate();
+		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		return shell;
+	}
+
 	@Test
 	public void testCreateScript(){
 		String scriptName = "testScript.stp";
 		createScript(bot, scriptName);
 
-		// Write a script
+		// Type a script
 		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
 		editor.typeText(0, editor.getText().length(), "\nprobe begin{log(\"began");
 		editor.typeText(0, editor.getText().length() - 1, "); exit(");
@@ -272,31 +361,14 @@ public class TestCreateSystemtapScript {
 			bot.button("Run").click();
 			bot.waitUntil(new ShellIsClosed(shell));
 
-			SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
-			console.setFocus();
-			assertTrue(console.bot().label().getText().contains(scriptName));
+			bot.waitUntil(new ConsoleIsReady(scriptName));
 			bot.waitUntil(new StapHasExited(), 10000); // The script should end on its own
 		}
 	}
 
 	@Test
 	public void testMissingColumns(){
-		String scriptName = "missingColumns.stp";
-		createScript(bot, scriptName);
-
-		openRunConfigurations(scriptName);
-		SWTBotShell shell = bot.shell("Run Configurations");
-		shell.setFocus();
-
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
-
-		// Select the "Graphing" tab.
-		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
-		tab.activate();
-
-		// Enable output graphing.
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		SWTBotShell shell = prepareScript("missingColumns.stp", null);
 
 		// As soon as the Graphing tab is entered, no regular expression exists & nothing can be run.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
@@ -327,20 +399,7 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testDeleteBlankRegex(){
-		createScript(bot, "blank.stp");
-		openRunConfigurations("blank.stp");
-		SWTBotShell shell = bot.shell("Run Configurations");
-		shell.setFocus();
-
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
-
-		// Select the "Graphing" tab.
-		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
-		tab.activate();
-
-		// Enable output graphing.
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		SWTBotShell shell = prepareScript("blank.stp", null);
 
 		// Confirm that adding a new regex when the current one is blank has no effect.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
@@ -515,8 +574,8 @@ public class TestCreateSystemtapScript {
 
 		// Give time for the table to be fully constructed
 		SWTBotEditor graphEditor = bot.activeEditor();
-		bot.waitUntil(new TableHasUpdated(graphEditor, 1, 10));
-		bot.waitUntil(new TableHasUpdated(graphEditor, 2, 4));
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, 10));
+		bot.waitUntil(new TableHasUpdated(scriptName, 2, 4));
 
 		graphEditor.setFocus();
 		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
@@ -542,12 +601,7 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testGenerateFromPrintf() {
-		String scriptName = "testGenerates.stp";
-		createScript(bot, scriptName);
-
-		// Write a script
-		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
-		editor.setText("#!/usr/bin/env stap"
+		SWTBotShell shell = prepareScript("testGenerates.stp", "#!/usr/bin/env stap"
 				+ "\nglobal i,j,k,a"
 				+ "\nprobe begin{i=0;j=5;k=20;a=65}"
 				+ "\n#probe begin{printf(\"%1b%1b%1blo %1b%1brld\\n\", 72,101,108,87,111)}"
@@ -559,20 +613,8 @@ public class TestCreateSystemtapScript {
 				+ "\nprobe timer.ms(100){printf(\"%x - %#x - %#X\\n\",i,i,i);}"
 				+ "\nprobe timer.ms(100){printf(\"%o - %#o\\n\",i,i);}"
 				+ "\nprobe begin{printf(\"%1b-\\\\n-%p\\n\", 65, 0x8000000002345678)}");
-		editor.save();
-
-		openRunConfigurations(scriptName);
-		SWTBotShell shell = bot.shell("Run Configurations");
-		shell.setFocus();
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
-
-		// Select the "Graphing" tab.
-		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
-		tab.activate();
 
 		// Generate regexs.
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsButton).click();
 
 		SWTBotShell shell2 = bot.shell(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle);
@@ -603,12 +645,14 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testLabelledGraphScript(){
-		String scriptName = "testLabels.stp";
-		createScript(bot, scriptName);
+		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
+		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
+		if (!stapInstalled) {
+			return;
+		}
 
-		// Write a script
-		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
-		editor.setText("#!/usr/bin/env stap"
+		String scriptName = "testLabels.stp";
+		SWTBotShell shell = prepareScript(scriptName, "#!/usr/bin/env stap"
 				 + "\nprobe begin{"
 				 + "\nprintf(\"Apples: 2 14 16\\n\");"
 				 + "\nprintf(\"1: 1 2 3\\n\");"
@@ -624,23 +668,11 @@ public class TestCreateSystemtapScript {
 				 + "\nprintf(\"Apples: 12 5 16\\n\");"
 				 + "\nprintf(\"Bananas (2): 3 1 3\\n\");"
 				 + "\nexit();}");
-		editor.save();
 		int numItems = 13;
 		int numNumberItems = 4;
 		int numCategories = 3;
 
-		openRunConfigurations(scriptName);
-		SWTBotShell shell = bot.shell("Run Configurations");
-		shell.setFocus();
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
-
-		// Select the "Graphing" tab.
-		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
-		tab.activate();
-
-		// Enable output graphing & enter a regex.
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		// Enter a regex.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
 		assertTrue(!button.isEnabled());
@@ -649,19 +681,15 @@ public class TestCreateSystemtapScript {
 		// Add bar, pie, and line graphs that use the same column data.
 		assertTrue(button.isEnabled());
 		button.click();
-		setupGraphGeneral("Fruit Info - Bar", 4, BarChartBuilder.ID, false);
+		String title = "Fruit Info";
+		setupGraphGeneral(title, 4, BarChartBuilder.ID, false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral("Fruit Info - Pie", 4, PieChartBuilder.ID, false);
+		setupGraphGeneral(title, 4, PieChartBuilder.ID, false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral("Fruit Info - Line", 4, LineChartBuilder.ID, false);
+		setupGraphGeneral(title, 4, LineChartBuilder.ID, false);
 		shell.setFocus();
-
-		// If Systemtap is not installed, don't test graph output. Otherwise, do.
-		if (!stapInstalled) {
-			return;
-		}
 
 		bot.button("Run").click();
 		bot.waitUntil(new ShellIsClosed(shell));
@@ -671,36 +699,32 @@ public class TestCreateSystemtapScript {
 
 		// Give time for the table to be fully constructed
 		SWTBotEditor graphEditor = bot.activeEditor();
-		bot.waitUntil(new TableHasUpdated(graphEditor, 1, numItems));
-
-		graphEditor.setFocus();
-		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
-		graphEditor.bot().cTabItem("Data View").activate();
-		SWTBotTable dataTable = bot.table(0);
-		assertEquals(numItems, dataTable.rowCount());
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, numItems));
 
 		// Confirm that the bar & pie charts display the String categories, but the line chart ignores them.
-		graphEditor.bot().cTabItem(GraphFactory.getGraphName(LineChartBuilder.ID)).activate();
-		@SuppressWarnings("unchecked")
-		Matcher<AbstractChartBuilder> matcher = allOf(widgetOfType(AbstractChartBuilder.class));
+		String titleBar = title + " - Bar Graph";
+		String titlePie = title + " - Pie Chart";
+		String titleLine = title + " - Line Graph";
+		graphEditor.bot().cTabItem(titleLine).activate();
+		Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
 		AbstractChartBuilder cb = bot.widget(matcher);
 		assertEquals(numNumberItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
 
-		graphEditor.bot().cTabItem(GraphFactory.getGraphName(PieChartBuilder.ID)).activate();
+		graphEditor.bot().cTabItem(titlePie).activate();
 		cb = bot.widget(matcher);
 		assertEquals(numItems, cb.getChart().getSeriesSet().getSeries().length);
 
-		graphEditor.bot().cTabItem(GraphFactory.getGraphName(BarChartBuilder.ID)).activate();
+		graphEditor.bot().cTabItem(titleBar).activate();
 		cb = bot.widget(matcher);
 		assertEquals(numItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
 
 		// Test graph scaling & scrolling
-		discreteXControlTests(cb, numItems); //BarGraph
+		discreteXControlTests(cb, numItems); //Bar Chart
 		continuousControlTests(cb, false);
-		graphEditor.bot().cTabItem(GraphFactory.getGraphName(PieChartBuilder.ID)).activate();
+		graphEditor.bot().cTabItem(titlePie).activate();
 		cb = bot.widget(matcher);
 		discreteXControlTests(cb, numCategories);
-		graphEditor.bot().cTabItem(GraphFactory.getGraphName(LineChartBuilder.ID)).activate();
+		graphEditor.bot().cTabItem(titleLine).activate();
 		cb = bot.widget(matcher);
 		continuousControlTests(cb, true);
 		continuousControlTests(cb, false);
@@ -919,6 +943,117 @@ public class TestCreateSystemtapScript {
 		bot.sleep(100);
 		range2 = axis.getRange();
 		assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper > range.upper && getAxisScroll(cb, isXAxis) > scroll);
+	}
+
+	@Test
+	public void testGraphTooltips(){
+		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
+		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
+		if (!stapInstalled) {
+			return;
+		}
+
+		String scriptName = "testGraphTooltips.stp";
+		SWTBotShell shell = prepareScript(scriptName, "#!/usr/bin/env stap"
+				 + "\nglobal y"
+				 + "\nprobe begin{y=5}"
+				 + "\nprobe timer.ms(1000){printf(\"%d\\n\",y);y++}"
+				 + "\nprobe timer.ms(5000){exit()}");
+
+		// Enter a regex.
+		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
+		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
+		assertTrue(!button.isEnabled());
+		combo.setText("(\\d+)");
+
+		// Add bar, pie, and line graphs that use the same column data.
+		assertTrue(button.isEnabled());
+		button.click();
+		String title = "Info";
+		setupGraphGeneral(title, 1, LineChartBuilder.ID, true);
+		shell.setFocus();
+		button.click();
+		setupGraphGeneral(title, 1, BarChartBuilder.ID, true);
+		shell.setFocus();
+
+		bot.button("Run").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
+		console.setFocus();
+
+		// Perform mouse hover tests on graphs as they are being updated
+		SWTBotEditor graphEditor = TestCreateSystemtapScript.bot.editorByTitle(scriptName.concat(" Graphs"));
+		graphEditor.setFocus();
+		graphEditor.bot().cTabItem("Info - Bar Graph").activate();
+		final Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
+		AbstractChartBuilder cb = bot.widget(matcher);
+		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 1));
+		checkTooltipAtDataPoint(cb, 0, 0, MessageFormat.format(
+				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.BarChartBuilder_ToolTipCoords,
+				"Column 1", "5"), true);
+
+		graphEditor.bot().cTabItem("Info - Line Graph").activate();
+		cb = bot.widget(matcher);
+		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 2));
+		checkTooltipAtDataPoint(cb, 0, 1, MessageFormat.format(
+				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
+				"Column 1", "2", "6"), true);
+
+		// The tooltip should disappear when a point moves away from the mouse, without need for mouse movement.
+		bot.waitUntil(new ChartHasUpdated(cb.getChart(), -1));
+		checkTooltipAtDataPoint(cb, 0, -1, MessageFormat.format(
+				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
+				"Column 1", "2", "6"), false);
+
+		ScriptConsole.stopAll();
+		bot.waitUntil(new StapHasExited());
+	}
+
+	/**
+	 * May move the mouse to a desired data point on a chart and test for the tooltip that appears.
+	 * @param cb The AbstractChartBuilder containing the chart to test.
+	 * @param series The index of the data series to hover over.
+	 * @param dataPoint The data point of the series to move the mouse to. Set this to -1 or less if the mouse should stay where it is.
+	 * @param expectedTooltip The expected contents of the tooltip.
+	 * @param shellShouldExist Set to <code>false</code> if the tooltip should not be found.
+	 */
+	private void checkTooltipAtDataPoint(final AbstractChartBuilder cb, final int series,
+			final int dataPoint, final String expectedTooltip, final boolean shellShouldExist) {
+		if (dataPoint >= 0) {
+			UIThreadRunnable.syncExec(new VoidResult() {
+
+				@Override
+				public void run() {
+					Event event = new Event();
+					event.type = SWT.MouseMove;
+					Point mousePoint = cb.getChart().getPlotArea().toDisplay(
+							cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
+					event.x = mousePoint.x;
+					event.y = mousePoint.y;
+					bot.getDisplay().post(event);
+				}
+			});
+		}
+
+		bot.sleep(100); // Give some time for the tooltip to appear/change
+		UIThreadRunnable.syncExec(new VoidResult() {
+
+			@Override
+			public void run() {
+				for (SWTBotShell bshell : bot.shells()) {
+					Control[] children = bshell.widget.getChildren();
+					if (children.length == 1 && children[0] instanceof Text && expectedTooltip.equals(((Text) children[0]).getText())) {
+						if (!shellShouldExist) {
+							throw new AssertionError("Did not expect to find this tooltip, but found it: " + expectedTooltip);
+						}
+						return;
+					}
+				}
+				if (shellShouldExist) {
+					throw new AssertionError("Didn't find the expected tooltip: " + expectedTooltip);
+				}
+			}
+		});
 	}
 
 	private void openRunConfigurations(String scriptName) {

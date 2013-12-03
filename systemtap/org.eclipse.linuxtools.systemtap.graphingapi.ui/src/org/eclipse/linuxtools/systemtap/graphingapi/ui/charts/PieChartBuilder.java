@@ -32,6 +32,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 	protected void createChart() {
 		this.chart = new PieChart(this, getStyle());
 		((PieChart) chart).setCustomColors(COLORS);
+		chartMouseMoveListener = new PieChartMouseMoveListener((PieChart) chart, chart);
 	}
 
 	@Override
@@ -114,5 +115,6 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 	@Override
 	public void updateDataSet() {
 		buildXSeries();
+		chartMouseMoveListener.update();
 	}
 }

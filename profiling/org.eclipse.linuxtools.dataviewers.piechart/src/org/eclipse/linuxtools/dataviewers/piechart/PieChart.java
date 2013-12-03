@@ -26,6 +26,7 @@ public class PieChart extends Chart {
 
 	protected List<RGB> colorList = new ArrayList<>();
 	private Color[] customColors = null;
+	private PieChartPaintListener pieChartPaintListener;
 
     public PieChart(Composite parent, int style) {
         super(parent, style);
@@ -34,7 +35,7 @@ public class PieChart extends Chart {
         	axis.getTitle().setVisible(false);
         }
         getPlotArea().setVisible(false);
-        addPaintListener(new PieChartPaintListener(this));
+        addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
         IAxis xAxis = getAxisSet().getXAxis(0);
         xAxis.enableCategory(true);
         xAxis.setCategorySeries(new String[]{""}); //$NON-NLS-1$
@@ -47,6 +48,9 @@ public class PieChart extends Chart {
 		}
     }
 
+    /**
+	 * @since 2.0
+	 */
     public void setCustomColors(Color[] customColors) {
     	this.customColors = customColors;
     }
@@ -108,5 +112,34 @@ public class PieChart extends Chart {
     	RGB next = IColorsConstants.COLORS[i % IColorsConstants.COLORS.length];
     	colorList.add(next);
     	return next;
+    }
+
+    /**
+     * Given a set of 2D pixel coordinates (typically those of a mouse cursor), return the
+     * index of the given pie's slice that those coordinates reside in.
+     * @param pieIndex The index of the pie to get the slice of.
+     * @param x The x-coordinate to test.
+     * @param y The y-coordinate to test.
+     * @return The slice that contains the point with coordinates (x,y).
+     * @since 2.0
+     */
+    public int getSliceIndexFromPosition(int pieIndex, int x, int y) {
+        return pieChartPaintListener.getSliceIndexFromPosition(pieIndex, x, y);
+    }
+
+    /**
+     * Given a pie and one of its slices, returns the size of the slice as a percentage of the pie.
+     * @param pieIndex The index of the pie to check.
+     * @param sliceIndex The slice of the pie to get the percentage of.
+     * @return The percentage of the entire pie taken up by the slice.
+     * @since 2.0
+     */
+    public double getSlicePercent(int pieIndex, int sliceIndex) {
+        double max = 0;
+        ISeries series[] = getSeriesSet().getSeries();
+        for (int i = 0; i < series.length; i++) {
+            max += series[i].getXSeries()[pieIndex];
+        }
+        return series[sliceIndex].getXSeries()[pieIndex] / max * 100;
     }
 }

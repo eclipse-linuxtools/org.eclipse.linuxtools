@@ -72,22 +72,22 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	 */
 	protected abstract ISeries createChartISeries(int i);
 
-    /**
-     * Constructor.
-     */
-
-    public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
-    	 super(adapter, parent, style, title);
+	/**
+	 * Constructor.
+	*/
+	public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
+		super(adapter, parent, style, title);
 		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
 		xLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
 		yLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES);
 	}
 
-    @Override
-    protected void createChart() {
-    	super.createChart();
-    	applyTitleBoundsListener();
-    }
+	@Override
+	protected void createChart() {
+		super.createChart();
+		applyTitleBoundsListener();
+		chartMouseMoveListener = new ChartWithAxisMouseMoveListener(chart, chart.getPlotArea());
+	}
 
     /**
      * After this method is called, the chart's title will (from then on) be centred with the plot area.
@@ -263,5 +263,11 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 
 		double lower = (actualRange - scaledRange) * scrollY + min;
 		axis.setRange(new Range(lower - marginL, lower + scaledRange + marginU));
+	}
+
+	@Override
+	public void updateDataSet() {
+		buildXSeries();
+		chartMouseMoveListener.update();
 	}
 }

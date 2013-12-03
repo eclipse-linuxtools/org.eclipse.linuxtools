@@ -90,6 +90,13 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 
 	private ArrayList<IUpdateListener> listeners = new ArrayList<>();
 
+	/**
+	 * The mouse listener that watches for MouseMove events over a specified region.
+	 * It is null by default.
+	 * @since 3.0
+	 */
+	protected ChartMouseMoveListener chartMouseMoveListener = null;
+
 	public abstract void updateDataSet();
 
 	/**
