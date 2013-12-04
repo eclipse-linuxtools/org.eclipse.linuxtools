@@ -53,7 +53,7 @@ public class PieChartPaintListener implements PaintListener {
      * properly position the legend title (if it is provided). Note that this class
      * does not handle drawing of the legend itself.
      * @param seriesNames The titles given to the legend & individual pies.
-     * @since 1.1
+     * @since 2.0
      */
     public PieChartPaintListener(PieChart chart, Control plotArea, Control legendArea, String[] seriesNames) {
         this.chart = chart;

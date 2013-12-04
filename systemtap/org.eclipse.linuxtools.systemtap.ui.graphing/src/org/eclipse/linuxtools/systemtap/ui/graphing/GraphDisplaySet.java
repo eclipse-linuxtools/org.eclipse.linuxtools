@@ -162,18 +162,20 @@ public class GraphDisplaySet {
 	 * to anything in this class after calling the dispose method.
 	 */
 	public void dispose() {
-		if(null != updater) {
+		if(null != updater && updater.isRunning()) {
 			updater.dispose();
 		}
 		updater = null;
 
 		dataSet = null;
-		if(null != folder) {
+		if(null != folder && !folder.isDisposed()) {
 			folder.removeSelectionListener(listener);
 			folder.dispose();
 			folder = null;
 		}
 		listener = null;
+
+		builders.clear();
 	}
 
 	/**

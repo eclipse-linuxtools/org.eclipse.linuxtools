@@ -35,8 +35,10 @@ public class UpdateManager {
 		if(!stopped) {
 			stopped = true;
 			timer.cancel();
-			for(int i=0; i<updateListeners.size(); i++)
-				removeUpdateListener(updateListeners.get(i));
+			synchronized (updateListeners) {
+				for(int i=0; i<updateListeners.size(); i++)
+					removeUpdateListener(updateListeners.get(i));
+			}
 		}
 	}
 
@@ -69,8 +71,10 @@ public class UpdateManager {
 		@Override
 		public void run() {
 			if(!stopped) {
-				for(int i = 0; i < updateListeners.size(); i++)
-					(updateListeners.get(i)).handleUpdateEvent();
+				synchronized (updateListeners) {
+					for(int i = 0; i < updateListeners.size(); i++)
+						(updateListeners.get(i)).handleUpdateEvent();
+				}
 			}
 		}
 	}

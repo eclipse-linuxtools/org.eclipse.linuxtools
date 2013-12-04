@@ -272,6 +272,9 @@ public class DataGrid implements IUpdateListener {
 		table.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (table.isDisposed()) {
+					return;
+				}
 				TableItem item;
 				int startLocation, endLocation = filteredDataSet.getRowCount();
 
