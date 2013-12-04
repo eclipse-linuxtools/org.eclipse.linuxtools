@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.ReportComparisonData;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
