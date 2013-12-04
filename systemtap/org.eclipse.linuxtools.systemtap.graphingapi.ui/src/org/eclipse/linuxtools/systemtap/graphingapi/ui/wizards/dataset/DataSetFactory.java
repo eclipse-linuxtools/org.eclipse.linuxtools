@@ -19,7 +19,6 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowDataSet
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.FilteredTableDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.datadisplay.DataGrid;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.SelectGraphAndSeriesWizard;
 import org.eclipse.swt.widgets.Composite;
 
 
