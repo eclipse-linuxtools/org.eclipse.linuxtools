@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
@@ -359,12 +358,13 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 						monitor.beginTask(Messages.CreaterepoProject_executeCreaterepo, IProgressMonitor.UNKNOWN);
 						MessageConsoleStream os = CreaterepoUtils.findConsole(Messages.CreaterepoProject_consoleName)
 								.newMessageStream();
-						String message = "Createrepo functionality to be implemented when clicking this button"; //$NON-NLS-1$
-						os.print(message);
-						return new Status(IStatus.OK, Activator.PLUGIN_ID, message);
+						return project.createrepo(os);
+					} catch (CoreException e) {
+						Activator.logError(Messages.Createrepo_errorExecuting, e);
 					} finally {
 						monitor.done();
 					}
+					return null;
 				}
 			};
 			executeCreaterepo.setUser(true);

@@ -66,6 +66,8 @@ public final class Messages {
 	// Createrepo
 	/****/
 	public static String Createrepo_jobName;
+	/****/
+	public static String Createrepo_errorExecuting;
 
 	// RepoFormEditor
 	/****/
