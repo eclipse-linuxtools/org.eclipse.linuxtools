@@ -28,14 +28,14 @@ public class GraphSelectorEditorInput implements IEditorInput {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 */
 	public GraphSelectorEditorInput(String scriptTitle) {
 		title = NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptTitle);
 	}
 
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+	public Object getAdapter(Class adapter) {
 		return null;
 	}
 
