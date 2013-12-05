@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Ericsson
+ * Copyright (c) 2009, 2013 Ericsson, École Polytechnique de Montréal
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -11,9 +11,12 @@
  *   Thomas Gatterweh	- Updated scaling / synchronization
  *   Francois Chouinard - Refactoring to align with TMF Event Model 1.0
  *   Francois Chouinard - Implement augmented interface
+ *   Geneviève Bastien  - Added copy constructor with new value
  *******************************************************************************/
 
 package org.eclipse.linuxtools.tmf.core.timestamp;
+
+import java.nio.ByteBuffer;
 
 /**
  * A generic timestamp implementation. The timestamp is represented by the
@@ -134,9 +137,39 @@ public class TmfTimestamp implements ITmfTimestamp {
         fPrecision = timestamp.getPrecision();
     }
 
+    /**
+     * Copies a timestamp but with a new time value
+     *
+     * @param timestamp
+     *            The timestamp to copy
+     * @param newvalue
+     *            The value the new timestamp will have
+     * @since 3.0
+     */
+    public TmfTimestamp(ITmfTimestamp timestamp, long newvalue) {
+        if (timestamp == null) {
+            throw new IllegalArgumentException();
+        }
+        fValue = newvalue;
+        fScale = timestamp.getScale();
+        fPrecision = timestamp.getPrecision();
+    }
+
     // ------------------------------------------------------------------------
     // ITmfTimestamp
     // ------------------------------------------------------------------------
+
+    /**
+     * Construct the timestamp from the ByteBuffer.
+     *
+     * @param bufferIn
+     *            the buffer to read from
+     *
+     * @since 3.0
+     */
+    public TmfTimestamp(ByteBuffer bufferIn) {
+        this(bufferIn.getLong(), bufferIn.getInt(), bufferIn.getInt());
+    }
 
     @Override
     public long getValue() {
@@ -337,4 +370,15 @@ public class TmfTimestamp implements ITmfTimestamp {
         }
     }
 
+    /**
+     * Write the time stamp to the ByteBuffer so that it can be saved to disk.
+     * @param bufferOut the buffer to write to
+     *
+     * @since 3.0
+     */
+    public void serialize(ByteBuffer bufferOut) {
+        bufferOut.putLong(fValue);
+        bufferOut.putInt(fScale);
+        bufferOut.putInt(fPrecision);
+    }
 }

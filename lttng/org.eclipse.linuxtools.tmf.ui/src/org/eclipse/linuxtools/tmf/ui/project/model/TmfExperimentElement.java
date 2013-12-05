@@ -186,7 +186,7 @@ public class TmfExperimentElement extends TmfWithFolderElement implements IPrope
         /* Finally, remove the trace from experiment*/
         removeChild(trace);
         trace.getResource().delete(true, null);
-
+        deleteSupplementaryResources();
     }
 
     private static void setProperties(IResource resource, String bundleName,
@@ -311,5 +311,22 @@ public class TmfExperimentElement extends TmfWithFolderElement implements IPrope
                 }
             }
         }
+    }
+
+    /**
+     * Get the list of analysis elements
+     *
+     * @return Array of analysis elements
+     * @since 3.0
+     */
+    public List<TmfAnalysisElement> getAvailableAnalysis() {
+        List<TmfAnalysisElement> list = new ArrayList<TmfAnalysisElement>();
+
+        /**
+         * TODO : implement this cleanly and test it when experiment types are
+         * available
+         */
+
+        return list;
     }
 }

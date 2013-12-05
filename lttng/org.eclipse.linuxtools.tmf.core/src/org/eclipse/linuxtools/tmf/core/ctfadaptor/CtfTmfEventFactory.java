@@ -60,7 +60,7 @@ public final class CtfTmfEventFactory {
         /* Prepare what to pass to CtfTmfEvent's constructor */
         final IEventDeclaration eventDecl = eventDef.getDeclaration();
         final long ts = eventDef.getTimestamp();
-        final CtfTmfTimestamp timestamp = new CtfTmfTimestamp(
+        final CtfTmfTimestamp timestamp = originTrace.createTimestamp(
                 originTrace.getCTFTrace().timestampCyclesToNanos(ts));
 
         int sourceCPU = eventDef.getCPU();

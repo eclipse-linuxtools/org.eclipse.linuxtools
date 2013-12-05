@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.ctf.core.event.types;
 
 import org.eclipse.linuxtools.ctf.core.event.io.BitBuffer;
+import org.eclipse.linuxtools.ctf.core.trace.CTFReaderException;
 
 /**
  * A CTF string definition (similar to a C null-terminated byte array).
@@ -31,9 +32,9 @@ public class StringDefinition extends Definition {
     // Attributes
     // ------------------------------------------------------------------------
 
-    private StringDeclaration declaration;
+    private StringDeclaration fDeclaration;
 
-    private StringBuilder string;
+    private String fString;
 
     // ------------------------------------------------------------------------
     // Constructors
@@ -53,9 +54,9 @@ public class StringDefinition extends Definition {
             IDefinitionScope definitionScope, String fieldName) {
         super(definitionScope, fieldName);
 
-        this.declaration = declaration;
+        fDeclaration = declaration;
 
-        string = new StringBuilder();
+        fString = ""; //$NON-NLS-1$
     }
 
     // ------------------------------------------------------------------------
@@ -64,7 +65,7 @@ public class StringDefinition extends Definition {
 
     @Override
     public StringDeclaration getDeclaration() {
-        return declaration;
+        return fDeclaration;
     }
 
     /**
@@ -74,26 +75,7 @@ public class StringDefinition extends Definition {
      *            the declaration
      */
     public void setDeclaration(StringDeclaration declaration) {
-        this.declaration = declaration;
-    }
-
-    /**
-     * Gets the string
-     *
-     * @return the stringbuilder
-     */
-    public StringBuilder getString() {
-        return string;
-    }
-
-    /**
-     * Sets a stringbuilder for the definition
-     *
-     * @param string
-     *            the stringbuilder
-     */
-    public void setString(StringBuilder string) {
-        this.string = string;
+        fDeclaration = declaration;
     }
 
     /**
@@ -102,7 +84,16 @@ public class StringDefinition extends Definition {
      * @return the string
      */
     public String getValue() {
-        return string.toString();
+        return fString;
+    }
+
+    /**
+     * Sets the string (value)
+     *
+     * @param str the string
+     */
+    public void setValue(String str) {
+        fString = str;
     }
 
     // ------------------------------------------------------------------------
@@ -110,15 +101,17 @@ public class StringDefinition extends Definition {
     // ------------------------------------------------------------------------
 
     @Override
-    public void read(BitBuffer input) {
+    public void read(BitBuffer input) throws CTFReaderException {
         /* Offset the buffer position wrt the current alignment */
-        alignRead(input, this.declaration);
-        string.setLength(0);
-        char c = (char) input.getInt(8, false);
+        alignRead(input, fDeclaration);
+
+        StringBuilder sb = new StringBuilder();
+        char c = (char) input.get(8, false);
         while (c != 0) {
-            string.append(c);
-            c = (char) input.getInt(8, false);
+            sb.append(c);
+            c = (char) input.get(8, false);
         }
+        fString = sb.toString();
     }
 
     @Override

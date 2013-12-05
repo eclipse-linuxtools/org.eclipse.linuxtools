@@ -28,9 +28,9 @@ import java.util.UUID;
 
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.RewriteCardinalityException;
 import org.eclipse.linuxtools.ctf.parser.CTFLexer;
 import org.eclipse.linuxtools.ctf.parser.CTFParser;
 import org.eclipse.linuxtools.ctf.parser.CTFParser.parse_return;
@@ -177,9 +177,9 @@ public class Metadata {
             tempException = new CTFReaderException(e);
         } catch (ParseException e) {
             tempException = new CTFReaderException(e);
-        } catch (MismatchedTokenException e) {
-            tempException = new CtfAntlrException(e);
         } catch (RecognitionException e) {
+            tempException = new CtfAntlrException(e);
+        } catch (RewriteCardinalityException e){
             tempException = new CtfAntlrException(e);
         }
 
@@ -239,8 +239,8 @@ public class Metadata {
     private boolean isPacketBased(FileChannel metadataFileChannel)
             throws CTFReaderException {
         /*
-         * Create a ByteBuffer to read the TSDL magic number (default is big
-         * endian)
+         * Create a ByteBuffer to read the TSDL magic number (default is
+         * big-endian)
          */
         ByteBuffer magicByteBuffer = ByteBuffer.allocate(Utils.TSDL_MAGIC_LEN);
 
@@ -260,7 +260,7 @@ public class Metadata {
             return true;
         }
 
-        /* Try the same thing, but with little endian */
+        /* Try the same thing, but with little-endian */
         magicByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         magic = magicByteBuffer.getInt(0);
 

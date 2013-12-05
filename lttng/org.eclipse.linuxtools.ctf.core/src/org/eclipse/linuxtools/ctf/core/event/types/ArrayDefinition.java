@@ -15,9 +15,10 @@ package org.eclipse.linuxtools.ctf.core.event.types;
 import java.util.Arrays;
 
 import org.eclipse.linuxtools.ctf.core.event.io.BitBuffer;
+import org.eclipse.linuxtools.ctf.core.trace.CTFReaderException;
 
 /**
- * A CTF array definiton
+ * A CTF array definition
  *
  * Arrays are fixed-length. Their length is declared in the type
  * declaration within the meta-data. They contain an array of "inner type"
@@ -127,7 +128,7 @@ public class ArrayDefinition extends Definition {
     // ------------------------------------------------------------------------
 
     @Override
-    public void read(BitBuffer input) {
+    public void read(BitBuffer input) throws CTFReaderException {
         for (Definition definition : definitions) {
             definition.read(input);
         }

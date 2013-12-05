@@ -26,9 +26,7 @@ import org.eclipse.linuxtools.tmf.core.exceptions.StateSystemDisposedException;
 import org.eclipse.linuxtools.tmf.core.exceptions.TimeRangeException;
 import org.eclipse.linuxtools.tmf.core.interval.ITmfStateInterval;
 import org.eclipse.linuxtools.tmf.core.interval.TmfStateInterval;
-import org.eclipse.linuxtools.tmf.core.request.ITmfDataRequest;
 import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest;
-import org.eclipse.linuxtools.tmf.core.request.TmfDataRequest;
 import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.statesystem.AbstractTmfStateProvider;
 import org.eclipse.linuxtools.tmf.core.statesystem.ITmfStateProvider;
@@ -283,10 +281,6 @@ public class PartialHistoryBackend implements IStateHistoryBackend {
     // ------------------------------------------------------------------------
 
     private class CheckpointsRequest extends TmfEventRequest {
-
-        /** The amount of events queried at a time through the requests */
-        private static final int CHUNK_SIZE = 50000;
-
         private final ITmfTrace trace;
         private final Map<Long, Long> checkpts;
         private long eventCount;
@@ -295,9 +289,9 @@ public class PartialHistoryBackend implements IStateHistoryBackend {
         public CheckpointsRequest(ITmfStateProvider input, Map<Long, Long> checkpoints) {
             super(input.getExpectedEventType(),
                     TmfTimeRange.ETERNITY,
-                    TmfDataRequest.ALL_DATA,
-                    CHUNK_SIZE,
-                    ITmfDataRequest.ExecutionType.BACKGROUND);
+                    0,
+                    ITmfEventRequest.ALL_DATA,
+                    ITmfEventRequest.ExecutionType.BACKGROUND);
             checkpoints.clear();
             this.trace = input.getTrace();
             this.checkpts = checkpoints;
@@ -330,17 +324,15 @@ public class PartialHistoryBackend implements IStateHistoryBackend {
     }
 
     private class PartialStateSystemRequest extends TmfEventRequest {
-
-        private static final int CHUNK_SIZE = 50000;
         private final ITmfStateProvider sci;
         private final ITmfTrace trace;
 
         PartialStateSystemRequest(ITmfStateProvider sci, TmfTimeRange range) {
             super(sci.getExpectedEventType(),
                     range,
-                    TmfDataRequest.ALL_DATA,
-                    CHUNK_SIZE,
-                    ITmfDataRequest.ExecutionType.BACKGROUND);
+                    0,
+                    ITmfEventRequest.ALL_DATA,
+                    ITmfEventRequest.ExecutionType.BACKGROUND);
             this.sci = sci;
             this.trace = sci.getTrace();
         }
@@ -365,7 +357,6 @@ public class PartialHistoryBackend implements IStateHistoryBackend {
             }
             super.handleCompleted();
         }
-
 
     }
 }

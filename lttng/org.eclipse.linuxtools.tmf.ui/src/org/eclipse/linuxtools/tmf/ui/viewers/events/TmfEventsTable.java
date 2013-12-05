@@ -75,7 +75,7 @@ import org.eclipse.linuxtools.internal.tmf.ui.Activator;
 import org.eclipse.linuxtools.internal.tmf.ui.Messages;
 import org.eclipse.linuxtools.internal.tmf.ui.commands.ExportToTextCommandHandler;
 import org.eclipse.linuxtools.internal.tmf.ui.dialogs.MultiLineInputDialog;
-import org.eclipse.linuxtools.tmf.core.component.ITmfDataProvider;
+import org.eclipse.linuxtools.tmf.core.component.ITmfEventProvider;
 import org.eclipse.linuxtools.tmf.core.component.TmfComponent;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEventField;
@@ -88,18 +88,19 @@ import org.eclipse.linuxtools.tmf.core.filter.model.ITmfFilterTreeNode;
 import org.eclipse.linuxtools.tmf.core.filter.model.TmfFilterAndNode;
 import org.eclipse.linuxtools.tmf.core.filter.model.TmfFilterMatchesNode;
 import org.eclipse.linuxtools.tmf.core.filter.model.TmfFilterNode;
-import org.eclipse.linuxtools.tmf.core.request.ITmfDataRequest.ExecutionType;
-import org.eclipse.linuxtools.tmf.core.request.TmfDataRequest;
+import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest.ExecutionType;
+import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.signal.TmfEventFilterAppliedSignal;
 import org.eclipse.linuxtools.tmf.core.signal.TmfEventSearchAppliedSignal;
 import org.eclipse.linuxtools.tmf.core.signal.TmfSignalHandler;
 import org.eclipse.linuxtools.tmf.core.signal.TmfTimeSynchSignal;
 import org.eclipse.linuxtools.tmf.core.signal.TmfTraceUpdatedSignal;
 import org.eclipse.linuxtools.tmf.core.timestamp.ITmfTimestamp;
+import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfContext;
-import org.eclipse.linuxtools.tmf.core.trace.ITmfLocation;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfTrace;
+import org.eclipse.linuxtools.tmf.core.trace.location.ITmfLocation;
 import org.eclipse.linuxtools.tmf.ui.viewers.events.TmfEventsCache.CachedEvent;
 import org.eclipse.linuxtools.tmf.ui.views.colors.ColorSetting;
 import org.eclipse.linuxtools.tmf.ui.views.colors.ColorSettingsManager;
@@ -197,7 +198,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         /** Filter object */
         String FILTER_OBJ = "$fltr_obj"; //$NON-NLS-1$
 
-        /** Timestamp*/
+        /** Timestamp */
         String TIMESTAMP = "$time"; //$NON-NLS-1$
 
         /** Rank */
@@ -386,9 +387,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                                 }
                             } else {
                                 broadcast(new TmfTimeSynchSignal(TmfEventsTable.this, ts, fSelectedBeginTimestamp));
-                                if (fStatusLineManager != null) {
-                                    updateStatusLine(fSelectedBeginTimestamp.getDelta(ts));
-                                }
+                                updateStatusLine(fSelectedBeginTimestamp.getDelta(ts));
                             }
                         }
                     } else {
@@ -612,7 +611,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                 fRawViewer.setVisible(true);
                 fSashForm.layout();
                 final int index = fTable.getSelectionIndex();
-                if (index >= +1) {
+                if (index >= 1) {
                     fRawViewer.selectAndReveal(index - 1);
                 }
             }
@@ -1448,7 +1447,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
      */
     protected class FilterThread extends Thread {
         private final ITmfFilterTreeNode filter;
-        private TmfDataRequest request;
+        private TmfEventRequest request;
         private boolean refreshBusy = false;
         private boolean refreshPending = false;
         private final Object syncObj = new Object();
@@ -1473,8 +1472,8 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
             if (nbRequested <= 0) {
                 return;
             }
-            request = new TmfDataRequest(ITmfEvent.class, (int) fFilterCheckCount,
-                    nbRequested, fTrace.getCacheSize(), ExecutionType.BACKGROUND) {
+            request = new TmfEventRequest(ITmfEvent.class, TmfTimeRange.ETERNITY,
+                    (int) fFilterCheckCount, nbRequested, ExecutionType.BACKGROUND) {
                 @Override
                 public void handleData(final ITmfEvent event) {
                     super.handleData(event);
@@ -1493,7 +1492,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                     fFilterCheckCount++;
                 }
             };
-            ((ITmfDataProvider) fTrace).sendRequest(request);
+            ((ITmfEventProvider) fTrace).sendRequest(request);
             try {
                 request.waitForCompletion();
             } catch (final InterruptedException e) {
@@ -1634,7 +1633,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         private int direction;
         private long rank;
         private long foundRank = -1;
-        private TmfDataRequest request;
+        private TmfEventRequest request;
         private ITmfTimestamp foundTimestamp = null;
 
         /**
@@ -1712,7 +1711,8 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                 if (direction == Direction.BACKWARD) {
                     rank = Math.max(0, rank - fTrace.getCacheSize() + 1);
                 }
-                request = new TmfDataRequest(ITmfEvent.class, (int) rank, nbRequested, fTrace.getCacheSize(), ExecutionType.BACKGROUND) {
+                request = new TmfEventRequest(ITmfEvent.class, TmfTimeRange.ETERNITY,
+                        (int) rank, nbRequested, ExecutionType.BACKGROUND) {
                     long currentRank = rank;
 
                     @Override
@@ -1729,7 +1729,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                         currentRank++;
                     }
                 };
-                ((ITmfDataProvider) fTrace).sendRequest(request);
+                ((ITmfEventProvider) fTrace).sendRequest(request);
                 try {
                     request.waitForCompletion();
                     if (request.isCancelled()) {
@@ -2270,7 +2270,8 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
             // Create a request for one event that will be queued after other ongoing requests. When this request is completed
             // do the work to select the actual event with the timestamp specified in the signal. This procedure prevents
             // the method fTrace.getRank() from interfering and delaying ongoing requests.
-            final TmfDataRequest subRequest = new TmfDataRequest(ITmfEvent.class, 0, 1, ExecutionType.FOREGROUND) {
+            final TmfEventRequest subRequest = new TmfEventRequest(ITmfEvent.class,
+                    TmfTimeRange.ETERNITY, 0, 1, ExecutionType.FOREGROUND) {
 
                 TmfTimestamp ts = new TmfTimestamp(signal.getBeginTime());
 
@@ -2324,7 +2325,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                 }
             };
 
-            ((ITmfDataProvider) fTrace).sendRequest(subRequest);
+            ((ITmfEventProvider) fTrace).sendRequest(subRequest);
         }
     }
 

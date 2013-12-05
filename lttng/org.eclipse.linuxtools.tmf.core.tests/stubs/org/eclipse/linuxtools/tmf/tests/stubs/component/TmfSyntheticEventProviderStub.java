@@ -15,11 +15,11 @@ package org.eclipse.linuxtools.tmf.tests.stubs.component;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.linuxtools.internal.tmf.core.component.TmfProviderManager;
-import org.eclipse.linuxtools.tmf.core.component.ITmfDataProvider;
+import org.eclipse.linuxtools.tmf.core.component.ITmfEventProvider;
 import org.eclipse.linuxtools.tmf.core.component.TmfEventProvider;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
-import org.eclipse.linuxtools.tmf.core.request.ITmfDataRequest;
 import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest;
+import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest.ExecutionType;
 import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfContext;
@@ -34,7 +34,6 @@ import org.eclipse.linuxtools.tmf.tests.stubs.event.TmfSyntheticEventStub;
 @SuppressWarnings("javadoc")
 public class TmfSyntheticEventProviderStub extends TmfEventProvider {
 
-    public static final int BLOCK_SIZE = 100;
     public static final int NB_EVENTS  = 1000;
 
     public TmfSyntheticEventProviderStub() {
@@ -42,22 +41,15 @@ public class TmfSyntheticEventProviderStub extends TmfEventProvider {
     }
 
     @Override
-    public ITmfContext armRequest(final ITmfDataRequest request) {
+    public ITmfContext armRequest(final ITmfEventRequest request) {
 
         // Get the TmfSyntheticEventStub provider
-        final ITmfDataProvider[] eventProviders = TmfProviderManager.getProviders(ITmfEvent.class, TmfEventProviderStub.class);
-        final ITmfDataProvider provider = eventProviders[0];
+        final ITmfEventProvider[] eventProviders = TmfProviderManager.getProviders(ITmfEvent.class, TmfEventProviderStub.class);
+        final ITmfEventProvider provider = eventProviders[0];
 
-        // make sure we have the right type of request
-        if (!(request instanceof ITmfEventRequest)) {
-            request.cancel();
-            return null;
-        }
-
-        final TmfEventRequest eventRequest = (TmfEventRequest) request;
-        final TmfTimeRange range = eventRequest.getRange();
+        final TmfTimeRange range = request.getRange();
         final TmfEventRequest subRequest =
-                new TmfEventRequest(ITmfEvent.class, range, NB_EVENTS, BLOCK_SIZE) {
+                new TmfEventRequest(ITmfEvent.class, range, 0, NB_EVENTS, ExecutionType.FOREGROUND) {
             @Override
             public void handleData(final ITmfEvent event) {
                 super.handleData(event);

@@ -189,7 +189,7 @@ public class CtfTmfTraceTest {
      */
     @Test
     public void testGetEventType() {
-        Class<ITmfEvent> result = fixture.getEventType();
+        Class<? extends ITmfEvent> result = fixture.getEventType();
         assertNotNull(result);
     }
 
@@ -362,4 +362,14 @@ public class CtfTmfTraceTest {
         assertTrue(fixture.hasAtLeastOneOfEvents(names));
         assertFalse(fixture.hasAllEvents(names));
     }
+
+    /**
+     * Run the String getHostId() method test
+     */
+    @Test
+    public void testCtfHostId() {
+        String a = fixture.getHostId();
+        assertEquals("\"84db105b-b3f4-4821-b662-efc51455106a\"", a);
+    }
+
 }

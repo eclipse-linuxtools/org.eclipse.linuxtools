@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.tmf.core.ctfadaptor;
 
+import java.nio.ByteBuffer;
+
 import org.eclipse.linuxtools.tmf.core.timestamp.ITmfTimestamp;
-import org.eclipse.linuxtools.tmf.core.trace.TmfLocation;
+import org.eclipse.linuxtools.tmf.core.trace.location.TmfLocation;
 
 /**
  * The nugget of information that is unique to a location in a CTF trace.
@@ -102,6 +104,18 @@ public final class CtfLocation extends TmfLocation {
     // ------------------------------------------------------------------------
 
     /**
+     * Construct the location from the ByteBuffer.
+     *
+     * @param bufferIn
+     *            the buffer to read from
+     *
+     * @since 3.0
+     */
+    public CtfLocation(ByteBuffer bufferIn) {
+        super(new CtfLocationInfo(bufferIn));
+    }
+
+    /**
      * @since 2.0
      */
     @Override
@@ -115,10 +129,19 @@ public final class CtfLocation extends TmfLocation {
 
     @Override
     public String toString() {
-        if( this.getLocationInfo().equals(CtfLocation.INVALID_LOCATION )) {
+        if (this.getLocationInfo().equals(CtfLocation.INVALID_LOCATION )) {
             return getClass().getSimpleName() + " [INVALID]"; //$NON-NLS-1$
         }
         return super.toString();
     }
 
+    /**
+     * Constructs the location from the ByteBuffer. This typically happens when reading from disk.
+     *
+     * @since 3.0
+     */
+    @Override
+    public void serialize(ByteBuffer bufferOut) {
+        getLocationInfo().serialize(bufferOut);
+    }
 }

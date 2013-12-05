@@ -24,7 +24,14 @@
         name="TestSDView2Loaders"
         restorable="true">
   </view>
-	</extension>
+  <view
+        category="org.eclipse.linuxtools.tmf.ui.stubs"
+        class="org.eclipse.linuxtools.tmf.ui.views.uml2sd.SDView"
+        id="org.eclipse.linuxtools.tmf.ui.tests.testAnalysisView"
+        name="Test Analysis View"
+        restorable="true">
+  </view>
+ </extension>
  <extension
        point="org.eclipse.linuxtools.tmf.ui.uml2SDLoader">
     <uml2SDLoader
@@ -72,6 +79,27 @@
                class="org.eclipse.linuxtools.tmf.ui.viewers.events.TmfEventsTable">
          </eventsTableType>
       </type>
+      <type
+            category="org.eclipse.linuxtools.tmf.tests.category.tracetype"
+            event_type="org.eclipse.linuxtools.tmf.core.ctfadaptor.CtfTmfEvent"
+            id="org.eclipse.linuxtools.tmf.tests.ctf.tracetype"
+            name="CTF Tests"
+            trace_type="org.eclipse.linuxtools.tmf.tests.stubs.ctf.CtfTmfTraceStub">
+      </type>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.analysis">
+      <module
+            analysis_module="org.eclipse.linuxtools.tmf.ui.tests.stubs.analysis.TestAnalysisUi"
+            id="org.eclipse.linuxtools.tmf.ui.tests.test"
+            name="Test analysis in UI">
+         <tracetype
+               class="org.eclipse.linuxtools.tmf.tests.stubs.trace.TmfTraceStub">
+         </tracetype>
+         <tracetype
+               class="org.eclipse.linuxtools.tmf.tests.stubs.ctf.CtfTmfTraceStub">
+         </tracetype>
+      </module>
    </extension>
 
 </plugin>

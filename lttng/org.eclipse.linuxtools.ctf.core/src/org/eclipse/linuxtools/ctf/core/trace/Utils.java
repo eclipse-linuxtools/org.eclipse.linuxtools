@@ -59,31 +59,35 @@ public class Utils {
     // ------------------------------------------------------------------------
 
     /**
-     * Unsigned long comparison.
+     * Performs an unsigned long comparison on two unsigned long numbers.
      *
-     * @param a
-     *            First operand.
-     * @param b
-     *            Second operand.
-     * @return -1 if a < b, 1 if a > b, 0 if a == b.
+     * @note As Java does not support unsigned types and arithmetic, parameters
+     *       are received encoded as a signed long (two-complement) but the
+     *       operation is an unsigned comparator.
+     *
+     * @param left
+     *            Left operand of the comparator.
+     * @param right
+     *            Right operand of the comparator.
+     * @return -1 if left < right, 1 if left > right, 0 if left == right.
      */
-    public static int unsignedCompare(long a, long b) {
-        boolean aLeftBit = (a & (1 << (Long.SIZE - 1))) != 0;
-        boolean bLeftBit = (b & (1 << (Long.SIZE - 1))) != 0;
-
-        if (aLeftBit && !bLeftBit) {
-            return 1;
-        } else if (!aLeftBit && bLeftBit) {
+    public static int unsignedCompare(long left, long right) {
+        /*
+         * This method assumes that the arithmetic overflow on signed
+         * integer wrap on a circular domain (modulo arithmetic in
+         * two-complement), which is the defined behavior in Java.
+         *
+         * This idea is to rotate the domain by the length of the negative
+         * space, and then use the signed operator.
+         */
+        final long a = left + Long.MIN_VALUE;
+        final long b = right + Long.MIN_VALUE;
+        if (a < b) {
             return -1;
-        } else {
-            if (a < b) {
-                return -1;
-            } else if (a > b) {
-                return 1;
-            } else {
-                return 0;
-            }
+        } else if (a > b) {
+            return 1;
         }
+        return 0;
     }
 
     /**

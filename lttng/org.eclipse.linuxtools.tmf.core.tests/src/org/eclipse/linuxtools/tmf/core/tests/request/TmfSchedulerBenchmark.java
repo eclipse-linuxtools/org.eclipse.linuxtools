@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 
 import org.eclipse.linuxtools.tmf.core.ctfadaptor.CtfTmfTrace;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
-import org.eclipse.linuxtools.tmf.core.request.TmfDataRequest;
+import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.tests.shared.CtfTmfTestTrace;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimeRange;
@@ -225,7 +225,6 @@ public class TmfSchedulerBenchmark {
     // ------------------------------------------------------------------------
 
     private static class BackgroundRequest extends TmfEventRequest {
-        private static final int CHUNK_SIZE = 0;
         private long startTime;
         private long endTimeLatency = -1;
         private long completedTime = 0;
@@ -236,9 +235,10 @@ public class TmfSchedulerBenchmark {
         private boolean isWaiting = false;
 
         BackgroundRequest(TmfTimeRange timeRange) {
-            super(trace.getEventType(), timeRange,
-                    TmfDataRequest.ALL_DATA,
-                    CHUNK_SIZE,
+            super(trace.getEventType(),
+                    timeRange,
+                    0,
+                    ITmfEventRequest.ALL_DATA,
                     ExecutionType.BACKGROUND);
             startTime = System.nanoTime();
         }
@@ -290,7 +290,6 @@ public class TmfSchedulerBenchmark {
     }
 
     private static class ForegroundRequest extends TmfEventRequest {
-        private static final int CHUNK_SIZE = 0;
         private long startTime = 0;
         private long endTimeLatency = -1;
         private long completedTime = 0;
@@ -301,9 +300,10 @@ public class TmfSchedulerBenchmark {
         private boolean isWaiting = false;
 
         ForegroundRequest(TmfTimeRange timeRange) {
-            super(trace.getEventType(), timeRange,
-                    TmfDataRequest.ALL_DATA,
-                    CHUNK_SIZE,
+            super(trace.getEventType(),
+                    timeRange,
+                    0,
+                    ITmfEventRequest.ALL_DATA,
                     ExecutionType.FOREGROUND);
             startTime = System.nanoTime();
         }

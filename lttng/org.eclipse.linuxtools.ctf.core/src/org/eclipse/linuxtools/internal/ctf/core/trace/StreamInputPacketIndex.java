@@ -8,6 +8,8 @@
  *
  * Contributors: Matthew Khouzam - Initial API and implementation
  * Contributors: Simon Marchi - Initial API and implementation
+ * Contributors: Etienne Bergeron <etienne.bergeron@gmail.com>
+ * Contributors: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.ctf.core.trace;
@@ -82,26 +84,25 @@ public class StreamInputPacketIndex {
     public void addEntry(StreamInputPacketIndexEntry entry)
             throws CTFReaderException {
         assert (entry.getContentSizeBits() != 0);
-        assert (entry.getContentSizeBits() != 0);
 
+        /* Validate consistent entry. */
         if (entry.getTimestampBegin() > entry.getTimestampEnd()) {
             throw new CTFReaderException("Packet begin timestamp is after end timestamp"); //$NON-NLS-1$
         }
 
+        /* Validate entries are inserted in monotonic increasing timestamp order. */
         if (!this.entries.isEmpty()) {
             if (entry.getTimestampBegin() < this.entries.lastElement()
                     .getTimestampBegin()) {
                 throw new CTFReaderException("Packets begin timestamp decreasing"); //$NON-NLS-1$
             }
         }
-
         this.entries.add(entry);
     }
 
     /**
-     * Given a timestamp, this methods returns the first PacketIndexEntry that
-     * could include the timestamp, that is the last packet with a begin
-     * timestamp smaller than the given timestamp.
+     * Returns the first PacketIndexEntry that could include the timestamp,
+     * that is the last packet with a begin timestamp smaller than the given timestamp.
      *
      * @param timestamp
      *            The timestamp to look for.
@@ -129,14 +130,12 @@ public class StreamInputPacketIndex {
             throw new IllegalArgumentException("timestamp is negative"); //$NON-NLS-1$
         }
 
+        /* Binary search */
         for (;;) {
             /*
-             * Guess in the middle of min and max. The +1 is so that in case
-             * (min + 1 == max), we choose the packet at the subscript "max"
-             * instead of the one at "min". Otherwise, it would give an infinite
-             * loop.
+             * Guess in the middle of min and max.
              */
-            guessI = (max + min + 1) / 2;
+            guessI = min + ((max - min) / 2);
             guessEntry = this.entries.get(guessI);
 
             /*
@@ -147,36 +146,18 @@ public class StreamInputPacketIndex {
                 break;
             }
 
-            if (timestamp < guessEntry.getTimestampBegin()) {
+            if (timestamp <= guessEntry.getTimestampEnd()) {
                 /*
-                 * If the timestamp if before the begin timestamp, we know that
-                 * the packet to return is before the guess.
+                 * If the timestamp is lower or equal to the end of the guess packet,
+                 * then the guess packet becomes the new inclusive max.
                  */
-                max = guessI - 1;
-            } else if (timestamp > guessEntry.getTimestampBegin()) {
+                max = guessI;
+            } else {
                 /*
-                 * If the timestamp is after the begin timestamp, we know that
-                 * the packet to return is after the guess or is the guess.
+                 * If the timestamp is greater than the end of the guess packet, then
+                 * the new inclusive min is the packet after the guess packet.
                  */
-                min = guessI;
-            } else if (timestamp == guessEntry.getTimestampBegin()) {
-                /*
-                 * If the timestamp is equal to the begin timestamp, we want to
-                 * return the first packetIndexEntry that have this timestamp.
-                 */
-                if (guessI > 0) {
-                    StreamInputPacketIndexEntry previousGuessEntry = this.entries.get(guessI - 1);
-                    while (guessI > 0 && guessEntry.getTimestampBegin() == previousGuessEntry.getTimestampBegin()) {
-                        guessEntry = previousGuessEntry;
-                        guessI--;
-                        if (guessI - 1 >= 0) {
-                            previousGuessEntry = this.entries.get(guessI - 1);
-                        }
-                    }
-                    min = guessI;
-                    max = guessI;
-                }
-
+                min = guessI + 1;
             }
         }
 

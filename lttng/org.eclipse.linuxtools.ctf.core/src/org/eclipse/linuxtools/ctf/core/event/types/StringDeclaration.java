@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.ctf.core.event.types;
 
 /**
  * A CTF string declaration.
- * 
+ *
  * Strings are an array of bytes of variable size and are terminated by a '\0'
  * "NULL" character. Their encoding is described in the TSDL meta-data. In
  * absence of encoding attribute information, the default encoding is UTF-8.
@@ -42,7 +42,7 @@ public class StringDeclaration implements IDeclaration {
     }
 
     /**
-     * generate an encoded string declaration
+     * Generate an encoded string declaration
      * @param encoding the encoding, utf8 or ascii
      */
     public StringDeclaration(Encoding encoding) {
@@ -71,7 +71,8 @@ public class StringDeclaration implements IDeclaration {
 
     @Override
     public long getAlignment() {
-        return 8; //FIXME: should be the elementtype.
+        // See ctf 4.2.5: Strings are always aligned on byte size.
+        return 8;
     }
     // ------------------------------------------------------------------------
     // Operations

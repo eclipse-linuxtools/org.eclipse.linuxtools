@@ -31,7 +31,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.tmf.core.trace.TmfExperimentContext;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
 import org.eclipse.linuxtools.tmf.core.exceptions.TmfTraceException;
-import org.eclipse.linuxtools.tmf.core.request.TmfDataRequest;
+import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest;
+import org.eclipse.linuxtools.tmf.core.request.ITmfEventRequest.ExecutionType;
 import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.tests.TmfCoreTestPlugin;
 import org.eclipse.linuxtools.tmf.core.tests.shared.TmfTestTrace;
@@ -39,8 +40,8 @@ import org.eclipse.linuxtools.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfContext;
-import org.eclipse.linuxtools.tmf.core.trace.ITmfLocation;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfTrace;
+import org.eclipse.linuxtools.tmf.core.trace.location.ITmfLocation;
 import org.eclipse.linuxtools.tmf.tests.stubs.trace.TmfExperimentStub;
 import org.eclipse.linuxtools.tmf.tests.stubs.trace.TmfTraceStub;
 import org.junit.AfterClass;
@@ -88,12 +89,12 @@ public class TmfMultiTraceExperimentTest {
 
             URL location = FileLocator.find(TmfCoreTestPlugin.getDefault().getBundle(), new Path(TmfTestTrace.O_TEST_10K.getFullPath()), null);
             File test = new File(FileLocator.toFileURL(location).toURI());
-            final TmfTraceStub trace1 = new TmfTraceStub(test.getPath(), 0, true);
+            final TmfTraceStub trace1 = new TmfTraceStub(test.getPath(), 0, true, null);
             traces[0] = trace1;
 
             location = FileLocator.find(TmfCoreTestPlugin.getDefault().getBundle(), new Path(TmfTestTrace.E_TEST_10K.getFullPath()), null);
             test = new File(FileLocator.toFileURL(location).toURI());
-            final TmfTraceStub trace2 = new TmfTraceStub(test.getPath(), 0, true);
+            final TmfTraceStub trace2 = new TmfTraceStub(test.getPath(), 0, true, null);
             traces[1] = trace2;
 
             return traces;
@@ -673,40 +674,12 @@ public class TmfMultiTraceExperimentTest {
 
     @Test
     public void testProcessRequestForNbEvents() throws InterruptedException {
-        final int blockSize = 100;
         final int nbEvents  = 1000;
         final Vector<ITmfEvent> requestedEvents = new Vector<ITmfEvent>();
 
         final TmfTimeRange range = new TmfTimeRange(TmfTimestamp.BIG_BANG, TmfTimestamp.BIG_CRUNCH);
-        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class, range, nbEvents, blockSize) {
-            @Override
-            public void handleData(final ITmfEvent event) {
-                super.handleData(event);
-                requestedEvents.add(event);
-            }
-        };
-        fExperiment.sendRequest(request);
-        request.waitForCompletion();
-
-        assertEquals("nbEvents", nbEvents, requestedEvents.size());
-        assertTrue("isCompleted",  request.isCompleted());
-        assertFalse("isCancelled", request.isCancelled());
-
-        // Ensure that we have distinct events.
-        // Don't go overboard: we are not validating the stub!
-        for (int i = 0; i < nbEvents; i++) {
-            assertEquals("Distinct events", i+1, requestedEvents.get(i).getTimestamp().getValue());
-        }
-    }
-
-    @Test
-    public void testProcessRequestForNbEvents2() throws InterruptedException {
-        final int blockSize = 2 * NB_EVENTS;
-        final int nbEvents = 1000;
-        final Vector<ITmfEvent> requestedEvents = new Vector<ITmfEvent>();
-
-        final TmfTimeRange range = new TmfTimeRange(TmfTimestamp.BIG_BANG, TmfTimestamp.BIG_CRUNCH);
-        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class, range, nbEvents, blockSize) {
+        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class,
+                range, 0, nbEvents, ExecutionType.FOREGROUND) {
             @Override
             public void handleData(final ITmfEvent event) {
                 super.handleData(event);
@@ -729,13 +702,13 @@ public class TmfMultiTraceExperimentTest {
 
     @Test
     public void testProcessRequestForAllEvents() throws InterruptedException {
-        final int nbEvents  = TmfDataRequest.ALL_DATA;
-        final int blockSize =  1;
+        final int nbEvents  = ITmfEventRequest.ALL_DATA;
         final Vector<ITmfEvent> requestedEvents = new Vector<ITmfEvent>();
         final long nbExpectedEvents = NB_EVENTS;
 
         final TmfTimeRange range = new TmfTimeRange(TmfTimestamp.BIG_BANG, TmfTimestamp.BIG_CRUNCH);
-        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class, range, nbEvents, blockSize) {
+        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class,
+                range, 0, nbEvents, ExecutionType.FOREGROUND) {
             @Override
             public void handleData(final ITmfEvent event) {
                 super.handleData(event);
@@ -763,31 +736,27 @@ public class TmfMultiTraceExperimentTest {
     @Test
     public void testCancel() throws InterruptedException {
         final int nbEvents  = NB_EVENTS;
-        final int blockSize = BLOCK_SIZE;
+        final int limit = BLOCK_SIZE;
         final Vector<ITmfEvent> requestedEvents = new Vector<ITmfEvent>();
 
         final TmfTimeRange range = new TmfTimeRange(TmfTimestamp.BIG_BANG, TmfTimestamp.BIG_CRUNCH);
-        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class, range, nbEvents, blockSize) {
+        final TmfEventRequest request = new TmfEventRequest(ITmfEvent.class,
+                range, 0, nbEvents, ExecutionType.FOREGROUND) {
             int nbRead = 0;
+
             @Override
             public void handleData(final ITmfEvent event) {
                 super.handleData(event);
                 requestedEvents.add(event);
-                if (++nbRead == blockSize) {
+                if (++nbRead == limit) {
                     cancel();
-                }
-            }
-            @Override
-            public void handleCancel() {
-                if (requestedEvents.size() < blockSize) {
-                    System.out.println("aie");
                 }
             }
         };
         fExperiment.sendRequest(request);
         request.waitForCompletion();
 
-        assertEquals("nbEvents",  blockSize, requestedEvents.size());
+        assertEquals("nbEvents",  limit, requestedEvents.size());
         assertTrue("isCompleted", request.isCompleted());
         assertTrue("isCancelled", request.isCancelled());
     }

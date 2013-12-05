@@ -16,11 +16,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- *  Test suite for org.eclipse.linuxtools.tmf.ui.project.model
+ * Test suite for org.eclipse.linuxtools.tmf.ui.project.model
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    ProjectModelTraceTest.class
+        ProjectModelAnalysisTest.class,
+        ProjectModelOutputTest.class,
+        ProjectModelTraceTest.class
 })
 public class AllTests {
 

@@ -22,17 +22,10 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    TmfCheckpointIndexTest.class,
-    TmfCheckpointIndexTest2.class,
-    TmfCheckpointTest.class,
     TmfContextTest.class,
-    TmfExperimentCheckpointIndexTest.class,
     TmfExperimentTest.class,
-    TmfLocationTest.class,
     TmfMultiTraceExperimentTest.class,
     TmfTraceManagerTest.class,
     TmfTraceTest.class
 })
-public class AllTests {
-
-}
+public class AllTests {}

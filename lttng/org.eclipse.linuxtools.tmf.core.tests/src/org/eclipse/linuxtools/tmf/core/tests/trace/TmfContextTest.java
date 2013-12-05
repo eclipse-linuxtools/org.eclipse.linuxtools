@@ -23,8 +23,8 @@ import static org.junit.Assert.fail;
 import org.eclipse.linuxtools.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfContext;
 import org.eclipse.linuxtools.tmf.core.trace.TmfContext;
-import org.eclipse.linuxtools.tmf.core.trace.TmfLongLocation;
-import org.eclipse.linuxtools.tmf.core.trace.TmfTimestampLocation;
+import org.eclipse.linuxtools.tmf.core.trace.location.TmfLongLocation;
+import org.eclipse.linuxtools.tmf.core.trace.location.TmfTimestampLocation;
 import org.junit.Test;
 
 /**

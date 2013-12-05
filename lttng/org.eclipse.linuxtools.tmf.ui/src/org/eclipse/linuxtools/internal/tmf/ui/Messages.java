@@ -298,6 +298,11 @@ public class Messages extends NLS {
     public static String CallStackView_DurationColumn;
     public static String CallStackView_StackInfoNotAvailable;
 
+    public static String CallStackView_ImportMappingButtonText;
+    public static String CallStackView_ImportMappingButtonTooltip;
+    public static String CallStackView_ImportMappingDialogTitle;
+    public static String CallStackView_ImportMappingJobName;
+
     public static String ExportToTextJob_Export_to;
     public static String ExportToTextJob_Export_trace_to;
     public static String ExportToTextJob_Unable_to_export_trace;

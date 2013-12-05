@@ -8,6 +8,7 @@
  * Contributors:
  *     Matthew Khouzam - Initial API and implementation
  *     Marc-Andre Laperle - Test in traces directory recursively
+ *     Simon Delisle - Add test for getCallsite(eventName, ip)
  *******************************************************************************/
 
 package org.eclipse.linuxtools.ctf.core.tests.trace;
@@ -44,14 +45,7 @@ import org.junit.Test;
  */
 public class CTFTraceTest {
 
-    private static final String TRACES_DIRECTORY = "../org.eclipse.linuxtools.ctf.core.tests/traces";
-
-    private static final String METADATA_FILENAME = "metadata";
-
     private static final CtfTestTrace testTrace = CtfTestTrace.KERNEL;
-
-    private static final String CTF_VERSION_NUMBER = "1.8";
-    private static final String CTF_SUITE_TEST_DIRECTORY = "ctf-testsuite/tests/" + CTF_VERSION_NUMBER;
 
     private CTFTrace fixture;
 
@@ -236,11 +230,11 @@ public class CTFTraceTest {
     }
 
     /**
-     * Run the boolean majortIsSet() method test.
+     * Run the boolean majorIsSet() method test.
      */
     @Test
-    public void testMajortIsSet() {
-        boolean result = fixture.majortIsSet();
+    public void testMajorIsSet() {
+        boolean result = fixture.majorIsSet();
         assertTrue(result);
     }
 
@@ -401,67 +395,26 @@ public class CTFTraceTest {
     }
 
     /**
-     * Open traces in specified directories and expect them to fail
-     *
+     * Test for getCallsite(eventName, ip)
      * @throws CTFReaderException not expected
      */
     @Test
-    public void testFailedParse() throws CTFReaderException {
-        parseTracesInDirectory(getTestTracesSubDirectory(CTF_SUITE_TEST_DIRECTORY + "/fail"), true);
-    }
+    public void callsitePosition() throws CTFReaderException{
+        long ip1 = 2;
+        long ip2 = 5;
+        long ip3 = 7;
+        CTFTrace callsiteTest = testTrace.getTraceFromFile();
+        callsiteTest.addCallsite("testEvent", null, ip1, null, 23);
+        callsiteTest.addCallsite("testEvent", null, ip2, null, 50);
+        callsiteTest.addCallsite("testEvent", null, ip3, null, 15);
 
-    /**
-     * Open traces in specified directories and expect them to succeed
-     *
-     * @throws CTFReaderException not expected
-     */
-    @Test
-    public void testSuccessfulParse() throws CTFReaderException {
-        parseTracesInDirectory(getTestTracesSubDirectory("kernel"), false);
-        parseTracesInDirectory(getTestTracesSubDirectory("trace2"), false);
-        parseTracesInDirectory(getTestTracesSubDirectory(CTF_SUITE_TEST_DIRECTORY + "/pass"), false);
-    }
-
-    /**
-     * Get the File object for the subDir in the traces directory. If the sub directory doesn't exist, the test is skipped.
-     */
-    private static File getTestTracesSubDirectory(String subDir) {
-        File file = new File(TRACES_DIRECTORY + "/" + subDir);
-        assumeTrue(file.isDirectory());
-        return file;
-    }
-
-    /**
-     * Parse the traces in given directory recursively
-     *
-     * @param directory The directory to search in
-     * @param expectException Whether or not traces in this directory are expected to throw an exception when parsed
-     * @throws CTFReaderException
-     */
-    void parseTracesInDirectory(File directory, boolean expectException) throws CTFReaderException {
-        for (File file : directory.listFiles()) {
-            if (file.getName().equals(METADATA_FILENAME)) {
-                try {
-                    new CTFTrace(directory);
-                    if (expectException) {
-                        fail("Trace was expected to fail parsing: " + directory);
-                    }
-                } catch (RuntimeException e) {
-                    if (!expectException) {
-                        throw new CTFReaderException("Failed parsing " + directory, e);
-                    }
-                } catch (CTFReaderException e) {
-                    if (!expectException) {
-                        throw new CTFReaderException("Failed parsing " + directory, e);
-                    }
-                }
-                return;
-            }
-
-            if (file.isDirectory()) {
-                parseTracesInDirectory(file, expectException);
-            }
-        }
+        assertEquals(2, (callsiteTest.getCallsite("testEvent", 1)).getIp());
+        assertEquals(2, (callsiteTest.getCallsite("testEvent", 2)).getIp());
+        assertEquals(5, (callsiteTest.getCallsite("testEvent", 3)).getIp());
+        assertEquals(5, (callsiteTest.getCallsite("testEvent", 5)).getIp());
+        assertEquals(7, (callsiteTest.getCallsite("testEvent", 6)).getIp());
+        assertEquals(7, (callsiteTest.getCallsite("testEvent", 7)).getIp());
+        assertEquals(7, (callsiteTest.getCallsite("testEvent", 8)).getIp());
     }
 
 }

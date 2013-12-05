@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.ctf"
       label="%featureName"
-      version="2.1.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="%featureProvider"
       license-feature="org.eclipse.linuxtools.license.feature"
       license-feature-version="1.0.0.qualifier">

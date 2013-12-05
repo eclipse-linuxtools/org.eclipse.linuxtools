@@ -23,59 +23,24 @@ import org.eclipse.linuxtools.tmf.core.exceptions.StateValueTypeException;
  * example, we can save numerical values as integers instead of arrays of
  * 1-digit characters.
  *
- * For now the two available types are either int or String.
+ * The available types are Int, Long, Double and String.
  *
  * @version 1.0
  * @author Alexandre Montplaisir
  */
 public abstract class TmfStateValue implements ITmfStateValue {
 
-    /**
-     * Retrieve directly the value object contained within. Implementing
-     * subclasses may limit the return type here.
-     *
-     * It's protected, since we do not want to expose this directly in the
-     * public API (and require all its users to manually cast to the right
-     * types). All accesses to the values should go through the "unbox-"
-     * methods.
-     *
-     * @return The underneath object assigned to this state value.
-     */
-    protected abstract Object getValue();
+    // ------------------------------------------------------------------------
+    // State value caches (sizes must be powers of 2)
+    // ------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(@Nullable Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof TmfStateValue)) {
-            return false;
-        }
+    private static final int INT_CACHE_SIZE = 128;
+    private static final int LONG_CACHE_SIZE = 128;
+    private static final int DOUBLE_CACHE_SIZE = 128;
 
-        /* If both types are different they're necessarily not equal */
-        if (this.getType() != ((TmfStateValue) other).getType()) {
-            return false;
-        }
-
-        /*
-         * This checks for the case where we'd compare two null values (and so
-         * avoid a NPE below)
-         */
-        if (this.isNull()) {
-            return true;
-        }
-
-        /* The two are valid and comparable, let's compare them */
-        return this.getValue().equals(((TmfStateValue) other).getValue());
-    }
-
-    @Override
-    public int hashCode() {
-        if (this.isNull()) {
-            return 0;
-        }
-        return this.getValue().hashCode();
-    }
+    private static final IntegerStateValue intCache[] = new IntegerStateValue[INT_CACHE_SIZE];
+    private static final LongStateValue longCache[] = new LongStateValue[LONG_CACHE_SIZE];
+    private static final DoubleStateValue doubleCache[] = new DoubleStateValue[DOUBLE_CACHE_SIZE];
 
     // ------------------------------------------------------------------------
     // Factory methods to instantiate new state values
@@ -104,10 +69,17 @@ public abstract class TmfStateValue implements ITmfStateValue {
      * @return The newly-created TmfStateValue object
      */
     public static TmfStateValue newValueInt(int intValue) {
-        if (intValue == -1) {
-            return nullValue();
+        /* Lookup in cache for the existence of the same value. */
+        int offset = intValue & (INT_CACHE_SIZE - 1);
+        IntegerStateValue cached = intCache[offset];
+        if (cached != null && cached.unboxInt() == intValue) {
+            return cached;
         }
-        return new IntegerStateValue(intValue);
+
+        /* Not in cache, create a new value and cache it. */
+        IntegerStateValue newValue = new IntegerStateValue(intValue);
+        intCache[offset] = newValue;
+        return newValue;
     }
 
     /**
@@ -119,10 +91,43 @@ public abstract class TmfStateValue implements ITmfStateValue {
      * @since 2.0
      */
     public static TmfStateValue newValueLong(long longValue) {
-        if (longValue == -1) {
-            return nullValue();
+        /* Lookup in cache for the existence of the same value. */
+        int offset = (int) longValue & (LONG_CACHE_SIZE - 1);
+        LongStateValue cached = longCache[offset];
+        if (cached != null && cached.unboxLong() == longValue) {
+            return cached;
         }
-        return new LongStateValue(longValue);
+
+        /* Not in cache, create a new value and cache it. */
+        LongStateValue newValue = new LongStateValue(longValue);
+        longCache[offset] = newValue;
+        return newValue;
+    }
+
+    /**
+     * Factory constructor for Double state values
+     *
+     * @param value
+     *            The double value to contain
+     * @return The newly-created TmfStateValue object
+     */
+    public static TmfStateValue newValueDouble(double value) {
+        /* Lookup in cache for the existence of the same value. */
+        int offset = (int) Double.doubleToLongBits(value) & (DOUBLE_CACHE_SIZE - 1);
+        DoubleStateValue cached = doubleCache[offset];
+
+        /*
+         * We're using Double.compare() instead of .equals(), because .compare()
+         * works when both values are Double.NaN.
+         */
+        if (cached != null && Double.compare(cached.unboxDouble(), value) == 0) {
+            return cached;
+        }
+
+        /* Not in cache, create a new value and cache it. */
+        DoubleStateValue newValue = new DoubleStateValue(value);
+        doubleCache[offset] = newValue;
+        return newValue;
     }
 
     /**
@@ -146,7 +151,7 @@ public abstract class TmfStateValue implements ITmfStateValue {
 
     private String unboxErrMsg(String targetType) {
         return "Type " + getClass().getSimpleName() + //$NON-NLS-1$
-                "cannot be unboxed into a " + targetType + " value."; //$NON-NLS-1$ //$NON-NLS-2$
+                " cannot be unboxed into a " + targetType + " value."; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     @Override
@@ -157,6 +162,11 @@ public abstract class TmfStateValue implements ITmfStateValue {
     @Override
     public long unboxLong() throws StateValueTypeException {
         throw new StateValueTypeException(unboxErrMsg("Long")); //$NON-NLS-1$
+    }
+
+    @Override
+    public double unboxDouble() throws StateValueTypeException {
+        throw new StateValueTypeException(unboxErrMsg("Double")); //$NON-NLS-1$
     }
 
     @Override
