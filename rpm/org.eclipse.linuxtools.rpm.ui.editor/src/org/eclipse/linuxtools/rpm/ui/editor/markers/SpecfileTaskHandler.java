@@ -47,7 +47,7 @@ public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	 * @param file The FileEditorInput to get the file from.
 	 * @param document The specfile document.
 	 *
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	public SpecfileTaskHandler(FileEditorInput file, IDocument document) {
 		this(file.getFile(), document);

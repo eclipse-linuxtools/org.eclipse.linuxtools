@@ -228,7 +228,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void setOprofileDir (String dir) {
 		DEV_OPROFILE = dir;
@@ -470,7 +470,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setEventIdCacheDoc (Element elem) {
 		EventIdCache.getInstance().setCacheDoc(elem);
