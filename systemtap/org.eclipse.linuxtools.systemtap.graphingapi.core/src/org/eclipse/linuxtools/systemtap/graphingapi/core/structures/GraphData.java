@@ -21,6 +21,7 @@ public class GraphData {
 	/**
 	 * Creates and returns a copy of this GraphData instance.
 	 * @return A copy of this GraphData.
+	 * @since 1.1
 	 */
 	public GraphData getCopy() {
 		GraphData gd = new GraphData();
@@ -36,6 +37,7 @@ public class GraphData {
 	 * Indicates whether all properties of this GraphData are the same as another GraphData.
 	 * @param gd The GraphData to compare with.
 	 * @return <code>true</code> if all properties are equal, or <code>false</code> otherwise.
+	 * @since 1.1
 	 */
 	public boolean equals(GraphData gd) {
 		if (gd.ySeries != null && this.ySeries != null) {

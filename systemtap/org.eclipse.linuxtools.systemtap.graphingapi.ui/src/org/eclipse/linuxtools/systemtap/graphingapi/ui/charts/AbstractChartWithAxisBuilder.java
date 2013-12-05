@@ -106,7 +106,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
 		for (int i = 0; i < len; i++) {
 			for (int j = 0; j < leny + 1; j++) {
-				Double val = getDoubleValue(data[start + i][j]);
+				Double val = getDoubleOrNullValue(data[start + i][j]);
 				if (j == 0) {
 					if (val != null) {
 						all_valx[i] = val;

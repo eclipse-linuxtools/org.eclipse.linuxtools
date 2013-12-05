@@ -1198,6 +1198,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param launchConfig The launch configuration to check for graph validity.
 	 * @return <code>true</code> if the launch settings are valid, or <code>false</code> if
 	 * its graph settings are invalid in some way.
+	 * @since 2.2
 	 */
 	public static boolean isValidLaunch(ILaunchConfiguration launchConfig) throws CoreException {
 		// If graphic is disabled then everything is valid.

@@ -90,7 +90,7 @@ public class GraphSelectorEditor extends EditorPart {
 	 * @param scriptName The full name of the script that is being monitored.
 	 * @param titles The names to be shown on each new tab
 	 * @param dataSets The <code>IDataSet</code>s for each new script set
-	 * @since 2.2
+	 * @since 2.1
 	 */
 	public void createScriptSets(String scriptName, List<String> titles, List<IDataSet> dataSets) {
 		CTabItem item = null;
@@ -111,7 +111,7 @@ public class GraphSelectorEditor extends EditorPart {
 
 	/**
 	 * @return The current number of script sets (one for each regular expression being watched).
-	 * @since 2.2
+	 * @since 2.1
 	 */
 	public int numberOfScriptSets() {
 		return displaySets.size();
@@ -174,7 +174,7 @@ public class GraphSelectorEditor extends EditorPart {
 	 * @param index The index of the GraphDisplaySet to return
 	 * @return The <code>GraphDisplaySet</code> of the provided
 	 * index, or null if the index is out of range.
-	 * @since 2.2
+	 * @since 2.1
 	 */
 	public GraphDisplaySet getDisplaySet(int index) {
 		if(index >= 0 && index < displaySets.size()) {

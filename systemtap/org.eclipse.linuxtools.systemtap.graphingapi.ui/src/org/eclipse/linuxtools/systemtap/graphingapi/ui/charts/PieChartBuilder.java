@@ -57,7 +57,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 			if (label != null) {
 				all_labels[i] = data[start + i][0].toString();
 				for (int j = 1; j < data[start + i].length; j++) {
-					Double val = getDoubleValue(data[start + i][j]);
+					Double val = getDoubleOrNullValue(data[start + i][j]);
 					if (val != null) {
 						all_values[i][j-1] = val;
 					} else {

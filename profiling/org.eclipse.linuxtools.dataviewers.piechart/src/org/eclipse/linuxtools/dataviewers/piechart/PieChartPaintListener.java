@@ -29,8 +29,8 @@ public class PieChartPaintListener implements PaintListener {
     private String[] seriesNames;
     private static final int X_GAP = 10;
 
-    protected static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
-    protected static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+    private static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
+    private static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 
     /**
      * Draws pie charts with no titles given to each pie.
