@@ -33,7 +33,7 @@ public class ValgrindCommand {
 
 	public String whichVersion(IProject project) throws IOException {
 		StringBuffer out = new StringBuffer();
-		String version = "";
+		String version = ""; //$NON-NLS-1$
 		Process p = RuntimeProcessFactory.getFactory().exec(new String[] { VALGRIND_CMD, CommandLineConstants.OPT_VERSION }, project);
 		try {
 			readIntoBuffer(out, p);
@@ -85,7 +85,7 @@ public class ValgrindCommand {
 		boolean success;
 		InputStream in, err, input;
 		if (p  == null ) {
-			throw new IOException("Null Process object: unabled to read input into buffer");
+			throw new IOException("Null Process object: unabled to read input into buffer"); //$NON-NLS-1$
 		}
 		try {
 			//We need to get the inputs before calling waitFor

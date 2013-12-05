@@ -33,22 +33,27 @@ public class AbstractValgrindMessage implements IValgrindMessage {
 		}
 	}
 
+	@Override
 	public void addChild(IValgrindMessage message) {
 		children.add(message);
 	}
 
+	@Override
 	public ILaunch getLaunch() {
 		return launch;
 	}
 	
+	@Override
 	public IValgrindMessage getParent() {
 		return parent;
 	}
 
+	@Override
 	public IValgrindMessage[] getChildren() {
 		return children.toArray(new IValgrindMessage[children.size()]);
 	}
 
+	@Override
 	public String getText() {
 		return text;
 	}
