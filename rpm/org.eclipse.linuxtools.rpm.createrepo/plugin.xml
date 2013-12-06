@@ -56,9 +56,23 @@
             locationURI="toolbar:formsToolbar">
          <command
                commandId="org.eclipse.linuxtools.rpm.createrepo.executeCommand"
+               icon="icons/refresh.gif"
+               style="push"
+               tooltip="%update.command">
+            <parameter
+                  name="executionType"
+                  value="refresh">
+            </parameter>
+         </command>
+         <command
+               commandId="org.eclipse.linuxtools.rpm.createrepo.executeCommand"
                icon="icons/run_exc.gif"
                style="push"
-               tooltip="%execute.command">
+               tooltip="%main.name">
+            <parameter
+                  name="executionType"
+                  value="createrepo">
+            </parameter>
          </command>
       </menuContribution>
    </extension>
@@ -67,12 +81,17 @@
       <command
             id="org.eclipse.linuxtools.rpm.createrepo.executeCommand"
             name="%execute.command">
+         <commandParameter
+               id="executionType"
+               name="executionType"
+               optional="false">
+         </commandParameter>
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.linuxtools.internal.rpm.createrepo.handler.CreaterepoExecuteCommandHandler"
+            class="org.eclipse.linuxtools.internal.rpm.createrepo.handler.CreaterepoCommandHandler"
             commandId="org.eclipse.linuxtools.rpm.createrepo.executeCommand">
       </handler>
    </extension>

@@ -47,6 +47,9 @@ public final class CreaterepoPreferenceConstants {
 	/****/ public static final String PREF_VERBOSE			= "verbose"; //$NON-NLS-1$
 	/****/ public static final String PREF_PROFILE			= "profile"; //$NON-NLS-1$
 
+	// Misc
+	/****/ public static final String PREF_UPDATE			= "update"; //$NON-NLS-1$
+
 	/*
 	 * Preference Values.
 	 */
