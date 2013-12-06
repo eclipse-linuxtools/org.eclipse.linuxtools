@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.osgi.framework.FrameworkUtil;
@@ -28,17 +29,27 @@ import org.osgi.framework.FrameworkUtil;
  */
 public class Createrepo {
 
+	/*
+	 * Default commands that every execution will have.
+	 */
+	private static final String[] DEFAULT_ARGUMENTS = {
+		CreaterepoPreferenceConstants.PREF_VERBOSE, CreaterepoPreferenceConstants.PREF_PROFILE};
+
 	/**
 	 * Holds the command line switches.
 	 */
 	private List<String> commandSwitches;
 
 	/**
-	 * Initialize the command switches to only be "createrepo".
+	 * Initialize the command switches to be "createrepo" and
+	 * default command arguments.
 	 */
 	public Createrepo() {
 		commandSwitches = new ArrayList<String>();
 		commandSwitches.add(ICreaterepoConstants.CREATEREPO_COMMAND);
+		for (String arg : DEFAULT_ARGUMENTS) {
+			commandSwitches.add(ICreaterepoConstants.DASH.concat(arg));
+		}
 	}
 
 	/**
@@ -55,7 +66,14 @@ public class Createrepo {
 	public IStatus execute(final OutputStream os, CreaterepoProject project, List<String> commands) throws CoreException {
 		commandSwitches.addAll(commands);
 		commandSwitches.add(project.getContentFolder().getLocation().toOSString());
+		/* Display what the execution looks like */
+		String commandString = ICreaterepoConstants.EMPTY_STRING;
+		for (String arg : commandSwitches) {
+			commandString = commandString.concat(arg + " "); //$NON-NLS-1$
+		}
+		commandString = commandString.concat("\n"); //$NON-NLS-1$
 		try {
+			os.write(commandString.getBytes());
 			return Utils.runCommand(os, project.getProject(), commandSwitches.toArray(new String[commandSwitches.size()]));
 		} catch (IOException e) {
 			IStatus status = new Status(

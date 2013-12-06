@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.preference;
 
-import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -102,7 +100,8 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 		layoutData.grabExcessHorizontalSpace = true;
 		btnProjectSettings.setText(Messages.CreaterepoGeneralPropertyPage_projectSettings);
 		btnProjectSettings.setLayoutData(layoutData);
-		btnProjectSettings.setSelection(loadBoolean(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
+		btnProjectSettings.setSelection(Activator.getDefault().getPreferenceStore()
+				.getBoolean(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
 		btnProjectSettings.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -257,20 +256,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 		return composite;
 	}
 
-	/**
-	 * Return the boolean value of the preference key.
-	 *
-	 * @param preferenceKey The preference key to get the boolean value of.
-	 * @return The boolean value of the preference key.
-	 */
-	protected boolean loadBoolean(String preferenceKey) {
-		IEclipsePreferences projectPreferences = new ProjectScope(project)
-				.getNode(Activator.PLUGIN_ID);
-		boolean value = projectPreferences.getBoolean(preferenceKey,
-				getPreferenceStore().getDefaultBoolean(preferenceKey));
-		return value;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
@@ -278,8 +263,8 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 	@Override
 	public void performDefaults() {
 		// load the defaults UI
-		btnProjectSettings.setSelection(getPreferenceStore().getDefaultBoolean(
-				CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
+		btnProjectSettings.setSelection(Activator.getDefault().getPreferenceStore()
+				.getDefaultBoolean(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
 		bfeIncludeChecksum.loadDefault();
 		bfeSQLDB.loadDefault();
 		bfeIgnoreSymlinks.loadDefault();
@@ -292,7 +277,7 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 		rgfeCompressionTypes.loadDefault();
 
 		// set the defaults preferences
-		getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED);
+		Activator.getDefault().getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED);
 		getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME);
 		getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_GENERATE_DB);
 		getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_IGNORE_SYMLINKS);
@@ -314,7 +299,8 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 	public boolean performOk() {
 		// only save when using project specific settings
 		if (btnProjectSettings.getSelection()) {
-			getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED, true);
+			Activator.getDefault().getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED,
+					true);
 			getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME,
 					bfeIncludeChecksum.getBooleanValue());
 			getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_GENERATE_DB,
@@ -337,7 +323,8 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 					getSelectedRadioButton(rgfeCompressionTypes.getRadioBoxControl(compressContainer),
 							rgfeCompressionTypes.getPreferenceName()));
 		} else {
-			getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED, false);
+			Activator.getDefault().getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED,
+					false);
 		}
 		return true;
 	}

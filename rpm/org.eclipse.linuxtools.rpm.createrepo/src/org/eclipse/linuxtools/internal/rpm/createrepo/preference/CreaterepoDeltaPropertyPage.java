@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.createrepo.preference;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
 import org.eclipse.swt.SWT;
@@ -51,7 +52,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 		bfeEnableDeltas = new BooleanFieldEditor(
 				CreaterepoPreferenceConstants.PREF_DELTA_ENABLE,
 				Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel, composite);
-		bfeEnableDeltas.setPreferenceStore(preferenceStore);
+		bfeEnableDeltas.setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		bfeEnableDeltas.load();
 		bfeEnableDeltas.setPropertyChangeListener(this);
 
@@ -97,6 +98,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 	 */
 	@Override
 	public void performDefaults() {
+		Activator.getDefault().getPreferenceStore().setToDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE);
 		bfeEnableDeltas.loadDefault();
 		ifeNumDeltas.loadDefault();
 		ifeMaxSizeDeltas.loadDefault();
@@ -108,7 +110,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 	 */
 	@Override
 	public boolean performOk() {
-		getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE,
+		Activator.getDefault().getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE,
 				bfeEnableDeltas.getBooleanValue());
 		getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
 				ifeNumDeltas.getIntValue());

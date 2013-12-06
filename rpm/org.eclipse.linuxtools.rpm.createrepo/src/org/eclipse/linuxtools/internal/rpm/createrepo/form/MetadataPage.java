@@ -127,6 +127,17 @@ public class MetadataPage extends FormPage {
 		if (!prefRevisionTxt.isEmpty()) {
 			revisionTxt.setText(prefRevisionTxt);
 		}
+		revisionTxt.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				String revisionText = revisionTxt.getText().trim();
+				savePreferences(CreaterepoPreferenceConstants.PREF_REVISION, revisionText);
+			}
+		});
 		revSection.setClient(sectionClient);
 		//---------- REVISION SECTION END
 
@@ -161,8 +172,8 @@ public class MetadataPage extends FormPage {
 				| SWT.VERTICAL | SWT.LEFT_TO_RIGHT | SWT.SMOOTH);
 		tagsTreeViewer.setContentProvider(new CreaterepoTreeContentProvider());
 		tagsTreeViewer.setLabelProvider(new CreaterepoTreeLabelProvider());
-		CreaterepoCategoryModel test = new CreaterepoCategoryModel(project);
-		tagsTreeViewer.setInput(test);
+		CreaterepoCategoryModel model = new CreaterepoCategoryModel(project);
+		tagsTreeViewer.setInput(model);
 		// change the tag text field on change (make editing tag easier)
 		tagsTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
