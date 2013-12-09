@@ -60,12 +60,11 @@ public class STPToggleCommentTest {
 			this.setupDocument(document);
 		}
 
-		@Override
-		protected IDocument createDocument(Object element) {
+		private IDocument createDocument(Object element) {
 			return document;
 		}
 	}
-	
+
 	@Test
 	public void getFirstCompleteLineOfRegionTest() {
 		IRegion scriptRegion;

@@ -44,7 +44,6 @@ public class STPCompletionProcessorTest extends SystemtapTest{
 			this.setupDocument(document);
 		}
 
-		@Override
 		protected IDocument createDocument(Object element) {
 			return document;
 		}

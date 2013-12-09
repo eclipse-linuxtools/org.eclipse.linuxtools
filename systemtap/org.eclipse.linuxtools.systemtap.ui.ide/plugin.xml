@@ -93,13 +93,13 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
-        contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-        default="true"
-        extensions="stp"
-        icon="icons/views/page_obj.gif"
-        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
-        name="%editor.stp.name"/>
+	        class="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
+	        contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+	        default="true"
+	        extensions="stp"
+	        icon="icons/views/page_obj.gif"
+	        id="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor"
+	        name="%editor.stp.name"/>
 		<editor
 			name="%editor.simple.name"
 			id="org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"

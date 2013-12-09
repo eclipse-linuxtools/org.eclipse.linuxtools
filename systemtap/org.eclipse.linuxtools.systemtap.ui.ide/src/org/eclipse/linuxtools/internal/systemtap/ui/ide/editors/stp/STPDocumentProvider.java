@@ -12,17 +12,24 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.linuxtools.systemtap.ui.editor.SimpleDocumentProvider;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
-public class STPDocumentProvider extends SimpleDocumentProvider {
+public class STPDocumentProvider extends TextFileDocumentProvider {
 
 	@Override
+	public void connect(Object element) throws CoreException {
+		super.connect(element);
+		setupDocument(this.getDocument(element));
+	}
+
 	protected void setupDocument(IDocument document) {
 		if (document != null) {
 			IDocumentPartitioner partitioner = new FastPartitioner(
@@ -40,7 +47,7 @@ public class STPDocumentProvider extends SimpleDocumentProvider {
 	 * Instantiates and returns a new AnnotationModel object.
 	 */
 	@Override
-	protected IAnnotationModel createAnnotationModel(Object element) {
+	protected IAnnotationModel createAnnotationModel(IFile file) {
 		return new AnnotationModel();
 	}
 
