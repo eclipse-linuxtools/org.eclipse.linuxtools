@@ -6,9 +6,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *    Keith Seitz <keiths@redhat.com> - SaveSessionValidator code 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *    Keith Seitz <keiths@redhat.com> - SaveSessionValidator code
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import java.text.MessageFormat;
@@ -34,7 +34,7 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /**
  * Menu item to save the default session. Moved from a double-click in the view
- * on the default session for consistency (since non-default sessions can't be saved). 
+ * on the default session for consistency (since non-default sessions can't be saved).
  */
 public class OprofileViewSaveDefaultSessionAction extends Action {
 	private IRemoteFileProxy proxy;
@@ -42,22 +42,26 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 	public OprofileViewSaveDefaultSessionAction() {
 		super(OprofileUiMessages.getString("view.actions.savedefaultsession.label")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void run() {
 		boolean defaultSessionExists = false;
+		String defaultSessionName = null;
+		String eventName = null;
 		UiModelRoot modelRoot = UiModelRoot.getDefault();
-		
+
 		if (modelRoot.hasChildren()) {
 			IUiModelElement[] events = modelRoot.getChildren();
 			for (IUiModelElement e : events) {
 				if (e instanceof UiModelError)
 					break;
-				
+
 				IUiModelElement[] sessions = e.getChildren();
 				for (IUiModelElement s : sessions) {
 					if (((UiModelSession)s).isDefaultSession()) {
 						defaultSessionExists = true;
+						defaultSessionName = s.getLabelText();
+						eventName = s.getParent().getLabelText();
 						break;
 					}
 				}
@@ -65,7 +69,7 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 					break;
 			}
 		}
-		
+
 		if (defaultSessionExists) {
 			//the following code was originially written by Keith Seitz
 			InputDialog dialog = new InputDialog(OprofileUiPlugin.getActiveWorkbenchShell(),
@@ -73,11 +77,15 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 					OprofileUiMessages.getString("savedialog.message"),    //$NON-NLS-1$
 					OprofileUiMessages.getString("savedialog.initial"),   //$NON-NLS-1$
 					new SaveSessionValidator());
-			
+
 			int result = dialog.open();
 			if (result == Window.OK) {
 				try {
 					OprofileCorePlugin.getDefault().getOpcontrolProvider().saveSession(dialog.getValue());
+					// remove the default session
+					OprofileCorePlugin.getDefault().getOpcontrolProvider().deleteSession(defaultSessionName, eventName);
+					// clear out collected data by this session
+					OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
 					OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 				} catch (OpcontrolException oe) {
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
@@ -89,7 +97,7 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 					OprofileUiMessages.getString("defaultsessiondialog.nodefaultsession.message")); //$NON-NLS-1$
 		}
 	}
-	
+
 	//Original author: Keith Seitz <keiths@redhat.com>
 	private class SaveSessionValidator implements IInputValidator {
 		public String isValid(String newText) {
@@ -97,26 +105,26 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			if (newText.length() == 0) {
 				return ""; //$NON-NLS-1$
 			}
-			
+
 			// Cannot contain invalid characters
 			int index = newText.indexOf('/');
 			if (index == -1) {
 				index = newText.indexOf('\\');
 			}
-			
+
 			if (index != -1) {
 				String format = OprofileUiMessages.getString("savedialog.validator.invalidChar"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText.substring(index, index + 1), newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
-				
+
 			// Cannot contain whitespace
 			if (newText.contains(" ") || newText.contains("\t")) { //$NON-NLS-1$ //$NON-NLS-2$
 				String format = OprofileUiMessages.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
-			
+
 			// Must not already exist (opcontrol doesn't allow it)
 
 			try {
@@ -136,4 +144,6 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			return null;
 		}
 	};
+
+
 }

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -19,12 +19,13 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 
 public class OprofileViewDeleteSessionAction extends Action {
-	
+
 	private TreeViewer treeViewer;
 
 	public OprofileViewDeleteSessionAction(TreeViewer tree) {
 		super("Delete Session"); //$NON-NLS-1$
 		treeViewer = tree;
+		setEnabled(false);
 	}
 
 	@Override
@@ -48,6 +49,8 @@ public class OprofileViewDeleteSessionAction extends Action {
 		String eventName = sess.getParent().getLabelText();
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().deleteSession(sessionName, eventName);
+			// clear out collected data by this session
+			OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
 		} catch (OpcontrolException e) {
 			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
 		}
