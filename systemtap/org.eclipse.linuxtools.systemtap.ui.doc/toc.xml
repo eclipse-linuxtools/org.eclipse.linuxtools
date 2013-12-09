@@ -45,7 +45,6 @@
 				</topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Toolbars" label="Toolbars">
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Action_Bar" label="Action Bar"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Perspective_Selector" label="Perspective Selector"></topic>
 				</topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Preferences" label="Preferences"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-IDE.html#Frequently_Asked_Questions" label="Frequently Asked Questions"></topic>
@@ -62,11 +61,13 @@
 		<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html" label="SystemTap Graphing">
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Getting_Started_2" label="Getting Started">
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Introduction" label="Introduction"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Graphing_Tutorial" label="Graphing Tutorial"></topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Graphing_Tutorial" label="Graphing Tutorial">
+					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Create_Graph_Wizard" label="Create Graph Wizard"></topic>
+				</topic>
 			</topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Concepts_2" label="Concepts">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#DataTable" label="DataTable"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#DataGraph_Types" label="DataGraph Types">
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Data_Table" label="Data Table"></topic>
+				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Data_Graph_Types" label="Data Graph Types">
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Scatter_Graph" label="Scatter Graph"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Line_Graph" label="Line Graph"></topic>
 					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Area_Graph" label="Area Graph"></topic>
@@ -76,66 +77,11 @@
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Filters" label="Filters"></topic>
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Graph_Interaction" label="Graph Interaction"></topic>
 			</topic>
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Tasks_2" label="Tasks">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Importing.2FExporting_Data_Sets" label="Importing/Exporting Data Sets">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Importing_a_Data_Set" label="Importing a Data Set"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Exporting_a_Data_Set" label="Exporting a Data Set"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Generating_Graphs" label="Generating Graphs"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Opening_Script_Output" label="Opening Script Output"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Saving_a_Graph_Image" label="Saving a Graph Image"></topic>
-			</topic>
 			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Reference_2" label="Reference">
 				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Frequently_Asked_Questions_2" label="Frequently Asked Questions"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Menus_2" label="Menus">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#File" label="File"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Run_2" label="Run"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Window_2" label="Window"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Toolbars_2" label="Toolbars">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Action_Bar_2" label="Action Bar"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Graphing.html#Perspective_Selector_2" label="Perspective Selector"></topic>
-				</topic>
 			</topic>
 		</topic>
-		<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html" label="SystemTap Dashboard">
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Dashboard_Tutorial" label="Dashboard Tutorial">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Multiple_Module_Execution" label="Multiple Module Execution"></topic>
-			</topic>
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Concepts_3" label="Concepts">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Modules" label="Modules">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Module_Families" label="Module Families"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Multiple_Graphs" label="Multiple Graphs"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Modules_Browser" label="Modules Browser"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Active_Modules_Browser" label="Active Modules Browser"></topic>
-			</topic>
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Tasks_3" label="Tasks">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Creating_Modules" label="Creating Modules">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Export_Script" label="Export Script"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Create_Module" label="Create Module"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Tips" label="Tips"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Constraints" label="Constraints"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Importing_Modules" label="Importing Modules"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Running_Modules" label="Running Modules">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Multiple_Module_Execution_2" label="Multiple Module Execution"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Graph_Interaction_2" label="Graph Interaction"></topic>
-			</topic>
-			<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Reference_3" label="Reference">
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Frequently_Asked_Questions_3" label="Frequently Asked Questions"></topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Menus_3" label="Menus">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#File_2" label="File"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Run_3" label="Run"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Window_3" label="Window"></topic>
-				</topic>
-				<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Toolbars_3" label="Toolbars">
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Action_Bar_3" label="Action Bar"></topic>
-					<topic href="Linux_Tools_Project/Systemtap/User_Guide/SystemTap-Dashboard.html#Perspective_Selector_3" label="Perspective Selector"></topic>
-				</topic>
-			</topic>
-		</topic>
+		<topic href="Linux_Tools_Project/Systemtap/User_Guide/Copyright-Information.html" label="Copyright Information"></topic>
 		<topic href="Linux_Tools_Project/Systemtap/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
 	</topic>
 </toc>
