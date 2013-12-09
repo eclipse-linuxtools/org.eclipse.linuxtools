@@ -18,7 +18,7 @@
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+					<a href="Import-src-rpm.html" title="Import src.rpm">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
@@ -26,7 +26,7 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top">Installing</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Import src.rpm and export rpm and src.rpm</td>
+				<td style="width: 20%" align="right" valign="top">Import src.rpm</td>
 			</tr>
 		</table><hr/>
 		<h1 id="General_Usage">General Usage</h1>
@@ -104,12 +104,24 @@
 			<dt>Source0 </dt>
 			<dd>This field specifies the source archive from which the package is built.</dd>
 		</dl>
-		<h2 id="rpmlint">rpmlint</h2>
-		<p>To enable <code>rpmlint</code> warnings, right-click on the project containing the 
-			<i><code>.spec</code></i> file. Then, select <u>Add/Remove rpmlint warnings</u> from the context menu. You can use this menu selection to disable <code>rpmlint</code> warnings as well.
+		<h2 id="Building_RPMs">Building RPMs</h2>
+		<p>To build RPMs, right-click on the RPM project or the Specfile Editor. Then, select <u>RPM</u> menu item from the context menu. You will be given a list of build options for the 
+			<i><code>.spec</code></i> file, as well as other Specfile options.
 		</p>
 		<p>
-			<img border="0" src="images/Specfile_enable_rpmlint.png"/>
+			<img border="0" src="images/SpecfileEditor_rpmMenu.png"/>
+		</p>
+		<h4 id="Toolbar">Toolbar</h4>
+		<p>These build options are also readily available on the toolbar menu for quicker access.</p>
+		<p>
+			<img border="0" src="images/SpecfileEditor_rpmToolbar.png"/>
+		</p>
+		<h2 id="rpmlint">rpmlint</h2>
+		<p>To enable <code>rpmlint</code> warnings, right-click on the project containing the 
+			<i><code>.spec</code></i> file. Then, select the <u>RPM</u> menu item. Then, <u>Add/Remove rpmlint warnings</u> from the context menu. You can use this menu selection to disable <code>rpmlint</code> warnings as well.
+		</p>
+		<p>
+			<img border="0" src="images/Specfileeditor_rpmlint.png"/>
 		</p>
 		<p>Enabling <code>rpmlint</code> warnings will add a new <code>rpmlint</code> builder to the project. This <code>rpmlint</code> builder checks the 
 			<i><code>.spec</code></i> file during each project build or clean. Afterwards, the builder displays any appropriate warnings and errors in the 
@@ -208,7 +220,7 @@
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
-					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+					<a href="Import-src-rpm.html" title="Import src.rpm">
 						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
@@ -216,7 +228,7 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top">Installing</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Import src.rpm and export rpm and src.rpm</td>
+				<td style="width: 20%" align="right" valign="top">Import src.rpm</td>
 			</tr>
 		</table>
 	</body>
