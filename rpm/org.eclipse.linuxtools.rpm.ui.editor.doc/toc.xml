@@ -9,6 +9,9 @@
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/General-Usage.html#rpmlint" label="rpmlint">
 				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/General-Usage.html#Quick_Fixes" label="Quick Fixes"></topic>
 			</topic>
+			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/General-Usage.html#Hyperlink_Detection" label="Hyperlink Detection">
+				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/General-Usage.html#Patches" label="Patches"></topic>
+			</topic>
 		</topic>
 		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Import-src-rpm-and-export-rpm-and-src-rpm.html" label="Import src.rpm and export rpm and src.rpm">
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Import-src-rpm-and-export-rpm-and-src-rpm.html#Invoking_the_Eclipse_SRPM_Import_Feature" label="Invoking the Eclipse SRPM Import Feature"></topic>
