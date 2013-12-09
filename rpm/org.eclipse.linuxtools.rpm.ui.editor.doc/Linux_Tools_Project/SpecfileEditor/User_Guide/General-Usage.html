@@ -164,6 +164,36 @@
 		</p>
 		<p>
 			<img border="0" src="images/Specfile_rpmlint_fix_after.png"/>
+		</p>
+		<h2 id="Hyperlink_Detection">Hyperlink Detection</h2>
+		<p>A common feature in most eclipse plugins is the ability to detect hyperlinks and to provide options for the user to handle the clicking of the hyperlink.</p>
+		<p>The SpecfileEditor handles the hyperlinks, often located in the 
+			<i><code>SOURCE</code></i> and 
+			<i><code>PATCH</code></i> defines, differently than regular hyperlinks.
+		</p>
+		<p>As shown below you are given the options to:</p>
+		<ul>
+			<li>Open the hyperlink in a browser</li>
+			<li>Open the file if it exists within the project (hidden if it doesn't)</li>
+			<li>Download the file from the browser</li>
+		</ul>
+		<p>In addition to these, if the user also happens to hover above a macro (e.g. 
+			<i><code>%{name}</code></i> or 
+			<i><code>%{version}</code></i>), it would show a "Go to ..." option to jump to where the macro is defined, if located in the 
+			<i><code>.spec</code></i> file.
+		</p>
+		<p>
+			<img border="0" src="images/SpecfileEditor_hyperlinksAfter.png"/>
+		</p>
+		<h4 id="Patches">Patches</h4>
+		<p>Patches are also considered hyperlinks in the SpecfileEditor. Based on the link itself, patch options could show a combination of the following options:</p>
+		<ul>
+			<li>Open the patch file in a browser if it is a URL</li>
+			<li>Create the file if it doesn't exist (or Open it if it does)</li>
+			<li>Download the file if it is a URL</li>
+		</ul>
+		<p>
+			<img border="0" src="images/SpecfileEditor_patchSourceImprovement.png"/>
 		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
