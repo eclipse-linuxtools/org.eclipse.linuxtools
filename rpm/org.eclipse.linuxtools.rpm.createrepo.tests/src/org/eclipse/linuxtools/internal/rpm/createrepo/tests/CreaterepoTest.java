@@ -13,12 +13,15 @@ package org.eclipse.linuxtools.internal.rpm.createrepo.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
+import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.rpm.createrepo.tests.TestCreaterepoProject;
 import org.eclipse.ui.console.MessageConsole;
@@ -40,12 +43,19 @@ public class CreaterepoTest {
 	private MessageConsole console;
 
 	/**
-	 * Initialize the test project.
+	 * Initialize the test project. Will fail immediately if it cannot find
+	 * the createrepo command.
 	 *
 	 * @throws CoreException
+	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws CoreException {
+	public static void setUpBeforeClass() throws CoreException, IOException, InterruptedException {
+		BufferedProcessInputStream bpis = Utils.runCommandToInputStream("which", "createrepo"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (bpis.getExitValue() == 1) {
+			fail("Failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
+		}
 		testProject = new TestCreaterepoProject();
 	}
 
