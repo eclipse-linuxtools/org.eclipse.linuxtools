@@ -27,6 +27,17 @@ public interface ICreaterepoTestConstants {
 	String BACK_BUTTON = "< Back"; //$NON-NLS-1$
 	String FINISH_BUTTON = "Finish"; //$NON-NLS-1$
 	String CANCEL_BUTTON = "Cancel"; //$NON-NLS-1$
+	String WINDOW = "Window"; //$NON-NLS-1$
+	String SHOW_VIEW = "Show View"; //$NON-NLS-1$
+	String OK_BUTTON = "OK"; //$NON-NLS-1$
+	String OPEN = "Open"; //$NON-NLS-1$
+
+	/*
+	 * Views
+	 */
+	String WELCOME_VIEW = "Welcome"; //$NON-NLS-1$
+	String JAVA_NODE = "Java"; //$NON-NLS-1$
+	String PACKAGE_EXPLORER = "Package Explorer"; //$NON-NLS-1$
 
 	/*
 	 * Project Wizard Specific Stuff

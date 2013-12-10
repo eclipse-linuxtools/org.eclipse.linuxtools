@@ -35,7 +35,6 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,13 +68,6 @@ public class CreaterepoWizardTest {
 		bot = new SWTWorkbenchBot();
 		root = ResourcesPlugin.getWorkspace().getRoot();
 		monitor = new NullProgressMonitor();
-	}
-
-	/**
-	 * Focus on main eclipse platform shell before continue SWTBot tests.
-	 */
-	@Before
-	public void setUp() {
 		try {
 			bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
 		} catch (WidgetNotFoundException e) {
