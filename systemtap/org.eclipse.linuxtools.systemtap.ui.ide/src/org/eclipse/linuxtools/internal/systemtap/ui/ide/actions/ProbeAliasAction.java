@@ -11,21 +11,31 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.LinkedList;
+
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.dialogs.ListDialog;
 
 
 
@@ -90,11 +100,13 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 	public void run() {
 		IWorkbenchPage page = window.getActivePage();
 		IEditorPart editor = page.getActiveEditor();
-		if(null == editor) {
-			NewFileAction action = new NewFileAction();
-			action.run();
-			editor = page.getWorkbenchWindow().getActivePage().getActiveEditor();
+		if(null == editor || !(editor instanceof STPEditor)) {
+			editor = findEditor();
+			if (null == editor) {
+				return;
+			}
 		}
+		page.activate(editor);
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
 		Object o = selection.getFirstElement();
@@ -128,6 +140,82 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 				stpeditor.insertText(s.toString());
 			}
 		}
+	}
+
+	private IEditorPart findEditor() {
+		final List<IEditorPart> allEditors = new LinkedList<IEditorPart>();
+		for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
+			IEditorPart editor = SynchronousActions.getRestoredEditor(ref);
+			if (editor instanceof STPEditor) {
+				allEditors.add(editor);
+			}
+		}
+
+		switch (allEditors.size()) {
+			// If only one file is found, open it. Give user the option to open another file.
+			case 1:
+				MessageDialog messageDialog = new MessageDialog(window.getShell(),
+						Messages.ProbeAliasAction_DialogTitle, null,
+						MessageFormat.format(Messages.ProbeAliasAction_AskBeforeAddMessage,
+								allEditors.get(0).getEditorInput().getName() ),
+						MessageDialog.QUESTION,
+						new String[]{Messages.ProbeAliasAction_AskBeforeAddCancel,
+							Messages.ProbeAliasAction_AskBeforeAddAnother,
+							Messages.ProbeAliasAction_AskBeforeAddYes}, 2);
+
+				switch (messageDialog.open()) {
+					case 2:
+						return allEditors.get(0);
+
+					case 1:
+						return openNewFile();
+
+					default:
+						return null;
+				}
+
+			// If no files found, prompt user to open a new file
+			case 0:
+				return openNewFile();
+
+			// If multiple files found, prompt user to select one of them
+			default:
+				ListDialog listDialog = new ListDialog(window.getShell());
+				listDialog.setTitle(Messages.ProbeAliasAction_DialogTitle);
+				listDialog.setContentProvider(new ArrayContentProvider());
+
+				listDialog.setLabelProvider(new LabelProvider() {
+					@Override
+					public String getText(Object element) {
+						int i = (Integer) element;
+						return i != -1 ? allEditors.get(i).getEditorInput().getName()
+								: Messages.NewFileAction_OtherFile;
+					}
+				});
+
+				Integer[] editorIndexes = new Integer[allEditors.size() + 1];
+				for (int i = 0; i < editorIndexes.length - 1; i++) {
+					editorIndexes[i] = i;
+				}
+				editorIndexes[editorIndexes.length - 1] = -1;
+				listDialog.setInput(editorIndexes);
+				listDialog.setMessage(Messages.ProbeAliasAction_SelectEditor);
+				if (listDialog.open() == Window.OK) {
+					int result = (Integer) listDialog.getResult()[0];
+					return result != -1 ? allEditors.get(result) : openNewFile();
+				}
+				// Abort if user cancels
+				return null;
+		}
+	}
+
+	private IEditorPart openNewFile() {
+		NewFileAction action = new NewFileAction();
+		action.run();
+		if (action.wasCancelled()) {
+			return null;
+		}
+		return window.getActivePage().getActiveEditor();
 	}
 
 	@Override

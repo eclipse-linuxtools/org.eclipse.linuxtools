@@ -34,12 +34,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * An action used for opening Systemtap scripts from the filesystem.
  * @since 2.0
  */
 public class OpenFileAction extends Action implements IWorkbenchWindowActionDelegate {
 
 	private boolean successful;
 	private IAction action;
+	private boolean cancelled;
 
 	/**
 	 * @since 2.0
@@ -78,16 +80,45 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	}
 
 	/**
+	 * @return The style to use for the FileDialog when querying for a file.
+	 * @since 2.2
+	 */
+	protected int dialogStyle() {
+		return SWT.OPEN;
+	}
+
+	/**
+	 * @return The name to give to the FileDialog when querying for a file.
+	 * @since 2.2
+	 */
+	protected String dialogName() {
+		return Localization.getString("OpenFileAction.OpenFile");
+	}
+
+	/**
 	 * Request the name and location of the file to the user.
 	 * @return the File object associated to the selected file.
 	 */
 	protected File queryFile() {
 		FileDialog dialog= new FileDialog(window.getShell(), SWT.OPEN);
-		dialog.setText(Localization.getString("OpenFileAction.OpenFile")); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[]{"*.stp"});
+		dialog.setText(dialogName()); //$NON-NLS-1$
 		String path= dialog.open();
-		if (path != null && path.length() > 0)
+		if (path != null && path.length() > 0) {
+			cancelled = false;
 			return new File(path);
+		}
+		cancelled = true;
 		return null;
+	}
+
+	/**
+	 * @return <code>true</code> if the last file query was cancelled,
+	 * or <code>false</code> if a file was selected.
+	 * @since 2.2
+	 */
+	public boolean wasCancelled() {
+		return cancelled;
 	}
 
 	/**

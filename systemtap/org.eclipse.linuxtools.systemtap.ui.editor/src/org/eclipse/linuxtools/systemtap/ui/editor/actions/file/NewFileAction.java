@@ -11,28 +11,20 @@
 
 package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
-import java.io.File;
-
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
-
 
 
 public class NewFileAction extends OpenFileAction {
-	
-	
-	/**
-	 * Creates a new file.
-	 * @return the new file object.
-	 */
+
 	@Override
-	protected File queryFile() {
-		FileDialog dialog= new FileDialog(window.getShell(), SWT.SAVE);
-		dialog.setText(Localization.getString("NewFileAction.NewFile")); //$NON-NLS-1$
-		String path= dialog.open();
-		if (path != null && path.length() > 0)
-			return new File(path);
-		return null;
+	protected int dialogStyle() {
+		return SWT.SAVE;
 	}
+
+	@Override
+	protected String dialogName() {
+		return Localization.getString("NewFileAction.NewFile");
+	}
+
 }
