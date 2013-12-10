@@ -126,5 +126,5 @@ public class KernelSourceTree {
 	}
 
 	private TreeNode kernelTree;
-	private String[] excluded;
+	private String[] excluded = new String[0];
 }
