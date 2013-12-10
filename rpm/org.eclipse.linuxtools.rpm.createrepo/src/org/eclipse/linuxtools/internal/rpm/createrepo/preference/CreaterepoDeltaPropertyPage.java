@@ -32,6 +32,9 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 	private IntegerFieldEditor ifeNumDeltas;
 	private IntegerFieldEditor ifeMaxSizeDeltas;
 
+	private Group dirGroup;
+	private CreaterepoPathEditor peDirectories;
+
 	/**
 	 * Default Constructor. Sets the description of the property page.
 	 */
@@ -88,6 +91,25 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 		layout = (GridLayout) optionsGroup.getLayout();
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
+
+		// the group for directories to package against
+		dirGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		layout = new GridLayout(2, false);
+		dirGroup.setLayout(layout);
+		dirGroup.setText(Messages.CreaterepoDeltaPropertyPage_groupDirectoryLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(dirGroup);
+
+		peDirectories = new CreaterepoPathEditor(CreaterepoPreferenceConstants.PREF_OLD_PACKAGE_DIRS,
+				Messages.CreaterepoDeltaPropertyPage_directoryDescription,
+				Messages.CreaterepoDeltaPropertyPage_directoryDialogLabel, dirGroup);
+		peDirectories.setPreferenceStore(preferenceStore);
+		peDirectories.load();
+		peDirectories.setPropertyChangeListener(this);
+
+		layout = (GridLayout) dirGroup.getLayout();
+		layout.marginWidth = 5;
+		layout.marginHeight = 5;
 		toggleEnabled();
 		return composite;
 	}
@@ -102,6 +124,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 		bfeEnableDeltas.loadDefault();
 		ifeNumDeltas.loadDefault();
 		ifeMaxSizeDeltas.loadDefault();
+		peDirectories.loadDefault();
 	}
 
 	/*
@@ -116,6 +139,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 				ifeNumDeltas.getIntValue());
 		getPreferenceStore().setValue(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
 				ifeMaxSizeDeltas.getIntValue());
+		peDirectories.store();
 		return true;
 	}
 
@@ -145,6 +169,7 @@ public class CreaterepoDeltaPropertyPage extends CreaterepoPropertyPage {
 		boolean enabled = bfeEnableDeltas.getBooleanValue();
 		ifeNumDeltas.setEnabled(enabled, optionsGroup);
 		ifeMaxSizeDeltas.setEnabled(enabled, optionsGroup);
+		peDirectories.setEnabled(enabled, dirGroup);
 	}
 
 }

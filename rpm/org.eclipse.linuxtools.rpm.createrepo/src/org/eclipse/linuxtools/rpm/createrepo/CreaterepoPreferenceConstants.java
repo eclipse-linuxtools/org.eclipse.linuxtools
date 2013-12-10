@@ -42,6 +42,7 @@ public final class CreaterepoPreferenceConstants {
 	/****/ public static final String PREF_DELTA_ENABLE		= "deltas"; 	//$NON-NLS-1$
 	/****/ public static final String PREF_NUM_DELTAS		= "num-deltas"; //$NON-NLS-1$
 	/****/ public static final String PREF_MAX_DELTA_SIZE	= "max-delta-rpm-size"; //$NON-NLS-1$
+	/****/ public static final String PREF_OLD_PACKAGE_DIRS = "oldpackagedirs"; //$NON-NLS-1$
 
 	// Defaults
 	/****/ public static final String PREF_VERBOSE			= "verbose"; //$NON-NLS-1$
@@ -73,4 +74,5 @@ public final class CreaterepoPreferenceConstants {
 	/****/ public static final boolean DEFAULT_DELTA_ENABLE 		= false;
 	/****/ public static final int DEFAULT_NUM_DELTAS 				= 1;
 	/****/ public static final int DEFAULT_MAX_DELTA_SIZE 			= 10;
+	/****/ public static final String DEFAULT_OLD_PACKAGE_DIR_LIST	= ICreaterepoConstants.EMPTY_STRING;
 }

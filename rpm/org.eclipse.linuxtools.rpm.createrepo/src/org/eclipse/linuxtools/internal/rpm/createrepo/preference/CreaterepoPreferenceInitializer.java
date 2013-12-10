@@ -62,6 +62,7 @@ public class CreaterepoPreferenceInitializer extends
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE, CreaterepoPreferenceConstants.DEFAULT_DELTA_ENABLE);
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_NUM_DELTAS, CreaterepoPreferenceConstants.DEFAULT_NUM_DELTAS);
 		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE, CreaterepoPreferenceConstants.DEFAULT_MAX_DELTA_SIZE);
+		prefStore.setDefault(CreaterepoPreferenceConstants.PREF_OLD_PACKAGE_DIRS, CreaterepoPreferenceConstants.DEFAULT_OLD_PACKAGE_DIR_LIST);
 	}
 
 }
