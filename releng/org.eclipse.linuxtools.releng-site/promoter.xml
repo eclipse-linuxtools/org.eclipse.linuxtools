@@ -40,6 +40,8 @@
 		<unzip dest="${build.root}/repository">
 			<fileset file="${build.root}/repository/artifacts.jar" />
 		</unzip>
+                <!-- Delete the archive, it will be re-generated -->
+                <delete file="${build.root}/repository/artifacts.jar" />
 		<move file="${build.root}/repository/artifacts.xml" tofile="${build.root}/repository/artifacts.original.xml" />
 		<xslt style="p2.xsl" in="${build.root}/repository/artifacts.original.xml" out="${build.root}/repository/artifacts.xml">
 			<param name="mirrorsURL" expression="http://www.eclipse.org/downloads/download.php?file=${mirror.repository.path}&amp;format=xml" />
