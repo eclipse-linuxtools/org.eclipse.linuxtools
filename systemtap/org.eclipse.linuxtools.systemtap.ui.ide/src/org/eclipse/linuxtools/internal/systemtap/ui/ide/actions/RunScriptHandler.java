@@ -115,7 +115,7 @@ public class RunScriptHandler extends AbstractHandler {
 			}
 			for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
 				try {
-					if (matchesEditor(ref.getEditorInput(), ref.getEditor(false), window.getShell())) {
+					if (matchesEditor(ref.getEditorInput(), SynchronousActions.getRestoredEditor(ref), window.getShell())) {
 						return;
 					}
 				} catch (PartInitException e) {
