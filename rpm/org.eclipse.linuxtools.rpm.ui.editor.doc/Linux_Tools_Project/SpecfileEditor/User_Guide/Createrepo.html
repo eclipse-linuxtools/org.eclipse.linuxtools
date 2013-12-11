@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Specfile Editor User Guide - Createrepo</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Createrepo</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Import-src-rpm.html" title="Import src.rpm">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Configuring-Specfile-Editor-Settings.html" title="Configuring Specfile Editor Settings">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Import src.rpm</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Configuring Specfile Editor Settings</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Createrepo">Createrepo</h1>
+		<p>As mentioned previously, the <code>createrepo</code> tool is used in creating repositories from a set of RPMs. Eclipse allows use of this functionality in a visual and interactive environment.
+			The following screenshot shows the <code>createrepo</code> tool in action:</p>
+		<p>
+			<img border="0" src="images/Createrepo_overview.png"/>
+		</p>
+		<h2 id="Creating_a_Repository">Creating a Repository</h2>
+		<p>To get started, user must first create a Createrepo project via <u>File</u> &gt; <u>New</u> &gt; <u>Other...</u> and selecting 
+			<b>
+				<i>Createrepo Wizard</i>
+			</b> under the 
+			<b>
+				<i>Createrepo</i>
+			</b> category. You will be provided with a general project creation dialog that allows you to: 1) specify a project name; 2) specify the location in which to save the project.
+		</p>
+		<p>
+			<img border="0" src="images/Createrepo_WizardPage_1.png"/>
+		</p>
+		<p>After specifying the name (and optionally the location), the user may click 
+			<b>
+				<i>Next</i>
+			</b> which will bring them to the <code>.repo</code> file initialization page:
+		</p>
+		<p>
+			<img border="0" src="images/Createrepo_WizardPage_2.png"/>
+		</p>
+		<p>This page creates the <code>.repo</code> file that allows the repository to be known to <code>yum</code>. There are three mandatory parts that are required to be filled before moving on:</p>
+		<dl>
+			<dt>Repo ID</dt>
+			<dd>A one-word string that uniquely identifies the <code>yum</code> repository</dd>
+		</dl>
+		<dl>
+			<dt>Name</dt>
+			<dd>A human-readable string describing the repository</dd>
+		</dl>
+		<dl>
+			<dt>Base URL</dt>
+			<dd>A URL to the directory where the repodata directory of a repository is located</dd>
+		</dl>
+		<p>Once these fields are filled, user can now click 
+			<b>
+				<i>Finish</i>
+			</b> and the Createrepo project should be initialized with an empty content folder and a <code>.repo</code> file with the same contents as what was filled in the wizard.
+		</p>
+		<h2 id="Getting_Familiar_with_the_Editor">Getting Familiar with the Editor</h2>
+		<p>There are 3 pages to the Createrepo editor:</p>
+		<h3 id="Repository_Page">Repository Page</h3>
+		<p>This page manages the RPMs that the user will be creating a repository for. It allows the user to  choose the RPMs they want to create a repository for and also execute the <code>createrepo</code> command to create the repository.</p>
+		<p>
+			<img border="0" src="images/Createrepo_FormPage_1.png"/>
+		</p>
+		<dl>
+			<dt>1 RPM list box</dt>
+			<dd>This box contains an always up-to-date listing of the RPMs within the <code>content</code> folder; in other words, it contains the RPMs that the user will be creating a repository for. The user may also drop RPMs onto this box which would serve the same purpose as the 
+				<b>
+					<i>Import RPMs</i>
+				</b> button
+			</dd>
+		</dl>
+		<dl>
+			<dt>2 Import RPMs</dt>
+			<dd>Executing this button allows the user to import RPMs from the file system</dd>
+		</dl>
+		<dl>
+			<dt>3 Remove RPMs</dt>
+			<dd>All selected RPMs within the list will be removed. These files are also deleted from the <code>content</code> folder</dd>
+		</dl>
+		<dl>
+			<dt>4 Create Repo</dt>
+			<dd>Execute the <code>createrepo</code> command in the <code>content</code> folder. This will take command arguments as specified by the user in the 
+				<a href="Configuring-Createrepo-Execution.html#Configuring_Createrepo_Execution">preference pages</a>. The RPM list can be empty when executing
+			</dd>
+		</dl>
+		<dl>
+			<dt>5 Update</dt>
+			<dd>A <code>createrepo</code> execution with the <code>--update</code> command switch passed into it</dd>
+		</dl>
+		<dl>
+			<dt>6 Createrepo</dt>
+			<dd>Same functionality as the 
+				<b>
+					<i>Create Repo</i>
+				</b> button, but available on the other pages as well
+			</dd>
+		</dl>
+		<dl>
+			<dt>7 Createrepo Console</dt>
+			<dd>Displays a verbose output of the execution</dd>
+		</dl>
+		<h3 id="Metadata_Page">Metadata Page</h3>
+		<p>This page manages the repository tags and revision number when the metadata is being generated. All new data placed into this page will be persisted on the next execution.</p>
+		<p>Similarly to the 
+			<b>
+				<i>Repository</i>
+			</b> page, this page also contains the 
+			<b>
+				<i>Update</i>
+			</b> and 
+			<b>
+				<i>Createrepo</i>
+			</b> buttons which execute the same way.
+		</p>
+		<p>
+			<img border="0" src="images/Createrepo_FormPage_2.png"/>
+		</p>
+		<dl>
+			<dt>1 Revision</dt>
+			<dd>An arbitrary string for a repository revision</dd>
+		</dl>
+		<dl>
+			<dt>2 Tag</dt>
+			<dd>The text field in which the user specifies a tag name to add into a category</dd>
+		</dl>
+		<dl>
+			<dt>3 Category and Tags list box</dt>
+			<dd>Repositories can have tags for <code>distro</code>, <code>content</code>, and <code>repo</code>. There can be as many tags as the user specifies, but they must be unique in respect to the tags within the category they belong to</dd>
+		</dl>
+		<dl>
+			<dt>4 Add</dt>
+			<dd>Add the tag specified into the category selected. Unique tags are enforced, meaning that tags that already exist within the category cannot be added again. Categories cannot be added</dd>
+		</dl>
+		<dl>
+			<dt>5 Edit</dt>
+			<dd>Edit the selected tag in the list with the tag specified in the tag text field. Similar to 
+				<b>
+					<i>Add</i>
+				</b>, edited tags must be unique in the category. Categories cannot be edited
+			</dd>
+		</dl>
+		<dl>
+			<dt>6 Remove</dt>
+			<dd>Remove the selected tag in the list. Categories cannot be removed</dd>
+		</dl>
+		<h3 id="Repo_Editor">Repo Editor</h3>
+		<p>This is a simple text editor that allows the user to modify the <code>.repo</code> file's contents.</p>
+		<p>
+			<img border="0" src="images/Createrepo_FormPage_3.png"/>
+		</p>
+		<dl>
+			<dt>1 Editor</dt>
+			<dd>Modify the contents of the <code>.repo</code> file</dd>
+		</dl><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Import-src-rpm.html" title="Import src.rpm">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Specfile Editor User Guide">
+						<img alt="Specfile Editor User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Configuring-Specfile-Editor-Settings.html" title="Configuring Specfile Editor Settings">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Import src.rpm</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Configuring Specfile Editor Settings</td>
+			</tr>
+		</table>
+	</body>
+</html>

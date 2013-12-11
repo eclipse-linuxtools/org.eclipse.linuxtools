@@ -19,6 +19,14 @@
 		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Import-src-rpm.html" label="Import src.rpm">
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Import-src-rpm.html#Invoking_the_Eclipse_SRPM_Import_Feature" label="Invoking the Eclipse SRPM Import Feature"></topic>
 		</topic>
+		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html" label="Createrepo">
+			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html#Creating_a_Repository" label="Creating a Repository"></topic>
+			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html#Getting_Familiar_with_the_Editor" label="Getting Familiar with the Editor">
+				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html#Repository_Page" label="Repository Page"></topic>
+				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html#Metadata_Page" label="Metadata Page"></topic>
+				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Createrepo.html#Repo_Editor" label="Repo Editor"></topic>
+			</topic>
+		</topic>
 		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html" label="Configuring Specfile Editor Settings">
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html#Macro_Completion" label="Macro Completion"></topic>
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html#RPM_Completions" label="RPM Completions">
@@ -27,6 +35,11 @@
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html#Rpmlint" label="Rpmlint"></topic>
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html#Task_Tags" label="Task Tags"></topic>
 			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html#Templates" label="Templates"></topic>
+		</topic>
+		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Createrepo-Execution.html" label="Configuring Createrepo Execution">
+			<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Createrepo-Execution.html#Repository_Specific_Configuration" label="Repository Specific Configuration">
+				<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Createrepo-Execution.html#Deltas" label="Deltas"></topic>
+			</topic>
 		</topic>
 		<topic href="Linux_Tools_Project/SpecfileEditor/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
 	</topic>
