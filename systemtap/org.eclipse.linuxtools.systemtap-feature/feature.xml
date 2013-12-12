@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.systemtap"
       label="%description"
-      version="2.1.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="%featureProvider"
       os="linux"
       license-feature="org.eclipse.linuxtools.license.feature"
