@@ -49,7 +49,6 @@
     <module>org.eclipse.linuxtools.rpm.ui.editor.doc</module>
     <module>org.eclipse.linuxtools.rpm.ui.editor.tests</module>
     <module>org.eclipse.linuxtools.rpmstubby</module>
-    <module>org.eclipse.linuxtools.rpmstubby-feature</module>
   </modules>
 
 </project>
