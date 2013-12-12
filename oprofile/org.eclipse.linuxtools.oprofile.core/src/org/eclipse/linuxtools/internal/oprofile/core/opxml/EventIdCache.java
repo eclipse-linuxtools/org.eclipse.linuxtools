@@ -257,6 +257,9 @@ public class EventIdCache {
 		return unitMaskType;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setCacheDoc(Element oldRoot) {
 		eventRoot = oldRoot;
 	}
