@@ -17,30 +17,31 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.linuxtools.rpmstubby</groupId>
-    <artifactId>linuxtools-rpmstubby-parent</artifactId>
+    <groupId>org.eclipse.linuxtools.rpm</groupId>
+    <artifactId>linuxtools-rpm-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.rpmstubby</artifactId>
-  <packaging>eclipse-plugin</packaging>
-  <version>1.2.0-SNAPSHOT</version>
-  <name>Linux Tools RPM Stubby Plug-in</name>
-
- <build>
-     <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
-     <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
+  <artifactId>org.eclipse.linuxtools.rpmstubby.feature</artifactId>
+  <packaging>eclipse-feature</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>Linux Tools RPM Stubby Feature (Incubation)</name>
+  
+  <build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
+        <artifactId>tycho-p2-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>attached-p2-metadata</id>
+            <phase>package</phase>
+            <goals>
+              <goal>p2-metadata</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

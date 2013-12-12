@@ -232,7 +232,6 @@
     <module>perf</module>
     <module>profiling</module>
     <module>rpm</module>
-    <module>rpmstubby</module>
     <module>systemtap</module>
     <module>valgrind</module>
     <module>releng</module>
