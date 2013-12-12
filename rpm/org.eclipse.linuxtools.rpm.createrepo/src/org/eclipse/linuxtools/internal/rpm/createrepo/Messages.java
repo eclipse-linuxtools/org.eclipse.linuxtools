@@ -67,7 +67,13 @@ public final class Messages {
 	/****/
 	public static String Createrepo_jobName;
 	/****/
+	public static String Createrepo_jobCancelled;
+	/****/
 	public static String Createrepo_errorExecuting;
+	/****/
+	public static String Createrepo_errorTryingToFindCommand;
+	/****/
+	public static String Createrepo_errorCommandNotFound;
 
 	// RepoFormEditor
 	/****/
