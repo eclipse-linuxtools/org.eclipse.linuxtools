@@ -22,10 +22,14 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectNature;
 import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.linuxtools.rpm.createrepo.IRepoFileConstants;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * A class to create a test createrepo project. This will create the repo file
@@ -154,6 +158,16 @@ public class TestCreaterepoProject {
 			repoFile.setContents(stream, true, true, monitor);
 		} else {
 			repoFile.create(stream, true, monitor);
+		}
+	}
+
+	/**
+	 * Restore the defaults of the workspace preferences.
+	 */
+	public void restoreDefaults() {
+		IPreferenceStore prefStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
+		for (String preference : ICreaterepoTestConstants.PREFS_ARRAY) {
+			prefStore.setToDefault(preference);
 		}
 	}
 

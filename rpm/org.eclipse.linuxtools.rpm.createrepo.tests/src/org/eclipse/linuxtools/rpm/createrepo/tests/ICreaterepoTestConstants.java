@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.createrepo.tests;
 
+import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
+
 
 /**
  * Constants used for testing.
@@ -66,4 +68,27 @@ public interface ICreaterepoTestConstants {
 	String PROJECT_NAME = "createrepo-test-project"; //$NON-NLS-1$
 	String REPO_NAME = "createrepo-test-repo.repo"; //$NON-NLS-1$
 
+	/*
+	 * Preferences used
+	 */
+	String[] PREFS_ARRAY = {
+		CreaterepoPreferenceConstants.PREF_DISTRO_TAG,
+		CreaterepoPreferenceConstants.PREF_CONTENT_TAG,
+		CreaterepoPreferenceConstants.PREF_REPO_TAG,
+		CreaterepoPreferenceConstants.PREF_REVISION,
+		CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME,
+		CreaterepoPreferenceConstants.PREF_GENERATE_DB,
+		CreaterepoPreferenceConstants.PREF_IGNORE_SYMLINKS,
+		CreaterepoPreferenceConstants.PREF_PRETTY_XML,
+		CreaterepoPreferenceConstants.PREF_WORKERS,
+		CreaterepoPreferenceConstants.PREF_CHECK_TS,
+		CreaterepoPreferenceConstants.PREF_CHANGELOG_LIMIT,
+		CreaterepoPreferenceConstants.PREF_CHECKSUM,
+		CreaterepoPreferenceConstants.PREF_COMPRESSION_TYPE,
+		CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED,
+		CreaterepoPreferenceConstants.PREF_DELTA_ENABLE,
+		CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
+		CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
+		CreaterepoPreferenceConstants.PREF_OLD_PACKAGE_DIRS,
+	};
 }
