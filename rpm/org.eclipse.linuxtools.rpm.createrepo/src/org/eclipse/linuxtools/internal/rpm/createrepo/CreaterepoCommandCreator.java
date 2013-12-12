@@ -190,15 +190,14 @@ public class CreaterepoCommandCreator {
 				commands.add(arg);
 				commands.add(Long.toString(value));
 			}
-		} else {
-			for (String arg : INT_COMMANDS) {
-				// if project preferences are enabled, use the preferences from there
-				int value = project ? projectPreferences.getInt(arg, preferenceStore.getDefaultInt(arg))
-						: preferenceStore.getInt(arg);
-				arg = ICreaterepoConstants.DASH.concat(arg);
-				commands.add(arg);
-				commands.add(Integer.toString(value));
-			}
+		}
+		for (String arg : INT_COMMANDS) {
+			// if project preferences are enabled, use the preferences from there
+			int value = project ? projectPreferences.getInt(arg, preferenceStore.getDefaultInt(arg))
+					: preferenceStore.getInt(arg);
+			arg = ICreaterepoConstants.DASH.concat(arg);
+			commands.add(arg);
+			commands.add(Integer.toString(value));
 		}
 		return commands;
 	}
