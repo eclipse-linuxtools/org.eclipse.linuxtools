@@ -65,22 +65,6 @@ public class PieChart extends Chart {
     }
 
     /**
-     * Add data to this Pie Chart. A single pie Chart will be drawn with the data provided.
-     * @deprecated see {@link #addPieChartSeries(String[], double[][])}
-     */
-    @Deprecated
-    public void addPieChartSeries(String labels[], double val[]) {
-        for (ISeries s : this.getSeriesSet().getSeries()) {
-			this.getSeriesSet().deleteSeries(s.getId());
-		}
-        double newVal[][] = new double[val.length][1];
-        for (int i = 0; i < val.length; i++) {
-			newVal[i][0] = val[i];
-		}
-        addPieChartSeries(labels, newVal);
-    }
-
-    /**
      * Add data to this Pie Chart. We'll build one pie chart for each value in the array provided. The val matrix must
      * have an array of an array of values. Ex. labels = {'a', 'b'} val = {{1,2,3}, {4,5,6}} This will create 3 pie
      * charts. For the first one, 'a' will be 1 and 'b' will be 4. For the second chart 'a' will be 2 and 'b' will be 5.
