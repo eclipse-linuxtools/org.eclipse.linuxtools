@@ -14,7 +14,10 @@ import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoImpor
 import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoMetadataPageTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoRepoFormEditorTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.listener.tests.CreaterepoResourceListenerTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoDeltaPropertyPageTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoGeneralPropertyPageTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoPreferenceInitializationTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoPreferencePageTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoCommandCreatorTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tree.tests.CreaterepoTreeCategoryTest;
@@ -29,7 +32,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreaterepoProjectTest.class, CreaterepoTreeCategoryTest.class, CreaterepoTreeTest.class,
 	CreaterepoWizardTest.class, CreaterepoTest.class, CreaterepoPreferenceInitializationTest.class,
 	CreaterepoRepoFormEditorTest.class, CreaterepoImportRPMsPageTest.class, CreaterepoMetadataPageTest.class,
-	CreaterepoResourceListenerTest.class, CreaterepoCommandCreatorTest.class})
+	CreaterepoResourceListenerTest.class, CreaterepoCommandCreatorTest.class,
+	CreaterepoPreferencePageTest.class, CreaterepoGeneralPropertyPageTest.class, CreaterepoDeltaPropertyPageTest.class})
 public class AllTests {
 	//Nothing here as annotation is important
 }

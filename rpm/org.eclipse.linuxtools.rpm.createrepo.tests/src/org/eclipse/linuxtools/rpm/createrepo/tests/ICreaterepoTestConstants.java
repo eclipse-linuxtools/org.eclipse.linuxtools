@@ -31,8 +31,12 @@ public interface ICreaterepoTestConstants {
 	String CANCEL_BUTTON = "Cancel"; //$NON-NLS-1$
 	String WINDOW = "Window"; //$NON-NLS-1$
 	String SHOW_VIEW = "Show View"; //$NON-NLS-1$
+	String PREFERENCES = "Preferences"; //$NON-NLS-1$
 	String OK_BUTTON = "OK"; //$NON-NLS-1$
 	String OPEN = "Open"; //$NON-NLS-1$
+	String DEFAULTS = "Restore Defaults"; //$NON-NLS-1$
+	String PROPERTIES = "Properties"; //$NON-NLS-1$
+	String PROPERTIES_SHELL = "Properties for %s"; //$NON-NLS-1$
 
 	/*
 	 * Views
@@ -71,6 +75,7 @@ public interface ICreaterepoTestConstants {
 	/*
 	 * Preferences used
 	 */
+	String DELTAS = "Deltas"; //$NON-NLS-1$
 	String[] PREFS_ARRAY = {
 		CreaterepoPreferenceConstants.PREF_DISTRO_TAG,
 		CreaterepoPreferenceConstants.PREF_CONTENT_TAG,
