@@ -115,6 +115,10 @@ public class CreaterepoProject {
 	 * @throws CoreException Thrown when failure to create a workspace file.
 	 */
 	public void importRPM(File externalFile) throws CoreException {
+		// must first check if external file exists
+		if (!externalFile.exists()) {
+			return;
+		}
 		// must put imported RPMs into the content folder; create if missing
 		if (!getContentFolder().exists()) {
 			createContentFolder();

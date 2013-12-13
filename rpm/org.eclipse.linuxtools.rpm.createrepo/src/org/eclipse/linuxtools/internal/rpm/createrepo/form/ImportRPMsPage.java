@@ -281,15 +281,21 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 		public void widgetSelected(SelectionEvent e) {
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			Shell shell = workbench.getModalDialogShellProvider().getShell();
-			FileDialog fileDialog = new FileDialog(shell, SWT.SINGLE);
+			FileDialog fileDialog = new FileDialog(shell, SWT.MULTI);
 			fileDialog.setFilterExtensions(EXTENSION_FILTERS);
 			if (fileDialog.open() != null) {
-				File externalFile = new File(fileDialog.getFilterPath(), fileDialog.getFileName());
-				try {
-					project.importRPM(externalFile);
+				String[] files = fileDialog.getFileNames();
+				if (files.length > 0) {
+					String directoryPath = fileDialog.getFilterPath();
+					for (String file : files) {
+						File externalFile = new File(directoryPath, file);
+						try {
+							project.importRPM(externalFile);
+						} catch (CoreException e1) {
+							Activator.logError(Messages.ImportButtonListener_error, e1);
+						}
+					}
 					refreshTree();
-				} catch (CoreException e1) {
-					Activator.logError(Messages.ImportButtonListener_error, e1);
 				}
 			}
 		}

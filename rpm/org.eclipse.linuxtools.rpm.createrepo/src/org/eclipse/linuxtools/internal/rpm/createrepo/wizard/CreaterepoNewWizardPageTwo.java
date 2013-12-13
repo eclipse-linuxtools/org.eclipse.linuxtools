@@ -84,11 +84,14 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
 				setPageComplete(isValid());
 			}
 		};
-		repositoryIDTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelID);
+		repositoryIDTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelID,
+				Messages.CreaterepoNewWizardPageTwo_tooltipID);
 		repositoryIDTxt.addModifyListener(modifyListner);
-		repositoryNameTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelName);
+		repositoryNameTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelName,
+				Messages.CreaterepoNewWizardPageTwo_tooltipName);
 		repositoryNameTxt.addModifyListener(modifyListner);
-		repositoryBaseURLTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelURL);
+		repositoryBaseURLTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelURL,
+				Messages.CreaterepoNewWizardPageTwo_tooltipURL);
 		repositoryBaseURLTxt.addModifyListener(modifyListner);
 		setControl(container);
 	}
@@ -100,7 +103,7 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
 	 * @param labelName The name on the label.
 	 * @return The newly created text field.
 	 */
-	protected Text createTextFieldWithLabel(Composite parent, String labelName) {
+	protected Text createTextFieldWithLabel(Composite parent, String labelName, String tooltip) {
 		GridData layoutData = new GridData();
 		// create the label
 		Label respositoryBaseURLLbl = new Label(parent, SWT.NONE);
@@ -108,6 +111,7 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
 		layoutData = new GridData();
 		layoutData.horizontalAlignment = GridData.BEGINNING;
 		layoutData.verticalAlignment = GridData.CENTER;
+		respositoryBaseURLLbl.setToolTipText(tooltip);
 		// create the text field
 		Text textField = new Text(parent, SWT.BORDER | SWT.SINGLE);
 		layoutData = new GridData();
@@ -115,6 +119,7 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
 		layoutData.horizontalAlignment = GridData.FILL;
 		layoutData.verticalAlignment = GridData.CENTER;
 		textField.setLayoutData(layoutData);
+		textField.setToolTipText(tooltip);
 		return textField;
 	}
 
@@ -197,4 +202,5 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
 		}
 		return repositoryBaseURLTxt.getText().trim();
 	}
+
 }
