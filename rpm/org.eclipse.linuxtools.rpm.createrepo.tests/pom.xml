@@ -30,6 +30,12 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
+          <excludes>
+            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
+            <exclude>**/Test*.class</exclude>
+          </excludes>
+          <testSuite>org.eclipse.linuxtools.rpm.createrepo.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.rpm.createrepo.tests.AllTests</testClass>
           <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
           <product>org.eclipse.platform.ide</product>
