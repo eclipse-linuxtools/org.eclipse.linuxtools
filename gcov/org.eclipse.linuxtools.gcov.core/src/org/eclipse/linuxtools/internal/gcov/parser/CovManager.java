@@ -258,9 +258,11 @@ public class CovManager implements Serializable {
             String postfix = ""; //$NON-NLS-1$
             File dir = null;
             do {
-                if ("".equals(postfix))postfix = f.getName(); //$NON-NLS-1$
-                else
-                    postfix = f.getName() + File.separator + postfix;
+                if (postfix.isEmpty()) {
+                	postfix = f.getName();
+                } else {
+                	postfix = f.getName() + File.separator + postfix;
+                }
                 f = f.getParentFile();
                 if (f != null) {
                     dir = sourcePath.get(f);
@@ -281,9 +283,9 @@ public class CovManager implements Serializable {
             fg.setFileName(filename);
             fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePath, filename }));
             String s = fg.open();
-            if (s == null)
-                return null;
-            else {
+            if (s == null) {
+            	return null;
+            } else {
                 f = new File(s).getAbsoluteFile();
                 addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
                 if (f.isFile() && f.canRead()) {

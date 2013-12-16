@@ -34,10 +34,10 @@ public class Folder implements Serializable {
 	
 	
 	public void accumulateSourcesCounts(){
-		for (int i = 0; i < srcFiles.size(); i++) {
-			numLines += (srcFiles.get(i)).getNumLines();
-			linesInstrumented += (srcFiles.get(i)).getLinesInstrumented();
-			linesExecuted += (srcFiles.get(i)).getLinesExecuted();
+		for (SourceFile srcFile: srcFiles) {
+			numLines += srcFile.getNumLines();
+			linesInstrumented += srcFile.getLinesInstrumented();
+			linesExecuted += srcFile.getLinesExecuted();
 		}	
 	}
 		
