@@ -121,8 +121,9 @@ public class CovManager implements Serializable {
             String gcnoPath = gcdaPath.replace(".gcda", ".gcno"); //$NON-NLS-1$ //$NON-NLS-2$
             // parse GCNO file
             traceFile = OpenTraceFileStream(gcnoPath, ".gcno", sourcePath); //$NON-NLS-1$
-            if (traceFile == null)
+            if (traceFile == null) {
                 return;
+            }
             GcnoRecordsParser noRcrd = new GcnoRecordsParser(sourceMap, allSrcs);
             noRcrd.parseData(traceFile);
 
@@ -132,8 +133,9 @@ public class CovManager implements Serializable {
             }
 
             // close the input stream
-            if (traceFile.getClass() == DataInputStream.class)
+            if (traceFile.getClass() == DataInputStream.class) {
                 ((DataInputStream) traceFile).close();
+            }
 
             // parse GCDA file
             traceFile = OpenTraceFileStream(gcdaPath, ".gcda", sourcePath); //$NON-NLS-1$
@@ -148,8 +150,9 @@ public class CovManager implements Serializable {
             daRcrd.parseGcdaRecord(traceFile);
 
             // close the input stream
-            if (traceFile.getClass() == DataInputStream.class)
+            if (traceFile.getClass() == DataInputStream.class) {
                 ((DataInputStream) traceFile).close();
+            }
         }
 
         // to fill the view title
@@ -187,8 +190,9 @@ public class CovManager implements Serializable {
                 folderName = "?"; //$NON-NLS-1$
             Folder folder = null;
             for (Folder f : allFolders) {
-                if (f.getPath().equals(folderName))
+                if (f.getPath().equals(folderName)) {
                     folder = f;
+                }
             }
             if (folder == null) {
                 folder = new Folder(folderName);
@@ -266,8 +270,9 @@ public class CovManager implements Serializable {
                 f = f.getParentFile();
                 if (f != null) {
                     dir = sourcePath.get(f);
-                } else
+                } else {
                     break;
+                }
             } while (dir == null);
 
             if (dir != null) {
@@ -348,9 +353,8 @@ public class CovManager implements Serializable {
 
     private Process getStringsProcess(String stringsTool, String binaryPath) {
         try {
-            Process p = Runtime.getRuntime().exec(new String[] { stringsTool, binaryPath });
-            return p;
-        } catch (Exception _) {
+            return Runtime.getRuntime().exec(new String[] { stringsTool, binaryPath });
+        } catch (IOException e) {
             return null;
         }
     }
@@ -369,7 +373,7 @@ public class CovManager implements Serializable {
         public void run() {
             try {
                 populateGCDAFiles(p.getInputStream());
-            } catch (Exception _) {
+            } catch (IOException e) {
             }
         }
 
@@ -390,8 +394,9 @@ public class CovManager implements Serializable {
                     IPath p = new Path(line);
                     String filename = p.toString();
 
-                    if (!list.contains(filename))
+                    if (!list.contains(filename)) {
                         list.add(filename);
+                    }
                 }
             }
         }
