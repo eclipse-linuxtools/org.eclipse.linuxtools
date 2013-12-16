@@ -19,6 +19,7 @@ public interface ICreaterepoTestConstants {
 	/*
 	 * Dialog specific stuff
 	 */
+	String MAIN_SHELL = "Resource - Eclipse Platform"; //$NON-NLS-1$
 	String FILE = "File"; //$NON-NLS-1$
 	String NEW = "New"; //$NON-NLS-1$
 	String OTHER = "Other..."; //$NON-NLS-1$

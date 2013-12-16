@@ -31,10 +31,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectCreator;
 import org.eclipse.linuxtools.rpm.createrepo.CreaterepoUtils;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -205,8 +207,11 @@ public class CreaterepoProjectTest {
 	public void testSimpleExecute() throws CoreException {
 		CreaterepoProject createrepoProject = new CreaterepoProject(project);
 		assertTrue(!createrepoProject.getContentFolder().exists());
-		IStatus status = createrepoProject.createrepo(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
+		// assume that there is creatrepo version of >= 0.9.8
+		IStatus validVersion = Createrepo.isCorrectVersion(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
+		Assume.assumeTrue(validVersion.isOK());
 
+		IStatus status = createrepoProject.createrepo(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
 		// check if  executing has an OK status and that content folder is created with the repodata contents
 		assertEquals(Status.OK_STATUS, status);
 		assertTrue(createrepoProject.getContentFolder().exists());
