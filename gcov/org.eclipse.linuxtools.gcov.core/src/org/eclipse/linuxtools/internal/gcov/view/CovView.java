@@ -178,9 +178,7 @@ public class CovView extends AbstractSTDataView {
             for (SourceFile sf : cvrgeMnger.getSourceMap().values()) {
                 OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, binary, sf, 0);
             }
-        } catch (CoreException e) {
-            reportError(e);
-        } catch (IOException e) {
+        } catch (CoreException|IOException e) {
             reportError(e);
         }
     }
@@ -211,11 +209,7 @@ public class CovView extends AbstractSTDataView {
             String timestamp = DateFormat.getInstance().format(date);
             CovView cvrgeView = displayCovResults(cvrgeMnger, timestamp);
             return cvrgeView;
-        } catch (InterruptedException e) {
-            reportError(e);
-        } catch (IOException e) {
-            reportError(e);
-        } catch (CoreException e) {
+        } catch (InterruptedException|IOException|CoreException e) {
             reportError(e);
         }
         return null;

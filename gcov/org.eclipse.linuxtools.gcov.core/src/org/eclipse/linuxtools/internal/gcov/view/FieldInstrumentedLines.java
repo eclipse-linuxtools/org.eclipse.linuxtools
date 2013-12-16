@@ -61,10 +61,12 @@ public class FieldInstrumentedLines extends AbstractSTDataViewersField implement
     public int compare(Object obj1, Object obj2) {
         int i1 = getInstrumentedLines(obj1);
         int i2 = getInstrumentedLines(obj2);
-        if (i1 > i2)
+        if (i1 > i2) {
             return 1;
-        if (i1 < i2)
+        }
+        if (i1 < i2) {
             return -1;
+        }
         return 0;
     }
 

@@ -66,17 +66,20 @@ public class OpenSourceFileAction {
         GcovSourceEditorInput input = new GcovSourceEditorInput(fs, sourceFile);
         IWorkbenchPage p = CUIPlugin.getActivePage();
         IEditorPart editorPart = p.findEditor(input);
-        if (editorPart != null)
+        if (editorPart != null) {
             p.closeEditor(editorPart, false);
+        }
         return input;
     }
 
     public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, int lineNumber) {
-        if (sourceFile == null)
+        if (sourceFile == null) {
             return;
+        }
         String pathName = sourceFile.getName();
-        if (pathName == null)
+        if (pathName == null) {
             return;
+        }
         IPath path = new Path(pathName);
         openAnnotatedSourceFile(project, binary, sourceFile, path, lineNumber);
     }

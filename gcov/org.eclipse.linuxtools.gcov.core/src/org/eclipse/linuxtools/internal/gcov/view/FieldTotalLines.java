@@ -40,8 +40,9 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
     @Override
     public String getValue(Object obj) {
         int v = getTotalLines(obj);
-        if (v < 0)
+        if (v < 0) {
             return ""; //$NON-NLS-1$
+        }
         return NumberFormat.getInstance().format(v);
     }
 
@@ -53,8 +54,9 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
     @Override
     public String getToolTipText(Object element) {
         int v = getTotalLines(element);
-        if (v < 0)
+        if (v < 0) {
             return null;
+        }
         String s = NumberFormat.getInstance().format(v);
         String message;
         if (v > 1) {
@@ -74,10 +76,12 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
     public int compare(Object obj1, Object obj2) {
         int i1 = getTotalLines(obj1);
         int i2 = getTotalLines(obj2);
-        if (i1 > i2)
+        if (i1 > i2) {
             return 1;
-        if (i1 < i2)
+        }
+        if (i1 < i2) {
             return -1;
+        }
         return 0;
     }
 }

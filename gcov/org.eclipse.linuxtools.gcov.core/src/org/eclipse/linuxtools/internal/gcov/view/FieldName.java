@@ -49,8 +49,7 @@ public class FieldName extends AbstractSTDataViewersField {
     public String getToolTipText(Object element) {
         if (element instanceof TreeElement) {
             TreeElement elem = (TreeElement) element;
-            String s = elem.getName();
-            return s;
+            return elem.getName();
         }
         return ""; //$NON-NLS-1$
     }
@@ -65,12 +64,14 @@ public class FieldName extends AbstractSTDataViewersField {
         String s1 = getValue(obj1);
         String s2 = getValue(obj2);
         if (s1 == null) {
-            if (s2 == null)
+            if (s2 == null) {
                 return 0;
+            }
             return -1;
         }
-        if (s2 == null)
+        if (s2 == null) {
             return 1;
+        }
         return s1.compareTo(s2);
     }
 }

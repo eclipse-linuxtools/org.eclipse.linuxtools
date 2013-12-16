@@ -24,9 +24,6 @@ public class STAnnotatedSourceNotFoundEditor extends STCSourceNotFoundEditor {
 
     public static final String ID = "org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"; //$NON-NLS-1$
 
-    public STAnnotatedSourceNotFoundEditor() {
-    }
-
     /*
      * (non-Javadoc)
      * @see

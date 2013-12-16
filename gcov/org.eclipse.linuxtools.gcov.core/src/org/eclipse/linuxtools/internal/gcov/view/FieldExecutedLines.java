@@ -42,8 +42,9 @@ public class FieldExecutedLines extends AbstractSTDataViewersField implements IC
         int v = getExecutedLines(element);
         String s = NumberFormat.getInstance().format(v);
         s += Messages.FieldExecutedLines_column_tooltip;
-        if (v > 1)
+        if (v > 1) {
             s += "s"; //$NON-NLS-1$
+        }
         return s;
     }
 
@@ -51,10 +52,12 @@ public class FieldExecutedLines extends AbstractSTDataViewersField implements IC
     public int compare(Object obj1, Object obj2) {
         int i1 = getExecutedLines(obj1);
         int i2 = getExecutedLines(obj2);
-        if (i1 > i2)
+        if (i1 > i2) {
             return 1;
-        if (i1 < i2)
+        }
+        if (i1 < i2) {
             return -1;
+        }
         return 0;
     }
 

@@ -86,10 +86,12 @@ public class GcovAnnotationProvider implements IAnnotationProvider {
                 Line line = lines.get(index);
                 if (line.exists()) {
                     long count = line.getCount();
-                    if (count == 0)
+                    if (count == 0) {
                         return RED;
-                    if (!USE_GRADIENT || count == sourceFile.getmaxLineCount())
+                    }
+                    if (!USE_GRADIENT || count == sourceFile.getmaxLineCount()) {
                         return GREEN_MAX;
+                    }
                     int colorIndex = 128 - (int) ((128 * count) / sourceFile.getmaxLineCount());
                     if (GREENCOLORS[colorIndex] == null) {
                         int r = GREEN_MIN.getRed() + (GREEN_MAX.getRed() - GREEN_MIN.getRed()) / colorIndex;
@@ -111,15 +113,19 @@ public class GcovAnnotationProvider implements IAnnotationProvider {
 
     @Override
     public void dispose() {
-        if (GREEN_MAX != null)
+        if (GREEN_MAX != null) {
             GREEN_MAX.dispose();
-        if (GREEN_MIN != null)
+        }
+        if (GREEN_MIN != null) {
             GREEN_MIN.dispose();
-        if (RED != null)
+        }
+        if (RED != null) {
             RED.dispose();
+        }
         for (Color c : GREENCOLORS) {
-            if (c != null)
+            if (c != null) {
                 c.dispose();
+            }
         }
     }
 
