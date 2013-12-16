@@ -169,7 +169,7 @@ public class CovView extends AbstractSTDataView {
 
             // parse and process coverage data
             CovManager cvrgeMnger = new CovManager(binaryPath, project);
-            List<String> gcdaPaths = new LinkedList<String>();
+            List<String> gcdaPaths = new LinkedList<>();
             gcdaPaths.add(gcdaFile);
             cvrgeMnger.processCovFiles(gcdaPaths, gcdaFile);
             // generate model for view

@@ -19,8 +19,8 @@ public class Block implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -7665287885679756014L;
-	private final ArrayList<Arc> entryArcs = new ArrayList<Arc>();
-	private final ArrayList<Arc> exitArcs = new ArrayList<Arc>();
+	private final ArrayList<Arc> entryArcs = new ArrayList<>();
+	private final ArrayList<Arc> exitArcs = new ArrayList<>();
 	private final long flag;
 	private long numSuccs = 0;
 	private long  numPreds = 0;

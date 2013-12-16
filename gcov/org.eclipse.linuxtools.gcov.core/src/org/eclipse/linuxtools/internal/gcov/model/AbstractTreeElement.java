@@ -19,7 +19,7 @@ public abstract class AbstractTreeElement implements TreeElement{
 	 */
 	private static final long serialVersionUID = -4911602250295116203L;
 	private final TreeElement parent;
-	private final LinkedList<TreeElement> children = new LinkedList<TreeElement>();
+	private final LinkedList<TreeElement> children = new LinkedList<>();
 	private final String name;
 	private final int totalLines;
 	private final int executedLines;

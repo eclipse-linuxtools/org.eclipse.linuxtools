@@ -36,7 +36,7 @@ public class GcnoRecordsParser {
     private static final int GCOV_TAG_LINES = 0x01450000;
 
     private GcnoFunction fnctn = null;
-    private final ArrayList<GcnoFunction> fnctns = new ArrayList<GcnoFunction>();
+    private final ArrayList<GcnoFunction> fnctns = new ArrayList<>();
     private final ArrayList<SourceFile> currentAllSrcs;
     private final HashMap<String, SourceFile> sourceMap;
 
@@ -133,7 +133,7 @@ public class GcnoRecordsParser {
                 }
 
                 else if (tag == GCOV_TAG_BLOCKS) {
-                    blocks = new ArrayList<Block>();
+                    blocks = new ArrayList<>();
                     for (int i = 0; i < length; i++) {
                         long BlckFlag = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
                         Block blck = new Block(BlckFlag);
@@ -144,7 +144,7 @@ public class GcnoRecordsParser {
                 } else if (tag == GCOV_TAG_ARCS) {
                     int srcBlockIndice = stream.readInt();
                     int nmbrArcs = (length - 1) / 2;
-                    ArrayList<Arc> arcs = new ArrayList<Arc>(nmbrArcs);
+                    ArrayList<Arc> arcs = new ArrayList<>(nmbrArcs);
 
                     for (int i = 0; i < nmbrArcs; i++) {
                         int dstnatnBlockIndice = stream.readInt();

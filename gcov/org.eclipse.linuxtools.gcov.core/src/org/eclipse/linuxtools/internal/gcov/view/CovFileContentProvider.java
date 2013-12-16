@@ -39,7 +39,7 @@ public class CovFileContentProvider extends CovFolderContentProvider {
 	}
 
 	protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
-		LinkedList<TreeElement> ret = new LinkedList<TreeElement>();
+		LinkedList<TreeElement> ret = new LinkedList<>();
 		LinkedList<? extends TreeElement> list = root.getChildren();
 		for (TreeElement folderlist : list) {
 			LinkedList<? extends TreeElement> partialList = folderlist.getChildren();

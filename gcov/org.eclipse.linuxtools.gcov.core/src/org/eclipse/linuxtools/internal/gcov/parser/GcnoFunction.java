@@ -25,7 +25,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
     private final long firstLineNmbr;
     private final String name;
     private final String srcFile;
-    private ArrayList<Block> functionBlocks = new ArrayList<Block>();
+    private ArrayList<Block> functionBlocks = new ArrayList<>();
     private int numCounts = 0, numBlocks = 0;
     private final CoverageInfo cvrge = new CoverageInfo();
 
@@ -77,8 +77,8 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
     public void solveGraphFnctn() {
         ArrayList<Block> fnctnBlcks = this.functionBlocks;
-        ArrayList<Block> validBlocks = new ArrayList<Block>();
-        ArrayList<Block> invalidBlocks = new ArrayList<Block>();
+        ArrayList<Block> validBlocks = new ArrayList<>();
+        ArrayList<Block> invalidBlocks = new ArrayList<>();
 
         // Function should contain at least one block
         if (fnctnBlcks.size() >= 2) {

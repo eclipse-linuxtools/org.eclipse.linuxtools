@@ -25,7 +25,7 @@ public class STGcovProgramChecker implements STNMSymbolsHandler {
 
     private boolean gcovFound = false;
     private long timestamp;
-    private final static WeakHashMap<File, STGcovProgramChecker> map = new WeakHashMap<File, STGcovProgramChecker>();
+    private final static WeakHashMap<File, STGcovProgramChecker> map = new WeakHashMap<>();
 
     /** Private Constructor */
     private STGcovProgramChecker(long timestamp) {

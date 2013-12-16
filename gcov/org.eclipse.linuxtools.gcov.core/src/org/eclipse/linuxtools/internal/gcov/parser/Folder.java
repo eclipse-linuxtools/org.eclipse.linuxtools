@@ -20,7 +20,7 @@ public class Folder implements Serializable {
 	 */
 	private static final long serialVersionUID = 5155033391199109661L;
 	private final String path;
-	private final ArrayList<SourceFile> srcFiles = new ArrayList<SourceFile>();
+	private final ArrayList<SourceFile> srcFiles = new ArrayList<>();
 	private int numLines = 0;
 	private int linesInstrumented = 0;
 	private int linesExecuted = 0;
