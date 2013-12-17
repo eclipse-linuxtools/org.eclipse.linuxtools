@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.rpm.createrepo.tests;
 
 
 /**
- * Constants used for SWTBot testing.
+ * Constants used for testing.
  */
 public interface ICreaterepoTestConstants {
 
@@ -36,8 +36,8 @@ public interface ICreaterepoTestConstants {
 	 * Views
 	 */
 	String WELCOME_VIEW = "Welcome"; //$NON-NLS-1$
-	String JAVA_NODE = "Java"; //$NON-NLS-1$
-	String PACKAGE_EXPLORER = "Package Explorer"; //$NON-NLS-1$
+	String GENERAL_NODE = "General"; //$NON-NLS-1$
+	String NAVIGATOR = "Navigator"; //$NON-NLS-1$
 
 	/*
 	 * Project Wizard Specific Stuff
@@ -51,11 +51,19 @@ public interface ICreaterepoTestConstants {
 	 */
 	String RPM_RESOURCE_LOC =  "resources" + System.getProperty("file.separator")  //$NON-NLS-1$//$NON-NLS-2$
 			+ "rpms" + System.getProperty("file.separator"); //$NON-NLS-1$ //$NON-NLS-2$
+	String RPM1 = "eclipse-egit-github-3.0.0-2.fc19.noarch.rpm"; //$NON-NLS-1$
+	String RPM2 = "hello-2.8-1.fc19.src.rpm"; //$NON-NLS-1$
 
 	/*
 	 * Common createrepo files
 	 */
 	String REPODATA_FOLDER = "repodata"; //$NON-NLS-1$
 	String REPO_MD_NAME = "repomd.xml"; //$NON-NLS-1$
+
+	/*
+	 * Test names
+	 */
+	String PROJECT_NAME = "createrepo-test-project"; //$NON-NLS-1$
+	String REPO_NAME = "createrepo-test-repo.repo"; //$NON-NLS-1$
 
 }

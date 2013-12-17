@@ -35,12 +35,6 @@ import org.eclipse.linuxtools.rpm.createrepo.IRepoFileConstants;
  */
 public class TestCreaterepoProject {
 
-	/*
-	 * Test names for the project and .repo file.
-	 */
-	public static final String PROJECT_NAME = "createrepo-test-project"; //$NON-NLS-1$
-	public static final String REPO_NAME = "createrepo-test-repo.repo"; //$NON-NLS-1$
-
 	private static NullProgressMonitor monitor;
 	private IProject project;
 
@@ -52,9 +46,9 @@ public class TestCreaterepoProject {
 	public TestCreaterepoProject() throws CoreException {
 		monitor = new NullProgressMonitor();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		project = root.getProject(PROJECT_NAME);
+		project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
 		IProjectDescription description = ResourcesPlugin.getWorkspace()
-				.newProjectDescription(PROJECT_NAME);
+				.newProjectDescription(ICreaterepoTestConstants.PROJECT_NAME);
 		description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
 		if (!project.exists()) {
 			project.create(description, monitor);
@@ -70,7 +64,7 @@ public class TestCreaterepoProject {
 	 */
 	private void init() throws CoreException {
 		createFolder(ICreaterepoConstants.CONTENT_FOLDER);
-		createFile(REPO_NAME);
+		createFile(ICreaterepoTestConstants.REPO_NAME);
 	}
 
 	/**
@@ -129,7 +123,7 @@ public class TestCreaterepoProject {
 	 * @throws CoreException
 	 */
 	public CreaterepoProject getCreaterepoProject() throws CoreException {
-		return new CreaterepoProject(project, project.getFile(REPO_NAME));
+		return new CreaterepoProject(project, project.getFile(ICreaterepoTestConstants.REPO_NAME));
 	}
 
 	/**
@@ -155,7 +149,7 @@ public class TestCreaterepoProject {
 		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
 		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
 		InputStream stream = new ByteArrayInputStream(contents.getBytes());
-		IFile repoFile = project.getFile(REPO_NAME);
+		IFile repoFile = project.getFile(ICreaterepoTestConstants.REPO_NAME);
 		if (repoFile.exists()) {
 			repoFile.setContents(stream, true, true, monitor);
 		} else {
