@@ -84,7 +84,7 @@ public class CreaterepoCommandCreator {
 	 * @return A list of all the command arguments.
 	 */
 	public List<String> getCommands() {
-		List<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<>();
 		commands.addAll(prepareBooleanCommands());
 		commands.addAll(prepareStringCommands());
 		commands.addAll(prepareIntCommands());
@@ -98,7 +98,7 @@ public class CreaterepoCommandCreator {
 	 * @return The command options to add.
 	 */
 	public List<String> prepareBooleanCommands() {
-		List<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<>();
 		if (delta) {
 			commands.add(ICreaterepoConstants.DASH.concat(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE));
 		}
@@ -135,7 +135,7 @@ public class CreaterepoCommandCreator {
 	 * @return The command options to add.
 	 */
 	public List<String> prepareStringCommands() {
-		List<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<>();
 		for (String arg : STRING_COMMANDS) {
 			String value = project ? projectPreferences.get(arg, preferenceStore.getDefaultString(arg))
 					: preferenceStore.getString(arg);
@@ -178,7 +178,7 @@ public class CreaterepoCommandCreator {
 	 * @return The command options to add.
 	 */
 	public List<String> prepareIntCommands() {
-		List<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<>();
 		if (delta) {
 			for (String arg : INT_DELTA_COMMANDS) {
 				long value = projectPreferences.getInt(arg, preferenceStore.getDefaultInt(arg));

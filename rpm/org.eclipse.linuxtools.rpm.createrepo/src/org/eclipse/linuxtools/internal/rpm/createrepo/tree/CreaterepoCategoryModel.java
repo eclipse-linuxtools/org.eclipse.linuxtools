@@ -40,7 +40,7 @@ public class CreaterepoCategoryModel {
 	 * @return Initial categories and saved tags (if any).
 	 */
 	public List<CreaterepoTreeCategory> getCategories() {
-		List<CreaterepoTreeCategory> model = new ArrayList<CreaterepoTreeCategory>();
+		List<CreaterepoTreeCategory> model = new ArrayList<>();
 		CreaterepoTreeCategory distroCat = new CreaterepoTreeCategory(
 				CreaterepoPreferenceConstants.PREF_DISTRO_TAG);
 		distroCat.addAllTags(getDistroTags());

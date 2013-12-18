@@ -48,7 +48,7 @@ public class Createrepo {
 	 * default command arguments.
 	 */
 	public Createrepo() {
-		commandSwitches = new ArrayList<String>();
+		commandSwitches = new ArrayList<>();
 		commandSwitches.add(ICreaterepoConstants.CREATEREPO_COMMAND);
 		for (String arg : DEFAULT_ARGUMENTS) {
 			commandSwitches.add(ICreaterepoConstants.DASH.concat(arg));

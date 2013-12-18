@@ -212,7 +212,7 @@ public class CreaterepoProject {
 	 * @throws CoreException Thrown when unable to look into the project.
 	 */
 	public List<IResource> getRPMs() throws CoreException {
-		List<IResource> rpms = new ArrayList<IResource>();
+		List<IResource> rpms = new ArrayList<>();
 		if (!getContentFolder().exists()) {
 			return rpms;
 		}
@@ -244,7 +244,7 @@ public class CreaterepoProject {
 	 * @return The command arguments.
 	 */
 	private List<String> getCommandArguments() {
-		List<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<>();
 		CreaterepoCommandCreator creator = new CreaterepoCommandCreator(projectPreferences);
 		commands.addAll(creator.getCommands());
 		return commands;
