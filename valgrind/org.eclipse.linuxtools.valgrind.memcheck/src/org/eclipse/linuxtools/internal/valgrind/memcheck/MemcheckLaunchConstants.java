@@ -53,7 +53,7 @@ public final class MemcheckLaunchConstants {
 	public static final String DEFAULT_MEMCHECK_MALLOCFILL_VAL = "";
 	public static final boolean DEFAULT_MEMCHECK_FREEFILL_BOOL = false;
 	public static final String DEFAULT_MEMCHECK_FREEFILL_VAL = "";
-	public static final List<?> DEFAULT_MEMCHECK_IGNORE_RANGES = Collections.EMPTY_LIST;
+	public static final List<String> DEFAULT_MEMCHECK_IGNORE_RANGES = Collections.EMPTY_LIST;
 	
 	// VG >= 3.4.0
 	public static final boolean DEFAULT_MEMCHECK_TRACKORIGINS = false;

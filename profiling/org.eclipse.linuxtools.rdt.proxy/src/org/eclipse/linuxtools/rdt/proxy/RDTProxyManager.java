@@ -23,10 +23,10 @@ import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.ptp.remote.core.IRemoteConnection;
-import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.RemoteServices;
-import org.eclipse.ptp.remote.core.exception.RemoteConnectionException;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteServices;
+import org.eclipse.remote.core.RemoteServices;
+import org.eclipse.remote.core.exception.RemoteConnectionException;
 
 public class RDTProxyManager implements IRemoteEnvProxyManager {
 

@@ -41,8 +41,8 @@ public final class MassifLaunchConstants {
 	public static final int DEFAULT_MASSIF_HEAPADMIN = 8;
 	public static final boolean DEFAULT_MASSIF_STACKS = false;
 	public static final int DEFAULT_MASSIF_DEPTH = 30;
-	public static final List<?> DEFAULT_MASSIF_ALLOCFN = Collections.EMPTY_LIST;
-	public static final List<?> DEFAULT_MASSIF_IGNOREFN = Collections.EMPTY_LIST;
+	public static final List<String> DEFAULT_MASSIF_ALLOCFN = Collections.EMPTY_LIST;
+	public static final List<String> DEFAULT_MASSIF_IGNOREFN = Collections.EMPTY_LIST;
 	public static final int DEFAULT_MASSIF_THRESHOLD = 10;
 	public static final int DEFAULT_MASSIF_PEAKINACCURACY = 10;
 	public static final String DEFAULT_MASSIF_TIMEUNIT = TIME_I;

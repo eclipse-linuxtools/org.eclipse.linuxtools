@@ -25,14 +25,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.rdt.proxy.Activator;
 import org.eclipse.linuxtools.rdt.proxy.RDTProxyManager;
-import org.eclipse.ptp.remote.core.IRemoteConnection;
-import org.eclipse.ptp.remote.core.IRemoteFileManager;
-import org.eclipse.ptp.remote.core.IRemoteProcess;
-import org.eclipse.ptp.remote.core.IRemoteProcessBuilder;
-import org.eclipse.ptp.remote.core.IRemoteResource;
-import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.RemoteServices;
-import org.eclipse.ptp.remote.core.RemoteProcessAdapter;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteFileManager;
+import org.eclipse.remote.core.IRemoteProcess;
+import org.eclipse.remote.core.IRemoteProcessBuilder;
+import org.eclipse.remote.core.IRemoteResource;
+import org.eclipse.remote.core.IRemoteServices;
+import org.eclipse.remote.core.RemoteServices;
+import org.eclipse.remote.core.RemoteProcessAdapter;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -146,8 +146,8 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 			fShowCommand = true;
 			IRemoteServices services = RemoteServices.getRemoteServices(uri);
 			IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-			IRemoteFileManager fm = services.getFileManager(connection);
-			IRemoteProcessBuilder builder = services.getProcessBuilder(connection, Arrays.asList(fCommandArgs));
+			IRemoteFileManager fm = connection.getFileManager();
+			IRemoteProcessBuilder builder = connection.getProcessBuilder(Arrays.asList(fCommandArgs));
 
 			if (changeToDirectory != null)
 				builder.directory(fm.getResource(changeToDirectory.toString()));

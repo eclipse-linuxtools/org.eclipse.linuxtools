@@ -16,14 +16,14 @@ import java.net.URISyntaxException;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.profiling.launch.ui.IRemoteResourceSelectorProxy;
-import org.eclipse.ptp.remote.core.IRemoteConnection;
-import org.eclipse.ptp.remote.core.IRemoteFileManager;
-import org.eclipse.ptp.remote.core.IRemoteServices;
-import org.eclipse.ptp.remote.core.RemoteServices;
-import org.eclipse.ptp.remote.ui.IRemoteUIConstants;
-import org.eclipse.ptp.remote.ui.IRemoteUIFileManager;
-import org.eclipse.ptp.remote.ui.IRemoteUIServices;
-import org.eclipse.ptp.remote.ui.RemoteUIServices;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteFileManager;
+import org.eclipse.remote.core.IRemoteServices;
+import org.eclipse.remote.core.RemoteServices;
+import org.eclipse.remote.ui.IRemoteUIConstants;
+import org.eclipse.remote.ui.IRemoteUIFileManager;
+import org.eclipse.remote.ui.IRemoteUIServices;
+import org.eclipse.remote.ui.RemoteUIServices;
 import org.eclipse.swt.widgets.Shell;
 
 public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
@@ -80,7 +80,7 @@ public class RDTResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 		URI selectedURI = null;
 		if (selectedPath != null) {
 			connection = uiFileManager.getConnection();
-			IRemoteFileManager remoteFileManager = services.getFileManager(connection);
+			IRemoteFileManager remoteFileManager = connection.getFileManager();
 			selectedURI = remoteFileManager.toURI(selectedPath);
 		}
 		return selectedURI;
