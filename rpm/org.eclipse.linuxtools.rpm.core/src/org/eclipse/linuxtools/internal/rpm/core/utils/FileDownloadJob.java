@@ -46,12 +46,11 @@ public class FileDownloadJob extends Job {
 
 	@Override
 	public IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask(
-				NLS.bind(Messages.DownloadJob_0,
-						file.getName()), content.getContentLength());
-		try {
-			FileOutputStream fos = new FileOutputStream(file);
-			InputStream is = new BufferedInputStream(content.getInputStream());
+		monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()),
+				content.getContentLength());
+		try (FileOutputStream fos = new FileOutputStream(file);
+				InputStream is = new BufferedInputStream(
+						content.getInputStream())) {
 			int b;
 			while ((b = is.read()) != -1) {
 				if (monitor.isCanceled()) {
@@ -60,10 +59,10 @@ public class FileDownloadJob extends Job {
 				fos.write(b);
 				monitor.worked(1);
 			}
-			is.close();
-			fos.close();
 		} catch (IOException e) {
-			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(
+					new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e
+							.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();

@@ -40,7 +40,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	public static final String ANNOTATION_WARNING = "org.eclipse.ui.workbench.texteditor.warning"; //$NON-NLS-1$
 	public static final String ANNOTATION_INFO = "org.eclipse.ui.workbench.texteditor.info"; //$NON-NLS-1$
 
-	private Map<Position, Annotation> annotations = new HashMap<Position, Annotation>();
+	private Map<Position, Annotation> annotations = new HashMap<>();
 	private AnnotationModel fAnnotationModel;
 	private IEditorInput input;
 

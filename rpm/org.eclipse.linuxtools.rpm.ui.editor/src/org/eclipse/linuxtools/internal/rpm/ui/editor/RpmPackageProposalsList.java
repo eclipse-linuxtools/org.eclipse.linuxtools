@@ -35,7 +35,7 @@ import org.eclipse.linuxtools.rpm.core.utils.Utils;
  *
  */
 public class RpmPackageProposalsList {
-	private Set<String> list = new HashSet<String>();
+	private Set<String> list = new HashSet<>();
 
 	public RpmPackageProposalsList() {
 		setPackagesList();
@@ -44,15 +44,15 @@ public class RpmPackageProposalsList {
 	private void setPackagesList() {
 		String rpmpkgsFile = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
-		BufferedReader reader = null;
 		try {
 			if (Utils.fileExist(rpmpkgsFile)) {
-				reader = new BufferedReader(
-						new InputStreamReader(new FileInputStream(rpmpkgsFile)));
-				String line = reader.readLine();
-				while (line != null) {
-					list.add(line.trim());
-					line = reader.readLine();
+				try (BufferedReader reader = new BufferedReader(
+						new InputStreamReader(new FileInputStream(rpmpkgsFile)))) {
+					String line = reader.readLine();
+					while (line != null) {
+						list.add(line.trim());
+						line = reader.readLine();
+					}
 				}
 			} else {
 				RpmPackageBuildProposalsJob.update();
@@ -60,21 +60,14 @@ public class RpmPackageProposalsList {
 		} catch (IOException e) {
 			RpmPackageBuildProposalsJob.update();
 			SpecfileLog.logError(e);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-				}
-			}
- 		}
+		}
 	}
 
 	public List<String[]> getProposals(String prefix) {
 		this.waitForUpdates();
 		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
-		List<String[]> proposalsList = new ArrayList<String[]>(list.size());
+		List<String[]> proposalsList = new ArrayList<>(list.size());
 		for (String listValue:list){
 			String item[] = new String[2];
 			item[0] = listValue;
@@ -91,7 +84,7 @@ public class RpmPackageProposalsList {
 		 * limit set in the RPM proposals preference page.
 		 */
 		if (proposalsList.size() < rpmpkgsMaxProposals) {
-			List<String[]> proposalsListWithInfo = new ArrayList<String[]>(proposalsList.size());
+			List<String[]> proposalsListWithInfo = new ArrayList<>(proposalsList.size());
 			for (String[]  proposals: proposalsList){
 				proposals[1] = getRpmInfo(proposals[0]);
 				proposalsListWithInfo.add(proposals);

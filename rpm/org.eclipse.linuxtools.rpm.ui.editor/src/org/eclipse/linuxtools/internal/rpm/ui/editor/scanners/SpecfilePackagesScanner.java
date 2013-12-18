@@ -31,7 +31,7 @@ import org.eclipse.swt.SWT;
 /**
  * This class is specifically used for syntax coloring of Requires,
  * BuildRquires, etc... tags of a specfile.
- * 
+ *
  */
 public class SpecfilePackagesScanner extends RuleBasedScanner {
 
@@ -52,7 +52,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		IToken macroToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.MACROS)));
 
-		List<IRule> rules = new ArrayList<IRule>();
+		List<IRule> rules = new ArrayList<>();
 
 		rules.add(new MacroRule(macroToken));
 

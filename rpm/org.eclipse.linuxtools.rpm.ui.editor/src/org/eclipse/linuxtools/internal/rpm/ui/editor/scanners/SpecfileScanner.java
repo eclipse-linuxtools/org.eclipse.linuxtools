@@ -76,7 +76,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 	private static final String[] SECTIONS = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
 		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, FILES_SECTION, CHANGELOG_SECTION,
-		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
+		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION,
 		CHECK_SECTION };
 
 	public static final String[] DEFINED_MACROS = {
@@ -110,9 +110,9 @@ public class SpecfileScanner extends RuleBasedScanner {
 		IToken commentToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.COMMENT)));
 
-		List<IRule> rules = new ArrayList<IRule>();
+		List<IRule> rules = new ArrayList<>();
 
-		rules.add(new CommentRule(commentToken)); 
+		rules.add(new CommentRule(commentToken));
 		rules.add(new MacroRule( macroToken));
 
 		// %define, %make, ...

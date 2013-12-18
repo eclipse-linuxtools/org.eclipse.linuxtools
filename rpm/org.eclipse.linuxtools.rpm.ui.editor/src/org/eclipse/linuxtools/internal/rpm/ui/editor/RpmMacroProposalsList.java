@@ -33,7 +33,7 @@ public class RpmMacroProposalsList {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	private Map<String, String> macroMap = new HashMap<String, String>();
+	private Map<String, String> macroMap = new HashMap<>();
 
 	private String toStringStr;
 
@@ -84,10 +84,8 @@ public class RpmMacroProposalsList {
 	 */
 	private void addMacroToMap(String filename) {
 		String line = EMPTY_STRING;
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(filename)));
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(filename)))){
 			line = reader.readLine();
 			String key = EMPTY_STRING, value = EMPTY_STRING;
 			while (line != null) {
@@ -131,13 +129,6 @@ public class RpmMacroProposalsList {
 			}
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-				}
-			}
 		}
 	}
 
@@ -168,7 +159,7 @@ public class RpmMacroProposalsList {
 	 * @return a <code>Map</code> of proposals.
 	 */
 	public Map<String, String> getProposals(String prefix) {
-		Map<String, String> proposalsMap = new HashMap<String, String>(macroMap.size());
+		Map<String, String> proposalsMap = new HashMap<>(macroMap.size());
 		for (Map.Entry<String, String> entry: macroMap.entrySet()) {
 			// Get proposals for macro begin with { char too.
 			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", EMPTY_STRING))) { //$NON-NLS-1$
@@ -176,7 +167,7 @@ public class RpmMacroProposalsList {
 			}
 		}
 		// Sort proposals
-		return new TreeMap<String, String>(proposalsMap);
+		return new TreeMap<>(proposalsMap);
 	}
 
 	/**

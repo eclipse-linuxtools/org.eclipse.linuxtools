@@ -116,7 +116,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
-		List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+		List<ICompletionProposal> result = new ArrayList<>();
 		Specfile specfile = editor.getSpecfile();
 		if (specfile == null) {
 			return null;
@@ -197,7 +197,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private List<? extends ICompletionProposal> computeTemplateProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		TemplateContext context = createContext(viewer, region, specfile);
-		List<TemplateProposal> matches = new ArrayList<TemplateProposal>();
+		List<TemplateProposal> matches = new ArrayList<>();
 		if (context == null) {
 			return matches;
 		}
@@ -244,7 +244,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		// grab defines and put them into the proposals map
 		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
 
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (rpmMacroProposalsMap != null) {
 			for (Map.Entry<String, String> entry : rpmMacroProposalsMap
 					.entrySet()) {
@@ -279,7 +279,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (patchesProposalsMap != null) {
 			for (Map.Entry<String, String> entry : patchesProposalsMap
 					.entrySet()) {
@@ -310,7 +310,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (sourcesProposalsMap != null) {
 			for (Map.Entry<String, String> entry : sourcesProposalsMap
 					.entrySet()) {
@@ -340,7 +340,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private List<ICompletionProposal> computeRpmPackageProposals(IRegion region,
 			String prefix) {
 		List<String[]> rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (rpmPkgProposalsList != null) {
 			for (String[] item : rpmPkgProposalsList) {
 				proposals.add(new CompletionProposal(item[0], region
@@ -358,7 +358,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			String prefix) {
 		List<String> rpmGroupProposalsList = Activator.getDefault()
 				.getRpmGroups();
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		for (String item : rpmGroupProposalsList) {
 			if (item.startsWith(prefix)) {
 				proposals.add(new CompletionProposal(item, region.getOffset(),
@@ -515,7 +515,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private Map<String, String> getDefines(Specfile specfile, String prefix) {
 		Collection<SpecfileDefine> defines = specfile.getDefines();
-		Map<String, String> ret = new HashMap<String, String>();
+		Map<String, String> ret = new HashMap<>();
 		String defineName;
 		for (SpecfileDefine define: defines) {
 			defineName = "%" + define.getName(); //$NON-NLS-1$
@@ -539,7 +539,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private Map<String, String> getPatches(Specfile specfile, String prefix) {
 		Collection<SpecfileSource> patches = specfile.getPatches();
-		Map<String, String> ret = new HashMap<String, String>();
+		Map<String, String> ret = new HashMap<>();
 		String patchName;
 		for (SpecfileSource patch: patches) {
 			patchName = "%patch" + patch.getNumber(); //$NON-NLS-1$
@@ -565,7 +565,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private Map<String, String> getSources(Specfile specfile, String prefix) {
 		Collection<SpecfileSource> sources = specfile.getSources();
-		Map<String, String> ret = new HashMap<String, String>();
+		Map<String, String> ret = new HashMap<>();
 		String sourceName;
 		for (SpecfileSource source : sources) {
 			sourceName = ISpecfileSpecialSymbols.MACRO_START_LONG + SOURCE

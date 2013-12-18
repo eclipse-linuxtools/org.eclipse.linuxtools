@@ -70,7 +70,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 		} catch (BadLocationException ex) {
 			return null;
 		}
-		List<IHyperlink> tempHList = new ArrayList<IHyperlink>();
+		List<IHyperlink> tempHList = new ArrayList<>();
 		// !! it feels like there is duplicate code, fix that !!
 		if (editor.getEditorInput() instanceof FileEditorInput) {
 			IFile original = ((FileEditorInput) editor.getEditorInput())

@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 
@@ -69,7 +68,7 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 	@Override
 	public boolean canSaveDocument(Object element) {
 		if (element instanceof FileStoreEditorInput) {
-			FileStoreEditorInput fei = (FileStoreEditorInput)element;
+			FileStoreEditorInput fei = (FileStoreEditorInput) element;
 			IDocument doc = getDocument(element);
 			if (!super.canSaveDocument(element)) {
 				return false;
@@ -79,10 +78,9 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 			}
 			URI uri = fei.getURI();
 			File f = URIUtil.toFile(uri);
-			BufferedReader input = null;
-			try {
-				if (originalLength != 0) {
-					input = new BufferedReader(new FileReader(f));
+			if (originalLength != 0) {
+				try (BufferedReader input = new BufferedReader(
+						new FileReader(f))) {
 					boolean finished = false;
 					char[] buffer = new char[100];
 					int curoffset = 0;
@@ -98,18 +96,10 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 						}
 						curoffset += len;
 					}
-				}
-				resetDocument(element);
-				return false;
-			} catch (Exception e) {
-				return true;
-			} finally {
-				if (input != null) {
-					try {
-						input.close();
-					} catch (IOException e) {
-						SpecfileLog.logError(e);
-					}
+					resetDocument(element);
+					return false;
+				} catch (Exception e) {
+					return true;
 				}
 			}
 		}

@@ -62,7 +62,7 @@ public class SpecfileElementHyperlink implements IHyperlink {
 				.getActiveWorkbenchWindow().getActivePage();
 		IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry()
 				.getDefaultEditor(file.getName());
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		// TODO don't increment the line number once the SpecfileSource reports
 		// correct line
 		map.put(IMarker.LINE_NUMBER, Integer

@@ -188,17 +188,11 @@ public class Utils {
 	 * @throws IOException If an I/O exception occurs.
 	 */
 	public static void copyFile(File in, File out) throws IOException {
-		FileChannel inChannel = new FileInputStream(in).getChannel();
-		FileChannel outChannel = new FileOutputStream(out).getChannel();
-		try {
+		try (FileInputStream fin = new FileInputStream(in);
+				FileChannel inChannel = fin.getChannel();
+				FileOutputStream fos = new FileOutputStream(out);
+				FileChannel outChannel = fos.getChannel()) {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
-		} finally {
-			if (inChannel != null) {
-				inChannel.close();
-			}
-			if (outChannel != null) {
-				outChannel.close();
-			}
 		}
 	}
 }

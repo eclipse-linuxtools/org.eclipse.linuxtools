@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class ColorManager {
 
-	private Map<RGB, Color> fColorTable = new HashMap<RGB, Color>(10);
+	private Map<RGB, Color> fColorTable = new HashMap<>(10);
 
 	public void dispose() {
 		for (Map.Entry<RGB, Color> entry:fColorTable.entrySet()){

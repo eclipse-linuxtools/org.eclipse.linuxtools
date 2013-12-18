@@ -51,26 +51,25 @@ public class DownloadJob extends Job {
 
 	@Override
 	public IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask(
-				NLS.bind(Messages.DownloadJob_0,
-						file.getName()), content.getContentLength());
+		monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()),
+				content.getContentLength());
 		try {
 			File tempFile = File.createTempFile(file.getName(), ""); //$NON-NLS-1$
-			FileOutputStream fos = new FileOutputStream(tempFile);
-			InputStream is = new BufferedInputStream(content.getInputStream());
-			int b;
-			byte buf[] = new byte[MULTIPLIER * KB]; // 5kB buffer
 			boolean canceled = false;
+			try (FileOutputStream fos = new FileOutputStream(tempFile);
+					InputStream is = new BufferedInputStream(
+							content.getInputStream())) {
+				int b;
+				byte buf[] = new byte[MULTIPLIER * KB]; // 5kB buffer
 				while ((b = is.read(buf)) != -1) {
 					if (monitor.isCanceled()) {
 						canceled = true;
 						break;
 					}
-					fos.write(buf, 0 ,b);
+					fos.write(buf, 0, b);
 					monitor.worked(1);
 				}
-			is.close();
-			fos.close();
+			}
 			if (!canceled) {
 				// override the previous file if there is one
 				if (file.exists()) {
@@ -82,11 +81,10 @@ public class DownloadJob extends Job {
 				}
 			}
 			tempFile.delete();
-		} catch (CoreException e) {
-			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-			return Status.CANCEL_STATUS;
-		} catch (IOException e) {
-			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+		} catch (CoreException | IOException e) {
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(
+					new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e
+							.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();

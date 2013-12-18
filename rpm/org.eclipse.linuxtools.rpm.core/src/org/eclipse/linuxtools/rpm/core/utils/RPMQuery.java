@@ -92,7 +92,7 @@ public class RPMQuery {
 			throws CoreException {
 		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
 		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-		List<String> command = new ArrayList<String>();
+		List<String> command = new ArrayList<>();
 		command.add(rpmCmd);
 		command.addAll(Arrays.asList(args));
 		command.add(rpmFile.getLocation().toOSString());
@@ -127,7 +127,7 @@ public class RPMQuery {
 		IEclipsePreferences node = DefaultScope.INSTANCE
 				.getNode(IRPMConstants.RPM_CORE_ID);
 		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-		List<String> command = new ArrayList<String>();
+		List<String> command = new ArrayList<>();
 		command.add(rpmCmd);
 		command.add("--eval"); //$NON-NLS-1$
 		command.add(toEval);

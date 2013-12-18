@@ -21,7 +21,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 
 	public SpecfilePackageContainer() {
 		super();
-		packages = new ArrayList<SpecfilePackage>();
+		packages = new ArrayList<>();
 	}
 
 	public SpecfilePackage[] getPackages() {

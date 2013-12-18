@@ -29,43 +29,43 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.VersionReleaseRule;
 import org.eclipse.swt.SWT;
 /**
  * This class is used specifically of the syntax coloring of the %changelog
- * section of a spec file, which has completely different syntax than 
+ * section of a spec file, which has completely different syntax than
  * the rest of the file.
- * 
+ *
  */
 public class SpecfileChangelogScanner extends RuleBasedScanner {
 
 	private IToken fLastToken;
-	
+
 	public SpecfileChangelogScanner(ColorManager manager) {
 		super();
 		IToken sectionToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
-		
+
 		IToken authorEmail = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.AUTHOR_MAIL), null, SWT.NONE));
 
 		IToken versionRelease = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.VER_REL), null, SWT.NONE));
-		
-		List<IRule> rules = new ArrayList<IRule>();
+
+		List<IRule> rules = new ArrayList<>();
 
 		// %prep, %build, ...
 		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
 		wordRule.addWord(RpmSections.CHANGELOG_SECTION, sectionToken);
 		rules.add(wordRule);
-	
+
 		AuthorEmailRule emailRule= new AuthorEmailRule(authorEmail);
 		rules.add(emailRule);
-		
+
 		VersionReleaseRule verRelRule = new VersionReleaseRule(versionRelease, authorEmail, this);
 		rules.add(verRelRule);
-		
+
 		IRule[] result = new IRule[rules.size()];
 		rules.toArray(result);
 		setRules(result);
 	}
-	
+
 	public IToken getLastToken (){
 		return fLastToken;
 	}

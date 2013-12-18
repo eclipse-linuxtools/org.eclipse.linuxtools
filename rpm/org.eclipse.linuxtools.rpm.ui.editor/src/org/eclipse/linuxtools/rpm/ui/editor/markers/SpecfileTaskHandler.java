@@ -66,7 +66,7 @@ public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 		}
 
 		String message = line.substring(line.indexOf(taskType));
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		MarkerUtilities.setLineNumber(map, lineNumber);
 		MarkerUtilities.setMessage(map, message);
 		map.put(IMarker.MESSAGE, message);
