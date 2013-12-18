@@ -10,7 +10,7 @@
   </parent>
 
     <artifactId>org.eclipse.linuxtools.oprofile.remote.launch</artifactId>
-  <version>0.3.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools OProfile Remote Launch Plug-in</name>
