@@ -92,7 +92,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	 * @since 2.2
 	 */
 	protected String dialogName() {
-		return Localization.getString("OpenFileAction.OpenFile");
+		return Localization.getString("OpenFileAction.OpenFile"); //$NON-NLS-1$
 	}
 
 	/**
@@ -101,8 +101,8 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	 */
 	protected File queryFile() {
 		FileDialog dialog= new FileDialog(window.getShell(), SWT.OPEN);
-		dialog.setFilterExtensions(new String[]{"*.stp"});
-		dialog.setText(dialogName()); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[]{"*.stp"}); //$NON-NLS-1$
+		dialog.setText(dialogName());
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
 			cancelled = false;
@@ -145,8 +145,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	 */
 	protected IEditorInput createEditorInput(File file) {
 		IPath location= new Path(file.getAbsolutePath());
-		PathEditorInput input= new PathEditorInput(location);
-		return input;
+		return new PathEditorInput(location);
 	}
 
 	public boolean isSuccessful() {

@@ -64,7 +64,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @return <code>true</code> if setting the content was successful or no file exists, <code>false</code> otherwise
 	 * @throws CoreException if reading the file fails
 	 */
-	private boolean setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
+	private static boolean setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
 		Reader reader = null;
 		try {
 			if (input instanceof FileStoreEditorInput){
@@ -98,9 +98,8 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @param reader the source
 	 * @throws IOException if reading fails
 	 */
-	private void setDocumentContent(IDocument document, Reader reader) throws IOException {
-		Reader in= new BufferedReader(reader);
-		try {
+	private static void setDocumentContent(IDocument document, Reader reader) throws IOException {
+		try (Reader in= new BufferedReader(reader)) {
 			
 			StringBuffer buffer= new StringBuffer(512);
 			char[] readBuffer= new char[512];
@@ -111,8 +110,6 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 			}
 			
 			document.set(buffer.toString());
-		} finally {
-			in.close();
 		}
 	}
 
@@ -167,12 +164,9 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @param monitor a progress monitor to report progress
 	 * @throws IOException if writing fails
 	 */
-	private void writeDocumentContent(IDocument document, Writer writer, IProgressMonitor monitor) throws IOException {
-		Writer out= new BufferedWriter(writer);
-		try {
+	private static void writeDocumentContent(IDocument document, Writer writer, IProgressMonitor monitor) throws IOException {
+		try (Writer out= new BufferedWriter(writer)) {
 			out.write(document.get());
-		} finally {
-			out.close();
 		}
 	}
 
