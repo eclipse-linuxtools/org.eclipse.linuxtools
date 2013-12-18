@@ -35,9 +35,7 @@ public class PerfStatDataOpenHandler implements IEditorLauncher {
 	@Override
 	public void open(IPath file) {
 		File statFile = file.toFile();
-		BufferedReader fileReader = null;
-		try {
-			fileReader = new BufferedReader(new FileReader(statFile));
+		try (BufferedReader fileReader = new BufferedReader(new FileReader(statFile))) {
 			final StringBuilder contents = new StringBuilder();
 			final StringBuilder title = new StringBuilder();
 			String line;
@@ -79,14 +77,6 @@ public class PerfStatDataOpenHandler implements IEditorLauncher {
 		} catch (IOException e) {
 			PerfPlugin.getDefault().openError(e,
 					NLS.bind(Messages.PerfEditorLauncher_file_read_error, statFile.getName()));
-		} finally {
-			if (fileReader != null) {
-				try {
-					fileReader.close();
-				} catch (IOException e) {
-					PerfPlugin.getDefault().openError(e, ""); //$NON-NLS-1$
-				}
-			}
-		}
+		} 
 	}
 }

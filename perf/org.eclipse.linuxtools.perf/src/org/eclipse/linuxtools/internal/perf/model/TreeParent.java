@@ -22,7 +22,7 @@ public class TreeParent {
 	public TreeParent(String name, float percent) {
 		this.name = name;
 		this.percent = percent;
-		children = new ArrayList<TreeParent>();
+		children = new ArrayList<>();
 	}
 
 	public TreeParent(String name, float percent, double samples) {
@@ -44,7 +44,7 @@ public class TreeParent {
 
 	@Override
 	public String toString() {
-		return getName() + " (" + getFormattedSamples() + " samples)";
+		return getName() + " (" + getFormattedSamples() + " samples)";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public Boolean equals(String s) {
@@ -100,7 +100,7 @@ public class TreeParent {
 
 	public TreeParent(String name) {
 		this.name = name;
-		children = new ArrayList<TreeParent>();
+		children = new ArrayList<>();
 	}
 
 	public void addChild(TreeParent child) {

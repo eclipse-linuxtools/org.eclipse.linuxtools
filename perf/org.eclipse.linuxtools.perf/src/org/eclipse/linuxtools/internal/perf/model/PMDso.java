@@ -41,13 +41,15 @@ public class PMDso extends TreeParent {
 	}
 	@Override
 	public String toString() {
-		String prefix = "";
-		if (getPercent() != -1)
-			prefix += getPercent() + "% (" + getFormattedSamples() + " samples) in ";
-		if (kernel == true)
-			prefix += "[k] ";
+		String prefix = ""; //$NON-NLS-1$
+		if (getPercent() != -1) {
+			prefix += getPercent() + "% (" + getFormattedSamples() + " samples) in "; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (kernel == true) {
+			prefix += "[k] "; //$NON-NLS-1$
+		}
 		if (path != null) {
-			return prefix + getName() + " (at " + path + ")";
+			return prefix + getName() + " (at " + path + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return prefix + getName();
 	}

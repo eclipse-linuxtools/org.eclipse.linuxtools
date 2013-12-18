@@ -119,7 +119,7 @@ public class ReportComparisonView extends Viewer {
 
 		result.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
 
-		List<StyleRange> styles = new ArrayList<StyleRange>();
+		List<StyleRange> styles = new ArrayList<>();
 		int ptr = 0;
 		String[] lines = input.split("\n"); //$NON-NLS-1$
 

@@ -43,7 +43,8 @@ public class PMSymbol extends TreeParent {
 
 	@Override
 	public String toString() {
-		return getPercent() + "% (" + getFormattedSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : "");
+		return getPercent()
+				+ "% (" + getFormattedSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	public void markConflict() {

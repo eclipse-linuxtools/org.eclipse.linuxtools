@@ -62,7 +62,7 @@ public class StatData extends AbstractDataManipulator {
 	}
 
 	protected String [] getCommand(String prog, String [] args) {
-		List<String> ret = new ArrayList<String>(Arrays.asList(
+		List<String> ret = new ArrayList<>(Arrays.asList(
 				new String[] {"perf", "stat" })); //$NON-NLS-1$ //$NON-NLS-2$
 		if (runCount > 1) {
 			ret.add("-r"); //$NON-NLS-1$

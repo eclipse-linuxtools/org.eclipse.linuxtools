@@ -134,7 +134,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				workingDir = workingDirRFP.getResource(workingDirURI.getPath());
 				//Build the commandline string to run perf recording the given project
 				String arguments[] = getProgramArgumentsArray( config ); //Program args from launch config.
-				ArrayList<String> command = new ArrayList<String>( 4 + arguments.length );
+				ArrayList<String> command = new ArrayList<>( 4 + arguments.length );
 				Version perfVersion = PerfCore.getPerfVersion(config);
 				command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion))); //Get the base commandline string (with flags/options based on config)
 				command.add( remoteBinFile.toOSString() ); // Add the path to the executable
@@ -153,15 +153,14 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				MessageConsoleStream stream = console.newMessageStream();
 
 				if (pProxy != null) {
-					BufferedReader error = new BufferedReader(
-							new InputStreamReader(pProxy.getErrorStream()));
-					String err;
-					err = error.readLine();
-					while (err != null) {
-						stream.println(err);
-						err = error.readLine();
+					try (BufferedReader error = new BufferedReader(
+							new InputStreamReader(pProxy.getErrorStream()))) {
+						String err = error.readLine();
+						while (err != null) {
+							stream.println(err);
+							err = error.readLine();
+						}
 					}
-					error.close();
 				}
 
 
@@ -285,7 +284,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		Object[] titleArgs = new Object[]{binURI.getPath(), args.toString(), String.valueOf(runCount)};
 		String title = renderProcessLabel(MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs));
 
-		@SuppressWarnings("unchecked")
 		List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
 				PerfPlugin.ATTR_SelectedEvents_default);
 

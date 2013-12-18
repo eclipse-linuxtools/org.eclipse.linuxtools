@@ -76,7 +76,7 @@ public class PerfCore {
 		String projectHost = getHostName(config);
 
 		if(eventsHostMap == null){
-			eventsHostMap = new HashMap<String, HashMap<String,ArrayList<String>>>();
+			eventsHostMap = new HashMap<>();
 		}
 
 		// local projects have null hosts
@@ -137,7 +137,7 @@ public class PerfCore {
 	}
 
 	private static HashMap<String,ArrayList<String>> loadEventList(ILaunchConfiguration config){
-		HashMap<String,ArrayList<String>> events = new HashMap<String,ArrayList<String>>();
+		HashMap<String,ArrayList<String>> events = new HashMap<>();
 		IProject project = getProject(config);
 
 		if (!PerfCore.checkPerfInPath(project)) {
@@ -164,7 +164,7 @@ public class PerfCore {
 	}
 
 	public static HashMap<String,ArrayList<String>> parseEventList (BufferedReader input){
-		HashMap<String,ArrayList<String>> events = new HashMap<String,ArrayList<String>>();
+		HashMap<String,ArrayList<String>> events = new HashMap<>();
 		String line;
 		try {
 			// Process list of events. Each line is of the form <event>\s+<category>.
@@ -187,7 +187,7 @@ public class PerfCore {
 					}
 					ArrayList<String> categoryEvents = events.get(category);
 					if (categoryEvents == null) {
-						categoryEvents = new ArrayList<String>();
+						categoryEvents = new ArrayList<>();
 						events.put(category, categoryEvents);
 					}
 					categoryEvents.add(event.trim());
@@ -251,7 +251,7 @@ public class PerfCore {
 		if (config == null) {
 			return base;
 		} else {
-			ArrayList<String> newCommand = new ArrayList<String>();
+			ArrayList<String> newCommand = new ArrayList<>();
 			newCommand.addAll(Arrays.asList(base));
 			try {
 				if (new Version(3, 11, 0).compareTo(perfVersion) > 0) {
@@ -278,7 +278,7 @@ public class PerfCore {
 	}
 
 	public static String[] getReportString(ILaunchConfiguration config, String perfDataLoc) {
-		ArrayList<String> base = new ArrayList<String>();
+		ArrayList<String> base = new ArrayList<>();
 		base.addAll(Arrays.asList(new String [] {PerfPlugin.PERF_COMMAND, "report", "--sort", "comm,dso,sym", "-n", "-t", "" + (char)1 }));//(char 1 as -t is a custom field seperator) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		if (config != null) {
 			try {
@@ -312,7 +312,7 @@ public class PerfCore {
 	}
 
 	public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
-		ArrayList<String> base = new ArrayList<String>();
+		ArrayList<String> base = new ArrayList<>();
 		if (OldPerfVersion) {
 			base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} else {

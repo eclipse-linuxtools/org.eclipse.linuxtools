@@ -57,7 +57,7 @@ IPerfData {
 	AbstractDataManipulator (String title, IPath pathWorkDir) {
 		this.title = title;
 		this.pathWorkDir=pathWorkDir;
-		threads = new ArrayList<Thread>();
+		threads = new ArrayList<>();
 	}
 
 	@Override

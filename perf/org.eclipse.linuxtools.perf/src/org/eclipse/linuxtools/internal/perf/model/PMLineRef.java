@@ -14,7 +14,7 @@ public class PMLineRef extends TreeParent {
 	protected int ln;
 
 	public PMLineRef(int lineNum, float percent) {
-		super(""+lineNum, percent);
+		super(""+lineNum, percent); //$NON-NLS-1$
 		ln = lineNum;
 	}
 
@@ -24,6 +24,6 @@ public class PMLineRef extends TreeParent {
 
 	@Override
 	public String toString() {
-		return getPercent() + "% (" + getFormattedSamples() + " samples) on line " + ln;
+		return getPercent() + "% (" + getFormattedSamples() + " samples) on line " + ln; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

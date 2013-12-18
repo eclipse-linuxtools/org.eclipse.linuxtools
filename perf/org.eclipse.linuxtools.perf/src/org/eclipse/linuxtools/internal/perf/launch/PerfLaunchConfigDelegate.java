@@ -88,7 +88,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			// Program args from launch config.
 			String arguments[] = getProgramArgumentsArray(config);
 
-			ArrayList<String> command = new ArrayList<String>();
+			ArrayList<String> command = new ArrayList<>();
 			// Get the base commandline string (with flags/options based on config)
 			Version perfVersion = PerfCore.getPerfVersion(config);
 			command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion)));
@@ -205,7 +205,6 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 		Object[] titleArgs = new Object[]{exePath.toOSString(), args.toString(), String.valueOf(runCount)};
 		String title = renderProcessLabel(MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs));
 
-		@SuppressWarnings("unchecked")
 		List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
 				PerfPlugin.ATTR_SelectedEvents_default);
 
