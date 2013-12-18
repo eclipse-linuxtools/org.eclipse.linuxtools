@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.rpm.createrepo.handler;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,7 +38,7 @@ public class CreaterepoCommandHandler extends AbstractHandler {
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 		final String executionType = event.getParameter("executionType"); //$NON-NLS-1$
 		try {
 			IWorkbench wb = PlatformUI.getWorkbench();

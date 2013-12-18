@@ -25,7 +25,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 public class FeatureVisitor implements IResourceVisitor {
 
 	private static final String FEATURE_XML = "feature.xml";
-	private List<IFile> featureFiles = new ArrayList<IFile>();
+	private List<IFile> featureFiles = new ArrayList<>();
 
 	/**
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)

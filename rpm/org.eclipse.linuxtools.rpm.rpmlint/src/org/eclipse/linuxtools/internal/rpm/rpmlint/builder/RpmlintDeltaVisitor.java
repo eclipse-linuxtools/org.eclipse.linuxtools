@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.parser.RpmlintParser;
 
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
-	private List<String> paths = new ArrayList<String>();
+	private List<String> paths = new ArrayList<>();
 
 	/**
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)

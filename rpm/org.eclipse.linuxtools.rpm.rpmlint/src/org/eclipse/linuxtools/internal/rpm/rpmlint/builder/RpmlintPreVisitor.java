@@ -24,7 +24,7 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
  */
 public class RpmlintPreVisitor implements IResourceVisitor {
 
-	private List<String> paths = new ArrayList<String>();
+	private List<String> paths = new ArrayList<>();
 
 	/**
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)

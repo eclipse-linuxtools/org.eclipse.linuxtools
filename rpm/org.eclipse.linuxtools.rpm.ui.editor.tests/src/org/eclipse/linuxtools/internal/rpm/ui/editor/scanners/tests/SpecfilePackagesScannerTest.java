@@ -46,10 +46,9 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist1");
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
-		
-		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(
-					"/tmp/pkglist1"));
+
+		try(BufferedWriter out = new BufferedWriter(new FileWriter(
+				"/tmp/pkglist1"))) {
 			out.write("setup\ntest_underscore\n");
 			out.close();
 		} catch (IOException e) {
@@ -62,7 +61,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
 	 */
@@ -73,7 +72,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
 	 */
 	@Override
@@ -93,7 +92,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	/**
 	 * We test a package with a underscore. see bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
 	 */
 	@Test
 	public void testPackage() {
@@ -118,7 +117,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	}
 	/**
 	 * Check that comments are not handle with the package scanner. See bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
 	 */
 	@Test
 	public void testComment() {

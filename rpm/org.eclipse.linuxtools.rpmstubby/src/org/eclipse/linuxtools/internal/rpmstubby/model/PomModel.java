@@ -112,7 +112,7 @@ public class PomModel {
 	 * @return All the dependencies.
 	 */
 	public Map<String, String> getDependencies() {
-		Map<String, String> dependencies = new HashMap<String, String>();
+		Map<String, String> dependencies = new HashMap<>();
 		NodeList nodes = xpathEvalNodes("/project/dependencies/dependency");
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby.parser;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -55,8 +54,8 @@ public class RubyGemParser {
 	 * @throws CoreException File is not valid
 	 */
 	public RubyGemParser(IFile file) throws IOException, CoreException {
-		mSetupDefinitions = new HashMap<String, List<String>>();
-		mSetupDependencies = new HashMap<String, ArrayList<String>>();
+		mSetupDefinitions = new HashMap<>();
+		mSetupDependencies = new HashMap<>();
 		if (file.getContents().available() <= 0) {
 			return;
 		}
@@ -70,14 +69,13 @@ public class RubyGemParser {
 	 *
 	 */
 	public void parse() {
-		List<String> rawSetupDefinitions = new ArrayList<String>();
-		List<String> lSetupDefinitions = new ArrayList<String>();
+		List<String> rawSetupDefinitions = new ArrayList<>();
+		List<String> lSetupDefinitions = new ArrayList<>();
 		String line = "";
 		long startPos;
 		long endPos;
-		try {
-			RandomAccessFile raf = new RandomAccessFile(file.getRawLocation()
-					.makeAbsolute().toFile(), "r");
+		try (RandomAccessFile raf = new RandomAccessFile(file.getRawLocation()
+				.makeAbsolute().toFile(), "r")) {
 			startPos = findStart(raf);
 			endPos = findEnd(raf, startPos);
 
@@ -92,9 +90,6 @@ public class RubyGemParser {
 			for (String str : lSetupDefinitions) {
 				parseLine(str);
 			}
-			raf.close();
-		} catch (FileNotFoundException e) {
-			StubbyLog.logError(e);
 		} catch (IOException e) {
 			StubbyLog.logError(e);
 		}
@@ -108,7 +103,7 @@ public class RubyGemParser {
 	 * @return The values of the gemspec option
 	 */
 	public List<String> getValueList(String key) {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 
 		if (mSetupDependencies.containsKey(key)) {
 			if (!mSetupDependencies.get(key).isEmpty()) {
@@ -151,7 +146,7 @@ public class RubyGemParser {
 	 * @return A list of objects that was found
 	 */
 	private static List<String> parseValue(String str) {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		String temp = str.trim();
 		Pattern pattern = null;
 		Matcher variableMatcher = null;
@@ -191,7 +186,7 @@ public class RubyGemParser {
 	 * @return A list containing the found values
 	 */
 	private static List<String> parseList(String str) {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		String temp = str.trim();
 		Pattern pattern = isPatternFoundList(str);
 
@@ -291,7 +286,7 @@ public class RubyGemParser {
 
 		if (variableMatcher.find()) {
 			String functionName = variableMatcher.group(2);
-			ArrayList<String> dependencies = new ArrayList<String>();
+			ArrayList<String> dependencies = new ArrayList<>();
 			dependencies.add(variableMatcher.group(4));
 			if (!mSetupDependencies.containsKey(functionName)) {
 				mSetupDependencies.put(functionName, dependencies);
@@ -319,7 +314,7 @@ public class RubyGemParser {
 
 		if (variableMatcher.find()) {
 			String functionName = variableMatcher.group(2);
-			ArrayList<String> dependencies = new ArrayList<String>();
+			ArrayList<String> dependencies = new ArrayList<>();
 			dependencies.add(variableMatcher.group(4));
 			if (!mSetupDependencies.containsKey(functionName)) {
 				mSetupDependencies.put(functionName, dependencies);
@@ -341,7 +336,7 @@ public class RubyGemParser {
 	 * @return A refined list of options with a single line for each option
 	 */
 	private List<String> prepareOptions(List<String> list) {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		String temp = "";
 
 		for (String str : list) {

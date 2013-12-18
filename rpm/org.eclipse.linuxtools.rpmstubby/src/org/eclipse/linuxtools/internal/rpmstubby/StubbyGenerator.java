@@ -114,7 +114,7 @@ public class StubbyGenerator extends AbstractGenerator {
 		return buffer.toString();
 	}
 
-	private void generateRequires(StringBuilder buffer) {
+	private static void generateRequires(StringBuilder buffer) {
 		buffer.append("Requires:       eclipse-platform >= 3.4.0\n");
 		buffer.append("BuildRequires:  maven-local\n");
 		buffer.append("\n\n");

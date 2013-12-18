@@ -74,7 +74,7 @@ public class PerlModel {
 	 * @return A list of the values taken from the makefile
 	 */
 	public List<String> getInstallRequires() {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		List<String> temp = perlMakefileParser.getValueList(REQUIRES);
 		String ver = "";
 		if (!temp.isEmpty()) {

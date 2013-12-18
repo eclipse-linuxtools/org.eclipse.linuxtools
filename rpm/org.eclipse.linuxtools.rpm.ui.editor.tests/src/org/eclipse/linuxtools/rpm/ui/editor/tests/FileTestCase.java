@@ -83,7 +83,7 @@ public abstract class FileTestCase {
 	}
 
 	protected ArrayList<SpecfileTestFailure> getFailures() {
-		ArrayList<SpecfileTestFailure> failures = new ArrayList<SpecfileTestFailure>();
+		ArrayList<SpecfileTestFailure> failures = new ArrayList<>();
 		IAnnotationModel model = SpecfileEditor.getSpecfileDocumentProvider()
 				.getAnnotationModel(fei);
 		for (Iterator<Annotation> i = model.getAnnotationIterator(); i
@@ -128,15 +128,11 @@ public abstract class FileTestCase {
 		prefStore.setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,
 						false);
 
-		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(
-					"/tmp/pkglist1"));
-
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(
+				"/tmp/pkglist1"))) {
 			for (String packageName : packages){
 				out.write(packageName + "\n");
 			}
-
-			out.close();
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}

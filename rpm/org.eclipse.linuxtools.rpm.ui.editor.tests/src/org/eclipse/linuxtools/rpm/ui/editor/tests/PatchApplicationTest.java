@@ -36,7 +36,7 @@ public class PatchApplicationTest extends FileTestCase {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 		newFile(specText);
 		SpecfileSource thisPatch = specfile.getPatch(3);
-		List<Integer> usedList = new ArrayList<Integer>(1);
+		List<Integer> usedList = new ArrayList<>(1);
 		usedList.add(Integer.valueOf(1));
 		assertEquals(thisPatch.getLinesUsed(), usedList);
 	}
@@ -46,7 +46,7 @@ public class PatchApplicationTest extends FileTestCase {
 				+ "\n" + "blah" + "\n" + "%patch3";
 		newFile(specText);
 		SpecfileSource thisPatch = specfile.getPatch(3);
-		List<Integer> usedList = new ArrayList<Integer>(2);
+		List<Integer> usedList = new ArrayList<>(2);
 		usedList.add(Integer.valueOf(1));
 		usedList.add(Integer.valueOf(3));
 		assertEquals(thisPatch.getLinesUsed(), usedList);

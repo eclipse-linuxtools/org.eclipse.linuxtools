@@ -69,7 +69,7 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 */
 	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
-		List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
+		List<IMarkerResolution> resolutions = new ArrayList<>();
 		String rpmlintErrorId = getRpmlintErrorId(marker);
 		if (rpmlintErrorId.equals(SetupNotQuiet.ID)) {
 			resolutions.add(new SetupNotQuiet());

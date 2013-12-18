@@ -34,7 +34,7 @@ public class CreaterepoTreeCategoryTest {
 	 */
 	@Test
 	public void testCreaterepoTreeCategory() {
-		List<String> tagsToCheck = new ArrayList<String>();
+		List<String> tagsToCheck = new ArrayList<>();
 		tagsToCheck.add(TAG1);
 		tagsToCheck.add(TAG2);
 		CreaterepoTreeCategory categoryTest = new CreaterepoTreeCategory(CATEGORY_NAME);

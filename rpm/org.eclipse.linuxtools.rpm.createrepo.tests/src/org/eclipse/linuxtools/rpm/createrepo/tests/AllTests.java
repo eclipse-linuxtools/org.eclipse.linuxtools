@@ -31,4 +31,5 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreaterepoRepoFormEditorTest.class, CreaterepoImportRPMsPageTest.class, CreaterepoMetadataPageTest.class,
 	CreaterepoResourceListenerTest.class, CreaterepoCommandCreatorTest.class})
 public class AllTests {
+	//Nothing here as annotation is important
 }

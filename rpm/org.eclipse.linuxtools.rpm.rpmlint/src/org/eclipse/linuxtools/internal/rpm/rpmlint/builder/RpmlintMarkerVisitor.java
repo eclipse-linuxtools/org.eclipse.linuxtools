@@ -190,16 +190,13 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 
 	private static String fileToString(IFile file) {
 		String ret = ""; //$NON-NLS-1$
-		try {
-			InputStream in = file.getContents();
+		try (InputStream in = file.getContents()) {
+			;
 			int nbrOfByte = in.available();
 			byte[] bytes = new byte[nbrOfByte];
 			in.read(bytes);
 			ret = new String(bytes);
-			in.close();
-		} catch (CoreException e) {
-			RpmlintLog.logError(e);
-		} catch (IOException e) {
+		} catch (CoreException | IOException e) {
 			RpmlintLog.logError(e);
 		}
 		return ret;

@@ -60,7 +60,7 @@ public class RpmlintParser {
 		 * project files.
 		 */
 		if (visitedResources.isEmpty() || !Utils.fileExist(rpmlintPath)) {
-			return new ArrayList<RpmlintItem>();
+			return new ArrayList<>();
 		}
 		return parseRpmlintOutput(runRpmlintCommand(visitedResources));
 	}
@@ -165,7 +165,7 @@ public class RpmlintParser {
 	 */
 	private static List<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
 		RpmlintItem item = new RpmlintItem();
-		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
+		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<>();
 		LineNumberReader reader = new LineNumberReader(
 				new InputStreamReader(in));
 		String line;

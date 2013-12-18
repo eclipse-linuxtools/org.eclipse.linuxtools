@@ -99,7 +99,7 @@ public class GemModel {
 	 * @return A list of the values taken from the gemspec
 	 */
 	public List<String> getDependencies(String key) {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		List<String> temp = rubyGemParser.getValueList(key);
 
 		if (!temp.isEmpty()) {
@@ -251,7 +251,7 @@ public class GemModel {
 	 * @return The require paths
 	 */
 	public List<String> getRequirePaths() {
-		List<String> rc = new ArrayList<String>();
+		List<String> rc = new ArrayList<>();
 		List<String> temp = rubyGemParser.getValueList(REQUIRE_PATHS);
 
 		if (!temp.isEmpty()) {

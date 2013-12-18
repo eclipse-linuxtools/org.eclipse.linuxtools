@@ -130,7 +130,7 @@ public class CreaterepoCommandCreatorTest {
 	/**
 	 * Set test workspace preferences.
 	 */
-	private void setWorkspacePreferences() {
+	private static void setWorkspacePreferences() {
 		IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
 		// --simple-md-filenames
 		prefStore.setValue(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME, false);
@@ -248,7 +248,7 @@ public class CreaterepoCommandCreatorTest {
 	 * @param list A list of strings.
 	 * @return A string.
 	 */
-	private String createStringFromList(List<String> list) {
+	private static String createStringFromList(List<String> list) {
 		String str = ""; //$NON-NLS-1$
 		if (!list.isEmpty()) {
 			for (String temp : list) {
@@ -268,7 +268,7 @@ public class CreaterepoCommandCreatorTest {
 	 * @param switchPattern The switch to look for.
 	 * @return 0 if switch cannot be found, 1 if single found, >1 if multiple found.
 	 */
-	private int findCommandSwitch(String command, String switchPattern) {
+	private static int findCommandSwitch(String command, String switchPattern) {
 		int matches = 0;
 		Pattern pattern = Pattern.compile(switchPattern, Pattern.CASE_INSENSITIVE);
 		Matcher variableMatcher = pattern.matcher(command);
