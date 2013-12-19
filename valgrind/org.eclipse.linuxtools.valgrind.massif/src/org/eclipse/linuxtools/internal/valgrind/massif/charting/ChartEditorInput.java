@@ -32,14 +32,17 @@ public class ChartEditorInput implements IEditorInput {
 		this.pid = pid;
 	}
 
+	@Override
 	public boolean exists() {
 		return false;
 	}
 
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getName() {		
 		return name;
 	}
@@ -48,14 +51,17 @@ public class ChartEditorInput implements IEditorInput {
 		return pid;
 	}
 
+	@Override
 	public IPersistableElement getPersistable() {
 		return null;
 	}
 
+	@Override
 	public String getToolTipText() {
 		return NLS.bind(Messages.getString("ChartEditorInput.Heap_allocation_chart_for"), name); //$NON-NLS-1$
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return null;

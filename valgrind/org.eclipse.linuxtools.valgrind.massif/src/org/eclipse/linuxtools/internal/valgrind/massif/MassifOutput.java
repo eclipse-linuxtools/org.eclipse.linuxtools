@@ -17,7 +17,7 @@ public class MassifOutput {
 	protected Map<Integer, MassifSnapshot[]> pidMap;
 	
 	public MassifOutput() {
-		pidMap = new HashMap<Integer, MassifSnapshot[]>();
+		pidMap = new HashMap<>();
 	}
 	
 	public void putSnapshots(Integer pid, MassifSnapshot[] snapshots) {

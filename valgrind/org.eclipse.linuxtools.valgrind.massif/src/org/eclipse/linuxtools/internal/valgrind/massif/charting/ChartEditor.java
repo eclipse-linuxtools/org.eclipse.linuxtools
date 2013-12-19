@@ -242,7 +242,8 @@ public class ChartEditor extends EditorPart {
      */
     public void showView() {
             Display.getDefault().syncExec(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                             try {
                                     IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                                     activePage.showView(ValgrindUIConstants.VIEW_ID);

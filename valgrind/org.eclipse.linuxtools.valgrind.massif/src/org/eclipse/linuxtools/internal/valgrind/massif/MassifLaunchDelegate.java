@@ -33,6 +33,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter MASSIF_FILTER = new FileFilter() {
+		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(OUT_PREFIX);
 		}
@@ -46,6 +47,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 
 	protected MassifOutput output;
 
+	@Override
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor)
 	throws CoreException {
 		MassifPlugin.getDefault().setConfig(config);
@@ -75,10 +77,10 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		monitor.worked(2);
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir)
 	throws CoreException {
-		ArrayList<String> opts = new ArrayList<String>();
+		ArrayList<String> opts = new ArrayList<>();
 
 		opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
 
@@ -111,6 +113,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		return opts.toArray(new String[opts.size()]);
 	}
 	
+	@Override
 	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException {
 		if (output != null && view instanceof MassifViewPart) {
 			((MassifViewPart) view).setChartName(contentDescription);

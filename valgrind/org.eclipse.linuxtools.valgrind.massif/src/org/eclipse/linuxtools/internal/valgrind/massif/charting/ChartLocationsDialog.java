@@ -41,7 +41,7 @@ public class ChartLocationsDialog extends ListDialog {
 	public void setInput(MassifSnapshot snapshot) {
 		MassifHeapTreeNode node = snapshot.getRoot();
 
-		allocs = new ArrayList<MassifHeapTreeNode>(node.getChildren().length);
+		allocs = new ArrayList<>(node.getChildren().length);
 
 		for (MassifHeapTreeNode alloc : node.getChildren()) {
 			if (alloc.hasSourceFile()) {

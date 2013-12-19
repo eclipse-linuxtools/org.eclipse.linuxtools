@@ -79,11 +79,13 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		}
 	};
 	protected ModifyListener modifyListener = new ModifyListener() {
+		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();	
 		}			
 	};
 	
+	@Override
 	public void createControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		GridLayout memcheckLayout = new GridLayout(2, true);
@@ -285,11 +287,12 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		freeFillText.setEnabled(freeFillButton.getSelection());
 	}
 	
+	@Override
 	public String getName() {
 		return Messages.getString("MemcheckToolPage.Memcheck_Options"); //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
@@ -330,6 +333,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		isInitializing = false;
 	}
 	
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, leakCheckButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, leakResCombo.getText());
@@ -394,6 +398,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		return result;
 	}
 	
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, MemcheckPlugin.TOOL_ID);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK);
@@ -419,6 +424,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_IGNORE_RANGES);
 	}
 		
+	@Override
 	public void setValgrindVersion(Version ver) {
 		valgrindVersion = ver;
 	}

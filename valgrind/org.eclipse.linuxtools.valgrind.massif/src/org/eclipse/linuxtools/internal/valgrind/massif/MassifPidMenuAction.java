@@ -36,12 +36,14 @@ public class MassifPidMenuAction extends Action implements IMenuCreator {
 		setMenuCreator(this);
 	}
 
+	@Override
 	public void dispose() {
 		if (menu != null) {
 			menu.dispose();
 		}
 	}
 
+	@Override
 	public Menu getMenu(Control parent) {
 		if (menu == null) {
 			if (pids != null) {
@@ -59,6 +61,7 @@ public class MassifPidMenuAction extends Action implements IMenuCreator {
 							setChecked(true);
 							view.setPid(pid);
 							Display.getDefault().syncExec(new Runnable() {
+								@Override
 								public void run() {
 									view.refreshView();
 								}							
@@ -75,6 +78,7 @@ public class MassifPidMenuAction extends Action implements IMenuCreator {
 		return menu;
 	}
 
+	@Override
 	public Menu getMenu(Menu parent) {
 		return null;
 	}
