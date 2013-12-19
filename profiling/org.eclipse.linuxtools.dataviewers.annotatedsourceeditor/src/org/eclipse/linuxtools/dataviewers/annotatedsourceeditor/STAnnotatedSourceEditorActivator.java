@@ -23,6 +23,7 @@ public class STAnnotatedSourceEditorActivator extends AbstractUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor"; //$NON-NLS-1$
+    public static final String EDITOR_ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.editor"; //$NON-NLS-1$
 
     /**
 	 * @since 5.0

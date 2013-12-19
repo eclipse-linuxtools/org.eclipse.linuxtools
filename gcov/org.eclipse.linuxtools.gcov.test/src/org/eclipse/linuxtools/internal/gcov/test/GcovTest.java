@@ -1,8 +1,8 @@
 package org.eclipse.linuxtools.internal.gcov.test;
 
+import static org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper.contextMenu;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForShell;
-import static org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper.contextMenu;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
-import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.actions.AbstractOpenSourceFileAction;
+import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
@@ -176,7 +176,7 @@ public abstract class GcovTest {
 
 		wbShell.activate();
 		
-		SWTBotEditor editor = bot.editorById(AbstractOpenSourceFileAction.EDITOR_ID);
+		SWTBotEditor editor = bot.editorById(STAnnotatedSourceEditorActivator.EDITOR_ID);
 		SWTBotEclipseEditor edt = editor.toTextEditor(); /* just to verify that the correct file was found */
 		edt.close();
 	}
