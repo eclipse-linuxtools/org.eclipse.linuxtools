@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
@@ -32,7 +31,6 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	private static final String SECTION_ICON="icons/section_obj.gif"; //$NON-NLS-1$
 	private static final String PACKAGES_ICON="icons/packages_obj.gif"; //$NON-NLS-1$
 	private static final String PACKAGE_ICON="icons/package_obj.gif"; //$NON-NLS-1$
-	private IProject project;
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -86,14 +84,6 @@ public class SpecfileLabelProvider implements ILabelProvider {
 			str = ((SpecfilePackage) element).getName();
 		}
 		return filterMacros(str.trim());
-	}
-
-	/**
-	 * Sets IProject
-	 * @since 2.1
-	 */
-	protected void setProject(IProject project) {
-		this.project=project;
 	}
 
 	/**

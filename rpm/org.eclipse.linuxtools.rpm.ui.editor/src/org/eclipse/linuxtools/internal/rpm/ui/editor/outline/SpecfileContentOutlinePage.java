@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -21,7 +20,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
@@ -74,15 +72,7 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 
 		TreeViewer viewer= getTreeViewer();
 		viewer.setContentProvider(new SpecfileContentProvider(editor));
-		IProject project = null;
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput fileEditorInput= (IFileEditorInput) input;
-			project = fileEditorInput.getFile().getProject();
-		}
 		SpecfileLabelProvider labelProvider = new SpecfileLabelProvider();
-		if (project!=null) {
-			labelProvider.setProject(project);
-		}
 		viewer.setLabelProvider(labelProvider);
 		viewer.addSelectionChangedListener(this);
 
