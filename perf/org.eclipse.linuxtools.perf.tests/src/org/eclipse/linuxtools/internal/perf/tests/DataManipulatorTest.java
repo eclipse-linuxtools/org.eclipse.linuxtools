@@ -103,7 +103,7 @@ public class DataManipulatorTest {
 
 		@Override
 		public String[] getCommand(String workingDir) {
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			// return the same command with 'echo' prepended
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(workingDir)));
@@ -124,7 +124,7 @@ public class DataManipulatorTest {
 		@Override
 		public String[] getCommand(String command, String[] args) {
 			// return the same command with 'echo' prepended
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand(command, args)));
 			return ret.toArray(new String[ret.size()]);
@@ -150,7 +150,7 @@ public class DataManipulatorTest {
 		@Override
 		protected String[] getCommand() {
 			// return the same command with 'echo' prepended
-			List<String> ret = new ArrayList<String>();
+			List<String> ret = new ArrayList<>();
 			ret.add("echo"); //$NON-NLS-1$
 			ret.addAll(Arrays.asList(super.getCommand()));
 			return ret.toArray(new String[ret.size()]);

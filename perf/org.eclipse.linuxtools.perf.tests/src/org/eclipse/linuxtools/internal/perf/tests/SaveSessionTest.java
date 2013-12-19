@@ -37,7 +37,7 @@ public class SaveSessionTest {
 	private static final String PERF_STATS_FILE_PATH = "stat_data"; //$NON-NLS-1$
 	private static final String DATA_FILE_NAME = "data"; //$NON-NLS-1$
 	private static final String DATA_FILE_EXT = "ext"; //$NON-NLS-1$
-	private ArrayList<IPath> testFiles = new ArrayList<IPath>();
+	private ArrayList<IPath> testFiles = new ArrayList<>();
 
 	@After
 	public void tearDown(){

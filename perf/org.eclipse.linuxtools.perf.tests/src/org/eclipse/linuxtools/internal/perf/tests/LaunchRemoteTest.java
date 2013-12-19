@@ -91,7 +91,7 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 	@Test
 	public void testClockEventRun() throws CoreException {
 		if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
-			ArrayList<String> list = new ArrayList<String>();
+			ArrayList<String> list = new ArrayList<>();
 			list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
 					"cycles" }));
 			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);

@@ -80,7 +80,7 @@ public class LaunchTest extends AbstractTest {
 	@Test
 	public void testClockEventRun() throws CoreException {
 		if (PerfCore.checkPerfInPath(null)) {
-			ArrayList<String> list = new ArrayList<String>();
+			ArrayList<String> list = new ArrayList<>();
 			list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
 					"cycles" }));
 			wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
