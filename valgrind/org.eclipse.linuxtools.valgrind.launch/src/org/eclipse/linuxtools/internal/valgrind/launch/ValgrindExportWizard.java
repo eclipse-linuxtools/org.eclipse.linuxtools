@@ -43,45 +43,31 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 		IProgressService ps = PlatformUI.getWorkbench().getProgressService();
 		try {
 			ps.busyCursorWhile(new IRunnableWithProgress() {
-
 				@Override
 				public void run(IProgressMonitor monitor)
-				throws InvocationTargetException {
+						throws InvocationTargetException {
 					if (logs.length > 0) {
 						File outputDir = outputPath.toFile();
-						monitor.beginTask(NLS.bind(Messages.getString("ValgrindExportWizard.Export_task"), outputPath.toOSString()), logs.length); //$NON-NLS-1$
-						FileChannel inChan = null;
-						FileChannel outChan = null;
-						try {
-							for (File log : logs) {
-								monitor.subTask(NLS.bind(Messages.getString("ValgrindExportWizard.Export_subtask"), log.getName())); //$NON-NLS-1$
+						monitor.beginTask(
+								NLS.bind(
+										Messages.getString("ValgrindExportWizard.Export_task"), outputPath.toOSString()), logs.length); //$NON-NLS-1$
+						for (File log : logs) {
+							monitor.subTask(NLS.bind(
+									Messages.getString("ValgrindExportWizard.Export_subtask"), log.getName())); //$NON-NLS-1$
 
-								File outLog = new File(outputDir, log.getName());
-								inChan = new FileInputStream(log).getChannel();
-								outChan = new FileOutputStream(outLog).getChannel();
-
+							File outLog = new File(outputDir, log.getName());
+							try (FileInputStream fis = new FileInputStream(log);
+									FileChannel inChan = fis.getChannel();
+									FileOutputStream fos = new FileOutputStream(
+											outLog);
+									FileChannel outChan = fos.getChannel()) {
 								outChan.transferFrom(inChan, 0, inChan.size());
-
-								inChan.close();
-								outChan.close();
-
-								monitor.worked(1);
-							}
-						} catch (IOException e) {
-							throw new InvocationTargetException(e);
-						} finally {
-							try {
-								if (inChan != null && inChan.isOpen()) {
-									inChan.close();
-								}
-								if (outChan != null && outChan.isOpen()) {
-									outChan.close();
-								}
 							} catch (IOException e) {
-								e.printStackTrace();
+								throw new InvocationTargetException(e);
 							}
-							monitor.done();
+							monitor.worked(1);
 						}
+						monitor.done();
 					}
 				}
 

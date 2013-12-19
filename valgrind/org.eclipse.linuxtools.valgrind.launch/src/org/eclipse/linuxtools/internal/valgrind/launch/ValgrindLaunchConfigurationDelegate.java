@@ -138,7 +138,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, config);
 
-			ArrayList<String> cmdLine = new ArrayList<String>(1 + arguments.length);
+			ArrayList<String> cmdLine = new ArrayList<>(1 + arguments.length);
 			cmdLine.add(valgrindCommand);
 			cmdLine.addAll(Arrays.asList(opts));
 			cmdLine.add(exePath.toOSString());
@@ -207,7 +207,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 	}
 
 	protected IValgrindMessage[] parseLogs(IPath outputPath) throws IOException, CoreException {
-		List<IValgrindMessage> messages = new ArrayList<IValgrindMessage>();
+		List<IValgrindMessage> messages = new ArrayList<>();
 
 		for (File log : outputPath.toFile().listFiles(LOG_FILTER)) {
 			ValgrindCoreParser parser = new ValgrindCoreParser(log, launch);
@@ -227,7 +227,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 	protected void createMarkers(IValgrindMessage[] messages) throws CoreException {
 		// find the topmost stack frame within the workspace to annotate with marker
 		// traverse nested errors as well
-		Stack<IValgrindMessage> messageStack = new Stack<IValgrindMessage>();
+		Stack<IValgrindMessage> messageStack = new Stack<>();
 		messageStack.addAll(Arrays.asList(messages));
 		while (!messageStack.isEmpty()) {
 			IValgrindMessage message = messageStack.pop();
@@ -329,7 +329,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 	}
 
 	protected String[] getValgrindArgumentsArray(ILaunchConfiguration config) throws CoreException {
-		ArrayList<String> opts = new ArrayList<String>();
+		ArrayList<String> opts = new ArrayList<>();
 		opts.add(CommandLineConstants.OPT_TOOL + EQUALS + getPlugin().getToolName(toolID));
 		opts.add(CommandLineConstants.OPT_QUIET); // suppress uninteresting output
 		opts.add(CommandLineConstants.OPT_LOGFILE + EQUALS + outputPath.append(LOG_FILE).toOSString());
