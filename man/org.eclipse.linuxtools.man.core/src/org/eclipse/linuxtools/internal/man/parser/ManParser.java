@@ -48,29 +48,15 @@ public class ManParser {
 				process.waitFor();
 			}
 
-			InputStream manContent = process.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					manContent));
-
 			String line = null;
-			try {
+			try (InputStream manContent = process.getInputStream();
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(manContent))) {
 				while ((line = reader.readLine()) != null) {
 					sb.append(line + "\n"); //$NON-NLS-1$
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					manContent.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
-		} catch (IOException e1) {
-			Status status = new Status(IStatus.ERROR, e1.getMessage(),
-					Activator.PLUGIN_ID);
-			Activator.getDefault().getLog().log(status);
-		} catch (InterruptedException e1) {
+		} catch (IOException | InterruptedException e1) {
 			Status status = new Status(IStatus.ERROR, e1.getMessage(),
 					Activator.PLUGIN_ID);
 			Activator.getDefault().getLog().log(status);

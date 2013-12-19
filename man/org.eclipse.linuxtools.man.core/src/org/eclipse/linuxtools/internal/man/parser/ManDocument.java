@@ -22,8 +22,8 @@ import org.eclipse.jface.text.Document;
 public class ManDocument extends Document {
 
 	private static final String BOLD = "\b"; //$NON-NLS-1$
-	private List<Integer> boldSymbols = new ArrayList<Integer>();
-	private List<Integer> underlineSymbols = new ArrayList<Integer>();
+	private List<Integer> boldSymbols = new ArrayList<>();
+	private List<Integer> underlineSymbols = new ArrayList<>();
 
 	/**
 	 * Creates an IDocument for the given man page and taking care for marking
