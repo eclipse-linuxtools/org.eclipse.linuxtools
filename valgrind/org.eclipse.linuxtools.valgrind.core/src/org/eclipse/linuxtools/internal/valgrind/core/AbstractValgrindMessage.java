@@ -23,7 +23,7 @@ public class AbstractValgrindMessage implements IValgrindMessage {
 	protected String text;
 
 	public AbstractValgrindMessage(IValgrindMessage parent, String text, ILaunch launch) {
-		children = new ArrayList<IValgrindMessage>();
+		children = new ArrayList<>();
 		this.parent = parent;
 		this.text = text;
 		this.launch = launch;

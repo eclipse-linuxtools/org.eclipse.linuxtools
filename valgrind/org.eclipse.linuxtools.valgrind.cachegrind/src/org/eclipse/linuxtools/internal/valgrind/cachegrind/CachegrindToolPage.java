@@ -63,11 +63,13 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		}
 	};
 	protected ModifyListener modifyListener = new ModifyListener() {
+		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();	
 		}			
 	};
 	
+	@Override
 	public void createControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		top.setLayout(new GridLayout());
@@ -200,10 +202,12 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		l2LineSizeSpinner.addModifyListener(modifyListener);
 	}
 
+	@Override
 	public String getName() {
 		return Messages.getString("CachegrindToolPage.Cachegrind_Options"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 		isInitializing = true;
 		
@@ -236,6 +240,7 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		isInitializing = false;
 	}
 
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, cacheButton.getSelection());
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_BRANCH_SIM, branchButton.getSelection());
@@ -256,6 +261,7 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_LSIZE, l2LineSizeSpinner.getSelection());
 	}
 
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, CachegrindPlugin.TOOL_ID);
 		config.setAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM);
@@ -294,6 +300,7 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		return result;
 	}
 	
+	@Override
 	public void setValgrindVersion(Version ver) {
 		// Not used
 	}

@@ -34,21 +34,25 @@ public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
 	
 	public SuppressionsReconcilingStrategy(SuppressionsEditor editor) {
 		this.editor = editor;
-		positions = new ArrayList<Position>();
+		positions = new ArrayList<>();
 	}
 	
+	@Override
 	public void reconcile(IRegion partition) {
 		initialReconcile();		
 	}
 
+	@Override
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 		initialReconcile();
 	}
 
+	@Override
 	public void setDocument(IDocument document) {
 		this.document = document;		
 	}
 
+	@Override
 	public void initialReconcile() {
 		int start = -1;
 		int end = document.getLength();
@@ -76,12 +80,14 @@ public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
 		monitor.done();
 		
 		Display.getDefault().syncExec(new Runnable() {		
+			@Override
 			public void run() {
 				editor.updateFoldingStructure(positions.toArray(new Position[positions.size()]));
 			}
 		});
 	}
 
+	@Override
 	public void setProgressMonitor(IProgressMonitor monitor) {
 		this.monitor = monitor;
 	}

@@ -110,6 +110,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		viewer.setLabelProvider(labelProvider);
 		viewer.setAutoExpandLevel(2);
 		doubleClickListener = new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				Object selection = ((StructuredSelection) event.getSelection()).getFirstElement();
 				String path = null;
@@ -156,6 +157,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
 				ICachegrindElement element = (ICachegrindElement) selection.getFirstElement();
@@ -176,10 +178,12 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		viewer.getTree().setFocus();
 	}
 
+	@Override
 	public IAction[] getToolbarActions() {
 		return null;
 	}
 
+	@Override
 	public void refreshView() {
 		if (outputs != null && outputs.length > 0) {
 			String[] events = outputs[0].getEvents();
@@ -324,6 +328,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 	protected static class CachegrindTreeContentProvider implements ITreeContentProvider {
 
+		@Override
 		public Object[] getChildren(Object parentElement) {
 			Object[] result = null;
 			if (parentElement instanceof CachegrindOutput[]) {
@@ -335,22 +340,27 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 			return result;
 		}
 
+		@Override
 		public Object getParent(Object element) {
 			return ((ICachegrindElement) element).getParent();
 		}
 
+		@Override
 		public boolean hasChildren(Object element) {
 			ICachegrindElement[] children = (ICachegrindElement[]) getChildren(element);
 			return children != null && children.length > 0;
 		}
 
+		@Override
 		public Object[] getElements(Object inputElement) {
 			return getChildren(inputElement);
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
 

@@ -24,7 +24,7 @@ public class ValgrindStubProcess implements IProcess {
 	protected IStreamsProxy streamsProxy;
 
 	public ValgrindStubProcess(ILaunch launch, String label) {
-		attributes = new HashMap<String, String>();
+		attributes = new HashMap<>();
 		streamsProxy = new ValgrindStubStreamsProxy();
 		this.launch = launch;
 		this.label = label;

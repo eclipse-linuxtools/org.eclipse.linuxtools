@@ -25,9 +25,10 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 public class SuppressionsContentAssistProcessor implements
 		IContentAssistProcessor {
 	
+	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
-		List<ICompletionProposal> completions = new ArrayList<ICompletionProposal>();
+		List<ICompletionProposal> completions = new ArrayList<>();
 		
 		IDocument doc = viewer.getDocument();		
 		try {
@@ -54,23 +55,28 @@ public class SuppressionsContentAssistProcessor implements
 		return completions.toArray(new ICompletionProposal[completions.size()]);
 	}
 
+	@Override
 	public IContextInformation[] computeContextInformation(ITextViewer viewer,
 			int offset) {
 		return new IContextInformation[0];
 	}
 
+	@Override
 	public char[] getCompletionProposalAutoActivationCharacters() {
 		return null;
 	}
 
+	@Override
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
 
+	@Override
 	public IContextInformationValidator getContextInformationValidator() {
 		return null;
 	}
 
+	@Override
 	public String getErrorMessage() {
 		return null;
 	}
@@ -94,7 +100,7 @@ public class SuppressionsContentAssistProcessor implements
 	}
 		
 	private String[] getCompletionStrings(String prefix, String toolName) {
-		List<String> words = new ArrayList<String>();
+		List<String> words = new ArrayList<>();
 		
 		// If the cursor is after "Memcheck:"
 		if (toolName != null && toolName.equals(SuppressionsElementScanner.MEMCHECK)) {			

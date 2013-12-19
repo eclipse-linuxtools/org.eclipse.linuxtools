@@ -32,6 +32,7 @@ public class SuppressionToolRule implements IRule {
 		token = successToken;
 		subrule = new WordRule(new IWordDetector() {
 		
+			@Override
 			public boolean isWordStart(char c) {
 				for (String tool : toolList) {
 					if (c == tool.charAt(0)) {
@@ -41,6 +42,7 @@ public class SuppressionToolRule implements IRule {
 				return false;
 			}
 		
+			@Override
 			public boolean isWordPart(char c) {
 				return c != ':';
 			}
@@ -52,6 +54,7 @@ public class SuppressionToolRule implements IRule {
 		}
 	}
 	
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		IToken result = subrule.evaluate(scanner);
 		if (!result.isUndefined()) {

@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.cachegrind.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.junit;bundle-version="4.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.valgrind.cachegrind

@@ -33,13 +33,12 @@ public class ValgrindCoreParser {
 
 	public ValgrindCoreParser(File inputFile, ILaunch launch) throws IOException {
 		this.launch = launch;
-		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		// keep track of nested messages and their corresponding indents
-		Stack<IValgrindMessage> messageStack = new Stack<IValgrindMessage>();
-		Stack<Integer> indentStack = new Stack<Integer>();
-		messages = new ArrayList<IValgrindMessage>();
+		Stack<IValgrindMessage> messageStack = new Stack<>();
+		Stack<Integer> indentStack = new Stack<>();
+		messages = new ArrayList<>();
 
-		try { 
+		try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) { 
 			pid = ValgrindParserUtils.parsePID(inputFile.getName(), CommandLineConstants.LOG_PREFIX);
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -93,10 +92,6 @@ public class ValgrindCoreParser {
 						}
 					}
 				}
-			}
-		} finally {
-			if (br != null) {
-				br.close();
 			}
 		}
 	}

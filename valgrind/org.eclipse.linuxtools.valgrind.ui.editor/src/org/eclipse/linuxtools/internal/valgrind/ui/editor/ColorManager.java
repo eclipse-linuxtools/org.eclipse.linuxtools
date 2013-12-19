@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class ColorManager {
 
-	protected Map<RGB, Color> colorTable = new HashMap<RGB, Color>(10);
+	protected Map<RGB, Color> colorTable = new HashMap<>(10);
 
 	public void dispose() {
 		Iterator<Color> e = colorTable.values().iterator();

@@ -181,7 +181,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 */
 	private IValgrindMessage[] getMessagesByText(String text) {
 		ValgrindViewPart valgrindView = ValgrindUIPlugin.getDefault().getView();
-		ArrayList<IValgrindMessage> foundMessages = new ArrayList<IValgrindMessage>();
+		ArrayList<IValgrindMessage> foundMessages = new ArrayList<>();
 
 		if(valgrindView != null){
 			IValgrindMessage[] messages = valgrindView.getMessages();

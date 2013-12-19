@@ -34,13 +34,14 @@ public class SuppressionKindRule implements IRule {
 		kinds = suppKinds;
 		token = successToken;
 		
-		final List<String> suppKindsList = new ArrayList<String>();
+		final List<String> suppKindsList = new ArrayList<>();
 		for (List<String> entry : suppKinds.values()) {
 			suppKindsList.addAll(entry);
 		}
 		
 		subrule = new WordRule(new IWordDetector() {
 		
+			@Override
 			public boolean isWordStart(char c) {
 				for (String kind : suppKindsList) {
 					if (c == kind.charAt(0)) {
@@ -50,6 +51,7 @@ public class SuppressionKindRule implements IRule {
 				return false;
 			}
 		
+			@Override
 			public boolean isWordPart(char c) {
 				return Character.isJavaIdentifierPart(c);
 			}
@@ -61,6 +63,7 @@ public class SuppressionKindRule implements IRule {
 		}
 	}
 	
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		IToken result = subrule.evaluate(scanner);
 		StringBuffer tool = new StringBuffer();

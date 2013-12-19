@@ -33,6 +33,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "cachegrind_"; //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter CACHEGRIND_FILTER = new FileFilter() {
+		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(OUT_PREFIX);
 		}
@@ -44,6 +45,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String YES = "yes"; //$NON-NLS-1$
 	private CachegrindOutput[] outputs;
 	
+	@Override
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(Messages.getString("CachegrindLaunchDelegate.Parsing_Cachegrind_Output"), 3); //$NON-NLS-1$
@@ -71,6 +73,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 		monitor.worked(2);
 	}
 	
+	@Override
 	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
@@ -95,6 +98,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 		return opts.toArray(new String[opts.size()]);
 	}
 	
+	@Override
 	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
 			throws CoreException {
 		if (outputs != null && view instanceof CachegrindViewPart) {

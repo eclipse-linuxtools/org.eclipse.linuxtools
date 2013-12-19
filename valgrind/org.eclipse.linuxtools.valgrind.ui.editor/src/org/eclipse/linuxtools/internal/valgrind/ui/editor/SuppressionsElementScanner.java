@@ -45,7 +45,7 @@ public class SuppressionsElementScanner extends BufferedRuleBasedScanner {
 
 	public SuppressionsElementScanner(ColorManager colorManager) {
 		String[] tools = { MEMCHECK };
-		Map<String, List<String>> kinds = new HashMap<String, List<String>>();
+		Map<String, List<String>> kinds = new HashMap<>();
 		kinds.put(MEMCHECK, Arrays.asList(MEMCHECK_SUPP_TYPES));
 		
 		IToken defaultToken = new Token(new TextAttribute(colorManager
@@ -90,6 +90,7 @@ public class SuppressionsElementScanner extends BufferedRuleBasedScanner {
 				new SuppressionToolRule(CONTEXTS, contextToken),
 //				keywordsRule,
 				new WhitespaceRule(new IWhitespaceDetector() {
+					@Override
 					public boolean isWhitespace(char c) {
 						return Character.isWhitespace(c);
 					}

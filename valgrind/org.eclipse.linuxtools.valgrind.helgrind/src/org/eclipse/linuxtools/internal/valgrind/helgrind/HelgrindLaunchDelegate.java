@@ -28,11 +28,13 @@ public class HelgrindLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
 
+	@Override
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
 	}
 	
+	@Override
 	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
-		ArrayList<String> opts = new ArrayList<String>();
+		ArrayList<String> opts = new ArrayList<>();
 
 		opts.add(HelgrindCommandConstants.OPT_TRACK_LOCKORDERS + EQUALS + (config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_LOCKORDERS, HelgrindLaunchConstants.DEFAULT_HELGRIND_LOCKORDERS) ? YES : NO));
 		opts.add(HelgrindCommandConstants.OPT_HISTORY_LEVEL + EQUALS + config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_HISTORYLEVEL, HelgrindLaunchConstants.DEFAULT_HELGRIND_HISTORYLEVEL));
@@ -40,6 +42,7 @@ public class HelgrindLaunchDelegate implements IValgrindLaunchDelegate {
 		return opts.toArray(new String[opts.size()]);
 	}
 
+	@Override
 	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
 			throws CoreException {
 	}
