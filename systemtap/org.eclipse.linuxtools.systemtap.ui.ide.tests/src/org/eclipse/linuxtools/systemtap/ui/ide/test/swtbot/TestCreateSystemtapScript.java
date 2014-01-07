@@ -222,7 +222,7 @@ public class TestCreateSystemtapScript {
 			SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 			console.setFocus();
 			assertTrue(console.bot().label().getText().contains(scriptName));
-			bot.waitUntil(new StapHasExited()); // The script should end on its own
+			bot.waitUntil(new StapHasExited(), 10000); // The script should end on its own
 		} else {
 			bot.button("Close").click();
 			bot.waitUntil(new ShellIsClosed(shell));

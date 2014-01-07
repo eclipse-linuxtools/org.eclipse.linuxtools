@@ -43,6 +43,14 @@
                 visible="true">
           </separator>
        </menuContribution>
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.ui.workbench.file">
+          <separator
+                name="chartGroup"
+                visible="true">
+          </separator>
+       </menuContribution>
        <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
            <command
                  commandId="org.eclipse.ui.navigate.collapseAll" />
@@ -62,6 +70,32 @@
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
                 icon="icons/actions/run/run_exc.gif"
                 label="%action.run.name"
+                style="push">
+             <visibleWhen
+                   checkEnabled="true">
+             </visibleWhen>
+          </command>
+       </menuContribution>
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.ui.workbench.file?after=chartGroup">
+          <command
+                commandId="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
+                icon="icons/actions/exportpref_obj.gif"
+                label="%action.dataExport.name"
+                style="push">
+             <visibleWhen
+                   checkEnabled="true">
+             </visibleWhen>
+          </command>
+       </menuContribution>
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.ui.workbench.file?after=chartGroup">
+          <command
+                commandId="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
+                icon="icons/actions/importpref_obj.gif"
+                label="%action.dataImport.name"
                 style="push">
              <visibleWhen
                    checkEnabled="true">
@@ -203,6 +237,18 @@
         	id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
         	name="%action.run.name">
  		</command>
+		<command
+			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler"
+			description="%action.dataExport.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
+			name="%action.dataExport.name">
+		</command>
+		<command
+			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler"
+			description="%action.dataImport.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
+			name="%action.dataImport.name">
+		</command>
 		<category
         	id="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
         	name="%editor.category.source.name">

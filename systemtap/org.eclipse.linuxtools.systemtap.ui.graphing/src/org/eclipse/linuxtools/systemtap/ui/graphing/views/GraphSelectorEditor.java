@@ -153,6 +153,14 @@ public class GraphSelectorEditor extends EditorPart {
 	}
 
 	/**
+	 * @return The title of the tab containing the active graph.
+	 * @since 3.0
+	 */
+	public String getActiveTitle() {
+		return scriptFolder.getSelection().getText();
+	}
+
+	/**
 	 * Finds and returns the component of the provided index.
 	 * @param index The index of the GraphDisplaySet to return
 	 * @return The <code>GraphDisplaySet</code> of the provided
