@@ -23,7 +23,7 @@
   <artifactId>linuxtools-valgrind-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools Valgrind Parent</name>
+  <name>Linux Tools Valgrind Parent</name>
 
   <licenses>
     <license>

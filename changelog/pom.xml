@@ -23,7 +23,7 @@
   <artifactId>linuxtools-changelog-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools ChangeLog Parent</name>
+  <name>Linux Tools ChangeLog Parent</name>
 
   <licenses>
     <license>

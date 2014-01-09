@@ -23,7 +23,7 @@
   <artifactId>linuxtools-oprofile-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools OProfile Parent</name>
+  <name>Linux Tools OProfile Parent</name>
 
   <licenses>
     <license>

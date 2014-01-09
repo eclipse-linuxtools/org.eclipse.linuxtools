@@ -23,7 +23,7 @@
   <artifactId>linuxtools-gcov-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools GCov Parent</name>
+  <name>Linux Tools GCov Parent</name>
 
   <licenses>
     <license>

@@ -23,7 +23,7 @@
   <artifactId>linuxtools-libhover-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools Libhover Parent</name>
+  <name>Linux Tools Libhover Parent</name>
 
   <licenses>
     <license>

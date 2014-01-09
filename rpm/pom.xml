@@ -23,7 +23,7 @@
   <artifactId>linuxtools-rpm-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools RPM Parent</name>
+  <name>Linux Tools RPM Parent</name>
 
   <licenses>
     <license>

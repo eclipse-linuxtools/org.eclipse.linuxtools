@@ -22,7 +22,7 @@
   <artifactId>linuxtools-systemtap-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools SystemTap Parent</name>
+  <name>Linux Tools SystemTap Parent</name>
 
   <licenses>
     <license>
