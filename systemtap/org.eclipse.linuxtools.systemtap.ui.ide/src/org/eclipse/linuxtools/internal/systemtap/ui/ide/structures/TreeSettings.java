@@ -99,9 +99,7 @@ public final class TreeSettings {
 			return false;
 		}
 
-		try {
-			FileReader reader = new FileReader(settingsFile);
-
+		try (FileReader reader = new FileReader(settingsFile)) {
 			if(!reader.ready()) {
 				reader.close();
 				return false;
@@ -136,11 +134,7 @@ public final class TreeSettings {
 
 			child = data.getChild("modifiedDate"); //$NON-NLS-1$
 			treeFileDate = Long.parseLong(child.getString("date")); //$NON-NLS-1$
-		} catch(FileNotFoundException fnfe) {
-			return false;
-		} catch(WorkbenchException we) {
-			return false;
-		} catch(IOException e) {
+		} catch(IOException|WorkbenchException fnfe) {
 			return false;
 		}
 

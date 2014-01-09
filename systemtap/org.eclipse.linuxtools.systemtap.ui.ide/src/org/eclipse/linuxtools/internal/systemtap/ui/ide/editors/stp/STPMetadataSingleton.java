@@ -118,7 +118,7 @@ public class STPMetadataSingleton {
 	}
 
 	private String[] getMatchingChildren(TreeNode node, String prefix) {
-		ArrayList<String> matches = new ArrayList<String>();
+		ArrayList<String> matches = new ArrayList<>();
 
 		int n = node.getChildCount();
 		for (int i = 0; i < n; i++) {

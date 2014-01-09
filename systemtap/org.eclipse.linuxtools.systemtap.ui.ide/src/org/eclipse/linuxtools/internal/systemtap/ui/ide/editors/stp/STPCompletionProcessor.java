@@ -135,7 +135,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			ICompletionProposal[] variableCompletions = getProbeVariableCompletions(document, offset, prefix);
 			ICompletionProposal[] functionCompletions = getFunctionCompletions(offset, prefix);
 
-			ArrayList<ICompletionProposal> completions = new ArrayList<ICompletionProposal>(
+			ArrayList<ICompletionProposal> completions = new ArrayList<>(
 					variableCompletions.length + functionCompletions.length);
 			completions.addAll(Arrays.asList(variableCompletions));
 			completions.addAll(Arrays.asList(functionCompletions));
@@ -300,7 +300,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 
 	private ICompletionProposal[] getGlobalKeywordCompletion(String prefix, int offset) {
 
-		ArrayList<ICompletionProposal> completions = new ArrayList<ICompletionProposal>();
+		ArrayList<ICompletionProposal> completions = new ArrayList<>();
 		int prefixLength = prefix.length();
 		for (String[] keyword : GLOBAL_KEYWORDS) {
 			if (keyword[0].startsWith(prefix)){

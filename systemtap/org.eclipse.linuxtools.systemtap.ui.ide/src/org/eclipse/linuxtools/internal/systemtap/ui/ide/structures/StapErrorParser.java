@@ -30,7 +30,7 @@ public final class StapErrorParser implements IErrorParser {
 	@Override
 	public String[][] parseOutput(String output) {
 		String[][] sErrors = null;
-		ArrayList<String[]> errors = new ArrayList<String[]>();
+		ArrayList<String[]> errors = new ArrayList<>();
 		int errorType = TYPE;
 
 		if(null != output) {

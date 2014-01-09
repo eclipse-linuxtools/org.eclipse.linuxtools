@@ -20,7 +20,7 @@ import java.util.Stack;
 public class ScannerContext {
 	private Reader fReader;
 	private int fOffset;
-	private Stack<Integer> fUndo = new Stack<Integer>();
+	private Stack<Integer> fUndo = new Stack<>();
 
 	public ScannerContext() {
 	}

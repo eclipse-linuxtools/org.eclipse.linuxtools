@@ -244,7 +244,7 @@ public class STPDefaultCodeFormatterOptions {
 	}
 
 	public Map<String, String> getMap() {
-		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> options = new HashMap<>();
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ARGUMENTS_IN_METHOD_INVOCATION, getAlignment(this.alignment_for_arguments_in_method_invocation));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_ASSIGNMENT, getAlignment(this.alignment_for_assignment));
 		options.put(STPDefaultCodeFormatterConstants.FORMATTER_ALIGNMENT_FOR_BINARY_EXPRESSION, getAlignment(this.alignment_for_binary_expression));

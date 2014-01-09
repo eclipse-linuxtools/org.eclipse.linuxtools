@@ -59,6 +59,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
+
 import com.jcraft.jsch.JSchException;
 
 /**
@@ -89,7 +90,7 @@ public class RunScriptHandler extends AbstractHandler {
 
 
 	public RunScriptHandler(){
-		this.cmdList = new ArrayList<String>();
+		this.cmdList = new ArrayList<>();
 	}
 
 	/**
@@ -364,10 +365,8 @@ public class RunScriptHandler extends AbstractHandler {
 	 * @return True if the script contains embedded C code.
 	 */
 	private boolean isGuru() {
-		try {
-			File f = new File(fileName);
-			FileReader fr = new FileReader(f);
-
+		File f = new File(fileName);
+		try (FileReader fr = new FileReader(f)){
 			int curr = 0;
 			int prev = 0;
 			boolean front = false;

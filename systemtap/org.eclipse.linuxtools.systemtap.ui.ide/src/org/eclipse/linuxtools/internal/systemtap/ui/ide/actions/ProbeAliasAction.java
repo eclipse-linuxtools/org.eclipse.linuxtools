@@ -12,8 +12,8 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -143,7 +143,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 	}
 
 	private IEditorPart findEditor() {
-		final List<IEditorPart> allEditors = new LinkedList<IEditorPart>();
+		final List<IEditorPart> allEditors = new LinkedList<>();
 		for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
 			IEditorPart editor = SynchronousActions.getRestoredEditor(ref);
 			if (editor instanceof STPEditor) {

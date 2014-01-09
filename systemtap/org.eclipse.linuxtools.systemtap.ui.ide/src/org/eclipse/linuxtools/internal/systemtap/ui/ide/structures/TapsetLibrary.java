@@ -55,7 +55,7 @@ public final class TapsetLibrary {
 		return functionTree;
 	}
 
-	private static HashMap<String, String> pages = new HashMap<String, String>();
+	private static HashMap<String, String> pages = new HashMap<>();
 
 	/**
 	 * Returns the documentation for the given probe, function, or tapset.

@@ -55,7 +55,7 @@ public abstract class TapsetParser extends Job {
 	protected TapsetParser(String[] tapsets, String jobTitle) {
 		super(jobTitle);
 		this.tapsets = Arrays.copyOf(tapsets, tapsets.length);
-		listeners = new ArrayList<IUpdateListener>();
+		listeners = new ArrayList<>();
 		cancelRequested = false;
 	}
 

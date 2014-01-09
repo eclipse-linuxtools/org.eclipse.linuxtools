@@ -71,7 +71,7 @@ public class AddStapProbe extends AbstractRulerActionDelegate {
 
 				// gogo find comment segments
 				try {
-					ArrayList<Integer> commentChunks = new ArrayList<Integer>();
+					ArrayList<Integer> commentChunks = new ArrayList<>();
 					char[] chars = s.toCharArray();
 					int needle = 1;
 					int offset = document.getLineOffset(lineno);

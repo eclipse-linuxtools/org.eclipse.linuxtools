@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
@@ -132,7 +131,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	/**
 	 * A list of error messages, each entry corresponding to an entered regular expression.
 	 */
-	private List<String> regexErrorMessages = new ArrayList<String>();
+	private List<String> regexErrorMessages = new ArrayList<>();
 
 	/**
 	 * The index of the selected regular expression.
@@ -142,7 +141,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	/**
 	 * A list containing the user-defined sample outputs associated with the regex of every index.
 	 */
-	private List<String> outputList = new ArrayList<String>();
+	private List<String> outputList = new ArrayList<>();
 
 	/**
 	 * A name is given to each group captured by a regular expression. This stack contains
@@ -154,27 +153,27 @@ public class SystemTapScriptGraphOptionsTab extends
 	/**
 	 * A list of cachedNames stacks, containing one entry for each regular expression stored.
 	 */
-	private List<Stack<String>> cachedNamesList = new ArrayList<Stack<String>>();
+	private List<Stack<String>> cachedNamesList = new ArrayList<>();
 
 	/**
 	 * A two-dimensional list that holds references to the names given to each regular expression's captured groups.
 	 */
-	private List<ArrayList<String>> columnNamesList = new ArrayList<ArrayList<String>>();
+	private List<ArrayList<String>> columnNamesList = new ArrayList<>();
 
 	/**
 	 * A list holding the data of every graph for the selected regular expression.
 	 */
-	private List<GraphData> graphsData = new LinkedList<GraphData>();
+	private List<GraphData> graphsData = new LinkedList<>();
 
 	/**
 	 * A list of graphsData lists. This is needed because each regular expression has its own set of graphs.
 	 */
-	private List<LinkedList<GraphData>> graphsDataList = new ArrayList<LinkedList<GraphData>>();
+	private List<LinkedList<GraphData>> graphsDataList = new ArrayList<>();
 
 	/**
 	 * A list of GraphDatas that rely on series information that has been deleted from their relying regex.
 	 */
-	private List<GraphData> badGraphs = new LinkedList<GraphData>();
+	private List<GraphData> badGraphs = new LinkedList<>();
 
 	private ModifyListener regexListener = new ModifyListener() {
 		@Override
@@ -208,7 +207,7 @@ public class SystemTapScriptGraphOptionsTab extends
 				return;
 			}
 
-			ArrayList<String> columnNames = new ArrayList<String>();
+			ArrayList<String> columnNames = new ArrayList<>();
 			Control[] children = textFieldsComposite.getChildren();
 			for (int i = 0; i < numberOfVisibleColumns; i++) {
 				columnNames.add(((Text)children[i*2]).getText());
@@ -264,9 +263,8 @@ public class SystemTapScriptGraphOptionsTab extends
 
 			// If chosen file is not being edited or is outside of the workspace, use the saved contents of the file itself.
 			if (contents == null) {
-				try {
-					File scriptFile = scriptPath.toFile();
-					FileInputStream f = new FileInputStream(scriptFile);
+				File scriptFile = scriptPath.toFile();
+				try (FileInputStream f = new FileInputStream(scriptFile)) {
 					byte[] data = new byte[(int)scriptFile.length()];
 					f.read(data);
 					f.close();
@@ -310,7 +308,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 					Matcher fmatch = format.matcher(printl);
 					int lastend = 0;
-					ArrayList<String> columnNames = new ArrayList<String>();
+					ArrayList<String> columnNames = new ArrayList<>();
 					int r = 0;
 
 					while (fmatch.find()) {
@@ -470,7 +468,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	public static ArrayList<String> createDatasetNames(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
-			ArrayList<String> names = new ArrayList<String>(numberOfRegexs);
+			ArrayList<String> names = new ArrayList<>(numberOfRegexs);
 			for (int r = 0; r < numberOfRegexs; r++) {
 				names.add(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, r + 1));
 			}
@@ -490,7 +488,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	public static ArrayList<IDataSetParser> createDatasetParsers(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
-			ArrayList<IDataSetParser> parsers = new ArrayList<IDataSetParser>(numberOfRegexs);
+			ArrayList<IDataSetParser> parsers = new ArrayList<>(numberOfRegexs);
 			for (int r = 0; r < numberOfRegexs; r++) {
 				parsers.add(new LineParser("^" + configuration.getAttribute(REGULAR_EXPRESSION + r, "") + "$")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
@@ -510,11 +508,11 @@ public class SystemTapScriptGraphOptionsTab extends
 	public static ArrayList<IDataSet> createDataset(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
-			ArrayList<IDataSet> datasets = new ArrayList<IDataSet>(numberOfRegexs);
+			ArrayList<IDataSet> datasets = new ArrayList<>(numberOfRegexs);
 
 			for (int r = 0; r < numberOfRegexs; r++) {
 				int numberOfColumns = configuration.getAttribute(NUMBER_OF_COLUMNS + r, 0);
-				ArrayList<String> labels = new ArrayList<String>(numberOfColumns);
+				ArrayList<String> labels = new ArrayList<>(numberOfColumns);
 
 				for (int c = 0; c < numberOfColumns; c++) {
 					labels.add(configuration.getAttribute(get2DConfigData(REGEX_BOX, r, c), "")); //$NON-NLS-1$
@@ -539,11 +537,11 @@ public class SystemTapScriptGraphOptionsTab extends
 		// Restrict number of regexs to at least one, so at least
 		// one inner list will exist in the return value.
 		int numberOfRegexs = Math.max(configuration.getAttribute(NUMBER_OF_REGEXS, 1), 1);
-		ArrayList<LinkedList<GraphData>> graphsList = new ArrayList<LinkedList<GraphData>>(numberOfRegexs);
+		ArrayList<LinkedList<GraphData>> graphsList = new ArrayList<>(numberOfRegexs);
 
 		for (int r = 0; r < numberOfRegexs; r++) {
 			int numberOfGraphs = configuration.getAttribute(NUMBER_OF_GRAPHS + r, 0);
-			LinkedList<GraphData> graphs = new LinkedList<GraphData>();
+			LinkedList<GraphData> graphs = new LinkedList<>();
 			for (int i = 0; i < numberOfGraphs; i++) {
 				GraphData graphData = new GraphData();
 				graphData.title = configuration.getAttribute(get2DConfigData(GRAPH_TITLE, r, i), (String) null);
@@ -1253,7 +1251,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 				// Save each regex's list of group names.
 				int numberOfColumns = configuration.getAttribute(NUMBER_OF_COLUMNS + r, 0);
-				ArrayList<String> namelist = new ArrayList<String>(numberOfColumns);
+				ArrayList<String> namelist = new ArrayList<>(numberOfColumns);
 				for (int i = 0; i < numberOfColumns; i++) {
 					namelist.add(configuration.getAttribute(get2DConfigData(REGEX_BOX, r, i), (String)null));
 				}
@@ -1261,7 +1259,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 				//Reclaim missing column data that was required for existing graphs at the time of the previous "apply".
 				int numberOfExtras = configuration.getAttribute(NUMBER_OF_EXTRAS + r, 0);
-				Stack<String> oldnames = new Stack<String>();
+				Stack<String> oldnames = new Stack<>();
 				for (int i = 0; i < numberOfExtras; i++) {
 					oldnames.push(configuration.getAttribute(get2DConfigData(EXTRA_BOX, r, i), (String)null));
 				}
