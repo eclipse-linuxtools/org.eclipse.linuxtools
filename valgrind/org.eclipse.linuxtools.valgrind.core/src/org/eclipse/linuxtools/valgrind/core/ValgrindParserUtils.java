@@ -108,8 +108,8 @@ public final class ValgrindParserUtils {
 	}
 
 	/**
-	 * Parses string ending with format ([FILE]:[LINE])
-	 * Assumes syntax is: "\(.*:[0-9]+\)$"
+	 * Parses string ending with format ([FILE]:[LINE MODULE])
+	 * Assumes syntax is: "\(.*:[0-9]+(\s.+)?\)$"
 	 * @param line - String with the above criteria
 	 * @return a tuple of [String filename, Integer line] 
 	 */
@@ -126,6 +126,16 @@ public final class ValgrindParserUtils {
 				if (isNumber(strLineNo)) {
 					lineNo = Integer.parseInt(strLineNo);
 					filename = part.substring(0, ix);
+				} else {
+					// handle format: (FILE:LINE MODULE)
+					int ix1 = strLineNo.indexOf(" "); //$NON-NLS-1$
+					if (ix1 > 0) {
+						strLineNo = strLineNo.substring(0, ix1);
+						if (isNumber(strLineNo)) {
+							lineNo = Integer.parseInt(strLineNo);
+							filename = part.substring(0, ix);
+						}
+					}
 				}
 			}
 			else {

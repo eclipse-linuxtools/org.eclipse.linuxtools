@@ -44,7 +44,8 @@ public class ValgrindCoreParser {
 			while ((line = br.readLine()) != null) {
 				// remove PID string
 				// might encounter warnings also #325130
-				line = line.replaceFirst("==\\d+==|\\*\\*\\d+\\*\\*", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				// fixed #423371 - handle timestamp (e.g. ==00:00:00:01.175 52756728==)
+				line = line.replaceFirst("==([\\d:\\.]+\\s)?\\d+==|\\*\\*\\d+\\*\\*", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
 				int indent;
 				for (indent = 0; indent < line.length()
