@@ -36,7 +36,7 @@ public class CachegrindFunction implements ICachegrindElement {
 	public CachegrindFunction(CachegrindFile parent, String name) {
 		this.parent = parent;
 		this.name = name;
-		lines = new ArrayList<CachegrindLine>();
+		lines = new ArrayList<>();
 
 		IAdaptable pModel = parent.getModel();
 		if (pModel instanceof ICElement) {
@@ -104,6 +104,7 @@ public class CachegrindFunction implements ICachegrindElement {
 		return name;
 	}
 
+	@Override
 	public IAdaptable getModel() {
 		return model;
 	}
@@ -116,6 +117,7 @@ public class CachegrindFunction implements ICachegrindElement {
 		return lines.toArray(new CachegrindLine[lines.size()]);
 	}
 
+	@Override
 	public ICachegrindElement[] getChildren() {
 		ICachegrindElement[] children = null;
 		// if there is only a summary don't return any children
@@ -125,10 +127,12 @@ public class CachegrindFunction implements ICachegrindElement {
 		return children;
 	}
 
+	@Override
 	public ICachegrindElement getParent() {
 		return parent;
 	}
 	
+	@Override
 	public int compareTo(ICachegrindElement o) {
 		int result = 0;
 		if (o instanceof CachegrindFunction) {

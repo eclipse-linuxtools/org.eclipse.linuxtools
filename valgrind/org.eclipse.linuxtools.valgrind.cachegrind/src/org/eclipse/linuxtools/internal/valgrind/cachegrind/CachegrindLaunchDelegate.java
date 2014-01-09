@@ -75,7 +75,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	
 	@Override
 	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
-		ArrayList<String> opts = new ArrayList<String>();
+		ArrayList<String> opts = new ArrayList<>();
 		
 		opts.add(CachegrindCommandConstants.OPT_CACHEGRIND_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
 		opts.add(CachegrindCommandConstants.OPT_CACHE_SIM + EQUALS + (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM) ? YES : NO));
