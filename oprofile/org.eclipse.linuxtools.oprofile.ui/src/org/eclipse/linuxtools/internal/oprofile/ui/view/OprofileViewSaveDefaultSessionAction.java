@@ -85,7 +85,22 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 					// remove the default session
 					OprofileCorePlugin.getDefault().getOpcontrolProvider().deleteSession(defaultSessionName, eventName);
 					// clear out collected data by this session
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+					// if opcontol is used
+					if (!Oprofile.OprofileProject.OPERF_BINARY
+							.equals(Oprofile.OprofileProject
+									.getProfilingBinary())) {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider()
+								.reset();
+					}
+					else
+					{
+						// remove oprofile_data so current event no longer be there
+						OprofileViewDeleteSessionAction
+								.deleteOperfDataFolder(Oprofile.OprofileProject
+										.getProject()
+										.getFolder(
+												Oprofile.OprofileProject.OPERF_DATA));
+					}
 					OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 				} catch (OpcontrolException oe) {
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
