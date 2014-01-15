@@ -495,7 +495,7 @@ public class TestUiDataModel {
 		assertNotNull(e1_s1_i1_s1_samples[0].toString());
 		assertNotNull(e1_s1_i1_s1_samples[0].getLabelText());
 		assertEquals(42, ((UiModelSample)e1_s1_i1_s1_samples[0]).getLine());
-		assertEquals(0.6341, ((UiModelSample)e1_s1_i1_s1_samples[0]).getCountPercentage(), 0.0001);
+		assertEquals(0.6190, ((UiModelSample)e1_s1_i1_s1_samples[0]).getCountPercentage(), 0.0001);
 		assertNull(e1_s1_i1_s1_samples[0].getChildren());
 		assertFalse(e1_s1_i1_s1_samples[0].hasChildren());
 		assertEquals(e1_s1_i1_symbols[0], e1_s1_i1_s1_samples[0].getParent());
@@ -504,7 +504,7 @@ public class TestUiDataModel {
 		assertNotNull(e1_s1_i1_s1_samples[1].toString());
 		assertNotNull(e1_s1_i1_s1_samples[1].getLabelText());
 		assertEquals(36, ((UiModelSample)e1_s1_i1_s1_samples[1]).getLine());
-		assertEquals(0.1951, ((UiModelSample)e1_s1_i1_s1_samples[1]).getCountPercentage(), 0.0001);
+		assertEquals(0.1904, ((UiModelSample)e1_s1_i1_s1_samples[1]).getCountPercentage(), 0.0001);
 		assertNull(e1_s1_i1_s1_samples[1].getChildren());
 		assertFalse(e1_s1_i1_s1_samples[1].hasChildren());
 		assertEquals(e1_s1_i1_symbols[0], e1_s1_i1_s1_samples[1].getParent());
@@ -513,7 +513,7 @@ public class TestUiDataModel {
 		assertNotNull(e1_s1_i1_s1_samples[2].toString());
 		assertNotNull(e1_s1_i1_s1_samples[2].getLabelText());
 		assertEquals(31, ((UiModelSample)e1_s1_i1_s1_samples[2]).getLine());
-		assertEquals(0.0488, ((UiModelSample)e1_s1_i1_s1_samples[2]).getCountPercentage(), 0.0001);
+		assertEquals(0.0476, ((UiModelSample)e1_s1_i1_s1_samples[2]).getCountPercentage(), 0.0001);
 		assertNull(e1_s1_i1_s1_samples[2].getChildren());
 		assertFalse(e1_s1_i1_s1_samples[2].hasChildren());
 		assertEquals(e1_s1_i1_symbols[0], e1_s1_i1_s1_samples[2].getParent());
@@ -531,7 +531,7 @@ public class TestUiDataModel {
 		assertNotNull(e1_s1_i1_s2_samples[0].toString());
 		assertNotNull(e1_s1_i1_s2_samples[0].getLabelText());
 		assertEquals(94, ((UiModelSample)e1_s1_i1_s2_samples[0]).getLine());
-		assertEquals(0.0976, ((UiModelSample)e1_s1_i1_s2_samples[0]).getCountPercentage(), 0.0001);
+		assertEquals(0.0952, ((UiModelSample)e1_s1_i1_s2_samples[0]).getCountPercentage(), 0.0001);
 		assertNull(e1_s1_i1_s2_samples[0].getChildren());
 		assertFalse(e1_s1_i1_s2_samples[0].hasChildren());
 		assertEquals(e1_s1_i1_symbols[1], e1_s1_i1_s2_samples[0].getParent());
@@ -558,7 +558,7 @@ public class TestUiDataModel {
 		assertNotNull(e2_s1_i1_s1_samples[0].toString());
 		assertNotNull(e2_s1_i1_s1_samples[0].getLabelText());
 		assertEquals(42, ((UiModelSample)e2_s1_i1_s1_samples[0]).getLine());
-		assertEquals(0.6341, ((UiModelSample)e2_s1_i1_s1_samples[0]).getCountPercentage(), 0.0001);
+		assertEquals(0.6190, ((UiModelSample)e2_s1_i1_s1_samples[0]).getCountPercentage(), 0.0001);
 		assertNull(e2_s1_i1_s1_samples[0].getChildren());
 		assertFalse(e2_s1_i1_s1_samples[0].hasChildren());
 		assertEquals(e2_s1_i1_symbols[0], e2_s1_i1_s1_samples[0].getParent());
@@ -567,7 +567,7 @@ public class TestUiDataModel {
 		assertNotNull(e2_s1_i1_s1_samples[1].toString());
 		assertNotNull(e2_s1_i1_s1_samples[1].getLabelText());
 		assertEquals(36, ((UiModelSample)e2_s1_i1_s1_samples[1]).getLine());
-		assertEquals(0.1951, ((UiModelSample)e2_s1_i1_s1_samples[1]).getCountPercentage(), 0.0001);
+		assertEquals(0.1904, ((UiModelSample)e2_s1_i1_s1_samples[1]).getCountPercentage(), 0.0001);
 		assertNull(e2_s1_i1_s1_samples[1].getChildren());
 		assertFalse(e2_s1_i1_s1_samples[1].hasChildren());
 		assertEquals(e2_s1_i1_symbols[0], e2_s1_i1_s1_samples[1].getParent());
@@ -576,7 +576,7 @@ public class TestUiDataModel {
 		assertNotNull(e2_s1_i1_s1_samples[2].toString());
 		assertNotNull(e2_s1_i1_s1_samples[2].getLabelText());
 		assertEquals(31, ((UiModelSample)e2_s1_i1_s1_samples[2]).getLine());
-		assertEquals(0.0488, ((UiModelSample)e2_s1_i1_s1_samples[2]).getCountPercentage(), 0.0001);
+		assertEquals(0.0476, ((UiModelSample)e2_s1_i1_s1_samples[2]).getCountPercentage(), 0.0001);
 		assertNull(e2_s1_i1_s1_samples[2].getChildren());
 		assertFalse(e2_s1_i1_s1_samples[2].hasChildren());
 		assertEquals(e2_s1_i1_symbols[0], e2_s1_i1_s1_samples[2].getParent());
@@ -594,7 +594,7 @@ public class TestUiDataModel {
 		assertNotNull(e2_s1_i1_s2_samples[0].toString());
 		assertNotNull(e2_s1_i1_s2_samples[0].getLabelText());
 		assertEquals(94, ((UiModelSample)e2_s1_i1_s2_samples[0]).getLine());
-		assertEquals(0.0976, ((UiModelSample)e2_s1_i1_s2_samples[0]).getCountPercentage(), 0.0001);
+		assertEquals(0.0952, ((UiModelSample)e2_s1_i1_s2_samples[0]).getCountPercentage(), 0.0001);
 		assertNull(e2_s1_i1_s2_samples[0].getChildren());
 		assertFalse(e2_s1_i1_s2_samples[0].hasChildren());
 		assertEquals(e2_s1_i1_symbols[1], e2_s1_i1_s2_samples[0].getParent());

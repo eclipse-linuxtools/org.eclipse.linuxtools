@@ -41,7 +41,7 @@ public class UiModelImage implements IUiModelElement {
 		this.parent = parent;
 		this.image = image;
 		this.symbols = null;
-		this.totalCount = totalCount;
+		this.totalCount = totalCount+depCount;//totalCount;
 		this.depCount = depCount;
 		refreshModel();
 	}
@@ -66,7 +66,7 @@ public class UiModelImage implements IUiModelElement {
 		if (image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
 			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
 		} else {
-			double countPercentage = (double)(image.getCount() - depCount) / (double)totalCount;
+			double countPercentage = (double)(image.getCount() ) / (double)totalCount;
 			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 			
 			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
