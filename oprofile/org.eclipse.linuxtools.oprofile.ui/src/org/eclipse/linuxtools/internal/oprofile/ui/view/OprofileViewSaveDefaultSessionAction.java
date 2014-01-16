@@ -115,6 +115,7 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 
 	//Original author: Keith Seitz <keiths@redhat.com>
 	private class SaveSessionValidator implements IInputValidator {
+		@Override
 		public String isValid(String newText) {
 			// Sanity check
 			if (newText.length() == 0) {

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
-import java.io.File;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
@@ -71,8 +69,7 @@ public class OprofileViewDeleteSessionAction extends Action {
 
 	public static void deleteOperfDataFolder(IFolder operfData)
 	{
-		if(operfData.exists())
-		{
+		if(operfData.exists()) {
 			try {
 				operfData.delete(true,null);
 			} catch (CoreException e) {

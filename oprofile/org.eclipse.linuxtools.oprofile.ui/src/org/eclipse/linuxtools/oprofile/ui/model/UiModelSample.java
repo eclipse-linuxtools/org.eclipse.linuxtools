@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
@@ -22,7 +22,7 @@ public class UiModelSample implements IUiModelElement {
 	private IUiModelElement parent;		//parent element
 	private OpModelSample sample;			//the node in the data model
 	private int totalCount;				//total sample count for the parent session
-	
+
 	/**
 	 * Constructor to the UiModelSample class
 	 * @param parent The parent element
@@ -34,15 +34,15 @@ public class UiModelSample implements IUiModelElement {
 		this.sample = sample;
 		this.totalCount = totalCount;
 	}
-	
+
 	@Override
 	public String toString() {
 		double countPercentage = (double)sample.getCount() / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
-		
+
 		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	/**
 	 * Return the sample line
 	 * @return the sample line
@@ -50,7 +50,7 @@ public class UiModelSample implements IUiModelElement {
 	public int getLine() {
 		return sample.getLine();
 	}
-	
+
 	/**
 	 * Return the path to the sample node
 	 * @return node path
@@ -66,8 +66,9 @@ public class UiModelSample implements IUiModelElement {
 	public double getCountPercentage() {
 		return (double)sample.getCount() / (double)totalCount;
 	}
-	
+
 	/** IUiModelElement functions **/
+	@Override
 	public String getLabelText() {
 		return toString();
 	}
@@ -76,6 +77,7 @@ public class UiModelSample implements IUiModelElement {
 	 * Returns the children of this element.
 	 * @return An array of child elements or null
 	 */
+	@Override
 	public IUiModelElement[] getChildren() {
 		return null;
 	}
@@ -83,6 +85,7 @@ public class UiModelSample implements IUiModelElement {
 	 * Returns if the element has any children.
 	 * @return true if the element has children, false otherwise
 	 */
+	@Override
 	public boolean hasChildren() {
 		return false;		//bottom level element
 	}
@@ -91,6 +94,7 @@ public class UiModelSample implements IUiModelElement {
 	 * Returns the element's parent.
 	 * @return parent The parent element
 	 */
+	@Override
 	public IUiModelElement getParent() {
 		return parent;
 	}
@@ -99,6 +103,7 @@ public class UiModelSample implements IUiModelElement {
 	 * Returns the Image to display next to the text in the tree viewer.
 	 * @return an Image object of the icon
 	 */
+	@Override
 	public Image getLabelImage() {
 		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.SAMPLE_ICON).createImage();
 	}

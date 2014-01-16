@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -26,9 +26,9 @@ import org.eclipse.ui.PartInitException;
 
 /**
  * Listener for the oprofile view when a user double clicks on an element in the tree.
- * 
+ *
  * Different things occur based on the event:
- *   
+ *
  *   UiModelEvent 		- nothing (?)
  *   UiModelSession 	- save the session to a different name
  *   UiModelImage 		- nothing (?)
@@ -36,11 +36,12 @@ import org.eclipse.ui.PartInitException;
  *   UiModelSample		- go to line number in appropriate file
  */
 public class OprofileViewDoubleClickListener implements IDoubleClickListener {
+	@Override
 	public void doubleClick(DoubleClickEvent event) {
 		TreeViewer tv = (TreeViewer) event.getSource();
 		TreeSelection tsl = (TreeSelection) tv.getSelection();
 		IUiModelElement element = (IUiModelElement) tsl.getFirstElement();
-		
+
 		try {
 			if (element instanceof UiModelEvent) {
 				// UiModelEvent event = (UiModelEvent)element;
@@ -54,9 +55,9 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 				final UiModelSymbol symbol = (UiModelSymbol) element;
 				final String fileName = symbol.getFileName();
 				int line = symbol.getLineNumber();
-				
+
 				ProfileUIUtils.openEditorAndSelect(fileName, line);
-				
+
 			} else if (element instanceof UiModelSample) {
 				// jump to line number in the appropriate file
 				UiModelSample sample = (UiModelSample) element;
@@ -72,5 +73,5 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			e2.printStackTrace();
 		}
 	}
-	
+
 }

@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
@@ -43,21 +43,22 @@ public class UiModelDependent implements IUiModelElement {
 
 	private void refreshModel() {
 		dependents = new UiModelImage[dataModelDependents.length];
-		
+
 		for (int i = 0; i < dataModelDependents.length; i++) {
 			dependents[i] = new UiModelImage(this, dataModelDependents[i], totalCount, 0);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		double countPercentage = (double)depCount / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/** IUiModelElement functions **/
+	@Override
 	public String getLabelText() {
 		return toString();
 	}
@@ -66,6 +67,7 @@ public class UiModelDependent implements IUiModelElement {
 	 * Returns the children of this element.
 	 * @return An array of child elements or null
 	 */
+	@Override
 	public IUiModelElement[] getChildren() {
 		return dependents;
 	}
@@ -74,6 +76,7 @@ public class UiModelDependent implements IUiModelElement {
 	 * Returns if the element has any children.
 	 * @return true if the element has children, false otherwise
 	 */
+	@Override
 	public boolean hasChildren() {
 		return true;	//must have children, or this object wouldn't be created
 	}
@@ -82,6 +85,7 @@ public class UiModelDependent implements IUiModelElement {
 	 * Returns the parent element.
 	 * @return the parent element or null
 	 */
+	@Override
 	public IUiModelElement getParent() {
 		return parent;
 	}
@@ -90,6 +94,7 @@ public class UiModelDependent implements IUiModelElement {
 	 * Returns the Image to display next to the text in the tree viewer.
 	 * @return an Image object of the icon
 	 */
+	@Override
 	public Image getLabelImage() {
 		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.DEPENDENT_ICON).createImage();
 	}

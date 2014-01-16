@@ -109,6 +109,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 		}
 
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
+			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
 
@@ -120,6 +121,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 				UiRoot.refreshModel();
 
 				Display.getDefault().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
 					}
@@ -140,6 +142,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 		}
 	}
 
+	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		TreeSelection tsl = (TreeSelection) viewer.getSelection();
 		if (tsl.getFirstElement() instanceof UiModelSession) {

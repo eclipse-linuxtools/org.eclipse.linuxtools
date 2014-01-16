@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
@@ -29,7 +29,7 @@ public class UiModelRoot implements IUiModelElement {
 		events = null;
 		rootError = null;
 	}
-	
+
 	/**
 	 * Get the instance of this ui model root.
 	 * @return the ui model root object
@@ -39,13 +39,13 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	/**
-	 * Kick off creating the UI model from the data model. Meant to 
-	 * 	be called from UI code. The refreshModel() method is called for 
+	 * Kick off creating the UI model from the data model. Meant to
+	 * 	be called from UI code. The refreshModel() method is called for
 	 *  the child elements from their constructor.
 	 */
 	public void refreshModel() {
 		OpModelEvent dataModelEvents[] = getModelDataEvents();
-		
+
 		rootError = null;
 		events = null;
 
@@ -58,13 +58,14 @@ public class UiModelRoot implements IUiModelElement {
 			}
 		}
 	}
-	
+
 	protected OpModelEvent[] getModelDataEvents() {
 		OpModelRoot modelRoot = OpModelRoot.getDefault();
 		return modelRoot.getEvents();
 	}
 
 	/** IUiModelElement functions **/
+	@Override
 	public String getLabelText() {
 		return null;
 	}
@@ -73,6 +74,7 @@ public class UiModelRoot implements IUiModelElement {
 	 * Returns the children of this element.
 	 * @return An array of child elements or null
 	 */
+	@Override
 	public IUiModelElement[] getChildren() {
 		if (events != null)
 			return events;
@@ -83,6 +85,7 @@ public class UiModelRoot implements IUiModelElement {
 	 * Returns if the element has any children.
 	 * @return true if the element has children, false otherwise
 	 */
+	@Override
 	public boolean hasChildren() {
 		return true;
 	}
@@ -91,10 +94,12 @@ public class UiModelRoot implements IUiModelElement {
 	 * Returns the element's parent.
 	 * @return The parent element or null
 	 */
+	@Override
 	public IUiModelElement getParent() {
 		return null;
 	}
 
+	@Override
 	public Image getLabelImage() {
 		return null;
 	}
