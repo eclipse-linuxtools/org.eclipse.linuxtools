@@ -215,7 +215,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			ArrayList<String> columnNames = new ArrayList<>();
 			Control[] children = textFieldsComposite.getChildren();
 			for (int i = 0; i < numberOfVisibleColumns; i++) {
-				columnNames.add(((Text)children[i*2]).getText());
+				columnNames.add(((Text)children[i*4 + 2]).getText());
 			}
 			columnNamesList.set(selectedRegex, columnNames);
 			updateLaunchConfigurationDialog();
@@ -645,8 +645,6 @@ public class SystemTapScriptGraphOptionsTab extends
 		GridLayout layout = new GridLayout();
 		parent.setLayout(layout);
 
-		GridLayout twoColumns = new GridLayout(2, false);
-
 		Composite topLayout = new Composite(parent, SWT.NONE);
 		topLayout.setLayout(new GridLayout(1, false));
 		topLayout.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
@@ -741,6 +739,8 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 		});
 
+		GridLayout twoColumns = new GridLayout(2, false);
+
 		Composite regexSummaryComposite = new Composite(parent, SWT.NONE);
 		regexSummaryComposite.setLayout(twoColumns);
 		regexSummaryComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -753,32 +753,40 @@ public class SystemTapScriptGraphOptionsTab extends
 		this.sampleOutputText.addModifyListener(sampleOutputListener);
 		sampleOutputText.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_sampleOutputTooltip);
 
+
 		Composite expressionTableLabels = new Composite(parent, SWT.NONE);
+		expressionTableLabels.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		expressionTableLabels.setLayout(twoColumns);
-		expressionTableLabels.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label label = new Label(expressionTableLabels, SWT.NONE);
 		label.setText(Messages.SystemTapScriptGraphOptionsTab_columnTitle);
-		label.setAlignment(SWT.CENTER);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
-		data.widthHint = 200;
+		label.setAlignment(SWT.LEFT);
 
-		label.setLayoutData(data);
-
-		label = new Label(expressionTableLabels, SWT.NONE);
-		label.setAlignment(SWT.CENTER);
-		label.setText(Messages.SystemTapScriptGraphOptionsTab_extractedValueLabel);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		Label label2 = new Label(expressionTableLabels, SWT.NONE);
+		label2.setAlignment(SWT.LEFT);
+		label2.setText(Messages.SystemTapScriptGraphOptionsTab_extractedValueLabel);
 
 		this.regexTextScrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
-		data = new GridData(SWT.FILL, SWT.FILL, true, false);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
 		data.heightHint = 200;
 		regexTextScrolledComposite.setLayoutData(data);
 
 		textFieldsComposite = new Composite(regexTextScrolledComposite, SWT.NONE);
-		textFieldsComposite.setLayout(twoColumns);
+		textFieldsComposite.setLayout(new GridLayout(4, false));
 		regexTextScrolledComposite.setContent(textFieldsComposite);
 		regexTextScrolledComposite.setExpandHorizontal(true);
+
+		// To position the column labels properly, add a dummy column and use its children's sizes for reference.
+		// This is necessary since expressionTableLabels can't share a layout with textFieldsComposite.
+		textListenersEnabled = false;
+		addColumn(""); //$NON-NLS-1$
+		data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.horizontalIndent = textFieldsComposite.getChildren()[2].getLocation().x;
+		data.widthHint = textFieldsComposite.getChildren()[2].getSize().x;
+		label.setLayoutData(data);
+		label2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		removeColumn(false);
+		textListenersEnabled = true;
 	}
 
 	private IDataSet getCurrentDataset() {
@@ -1040,7 +1048,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			} else {
 				sampleOutputResults = Messages.SystemTapScriptGraphOptionsTab_sampleOutputNoMatch;
 			}
-			((Label)children[i*2+1]).setText(" " + sampleOutputResults); //$NON-NLS-1$
+			((Label)children[i*4+3]).setText(" " + sampleOutputResults); //$NON-NLS-1$
 		}
 
 		// May only add/edit graphs if there is output data being captured.
@@ -1074,6 +1082,20 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * the active stack of cached names, or a default name if one doesn't exist.
 	 */
 	private void addColumn(String nameToAdd) {
+		// Show the "shift" buttons of the previous column, if it exists.
+		if (this.numberOfVisibleColumns > 0) {
+			textFieldsComposite.getChildren()[(this.numberOfVisibleColumns - 1) * 4].setVisible(true);
+			textFieldsComposite.getChildren()[(this.numberOfVisibleColumns - 1) * 4 + 1].setVisible(true);
+		}
+
+		// Add buttons for shifting column names up/down in the list.
+		Button buttonUp = new Button(textFieldsComposite, SWT.PUSH);
+		buttonUp.setText(Messages.SystemTapScriptGraphOptionsTab_columnShiftUp);
+		buttonUp.setVisible(false);
+		Button buttonDown = new Button(textFieldsComposite, SWT.PUSH);
+		buttonDown.setText(Messages.SystemTapScriptGraphOptionsTab_columnShiftDown);
+		buttonDown.setVisible(false);
+
 		Text text = new Text(textFieldsComposite, SWT.BORDER);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
 		data.minimumWidth = 200;
@@ -1099,6 +1121,50 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		textFieldsComposite.layout();
 		textFieldsComposite.pack();
+
+		// Special value: if an empty string is given, don't add button listeners.
+		if (nameToAdd == "") { //$NON-NLS-1$
+			return;
+		}
+
+		// Add button listeners for shifting column names.
+		buttonUp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Control clickedButton = (Control) e.widget;
+				Control[] children = textFieldsComposite.getChildren();
+				int currentColumn = 0;
+				for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
+					if (children[currentColumn*4].equals(clickedButton)) {
+						break;
+					}
+				}
+				String edgeName = ((Text)children[currentColumn*4 + 2]).getText();
+				for (int i = currentColumn; i < numberOfVisibleColumns - 1; i++) {
+					((Text)children[i*4 + 2]).setText(((Text)children[(i + 1)*4 + 2]).getText());
+				}
+				((Text)children[(numberOfVisibleColumns - 1)*4 + 2]).setText(edgeName);
+			}
+		});
+
+		buttonDown.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Control clickedButton = (Control) e.widget;
+				Control[] children = textFieldsComposite.getChildren();
+				int currentColumn = 0;
+				for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
+					if (children[currentColumn*4 + 1].equals(clickedButton)) {
+						break;
+					}
+				}
+				String edgeName = ((Text)children[(numberOfVisibleColumns - 1)*4 + 2]).getText();
+				for (int i = numberOfVisibleColumns - 1; i > currentColumn; i--) {
+					((Text)children[i*4 + 2]).setText(((Text)children[(i - 1)*4 + 2]).getText());
+				}
+				((Text)children[currentColumn*4 + 2]).setText(edgeName);
+			}
+		});
 	}
 
 	/**
@@ -1109,7 +1175,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 */
 	private void removeColumn(Boolean saveNames) {
 		Control[] children = textFieldsComposite.getChildren();
-		int i = this.numberOfVisibleColumns*2 -1;
+		int i = this.numberOfVisibleColumns*4 - 1;
 
 		if (saveNames) {
 			// Push the removed name on a stack.
@@ -1122,6 +1188,14 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		children[i].dispose();
 		children[i-1].dispose();
+		children[i-2].dispose();
+		children[i-3].dispose();
+
+		// Hide the previous column's "shift" buttons, if it exists.
+		if (this.numberOfVisibleColumns > 2) {
+			children[i - 6].setVisible(false);
+			children[i - 7].setVisible(false);
+		}
 
 		this.numberOfVisibleColumns--;
 
