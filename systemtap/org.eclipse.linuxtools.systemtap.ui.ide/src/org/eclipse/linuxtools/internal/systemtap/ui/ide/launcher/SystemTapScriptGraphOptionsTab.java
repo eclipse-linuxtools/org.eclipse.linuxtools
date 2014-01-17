@@ -81,6 +81,11 @@ public class SystemTapScriptGraphOptionsTab extends
 	 */
 	static final int MAX_NUMBER_OF_REGEXS = 20;
 
+	/**
+	 * The maximum length of an output-parsing regular expression.
+	 */
+	static final int MAX_REGEX_LENGTH = 200;
+
 	// Note: any non-private String key with a trailing underscore is to be appended with an integer when looking up values.
 	static final String RUN_WITH_CHART = "runWithChart"; //$NON-NLS-1$
 	static final String NUMBER_OF_REGEXS = "numberOfRegexs"; //$NON-NLS-1$
@@ -283,7 +288,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			contents = CommentRemover.exec(contents);
 
 			// Now actually search the contents for "printf(...)" statements. (^|[\s({;])printf\("(.+?)",.+\)
-			Pattern pattern = Pattern.compile("(?<![a-zA-Z])printf\\(\"(.+?)\",.+\\)"); //$NON-NLS-1$
+			Pattern pattern = Pattern.compile("(?<=[^\\w])printf\\(\"(.+?)\",.+?\\)"); //$NON-NLS-1$
 			Matcher matcher = pattern.matcher(contents);
 			boolean firstfound = false;
 			while (matcher.find() && (!firstfound || getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS)) {
@@ -602,7 +607,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		Composite top = new Composite(parent, SWT.NONE);
 		setControl(top);
 		top.setLayout(layout);
-		top.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, true));
+		top.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		this.runWithChartCheckButton = new Button(top, SWT.CHECK);
 		runWithChartCheckButton.setText(Messages.SystemTapScriptGraphOptionsTab_2);
@@ -626,7 +631,9 @@ public class SystemTapScriptGraphOptionsTab extends
 		this.createColumnSelector(outputParsingGroup);
 
 		this.graphsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
-		graphsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		// Set the text here just to allow proper sizing.
+		graphsGroup.setText(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1));
+		graphsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		createGraphCreateArea(graphsGroup);
 
 		setGraphingEnabled(false);
@@ -638,17 +645,10 @@ public class SystemTapScriptGraphOptionsTab extends
 		GridLayout layout = new GridLayout();
 		parent.setLayout(layout);
 
-		GridLayout oneColumn = new GridLayout();
-		oneColumn.numColumns = 1;
-
-		GridLayout twoColumns = new GridLayout();
-		twoColumns.numColumns = 2;
-
-		GridLayout threeColumns = new GridLayout();
-		threeColumns.numColumns = 3;
+		GridLayout twoColumns = new GridLayout(2, false);
 
 		Composite topLayout = new Composite(parent, SWT.NONE);
-		topLayout.setLayout(oneColumn);
+		topLayout.setLayout(new GridLayout(1, false));
 		topLayout.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		generateExpsButton = new Button(topLayout, SWT.PUSH);
@@ -658,13 +658,14 @@ public class SystemTapScriptGraphOptionsTab extends
 		generateExpsButton.addSelectionListener(regexGenerator);
 
 		Composite regexButtonLayout = new Composite(parent, SWT.NONE);
-		regexButtonLayout.setLayout(threeColumns);
+		regexButtonLayout.setLayout(new GridLayout(3, false));
 		regexButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Label selectedRegexLabel = new Label(regexButtonLayout, SWT.NONE);
 		selectedRegexLabel.setText(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		selectedRegexLabel.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_regexTooltip);
 		regularExpressionCombo = new Combo(regexButtonLayout, SWT.DROP_DOWN);
+		regularExpressionCombo.setTextLimit(MAX_REGEX_LENGTH);
 		regularExpressionCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		regularExpressionCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -758,7 +759,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		Label label = new Label(expressionTableLabels, SWT.NONE);
 		label.setText(Messages.SystemTapScriptGraphOptionsTab_columnTitle);
-		label.setAlignment(SWT.LEFT);
+		label.setAlignment(SWT.CENTER);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
 		data.widthHint = 200;
 
@@ -776,10 +777,8 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		textFieldsComposite = new Composite(regexTextScrolledComposite, SWT.NONE);
 		textFieldsComposite.setLayout(twoColumns);
-		textFieldsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		regexTextScrolledComposite.setContent(textFieldsComposite);
 		regexTextScrolledComposite.setExpandHorizontal(true);
-		regexTextScrolledComposite.setExpandVertical(false);
 	}
 
 	private IDataSet getCurrentDataset() {
@@ -787,9 +786,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	}
 
 	private void createGraphCreateArea(Composite comp){
-		GridLayout twoColumnsLayout = new GridLayout();
-		comp.setLayout(twoColumnsLayout);
-		twoColumnsLayout.numColumns = 2;
+		comp.setLayout(new GridLayout(2, false));
 
 		graphsTable = new Table(comp, SWT.SINGLE | SWT.BORDER);
 		GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
