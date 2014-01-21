@@ -11,7 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.datadisplay;
 
+import java.text.MessageFormat;
+
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
@@ -53,12 +56,12 @@ public class DataGrid implements IUpdateListener {
 
 		dataSet = set;
 		filteredDataSet = (dataSet instanceof IFilteredDataSet)
-								? (IFilteredDataSet)dataSet
-								: DataSetFactory.createFilteredDataSet(dataSet);
-		this.style = style;
-		clickLocation = new Point(-1, -1);
-		removedItems = 0;
-		createPartControl(composite);
+				? (IFilteredDataSet)dataSet
+						: DataSetFactory.createFilteredDataSet(dataSet);
+				this.style = style;
+				clickLocation = new Point(-1, -1);
+				removedItems = 0;
+				createPartControl(composite);
 	}
 
 	public void setLayoutData(Object data) {
@@ -103,33 +106,38 @@ public class DataGrid implements IUpdateListener {
 		handleUpdateEvent();
 	}
 
+	private MenuItem removeFiltersMenuItem;
+	private MenuItem formatMenuItem;
+
 	public Menu initMenus() {
 		Menu menu = new Menu(table.getShell(), SWT.POP_UP);
 		menu.addMenuListener(new MainMenuListener());
 
 		Menu formatMenu = new Menu(menu);
+		formatMenuItem = new MenuItem(menu, SWT.CASCADE);
+		formatMenuItem.setText(Localization.getString("DataGrid.FormatAs")); //$NON-NLS-1$
+		formatMenuItem.setMenu(formatMenu);
+
+		filterMenu = new Menu(menu);
 		MenuItem item = new MenuItem(menu, SWT.CASCADE);
-		item.setText(Localization.getString("DataGrid.FormatAs")); //$NON-NLS-1$
-		item.setMenu(formatMenu);
+		item.setText(Localization.getString("DataGrid.AddFilter")); //$NON-NLS-1$
+		item.addSelectionListener(new AddFilterSelection());
 
-			filterMenu = new Menu(menu);
-			item = new MenuItem(menu, SWT.CASCADE);
-			item.setText(Localization.getString("DataGrid.AddFilter")); //$NON-NLS-1$
-			item.addSelectionListener(new AddFilterSelection());
+		removeFiltersMenuItem = new MenuItem(menu, SWT.CASCADE);
+		removeFiltersMenuItem.setText(Localization.getString("DataGrid.RemoveFilter")); //$NON-NLS-1$
+		removeFiltersMenuItem.setMenu(filterMenu);
 
-			item = new MenuItem(menu, SWT.CASCADE);
-			item.setText(Localization.getString("DataGrid.RemoveFilter")); //$NON-NLS-1$
-			item.setMenu(filterMenu);
-
-			IDataSetFilter[] filters = filteredDataSet.getFilters();
-			if(null != filters) {
-				for(int i=0; i<filters.length; i++) {
-					item = new MenuItem(filterMenu, SWT.CASCADE);
-					item.setText(AvailableFilterTypes.getFilterName(filters[i].getID()));
-					item.setData(filters[i]);
-					item.addSelectionListener(new RemoveFilterSelection());
-				}
+		IDataSetFilter[] filters = filteredDataSet.getFilters();
+		if(null != filters && filters.length > 0) {
+			for(int i=0; i<filters.length; i++) {
+				item = new MenuItem(filterMenu, SWT.CASCADE);
+				item.setText(AvailableFilterTypes.getFilterName(filters[i].getID()));
+				item.setData(filters[i]);
+				item.addSelectionListener(new RemoveFilterSelection());
 			}
+		} else {
+			removeFiltersMenuItem.setEnabled(false);
+		}
 
 		item = new MenuItem(menu, SWT.CHECK);
 		item.setText(Localization.getString("DataGrid.ManualyResize")); //$NON-NLS-1$
@@ -141,6 +149,7 @@ public class DataGrid implements IUpdateListener {
 			item.addSelectionListener(new MenuFormatSelection());
 		}
 
+		formatMenuItem.setEnabled(filteredDataSet.getRowCount() > 0);
 		formatMenu.addMenuListener(new FormatMenuListener());
 		return menu;
 	}
@@ -148,9 +157,11 @@ public class DataGrid implements IUpdateListener {
 	private int getSelectedColumn() {
 		TableColumn[] cols = table.getColumns();
 		int location = 0;
-		for(int i=0; i<cols.length; i++)
-			if(clickLocation.x > location && clickLocation.x < (location+=cols[i].getWidth()))
+		for(int i=0; i<cols.length; i++) {
+			if(clickLocation.x > location && clickLocation.x < (location+=cols[i].getWidth())) {
 				return i;
+			}
+		}
 
 		return cols.length-1;
 	}
@@ -178,21 +189,22 @@ public class DataGrid implements IUpdateListener {
 			wizard.init(workbench, null);
 			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
 			dialog.create();
-			dialog.open();
+			int result = dialog.open();
 
-			IDataSetFilter filter = wizard.getFilter();
-			wizard.dispose();
-
-			if(null != filter) {
+			if(result != Window.CANCEL) {
+				IDataSetFilter filter = wizard.getFilter();
+				removeFiltersMenuItem.setEnabled(true);
 				filteredDataSet.addFilter(filter);
 				table.removeAll();
 				handleUpdateEvent();
 
 				MenuItem item = new MenuItem(filterMenu, SWT.CASCADE);
-				item.setText(AvailableFilterTypes.getFilterName(filter.getID()));
+				item.setText(MessageFormat.format(Localization.getString("DataGrid.FilterLabel"), //$NON-NLS-1$
+						AvailableFilterTypes.getFilterName(filter.getID()), dataSet.getTitles()[filter.getColumn()], filter.getInfo()));
 				item.setData(filter);
 				item.addSelectionListener(new RemoveFilterSelection());
 			}
+			wizard.dispose();
 		}
 	}
 
@@ -201,6 +213,9 @@ public class DataGrid implements IUpdateListener {
 		public void widgetSelected(SelectionEvent e) {
 			IDataSetFilter idsf = (IDataSetFilter)((MenuItem)e.widget).getData();
 			e.widget.dispose();
+			if (filterMenu.getItemCount() == 0) {
+				removeFiltersMenuItem.setEnabled(false);
+			}
 
 			if(filteredDataSet.removeFilter(idsf)) {
 				table.removeAll();
@@ -221,22 +236,22 @@ public class DataGrid implements IUpdateListener {
 
 			int selectedCol = Math.max(1, getSelectedColumn());
 
-			for(int i=0; i<items.length; i++)
+			for(int i=0; i<items.length; i++) {
 				items[i].setSelection(false);
+			}
 			items[columnFormat[selectedCol-1].getFormat()].setSelection(true);
 
-			itemText = dataSet.getRow(0)[selectedCol-1].toString();
 			items[IFormattingStyles.UNFORMATED].setEnabled(true);
 			items[IFormattingStyles.STRING].setEnabled(true);
 
+			itemText = dataSet.getRow(0)[selectedCol-1].toString();
 			try {
 				Double.parseDouble(itemText);
 				doubleValid = true;
-
-				try {
-					Long.parseLong(itemText);
-					longValid = true;
-				} catch(NumberFormatException nfe2) {}
+			} catch(NumberFormatException nfe) {}
+			try {
+				Long.parseLong(itemText);
+				longValid = true;
 			} catch(NumberFormatException nfe) {}
 
 			items[IFormattingStyles.DOUBLE].setEnabled(doubleValid);
@@ -253,21 +268,26 @@ public class DataGrid implements IUpdateListener {
 			int format = IFormattingStyles.UNFORMATED;
 			int column = Math.max(1, getSelectedColumn());
 			int i;
-			for(i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++)
-				if(IFormattingStyles.FORMAT_TITLES[i].equals(((MenuItem)e.getSource()).getText()))
+			for(i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++) {
+				if(IFormattingStyles.FORMAT_TITLES[i].equals(((MenuItem)e.getSource()).getText())) {
 					format = i;
+				}
+			}
 
 			Object[] data = dataSet.getColumn(column-1);
 			columnFormat[column-1].setFormat(format);
-			for(i=0; i<table.getItemCount(); i++)
+			for(i=0; i<table.getItemCount(); i++) {
 				table.getItem(i).setText(column, columnFormat[column-1].format(data[i].toString()));
+			}
 			table.redraw();
 		}
 	}
 
 	@Override
 	public void handleUpdateEvent() {
-		if(table.isDisposed()) return;
+		if(table.isDisposed()) {
+			return;
+		}
 
 		table.getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -277,6 +297,7 @@ public class DataGrid implements IUpdateListener {
 				}
 				TableItem item;
 				int startLocation, endLocation = filteredDataSet.getRowCount();
+				boolean rowsAdded = endLocation != table.getItemCount();
 
 				if(FULL_UPDATE == (style & FULL_UPDATE)) {
 					//Remove extra items so save memory.
@@ -317,12 +338,16 @@ public class DataGrid implements IUpdateListener {
 				col.pack();
 				if(!manualResize) {
 					TableColumn[] cols = table.getColumns();
-					for(int i=1; i<cols.length; i++)
+					for(int i=1; i<cols.length; i++) {
 						cols[i].pack();
+					}
 				}
 				//Use if we want to set focus to newly added item
-				if(prefs.getBoolean(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY))
-					table.showItem(table.getItem(table.getItemCount()-1));
+				if(prefs.getBoolean(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
+						&& table.getItemCount() > 1 && rowsAdded) {
+					table.select(table.getItemCount()-1);
+				}
+				formatMenuItem.setEnabled(table.getItemCount() > 0);
 			}
 		});
 	}

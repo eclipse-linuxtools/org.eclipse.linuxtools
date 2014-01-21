@@ -86,12 +86,13 @@ public class SelectFilterWizardPage extends WizardPage {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if(null != btnFilters)
+		if(null != btnFilters) {
 			for(int i=0; i<btnFilters.length; i++) {
 				btnFilters[i].removeSelectionListener(buttonListener);
 				btnFilters[i].dispose();
 				btnFilters[i] = null;
 			}
+		}
 		btnFilters = null;
 		lblDesc = null;
 	}

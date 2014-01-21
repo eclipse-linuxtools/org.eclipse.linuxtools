@@ -11,8 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.graphingapi.core.filters;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.core.Localization;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.NumberType;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
 
@@ -23,7 +25,11 @@ public class RangeFilter implements IDataSetFilter {
 		this.column = column;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
-		this.style = style;
+		if (lowerBound == null || upperBound == null) {
+			this.style = style & INCLUSIVE;
+		} else {
+			this.style = style;
+		}
 	}
 
 	/**
@@ -35,14 +41,16 @@ public class RangeFilter implements IDataSetFilter {
 	 */
 	@Override
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
-		if(column < 0 || column >= data.length)
+		if(column < 0 || column >= data.length) {
 			return null;
+		}
 
 		ArrayList<Object>[] newData = Copier.copy(data);
 		for(int j,i=newData[column].size()-1; i>=0; i--) {
 			if(!inBounds(NumberType.obj2num(newData[column].get(i)))) {
-				for(j=0; j<newData.length; j++)
+				for(j=0; j<newData.length; j++) {
 					newData[j].remove(i);
+				}
 			}
 		}
 		return newData;
@@ -61,31 +69,61 @@ public class RangeFilter implements IDataSetFilter {
 	 * @return True if the number is within bounds.
 	 */
 	private boolean inBounds(Number num) {
-		if(INSIDE_BOUNDS == (style & 1)) {
+		if (INSIDE_BOUNDS == (style & 1)) {
 			if(INCLUSIVE == (style & 2)) {
-				if(num.doubleValue() > upperBound.doubleValue()
-				|| num.doubleValue() < lowerBound.doubleValue())
+				if((upperBound != null && num.doubleValue() > upperBound.doubleValue())
+						|| (lowerBound != null && num.doubleValue() < lowerBound.doubleValue())) {
 					return false;
+				}
 			} else {
-				if(num.doubleValue() >= upperBound.doubleValue()
-				|| num.doubleValue() <= lowerBound.doubleValue())
+				if((upperBound != null && num.doubleValue() >= upperBound.doubleValue())
+						|| (lowerBound != null && num.doubleValue() <= lowerBound.doubleValue())) {
 					return false;
+				}
+			}
+		} else {
+			if(INCLUSIVE == (style & 2)) {
+				if((upperBound != null && num.doubleValue() < upperBound.doubleValue())
+						&& (lowerBound != null && num.doubleValue() > lowerBound.doubleValue())) {
+					return false;
+				}
+			} else {
+				if((upperBound != null && num.doubleValue() <= upperBound.doubleValue())
+						&& (lowerBound != null && num.doubleValue() >= lowerBound.doubleValue())) {
+					return false;
+				}
 			}
 		}
-
-		if(OUTSIDE_BOUNDS == (style & 1)) {
-			if(INCLUSIVE == (style & 2)) {
-				if(num.doubleValue() < upperBound.doubleValue()
-				&& num.doubleValue() > lowerBound.doubleValue())
-					return false;
-			} else {
-				if(num.doubleValue() <= upperBound.doubleValue()
-				&& num.doubleValue() >= lowerBound.doubleValue())
-					return false;
-			}
-		}
-
 		return true;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public String getInfo() {
+		boolean insideBounds = INSIDE_BOUNDS == (style & 1);
+		boolean inclusive = INCLUSIVE == (style & 2);
+		String info;
+		if (lowerBound != null && upperBound != null) {
+			info = MessageFormat.format(Localization.getString(insideBounds ?
+					"RangeFilter.Inside" : "RangeFilter.Outside"), lowerBound.toString(), upperBound.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			return inclusive ? MessageFormat.format(Localization.getString("RangeFilter.Inclusive"), info) : info; //$NON-NLS-1$
+		} else {
+			boolean lower = lowerBound != null;
+			info = (lower ? lowerBound : upperBound).toString();
+			return MessageFormat.format(Localization.getString(lower ?
+					"RangeFilter.GreaterThan" : "RangeFilter.LessThan"), !inclusive ? //$NON-NLS-1$ //$NON-NLS-2$
+							info : MessageFormat.format(Localization.getString("RangeFilter.EqualTo"), info)); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public int getColumn() {
+		return column;
 	}
 
 	private int column;

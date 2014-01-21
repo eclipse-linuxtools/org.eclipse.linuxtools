@@ -52,10 +52,11 @@ public class SortFilterWizardPage extends FilterWizardPage {
 		//Column
 		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
 		lblColumn.setText(Localization.getString("SortFilterWizardPage.Column")); //$NON-NLS-1$
-		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN);
+		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
 		cboColumn.addSelectionListener(selectionListener);
-		for(int i=0; i<wizard.series.length; i++)
+		for(int i=0; i<wizard.series.length; i++) {
 			cboColumn.add(wizard.series[i]);
+		}
 
 		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
@@ -68,6 +69,8 @@ public class SortFilterWizardPage extends FilterWizardPage {
 		radDescending.setText(Localization.getString("SortFilterWizardPage.Descending")); //$NON-NLS-1$
 		radDescending.addSelectionListener(selectionListener);
 
+		cboColumn.select(0);
+		createFilter();
 		setControl(comp);
 	}
 
@@ -80,8 +83,7 @@ public class SortFilterWizardPage extends FilterWizardPage {
 	protected void createFilter() {
 		int selected = cboColumn.getSelectionIndex();
 		int style = (radAscending.getSelection() ? SortFilter.ASCENDING : SortFilter.DESCENDING);
-		if(selected >=0 && selected < cboColumn.getItemCount())
-			wizard.filter = new SortFilter(selected, style);
+		filter = new SortFilter(selected, style);
 	}
 
 	@Override

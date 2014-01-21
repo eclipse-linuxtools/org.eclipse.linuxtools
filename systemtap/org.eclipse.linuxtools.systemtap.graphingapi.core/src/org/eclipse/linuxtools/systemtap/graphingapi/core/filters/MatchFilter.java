@@ -11,8 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.graphingapi.core.filters;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.core.Localization;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
 
 
@@ -33,16 +35,18 @@ public class MatchFilter implements IDataSetFilter {
 	 */
 	@Override
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
-		if(column < 0 || column >= data.length)
+		if(column < 0 || column >= data.length) {
 			return null;
+		}
 
 		ArrayList<Object>[] newData = Copier.copy(data);
 		boolean equals;
 		for(int j, i=newData[column].size()-1; i>=0; i--) {
 			equals = newData[column].get(i).toString().equals(value.toString());	//TODO: Find better equivilance method
 			if((equals && REMOVE_MATCHING == (style & 1)) || (!equals && KEEP_MATCHING == (style & 1))) {
-				for(j=0; j<newData.length; j++)
+				for(j=0; j<newData.length; j++) {
 					newData[j].remove(i);
+				}
 			}
 		}
 		return newData;
@@ -51,6 +55,22 @@ public class MatchFilter implements IDataSetFilter {
 	@Override
 	public String getID() {
 		return ID;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public String getInfo() {
+		return MessageFormat.format(Localization.getString(style == KEEP_MATCHING ? "MatchFilter.Matches" : "MatchFilter.Removes"), value.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public int getColumn() {
+		return column;
 	}
 
 	private int column;

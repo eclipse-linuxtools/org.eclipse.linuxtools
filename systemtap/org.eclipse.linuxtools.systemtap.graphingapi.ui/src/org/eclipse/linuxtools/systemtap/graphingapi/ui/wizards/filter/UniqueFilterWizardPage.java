@@ -56,7 +56,7 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 		//Column
 		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
 		lblColumn.setText(Localization.getString("UniqueFilterWizardPage.Column")); //$NON-NLS-1$
-		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN);
+		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
 		cboColumn.addSelectionListener(selectionListener);
 		for (String series : wizard.series) {
 			cboColumn.add(series);
@@ -70,7 +70,7 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 
 		btnAggregates = new Button[AggregateFactory.aggregateIDs.length];
 		for(int i=0; i<btnAggregates.length; i++) {
-			btnAggregates[i] = new Button(cmpFilterOpts, SWT.NONE);
+			btnAggregates[i] = new Button(cmpFilterOpts, SWT.RADIO);
 			btnAggregates[i].setText(AggregateFactory.getAggregateName(AggregateFactory.aggregateIDs[i]));
 			btnAggregates[i].addSelectionListener(btnSelectionListener);
 			btnAggregates[i].setData(AggregateFactory.aggregateIDs[i]);
@@ -84,6 +84,9 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 
 		lblDesc = new Label(comp, SWT.WRAP);
 		lblDesc.setLayoutData(data2);
+
+		cboColumn.select(0);
+		createFilter();
 		setControl(comp);
 	}
 
@@ -97,7 +100,7 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 		int selected = cboColumn.getSelectionIndex();
 		if(selected >=0 && selected < cboColumn.getItemCount()) {
 			if(null != aggregateID && aggregateID.length() > 0) {
-				((SelectFilterWizard) super.getWizard()).filter = new UniqueFilter(
+				filter = new UniqueFilter(
 						selected,
 						AggregateFactory.createAggregate(aggregateID));
 			}

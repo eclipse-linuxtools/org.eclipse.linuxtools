@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core.filters;
 
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.core.Localization;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.NumberType;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
 import org.eclipse.linuxtools.systemtap.structures.IndexedObject;
@@ -67,6 +68,22 @@ public class SortFilter implements IDataSetFilter {
 	@Override
 	public String getID() {
 		return ID;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public String getInfo() {
+		return Localization.getString(style == ASCENDING ? "SortFilter.Ascending" : "SortFilter.Descending"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public int getColumn() {
+		return column;
 	}
 
 	private int column;

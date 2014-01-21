@@ -16,4 +16,12 @@ import java.util.ArrayList;
 public interface IDataSetFilter {
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data);
 	public String getID();
+	/**
+	 * @since 2.0
+	 */
+	public String getInfo();
+	/**
+	 * @since 2.0
+	 */
+	public int getColumn();
 }
