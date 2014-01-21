@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
@@ -187,6 +188,20 @@ public class RunScriptHandler extends AbstractHandler {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						String name = !local ? serverfileName : fileName;
+						if (ScriptConsole.instanceIsRunning(name)) {
+							MessageDialog dialog = new MessageDialog(
+									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+									Messages.RunScriptAction_alreadyRunningDialogTitle, null,
+									MessageFormat.format(Messages.RunScriptAction_alreadyRunningDialogMessage, fileName),
+									MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
+							if (dialog.open() != Window.OK) {
+								if (launch != null) {
+									launch.forceRemove();
+								}
+								return;
+							}
+						}
 						final ScriptConsole console;
 						if (!local) {
 							console = ScriptConsole.getInstance(serverfileName);

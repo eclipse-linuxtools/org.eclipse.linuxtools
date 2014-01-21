@@ -89,6 +89,28 @@ public class ScriptConsole extends IOConsole {
 	private List<ScriptConsoleObserver> inactiveConsoleObservers = new LinkedList<>();
 
 	/**
+	 * Returns whether or not a ScriptConsole of the specified name exists and is running.
+	 * @param name The name of the console (likely a script name) to check.
+	 * @return <code>true</code> if a ScriptConsole of the given name both exists and is running,
+	 * or <code>false</code> otherwise.
+	 * @since 3.0
+	 */
+	public static boolean instanceIsRunning(String name) {
+		IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+		if (null != ic) {
+			for (IConsole consoleIterator: ic) {
+				if (consoleIterator instanceof ScriptConsole){
+					ScriptConsole activeConsole = (ScriptConsole) consoleIterator;
+					if(activeConsole.getName().endsWith(name) && activeConsole.isRunning()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * This method is used to create a reference to a new <code>ScriptConsole</code>.  If there
 	 * is already an console that has the same name as that provided it will be stopped,
 	 * cleared and returned to the caller to use.  If there is no console matching the
@@ -259,7 +281,7 @@ public class ScriptConsole extends IOConsole {
 	public void runLocally(String[] command, String[] envVars, IErrorParser errorParser) {
 		runLocally(command, envVars, errorParser, null);
 	}
-	
+
 	/**
 	 * Runs the provided command in this ScriptConsole instance on the current
 	 * host.

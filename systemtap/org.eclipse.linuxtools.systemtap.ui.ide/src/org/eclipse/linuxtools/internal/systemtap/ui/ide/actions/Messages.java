@@ -21,6 +21,8 @@ public class Messages extends NLS {
 	public static String ScriptRunAction_InvalidScriptTitle;
 	public static String ScriptRunAction_InvalidScriptTMessage;
 	public static String TempFileAction_errorDialogTitle;
+	public static String RunScriptAction_alreadyRunningDialogTitle;
+	public static String RunScriptAction_alreadyRunningDialogMessage;
 	public static String RunScriptChartAction_couldNotSwitchToGraphicPerspective;
 	public static String ProbeAliasAction_SelectEditor;
 	public static String ProbeAliasAction_DialogTitle;

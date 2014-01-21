@@ -94,7 +94,7 @@ public class SystemTapScriptLaunch extends Launch
 		}
 	}
 
-	private void forceRemove() {
+	public void forceRemove() {
 		runStopped = true;
 		removeConsole();
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
