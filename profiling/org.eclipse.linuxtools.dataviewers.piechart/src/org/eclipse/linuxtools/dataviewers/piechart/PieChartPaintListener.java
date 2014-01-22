@@ -34,17 +34,6 @@ public class PieChartPaintListener implements PaintListener {
     private static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 
     /**
-     * Draws pie charts with no titles given to each pie.
-     * @param chart
-     * @param plotArea
-     * @deprecated See {@link #PieChartPaintListener(PieChart, Control, Control, String[])}
-     */
-    @Deprecated
-    public PieChartPaintListener(PieChart chart, Control plotArea) {
-        this(chart, plotArea, null, new String[0]);
-    }
-
-    /**
      * Handles drawing & updating of a PieChart, with titles given to its legend and
      * to each of its pies.
      * @param chart The PieChart to draw & update.

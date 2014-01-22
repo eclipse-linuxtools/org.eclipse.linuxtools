@@ -26,17 +26,6 @@ public class PieChart extends Chart {
 
 	protected List<RGB> colorList = new ArrayList<RGB>();
 
-	/**
-	 * A PieChart with no titles given to its pies.
-	 * @param parent
-	 * @param style
-	 * @deprecated See {@link #PieChart(Composite, int, String[])}
-	 */
-	@Deprecated
-    public PieChart(Composite parent, int style) {
-        this(parent, style, new String[0]);
-    }
-
     /**
      * A PieChart with titles given to each pie it draws.
      * @param parent The parent composite.
