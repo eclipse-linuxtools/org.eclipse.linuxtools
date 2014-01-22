@@ -22,7 +22,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>Resource Selector Proxy for RDT (Incubation)</name>
+  <name>Linux Tools Resource Selector Proxy for RDT</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
