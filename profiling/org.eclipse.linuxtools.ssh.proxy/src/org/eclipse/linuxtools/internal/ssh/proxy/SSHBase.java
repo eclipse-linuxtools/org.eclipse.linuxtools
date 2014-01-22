@@ -33,7 +33,7 @@ public class SSHBase {
 	private JSch jsch;
 	private Session session;
 	private ChannelSftp channelSftp;
-	private static HashMap<String, String> passwords = new HashMap<String, String>();
+	private static HashMap<String, String> passwords = new HashMap<>();
 
 	public SSHBase(URI uri) {
 		this.uri = uri;

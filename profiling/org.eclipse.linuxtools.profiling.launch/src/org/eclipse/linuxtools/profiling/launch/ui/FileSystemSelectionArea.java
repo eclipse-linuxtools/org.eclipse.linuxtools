@@ -61,7 +61,7 @@ public class FileSystemSelectionArea {
 
 	private FileSystemElement[] getSchemes() {
 		if (fsElements == null) {
-			fsElements = new LinkedList<FileSystemElement>();
+			fsElements = new LinkedList<>();
 
 			// Add all of the ones declared by the registry.
 			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, EXTENSION_POINT_ID);

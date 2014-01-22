@@ -71,9 +71,10 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	private boolean customSelected;
 
 	private String [][]fillPaths() {
-		LinkedList<String[]> list = new LinkedList<String[]>();
-		for (String[] t : DEFAULT_PATHS)
+		LinkedList<String[]> list = new LinkedList<>();
+		for (String[] t : DEFAULT_PATHS) {
 			list.add(t);
+		}
 
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LaunchCoreConstants.PLUGIN_ID, LINUXTOOLS_PATH_EXT_POINT);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
@@ -227,10 +228,12 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 	 */
 	@Override
 	public IAdaptable getElement() {
-		if (element == null)
+		if (element == null) {
 			return element;
-		if (!(element instanceof IProject))
+		}
+		if (!(element instanceof IProject)) {
 			return (IAdaptable) element.getAdapter(IProject.class);
+		}
 		return element;
 	}
 

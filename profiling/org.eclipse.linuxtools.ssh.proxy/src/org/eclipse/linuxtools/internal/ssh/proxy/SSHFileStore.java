@@ -68,7 +68,7 @@ public class SSHFileStore extends FileStore {
 			monitor.worked(25);
 			Vector<?> v = channel.ls(uri.getPath());
 			monitor.worked(50);
-			LinkedList<String> childs = new LinkedList<String>();
+			LinkedList<String> childs = new LinkedList<>();
 
 			boolean isDir = false;
 			for (int i=0; i < v.size(); i++) {
@@ -102,7 +102,7 @@ public class SSHFileStore extends FileStore {
 			monitor.worked(25);
 			Vector<?> v = channel.ls(uri.getPath());
 			monitor.worked(50);
-			LinkedList<IFileInfo> childs = new LinkedList<IFileInfo>();
+			LinkedList<IFileInfo> childs = new LinkedList<>();
 
 			boolean isDir = false;
 			for (int i=0; i < v.size(); i++) {
@@ -144,7 +144,7 @@ public class SSHFileStore extends FileStore {
 			monitor.worked(25);
 			Vector<?> v = channel.ls(uri.getPath());
 			monitor.worked(50);
-			LinkedList<IFileStore> childs = new LinkedList<IFileStore>();
+			LinkedList<IFileStore> childs = new LinkedList<>();
 
 			boolean isDir = false;
 			for (int i=0; i < v.size(); i++) {

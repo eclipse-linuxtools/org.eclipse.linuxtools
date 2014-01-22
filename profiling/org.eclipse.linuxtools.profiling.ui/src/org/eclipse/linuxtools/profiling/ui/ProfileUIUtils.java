@@ -195,10 +195,11 @@ public class ProfileUIUtils {
 	 */
 	public static ICProject findCProjectWithAbsolutePath(final String absPath) throws CoreException{
 		final String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-		final ArrayList<ICProject> ret = new ArrayList<ICProject>();
+		final ArrayList<ICProject> ret = new ArrayList<>();
 		
 		// visitor object to check for the matching path string
 		ICElementVisitor vis = new ICElementVisitor() {
+			@Override
 			public boolean visit(ICElement element) {
 				if (element.getElementType() == ICElement.C_CCONTAINER
 						|| element.getElementType() == ICElement.C_PROJECT){
@@ -234,7 +235,7 @@ public class ProfileUIUtils {
 	 */
 	public static HashMap<String,int[]> findFunctionsInProject(ICProject project, String functionName,
 			int numArgs, String fileHint)  {
-		  HashMap<String,int[]> files = new HashMap<String,int[]>() ;
+		  HashMap<String,int[]> files = new HashMap<>() ;
 
 		  IIndexManager manager = CCorePlugin.getIndexManager();
 		  IIndex index = null;

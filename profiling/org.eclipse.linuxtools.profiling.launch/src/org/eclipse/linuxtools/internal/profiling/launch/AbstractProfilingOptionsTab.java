@@ -57,7 +57,7 @@ public abstract class AbstractProfilingOptionsTab extends ProfileLaunchConfigura
 	Image img;
 
 	// if tabs are being initialized do not call performApply()
-	HashMap<String, Boolean> initialized = new HashMap<String, Boolean> ();
+	HashMap<String, Boolean> initialized = new HashMap<> ();
 
 	/**
 	 * Get list of profiling providers for the user to choose from.

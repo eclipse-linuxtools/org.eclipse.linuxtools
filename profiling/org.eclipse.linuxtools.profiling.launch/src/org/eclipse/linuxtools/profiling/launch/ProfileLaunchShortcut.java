@@ -84,7 +84,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		List<ILaunchConfiguration> candidateConfigs = Collections.emptyList();
 		try {
 			ILaunchConfiguration[] configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations(configType);
-			candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
+			candidateConfigs = new ArrayList<>(configs.length);
 			for (int i = 0; i < configs.length; i++) {
 				ILaunchConfiguration config = configs[i];
 				IPath programPath = CDebugUtils.getProgramPath(config);
@@ -197,7 +197,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 			if (elements.length == 1 && elements[0] instanceof IBinary) {
 				bin = (IBinary) elements[0];
 			} else {
-				final List<IBinary> results = new ArrayList<IBinary>();
+				final List<IBinary> results = new ArrayList<>();
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(getActiveWorkbenchShell());
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
 					@Override

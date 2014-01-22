@@ -42,8 +42,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 public class ResourceHelper {
 	private final static IProgressMonitor NULL_MONITOR = new NullProgressMonitor();
-	private final static Set<String> externalFilesCreated = new HashSet<String>();
-	private final static Set<IResource> resourcesCreated = new HashSet<IResource>();
+	private final static Set<String> externalFilesCreated = new HashSet<>();
+	private final static Set<IResource> resourcesCreated = new HashSet<>();
 
 
 	/**

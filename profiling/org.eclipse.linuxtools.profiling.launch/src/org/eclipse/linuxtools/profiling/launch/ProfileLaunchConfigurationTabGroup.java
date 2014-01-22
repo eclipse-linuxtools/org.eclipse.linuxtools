@@ -26,7 +26,7 @@ public abstract class ProfileLaunchConfigurationTabGroup extends AbstractLaunchC
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<AbstractLaunchConfigurationTab>();
+		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
 		tabs.add(new CMainTab());
 		tabs.add(new CArgumentsTab());
 

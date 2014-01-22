@@ -175,7 +175,7 @@ public class ProviderFramework {
 	 * @since 1.2
 	 */
 	public static HashMap<String, String> getProviderNamesForType(String type) {
-		HashMap<String, String> ret = new HashMap<String, String>();
+		HashMap<String, String> ret = new HashMap<>();
 		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
@@ -201,7 +201,7 @@ public class ProviderFramework {
 	 * @since 2.0
 	 */
 	public static SortedMap<String, String> getAllProviderNames() {
-		SortedMap<String, String> ret = new TreeMap<String, String>();
+		SortedMap<String, String> ret = new TreeMap<>();
 		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
@@ -224,7 +224,7 @@ public class ProviderFramework {
 	 */
 	public static ArrayList<IConfigurationElement> getOrderedConfigElements(String type) {
 		IConfigurationElement[] configs = getConfigurationElements();
-		ArrayList<IConfigurationElement> configList = new ArrayList<IConfigurationElement>();
+		ArrayList<IConfigurationElement> configList = new ArrayList<>();
 
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
@@ -408,7 +408,7 @@ public class ProviderFramework {
 	 * @since 2.0
 	 */
 	public static String[] getProviderIdsForType(String type) {
-		ArrayList<String> ret = new ArrayList<String> ();
+		ArrayList<String> ret = new ArrayList<> ();
 		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$
@@ -432,7 +432,7 @@ public class ProviderFramework {
 	 * @since 2.0
 	 */
 	public static String[] getProviderCategories() {
-		Set<String> ret = new TreeSet<String> ();
+		Set<String> ret = new TreeSet<> ();
 		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
 			if (config.getName().equals("provider")) { //$NON-NLS-1$

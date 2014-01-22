@@ -31,7 +31,7 @@ public abstract class RemoteProxyProfileLaunchConfigurationTabGroup extends Abst
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<AbstractLaunchConfigurationTab>();
+		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
 		tabs.add(new RemoteProxyCMainTab());
 		tabs.add(new CArgumentsTab());
 

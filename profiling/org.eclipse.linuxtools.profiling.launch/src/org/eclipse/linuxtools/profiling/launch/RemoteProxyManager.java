@@ -40,7 +40,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	 * @since 2.1
 	 */
 	protected RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
-	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<String, IRemoteProxyManager>();
+	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<>();
 
 	/**
 	 * @since 2.1

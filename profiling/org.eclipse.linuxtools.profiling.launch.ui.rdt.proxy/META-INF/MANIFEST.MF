@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.remote.core,
  org.eclipse.remote.ui,
  org.eclipse.linuxtools.profiling.launch;bundle-version="1.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy

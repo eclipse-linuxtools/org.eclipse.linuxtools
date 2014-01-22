@@ -232,7 +232,7 @@ public class RemoteConnection {
 
 		rmtCmdLauncher.execute(envPath, empty, empty, null, new NullProgressMonitor());
 		rmtCmdLauncher.waitAndRead(stdout, stderr, new NullProgressMonitor());
-		Map<String,String> env = new HashMap<String, String>();
+		Map<String,String> env = new HashMap<>();
 		String envLines[] = getLines(stdout.toString());
 		// Skip the first line, which is just env command being issued
 		for (int idx = 1; idx < envLines.length; idx++) {

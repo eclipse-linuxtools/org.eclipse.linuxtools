@@ -64,8 +64,9 @@ public class SSHProcess extends Process {
 
 	@Override
 	public int exitValue() {
-		if (!channel.isClosed())
+		if (!channel.isClosed()) {
 			throw new IllegalThreadStateException();
+		}
 		return channel.getExitStatus();
 	}
 

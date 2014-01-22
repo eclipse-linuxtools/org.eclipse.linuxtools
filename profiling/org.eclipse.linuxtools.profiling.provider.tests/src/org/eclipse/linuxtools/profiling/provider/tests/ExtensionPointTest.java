@@ -37,7 +37,7 @@ public class ExtensionPointTest {
 		assertEquals(PLUGIN_ID + "1", highestProviderId); //$NON-NLS-1$
 
 		String[] providerIds = ProviderFramework.getProviderIdsForType(PROFILING_TYPE);
-		HashSet<String> set = new HashSet<String>(Arrays.asList(providerIds));
+		HashSet<String> set = new HashSet<>(Arrays.asList(providerIds));
 		for (int i = 0; i < providerIds.length; i++){
 			assertTrue(set.contains(PLUGIN_ID + (i+1)));
 		}

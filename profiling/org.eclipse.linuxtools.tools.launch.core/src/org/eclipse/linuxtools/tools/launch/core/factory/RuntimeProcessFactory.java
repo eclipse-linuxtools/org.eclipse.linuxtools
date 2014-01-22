@@ -83,24 +83,28 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 				IPath whichPath = new Path(proxy.toPath(whichUri));
 				IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
 				Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
-				if (pProxy != null){
-					BufferedReader error = new BufferedReader(new InputStreamReader(pProxy.getErrorStream()));
-					BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()));
+				if (pProxy != null) {
+
 					String errorLine;
-					if((errorLine = error.readLine()) != null){
-						throw new IOException(errorLine);
+					try (BufferedReader error = new BufferedReader(
+							new InputStreamReader(pProxy.getErrorStream()))) {
+						if ((errorLine = error.readLine()) != null) {
+							throw new IOException(errorLine);
+						}
 					}
-					error.close();
-					String readLine = reader.readLine();
-					ArrayList<String> lines = new ArrayList<String>();
-					while (readLine != null) {
-						lines.add(readLine);
-						readLine = reader.readLine();
+					ArrayList<String> lines = new ArrayList<>();
+					try (BufferedReader reader = new BufferedReader(
+							new InputStreamReader(pProxy.getInputStream()))) {
+						String readLine = reader.readLine();
+						while (readLine != null) {
+							lines.add(readLine);
+							readLine = reader.readLine();
+						}
 					}
-					reader.close();
 					if (!lines.isEmpty()) {
 						if (project.getLocationURI() != null) {
-							if (project.getLocationURI().toString().startsWith("rse:")) { //$NON-NLS-1$
+							if (project.getLocationURI().toString()
+									.startsWith("rse:")) { //$NON-NLS-1$
 								// RSE output
 								if (lines.size() > 1) {
 									command = lines.get(lines.size() - 2);
@@ -246,7 +250,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 			}
 
 
-			List<String> cmdlist = new ArrayList<String>(Arrays.asList(cmdarray));
+			List<String> cmdlist = new ArrayList<>(Arrays.asList(cmdarray));
 			cmdlist.remove(0);
 			cmdlist.toArray(cmdarray);
 			cmdarray = cmdlist.toArray(new String[0]);
@@ -346,7 +350,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		URI uri = URI.create("sudo"); //$NON-NLS-1$
 
 		List<String> cmdList = Arrays.asList(cmdarray);
-		ArrayList<String> cmdArrayList = new ArrayList<String>(cmdList);
+		ArrayList<String> cmdArrayList = new ArrayList<>(cmdList);
 		cmdArrayList.add(0, "-n"); //$NON-NLS-1$
 
 		String[] cmdArraySudo = new String[cmdArrayList.size()];
@@ -374,7 +378,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 				}
 			}
 
-			List<String> cmdlist = new ArrayList<String>(Arrays.asList(cmdArraySudo));
+			List<String> cmdlist = new ArrayList<>(Arrays.asList(cmdArraySudo));
 			cmdlist.remove(0);
 			cmdlist.toArray(cmdArraySudo);
 			cmdArraySudo = cmdlist.toArray(new String[0]);
