@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.linuxtools.systemtap.ui.tests
 Import-Package: org.eclipse.linuxtools.tools.launch.core.factory,
  org.junit;version="4.10.0"

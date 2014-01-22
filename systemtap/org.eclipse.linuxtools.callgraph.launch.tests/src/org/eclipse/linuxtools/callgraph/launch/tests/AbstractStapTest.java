@@ -58,7 +58,7 @@ public class AbstractStapTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		launches = new ArrayList<ILaunch>();
+		launches = new ArrayList<>();
 	}
 
 	@After

@@ -62,7 +62,7 @@ public class SystemTapCommandGenerator {
 	 */
 	protected static String[] buildScript() {
 		//TODO: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList<String> cmdList = new ArrayList<String>();
+		ArrayList<String> cmdList = new ArrayList<>();
 		String[] script;
 
 		if (flags.length() > 0){

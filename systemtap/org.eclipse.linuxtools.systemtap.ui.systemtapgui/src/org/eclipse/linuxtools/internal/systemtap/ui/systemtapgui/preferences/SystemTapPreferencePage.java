@@ -31,9 +31,11 @@ public class SystemTapPreferencePage extends FieldEditorPreferencePage implement
 	/**
 	 * Sets up the field editors for optional change by the user.
 	 */
+	@Override
 	public void createFieldEditors() {
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 

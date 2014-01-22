@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 
 public class UpdateManager {
 	public UpdateManager(int delay) {
-		updateListeners = new ArrayList<IUpdateListener>();
+		updateListeners = new ArrayList<>();
 		stopped = false;
 		disposed = false;
 		timer = new Timer("Update Manager", true); //$NON-NLS-1$

@@ -34,21 +34,17 @@ public final class ZipArchive {
 	 * @param names The names of the files you wish to zip.
 	 */
 	public static void zipFiles(String zipFileName, String[] files, String[] names) {
-		try {
-			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-
+		try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName))) {
 			for (int i=0; i<files.length; i++) {
-				FileInputStream in = new FileInputStream(files[i]);
+				try (FileInputStream in = new FileInputStream(files[i])) {
 
-				out.putNextEntry(new ZipEntry(names[i]));
+					out.putNextEntry(new ZipEntry(names[i]));
 
-				transferData(in, out);
+					transferData(in, out);
 
-				out.closeEntry();
-				in.close();
+					out.closeEntry();
+				}
 			}
-
-			out.close();
 		} catch (IOException e) {}
 	}
 
@@ -59,9 +55,7 @@ public final class ZipArchive {
 	 * @param destination The location you wish to unzip files to.
 	 */
 	public static void unzipFiles(String zipFileName, String destination) {
-		try {
-			ZipFile zf = new ZipFile(zipFileName);
-
+		try (ZipFile zf = new ZipFile(zipFileName)) {
 			for (Enumeration<?> entries = zf.entries(); entries.hasMoreElements();) {
 				ZipEntry zipEntry = (ZipEntry)entries.nextElement();
 				String zipEntryName = zipEntry.getName();
@@ -73,13 +67,11 @@ public final class ZipArchive {
 				}
 
 				if (!zipEntryName.endsWith("/")) { //$NON-NLS-1$
-					OutputStream out = new FileOutputStream(destination + zipEntryName);
-					InputStream in = zf.getInputStream(zipEntry);
-
-					transferData(in, out);
-
-					out.close();
-					in.close();
+					try (OutputStream out = new FileOutputStream(destination
+							+ zipEntryName);
+							InputStream in = zf.getInputStream(zipEntry)) {
+						transferData(in, out);
+					}
 				}
 			}
 		} catch (IOException e) {}
@@ -92,16 +84,14 @@ public final class ZipArchive {
 	 * @param inFileName The file you wish to compress.
 	 */
 	public static void compressFile(String outFileName, String inFileName) {
-		try {
-			GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(outFileName));
-			FileInputStream in = new FileInputStream(inFileName);
-
+		try (GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(
+				outFileName));
+				FileInputStream in = new FileInputStream(inFileName)) {
 			transferData(in, out);
 
-			in.close();
 			out.finish();
-			out.close();
-		} catch (IOException ioe) {}
+		} catch (IOException ioe) {
+		}
 	}
 
 	/**
@@ -111,15 +101,12 @@ public final class ZipArchive {
 	 * @param inFileName The file you wish to uncompress.
 	 */
 	public static void uncompressFile(String outFileName, String inFileName) {
-		try {
-			GZIPInputStream in = new GZIPInputStream(new FileInputStream(inFileName));
-			FileOutputStream out = new FileOutputStream(outFileName);
-
+		try (GZIPInputStream in = new GZIPInputStream(new FileInputStream(
+				inFileName));
+				FileOutputStream out = new FileOutputStream(outFileName)) {
 			transferData(in, out);
-
-			in.close();
-			out.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
 
 	/**

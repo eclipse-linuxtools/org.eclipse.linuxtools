@@ -33,12 +33,12 @@ public class XMLParser {
 		if (keyValues != null) {
 			keyValues.clear();
 		}
-		keyValues = new HashMap<Integer,HashMap<String,String>>();
+		keyValues = new HashMap<>();
 
 		if (idList != null) {
 			idList.clear();
 		}
-		idList = new ArrayList<Integer>();
+		idList = new ArrayList<>();
 
 		textMode = false;
 	}
@@ -82,7 +82,7 @@ public class XMLParser {
 					//This tag opens and closes in one line
 					id++;
 					String[] tokens = line.split(" "); //$NON-NLS-1$
-					HashMap<String,String> map = new HashMap<String,String>();
+					HashMap<String,String> map = new HashMap<>();
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
 					textMode = false;
@@ -97,7 +97,7 @@ public class XMLParser {
 					String[] tokens = line.split(" "); //$NON-NLS-1$
 
 					//Add name variable
-					HashMap<String,String> map = new HashMap<String,String>();
+					HashMap<String,String> map = new HashMap<>();
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
 
@@ -170,26 +170,21 @@ public class XMLParser {
 
 
 
-	  static public String getContents(File file) {
-		    StringBuilder contents = new StringBuilder();
+	static public String getContents(File file) {
+		StringBuilder contents = new StringBuilder();
 
-		    try {
-		      BufferedReader input =  new BufferedReader(new FileReader(file));
-		      try {
-		        String line = null;
-		        while (( line = input.readLine()) != null){
-		          contents.append(line);
-		          contents.append("\n"); //$NON-NLS-1$
-		        }
-		      } finally {
-		        input.close();
-		      }
-		    } catch (IOException ex){
-		      ex.printStackTrace();
-		    }
+		try (BufferedReader input = new BufferedReader(new FileReader(file))) {
+			String line = null;
+			while ((line = input.readLine()) != null) {
+				contents.append(line);
+				contents.append("\n"); //$NON-NLS-1$
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 
-		    return contents.toString();
-		  }
+		return contents.toString();
+	}
 
 	  public void setTextMode(boolean val) {
 		  textMode = val;

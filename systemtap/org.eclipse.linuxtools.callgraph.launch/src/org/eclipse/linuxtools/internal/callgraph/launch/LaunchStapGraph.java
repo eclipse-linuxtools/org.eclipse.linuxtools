@@ -36,7 +36,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	public LaunchStapGraph() {
 		funcs = null;
-		exclusions = new ArrayList<String>();
+		exclusions = new ArrayList<>();
 		projectName = null;
 	}
 
@@ -161,12 +161,13 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 					"printf(\"" + projectName + "\\n\")\n" + //$NON-NLS-1$ //$NON-NLS-2$
 					"}"; //$NON-NLS-1$
  		File partialScript = new File(partialScriptPath);
-		BufferedReader scriptReader = new BufferedReader(new FileReader(
-				partialScript));
-		while ((temp = scriptReader.readLine()) != null) {
-			toWrite += temp + "\n";  //$NON-NLS-1$
+		try (BufferedReader scriptReader = new BufferedReader(new FileReader(
+				partialScript))) {
+			while ((temp = scriptReader.readLine()) != null) {
+				toWrite += temp + "\n"; //$NON-NLS-1$
+			}
+			scriptReader.close();
 		}
-		scriptReader.close();
 
 		return toWrite;
 	}

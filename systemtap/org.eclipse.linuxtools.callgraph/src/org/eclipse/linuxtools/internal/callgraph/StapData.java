@@ -50,8 +50,8 @@ public class StapData {
         this.time = time;
         this.style = style;
         this.timesCalled = called;
-        children = new ArrayList<Integer>();
-        collapsedChildren = new ArrayList<Integer>();
+        children = new ArrayList<>();
+        collapsedChildren = new ArrayList<>();
         this.id = currentID;
         this.name = txt;
         this.graph = graphModel;
@@ -109,7 +109,7 @@ public class StapData {
      * Sort the list of callees according to time
      */
     public void sortByTime(){
-    	TreeMap<Long,ArrayList<StapData>> tempList = new TreeMap<Long,ArrayList<StapData>>();
+    	TreeMap<Long,ArrayList<StapData>> tempList = new TreeMap<>();
     	//INDEX ALL THE STAPDATA INTO AN ARRAY AT THE CALCULATED INDEX
     	//SCATTERED INDICES : 0,1,...,5,..,10
     	for (int val : collapsedChildren){

@@ -403,7 +403,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 				IConfigurationElement[] extensions = reg
 						.getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE,
 								PluginConstants.VIEW_NAME);
-				ArrayList<IConfigurationElement> ext = new ArrayList<IConfigurationElement>();
+				ArrayList<IConfigurationElement> ext = new ArrayList<>();
 				for (IConfigurationElement el : extensions) {
 					if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools")) //$NON-NLS-1$
 						continue;

@@ -63,8 +63,8 @@ public class GraphDisplaySet {
 		updater = new UpdateManager(delay);
 		createPartControl(parent);
 
-		builders = new ArrayList<AbstractChartBuilder>();
-		tabListeners = new ArrayList<ITabListener>();
+		builders = new ArrayList<>();
+		tabListeners = new ArrayList<>();
 	}
 
 	/**

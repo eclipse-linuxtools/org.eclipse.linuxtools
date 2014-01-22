@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class TreeNode {
 	public TreeNode(Object d, boolean c) {
-		children = new ArrayList<TreeNode>();
+		children = new ArrayList<>();
 		data = d;
 		clickable = c;
 
@@ -27,7 +27,7 @@ public class TreeNode {
 	}
 
 	public TreeNode(Object d, String disp, boolean c) {
-		children = new ArrayList<TreeNode>();
+		children = new ArrayList<>();
 		data = d;
 		display = disp;
 		clickable = c;

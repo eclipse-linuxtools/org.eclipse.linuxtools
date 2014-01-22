@@ -88,7 +88,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 		}
 
 		// Give duplicate labels unique names.
-		Set<String> labels_unique = new LinkedHashSet<String>();
+		Set<String> labels_unique = new LinkedHashSet<>();
 		for (String label : labels_trim) {
 			int count = 1;
 			while (!labels_unique.add(makeCountedLabel(label, count))) {

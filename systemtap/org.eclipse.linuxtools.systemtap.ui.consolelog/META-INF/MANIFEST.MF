@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.ui,
  com.jcraft.jsch;bundle-version="0.1.37",
  org.eclipse.debug.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources,
  org.eclipse.debug.ui,
  org.eclipse.linuxtools.systemtap.graphingapi.core.datasets,

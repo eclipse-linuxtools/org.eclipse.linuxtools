@@ -91,7 +91,7 @@ public class ViewFactory {
 	 */
 	public static void addView(SystemTapView view) {
 		if (views == null) {
-			views = new ArrayList<IViewPart>();
+			views = new ArrayList<>();
 		}
 		views.add(view);
 	}

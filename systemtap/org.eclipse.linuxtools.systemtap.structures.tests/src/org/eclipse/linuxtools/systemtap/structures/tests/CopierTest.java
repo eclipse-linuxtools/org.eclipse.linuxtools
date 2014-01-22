@@ -23,7 +23,7 @@ public class CopierTest {
 
 	@Test
 	public void testCopy() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] lists = new ArrayList[3];
 		int listsSize = 3;
@@ -31,7 +31,7 @@ public class CopierTest {
 		for(int i=0; i<listsSize; i++) {
 			list.add("" + i);
 			for(int j=0; j<5; j++){
-				lists[i] = new ArrayList<Integer>();
+				lists[i] = new ArrayList<>();
 				lists[i].add(new Integer(j));
 			}
 		}

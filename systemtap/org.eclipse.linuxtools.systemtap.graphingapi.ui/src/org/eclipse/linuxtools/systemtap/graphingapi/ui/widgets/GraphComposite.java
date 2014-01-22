@@ -47,7 +47,7 @@ public class GraphComposite extends Composite {
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
 		this.setLayout(layout);
-		checkOptions = new ArrayList<Button>();
+		checkOptions = new ArrayList<>();
 
 		label = new Label(this, SWT.HORIZONTAL | SWT.BORDER | SWT.BOLD | SWT.CENTER);
 		scale = scales[7];

@@ -55,7 +55,7 @@ public class StapGraphParser extends SystemTapParser {
 	private static final String DELIM = ",,"; //$NON-NLS-1$
 
 	private boolean encounteredMain = false;
-	private ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
+	private ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <>();
 
 	private  HashMap<Integer, ArrayList<String>> nameMaps;
 	private  HashMap<Integer, ArrayList<Integer>> idMaps;
@@ -69,17 +69,17 @@ public class StapGraphParser extends SystemTapParser {
 	@Override
 	protected void initialize() {
 		//INITIALIZE MAPS
-		neighbourMaps = new HashMap<Integer, HashMap<Integer, ArrayList<Integer>>>();
-		timeMap = new HashMap<Integer, Long>();
-		serialMap = new TreeMap<Integer, String>();
-		aggregateTimeMap = new HashMap<String, Long>();
-		countMap = new HashMap<String, Integer>();
+		neighbourMaps = new HashMap<>();
+		timeMap = new HashMap<>();
+		serialMap = new TreeMap<>();
+		aggregateTimeMap = new HashMap<>();
+		countMap = new HashMap<>();
 		endingTimeInNS = 0l;
-		callOrderList = new ArrayList<Integer>();
-		markedMap = new HashMap<Integer, String>();
-		lastFunctionMap = new HashMap<Integer, Integer>();
-		nameMaps = new HashMap<Integer, ArrayList<String>>();
-		idMaps = new HashMap<Integer, ArrayList<Integer>>();
+		callOrderList = new ArrayList<>();
+		markedMap = new HashMap<>();
+		lastFunctionMap = new HashMap<>();
+		nameMaps = new HashMap<>();
+		idMaps = new HashMap<>();
 		project = null;
 		startTime = -1;
 	}
@@ -233,17 +233,17 @@ public class StapGraphParser extends SystemTapParser {
 
 				ArrayList<String> nameList = nameMaps.get(tid);
 				if (nameList == null) {
-					nameList = new ArrayList<String>();
+					nameList = new ArrayList<>();
 				}
 
 				ArrayList<Integer> idList = idMaps.get(tid);
 				if (idList == null) {
-					idList = new ArrayList<Integer>();
+					idList = new ArrayList<>();
 				}
 
 				HashMap<Integer, ArrayList<Integer>> outNeighbours = neighbourMaps.get(tid);
 				if (outNeighbours == null) {
-					outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
+					outNeighbours = new HashMap<>();
 				}
 
 				if (startTime < 1) {
@@ -320,12 +320,12 @@ public class StapGraphParser extends SystemTapParser {
 
 				nameList = nameMaps.get(tid);
 				if (nameList == null) {
-					nameList = new ArrayList<String>();
+					nameList = new ArrayList<>();
 				}
 
 				idList = idMaps.get(tid);
 				if (idList == null) {
-					idList = new ArrayList<Integer>();
+					idList = new ArrayList<>();
 				}
 
 
@@ -401,9 +401,9 @@ public class StapGraphParser extends SystemTapParser {
 
 		BufferedReader buff = (BufferedReader) internalData;
 
-		HashMap <Integer, ArrayList<Integer>> outNeighbours= new HashMap<Integer, ArrayList<Integer>>();
-		ArrayList<String> nameList = new ArrayList<String>();
-		ArrayList<Integer> idList = new ArrayList<Integer>();
+		HashMap <Integer, ArrayList<Integer>> outNeighbours= new HashMap<>();
+		ArrayList<String> nameList = new ArrayList<>();
+		ArrayList<Integer> idList = new ArrayList<>();
 		endingTimeInNS =0l;
 		totalTime=10000l;
 		try {
@@ -442,7 +442,7 @@ public class StapGraphParser extends SystemTapParser {
 					//Set neighbour
 					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
 					if (tmpList == null) {
-						tmpList = new ArrayList<Integer>();
+						tmpList = new ArrayList<>();
 					}
 
 					for (int i = 0; i < called; i++) {

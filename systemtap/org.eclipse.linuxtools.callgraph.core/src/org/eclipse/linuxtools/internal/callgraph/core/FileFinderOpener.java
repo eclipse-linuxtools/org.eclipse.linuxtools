@@ -27,7 +27,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  */
 public class FileFinderOpener {
 	
-	private static HashMap<String, int []> map = new HashMap<String, int []>();
+	private static HashMap<String, int []> map = new HashMap<>();
 	
 	/**
 	 * Seeks all functions in the given proejct that contains the given function name.
@@ -45,7 +45,7 @@ public class FileFinderOpener {
 		}
 		
 		map = ProfileUIUtils.findFunctionsInProject(project, functionName, -1, null);
-		ArrayList<String> files = new ArrayList<String>(map.keySet());
+		ArrayList<String> files = new ArrayList<>(map.keySet());
 		
 		if (files == null || files.size() < 1) {
 			return;

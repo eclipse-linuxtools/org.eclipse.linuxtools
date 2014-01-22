@@ -63,8 +63,8 @@ public class UniqueFilterTest  {
 		assertNull(filter.filter(null));
 
 		data = MockDataSet.createArrayList(2, new Object());
-		data[0] = new ArrayList<Object>();
-		data[1] = new ArrayList<Object>();
+		data[0] = new ArrayList<>();
+		data[1] = new ArrayList<>();
 
 		data[0].add("a");
 		data[0].add("a");

@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,7 +33,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 		} else {
 			this.titles = Arrays.copyOf(labels, labels.length);
 		}
-		data = new ArrayList<TableEntry>();
+		data = new ArrayList<>();
 	}
 
 	//IDataSet Methods
@@ -50,26 +49,24 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 	@Override
 	public boolean readFromFile(File file) {
-		try {
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+		try (FileReader fr = new FileReader(file);
+			BufferedReader br = new BufferedReader(fr)){
 
 			br.readLine();	//Skip the ID
 			br.readLine();	//Skip the Titles
 			String line;
 			TableEntry entry = new TableEntry();
 			while(null != (line = br.readLine())) {
-				if(line.equals("")) { //$NON-NLS-1$
+				if(line.isEmpty()) {
 					append(entry);
 					entry = new TableEntry();
-				} else
+				} else {
 					entry.add(line.split(", ")); //$NON-NLS-1$
+				}
 			}
 			br.close();
 			return true;
-		} catch(FileNotFoundException fnfe) {
-		} catch(IOException ioe) {
-		} catch(ArrayIndexOutOfBoundsException aioobe) {}
+		} catch(IOException|ArrayIndexOutOfBoundsException e) {}
 		return false;
 	}
 
@@ -86,8 +83,9 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 			//Labels
 			int i, j, k;
-			for(i=0; i<titles.length; i++)
+			for(i=0; i<titles.length; i++) {
 				b.append(titles[i] + ", "); //$NON-NLS-1$
+			}
 			b.append("\n"); //$NON-NLS-1$
 
 			//Data
@@ -97,8 +95,9 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 				e = data.get(i);
 				for(j=0; j<e.getRowCount(); j++) {
 					o = e.getRow(j);
-					for(k=0; k<o.length; k++)
+					for(k=0; k<o.length; k++) {
 						b.append(o[k].toString() + ", "); //$NON-NLS-1$
+					}
 					b.append("\n"); //$NON-NLS-1$
 				}
 				b.append("\n"); //$NON-NLS-1$
@@ -106,17 +105,17 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 			ps.print(b.toString());
 			ps.close();
 			return true;
-		} catch(FileNotFoundException e) {
 		} catch(IOException e) {}
 		return false;
 	}
 
 	@Override
 	public int getRowCount() {
-		if(data.size() > 0)
+		if(data.size() > 0) {
 			return data.get(data.size()-1).getRowCount();
-		else
+		} else {
 			return 0;
+		}
 	}
 
 	@Override
@@ -136,12 +135,14 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 	@Override
 	public Object[] getColumn(int col, int start, int end) {
-		if(start > end || start < 0 || end > getEntryCount() || col < COL_ROW_NUM || col >= this.getColCount())
+		if(start > end || start < 0 || end > getEntryCount() || col < COL_ROW_NUM || col >= this.getColCount()) {
 			return null;
+		}
 		if(COL_ROW_NUM == col) {
 			Integer[] rows = new Integer[Math.min(end-start, getRowCount())];
-			for(int i=0;i<rows.length; i++)
+			for(int i=0;i<rows.length; i++) {
 				rows[i] = Integer.valueOf(start+i+1);
+			}
 			return rows;
 		}
 		return data.get(data.size()-1).getColumn(col, start, end);
@@ -161,8 +162,9 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	//IHistoricalDataSet Methods
 	@Override
 	public void append(IDataEntry data) {
-		if(data instanceof TableEntry)
+		if(data instanceof TableEntry) {
 			this.data.add((TableEntry)data);
+		}
 	}
 
 	@Override
@@ -172,13 +174,15 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 	@Override
 	public Object[] getHistoricalData(String key, int col, int start, int end) {
-		if(start > end || start < 0 || end > getEntryCount() || col < COL_ROW_NUM || col >= this.getColCount())
+		if(start > end || start < 0 || end > getEntryCount() || col < COL_ROW_NUM || col >= this.getColCount()) {
 			return null;
+		}
 
 		if(COL_ROW_NUM == col) {
 			Integer[] rows = new Integer[Math.min(end-start, data.size())];
-			for(int i=0;i<rows.length; i++)
+			for(int i=0;i<rows.length; i++) {
 				rows[i] = Integer.valueOf(start+i+1);
+			}
 			return rows;
 		}
 
@@ -186,8 +190,9 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 		for(int i=0; i<d.length; i++) {
 			d[i] = getEntry(i+start).get(key, col);
-			if(null == d[i])
+			if(null == d[i]) {
 				d[i] = Integer.valueOf(0);
+			}
 		}
 		return d;
 	}
@@ -199,15 +204,17 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 
 	@Override
 	public IDataEntry getEntry(int entry) {
-		if(entry >=0 && entry < getEntryCount())
+		if(entry >=0 && entry < getEntryCount()) {
 			return data.get(entry);
+		}
 		return null;
 	}
 
 	@Override
 	public boolean remove(int entry) {
-		if(entry < 0 || entry >= data.size())
+		if(entry < 0 || entry >= data.size()) {
 			return false;
+		}
 		return (null != data.remove(entry));
 	}
 	//End IHistoricalDataSet Methods

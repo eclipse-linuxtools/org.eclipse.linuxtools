@@ -84,10 +84,8 @@ public class ScriptConsole extends IOConsole {
 		public void runningStateChanged(boolean running);
 	}
 
-	private final LinkedList<ScriptConsoleObserver> activeConsoleObservers
-	= new LinkedList<ScriptConsoleObserver>();
-	private LinkedList<ScriptConsoleObserver> inactiveConsoleObservers
-	= new LinkedList<ScriptConsoleObserver>();
+	private final LinkedList<ScriptConsoleObserver> activeConsoleObservers = new LinkedList<>();
+	private LinkedList<ScriptConsoleObserver> inactiveConsoleObservers = new LinkedList<>();
 
 	/**
 	 * This method is used to create a reference to a new <code>ScriptConsole</code>.  If there
@@ -371,7 +369,7 @@ public class ScriptConsole extends IOConsole {
 		for (ScriptConsoleObserver observer : inactiveConsoleObservers) {
 			activeConsoleObservers.remove(observer);
 		}
-		inactiveConsoleObservers = new LinkedList<ScriptConsoleObserver>();
+		inactiveConsoleObservers = new LinkedList<>();
 		for (ScriptConsoleObserver observer : activeConsoleObservers) {
 			observer.runningStateChanged(running);
 		}

@@ -56,8 +56,8 @@ public class Command implements Runnable {
 	protected StreamGobbler errorGobbler = null;
 
 	private boolean disposed = false;
-	private ArrayList<IGobblerListener> inputListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private ArrayList<IGobblerListener> errorListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private ArrayList<IGobblerListener> inputListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private ArrayList<IGobblerListener> errorListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
 	private int returnVal = Integer.MAX_VALUE;
 
 	private String[] cmd;

@@ -29,7 +29,7 @@ public class StreamGobbler implements Runnable {
 		if(null != is) {
 			this.is = is;
 			line = new StringBuilder();
-			listeners = new ArrayList<IGobblerListener>();
+			listeners = new ArrayList<>();
 		}
 	}
 

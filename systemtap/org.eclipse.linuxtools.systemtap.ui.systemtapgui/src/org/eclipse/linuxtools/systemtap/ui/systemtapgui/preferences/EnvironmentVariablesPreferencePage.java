@@ -37,6 +37,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 		setDescription("Environment Variables.");
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 
@@ -48,6 +49,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	 *
 	 * @return The ScrolledComposite object that is created configured.
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL );
 		Composite c = new Composite(sc, SWT.NONE);
@@ -84,6 +86,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	/**
 	 * Loads the default environment variables.
 	 */
+	@Override
 	protected void performDefaults() {
 		for (StringFieldEditor envVariable : envVariables) {
 			envVariable.loadDefault();
@@ -97,6 +100,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	 *
 	 * @return True.
 	 */
+	@Override
 	public boolean performOk() {
 		for (StringFieldEditor envVariable : envVariables) {
 			envVariable.store();
@@ -140,6 +144,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	/**
 	 * Clears the environment variables string array.
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 

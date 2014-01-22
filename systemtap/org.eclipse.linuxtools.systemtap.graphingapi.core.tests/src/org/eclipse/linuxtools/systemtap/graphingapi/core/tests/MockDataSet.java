@@ -30,8 +30,9 @@ public final class MockDataSet {
 		int j;
 		for(i=0; i<rows; i++) {
 			Object[] d = new Object[cols];
-			for(j=0; j< cols; j++)
+			for(j=0; j< cols; j++) {
 				d[j] = new Double(i*cols + j);
+			}
 			entry = new RowEntry();
 			entry.putRow(0, d);
 			data.append(entry);
@@ -43,7 +44,7 @@ public final class MockDataSet {
 		ArrayList<Object>[] list = createArrayList(width, new Object());
 		
 		for(int i=0; i<width; i++) {
-			list[i] = new ArrayList<Object>();
+			list[i] = new ArrayList<>();
 			for(int j=0; j<height; j++) {
 				list[i].add("" + ((j+i) % wrap));
 			}
@@ -58,15 +59,17 @@ public final class MockDataSet {
 
 	public static Integer[] buildIntegerArray(int[] arr) {
 		Integer[] ints = new Integer[arr.length];
-		for(int i=0; i<arr.length; i++)
+		for(int i=0; i<arr.length; i++) {
 			ints[i] = Integer.valueOf(arr[i]);
+		}
 		return ints;
 	}
 	
 	public static Double[] buildDoubleArray(double[] arr) {
 		Double[] doubles = new Double[arr.length];
-		for(int i=0; i<arr.length; i++)
+		for(int i=0; i<arr.length; i++) {
 			doubles[i] = Double.valueOf(arr[i]);
+		}
 		return doubles;
 	}
 }

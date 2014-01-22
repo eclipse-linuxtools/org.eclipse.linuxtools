@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.callgraph.launch.tests;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -20,29 +21,29 @@ import org.junit.Test;
 
 public class SystemTapCommandTest {
 
-
 	/**
 	 * Tests if SystemTapCommand is properly obtaining output from the runtime
 	 * process
-	 *
+	 * 
 	 * @throws FileNotFoundException
 	 */
 	@Test
-	public void testCommand() throws FileNotFoundException {
-		//Set up variables
+	public void testCommand() throws IOException {
+		// Set up variables
 		String testText = "CORRECT";
-		String tempLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()
-								+ "/DeleteThisScript.stp";
+		String tempLocation = ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().toString()
+				+ "/DeleteThisScript.stp";
 
-		//Create temporary file containing the test script
+		// Create temporary file containing the test script
 		File temporaryScript = new File(tempLocation);
 
-		FileOutputStream output = new FileOutputStream(temporaryScript);
-		PrintStream printer = new PrintStream(output);
-		printer.println("probe begin { printf(\"" + testText + "\") exit() }");
-
-		//Cleanup
-		printer.close();
+		try (FileOutputStream output = new FileOutputStream(temporaryScript);
+				PrintStream printer = new PrintStream(output)) {
+			printer.println("probe begin { printf(\"" + testText
+					+ "\") exit() }");
+		}
+		// Cleanup
 		temporaryScript.delete();
 	}
 }

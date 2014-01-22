@@ -34,13 +34,15 @@ public class UniqueFilter implements IDataSetFilter {
 	 */
 	@Override
 	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
-		if(column < 0 || column >= data.length)
+		if(column < 0 || column >= data.length) {
 			return null;
+		}
 
 		ArrayList<Object>[] newData = Copier.copy(data);
 		ArrayList<Object>[] aggregates = GraphingAPINonUIPlugin.createArrayList(newData.length, new Object());
-		for(int i=0; i<aggregates.length;i++)
-			aggregates[i] = new ArrayList<Object>();
+		for(int i=0; i<aggregates.length;i++) {
+			aggregates[i] = new ArrayList<>();
+		}
 
 		for(int k,j,i=newData[0].size()-1; i>=0; i--) {
 			for(j=i-1; j>=0; j--) {
@@ -78,8 +80,9 @@ public class UniqueFilter implements IDataSetFilter {
 	private String columnMerge(Object[] col) {
 		StringBuilder sb = new StringBuilder(col[0].toString());
 		for(int i=1; i<col.length; i++) {
-			if(sb.indexOf(col[i].toString()) < 0)
+			if(sb.indexOf(col[i].toString()) < 0) {
 				sb.append("/" + col[i].toString()); //$NON-NLS-1$
+			}
 		}
 		return sb.toString();
 	}

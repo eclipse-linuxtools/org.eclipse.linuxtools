@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -26,11 +26,11 @@ public class StapTreeListener implements ITreeViewerListener{
 	private ScrollBar scrollbar;
 	private HashMap<Integer, List<Integer>> highestLevelNodes;
 	//Level of recursion, list of nodes at that level currently displayed in tree
-		
-	
+
+
 	/**
 	 * Autoscroll the horizontal scrollbar when there is a collapse event.
-	 * 
+	 *
 	 */
 	@Override
 	public void treeCollapsed(TreeExpansionEvent event) {
@@ -40,12 +40,12 @@ public class StapTreeListener implements ITreeViewerListener{
 					scrollbar.setSelection(scrollbar.getSelection() - INCREMENT);
 					highestLevelOfExpansion--;
 		}
-		
+
 	}
 
 	/**
 	 * Autoscroll the horizontal scrollbar when there is an expand event.
-	 * 
+	 *
 	 */
 	@Override
 	public void treeExpanded(TreeExpansionEvent event) {
@@ -54,7 +54,7 @@ public class StapTreeListener implements ITreeViewerListener{
 			scrollbar.setSelection(scrollbar.getSelection() + INCREMENT);
 			highestLevelOfExpansion = ((StapData) event.getElement()).levelOfRecursion;
 		}
-		
+
 		int lvl = d.levelOfRecursion;
 		if (highestLevelNodes.get(lvl) == null) {
 			highestLevelNodes.put(lvl, new ArrayList<Integer>());
@@ -65,6 +65,6 @@ public class StapTreeListener implements ITreeViewerListener{
 	public StapTreeListener(ScrollBar bar) {
 		this.highestLevelOfExpansion=0;
 		this.scrollbar = bar;
-		highestLevelNodes = new HashMap<Integer, List<Integer>>();
+		highestLevelNodes = new HashMap<>();
 	}
 }

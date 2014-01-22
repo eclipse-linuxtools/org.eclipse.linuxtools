@@ -59,7 +59,7 @@ public class SystemTapTextView extends SystemTapView {
 	 * @param text
 	 */
 	public void prettyPrintln(String text) {
-		List<StyleRange> styles = new ArrayList<StyleRange>();
+		List<StyleRange> styles = new ArrayList<>();
 		String[] txt = text.split("\\n"); //$NON-NLS-1$
 		int lineOffset = 0;
 		int inLineOffset;

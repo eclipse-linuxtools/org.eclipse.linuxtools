@@ -165,15 +165,15 @@ public class StapGraph extends Graph {
 
 		//-------------Initialize variables
 		thumbCanvas = tCanvas;
-		nodeMap = new HashMap<Integer, StapNode>();
-		levels = new HashMap<Integer, List<Integer>>();
-		nodeDataMap = new HashMap<Integer, StapData>();
-		aggregateTime = new HashMap<String, Long>();
-		aggregateCount = new HashMap<String, Integer>();
-		currentPositionInLevel = new HashMap<Integer, Integer>();
-		collapsedLevelSize = new HashMap<Integer, Integer>();
-		markedNodes = new ArrayList<Integer>();
-		markedCollapsedNodes = new ArrayList<Integer>();
+		nodeMap = new HashMap<>();
+		levels = new HashMap<>();
+		nodeDataMap = new HashMap<>();
+		aggregateTime = new HashMap<>();
+		aggregateCount = new HashMap<>();
+		currentPositionInLevel = new HashMap<>();
+		collapsedLevelSize = new HashMap<>();
+		markedNodes = new ArrayList<>();
+		markedCollapsedNodes = new ArrayList<>();
 		animation_mode = 1;
 		idOfLastNode = 0;
 		rootVisibleNodeNumber=0;
@@ -459,7 +459,7 @@ public class StapGraph extends Graph {
 	private void drawAggregateView(){
 
 		if (aggregateNodes == null){
-			aggregateNodes = new ArrayList<GraphNode>();
+			aggregateNodes = new ArrayList<>();
 		}else{
 			aggregateNodes.clear();
 		}
@@ -487,8 +487,8 @@ public class StapGraph extends Graph {
 
 		//TEMPORARY STORAGE OF THE ENTRIES
 		//IMPLEMENTS A COMPARATOR TO STORE BY ORDER OF THE VALUE
-		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
-		HashMap<String, Long> tempMap = new HashMap<String, Long>();
+		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<>(StapGraph.VALUE_ORDER);
+		HashMap<String, Long> tempMap = new HashMap<>();
 		tempMap.putAll(aggregateTime);
 
 		for (String key : tempMap.keySet()) {
@@ -1331,13 +1331,13 @@ public class StapGraph extends Graph {
 
 
 		// Name, id
-		HashMap<String, Integer> newNodeMap = new HashMap<String, Integer>();
+		HashMap<String, Integer> newNodeMap = new HashMap<>();
 
 		for (int collapsedID : nodeDataMap.get(id).collapsedChildren) {
 			newNodeMap.put(getNodeData(collapsedID).name, collapsedID);
 		}
 		// id of 'collapsed' node, id of its uncollapsed twin
-		HashMap<Integer, Integer> collapsedNodesWithOnlyOneNodeInThem = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> collapsedNodesWithOnlyOneNodeInThem = new HashMap<>();
 		int size = nodeDataMap.get(id).children.size();
 
 

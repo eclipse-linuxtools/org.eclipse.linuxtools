@@ -56,8 +56,8 @@ public class GraphSelectorEditor extends EditorPart {
 
 	public GraphSelectorEditor() {
 		super();
-		displaySets = new ArrayList<GraphDisplaySet>();
-		tabListeners = new ArrayList<ITabListener>();
+		displaySets = new ArrayList<>();
+		tabListeners = new ArrayList<>();
 	}
 
 	/**

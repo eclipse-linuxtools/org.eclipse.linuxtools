@@ -10,6 +10,6 @@ Import-Package: org.eclipse.linuxtools.systemtap.ui.tests,
  org.junit,
  org.junit.runner;version="4.10.0",
  org.junit.runners;version="4.10.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Fragment-Host: org.eclipse.linuxtools.systemtap.structures
 

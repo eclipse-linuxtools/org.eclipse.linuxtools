@@ -48,7 +48,7 @@ public class AbstractAutoEditTest extends SystemtapTest {
 	 */
 	protected static class AutoEditTester {
 		private IAutoEditStrategy tabsToSpacesConverter;
-		private Map<String, IAutoEditStrategy> fStrategyMap = new HashMap<String, IAutoEditStrategy>();
+		private Map<String, IAutoEditStrategy> fStrategyMap = new HashMap<>();
 		IDocument fDoc;
 		private String fPartitioning;
 		private int fCaretOffset;

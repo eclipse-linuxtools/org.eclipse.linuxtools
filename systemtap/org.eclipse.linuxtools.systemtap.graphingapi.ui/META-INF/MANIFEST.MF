@@ -23,4 +23,4 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.graphingapi.core;visibility:=re
  org.swtchart,
  org.eclipse.linuxtools.dataviewers.piechart
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

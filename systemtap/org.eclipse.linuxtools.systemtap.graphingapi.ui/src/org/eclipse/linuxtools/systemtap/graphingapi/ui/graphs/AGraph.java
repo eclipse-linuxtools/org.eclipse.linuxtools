@@ -38,7 +38,7 @@ public abstract class AGraph extends AChart {
 	public AGraph(GraphComposite parent, int style, String title, IAdapter adapt) {
 		super(parent, style, title, adapt);
 		adapter = adapt;
-		axes = new LinkedList<GraphAxis>();
+		axes = new LinkedList<>();
 
 		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
 		xSeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS);
@@ -52,8 +52,9 @@ public abstract class AGraph extends AChart {
 		GraphingAPIUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 		
 		parent.addCheckOption(Localization.getString("AGraph.GridLines"), gridListener); //$NON-NLS-1$
-		if(adapter.getSeriesCount() > 1)
+		if(adapter.getSeriesCount() > 1) {
 			parent.addCheckOption(Localization.getString("AGraph.Normalize"), normalizeListener); //$NON-NLS-1$
+		}
 	}
 	
 	protected void createAxis(String title, int tickCount, int style) {
@@ -173,11 +174,11 @@ public abstract class AGraph extends AChart {
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-			if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS))
+			if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS)) {
 				maxItems = store.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS);
-			else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS))
+			} else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS)) {
 				viewableItems = store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS);
-			else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS)) {
+			} else if(event.getProperty().equals(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS)) {
 				xSeriesTicks = store.getInt(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS);
 				for(GraphAxis a: axes) {
 					if(GraphAxis.HORIZONTAL == a.getType()) {
@@ -219,7 +220,9 @@ public abstract class AGraph extends AChart {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			normalize = ((Button)e.getSource()).getSelection();
-			if(!normalize) removeSeriesAxis();
+			if(!normalize) {
+				removeSeriesAxis();
+			}
 			handleUpdateEvent();
 		}
 	};
