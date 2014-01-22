@@ -21,7 +21,7 @@
   <version>2.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>Linux Tools RPM Import/Export/Building and Editing Tools Feature</name>
+  <name>Linux Tools RPM Tools Feature</name>
   
   <build>
     <plugins>
