@@ -45,6 +45,7 @@ import org.eclipse.linuxtools.tmf.ui.widgets.timegraph.model.TimeLinkEvent;
 import org.eclipse.linuxtools.tmf.ui.widgets.timegraph.widgets.Utils;
 import org.eclipse.linuxtools.tmf.ui.widgets.timegraph.widgets.Utils.Resolution;
 import org.eclipse.linuxtools.tmf.ui.widgets.timegraph.widgets.Utils.TimeFormat;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * The Control Flow view main object
@@ -193,9 +194,31 @@ public class ControlFlowView extends AbstractTimeGraphView {
 
     }
 
+    private static class ControlFlowFilterLabelProvider extends TreeLabelProvider {
+
+        @Override
+        public String getColumnText(Object element, int columnIndex) {
+            ControlFlowEntry entry = (ControlFlowEntry) element;
+
+            if (columnIndex == 0) {
+                return entry.getName();
+            } else if (columnIndex == 1) {
+                return Integer.toString(entry.getThreadId());
+            }
+            return ""; //$NON-NLS-1$
+        }
+
+    }
+
     // ------------------------------------------------------------------------
     // Internal
     // ------------------------------------------------------------------------
+
+    @Override
+    public void createPartControl(Composite parent) {
+        super.createPartControl(parent);
+        getTimeGraphCombo().setFilterLabelProvider(new ControlFlowFilterLabelProvider());
+    }
 
     @Override
     protected void buildEventList(final ITmfTrace trace, IProgressMonitor monitor) {
