@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Tests for CreaterepoPreferencePage class.
@@ -99,11 +98,9 @@ public class CreaterepoPreferencePageTest {
 
 	/**
 	 * Restore the defaults for the general preference page.
-	 *
-	 * @throws BackingStoreException
 	 */
 	@After
-	public void tearDown() throws BackingStoreException {
+	public void tearDown() {
 		try {
 			if (bot.shell(ICreaterepoTestConstants.PREFERENCES).isActive()) {
 				bot.shell(ICreaterepoTestConstants.PREFERENCES).close();
@@ -229,7 +226,7 @@ public class CreaterepoPreferencePageTest {
 	/**
 	 * Open the preference page.
 	 */
-	private void openPreferencePage() {
+	private static void openPreferencePage() {
 		// open the preferences window
 		bot.menu(ICreaterepoTestConstants.WINDOW).menu(ICreaterepoTestConstants.PREFERENCES).click();
 		SWTBotShell shell = bot.shell(ICreaterepoTestConstants.PREFERENCES);

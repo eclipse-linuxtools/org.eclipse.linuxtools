@@ -20,6 +20,11 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.parser.RpmlintParser;
 
+/**
+ * Visitor that checks whether the resource is a .spec or .rpm file and whether it's ADDED or CHANGED.
+ * If both conditions are true it's stored for later usage.
+ *
+ */
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
 	private List<String> paths = new ArrayList<>();
@@ -48,6 +53,10 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 		return true;
 	}
 
+	/**
+	 * Returns the visited and marked paths.
+	 * @return The marked paths.
+	 */
 	public List<String> getVisitedPaths() {
 		return paths;
 	}

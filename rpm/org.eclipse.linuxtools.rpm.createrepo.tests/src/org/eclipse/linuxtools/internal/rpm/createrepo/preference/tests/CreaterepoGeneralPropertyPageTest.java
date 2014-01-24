@@ -291,7 +291,7 @@ public class CreaterepoGeneralPropertyPageTest {
 	/**
 	 * Open the property page.
 	 */
-	private void openPropertyPage() {
+	private static void openPropertyPage() {
 		SWTBotView view = bot.viewByTitle(ICreaterepoTestConstants.NAVIGATOR);
 		view.show();
 		// select the .repo file from the package explorer and open its properties
