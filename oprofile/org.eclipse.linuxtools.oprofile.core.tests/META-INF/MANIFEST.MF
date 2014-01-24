@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.core.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.junit;bundle-version="4.10.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Fragment-Host: org.eclipse.linuxtools.oprofile.core
 Import-Package: org.eclipse.linuxtools.oprofile.tests

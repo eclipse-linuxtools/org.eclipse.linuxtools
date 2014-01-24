@@ -142,7 +142,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 		HashMap<String, NodeList> oldDetailTableListMap = parseDetailTable (oldDetailTableList);
 		
 		// An ArrayList to hold the binary and other modules
-		ArrayList<Element> oldImageList = new ArrayList<Element>();
+		ArrayList<Element> oldImageList = new ArrayList<>();
 		// The first element is the original binary!
 		oldImageList.add(oldImage); 
 		
@@ -206,9 +206,9 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				NodeList detailDataList = oldDetailTableListMap.get(idref);
 
 				// go through the detail data of each symbol's details
-				HashMap<String, Element> tmp = new HashMap<String, Element>();
+				HashMap<String, Element> tmp = new HashMap<>();
 				// temporary place to store the elements for sorting
-				TreeSet<Element> sorted = new TreeSet<Element>(SAMPLE_COUNT_ORDER);
+				TreeSet<Element> sorted = new TreeSet<>(SAMPLE_COUNT_ORDER);
 				for (int l = 0; l < detailDataList.getLength(); l++) {
 
 					Element detailData = (Element) detailDataList.item(l);
@@ -293,7 +293,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	 * containing a list of the 'detaildata' tags that contain sample information.
 	 */
 	private HashMap<String, NodeList> parseDetailTable(NodeList oldDetailTableList) {
-		HashMap<String, NodeList> ret = new HashMap<String, NodeList> ();
+		HashMap<String, NodeList> ret = new HashMap<> ();
 		for (int i = 0; i < oldDetailTableList.getLength(); i++){
 			Element symbolDetails = (Element) oldDetailTableList.item(i);
 			String id = symbolDetails.getAttribute(ID);
@@ -310,9 +310,9 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	 * with various parameters of data
 	 */
 	private HashMap<String, HashMap<String, String>> parseDataList(NodeList oldSymbolDataList) {
-		HashMap<String, HashMap<String,String>> ret = new HashMap<String, HashMap<String, String>> ();
+		HashMap<String, HashMap<String,String>> ret = new HashMap<> ();
 		for (int j = 0; j < oldSymbolDataList.getLength(); j++){
-			HashMap<String,String> tmp = new HashMap<String,String> ();
+			HashMap<String,String> tmp = new HashMap<> ();
 			Element symbolData = (Element) oldSymbolDataList.item(j);
 			String id = symbolData.getAttribute(ID);
 			String name = symbolData.getAttribute(NAME);
@@ -343,6 +343,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	 */
 	public static final Comparator<Element> SAMPLE_COUNT_ORDER = new Comparator<Element>()
     {
+		@Override
 		public int compare(Element a, Element b) {
 			// sort from largest to smallest count in descending order
 			// items with the same count are sorted by line number from smallest

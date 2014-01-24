@@ -37,7 +37,7 @@ public class OpControlErrorHandler {
 	
 	private static OpControlErrorHandler singleton = new OpControlErrorHandler(); 
 	private String errorFilePath = OprofileCorePlugin.getDefault().getPluginLocation() + "op_error_key"; //$NON-NLS-1$
-	private HashMap<String, String> errorMap = new HashMap<String, String> ();
+	private HashMap<String, String> errorMap = new HashMap<> ();
 	
 	private OpControlErrorHandler (){
 	}
@@ -87,9 +87,7 @@ public class OpControlErrorHandler {
 			
 			buff.close();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
+		} catch (IOException|CoreException e) {
 			e.printStackTrace();
 		}
 		

@@ -71,7 +71,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
-		ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
+		ArrayList<OprofileDaemonEvent> events = new ArrayList<>();
 		if (!config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
 			//get the events to profile from the counters
 			OprofileCounter[] counters = oprofileCounters(config);
@@ -120,7 +120,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 				eventsString+=events.get(i).getEvent().getText() + ":" + events.get(i).getEvent().getMinCount() + ","; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			ArrayList<String> argArray = new ArrayList<String>(Arrays.asList(getProgramArgumentsArray( config )));
+			ArrayList<String> argArray = new ArrayList<>(Arrays.asList(getProgramArgumentsArray( config )));
 			IFolder dataFolder = Oprofile.OprofileProject.getProject().getFolder(OPROFILE_DATA);
 			if(!dataFolder.exists()) {
 				dataFolder.create(false, true, null);

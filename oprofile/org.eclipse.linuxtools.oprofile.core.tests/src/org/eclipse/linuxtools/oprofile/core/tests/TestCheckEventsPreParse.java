@@ -79,66 +79,47 @@ public class TestCheckEventsPreParse {
 		}
 		File cpuFile = new File(InfoAdapter.CPUTYPE);
 
-		BufferedReader bi = null;
-		BufferedReader eventReader = null;
-		try {
-			bi = new BufferedReader(new FileReader(cpuFile));
+		try (BufferedReader bi = new BufferedReader(new FileReader(cpuFile))) {
 			String cpuType = bi.readLine();
-			File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.EVENTS);
-			File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType + "/" + InfoAdapter.UNIT_MASKS);
+			File opArchEvents = new File(InfoAdapter.OP_SHARE + cpuType + "/"
+					+ InfoAdapter.EVENTS);
+			File opArchUnitMasks = new File(InfoAdapter.OP_SHARE + cpuType
+					+ "/" + InfoAdapter.UNIT_MASKS);
 
-			eventReader = new BufferedReader(new FileReader(opArchEvents));
-			String line;
-			while ((line = eventReader.readLine()) != null){
-				// find the first event and use it
-				if (line.contains("name:")){
-					int start = line.indexOf("name:") + 5;
-					int end = line.indexOf(" ", start);
+			try (BufferedReader eventReader = new BufferedReader(
+					new FileReader(opArchEvents))) {
+				String line;
+				while ((line = eventReader.readLine()) != null) {
+					// find the first event and use it
+					if (line.contains("name:")) {
+						int start = line.indexOf("name:") + 5;
+						int end = line.indexOf(" ", start);
 
-					// get the string that references the unit mask type
-					start = line.indexOf("um:") + 3;
-					end = line.indexOf(" ", start);
-					String um = line.substring(start, end);
+						// get the string that references the unit mask type
+						start = line.indexOf("um:") + 3;
+						end = line.indexOf(" ", start);
+						String um = line.substring(start, end);
 
-					BufferedReader unitMaskReader = null;
-					try {
-						unitMaskReader = new BufferedReader(new FileReader(
-								opArchUnitMasks));
-						while ((line = unitMaskReader.readLine()) != null) {
-							if (line.contains("name:" + um + " ")) {
-								start = line.indexOf("default:") + 8;
-								String unitMaskDef = line.substring(start);
-								// convert from hex. to dec.
-								unitMaskDef = unitMaskDef
-										.replaceFirst("0x", "");
-								umask = String.valueOf(Integer.parseInt(
-										unitMaskDef, 16));
-								break;
+						try (BufferedReader unitMaskReader = new BufferedReader(
+								new FileReader(opArchUnitMasks))) {
+							while ((line = unitMaskReader.readLine()) != null) {
+								if (line.contains("name:" + um + " ")) {
+									start = line.indexOf("default:") + 8;
+									String unitMaskDef = line.substring(start);
+									// convert from hex. to dec.
+									unitMaskDef = unitMaskDef.replaceFirst(
+											"0x", "");
+									umask = String.valueOf(Integer.parseInt(
+											unitMaskDef, 16));
+									break;
+								}
 							}
 						}
-					} finally {
-						if (unitMaskReader != null) {
-							unitMaskReader.close();
-						}
+						break;
 					}
-					break;
 				}
 			}
-		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
-		} finally {
-			if (bi != null) {
-				try {
-					bi.close();
-				} catch (IOException e) {
-				}
-			}
-			if (eventReader != null) {
-				try {
-					eventReader.close();
-				} catch (IOException e) {
-				}
-			}
 		}
 	}
 

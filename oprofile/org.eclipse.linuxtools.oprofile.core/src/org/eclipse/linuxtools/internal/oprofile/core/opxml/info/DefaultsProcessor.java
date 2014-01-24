@@ -26,7 +26,7 @@ public class DefaultsProcessor extends XMLProcessor {
 	public static final String LOCK_FILE = "lock-file"; //$NON-NLS-1$
 	public static final String LOG_FILE = "log-file"; //$NON-NLS-1$
 	public static final String DUMP_STATUS = "dump-status"; //$NON-NLS-1$
-	protected HashMap<String,String> map = new HashMap<String,String>();
+	protected HashMap<String,String> map = new HashMap<>();
 
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()

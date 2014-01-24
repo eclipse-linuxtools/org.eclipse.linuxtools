@@ -47,7 +47,7 @@ public class DependentProcessor extends XMLProcessor {
 	@Override
 	public void reset(Object callData) {
 		image = new OpModelImage();
-		imageList = new ArrayList<OpModelImage>();
+		imageList = new ArrayList<>();
 	}
 	/**
 	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String)

@@ -29,7 +29,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	private static OprofileSAXHandler instance = null;
 	
 	// A Map of all the XML processors for opxml
-	private static HashMap<String,Class<?>> processors = new HashMap<String,Class<?>>();
+	private static HashMap<String,Class<?>> processors = new HashMap<>();
 	
 	// The current processor being used to parse the document
 	private XMLProcessor processor = null;
@@ -37,7 +37,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	
 	/* A stack of XML processors. This allows processors to invoke sub-processors
 	   for handling nested tags more efficiently. */
-	private Stack<XMLProcessor> processorStack = new Stack<XMLProcessor>();
+	private Stack<XMLProcessor> processorStack = new Stack<>();
 	
 	// Introduced for fix of Eclipse BZ#343025
 	// As per SAX spec, SAX parsers are allowed to split character data into as many chunks as

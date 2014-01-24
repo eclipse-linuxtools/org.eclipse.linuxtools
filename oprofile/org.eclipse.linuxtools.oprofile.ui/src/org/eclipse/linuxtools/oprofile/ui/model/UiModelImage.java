@@ -28,7 +28,6 @@ public class UiModelImage implements IUiModelElement {
 	private OpModelImage image;			//the node in the data model
 	private UiModelSymbol symbols[];		//this node's child (symbols)
 	private int totalCount;				//total number of samples
-	private int depCount;					//number of samples from dependent images
 
 	/**
 	 * Constructor to the UiModelImage class
@@ -42,7 +41,6 @@ public class UiModelImage implements IUiModelElement {
 		this.image = image;
 		this.symbols = null;
 		this.totalCount = totalCount+depCount;//totalCount;
-		this.depCount = depCount;
 		refreshModel();
 	}
 	/**

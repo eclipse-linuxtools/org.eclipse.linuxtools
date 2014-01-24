@@ -37,6 +37,7 @@ public class OpInfo {
 	 *  (sorting by event name)
 	 */
 	private static class SortEventComparator implements Comparator<OpEvent> {
+		@Override
 		public int compare(OpEvent o1, OpEvent o2) {
 			return o1.getText().compareTo(o2.getText());
 		}
@@ -47,6 +48,7 @@ public class OpInfo {
 	 *  (searching by event name)
 	 */
 	private static class SearchEventComparator implements Comparator<Object> {
+		@Override
 		public int compare(Object a, Object b) {
 			String astr, bstr;
 			if (a instanceof String) {

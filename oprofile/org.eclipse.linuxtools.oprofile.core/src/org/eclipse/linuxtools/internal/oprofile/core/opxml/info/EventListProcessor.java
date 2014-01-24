@@ -104,7 +104,7 @@ public class EventListProcessor extends XMLProcessor {
 		public UnitMaskProcessor() {
 			super();
 			maskProcessor = new MaskProcessor();
-			masks = new ArrayList<OpUnitMask.MaskInfo>();
+			masks = new ArrayList<>();
 		}
 		
 		/**
@@ -186,7 +186,7 @@ public class EventListProcessor extends XMLProcessor {
 	
 	@Override
 	public void reset(Object callData) {
-		currentEventList = new ArrayList<OpEvent>();
+		currentEventList = new ArrayList<>();
 	}
 	
 	/**

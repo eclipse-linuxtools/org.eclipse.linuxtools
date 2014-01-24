@@ -91,7 +91,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	 * otherwise.
 	 */
 	private boolean isValidUnitMask() {
-		TreeSet<Integer> bitMaskSet = new TreeSet<Integer> ();
+		TreeSet<Integer> bitMaskSet = new TreeSet<> ();
 		Element unitMasksTag = (Element) event.getElementsByTagName(UNIT_MASKS).item(0);
 
 		if (unitMasksTag == null){

@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProc
  */
 public class LinuxOpxmlProvider implements IOpxmlProvider {
 	
+	@Override
 	public IRunnableWithProgress info(final OpInfo info) {
 		return new OpInfoRunner(info);
 	}
@@ -47,6 +48,7 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 			return b;
 		}
 		
+		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			OpxmlRunner runner = new OpxmlRunner();
 			String[] args = new String[] {
@@ -56,8 +58,10 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		}
 	}
 	
+	@Override
 	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {	
+			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				OpxmlRunner runner = new OpxmlRunner();
 
@@ -75,8 +79,10 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		return runnable;
 	}
 		
+	@Override
 	public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+			@Override
 			public void run(IProgressMonitor monitor) {
 				OpxmlRunner runner = new OpxmlRunner();
 				String[] args = new String[] {
@@ -92,9 +98,11 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		return runnable;
 	}
 	
+	@Override
 	public IRunnableWithProgress sessions(final ArrayList<OpModelEvent> sessionList) {
 		
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+			@Override
 			public void run(IProgressMonitor monitor) {
 				OpxmlRunner runner = new OpxmlRunner();
 				String[] args = new String[] {

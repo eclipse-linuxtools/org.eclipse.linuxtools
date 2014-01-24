@@ -60,7 +60,7 @@ public class EventConfigCache {
 	 * Default constructor, creates an empty cache.
 	 */
 	public EventConfigCache() {
-		validEventCache = new HashMap<CheckEventEntry, Boolean>();
+		validEventCache = new HashMap<>();
 	}
 
 	/**

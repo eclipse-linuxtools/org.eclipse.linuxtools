@@ -228,7 +228,7 @@ public class Oprofile
 	public static OpModelEvent[] getEvents() {
 		OpModelEvent[] events = null;
 
-		ArrayList<OpModelEvent> sessionList = new ArrayList<OpModelEvent>();
+		ArrayList<OpModelEvent> sessionList = new ArrayList<>();
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().sessions(sessionList);
 			opxml.run(null);

@@ -197,7 +197,7 @@ public class SessionManager {
 	 * given session.
 	 */
 	public ArrayList<String> getSessionEvents(String sessionName){
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		NodeList eventList = root.getElementsByTagName(EVENT);
 		
 		for (int i = 0; i < eventList.getLength(); i++){

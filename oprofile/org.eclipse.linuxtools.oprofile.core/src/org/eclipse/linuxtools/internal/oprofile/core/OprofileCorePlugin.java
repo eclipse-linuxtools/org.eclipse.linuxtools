@@ -193,6 +193,7 @@ public class OprofileCorePlugin extends Plugin {
 
 		//needs to be run in the ui thread otherwise swt throws invalid thread access 
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				ErrorDialog.openError(null, dialogTitle, errorMessage, status);
 			}

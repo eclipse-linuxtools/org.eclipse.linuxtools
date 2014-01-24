@@ -41,7 +41,7 @@ public class SamplesProcessor extends XMLProcessor {
 	@Override
 	public void reset(Object callData) {
 		sample = new OpModelSample();
-		sampleList = new ArrayList<OpModelSample>();
+		sampleList = new ArrayList<>();
 	}
 
 	/**

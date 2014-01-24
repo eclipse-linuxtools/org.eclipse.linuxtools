@@ -48,7 +48,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	@Override
 	public void reset(Object callData) {
 		symbol = new OpModelSymbol();
-		symbols = new ArrayList<OpModelSymbol>();
+		symbols = new ArrayList<>();
 	}
 
 	/**

@@ -781,7 +781,7 @@ AbstractLaunchConfigurationTab {
 		private void handleEventListSelectionChange() {
 			int [] indices = eventList.getList().getSelectionIndices();
 			if (indices.length != 0) {
-				ArrayList<OpEvent> tmp = new ArrayList<OpEvent> ();
+				ArrayList<OpEvent> tmp = new ArrayList<> ();
 				for (int index : indices) {
 					OpEvent event = (OpEvent) eventList.getElementAt(index);
 					tmp.add(event);
@@ -964,7 +964,7 @@ AbstractLaunchConfigurationTab {
 				//creates these buttons with the default masks
 				mask.setDefaultMaskValue();
 
-				ArrayList<Button> maskButtons = new ArrayList<Button>();
+				ArrayList<Button> maskButtons = new ArrayList<>();
 
 				for (int i = 0; i < totalMasks; i++) {
 					Button maskButton;
