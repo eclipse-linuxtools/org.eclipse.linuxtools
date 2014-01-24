@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2014 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,12 @@
 package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.statushandlers.StatusAdapter;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * Property page displaying install scripts as fetched by RPM headers.
@@ -62,23 +59,18 @@ public class InstallScriptsPage extends AbstractRPMPropertyPage {
 		rpmPostUnInstallText.setLayoutData(gd);
 
 		// Populate RPM text fields
-		try {
-			IFile rpmFile = (IFile) getElement();
-			String rpm_PreInstall = RPMQuery.getPreInstallScript(rpmFile);
-			rpmPreInstallText.setText(rpm_PreInstall);
+		IFile rpmFile = (IFile) getElement();
+		String rpm_PreInstall = RPMQuery.getPreInstallScript(rpmFile);
+		rpmPreInstallText.setText(rpm_PreInstall);
 
-			String rpm_PostInstall = RPMQuery.getPostInstallScript(rpmFile);
-			rpmPostInstallText.setText(rpm_PostInstall);
+		String rpm_PostInstall = RPMQuery.getPostInstallScript(rpmFile);
+		rpmPostInstallText.setText(rpm_PostInstall);
 
-			String rpm_PreUnInstall = RPMQuery.getPreUninstallScript(rpmFile);
-			rpmPreUnInstallText.setText(rpm_PreUnInstall);
+		String rpm_PreUnInstall = RPMQuery.getPreUninstallScript(rpmFile);
+		rpmPreUnInstallText.setText(rpm_PreUnInstall);
 
-			String rpm_PostUnInstall = RPMQuery.getPostUninstallScript(rpmFile);
-			rpmPostUnInstallText.setText(rpm_PostUnInstall);
-		} catch (CoreException e) {
-			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
-					StatusManager.LOG | StatusManager.SHOW);
-		}
+		String rpm_PostUnInstall = RPMQuery.getPostUninstallScript(rpmFile);
+		rpmPostUnInstallText.setText(rpm_PostUnInstall);
 
 	}
 

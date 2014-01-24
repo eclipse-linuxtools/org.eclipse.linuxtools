@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2014 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,12 @@
 package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.statushandlers.StatusAdapter;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * Property page displaying the generic info fetched from the RPM headers.
@@ -39,21 +36,16 @@ public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
 		rpmDescriptionLabel.setText(Messages
 				.getString("SpecFileHeaderPage.info")); //$NON-NLS-1$
-		Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY
-				| SWT.V_SCROLL | SWT.WRAP);
+		Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER
+				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		GridData gdQI = new GridData();
 		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
 		gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
 		rpmQiText.setLayoutData(gdQI);
 
 		// Populate RPM text field
-		try {
-			String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
-			rpmQiText.setText(rpm_qi);
-		} catch (CoreException e) {
-			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
-					StatusManager.LOG | StatusManager.SHOW);
-		}
+		String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
+		rpmQiText.setText(rpm_qi);
 	}
 
 }

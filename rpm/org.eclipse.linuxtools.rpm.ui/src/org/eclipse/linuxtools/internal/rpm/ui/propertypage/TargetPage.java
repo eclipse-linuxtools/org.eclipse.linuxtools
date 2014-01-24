@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2014 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,11 @@
 package org.eclipse.linuxtools.internal.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.statushandlers.StatusAdapter;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * Property page displaying the target (aka build arch and friends) as fetched
@@ -58,23 +55,17 @@ public class TargetPage extends AbstractRPMPropertyPage {
 		rpmTimeText.setLayoutData(gd);
 
 		// Populate RPM text fields
-		try {
-			IFile rpmFile = (IFile) getElement();
-			String rpmArch = RPMQuery.getArch(rpmFile);
-			rpmArchText.setText(rpmArch);
-			String rpmPlatform = RPMQuery.getPlatform(rpmFile);
-			rpmPlatformText.setText(rpmPlatform);
-			String rpmOs = RPMQuery.getOS(rpmFile);
-			rpmOsText.setText(rpmOs);
-			String rpmHost = RPMQuery.getBuildHost(rpmFile);
-			rpmHostText.setText(rpmHost);
-			String rpmTime = RPMQuery.getBuildTime(rpmFile);
-			rpmTimeText.setText(rpmTime);
-		} catch (CoreException e) {
-			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
-					StatusManager.LOG | StatusManager.SHOW);
-		}
-
+		IFile rpmFile = (IFile) getElement();
+		String rpmArch = RPMQuery.getArch(rpmFile);
+		rpmArchText.setText(rpmArch);
+		String rpmPlatform = RPMQuery.getPlatform(rpmFile);
+		rpmPlatformText.setText(rpmPlatform);
+		String rpmOs = RPMQuery.getOS(rpmFile);
+		rpmOsText.setText(rpmOs);
+		String rpmHost = RPMQuery.getBuildHost(rpmFile);
+		rpmHostText.setText(rpmHost);
+		String rpmTime = RPMQuery.getBuildTime(rpmFile);
+		rpmTimeText.setText(rpmTime);
 	}
 
 }
