@@ -74,10 +74,10 @@ public class STSymbolManager {
         private long startTime;
     }
 
-    /** Map of all living instance of addr2line */
-    private final HashMap<IBinaryObject, AutoDisposeAddr2line> addr2lines = new HashMap<IBinaryObject, AutoDisposeAddr2line>();
-    /** Map of all living instance of cppfilt */
-    private final HashMap<String, AutoDisposeCPPFilt> cppfilts = new HashMap<String, AutoDisposeCPPFilt>();
+	/** Map of all living instance of addr2line */
+	private final HashMap<IBinaryObject, AutoDisposeAddr2line> addr2lines = new HashMap<>();
+	/** Map of all living instance of cppfilt */
+	private final HashMap<String, AutoDisposeCPPFilt> cppfilts = new HashMap<>();
 
     /**
      * Constructor
@@ -487,7 +487,7 @@ public class STSymbolManager {
                 return object;
             parsers = getBinaryParser(c.getProject());
         } else {
-            parsers = new LinkedList<IBinaryParser>();
+            parsers = new LinkedList<>();
         }
 
         if (defaultparser == null) {
@@ -598,7 +598,7 @@ public class STSymbolManager {
      * Retrieve the list of binary parsers defined for the given project
      */
     private List<IBinaryParser> getBinaryParser(IProject project) {
-        List<IBinaryParser> parsers = new LinkedList<IBinaryParser>();
+        List<IBinaryParser> parsers = new LinkedList<>();
 
         ICProjectDescription projDesc = CCorePlugin.getDefault().getProjectDescription(project);
         if (projDesc == null)

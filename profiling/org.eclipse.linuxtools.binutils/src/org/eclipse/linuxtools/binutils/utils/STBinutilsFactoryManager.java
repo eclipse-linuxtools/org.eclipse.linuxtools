@@ -34,7 +34,7 @@ public class STBinutilsFactoryManager {
     /**
      * Map of CPU/ISTBinutilsFactory
      */
-    private final Map<String, ISTBinutilsFactory> map = new HashMap<String, ISTBinutilsFactory>();
+    private final Map<String, ISTBinutilsFactory> map = new HashMap<>();
 
     /**
      * Default factory

@@ -20,5 +20,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.binutils,
  org.eclipse.linuxtools.binutils.link2source,
  org.eclipse.linuxtools.binutils.utils
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin

@@ -177,7 +177,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     private void addSourceMappingToDirector(IPath missingPath, IPath newSourcePath,
             AbstractSourceLookupDirector director) {
 
-        ArrayList<ISourceContainer> containerList = new ArrayList<ISourceContainer>(Arrays.asList(director
+        ArrayList<ISourceContainer> containerList = new ArrayList<>(Arrays.asList(director
                 .getSourceContainers()));
         boolean hasFoundMappings = false;
         MappingSourceContainer foundMappings = null;
