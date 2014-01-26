@@ -266,14 +266,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			String cmd = generateCommand(config);
 			File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh"); //$NON-NLS-1$ //$NON-NLS-2$
 			String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
-			FileOutputStream out = null;
-			try {
-				out = new FileOutputStream(script);
+			try (FileOutputStream out = new FileOutputStream(script)){
 				out.write(data.getBytes());
-			} finally {
-				if (out != null) {
-					out.close();
-				}
 			}
 
 			String [] commandArray = new String [] {"sh", script.getAbsolutePath()}; //$NON-NLS-1$
