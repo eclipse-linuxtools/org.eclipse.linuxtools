@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -88,8 +87,6 @@ public class SystemTapErrorHandler {
             }
 
             logContents.append(errors);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
