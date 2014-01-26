@@ -350,7 +350,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 		selectedContainer = container;
 
 		// expand to and select the specified container
-		List<IContainer> itemsToExpand = new ArrayList<IContainer>();
+		List<IContainer> itemsToExpand = new ArrayList<>();
 		IContainer parent = container.getParent();
 		while (parent != null) {
 			itemsToExpand.add(0, parent);

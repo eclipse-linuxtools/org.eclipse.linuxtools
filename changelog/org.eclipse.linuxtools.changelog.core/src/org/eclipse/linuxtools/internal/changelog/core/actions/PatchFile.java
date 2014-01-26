@@ -59,7 +59,7 @@ public class PatchFile {
 	}
 
 	private IStorage storage = new EmptyStorage();
-	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
+	private ArrayList<PatchRangeElement> pranges = new ArrayList<>();
 
 	private boolean newfile = false;
 	private boolean removedfile = false;

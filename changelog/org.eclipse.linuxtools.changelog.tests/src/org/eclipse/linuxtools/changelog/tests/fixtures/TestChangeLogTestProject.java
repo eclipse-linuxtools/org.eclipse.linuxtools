@@ -88,11 +88,11 @@ public class TestChangeLogTestProject {
 		assertTrue(createdFile instanceof IFile);
 
 		// Content should be "some content"
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				new FileInputStream(createdFile.getLocation().toFile())));
-		String actualContent = br.readLine();
-		br.close();
-		assertEquals(fileContent, actualContent);
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				new FileInputStream(createdFile.getLocation().toFile())))) {
+			String actualContent = br.readLine();
+			assertEquals(fileContent, actualContent);
+		}
 		
 		// this should throw an IllegalStateException
 		boolean exceptionTrown = false;

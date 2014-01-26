@@ -78,17 +78,12 @@ public class LineComparator implements IRangeComparator {
 
     }
 
-    public static LineComparator create(IStorage storage, String outputEncoding) throws CoreException, UnsupportedEncodingException {
-    	InputStream is = new BufferedInputStream(storage.getContents());
-    	try {
+    public static LineComparator create(IStorage storage, String outputEncoding) throws CoreException {
+    	try (InputStream is = new BufferedInputStream(storage.getContents())) {
 			String encoding = getEncoding(storage, outputEncoding);
 			return new LineComparator(is, encoding);
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				// Ignore
-			}
+		} catch (IOException e) {
+			return null;
 		}
     }
 
@@ -107,7 +102,7 @@ public class LineComparator implements IRangeComparator {
         TrailingLineFeedDetector trailingLineFeedDetector = new TrailingLineFeedDetector(is);
 		BufferedReader br = new BufferedReader(new InputStreamReader(trailingLineFeedDetector, encoding));
         String line;
-        ArrayList<String> ar = new ArrayList<String>();
+        ArrayList<String> ar = new ArrayList<>();
         try {
             while ((line = br.readLine()) != null)
                 ar.add(line);

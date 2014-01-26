@@ -214,13 +214,13 @@ public class ChangeLogWriterTest {
 		
 		// Read in content written to file
 		StringBuffer actualContent = new StringBuffer();
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				new FileInputStream(changelogFile.getLocation().toFile())));
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			actualContent.append(line + "\n");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				new FileInputStream(changelogFile.getLocation().toFile())))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				actualContent.append(line + "\n");
+			}
 		}
-		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedContent, actualContent.toString());
 		EditorHelper.closeEditor(editorContent);
@@ -282,13 +282,13 @@ public class ChangeLogWriterTest {
 		
 		// Read in content written to file
 		StringBuffer actualContent = new StringBuffer();
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				new FileInputStream(emptyChangeLogFile.getLocation().toFile())));
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			actualContent.append(line + "\n");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				new FileInputStream(emptyChangeLogFile.getLocation().toFile())))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				actualContent.append(line + "\n");
+			}
 		}
-		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedChangeLogEntry, actualContent.toString());
 		EditorHelper.closeEditor(editorContent);

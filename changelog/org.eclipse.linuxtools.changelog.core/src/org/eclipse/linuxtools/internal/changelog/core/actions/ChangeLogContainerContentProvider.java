@@ -55,7 +55,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
 				return allProjects;
 			}
 
-            ArrayList<IProject> accessibleProjects = new ArrayList<IProject>();
+            ArrayList<IProject> accessibleProjects = new ArrayList<>();
             for (int i = 0; i < allProjects.length; i++) {
                 if (allProjects[i].isOpen()) {
                     accessibleProjects.add(allProjects[i]);
@@ -66,7 +66,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
             IContainer container = (IContainer) element;
             if (container.isAccessible()) {
                 try {
-                    List<IResource> children = new ArrayList<IResource>();
+                    List<IResource> children = new ArrayList<>();
                     IResource[] members = container.members();
                     for (int i = 0; i < members.length; i++) {
                         if (members[i].getType() != IResource.FILE) {
@@ -80,7 +80,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
             }
         } else if (element instanceof ChangeLogRootContainer) {
         	ChangeLogRootContainer container = (ChangeLogRootContainer) element;
-        	List<IResource> children = new ArrayList<IResource>();
+        	List<IResource> children = new ArrayList<>();
         	IResource[] members = container.members();
         	for (int i = 0; i < members.length; i++) {
         		if (members[i].getType() != IResource.FILE) {

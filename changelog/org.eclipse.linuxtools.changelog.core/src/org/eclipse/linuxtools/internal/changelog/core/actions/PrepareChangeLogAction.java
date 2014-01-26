@@ -273,9 +273,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		Object element = selected.getFirstElement();
 
 		IResource resource = null;
-		Vector<PatchFile> newList = new Vector<PatchFile>();
-		Vector<PatchFile> removeList = new Vector<PatchFile>();
-		Vector<PatchFile> changeList = new Vector<PatchFile>();
+		Vector<PatchFile> newList = new Vector<>();
+		Vector<PatchFile> removeList = new Vector<>();
+		Vector<PatchFile> changeList = new Vector<>();
 		int totalChanges = 0;
 
 		if (element instanceof IResource) {
@@ -563,8 +563,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			IDocument doc = mdp.createDocument(fei);
 			IDocument olddoc = msdp.createDocument(sei);
 
-			HashMap<String, String> functionNamesMap = new HashMap<String, String>();
-			ArrayList<String> nameList = new ArrayList<String>();
+			HashMap<String, String> functionNamesMap = new HashMap<>();
+			ArrayList<String> nameList = new ArrayList<>();
 
 			// for all the ranges
 			for (PatchRangeElement tpre: patchFileInfo.getRanges()) {

@@ -20,13 +20,13 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Manages color schemes. Actual color value is stored in
  * IChangeLogColorConstants.
- * 
+ *
  * @author klee (Kyu Lee)
- * 
+ *
  */
 public class ColorManager {
 
-	protected Map<RGB, Color> fColorTable = new HashMap<RGB, Color>(10);
+	protected Map<RGB, Color> fColorTable = new HashMap<>(10);
 
 	public void dispose() {
 		for (Color color: fColorTable.values()){
