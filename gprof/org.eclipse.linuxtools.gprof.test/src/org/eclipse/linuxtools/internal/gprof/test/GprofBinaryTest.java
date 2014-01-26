@@ -28,7 +28,7 @@ public class GprofBinaryTest {
 
 	@Parameters
     public static Collection<Object[]> data() {
-    	List<Object[]> params = new ArrayList<Object[]>();
+    	List<Object[]> params = new ArrayList<>();
 		for (File testDir : STJunitUtils.getTestDirs()) {
 			params.add(new Object[]{testDir.getName()+File.separator+BINARY_FILE});
 		}

@@ -34,7 +34,7 @@ public class CallGraphDecoder {
 	protected final GmonDecoder decoder;
 	
 	
-	private final Map<ISymbol, CallGraphNode> nodes = new HashMap<ISymbol, CallGraphNode>();
+	private final Map<ISymbol, CallGraphNode> nodes = new HashMap<>();
 	
 	/**
 	 * Constructor

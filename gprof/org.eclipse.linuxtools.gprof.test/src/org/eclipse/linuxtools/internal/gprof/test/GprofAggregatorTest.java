@@ -34,7 +34,7 @@ public class GprofAggregatorTest {
 
 	@Parameters
 	public static Collection<Object[]> data() {
-		List<Object[]> params = new ArrayList<Object[]>();
+		List<Object[]> params = new ArrayList<>();
 		for (File testDir : STJunitUtils.getTestDirs()) {
 			final String dirName = testDir.getName();
 			params.add(new Object[] { dirName });
@@ -62,7 +62,7 @@ public class GprofAggregatorTest {
 		String gmon = gmonPath.toString();
 		String binary = binaryPath.toString();
 
-		LinkedList<String> s = new LinkedList<String>();
+		LinkedList<String> s = new LinkedList<>();
 		s.add(gmon.toString());
 		s.add(gmon.toString());
 

@@ -25,7 +25,7 @@ public class CGCategory extends AbstractTreeElement {
     public final static String CHILDREN = "children"; //$NON-NLS-1$
 
     public final String category;
-    private final LinkedList<TreeElement> children = new LinkedList<TreeElement>();
+    private final LinkedList<TreeElement> children = new LinkedList<>();
 
     /**
      * Constructor

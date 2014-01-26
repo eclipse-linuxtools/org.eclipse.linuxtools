@@ -39,7 +39,7 @@ public class FlatHistogramContentProvider extends FunctionHistogramContentProvid
 	@Override
 	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
 		LinkedList<? extends TreeElement> list = super.getFunctionChildrenList(root);
-		LinkedList<TreeElement> ret = new LinkedList<TreeElement>();
+		LinkedList<TreeElement> ret = new LinkedList<>();
 		for (TreeElement histTreeElem : list) {
 			LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
 			ret.addAll(partialList);

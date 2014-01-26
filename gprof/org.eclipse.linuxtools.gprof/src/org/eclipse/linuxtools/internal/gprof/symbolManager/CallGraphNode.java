@@ -22,8 +22,8 @@ import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 public class CallGraphNode {
 
     private final ISymbol symbol;
-    private final LinkedList<CallGraphArc> parents = new LinkedList<CallGraphArc>();
-    private final LinkedList<CallGraphArc> children = new LinkedList<CallGraphArc>();
+    private final LinkedList<CallGraphArc> parents = new LinkedList<>();
+    private final LinkedList<CallGraphArc> children = new LinkedList<>();
 
     /**
      * Constructor

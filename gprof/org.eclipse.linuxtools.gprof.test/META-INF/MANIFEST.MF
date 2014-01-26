@@ -4,7 +4,7 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gprof.test
 Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: %bundleProvider
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.10.0",
  org.eclipse.linuxtools.gprof.launch;bundle-version="1.0.0",
  org.eclipse.linuxtools.profiling.tests;bundle-version="1.0.0",

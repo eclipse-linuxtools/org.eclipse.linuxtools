@@ -61,7 +61,7 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 	}
 
 	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
-		LinkedList<TreeElement> ret = new LinkedList<TreeElement>();
+		LinkedList<TreeElement> ret = new LinkedList<>();
 		LinkedList<? extends TreeElement> list = root.getChildren();
 		for (TreeElement histTreeElem : list) {
 			LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();

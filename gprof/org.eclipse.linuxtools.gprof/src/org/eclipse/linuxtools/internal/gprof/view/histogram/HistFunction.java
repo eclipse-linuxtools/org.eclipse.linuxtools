@@ -31,11 +31,11 @@ public class HistFunction extends AbstractTreeElement {
 
 	/** The sympbol to display */
 	public final ISymbol symbol;
-	private final LinkedList<HistLine> children = new LinkedList<HistLine>();
+	private final LinkedList<HistLine> children = new LinkedList<>();
 	private CGCategory parentsFunctions;
 	private CGCategory childrenFunctions;
 	
-	private static HashMap<ISymbol, Integer> histSym = new HashMap<ISymbol, Integer>();
+	private static HashMap<ISymbol, Integer> histSym = new HashMap<>();
 	
 	/**
 	 * Constructor 

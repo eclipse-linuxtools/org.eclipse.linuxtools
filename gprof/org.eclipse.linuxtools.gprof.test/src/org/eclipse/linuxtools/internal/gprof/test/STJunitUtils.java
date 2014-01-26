@@ -67,9 +67,8 @@ public class STJunitUtils {
 		String message = "Comparing ref file ("+refFile+ ")and dump file (" +
 		  dumpFile+")";
 		boolean equals = false;
-		try {
-		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
-		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
+		try (LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
+		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile))){
 			do {
 				String line1 = is1.readLine();
 				String line2 = is2.readLine();
@@ -93,13 +92,13 @@ public class STJunitUtils {
 			if (equals && deleteDumpFileIfOk) {
 				new File(dumpFile).delete();
 			}
-		}catch (FileNotFoundException _) {
+		}catch (FileNotFoundException fnfe) {
 			message += "... FAILED: One of these files may not exist";
-			assertNull(message, _);
+			assertNull(message, fnfe);
 		}
-		catch (Exception _) {
+		catch (Exception e) {
 			message += ": exception raised ... FAILED";
-			assertNull(message, _);
+			assertNull(message, e);
 		}
 		return equals;
 	}
@@ -116,9 +115,8 @@ public class STJunitUtils {
 		boolean equals = false;
 		String str = "[in-charge]"; // this string can be dumped according to binutils version installed on local machine
 
-		try {
-		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
-		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
+		try (LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
+		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile))){
 			do {
 				String line1 = is1.readLine();
 				String line2 = is2.readLine();
@@ -148,12 +146,12 @@ public class STJunitUtils {
 			if (!equals) {
 				StringBuffer msg = new StringBuffer(message + ": not correspond ");
  				msg.append("\n========= begin dump file =========\n");
- 				FileReader fr = new FileReader(dumpFile);
- 				int c;
- 				while ((c = fr.read()) != -1) {
- 					msg.append((char) c);
- 				}
- 				fr.close();
+				try (FileReader fr = new FileReader(dumpFile)) {
+					int c;
+					while ((c = fr.read()) != -1) {
+						msg.append((char) c);
+					}
+				}
  				msg.append("\n=========  end dump file  =========\n");
  				assertEquals(msg.toString(), true, false);
 			}

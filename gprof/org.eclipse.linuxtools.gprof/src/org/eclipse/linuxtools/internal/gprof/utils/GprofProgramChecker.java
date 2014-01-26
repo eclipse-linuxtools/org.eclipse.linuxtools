@@ -26,7 +26,7 @@ public class GprofProgramChecker implements STNMSymbolsHandler {
 	private boolean mcountFound = false;
 	private boolean mcleanupFound = false;
 	private long timestamp;
-	private final static WeakHashMap<File, GprofProgramChecker> map = new WeakHashMap<File, GprofProgramChecker>();
+	private final static WeakHashMap<File, GprofProgramChecker> map = new WeakHashMap<>();
 	/** Private Constructor */
 	private GprofProgramChecker(long timestamp) {
 		this.timestamp = timestamp;

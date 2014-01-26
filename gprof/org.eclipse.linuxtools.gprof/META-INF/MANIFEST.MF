@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.binutils,
  org.eclipse.linuxtools.dataviewers.charts
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin
 Export-Package: 
  org.eclipse.linuxtools.internal.gprof.view;x-friends:="org.eclipse.linuxtools.gprof.launch"

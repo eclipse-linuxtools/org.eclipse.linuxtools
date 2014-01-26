@@ -28,7 +28,7 @@ public class HistFile extends AbstractTreeElement {
 
 	/** The source path to display */
 	public final String sourcePath;
-	private final LinkedList<HistFunction> children = new LinkedList<HistFunction>();
+	private final LinkedList<HistFunction> children = new LinkedList<>();
 	
 	/**
 	 * Constructor 

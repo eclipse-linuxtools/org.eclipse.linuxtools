@@ -50,7 +50,7 @@ public class GprofTest {
 
 	@Parameters
 	public static Collection<Object[]> data() {
-		List<Object[]> params = new ArrayList<Object[]>();
+		List<Object[]> params = new ArrayList<>();
 		boolean addr2line2_16 = false;
 		try {
 			Process p = Runtime.getRuntime().exec("addr2line --version");

@@ -24,7 +24,7 @@ public class HistLine extends AbstractTreeElement {
 
 
 	public final int line;
-	private final LinkedList<HistBucket> children = new LinkedList<HistBucket>();
+	private final LinkedList<HistBucket> children = new LinkedList<>();
 
 	/**
 	 * Constructor 

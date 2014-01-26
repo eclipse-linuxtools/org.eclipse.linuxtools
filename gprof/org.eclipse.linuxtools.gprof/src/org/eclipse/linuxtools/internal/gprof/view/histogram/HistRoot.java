@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphNode;
  */
 public class HistRoot extends AbstractTreeElement {
 
-	private final LinkedList<HistFile> children = new LinkedList<HistFile>();
+	private final LinkedList<HistFile> children = new LinkedList<>();
 	
 	/** The decoded gmon to display */
 	public final GmonDecoder decoder;
