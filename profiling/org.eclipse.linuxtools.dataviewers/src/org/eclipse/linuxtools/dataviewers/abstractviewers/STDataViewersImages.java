@@ -142,7 +142,7 @@ public class STDataViewersImages {
      * @see org.eclipse.jface.resource.ImageRegistry
      */
     public static ImageRegistry initializeImageRegistry() {
-        imageDescriptors = new HashMap<String, ImageDescriptor>(30);
+        imageDescriptors = new HashMap<>(30);
         declareImages();
         return imageRegistry;
     }

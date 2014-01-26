@@ -24,7 +24,7 @@ import org.swtchart.ISeries;
 
 public class PieChart extends Chart {
 
-	protected List<RGB> colorList = new ArrayList<RGB>();
+	protected List<RGB> colorList = new ArrayList<>();
 
     /**
      * A PieChart with titles given to each pie it draws.

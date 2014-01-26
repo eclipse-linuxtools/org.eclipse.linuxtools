@@ -280,7 +280,7 @@ public class ChartDialog extends Dialog {
      * @param listener
      */
     private void addColumnButtons(Composite comp, SelectionListener listener) {
-        columnButtons = new LinkedList<Button>();
+        columnButtons = new LinkedList<>();
         for (ISTDataViewersField field : stViewer.getAllFields()) {
             if (field instanceof IChartField) {
                 IChartField cField = (IChartField) field;
@@ -392,7 +392,7 @@ public class ChartDialog extends Dialog {
 
         ISTDataViewersField labelField = getLabelField(stViewer);
 
-        List<IChartField> selectedFields = new ArrayList<IChartField>();
+        List<IChartField> selectedFields = new ArrayList<>();
         for (Button button : columnButtons) {
             if (button.getSelection()) {
                 selectedFields.add((IChartField) button.getData());

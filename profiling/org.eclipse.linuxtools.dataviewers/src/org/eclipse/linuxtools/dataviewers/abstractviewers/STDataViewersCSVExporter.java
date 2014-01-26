@@ -421,7 +421,7 @@ public class STDataViewersCSVExporter {
 
                 // getting fields mapping
                 // (before removing hidden columns)
-                Map<Item, ISTDataViewersField> fieldsMap = new HashMap<Item, ISTDataViewersField>();
+                Map<Item, ISTDataViewersField> fieldsMap = new HashMap<>();
                 for (Item column : columns) {
                     fieldsMap.put(column, (ISTDataViewersField) column.getData());
                 }
@@ -432,7 +432,7 @@ public class STDataViewersCSVExporter {
                 // getting only visible columns, using the column order
                 if (!showHiddenColumns) {
                     int[] columnsState = stViewer.getHideShowManager().getColumnsState();
-                    List<Item> enabledColumns = new ArrayList<Item>();
+                    List<Item> enabledColumns = new ArrayList<>();
                     for (int i = 0; i < columnsState.length; i++) {
                         if (columnsState[columnOrder[i]] == STDataViewersHideShowManager.STATE_SHOWN) {
                             enabledColumns.add(columns[i]);
@@ -454,7 +454,7 @@ public class STDataViewersCSVExporter {
                 contentProvider = stViewer.getViewer().getContentProvider();
 
                 // getting expanded elements if necessary
-                expandedElts = new ArrayList<Object>();
+                expandedElts = new ArrayList<>();
                 if (!expandAll && stViewer.getViewer() instanceof TreeViewer) {
                     TreeViewer tv = (TreeViewer) stViewer.getViewer();
                     expandedElts = Arrays.asList(tv.getExpandedElements());

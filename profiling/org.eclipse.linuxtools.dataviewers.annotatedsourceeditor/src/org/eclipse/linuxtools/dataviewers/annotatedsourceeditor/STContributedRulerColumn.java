@@ -364,7 +364,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     }
 
     private Map<Object, AnnotationPreference> getAnnotationPreferenceMap() {
-        Map<Object, AnnotationPreference> annotationPrefs = new HashMap<Object, AnnotationPreference>();
+        Map<Object, AnnotationPreference> annotationPrefs = new HashMap<>();
         MarkerAnnotationPreferences fAnnotationPreferences = new MarkerAnnotationPreferences();
         Iterator<?> iter = fAnnotationPreferences.getAnnotationPreferences().iterator();
         while (iter.hasNext()) {
