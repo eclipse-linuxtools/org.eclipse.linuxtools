@@ -52,7 +52,7 @@ public class DevHelpToc implements IToc {
 	@Override
 	public ITopic[] getTopics() {
 		try {
-			ArrayList<ITopic> topics = new ArrayList<ITopic>();
+			ArrayList<ITopic> topics = new ArrayList<>();
 			IPreferenceStore ps = DevHelpPlugin.getDefault()
 					.getPreferenceStore();
 			IPath devhelpLocation = new Path(

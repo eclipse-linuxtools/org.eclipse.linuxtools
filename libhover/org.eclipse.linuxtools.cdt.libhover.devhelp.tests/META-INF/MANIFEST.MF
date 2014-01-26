@@ -7,5 +7,5 @@ Bundle-Vendor: %provider
 Require-Bundle: org.junit,
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Fragment-Host: org.eclipse.linuxtools.cdt.libhover.devhelp

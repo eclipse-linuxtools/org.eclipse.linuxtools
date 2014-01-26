@@ -26,10 +26,12 @@ public class HelpBook implements ICHelpBook {
 		else
 			type = HELP_TYPE_ASM;
 	}
+	@Override
 	public String getTitle () {
 		return title;
 	}
 	
+	@Override
 	public int getCHelpType () {
 		return type;
 	}

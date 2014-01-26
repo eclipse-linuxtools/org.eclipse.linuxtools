@@ -117,8 +117,9 @@ public class MemberInfo implements Serializable {
 	 * @param info a member with same name as this member.
 	 */
 	public void addChild(MemberInfo info) {
-		if (children == null)
-			children = new ArrayList<MemberInfo>();
+		if (children == null) {
+			children = new ArrayList<>();
+		}
 		children.add(info);
 	}
 

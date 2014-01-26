@@ -43,7 +43,7 @@ public class DoxygenCPPInfo {
 
 	private Document document;
 	private LibHoverInfo cppInfo = new LibHoverInfo();
-	private HashMap<String, ClassInfo> classesById = new HashMap<String, ClassInfo>();
+	private HashMap<String, ClassInfo> classesById = new HashMap<>();
 
 	public DoxygenCPPInfo(Document document) {
 		this.document = document;
@@ -189,7 +189,7 @@ public class DoxygenCPPInfo {
 									cppInfo.classes.put(hashName, d);
 							}
 						} else if (name2.equals("templateparamlist")) { //$NON-NLS-1$
-							ArrayList<String> templates = new ArrayList<String>();
+							ArrayList<String> templates = new ArrayList<>();
 							NodeList params = n2.getChildNodes();
 							int paramsLength = params.getLength();
 							for (int j2 = 0; j2 < paramsLength; ++j2) {
@@ -253,7 +253,7 @@ public class DoxygenCPPInfo {
 													String type = null;
 													String args = null;
 													String desc = null;
-													ArrayList<String> parms = new ArrayList<String>();
+													ArrayList<String> parms = new ArrayList<>();
 													NodeList nl4 = n3.getChildNodes();
 													int memberLength = nl4.getLength();
 													for (int k = 0; k < memberLength; ++k) {
@@ -462,7 +462,7 @@ public class DoxygenCPPInfo {
 
 	public String[] getTemplateParms(Node classNode) {
 		Node n = null;
-		ArrayList<String> templateArray = new ArrayList<String>();
+		ArrayList<String> templateArray = new ArrayList<>();
 		NodeList list = classNode.getChildNodes();
 		for (int i = 0; i < list.getLength(); ++i) {
 			n = list.item(i);
@@ -517,19 +517,7 @@ public class DoxygenCPPInfo {
 				d.buildDoxygenCPPInfo(args[1]);
 			}
 			System.out.println("Built " + args[1] + " from " + args[0]); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
+		} catch (URISyntaxException|SAXException|ParserConfigurationException|IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

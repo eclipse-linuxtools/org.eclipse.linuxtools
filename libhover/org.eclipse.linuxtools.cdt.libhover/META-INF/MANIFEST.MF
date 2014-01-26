@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem;bundle-version="1.2.0",
  org.eclipse.cdt.core;bundle-version="5.0.0",
  org.eclipse.jface.text;bundle-version="3.4.1"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.linuxtools.cdt.libhover,
  org.eclipse.linuxtools.internal.cdt.libhover;x-friends:="org.eclipse.linuxtools.cdt.libhover.devhelp,org.eclipse.linuxtools.cdt.libhover.devhelp.tests",
  org.eclipse.linuxtools.internal.cdt.libhover.preferences;x-friends:="org.eclipse.linuxtools.cdt.libhover.devhelp.tests"

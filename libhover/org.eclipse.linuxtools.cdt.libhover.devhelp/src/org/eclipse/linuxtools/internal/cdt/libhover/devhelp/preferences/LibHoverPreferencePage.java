@@ -116,9 +116,6 @@ public class LibHoverPreferencePage
 					out.writeObject(hover);
 					out.close();
 					monitor.done();
-				} catch(FileNotFoundException e) {
-					monitor.done();
-					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 				} catch(IOException e) {
 					monitor.done();
 					return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);

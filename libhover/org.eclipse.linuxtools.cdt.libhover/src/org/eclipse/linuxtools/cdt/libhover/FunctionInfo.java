@@ -19,7 +19,7 @@ public class FunctionInfo implements Serializable {
 	private String prototype;
 	private String desc;
 	private String returnType;
-	private ArrayList<String> headers = new ArrayList<String>();
+	private ArrayList<String> headers = new ArrayList<>();
 	private ArrayList<FunctionInfo> children = null;
 	
 	/**
@@ -118,8 +118,9 @@ public class FunctionInfo implements Serializable {
 	 * @param info a function with same name as this function.
 	 */
 	public void addChild(FunctionInfo info) {
-		if (children == null)
-			children = new ArrayList<FunctionInfo>();
+		if (children == null) {
+			children = new ArrayList<>();
+		}
 		children.add(info);
 	}
 

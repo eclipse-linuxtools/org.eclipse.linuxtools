@@ -55,11 +55,15 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 		plugin = this;
 		ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID,
 				new ISaveParticipant() {
+					@Override
 					public void saving(ISaveContext saveContext) {
 						save(saveContext);
 					}				
+					@Override
 					public void rollback(ISaveContext saveContext) {}
+					@Override
 					public void prepareToSave(ISaveContext saveContext) {}
+					@Override
 					public void doneSaving(ISaveContext saveContext) {}
 				});
 		IPreferenceStore ps = getPreferenceStore();
