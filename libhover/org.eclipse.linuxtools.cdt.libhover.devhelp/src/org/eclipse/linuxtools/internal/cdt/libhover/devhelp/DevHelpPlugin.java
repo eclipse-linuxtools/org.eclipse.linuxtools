@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -34,7 +33,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class DevHelpPlugin extends AbstractUIPlugin implements IStartup {
 

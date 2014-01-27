@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.cdt.libhover.libstdcxx;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.cdt.libhover.ClassInfo;
+import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.cdt.libhover.MemberInfo;
 import org.eclipse.linuxtools.cdt.libhover.TypedefInfo;
 import org.w3c.dom.Document;
@@ -84,10 +83,11 @@ public class DoxygenCPPInfo {
 			// Following is a bit of a hack knowing the docs don't add the namespace when the transformed
 			// type is in the same space
 			int namespace = result[1].indexOf("::"); //$NON-NLS-1$
-			if (namespace < 0)
+			if (namespace < 0) {
 				result[0] = def.substring(8, startIndex).trim();
-			else
+			} else {
 				result[0] = result[1].substring(0, namespace) + "::" + def.substring(8, startIndex).trim(); //$NON-NLS-1$
+			}
 		}
 		return result;
 	}

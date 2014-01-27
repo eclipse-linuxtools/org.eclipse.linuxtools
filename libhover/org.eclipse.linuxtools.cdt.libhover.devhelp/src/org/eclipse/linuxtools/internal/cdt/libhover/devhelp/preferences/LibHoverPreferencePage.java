@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -61,9 +60,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * be accessed directly via the preference store.
  */
 
-public class LibHoverPreferencePage
-	extends FieldEditorPreferencePage
-	implements IWorkbenchPreferencePage {
+public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
+		IWorkbenchPreferencePage {
 
 	private final static String DEVHELP_DIR = "Libhover.Devhelp.Directory"; //$NON-NLS-1$
 	private final static String GENERATE = "Libhover.Devhelp.Generate.lbl"; //$NON-NLS-1$
