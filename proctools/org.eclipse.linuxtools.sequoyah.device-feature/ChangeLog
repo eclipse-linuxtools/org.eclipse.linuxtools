@@ -1,8 +1,0 @@
-2010-11-02  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* feature.xml: Initial check-in and refactoring.
-	* feature.properties: Ditto.
-	* license.html: Ditto.
-	* eclipse_update_120.jpg: Ditto.
-	* epl-v10.html: Ditto.
-	* build.properties: Ditto.
