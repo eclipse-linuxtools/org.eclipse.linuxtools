@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
@@ -67,7 +66,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
 
 	/**
-	 * @see ILaunchConfigurationTab#getImage()
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
 	 */
 	@Override
 	public Image getImage() {
@@ -306,7 +305,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 			}
 			previousProject = project;
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
@@ -351,7 +349,9 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		}
-		if (hwbps.size() == 0) { hwbps = null; } //to match with default value.
+		if (hwbps.size() == 0) {
+			hwbps = null; // to match with default value.
+		}
 		wconfig.setAttribute(PerfPlugin.ATTR_HwBreakpointEvents, hwbps);
 
 		//Store any custom Raw HW Events they added (even if unchecked).
@@ -363,7 +363,9 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		}
-		if (rawhwe.size() == 0) { rawhwe = null; } //to match with default value.
+		if (rawhwe.size() == 0) { 
+			rawhwe = null; //to match with default value.
+		} 
 		wconfig.setAttribute(PerfPlugin.ATTR_RawHwEvents, rawhwe);
 	}
 

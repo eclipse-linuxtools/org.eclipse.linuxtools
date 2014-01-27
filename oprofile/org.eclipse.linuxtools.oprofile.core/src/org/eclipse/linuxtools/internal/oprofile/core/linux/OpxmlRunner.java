@@ -32,10 +32,9 @@ import javax.xml.parsers.SAXParserFactory;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
-import org.eclipse.linuxtools.internal.oprofile.core.OpxmlException;
-import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
@@ -75,7 +74,6 @@ public class OpxmlRunner {
 	 * @param args the arguments to pass to opxml
 	 * @param callData any callData to pass to the processor
 	 * @return boolean indicating the success/failure of opxml
-	 * @throws OpxmlException 
 	 */
 	public boolean run(String[] args, Object callData) {
 		XMLReader reader = null;

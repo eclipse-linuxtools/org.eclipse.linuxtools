@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -60,7 +59,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected ScrolledComposite scrollTop;
 
 	/**
-	 * @see ILaunchConfigurationTab#getImage()
+	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
 	 */
 	@Override
 	public Image getImage() {

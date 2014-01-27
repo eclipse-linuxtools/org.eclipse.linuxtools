@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.profiling.ui;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -267,12 +266,6 @@ public class ProfileUIUtils {
 					}
 				}
 				
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally{

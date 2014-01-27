@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.linuxtools.dataviewers.listeners.ISpecialDrawerListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -21,12 +20,12 @@ import org.eclipse.swt.graphics.Image;
  * <ul>
  * <li>the name of the column header
  * <li>the tooltip of the column header
- * <li>It computes the label to display for each object given by the {@link ITreeContentProvider}
- * <li>It computes the tooltip to display for each object given by the {@link ITreeContentProvider}
+ * <li>It computes the label to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
+ * <li>It computes the tooltip to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
  * <li>It computes the background & foreground color to display for each object given by the
- * {@link ITreeContentProvider}
- * <li>It computes the image to display for each object given by the {@link ITreeContentProvider}
- * <li>It provides a comparator, used to compare objects given by the {@link ITreeContentProvider}
+ * {@link org.eclipse.jface.viewers.ITreeContentProvider}
+ * <li>It computes the image to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
+ * <li>It provides a comparator, used to compare objects given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
  * <li>It allows a "custom rendering", for example if you want to display percentages as progress bars or to display
  * hyperlink as underlined text
  * </ul>

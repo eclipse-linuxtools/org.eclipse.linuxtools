@@ -45,7 +45,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.AnnotationPreference;
@@ -58,7 +57,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
         IVerticalRulerInfoExtension {
     /**
      * Forwarder for preference checks and ruler creation. Needed to maintain the forwarded APIs in
-     * {@link AbstractDecoratedTextEditor}.
+     * {@link org.eclipse.ui.texteditor.AbstractDecoratedTextEditor}.
      */
     public static final String ID = "org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.column"; //$NON-NLS-1$
 
@@ -712,8 +711,8 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
     }
 
     /**
-     * Sets the STRulerColumn. Used by {@link AbstractDecoratedTextEditor} to maintain the contract of its
-     * {@link AbstractDecoratedTextEditor#createLineNumberRulerColumn} method.
+     * Sets the STRulerColumn. Used by {@link org.eclipse.ui.texteditor.AbstractDecoratedTextEditor} to maintain the contract of its
+     * {@link org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createLineNumberRulerColumn} method.
      *
      * @param rulerColumn The ruler column.
      */

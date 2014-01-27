@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -116,9 +115,6 @@ AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
-	 */
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 
@@ -193,9 +189,6 @@ AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#isValid(ILaunchConfiguration)
-	 */
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		IProject project = getProject(config);
@@ -269,9 +262,6 @@ AbstractLaunchConfigurationTab {
 		return (numEnabledEvents > 0 && valid);
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
-	 */
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		if (getOprofileTimerMode() || counterSubTabs == null) {
@@ -284,9 +274,6 @@ AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#setDefaults(ILaunchConfigurationWorkingCopy)
-	 */
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		boolean useDefault = true;
@@ -306,17 +293,11 @@ AbstractLaunchConfigurationTab {
 		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, useDefault);
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#getName()
-	 */
 	@Override
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.event.name"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see ILaunchConfigurationTab#getImage()
-	 */
 	@Override
 	public Image getImage() {
 		return OprofileLaunchPlugin.getImageDescriptor(OprofileLaunchPlugin.ICON_EVENT_TAB).createImage();
