@@ -12,39 +12,57 @@
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
+
 /**
  * A class which represents the event collected in a given session.
  */
 public class OpModelEvent {
 	private String eventName;
-	private OpModelSession[] sessions;
 	private String printTabs = "";		//for nice output  //$NON-NLS-1$
-	
-	public OpModelEvent(String name) {
-		eventName = name;
-	}
+	private OpModelImage image;
+	private OpModelSession parentSession;
 
-	public OpModelSession[] getSessions() {
-		return sessions;
-	}
 
-	public void setSessions(OpModelSession[] sessions) {
-		this.sessions = sessions;
+	public OpModelEvent(OpModelSession parentSession ,String name) {
+		this.parentSession = parentSession;
+		this.eventName = name;
 	}
 
 	public String getName() {
 		return eventName;
 	}
 
-	//populate all sessions
+	public OpModelSession getSession()
+	{
+		return parentSession;
+	}
+
+	public void setSession(OpModelSession session)
+	{
+		this.parentSession = session;
+	}
+	//populate all images & dependent images
 	public void refreshModel() {
-		if (sessions != null) {
-			for (int i = 0; i < sessions.length; i++) {
-				sessions[i].refreshModel();
-			}
+		image = getNewImage();
+	}
+
+	public OpModelImage getImage() {
+		return image;
+	}
+
+	protected OpModelImage getNewImage() {
+		return Oprofile.getModelData(this.eventName, parentSession.getName());
+	}
+
+	public int getCount() {
+		if (image == null) {
+			return 0;
+		} else {
+			return image.getCount();
 		}
 	}
-	
+
 	public String toString(String tabs) {
 		printTabs = tabs;
 		String s = toString();
@@ -55,11 +73,9 @@ public class OpModelEvent {
 	@Override
 	public String toString() {
 		String s = eventName + "\n"; //$NON-NLS-1$
-		if (sessions != null) {
-			for (int i = 0; i < sessions.length; i++) {
-				s += printTabs + "Session: "; //$NON-NLS-1$
-				s += sessions[i].toString(printTabs + "\t"); //$NON-NLS-1$
-			}
+		if (image != null) {
+			s += printTabs + "Image: "; //$NON-NLS-1$
+			s += image.toString(printTabs + "\t"); //$NON-NLS-1$
 		}
 		return s;
 	}

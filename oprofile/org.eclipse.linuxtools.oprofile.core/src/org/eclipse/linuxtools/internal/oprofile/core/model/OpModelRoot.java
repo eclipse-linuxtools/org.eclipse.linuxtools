@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
@@ -16,21 +16,21 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 /**
  * A root node for the data model. Only one instance exists at any time,
  * although the contents will change. On instantiation the events and
- * sessions are gathered. 
- * 
+ * sessions are gathered.
+ *
  * Note that this data model does not map 1:1 to the oprofile data model.
  * This model is for use in profiling one application compiled with debug
- * info, from within eclipse. 
+ * info, from within eclipse.
  */
 
 public class OpModelRoot {
 	//single instance
 	private static OpModelRoot modelRoot = new OpModelRoot();
 
-	private OpModelEvent[] events;
+	private OpModelSession[] session;
 
 	protected OpModelRoot() {
-		events = null;
+		session = null;
 	}
 
 	public static OpModelRoot getDefault() {
@@ -39,34 +39,40 @@ public class OpModelRoot {
 
 	public void refreshModel() {
 		//TODO-performance/interactivity: some persistence for events/sessions
-		// that dont change from run to run (non default sessions) 
-		
-		events = getNewEvents();
-		if (events != null) {
-			for (int i = 0; i < events.length; i++) {
-				if (events[i] != null)
-					events[i].refreshModel();
+		// that dont change from run to run (non default sessions)
+
+		session = getNewSessions();
+		if (session != null) {
+			for (int i = 0; i < session.length; i++) {
+				if (session[i] != null)
+					session[i].refreshModel();
 			}
 		}
 	}
-	
-	protected OpModelEvent[] getNewEvents() {
+
+	/**
+	 * return list of session collected on this system as well as events under each of them.
+	 * @return collected sessions list
+	 * @since 3.0
+	 */
+	protected OpModelSession[] getNewSessions() {
 		//launch `opxml sessions`, gather up events & the sessions under them
-		return Oprofile.getEvents(); 
+		return Oprofile.getSessions();
 	}
-	
-	public OpModelEvent[] getEvents() {
-		return events;
+
+
+	public OpModelSession[] getSessions() {
+		return session;
 	}
-	
+
 	@Override
 	public String toString() {
 		String s = ""; //$NON-NLS-1$
-		if (events != null) {
-			for (int i = 0; i < events.length; i++) {
-				if (events[i] != null) {
-					s += "Event: "; //$NON-NLS-1$
-					s += events[i].toString("\t"); //$NON-NLS-1$
+		if (session != null) {
+			for (int i = 0; i < session.length; i++) {
+				if (session[i] != null) {
+					s += "Session: "; //$NON-NLS-1$
+					s += session[i].toString("\t"); //$NON-NLS-1$
 				}
 			}
 		}

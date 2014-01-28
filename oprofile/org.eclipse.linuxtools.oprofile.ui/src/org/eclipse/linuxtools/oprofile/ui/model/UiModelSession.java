@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
@@ -29,6 +30,8 @@ public class UiModelSession implements IUiModelElement {
 	private UiModelImage image;			//this node's child
 	private UiModelDependent dependent;	//dependent images of the OpModelImage
 
+	private UiModelEvent events[];
+
 	//OProfile's default session name
 	private static final String DEFAULT_SESSION_NAME = "current"; //$NON-NLS-1$
 
@@ -37,23 +40,26 @@ public class UiModelSession implements IUiModelElement {
 	 * @param parent The parent element
 	 * @param session Oprofile session node in the data model
 	 */
-	public UiModelSession(IUiModelElement parent, OpModelSession session) {
-		this.parent = parent;
-		this.session = session;
-		this.image = null;
-		this.dependent = null;
+	public UiModelSession(OpModelSession session) {
+		if(session != null){
+			this.session = session;
 		refreshModel();
+		}
 	}
 
 	private void refreshModel() {
-		OpModelImage dataModelImage = session.getImage();
-		if (dataModelImage != null) {
-			image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
 
-			if (dataModelImage.hasDependents()) {
-				dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
-			}
+		OpModelEvent dataModelEvents[] = session.getEvents();
+		events = new UiModelEvent[dataModelEvents.length];
+		for (int i = 0; i < dataModelEvents.length; i++) {
+			events[i] = new UiModelEvent(this, dataModelEvents[i]);
 		}
+
+	}
+
+	protected OpModelSession[] getModelDataSessions() {
+		OpModelRoot modelRoot = OpModelRoot.getDefault();
+		return modelRoot.getSessions();
 	}
 
 	@Override
@@ -87,11 +93,7 @@ public class UiModelSession implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		if (dependent != null) {
-			return new IUiModelElement[] {image, dependent};
-		} else {
-			return new IUiModelElement[] {image};
-		}
+		return events;
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class UiModelSession implements IUiModelElement {
 	 */
 	@Override
 	public boolean hasChildren() {
-		return (image != null);
+		return (events == null || events.length == 0 ? false : true);
 	}
 
 	/**

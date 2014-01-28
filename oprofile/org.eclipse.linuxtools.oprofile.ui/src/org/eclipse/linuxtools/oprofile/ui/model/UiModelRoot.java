@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -21,12 +21,13 @@ import org.eclipse.swt.graphics.Image;
  */
 public class UiModelRoot implements IUiModelElement {
 	private static UiModelRoot uiModelRoot = new UiModelRoot();	//singleton
-	private UiModelEvent[] events;							//this node's children
+
 	private UiModelError rootError;
+	private UiModelSession[] session;						//this node's children
 
 	/** constructor, private for singleton use **/
 	protected UiModelRoot() {
-		events = null;
+		session = null;
 		rootError = null;
 	}
 
@@ -44,24 +45,25 @@ public class UiModelRoot implements IUiModelElement {
 	 *  the child elements from their constructor.
 	 */
 	public void refreshModel() {
-		OpModelEvent dataModelEvents[] = getModelDataEvents();
+		OpModelSession dataModelEvents[] = getModelDataEvents();
+
 
 		rootError = null;
-		events = null;
+		session = null;
 
 		if (dataModelEvents == null || dataModelEvents.length == 0) {
 			rootError = UiModelError.NO_SAMPLES_ERROR;
 		} else {
-			events = new UiModelEvent[dataModelEvents.length];
+			session = new UiModelSession[dataModelEvents.length];
 			for (int i = 0; i < dataModelEvents.length; i++) {
-				events[i] = new UiModelEvent(dataModelEvents[i]);
+				session[i] = new UiModelSession(dataModelEvents[i]);
 			}
 		}
 	}
 
-	protected OpModelEvent[] getModelDataEvents() {
+	protected OpModelSession[] getModelDataEvents() {
 		OpModelRoot modelRoot = OpModelRoot.getDefault();
-		return modelRoot.getEvents();
+		return modelRoot.getSessions();
 	}
 
 	/** IUiModelElement functions **/
@@ -76,8 +78,8 @@ public class UiModelRoot implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		if (events != null)
-			return events;
+		if (session != null && session.length != 0)
+			return session;
 		else
 			return new IUiModelElement[] { rootError };
 	}

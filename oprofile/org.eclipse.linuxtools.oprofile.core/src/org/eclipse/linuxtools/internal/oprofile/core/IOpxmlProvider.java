@@ -7,30 +7,30 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core;
 
 import java.util.ArrayList;
 
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OpInfo;
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 
 /**
  * Interface for the core to utilize opxml. Platform plugins should define/register an
  * OpxmlProvider for the core to use.
  */
 public interface IOpxmlProvider {
-	
+
 	/**
 	 * Returns an <code>IRunnableWithProgress</code> that fetches generic information from opxml
 	 * @param info <code>OpInfo</code> object for results
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
 	 */
 	public IRunnableWithProgress info(OpInfo info);
-	
+
 	/**
 	 * Returns an <code>IRunnableWithProgress</code> that fetches samples for the
 	 * given <code>OpModelSession</code>
@@ -40,10 +40,10 @@ public interface IOpxmlProvider {
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
 	 */
 	public IRunnableWithProgress modelData(String eventName, String sessionName, OpModelImage image);
-	
+
 	/**
 	 * Returns an <code>IRunnableWithProgress</code> that checks the validity of the given
-	 * event, unit mask, and counter combination 
+	 * event, unit mask, and counter combination
 	 * @param ctr the counter
 	 * @param event the String event name
 	 * @param um the integer unit mask
@@ -51,12 +51,12 @@ public interface IOpxmlProvider {
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
 	 */
 	public IRunnableWithProgress checkEvents(int ctr, String event, int um, int[] eventValid);
-	
+
 	/**
 	 * Returns an <code>IRunnableWithProgress</code> that fetches the list of sessions
 	 * @param info the <code>OpInfo</code> for oprofile
 	 * @param sessionList an <code>ArrayList</code> in which to return the list of sessions
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
 	 */
-	public IRunnableWithProgress sessions(ArrayList<OpModelEvent> sessionList);
+	public IRunnableWithProgress sessions(ArrayList<OpModelSession> sessionList);
 }

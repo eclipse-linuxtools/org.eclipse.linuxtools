@@ -48,19 +48,19 @@ public class SessionManager {
 	public final static String OPXML_PREFIX = PLUGIN_LOC + "/opxml_"; //$NON-NLS-1$
 	public final static String SESSION_LOCATION = OPXML_PREFIX + SESSIONS; //$NON-NLS-1$
 	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
-	
+
 	public Document doc;
 	public Element root;
 	public String absfilePath;
-	
+
 	public SessionManager(String filePath) {
 		this(new File(filePath));
 		absfilePath = filePath;
 		write();
 	}
-	
+
 	/**
-	 * Session manager class constructor to manipulate the XML data 
+	 * Session manager class constructor to manipulate the XML data
 	 * @param file the xml file
 	 */
 	public SessionManager(File file) {
@@ -87,27 +87,29 @@ public class SessionManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Add a session to the specified event element if it does not exist.
 	 * @param sessionName the name of the session
 	 * @param eventName the name of the event
 	 */
 	public void addSession(String sessionName, String eventName){
-		Element event = find(root, EVENT, NAME, eventName);
-		
-		Element session = doc.createElement(SESSION);
-		session.setAttribute(NAME, sessionName);
-		
+		Element event = null;
+		Element session = find(root, SESSION, NAME, sessionName);
+		if(session == null){
+			session = doc.createElement(SESSION);
+			session.setAttribute(NAME, sessionName);
+			root.appendChild(session);
+		}
+		else
+			event = find(session, EVENT, NAME, eventName);
+
+
 		if (event == null){
 			event = doc.createElement(EVENT);
 			event.setAttribute(NAME, eventName);
-			root.appendChild(event);
-			event.appendChild(session);
-		}else{
-			if (find (event, SESSION, NAME, sessionName) == null){
-				event.appendChild(session);
-			}
+			session.appendChild(event);
+
 		}
 	}
 	/**
@@ -118,7 +120,7 @@ public class SessionManager {
 	public boolean existsSession (String sessionName){
 		return find (root, SESSION, NAME, sessionName) != null ? true : false;
  	}
-	
+
 	/**
 	 * Find an element in the XML
 	 * @param elem the element to look under
@@ -139,57 +141,83 @@ public class SessionManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Remove all sessions under any event that have the name 'current'
 	 */
 	public void removeAllCurrentSessions() {
-		NodeList eventList = root.getElementsByTagName(EVENT);
-		for (int i = 0; i < eventList.getLength(); i++){
-			Element event = (Element) eventList.item(i);
-			String eventName = event.getAttribute(NAME);
-			NodeList sessionList = event.getElementsByTagName(SESSION);
-			for (int j = 0; j < sessionList.getLength(); j++){
-				Element session = (Element) sessionList.item(j);
-				if (session.getAttribute(NAME).equals(CURRENT)){
-					event.removeChild(session);
-					File file = new File (SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + eventName + SessionManager.CURRENT);
-					file.delete();
-					if (sessionList.getLength() == 0){
-						root.removeChild(event);
-					}
+		NodeList sessionList = root.getElementsByTagName(SESSION);
+		for (int i = 0; i < sessionList.getLength(); i++){
+			Element session = (Element) sessionList.item(i);
+			String sessionName = session.getAttribute(NAME);
+			if(CURRENT.equals(sessionName))
+			{
+			NodeList eventList = session.getElementsByTagName(EVENT);
+			for (int j = 0; j < eventList.getLength(); j++){
+				Element event = (Element) eventList.item(j);
+				String eventName = event.getAttribute(NAME);
+				session.removeChild(event);
+				File file = new File (SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + eventName + SessionManager.CURRENT);
+				file.delete();
+				if (sessionList.getLength() == 0){
+					root.removeChild(session);
 				}
 			}
 		}
+		}
 	}
-	
+
 	/**
 	 * Remove a session named sessionName that is under eventName if it exists.
 	 * @param sessionName
 	 * @param eventName
 	 */
 	public void removeSession(String sessionName, String eventName) {
-		Element event = find(root, EVENT, NAME, eventName);
-		if (event != null){
-			removeSessionHelper(sessionName, event);
-		}
-	}
-	
-	private void removeSessionHelper(String sessionName, Element elem){
-		NodeList list = elem.getElementsByTagName(SESSION);
-		for (int i = 0; i < list.getLength(); i++){
-			if (list.item(i) instanceof Element){
-				Element e = (Element) list.item(i);
-				if (e.getAttribute(NAME).equals(sessionName)){
-					elem.removeChild(e);
-					if (list.getLength() == 0){
-						root.removeChild(elem);
+		NodeList list = root.getElementsByTagName(SESSION);
+		for (int i = 0; i < list.getLength(); i++) {
+
+			if (list.item(i) instanceof Element) {
+				Element session = (Element) list.item(i);
+				if (session.getAttribute(NAME).equals(sessionName)) {
+					Element event = find((Element) list.item(0), EVENT, NAME,
+							eventName);
+					if (event != null) {
+						removeSessionHelper(sessionName, event);
 					}
 				}
 			}
 		}
 	}
-	
+
+	/**
+	 * remove event elem for given session sessionName , also remove session if there
+	 * is no event under it.
+	 * @param sessionName
+	 * @param elem
+	 *
+	 */
+	private void removeSessionHelper(String sessionName, Element elem) {
+		NodeList list = root.getElementsByTagName(SESSION);
+		for (int i = 0; i < list.getLength(); i++) {
+			if (list.item(i) instanceof Element) {
+				Element e = (Element) list.item(i);
+				if (e.getAttribute(NAME).equals(sessionName)) {
+					NodeList events = e.getElementsByTagName(EVENT);
+					for (int j = 0; j < events.getLength(); j++) {
+						Element event = (Element) events.item(j);
+						if (event.getAttribute(NAME).equals(
+								elem.getAttribute(NAME))) {
+							e.removeChild(event);
+						}
+						if (events.getLength() == 0) {
+							root.removeChild(e);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Return a list of the events run with the given session
 	 * @param sessionName the name of the session
@@ -197,18 +225,19 @@ public class SessionManager {
 	 * given session.
 	 */
 	public ArrayList<String> getSessionEvents(String sessionName){
-		ArrayList<String> ret = new ArrayList<>();
-		NodeList eventList = root.getElementsByTagName(EVENT);
-		
+		ArrayList<String> ret = new ArrayList<String>();
+		NodeList eventList = root.getElementsByTagName(SESSION);
+
 		for (int i = 0; i < eventList.getLength(); i++){
 			if (eventList.item(i) instanceof Element){
 				Element event = ((Element)eventList.item(i));
-				NodeList sessionList = event.getElementsByTagName(SESSION);
-				for (int j = 0; j < sessionList.getLength(); j++){
-					if (sessionList.item(j) instanceof Element){
-						Element session = ((Element)sessionList.item(j));
-						if (session.getAttribute(NAME).equals(sessionName)){
-							ret.add(event.getAttribute(NAME));
+				if (event.getAttribute(NAME).equals(sessionName)){
+
+					NodeList sessionList = event.getElementsByTagName(EVENT);
+					for (int j = 0; j < sessionList.getLength(); j++){
+						if (sessionList.item(j) instanceof Element){
+							Element session = ((Element)sessionList.item(j));
+							ret.add(session.getAttribute(NAME));
 						}
 					}
 				}
@@ -216,14 +245,14 @@ public class SessionManager {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Write back to the same file, that the data was loaded from.
 	 */
 	public void write (){
 		writeToFile(absfilePath);
 	}
-	
+
 	/**
 	 * Write the contents of the given Document to a file.
 	 */
@@ -241,6 +270,4 @@ public class SessionManager {
 			e.printStackTrace();
 		}
 	}
-
-
 }

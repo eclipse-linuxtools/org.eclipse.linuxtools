@@ -30,12 +30,12 @@ public class TestDataModel {
 
 	@Test
 	public void testParse() {
-		OpModelEvent[] events = _testRoot.getEvents();
-		assertEquals(3, events.length);
-		assertEquals(TestingOpModelRoot.NAME_E1, events[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2, events[1].getName());
+		OpModelSession[] sessions = _testRoot.getSessions();
+		assertEquals(3, sessions.length);
+		assertEquals(TestingOpModelRoot.NAME_E1, sessions[0].getName());
+		assertEquals(TestingOpModelRoot.NAME_E2, sessions[1].getName());
 
-		OpModelSession[] e1_sessions = events[0].getSessions(), e2_sessions = events[1].getSessions();
+		OpModelEvent[] e1_sessions = sessions[0].getEvents(), e2_sessions = sessions[1].getEvents();
 		assertEquals(1, e1_sessions.length);
 		assertEquals(4, e2_sessions.length);
 

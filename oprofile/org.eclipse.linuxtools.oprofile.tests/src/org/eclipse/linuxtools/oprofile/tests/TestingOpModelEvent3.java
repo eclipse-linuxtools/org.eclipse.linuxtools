@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.tests;
 
 import java.io.FileNotFoundException;
@@ -32,11 +32,11 @@ import org.xml.sax.XMLReader;
  * A faked OpModelSession object when there are multiple images in the session,
  * simulating when the session was not created from within the eclipse plugin.
  */
-public class TestingOpModelSession3 extends OpModelSession {
+public class TestingOpModelEvent3 extends OpModelEvent {
 	private static final String REL_PATH_TO_TEST_XML = "resources/test_model-data_multiple_image.xml"; //$NON-NLS-1$
 
-	public TestingOpModelSession3(OpModelEvent event, String name) {
-		super(event, name);
+	public TestingOpModelEvent3(OpModelSession session, String name) {
+		super(session, name);
 	}
 	@Override
 	protected OpModelImage getNewImage() {
@@ -47,15 +47,15 @@ public class TestingOpModelSession3 extends OpModelSession {
 			parsedImage = new OpModelImage();
 			ModelDataProcessor.CallData image = new ModelDataProcessor.CallData(parsedImage);
 			OprofileSAXHandler handler = OprofileSAXHandler.getInstance(image);
-			
+
 			// Create XMLReader
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			reader = factory.newSAXParser().getXMLReader();
-			
+
 			// Set content/error handlers
 			reader.setContentHandler(handler);
 			reader.setErrorHandler(handler);
-			
+
 			String filePath = FileLocator.toFileURL(FileLocator.find(TestPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
 			reader.parse(new InputSource(new FileReader(filePath)));
 		} catch (FileNotFoundException e) {
@@ -67,7 +67,7 @@ public class TestingOpModelSession3 extends OpModelSession {
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return parsedImage;
 	}
 }

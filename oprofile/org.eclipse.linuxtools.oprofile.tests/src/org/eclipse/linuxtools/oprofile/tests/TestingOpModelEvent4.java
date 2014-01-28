@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.tests;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
@@ -15,13 +15,13 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 
 /*
- * A faked OpModelSession object where there is no image. 
+ * A faked OpModelSession object where there is no image.
  * Note: technically this shouldn't really happen in normal operation
  *       of the plugin unless there is a major b0rk-up with the xml parsers..
  */
-public class TestingOpModelSession4 extends OpModelSession {
-	public TestingOpModelSession4(OpModelEvent event, String name) {
-		super(event, name);
+public class TestingOpModelEvent4 extends OpModelEvent {
+	public TestingOpModelEvent4(OpModelSession session, String name) {
+		super(session, name);
 	}
 	@Override
 	protected OpModelImage getNewImage() {

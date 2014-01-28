@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -23,24 +23,29 @@ import org.eclipse.swt.graphics.Image;
 public class UiModelEvent implements IUiModelElement {
 	private IUiModelElement parent = null;		//parent node -- necessary?
 	private OpModelEvent event;				//the node in the data model
-	private UiModelSession sessions[];			//this node's children
 
-	public UiModelEvent(OpModelEvent event) {
-		if (event != null) {
-			this.event = event;
-			refreshModel();
-		}
+	private UiModelImage image;			//this node's child
+	private UiModelDependent dependent;	//dependent images of the OpModelImage
+
+	public UiModelEvent(IUiModelElement parent, OpModelEvent event) {
+		this.parent = parent;
+		this.event = event;
+		this.image = null;
+		this.dependent = null;
+		refreshModel();
 	}
 
 	/**
 	 * Create the ui sessions from the data model.
 	 */
 	private void refreshModel() {
-		OpModelSession dataModelSessions[] = event.getSessions();
-		sessions = new UiModelSession[dataModelSessions.length];
+		OpModelImage dataModelImage = event.getImage();
+		if (dataModelImage != null) {
+			image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
 
-		for (int i = 0; i < dataModelSessions.length; i++) {
-			sessions[i] = new UiModelSession(this, dataModelSessions[i]);
+			if (dataModelImage.hasDependents()) {
+				dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
+			}
 		}
 	}
 
@@ -61,7 +66,11 @@ public class UiModelEvent implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		return sessions;
+		if (dependent != null) {
+			return new IUiModelElement[] {image, dependent};
+		} else {
+			return new IUiModelElement[] {image};
+		}
 	}
 
 	/**
@@ -70,7 +79,7 @@ public class UiModelEvent implements IUiModelElement {
 	 */
 	@Override
 	public boolean hasChildren() {
-		return (sessions == null || sessions.length == 0 ? false : true);
+		return (image != null);
 	}
 
 	/**

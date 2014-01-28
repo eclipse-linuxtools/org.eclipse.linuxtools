@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
-import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 
 
 /**
@@ -21,35 +20,26 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 public class OpModelSession {
 	private static final String DEFAULT_SESSION_STRING = "current"; //$NON-NLS-1$
 
-	private OpModelEvent parentEvent;
-	private OpModelImage image;
 	private String name;
 	private String printTabs = "";		//for nice output //$NON-NLS-1$
+	private OpModelEvent[] events;
 
-	public OpModelSession(OpModelEvent event, String name) {
-		parentEvent = event;
+	public OpModelSession(String name) {
 		this.name = name;
-		image = null;
-	}
-	
-	public OpModelImage getImage() {
-		return image;
 	}
 
-	public OpModelEvent getEvent() {
-		return parentEvent;
-	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
-	public int getCount() {
-		if (image == null) {
-			return 0;
-		} else {
-			return image.getCount();
-		}
+
+	public OpModelEvent[] getEvents() {
+		return events;
+	}
+
+
+	public void setEvents(OpModelEvent[] events) {
+		this.events = events;
 	}
 	
 	public boolean isDefaultSession() {
@@ -57,12 +47,11 @@ public class OpModelSession {
 	}
 	
 	public void refreshModel() {
-		//populate this session with samples
-		image = getNewImage();
-	}
-	
-	protected OpModelImage getNewImage() {
-		return Oprofile.getModelData(parentEvent.getName(), name);
+		if (events != null) {
+			for (int i = 0; i < events.length; i++) {
+				events[i].refreshModel();
+			}
+		}
 	}
 
 	public String toString(String tabs) {
@@ -75,9 +64,11 @@ public class OpModelSession {
 	@Override
 	public String toString() {
 		String s = name + "\n"; //$NON-NLS-1$
-		if (image != null) {
-			s += printTabs + "Image: "; //$NON-NLS-1$
-			s += image.toString(printTabs + "\t"); //$NON-NLS-1$
+		if (events != null) {
+			for (int i = 0; i < events.length; i++) {
+				s += printTabs + "Event: "; //$NON-NLS-1$
+				s += events[i].toString(printTabs + "\t"); //$NON-NLS-1$
+			}
 		}
 		return s;
 		

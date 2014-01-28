@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sessions>
-	<event name="BR_INST_EXEC">
+	<!-- <event name="BR_INST_EXEC">
 		<session name="current">
 		</session>
 	</event>
@@ -13,6 +13,18 @@
 		</session>
 		<session name="&quot;&lt;&gt;&amp;&apos;">
 		</session>
-	</event>
+	</event> -->
+	<session name="current">
+		<event name="BR_INST_EXEC"/>
+		<event name="UOPS_RETIRED"/>
+	</session>
+
+	<session name="saved">
+		<event name="CPU_CLK_UNHALTED"/>
+	</session>
+
+	<session name="&quot;&lt;&gt;&amp;&apos;">
+		<event name="UOPS_RETIRED"/>
+	</session>
 </sessions>
 				
