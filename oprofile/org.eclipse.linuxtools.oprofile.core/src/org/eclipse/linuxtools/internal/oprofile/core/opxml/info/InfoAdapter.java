@@ -36,6 +36,7 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * This class takes the XML that is output from 'ophelp -X' for and uses that
@@ -138,20 +139,24 @@ public class InfoAdapter extends AbstractDataAdapter{
 		DocumentBuilder builder;
 		try {
 			builder = factory.newDocumentBuilder();
-			try {
-				if (is != null) {
+			if (is != null) {
+				try {
 					Document oldDoc = builder.parse(is);
 					Element elem = (Element) oldDoc.getElementsByTagName(HELP_EVENTS).item(0);
 					oldRoot = elem;
+				} catch (SAXException | IOException e) {
+					e.printStackTrace();
+					OpcontrolException opcontrolException = new OpcontrolException(OprofileCorePlugin.createErrorStatus("ophelpRun", null)); //$NON-NLS-1$
+					OprofileCorePlugin.showErrorDialog("opxmlSAXParseException",opcontrolException);
 				}
-				
-				newDoc = builder.newDocument();
+			}
+
+			newDoc = builder.newDocument();
+			try {
 				newRoot = newDoc.createElement(INFO);
-				newDoc.appendChild(newRoot);	
+				newDoc.appendChild(newRoot);
 			} catch (Exception e) {
 				e.printStackTrace();
-				OpcontrolException opcontrolException = new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", null)); //$NON-NLS-1$
-				OprofileCorePlugin.showErrorDialog("opcontrolProvider",opcontrolException);
 			}
 		} catch (ParserConfigurationException e1) {
 			e1.printStackTrace();
