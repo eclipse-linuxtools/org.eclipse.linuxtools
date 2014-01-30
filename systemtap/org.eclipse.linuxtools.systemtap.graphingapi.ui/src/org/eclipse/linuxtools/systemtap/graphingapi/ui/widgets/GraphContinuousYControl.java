@@ -29,10 +29,12 @@ import org.eclipse.swt.widgets.Slider;
  */
 public class GraphContinuousYControl extends Composite {
 
+	private static final int CLICK_INCREMENT = 10;
+	private static final double TOLERANCE = 0.01;
+
 	private AbstractChartBuilder builder;
 	private Scale zoomScale;
 	private Slider scrollBar;
-	private static final int CLICK_INCREMENT = 10;
 
 	public GraphContinuousYControl(GraphComposite comp, int style) {
 		super(comp, style);
@@ -124,7 +126,7 @@ public class GraphContinuousYControl extends Composite {
 
 	private void updateScaleY() {
 		double newscale = zoomScale.getSelection() / 100.0;
-		if(builder.getScaleY() != newscale) {
+		if (Math.abs(builder.getScaleY() - newscale) >= TOLERANCE) {
 			builder.setScaleY(newscale);
 			scrollBar.setThumb((int) (newscale * 100));
 			scrollBar.setSelection((int) ((1 - builder.getScrollY()) * (101 - scrollBar.getThumb())));
@@ -133,7 +135,7 @@ public class GraphContinuousYControl extends Composite {
 
 	private void updateScrollY() {
 		double newscroll = 1.0 - scrollBar.getSelection() / (101.0 - scrollBar.getThumb());
-		if (builder.getScrollY() != newscroll) {
+		if (Math.abs(builder.getScrollY() - newscroll) >= TOLERANCE) {
 			builder.setScrollY(newscroll);
 		}
 	}

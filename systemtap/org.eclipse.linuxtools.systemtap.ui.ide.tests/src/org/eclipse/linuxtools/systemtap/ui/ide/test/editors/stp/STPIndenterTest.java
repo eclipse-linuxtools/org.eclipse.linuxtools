@@ -100,7 +100,9 @@ public class STPIndenterTest extends TestCase {
 				if (bundle != null) {
 					in = FileLocator.openStream(bundle, filePath, false);
 				} else {
-					in = clazz.getResourceAsStream('/' + classFile);
+					try (InputStream inTry = clazz.getResourceAsStream('/' + classFile)) {
+						in = inTry;
+					}
 				}
 			} catch (IOException e) {
 				if (superclass == null || !superclass.getPackage().equals(clazz.getPackage())) {

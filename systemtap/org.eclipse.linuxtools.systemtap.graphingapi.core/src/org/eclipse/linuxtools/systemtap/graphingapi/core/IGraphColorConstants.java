@@ -14,13 +14,13 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core;
 import org.eclipse.swt.graphics.RGB;
 
 public interface IGraphColorConstants {
-	static final RGB[] COLORS = new RGB[] {
-		
-		
+	RGB[] COLORS = new RGB[] {
+
+
 		new RGB(0,102,204),
 		new RGB(51,153,255),
 		new RGB(102,204,255),
-		
+
 		new RGB(0,51,153),
 		new RGB(153,153,255),
 		new RGB(102,102,255),
@@ -33,17 +33,17 @@ public interface IGraphColorConstants {
 		new RGB(0,102,102),
 		new RGB(0,51,102),
 		new RGB(0,153,255),
-		
-		
-		
+
+
+
 		new RGB(202,204,255),
-		
+
 		/*new RGB(153,102,102),
 		new RGB(153,153,153),
 		new RGB(204,102,103),
 		new RGB(204,153,102),
 		new RGB(204,153,51),*/
-		
+
 		new RGB(204,153,153),
 		new RGB(204,204,204),
 		new RGB(255,153,153),
@@ -60,7 +60,7 @@ public interface IGraphColorConstants {
 		new RGB(153,102,153),
 		new RGB(204,153,204),
 		new RGB(153,153,104),
-		
+
 		new RGB(0, 0, 255),
 		new RGB(255, 0, 0),
 		new RGB(0, 255, 0),
@@ -288,6 +288,6 @@ public interface IGraphColorConstants {
 		new RGB(0, 0, 51),
 		new RGB(0, 0, 0)
 	};
-	
-	
+
+
 }

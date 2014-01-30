@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
@@ -50,15 +50,15 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 			}
 			return document;
 		}
-	
+
 		return null;
 	}
-	
+
 	/**
 	 * Tries to read the file pointed at by <code>input</code> if it is an
 	 * <code>IPathEditorInput</code>. If the file does not exist, <code>true</code>
 	 * is returned.
-	 *  
+	 * 
 	 * @param document the document to fill with the contents of <code>input</code>
 	 * @param input the editor input
 	 * @return <code>true</code> if setting the content was successful or no file exists, <code>false</code> otherwise
@@ -82,7 +82,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
-		
+
 		try {
 			setDocumentContent(document, reader);
 			return true;
@@ -100,7 +100,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 */
 	private static void setDocumentContent(IDocument document, Reader reader) throws IOException {
 		try (Reader in= new BufferedReader(reader)) {
-			
+
 			StringBuffer buffer= new StringBuffer(512);
 			char[] readBuffer= new char[512];
 			int n= in.read(readBuffer);
@@ -108,7 +108,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 				buffer.append(readBuffer, 0, n);
 				n= in.read(readBuffer);
 			}
-			
+
 			document.set(buffer.toString());
 		}
 	}
@@ -119,6 +119,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @param document the new document
 	 */
 	protected void setupDocument(IDocument document) {
+		// Empty
 	}
 
 	/*
@@ -138,7 +139,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 			IPathEditorInput pei= (IPathEditorInput) element;
 			IPath path= pei.getPath();
 			File file= path.toFile();
-			
+
 			try {
 				file.createNewFile();
 
@@ -146,10 +147,12 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 					if (file.canWrite()) {
 						Writer writer= new FileWriter(file);
 						writeDocumentContent(document, writer, monitor);
-					} else
+					} else {
 						throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "file is read-only", null)); //$NON-NLS-1$
-				} else
+					}
+				} else {
 					throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "error creating file", null)); //$NON-NLS-1$
+				}
 			} catch (IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("errorCreatingFile"), e)); //$NON-NLS-1$
 			}
@@ -177,7 +180,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
-	
+
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isModifiable(java.lang.Object)
 	 */
@@ -190,7 +193,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 		}
 		return false;
 	}
-	
+
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isReadOnly(java.lang.Object)
 	 */
@@ -198,7 +201,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	public boolean isReadOnly(Object element) {
 		return !isModifiable(element);
 	}
-	
+
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isStateValidated(java.lang.Object)
 	 */

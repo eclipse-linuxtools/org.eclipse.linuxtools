@@ -94,7 +94,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	 * @since 3.0
 	 */
     protected void applyTitleBoundsListener() {
-    	chart.addPaintListener(titleBoundsPaintListener = new PaintListener() {
+    	titleBoundsPaintListener = new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -103,7 +103,8 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		        Rectangle titleBounds = title.getBounds();
 		        title.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title.getLocation().y));
 			}
-		});
+		};
+		chart.addPaintListener(titleBoundsPaintListener);
     }
 
     /**
@@ -173,10 +174,11 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 
 		Double[] all_valx = new Double[len];
 		Double[][] all_valy = new Double[leny][len];
-		double maxX, maxY, minX, minY;
 		// Will want to centre view around points, so be as accurate with max/min as possible.
-		maxX = maxY = Double.NEGATIVE_INFINITY;
-		minX = minY = Double.POSITIVE_INFINITY;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = maxX;
+		double minX = Double.POSITIVE_INFINITY;
+		double minY = minX;
 
 		// Read in from the data array all x/y points to plot.
 		// In the case of an empty (null) value in either axis, ignore both x & y axis data for that point.

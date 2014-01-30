@@ -70,6 +70,7 @@ public class SimpleEditor extends TextEditor {
 			int offset = reg.getOffset();
 			line = doc.getLineOfOffset(offset);
 		} catch(BadLocationException ble) {
+			// Pass
 		} catch(NullPointerException npe) {
 			line = -1;
 		}
@@ -88,7 +89,9 @@ public class SimpleEditor extends TextEditor {
 		try {
 			int offset = doc.getLineOffset(line-1) + character;
 			this.getSelectionProvider().setSelection(new TextSelection(doc, offset, 0));
-		} catch(BadLocationException boe) {}
+		} catch(BadLocationException boe) {
+			// Pass
+		}
 	}
 
 	/**
@@ -100,7 +103,9 @@ public class SimpleEditor extends TextEditor {
 
 		try {
 			this.getSelectionProvider().setSelection(new TextSelection(doc, doc.getLineOffset(line-1), doc.getLineLength(line-1)-1));
-		} catch(BadLocationException boe) {}
+		} catch(BadLocationException boe) {
+			// Pass
+		}
 	}
 
 	/**
@@ -122,7 +127,9 @@ public class SimpleEditor extends TextEditor {
 				PrintStream ps = new PrintStream(fos)){
 			ps.print(s);
 			ps.close();
-		} catch(IOException fnfe) {}
+		} catch(IOException fnfe) {
+			// Pass
+		}
 
 		setInput(inputFile);
 		setPartName(inputFile.getName());

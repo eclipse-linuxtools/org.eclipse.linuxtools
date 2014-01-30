@@ -31,11 +31,11 @@ import org.osgi.framework.BundleContext;
  */
 public class CallgraphCorePlugin extends AbstractUIPlugin {
 
-	
+
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
 	// The shared instance
 	private static CallgraphCorePlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -60,7 +60,7 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-		
+
 	}
 
 	/**
@@ -72,9 +72,9 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	
+
 	/**
-	 * Returns the location of the plugin by checking the path of the bundle's 
+	 * Returns the location of the plugin by checking the path of the bundle's
 	 * locationURL.
 	 * 
 	 * @return
@@ -86,10 +86,11 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 		URL fileUrl = null;
 		try {
 			fileUrl = FileLocator.toFileURL(locationUrl);
+			return fileUrl.getFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return fileUrl.getFile();
+		return new String();
 	}
 
 	/**

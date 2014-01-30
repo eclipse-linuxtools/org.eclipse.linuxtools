@@ -159,7 +159,6 @@ public class StapNewWizardPage extends WizardPage {
 	private void dialogChanged() {
 		IPath container = Path.fromOSString(getContainerName());
 		String fileName = getFileName();
-		container.isValidPath(getContainerName());
 		if (fileName.length() == 0 || fileName.equals(".stp")) { //$NON-NLS-1$
 			updateStatus(resourceBundle.getString("StapNewWizardPage.UpdateStatus1")); //$NON-NLS-1$
 			return;

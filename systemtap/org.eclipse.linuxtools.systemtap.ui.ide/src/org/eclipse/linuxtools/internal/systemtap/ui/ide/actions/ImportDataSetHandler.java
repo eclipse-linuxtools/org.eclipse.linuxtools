@@ -10,9 +10,11 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -50,12 +52,14 @@ public class ImportDataSetHandler extends AbstractHandler {
 
 		IDataSet dataset = null;
 		File file = new File(path);
-		try (FileReader fr = new FileReader(file);
+		try (InputStreamReader fr = new InputStreamReader(new FileInputStream(file), Charset.defaultCharset());
 				BufferedReader br = new BufferedReader(fr)) {
 			String id = br.readLine();
-
 			String[] titles = br.readLine().split(", "); //$NON-NLS-1$
-			if (id.equals(RowDataSet.ID)) {
+
+			if (id == null && titles == null) {
+				throw new IOException();
+			} else if (id.equals(RowDataSet.ID)) {
 				dataset = new RowDataSet(titles);
 			} else if (id.equals(TableDataSet.ID)) {
 				dataset = new TableDataSet(titles);

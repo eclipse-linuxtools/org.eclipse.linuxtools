@@ -856,6 +856,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 					m.worked(1);
 				}
+				index.releaseReadLock();
 
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -863,7 +864,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				e.printStackTrace();
 			}
 
-			index.releaseReadLock();
 			return Status.OK_STATUS;
 		}
 

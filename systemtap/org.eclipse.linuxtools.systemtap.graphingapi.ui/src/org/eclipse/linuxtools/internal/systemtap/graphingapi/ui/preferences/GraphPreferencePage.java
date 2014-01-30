@@ -16,7 +16,6 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -28,16 +27,16 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, 
+				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES,
 				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, 
+				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES,
 				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
@@ -68,6 +67,6 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 
 	@Override
 	public void init(IWorkbench workbench) {}
-	
+
 }
 

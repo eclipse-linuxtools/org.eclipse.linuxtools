@@ -37,11 +37,13 @@ public class StapTreeLabelProvider implements ILabelProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
+		// Empty
 	}
 
 
 	@Override
 	public void dispose() {
+		// Empty
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class StapTreeLabelProvider implements ILabelProvider {
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
+		// Empty
 	}
 
 }

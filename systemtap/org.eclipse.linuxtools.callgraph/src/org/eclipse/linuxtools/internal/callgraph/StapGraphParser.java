@@ -419,8 +419,7 @@ public class StapGraphParser extends SystemTapParser {
 					continue;
 				}
 
-				String[] args = new String[2];
-				args = line.split(" ", 2); //$NON-NLS-1$
+				String[] args = line.split(" ", 2); //$NON-NLS-1$
 				if (args[0].contains("->")) { //$NON-NLS-1$
 					//connection
 					int[] ids = new int[2];

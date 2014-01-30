@@ -48,8 +48,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof StapData) {
-			return element == null ? false :
-				((StapData) element).children.size() > 0;
+			return ((StapData) element).children.size() > 0;
 		}
 		return false;
 	}
@@ -61,11 +60,12 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 
 	@Override
 	public void dispose() {
-
+		//Empty
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		//Empty
 	}
 
 	public void setGraph(StapGraph graph) {

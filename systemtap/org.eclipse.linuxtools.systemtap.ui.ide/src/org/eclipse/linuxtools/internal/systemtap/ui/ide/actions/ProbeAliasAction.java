@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.ISelectionListener;
@@ -100,7 +101,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 	public void run() {
 		IWorkbenchPage page = window.getActivePage();
 		IEditorPart editor = page.getActiveEditor();
-		if(null == editor || !(editor instanceof STPEditor)) {
+		if (!(editor instanceof STPEditor)) {
 			editor = findEditor();
 			if (null == editor) {
 				return;
@@ -110,103 +111,123 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 		ISelection incoming = viewer.getViewer().getSelection();
 		IStructuredSelection selection = (IStructuredSelection)incoming;
 		Object o = selection.getFirstElement();
-		if (o instanceof TreeNode) {
-			TreeNode t = (TreeNode) o;
-			if(editor instanceof STPEditor) {
-				STPEditor stpeditor = (STPEditor)editor;
-				//build the string
-				StringBuilder s = new StringBuilder("\nprobe " + t.toString()); //$NON-NLS-1$
-				if(!t.isClickable())
-					if(0 <t.getChildCount())
-						s.append(".*"); //$NON-NLS-1$
-					else
-						return;
-				s.append("\n{\n"); //$NON-NLS-1$
-				if(t.isClickable() && t.getChildCount() > 0) {
-					s.append("\t/*\n\t * " + //$NON-NLS-1$
-							Localization
-									.getString("ProbeAliasAction.AvailableVariables") + //$NON-NLS-1$
-							"\n\t * "); //$NON-NLS-1$
-					boolean first = true;
-					for(int i = 0; i < t.getChildCount(); i++) {
-						if(first) first = false;
-						else
-							s.append(", "); //$NON-NLS-1$
-						s.append(t.getChildAt(i).toString());
-					}
-					s.append("\n\t */\n"); //$NON-NLS-1$
-				}
-				s.append("\n}\n"); //$NON-NLS-1$
-				stpeditor.insertText(s.toString());
+		if (o instanceof TreeNode && editor instanceof STPEditor) {
+			buildString((STPEditor) editor, (TreeNode) o);
+		}
+	}
+
+	private void buildString(STPEditor stpeditor, TreeNode t) {
+		//build the string
+		StringBuilder s = new StringBuilder("\nprobe " + t.toString()); //$NON-NLS-1$
+		if(!t.isClickable()) {
+			if(0 <t.getChildCount()) {
+				s.append(".*"); //$NON-NLS-1$
+			} else {
+				return;
 			}
 		}
+		s.append("\n{\n"); //$NON-NLS-1$
+		if(t.isClickable() && t.getChildCount() > 0) {
+			s.append("\t/*\n\t * " + //$NON-NLS-1$
+					Localization
+					.getString("ProbeAliasAction.AvailableVariables") + //$NON-NLS-1$
+					"\n\t * "); //$NON-NLS-1$
+			boolean first = true;
+			for(int i = 0; i < t.getChildCount(); i++) {
+				if(first) {
+					first = false;
+				} else {
+					s.append(", "); //$NON-NLS-1$
+				}
+				s.append(t.getChildAt(i).toString());
+			}
+			s.append("\n\t */\n"); //$NON-NLS-1$
+		}
+		s.append("\n}\n"); //$NON-NLS-1$
+		stpeditor.insertText(s.toString());
+	}
+
+	private IEditorPart getRestoredEditor(final IEditorReference ref) {
+		if (ref.getEditor(false) == null) {
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					ref.getEditor(true);
+				}
+			});
+		}
+		return ref.getEditor(false);
 	}
 
 	private IEditorPart findEditor() {
 		final List<IEditorPart> allEditors = new LinkedList<>();
 		for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
-			IEditorPart editor = SynchronousActions.getRestoredEditor(ref);
+			IEditorPart editor = getRestoredEditor(ref);
 			if (editor instanceof STPEditor) {
 				allEditors.add(editor);
 			}
 		}
 
 		switch (allEditors.size()) {
-			// If only one file is found, open it. Give user the option to open another file.
+		// If only one file is found, open it. Give user the option to open another file.
+		case 1:
+			MessageDialog messageDialog = new MessageDialog(window.getShell(),
+					Messages.ProbeAliasAction_DialogTitle, null,
+					MessageFormat.format(Messages.ProbeAliasAction_AskBeforeAddMessage,
+							allEditors.get(0).getEditorInput().getName() ),
+							MessageDialog.QUESTION,
+							new String[]{Messages.ProbeAliasAction_AskBeforeAddCancel,
+				Messages.ProbeAliasAction_AskBeforeAddAnother,
+				Messages.ProbeAliasAction_AskBeforeAddYes}, 2);
+
+			switch (messageDialog.open()) {
+			case 2:
+				return allEditors.get(0);
+
 			case 1:
-				MessageDialog messageDialog = new MessageDialog(window.getShell(),
-						Messages.ProbeAliasAction_DialogTitle, null,
-						MessageFormat.format(Messages.ProbeAliasAction_AskBeforeAddMessage,
-								allEditors.get(0).getEditorInput().getName() ),
-						MessageDialog.QUESTION,
-						new String[]{Messages.ProbeAliasAction_AskBeforeAddCancel,
-							Messages.ProbeAliasAction_AskBeforeAddAnother,
-							Messages.ProbeAliasAction_AskBeforeAddYes}, 2);
-
-				switch (messageDialog.open()) {
-					case 2:
-						return allEditors.get(0);
-
-					case 1:
-						return openNewFile();
-
-					default:
-						return null;
-				}
-
-			// If no files found, prompt user to open a new file
-			case 0:
 				return openNewFile();
 
-			// If multiple files found, prompt user to select one of them
 			default:
-				ListDialog listDialog = new ListDialog(window.getShell());
-				listDialog.setTitle(Messages.ProbeAliasAction_DialogTitle);
-				listDialog.setContentProvider(new ArrayContentProvider());
-
-				listDialog.setLabelProvider(new LabelProvider() {
-					@Override
-					public String getText(Object element) {
-						int i = (Integer) element;
-						return i != -1 ? allEditors.get(i).getEditorInput().getName()
-								: Messages.NewFileAction_OtherFile;
-					}
-				});
-
-				Integer[] editorIndexes = new Integer[allEditors.size() + 1];
-				for (int i = 0; i < editorIndexes.length - 1; i++) {
-					editorIndexes[i] = i;
-				}
-				editorIndexes[editorIndexes.length - 1] = -1;
-				listDialog.setInput(editorIndexes);
-				listDialog.setMessage(Messages.ProbeAliasAction_SelectEditor);
-				if (listDialog.open() == Window.OK) {
-					int result = (Integer) listDialog.getResult()[0];
-					return result != -1 ? allEditors.get(result) : openNewFile();
-				}
-				// Abort if user cancels
 				return null;
+			}
+
+			// If no files found, prompt user to open a new file
+		case 0:
+			return openNewFile();
+
+			// If multiple files found, prompt user to select one of them
+		default:
+			return openNewFileFromMultiple(allEditors);
 		}
+	}
+
+	private IEditorPart openNewFileFromMultiple(final List<IEditorPart> allEditors) {
+		ListDialog listDialog = new ListDialog(window.getShell());
+		listDialog.setTitle(Messages.ProbeAliasAction_DialogTitle);
+		listDialog.setContentProvider(new ArrayContentProvider());
+
+		listDialog.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				int i = (Integer) element;
+				return i != -1 ? allEditors.get(i).getEditorInput().getName()
+						: Messages.NewFileAction_OtherFile;
+			}
+		});
+
+		Integer[] editorIndexes = new Integer[allEditors.size() + 1];
+		for (int i = 0; i < editorIndexes.length - 1; i++) {
+			editorIndexes[i] = i;
+		}
+		editorIndexes[editorIndexes.length - 1] = -1;
+		listDialog.setInput(editorIndexes);
+		listDialog.setMessage(Messages.ProbeAliasAction_SelectEditor);
+		if (listDialog.open() == Window.OK) {
+			int result = (Integer) listDialog.getResult()[0];
+			return result != -1 ? allEditors.get(result) : openNewFile();
+		}
+		// Abort if user cancels
+		return null;
 	}
 
 	private IEditorPart openNewFile() {

@@ -52,7 +52,7 @@ public class PieChart extends Chart {
 	 * @since 2.0
 	 */
     public void setCustomColors(Color[] customColors) {
-    	this.customColors = customColors;
+        this.customColors = customColors.clone();
     }
 
     /**

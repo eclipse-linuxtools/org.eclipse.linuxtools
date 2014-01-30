@@ -238,7 +238,8 @@ public class GraphDisplaySet {
 
 	public void addGraph(GraphData gd) {
 		CTabItem item = new CTabItem(folder, SWT.CLOSE);
-		item.setText(MessageFormat.format(Localization.getString("GraphDisplaySet.GraphTabTitle"), gd.title, GraphFactory.getGraphName(gd.graphID)));
+		item.setText(MessageFormat.format(Localization.getString("GraphDisplaySet.GraphTabTitle"), //$NON-NLS-1$
+				gd.title, GraphFactory.getGraphName(gd.graphID)));
 		final GraphComposite gc = new GraphComposite(folder, SWT.FILL, gd, dataSet);
 		gc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		gc.addCheckOption("Legend", new SelectionAdapter() { //$NON-NLS-1$

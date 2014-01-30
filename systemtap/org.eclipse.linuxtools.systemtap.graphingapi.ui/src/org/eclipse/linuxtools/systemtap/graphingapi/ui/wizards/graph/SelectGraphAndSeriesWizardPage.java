@@ -116,7 +116,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		for(int i=0; i<cboYItems.length; i++) {
 			lblYItems[i] = new Label(cmpGraphOptsSeries, SWT.NONE);
 			lblYItems[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-			lblYItems[i].setText(MessageFormat.format(Localization.getString("SelectGraphAndSeriesWizardPage.YSeries"), new Integer(i))); //$NON-NLS-1$
+			lblYItems[i].setText(MessageFormat.format(Localization.getString("SelectGraphAndSeriesWizardPage.YSeries"), i)); //$NON-NLS-1$
 			cboYItems[i] = new Combo(cmpGraphOptsSeries, SWT.DROP_DOWN|SWT.READ_ONLY);
 			cboYItems[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			cboYItems[i].addSelectionListener(new ComboSelectionListener());
@@ -224,13 +224,6 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 	private boolean saveDataToModelSeries() {
 		if(getErrorMessage() == null) {
 			model.setTitle(txtTitle.getText());
-
-			if(null != txtKey && txtKey.isEnabled()) {
-				model.setKey(txtKey.getText());
-			} else {
-				model.setKey(null);
-			}
-
 			model.setXSeries(cboXItem.getSelectionIndex()-1);
 
 			int i, count;
@@ -278,10 +271,10 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 				for(j=i+1; j<cboYItems.length; j++) {
 					try {
 						if(!deleted[j+1] && cboYItems[j].isVisible()
-									&& cboYItems[i].getSelectionIndex() + offset == cboYItems[j].getSelectionIndex()) {
-								markAsDuplicate(cboYItems[i], true);
-								markAsDuplicate(cboYItems[j], true);
-								foundDuplicate = true;
+								&& cboYItems[i].getSelectionIndex() + offset == cboYItems[j].getSelectionIndex()) {
+							markAsDuplicate(cboYItems[i], true);
+							markAsDuplicate(cboYItems[j], true);
+							foundDuplicate = true;
 						}
 					} catch (Exception e) {
 						// If a cboYItem has no item selected, don't mark any duplicates. Ignore.
@@ -333,19 +326,6 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 			txtTitle.dispose();
 		}
 		txtTitle = null;
-
-		if(null != txtKey) {
-			txtKey.dispose();
-		}
-		txtKey = null;
-		if(null != btnKey) {
-			btnKey.dispose();
-		}
-		btnKey = null;
-		if(null != lblKey) {
-			lblKey.dispose();
-		}
-		lblKey = null;
 
 		if(null != cboXItem) {
 			cboXItem.dispose();
@@ -437,9 +417,6 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 	private SelectGraphAndSeriesWizard wizard;
 
 	private Text txtTitle;		//TODO: Move this to another page once graphs get more detail
-	private Text txtKey;
-	private Button btnKey;
-	private Label lblKey;
 	private Combo cboXItem;
 	private Combo[] cboYItems;
 	private Label[] lblYItems;

@@ -13,9 +13,24 @@ class BarChart extends Chart {
 	private final static int MIN_LABEL_SIZE = Messages.BarChartBuilder_LabelTrimTag.length();
 	private final int fontSize;
 
-	public boolean suspendUpdate = false;
 	private String[] fullLabels = null;
 	private IAxis xAxis = null;
+
+	private boolean updateSuspended = false;
+	public void suspendUpdate(boolean suspend) {
+		if (updateSuspended == suspend) {
+			return;
+		}
+		updateSuspended = suspend;
+
+		// make sure that chart is updated
+		if (!suspend) {
+			updateLayout();
+		}
+	}
+	public boolean isUpdateSuspended() {
+		return updateSuspended;
+	}
 
 	public BarChart(Composite parent, int style) {
 		super(parent, style);
@@ -45,18 +60,18 @@ class BarChart extends Chart {
 	public String[] getCategorySeries() {
 		String[] copiedCategorySeries = null;
 
-        if (fullLabels != null) {
-            copiedCategorySeries = new String[fullLabels.length];
-            System.arraycopy(fullLabels, 0, copiedCategorySeries, 0,
-                    fullLabels.length);
-        }
+		if (fullLabels != null) {
+			copiedCategorySeries = new String[fullLabels.length];
+			System.arraycopy(fullLabels, 0, copiedCategorySeries, 0,
+					fullLabels.length);
+		}
 
-        return copiedCategorySeries;
+		return copiedCategorySeries;
 	}
 
 	@Override
 	public void updateLayout() {
-		if (suspendUpdate) {
+		if (isUpdateSuspended()) {
 			return;
 		}
 
@@ -74,10 +89,12 @@ class BarChart extends Chart {
 						break;
 					}
 				}
-				// setCategorySeries triggers an unnecessary call to updateLayout, so prevent it.
-				suspendUpdate = true;
-				xAxis.setCategorySeries(labels);
-				suspendUpdate = false;
+				if (labels == trimmedLabels) {
+					// setCategorySeries triggers an unnecessary call to updateLayout, so prevent it.
+					updateSuspended = true;
+					xAxis.setCategorySeries(labels);
+					updateSuspended = false;
+				}
 			}
 		}
 		super.updateLayout();

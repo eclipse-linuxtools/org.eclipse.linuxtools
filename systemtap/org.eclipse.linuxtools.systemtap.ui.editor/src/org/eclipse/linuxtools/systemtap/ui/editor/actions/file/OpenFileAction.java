@@ -65,8 +65,9 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	@Override
 	public void run() {
 		successful = false;
-		if (window == null)
-					window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window == null) {
+			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		}
 		File file = queryFile();
 		if (file != null) {
 			IEditorInput input= createEditorInput(file);
@@ -75,7 +76,9 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 			try {
 				page.openEditor(input, editorId);
 				successful = true;
-			} catch (PartInitException e) {}
+			} catch (PartInitException e) {
+				//Pass
+			}
 		}
 	}
 
@@ -130,11 +133,12 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 		IWorkbench workbench= window.getWorkbench();
 		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
 		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
-		for (IEditorDescriptor d : descriptors)
+		for (IEditorDescriptor d : descriptors) {
 			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") || //$NON-NLS-1$
-				d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) { //$NON-NLS-1$
+					d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) { //$NON-NLS-1$
 				return d.getId();
 			}
+		}
 		return SimpleEditor.ID;
 	}
 

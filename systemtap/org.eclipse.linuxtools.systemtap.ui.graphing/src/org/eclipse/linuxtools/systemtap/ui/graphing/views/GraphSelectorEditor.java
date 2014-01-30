@@ -176,7 +176,9 @@ public class GraphSelectorEditor extends EditorPart {
 	}
 
 	@Override
-	public void setFocus() {}
+	public void setFocus() {
+		// Empty
+	}
 
 	/**
 	 * @since 2.0
@@ -234,10 +236,12 @@ public class GraphSelectorEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		// TODO
 	}
 
 	@Override
 	public void doSaveAs() {
+		// TODO
 	}
 
 	@Override

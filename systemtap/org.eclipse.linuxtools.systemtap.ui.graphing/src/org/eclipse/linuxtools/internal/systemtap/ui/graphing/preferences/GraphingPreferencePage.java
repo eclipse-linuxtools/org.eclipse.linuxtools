@@ -26,7 +26,7 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphingPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void createFieldEditors() {
 		addField(
@@ -38,6 +38,7 @@ public class GraphingPreferencePage extends FieldEditorPreferencePage implements
 
 	@Override
 	public void init(IWorkbench workbench) {
+		// Empty
 	}
-	
+
 }

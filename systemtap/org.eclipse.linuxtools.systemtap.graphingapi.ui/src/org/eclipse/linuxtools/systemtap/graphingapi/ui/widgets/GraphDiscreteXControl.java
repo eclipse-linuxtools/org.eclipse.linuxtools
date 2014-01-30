@@ -31,6 +31,8 @@ import org.swtchart.Range;
  */
 public class GraphDiscreteXControl extends Composite implements IUpdateListener {
 
+	private final static double ZOOM_AMOUNT = 2.0;
+
 	private AbstractChartBuilder builder;
 	private Button zoomInButton;
 	private Button zoomOutButton;
@@ -39,8 +41,6 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
 	private Button rightButton;
 	private Button firstButton;
 	private Button lastButton;
-
-	private final static double ZOOM_AMOUNT = 2.0;
 
 	public GraphDiscreteXControl(GraphComposite comp, int style) {
 		super(comp, style);

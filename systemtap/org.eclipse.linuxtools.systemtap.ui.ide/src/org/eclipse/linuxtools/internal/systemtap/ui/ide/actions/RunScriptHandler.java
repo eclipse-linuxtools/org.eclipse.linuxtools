@@ -100,10 +100,11 @@ public class RunScriptHandler extends AbstractHandler {
 		this.path = path;
 		URI uri = URIUtil.toURI(path);
 		IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(uri);
-		if (files.length > 0)
+		if (files.length > 0) {
 			this.project = files[0].getProject();
+		}
 	}
-	
+
 	/**
 	 * @since 2.1
 	 */
@@ -136,8 +137,8 @@ public class RunScriptHandler extends AbstractHandler {
 		}
 
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
-			IEditorPart ed_test = window.getActivePage().getActiveEditor();
-			if (matchesEditor(ed_test.getEditorInput(), ed_test, window.getShell())) {
+			IEditorPart edTest = window.getActivePage().getActiveEditor();
+			if (edTest != null && matchesEditor(edTest.getEditorInput(), edTest, window.getShell())) {
 				return;
 			}
 			for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
@@ -173,32 +174,20 @@ public class RunScriptHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event){
 		findTargetEditor();
+		final boolean local = getRunLocal();
 		if(isValid()) {
-			if(getRunLocal() == false) {
-				try {
-					ScpClient scpclient = new ScpClient();
-					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
-					tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
-					scpclient.transfer(fileName,tmpfileName);
-				} catch (JSchException e) {
-					ErrorDialog.openError(PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getShell(),
-							Localization.getString("RunScriptHandler.serverError"), Localization.getString("RunScriptHandler.serverError"), //$NON-NLS-1$ //$NON-NLS-2$
-							new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Localization.getString("RunScriptHandler.checkCredentials"))); //$NON-NLS-1$
-					return null;
-				} catch (IOException e) {
-					ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.ioError"), e); //$NON-NLS-1$
+			if(!local) {
+				if (!prepareNonLocalScript()) {
 					return null;
 				}
 			}
 			final String[] script = buildStandardScript();
 			final String[] envVars = getEnvironmentVariables();
-			if(continueRun) {
+			if (continueRun) {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						final ScriptConsole console;
-						boolean local = getRunLocal();
 						if (!local) {
 							console = ScriptConsole.getInstance(serverfileName);
 						} else {
@@ -218,6 +207,25 @@ public class RunScriptHandler extends AbstractHandler {
 		}
 
 		return null;
+	}
+
+	private boolean prepareNonLocalScript() {
+		try {
+			ScpClient scpclient = new ScpClient();
+			serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
+			tmpfileName="/tmp/"+ serverfileName; //$NON-NLS-1$
+			scpclient.transfer(fileName,tmpfileName);
+		} catch (JSchException e) {
+			ErrorDialog.openError(PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getShell(),
+					Localization.getString("RunScriptHandler.serverError"), Localization.getString("RunScriptHandler.serverError"), //$NON-NLS-1$ //$NON-NLS-2$
+					new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Localization.getString("RunScriptHandler.checkCredentials"))); //$NON-NLS-1$
+			return false;
+		} catch (IOException e) {
+			ExceptionErrorDialog.openError(Localization.getString("RunScriptHandler.ioError"), e); //$NON-NLS-1$
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -261,12 +269,10 @@ public class RunScriptHandler extends AbstractHandler {
 	private boolean isValid() {
 		// If the path is not set this action will run the script from
 		// the active editor
-		if(!tryEditorSave()){
-			if (this.path == null){
-				String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null); //$NON-NLS-1$
-				MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("RunScriptAction.Problem"), msg); //$NON-NLS-1$
-				return false;
-			}
+		if(!tryEditorSave() && this.path == null){
+			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null); //$NON-NLS-1$
+			MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Localization.getString("RunScriptAction.Problem"), msg); //$NON-NLS-1$
+			return false;
 		}
 		String filePath = this.getFilePath();
 		return filePath.endsWith(".stp") //$NON-NLS-1$
@@ -332,8 +338,7 @@ public class RunScriptHandler extends AbstractHandler {
 	protected String[] buildStandardScript() {
 		getImportedTapsets(cmdList);
 
-		if(isGuru())
-		 {
+		if(isGuru()) {
 			cmdList.add("-g"); //$NON-NLS-1$
 		}
 
@@ -352,10 +357,10 @@ public class RunScriptHandler extends AbstractHandler {
 
 		//Get all imported tapsets
 		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
-	   		for(int i=0; i<tapsets.length; i++) {
-	   			cmdList.add("-I"); //$NON-NLS-1$
-	   			cmdList.add(tapsets[i]);
-	   		}
+			for(int i=0; i<tapsets.length; i++) {
+				cmdList.add("-I"); //$NON-NLS-1$
+				cmdList.add(tapsets[i]);
+			}
 		}
 	}
 

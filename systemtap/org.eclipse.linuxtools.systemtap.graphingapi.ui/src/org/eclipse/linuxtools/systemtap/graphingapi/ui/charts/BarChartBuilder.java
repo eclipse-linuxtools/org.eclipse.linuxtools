@@ -67,7 +67,9 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 
 		String[] allValx = new String[len];
 		Double[][] allValy = new Double[leny][len];
-		double maxY = 0, minY = 0; // Want to show x-axis if possible, so default max/min is 0.
+		 // Want to show x-axis if possible, so default max/min is 0.
+		double maxY = 0;
+		double minY = 0;
 
 		// Read in from the data array all x/y points to plot.
 		// If a y-axis value is empty (null), set it to 0.
@@ -100,9 +102,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 			}
 		}
 		String[] valxTrim = new String[lenTrim];
-		for (int i = 0; i < lenTrim; i++) {
-			valxTrim[i] = valx[i];
-		}
+		System.arraycopy(valx, 0, valxTrim, 0, lenTrim);
 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
 		for (int i = 0; i < leny; i++) {
@@ -122,19 +122,15 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 				}
 			}
 			double[] valyTrim = new double[lenyTrim];
-			for (int j = 0; j < lenyTrim; j++) {
-				valyTrim[j] = valy[j];
-			}
-
+			System.arraycopy(valy, 0, valyTrim, 0, lenyTrim);
 			series.setYSeries(valyTrim);
 		}
 
-		((BarChart) chart).suspendUpdate = true;
+		((BarChart) chart).suspendUpdate(true);
 		((BarChart) chart).setCategorySeries(getUniqueNames(valxTrim));
 		applyCategoryRange(valxTrim.length);
 		applyRangeY(minY, maxY);
-		((BarChart) chart).suspendUpdate = false;
-		chart.updateLayout();
+		((BarChart) chart).suspendUpdate(false);
 		chart.redraw();
 	}
 
