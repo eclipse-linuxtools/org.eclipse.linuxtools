@@ -12,6 +12,9 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -20,11 +23,17 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.Messages;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.BarChartBuilder;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.LineChartBuilder;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -44,9 +53,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.swtchart.IAxis;
+import org.swtchart.Range;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class TestCreateSystemtapScript {
@@ -97,7 +110,7 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
-	private static class StapHasExited extends DefaultCondition{
+	private static class StapHasExited extends DefaultCondition {
 
 		@Override
 		public boolean test() {
@@ -109,6 +122,38 @@ public class TestCreateSystemtapScript {
 		@Override
 		public String getFailureMessage() {
 			return "Timed out waiting for stap to exit";
+		}
+	}
+
+	private static class TableHasUpdated extends DefaultCondition {
+
+		private SWTBotEditor graphEditor;
+		private int graphSetNum;
+		private int expectedRows;
+		/**
+		 * Wait for the provided GraphSelectorEditor to be fully updated. A table is considered to be updated
+		 * once the number of entries in the table is equal to the expectedRows parameter of this constructor.
+		 * Note that using this will set focus to the Data View tab of the specified graph set.
+		 * @param graphEditor The SWTBotEditor of the GraphSelectorEditor to wait for.
+		 * @param graphSetNum Which graph set to focus on & watch for updates.
+		 * @param expectedRows How many entries/rows are expected to be in the table when it's fully updated.
+		 */
+		public TableHasUpdated(SWTBotEditor graphEditor, int graphSetNum, int expectedRows) {
+			this.graphEditor = graphEditor;
+			this.graphSetNum = graphSetNum;
+			this.expectedRows = expectedRows;
+		}
+		@Override
+		public boolean test() {
+			graphEditor.setFocus();
+			graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, graphSetNum)).activate();
+			graphEditor.bot().cTabItem("Data View").activate();
+			return bot.table(0).rowCount() == expectedRows;
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for chart data to update";
 		}
 	}
 
@@ -168,6 +213,12 @@ public class TestCreateSystemtapScript {
 		bot.waitUntil(new ShellIsClosed(shell));
 	}
 
+	@After
+	public void cleanUp() {
+		bot.closeAllShells();
+		bot.closeAllEditors();
+	}
+
 	public static void createScript(SWTWorkbenchBot bot, String scriptName) {
 		SWTBotMenu fileMenu = bot.menu("File");
 		SWTBotMenu newMenu = fileMenu.menu("New");
@@ -223,9 +274,6 @@ public class TestCreateSystemtapScript {
 			console.setFocus();
 			assertTrue(console.bot().label().getText().contains(scriptName));
 			bot.waitUntil(new StapHasExited(), 10000); // The script should end on its own
-		} else {
-			bot.button("Close").click();
-			bot.waitUntil(new ShellIsClosed(shell));
 		}
 	}
 
@@ -259,7 +307,7 @@ public class TestCreateSystemtapScript {
 		assertTrue(bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
 
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
-		setupGraph("Graph");
+		setupGraphWithTests("Graph");
 
 		shell.setFocus();
 		assertTrue(bot.button("Run").isEnabled());
@@ -273,8 +321,6 @@ public class TestCreateSystemtapScript {
 
 		shell.setFocus();
 		bot.button("Apply").click();
-		bot.button("Close").click();
-		bot.waitUntil(new ShellIsClosed(shell));
 	}
 
 	@Test
@@ -351,12 +397,6 @@ public class TestCreateSystemtapScript {
 		assertEquals("sample", combo.getText());
 		assertEquals("sample", combo.items()[0]);
 		assertEquals("another sample", combo.items()[1]);
-
-		bot.button("Close").click();
-		shell2 = bot.shell("Save Changes");
-		shell2.setFocus();
-		bot.button("No").click();
-		bot.waitUntil(new ShellIsClosed(shell));
 	}
 
 	@Test
@@ -409,7 +449,7 @@ public class TestCreateSystemtapScript {
 
 		// Add a graph.
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
-		setupGraph("Values");
+		setupGraphWithTests("Values");
 
 		// Make a second regex, and a graph for it.
 		shell.setFocus();
@@ -432,7 +472,7 @@ public class TestCreateSystemtapScript {
 		assertEquals("", text.getText());
 
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
-		setupGraph("Others");
+		setupGraphWithTests("Others");
 
 		// Apply the changes, then close the menu & reopen it to make sure settings were saved.
 		shell.setFocus();
@@ -462,23 +502,23 @@ public class TestCreateSystemtapScript {
 
 		// If Systemtap is not installed, don't test graph output. Otherwise, do.
 		if (!stapInstalled) {
-			bot.button("Close").click();
-			bot.waitUntil(new ShellIsClosed(shell));
 			return;
 		}
 
 		bot.button("Run").click();
 		bot.waitUntil(new ShellIsClosed(shell));
-		bot.sleep(2500); // Let the script run for a moment
 		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 		console.setFocus();
 		bot.waitUntil(new StapHasExited()); // The script should end on its own
 
-		bot.sleep(1000); // Give time for the table to be fully constructed
-		SWTBotEditor graphDisplay = bot.activeEditor();
-		graphDisplay.setFocus();
-		graphDisplay.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
-		graphDisplay.bot().cTabItem("Data View").activate();
+		// Give time for the table to be fully constructed
+		SWTBotEditor graphEditor = bot.activeEditor();
+		bot.waitUntil(new TableHasUpdated(graphEditor, 1, 10));
+		bot.waitUntil(new TableHasUpdated(graphEditor, 2, 4));
+
+		graphEditor.setFocus();
+		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
 		SWTBotTable dataTable = bot.table(0);
 		List<String> colNames = dataTable.columns();
 		assertEquals(3, colNames.size());
@@ -487,8 +527,8 @@ public class TestCreateSystemtapScript {
 		assertEquals("3", dataTable.cell(3, 1));
 		assertEquals("6", dataTable.cell(3, 2));
 
-		graphDisplay.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 2)).activate();
-		graphDisplay.bot().cTabItem("Data View").activate();
+		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 2)).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
 		dataTable = bot.table(0);
 		colNames = dataTable.columns();
 		assertEquals(3, colNames.size());
@@ -557,7 +597,225 @@ public class TestCreateSystemtapScript {
 			assertEquals(expectedRegexs[i], combo.items()[i]);
 		}
 		bot.button("Apply").click();
-		bot.button("Close").click();
+	}
+
+	@Test
+	public void testLabelledGraphScript(){
+		String scriptName = "testLabels.stp";
+		createScript(bot, scriptName);
+
+		// Write a script
+		SWTBotEclipseEditor editor = bot.editorByTitle(scriptName).toTextEditor();
+		editor.setText("#!/usr/bin/env stap"
+				 + "\nprobe begin{"
+				 + "\nprintf(\"Apples: 2 14 16\\n\");"
+				 + "\nprintf(\"1: 1 2 3\\n\");"
+				 + "\nprintf(\"Bananas (2): 10 10 10\\n\");"
+				 + "\nprintf(\"Cherries: 10 20 30\\n\");"
+				 + "\nprintf(\"2: 2 4 6\\n\");"
+				 + "\nprintf(\"Apples: 12 5 16\\n\");"
+				 + "\nprintf(\"Bananas: 0 1 0\\n\");"
+				 + "\nprintf(\"3: 3 6 9\\n\");"
+				 + "\nprintf(\"Dates: 12 5 16\\n\");"
+				 + "\nprintf(\"Bananas: 2 1 2\\n\");"
+				 + "\nprintf(\"4: 4 8 12\\n\");"
+				 + "\nprintf(\"Apples: 12 5 16\\n\");"
+				 + "\nprintf(\"Bananas (2): 3 1 3\\n\");"
+				 + "\nexit();}");
+		editor.save();
+		int numItems = 13;
+		int numNumberItems = 4;
+		int numCategories = 3;
+
+		openRunConfigurations(scriptName);
+		SWTBotShell shell = bot.shell("Run Configurations");
+		shell.setFocus();
+		SWTBotTree runConfigurationsTree = bot.tree();
+		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+
+		// Select the "Graphing" tab.
+		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
+		tab.activate();
+
+		// Enable output graphing & enter a regex.
+		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
+		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
+		assertTrue(!button.isEnabled());
+		combo.setText("(.*): (\\d+) (\\d+) (\\d+)");
+
+		// Add bar, pie, and line graphs that use the same column data.
+		assertTrue(button.isEnabled());
+		button.click();
+		setupGraphGeneral("Fruit Info - Bar", 4, BarChartBuilder.ID, false);
+		shell.setFocus();
+		button.click();
+		setupGraphGeneral("Fruit Info - Pie", 4, PieChartBuilder.ID, false);
+		shell.setFocus();
+		button.click();
+		setupGraphGeneral("Fruit Info - Line", 4, LineChartBuilder.ID, false);
+		shell.setFocus();
+
+		// If Systemtap is not installed, don't test graph output. Otherwise, do.
+		if (!stapInstalled) {
+			return;
+		}
+
+		bot.button("Run").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
+		console.setFocus();
+		bot.waitUntil(new StapHasExited()); // The script should end on its own
+
+		// Give time for the table to be fully constructed
+		SWTBotEditor graphEditor = bot.activeEditor();
+		bot.waitUntil(new TableHasUpdated(graphEditor, 1, numItems));
+
+		graphEditor.setFocus();
+		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
+		SWTBotTable dataTable = bot.table(0);
+		assertEquals(numItems, dataTable.rowCount());
+
+		// Confirm that the bar & pie charts display the String categories, but the line chart ignores them.
+		graphEditor.bot().cTabItem(GraphFactory.getGraphName(LineChartBuilder.ID)).activate();
+		@SuppressWarnings("unchecked")
+		Matcher<AbstractChartBuilder> matcher = allOf(widgetOfType(AbstractChartBuilder.class));
+		AbstractChartBuilder cb = bot.widget(matcher);
+		assertEquals(numNumberItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
+
+		graphEditor.bot().cTabItem(GraphFactory.getGraphName(PieChartBuilder.ID)).activate();
+		cb = bot.widget(matcher);
+		assertEquals(numItems, cb.getChart().getSeriesSet().getSeries().length);
+
+		graphEditor.bot().cTabItem(GraphFactory.getGraphName(BarChartBuilder.ID)).activate();
+		cb = bot.widget(matcher);
+		assertEquals(numItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
+
+		// Test graph scaling & scrolling
+		discreteXControlTests(cb, numItems);
+		graphEditor.bot().cTabItem(GraphFactory.getGraphName(PieChartBuilder.ID)).activate();
+		cb = bot.widget(matcher);
+		discreteXControlTests(cb, numCategories);
+	}
+
+	private void discreteXControlTests(final AbstractChartBuilder cb, int numAxisItems) {
+		// Check that default range shows 100% of data.
+		IAxis axis = cb.getChart().getAxisSet().getXAxis(0);
+		Range range = axis.getRange();
+		assertTrue(range.upper - range.lower == axis.getCategorySeries().length - 1 && range.upper - range.lower == numAxisItems - 1);
+
+		// Check that scroll buttons are disabled at 100% range.
+		SWTBotButton firstButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_First);
+		SWTBotButton leftButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Left);
+		SWTBotButton rightButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Right);
+		SWTBotButton lastButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Last);
+		assertTrue(!firstButton.isEnabled());
+		assertTrue(!leftButton.isEnabled());
+		assertTrue(!rightButton.isEnabled());
+		assertTrue(!lastButton.isEnabled());
+
+		// Test zooming in. The amount of zoom is arbitrary for this test--just make sure zooming happened.
+		SWTBotButton zoomInButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_ZoomIn);
+		SWTBotButton zoomOutButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_ZoomOut);
+		SWTBotButton allButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_All);
+		assertTrue(zoomInButton.isEnabled());
+		assertTrue(!zoomOutButton.isEnabled());
+		assertTrue(!allButton.isEnabled());
+		zoomInButton.click();
+		assertTrue(zoomOutButton.isEnabled());
+		assertTrue(allButton.isEnabled());
+
+		// By default, zooming in should zoom in on the end of the axis, not the beginning.
+		range = axis.getRange();
+		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0);
+
+		// Left scrolling should now be enabled.
+		assertTrue(firstButton.isEnabled());
+		assertTrue(leftButton.isEnabled());
+		assertTrue(!rightButton.isEnabled());
+		assertTrue(!lastButton.isEnabled());
+
+		// Test scrolling left. Again, the specific amount is arbitrary, just make sure scrolling happened.
+		leftButton.click();
+		range = axis.getRange();
+		assertTrue(range.upper < numAxisItems - 1);
+		int rstore = (int) range.lower;
+		assertTrue(rightButton.isEnabled());
+		assertTrue(lastButton.isEnabled());
+
+		// Zooming out should bring the range back to 100%.
+		zoomOutButton.click();
+		range = axis.getRange();
+		assertTrue(range.upper - range.lower == numAxisItems - 1);
+		assertTrue(zoomInButton.isEnabled());
+		assertTrue(!zoomOutButton.isEnabled());
+		assertTrue(!allButton.isEnabled());
+		assertTrue(!firstButton.isEnabled());
+		assertTrue(!leftButton.isEnabled());
+		assertTrue(!rightButton.isEnabled());
+		assertTrue(!lastButton.isEnabled());
+
+		// For convenience, zooming out after having scrolled somewhere should make zooming in
+		// zoom back to the area that was scrolled to.
+		zoomInButton.click();
+		assertTrue(rstore == axis.getRange().lower);
+
+		// Scrolling right should take the range back to the end of the axis.
+		rightButton.click();
+		range = axis.getRange();
+		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0);
+		assertTrue(firstButton.isEnabled());
+		assertTrue(leftButton.isEnabled());
+		assertTrue(!rightButton.isEnabled());
+		assertTrue(!lastButton.isEnabled());
+
+		// Zoom in as much as possible (range should show only one item),
+		// and step right/left. Add a loop limit for safety.
+		for (int i = 0; i < numAxisItems; i++) {
+			range = axis.getRange();
+			if (range.upper == range.lower) {
+				break;
+			}
+			zoomInButton.click();
+		}
+		range = axis.getRange();
+		assertTrue(range.upper == range.lower && range.upper == numAxisItems - 1);
+		assertTrue(!zoomInButton.isEnabled());
+		for (int i = 0; i < numAxisItems; i++) {
+			if (axis.getRange().lower == 0) {
+				break;
+			}
+			leftButton.click();
+			assertTrue(axis.getRange().lower < range.lower);
+			range = axis.getRange();
+			assertTrue(range.lower == range.upper);
+		}
+		assertTrue(axis.getRange().lower == 0);
+		for (int i = 0; i < numAxisItems; i++) {
+			if (axis.getRange().upper == numAxisItems - 1) {
+				break;
+			}
+			rightButton.click();
+			assertTrue(axis.getRange().upper > range.upper);
+			range = axis.getRange();
+			assertTrue(range.lower == range.upper);
+		}
+		assertTrue(axis.getRange().upper == numAxisItems - 1);
+
+		firstButton.click();
+		assertTrue(axis.getRange().lower == 0);
+		assertTrue(!firstButton.isEnabled());
+		assertTrue(!leftButton.isEnabled());
+		assertTrue(rightButton.isEnabled());
+		assertTrue(lastButton.isEnabled());
+
+		lastButton.click();
+		assertTrue(axis.getRange().upper == numAxisItems - 1);
+		assertTrue(firstButton.isEnabled());
+		assertTrue(leftButton.isEnabled());
+		assertTrue(!rightButton.isEnabled());
+		assertTrue(!lastButton.isEnabled());
 	}
 
 	private void openRunConfigurations(String scriptName) {
@@ -575,7 +833,7 @@ public class TestCreateSystemtapScript {
 		click(menu);
 	}
 
-	private void setupGraph(String title) {
+	private void setupGraphWithTests(String title) {
 		SWTBotShell shell = bot.shell("Create Graph");
 		shell.setFocus();
 
@@ -583,20 +841,63 @@ public class TestCreateSystemtapScript {
 		text.setText(title);
 		assertEquals(title, text.getText());
 
-		SWTBotCombo combo_x = bot.comboBoxWithLabel("X Series:");
-		assertEquals(3, combo_x.itemCount()); // X Series includes "Row Num" as a selection
-		SWTBotCombo combo_y0 = bot.comboBoxWithLabel("Y Series 0:");
-		assertEquals(2, combo_y0.itemCount()); // Y Series 0 only includes series entries
-		combo_y0.setSelection(0);
-		SWTBotCombo combo_y1 = bot.comboBoxWithLabel("Y Series 1:");
-		assertEquals(3, combo_y1.itemCount()); // Y Series (i>0) has extra "NA" option as first entry
-		combo_y1.setSelection(1);
+		SWTBotCombo comboX = bot.comboBoxWithLabel("X Series:");
+		assertEquals(3, comboX.itemCount()); // X Series includes "Row Num" as a selection
+		SWTBotCombo comboY0 = bot.comboBoxWithLabel("Y Series 0:");
+		assertEquals(2, comboY0.itemCount()); // Y Series 0 only includes series entries
+		comboY0.setSelection(0);
+		SWTBotCombo comboY1 = bot.comboBoxWithLabel("Y Series 1:");
+		assertEquals(3, comboY1.itemCount()); // Y Series (i>0) has extra "NA" option as first entry
+		comboY1.setSelection(1);
 		assertTrue(!bot.button("Finish").isEnabled()); // Don't allow duplicate selections
-		combo_y1.setSelection(2);
+		comboY1.setSelection(2);
 		bot.button("Finish").click();
 
 		bot.waitUntil(new ShellIsClosed(shell));
 	}
+
+	private void setupGraphGeneral(String title, int numItems, String graphID, boolean useRowNum) {
+		int offset = useRowNum ? 0 : 1;
+		SWTBotShell shell = bot.shell("Create Graph");
+		shell.setFocus();
+
+		deselectDefaultSelection(0);
+		bot.radioWithTooltip(GraphFactory.getGraphName(graphID) + "\n\n" +
+				GraphFactory.getGraphDescription(graphID)).click();
+
+		SWTBotText text = bot.textWithLabel("Title:");
+		text.setText(title);
+
+		bot.comboBoxWithLabel("X Series:").setSelection(offset);
+		bot.comboBoxWithLabel("Y Series 0:").setSelection(offset);
+		for (int i = 1; i < numItems - offset; i++) {
+			bot.comboBoxWithLabel(MessageFormat.format("Y Series {0}:", i)).setSelection(i + 1 + offset);
+		}
+		if (!useRowNum) {
+			bot.comboBoxWithLabel(MessageFormat.format("Y Series {0}:", numItems - 1)).setSelection(0);
+		}
+		bot.button("Finish").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+	}
+
+	/**
+	 * Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=344484
+	 * @param currSelection The index of the radiobutton to deselect
+	 */
+	private void deselectDefaultSelection(final int currSelection) {
+			UIThreadRunnable.syncExec(new VoidResult() {
+
+				@Override
+				public void run() {
+					@SuppressWarnings("unchecked")
+					Matcher<Widget> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"));
+					Button b = (Button) bot.widget(matcher, currSelection);
+					b.setSelection(false);
+
+				}
+
+			});
+		}
 
 	public static void click(final MenuItem menuItem) {
         final Event event = new Event();

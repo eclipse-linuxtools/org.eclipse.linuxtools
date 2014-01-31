@@ -23,4 +23,5 @@ Import-Package: org.apache.log4j,
  org.eclipse.swtbot.swt.finder,
  org.eclipse.swtbot.swt.finder.junit,
  org.eclipse.swtbot.swt.finder.waits,
- org.eclipse.swtbot.swt.finder.widgets
+ org.eclipse.swtbot.swt.finder.widgets,
+ org.swtchart
