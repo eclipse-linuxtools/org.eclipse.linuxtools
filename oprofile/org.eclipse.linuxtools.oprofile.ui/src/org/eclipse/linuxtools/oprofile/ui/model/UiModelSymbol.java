@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
@@ -71,7 +72,7 @@ public class UiModelSymbol implements IUiModelElement {
 		//a hack to get `basename` type functionality
 		String fileName = (new File(symbol.getFilePath())).getName();
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 	/**
 	 * Return the file path for the current debugging symbol
@@ -112,6 +113,10 @@ public class UiModelSymbol implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
+		if (UiModelRoot.SORT_TYPE.LINE_NO == UiModelRoot.getSortingType()) {
+			Arrays.sort(samples, UiModelSorting.getInstance());
+			return samples;
+		}
 		return samples;
 	}
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
@@ -93,6 +95,11 @@ public class UiModelSession implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
+		if (UiModelRoot.SORT_TYPE.EVENT == UiModelRoot.getSortingType()) {
+			Arrays.sort(events, UiModelSorting.getInstance());
+			return events;
+		}
+
 		return events;
 	}
 

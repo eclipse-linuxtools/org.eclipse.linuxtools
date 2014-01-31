@@ -179,7 +179,7 @@ public class SessionManager {
 			if (list.item(i) instanceof Element) {
 				Element session = (Element) list.item(i);
 				if (session.getAttribute(NAME).equals(sessionName)) {
-					Element event = find((Element) list.item(0), EVENT, NAME,
+					Element event = find((Element) list.item(i), EVENT, NAME,
 							eventName);
 					if (event != null) {
 						removeSessionHelper(sessionName, event);

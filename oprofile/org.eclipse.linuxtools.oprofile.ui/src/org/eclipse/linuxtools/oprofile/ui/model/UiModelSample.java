@@ -40,7 +40,7 @@ public class UiModelSample implements IUiModelElement {
 		double countPercentage = (double)sample.getCount() / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line")+" " + Integer.toString(sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

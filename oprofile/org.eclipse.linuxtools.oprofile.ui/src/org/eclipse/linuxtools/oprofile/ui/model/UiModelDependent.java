@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
@@ -54,7 +56,7 @@ public class UiModelDependent implements IUiModelElement {
 		double countPercentage = (double)depCount / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/** IUiModelElement functions **/
@@ -69,6 +71,12 @@ public class UiModelDependent implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
+
+		if (UiModelRoot.SORT_TYPE.LIB == UiModelRoot.getSortingType()) {
+			Arrays.sort(dependents, UiModelSorting.getInstance());
+			return dependents;
+		}
+
 		return dependents;
 	}
 

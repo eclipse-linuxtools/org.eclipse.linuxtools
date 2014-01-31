@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.swt.graphics.Image;
@@ -78,9 +80,17 @@ public class UiModelRoot implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		if (session != null && session.length != 0)
-			return session;
-		else
+		if (session != null && session.length != 0) {
+			if (UiModelRoot.SORT_TYPE.SESSION == UiModelRoot.getSortingType()) {
+				Arrays.sort(session, UiModelSorting.getInstance());
+				return session;
+			}
+
+			else {
+				return session;
+			}
+
+		} else
 			return new IUiModelElement[] { rootError };
 	}
 	/**
@@ -104,5 +114,23 @@ public class UiModelRoot implements IUiModelElement {
 	@Override
 	public Image getLabelImage() {
 		return null;
+	}
+
+	/**
+	 *
+	 * adding sorting feature in tree.
+	 * @since 3.0
+	 *
+	 */
+	public static enum SORT_TYPE{DEFAULT,SESSION,EVENT,LIB,FUNCTION,LINE_NO};
+	private static SORT_TYPE sortType;
+	public static void setSortingType(SORT_TYPE sortType)
+	{
+		UiModelRoot.sortType = sortType;
+	}
+
+	public static SORT_TYPE getSortingType()
+	{
+		return UiModelRoot.sortType;
 	}
 }

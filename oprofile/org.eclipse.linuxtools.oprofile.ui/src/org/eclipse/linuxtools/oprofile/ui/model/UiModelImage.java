@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.util.Arrays;
+
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
@@ -67,7 +69,7 @@ public class UiModelImage implements IUiModelElement {
 			double countPercentage = (double)(image.getCount() ) / (double)totalCount;
 			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -92,7 +94,10 @@ public class UiModelImage implements IUiModelElement {
 				children[i] = symbols[i];
 			}
 		}
-
+		if (UiModelRoot.SORT_TYPE.FUNCTION == UiModelRoot.getSortingType()) {
+			Arrays.sort(children, UiModelSorting.getInstance());
+			return children;
+		}
 		return children;
 	}
 	/**
