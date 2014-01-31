@@ -117,7 +117,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 
 			String eventsString=EVENTS;
 			for (int i=0;i<events.size();i++) {
-				eventsString+=events.get(i).getEvent().getText() + ":" + events.get(i).getEvent().getMinCount() + ","; //$NON-NLS-1$ //$NON-NLS-2$
+				eventsString+=events.get(i).getEvent().getText() + ":" + events.get(i).getResetCount() + ","; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			ArrayList<String> argArray = new ArrayList<>(Arrays.asList(getProgramArgumentsArray( config )));
