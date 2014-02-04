@@ -203,8 +203,8 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 		// and plot those values to the chart.
 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
+		ISeries series = null;
 		for (int i = 0; i < leny; i++) {
-			ISeries series;
 			if (i >= allSeries.length) {
 				series = createChartISeries(i);
 			} else {
@@ -231,8 +231,10 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 			series.setYSeries(valy_trim);
 		}
 
-		applyRangeX(minX, maxX);
-		applyRangeY(minY, maxY);
+		if (series != null && series.getXSeries().length > 0) {
+			applyRangeX(minX, maxX);
+			applyRangeY(minY, maxY);
+		}
 		chart.redraw();
 	}
 
