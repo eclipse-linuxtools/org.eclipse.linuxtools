@@ -37,7 +37,7 @@ public class GraphContinuousXControl extends Composite {
 
 		Button zoomOutButton = new Button(this, SWT.CENTER);
 		zoomOutButton.setText(Messages.GraphContinuousControl_ZoomOutLabel);
-		zoomOutButton.setToolTipText(Messages.GraphContinuousControl_ZoomOutTooltip);
+		zoomOutButton.setToolTipText(Messages.GraphContinuousXControl_ZoomOutTooltip);
 		zoomOutButton.setFont(font);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
@@ -53,7 +53,7 @@ public class GraphContinuousXControl extends Composite {
 
 		Button zoomInButton = new Button(this, SWT.CENTER);
 		zoomInButton.setText(Messages.GraphContinuousControl_ZoomInLabel);
-		zoomInButton.setToolTipText(Messages.GraphContinuousControl_ZoomInTooltip);
+		zoomInButton.setToolTipText(Messages.GraphContinuousXControl_ZoomInTooltip);
 		zoomInButton.setFont(font);
 		data = new FormData();
 		data.right = new FormAttachment(100, 0);

@@ -48,7 +48,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotScale;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotSlider;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -153,7 +155,7 @@ public class TestCreateSystemtapScript {
 
 		@Override
 		public String getFailureMessage() {
-			return "Timed out waiting for chart data to update";
+			return "Timed out waiting for data table to update";
 		}
 	}
 
@@ -693,17 +695,25 @@ public class TestCreateSystemtapScript {
 		assertEquals(numItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
 
 		// Test graph scaling & scrolling
-		discreteXControlTests(cb, numItems);
+		discreteXControlTests(cb, numItems); //BarGraph
+		continuousControlTests(cb, false);
 		graphEditor.bot().cTabItem(GraphFactory.getGraphName(PieChartBuilder.ID)).activate();
 		cb = bot.widget(matcher);
 		discreteXControlTests(cb, numCategories);
+		graphEditor.bot().cTabItem(GraphFactory.getGraphName(LineChartBuilder.ID)).activate();
+		cb = bot.widget(matcher);
+		continuousControlTests(cb, true);
+		continuousControlTests(cb, false);
 	}
 
-	private void discreteXControlTests(final AbstractChartBuilder cb, int numAxisItems) {
+	private void discreteXControlTests(AbstractChartBuilder cb, int numAxisItems) {
 		// Check that default range shows 100% of data.
 		IAxis axis = cb.getChart().getAxisSet().getXAxis(0);
 		Range range = axis.getRange();
+		double scale = cb.getScale();
+		double scroll = cb.getScroll();
 		assertTrue(range.upper - range.lower == axis.getCategorySeries().length - 1 && range.upper - range.lower == numAxisItems - 1);
+		assertTrue(scale == 1.0 && scroll == 1.0);
 
 		// Check that scroll buttons are disabled at 100% range.
 		SWTBotButton firstButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_First);
@@ -726,9 +736,9 @@ public class TestCreateSystemtapScript {
 		assertTrue(zoomOutButton.isEnabled());
 		assertTrue(allButton.isEnabled());
 
-		// By default, zooming in should zoom in on the end of the axis, not the beginning.
+		// By default, zooming in should zoom in on the end of the axis (newest data).
 		range = axis.getRange();
-		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0);
+		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0 && cb.getScale() < scale && cb.getScroll() == 1.0);
 
 		// Left scrolling should now be enabled.
 		assertTrue(firstButton.isEnabled());
@@ -739,7 +749,7 @@ public class TestCreateSystemtapScript {
 		// Test scrolling left. Again, the specific amount is arbitrary, just make sure scrolling happened.
 		leftButton.click();
 		range = axis.getRange();
-		assertTrue(range.upper < numAxisItems - 1);
+		assertTrue(range.upper < numAxisItems - 1 && cb.getScroll() < scroll);
 		int rstore = (int) range.lower;
 		assertTrue(rightButton.isEnabled());
 		assertTrue(lastButton.isEnabled());
@@ -747,7 +757,7 @@ public class TestCreateSystemtapScript {
 		// Zooming out should bring the range back to 100%.
 		zoomOutButton.click();
 		range = axis.getRange();
-		assertTrue(range.upper - range.lower == numAxisItems - 1);
+		assertTrue(range.upper - range.lower == numAxisItems - 1 && cb.getScale() == 1.0 && cb.getScroll() < scroll);
 		assertTrue(zoomInButton.isEnabled());
 		assertTrue(!zoomOutButton.isEnabled());
 		assertTrue(!allButton.isEnabled());
@@ -758,13 +768,14 @@ public class TestCreateSystemtapScript {
 
 		// For convenience, zooming out after having scrolled somewhere should make zooming in
 		// zoom back to the area that was scrolled to.
+		scroll = cb.getScroll();
 		zoomInButton.click();
-		assertTrue(rstore == axis.getRange().lower);
+		assertTrue(rstore == axis.getRange().lower && scroll == cb.getScroll());
 
 		// Scrolling right should take the range back to the end of the axis.
 		rightButton.click();
 		range = axis.getRange();
-		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0);
+		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0 && cb.getScroll() > scroll);
 		assertTrue(firstButton.isEnabled());
 		assertTrue(leftButton.isEnabled());
 		assertTrue(!rightButton.isEnabled());
@@ -816,6 +827,98 @@ public class TestCreateSystemtapScript {
 		assertTrue(leftButton.isEnabled());
 		assertTrue(!rightButton.isEnabled());
 		assertTrue(!lastButton.isEnabled());
+	}
+
+	private double getAxisScale(AbstractChartBuilder cb, boolean isXAxis) {
+		return isXAxis ? cb.getScale() : cb.getScaleY();
+	}
+
+	private double getAxisScroll(AbstractChartBuilder cb, boolean isXAxis) {
+		return isXAxis ? cb.getScroll() : cb.getScrollY();
+	}
+
+	private void continuousControlTests(AbstractChartBuilder cb, boolean isXAxis) {
+		// Continuous scaling/scrolling is less strict/predictable than discrete scrolling,
+		// so just check that the controls perform their intended actions.
+		IAxis axis;
+		SWTBotButton zoomInButton, zoomOutButton;
+		SWTBotScale zoomScale;
+		SWTBotSlider scrollBar;
+		int flipSign;
+		if (isXAxis) {
+			axis = cb.getChart().getAxisSet().getXAxis(0);
+			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ZoomInTooltip);
+			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ZoomOutTooltip);
+			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ScaleMessage);
+			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ScrollMessage);
+			flipSign = 1;
+		} else {
+			axis = cb.getChart().getAxisSet().getYAxis(0);
+			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ZoomInTooltip);
+			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ZoomOutTooltip);
+			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ScaleMessage);
+			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ScrollMessage);
+			flipSign = -1;
+		}
+		double scale = getAxisScale(cb, isXAxis);
+		double scroll = getAxisScroll(cb, isXAxis);
+		int thumb = scrollBar.getThumb();
+
+		// Default range should be 100%, so zooming out shouldn't have an effect yet.
+		assertTrue(scale == 1.0);
+		int zoomValue = zoomScale.getValue();
+		Range range = axis.getRange();
+		zoomOutButton.click();
+		Range range2 = axis.getRange();
+		assertTrue(range.upper == range2.upper && range.lower == range2.lower && zoomScale.getValue() == zoomValue && getAxisScale(cb, isXAxis) == scale && scrollBar.getThumb() == thumb);
+
+		// Zoom in & back out with the zoom buttons.
+		zoomInButton.click();
+		range2 = axis.getRange();
+		assertTrue(range2.upper - range2.lower < range.upper - range.lower && flipSign * (zoomScale.getValue() - zoomValue) > 0 && getAxisScale(cb, isXAxis) < scale && scrollBar.getThumb() < thumb);
+		zoomOutButton.click();
+		range2 = axis.getRange();
+		assertTrue(range.upper == range2.upper && range.lower == range2.lower && zoomScale.getValue() == zoomValue && getAxisScale(cb, isXAxis) == scale && scrollBar.getThumb() == thumb);
+
+		// Zoom in with the Scale control.
+		int controlRange = zoomScale.getMaximum() - zoomScale.getMinimum();
+		zoomScale.setValue(zoomScale.getValue() + controlRange / 2 * flipSign);
+		// Note: the charts need some time to be updated after using the scale/slider controls.
+		// Sleeping for a brief moment is faster than using a bot wait condition.
+		bot.sleep(100);
+		range2 = axis.getRange();
+		assertTrue(range2.upper - range2.lower < range.upper - range.lower && getAxisScale(cb, isXAxis) < scale && scrollBar.getThumb() < thumb);
+
+		range = range2;
+		thumb = scrollBar.getThumb();
+		scale = getAxisScale(cb, isXAxis);
+		zoomScale.setValue(zoomScale.getValue() - controlRange / 4 * flipSign);
+		bot.sleep(100);
+		range2 = axis.getRange();
+		assertTrue(range2.upper - range2.lower > range.upper - range.lower && getAxisScale(cb, isXAxis) > scale && scrollBar.getThumb() > thumb);
+
+		// Test scrolling. Don't assume an initial scroll position, as it may be changed
+		// in future versions (it's more likely to change than default zoom, at least).
+		thumb = scrollBar.getThumb();
+		controlRange = scrollBar.getMaximum() - scrollBar.getThumb() - scrollBar.getMinimum();
+		scrollBar.setSelection(controlRange / 2);
+		bot.sleep(100);
+		assertTrue(scrollBar.getThumb() == thumb);
+
+		// Scroll towards origin.
+		range = axis.getRange();
+		scrollBar.setSelection(scrollBar.getSelection() - controlRange / 4 * flipSign);
+		bot.sleep(100);
+		range2 = axis.getRange();
+		assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper < range.upper && getAxisScroll(cb, isXAxis) < scroll);
+
+		// Scroll away from origin.
+		range = range2;
+		scroll = getAxisScroll(cb, isXAxis);
+		scrollBar.setSelection(scrollBar.getSelection() + controlRange / 8 * flipSign);
+		bot.sleep(100);
+		range2 = axis.getRange();
+		assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper > range.upper && getAxisScroll(cb, isXAxis) > scroll);
 	}
 
 	private void openRunConfigurations(String scriptName) {

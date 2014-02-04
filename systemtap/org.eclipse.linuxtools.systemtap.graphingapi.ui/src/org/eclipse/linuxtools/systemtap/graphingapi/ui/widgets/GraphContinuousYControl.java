@@ -37,7 +37,7 @@ public class GraphContinuousYControl extends Composite {
 
 		Button zoomOutButton = new Button(this, SWT.CENTER);
 		zoomOutButton.setText(Messages.GraphContinuousControl_ZoomOutLabel);
-		zoomOutButton.setToolTipText(Messages.GraphContinuousControl_ZoomOutTooltip);
+		zoomOutButton.setToolTipText(Messages.GraphContinuousYControl_ZoomOutTooltip);
 		zoomOutButton.setFont(font);
 		FormData data = new FormData();
 		data.bottom = new FormAttachment(100, 0);
@@ -53,7 +53,7 @@ public class GraphContinuousYControl extends Composite {
 
 		Button zoomInButton = new Button(this, SWT.CENTER);
 		zoomInButton.setText(Messages.GraphContinuousControl_ZoomInLabel);
-		zoomInButton.setToolTipText(Messages.GraphContinuousControl_ZoomInTooltip);
+		zoomInButton.setToolTipText(Messages.GraphContinuousYControl_ZoomInTooltip);
 		zoomInButton.setFont(font);
 		data = new FormData();
 		data.top = new FormAttachment(0, 0);
