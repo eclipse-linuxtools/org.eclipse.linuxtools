@@ -101,7 +101,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
-	private String verbosity = ""; //$NON-NLS-1$
+	private final String verbosity = ""; //$NON-NLS-1$
 
 
 	public LinuxOpcontrolProvider() {
