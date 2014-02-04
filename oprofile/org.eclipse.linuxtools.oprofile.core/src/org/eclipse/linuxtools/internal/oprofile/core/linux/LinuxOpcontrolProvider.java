@@ -65,9 +65,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String OPD_SETUP_SEPARATE_CPU = "cpu"; //$NON-NLS-1$
 
 	private static final String OPD_SETUP_EVENT = "--event="; //$NON-NLS-1$
-	private static final String OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
-	private static final String OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
-	private static final String OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
+	public static final String OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
+	public static final String OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
+	public static final String OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
 	private static final String OPD_SETUP_EVENT_DEFAULT = "default"; //$NON-NLS-1$
 
 	private static final String OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
