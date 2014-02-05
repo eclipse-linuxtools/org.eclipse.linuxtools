@@ -118,11 +118,11 @@ public class UiModelRoot implements IUiModelElement {
 
 	/**
 	 *
-	 * adding sorting feature in tree.
+	 * Adding sorting feature in tree.
 	 * @since 3.0
 	 *
 	 */
-	public static enum SORT_TYPE{DEFAULT,SESSION,EVENT,LIB,FUNCTION,LINE_NO};
+	public static enum SORT_TYPE{DEFAULT,SESSION,EVENT,LIB,FUNCTION,LINE_NO}
 	private static SORT_TYPE sortType;
 	public static void setSortingType(SORT_TYPE sortType)
 	{

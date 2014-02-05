@@ -19,12 +19,12 @@ public class OprofileViewSortAction extends Action {
 
 	public static Map<UiModelRoot.SORT_TYPE, String> sortTypeMap = new HashMap<>();
 	static{
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.DEFAULT, OprofileUiMessages.getString("view.actions.default.label"));
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.SESSION, OprofileUiMessages.getString("view.actions.session.label"));
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.EVENT, OprofileUiMessages.getString("view.actions.event.label"));
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.LIB, OprofileUiMessages.getString("view.actions.lib.label"));
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.FUNCTION, OprofileUiMessages.getString("view.actions.function.label"));
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.LINE_NO, OprofileUiMessages.getString("view.actions.line.label"));
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.DEFAULT, OprofileUiMessages.getString("view.actions.default.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.SESSION, OprofileUiMessages.getString("view.actions.session.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.EVENT, OprofileUiMessages.getString("view.actions.event.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.LIB, OprofileUiMessages.getString("view.actions.lib.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.FUNCTION, OprofileUiMessages.getString("view.actions.function.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SORT_TYPE.LINE_NO, OprofileUiMessages.getString("view.actions.line.label")); //$NON-NLS-1$
 	}
 	private UiModelRoot.SORT_TYPE sortType;
 

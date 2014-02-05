@@ -93,7 +93,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 		manager.add(deleteSessionAction);
 
 		MenuManager sortMenu = new MenuManager(
-				OprofileUiMessages.getString("view.menu.sortby.label"));
+				OprofileUiMessages.getString("view.menu.sortby.label")); //$NON-NLS-1$
 
 		for (UiModelRoot.SORT_TYPE s : UiModelRoot.SORT_TYPE.values()) {
 			sortMenu.add(new OprofileViewSortAction(s,
@@ -138,7 +138,6 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 					}
 				});
 				monitor.worked(1);
-
 				monitor.done();
 			}
 		};
@@ -146,9 +145,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 		ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
 		try {
 			dialog.run(true, false, refreshRunner);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException|InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -165,9 +162,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 				if (!saveDefaultSessionAction.isEnabled()) {
 					saveDefaultSessionAction.setEnabled(true);
 				}
-
 			}
-
 		} else {
 			deleteSessionAction.setEnabled(false);
 			saveDefaultSessionAction.setEnabled(false);

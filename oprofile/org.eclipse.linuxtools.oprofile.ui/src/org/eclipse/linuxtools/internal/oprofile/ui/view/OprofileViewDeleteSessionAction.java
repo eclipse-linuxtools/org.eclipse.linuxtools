@@ -80,7 +80,7 @@ public class OprofileViewDeleteSessionAction extends Action {
 			try {
 				operfData.delete(true,null);
 			} catch (CoreException e) {
-				OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
 			}
 		}
 

@@ -64,7 +64,7 @@ public class SessionsProcessor extends XMLProcessor {
 		if (name.equals(SESSION_TAG)) {
 			String sessionName = valid_string(attrs.getValue(SESSION_NAME_ATTR));
 			currentSession = new OpModelSession(sessionName);
-			eventList = new ArrayList<OpModelEvent>();
+			eventList = new ArrayList<>();
 		} else if (name.equals(EVENT_TAG)) {
 			String eventName = attrs.getValue(EVENT_NAME_ATTR);
 			currentEvent = new OpModelEvent(currentSession,eventName);

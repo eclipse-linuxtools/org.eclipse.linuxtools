@@ -69,7 +69,7 @@ public class UiModelImage implements IUiModelElement {
 			double countPercentage = (double)(image.getCount() ) / (double)totalCount;
 			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

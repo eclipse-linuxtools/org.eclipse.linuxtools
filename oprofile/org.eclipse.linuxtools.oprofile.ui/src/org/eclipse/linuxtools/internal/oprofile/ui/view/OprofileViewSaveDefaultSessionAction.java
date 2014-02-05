@@ -35,13 +35,15 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 
 /**
  * Menu item to save the default session. Moved from a double-click in the view
- * on the default session for consistency (since non-default sessions can't be saved).
+ * on the default session for consistency (since non-default sessions can't be
+ * saved).
  */
 public class OprofileViewSaveDefaultSessionAction extends Action {
 	private IRemoteFileProxy proxy;
 
 	public OprofileViewSaveDefaultSessionAction() {
-		super(OprofileUiMessages.getString("view.actions.savedefaultsession.label")); //$NON-NLS-1$
+		super(OprofileUiMessages
+				.getString("view.actions.savedefaultsession.label")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -57,76 +59,83 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 				if (e instanceof UiModelError)
 					break;
 
-				if(e instanceof UiModelSession ){
+				if (e instanceof UiModelSession) {
 
-					if (((UiModelSession)e).isDefaultSession()) {
+					if (((UiModelSession) e).isDefaultSession()) {
 						defaultSessionExists = true;
 						defaultSessionName = e.getLabelText();
-						modelEvents = ((UiModelSession)e).getChildren();
+						modelEvents = ((UiModelSession) e).getChildren();
 						break;
 					}
 
-				if (defaultSessionExists)
-					break;
-			}
-		}
-
-		if (defaultSessionExists) {
-			//the following code was originially written by Keith Seitz
-			InputDialog dialog = new InputDialog(OprofileUiPlugin.getActiveWorkbenchShell(),
-					OprofileUiMessages.getString("savedialog.title"),    //$NON-NLS-1$
-					OprofileUiMessages.getString("savedialog.message"),    //$NON-NLS-1$
-					OprofileUiMessages.getString("savedialog.initial"),   //$NON-NLS-1$
-					new SaveSessionValidator());
-
-			int result = dialog.open();
-			if (result == Window.OK) {
-				try {
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().saveSession(dialog.getValue());
-					// remove the default session
-					for (int i = 0; i < modelEvents.length; i++) {
-						OprofileCorePlugin
-								.getDefault()
-								.getOpcontrolProvider()
-								.deleteSession(defaultSessionName,
-										modelEvents[i].getLabelText());
-					}
-					// clear out collected data by this session
-					// if opcontol is used
-					if (!Oprofile.OprofileProject.OPERF_BINARY
-							.equals(Oprofile.OprofileProject
-									.getProfilingBinary())) {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider()
-								.reset();
-					}
-					else
-					{
-						// remove oprofile_data so current event no longer be there
-						OprofileViewDeleteSessionAction
-								.deleteOperfDataFolder(Oprofile.OprofileProject
-										.getProject()
-										.getFolder(
-												Oprofile.OprofileProject.OPERF_DATA));
-					}
-					OprofileUiPlugin.getDefault().getOprofileView().refreshView();
-				} catch (OpcontrolException oe) {
-					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+					if (defaultSessionExists)
+						break;
 				}
 			}
-		} else {
-			MessageDialog.openError(OprofileUiPlugin.getActiveWorkbenchShell(),
-					OprofileUiMessages.getString("defaultsessiondialog.nodefaultsession.title"),  //$NON-NLS-1$
-					OprofileUiMessages.getString("defaultsessiondialog.nodefaultsession.message")); //$NON-NLS-1$
+
+			if (defaultSessionExists) {
+				// the following code was originially written by Keith Seitz
+				InputDialog dialog = new InputDialog(
+						OprofileUiPlugin.getActiveWorkbenchShell(),
+						OprofileUiMessages.getString("savedialog.title"), //$NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.message"), //$NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.initial"), //$NON-NLS-1$
+						new SaveSessionValidator());
+
+				int result = dialog.open();
+				if (result == Window.OK) {
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider()
+								.saveSession(dialog.getValue());
+						// remove the default session
+						for (int i = 0; i < modelEvents.length; i++) {
+							OprofileCorePlugin
+									.getDefault()
+									.getOpcontrolProvider()
+									.deleteSession(defaultSessionName,
+											modelEvents[i].getLabelText());
+						}
+						// clear out collected data by this session
+						// if opcontol is used
+						if (!Oprofile.OprofileProject.OPERF_BINARY
+								.equals(Oprofile.OprofileProject
+										.getProfilingBinary())) {
+							OprofileCorePlugin.getDefault()
+									.getOpcontrolProvider().reset();
+						} else {
+							// remove oprofile_data so current event no longer
+							// be there
+							OprofileViewDeleteSessionAction
+									.deleteOperfDataFolder(Oprofile.OprofileProject
+											.getProject()
+											.getFolder(
+													Oprofile.OprofileProject.OPERF_DATA));
+						}
+						OprofileUiPlugin.getDefault().getOprofileView()
+								.refreshView();
+					} catch (OpcontrolException oe) {
+						OprofileCorePlugin.showErrorDialog(
+								"opcontrolProvider", oe); //$NON-NLS-1$
+					}
+				}
+			} else {
+				MessageDialog
+						.openError(
+								OprofileUiPlugin.getActiveWorkbenchShell(),
+								OprofileUiMessages
+										.getString("defaultsessiondialog.nodefaultsession.title"), //$NON-NLS-1$
+								OprofileUiMessages
+										.getString("defaultsessiondialog.nodefaultsession.message")); //$NON-NLS-1$
+			}
 		}
 	}
-	}
 
-	//Original author: Keith Seitz <keiths@redhat.com>
+	// Original author: Keith Seitz <keiths@redhat.com>
 	private class SaveSessionValidator implements IInputValidator {
 
 		private SessionManager session = null;
-		public SaveSessionValidator()
-		{
+
+		public SaveSessionValidator() {
 			session = new SessionManager(SessionManager.SESSION_LOCATION);
 		}
 
@@ -144,21 +153,24 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			}
 
 			if (index != -1) {
-				String format = OprofileUiMessages.getString("savedialog.validator.invalidChar"); //$NON-NLS-1$
-				Object[] fmtArgs = new Object[] { newText.substring(index, index + 1), newText };
+				String format = OprofileUiMessages
+						.getString("savedialog.validator.invalidChar"); //$NON-NLS-1$
+				Object[] fmtArgs = new Object[] {
+						newText.substring(index, index + 1), newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
 
 			// Cannot contain whitespace
 			if (newText.contains(" ") || newText.contains("\t")) { //$NON-NLS-1$ //$NON-NLS-2$
-				String format = OprofileUiMessages.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
+				String format = OprofileUiMessages
+						.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
 
-			if(session.existsSession(newText))
-			{
-				String format = OprofileUiMessages.getString("savedialog.validator.exists"); //$NON-NLS-1$
+			if (session.existsSession(newText)) {
+				String format = OprofileUiMessages
+						.getString("savedialog.validator.exists"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
@@ -166,14 +178,17 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			// Must not already exist (opcontrol doesn't allow it)
 
 			try {
-				proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+				proxy = RemoteProxyManager.getInstance().getFileProxy(
+						Oprofile.OprofileProject.getProject());
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
 
-			IFileStore fileStore = proxy.getResource(Oprofile.getDefaultSamplesDirectory() + newText);
+			IFileStore fileStore = proxy.getResource(Oprofile
+					.getDefaultSamplesDirectory() + newText);
 			if (fileStore.fetchInfo().exists()) {
-				String format = OprofileUiMessages.getString("savedialog.validator.exists"); //$NON-NLS-1$
+				String format = OprofileUiMessages
+						.getString("savedialog.validator.exists"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
@@ -181,8 +196,6 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 			// Everything OK
 			return null;
 		}
-	};
-
 	}
 
-
+}

@@ -63,8 +63,9 @@ public class Oprofile
 	 */
 	static private void initializeOprofileModule() {
 		// Check if kernel module is loaded, if not, try to load it
-		if (!isKernelModuleLoaded())
+		if (!isKernelModuleLoaded()) {
 			initializeOprofile();
+		}
 
 		if (isKernelModuleLoaded()) {
 			initializeOprofileCore();
@@ -89,8 +90,9 @@ public class Oprofile
 
 		for (int i = 0; i < OPROFILE_CPU_TYPE_FILES.length; ++i) {
 			IFileStore f = proxy.getResource(OPROFILE_CPU_TYPE_FILES[i]);
-			if (f.fetchInfo().exists())
+			if (f.fetchInfo().exists()) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -213,8 +215,7 @@ public class Oprofile
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um, validResult);
 			opxml.run(null);
-		} catch (InvocationTargetException e) {
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException|InterruptedException e) {
 		}
 
 		return (validResult[0] == CheckEventsProcessor.EVENT_OK);
@@ -229,14 +230,13 @@ public class Oprofile
 	public static OpModelSession[] getSessions() {
 		OpModelSession[] events = null;
 
-		ArrayList<OpModelSession> sessionList = new ArrayList<OpModelSession>();
+		ArrayList<OpModelSession> sessionList = new ArrayList<>();
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().sessions(sessionList);
 			opxml.run(null);
 			events = new OpModelSession[sessionList.size()];
 			sessionList.toArray(events);
-		} catch (InvocationTargetException e) {
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException|InterruptedException e) {
 		}
 		return events;
 	}
@@ -253,8 +253,7 @@ public class Oprofile
 		try {
 			opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().modelData(eventName, sessionName, image);
 			opxml.run(null);
-		} catch (InvocationTargetException e) {
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException|InterruptedException e) {
 		}
 
 		return image;

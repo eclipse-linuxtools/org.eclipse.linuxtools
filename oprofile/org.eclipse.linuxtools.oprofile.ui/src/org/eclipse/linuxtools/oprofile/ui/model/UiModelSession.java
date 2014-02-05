@@ -29,8 +29,6 @@ import org.eclipse.swt.graphics.Image;
 public class UiModelSession implements IUiModelElement {
 	private IUiModelElement parent;		//parent element
 	private OpModelSession session;		//the node in the data model
-	private UiModelImage image;			//this node's child
-	private UiModelDependent dependent;	//dependent images of the OpModelImage
 
 	private UiModelEvent events[];
 

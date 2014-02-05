@@ -56,7 +56,7 @@ public class UiModelDependent implements IUiModelElement {
 		double countPercentage = (double)depCount / (double)totalCount;
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	/** IUiModelElement functions **/

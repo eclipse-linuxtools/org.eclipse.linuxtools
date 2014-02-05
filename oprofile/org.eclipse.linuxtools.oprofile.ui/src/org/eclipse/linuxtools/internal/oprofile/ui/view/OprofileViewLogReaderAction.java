@@ -59,9 +59,7 @@ public class OprofileViewLogReaderAction extends Action {
 
 		try {
 			new ProgressMonitorDialog(activeShell).run(true, false, log);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException|InterruptedException e) {
 			e.printStackTrace();
 		}
 
@@ -91,7 +89,7 @@ class LogReader implements Runnable, IRunnableWithProgress {
 				// only reread it if it has been modified since the last run
 				if (modified != lastModified) {
 					lastModified = modified;
-					contents = "";
+					contents = ""; //$NON-NLS-1$
 				}
 				try (InputStream is = fileStore.openInputStream(EFS.NONE,
 						new NullProgressMonitor());
