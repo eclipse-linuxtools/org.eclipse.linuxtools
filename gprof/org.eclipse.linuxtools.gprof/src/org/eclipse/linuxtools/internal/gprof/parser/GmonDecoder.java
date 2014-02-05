@@ -59,7 +59,7 @@ public class GmonDecoder {
     private String file;
     private int tag = -1;
 
-    private final HashMap<ISymbol, String> filenames = new HashMap<ISymbol, String>();
+    private final HashMap<ISymbol, String> filenames = new HashMap<>();
     private final IProject project;
 
     // for dump

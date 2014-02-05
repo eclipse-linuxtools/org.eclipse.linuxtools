@@ -16,15 +16,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.oprofile.tests.TestPlugin;
+import org.eclipse.linuxtools.oprofile.tests.TestingOpModelRoot;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSample;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSymbol;
-import org.eclipse.linuxtools.oprofile.tests.TestPlugin;
-import org.eclipse.linuxtools.oprofile.tests.TestingOpModelRoot;
 import org.junit.Before;
 import org.junit.Test;
 
