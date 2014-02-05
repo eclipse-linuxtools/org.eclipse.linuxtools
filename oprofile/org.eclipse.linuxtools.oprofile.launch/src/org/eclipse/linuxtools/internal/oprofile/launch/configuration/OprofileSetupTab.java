@@ -328,8 +328,9 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		if (!kernel.fetchInfo().exists()) {
 			kernel = proxy.getResource("/boot");	//$NON-NLS-1$
 
-			if (!kernel.fetchInfo().exists())
+			if (!kernel.fetchInfo().exists()) {
 				kernel = proxy.getResource("/");	//$NON-NLS-1$
+			}
 		}
 		d.setFileName(kernel.toString());
 		d.setText(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.text")); //$NON-NLS-1$

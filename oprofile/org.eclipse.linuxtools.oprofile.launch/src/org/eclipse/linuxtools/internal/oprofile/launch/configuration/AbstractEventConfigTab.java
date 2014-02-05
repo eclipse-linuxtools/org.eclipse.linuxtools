@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -255,7 +254,7 @@ AbstractLaunchConfigurationTab {
 						if(OprofileProject.OPCONTROL_BINARY.equals(OprofileProject.getProfilingBinary()) && count > counters.length)
 						{
 							Object[] args = new Object[] { counters.length };
-							setErrorMessage(MessageFormat.format(OprofileLaunchMessages.getString("tab.event.opcontrol.validation.msg"),args));
+							setErrorMessage(MessageFormat.format(OprofileLaunchMessages.getString("tab.event.opcontrol.validation.msg"),args)); //$NON-NLS-1$
 							valid = false;
 						}
 					}
@@ -275,7 +274,7 @@ AbstractLaunchConfigurationTab {
 								Object[] args = new Object[] { min };
 								setErrorMessage(MessageFormat
 										.format(OprofileLaunchMessages
-												.getString("tab.event.counterSettings.count.too-small"),
+												.getString("tab.event.counterSettings.count.too-small"), //$NON-NLS-1$
 												args));
 								valid = false;
 								break;
@@ -285,7 +284,7 @@ AbstractLaunchConfigurationTab {
 							if (!checkEventSetupValidity(
 									counters[i].getNumber(), event.getText(), event.getUnitMask().getMaskValue())) {
 								Object[] args = new Object[] { event.getText() };
-								setErrorMessage(MessageFormat.format(OprofileLaunchMessages.getString("tab.event.validation.msg"), args));
+								setErrorMessage(MessageFormat.format(OprofileLaunchMessages.getString("tab.event.validation.msg"), args)); //$NON-NLS-1$
 								valid = false;
 								break;
 							}
@@ -469,8 +468,8 @@ AbstractLaunchConfigurationTab {
 		private final int REMOVE = 3;
 		private final int REMOVE_ALL = 4;
 		private final int CUSTOMIZE = 5;
-		private List<OpEvent> sourceList = new ArrayList<OpEvent>(0);
-		private List<OpEvent> targetList = new ArrayList<OpEvent>(0);
+		private List<OpEvent> sourceList = new ArrayList<>(0);
+		private List<OpEvent> targetList = new ArrayList<>(0);
 
 
 		public Composite getTabTopContainer() {
@@ -652,7 +651,7 @@ AbstractLaunchConfigurationTab {
 			HandleButtonClick listener = new HandleButtonClick();
 			add = new Button(parent, SWT.PUSH);
 			add.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-			add.setText(OprofileLaunchMessages.getString("tab.event.addevent.button.text"));
+			add.setText(OprofileLaunchMessages.getString("tab.event.addevent.button.text")); //$NON-NLS-1$
 			add.setData(ADD);
 			add.addListener(SWT.Selection, listener);
 
@@ -716,27 +715,27 @@ AbstractLaunchConfigurationTab {
 
 			addAll = new Button(parent, SWT.PUSH);
 			addAll.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-			addAll.setText(OprofileLaunchMessages.getString("tab.event.addallevent.button.text"));
+			addAll.setText(OprofileLaunchMessages.getString("tab.event.addallevent.button.text")); //$NON-NLS-1$
 			addAll.setData(ADD_ALL);
 			addAll.addListener(SWT.Selection, listener);
 
 
 			remove = new Button(parent, SWT.PUSH);
 			remove.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-			remove.setText(OprofileLaunchMessages.getString("tab.event.removeevent.button.text"));
+			remove.setText(OprofileLaunchMessages.getString("tab.event.removeevent.button.text")); //$NON-NLS-1$
 			remove.setData(REMOVE);
 			remove.addListener(SWT.Selection, listener);
 
 
 			removeAll = new Button(parent, SWT.PUSH);
 			removeAll.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-			removeAll.setText(OprofileLaunchMessages.getString("tab.event.removeallevent.button.text"));
+			removeAll.setText(OprofileLaunchMessages.getString("tab.event.removeallevent.button.text")); //$NON-NLS-1$
 			removeAll.setData(REMOVE_ALL);
 			removeAll.addListener(SWT.Selection, listener);
 
 			customizeBtn = new Button(parent, SWT.PUSH);
 			customizeBtn.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-			customizeBtn.setText(OprofileLaunchMessages.getString("tab.event.customizeevent.button.text"));
+			customizeBtn.setText(OprofileLaunchMessages.getString("tab.event.customizeevent.button.text")); //$NON-NLS-1$
 			customizeBtn.addListener(SWT.Selection, listener);
 			customizeBtn.setData(CUSTOMIZE);
 
@@ -839,7 +838,7 @@ AbstractLaunchConfigurationTab {
 
 
 			// add opevent to target event list
-			ArrayList<OpEvent> tmp = new ArrayList<OpEvent>(Arrays.asList(counter.getEvents()));
+			ArrayList<OpEvent> tmp = new ArrayList<>(Arrays.asList(counter.getEvents()));
 			targetList.addAll(tmp);
 			selectedEventList.add(tmp.toArray());
 			selectedEventList.refresh();
@@ -923,7 +922,7 @@ AbstractLaunchConfigurationTab {
 			setErrorMessage(null);
 			int [] indices = eventList.getList().getSelectionIndices();
 			if (indices.length != 0) {
-				ArrayList<OpEvent> tmp = new ArrayList<OpEvent> ();
+				ArrayList<OpEvent> tmp = new ArrayList<> ();
 				for (int index : indices) {
 					OpEvent event = (OpEvent) eventList.getElementAt(index);
 					tmp.add(event);
@@ -1109,7 +1108,7 @@ AbstractLaunchConfigurationTab {
 				//creates these buttons with the default masks
 				mask.setDefaultMaskValue();
 
-				ArrayList<Button> maskButtons = new ArrayList<Button>();
+				ArrayList<Button> maskButtons = new ArrayList<>();
 
 				for (int i = 0; i < totalMasks; i++) {
 					Button maskButton;
@@ -1286,7 +1285,6 @@ AbstractLaunchConfigurationTab {
 					customizeButtonClicked();
 					break;
 				default:
-					System.out.println("unknown option");
 					break;
 				}
 
@@ -1295,7 +1293,7 @@ AbstractLaunchConfigurationTab {
 			private void addButtonClicked() {
 				int[] indices = eventList.getList().getSelectionIndices();
 				if (indices.length != 0) {
-					ArrayList<OpEvent> tmp = new ArrayList<OpEvent>();
+					ArrayList<OpEvent> tmp = new ArrayList<>();
 					for (int index : indices) {
 						OpEvent event = (OpEvent) eventList.getElementAt(index);
 						tmp.add(event);
@@ -1308,7 +1306,7 @@ AbstractLaunchConfigurationTab {
 					eventList.remove(tmp.toArray());
 
 					int count = selectedEventList.getList().getItemCount();
-					tmp = new ArrayList<OpEvent>();
+					tmp = new ArrayList<>();
 					for (int i = 0; i < count; i++) {
 						OpEvent event = (OpEvent) selectedEventList
 								.getElementAt(i);
@@ -1327,7 +1325,7 @@ AbstractLaunchConfigurationTab {
 
 			private void addAllButtonClicked() {
 				int count = eventList.getList().getItemCount();
-				ArrayList<OpEvent> tmp = new ArrayList<OpEvent>();
+				ArrayList<OpEvent> tmp = new ArrayList<>();
 				for (int i = 0; i < count; i++) {
 					OpEvent event = (OpEvent) eventList.getElementAt(i);
 					tmp.add(event);
@@ -1340,7 +1338,7 @@ AbstractLaunchConfigurationTab {
 				sourceList.removeAll(tmp);
 
 				count = selectedEventList.getList().getItemCount();
-				tmp = new ArrayList<OpEvent>();
+				tmp = new ArrayList<>();
 				for (int i = 0; i < count; i++) {
 					OpEvent event = (OpEvent) selectedEventList.getElementAt(i);
 					tmp.add(event);
@@ -1359,7 +1357,7 @@ AbstractLaunchConfigurationTab {
 				int[] indices = selectedEventList.getList()
 						.getSelectionIndices();
 				if (indices.length != 0) {
-					ArrayList<OpEvent> tmp = new ArrayList<OpEvent>();
+					ArrayList<OpEvent> tmp = new ArrayList<>();
 					for (int index : indices) {
 						OpEvent event = (OpEvent) selectedEventList
 								.getElementAt(index);
@@ -1373,7 +1371,7 @@ AbstractLaunchConfigurationTab {
 					selectedEventList.remove(tmp.toArray());
 
 					int count = selectedEventList.getList().getItemCount();
-					tmp = new ArrayList<OpEvent>();
+					tmp = new ArrayList<>();
 					for (int i = 0; i < count; i++) {
 						OpEvent event = (OpEvent) selectedEventList
 								.getElementAt(i);
@@ -1395,7 +1393,7 @@ AbstractLaunchConfigurationTab {
 			private void removeAllButtonClicked() {
 
 				int count = selectedEventList.getList().getItemCount();
-				ArrayList<OpEvent> tmp = new ArrayList<OpEvent>();
+				ArrayList<OpEvent> tmp = new ArrayList<>();
 				for (int i = 0; i < count; i++) {
 					OpEvent event = (OpEvent) selectedEventList.getElementAt(i);
 					tmp.add(event);

@@ -93,7 +93,9 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
 		 */
 
-		if (!preExec(options, daemonEvents, launch)) return;
+		if (!preExec(options, daemonEvents, launch)) {
+			return;
+		}
 		Process process = null;
 		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
 			String arguments[] = getProgramArgumentsArray( config );
@@ -124,8 +126,9 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 			boolean isCommaAllowed = false;
 			for (int i=0;i<events.size();i++) {
 				OprofileDaemonEvent event = events.get(i);
-				if(isCommaAllowed)
-					spec.append(",");
+				if(isCommaAllowed) {
+					spec.append(',');
+				}
 				spec.append(event.getEvent().getText());
 				spec.append(LinuxOpcontrolProvider.OPD_SETUP_EVENT_SEPARATOR);
 				spec.append(event.getResetCount());
@@ -145,13 +148,16 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 				dataFolder.create(false, true, null);
 			}
 			argArray.add(0, exePath.toOSString());
-			if (events.size()>0)
+			if (events.size()>0) {
 				argArray.add(0,eventsString);
+			}
 			argArray.add(0, SESSION_DIR + oprofileWorkingDirURI(config).getPath() + IPath.SEPARATOR + OPROFILE_DATA);
 			argArray.add(0, OprofileProject.OPERF_BINARY);
 
 			for(int i = 0; i < options.getExecutionsNumber(); i++){
-				if (i!=0) argArray.add(APPEND);
+				if (i!=0) {
+					argArray.add(APPEND);
+				}
 				String[] arguments = new String[argArray.size()];
 				arguments = argArray.toArray(arguments);
 				try {
@@ -290,6 +296,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		}
 		return null;
 	}
+	
 	/**
 	 *
 	 * @param config
@@ -298,8 +305,6 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 	 * @since 1.1
 	 */
 	protected IPath getExePath(ILaunchConfiguration config) throws CoreException{
-		IPath exePath = CDebugUtils.verifyProgramPath( config );
-
-		return exePath;
+		return CDebugUtils.verifyProgramPath( config );
 	}
 }
