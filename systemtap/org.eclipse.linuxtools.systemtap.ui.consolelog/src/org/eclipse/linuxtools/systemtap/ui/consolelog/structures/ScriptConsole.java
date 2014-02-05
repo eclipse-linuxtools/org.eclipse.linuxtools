@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -84,8 +85,8 @@ public class ScriptConsole extends IOConsole {
 		public void runningStateChanged(boolean running);
 	}
 
-	private final LinkedList<ScriptConsoleObserver> activeConsoleObservers = new LinkedList<>();
-	private LinkedList<ScriptConsoleObserver> inactiveConsoleObservers = new LinkedList<>();
+	private final List<ScriptConsoleObserver> activeConsoleObservers = new LinkedList<>();
+	private List<ScriptConsoleObserver> inactiveConsoleObservers = new LinkedList<>();
 
 	/**
 	 * This method is used to create a reference to a new <code>ScriptConsole</code>.  If there

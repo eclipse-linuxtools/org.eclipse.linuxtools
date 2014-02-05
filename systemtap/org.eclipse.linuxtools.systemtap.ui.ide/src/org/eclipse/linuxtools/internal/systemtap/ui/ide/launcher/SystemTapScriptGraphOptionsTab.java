@@ -258,10 +258,10 @@ public class SystemTapScriptGraphOptionsTab extends
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			IEditorPart editor = ResourceUtil.findEditor(workbench.getActiveWorkbenchWindow().getActivePage(), root.getFile(scriptPath.makeRelativeTo(root.getLocation())));
 			if (editor != null) {
-				ITextEditor t_editor = (ITextEditor) editor.getAdapter(ITextEditor.class);
-				if (t_editor != null) {
-					IDocumentProvider provider = t_editor.getDocumentProvider();
-					IDocument document = provider.getDocument(t_editor.getEditorInput());
+				ITextEditor tEditor = (ITextEditor) editor.getAdapter(ITextEditor.class);
+				if (tEditor != null) {
+					IDocumentProvider provider = tEditor.getDocumentProvider();
+					IDocument document = provider.getDocument(tEditor.getEditorInput());
 					contents = document.get();
 				}
 			}

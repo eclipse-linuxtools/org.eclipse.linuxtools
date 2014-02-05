@@ -10,7 +10,7 @@ import org.swtchart.Range;
  */
 class BarChart extends Chart {
 
-	private final int MIN_LABEL_SIZE = Messages.BarChartBuilder_LabelTrimTag.length();
+	private final static int MIN_LABEL_SIZE = Messages.BarChartBuilder_LabelTrimTag.length();
 	private final int fontSize;
 
 	public boolean suspendUpdate = false;

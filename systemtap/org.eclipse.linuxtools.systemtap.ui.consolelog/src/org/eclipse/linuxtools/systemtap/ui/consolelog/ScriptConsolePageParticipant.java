@@ -89,9 +89,9 @@ public class ScriptConsolePageParticipant implements IConsolePageParticipant, ID
 		if ((event.getFlags() & DebugContextEvent.ACTIVATED) > 0) {
 			if (fView != null && fConsole != null) {
 				IProcess process = DebugUITools.getCurrentProcess();
-				if (process != null && process instanceof SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess
+				if (process instanceof SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess
 						&& ((SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess) process)
-						.matchesProcess(fConsole.getProcess())) {
+								.matchesProcess(fConsole.getProcess())) {
 					fView.display(fConsole);
 				}
 			}

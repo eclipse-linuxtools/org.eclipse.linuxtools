@@ -29,7 +29,7 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
 	private Button firstButton;
 	private Button lastButton;
 
-	private final double ZOOM_AMOUNT = 2.0;
+	private final static double ZOOM_AMOUNT = 2.0;
 
 	public GraphDiscreteXControl(GraphComposite comp, int style) {
 		super(comp, style);

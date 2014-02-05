@@ -143,35 +143,45 @@ public final class GraphFactory {
 		}
 	}
 
-	public static final AbstractChartBuilder createGraph(GraphComposite comp, int style, GraphData gd, IDataSet data) {
+	public static final AbstractChartBuilder createGraph(GraphComposite comp,
+			int style, GraphData gd, IDataSet data) {
 		AbstractChartBuilder builder = null;
 
-		switch(getIndex(gd.graphID)) {
-			case 0:
-				builder = new ScatterChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
-				break;
-			case 1:
-				builder = new LineChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
-				break;
-			case 2:
-			if(!(data instanceof IBlockDataSet) || (null != gd.key))
-				{
-					builder = new BarChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+		switch (getIndex(gd.graphID)) {
+		case 0:
+			builder = new ScatterChartBuilder(comp, style, gd.title,
+					new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+							gd.ySeries, gd.key));
+			break;
+		case 1:
+			builder = new LineChartBuilder(comp, style, gd.title,
+					new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+							gd.ySeries, gd.key));
+			break;
+		case 2:
+			if (!(data instanceof IBlockDataSet) || (null != gd.key)) {
+				builder = new BarChartBuilder(comp, style, gd.title,
+						new ScrollAdapter((IHistoricalDataSet) data,
+								gd.xSeries, gd.ySeries, gd.key));
 
-				}
-				else
-				{
-				builder = new BarChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+			} else {
+				builder = new BarChartBuilder(comp, style, gd.title,
+						new BlockAdapter((IBlockDataSet) data, gd.xSeries,
+								gd.ySeries));
 
-				}
-				break;
-			case 3:
-						builder = new AreaChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
-						break;
-			case 4:
-				builder = new PieChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+			}
+			break;
+		case 3:
+			builder = new AreaChartBuilder(comp, style, gd.title,
+					new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+							gd.ySeries, gd.key));
+			break;
+		case 4:
+			builder = new PieChartBuilder(comp, style, gd.title,
+					new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+							gd.ySeries, gd.key));
 
-				break;
+			break;
 		}
 		return builder;
 	}

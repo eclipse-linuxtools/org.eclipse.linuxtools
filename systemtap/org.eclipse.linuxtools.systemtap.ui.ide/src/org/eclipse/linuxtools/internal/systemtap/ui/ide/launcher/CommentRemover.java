@@ -3,8 +3,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 class CommentRemover {
 
 	public static String exec(String contents) {
-		if (contents.length() == 0)
+		if (contents.isEmpty()) {
 			return ""; //$NON-NLS-1$
+		}
 
 		char curchar, nxtchar;
 		boolean inQuotes = false;

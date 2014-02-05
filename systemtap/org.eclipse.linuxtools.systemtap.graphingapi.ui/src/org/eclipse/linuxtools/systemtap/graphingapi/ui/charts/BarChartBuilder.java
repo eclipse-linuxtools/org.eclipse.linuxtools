@@ -64,8 +64,8 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 			start = data.length - this.maxItems;
 		}
 
-		String[] all_valx = new String[len];
-		Double[][] all_valy = new Double[leny][len];
+		String[] allValx = new String[len];
+		Double[][] allValy = new Double[leny][len];
 		double maxY = 0, minY = 0; // Want to show x-axis if possible, so default max/min is 0.
 
 		// Read in from the data array all x/y points to plot.
@@ -74,13 +74,13 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		for (int i = 0; i < len; i++) {
 			Object label = data[start + i][0];
 			if (label != null) {
-				all_valx[i] = label.toString();
+				allValx[i] = label.toString();
 				for (int j = 1; j < leny + 1; j++) {
 					Double val = getDoubleOrNullValue(data[start + i][j]);
 					if (val == null) {
 						val = 0.0;
 					}
-					all_valy[j-1][i] = val;
+					allValy[j-1][i] = val;
 					maxY = Math.max(val, maxY);
 					minY = Math.min(val, minY);
 				}
@@ -91,16 +91,16 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 		// and plot those values to the chart.
 
 		String valx[] = new String[len];
-		int len_trim = 0;
+		int lenTrim = 0;
 		for (int i = 0; i < len; i++) {
-			if (all_valx[i] != null) {
-				valx[len_trim] = all_valx[i];
-				len_trim++;
+			if (allValx[i] != null) {
+				valx[lenTrim] = allValx[i];
+				lenTrim++;
 			}
 		}
-		String[] valx_trim = new String[len_trim];
-		for (int i = 0; i < len_trim; i++) {
-			valx_trim[i] = valx[i];
+		String[] valxTrim = new String[lenTrim];
+		for (int i = 0; i < lenTrim; i++) {
+			valxTrim[i] = valx[i];
 		}
 
 		ISeries allSeries[] = chart.getSeriesSet().getSeries();
@@ -113,24 +113,24 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 			}
 
 			double[] valy = new double[len];
-			int leny_trim = 0;
+			int lenyTrim = 0;
 			for (int j = 0; j < len; j++) {
-				if (all_valy[i][j] != null) {
-					valy[leny_trim] = all_valy[i][j].doubleValue();
-					leny_trim++;
+				if (allValy[i][j] != null) {
+					valy[lenyTrim] = allValy[i][j].doubleValue();
+					lenyTrim++;
 				}
 			}
-			double[] valy_trim = new double[leny_trim];
-			for (int j = 0; j < leny_trim; j++) {
-				valy_trim[j] = valy[j];
+			double[] valyTrim = new double[lenyTrim];
+			for (int j = 0; j < lenyTrim; j++) {
+				valyTrim[j] = valy[j];
 			}
 
-			series.setYSeries(valy_trim);
+			series.setYSeries(valyTrim);
 		}
 
 		((BarChart) chart).suspendUpdate = true;
-		((BarChart) chart).setCategorySeries(getUniqueNames(valx_trim));
-		applyCategoryRange(valx_trim.length);
+		((BarChart) chart).setCategorySeries(getUniqueNames(valxTrim));
+		applyCategoryRange(valxTrim.length);
 		applyRangeY(minY, maxY);
 		((BarChart) chart).suspendUpdate = false;
 		chart.updateLayout();

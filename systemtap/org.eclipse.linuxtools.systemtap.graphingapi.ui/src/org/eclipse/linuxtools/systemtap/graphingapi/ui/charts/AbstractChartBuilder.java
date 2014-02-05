@@ -88,7 +88,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 */
 	protected String title = null;
 
-	private ArrayList<IUpdateListener> listeners = new ArrayList<IUpdateListener>();
+	private ArrayList<IUpdateListener> listeners = new ArrayList<>();
 
 	public abstract void updateDataSet();
 
@@ -329,14 +329,14 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 * @since 3.0
 	 */
 	protected String[] getUniqueNames(String[] labels) {
-		Set<String> labels_unique = new LinkedHashSet<String>();
+		Set<String> labelsUnique = new LinkedHashSet<>();
 		for (String label : labels) {
 			int count = 1;
-			while (!labels_unique.add(makeCountedLabel(label, count))) {
+			while (!labelsUnique.add(makeCountedLabel(label, count))) {
 				count++;
 			}
 		}
-		return labels_unique.toArray(new String[labels.length]);
+		return labelsUnique.toArray(new String[labels.length]);
 	}
 
 	private String makeCountedLabel(String original, int count) {

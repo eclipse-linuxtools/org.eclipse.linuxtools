@@ -118,10 +118,10 @@ public class ScpClient {
 			channel.disconnect();
 			session.disconnect();
 
-		} catch (IOException e) {
-			if (fis != null)
+		} finally {
+			if (fis != null) {
 				fis.close();
-			throw e;
+			}
 		}
   }
 
