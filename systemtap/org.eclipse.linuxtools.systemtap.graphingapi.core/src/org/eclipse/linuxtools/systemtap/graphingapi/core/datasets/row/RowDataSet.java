@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -101,7 +100,7 @@ public class RowDataSet implements IHistoricalDataSet {
 			}
 			return true;
 		} catch(IOException|ArrayIndexOutOfBoundsException e) {
-		} 
+		}
 		return false;
 	}
 
@@ -109,33 +108,33 @@ public class RowDataSet implements IHistoricalDataSet {
 	public boolean writeToFile(File file) {
 		try {
 			file.createNewFile();
-			FileOutputStream fos = new FileOutputStream(file);
-			PrintStream ps = new PrintStream(fos);
+			try (FileOutputStream fos = new FileOutputStream(file);
+					PrintStream ps = new PrintStream(fos)) {
 
-			String line = ""; //$NON-NLS-1$
-			Object[] dataRow;
+				String line = ""; //$NON-NLS-1$
+				Object[] dataRow;
 
-			//ID
-			ps.print(ID + "\n"); //$NON-NLS-1$
+				// ID
+				ps.print(ID + "\n"); //$NON-NLS-1$
 
-			//Labels
-			int i, j;
-			for(i=0; i<titles.length; i++)
-				line += titles[i] + ", "; //$NON-NLS-1$
-			ps.print(line + "\n"); //$NON-NLS-1$
-
-			//Data
-			for(i=0; i<getRowCount(); i++) {
-				dataRow = getRow(i);
-				line = ""; //$NON-NLS-1$
-				for(j=0; j<dataRow.length; j++)
-					line += dataRow[j].toString() + ", "; //$NON-NLS-1$
+				// Labels
+				int i, j;
+				for (i = 0; i < titles.length; i++)
+					line += titles[i] + ", "; //$NON-NLS-1$
 				ps.print(line + "\n"); //$NON-NLS-1$
+
+				// Data
+				for (i = 0; i < getRowCount(); i++) {
+					dataRow = getRow(i);
+					line = ""; //$NON-NLS-1$
+					for (j = 0; j < dataRow.length; j++)
+						line += dataRow[j].toString() + ", "; //$NON-NLS-1$
+					ps.print(line + "\n"); //$NON-NLS-1$
+				}
 			}
-			ps.close();
 			return true;
-		} catch(FileNotFoundException e) {
-		} catch(IOException e) {}
+		} catch (IOException e) {
+		}
 		return false;
 	}
 

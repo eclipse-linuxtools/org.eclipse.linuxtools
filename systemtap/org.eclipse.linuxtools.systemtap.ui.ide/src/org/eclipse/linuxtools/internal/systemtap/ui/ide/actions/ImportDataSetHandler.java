@@ -49,11 +49,9 @@ public class ImportDataSetHandler extends AbstractHandler {
 		}
 
 		IDataSet dataset = null;
-		BufferedReader br = null;
-		try {
-			File file = new File(path);
-			FileReader fr = new FileReader(file);
-			br = new BufferedReader(fr);
+		File file = new File(path);
+		try (FileReader fr = new FileReader(file);
+				BufferedReader br = new BufferedReader(fr)) {
 			String id = br.readLine();
 
 			String[] titles = br.readLine().split(", "); //$NON-NLS-1$
@@ -76,14 +74,6 @@ public class ImportDataSetHandler extends AbstractHandler {
 			ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileInvalid, ioe);
 		} catch (WorkbenchException we) {
 			ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
 		return null;

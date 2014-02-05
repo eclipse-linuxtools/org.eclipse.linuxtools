@@ -74,38 +74,39 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	public boolean writeToFile(File file) {
 		try {
 			file.createNewFile();
-			FileOutputStream fos = new FileOutputStream(file);
-			PrintStream ps = new PrintStream(fos);
-			StringBuilder b = new StringBuilder();
+			try (FileOutputStream fos = new FileOutputStream(file);
+					PrintStream ps = new PrintStream(fos)) {
+				StringBuilder b = new StringBuilder();
 
-			//ID
-			b.append(ID + "\n"); //$NON-NLS-1$
+				// ID
+				b.append(ID + "\n"); //$NON-NLS-1$
 
-			//Labels
-			int i, j, k;
-			for(i=0; i<titles.length; i++) {
-				b.append(titles[i] + ", "); //$NON-NLS-1$
-			}
-			b.append("\n"); //$NON-NLS-1$
+				// Labels
+				int i, j, k;
+				for (i = 0; i < titles.length; i++) {
+					b.append(titles[i] + ", "); //$NON-NLS-1$
+				}
+				b.append("\n"); //$NON-NLS-1$
 
-			//Data
-			TableEntry e;
-			Object[] o;
-			for(i=0; i<data.size(); i++) {
-				e = data.get(i);
-				for(j=0; j<e.getRowCount(); j++) {
-					o = e.getRow(j);
-					for(k=0; k<o.length; k++) {
-						b.append(o[k].toString() + ", "); //$NON-NLS-1$
+				// Data
+				TableEntry e;
+				Object[] o;
+				for (i = 0; i < data.size(); i++) {
+					e = data.get(i);
+					for (j = 0; j < e.getRowCount(); j++) {
+						o = e.getRow(j);
+						for (k = 0; k < o.length; k++) {
+							b.append(o[k].toString() + ", "); //$NON-NLS-1$
+						}
+						b.append("\n"); //$NON-NLS-1$
 					}
 					b.append("\n"); //$NON-NLS-1$
 				}
-				b.append("\n"); //$NON-NLS-1$
+				ps.print(b.toString());
 			}
-			ps.print(b.toString());
-			ps.close();
 			return true;
-		} catch(IOException e) {}
+		} catch (IOException e) {
+		}
 		return false;
 	}
 

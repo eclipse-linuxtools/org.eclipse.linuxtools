@@ -146,12 +146,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 			temporaryScript.delete();
 			try {
 				temporaryScript.createNewFile();
-				FileWriter fstream = new FileWriter(temporaryScript);
-				BufferedWriter out = new BufferedWriter(fstream);
-				out.write(config.getAttribute(
-						LaunchConfigurationConstants.GENERATED_SCRIPT,
-						LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
-				out.close();
+				try (FileWriter fstream = new FileWriter(temporaryScript);
+						BufferedWriter out = new BufferedWriter(fstream)) {
+					out.write(config
+							.getAttribute(
+									LaunchConfigurationConstants.GENERATED_SCRIPT,
+									LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

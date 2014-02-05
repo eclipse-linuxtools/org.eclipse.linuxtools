@@ -490,45 +490,50 @@ public class CallgraphView extends SystemTapView {
 		        }
 		        File f = new File(filePath);
 		        f.delete();
-        		try {
-	            	f.createNewFile();
-					BufferedWriter out = new BufferedWriter(new FileWriter(f));
-					StringBuilder builder = new StringBuilder();
-					builder.append("                           Function                           | Called |  Time\n"); //$NON-NLS-1$
+				try {
+					f.createNewFile();
+					try (BufferedWriter out = new BufferedWriter(
+							new FileWriter(f))) {
+						StringBuilder builder = new StringBuilder();
+						builder.append("                           Function                           | Called |  Time\n"); //$NON-NLS-1$
 
-					for (StapData k : g.nodeDataMap.values()) {
-	            		if ( (!k.isCollapsed ) && !k.isOnlyChildWithThisName()) {
-	            			continue;
-	            		}
-						if (k.isCollapsed) {
-							StringBuilder name = new StringBuilder(k.name);
-							name = fixString(name, 60);
-							builder.append(" " + name + " | "); //$NON-NLS-1$ //$NON-NLS-2$
+						for (StapData k : g.nodeDataMap.values()) {
+							if ((!k.isCollapsed)
+									&& !k.isOnlyChildWithThisName()) {
+								continue;
+							}
+							if (k.isCollapsed) {
+								StringBuilder name = new StringBuilder(k.name);
+								name = fixString(name, 60);
+								builder.append(" " + name + " | "); //$NON-NLS-1$ //$NON-NLS-2$
 
-							StringBuilder called = new StringBuilder("" + k.timesCalled); //$NON-NLS-1$
-							called = fixString(called, 6);
+								StringBuilder called = new StringBuilder(
+										"" + k.timesCalled); //$NON-NLS-1$
+								called = fixString(called, 6);
 
-							StringBuilder time = new StringBuilder("" + //$NON-NLS-1$
-									StapNode.numberFormat.format((float) k.getTime()/g.getTotalTime() * 100)
-									+ "%"); //$NON-NLS-1$
-							time = fixString(time, 6);
+								StringBuilder time = new StringBuilder("" + //$NON-NLS-1$
+										StapNode.numberFormat.format((float) k
+												.getTime()
+												/ g.getTotalTime()
+												* 100) + "%"); //$NON-NLS-1$
+								time = fixString(time, 6);
 
-							builder.append(called + " | " + time + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+								builder.append(called + " | " + time + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+							}
+							if (builder.length() > 2000) {
+								out.append(builder.toString());
+								out.flush();
+								builder.setLength(0);
+							}
 						}
-						if (builder.length() > 2000) {
+
+						if (builder.length() > 0) {
 							out.append(builder.toString());
-							out.flush();
-							builder.setLength(0);
 						}
 					}
-
-					if (builder.length() > 0) {
-						out.append(builder.toString());
-					}
-					out.close();
-		        } catch (IOException e) {
-		        	e.printStackTrace();
-		        }
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		saveMenu = new MenuManager(Messages.getString("CallgraphView.SaveMenu")); //$NON-NLS-1$
@@ -694,9 +699,9 @@ public class CallgraphView extends SystemTapView {
 		}
 
 		SystemTapUIErrorMessages message = new SystemTapUIErrorMessages(
-				Messages.getString("CallgraphView.StapError1"),
-				Messages.getString("CallgraphView.StapError1"), NLS.bind(
-						Messages.getString("CallgraphView.StapError2"), user));
+				Messages.getString("CallgraphView.StapError1"), //$NON-NLS-1$
+				Messages.getString("CallgraphView.StapError1"), NLS.bind( //$NON-NLS-1$
+						Messages.getString("CallgraphView.StapError2"), user)); //$NON-NLS-1$
 		message.schedule();
 	}
 	/**
