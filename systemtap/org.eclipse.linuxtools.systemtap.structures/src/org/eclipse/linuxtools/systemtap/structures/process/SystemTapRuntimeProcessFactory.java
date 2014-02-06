@@ -43,6 +43,7 @@ public class SystemTapRuntimeProcessFactory implements IProcessFactory {
 	@Override
 	public IProcess newProcess(ILaunch launch, Process process, String label,
 			Map<String, String> attributes) {
+
 		return new SystemTapRuntimeProcess(launch, process, label, attributes);
 	}
 

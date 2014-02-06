@@ -15,7 +15,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	public static String ConsoleStreamDaemon_errorWritingToConsole;
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.structures.messages"; //$NON-NLS-1$
+	public static String RemoteScriptOptions_invalidArguments;
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures.messages"; //$NON-NLS-1$
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

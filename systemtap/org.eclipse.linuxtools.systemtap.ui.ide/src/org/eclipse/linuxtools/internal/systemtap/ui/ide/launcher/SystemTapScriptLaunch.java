@@ -7,12 +7,12 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole.ScriptConsoleObserver;
-import org.eclipse.swt.widgets.Display;
 
 public class SystemTapScriptLaunch extends Launch
 	implements ScriptConsoleObserver {
 
 	private ScriptConsole console = null;
+	private boolean runStarted = false;
 	private boolean runStopped = false;
 
 	public SystemTapScriptLaunch(ILaunchConfiguration launchConfiguration, String mode) {
@@ -43,23 +43,28 @@ public class SystemTapScriptLaunch extends Launch
 	}
 
 	@Override
-	public void runningStateChanged(boolean running) {
-		DebugPlugin.newProcess(this, console.getCommand().getProcess(), console.getName());
-		console.removeScriptConsoleObserver(this);
+	public void runningStateChanged(boolean started, boolean stopped) {
+		if (!runStarted && started) {
+			runStarted = started;
+			if (console.getCommand().getProcess() != null) {
+				DebugPlugin.newProcess(this, console.getCommand().getProcess(), console.getName());
+			}
+			if (stopped) {
+				runStopped = true;
+			}
+			console.removeScriptConsoleObserver(this);
+		}
 	}
 
 	@Override
 	public boolean canTerminate() {
-		if (runStopped) {
-			return false;
-		}
-		return console != null && !runStopped;
+		return !isTerminated();
 	}
 
 	@Override
 	public boolean isTerminated() {
 		if (!runStopped) {
-			if (super.isTerminated()) {
+			if (super.isTerminated() || (console != null && !console.isRunning())) {
 				runStopped = true;
 			}
 		}
@@ -68,14 +73,8 @@ public class SystemTapScriptLaunch extends Launch
 
 	@Override
 	public void terminate() {
-		if (console != null)
-		{
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					console.stop();
-				}
-			});
+		if (console != null) {
+			console.stop();
 		}
 	}
 
@@ -90,13 +89,14 @@ public class SystemTapScriptLaunch extends Launch
 	private void removeConsole() {
 		if (console != null) {
 			console.removeScriptConsoleObserver(this);
+			console.stop();
 			console = null;
 		}
 	}
 
 	public void forceRemove() {
-		runStopped = true;
 		removeConsole();
+		runStopped = true;
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		manager.removeLaunch(this);
 	}

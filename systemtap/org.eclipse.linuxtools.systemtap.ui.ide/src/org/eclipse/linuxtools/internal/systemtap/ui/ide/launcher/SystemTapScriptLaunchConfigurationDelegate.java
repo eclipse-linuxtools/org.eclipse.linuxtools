@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -30,7 +31,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
@@ -38,8 +38,7 @@ import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.structures.process.SystemTapRuntimeProcessFactory;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
 
 public class SystemTapScriptLaunchConfigurationDelegate extends
 		LaunchConfigurationDelegate {
@@ -106,8 +105,6 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 			throw new CoreException(new Status(IStatus.ERROR, getPluginID(), Messages.SystemTapScriptLaunchError_graph));
 		}
 
-		IPreferenceStore preferenceStore = ConsoleLogPlugin.getDefault().getPreferenceStore();
-
 		RunScriptHandler action;
 
 		boolean runWithChart = configuration.getAttribute(SystemTapScriptGraphOptionsTab.RUN_WITH_CHART, false);
@@ -137,22 +134,14 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		}
 		action.setPath(scriptPath);
 
-		// User Name
-		String userName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""); //$NON-NLS-1$
-		preferenceStore.setValue(ConsoleLogPreferenceConstants.SCP_USER, userName);
-
-		// User Password
-		String password = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_PASS_ATTR, ""); //$NON-NLS-1$
-		preferenceStore.setValue(ConsoleLogPreferenceConstants.SCP_PASSWORD, password);
-
 		// Run locally and/or as current user.
 		boolean runAsCurrentUser = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.CURRENT_USER_ATTR, true);
 		boolean runLocal = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.LOCAL_HOST_ATTR, true);
-		action.setLocalScript(runLocal && runAsCurrentUser);
 
-		// Host Name.
-		String hostName = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, "localhost"); //$NON-NLS-1$
-		preferenceStore.setValue(ConsoleLogPreferenceConstants.HOST_NAME, hostName);
+		action.setRemoteScriptOptions(runLocal && runAsCurrentUser ? null : new RemoteScriptOptions(
+						configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""), //$NON-NLS-1$
+						configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_PASS_ATTR, ""), //$NON-NLS-1$
+						configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, "localhost"))); //$NON-NLS-1$
 
 		String value = configuration.getAttribute(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
 		if (!value.isEmpty()){
@@ -182,7 +171,11 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		}
 
 		action.setLaunch((SystemTapScriptLaunch) launch);
-		action.execute(null);
+		try {
+			action.execute(null);
+		} catch (ExecutionException e) {
+			throw new CoreException(new Status(IStatus.ERROR, getPluginID(), e.getMessage()));
+		}
 	}
 
 }

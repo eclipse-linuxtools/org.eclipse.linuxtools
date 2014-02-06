@@ -43,8 +43,8 @@ public class CloseStapConsoleAction extends ConsoleAction implements ScriptConso
 	}
 
 	@Override
-	public void runningStateChanged(boolean running) {
-		setEnabled(!running);
+	public void runningStateChanged(boolean started, boolean stopped) {
+		setEnabled(stopped);
 	}
 
 }

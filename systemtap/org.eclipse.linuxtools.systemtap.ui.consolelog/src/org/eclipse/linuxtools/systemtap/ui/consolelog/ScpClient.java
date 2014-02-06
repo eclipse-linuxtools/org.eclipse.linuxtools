@@ -27,8 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -42,16 +41,16 @@ public class ScpClient {
 
 	private Session session;
 
-	public ScpClient() throws JSchException {
-
-	  String user=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER);
-      String host=ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME);
+	/**
+	 * @since 3.0
+	 */
+	public ScpClient(RemoteScriptOptions remoteOptions) throws JSchException {
 
       JSch jsch=new JSch();
 
-      session=jsch.getSession(user, host, 22);
+      session=jsch.getSession(remoteOptions.getUserName(), remoteOptions.getHostName(), 22);
 
-      session.setPassword(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
+      session.setPassword(remoteOptions.getPassword());
       java.util.Properties config = new java.util.Properties();
                       config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$ //$NON-NLS-2$
                       session.setConfig(config);
@@ -98,8 +97,9 @@ public class ScpClient {
 			try (FileInputStream fis = new FileInputStream(lfile)) {
 				while (true) {
 					int len = fis.read(buf, 0, buf.length);
-					if (len <= 0)
+					if (len <= 0) {
 						break;
+					}
 					out.write(buf, 0, len);
 
 				}
@@ -124,10 +124,12 @@ public class ScpClient {
 		// 1 for error,
 		// 2 for fatal error,
 		// -1
-		if (b == 0)
+		if (b == 0) {
 			return b;
-		if (b == -1)
+		}
+		if (b == -1) {
 			return b;
+		}
 
 		if (b == 1 || b == 2) {
 			StringBuilder sb = new StringBuilder();

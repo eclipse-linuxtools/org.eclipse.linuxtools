@@ -22,7 +22,8 @@ import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFacto
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.jcraft.jsch.Channel;
@@ -31,44 +32,39 @@ import com.jcraft.jsch.JSchException;
 public class ScpExec extends Command {
 
 	private Channel channel;
+	private RemoteScriptOptions remoteOptions;
 
 	/**
-	 * @since 2.0
+	 * @since 3.0
 	 */
-	public ScpExec(String cmds[]) {
+	public ScpExec(String cmds[], RemoteScriptOptions remoteOptions) {
 		super(cmds, null);
 		this.command = ""; //$NON-NLS-1$
 		for (String cmd:cmds) {
 			this.command = this.command + " " + cmd; //$NON-NLS-1$
 		}
+		this.remoteOptions = remoteOptions;
 	}
 
 	@Override
 	protected IStatus init() {
-		String user = ConsoleLogPlugin.getDefault().getPreferenceStore()
-				.getString(ConsoleLogPreferenceConstants.SCP_USER);
-		String host = ConsoleLogPlugin.getDefault().getPreferenceStore()
-				.getString(ConsoleLogPreferenceConstants.HOST_NAME);
-		String password = ConsoleLogPlugin.getDefault()
-				.getPreferenceStore()
-				.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
-
 		try {
 			channel = SystemtapProcessFactory.execRemote(
-					new String[] { command }, System.out, System.err, user, host, password);
+					new String[] { command }, System.out, System.err, remoteOptions.getUserName(), remoteOptions.getHostName(), remoteOptions.getPassword());
 
 			errorGobbler = new StreamGobbler(channel.getExtInputStream());
 			inputGobbler = new StreamGobbler(channel.getInputStream());
 
 			this.transferListeners();
 			return Status.OK_STATUS;
-		} catch (JSchException e) {
-			IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
-			ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.ScpExec_Error, e.getMessage(), status);
-			return status;
-		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
-			ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.ScpExec_Error, e.getMessage(), status);
+		} catch (final JSchException|IOException e) {
+			final IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.ScpExec_Error, e.getMessage(), status);
+				}
+			});
 			return status;
 		}
 	}
@@ -99,7 +95,17 @@ public class ScpExec extends Command {
 	@Override
 	public synchronized void stop() {
 		if(!stopped) {
-            channel.disconnect();
+			if(null != errorGobbler) {
+				errorGobbler.stop();
+			}
+			if(null != inputGobbler) {
+				inputGobbler.stop();
+			}
+			if (channel != null) {
+				channel.disconnect();
+			}
+            stopped = true;
+            notifyAll();
 		}
 	}
 

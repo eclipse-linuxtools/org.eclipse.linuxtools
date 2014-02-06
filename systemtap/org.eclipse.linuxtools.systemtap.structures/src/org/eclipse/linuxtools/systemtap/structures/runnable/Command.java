@@ -46,6 +46,7 @@ public class Command implements Runnable {
 	 * @since 2.0
 	 */
 	protected boolean stopped = false;
+	private boolean started = false;
 	/**
 	 * @since 2.0
 	 */
@@ -82,9 +83,9 @@ public class Command implements Runnable {
 	 * @since 2.0
 	 */
 	public Command(String[] cmd, String[] envVars) {
-		this(cmd, envVars, null); 
+		this(cmd, envVars, null);
 	}
-	
+
 	/**
 	 * Spawns the new thread that this class will run in.  From the Runnable
 	 * interface spawning the new thread automatically calls the run() method.
@@ -118,6 +119,7 @@ public class Command implements Runnable {
 		if(status.isOK()) {
 			Thread t = new Thread(this, cmd[0]);
 			t.start();
+			started = true;
 		} else {
 			stop();
 			returnVal = Integer.MIN_VALUE;
@@ -213,6 +215,16 @@ public class Command implements Runnable {
 	 */
 	public boolean isRunning() {
 		return !stopped;
+	}
+
+	/**
+	 * Method to check whether or not the process has began to run.
+	 * @return <code>false</code> before the process begins to run or
+	 * if initialization of the process has failed; <code>true</code> otherwise.
+	 * @since 2.2
+	 */
+	public boolean hasStarted() {
+		return started;
 	}
 
 	/**

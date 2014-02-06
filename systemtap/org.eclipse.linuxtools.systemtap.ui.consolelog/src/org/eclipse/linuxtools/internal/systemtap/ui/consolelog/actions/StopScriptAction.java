@@ -57,8 +57,8 @@ public class StopScriptAction extends ConsoleAction implements ScriptConsoleObse
 	 * @since 2.0
 	 */
 	@Override
-	public void runningStateChanged(boolean running) {
-		setEnabled(running);
+	public void runningStateChanged(boolean started, boolean stopped) {
+		setEnabled(!stopped);
 	}
 
 }
