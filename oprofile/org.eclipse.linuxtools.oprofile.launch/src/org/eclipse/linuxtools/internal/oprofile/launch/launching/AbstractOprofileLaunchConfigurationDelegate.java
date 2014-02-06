@@ -35,11 +35,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
+import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.internal.oprofile.core.daemon.OprofileDaemonOptions;
-import org.eclipse.linuxtools.internal.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
@@ -55,10 +54,13 @@ import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 	protected ILaunchConfiguration config;
-	private String OPROFILE_DATA = "oprofile_data"; //$NON-NLS-1$
-	private String SESSION_DIR = "--session-dir="; //$NON-NLS-1$
-	private String EVENTS = "--events="; //$NON-NLS-1$
-	private String APPEND = "--append"; //$NON-NLS-1$
+	private static final String OPROFILE_DATA = "oprofile_data"; //$NON-NLS-1$
+	private static final String SESSION_DIR = "--session-dir="; //$NON-NLS-1$
+	private static final String EVENTS = "--events="; //$NON-NLS-1$
+	private static final String APPEND = "--append"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
+	private static final String OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
@@ -130,14 +132,14 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 					spec.append(',');
 				}
 				spec.append(event.getEvent().getText());
-				spec.append(LinuxOpcontrolProvider.OPD_SETUP_EVENT_SEPARATOR);
+				spec.append(OPD_SETUP_EVENT_SEPARATOR);
 				spec.append(event.getResetCount());
-				spec.append(LinuxOpcontrolProvider.OPD_SETUP_EVENT_SEPARATOR);
+				spec.append(OPD_SETUP_EVENT_SEPARATOR);
 				spec.append(event.getEvent().getUnitMask().getMaskValue());
-				spec.append(LinuxOpcontrolProvider.OPD_SETUP_EVENT_SEPARATOR);
-				spec.append((event.getProfileKernel() ? LinuxOpcontrolProvider.OPD_SETUP_EVENT_TRUE : LinuxOpcontrolProvider.OPD_SETUP_EVENT_FALSE));
-				spec.append(LinuxOpcontrolProvider.OPD_SETUP_EVENT_SEPARATOR);
-				spec.append((event.getProfileUser() ? LinuxOpcontrolProvider.OPD_SETUP_EVENT_TRUE : LinuxOpcontrolProvider.OPD_SETUP_EVENT_FALSE));
+				spec.append(OPD_SETUP_EVENT_SEPARATOR);
+				spec.append((event.getProfileKernel() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
+				spec.append(OPD_SETUP_EVENT_SEPARATOR);
+				spec.append((event.getProfileUser() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
 				isCommaAllowed = true;
 			}
 			eventsString = spec.toString();
