@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.profiling.launch;
 
 import java.io.OutputStream;
 
+import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,6 +24,10 @@ public interface IRemoteCommandLauncher {
 	public final static int ILLEGAL_COMMAND = -1;
 	
 	public Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
+	/**
+	 * @since 3.0
+	 */
+	public Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor, PTY pty) throws CoreException;
 	public int waitAndRead(OutputStream output, OutputStream err, IProgressMonitor monitor);
 	public String getErrorMessage();
 	

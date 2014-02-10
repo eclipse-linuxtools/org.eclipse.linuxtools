@@ -14,3 +14,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin
 Bundle-Vendor: %provider
+Import-Package: org.eclipse.cdt.utils.pty

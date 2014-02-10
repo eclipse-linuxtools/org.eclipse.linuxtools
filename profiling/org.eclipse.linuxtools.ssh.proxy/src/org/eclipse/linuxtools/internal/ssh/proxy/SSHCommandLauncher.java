@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.ssh.proxy;
 import java.io.OutputStream;
 import java.net.URI;
 
+import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,7 +42,7 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 
 	@Override
 	public Process execute(IPath commandPath, String[] args, String[] env,
-			IPath changeToDirectory, IProgressMonitor monitor)
+			IPath changeToDirectory, IProgressMonitor monitorm, PTY pty)
 			throws CoreException {
 		StringBuilder cmd = new StringBuilder();
 
@@ -97,5 +98,11 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
 	@Override
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	@Override
+	public Process execute(IPath commandPath, String[] args, String[] env,
+			IPath changeToDirectory, IProgressMonitor monitor) throws CoreException {
+		return execute(commandPath, args, env, changeToDirectory, monitor, null);
 	}
 }

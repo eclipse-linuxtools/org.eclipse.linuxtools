@@ -11,15 +11,18 @@
 package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -30,10 +33,6 @@ import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
 import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.IOConsole;
 
 /**
  * This class represents the general flow of a perf command being
@@ -117,7 +116,50 @@ IPerfData {
 			}
 			joinAll();
 			text = data.toString();
-			printToConsole(proc, temp.toString());
+		} catch (IOException e) {
+			text = ""; //$NON-NLS-1$
+		} catch (InterruptedException e){
+			text = ""; //$NON-NLS-1$
+		}finally {
+			try {
+				if (buffData != null) {
+					buffData.close();
+				}
+				if (buffTemp != null) {
+					buffTemp.close();
+				}
+			} catch (IOException e) {
+				// continue
+			}
+		}
+	}
+
+	public void performCommand(String[] cmd, String file) {
+		BufferedReader buffData = null;
+		BufferedReader buffTemp = null;
+		URI pathWorkDirURI = null;
+		try {
+
+			Process proc = null;
+			RemoteConnection exeRC = null;
+			try {
+				pathWorkDirURI = new URI(pathWorkDir.toOSString());
+				exeRC = new RemoteConnection(pathWorkDirURI);
+			} catch (RemoteConnectionException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+			} catch (URISyntaxException e) {
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+			}
+			IFileStore workDirStore = exeRC.getRmtFileProxy().getResource(pathWorkDirURI.getPath());
+			proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, project, new PTY());
+			DebugPlugin.newProcess(launch, proc, ""); //$NON-NLS-1$
+			proc.waitFor();
+
+			StringBuffer data = new StringBuffer();
+			buffData = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			readStream(buffData, data);
+			joinAll();
+			text = data.toString();
 		} catch (IOException e) {
 			text = ""; //$NON-NLS-1$
 		} catch (InterruptedException e){
@@ -152,43 +194,6 @@ IPerfData {
 		});
 		readThread.start();
 		threads.add(readThread);
-	}
-
-	/**
-	 * Print String to process console.
-	 *
-	 * @param p Process to get console from.
-	 * @param s String to print.
-	 */
-	private void printToConsole(Process p, String s){
-		if (launch != null) {
-			String configName = launch.getLaunchConfiguration().getName();
-			// Console will try to read from stream so create afterwards
-			// Console will have the configuration name as a substring
-			DebugPlugin.newProcess(launch, p, ""); //$NON-NLS-1$
-
-			ConsolePlugin plugin = ConsolePlugin.getDefault();
-			IConsoleManager conMan = plugin.getConsoleManager();
-			IConsole[] existing = conMan.getConsoles();
-			IOConsole binaryOutCons = null;
-			PrintStream print;
-
-			// Find the console
-			for (IConsole x : existing) {
-				if (x.getName().contains(configName) &&
-						x instanceof IOConsole) {
-					binaryOutCons = (IOConsole) x;
-				}
-			}
-
-			// Get the printstream via the outputstream.
-			// Get ouput stream
-			if (binaryOutCons != null) {
-				OutputStream outputTo = binaryOutCons.newOutputStream();
-				print = new PrintStream(outputTo);
-				print.println(s);
-			}
-		}
 	}
 
 	/**

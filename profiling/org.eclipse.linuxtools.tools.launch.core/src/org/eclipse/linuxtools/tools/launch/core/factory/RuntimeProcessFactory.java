@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -220,6 +221,25 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	 * @since 1.1
 	 */
 	public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project)
+			throws IOException {
+		return exec(cmdarray, envp, dir, project, null);
+	}
+
+	/**
+	 * Execute one command using the path selected in 'Linux Tools Path' preference page
+	 * in the informed project.
+	 * @param cmdarray An array with the command to be executed and its params.
+	 * @param envp An array with extra enviroment variables to be used when running
+	 * the command
+	 * @param dir The directory used as current directory to run the command.
+	 * @param project The current project. If null, only system path will be
+	 * used to look for the command.
+	 * @param pty PTY for use with Eclipse Console.
+	 * @return The process started by exec.
+	 *
+	 * @since 2.1
+	 */
+	public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project, PTY pty)
 		throws IOException {
 
 		Process p = null;
@@ -255,7 +275,11 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 			cmdlist.toArray(cmdarray);
 			cmdarray = cmdlist.toArray(new String[0]);
 
-			p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor());
+			if (pty == null) {
+				p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor());
+			} else {
+				p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor(), pty);
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

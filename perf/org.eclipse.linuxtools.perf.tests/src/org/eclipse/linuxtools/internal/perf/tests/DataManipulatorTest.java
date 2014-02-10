@@ -28,6 +28,8 @@ import org.junit.Test;
 
 public class DataManipulatorTest {
 
+	private static final String output = "output"; //$NON-NLS-1$
+
 	@Test
 	public void testEchoSourceDisassemblyData() {
 		final IPath path = new Path("/a/b/c/"); //$NON-NLS-1$
@@ -50,7 +52,7 @@ public class DataManipulatorTest {
 				"stat data", binary, args, runCount, null); //$NON-NLS-1$
 		sData.parse();
 
-		String expected = "perf stat -r " + runCount + " " + binary; //$NON-NLS-1$
+		String expected = "perf stat -r " + runCount + " -o " + output + " " + binary; //$NON-NLS-1$ //$NON-NLS-2$
 		for (String i:args) {
 			expected += " " + i; //$NON-NLS-1$
 		}
@@ -73,7 +75,7 @@ public class DataManipulatorTest {
 			expected += " -e " + event; //$NON-NLS-1$
 		}
 
-		expected = expected + " " + binary; //$NON-NLS-1$
+		expected = expected + " -o " + output + " " + binary; //$NON-NLS-1$
 		for (String i : args) {
 			expected += " " + i; //$NON-NLS-1$
 		}
@@ -134,17 +136,17 @@ public class DataManipulatorTest {
 		}
 
 		@Override
-		public String[] getCommand(String command, String[] args) {
+		public String[] getCommand(String command, String[] args, String file) {
 			// return the same command with 'echo' prepended
 			List<String> ret = new ArrayList<>();
 			ret.add("echo"); //$NON-NLS-1$
-			ret.addAll(Arrays.asList(super.getCommand(command, args)));
+			ret.addAll(Arrays.asList(super.getCommand(command, args, file)));
 			return ret.toArray(new String[ret.size()]);
 		}
 
 		@Override
 		public void parse() {
-			String[] cmd = getCommand(getProgram(), getArguments());
+			String[] cmd = getCommand(getProgram(), getArguments(), output); //$NON-NLS-1$
 			// echo will print to standard out
 			performCommand(cmd, 1);
 		}
