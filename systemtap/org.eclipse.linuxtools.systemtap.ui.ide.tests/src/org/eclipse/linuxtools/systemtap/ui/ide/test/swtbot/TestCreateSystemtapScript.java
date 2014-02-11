@@ -227,11 +227,11 @@ public class TestCreateSystemtapScript {
 
 		// Dismiss "Systemtap not installed" dialog(s) if present.
 		try {
-			SWTBotShell shell = bot.shell("Cannot Run Systemtap").activate();
+			SWTBotShell shell = bot.shell("Cannot Run SystemTap").activate();
 			stapInstalled = false;
 			shell.close();
 
-			shell = bot.shell("Cannot Run Systemtap").activate();
+			shell = bot.shell("Cannot Run SystemTap").activate();
 			shell.close();
 		} catch (WidgetNotFoundException e) {
 			//ignore
@@ -299,10 +299,10 @@ public class TestCreateSystemtapScript {
 		SWTBotShell shell = bot.shell("New");
 		shell.activate();
 
-		SWTBotTreeItem node = bot.tree().expandNode("Systemtap");
+		SWTBotTreeItem node = bot.tree().expandNode("SystemTap");
 		assertNotNull(node);
-		bot.waitUntil(new NodeAvaiable(node, "Systemtap Script"));
-		node.select("Systemtap Script");
+		bot.waitUntil(new NodeAvaiable(node, "SystemTap Script"));
+		node.select("SystemTap Script");
 
 		bot.button("Next >").click();
 

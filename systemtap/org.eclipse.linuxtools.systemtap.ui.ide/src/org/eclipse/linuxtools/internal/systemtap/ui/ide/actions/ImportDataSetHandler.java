@@ -82,4 +82,10 @@ public class ImportDataSetHandler extends AbstractHandler {
 
 		return null;
 	}
+
+	@Override
+	public boolean isEnabled() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
+				getPerspective().getId().equals(IDEPerspective.ID);
+	}
 }

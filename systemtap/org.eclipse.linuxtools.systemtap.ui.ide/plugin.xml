@@ -35,22 +35,6 @@
         name="%view.probe.name"/>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
-       <menuContribution
-             allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file">
-          <separator
-                name="runGroup"
-                visible="true">
-          </separator>
-       </menuContribution>
-       <menuContribution
-             allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file">
-          <separator
-                name="chartGroup"
-                visible="true">
-          </separator>
-       </menuContribution>
        <menuContribution locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
            <command
                  commandId="org.eclipse.ui.navigate.collapseAll" />
@@ -65,11 +49,49 @@
        </menuContribution>
        <menuContribution
              allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file?after=runGroup">
+             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+          <toolbar
+                id="org.eclipse.linuxtools.systemtap.ui.ide.toolbar"
+                label="%toolbar.actions.name">
+             <separator
+                   name="fileGroup"
+                   visible="true">
+             </separator>
+             <separator
+                   name="runGroup"
+                   visible="true">
+             </separator>
+             <separator
+                   name="chartGroup"
+                   visible="true">
+             </separator>
+          </toolbar>
+       </menuContribution>
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=fileGroup">
+          <command
+                commandId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
+                icon="icons/actions/import_wiz.gif"
+                label="%action.import.name"
+                style="push">
+             <visibleWhen>
+                <with
+                      variable="activeWorkbenchWindow.activePerspective">
+                   <equals
+                         value="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+                   </equals>
+                </with>
+             </visibleWhen>
+          </command>
+       </menuContribution>
+       <menuContribution
+             allPopups="true"
+             locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=runGroup">
           <command
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
                 icon="icons/actions/run/run_exc.gif"
-                label="%action.run.name"
+                label="%action.run.desc"
                 style="push">
              <visibleWhen
                    checkEnabled="true">
@@ -78,7 +100,7 @@
        </menuContribution>
        <menuContribution
              allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file?after=chartGroup">
+             locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=chartGroup">
           <command
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
                 icon="icons/actions/exportpref_obj.gif"
@@ -88,10 +110,6 @@
                    checkEnabled="true">
              </visibleWhen>
           </command>
-       </menuContribution>
-       <menuContribution
-             allPopups="true"
-             locationURI="toolbar:org.eclipse.ui.workbench.file?after=chartGroup">
           <command
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
                 icon="icons/actions/importpref_obj.gif"
@@ -111,10 +129,6 @@
                 mnemonic="%command.toggleComment.mne"
                 style="push">
           </command>
-       </menuContribution>
-       <menuContribution
-             allPopups="false"
-             locationURI="popup:#TextEditorContext?after=additions">
           <command
                 commandId="org.eclipse.linuxtools.systemtap.ui.ide.indent"
                 label="%command.indent.name"
@@ -203,97 +217,66 @@
 
 	<extension
 		point="org.eclipse.ui.commands">
+		<category
+			name="%category.file.name"
+			description="%category.file.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.category.file">
+		</category>
 		<command
 			name="%command.import.name"
 			description="%command.import.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"/>
-		<command
-			name="%command.run.name"
-			description="%command.run.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"/>
-		<command
-			name="%command.stop.name"
-			description="%command.stop.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
-			id="org.eclipse.linuxtools.systemtap.ui.consolelog.commands.StopScript"/>
-		<command
-			name="%command.insertProbe.name"
-			description="%command.insertProbe.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.probealiasaction"/>
-		<command
-			name="%command.insertFunction.name"
-			description="%command.insertFunction.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.functionaction"/>	
-		<category
-			name="%category.file.name"
-			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.category.file"/>
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
+			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportTapsetHandler">
+		</command>
 		<category
 			name="%category.run.name"
 			description="%category.run.desc"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.category.run"/>
-		<category
-			name="%category.popup.name"
-			description="%category.popup.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"/>
 		<command
-        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler"
+			name="%action.run.name"
         	description="%action.run.desc"
+        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
         	id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
-        	name="%action.run.name">
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler">
  		</command>
-		<command
-			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler"
-			description="%action.dataExport.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
-			name="%action.dataExport.name">
-		</command>
-		<command
-			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler"
-			description="%action.dataImport.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
-			name="%action.dataImport.name">
-		</command>
 		<category
-        	id="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
-        	name="%editor.category.source.name">
+			name="%category.data.name"
+			description="%category.data.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.category.data">
 		</category>
 		<command
-        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
-        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler"
-        	description="%command.toggleComment.desc"
-        	id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
-        	name="%command.toggleComment.name">
+			name="%action.dataExport.name"
+			description="%action.dataExport.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
+			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler">
 		</command>
 		<command
-        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
-        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.IndentHandler"
-        	description="%command.indent.desc"
-        	id="org.eclipse.linuxtools.systemtap.ui.ide.indent"
-        	name="%command.indent.name">
+			name="%action.dataImport.name"
+			description="%action.dataImport.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
+			defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler">
 		</command>
-	</extension>
-	<extension
-		point="org.eclipse.ui.actionSets">
-		<actionSet
-			label="%actionset.file.name"
-			visible="false"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet">
-			<action
-				label="%action.import.name"
-				tooltip="%action.import.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.ImportTapset"
-				icon="icons/actions/import_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/import.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportTapsetAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
-				style="push"
-				state="false"/>
-		</actionSet>
+		<category
+			name="%editor.category.source.name"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.category.source">
+		</category>
+		<command
+			name="%command.toggleComment.name"
+        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        	description="%command.toggleComment.desc"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler">
+		</command>
+		<command
+        	name="%command.indent.name"
+        	description="%command.indent.desc"
+        	categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
+        	id="org.eclipse.linuxtools.systemtap.ui.ide.indent"
+        	defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.IndentHandler">
+		</command>
 	</extension>
 
 	<extension
@@ -325,27 +308,11 @@
 		point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension
 			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet"/>
 			<actionSet id="org.eclipse.debug.ui.launchActionSet"/>
-
-		</perspectiveExtension>
-		<perspectiveExtension
-           targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-                        <view
-                                ratio="0.40f"
-                                relative="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
-                                relationship="bottom"
-                                id="org.eclipse.ui.console.ConsoleView"/>
-                        <viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
-                       
-         </perspectiveExtension>
-		
-		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
-			<perspectiveShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
+			<hiddenMenuItem id="org.eclipse.debug.commands"/>
 		</perspectiveExtension>
 	</extension>
+
  <extension
        point="org.eclipse.ui.newWizards">
     <category
