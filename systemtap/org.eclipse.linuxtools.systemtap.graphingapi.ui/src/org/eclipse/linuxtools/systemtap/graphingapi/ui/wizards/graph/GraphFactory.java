@@ -27,7 +27,6 @@ import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.BarChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.LineChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.ScatterChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.graphs.PieChart;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphContinuousXControl;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.GraphContinuousYControl;
@@ -38,11 +37,11 @@ import org.eclipse.swt.widgets.Composite;
 
 public final class GraphFactory {
 	private static final String[] graphNames = new String[] {
-			Localization.getString("GraphFactory.ScatterGraph"), //$NON-NLS-1$
-			Localization.getString("GraphFactory.LineGraph"), //$NON-NLS-1$
-			Localization.getString("GraphFactory.BarGraph"), //$NON-NLS-1$
-			Localization.getString("GraphFactory.AreaGraph"), //$NON-NLS-1$
-			Localization.getString("GraphFactory.PieChart"), //$NON-NLS-1$
+		Localization.getString("GraphFactory.ScatterGraph"), //$NON-NLS-1$
+		Localization.getString("GraphFactory.LineGraph"), //$NON-NLS-1$
+		Localization.getString("GraphFactory.BarGraph"), //$NON-NLS-1$
+		Localization.getString("GraphFactory.AreaGraph"), //$NON-NLS-1$
+		Localization.getString("GraphFactory.PieChart"), //$NON-NLS-1$
 	};
 
 	private static final String[] graphDescriptions = new String[] {
@@ -114,32 +113,29 @@ public final class GraphFactory {
 	}
 
 	public static boolean isMultiGraph(String id) {
-		if(id.equals(PieChart.ID)) {
-			return false;
-		}
 		return true;
 	}
 
 	public static boolean isKeyRequired(String graphID, IDataSet data) {
 		switch(getIndex(graphID)) {
-			case 0:
-			case 1:
-				if(data instanceof IBlockDataSet) {
-					return true;
-				}
-			default:
-				return false;
+		case 0:
+		case 1:
+			if(data instanceof IBlockDataSet) {
+				return true;
+			}
+		default:
+			return false;
 		}
 	}
 
 	public static boolean isKeyOptional(String graphID, IDataSet data) {
 		switch(getIndex(graphID)) {
-			case 2:
-				if(data instanceof IBlockDataSet) {
-					return true;
-				}
-			default:
-				return false;
+		case 2:
+			if(data instanceof IBlockDataSet) {
+				return true;
+			}
+		default:
+			return false;
 		}
 	}
 
