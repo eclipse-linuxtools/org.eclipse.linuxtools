@@ -9,14 +9,14 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -25,19 +25,19 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public GraphPreferencePage() {
 		super(GRID);
-		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
-
+	
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES,
+				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, 
 				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES,
+				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, 
 				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
@@ -64,12 +64,10 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
 				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
-
 	}
 
 	@Override
-	public void init(IWorkbench workbench) {
-	}
-
+	public void init(IWorkbench workbench) {}
+	
 }
 

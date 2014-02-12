@@ -9,7 +9,6 @@ Bundle-Localization: plugin
 Export-Package: 
  org.eclipse.linuxtools.systemtap.graphingapi.ui.charts,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.datadisplay,
- org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.dataset,
  org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.filter,

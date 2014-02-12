@@ -9,60 +9,42 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 
-public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public GraphPreferencePage() {
+public class DataTablePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+	public DataTablePreferencePage() {
 		super(GRID);
 		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
+		setDescription(Localization.getString("DataTablePreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, 
-				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
+				GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, 
+				Localization.getString("DataTablePreferencePage.JumpNewestEntry"), //$NON-NLS-1$
 				getFieldEditorParent()));
-
+		
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, 
-				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
+				GraphingAPIPreferenceConstants.P_AUTO_RESIZE, 
+				Localization.getString("DataTablePreferencePage.AutoResizeColumns"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
 				GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.MaxDataItems"), //$NON-NLS-1$
-				getFieldEditorParent()));
-
-		addField(
-				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
-				getFieldEditorParent()));
-
-		addField(
-				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_X_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.XSeriesTicks"), //$NON-NLS-1$
-				getFieldEditorParent()));
-
-		addField(
-				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
+				Localization.getString("DataTablePreferencePage.MaxDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 	}
 

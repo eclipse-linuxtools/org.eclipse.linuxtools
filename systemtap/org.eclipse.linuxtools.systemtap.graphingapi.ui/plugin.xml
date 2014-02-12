@@ -6,17 +6,17 @@
 		<page
 			name="%preference.dataTable.name"
 			id="org.eclipse.linuxtools.generic.prefs.graphing.datatable"
-			class="org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences.DataTablePreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.DataTablePreferencePage"
 			category="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
 		<page
 			name="%preference.graph.name"
 			id="org.eclipse.linuxtools.generic.prefs.graphing.graph"
-			class="org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences.GraphPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphPreferencePage"
 			category="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
 	</extension>
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtap.graphingapi.ui.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.PreferenceInitializer"/>
 	</extension>
 </plugin>
