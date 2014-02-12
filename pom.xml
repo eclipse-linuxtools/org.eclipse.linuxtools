@@ -55,7 +55,7 @@
     <platform-version-name>luna</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
-    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit-site>
+    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository</orbit-site>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -80,7 +80,7 @@
       <url>${orbit-site}</url>
     </repository>
   </repositories>
-  
+
   <profiles>
     <profile>
       <id>platform-kepler</id>
@@ -308,7 +308,7 @@
            </goals>
 	   <configuration>
               <!-- Where to put jacoco coverage report -->
-              <destFile>${sonar.jacoco.reportPath}</destFile> 
+              <destFile>${sonar.jacoco.reportPath}</destFile>
               <includes>
                 <include>org.eclipse.linuxtools.*</include>
               </includes>
@@ -353,7 +353,7 @@
                </dependency>
             </dependencies>
             <product>org.eclipse.platform.ide</product>
- 	    <argLine>${tycho.testArgLine} -Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</argLine> 
+ 	    <argLine>${tycho.testArgLine} -Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</argLine>
 	  </configuration>
 	</plugin>
         <plugin>
