@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Red Hat - Ongoing maintenance
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets;
