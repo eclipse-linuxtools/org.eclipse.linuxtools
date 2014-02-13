@@ -1295,10 +1295,6 @@ public class SystemTapScriptGraphOptionsTab extends
 		try {
 			textListenersEnabled = false;
 
-			boolean chart = configuration.getAttribute(RUN_WITH_CHART, false);
-			setGraphingEnabled(chart);
-			this.runWithChartCheckButton.setSelection(chart);
-
 			// Reset lists & settings to keep things idempotent.
 			regularExpressionCombo.removeAll();
 			outputList.clear();
@@ -1356,6 +1352,10 @@ public class SystemTapScriptGraphOptionsTab extends
 
 			updateRegexSelection(defaultSelectedRegex, true); // Handles all remaining updates.
 			checkAllOtherErrors();
+
+			boolean chart = configuration.getAttribute(RUN_WITH_CHART, false);
+			setGraphingEnabled(chart);
+			this.runWithChartCheckButton.setSelection(chart);
 
 		} catch (CoreException e) {
 			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_5, e);
@@ -1594,9 +1594,6 @@ public class SystemTapScriptGraphOptionsTab extends
 	}
 
 	private void setGraphingEnabled(boolean enabled){
-		if (this.graphingEnabled == enabled){
-			return;
-		}
 		this.graphingEnabled = enabled;
 		this.setControlEnabled(outputParsingGroup, enabled);
 		this.setControlEnabled(graphsGroup, enabled);
