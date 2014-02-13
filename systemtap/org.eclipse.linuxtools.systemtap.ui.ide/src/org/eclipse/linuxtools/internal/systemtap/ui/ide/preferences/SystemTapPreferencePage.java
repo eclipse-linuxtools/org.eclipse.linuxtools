@@ -9,10 +9,9 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.Localization;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -24,8 +23,8 @@ public class SystemTapPreferencePage extends FieldEditorPreferencePage implement
 	 * Get the current preferences.
 	 */
 	public SystemTapPreferencePage() {
-		super(FLAT);
-		setDescription(Localization.getString("SystemTapPreferencePage.GUIPreferencesDescription"));
+		super();
+		setDescription(Messages.SystemTapPreferencePageDescription);
 	}
 
 	/**

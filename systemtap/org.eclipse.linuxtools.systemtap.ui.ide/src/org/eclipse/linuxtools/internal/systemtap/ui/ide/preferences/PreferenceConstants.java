@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
 /**
  * Constant definitions for plug-in preferences
@@ -18,10 +18,10 @@ public class PreferenceConstants {
 
 	//environmentvariables
 	public static final String[][] P_ENV = new String[][] {
-		{"EnvLdLibraryPath", "LD_LIBRARY_PATH"},
-		{"EnvPath", "PATH"},
-		{"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"},
-		{"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"},
+		{"EnvLdLibraryPath", "LD_LIBRARY_PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
+		{"EnvPath", "PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
+		{"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"}, //$NON-NLS-1$ //$NON-NLS-2$
+		{"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"}, //$NON-NLS-1$ //$NON-NLS-2$
 	};
 
 }

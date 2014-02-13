@@ -59,7 +59,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.ide.tests</module>
     <module>org.eclipse.linuxtools.systemtap.structures</module>
     <module>org.eclipse.linuxtools.systemtap.structures.tests</module>
-    <module>org.eclipse.linuxtools.systemtap.ui.systemtapgui</module>
     <module>org.eclipse.linuxtools.systemtap.ui.tests</module>
   </modules>
 

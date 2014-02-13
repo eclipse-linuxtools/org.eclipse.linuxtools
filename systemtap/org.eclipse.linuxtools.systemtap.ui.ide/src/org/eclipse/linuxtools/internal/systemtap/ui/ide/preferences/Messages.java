@@ -23,6 +23,8 @@ public class Messages extends NLS {
 	public static String DirectoryValidator_FolderName;
 	public static String DirectoryValidator_MustEnd;
 	public static String DirectoryValidator_NotNull;
+	public static String EnvironmentVariablesPreferencePage_Title;
+	public static String SystemTapPreferencePageDescription;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

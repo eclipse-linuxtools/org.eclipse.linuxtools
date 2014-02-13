@@ -146,6 +146,10 @@
 	<extension
 		point="org.eclipse.ui.preferencePages">
 		<page
+            name="%preference.systemTap.name"
+            id="org.eclipse.linuxtools.systemtap.prefs.view"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.SystemTapPreferencePage"/>
+		<page
 			name="%preference.ide.name"
 			id="org.eclipse.linuxtools.systemtap.prefs.ide"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferencePage"
@@ -185,6 +189,11 @@
 			id="org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"
 			class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.TapsetsPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
+		<page
+            name="%preference.envVars.name"
+            id="org.eclipse.linuxtools.systemtap.prefs.environmentvariables"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentVariablesPreferencePage"
+            category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 	</extension>
 
 	<extension

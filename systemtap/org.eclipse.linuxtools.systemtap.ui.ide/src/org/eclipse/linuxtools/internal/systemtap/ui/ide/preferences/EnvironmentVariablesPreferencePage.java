@@ -9,14 +9,14 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.linuxtools.internal.systemtap.ui.systemtapgui.SystemTapGUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
@@ -33,8 +33,8 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	 */
 	public EnvironmentVariablesPreferencePage() {
 		super();
-		setPreferenceStore(SystemTapGUIPlugin.getDefault().getPreferenceStore());
-		setDescription("Environment Variables.");
+		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
+		setDescription(Messages.EnvironmentVariablesPreferencePage_Title);
 	}
 
 	@Override
@@ -115,26 +115,26 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
 	 * @return The string array containing the current environment variables.
 	 */
 	public static String[] getEnvironmentVariables() {
-		ArrayList vars = new ArrayList();
+		ArrayList<String> vars = new ArrayList<>();
 		String[] envVars = null;
 		String var;
 
 		int i;
-		if(null == SystemTapGUIPlugin.getDefault() || null == SystemTapGUIPlugin.getDefault().getPreferenceStore()) {
+		if(null == IDEPlugin.getDefault() || null == IDEPlugin.getDefault().getPreferenceStore()) {
 			return null;
 		}
-		IPreferenceStore p = SystemTapGUIPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
 		for(i=0; i<PreferenceConstants.P_ENV.length; i++) {
 			var = p.getString(PreferenceConstants.P_ENV[i][0]).trim();
-			if(!var.equals("")) {
-				vars.add(PreferenceConstants.P_ENV[i][0] + "=" + var);
+			if(!var.isEmpty()) {
+				vars.add(PreferenceConstants.P_ENV[i][0] + "=" + var); //$NON-NLS-1$
 			}
 		}
 
 		if(vars.size() > 0) {
 			envVars = new String[vars.size()];
 			for (i = 0; i < vars.size(); i++) {
-				envVars[i] = (String) vars.get(i);
+				envVars[i] = vars.get(i);
 			}
 		}
 
