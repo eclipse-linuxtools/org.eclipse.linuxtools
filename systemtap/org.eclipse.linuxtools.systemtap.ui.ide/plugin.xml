@@ -9,7 +9,7 @@
 			icon="icons/perspective_obj.gif"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
 	</extension>
-	
+
 	<extension
 		point="org.eclipse.ui.views">
 		<view
@@ -137,7 +137,7 @@
           </command>
        </menuContribution>
     </extension>
-	
+
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
@@ -321,9 +321,12 @@
     <wizard
           category="org.eclipse.linuxtools.systemtap.ui.ide"
           class="org.eclipse.linuxtools.internal.systemtap.ui.ide.wizards.StapNewWizard"
-          icon="icons/smileytap.gif"
+          icon="icons/smileytap_small.gif"
           id="org.eclipse.linuxtools.systemtap.ui.ide.wizards.StapNewWizard"
           name="%wizard.name">
+       <description>
+          Create a SystemTap script file
+       </description>
     </wizard>
  </extension>
  <extension
@@ -337,38 +340,36 @@
           modes="run">
        <contextualLaunch>
           <enablement>
-             <or>
-                <with
-                      variable="selection">
-                   <count
-                         value="1">
-                   </count>
-                   <iterate>
-                      <or>
-                         <and>
-                            <instanceof
-                                  value="org.eclipse.core.resources.IResource">
-                            </instanceof>
-                            <test
-                                  property="org.eclipse.core.resources.name"
-                                  value="*.stp">
-                            </test>
-                         </and>
-                         <and>
-                            <instanceof
-                                  value="org.eclipse.ui.IPathEditorInput">
-                            </instanceof>
-                            <with
-                                  variable="activeEditorId">
-                               <equals
-                                     value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
-                               </equals>
-                            </with>
-                         </and>
-                      </or>
-                   </iterate>
-                </with>
-             </or>
+             <with
+                   variable="selection">
+                <count
+                      value="1">
+                </count>
+                <iterate>
+                   <or>
+                      <and>
+                         <instanceof
+                               value="org.eclipse.core.resources.IResource">
+                         </instanceof>
+                         <test
+                               property="org.eclipse.core.resources.name"
+                               value="*.stp">
+                         </test>
+                      </and>
+                      <and>
+                         <instanceof
+                               value="org.eclipse.ui.IPathEditorInput">
+                         </instanceof>
+                         <with
+                               variable="activeEditorId">
+                            <equals
+                                  value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
+                            </equals>
+                         </with>
+                      </and>
+                   </or>
+                </iterate>
+             </with>
           </enablement>
        </contextualLaunch>
     </shortcut>
