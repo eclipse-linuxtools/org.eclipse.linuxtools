@@ -62,7 +62,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 		Path p = new Path(filename);
 
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		PathEditorInput input = new PathEditorInput(p, window);
+		PathEditorInput input = new PathEditorInput(p);
 		try {
 			IEditorPart editorPart = window.getActivePage().openEditor(input, STPEditor.ID);
 			STPEditor editor = (STPEditor)editorPart;
@@ -75,7 +75,7 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 
 			editor.jumpToLocation(++line, 0);
 		} catch (PartInitException e) {
-			ExceptionErrorDialog.openError(Messages.TempFileAction_errorDialogTitle, e);
+			ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
 		}
 	}
 

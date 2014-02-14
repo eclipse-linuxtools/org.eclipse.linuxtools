@@ -7,7 +7,8 @@ Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.editor.actions.file
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.filesystem,
+ org.eclipse.core.runtime,
  org.eclipse.jface.text;visibility:=reexport,
  org.eclipse.ui.editors;visibility:=reexport,
  org.eclipse.ui.workbench.texteditor;visibility:=reexport,

@@ -22,7 +22,6 @@
 			id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet">
 			<action
 				label="%action.open.name"
-				tooltip="%action.open.desc"
 				id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction"
 				icon="icons/actions/file/open_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/new.ext"

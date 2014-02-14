@@ -48,14 +48,19 @@ public class STPEditor extends SimpleEditor {
 		super();
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new STPConfiguration(colorManager,this));
+	}
+
+	@Override
+	protected void internal_init() {
+		configureInsertMode(SMART_INSERT, false);
 		setDocumentProvider(new STPDocumentProvider());
 	}
 
 	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
-		if(input instanceof FileStoreEditorInput)
+		if(input instanceof FileStoreEditorInput) {
 			input= new PathEditorInput(new Path(((FileStoreEditorInput) input).getURI().getPath()));
-
+		}
 		super.doSetInput(input);
 	}
 

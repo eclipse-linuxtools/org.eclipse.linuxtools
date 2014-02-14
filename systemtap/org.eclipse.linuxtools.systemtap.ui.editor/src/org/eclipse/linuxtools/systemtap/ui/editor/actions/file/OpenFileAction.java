@@ -13,25 +13,20 @@ package org.eclipse.linuxtools.systemtap.ui.editor.actions.file;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
-import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
-import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorRegistry;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 
 /**
  * An action used for opening Systemtap scripts from the filesystem.
@@ -70,11 +65,10 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 		}
 		File file = queryFile();
 		if (file != null) {
-			IEditorInput input= createEditorInput(file);
-			String editorId= getEditorId(file);
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
 			IWorkbenchPage page= window.getActivePage();
 			try {
-				page.openEditor(input, editorId);
+				IDE.openEditorOnFileStore(page, fileStore);
 				successful = true;
 			} catch (PartInitException e) {
 				//Pass
@@ -122,34 +116,6 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	 */
 	public boolean wasCancelled() {
 		return cancelled;
-	}
-
-	/**
-	 * Returns the editor ID associated with the specified file.
-	 * @param file the file to examine
-	 * @return the editor ID
-	 */
-	protected String getEditorId(File file) {
-		IWorkbench workbench= window.getWorkbench();
-		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
-		IEditorDescriptor[] descriptors= editorRegistry.getEditors(file.getName());
-		for (IEditorDescriptor d : descriptors) {
-			if (d.getId().startsWith("org.eclipse.linuxtools.systemtap.ui.ide.editors") || //$NON-NLS-1$
-					d.getId().startsWith("org.eclipse.linuxtools.internal.systemtap.ui.ide.editors")) { //$NON-NLS-1$
-				return d.getId();
-			}
-		}
-		return SimpleEditor.ID;
-	}
-
-	/**
-	 * Creates an editor input.
-	 * @param file the file you wish the editor to point at
-	 * @return the input created
-	 */
-	protected IEditorInput createEditorInput(File file) {
-		IPath location= new Path(file.getAbsolutePath());
-		return new PathEditorInput(location);
 	}
 
 	public boolean isSuccessful() {

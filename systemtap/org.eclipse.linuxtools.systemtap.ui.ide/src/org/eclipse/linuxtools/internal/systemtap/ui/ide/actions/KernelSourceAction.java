@@ -131,7 +131,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 							IDESessionSettings.setActiveSTPEditor((STPEditor)editor);
 						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
 					} catch (PartInitException e) {
-						ExceptionErrorDialog.openError(Messages.TempFileAction_errorDialogTitle, e);
+						ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
 					}
 
 				}
