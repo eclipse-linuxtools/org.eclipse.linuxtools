@@ -309,7 +309,6 @@
 		<perspectiveExtension
 			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
 			<actionSet id="org.eclipse.debug.ui.launchActionSet"/>
-			<hiddenMenuItem id="org.eclipse.debug.commands"/>
 		</perspectiveExtension>
 	</extension>
 

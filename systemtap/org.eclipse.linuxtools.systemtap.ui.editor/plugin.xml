@@ -32,4 +32,12 @@
 				state="false"/>
 		</actionSet>
 	</extension>
+
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
+		</perspectiveExtension>
+	</extension>
 </plugin>
