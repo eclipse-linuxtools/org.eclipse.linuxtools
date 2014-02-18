@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.editor;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -68,5 +69,15 @@ public class PathEditorInput extends FileStoreEditorInput implements IPathEditor
 			return ((PathEditorInput)element).getPath();
 		}
 		return null;
+	}
+
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (PathEditorInput.class.equals(adapter)
+				|| IPathEditorInput.class.equals(adapter)
+				|| ILocationProvider.class.equals(adapter)) {
+			return this;
+		}
+		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 }
