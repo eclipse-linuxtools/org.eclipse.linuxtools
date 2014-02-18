@@ -33,7 +33,7 @@ public class BarChartMouseMoveListener extends ToolTipChartMouseMoveListener {
 			String textTip = ""; //$NON-NLS-1$
 			for (int i = 0; i < allSeries.length; i++) {
 				textTip = textTip.concat((i > 0 ? "\n" : "") + MessageFormat.format(Messages.BarChartBuilder_ToolTipCoords, //$NON-NLS-1$ //$NON-NLS-2$
-						allSeries[i].getId(), allSeries[i].getYSeries()[barIndex]));
+						allSeries[i].getId(), ((BarChart) chart).getBarValue(i, barIndex)));
 			}
 			setTextTip(textTip);
 		} else {
