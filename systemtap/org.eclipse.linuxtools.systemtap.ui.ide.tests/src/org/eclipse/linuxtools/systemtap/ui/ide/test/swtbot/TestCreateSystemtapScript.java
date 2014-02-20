@@ -119,6 +119,25 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
+	private static class TreePopulated extends DefaultCondition {
+
+		private SWTBotTree parent;
+
+		TreePopulated(SWTBotTree parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean test() {
+			return this.parent.getAllItems().length > 0;
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for tree to populate.";
+		}
+	}
+
 	private static class ConsoleIsReady extends DefaultCondition {
 
 		private String scriptName;
@@ -364,6 +383,75 @@ public class TestCreateSystemtapScript {
 			bot.waitUntil(new ConsoleIsReady(scriptName));
 			bot.waitUntil(new StapHasExited(), 10000); // The script should end on its own
 		}
+	}
+
+	@Test
+	public void testAddProbes(){
+		// Create a blank script and add a probe to it while it's open.
+		String scriptName = "probeScript.stp";
+		createScript(bot, scriptName);
+
+		SWTBotView probeView = bot.viewByTitle("Probe Alias");
+		SWTBotTree probeTree = probeView.bot().tree();
+		bot.waitUntil(new TreePopulated(probeTree), 10000);
+		SWTBotTreeItem[] items = probeTree.getAllItems();
+		items[0].doubleClick();
+		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
+		assertTrue(editor.getText().contains("probe " + items[0].getText() + "\n"));
+
+		// Open a non-stap file and add a probe. This should bring up a dialog
+		// asking if the probe should be added to the only open .stp file.
+		SWTBotMenu fileMenu = bot.menu("File");
+		SWTBotMenu newMenu = fileMenu.menu("New");
+		SWTBotMenu projectMenu = newMenu.menu("Other...");
+		projectMenu.click();
+		SWTBotShell shell = bot.shell("New");
+		shell.activate();
+		SWTBotTreeItem node = bot.tree().expandNode("General");
+		assertNotNull(node);
+		bot.waitUntil(new NodeAvaiable(node, "Untitled Text File"));
+		node.select("Untitled Text File");
+		bot.button("Finish").click();
+
+		items[1].doubleClick();
+		shell = bot.shell("Add Probe To Script");
+		shell.setFocus();
+		bot.button("Yes").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+
+		// The editor containing the script should now be in focus.
+		editor = bot.activeEditor().toTextEditor();
+		assertEquals(scriptName, editor.getTitle());
+		assertTrue(editor.getText().contains("probe " + items[0].getText() + "\n"));
+		assertTrue(editor.getText().contains("probe " + items[1].getText() + "\n"));
+
+		// Adding a probe while an .stp editor is in focus should always add it
+		// to that editor, even if multiple .stp editors are open.
+		String scriptName2 = "probeScript2.stp";
+		createScript(bot, scriptName2);
+		editor = bot.activeEditor().toTextEditor();
+		assertEquals(scriptName2, editor.getTitle());
+		items[2].doubleClick();
+		assertTrue(editor.getText().contains("probe " + items[2].getText() + "\n"));
+		editor = bot.editorByTitle(scriptName).toTextEditor();
+		assertTrue(!editor.getText().contains("probe " + items[2].getText() + "\n"));
+
+		// Switch to the non-stp editor, and add a probe. A dialog should appear
+		// to let the user choose which of the open files to add to.
+		editor = bot.editorByTitle("Untitled 1").toTextEditor();
+		editor.show();
+		items[3].doubleClick();
+		shell = bot.shell("Add Probe To Script");
+		shell.setFocus();
+		SWTBotTable table = bot.table();
+		assertTrue(table.containsItem(scriptName));
+		assertTrue(table.containsItem(scriptName2));
+		table.select(scriptName2);
+		bot.button("OK").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+		editor = bot.activeEditor().toTextEditor();
+		assertTrue(!editor.getTitle().equals("Untitled 1"));
+		assertTrue(editor.getText().contains("probe " + items[3].getText() + "\n"));
 	}
 
 	@Test

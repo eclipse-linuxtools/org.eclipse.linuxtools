@@ -211,7 +211,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 			public String getText(Object element) {
 				int i = (Integer) element;
 				return i != -1 ? allEditors.get(i).getEditorInput().getName()
-						: Messages.NewFileAction_OtherFile;
+						: Messages.ProbeAliasAction_OtherFile;
 			}
 		});
 

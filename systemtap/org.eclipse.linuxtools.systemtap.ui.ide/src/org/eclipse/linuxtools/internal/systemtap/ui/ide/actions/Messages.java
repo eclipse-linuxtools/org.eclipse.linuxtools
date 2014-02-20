@@ -30,7 +30,7 @@ public class Messages extends NLS {
 	public static String ProbeAliasAction_AskBeforeAddYes;
 	public static String ProbeAliasAction_AskBeforeAddCancel;
 	public static String ProbeAliasAction_AskBeforeAddAnother;
-	public static String NewFileAction_OtherFile;
+	public static String ProbeAliasAction_OtherFile;
 	public static String DataSetFileExtension;
 	public static String ExportDataSetAction_DialogTitle;
 	public static String ImportDataSetAction_DialogTitle;
