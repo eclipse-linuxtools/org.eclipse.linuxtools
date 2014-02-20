@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners.ChartMouseMoveListener;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;

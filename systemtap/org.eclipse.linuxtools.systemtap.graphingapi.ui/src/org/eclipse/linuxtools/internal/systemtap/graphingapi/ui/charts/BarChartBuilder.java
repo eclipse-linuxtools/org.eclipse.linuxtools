@@ -11,8 +11,9 @@
  *
  ****************************************************************
  */
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts;
 
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners.BarChartMouseMoveListener;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.IBarSeries;

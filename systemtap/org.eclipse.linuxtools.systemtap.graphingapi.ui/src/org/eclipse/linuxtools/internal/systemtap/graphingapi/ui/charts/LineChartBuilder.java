@@ -10,31 +10,36 @@
  *
  ****************************************************************
  */
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts;
 
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.ILineSeries;
 import org.swtchart.ISeries;
+import org.swtchart.ISeries.SeriesType;
+import org.swtchart.LineStyle;
 
 /**
- * Builds bar chart.
+ * Builds line chart.
  *
  * @author Qi Liang
  */
 
-public class AreaChartBuilder extends LineChartBuilder {
+public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.areachartbuilder"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder"; //$NON-NLS-1$
 
-    public AreaChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-		super(parent, style, title, adapter);
+    public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
+		super(adapter, parent, style, title);
     }
 
 	@Override
 	protected ISeries createChartISeries(int i) {
-		ILineSeries series = (ILineSeries) super.createChartISeries(i);
-		series.enableArea(true);
+		ILineSeries series = (ILineSeries) chart.getSeriesSet().
+			createSeries(SeriesType.LINE, adapter.getLabels()[i+1]);
+		series.setSymbolColor(COLORS[i % COLORS.length]);
+		series.setLineColor(COLORS[i % COLORS.length]);
+		series.setLineStyle(LineStyle.SOLID);
 		return series;
 	}
 }

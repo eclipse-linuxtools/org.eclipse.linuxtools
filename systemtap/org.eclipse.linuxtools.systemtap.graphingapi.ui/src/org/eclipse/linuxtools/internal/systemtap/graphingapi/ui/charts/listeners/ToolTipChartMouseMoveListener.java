@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;

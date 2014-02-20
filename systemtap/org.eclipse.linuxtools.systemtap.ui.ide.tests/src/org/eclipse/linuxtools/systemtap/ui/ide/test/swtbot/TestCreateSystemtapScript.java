@@ -23,10 +23,6 @@ import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.Messages;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.BarChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.LineChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.PieChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.swt.SWT;
@@ -656,12 +652,13 @@ public class TestCreateSystemtapScript {
 		assertEquals("Value:(\\d+) (\\d+)", combo.getText());
 		assertEquals("Value:1 2", text.getText());
 		assertEquals(1, table.rowCount());
-		assertTrue(table.containsItem(GraphFactory.getGraphName(ScatterChartBuilder.ID) + ":Values"));
+		String graphName = GraphFactory.getGraphName("org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.scatterchartbuilder");
+		assertTrue(table.containsItem(graphName.concat(":Values")));
 		combo.setSelection(1);
 		assertEquals("Other:(\\d+) (\\d+)", combo.getText());
 		assertEquals("", text.getText());
 		assertEquals(1, table.rowCount());
-		assertTrue(table.containsItem(GraphFactory.getGraphName(ScatterChartBuilder.ID) + ":Others"));
+		assertTrue(table.containsItem(graphName.concat(":Others")));
 
 		// If Systemtap is not installed, don't test graph output. Otherwise, do.
 		if (!stapInstalled) {
@@ -786,13 +783,13 @@ public class TestCreateSystemtapScript {
 		assertTrue(button.isEnabled());
 		button.click();
 		String title = "Fruit Info";
-		setupGraphGeneral(title, 4, BarChartBuilder.ID, false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.barchartbuilder", false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 4, PieChartBuilder.ID, false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.piechartbuilder", false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 4, LineChartBuilder.ID, false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder", false);
 		shell.setFocus();
 
 		bot.button("Run").click();
@@ -1076,10 +1073,10 @@ public class TestCreateSystemtapScript {
 		assertTrue(button.isEnabled());
 		button.click();
 		String title = "Info";
-		setupGraphGeneral(title, 1, LineChartBuilder.ID, true);
+		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder", true);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 1, BarChartBuilder.ID, true);
+		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.barchartbuilder", true);
 		shell.setFocus();
 
 		bot.button("Run").click();
@@ -1094,22 +1091,18 @@ public class TestCreateSystemtapScript {
 		final Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
 		AbstractChartBuilder cb = bot.widget(matcher);
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 1));
-		checkTooltipAtDataPoint(cb, 0, 0, new Point(0, 20), MessageFormat.format(
-				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.BarChartBuilder_ToolTipCoords,
-				"Column 1", "5"), true);
+		String tooltipFormat = "{0}: {1}";
+		checkTooltipAtDataPoint(cb, 0, 0, new Point(0, 20), MessageFormat.format(tooltipFormat, "Column 1", "5"), true);
 
 		graphEditor.bot().cTabItem("Info - Line Graph").activate();
 		cb = bot.widget(matcher);
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 2));
-		checkTooltipAtDataPoint(cb, 0, 1, null, MessageFormat.format(
-				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
-				"Column 1", "2", "6"), true);
+		tooltipFormat = "Series: {0}\nx: {1}\ny: {2}";
+		checkTooltipAtDataPoint(cb, 0, 1, null, MessageFormat.format(tooltipFormat,	"Column 1", "2", "6"), true);
 
 		// The tooltip should disappear when a point moves away from the mouse, without need for mouse movement.
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), -1));
-		checkTooltipAtDataPoint(cb, 0, -1, null, MessageFormat.format(
-				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
-				"Column 1", "2", "6"), false);
+		checkTooltipAtDataPoint(cb, 0, -1, null, MessageFormat.format(tooltipFormat, "Column 1", "2", "6"), false);
 
 		ScriptConsole.stopAll();
 		bot.waitUntil(new StapHasExited());

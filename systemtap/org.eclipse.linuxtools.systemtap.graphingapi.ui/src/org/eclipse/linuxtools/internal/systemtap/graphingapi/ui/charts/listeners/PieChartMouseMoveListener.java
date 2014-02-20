@@ -1,8 +1,9 @@
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners;
 
 import java.text.MessageFormat;
 
 import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.Messages;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.ISeries;

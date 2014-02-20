@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.systemtap.graphingapi.ui.charts;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts;
 
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.Chart;
@@ -9,7 +9,7 @@ import org.swtchart.Range;
 /**
  * @since 3.0
  */
-class BarChart extends Chart {
+public class BarChart extends Chart {
 
 	private final static int MIN_LABEL_SIZE = Messages.BarChartBuilder_LabelTrimTag.length();
 	private final int fontSize;
