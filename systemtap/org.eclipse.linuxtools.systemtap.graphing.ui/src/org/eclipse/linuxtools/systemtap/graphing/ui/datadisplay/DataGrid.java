@@ -24,7 +24,6 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.Graphin
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;
-import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.filter.AvailableFilterTypes;
 import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.filter.SelectFilterWizard;
 import org.eclipse.linuxtools.systemtap.structures.IFormattingStyles;
@@ -52,14 +51,14 @@ import org.eclipse.ui.PlatformUI;
 
 
 public class DataGrid implements IUpdateListener {
-	public DataGrid(Composite composite, IDataSet set, int style) {
+	/**
+	 * @since 3.0 set must be a IFilteredDataSet.
+	 */
+	public DataGrid(Composite composite, IFilteredDataSet set, int style) {
 		prefs = GraphingUIPlugin.getDefault().getPreferenceStore();
 		manualResize = !prefs.getBoolean(GraphingPreferenceConstants.P_AUTO_RESIZE);
 
-		dataSet = set;
-		filteredDataSet = (dataSet instanceof IFilteredDataSet)
-				? (IFilteredDataSet)dataSet
-						: DataSetFactory.createFilteredDataSet(dataSet);
+		filteredDataSet = set;
 				this.style = style;
 				clickLocation = new Point(-1, -1);
 				createPartControl(composite);
@@ -79,7 +78,7 @@ public class DataGrid implements IUpdateListener {
 		table.setLayoutData(data);
 	}
 
-	public IDataSet getDataSet() { return dataSet; }
+	public IDataSet getDataSet() { return filteredDataSet; }
 	public Control getControl() { return table; }
 
 	public void createPartControl(Composite parent) {
@@ -88,7 +87,7 @@ public class DataGrid implements IUpdateListener {
 		table.setLinesVisible(true);
 		table.getVerticalBar().setVisible(true);
 
-		String[] names = dataSet.getTitles();
+		String[] names = filteredDataSet.getTitles();
 		TableColumn column = new TableColumn(table, SWT.LEFT);
 		column.setText(Localization.getString("DataGrid.Row")); //$NON-NLS-1$
 		column.pack();
@@ -192,7 +191,7 @@ public class DataGrid implements IUpdateListener {
 	public class AddFilterSelection extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			SelectFilterWizard wizard = new SelectFilterWizard(dataSet.getTitles());
+			SelectFilterWizard wizard = new SelectFilterWizard(filteredDataSet.getTitles());
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			wizard.init(workbench, null);
 			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
@@ -208,7 +207,7 @@ public class DataGrid implements IUpdateListener {
 
 				MenuItem item = new MenuItem(filterMenu, SWT.CASCADE);
 				item.setText(MessageFormat.format(Localization.getString("DataGrid.FilterLabel"), //$NON-NLS-1$
-						AvailableFilterTypes.getFilterName(filter.getID()), dataSet.getTitles()[filter.getColumn()], filter.getInfo()));
+						AvailableFilterTypes.getFilterName(filter.getID()), filteredDataSet.getTitles()[filter.getColumn()], filter.getInfo()));
 				item.setData(filter);
 				item.addSelectionListener(new RemoveFilterSelection());
 			}
@@ -252,7 +251,7 @@ public class DataGrid implements IUpdateListener {
 			items[IFormattingStyles.UNFORMATED].setEnabled(true);
 			items[IFormattingStyles.STRING].setEnabled(true);
 
-			itemText = dataSet.getRow(0)[selectedCol-1].toString();
+			itemText = filteredDataSet.getRow(0)[selectedCol-1].toString();
 			try {
 				Double.parseDouble(itemText);
 				doubleValid = true;
@@ -282,7 +281,7 @@ public class DataGrid implements IUpdateListener {
 				}
 			}
 
-			Object[] data = dataSet.getColumn(column-1);
+			Object[] data = filteredDataSet.getColumn(column-1);
 			columnFormat[column-1].setFormat(format);
 			for(i=0; i<table.getItemCount(); i++) {
 				table.getItem(i).setText(column, columnFormat[column-1].format(data[i].toString()));
@@ -361,7 +360,7 @@ public class DataGrid implements IUpdateListener {
 	}
 
 	public void dispose() {
-		dataSet = null;
+		filteredDataSet = null;
 		table.dispose();
 		table = null;
 		clickLocation = null;
@@ -370,7 +369,6 @@ public class DataGrid implements IUpdateListener {
 		propertyChangeListener = null;
 	}
 
-	protected IDataSet dataSet;
 	protected IFilteredDataSet filteredDataSet;
 	protected IFormattingStyles columnFormat[];
 	protected int removedItems;

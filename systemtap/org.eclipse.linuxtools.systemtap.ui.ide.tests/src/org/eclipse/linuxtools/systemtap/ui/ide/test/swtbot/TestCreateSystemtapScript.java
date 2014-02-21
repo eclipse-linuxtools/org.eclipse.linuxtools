@@ -194,18 +194,21 @@ public class TestCreateSystemtapScript {
 		private String scriptName;
 		private int graphSetNum;
 		private int expectedRows;
+		private boolean exact;
 		/**
-		 * Wait for the provided GraphSelectorEditor to be fully updated. A table is considered to be updated
-		 * once the number of entries in the table is equal to the expectedRows parameter of this constructor.
+		 * Wait for the provided GraphSelectorEditor to be fully updated.
 		 * Note that using this will set focus to the Data View tab of the specified graph set.
-		 * @param graphEditor The SWTBotEditor of the GraphSelectorEditor to wait for.
+		 * @param scriptName The name of the script that is being graphed.
 		 * @param graphSetNum Which graph set to focus on & watch for updates.
 		 * @param expectedRows How many entries/rows are expected to be in the table when it's fully updated.
+		 * @param exact Set this to <code>true</code> if the number of graph columns should exactly match the
+		 * expected amount, or <code>false</code> if it may be greater than the expected amount.
 		 */
-		public TableHasUpdated(String scriptName, int graphSetNum, int expectedRows) {
+		public TableHasUpdated(String scriptName, int graphSetNum, int expectedRows, boolean exact) {
 			this.scriptName = scriptName;
 			this.graphSetNum = graphSetNum;
 			this.expectedRows = expectedRows;
+			this.exact = exact;
 		}
 		@Override
 		public boolean test() {
@@ -213,7 +216,11 @@ public class TestCreateSystemtapScript {
 			graphEditor.setFocus();
 			graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, graphSetNum)).activate();
 			graphEditor.bot().cTabItem("Data View").activate();
-			return bot.table(0).rowCount() >= expectedRows;
+			if (!exact) {
+				return bot.table().rowCount() >= expectedRows;
+			} else {
+				return bot.table().rowCount() == expectedRows;
+			}
 		}
 
 		@Override
@@ -228,8 +235,7 @@ public class TestCreateSystemtapScript {
 		int oldCount;
 		int expectedCount;
 		/**
-		 * Wait for the provided chart to become updated. The chart is considered
-		 * to be updated once a new point is added to one of its series sets.
+		 * Wait for the provided chart to become updated.
 		 * @param chart The chart to watch for an update.
 		 * @param expectedCount The expected number of series points. Set to -1 to instead
 		 * check for when there are more points than there were at the beginning.
@@ -574,7 +580,7 @@ public class TestCreateSystemtapScript {
 		combo.setText("sample");
 		combo.setSelection(1);
 		assertEquals(4, combo.itemCount());
-		SWTBotTable table = bot.table(0);
+		SWTBotTable table = bot.table();
 		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButton);
 		assertTrue(!button.isEnabled());
 		table.select(0);
@@ -614,9 +620,9 @@ public class TestCreateSystemtapScript {
 				+ "\nprobe timer.ms(1000){exit()}");
 		editor.save();
 
-		String val0 = "i";
-		String val1 = "j";
-		String val2 = "k";
+		final String val0 = "i";
+		final String val1 = "j";
+		final String val2 = "k";
 
 		openRunConfigurations(scriptName);
 		SWTBotShell shell = bot.shell("Run Configurations");
@@ -648,6 +654,8 @@ public class TestCreateSystemtapScript {
 		// Add a graph.
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		setupGraphWithTests("Values");
+		String setTitle1 = MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1);
+		String graphTitle1 = "Values - Scatter Graph";
 
 		// Make a second regex, and a graph for it.
 		shell.setFocus();
@@ -671,6 +679,8 @@ public class TestCreateSystemtapScript {
 
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		setupGraphWithTests("Others");
+		String setTitle2 = MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 2);
+		String graphTitle2 = "Others - Scatter Graph";
 
 		// Apply the changes, then close the menu & reopen it to make sure settings were saved.
 		shell.setFocus();
@@ -687,7 +697,7 @@ public class TestCreateSystemtapScript {
 
 		combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		text = bot.textWithLabel(Messages.SystemTapScriptGraphOptionsTab_sampleOutputLabel);
-		SWTBotTable table = bot.table(0);
+		SWTBotTable table = bot.table();
 		assertEquals(3, combo.itemCount());
 		assertEquals("Value:(\\d+) (\\d+)", combo.getText());
 		assertEquals("Value:1 2", text.getText());
@@ -711,31 +721,95 @@ public class TestCreateSystemtapScript {
 		console.setFocus();
 		bot.waitUntil(new StapHasExited()); // The script should end on its own
 
-		// Give time for the table to be fully constructed
+		// Give time for the table to be fully constructed.
 		SWTBotEditor graphEditor = bot.activeEditor();
-		bot.waitUntil(new TableHasUpdated(scriptName, 1, 10));
-		bot.waitUntil(new TableHasUpdated(scriptName, 2, 4));
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, 10, false));
+		bot.waitUntil(new TableHasUpdated(scriptName, 2, 4, false));
 
+		// Test table & graph contents.
 		graphEditor.setFocus();
-		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1)).activate();
+		graphEditor.bot().cTabItem(setTitle1).activate();
 		graphEditor.bot().cTabItem("Data View").activate();
-		SWTBotTable dataTable = bot.table(0);
+		SWTBotTable dataTable = bot.table();
 		List<String> colNames = dataTable.columns();
 		assertEquals(3, colNames.size());
 		assertEquals(val0, colNames.get(1));
 		assertEquals(val1, colNames.get(2));
-		assertEquals("3", dataTable.cell(3, 1));
-		assertEquals("6", dataTable.cell(3, 2));
+		assertEquals("2", dataTable.cell(2, 1));
+		assertEquals("4", dataTable.cell(2, 2));
 
-		graphEditor.bot().cTabItem(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 2)).activate();
+		graphEditor.bot().cTabItem(graphTitle1).activate();
+		Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
+		AbstractChartBuilder cb = bot.widget(matcher);
+		ISeries[] series = cb.getChart().getSeriesSet().getSeries();
+		assertEquals(2, series.length);
+		assertEquals(10, series[0].getXSeries().length);
+		assertEquals(10, series[1].getXSeries().length);
+		assertEquals(2, (int) series[0].getYSeries()[2]);
+		assertEquals(4, (int) series[1].getYSeries()[2]);
+
+		graphEditor.bot().cTabItem(setTitle2).activate();
 		graphEditor.bot().cTabItem("Data View").activate();
-		dataTable = bot.table(0);
+		dataTable = bot.table();
 		colNames = dataTable.columns();
 		assertEquals(3, colNames.size());
 		assertEquals(val0, colNames.get(1));
 		assertEquals(val2, colNames.get(2));
-		assertEquals("10", dataTable.cell(3, 1));
-		assertEquals("3", dataTable.cell(3, 2));
+		assertEquals("7", dataTable.cell(2, 1));
+		assertEquals("2", dataTable.cell(2, 2));
+
+		graphEditor.bot().cTabItem(graphTitle2).activate();
+		cb = bot.widget(matcher);
+		series = cb.getChart().getSeriesSet().getSeries();
+		assertEquals(2, series.length);
+		assertEquals(4, series[0].getXSeries().length);
+		assertEquals(4, series[1].getXSeries().length);
+		assertEquals(7, (int) series[0].getYSeries()[2]);
+		assertEquals(2, (int) series[1].getYSeries()[2]);
+
+		// Test filters on the data table & graphs.
+		graphEditor.bot().cTabItem(setTitle1).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
+		dataTable = bot.table();
+		click(ContextMenuHelper.contextMenu(dataTable, "Add filter..."));
+		shell = bot.shell("Create Filter");
+		shell.setFocus();
+
+		// Match Filter - Remove a matching
+		bot.button("Match Filter").click();
+		bot.button("Next >").click();
+		bot.text().setText("2");
+		deselectDefaultSelection(0);
+		bot.radio(1).click();
+		bot.button("Finish").click();
+		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, 9, true));
+		assertEquals("3", dataTable.cell(2, 1));
+		assertEquals("6", dataTable.cell(2, 2));
+
+		// Filters should be applied to graphs as well as data tables.
+		graphEditor.bot().cTabItem(graphTitle1).activate();
+		cb = bot.widget(matcher);
+		series = cb.getChart().getSeriesSet().getSeries();
+		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 9));
+		assertEquals(3, (int) series[0].getYSeries()[2]);
+		assertEquals(6, (int) series[1].getYSeries()[2]);
+
+		// Each graph set should have its own filters.
+		graphEditor.bot().cTabItem(setTitle2).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
+		dataTable = bot.table();
+		assertEquals(4, dataTable.rowCount());
+		assertEquals("2", dataTable.cell(0, 1));
+
+		// Test removing a filter.
+		graphEditor.bot().cTabItem(setTitle1).activate();
+		graphEditor.bot().cTabItem("Data View").activate();
+		dataTable = bot.table();
+		click(ContextMenuHelper.contextMenu(dataTable, "Remove filter...", "Match Filter: \"" + val0 + "\" removing \"2\""));
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, 10, true));
+		assertEquals("2", dataTable.cell(2, 1));
+		assertEquals("4", dataTable.cell(2, 2));
 
 		clearAllTerminated();
 	}
@@ -836,9 +910,9 @@ public class TestCreateSystemtapScript {
 		console.setFocus();
 		bot.waitUntil(new StapHasExited()); // The script should end on its own
 
-		// Give time for the table to be fully constructed
+		// Give time for the table to be fully constructed.
 		SWTBotEditor graphEditor = bot.activeEditor();
-		bot.waitUntil(new TableHasUpdated(scriptName, 1, numItems));
+		bot.waitUntil(new TableHasUpdated(scriptName, 1, numItems, false));
 
 		// Confirm that the bar & pie charts display the String categories, but the line chart ignores them.
 		String titleBar = title + " - Bar Graph";

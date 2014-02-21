@@ -48,10 +48,11 @@ public final class DataSetFactory {
 		return null;
 	}
 
-	public static DataGrid getDataGrid(Composite composite, IDataSet set) {
-		if(set instanceof RowDataSet) {
-			return new DataGrid(composite, set, DataGrid.NONE);
-		} else if(set instanceof TableDataSet) {
+	/**
+	 * @since 3.0 set must be a IFilteredDataSet.
+	 */
+	public static DataGrid getDataGrid(Composite composite, IFilteredDataSet set) {
+		if(set instanceof RowDataSet || set instanceof TableDataSet) {
 			return new DataGrid(composite, set, DataGrid.FULL_UPDATE);
 		}
 

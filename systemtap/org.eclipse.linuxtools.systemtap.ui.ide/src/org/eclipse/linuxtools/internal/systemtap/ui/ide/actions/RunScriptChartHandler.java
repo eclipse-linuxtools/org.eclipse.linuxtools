@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
-import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.ChartStreamDaemon;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor;
@@ -35,11 +35,11 @@ import org.eclipse.ui.WorkbenchException;
 public class RunScriptChartHandler extends RunScriptHandler {
 
 	private List<IDataSetParser> parsers;
-	private List<IDataSet> dataSets;
+	private List<IFilteredDataSet> dataSets;
 	private List<String> names;
 	private List<LinkedList<GraphData>> graphs;
 
-	public RunScriptChartHandler(List<IDataSetParser> parsers, List<IDataSet> dataSet, List<String> names, List<LinkedList<GraphData>> graphs) {
+	public RunScriptChartHandler(List<IDataSetParser> parsers, List<IFilteredDataSet> dataSet, List<String> names, List<LinkedList<GraphData>> graphs) {
 		super();
 		this.parsers = parsers;
 		this.dataSets = dataSet;

@@ -39,6 +39,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.row.LineParser;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.row.RowDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
@@ -510,10 +511,10 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param configuration
 	 * @return
 	 */
-	public static ArrayList<IDataSet> createDataset(ILaunchConfiguration configuration) {
+	public static ArrayList<IFilteredDataSet> createDataset(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
-			ArrayList<IDataSet> datasets = new ArrayList<>(numberOfRegexs);
+			ArrayList<IFilteredDataSet> datasets = new ArrayList<>(numberOfRegexs);
 
 			for (int r = 0; r < numberOfRegexs; r++) {
 				int numberOfColumns = configuration.getAttribute(NUMBER_OF_COLUMNS + r, 0);
@@ -522,7 +523,7 @@ public class SystemTapScriptGraphOptionsTab extends
 				for (int c = 0; c < numberOfColumns; c++) {
 					labels.add(configuration.getAttribute(get2DConfigData(REGEX_BOX, r, c), "")); //$NON-NLS-1$
 				}
-				datasets.add(DataSetFactory.createDataSet(RowDataSet.ID, labels.toArray(new String[] {})));
+				datasets.add(DataSetFactory.createFilteredDataSet(RowDataSet.ID, labels.toArray(new String[] {})));
 			}
 
 			return datasets;

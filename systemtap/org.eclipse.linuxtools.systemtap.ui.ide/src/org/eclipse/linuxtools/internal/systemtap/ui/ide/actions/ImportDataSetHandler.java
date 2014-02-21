@@ -20,8 +20,10 @@ import java.util.Arrays;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
-import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.row.FilteredRowDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.row.RowDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.table.FilteredTableDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.table.TableDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor;
 import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditorInput;
@@ -50,7 +52,7 @@ public class ImportDataSetHandler extends AbstractHandler {
 			return null;
 		}
 
-		IDataSet dataset = null;
+		IFilteredDataSet dataset = null;
 		File file = new File(path);
 		try (InputStreamReader fr = new InputStreamReader(new FileInputStream(file), Charset.defaultCharset());
 				BufferedReader br = new BufferedReader(fr)) {
@@ -60,9 +62,9 @@ public class ImportDataSetHandler extends AbstractHandler {
 			if (id == null && titles == null) {
 				throw new IOException();
 			} else if (id.equals(RowDataSet.ID)) {
-				dataset = new RowDataSet(titles);
+				dataset = new FilteredRowDataSet(titles);
 			} else if (id.equals(TableDataSet.ID)) {
-				dataset = new TableDataSet(titles);
+				dataset = new FilteredTableDataSet(titles);
 			} else {
 				throw new IOException();
 			}

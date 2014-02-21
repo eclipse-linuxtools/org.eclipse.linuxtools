@@ -34,8 +34,8 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.structures.process.SystemTapRuntimeProcessFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
@@ -113,7 +113,7 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		int numGraphs = configuration.getAttribute(SystemTapScriptGraphOptionsTab.NUMBER_OF_REGEXS, 0);
 		if (runWithChart && numGraphs > 0){
 			List<IDataSetParser> parsers = SystemTapScriptGraphOptionsTab.createDatasetParsers(configuration);
-			List<IDataSet> dataSets = SystemTapScriptGraphOptionsTab.createDataset(configuration);
+			List<IFilteredDataSet> dataSets = SystemTapScriptGraphOptionsTab.createDataset(configuration);
 			List<String> names = SystemTapScriptGraphOptionsTab.createDatasetNames(configuration);
 			List<LinkedList<GraphData>> graphs = SystemTapScriptGraphOptionsTab.createGraphsFromConfiguration(configuration);
 			action = new RunScriptChartHandler(parsers, dataSets, names, graphs);

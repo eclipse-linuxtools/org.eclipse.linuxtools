@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.views.Messages;
-import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.ui.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.osgi.util.NLS;
@@ -65,10 +65,10 @@ public class GraphSelectorEditor extends EditorPart {
 	 * Each new script set will be given a new tab item at the end of the list.
 	 * @param scriptName The full name of the script that is being monitored.
 	 * @param titles The names to be shown on each new tab
-	 * @param dataSets The <code>IDataSet</code>s for each new script set
+	 * @param dataSets The <code>IFilteredDataSet</code>s for each new script set
 	 * @since 2.2
 	 */
-	public void createScriptSets(String scriptName, List<String> titles, List<IDataSet> dataSets) {
+	public void createScriptSets(String scriptName, List<String> titles, List<IFilteredDataSet> dataSets) {
 		CTabItem item = null;
 
 		for (int i = 0, n = titles.size(); i < n; i++) {

@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.Localization;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphing.ui.datadisplay.DataGrid;
@@ -62,7 +63,10 @@ public class GraphDisplaySet {
 	private IPropertyChangeListener propertyChangeListener;
 	private IPreferenceStore p;
 
-	public GraphDisplaySet(Composite parent, IDataSet data) {
+	/**
+	 * @since 3.0 set must be a IFilteredDataSet.
+	 */
+	public GraphDisplaySet(Composite parent, IFilteredDataSet data) {
 		p = GraphingUIPlugin.getDefault().getPreferenceStore();
 		int delay = p.getInt(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY);
 
@@ -283,7 +287,7 @@ public class GraphDisplaySet {
 	}
 
 	private int lastSelectedTab;
-	private IDataSet dataSet;
+	private IFilteredDataSet dataSet;
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
