@@ -57,6 +57,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotSlider;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
@@ -98,12 +99,12 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
-	private static class NodeAvaiable extends DefaultCondition {
+	private static class NodeAvailable extends DefaultCondition {
 
 		private String node;
 		private SWTBotTreeItem parent;
 
-		NodeAvaiable(SWTBotTreeItem parent, String node){
+		NodeAvailable(SWTBotTreeItem parent, String node){
 			this.node = node;
 			this.parent = parent;
 		}
@@ -293,6 +294,15 @@ public class TestCreateSystemtapScript {
 		bot.textWithLabel("Project name:").setText(SYSTEMTAP_PROJECT_NAME);
 		bot.button("Finish").click();
 		bot.waitUntil(new ShellIsClosed(shell));
+
+		// Open the Debug view.
+		bot.menu("Window").menu("Show View").menu("Other...").click();
+		shell = bot.shell("Show View");
+		node = bot.tree().expandNode("Debug");
+		assertNotNull(node);
+		bot.waitUntil(new NodeAvailable(node, "Debug"));
+		node.select("Debug");
+		bot.button("OK").click();
 	}
 
 	@After
@@ -320,7 +330,7 @@ public class TestCreateSystemtapScript {
 
 		SWTBotTreeItem node = bot.tree().expandNode("SystemTap");
 		assertNotNull(node);
-		bot.waitUntil(new NodeAvaiable(node, "SystemTap Script"));
+		bot.waitUntil(new NodeAvailable(node, "SystemTap Script"));
 		node.select("SystemTap Script");
 
 		bot.button("Next >").click();
@@ -355,6 +365,18 @@ public class TestCreateSystemtapScript {
 		bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7).activate();
 		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
 		return shell;
+	}
+
+	private void clearAllTerminated(){
+		SWTBotView debugView = bot.viewByTitle("Debug");
+		debugView.setFocus();
+		SWTBotTree debugTable = debugView.bot().tree();
+		assertTrue(debugTable.getAllItems().length > 0);
+		SWTBotToolbarButton remButton = debugView.toolbarPushButton("Remove All Terminated Launches");
+		assertTrue(remButton.isEnabled());
+		remButton.click();
+		assertTrue(debugTable.getAllItems().length == 0);
+		assertTrue(!remButton.isEnabled());
 	}
 
 	@Test
@@ -409,7 +431,7 @@ public class TestCreateSystemtapScript {
 		shell.activate();
 		SWTBotTreeItem node = bot.tree().expandNode("General");
 		assertNotNull(node);
-		bot.waitUntil(new NodeAvaiable(node, "Untitled Text File"));
+		bot.waitUntil(new NodeAvailable(node, "Untitled Text File"));
 		node.select("Untitled Text File");
 		bot.button("Finish").click();
 
@@ -685,6 +707,8 @@ public class TestCreateSystemtapScript {
 		assertEquals(val2, colNames.get(2));
 		assertEquals("10", dataTable.cell(3, 1));
 		assertEquals("3", dataTable.cell(3, 2));
+
+		clearAllTerminated();
 	}
 
 	@Test
@@ -816,6 +840,8 @@ public class TestCreateSystemtapScript {
 		cb = bot.widget(matcher);
 		continuousControlTests(cb, true);
 		continuousControlTests(cb, false);
+
+		clearAllTerminated();
 	}
 
 	private void discreteXControlTests(AbstractChartBuilder cb, int numAxisItems) {
@@ -1095,6 +1121,7 @@ public class TestCreateSystemtapScript {
 
 		ScriptConsole.stopAll();
 		bot.waitUntil(new StapHasExited());
+		clearAllTerminated();
 	}
 
 	/**
@@ -1151,7 +1178,7 @@ public class TestCreateSystemtapScript {
 		SWTBotTree treeBot = bot.tree();
 		treeBot.setFocus();
 		SWTBotTreeItem node = treeBot.expandNode(SYSTEMTAP_PROJECT_NAME);
-		bot.waitUntil(new NodeAvaiable(node, scriptName));
+		bot.waitUntil(new NodeAvailable(node, scriptName));
 
 		treeBot.expandNode(SYSTEMTAP_PROJECT_NAME).expand().select(scriptName);
 
