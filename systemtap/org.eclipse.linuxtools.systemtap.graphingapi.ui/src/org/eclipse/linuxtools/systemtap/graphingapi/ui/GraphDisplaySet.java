@@ -9,16 +9,16 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphing;
+package org.eclipse.linuxtools.systemtap.graphingapi.ui;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
@@ -53,7 +53,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class is used to contain all of the graphing components that can
  * be displayed as individual tabs in a single location.
  * @author Ryan Morse
- * @since 2.0
+ * @since 3.0 Migrated from .ui.graphing package.
  */
 public class GraphDisplaySet {
 

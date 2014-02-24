@@ -12,9 +12,9 @@
 package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners.ChartWithAxisMouseMoveListener;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.swt.events.PaintEvent;
@@ -79,9 +79,9 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 	*/
 	public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
 		super(adapter, parent, style, title);
-		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		xLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES);
-		yLineGrid = store.getBoolean(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES);
+		IPreferenceStore store = GraphingPlugin.getDefault().getPreferenceStore();
+		xLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES);
+		yLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -24,25 +24,25 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class DataTablePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public DataTablePreferencePage() {
 		super(GRID);
-		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("DataTablePreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
 
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY,
+				GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY,
 				Localization.getString("DataTablePreferencePage.JumpNewestEntry"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_AUTO_RESIZE,
+				GraphingPreferenceConstants.P_AUTO_RESIZE,
 				Localization.getString("DataTablePreferencePage.AutoResizeColumns"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS,
+				GraphingPreferenceConstants.P_MAX_DATA_ITEMS,
 				Localization.getString("DataTablePreferencePage.MaxDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 	}

@@ -11,7 +11,10 @@
 
 package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 
-public class GraphingAPIPreferenceConstants {
+public class GraphingPreferenceConstants {
+	//graphing
+	public static final String P_GRAPH_UPDATE_DELAY = "GraphUpdateDelay"; //$NON-NLS-1$
+
 	//graphing.datatable
 	public static final String P_JUMP_NEW_TABLE_ENTRY = "JumpNewTableEntry"; //$NON-NLS-1$
 	public static final String P_AUTO_RESIZE = "AutoResizeColumns"; //$NON-NLS-1$

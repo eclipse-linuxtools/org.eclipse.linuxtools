@@ -9,12 +9,12 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.graphing.preferences;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.GraphingPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 

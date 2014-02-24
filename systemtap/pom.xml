@@ -51,7 +51,6 @@
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog.tests</module>
     <module>org.eclipse.linuxtools.systemtap.ui.doc</module>
     <module>org.eclipse.linuxtools.systemtap.ui.editor</module>
-    <module>org.eclipse.linuxtools.systemtap.ui.graphing</module>
     <module>org.eclipse.linuxtools.systemtap.graphingapi.core</module>
     <module>org.eclipse.linuxtools.systemtap.graphingapi.core.tests</module>
     <module>org.eclipse.linuxtools.systemtap.graphingapi.ui</module>

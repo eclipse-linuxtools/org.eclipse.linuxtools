@@ -9,18 +9,18 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.graphing.actions;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.Localization;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor;
 import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphDisplaySet;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.GC;
@@ -38,6 +38,7 @@ import org.eclipse.ui.PlatformUI;
  * It will let the user select the location to save the image, and then save it as
  * a jpg image.
  * @author Ryan Morse
+ * @since 3.0 Migrated from .ui.graphing package.
  */
 public class SaveGraphImageAction extends Action implements IWorkbenchWindowActionDelegate {
 	@Override

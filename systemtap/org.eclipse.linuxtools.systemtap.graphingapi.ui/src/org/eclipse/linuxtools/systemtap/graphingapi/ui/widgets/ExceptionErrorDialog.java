@@ -15,7 +15,7 @@ import java.io.StringWriter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -29,7 +29,7 @@ public class ExceptionErrorDialog {
 	public static int openError(String message, Exception e){
 		StringWriter writer = new StringWriter();
 		e.printStackTrace(new PrintWriter(writer));
-		Status status = new Status(IStatus.ERROR, GraphingAPIUIPlugin.PLUGIN_ID, e.toString(), new Throwable(writer.toString()));
+		Status status = new Status(IStatus.ERROR, GraphingPlugin.PLUGIN_ID, e.toString(), new Throwable(writer.toString()));
 		return ErrorDialog.openError(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getShell(), message,
 				message, status);

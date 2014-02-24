@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -24,43 +24,43 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public GraphPreferencePage() {
 		super(GRID);
-		setPreferenceStore(GraphingAPIUIPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(GraphingPlugin.getDefault().getPreferenceStore());
 		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
 	}
 
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES,
+				GraphingPreferenceConstants.P_SHOW_X_GRID_LINES,
 				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor(
-				GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES,
+				GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES,
 				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS,
+				GraphingPreferenceConstants.P_MAX_DATA_ITEMS,
 				Localization.getString("GraphPreferencePage.MaxDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
+				GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
 				Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_X_SERIES_TICKS,
+				GraphingPreferenceConstants.P_X_SERIES_TICKS,
 				Localization.getString("GraphPreferencePage.XSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS,
+				GraphingPreferenceConstants.P_Y_SERIES_TICKS,
 				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
 				getFieldEditorParent()));
 	}

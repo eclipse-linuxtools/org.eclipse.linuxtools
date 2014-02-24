@@ -18,16 +18,16 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class GraphingAPIUIPlugin extends AbstractUIPlugin {
+public class GraphingPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui"; //$NON-NLS-1$
 	//The shared instance.
-	private static GraphingAPIUIPlugin plugin;
+	private static GraphingPlugin plugin;
 
 	/**
 	 * The constructor.
 	 */
-	public GraphingAPIUIPlugin() {
+	public GraphingPlugin() {
 		plugin = this;
 	}
 
@@ -43,7 +43,7 @@ public class GraphingAPIUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns the shared instance.
 	 */
-	public static GraphingAPIUIPlugin getDefault() {
+	public static GraphingPlugin getDefault() {
 		return plugin;
 	}
 

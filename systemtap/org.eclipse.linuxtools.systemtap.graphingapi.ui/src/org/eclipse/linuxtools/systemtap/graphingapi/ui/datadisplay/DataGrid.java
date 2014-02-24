@@ -16,9 +16,9 @@ import java.text.MessageFormat;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.filters.IDataSetFilter;
@@ -51,8 +51,8 @@ import org.eclipse.ui.PlatformUI;
 
 public class DataGrid implements IUpdateListener {
 	public DataGrid(Composite composite, IDataSet set, int style) {
-		prefs = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		manualResize = !prefs.getBoolean(GraphingAPIPreferenceConstants.P_AUTO_RESIZE);
+		prefs = GraphingPlugin.getDefault().getPreferenceStore();
+		manualResize = !prefs.getBoolean(GraphingPreferenceConstants.P_AUTO_RESIZE);
 
 		dataSet = set;
 		filteredDataSet = (dataSet instanceof IFilteredDataSet)
@@ -326,8 +326,8 @@ public class DataGrid implements IUpdateListener {
 
 				if(FULL_UPDATE != (style & FULL_UPDATE)) {
 					//Remove extra items so save memory.
-					if(table.getItemCount() > prefs.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS)) {
-						int items = table.getItemCount()-prefs.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS);
+					if(table.getItemCount() > prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
+						int items = table.getItemCount()-prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
 						table.remove(0, items-1);
 						removedItems += items;
 					}
@@ -343,7 +343,7 @@ public class DataGrid implements IUpdateListener {
 					}
 				}
 				//Use if we want to set focus to newly added item
-				if(prefs.getBoolean(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
+				if(prefs.getBoolean(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
 						&& table.getItemCount() > 1 && rowsAdded) {
 					table.select(table.getItemCount()-1);
 				}

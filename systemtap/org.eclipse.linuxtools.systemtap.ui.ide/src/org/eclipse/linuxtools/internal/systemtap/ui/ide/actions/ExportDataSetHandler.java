@@ -13,7 +13,7 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorPart;

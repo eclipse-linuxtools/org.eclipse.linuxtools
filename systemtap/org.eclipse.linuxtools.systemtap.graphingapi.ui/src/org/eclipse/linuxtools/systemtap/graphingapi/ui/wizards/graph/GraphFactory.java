@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph;
 
 import java.util.LinkedList;
 
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.Localization;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.AreaChartBuilder;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.BarChartBuilder;
@@ -53,11 +53,11 @@ public final class GraphFactory {
 	};
 
 	private static final Image[] graphImages = new Image[] {
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/ScatterGraph.gif").createImage(), //$NON-NLS-1$
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/LineGraph.gif").createImage(), //$NON-NLS-1$
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/BarGraph.gif").createImage(), //$NON-NLS-1$
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/AreaChart.gif").createImage(), //$NON-NLS-1$
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage(), //$NON-NLS-1$
+		GraphingPlugin.getImageDescriptor("icons/graphs/ScatterGraph.gif").createImage(), //$NON-NLS-1$
+		GraphingPlugin.getImageDescriptor("icons/graphs/LineGraph.gif").createImage(), //$NON-NLS-1$
+		GraphingPlugin.getImageDescriptor("icons/graphs/BarGraph.gif").createImage(), //$NON-NLS-1$
+		GraphingPlugin.getImageDescriptor("icons/graphs/AreaChart.gif").createImage(), //$NON-NLS-1$
+		GraphingPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage(), //$NON-NLS-1$
 	};
 
 	private static final String[] graphIDs = new String[] {

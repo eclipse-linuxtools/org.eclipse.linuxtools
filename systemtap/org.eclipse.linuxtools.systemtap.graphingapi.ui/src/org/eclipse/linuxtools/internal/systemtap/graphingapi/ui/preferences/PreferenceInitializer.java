@@ -13,22 +13,25 @@ package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = GraphingPlugin.getDefault().getPreferenceStore();
 
-		store.setDefault(GraphingAPIPreferenceConstants.P_SHOW_X_GRID_LINES, true);
-		store.setDefault(GraphingAPIPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
-		store.setDefault(GraphingAPIPreferenceConstants.P_AUTO_RESIZE, true);
-		store.setDefault(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
-		store.setDefault(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
-		store.setDefault(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS, 250);
-		store.setDefault(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS, 10);
-		store.setDefault(GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS, 4);
+		//graphing
+		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
+
+		store.setDefault(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES, true);
+		store.setDefault(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
+		store.setDefault(GraphingPreferenceConstants.P_AUTO_RESIZE, true);
+		store.setDefault(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
+		store.setDefault(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
+		store.setDefault(GraphingPreferenceConstants.P_MAX_DATA_ITEMS, 250);
+		store.setDefault(GraphingPreferenceConstants.P_X_SERIES_TICKS, 10);
+		store.setDefault(GraphingPreferenceConstants.P_Y_SERIES_TICKS, 4);
 	}
 }

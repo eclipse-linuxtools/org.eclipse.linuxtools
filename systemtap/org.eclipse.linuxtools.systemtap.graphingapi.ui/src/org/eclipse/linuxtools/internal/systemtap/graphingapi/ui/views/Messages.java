@@ -9,12 +9,12 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.graphing.views;
+package org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.views;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.graphing.views.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.views.messages"; //$NON-NLS-1$
 	public static String GraphSelectorEditor_graphsEditorTitle;
 	public static String GraphSelectorEditor_graphsEditorDefaultTitle;
 	static {

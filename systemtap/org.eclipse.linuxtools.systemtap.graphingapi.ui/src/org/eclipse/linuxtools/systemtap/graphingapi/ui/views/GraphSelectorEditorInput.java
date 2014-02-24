@@ -8,16 +8,16 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.ui.graphing.views;
+package org.eclipse.linuxtools.systemtap.graphingapi.ui.views;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.views.Messages;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.views.Messages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 /**
- * @since 2.0
+ * @since 3.0 Migrated from .ui.graphing package.
  */
 public class GraphSelectorEditorInput implements IEditorInput {
 

@@ -9,16 +9,16 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.graphing.views;
+package org.eclipse.linuxtools.systemtap.graphingapi.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.linuxtools.internal.systemtap.ui.graphing.views.Messages;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.views.Messages;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphingapi.ui.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
-import org.eclipse.linuxtools.systemtap.ui.graphing.GraphDisplaySet;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -45,14 +45,14 @@ import org.eclipse.ui.part.EditorPart;
  * that specific script.  Script sets can be created or disposed of at the will
  * of the user.
  * @author Ryan Morse
- * @since 2.0
+ * @since 3.0 Migrated from .ui.graphing package.
  */
 public class GraphSelectorEditor extends EditorPart {
 
 	private CTabFolder scriptFolder;
 	private ArrayList<GraphDisplaySet> displaySets;
 	private ArrayList<ITabListener> tabListeners;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorEditor"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor"; //$NON-NLS-1$
 
 	public GraphSelectorEditor() {
 		super();

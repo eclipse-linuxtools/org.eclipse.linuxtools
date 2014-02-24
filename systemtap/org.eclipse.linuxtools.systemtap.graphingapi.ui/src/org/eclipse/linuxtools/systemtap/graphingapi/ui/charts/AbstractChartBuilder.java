@@ -17,9 +17,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingAPIUIPlugin;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.GraphingPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.charts.listeners.ChartMouseMoveListener;
-import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingAPIPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphingapi.core.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
@@ -109,9 +109,9 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 		this.adapter = adapter;
 		this.title = title;
 		this.setLayout(new FillLayout());
-		IPreferenceStore store = GraphingAPIUIPlugin.getDefault().getPreferenceStore();
-		maxItems = Math.min(store.getInt(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
-									store.getInt(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS));
+		IPreferenceStore store = GraphingPlugin.getDefault().getPreferenceStore();
+		maxItems = Math.min(store.getInt(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
+									store.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS));
 	}
 
 	/**
