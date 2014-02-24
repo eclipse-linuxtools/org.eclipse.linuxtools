@@ -123,6 +123,80 @@ public class RangeFilterTest {
 		assertNull(filter.filter(data));
 	}
 	@Test
+	public void testUnboundedFilters() {
+		int width = 4;
+		int height = 10;
+		int wrap = height / 3;
+		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
+
+		filter = new RangeFilter(1, 1, null, RangeFilter.INCLUSIVE);
+		ArrayList<Object>[] data2 = filter.filter(data);
+
+		assertEquals(width, data.length);
+		assertEquals(height, data[1].size());
+		assertEquals(width, data2.length);
+		assertEquals(7, data2[1].size());
+		assertEquals("1", data2[1].get(0));
+		assertEquals("2", data2[1].get(1));
+		assertEquals("1", data2[1].get(2));
+		assertEquals("2", data2[1].get(3));
+
+		assertEquals(data[2].get(0), data2[2].get(0));
+		assertEquals(data[2].get(1), data2[2].get(1));
+		assertEquals(data[2].get(3), data2[2].get(2));
+		assertEquals(data[2].get(4), data2[2].get(3));
+
+
+		filter = new RangeFilter(1, 1, null, 0);
+		data2 = filter.filter(data);
+
+		assertEquals(width, data.length);
+		assertEquals(height, data[1].size());
+		assertEquals(width, data2.length);
+		assertEquals(3, data2[1].size());
+		assertEquals("2", data2[1].get(0));
+		assertEquals("2", data2[1].get(1));
+		assertEquals("2", data2[1].get(2));
+
+		assertEquals(data[2].get(1), data2[2].get(0));
+		assertEquals(data[2].get(4), data2[2].get(1));
+		assertEquals(data[2].get(7), data2[2].get(2));
+
+
+		filter = new RangeFilter(1, null, 1, RangeFilter.INCLUSIVE);
+		data2 = filter.filter(data);
+
+		assertEquals(width, data.length);
+		assertEquals(height, data[1].size());
+		assertEquals(width, data2.length);
+		assertEquals(7, data2[1].size());
+		assertEquals("1", data2[1].get(0));
+		assertEquals("0", data2[1].get(1));
+		assertEquals("1", data2[1].get(2));
+		assertEquals("0", data2[1].get(3));
+
+		assertEquals(data[2].get(0), data2[2].get(0));
+		assertEquals(data[2].get(2), data2[2].get(1));
+		assertEquals(data[2].get(3), data2[2].get(2));
+		assertEquals(data[2].get(5), data2[2].get(3));
+
+
+		filter = new RangeFilter(1, null, 1, 0);
+		data2 = filter.filter(data);
+
+		assertEquals(width, data.length);
+		assertEquals(height, data[1].size());
+		assertEquals(width, data2.length);
+		assertEquals(3, data2[1].size());
+		assertEquals("0", data2[1].get(0));
+		assertEquals("0", data2[1].get(1));
+		assertEquals("0", data2[1].get(2));
+
+		assertEquals(data[2].get(2), data2[2].get(0));
+		assertEquals(data[2].get(5), data2[2].get(1));
+		assertEquals(data[2].get(8), data2[2].get(2));
+	}
+	@Test
 	public void testGetID() {
 		assertTrue(RangeFilter.ID.equals(filter.getID()));
 	}

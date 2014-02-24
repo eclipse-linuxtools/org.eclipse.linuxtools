@@ -21,6 +21,14 @@ import org.eclipse.linuxtools.systemtap.structures.Copier;
 
 
 public class RangeFilter implements IDataSetFilter {
+	/**
+	 * Create a new Range Filter for a table of data.
+	 * @param column The index of the table's column to apply the filter to.
+	 * @param lowerBound The lower bound of the range to apply. Set to <code>null</code> to set a boundless lower limit.
+	 * @param upperBound The upper bound of the range to apply. Set to <code>null</code> to set a boundless upper limit.
+	 * @param style Extra properties of this filter, set by <i>bitwise-OR</i>'ing none or more of
+	 * {@link #INSIDE_BOUNDS}, {@link #OUTSIDE_BOUNDS}, or {@link #INCLUSIVE}.
+	 */
 	public RangeFilter(int column, Number lowerBound, Number upperBound, int style) {
 		this.column = column;
 		this.lowerBound = lowerBound;
@@ -131,9 +139,20 @@ public class RangeFilter implements IDataSetFilter {
 	private Number lowerBound;
 	private int style;
 
+	/**
+	 * Style constant indicating that the filter will only keep values inside the provided bounds.
+	 * (Not applicable for unbounded ranges.)
+	 */
 	public static final int INSIDE_BOUNDS = 0;
+	/**
+	 * Style constant indicating that the filter will only keep values outside the provided bounds.
+	 * (Not applicable for unbounded ranges.)
+	 */
 	public static final int OUTSIDE_BOUNDS = 1;
-
+	/**
+	 * Style constant indicating that the filter will not exclude values that equal either the upper or lower bound.
+	 */
 	public static final int INCLUSIVE = 2;
+
 	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.core.filters.RangeFilter"; //$NON-NLS-1$
 }
