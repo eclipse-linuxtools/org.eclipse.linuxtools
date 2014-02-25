@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.systemtap.graphing.ui.datadisplay;
 import java.text.MessageFormat;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
@@ -60,8 +62,17 @@ public class DataGrid implements IUpdateListener {
 						: DataSetFactory.createFilteredDataSet(dataSet);
 				this.style = style;
 				clickLocation = new Point(-1, -1);
-				removedItems = 0;
 				createPartControl(composite);
+
+		propertyChangeListener = new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
+					handleUpdateEvent();
+				}
+			}
+		};
+		prefs.addPropertyChangeListener(propertyChangeListener);
 	}
 
 	public void setLayoutData(Object data) {
@@ -105,9 +116,6 @@ public class DataGrid implements IUpdateListener {
 		});
 		handleUpdateEvent();
 	}
-
-	private MenuItem removeFiltersMenuItem;
-	private MenuItem formatMenuItem;
 
 	public Menu initMenus() {
 		Menu menu = new Menu(table.getShell(), SWT.POP_UP);
@@ -296,17 +304,15 @@ public class DataGrid implements IUpdateListener {
 					return;
 				}
 				TableItem item;
-				int startLocation, endLocation = filteredDataSet.getRowCount();
-				boolean rowsAdded = endLocation != table.getItemCount();
+				int startLocation;
+				int endLocation = filteredDataSet.getRowCount();
+				int maxItems = prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
+				int oldSelection = table.getSelectionIndex();
 
-				if(FULL_UPDATE == (style & FULL_UPDATE)) {
-					//Remove extra items so save memory.
-					removedItems += table.getItemCount();
-					table.removeAll();
-					startLocation = 0;
-				} else {
-					startLocation = table.getItemCount()+removedItems;
-				}
+				//Remove old items to refresh table, and only read in as many items as will fit.
+				//Note that a full refresh is necessary in order for filtered data to appear correctly.
+				table.removeAll();
+				startLocation = Math.max(endLocation-maxItems, 0);
 
 				//Add all the new items to the table
 				Object[] os;
@@ -323,14 +329,9 @@ public class DataGrid implements IUpdateListener {
 						}
 					}
 				}
-
-				if(FULL_UPDATE != (style & FULL_UPDATE)) {
-					//Remove extra items so save memory.
-					if(table.getItemCount() > prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
-						int items = table.getItemCount()-prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
-						table.remove(0, items-1);
-						removedItems += items;
-					}
+				//Re-select the old table selection, if there was one
+				if (oldSelection != -1) {
+					table.select(oldSelection);
 				}
 
 				//Resize the columns
@@ -342,10 +343,17 @@ public class DataGrid implements IUpdateListener {
 						cols[i].pack();
 					}
 				}
-				//Use if we want to set focus to newly added item
+
+				//Use if we want to set focus to newly added item.
+				//Run async so the table can be fully constructed before jumping to an entry.
 				if(prefs.getBoolean(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
-						&& table.getItemCount() > 1 && rowsAdded) {
-					table.select(table.getItemCount()-1);
+						&& table.getItemCount() > 0) {
+					table.getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							table.showItem(table.getItem(table.getItemCount()-1));
+						}
+					});
 				}
 				formatMenuItem.setEnabled(table.getItemCount() > 0);
 			}
@@ -358,6 +366,8 @@ public class DataGrid implements IUpdateListener {
 		table = null;
 		clickLocation = null;
 		columnFormat = null;
+		prefs.removePropertyChangeListener(propertyChangeListener);
+		propertyChangeListener = null;
 	}
 
 	protected IDataSet dataSet;
@@ -370,6 +380,10 @@ public class DataGrid implements IUpdateListener {
 	protected boolean manualResize;
 	protected Menu filterMenu;
 	protected int style;
+
+	private MenuItem removeFiltersMenuItem;
+	private MenuItem formatMenuItem;
+	private IPropertyChangeListener propertyChangeListener;
 
 	public static final int NONE = 0;
 	public static final int FULL_UPDATE = 1;

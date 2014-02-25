@@ -11,8 +11,7 @@
 
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.ChartWithAxisMouseMoveListener;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
@@ -68,20 +67,44 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
      */
     protected String xTitle = null;
 	protected boolean xLineGrid, yLineGrid;
+	/**
+	 * @since 3.0
+	 */
+	protected int xSeriesTicks, ySeriesTicks;
 
 	/**
 	 * Create a chart series for that chart.
 	 */
 	protected abstract ISeries createChartISeries(int i);
 
+	@Override
+	protected void updateProperties(PropertyChangeEvent event) {
+		super.updateProperties(event);
+		String eventName = event.getProperty();
+		if (eventName.equals(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES)) {
+			xLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES);
+			buildXAxis();
+		} else if (eventName.equals(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES)) {
+			yLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES);
+			buildYAxis();
+		} else if (eventName.equals(GraphingPreferenceConstants.P_X_SERIES_TICKS)) {
+			xSeriesTicks = store.getInt(GraphingPreferenceConstants.P_X_SERIES_TICKS);
+			buildXAxis();
+		} else if (eventName.equals(GraphingPreferenceConstants.P_Y_SERIES_TICKS)) {
+			ySeriesTicks = store.getInt(GraphingPreferenceConstants.P_Y_SERIES_TICKS);
+			buildYAxis();
+		}
+	}
+
 	/**
 	 * Constructor.
 	*/
 	public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
 		super(adapter, parent, style, title);
-		IPreferenceStore store = GraphingUIPlugin.getDefault().getPreferenceStore();
 		xLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES);
 		yLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES);
+		xSeriesTicks = store.getInt(GraphingPreferenceConstants.P_X_SERIES_TICKS);
+		ySeriesTicks = store.getInt(GraphingPreferenceConstants.P_Y_SERIES_TICKS);
 	}
 
 	@Override
@@ -133,6 +156,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 			xAxis.getGrid().setStyle(LineStyle.NONE);
 		}
 		xAxis.getTick().setForeground(BLACK);
+		xAxis.getTick().setTickMarkStepHint(xSeriesTicks);
 		ITitle xTitle = xAxis.getTitle();
 		xTitle.setForeground(BLACK);
 
@@ -157,6 +181,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
 			yAxis.getGrid().setStyle(LineStyle.NONE);
 		}
 		yAxis.getTick().setForeground(BLACK);
+		yAxis.getTick().setTickMarkStepHint(ySeriesTicks);
 	}
 
 	/**

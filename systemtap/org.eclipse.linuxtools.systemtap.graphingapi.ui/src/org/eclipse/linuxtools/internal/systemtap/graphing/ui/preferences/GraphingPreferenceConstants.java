@@ -18,11 +18,11 @@ public class GraphingPreferenceConstants {
 	//graphing.datatable
 	public static final String P_JUMP_NEW_TABLE_ENTRY = "JumpNewTableEntry"; //$NON-NLS-1$
 	public static final String P_AUTO_RESIZE = "AutoResizeColumns"; //$NON-NLS-1$
+	public static final String P_MAX_DATA_ITEMS = "MaxDataItems"; //$NON-NLS-1$
 
 	//graphing.graph
 	public static final String P_SHOW_X_GRID_LINES = "ShowXGridLines"; //$NON-NLS-1$
 	public static final String P_SHOW_Y_GRID_LINES = "ShowYGridLines"; //$NON-NLS-1$
-	public static final String P_MAX_DATA_ITEMS = "MaxDataItems"; //$NON-NLS-1$
 	public static final String P_VIEWABLE_DATA_ITEMS = "ViewableDataItems"; //$NON-NLS-1$
 	public static final String P_X_SERIES_TICKS = "XSeriesTicks"; //$NON-NLS-1$
 	public static final String P_Y_SERIES_TICKS = "YSeriesTicks"; //$NON-NLS-1$

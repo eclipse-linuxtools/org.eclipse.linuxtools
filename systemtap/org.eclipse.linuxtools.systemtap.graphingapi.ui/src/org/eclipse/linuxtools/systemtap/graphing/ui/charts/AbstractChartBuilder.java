@@ -17,6 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.ChartMouseMoveListener;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
@@ -101,17 +103,53 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	public abstract void updateDataSet();
 
 	/**
+	 * A reference to the SystemTap Graphing preference store.
+	 * @since 3.0
+	 */
+	protected IPreferenceStore store;
+	/**
+	 * Updates the chart with properties read from user-set preferences. It is called automatically
+	 * whenever a change is made to SystemTap Graphing preferences.
+	 * @param event The update event containing details on the preference that was changed.
+	 * @since 3.0
+	 */
+	protected void updateProperties(PropertyChangeEvent event) {
+		if (event.getProperty().equals(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS)
+				|| event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
+			maxItems = Math.min(store.getInt(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
+					store.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS));
+			updateDataSet();
+		}
+	}
+	private IPropertyChangeListener propertyChangeListener;
+
+	/**
 	 * Constructs one chart builder and associate it to one data set.
 	 */
-
 	public AbstractChartBuilder(IAdapter adapter, Composite parent, int style, String title) {
 		super(parent, style);
 		this.adapter = adapter;
 		this.title = title;
 		this.setLayout(new FillLayout());
-		IPreferenceStore store = GraphingUIPlugin.getDefault().getPreferenceStore();
+
+		store = GraphingUIPlugin.getDefault().getPreferenceStore();
 		maxItems = Math.min(store.getInt(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS),
-									store.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS));
+				store.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS));
+
+		propertyChangeListener = new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				updateProperties(event);
+			}
+		};
+		store.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	@Override
+	public void dispose() {
+		store.removePropertyChangeListener(propertyChangeListener);
+		propertyChangeListener = null;
+		super.dispose();
 	}
 
 	/**

@@ -42,12 +42,6 @@ public class GraphPreferencePage extends FieldEditorPreferencePage implements IW
 
 		addField(
 				new IntegerFieldEditor(
-				GraphingPreferenceConstants.P_MAX_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.MaxDataItems"), //$NON-NLS-1$
-				getFieldEditorParent()));
-
-		addField(
-				new IntegerFieldEditor(
 				GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
 				Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
 				getFieldEditorParent()));

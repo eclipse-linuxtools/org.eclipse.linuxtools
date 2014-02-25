@@ -25,13 +25,16 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		//graphing
 		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
 
-		store.setDefault(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES, true);
-		store.setDefault(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
+		//data table
 		store.setDefault(GraphingPreferenceConstants.P_AUTO_RESIZE, true);
 		store.setDefault(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
-		store.setDefault(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
 		store.setDefault(GraphingPreferenceConstants.P_MAX_DATA_ITEMS, 250);
-		store.setDefault(GraphingPreferenceConstants.P_X_SERIES_TICKS, 10);
-		store.setDefault(GraphingPreferenceConstants.P_Y_SERIES_TICKS, 4);
+
+		//graph
+		store.setDefault(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES, true);
+		store.setDefault(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
+		store.setDefault(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
+		store.setDefault(GraphingPreferenceConstants.P_X_SERIES_TICKS, 64);
+		store.setDefault(GraphingPreferenceConstants.P_Y_SERIES_TICKS, 64);
 	}
 }

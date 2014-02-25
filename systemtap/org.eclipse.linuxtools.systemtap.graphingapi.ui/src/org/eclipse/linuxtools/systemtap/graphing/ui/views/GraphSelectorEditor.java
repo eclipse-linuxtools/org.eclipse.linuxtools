@@ -218,10 +218,6 @@ public class GraphSelectorEditor extends EditorPart {
 	 */
 	@Override
 	public void dispose() {
-		for (GraphDisplaySet displaySet : displaySets) {
-			displaySet.dispose();
-		}
-
 		super.dispose();
 
 		if(null != scriptFolder && !scriptFolder.isDisposed()) {

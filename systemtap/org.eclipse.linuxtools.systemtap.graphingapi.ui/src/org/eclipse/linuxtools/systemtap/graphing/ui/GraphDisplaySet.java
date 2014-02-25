@@ -15,6 +15,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.Localization;
@@ -57,13 +59,26 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class GraphDisplaySet {
 
+	private IPropertyChangeListener propertyChangeListener;
+	private IPreferenceStore p;
+
 	public GraphDisplaySet(Composite parent, IDataSet data) {
-		IPreferenceStore p = GraphingUIPlugin.getDefault().getPreferenceStore();
+		p = GraphingUIPlugin.getDefault().getPreferenceStore();
 		int delay = p.getInt(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY);
 
 		dataSet = data;
 		updater = new UpdateManager(delay);
 		createPartControl(parent);
+
+		propertyChangeListener = new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (updater.isRunning() && event.getProperty().equals(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY)) {
+					updater.restart((int) event.getNewValue());
+				}
+			}
+		};
+		p.addPropertyChangeListener(propertyChangeListener);
 
 		builders = new ArrayList<>();
 		tabListeners = new ArrayList<>();
@@ -171,6 +186,9 @@ public class GraphDisplaySet {
 		}
 		updater = null;
 
+		p.removePropertyChangeListener(propertyChangeListener);
+		propertyChangeListener = null;
+
 		dataSet = null;
 		if(null != folder && !folder.isDisposed()) {
 			folder.removeSelectionListener(listener);
@@ -179,6 +197,9 @@ public class GraphDisplaySet {
 		}
 		listener = null;
 
+		for (AbstractChartBuilder builder : builders) {
+			builder.dispose();
+		}
 		builders.clear();
 	}
 
