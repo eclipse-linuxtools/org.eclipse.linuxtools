@@ -258,8 +258,11 @@ public class PerfCore {
 					// Removed as of 4a4d371a4dfbd3b84a7eab8d535d4c7c3647b09e from perf upstream (kernel)
 					newCommand.add("-f"); //$NON-NLS-1$
 				}
-				if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default))
+				if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default)) {
 					newCommand.add("-r"); //$NON-NLS-1$
+					int priority = config.getAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, PerfPlugin.ATTR_Record_Realtime_Priority_default);
+					newCommand.add(Integer.toString(priority));
+				}
 				if (config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default))
 					newCommand.add("-v"); //$NON-NLS-1$
 				if (config.getAttribute(PerfPlugin.ATTR_Multiplex, PerfPlugin.ATTR_Multiplex_default))

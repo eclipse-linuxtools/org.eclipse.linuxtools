@@ -51,6 +51,8 @@ public class PerfPlugin extends AbstractUIPlugin {
 	public static final String ATTR_Kernel_Location_default = ""; //$NON-NLS-1$
 	public static final String ATTR_Record_Realtime = "org.eclipse.linuxtools.internal.perf.attr.Record.Realtime"; //$NON-NLS-1$
 	public static final boolean ATTR_Record_Realtime_default = false;
+	public static final String ATTR_Record_Realtime_Priority = "org.eclipse.linuxtools.internal.perf.attr.Record.Realtime.Priority"; //$NON-NLS-1$
+	public static final int ATTR_Record_Realtime_Priority_default = 1;
 	public static final String ATTR_Record_Verbose = "org.eclipse.linuxtools.internal.perf.attr.Record.Verbose"; //$NON-NLS-1$
 	public static final boolean ATTR_Record_Verbose_default = false;
 	public static final String ATTR_SourceLineNumbers = "org.eclipse.linuxtools.internal.perf.attr.SourceLineNumbers"; //$NON-NLS-1$

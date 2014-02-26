@@ -51,6 +51,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
 	protected Text txtKernelLocation;
 	protected Button chkRecordRealtime;
+	protected Spinner rtPriority;
 	protected Button chkRecordVerbose;
 	protected Button chkSourceLineNumbers;
 	protected Button chkKernelSourceLineNumbers;
@@ -182,7 +183,26 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		chkKernelSourceLineNumbers = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_Kernel_SourceLineNumbers);
-		chkRecordRealtime = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_Record_Realtime);
+
+		Composite realtimeComp = new Composite(top, SWT.NONE);
+		realtimeComp.setLayout(parallelLayout);
+
+		chkRecordRealtime = createCheckButtonHelper(realtimeComp, PerfPlugin.STRINGS_Record_Realtime);
+		chkRecordRealtime.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent se) {
+				rtPriority.setEnabled(chkRecordRealtime.getSelection());
+			}
+		});
+		rtPriority = new Spinner(realtimeComp, SWT.BORDER);
+		rtPriority.setEnabled(chkRecordRealtime.getSelection());
+		rtPriority.setMinimum(1);
+		rtPriority.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
 
 		// A disabled button does not respond to mouse events so use a composite.
 		final Composite multiplexEventsComp = new Composite(chkBoxComp, SWT.NONE);
@@ -320,6 +340,9 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
 			txtKernelLocation.setText(config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default));
 			chkRecordRealtime.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default));
+			int priority = config.getAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, PerfPlugin.ATTR_Record_Realtime_Priority_default);
+			rtPriority.setEnabled(chkRecordRealtime.getSelection());
+			rtPriority.setSelection(priority);
 			chkRecordVerbose.setSelection(config.getAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default));
 			chkSourceLineNumbers.setSelection(config.getAttribute(PerfPlugin.ATTR_SourceLineNumbers, PerfPlugin.ATTR_SourceLineNumbers_default));
 			chkKernelSourceLineNumbers.setSelection(config.getAttribute(PerfPlugin.ATTR_Kernel_SourceLineNumbers, PerfPlugin.ATTR_Kernel_SourceLineNumbers_default));
@@ -347,6 +370,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
 		wconfig.setAttribute(PerfPlugin.ATTR_Kernel_Location, txtKernelLocation.getText());
 		wconfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, chkRecordRealtime.getSelection());
+		wconfig.setAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, rtPriority.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, chkRecordVerbose.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_SourceLineNumbers, chkSourceLineNumbers.getSelection());
 		wconfig.setAttribute(PerfPlugin.ATTR_Kernel_SourceLineNumbers, chkKernelSourceLineNumbers.getSelection());
@@ -361,6 +385,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy wconfig) {
 		wconfig.setAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default);
+		wconfig.setAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, PerfPlugin.ATTR_Record_Realtime_Priority_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, PerfPlugin.ATTR_Record_Verbose_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_SourceLineNumbers, PerfPlugin.ATTR_SourceLineNumbers_default);
 		wconfig.setAttribute(PerfPlugin.ATTR_Kernel_SourceLineNumbers, PerfPlugin.ATTR_Kernel_SourceLineNumbers_default);

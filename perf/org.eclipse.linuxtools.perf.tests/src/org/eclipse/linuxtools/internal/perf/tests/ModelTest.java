@@ -345,6 +345,7 @@ public class ModelTest extends AbstractTest {
 	public void testRecordString() throws CoreException {
 		ILaunchConfigurationWorkingCopy tempConfig = config.copy("test-config");
 		tempConfig.setAttribute(PerfPlugin.ATTR_Record_Realtime, true);
+		tempConfig.setAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, 2);
 		tempConfig.setAttribute(PerfPlugin.ATTR_Record_Verbose, true);
 		tempConfig.setAttribute(PerfPlugin.ATTR_Multiplex, true);
 
@@ -360,7 +361,7 @@ public class ModelTest extends AbstractTest {
 		assertNotNull(recordString);
 
 		String[] expectedString = { PerfPlugin.PERF_COMMAND, "record", "-f",
-				"-r", "-v", "-M", "-e", "cpu-cycles", "-e", "cache-misses",
+				"-r", "2", "-v", "-M", "-e", "cpu-cycles", "-e", "cache-misses",
 				"-e", "cpu-clock" };
 		assertArrayEquals(expectedString, recordString);
 	}
