@@ -18,6 +18,12 @@ public class Messages extends NLS {
 	public static String PerfLaunchConfigDelegate_perf_not_found;
 	public static String PerfLaunchConfigDelegate_analyzing;
 	public static String PerfLaunchConfigDelegate_stat_title;
+	public static String PerfOptionsTab_Browse;
+	public static String PerfOptionsTab_File_DNE;
+	public static String PerfOptionsTab_Kernel_Prompt;
+	public static String PerfOptionsTab_Loc_DNE;
+	public static String PerfOptionsTab_Options;
+	public static String PerfOptionsTab_Requires_LTE;
 
 	static {
 		// initialize resource bundle
