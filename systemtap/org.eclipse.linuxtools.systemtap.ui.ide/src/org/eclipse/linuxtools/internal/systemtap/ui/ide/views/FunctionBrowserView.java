@@ -13,9 +13,11 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.FunctionBrowserAction;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -45,6 +47,21 @@ public class FunctionBrowserView extends BrowserView {
 		TapsetLibrary.addFunctionListener(new ViewUpdater());
 		refresh();
 		makeActions();
+	}
+
+	@Override
+	protected Image getEntryImage(TreeNode treeObj) {
+		String item = treeObj.getData().toString();
+		if (item.startsWith("function")) { //$NON-NLS-1$
+			item = item.substring(0, item.indexOf('(')).trim();
+		}
+		if(item.endsWith(":long")) {//$NON-NLS-1$
+			return IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$
+		}
+		if(item.endsWith(":string")) {//$NON-NLS-1$
+			return IDEPlugin.getImageDescriptor("icons/vars/var_str.gif").createImage(); //$NON-NLS-1$
+		}
+		return IDEPlugin.getImageDescriptor("icons/vars/var_void.gif").createImage(); //$NON-NLS-1$
 	}
 
 	/**
