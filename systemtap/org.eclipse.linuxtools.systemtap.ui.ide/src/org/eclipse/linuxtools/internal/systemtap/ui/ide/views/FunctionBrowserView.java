@@ -11,10 +11,15 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.FunctionBrowserAction;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 
 
@@ -80,6 +85,13 @@ public class FunctionBrowserView extends BrowserView {
 	private void makeActions() {
 		doubleClickAction = new FunctionBrowserAction(getSite().getWorkbenchWindow(), this);
 		viewer.addDoubleClickListener(doubleClickAction);
+		Control control = this.viewer.getControl();
+		MenuManager manager = new MenuManager("functionPopup"); //$NON-NLS-1$
+
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		Menu menu = manager.createContextMenu(control);
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(manager, viewer);
 	}
 
 	@Override

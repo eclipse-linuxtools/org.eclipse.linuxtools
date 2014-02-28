@@ -55,10 +55,24 @@ public class SimpleEditor extends TextEditor {
 	/**
 	 * Searches the IDocument for the specified string.
 	 *
-	 * @param search string to find
+	 * @param search string to find, case-sensitive
 	 * @return the integer line number of the string
 	 */
 	public int find(String search) {
+		return findWithOptions(search, false);
+	}
+
+	/**
+	 * Searches the IDocument for the specified regex.
+	 * @param regex string regex to find
+	 * @return the integer line number of the string
+	 * @since 3.0
+	 */
+	public int findRegex(String regex) {
+		return findWithOptions(regex, true);
+	}
+
+	private int findWithOptions(String search, boolean regExSearch) {
 		IDocument doc = getSourceViewer().getDocument();
 		FindReplaceDocumentAdapter finder = new FindReplaceDocumentAdapter(doc);
 
@@ -66,7 +80,7 @@ public class SimpleEditor extends TextEditor {
 
 		jumpToLocation(0, 0);
 		try {
-			IRegion reg = finder.find(0, search, true, false, false, false);
+			IRegion reg = finder.find(0, search, true, !regExSearch, false, regExSearch);
 			int offset = reg.getOffset();
 			line = doc.getLineOfOffset(offset);
 		} catch(BadLocationException ble) {

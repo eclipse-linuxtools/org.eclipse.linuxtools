@@ -120,7 +120,7 @@ public abstract class BrowserView extends ViewPart {
 			}
 
 			//Functions
-			if(item.endsWith(")") && !item.endsWith("\")")) { //$NON-NLS-1$ //$NON-NLS-2$
+			if(item.startsWith("function")) { //$NON-NLS-1$
 				item = item.substring(0, item.indexOf('(')).trim();
 				if(item.endsWith(":long")) {//$NON-NLS-1$
 					img = IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$

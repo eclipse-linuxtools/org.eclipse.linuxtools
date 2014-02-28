@@ -92,17 +92,20 @@ public class FunctionParser extends TapsetParser {
 		st.nextToken(); //skip that stap command
 		String tok = ""; //$NON-NLS-1$
 		String regex = "^function .*\\)\n$"; //match ^function and ending the line with ')' //$NON-NLS-1$
+		String pathname = null;
 		Pattern p = Pattern.compile(regex, Pattern.MULTILINE | Pattern.UNIX_LINES | Pattern.COMMENTS);
 		Pattern secondp = Pattern.compile("[\\W]"); //take our function line and split it up //$NON-NLS-1$
 		Pattern underscorep = Pattern.compile("^function _.*"); //remove any lines that "^function _" //$NON-NLS-1$
 		Pattern allCaps = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
+		Pattern pathnamep = Pattern.compile("^# file (/.*\\.stp)"); //$NON-NLS-1$
 		while(st.hasMoreTokens()) {
 			tok = st.nextToken();
 			Matcher m = p.matcher(tok);
 			while(m.find()) {
 				// this gives us function foo (bar, bar)
 				// we need to strip the ^function and functions with a leading _
-				String[] us = underscorep.split(m.group().toString());
+				String functionLine = m.group();
+				String[] us = underscorep.split(functionLine);
 
 				for(String s : us) {
 					String[] test = secondp.split(s);
@@ -112,15 +115,20 @@ public class FunctionParser extends TapsetParser {
 						// Ignore ALL_CAPS functions; they are not meant for end
 						// user use.
 						if(i == 1 && !allCaps.matcher(t).matches()) {
-							functions.add(new TreeNode(t, t, true));
+							// A function node's data is the entire function line.
+							functions.add(new TreeDefinitionNode(functionLine, t, pathname, true));
 						}
 						else if(i > 1 && t.length() >= 1) {
 							parent = functions.getChildAt(functions.getChildCount()-1);
-							parent.add(new TreeDefinitionNode("function " + t, t, parent.getData().toString(), false)); //$NON-NLS-1$
+							parent.add(new TreeNode(t, t, false));
 						}
 						i++;
 					}
 				}
+			}
+			Matcher f = pathnamep.matcher(tok);
+			if(f.find()) {
+				pathname = f.group(1).toString();
 			}
 		}
 		functions.sortTree();
