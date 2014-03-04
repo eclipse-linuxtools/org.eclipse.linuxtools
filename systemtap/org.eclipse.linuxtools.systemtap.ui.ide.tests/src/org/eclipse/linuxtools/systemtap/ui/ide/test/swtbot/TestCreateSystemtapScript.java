@@ -16,7 +16,6 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.MessageFormat;
@@ -96,27 +95,6 @@ public class TestCreateSystemtapScript {
 		@Override
 		public String getFailureMessage() {
 				return "Timed out waiting for " + shell + " to close."; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
-
-	private static class NodeAvailable extends DefaultCondition {
-
-		private String node;
-		private SWTBotTreeItem parent;
-
-		NodeAvailable(SWTBotTreeItem parent, String node){
-			this.node = node;
-			this.parent = parent;
-		}
-
-		@Override
-		public boolean test() {
-			return this.parent.getNodes().contains(node);
-		}
-
-		@Override
-		public String getFailureMessage() {
-			return "Timed out waiting for " + node; //$NON-NLS-1$
 		}
 	}
 
@@ -284,13 +262,9 @@ public class TestCreateSystemtapScript {
 		projectMenu.click();
 
 		SWTBotShell shell = bot.shell("New Project");
-		shell.activate();
-
-		SWTBotTreeItem node = bot.tree().expandNode("General").select("Project");
-		assertNotNull(node);
-
+		shell.setFocus();
+		bot.tree().expandNode("General").select("Project");
 		bot.button("Next >").click();
-
 		bot.textWithLabel("Project name:").setText(SYSTEMTAP_PROJECT_NAME);
 		bot.button("Finish").click();
 		bot.waitUntil(new ShellIsClosed(shell));
@@ -298,10 +272,8 @@ public class TestCreateSystemtapScript {
 		// Open the Debug view.
 		bot.menu("Window").menu("Show View").menu("Other...").click();
 		shell = bot.shell("Show View");
-		node = bot.tree().expandNode("Debug");
-		assertNotNull(node);
-		bot.waitUntil(new NodeAvailable(node, "Debug"));
-		node.select("Debug");
+		shell.setFocus();
+		bot.tree().expandNode("Debug").select("Debug");
 		bot.button("OK").click();
 	}
 
@@ -326,18 +298,12 @@ public class TestCreateSystemtapScript {
 		projectMenu.click();
 
 		SWTBotShell shell = bot.shell("New");
-		shell.activate();
-
-		SWTBotTreeItem node = bot.tree().expandNode("SystemTap");
-		assertNotNull(node);
-		bot.waitUntil(new NodeAvailable(node, "SystemTap Script"));
-		node.select("SystemTap Script");
-
+		shell.setFocus();
+		bot.tree().expandNode("SystemTap").select("SystemTap Script");
 		bot.button("Next >").click();
 
 		SWTBotText text = bot.textWithLabel("Script Name:").setText(scriptName);
 		assertEquals(scriptName, text.getText());
-
 		text = bot.textWithLabel("Project:").setText(SYSTEMTAP_PROJECT_NAME);
 		assertEquals(SYSTEMTAP_PROJECT_NAME, text.getText());
 
@@ -358,8 +324,7 @@ public class TestCreateSystemtapScript {
 		openRunConfigurations(scriptName);
 		SWTBotShell shell = bot.shell("Run Configurations");
 		shell.setFocus();
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+		bot.tree().select("SystemTap").contextMenu("New").click();
 
 		// Select the "Graphing" tab and enable output graphing.
 		bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7).activate();
@@ -394,9 +359,7 @@ public class TestCreateSystemtapScript {
 		openRunConfigurations(scriptName);
 		SWTBotShell shell = bot.shell("Run Configurations");
 		shell.setFocus();
-
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+		bot.tree().select("SystemTap").contextMenu("New").click();
 
 		if (stapInstalled) {
 			bot.button("Run").click();
@@ -428,11 +391,8 @@ public class TestCreateSystemtapScript {
 		SWTBotMenu projectMenu = newMenu.menu("Other...");
 		projectMenu.click();
 		SWTBotShell shell = bot.shell("New");
-		shell.activate();
-		SWTBotTreeItem node = bot.tree().expandNode("General");
-		assertNotNull(node);
-		bot.waitUntil(new NodeAvailable(node, "Untitled Text File"));
-		node.select("Untitled Text File");
+		shell.setFocus();
+		bot.tree().expandNode("General").select("Untitled Text File");
 		bot.button("Finish").click();
 
 		items[1].doubleClick();
@@ -592,9 +552,7 @@ public class TestCreateSystemtapScript {
 		openRunConfigurations(scriptName);
 		SWTBotShell shell = bot.shell("Run Configurations");
 		shell.setFocus();
-
-		SWTBotTree runConfigurationsTree = bot.tree();
-		runConfigurationsTree.select("SystemTap").contextMenu("New").click();
+		bot.tree().select("SystemTap").contextMenu("New").click();
 		bot.textWithLabel("Name:").setText(scriptName);
 
 		// Select the "Graphing" tab.
@@ -1144,7 +1102,7 @@ public class TestCreateSystemtapScript {
 					Point mousePoint = cb.getChart().getPlotArea().toDisplay(
 							cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
 					event.x = mousePoint.x;
-					event.y = mousePoint.y;
+					event.y = mousePoint.y + 1; // Adjust the mouse to be a bit lower, as it sometimes goes above bars
 					bot.getDisplay().post(event);
 				}
 			});
@@ -1174,14 +1132,8 @@ public class TestCreateSystemtapScript {
 	private void openRunConfigurations(String scriptName) {
 		// Focus on project explorer view.
 		bot.viewByTitle("Project Explorer").setFocus();
-		bot.activeShell();
 		SWTBotTree treeBot = bot.tree();
-		treeBot.setFocus();
-		SWTBotTreeItem node = treeBot.expandNode(SYSTEMTAP_PROJECT_NAME);
-		bot.waitUntil(new NodeAvailable(node, scriptName));
-
 		treeBot.expandNode(SYSTEMTAP_PROJECT_NAME).expand().select(scriptName);
-
 		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, "Run As", "Run Configurations...");
 		click(menu);
 	}
