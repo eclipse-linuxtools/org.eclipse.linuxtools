@@ -11,21 +11,21 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
-import org.eclipse.core.runtime.Path;
+import java.io.File;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
-import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.structures.FunctionNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
-import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
+import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -59,23 +59,20 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 			return;
 		TreeDefinitionNode t = (TreeDefinitionNode)o;
 		String filename = t.getDefinition();
-		Path p = new Path(filename);
-
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		PathEditorInput input = new PathEditorInput(p);
-		try {
-			IEditorPart editorPart = window.getActivePage().openEditor(input, STPEditor.ID);
+		File file = new File(filename);
+		OpenFileAction open = new OpenFileAction();
+		open.run(file);
+		if (open.isSuccessful()) {
+			IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 			STPEditor editor = (STPEditor)editorPart;
 			int line;
 
-			if(t.getData().toString().startsWith("probe")) //$NON-NLS-1$
+			if (!(t.getData() instanceof FunctionNodeData))
 				line = probeFind(t, editor);
 			else
 				line = functionFind(t, editor);
 
 			editor.jumpToLocation(++line, 0);
-		} catch (PartInitException e) {
-			ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
 		}
 	}
 
@@ -87,10 +84,13 @@ public class DefinitionAction extends Action implements IObjectActionDelegate, I
 	 * @return int representing the line where the node is defined
 	 */
 	private int functionFind(TreeDefinitionNode t, STPEditor editor) {
-		String func = t.toString();
-		int line = editor.findRegex("^function " + func + ".*\\(.*\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		if(line < 0)
-			line = editor.find(func);
+		int line = editor.find(t.getData().toString());
+		if(line < 0) {
+			line = editor.findRegex("(?<!\\w)function " + t.toString()); //$NON-NLS-1$
+			if(line < 0) {
+				line = editor.find(t.toString());
+			}
+		}
 		return Math.max(line, 0);
 	}
 

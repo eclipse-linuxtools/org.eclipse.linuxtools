@@ -55,24 +55,41 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	}
 
 	/**
-	 * Opens the editor input.
+	 * Queries the user for a Systemtap file to open, and opens that file's editor input.
 	 */
 	@Override
 	public void run() {
-		successful = false;
 		if (window == null) {
 			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		}
 		File file = queryFile();
 		if (file != null) {
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
-			IWorkbenchPage page= window.getActivePage();
-			try {
-				IDE.openEditorOnFileStore(page, fileStore);
-				successful = true;
-			} catch (PartInitException e) {
-				//Pass
-			}
+			runActions(file);
+		}
+	}
+
+	/**
+	 * Opens the provided file's editor input, if it is a valid Systemtap file.
+	 * @since 3.0
+	 */
+	public void run(File file) {
+		if (window == null) {
+			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		}
+		if (file != null && file.exists() && file.getName().endsWith(".stp")) { //$NON-NLS-1$
+			runActions(file);
+		}
+	}
+
+	private void runActions(File file) {
+		successful = false;
+		IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
+		IWorkbenchPage page = window.getActivePage();
+		try {
+			IDE.openEditorOnFileStore(page, fileStore);
+			successful = true;
+		} catch (PartInitException e) {
+			//Pass
 		}
 	}
 

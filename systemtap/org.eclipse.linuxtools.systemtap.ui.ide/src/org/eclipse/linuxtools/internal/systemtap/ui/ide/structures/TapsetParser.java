@@ -11,9 +11,9 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -52,9 +52,10 @@ public abstract class TapsetParser extends Job {
 	private String[] tapsets;
 	protected boolean cancelRequested;
 
-	protected TapsetParser(String[] tapsets, String jobTitle) {
+	protected TapsetParser(String jobTitle) {
 		super(jobTitle);
-		this.tapsets = Arrays.copyOf(tapsets, tapsets.length);
+		this.tapsets = IDEPlugin.getDefault().getPreferenceStore()
+				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 		listeners = new ArrayList<>();
 		cancelRequested = false;
 	}
@@ -98,38 +99,37 @@ public abstract class TapsetParser extends Job {
 	 * Runs the stap with the given options and returns the output generated
 	 * @param options String[] of any optional parameters to pass to stap
 	 * @param probe String containing the script to run stap on
-	 * @since 1.2
+	 * @param getErrors Set this to <code>true</code> if the script's error
+	 * stream contents should be returned instead of its standard output
 	 */
-	protected String runStap(String[] options, String probe) {
+	protected String runStap(String[] options, String probe, boolean getErrors) {
 		String[] args = null;
 
 		int size = 2;	//start at 2 for stap, script, options will be added in later
-		if (null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
+		if (tapsets.length > 0 && tapsets[0].trim().length() > 0) {
 			size += tapsets.length<<1;
 		}
-		if (null != options && options.length > 0 && options[0].trim().length() > 0) {
+		if (options.length > 0 && options[0].trim().length() > 0) {
 			size += options.length;
 		}
 
 		args = new String[size];
 		args[0] = "stap"; //$NON-NLS-1$
 		args[size-1] = probe;
-		args[size-2] = ""; //$NON-NLS-1$
 
 		//Add extra tapset directories
-		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
+		if(tapsets.length > 0 && tapsets[0].trim().length() > 0) {
 			for(int i=0; i<tapsets.length; i++) {
-				args[2+(i<<1)] = "-I"; //$NON-NLS-1$
-				args[3+(i<<1)] = tapsets[i];
+				args[1+(i<<1)] = "-I"; //$NON-NLS-1$
+				args[2+(i<<1)] = tapsets[i];
 			}
 		}
 		if(null != options && options.length > 0 && options[0].trim().length() > 0) {
 			for(int i=0; i<options.length; i++) {
-				args[args.length-options.length-1+i] = options[i];
+				args[size-1-options.length+i] = options[i];
 			}
 		}
 
-		String output = null;
 		try {
 			if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
 				StringOutputStream str = new StringOutputStream();
@@ -145,18 +145,29 @@ public abstract class TapsetParser extends Job {
 					displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
 				}
 
-				output = str.toString();
+				return (!getErrors ? str : strErr).toString();
 			} else {
 				Process process = SystemtapProcessFactory.exec(args, null);
 				if(process == null){
 					displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
-					return output;
+					return null;
 				}
 
 				StringStreamGobbler gobbler = new StringStreamGobbler(process.getInputStream());
+				StringStreamGobbler egobbler = null;
 				gobbler.start();
+				if (getErrors) {
+					egobbler = new StringStreamGobbler(process.getErrorStream());
+					egobbler.start();
+				}
 				process.waitFor();
-				output = gobbler.getOutput().toString();
+				gobbler.stop();
+				if (egobbler == null) {
+					return gobbler.getOutput().toString();
+				} else {
+					egobbler.stop();
+					return egobbler.getOutput().toString();
+				}
 			}
 
 		} catch (JSchException e) {
@@ -168,7 +179,7 @@ public abstract class TapsetParser extends Job {
 			e.printStackTrace();
 		}
 
-		return output;
+		return null;
 	}
 
 	private void displayError(final String title, final String error){

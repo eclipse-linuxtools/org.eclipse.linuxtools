@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
@@ -50,16 +49,12 @@ public class ProbeParser extends TapsetParser {
 		if (parser != null) {
 			return parser;
 		}
-
-		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
-				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
-		parser = new ProbeParser(tapsets);
-
+		parser = new ProbeParser();
 		return parser;
 	}
 
-	private ProbeParser(String[] tapsets) {
-		super(tapsets, "Probe Parser"); //$NON-NLS-1$
+	private ProbeParser() {
+		super("Probe Parser"); //$NON-NLS-1$
 		probes = new TreeNode("", false); //$NON-NLS-1$
 	}
 
@@ -102,7 +97,7 @@ public class ProbeParser extends TapsetParser {
 			options = null;
 		}
 
-		String s = runStap(options, script);
+		String s = runStap(options, script, false);
 		if (s == null) {
 			return ""; //$NON-NLS-1$
 		}

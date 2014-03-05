@@ -233,10 +233,10 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 	private IEditorPart openNewFile() {
 		NewFileAction action = new NewFileAction();
 		action.run();
-		if (action.wasCancelled()) {
-			return null;
+		if (action.isSuccessful()) {
+			return window.getActivePage().getActiveEditor();
 		}
-		return window.getActivePage().getActiveEditor();
+		return null;
 	}
 
 	@Override

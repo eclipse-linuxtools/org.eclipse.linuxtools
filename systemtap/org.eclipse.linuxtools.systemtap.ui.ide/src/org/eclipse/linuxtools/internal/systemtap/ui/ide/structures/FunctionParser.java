@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
-import java.io.File;
+import java.text.MessageFormat;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +19,9 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.structures.FunctionNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 
@@ -45,16 +46,12 @@ public class FunctionParser extends TapsetParser {
 		if (parser != null) {
 			return parser;
 		}
-
-		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
-				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
-		parser = new FunctionParser(tapsets);
-
+		parser = new FunctionParser();
 		return parser;
 	}
 
-	private FunctionParser(String[] tapsets) {
-		super(tapsets, "Function Parser"); //$NON-NLS-1$
+	private FunctionParser() {
+		super("Function Parser"); //$NON-NLS-1$
 		functions = new TreeNode("", false); //$NON-NLS-1$
 	}
 
@@ -81,57 +78,84 @@ public class FunctionParser extends TapsetParser {
 	 * 'probe begin{}' and parsing the output.
 	 */
 	private void runPass2Functions() {
-		int i = 0;
-		TreeNode parent;
 		String script = "probe begin{}"; //$NON-NLS-1$
-		String result = runStap(new String[] {"-v", "-p1", "-e"}, script);   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		String result = runStap(new String[] {"-v", "-p1", "-e"}, script, false);   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		if (result == null) {
 			return;
 		}
 		StringTokenizer st = new StringTokenizer(result, "\n", false); //$NON-NLS-1$
 		st.nextToken(); //skip that stap command
 		String tok = ""; //$NON-NLS-1$
-		String regex = "^function .*\\)\n$"; //match ^function and ending the line with ')' //$NON-NLS-1$
-		String pathname = null;
-		Pattern p = Pattern.compile(regex, Pattern.MULTILINE | Pattern.UNIX_LINES | Pattern.COMMENTS);
-		Pattern secondp = Pattern.compile("[\\W]"); //take our function line and split it up //$NON-NLS-1$
-		Pattern underscorep = Pattern.compile("^function _.*"); //remove any lines that "^function _" //$NON-NLS-1$
-		Pattern allCaps = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
-		Pattern pathnamep = Pattern.compile("^# file (/.*\\.stp)"); //$NON-NLS-1$
+		String filename = null;
+		String scriptText = null;
+
+		String functionRegex = "(?s)(?<!\\w)function\\s+({0})(?:\\s*:\\s*(\\w+))?\\s*\\(([^)]+?)?\\)"; //$NON-NLS-1$
+		// Get functions (with proper typing) directly from the .stp files being used by stap.
+		Pattern pFilename = Pattern.compile("# file (/.*\\.stp)"); //$NON-NLS-1$
+		Pattern pFunction = Pattern.compile("function (?!_)(\\w+) \\(.*?\\)"); //Ignore functions starting with _. //$NON-NLS-1$
+		Pattern pParams = Pattern.compile("(\\w+)(?:\\s*:\\s*(\\w+))?"); //$NON-NLS-1$
+		Pattern pAllCaps = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
+		Pattern pReturn = Pattern.compile("\\sreturn\\W"); //$NON-NLS-1$
+
 		while(st.hasMoreTokens()) {
 			tok = st.nextToken();
-			Matcher m = p.matcher(tok);
-			while(m.find()) {
-				// this gives us function foo (bar, bar)
-				// we need to strip the ^function and functions with a leading _
-				String functionLine = m.group();
-				String[] us = underscorep.split(functionLine);
-
-				for(String s : us) {
-					String[] test = secondp.split(s);
-					i = 0;
-					for(String t : test) {
-						// If i== 1 this is a function name.
-						// Ignore ALL_CAPS functions; they are not meant for end
-						// user use.
-						if(i == 1 && !allCaps.matcher(t).matches()) {
-							// A function node's data is the entire function line.
-							functions.add(new TreeDefinitionNode(functionLine, t, pathname, true));
+			Matcher mFilename = pFilename.matcher(tok);
+			if(mFilename.matches()) {
+				filename = mFilename.group(1).toString();
+				scriptText = null;
+			} else if (filename != null) {
+				Matcher mFunction = pFunction.matcher(tok);
+				if(mFunction.matches()) {
+					// Ignore ALL_CAPS functions, since they are not meant for end-user use.
+					String functionName = mFunction.group(1);
+					if (pAllCaps.matcher(functionName).matches()) {
+						continue;
+					}
+					if (scriptText == null) {
+						scriptText = CommentRemover.execWithFile(filename);
+					}
+					Matcher mScript = Pattern.compile(MessageFormat.format(functionRegex, functionName)).matcher(scriptText);
+					while (mScript.find()) {
+						String functionLine = mScript.group();
+						String functionType = mScript.group(2);
+						// If the function has no return type, look for a "return" statement to check
+						// if it's really a void function, or if its return type is just unspecified
+						if (functionType == null && searchForPattern(scriptText, mScript.end(), pReturn)) {
+							functionType = FunctionNodeData.UNKNOWN_TYPE;
 						}
-						else if(i > 1 && t.length() >= 1) {
-							parent = functions.getChildAt(functions.getChildCount()-1);
-							parent.add(new TreeNode(t, t, false));
+						TreeDefinitionNode function = new TreeDefinitionNode(
+								new FunctionNodeData(functionLine, functionType),
+								functionName, filename, true);
+						functions.add(function);
+						// Add all function parameters that exist
+						String params = mScript.group(3);
+						if (params != null) {
+							Matcher mParams = pParams.matcher(params);
+							while (mParams.find()) {
+								function.add(new TreeNode(
+										new FunctionNodeData(null, mParams.group(2)),
+										mParams.group(1), false));
+							}
 						}
-						i++;
 					}
 				}
 			}
-			Matcher f = pathnamep.matcher(tok);
-			if(f.find()) {
-				pathname = f.group(1).toString();
-			}
 		}
 		functions.sortTree();
+	}
+
+	private boolean searchForPattern(String scriptText, int start, Pattern p) {
+		int end, bcount = 1;
+		start = scriptText.indexOf('{', start) + 1;
+		for (end = start; end < scriptText.length(); end++) {
+			char c = scriptText.charAt(end);
+			if (c == '{') {
+				bcount++;
+			} else if (c == '}' && --bcount == 0) {
+				break;
+			}
+		}
+		return p.matcher(scriptText.substring(start, end)).find();
 	}
 
 	/**

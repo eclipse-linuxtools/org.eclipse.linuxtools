@@ -16,6 +16,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.FunctionBrowserAction;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
+import org.eclipse.linuxtools.systemtap.structures.FunctionNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -51,17 +52,20 @@ public class FunctionBrowserView extends BrowserView {
 
 	@Override
 	protected Image getEntryImage(TreeNode treeObj) {
-		String item = treeObj.getData().toString();
-		if (item.startsWith("function")) { //$NON-NLS-1$
-			item = item.substring(0, item.indexOf('(')).trim();
+		if (!(treeObj.getData() instanceof FunctionNodeData)) {
+			return null;
 		}
-		if(item.endsWith(":long")) {//$NON-NLS-1$
+		FunctionNodeData d = (FunctionNodeData) treeObj.getData();
+		String type = d.getType();
+		if (type == null) {
+			return IDEPlugin.getImageDescriptor("icons/vars/var_void.gif").createImage(); //$NON-NLS-1$
+		} else if(type.equals("long")) {//$NON-NLS-1$
 			return IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$
-		}
-		if(item.endsWith(":string")) {//$NON-NLS-1$
+		} else if(type.equals("string")) {//$NON-NLS-1$
 			return IDEPlugin.getImageDescriptor("icons/vars/var_str.gif").createImage(); //$NON-NLS-1$
+		} else {
+			return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
 		}
-		return IDEPlugin.getImageDescriptor("icons/vars/var_void.gif").createImage(); //$NON-NLS-1$
 	}
 
 	/**
