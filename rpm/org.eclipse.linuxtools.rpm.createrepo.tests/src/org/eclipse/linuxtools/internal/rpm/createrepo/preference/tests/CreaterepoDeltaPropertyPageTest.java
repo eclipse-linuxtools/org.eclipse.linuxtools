@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -29,8 +32,10 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,6 +51,35 @@ public class CreaterepoDeltaPropertyPageTest {
 	private static TestCreaterepoProject testProject;
 	private CreaterepoProject project;
 	private static SWTWorkbenchBot bot;
+
+	private static class NodeAvailableAndSelect extends DefaultCondition {
+
+		private SWTBotTree tree;
+		private String parent;
+		private String node;
+
+		NodeAvailableAndSelect(SWTBotTree tree, String parent, String node){
+			this.tree = tree;
+			this.node = node;
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean test() {
+			try {
+				SWTBotTreeItem parentNode = tree.getTreeItem(parent);
+				parentNode.getNode(node).select();
+				return true;
+			} catch (WidgetNotFoundException e) {
+				return false;
+			}
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for " + node; //$NON-NLS-1$
+		}
+	}
 
 	/**
 	 * Initialize the test project.
@@ -201,7 +235,8 @@ public class CreaterepoDeltaPropertyPageTest {
 		.menu(ICreaterepoTestConstants.OTHER).click();
 		SWTBotShell shell = bot.shell(ICreaterepoTestConstants.SHOW_VIEW);
 		shell.activate();
-		bot.tree().expandNode(ICreaterepoTestConstants.GENERAL_NODE).select(ICreaterepoTestConstants.NAVIGATOR);
+		shell.bot().text().setText(ICreaterepoTestConstants.NAVIGATOR);
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.GENERAL_NODE, ICreaterepoTestConstants.NAVIGATOR));
 		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
 	}
 
@@ -223,7 +258,8 @@ public class CreaterepoDeltaPropertyPageTest {
 		SWTBotShell propertyShell = bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
 				ICreaterepoTestConstants.REPO_NAME));
 		propertyShell.activate();
-		bot.tree().expandNode(ICreaterepoTestConstants.CREATEREPO_CATEGORY).getNode(ICreaterepoTestConstants.DELTAS).select();
+		propertyShell.bot().text().setText(ICreaterepoTestConstants.DELTAS);
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.DELTAS));
 	}
 
 }

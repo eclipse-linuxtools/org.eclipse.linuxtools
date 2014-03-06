@@ -98,6 +98,35 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
+	private static class NodeAvailableAndSelect extends DefaultCondition {
+
+		private SWTBotTree tree;
+		private String parent;
+		private String node;
+
+		NodeAvailableAndSelect(SWTBotTree tree, String parent, String node){
+			this.tree = tree;
+			this.node = node;
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean test() {
+			try {
+				SWTBotTreeItem parentNode = tree.getTreeItem(parent);
+				parentNode.getNode(node).select();
+				return true;
+			} catch (WidgetNotFoundException e) {
+				return false;
+			}
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for " + node; //$NON-NLS-1$
+		}
+	}
+
 	private static class TreePopulated extends DefaultCondition {
 
 		private SWTBotTree parent;
@@ -263,7 +292,8 @@ public class TestCreateSystemtapScript {
 
 		SWTBotShell shell = bot.shell("New Project");
 		shell.setFocus();
-		bot.tree().expandNode("General").select("Project");
+		shell.bot().text().setText("Project");
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Project"));
 		bot.button("Next >").click();
 		bot.textWithLabel("Project name:").setText(SYSTEMTAP_PROJECT_NAME);
 		bot.button("Finish").click();
@@ -273,7 +303,8 @@ public class TestCreateSystemtapScript {
 		bot.menu("Window").menu("Show View").menu("Other...").click();
 		shell = bot.shell("Show View");
 		shell.setFocus();
-		bot.tree().expandNode("Debug").select("Debug");
+		shell.bot().text().setText("Debug");
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "Debug", "Debug"));
 		bot.button("OK").click();
 	}
 
@@ -299,7 +330,8 @@ public class TestCreateSystemtapScript {
 
 		SWTBotShell shell = bot.shell("New");
 		shell.setFocus();
-		bot.tree().expandNode("SystemTap").select("SystemTap Script");
+		shell.bot().text().setText("SystemTap");
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "SystemTap", "SystemTap Script"));
 		bot.button("Next >").click();
 
 		SWTBotText text = bot.textWithLabel("Script Name:").setText(scriptName);
@@ -392,7 +424,8 @@ public class TestCreateSystemtapScript {
 		projectMenu.click();
 		SWTBotShell shell = bot.shell("New");
 		shell.setFocus();
-		bot.tree().expandNode("General").select("Untitled Text File");
+		shell.bot().text().setText("Untitled Text File");
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Untitled Text File"));
 		bot.button("Finish").click();
 
 		items[1].doubleClick();
@@ -611,7 +644,8 @@ public class TestCreateSystemtapScript {
 		openRunConfigurations(scriptName);
 		shell = bot.shell("Run Configurations");
 		shell.setFocus();
-		bot.tree().expandNode("SystemTap").select(scriptName);
+		shell.bot().text().setText(scriptName); // Set the filter text to show configs of the current script
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "SystemTap", scriptName));
 		tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
 		tab.activate();
 
@@ -1060,20 +1094,20 @@ public class TestCreateSystemtapScript {
 		final Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
 		AbstractChartBuilder cb = bot.widget(matcher);
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 1));
-		checkTooltipAtDataPoint(cb, 0, 0, MessageFormat.format(
+		checkTooltipAtDataPoint(cb, 0, 0, new Point(0, 20), MessageFormat.format(
 				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.BarChartBuilder_ToolTipCoords,
 				"Column 1", "5"), true);
 
 		graphEditor.bot().cTabItem("Info - Line Graph").activate();
 		cb = bot.widget(matcher);
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), 2));
-		checkTooltipAtDataPoint(cb, 0, 1, MessageFormat.format(
+		checkTooltipAtDataPoint(cb, 0, 1, null, MessageFormat.format(
 				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
 				"Column 1", "2", "6"), true);
 
 		// The tooltip should disappear when a point moves away from the mouse, without need for mouse movement.
 		bot.waitUntil(new ChartHasUpdated(cb.getChart(), -1));
-		checkTooltipAtDataPoint(cb, 0, -1, MessageFormat.format(
+		checkTooltipAtDataPoint(cb, 0, -1, null, MessageFormat.format(
 				org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.Messages.AbstractChartWithAxisBuilder_ToolTipCoords,
 				"Column 1", "2", "6"), false);
 
@@ -1086,12 +1120,16 @@ public class TestCreateSystemtapScript {
 	 * May move the mouse to a desired data point on a chart and test for the tooltip that appears.
 	 * @param cb The AbstractChartBuilder containing the chart to test.
 	 * @param series The index of the data series to hover over.
-	 * @param dataPoint The data point of the series to move the mouse to. Set this to -1 or less if the mouse should stay where it is.
+	 * @param dataPoint The data point of the series to move the mouse to. Set this to -1
+	 * or less if the mouse should stay where it is.
+	 * @param adjustment Move the mouse's x & y coordinates by the values of this Point,
+	 * or set this to <code>null</code> to make no adjustment.
 	 * @param expectedTooltip The expected contents of the tooltip.
 	 * @param shellShouldExist Set to <code>false</code> if the tooltip should not be found.
 	 */
 	private void checkTooltipAtDataPoint(final AbstractChartBuilder cb, final int series,
-			final int dataPoint, final String expectedTooltip, final boolean shellShouldExist) {
+			final int dataPoint, final Point adjustment, final String expectedTooltip,
+			final boolean shellShouldExist) {
 		if (dataPoint >= 0) {
 			UIThreadRunnable.syncExec(new VoidResult() {
 
@@ -1101,8 +1139,8 @@ public class TestCreateSystemtapScript {
 					event.type = SWT.MouseMove;
 					Point mousePoint = cb.getChart().getPlotArea().toDisplay(
 							cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
-					event.x = mousePoint.x;
-					event.y = mousePoint.y + 1; // Adjust the mouse to be a bit lower, as it sometimes goes above bars
+					event.x = mousePoint.x + (adjustment != null ? adjustment.x : 0);
+					event.y = mousePoint.y + (adjustment != null ? adjustment.y : 0);
 					bot.getDisplay().post(event);
 				}
 			});
