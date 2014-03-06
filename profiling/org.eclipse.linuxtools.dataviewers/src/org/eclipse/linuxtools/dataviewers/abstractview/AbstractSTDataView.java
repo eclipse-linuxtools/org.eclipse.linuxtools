@@ -302,8 +302,9 @@ public abstract class AbstractSTDataView extends ViewPart {
      * </p>
      *
      * @param manager
+     * @since 3.0
      */
-    private void fillContextMenu(IMenuManager manager) {
+    protected void fillContextMenu(IMenuManager manager) {
     	Control control = stViewer.getViewer().getControl();
         if (control instanceof Tree) {
             Tree tree = (Tree) control;
