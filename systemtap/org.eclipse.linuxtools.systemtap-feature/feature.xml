@@ -39,7 +39,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.graphingapi.core"
+         id="org.eclipse.linuxtools.systemtap.graphing.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -52,7 +52,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.graphingapi.ui"
+         id="org.eclipse.linuxtools.systemtap.graphing.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

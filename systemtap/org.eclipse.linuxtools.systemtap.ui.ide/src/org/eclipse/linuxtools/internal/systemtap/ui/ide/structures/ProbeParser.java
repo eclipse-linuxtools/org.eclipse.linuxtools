@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 

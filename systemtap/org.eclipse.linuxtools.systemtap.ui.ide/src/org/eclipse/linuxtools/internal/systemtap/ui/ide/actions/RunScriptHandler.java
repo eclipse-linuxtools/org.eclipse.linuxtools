@@ -46,7 +46,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentV
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.StapErrorParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;

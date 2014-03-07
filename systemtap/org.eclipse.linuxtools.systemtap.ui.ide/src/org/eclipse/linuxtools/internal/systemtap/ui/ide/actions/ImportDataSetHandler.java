@@ -20,12 +20,12 @@ import java.util.Arrays;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row.RowDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table.TableDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditorInput;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.row.RowDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.table.TableDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor;
+import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditorInput;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchPage;
@@ -57,6 +57,10 @@ public class ImportDataSetHandler extends AbstractHandler {
 			String id = br.readLine();
 			String[] titles = br.readLine().split(", "); //$NON-NLS-1$
 
+			/*
+			 * Note: "graphingapi" is included in dataset IDs (rather than "graphing") to maintain
+			 * compatibility with graph sets created before the project name change.
+			 */
 			if (id == null && titles == null) {
 				throw new IOException();
 			} else if (id.equals(RowDataSet.ID)) {

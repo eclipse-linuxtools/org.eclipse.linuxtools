@@ -17,7 +17,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.PathEditorInput;
 import org.eclipse.ui.IEditorPart;

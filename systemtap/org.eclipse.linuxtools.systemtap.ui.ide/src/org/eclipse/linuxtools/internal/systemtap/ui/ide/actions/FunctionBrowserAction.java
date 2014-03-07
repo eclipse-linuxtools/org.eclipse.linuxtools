@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.ui.IEditorInput;

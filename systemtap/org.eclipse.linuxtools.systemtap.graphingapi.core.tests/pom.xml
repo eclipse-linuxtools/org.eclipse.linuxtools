@@ -17,11 +17,11 @@
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.systemtap.graphingapi.core.tests</artifactId>
+  <artifactId>org.eclipse.linuxtools.systemtap.graphing.core.tests</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
-  <name>Linux Tools SystemTap Graphing API Tests Plug-in</name>
+  <name>Linux Tools SystemTap Graphing Tests Plug-in</name>
 
   <build>
     <plugins>
@@ -34,8 +34,8 @@
             <!-- test mojo matches TestProject be default and treats it as PojoTest -->
             <exclude>**/Test*.class</exclude>
           </excludes>
-          <testSuite>org.eclipse.linuxtools.systemtap.graphingapi.core.tests</testSuite>
-          <testClass>org.eclipse.linuxtools.systemtap.graphingapi.core.tests.AllTests</testClass>
+          <testSuite>org.eclipse.linuxtools.systemtap.graphing.core.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.systemtap.graphing.core.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>

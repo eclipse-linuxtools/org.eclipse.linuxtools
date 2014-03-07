@@ -6,32 +6,32 @@
 		<page
 			name="%preference.dataTable.name"
 			id="org.eclipse.linuxtools.generic.prefs.graphing.datatable"
-			class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.DataTablePreferencePage"
-			category="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
+			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.DataTablePreferencePage"
+			category="org.eclipse.linuxtools.generic.prefs.graphing"/>
 		<page
 			name="%preference.graph.name"
 			id="org.eclipse.linuxtools.generic.prefs.graphing.graph"
-			class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphPreferencePage"
-			category="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
+			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphPreferencePage"
+			category="org.eclipse.linuxtools.generic.prefs.graphing"/>
 	</extension>
 
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.PreferenceInitializer"/>
 	</extension>
 
     <extension
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.graphing.name"
-			class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.GraphingPreferencePage"
+			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferencePage"
 			category="org.eclipse.linuxtools.systemtap.prefs.view"
-            id="org.eclipse.linuxtools.generic.prefs.graphingapi"/>
+            id="org.eclipse.linuxtools.generic.prefs.graphing"/>
 	</extension>
 
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.PreferenceInitializer"/>
 	</extension>
 
 	<extension
@@ -39,12 +39,12 @@
 		<category
 			name="%category.file.name"
 			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtap.graphingapi.ui.category.file"/>
+			id="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"/>
 		<command
 			name="%command.save.name"
 			description="%command.save.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.graphingapi.ui.category.file"
-			id="org.eclipse.linuxtools.systemtap.graphingapi.ui.commands.SaveGraphImage"/>
+			categoryId="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"
+			id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"/>
 	</extension>
 
 
@@ -53,15 +53,15 @@
 		<actionSet
 			label="actionset.graph.name"
 			visible="false"
-			id="org.eclipse.linuxtools.systemtap.graphingapi.ui.GraphingActionSet">
+			id="org.eclipse.linuxtools.systemtap.graphing.ui.GraphingActionSet">
 			<action
 				label="%action.save.name"
 				tooltip="%action.save.desc"
-				id="org.eclipse.linuxtools.systemtap.graphingapi.ui.actions.SaveGraphImage"
+				id="org.eclipse.linuxtools.systemtap.graphing.ui.actions.SaveGraphImage"
 				icon="icons/actions/save_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/save.ext"
-				class="org.eclipse.linuxtools.internal.systemtap.graphingapi.ui.actions.SaveGraphImageAction"
-				definitionId="org.eclipse.linuxtools.systemtap.graphingapi.ui.commands.SaveGraphImage"
+				class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.actions.SaveGraphImageAction"
+				definitionId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
 				style="push"
 				state="false"/>
 		</actionSet>
@@ -69,9 +69,9 @@
  <extension
        point="org.eclipse.ui.editors">
     <editor
-          class="org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor"
+          class="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
           default="false"
-          id="org.eclipse.linuxtools.systemtap.graphingapi.ui.views.GraphSelectorEditor"
+          id="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
           name="Graphs">
     </editor>
  </extension>

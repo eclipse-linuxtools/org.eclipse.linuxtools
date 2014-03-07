@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.graphingapi.core;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.graphing.core;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Localization: plugin
 Bundle-Vendor: %bundleProvider
-Export-Package: org.eclipse.linuxtools.systemtap.graphingapi.core,
- org.eclipse.linuxtools.systemtap.graphingapi.core.adapters,
- org.eclipse.linuxtools.systemtap.graphingapi.core.aggregates,
- org.eclipse.linuxtools.systemtap.graphingapi.core.datasets,
- org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.row,
- org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.table,
- org.eclipse.linuxtools.systemtap.graphingapi.core.filters,
- org.eclipse.linuxtools.systemtap.graphingapi.core.structures
+Export-Package: org.eclipse.linuxtools.systemtap.graphing.core,
+ org.eclipse.linuxtools.systemtap.graphing.core.adapters,
+ org.eclipse.linuxtools.systemtap.graphing.core.aggregates,
+ org.eclipse.linuxtools.systemtap.graphing.core.datasets,
+ org.eclipse.linuxtools.systemtap.graphing.core.datasets.row,
+ org.eclipse.linuxtools.systemtap.graphing.core.datasets.table,
+ org.eclipse.linuxtools.systemtap.graphing.core.filters,
+ org.eclipse.linuxtools.systemtap.graphing.core.structures
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.swt

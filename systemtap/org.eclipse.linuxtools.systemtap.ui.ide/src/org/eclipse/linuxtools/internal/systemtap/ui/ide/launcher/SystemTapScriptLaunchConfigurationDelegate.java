@@ -34,9 +34,9 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSet;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.IDataSetParser;
-import org.eclipse.linuxtools.systemtap.graphingapi.core.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
+import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSetParser;
+import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.structures.process.SystemTapRuntimeProcessFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
 

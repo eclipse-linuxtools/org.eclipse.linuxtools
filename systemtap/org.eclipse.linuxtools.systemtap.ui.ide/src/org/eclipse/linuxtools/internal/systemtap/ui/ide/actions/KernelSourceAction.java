@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;

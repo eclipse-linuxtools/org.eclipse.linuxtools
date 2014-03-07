@@ -20,7 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpExec;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;

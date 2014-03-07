@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.widgets.Composite;

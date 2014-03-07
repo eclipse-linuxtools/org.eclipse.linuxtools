@@ -17,8 +17,8 @@
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.systemtap.graphingapi.ui</artifactId>
+  <artifactId>org.eclipse.linuxtools.systemtap.graphing.ui</artifactId>
   <version>3.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
-  <name>Linux Tools SystemTap Graphing API UI Plug-In</name>
+  <name>Linux Tools SystemTap Graphing UI Plug-In</name>
 </project>

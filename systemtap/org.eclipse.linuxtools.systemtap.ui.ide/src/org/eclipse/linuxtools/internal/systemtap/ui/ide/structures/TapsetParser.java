@@ -21,7 +21,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFactory;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;

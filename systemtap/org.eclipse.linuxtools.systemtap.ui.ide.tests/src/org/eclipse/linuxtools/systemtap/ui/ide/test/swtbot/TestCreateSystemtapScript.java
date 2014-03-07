@@ -22,8 +22,8 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.Messages;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.AbstractChartBuilder;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.wizards.graph.GraphFactory;
+import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -843,19 +843,19 @@ public class TestCreateSystemtapScript {
 		assertTrue(scale == 1.0 && scroll == 1.0);
 
 		// Check that scroll buttons are disabled at 100% range.
-		SWTBotButton firstButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_First);
-		SWTBotButton leftButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Left);
-		SWTBotButton rightButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Right);
-		SWTBotButton lastButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_Last);
+		SWTBotButton firstButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_First);
+		SWTBotButton leftButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Left);
+		SWTBotButton rightButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Right);
+		SWTBotButton lastButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Last);
 		assertTrue(!firstButton.isEnabled());
 		assertTrue(!leftButton.isEnabled());
 		assertTrue(!rightButton.isEnabled());
 		assertTrue(!lastButton.isEnabled());
 
 		// Test zooming in. The amount of zoom is arbitrary for this test--just make sure zooming happened.
-		SWTBotButton zoomInButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_ZoomIn);
-		SWTBotButton zoomOutButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_ZoomOut);
-		SWTBotButton allButton = bot.button(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphDiscreteXControl_All);
+		SWTBotButton zoomInButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_ZoomIn);
+		SWTBotButton zoomOutButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_ZoomOut);
+		SWTBotButton allButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_All);
 		assertTrue(zoomInButton.isEnabled());
 		assertTrue(!zoomOutButton.isEnabled());
 		assertTrue(!allButton.isEnabled());
@@ -974,17 +974,17 @@ public class TestCreateSystemtapScript {
 		int flipSign;
 		if (isXAxis) {
 			axis = cb.getChart().getAxisSet().getXAxis(0);
-			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ZoomInTooltip);
-			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ZoomOutTooltip);
-			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ScaleMessage);
-			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousXControl_ScrollMessage);
+			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousXControl_ZoomInTooltip);
+			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousXControl_ZoomOutTooltip);
+			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousXControl_ScaleMessage);
+			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousXControl_ScrollMessage);
 			flipSign = 1;
 		} else {
 			axis = cb.getChart().getAxisSet().getYAxis(0);
-			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ZoomInTooltip);
-			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ZoomOutTooltip);
-			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ScaleMessage);
-			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.Messages.GraphContinuousYControl_ScrollMessage);
+			zoomInButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousYControl_ZoomInTooltip);
+			zoomOutButton = bot.buttonWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousYControl_ZoomOutTooltip);
+			zoomScale = bot.scaleWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousYControl_ScaleMessage);
+			scrollBar = bot.sliderWithTooltip(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphContinuousYControl_ScrollMessage);
 			flipSign = -1;
 		}
 		double scale = getAxisScale(cb, isXAxis);

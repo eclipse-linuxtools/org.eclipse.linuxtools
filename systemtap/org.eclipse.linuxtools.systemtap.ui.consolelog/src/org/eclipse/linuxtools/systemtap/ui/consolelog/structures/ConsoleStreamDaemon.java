@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 import java.io.IOException;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures.Messages;
-import org.eclipse.linuxtools.systemtap.graphingapi.ui.widgets.ExceptionErrorDialog;
+import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 
