@@ -52,7 +52,6 @@ public class FunctionParser extends TapsetParser {
 
 	private FunctionParser() {
 		super("Function Parser"); //$NON-NLS-1$
-		functions = new TreeNode("", false); //$NON-NLS-1$
 	}
 
 	/**
@@ -78,6 +77,8 @@ public class FunctionParser extends TapsetParser {
 	 * 'probe begin{}' and parsing the output.
 	 */
 	private void runPass2Functions() {
+		// Create a new function tree each time, so as to not add duplicates
+		functions = new TreeNode("", false); //$NON-NLS-1$
 		String script = "probe begin{}"; //$NON-NLS-1$
 		String result = runStap(new String[] {"-v", "-p1", "-e"}, script, false);   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		if (result == null) {

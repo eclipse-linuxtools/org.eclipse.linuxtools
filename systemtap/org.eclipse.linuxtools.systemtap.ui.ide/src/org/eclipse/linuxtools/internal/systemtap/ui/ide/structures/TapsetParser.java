@@ -49,13 +49,10 @@ public abstract class TapsetParser extends Job {
 
 	private ArrayList<IUpdateListener> listeners;
 
-	private String[] tapsets;
 	protected boolean cancelRequested;
 
 	protected TapsetParser(String jobTitle) {
 		super(jobTitle);
-		this.tapsets = IDEPlugin.getDefault().getPreferenceStore()
-				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 		listeners = new ArrayList<>();
 		cancelRequested = false;
 	}
@@ -104,6 +101,8 @@ public abstract class TapsetParser extends Job {
 	 */
 	protected String runStap(String[] options, String probe, boolean getErrors) {
 		String[] args = null;
+		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
+				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
 		int size = 2;	//start at 2 for stap, script, options will be added in later
 		if (tapsets.length > 0 && tapsets[0].trim().length() > 0) {
@@ -124,7 +123,7 @@ public abstract class TapsetParser extends Job {
 				args[2+(i<<1)] = tapsets[i];
 			}
 		}
-		if(null != options && options.length > 0 && options[0].trim().length() > 0) {
+		if(options.length > 0 && options[0].trim().length() > 0) {
 			for(int i=0; i<options.length; i++) {
 				args[size-1-options.length+i] = options[i];
 			}

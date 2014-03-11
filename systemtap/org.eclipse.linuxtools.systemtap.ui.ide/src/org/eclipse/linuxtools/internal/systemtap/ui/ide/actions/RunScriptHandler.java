@@ -397,7 +397,7 @@ public class RunScriptHandler extends AbstractHandler {
 		String[] tapsets = preferenceStore.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
 		//Get all imported tapsets
-		if(null != tapsets && tapsets.length > 0 && tapsets[0].trim().length() > 0) {
+		if(tapsets.length > 0 && tapsets[0].trim().length() > 0) {
 			for(int i=0; i<tapsets.length; i++) {
 				cmdList.add("-I"); //$NON-NLS-1$
 				cmdList.add(tapsets[i]);

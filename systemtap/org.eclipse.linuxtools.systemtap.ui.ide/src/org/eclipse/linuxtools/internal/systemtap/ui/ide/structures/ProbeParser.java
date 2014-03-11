@@ -55,7 +55,6 @@ public class ProbeParser extends TapsetParser {
 
 	private ProbeParser() {
 		super("Probe Parser"); //$NON-NLS-1$
-		probes = new TreeNode("", false); //$NON-NLS-1$
 	}
 
 	/**
@@ -118,6 +117,8 @@ public class ProbeParser extends TapsetParser {
 	 * @param s The entire output from running stap -L.
 	 */
 	private void parseProbes(String s) {
+		// Create a new function tree each time, so as to not add duplicates
+		probes = new TreeNode("", false); //$NON-NLS-1$
 		String token = null;
 		StringBuilder prev = new StringBuilder(""); //$NON-NLS-1$
 		TreeNode currentProbe = null;

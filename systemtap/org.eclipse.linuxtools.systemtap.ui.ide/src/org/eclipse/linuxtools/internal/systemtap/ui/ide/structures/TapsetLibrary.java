@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
@@ -124,6 +126,15 @@ public final class TapsetLibrary {
 		return doc;
 	}
 
+	private static IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (event.getProperty().equals(IDEPreferenceConstants.P_TAPSETS)) {
+				runStapParser();
+			}
+		}
+	};
+
 	/**
 	 * This method will attempt to get the most up-to-date information.
 	 * However, if the TapsetParser is running already it will quit,
@@ -137,6 +148,7 @@ public final class TapsetLibrary {
 		}
 
 		IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
+		preferenceStore.addPropertyChangeListener(propertyChangeListener);
 
 		if (preferenceStore.contains(IDEPreferenceConstants.P_STORED_TREE)
 				&& preferenceStore.getBoolean(IDEPreferenceConstants.P_STORED_TREE)
@@ -187,15 +199,13 @@ public final class TapsetLibrary {
 			return false;
 		}
 
-		if(null != tapsets) {
-			for(int i=0; i<tapsets.length; i++) {
-				f = new File(tapsets[i]);
-				if (f.lastModified() > treesDate) {
-					return false;
-				}
-				if (f.canRead() && !checkIsCurrentFolder(treesDate, f)) {
-					return false;
-				}
+		for(int i=0; i<tapsets.length; i++) {
+			f = new File(tapsets[i]);
+			if (f.lastModified() > treesDate) {
+				return false;
+			}
+			if (f.canRead() && !checkIsCurrentFolder(treesDate, f)) {
+				return false;
 			}
 		}
 		return true;
