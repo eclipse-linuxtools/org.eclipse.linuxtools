@@ -35,6 +35,7 @@ import java.util.SortedMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
+import org.eclipse.cdt.core.dom.ast.IASTCompletionNode;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IBinding;
@@ -55,6 +56,7 @@ import org.eclipse.cdt.ui.ICHelpResourceDescriptor;
 import org.eclipse.cdt.ui.IFunctionSummary;
 import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
+import org.eclipse.cdt.ui.text.IContentAssistHelpInvocationContext;
 import org.eclipse.cdt.ui.text.IHoverHelpInvocationContext;
 import org.eclipse.cdt.ui.text.SharedASTJob;
 import org.eclipse.core.filesystem.EFS;
@@ -259,7 +261,7 @@ public class LibHover implements ICHelpProvider {
         private boolean prototypeHasBrackets;
 
         private class RequiredInclude implements IRequiredInclude {
-        	private String include;
+        	private final String include;
 
         	public RequiredInclude (String file) {
         		include = file;
@@ -282,7 +284,7 @@ public class LibHover implements ICHelpProvider {
 			return getName().compareTo(y.getName());
 		}
 
-        private ArrayList<RequiredInclude> Includes = new ArrayList<>();
+        private final ArrayList<RequiredInclude> Includes = new ArrayList<>();
 
         private void setIncludeName (String iname) {
         	RequiredInclude nri = new RequiredInclude(iname);
@@ -338,8 +340,8 @@ public class LibHover implements ICHelpProvider {
 	}
 
 	private static class EnclosingASTNameJob extends SharedASTJob {
-		private int tlength;
-		private int toffset;
+		private final int tlength;
+		private final int toffset;
 		private IASTName result = null;
 		public EnclosingASTNameJob (ITranslationUnit t,
 				int toffset, int tlength) {
@@ -360,7 +362,7 @@ public class LibHover implements ICHelpProvider {
 	}
 
 	public static class ASTDeclarationFinderJob extends SharedASTJob {
-		private IBinding binding;
+		private final IBinding binding;
 		private IASTName[] decls = null;
 		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
 			super("ASTDeclarationFinderJob", t); //$NON-NLS-1$
@@ -640,35 +642,67 @@ public class LibHover implements ICHelpProvider {
 	public IFunctionSummary[] getMatchingFunctions(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String prefix) {
 		ArrayList<IFunctionSummary> fList = new ArrayList<>();
 
-		for (int di = 0; di < helpBooks.length; ++di) {
-			LibHoverLibrary l = libraries.get(helpBooks[di]);
-			LibHoverInfo cppInfo = l.getHoverInfo();
-			SortedMap<String, FunctionInfo> map = cppInfo.functions.tailMap(prefix);
-			Set<Map.Entry<String, FunctionInfo>> c = map.entrySet();
-			for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
-				Map.Entry<String, FunctionInfo> e = i.next();
-				FunctionInfo x = e.getValue();
-				String name = x.getName();
-				// Look for names that start with prefix, but ignore names that
-				// start with "0" which is used to import text data that cannot
-				// be omitted from the binary version of the document (e.g. invariant
-				// sections of a GFDL licensed document).  This data is given a
-				// function name that starts with the character "0" which is not
-				// valid for the start of a C/C++ function name.  As such, it should
-				// never be offered as a choice for an empty prefix.
-				if (name.startsWith(prefix) && !name.startsWith("0")) { //$NON-NLS-1$
-					FunctionSummary f = new FunctionSummary();
-					f.ReturnType = x.getReturnType();
-					f.Prototype = x.getPrototype();
-					f.Summary = x.getDescription();
-					f.Name = x.getName();
-					ArrayList<String> headers = x.getHeaders();
-					for (int i1 = 0; i1 < headers.size(); ++i1)
-						f.setIncludeName(headers.get(i1));
-					fList.add(f);
-				}
-			}
-		}
+        ITranslationUnit t = context.getTranslationUnit();
+
+        boolean qualifiedCPP = false;
+
+        if (t.isCXXLanguage()) {
+        	try {
+        		if (context instanceof IContentAssistHelpInvocationContext) {
+        			// We know the file offset of the member reference.
+        			IASTCompletionNode node = ((IContentAssistHelpInvocationContext)context).getCompletionNode();
+
+        			IASTName[] names = node.getNames();
+
+        			for (IASTName name : names) {
+        				if (name.isQualified()) {
+        					qualifiedCPP = true;
+        					break;
+        				}
+
+        			}
+
+        		}
+        	} catch (IllegalArgumentException e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	} catch (Exception e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	}
+        }
+
+        if (!qualifiedCPP) {
+        	for (int di = 0; di < helpBooks.length; ++di) {
+        		LibHoverLibrary l = libraries.get(helpBooks[di]);
+        		LibHoverInfo cppInfo = l.getHoverInfo();
+        		SortedMap<String, FunctionInfo> map = cppInfo.functions.tailMap(prefix);
+        		Set<Map.Entry<String, FunctionInfo>> c = map.entrySet();
+        		for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
+        			Map.Entry<String, FunctionInfo> e = i.next();
+        			FunctionInfo x = e.getValue();
+        			String name = x.getName();
+        			// Look for names that start with prefix, but ignore names that
+        			// start with "0" which is used to import text data that cannot
+        			// be omitted from the binary version of the document (e.g. invariant
+        			// sections of a GFDL licensed document).  This data is given a
+        			// function name that starts with the character "0" which is not
+        			// valid for the start of a C/C++ function name.  As such, it should
+        			// never be offered as a choice for an empty prefix.
+        			if (name.startsWith(prefix) && !name.startsWith("0")) { //$NON-NLS-1$
+        				FunctionSummary f = new FunctionSummary();
+        				f.ReturnType = x.getReturnType();
+        				f.Prototype = x.getPrototype();
+        				f.Summary = x.getDescription();
+        				f.Name = x.getName();
+        				ArrayList<String> headers = x.getHeaders();
+        				for (int i1 = 0; i1 < headers.size(); ++i1)
+        					f.setIncludeName(headers.get(i1));
+        				fList.add(f);
+        			}
+        		}
+        	}
+        }
 		IFunctionSummary[] summaries = new IFunctionSummary[fList.size()];
 		for (int k = 0; k < summaries.length; k++) {
 			summaries[k] = fList.get(k);
@@ -677,8 +711,8 @@ public class LibHover implements ICHelpProvider {
 	}
 
 	private static class HelpResource implements IHelpResource {
-		private String href;
-		private String label;
+		private final String href;
+		private final String label;
 		public HelpResource(String href, String label) {
 			this.href = href;
 			this.label = label;
@@ -694,7 +728,7 @@ public class LibHover implements ICHelpProvider {
 	}
 
 	private static class HelpResourceDescriptor implements ICHelpResourceDescriptor {
-		private ICHelpBook helpbook;
+		private final ICHelpBook helpbook;
 
 		public HelpResourceDescriptor(ICHelpBook helpbook) {
 			this.helpbook = helpbook;

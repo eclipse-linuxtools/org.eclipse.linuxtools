@@ -51,6 +51,7 @@
     <module>org.eclipse.linuxtools.cdt.libhover.devhelp</module>
     <module>org.eclipse.linuxtools.cdt.libhover.devhelp.tests</module>
     <module>org.eclipse.linuxtools.cdt.libhover.devhelp-feature</module>
+    <module>org.eclipse.linuxtools.cdt.libhover.tests</module>
   </modules>
 
 </project>
