@@ -31,6 +31,7 @@ import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectNature;
 import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.linuxtools.rpm.createrepo.IRepoFileConstants;
 import org.eclipse.linuxtools.rpm.createrepo.tests.ICreaterepoTestConstants;
+import org.eclipse.linuxtools.rpm.createrepo.tests.TestUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -101,7 +102,8 @@ public class CreaterepoWizardTest {
 		bot.menu(ICreaterepoTestConstants.FILE).menu(ICreaterepoTestConstants.NEW).menu(ICreaterepoTestConstants.OTHER).click();
 		SWTBotShell shell = bot.shell(ICreaterepoTestConstants.NEW);
 		shell.activate();
-		bot.tree().expandNode(ICreaterepoTestConstants.CREATEREPO_CATEGORY).select(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
+		bot.text().setText(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
+		bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));
 		bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
 		bot.textWithLabel(ICreaterepoTestConstants.PROJECT_NAME_LABEL).setText(ICreaterepoTestConstants.PROJECT_NAME);
 		bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();

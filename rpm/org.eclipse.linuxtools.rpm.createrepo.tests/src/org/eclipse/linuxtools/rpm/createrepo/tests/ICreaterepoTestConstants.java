@@ -39,6 +39,13 @@ public interface ICreaterepoTestConstants {
 	String PROPERTIES_SHELL = "Properties for %s"; //$NON-NLS-1$
 
 	/*
+	 * Navigator controls
+	 */
+	String GO_INTO = "Go Into"; //$NON-NLS-1$
+	String GO_BACK = "Back to Workspace"; //$NON-NLS-1$
+	String GO_FORWARD = "Forward"; //$NON-NLS-1$
+
+	/*
 	 * Views
 	 */
 	String WELCOME_VIEW = "Welcome"; //$NON-NLS-1$

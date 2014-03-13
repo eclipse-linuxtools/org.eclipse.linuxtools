@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -25,15 +28,11 @@ import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoChecksums;
 import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoCompressionTypes;
 import org.eclipse.linuxtools.rpm.createrepo.tests.ICreaterepoTestConstants;
 import org.eclipse.linuxtools.rpm.createrepo.tests.TestCreaterepoProject;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
+import org.eclipse.linuxtools.rpm.createrepo.tests.TestUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -49,8 +48,9 @@ import org.osgi.service.prefs.BackingStoreException;
 public class CreaterepoGeneralPropertyPageTest {
 
 	private static TestCreaterepoProject testProject;
-	private CreaterepoProject project;
 	private static SWTWorkbenchBot bot;
+	private static SWTBotView navigator;
+	private CreaterepoProject project;
 
 	/**
 	 * Initialize the test project.
@@ -68,7 +68,8 @@ public class CreaterepoGeneralPropertyPageTest {
 		} catch (WidgetNotFoundException e) {
 			// cannot activate main shell, continue anyways
 		}
-		openResourcePerspective();
+		TestUtils.openResourcePerspective(bot);
+		navigator = TestUtils.enterProjectFolder(bot);
 	}
 
 	/**
@@ -78,6 +79,7 @@ public class CreaterepoGeneralPropertyPageTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws CoreException {
+		TestUtils.exitProjectFolder(bot, navigator);
 		testProject.dispose();
 		assertFalse(testProject.getProject().exists());
 	}
@@ -276,37 +278,11 @@ public class CreaterepoGeneralPropertyPageTest {
 	}
 
 	/**
-	 * Open the resource perspective.
-	 */
-	private static void openResourcePerspective() {
-		// turn on the resource perspective
-		bot.menu(ICreaterepoTestConstants.WINDOW).menu(ICreaterepoTestConstants.SHOW_VIEW)
-		.menu(ICreaterepoTestConstants.OTHER).click();
-		SWTBotShell shell = bot.shell(ICreaterepoTestConstants.SHOW_VIEW);
-		shell.activate();
-		bot.tree().expandNode(ICreaterepoTestConstants.GENERAL_NODE).select(ICreaterepoTestConstants.NAVIGATOR);
-		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
-	}
-
-	/**
 	 * Open the property page.
 	 */
 	private static void openPropertyPage() {
-		SWTBotView view = bot.viewByTitle(ICreaterepoTestConstants.NAVIGATOR);
-		view.show();
-		// select the .repo file from the package explorer and open its properties
-		Composite packageExplorer = (Composite)view.getWidget();
-		assertNotNull(packageExplorer);
-		Tree swtTree = bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class), packageExplorer);
-		assertNotNull(swtTree);
-		SWTBotTree botTree = new SWTBotTree(swtTree);
-		botTree.expandNode(ICreaterepoTestConstants.PROJECT_NAME).getNode(ICreaterepoTestConstants.REPO_NAME)
-			.contextMenu(ICreaterepoTestConstants.PROPERTIES).click();
-		// get a handle of the property shell
-		SWTBotShell propertyShell = bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
-				ICreaterepoTestConstants.REPO_NAME));
-		propertyShell.activate();
-		bot.tree().expandNode(ICreaterepoTestConstants.CREATEREPO_CATEGORY).select();
+		TestUtils.openPropertyPage(bot, navigator);
+		bot.tree().select(ICreaterepoTestConstants.CREATEREPO_CATEGORY);
 	}
 
 }
