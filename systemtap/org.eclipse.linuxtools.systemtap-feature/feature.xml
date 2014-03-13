@@ -5,7 +5,7 @@
       version="3.0.0.qualifier"
       provider-name="%featureProvider"
       os="linux"
-      license-feature="org.eclipse.linuxtools.license.feature"
+      license-feature="org.eclipse.license"
       license-feature-version="1.0.0.qualifier">
 
    <description>
