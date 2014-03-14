@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
 
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+
+
 /**
  * A structure for containing extra information of SystemTap functions.
  * @since 3.0

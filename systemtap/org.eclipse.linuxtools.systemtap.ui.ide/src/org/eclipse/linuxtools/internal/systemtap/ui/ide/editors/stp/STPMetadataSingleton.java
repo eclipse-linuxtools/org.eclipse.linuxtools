@@ -19,6 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ICompletable;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 
 
@@ -29,7 +31,7 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  */
 public final class STPMetadataSingleton {
 
-    public static String[] NO_MATCHES = new String[0];
+    public static TreeNode[] NO_MATCHES = new TreeNode[0];
 
     private static STPMetadataSingleton instance = null;
 
@@ -46,13 +48,13 @@ public final class STPMetadataSingleton {
         TapsetLibrary.waitForInitialization();
     }
 
-    public String[] getFunctionCompletions(String prefix) {
+    public TreeNode[] getFunctionCompletions(String prefix) {
         TreeNode node = TapsetLibrary.getFunctions();
         return getMatchingChildren(node, prefix);
     }
 
-    public String[] getProbeCompletions(String prefix) {
-        List<String> matches = new LinkedList<>();
+    public TreeNode[] getProbeCompletions(String prefix) {
+        List<TreeNode> matches = new LinkedList<>();
         String groupName = extractProbeGroupName(prefix);
 
         for (TreeNode node : TapsetLibrary.getProbeCategoryNodes()) {
@@ -68,7 +70,7 @@ public final class STPMetadataSingleton {
             matches.addAll(Arrays.asList(getMatchingChildren(node, prefix)));
         }
 
-        return !matches.isEmpty() ? matches.toArray(new String[matches.size()]) : NO_MATCHES;
+        return !matches.isEmpty() ? matches.toArray(new TreeNode[matches.size()]) : NO_MATCHES;
     }
 
     /**
@@ -77,37 +79,58 @@ public final class STPMetadataSingleton {
      * @param prefix The prefix to complete.
      * @return a list of variables matching the prefix.
      */
-    public String[] getProbeVariableCompletions(String probe, String prefix) {
+    public TreeNode[] getProbeVariableCompletions(String probe, String prefix) {
         // The only probes that may have avilable variables are non-static ones.
+        TreeNode node = getProbeAlias(probe);
+        return node != null ? getMatchingChildren(node, prefix) : NO_MATCHES;
+    }
+
+    public boolean isVariableInProbe(String probe, String variable) {
+        TreeNode node = getProbeAlias(probe);
+        if (node == null) {
+            return false;
+        }
+        for (int i = 0, n = node.getChildCount(); i < n; i++) {
+            TreeNode child = node.getChildAt(i);
+            String nodeVar = ((ProbevarNodeData) child.getData()).getCompletionText();
+            if (nodeVar.equals(variable)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public TreeNode getProbeAlias(String probe) {
         TreeNode node = TapsetLibrary.getProbeAliases();
         if (node == null) {
-            return NO_MATCHES;
+            return null;
         }
 
         node = node.getChildByName(extractProbeGroupName(probe));
         if (node == null) {
-            return NO_MATCHES;
+            return null;
         }
 
-        node = node.getChildByName(probe);
-        if (node == null) {
-            return NO_MATCHES;
-        }
-
-        return getMatchingChildren(node, prefix);
+        return node.getChildByName(probe);
     }
 
-    private String[] getMatchingChildren(TreeNode node, String prefix) {
-        ArrayList<String> matches = new ArrayList<>();
+    private TreeNode[] getMatchingChildren(TreeNode node, String prefix) {
+        ArrayList<TreeNode> matches = new ArrayList<>();
 
-        int n = node.getChildCount();
-        for (int i = 0; i < n; i++) {
-            if (node.getChildAt(i).toString().startsWith(prefix)) {
-                matches.add(node.getChildAt(i).toString());
+        for (int i = 0, n = node.getChildCount(); i < n; i++) {
+            TreeNode childNode = node.getChildAt(i);
+            String childName;
+            if (childNode.getData() instanceof ICompletable) {
+                childName = ((ICompletable) childNode.getData()).getCompletionText();
+            } else {
+                childName = childNode.toString();
+            }
+            if (childName.startsWith(prefix)) {
+                matches.add(childNode);
             }
         }
 
-        return matches.toArray(new String[0]);
+        return matches.toArray(new TreeNode[0]);
     }
 
     private String extractProbeGroupName(String probeName) {

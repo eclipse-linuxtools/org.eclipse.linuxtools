@@ -12,11 +12,7 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.io.File;
-import java.util.HashMap;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -26,12 +22,13 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.man.parser.ManPage;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+
+
 
 /**
  * This class is used for obtaining all probes and functions from the tapsets.
@@ -70,75 +67,6 @@ public final class TapsetLibrary {
 
     public static TreeNode getFunctions() {
         return functionTree;
-    }
-
-    private static HashMap<String, String> pages = new HashMap<>();
-
-    /**
-     * Returns the documentation for the given element and caches the result. Use this
-     * function if the given element is known to be a probe, function, or tapset.
-     * @param element
-     * @return
-     * @since 2.0
-     */
-    public static synchronized String getAndCacheDocumentation(String element) {
-        String doc = pages.get(element);
-        if (doc == null) {
-            doc = getDocumentation(element);
-            pages.put(element, doc);
-        }
-        return doc;
-    }
-
-    /**
-     * Returns the documentation for the given probe, function, or tapset.
-     * @since 2.0
-     */
-    public static synchronized String getDocumentation(String element) {
-        String documentation = pages.get(element);
-        if (documentation == null) {
-
-            // If the requested element is a probe variable
-            // fetch the documentation for the parent probe then check the map
-            if (element.matches("probe::.*::.*")) { //$NON-NLS-1$
-                String probe = element.split("::")[1]; //$NON-NLS-1$
-                getDocumentation("probe::" + probe); //$NON-NLS-1$
-                return pages.get(element);
-            }
-
-            // Otherwise, get the documentation for the requested element.
-            documentation = (new ManPage(element)).getStrippedTextPage().toString();
-
-            // If the requested element is a probe and a documentation page was
-            // found for it, parse the documentation for the variables if present.
-            if (!documentation.startsWith("No manual entry for") && //$NON-NLS-1$
-                    element.startsWith("probe::")) { //$NON-NLS-1$
-                // If this is a probe parse out the variables
-                String[] sections = documentation.split("VALUES"); //$NON-NLS-1$
-                if (sections.length > 1) {
-                    // Discard any other sections
-                    String variablesString = sections[1].split("CONTEXT|DESCRIPTION|SystemTap Tapset Reference")[0].trim(); //$NON-NLS-1$
-                    String[] variables = variablesString.split("\n"); //$NON-NLS-1$
-                    int i = 0;
-                    if (!variables[0].equals("None")) { //$NON-NLS-1$
-                        while ( i < variables.length) {
-                            String variableName = variables[i].trim();
-                            StringBuilder variableDocumentation = new StringBuilder();
-                            i++;
-                            while (i < variables.length && !variables[i].isEmpty()) {
-                                variableDocumentation.append(variables[i].trim());
-                                variableDocumentation.append("\n"); //$NON-NLS-1$
-                                i++;
-                            }
-
-                            pages.put(element + "::" + variableName, variableDocumentation.toString().trim()); //$NON-NLS-1$
-                            i++;
-                        }
-                    }
-                }
-            }
-        }
-        return documentation;
     }
 
     /**
@@ -203,10 +131,8 @@ public final class TapsetLibrary {
             if (!parser.isCancelRequested()) {
                 if (parser.equals(functionParser)) {
                     functionTree = parser.getTree();
-                    cacheFunctionManpages.schedule();
                 } else {
                     probeTree = parser.getTree();
-                    cacheProbeManpages.schedule();
                 }
 
                 if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_STORED_TREE)) {
@@ -228,6 +154,7 @@ public final class TapsetLibrary {
         stop();
         clearTrees();
         SharedParser.getInstance().clearTapsetContents();
+        ManpageCacher.clear();
         functionParser.schedule();
         probeParser.schedule();
     }
@@ -243,46 +170,6 @@ public final class TapsetLibrary {
         }
     }
 
-    private static Job cacheFunctionManpages = new Job(Localization.getString("TapsetLibrary.0")) { //$NON-NLS-1$
-        private boolean cancelled;
-
-        @Override
-        protected IStatus run(IProgressMonitor monitor) {
-            TreeNode nodes = getFunctions();
-            for (int i = 0, n = nodes.getChildCount(); i < n && !this.cancelled; i++) {
-                getAndCacheDocumentation("function::" + (nodes.getChildAt(i).toString())); //$NON-NLS-1$
-            }
-
-            return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$;
-        }
-
-        @Override
-        protected void canceling() {
-            this.cancelled = true;
-        }
-
-    };
-
-    private static Job cacheProbeManpages = new Job(Localization.getString("TapsetLibrary.1")) { //$NON-NLS-1$
-        private boolean cancelled;
-
-        @Override
-        protected IStatus run(IProgressMonitor monitor) {
-            for (TreeNode nodes : getProbeCategoryNodes()) {
-                for (int i = 0, n = nodes.getChildCount(); i < n && !this.cancelled; i++) {
-                    getAndCacheDocumentation("probe::" + (nodes.getChildAt(i).toString())); //$NON-NLS-1$
-                }
-            }
-
-            return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$;
-        }
-
-        @Override
-        protected void canceling() {
-            this.cancelled = true;
-        }
-    };
-
     /**
      * This method will get all of the tree information from
      * the TreeSettings xml file.
@@ -290,8 +177,6 @@ public final class TapsetLibrary {
     private static void readTreeFile() {
         functionTree = TreeSettings.getFunctionTree();
         probeTree = TreeSettings.getProbeTree();
-        cacheFunctionManpages.schedule();
-        cacheProbeManpages.schedule();
     }
 
     /**
@@ -437,9 +322,6 @@ public final class TapsetLibrary {
      */
     public static void stop() {
         functionParser.cancel();
-        cacheFunctionManpages.cancel();
-        probeParser.cancel();
-        cacheProbeManpages.cancel();
         try {
             functionParser.join();
         } catch (InterruptedException e) {
@@ -447,14 +329,9 @@ public final class TapsetLibrary {
             // for the parser thread to exit. Nothing to do
             // continue stopping.
         }
-        try {
-            cacheFunctionManpages.join();
-        } catch (InterruptedException e) {}
+        probeParser.cancel();
         try {
             probeParser.join();
-        } catch (InterruptedException e) {}
-        try {
-            cacheProbeManpages.join();
         } catch (InterruptedException e) {}
     }
 }
