@@ -135,6 +135,25 @@ public class TestCreateSystemtapScript {
 		}
 	}
 
+	private static class TreeItemPopulated extends DefaultCondition {
+
+		private SWTBotTreeItem parent;
+
+		TreeItemPopulated(SWTBotTreeItem parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean test() {
+			return this.parent.getItems().length > 0;
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for tree to populate.";
+		}
+	}
+
 	private static class ConsoleIsReady extends DefaultCondition {
 
 		private String scriptName;
@@ -429,6 +448,9 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testAddProbes() {
+		// TODO Create dummy probe tree data that can be tested instead of relying on stap.
+		assumeTrue(stapInstalled);
+
 		// Create a blank script and add a probe to it while it's open.
 		String scriptName = "probeScript.stp";
 		createScript(bot, scriptName);
@@ -436,10 +458,15 @@ public class TestCreateSystemtapScript {
 		SWTBotView probeView = bot.viewByTitle("Probe Alias");
 		SWTBotTree probeTree = probeView.bot().tree();
 		bot.waitUntil(new TreePopulated(probeTree), 10000);
+
+		// Root level entries are categories of probe types. Enter them to access probe groups
 		SWTBotTreeItem[] items = probeTree.getAllItems();
 		items[0].doubleClick();
+		bot.waitUntil(new TreeItemPopulated(items[0]));
+		items = items[0].getItems();
+		items[0].doubleClick();
 		SWTBotEclipseEditor editor = bot.activeEditor().toTextEditor();
-		assertTrue(editor.getText().contains("probe " + items[0].getText() + "\n"));
+		assertTrue(editor.getText().contains("probe " + items[0].getText() + ".*\n"));
 
 		// Open a non-stap file and add a probe. This should bring up a dialog
 		// asking if the probe should be added to the only open .stp file.
@@ -462,8 +489,8 @@ public class TestCreateSystemtapScript {
 		// The editor containing the script should now be in focus.
 		editor = bot.activeEditor().toTextEditor();
 		assertEquals(scriptName, editor.getTitle());
-		assertTrue(editor.getText().contains("probe " + items[0].getText() + "\n"));
-		assertTrue(editor.getText().contains("probe " + items[1].getText() + "\n"));
+		assertTrue(editor.getText().contains("probe " + items[0].getText() + ".*\n"));
+		assertTrue(editor.getText().contains("probe " + items[1].getText() + ".*\n"));
 
 		// Adding a probe while an .stp editor is in focus should always add it
 		// to that editor, even if multiple .stp editors are open.
@@ -472,9 +499,9 @@ public class TestCreateSystemtapScript {
 		editor = bot.activeEditor().toTextEditor();
 		assertEquals(scriptName2, editor.getTitle());
 		items[2].doubleClick();
-		assertTrue(editor.getText().contains("probe " + items[2].getText() + "\n"));
+		assertTrue(editor.getText().contains("probe " + items[2].getText() + ".*\n"));
 		editor = bot.editorByTitle(scriptName).toTextEditor();
-		assertFalse(editor.getText().contains("probe " + items[2].getText() + "\n"));
+		assertFalse(editor.getText().contains("probe " + items[2].getText() + ".*\n"));
 
 		// Switch to the non-stp editor, and add a probe. A dialog should appear
 		// to let the user choose which of the open files to add to.
@@ -491,7 +518,7 @@ public class TestCreateSystemtapScript {
 		bot.waitUntil(Conditions.shellCloses(shell));
 		editor = bot.activeEditor().toTextEditor();
 		assertFalse(editor.getTitle().equals("Untitled 1"));
-		assertTrue(editor.getText().contains("probe " + items[3].getText() + "\n"));
+		assertTrue(editor.getText().contains("probe " + items[3].getText() + ".*\n"));
 	}
 
 	@Test
@@ -940,7 +967,7 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testLabelledGraphScript() {
-		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
+		// TODO If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
 		assumeTrue(stapInstalled);
 
@@ -1235,7 +1262,7 @@ public class TestCreateSystemtapScript {
 
 	@Test
 	public void testGraphTooltips() {
-		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
+		// TODO If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
 		assumeTrue(stapInstalled);
 

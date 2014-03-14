@@ -11,17 +11,16 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
+import java.util.List;
+
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ProbeAliasAction;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeNodeData;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbevarNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IWorkbenchActionConstants;
 
 
 /**
@@ -49,23 +48,30 @@ public class ProbeAliasBrowserView extends BrowserView {
 
 	@Override
 	protected Image getEntryImage(TreeNode treeObj) {
-		String item = treeObj.getData().toString();
-		if(item.startsWith("probe")) {//$NON-NLS-1$
-			return IDEPlugin.getImageDescriptor("icons/misc/probe_obj.gif").createImage(); //$NON-NLS-1$
-		}
-
 		//Probe variables
-		if(item.endsWith(":long")) {//$NON-NLS-1$
+		if (treeObj.getData() instanceof ProbevarNodeData) {
+			List<String> varTypes = ((ProbevarNodeData) treeObj.getData()).getTypes();
+			if (varTypes.get(varTypes.size()-1).endsWith("*")) { //Pointers //$NON-NLS-1$
+				return IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$
+			}
+			if (varTypes.contains("struct")) {//$NON-NLS-1$
+				return IDEPlugin.getImageDescriptor("icons/vars/var_struct.gif").createImage(); //$NON-NLS-1$
+			}
+			if (varTypes.contains("string")) {//$NON-NLS-1$
+				return IDEPlugin.getImageDescriptor("icons/vars/var_str.gif").createImage(); //$NON-NLS-1$
+			}
+			if (varTypes.contains("unknown")) {//$NON-NLS-1$
+				return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
+			}
+			// All other types are displayed as long
 			return IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$
 		}
-		if(item.endsWith(":string")) {//$NON-NLS-1$
-			return IDEPlugin.getImageDescriptor("icons/vars/var_str.gif").createImage(); //$NON-NLS-1$
-		}
-		if(item.endsWith(":unknown")) {//$NON-NLS-1$
-			return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
-		}
 
-		return IDEPlugin.getImageDescriptor("icons/vars/var_long.gif").createImage(); //$NON-NLS-1$
+		//Non-variable icons
+		if (treeObj.getData() instanceof ProbeNodeData) {
+			return IDEPlugin.getImageDescriptor("icons/misc/probe_obj.gif").createImage(); //$NON-NLS-1$
+		}
+		return getGenericImage(treeObj);
 	}
 
 	/**
@@ -75,7 +81,7 @@ public class ProbeAliasBrowserView extends BrowserView {
 	public void refresh() {
 		TreeNode probes = TapsetLibrary.getProbes();
 		if (probes != null){
-			super.viewer.setInput(TapsetLibrary.getProbes());
+			super.viewer.setInput(probes);
 		}
 	}
 
@@ -85,22 +91,16 @@ public class ProbeAliasBrowserView extends BrowserView {
 	private void makeActions() {
 		doubleClickAction = new ProbeAliasAction(getSite().getWorkbenchWindow(), this);
 		viewer.addDoubleClickListener(doubleClickAction);
-		Control control = this.viewer.getControl();
-		MenuManager manager = new MenuManager("probePopup"); //$NON-NLS-1$
-
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		Menu menu = manager.createContextMenu(control);
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(manager, viewer);
+		registerContextMenu("probePopup"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-		if(null != viewer) {
+		if (null != viewer) {
 			viewer.removeDoubleClickListener(doubleClickAction);
 		}
-		if(null != doubleClickAction) {
+		if (null != doubleClickAction) {
 			doubleClickAction.dispose();
 		}
 		doubleClickAction = null;

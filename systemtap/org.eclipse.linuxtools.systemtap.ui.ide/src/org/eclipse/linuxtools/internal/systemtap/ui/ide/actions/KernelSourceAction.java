@@ -12,11 +12,6 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
@@ -25,9 +20,7 @@ import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -44,13 +37,9 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.TreeExpandCollapseAction
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView
  */
-public class KernelSourceAction extends Action implements ISelectionListener, IDoubleClickListener {
-	private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor"; //$NON-NLS-1$
-	private final IWorkbenchWindow window;
+public class KernelSourceAction extends BrowserViewAction {
 	public final static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.KBAction"; //$NON-NLS-1$
-	private KernelBrowserView viewer;
-	private IStructuredSelection selection;
-	private TreeExpandCollapseAction expandAction;
+	private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor"; //$NON-NLS-1$
 
 	/**
 	 * The default constructor for the <code>KernelSourceAction</code>. Takes the window that it affects
@@ -59,34 +48,12 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	 * @param browser	The <code>KernelBrowserView</code> that fires this action.
 	 */
 	public KernelSourceAction(IWorkbenchWindow window, KernelBrowserView browser) {
-		this.window = window;
+		super(window, browser);
 		setId(ID);
 		setActionDefinitionId(ID);
 		setText(Localization.getString("KernelSourceAction.Insert")); //$NON-NLS-1$
 		setToolTipText(Localization
 				.getString("KernelSourceAction.InsertSelectedFunction")); //$NON-NLS-1$
-		window.getSelectionService().addSelectionListener(this);
-		viewer = browser;
-		expandAction = new TreeExpandCollapseAction(viewer);
-	}
-
-	/**
-	 * Updates <code>selection</code> with the current selection whenever the user changes
-	 * the current selection.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		if (incoming instanceof IStructuredSelection) {
-			selection = (IStructuredSelection) incoming;
-			setEnabled(selection.size() == 1);
-		} else {
-			// Other selections, for example containing text or of other kinds.
-			setEnabled(false);
-		}
-	}
-
-	public void dispose() {
-		window.getSelectionService().removeSelectionListener(this);
 	}
 
 	/**
@@ -115,9 +82,7 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 	@Override
 	public void run() {
 		IWorkbench wb = PlatformUI.getWorkbench();
-		ISelection incoming = viewer.getViewer().getSelection();
-		IStructuredSelection selection = (IStructuredSelection)incoming;
-		Object o  = selection.getFirstElement();
+		Object o = getSelectedElement();
 		if(o instanceof TreeNode) {
 			TreeNode t = (TreeNode)o;
 			if(t.isClickable()) {
@@ -136,16 +101,10 @@ public class KernelSourceAction extends Action implements ISelectionListener, ID
 
 				}
 			}
-			else
-			{
-
-				expandAction.run();
+			else {
+				runExpandAction();
 			}
 		}
 	}
 
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		run();
-	}
 }

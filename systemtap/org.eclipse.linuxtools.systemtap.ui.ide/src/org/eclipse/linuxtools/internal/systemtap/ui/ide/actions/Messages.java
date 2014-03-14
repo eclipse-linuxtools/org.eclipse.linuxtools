@@ -24,13 +24,6 @@ public class Messages extends NLS {
 	public static String RunScriptAction_alreadyRunningDialogTitle;
 	public static String RunScriptAction_alreadyRunningDialogMessage;
 	public static String RunScriptChartAction_couldNotSwitchToGraphicPerspective;
-	public static String ProbeAliasAction_SelectEditor;
-	public static String ProbeAliasAction_DialogTitle;
-	public static String ProbeAliasAction_AskBeforeAddMessage;
-	public static String ProbeAliasAction_AskBeforeAddYes;
-	public static String ProbeAliasAction_AskBeforeAddCancel;
-	public static String ProbeAliasAction_AskBeforeAddAnother;
-	public static String ProbeAliasAction_OtherFile;
 	public static String DataSetFileExtension;
 	public static String ExportDataSetAction_DialogTitle;
 	public static String ImportDataSetAction_DialogTitle;

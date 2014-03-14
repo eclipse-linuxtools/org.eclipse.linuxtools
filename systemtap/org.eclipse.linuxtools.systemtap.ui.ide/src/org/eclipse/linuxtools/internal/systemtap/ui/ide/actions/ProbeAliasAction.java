@@ -15,26 +15,21 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeNodeData;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbevarNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.dialogs.ListDialog;
 
@@ -50,46 +45,16 @@ import org.eclipse.ui.dialogs.ListDialog;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView
  * @see org.eclipse.jface.action.Action
  */
-public class ProbeAliasAction extends Action implements ISelectionListener, IDoubleClickListener {
-	private final IWorkbenchWindow window;
-	private final ProbeAliasBrowserView viewer;
+public class ProbeAliasAction extends BrowserViewAction {
 	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.ProbeAliasAction"; //$NON-NLS-1$
-	private IStructuredSelection selection;
 
-	/**
-	 * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
-	 * as well as the <code>ProbeAliasBrowserView</code> that will fire this action.
-	 * @param window	window effected by this event
-	 * @param view	browser that fires this action
-	 */
 	public ProbeAliasAction(IWorkbenchWindow window, ProbeAliasBrowserView view) {
-		this.window = window;
+		super(window, view);
 		setId(ID);
 		setActionDefinitionId(ID);
 		setText(Localization.getString("ProbeAliasAction.Insert")); //$NON-NLS-1$
 		setToolTipText(Localization
 				.getString("ProbeAliasAction.InsertSelectedProbe")); //$NON-NLS-1$
-		window.getSelectionService().addSelectionListener(this);
-		viewer = view;
-	}
-
-	/**
-	 * Updates <code>selection</code> with the current selection whenever the user changes
-	 * the current selection.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		if (incoming instanceof IStructuredSelection) {
-			selection = (IStructuredSelection) incoming;
-			setEnabled(selection.size() == 1);
-		} else {
-			// Other selections, for example containing text or of other kinds.
-			setEnabled(false);
-		}
-	}
-
-	public void dispose() {
-		window.getSelectionService().removeSelectionListener(this);
 	}
 
 	/**
@@ -99,35 +64,34 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 	 */
 	@Override
 	public void run() {
-		IWorkbenchPage page = window.getActivePage();
-		IEditorPart editor = page.getActiveEditor();
-		if (!(editor instanceof STPEditor)) {
-			editor = findEditor();
-			if (null == editor) {
-				return;
+		IWorkbenchPage page = getWindow().getActivePage();
+		Object o = getSelectedElement();
+		if (o instanceof TreeNode) {
+			TreeNode t = (TreeNode) o;
+			if (t.isClickable()) {
+				IEditorPart editor = page.getActiveEditor();
+				if (!(editor instanceof STPEditor)) {
+					editor = findEditor();
+					if (null == editor) {
+						return;
+					}
+				}
+				page.activate(editor);
+				buildString((STPEditor) editor, (TreeNode) o);
+			} else {
+				runExpandAction();
 			}
-		}
-		page.activate(editor);
-		ISelection incoming = viewer.getViewer().getSelection();
-		IStructuredSelection selection = (IStructuredSelection)incoming;
-		Object o = selection.getFirstElement();
-		if (o instanceof TreeNode && editor instanceof STPEditor) {
-			buildString((STPEditor) editor, (TreeNode) o);
 		}
 	}
 
 	private void buildString(STPEditor stpeditor, TreeNode t) {
 		//build the string
 		StringBuilder s = new StringBuilder("\nprobe " + t.toString()); //$NON-NLS-1$
-		if(!t.isClickable()) {
-			if(0 <t.getChildCount()) {
-				s.append(".*"); //$NON-NLS-1$
-			} else {
-				return;
-			}
+		if (t.getChildCount() > 0 && t.getChildAt(0).getData() instanceof ProbeNodeData) {
+			s.append(".*"); //$NON-NLS-1$
 		}
 		s.append("\n{\n"); //$NON-NLS-1$
-		if(t.isClickable() && t.getChildCount() > 0) {
+		if (t.getChildCount() > 0 && t.getChildAt(0).getData() instanceof ProbevarNodeData) {
 			s.append("\t/*\n\t * " + //$NON-NLS-1$
 					Localization
 					.getString("ProbeAliasAction.AvailableVariables") + //$NON-NLS-1$
@@ -159,26 +123,26 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 		return ref.getEditor(false);
 	}
 
-	private IEditorPart findEditor() {
-		final List<IEditorPart> allEditors = new LinkedList<>();
-		for (IEditorReference ref : window.getActivePage().getEditorReferences()) {
+	private STPEditor findEditor() {
+		final List<STPEditor> allEditors = new LinkedList<>();
+		for (IEditorReference ref : getWindow().getActivePage().getEditorReferences()) {
 			IEditorPart editor = getRestoredEditor(ref);
 			if (editor instanceof STPEditor) {
-				allEditors.add(editor);
+				allEditors.add((STPEditor) editor);
 			}
 		}
 
 		switch (allEditors.size()) {
 		// If only one file is found, open it. Give user the option to open another file.
 		case 1:
-			MessageDialog messageDialog = new MessageDialog(window.getShell(),
-					Messages.ProbeAliasAction_DialogTitle, null,
-					MessageFormat.format(Messages.ProbeAliasAction_AskBeforeAddMessage,
+			MessageDialog messageDialog = new MessageDialog(getWindow().getShell(),
+					Localization.getString("ProbeAliasAction.DialogTitle"), null, //$NON-NLS-1$
+					MessageFormat.format(Localization.getString("ProbeAliasAction.AskBeforeAddMessage"), //$NON-NLS-1$
 							allEditors.get(0).getEditorInput().getName() ),
 							MessageDialog.QUESTION,
-							new String[]{Messages.ProbeAliasAction_AskBeforeAddCancel,
-				Messages.ProbeAliasAction_AskBeforeAddAnother,
-				Messages.ProbeAliasAction_AskBeforeAddYes}, 2);
+							new String[]{Localization.getString("ProbeAliasAction.AskBeforeAddCancel"), //$NON-NLS-1$
+				Localization.getString("ProbeAliasAction.AskBeforeAddAnother"), //$NON-NLS-1$
+				Localization.getString("ProbeAliasAction.AskBeforeAddYes")}, 2); //$NON-NLS-1$
 
 			switch (messageDialog.open()) {
 			case 2:
@@ -191,19 +155,19 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 				return null;
 			}
 
-			// If no files found, prompt user to open a new file
+		// If no files found, prompt user to open a new file
 		case 0:
 			return openNewFile();
 
-			// If multiple files found, prompt user to select one of them
+		// If multiple files found, prompt user to select one of them
 		default:
 			return openNewFileFromMultiple(allEditors);
 		}
 	}
 
-	private IEditorPart openNewFileFromMultiple(final List<IEditorPart> allEditors) {
-		ListDialog listDialog = new ListDialog(window.getShell());
-		listDialog.setTitle(Messages.ProbeAliasAction_DialogTitle);
+	private STPEditor openNewFileFromMultiple(final List<STPEditor> allEditors) {
+		ListDialog listDialog = new ListDialog(getWindow().getShell());
+		listDialog.setTitle(Localization.getString("ProbeAliasAction.DialogTitle")); //$NON-NLS-1$
 		listDialog.setContentProvider(new ArrayContentProvider());
 
 		listDialog.setLabelProvider(new LabelProvider() {
@@ -211,7 +175,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 			public String getText(Object element) {
 				int i = (Integer) element;
 				return i != -1 ? allEditors.get(i).getEditorInput().getName()
-						: Messages.ProbeAliasAction_OtherFile;
+						: Localization.getString("ProbeAliasAction.OtherFile"); //$NON-NLS-1$
 			}
 		});
 
@@ -221,7 +185,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 		}
 		editorIndexes[editorIndexes.length - 1] = -1;
 		listDialog.setInput(editorIndexes);
-		listDialog.setMessage(Messages.ProbeAliasAction_SelectEditor);
+		listDialog.setMessage(Localization.getString("ProbeAliasAction.SelectEditor")); //$NON-NLS-1$
 		if (listDialog.open() == Window.OK) {
 			int result = (Integer) listDialog.getResult()[0];
 			return result != -1 ? allEditors.get(result) : openNewFile();
@@ -230,17 +194,13 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IDou
 		return null;
 	}
 
-	private IEditorPart openNewFile() {
+	private STPEditor openNewFile() {
 		NewFileAction action = new NewFileAction();
 		action.run();
 		if (action.isSuccessful()) {
-			return window.getActivePage().getActiveEditor();
+			return (STPEditor) getWindow().getActivePage().getActiveEditor();
 		}
 		return null;
 	}
 
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		run();
-	}
 }

@@ -11,15 +11,24 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.handlers.CollapseAllHandler;
@@ -88,6 +97,14 @@ public abstract class BrowserView extends ViewPart {
 
 	protected abstract Image getEntryImage(TreeNode treeObj);
 
+	protected Image getGenericImage(TreeNode treeObj) {
+		if (treeObj.getChildCount() == 0) {
+			return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
+		} else {
+			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+		}
+	}
+
 	/**
 	 * Provides the icon and text for each entry in the tapset tree.
 	 * @author Ryan Morse
@@ -115,6 +132,18 @@ public abstract class BrowserView extends ViewPart {
 		IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 		collapseHandler = new CollapseAllHandler(getViewer());
 		handlerService.activateHandler(CollapseAllHandler.COMMAND_ID, collapseHandler);
+	}
+
+	protected void registerContextMenu(String menuName) {
+		Control control = this.viewer.getControl();
+		MenuManager manager = new MenuManager(menuName);
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		Menu menu = manager.createContextMenu(control);
+		viewer.getControl().setMenu(menu);
+
+		IWorkbenchPartSite partSite = getSite();
+		partSite.registerContextMenu(manager, viewer);
+		partSite.setSelectionProvider(viewer);
 	}
 
 	public TreeViewer getViewer() {

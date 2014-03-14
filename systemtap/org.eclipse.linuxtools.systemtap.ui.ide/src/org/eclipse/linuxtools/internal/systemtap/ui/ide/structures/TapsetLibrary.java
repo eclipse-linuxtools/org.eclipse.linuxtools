@@ -53,6 +53,14 @@ public final class TapsetLibrary {
 		return probeTree;
 	}
 
+	public static TreeNode getStaticProbes() {
+		return probeTree == null ? null : probeTree.getChildByName(Messages.ProbeParser_staticProbes);
+	}
+
+	public static TreeNode getProbeAliases() {
+		return probeTree == null ? null : probeTree.getChildByName(Messages.ProbeParser_aliasProbes);
+	}
+
 	public static TreeNode getFunctions() {
 		return functionTree;
 	}
@@ -69,7 +77,7 @@ public final class TapsetLibrary {
 
 			// If the requested element is a probe variable
 			// fetch the documentation for the parent probe then check the map
-			if (element.matches("probe::.*::.*")){ //$NON-NLS-1$
+			if (element.matches("probe::.*::.*")) { //$NON-NLS-1$
 				String probe = element.split("::")[1]; //$NON-NLS-1$
 				getDocumentation("probe::" + probe); //$NON-NLS-1$
 				return pages.get(element);
@@ -84,7 +92,7 @@ public final class TapsetLibrary {
 					element.startsWith("probe::")) { //$NON-NLS-1$
 				// If this is a probe parse out the variables
 				String[] sections = documentation.split("VALUES"); //$NON-NLS-1$
-				if (sections.length > 1){
+				if (sections.length > 1) {
 					// Discard any other sections
 					String variablesString = sections[1].split("CONTEXT|DESCRIPTION|SystemTap Tapset Reference")[0].trim(); //$NON-NLS-1$
 					String[] variables = variablesString.split("\n"); //$NON-NLS-1$
@@ -94,7 +102,7 @@ public final class TapsetLibrary {
 							String variableName = variables[i].trim();
 							StringBuilder variableDocumentation = new StringBuilder();
 							i++;
-							while (i < variables.length && !variables[i].isEmpty()){
+							while (i < variables.length && !variables[i].isEmpty()) {
 								variableDocumentation.append(variables[i].trim());
 								variableDocumentation.append("\n"); //$NON-NLS-1$
 								i++;
@@ -117,9 +125,9 @@ public final class TapsetLibrary {
 	 * @return
 	 * @since 2.0
 	 */
-	public static synchronized String getAndCacheDocumentation(String element){
+	public static synchronized String getAndCacheDocumentation(String element) {
 		String doc = pages.get(element);
-		if (doc == null){
+		if (doc == null) {
 			doc = getDocumentation(element);
 			pages.put(element, doc);
 		}
@@ -164,6 +172,8 @@ public final class TapsetLibrary {
 	 * to get the information directly from the files.
 	 */
 	private static void runStapParser() {
+		SharedParser.getInstance().clearTapsetContents();
+
 		functionParser = FunctionParser.getInstance();
 		functionParser.addListener(functionCompletionListener);
 		functionParser.schedule();
@@ -287,7 +297,7 @@ public final class TapsetLibrary {
 		return true;
 	}
 
-	private static Job cacheFunctionManpages = new Job(Localization.getString("TapsetLibrary.0")){ //$NON-NLS-1$
+	private static Job cacheFunctionManpages = new Job(Localization.getString("TapsetLibrary.0")) { //$NON-NLS-1$
 		private boolean cancelled;
 
 		@Override
@@ -308,7 +318,7 @@ public final class TapsetLibrary {
 
 	};
 
-	private static Job cacheProbeManpages = new Job(Localization.getString("TapsetLibrary.1")){ //$NON-NLS-1$
+	private static Job cacheProbeManpages = new Job(Localization.getString("TapsetLibrary.1")) { //$NON-NLS-1$
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			TreeNode node = probeParser.getProbes();
@@ -351,7 +361,7 @@ public final class TapsetLibrary {
 	 * @since 2.0
 	 */
 	public static void waitForInitialization() {
-		while (functionParser.getResult() == null){
+		while (functionParser.getResult() == null) {
 			try {
 				synchronized (functionParser) {
 					functionParser.wait(5000);
@@ -360,7 +370,7 @@ public final class TapsetLibrary {
 				break;
 			}
 		}
-		while (probeParser.getResult() == null){
+		while (probeParser.getResult() == null) {
 			try {
 				synchronized (probeParser) {
 					probeParser.wait(5000);
@@ -376,8 +386,8 @@ public final class TapsetLibrary {
 	 * {@link TapsetLibrary#init()} such as the {@link TapsetParser}
 	 * @since 1.2
 	 */
-	public static void stop(){
-		if(null != functionParser){
+	public static void stop() {
+		if(null != functionParser) {
 			functionParser.cancel();
 			cacheFunctionManpages.cancel();
 			try {
@@ -388,7 +398,7 @@ public final class TapsetLibrary {
 				// continue stopping.
 			}
 		}
-		if(probeParser != null){
+		if(probeParser != null) {
 			probeParser.cancel();
 			cacheProbeManpages.cancel();
 			try {

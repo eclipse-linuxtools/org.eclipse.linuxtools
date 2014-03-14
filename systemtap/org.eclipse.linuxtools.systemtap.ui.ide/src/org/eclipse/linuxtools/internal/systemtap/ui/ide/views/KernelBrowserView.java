@@ -36,8 +36,6 @@ import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -137,7 +135,7 @@ public class KernelBrowserView extends BrowserView {
 		if(item.endsWith(".h")) { //$NON-NLS-1$
 			return IDEPlugin.getImageDescriptor("icons/files/file_h.gif").createImage(); //$NON-NLS-1$
 		}
-		return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+		return getGenericImage(treeObj);
 	}
 
 	/**

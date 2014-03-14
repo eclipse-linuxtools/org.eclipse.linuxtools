@@ -47,7 +47,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 
 	private STPMetadataSingleton stpMetadataSingleton;
 
-	private static class Token implements IRegion{
+	private static class Token implements IRegion {
 		String tokenString;
 		int offset;
 
@@ -67,7 +67,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		}
 	}
 
-	public STPCompletionProcessor(){
+	public STPCompletionProcessor() {
 		this.stpMetadataSingleton = STPMetadataSingleton.getInstance();
 	}
 
@@ -80,7 +80,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		return computeCompletionProposals(viewer.getDocument(), offset);
 	}
 
-	public ICompletionProposal[] computeCompletionProposals(IDocument document, int offset){
+	public ICompletionProposal[] computeCompletionProposals(IDocument document, int offset) {
 
 		ITypedRegion partition = null;
 		boolean useGlobal = false;
@@ -114,7 +114,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			Token previousToken = getPrecedingToken(document, offset - prefix.length() - 1);
 
 			while (previousToken.tokenString.equals("=") || //$NON-NLS-1$
-					previousToken.tokenString.equals(",") ){ //$NON-NLS-1$
+					previousToken.tokenString.equals(",") ) { //$NON-NLS-1$
 				previousToken = getPrecedingToken(document, previousToken.offset - 1);
 				previousToken = getPrecedingToken(document, previousToken.offset - 1);
 			}
@@ -125,7 +125,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			return NO_COMPLETIONS;
 		}
 
-		if (prePrefix.startsWith("probe")){ //$NON-NLS-1$
+		if (prePrefix.startsWith("probe")) { //$NON-NLS-1$
 			return getProbeCompletionList(prefix, offset);
 		}
 
@@ -154,7 +154,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		String[] completionData = stpMetadataSingleton.getFunctionCompletions(prefix);
 		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
 		int prefixLength = prefix.length();
-		for (int i = 0; i < completionData.length; i++){
+		for (int i = 0; i < completionData.length; i++) {
 			result[i] = new CompletionProposal(
 							completionData[i].substring(prefixLength) + "()", //$NON-NLS-1$
 							offset,
@@ -169,7 +169,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		return result;
 	}
 
-	private ICompletionProposal[] getProbeVariableCompletions(IDocument document, int offset, String prefix){
+	private ICompletionProposal[] getProbeVariableCompletions(IDocument document, int offset, String prefix) {
 		try {
 			String probe;
 			probe = getProbe(document, offset);
@@ -189,8 +189,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 						null,
 						completionData[i] + " - variable", //$NON-NLS-1$
 						null,
-						TapsetLibrary
-								.getAndCacheDocumentation("probe::" + probe + "::" + variableName)); //$NON-NLS-1$ //$NON-NLS-2$
+						TapsetLibrary.getAndCacheDocumentation("probe::" + probe + "::" + variableName)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return result;
 		} catch (BadLocationException e) {
@@ -210,7 +209,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	 * @throws BadLocationException
 	 * @throws BadPartitioningException 
 	 */
-	private String getProbe(IDocument document, int offset) throws BadLocationException, BadPartitioningException{
+	private String getProbe(IDocument document, int offset) throws BadLocationException, BadPartitioningException {
 		String probePoint = null;
 
 		ITypedRegion partition 
@@ -219,7 +218,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		String probe = document.get(partition.getOffset(), partition.getLength());
 
 		// make sure that we are inside a probe
-		if (probe.startsWith(PROBE_KEYWORD)){
+		if (probe.startsWith(PROBE_KEYWORD)) {
 			probePoint = probe.substring(PROBE_KEYWORD.length(), probe.indexOf('{'));
 			probePoint = probePoint.trim();
 		}
@@ -227,16 +226,10 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		return probePoint;
 	}
 
-	private ICompletionProposal[] getProbeCompletionList(String prefix, int offset){
+	private ICompletionProposal[] getProbeCompletionList(String prefix, int offset) {
 		prefix = canonicalizePrefix(prefix);
-		String[] completionData = stpMetadataSingleton.getCompletionResults(prefix);
+		String[] completionData = stpMetadataSingleton.getProbeCompletions(prefix);
 
-		String manPrefix = "probe::"; //$NON-NLS-1$
-		if (prefix.indexOf('.') == -1){
-			manPrefix = "tapset::"; //$NON-NLS-1$
-		}
-
-		// Build proposals and submit
 		ICompletionProposal[] result = new ICompletionProposal[completionData.length];
 		for (int i = 0; i < completionData.length; i++) {
 			result[i] = new CompletionProposal(
@@ -247,7 +240,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 							null,
 							completionData[i],
 							null,
-							TapsetLibrary.getAndCacheDocumentation(manPrefix + completionData[i]));
+							TapsetLibrary.getAndCacheDocumentation("probe::" + completionData[i])); //$NON-NLS-1$
 		}
 		return result;
 
@@ -256,45 +249,17 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	/**
 	 * Returns a standardized version of the given prefix so that completion matching
 	 * can be performed.
-	 * For example for process("/some/long/path") this returns process("PATH");
+	 * For example for process("/some/long/path") this returns process(string);
 	 * @param prefix
 	 * @return
 	 */
 	private String canonicalizePrefix(String prefix) {
 
-		if (prefix.isEmpty())
-		 {
+		if (prefix.isEmpty()) {
 			return ""; //$NON-NLS-1$
 		}
-
-		if(prefix.matches("process\\(\".*\"\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("process\\(\".*\"\\)", "process\\(\"PATH\"\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches("process\\(\\d*\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("process\\(\\d*\\)", "process\\(PID\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches("procfs\\(\".*\"\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("procfs\\(\".*\"\\)", "procfs\\(\"PATH\"\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches(".*function\\(\".*\"\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("function\\(\".*\"\\)", "function\\(\"PATTERN\"\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches(".*module\\(\".*\"\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("module\\(\".*\"\\)", "module\\(\"MPATTERN\"\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches("jiffies\\(\\d*\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("jiffies\\(\\d*\\)", "jiffies\\(N\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(prefix.matches("randomize\\(\\d*\\).*")){ //$NON-NLS-1$
-			prefix = prefix.replaceAll("randomize\\(\\d*\\)", "randomize\\(M\\)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
+		prefix = prefix.replaceAll("(?s)\\(\\s*\".*\"\\s*\\)", "(string)"); //$NON-NLS-1$ //$NON-NLS-2$
+		prefix = prefix.replaceAll("(?s)\\(\\s*\\d*\\s*\\)", "(number)"); //$NON-NLS-1$ //$NON-NLS-2$
 		return prefix;
 	}
 
@@ -303,7 +268,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		ArrayList<ICompletionProposal> completions = new ArrayList<>();
 		int prefixLength = prefix.length();
 		for (String[] keyword : GLOBAL_KEYWORDS) {
-			if (keyword[0].startsWith(prefix)){
+			if (keyword[0].startsWith(prefix)) {
 				CompletionProposal proposal = new CompletionProposal(
 						keyword[0].substring(prefixLength),
 						offset,
@@ -327,40 +292,40 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 	 * @return The preceding token.
 	 * @throws BadLocationException
 	 */
-	private Token getPrecedingToken(IDocument doc, int offset) throws BadLocationException{
+	private Token getPrecedingToken(IDocument doc, int offset) throws BadLocationException {
 		// Skip trailing space
 		int n = offset;
-		while (n >= 0 && Character.isSpaceChar(doc.getChar(n))){
+		while (n >= 0 && Character.isSpaceChar(doc.getChar(n))) {
 			n--;
 		}
 
 		char c = doc.getChar(n);
-		if(isTokenDelimiter(c)){
+		if (isTokenDelimiter(c)) {
 			return new Token(Character.toString(c), n);
 		}
 
 		int end = n;
-		while (n >= 0 && !isTokenDelimiter((doc.getChar(n)))){
+		while (n >= 0 && !isTokenDelimiter((doc.getChar(n)))) {
 			n--;
 		}
 
 		return new Token(doc.get(n+1, end-n), n+1);
 	}
 
-	private Token getCurrentToken(IDocument doc, int offset) throws BadLocationException{
+	private Token getCurrentToken(IDocument doc, int offset) throws BadLocationException {
 		char c = doc.getChar(offset);
 
-		if(isDelimiter(c)){
+		if (isDelimiter(c)) {
 			return new Token(Character.toString(c), offset);
 		}
 
 		int start = offset;
-		while (start >= 0 && !isDelimiter((doc.getChar(start)))){
+		while (start >= 0 && !isDelimiter((doc.getChar(start)))) {
 			start--;
 		}
 
 		int end = offset;
-		while (end < doc.getLength() && !isDelimiter((doc.getChar(end)))){
+		while (end < doc.getLength() && !isDelimiter((doc.getChar(end)))) {
 			end++;
 		}
 
@@ -423,7 +388,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 		return false;
 	}
 
-	public void waitForInitialization(){
+	public void waitForInitialization() {
 		this.stpMetadataSingleton.waitForInitialization();
 	}
 
@@ -476,21 +441,21 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
 			String keyword = textViewer.getDocument().get(hoverRegion.getOffset(), hoverRegion.getLength());
 
 			documentation = TapsetLibrary.getDocumentation("function::" + keyword); //$NON-NLS-1$
-			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")) { //$NON-NLS-1$
 				return documentation;
 			}
 
 			documentation = TapsetLibrary.getDocumentation("probe::" + keyword); //$NON-NLS-1$
-			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")) { //$NON-NLS-1$
 				return documentation;
 			}
 
 			documentation = TapsetLibrary.getDocumentation("tapset::" + keyword); //$NON-NLS-1$
-			if (!documentation.startsWith("No manual entry for")){ //$NON-NLS-1$
+			if (!documentation.startsWith("No manual entry for")) { //$NON-NLS-1$
 				return documentation;
 			}
 
-			if (keyword.indexOf('.') > 0){
+			if (keyword.indexOf('.') > 0) {
 				keyword = keyword.split("\\.")[0]; //$NON-NLS-1$
 				documentation = TapsetLibrary.getDocumentation("tapset::" + keyword); //$NON-NLS-1$
 			}

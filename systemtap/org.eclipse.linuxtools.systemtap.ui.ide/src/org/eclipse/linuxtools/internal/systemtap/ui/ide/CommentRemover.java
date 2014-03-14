@@ -17,6 +17,7 @@ import java.io.IOException;
 
 /**
  * A helper class for removing comments from a SystemTap script.
+ * Note: if an entire line is a comment, it is replaced with a blank line.
  */
 public final class CommentRemover {
 
@@ -34,19 +35,28 @@ public final class CommentRemover {
 			while ((line = br.readLine()) != null) {
 				buffer.append(line.concat("\n")); //$NON-NLS-1$
 			}
-			return exec(buffer.toString());
+			// No need to format line breaks, since this did it already with newlines.
+			return exec(buffer.toString(), false);
 		} catch (IOException e) {
 			return ""; //$NON-NLS-1$
 		}
 	}
+
 	/**
-	 * Remove comments from a .stp script.
+	 * Remove comments from a .stp script. Also, line breaks will be formatted to newlines.
 	 * @param contents A complete .stp script.
 	 * @return A copy of the script with comments removed.
 	 */
 	public static String exec(String contents) {
+		return exec(contents, true);
+	}
+
+	private static String exec(String contents, boolean standardizeLineBreaks) {
 		if (contents == null || contents.isEmpty()) {
 			return ""; //$NON-NLS-1$
+		}
+		if (standardizeLineBreaks) {
+			contents = doStandardizeLineBreaks(contents);
 		}
 
 		char curchar, nxtchar;
@@ -64,18 +74,22 @@ public final class CommentRemover {
 			if (!inQuotes) {
 				if (!inComment) {
 					if (curchar == '#' || (curchar == '/' && nxtchar == '/')) {
-						inQuotes = false;
-						c = contents.indexOf('\n', c + 1);
+						buffer.append('\n'); // Replace the rest of this line with a newline.
+						c = contents.indexOf('\n', c); // Skip past the next newline, if one exists.
+						if (c == -1) {
+							break;
+						}
+						c++; // Skip the newline character on the next character scan.
 						continue;
 					}
 					if (curchar == '/' && nxtchar == '*') {
 						inComment = true;
-						c++; //Skip the * on the next character scan.
+						c++; // Skip the * on the next character scan.
 						continue;
 					}
 				} else if (curchar == '*' && nxtchar == '/') {
 					inComment = false;
-					c++; //Skip the / on the next character scan.
+					c++; // Skip the / on the next character scan.
 					continue;
 				}
 			}
@@ -85,15 +99,22 @@ public final class CommentRemover {
 				if (curchar == '\"') {
 					inQuotes = !inQuotes;
 				}
-				else if (curchar == '\n') {
+				else if (curchar == '\n' && inQuotes) {
 					inQuotes = false;
 				}
-
+				buffer.append(curchar);
+			}
+			else if (curchar == '\n') {
+				// Print the line breaks of multiline comments.
 				buffer.append(curchar);
 			}
 
-		} while (c != -1 && c < contents.length());
+		} while (c < contents.length());
 
 		return buffer.toString();
+	}
+
+	private static String doStandardizeLineBreaks(String contents) {
+		return contents.replaceAll("(\\r\\n)|(\\n)", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -11,11 +11,6 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
@@ -24,9 +19,7 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 
@@ -45,51 +38,16 @@ import org.eclipse.ui.PartInitException;
  * @see org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor#insertTextAtCurrent(String)
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.TreeExpandCollapseAction
  */
-public class FunctionBrowserAction extends Action implements ISelectionListener, IDoubleClickListener {
-	private final IWorkbenchWindow window;
-	private final FunctionBrowserView viewer;
+public class FunctionBrowserAction extends BrowserViewAction {
 	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction"; //$NON-NLS-1$
-	private IStructuredSelection selection;
-	private TreeExpandCollapseAction expandAction;
 
-	/**
-	 * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
-	 * as well as the <code>FunctionBrowserView</code> that will fire this action.
-	 * @param window	window effected by this event
-	 * @param browser	browser that fires this action
-	 */
 	public FunctionBrowserAction(IWorkbenchWindow window, FunctionBrowserView browser) {
-		this.window = window;
+		super(window, browser);
 		setId(ID);
 		setActionDefinitionId(ID);
 		setText(Localization.getString("FunctionBrowserAction.Insert")); //$NON-NLS-1$
 		setToolTipText(Localization
 				.getString("FunctionBrowserAction.InsertFunction")); //$NON-NLS-1$
-		window.getSelectionService().addSelectionListener(this);
-		viewer = browser;
-		expandAction = new TreeExpandCollapseAction(viewer);
-	}
-
-	public void dispose() {
-		window.getSelectionService().removeSelectionListener(this);
-		selection = null;
-		expandAction.dispose();
-		expandAction = null;
-	}
-
-	/**
-	 * Updates <code>selection</code> with the current selection whenever the user changes
-	 * the current selection.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		if (incoming instanceof IStructuredSelection) {
-			selection = (IStructuredSelection) incoming;
-			setEnabled(selection.size() == 1);
-		} else {
-			// Other selections, for example containing text or of other kinds.
-			setEnabled(false);
-		}
 	}
 
 	/**
@@ -101,10 +59,8 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 	 */
 	@Override
 	public void run() {
-		IWorkbenchPage page = window.getActivePage();
-		ISelection incoming = viewer.getViewer().getSelection();
-		IStructuredSelection selection = (IStructuredSelection)incoming;
-		Object o = selection.getFirstElement();
+		IWorkbenchPage page = getWindow().getActivePage();
+		Object o = getSelectedElement();
 		if (o instanceof TreeNode) {
 			TreeNode t = (TreeNode) o;
 			if(t.isClickable()) {
@@ -134,13 +90,9 @@ public class FunctionBrowserAction extends Action implements ISelectionListener,
 					ExceptionErrorDialog.openError(Localization.getString("FunctionBrowserAction.UnableToInsertFunction"), e); //$NON-NLS-1$
 				}
 			} else {
-				expandAction.run();
+				runExpandAction();
 			}
 		}
 	}
 
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		run();
-	}
 }

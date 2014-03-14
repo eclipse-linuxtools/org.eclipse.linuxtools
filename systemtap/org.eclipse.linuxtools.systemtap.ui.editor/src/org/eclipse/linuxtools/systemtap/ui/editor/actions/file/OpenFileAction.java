@@ -15,9 +15,13 @@ import java.io.File;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.linuxtools.internal.systemtap.ui.editor.EditorPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -88,7 +92,10 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 			IDE.openEditorOnFileStore(page, fileStore);
 			successful = true;
 		} catch (PartInitException e) {
-			//Pass
+			ErrorDialog.openError(window.getShell(),
+					Localization.getString("OpenFileAction.Problem"), //$NON-NLS-1$
+					Localization.getString("OpenFileAction.ProblemMessage"), //$NON-NLS-1$
+					new Status(IStatus.ERROR, EditorPlugin.ID, e.getMessage(), e));
 		}
 	}
 

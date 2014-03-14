@@ -14,6 +14,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
@@ -41,53 +44,33 @@ public final class STPMetadataSingleton {
 		return instance;
 	}
 
-	public void waitForInitialization(){
+	public void waitForInitialization() {
 		TapsetLibrary.waitForInitialization();
 	}
 
-	/**
-	 * Given the parameter return the completion proposals that best match the data.
-	 *
-	 * @param match - completion hint.
-	 *
-	 * @return - completion proposals.
-	 *
-	 */
-	public String[] getCompletionResults(String match) {
-
-		// Check to see if the proposal hint included a <tapset>.<partialprobe>
-		// or just a <probe>. (ie syscall. or syscall.re).
-		boolean tapsetAndProbeIncluded = match.indexOf('.') >= 0;
-
-		TreeNode node = TapsetLibrary.getProbes();
-		if (node == null) {
-			return NO_MATCHES;
-		}
-
-		// If the result is a tapset and partial probe, get the tapset, then
-		// narrow down the list with partial probe matches.
-		if (tapsetAndProbeIncluded) {
-			node = node.getChildByName(getTapset(match));
-			if (node == null) {
-				return NO_MATCHES;
-			}
-
-			// Now get the completions.
-			return getMatchingChildren(node, match);
-		}
-
-		// Now get the completions.
-		return getMatchingChildren(node, match);
-	}
-
-	/**
-	 * Returns a list of functions that complete the given prefix.
-	 * @param prefix
-	 * @return
-	 */
 	public String[] getFunctionCompletions(String prefix) {
 		TreeNode node = TapsetLibrary.getFunctions();
 		return getMatchingChildren(node, prefix);
+	}
+
+	public String[] getProbeCompletions(String prefix) {
+		List<String> matches = new LinkedList<>();
+		String groupName = extractProbeGroupName(prefix);
+
+		for (TreeNode node : getEachProbeCategoryNode()) {
+			if (node == null) {
+				continue;
+			}
+
+			TreeNode groupNode = node.getChildByName(groupName);
+			if (groupNode != null) {
+				node = groupNode;
+			}
+
+			matches.addAll(Arrays.asList(getMatchingChildren(node, prefix)));
+		}
+
+		return !matches.isEmpty() ? matches.toArray(new String[matches.size()]) : NO_MATCHES;
 	}
 
 	/**
@@ -96,14 +79,14 @@ public final class STPMetadataSingleton {
 	 * @param prefix The prefix to complete.
 	 * @return a list of variables matching the prefix.
 	 */
-	public String[] getProbeVariableCompletions(String probe, String prefix){
-		TreeNode node = TapsetLibrary.getProbes();
+	public String[] getProbeVariableCompletions(String probe, String prefix) {
+		// The only probes that may have avilable variables are non-static ones.
+		TreeNode node = TapsetLibrary.getProbeAliases();
 		if (node == null) {
 			return NO_MATCHES;
 		}
 
-		// Get the matching leaf node.
-		node = node.getChildByName(getTapset(probe));
+		node = node.getChildByName(extractProbeGroupName(probe));
 		if (node == null) {
 			return NO_MATCHES;
 		}
@@ -113,8 +96,11 @@ public final class STPMetadataSingleton {
 			return NO_MATCHES;
 		}
 
-		// Get the completions.
 		return getMatchingChildren(node, prefix);
+	}
+
+	private TreeNode[] getEachProbeCategoryNode() {
+		return new TreeNode[]{TapsetLibrary.getStaticProbes(), TapsetLibrary.getProbeAliases()};
 	}
 
 	private String[] getMatchingChildren(TreeNode node, String prefix) {
@@ -122,7 +108,7 @@ public final class STPMetadataSingleton {
 
 		int n = node.getChildCount();
 		for (int i = 0; i < n; i++) {
-			if (node.getChildAt(i).toString().startsWith(prefix)){
+			if (node.getChildAt(i).toString().startsWith(prefix)) {
 				matches.add(node.getChildAt(i).toString());
 			}
 		}
@@ -130,19 +116,19 @@ public final class STPMetadataSingleton {
 		return matches.toArray(new String[0]);
 	}
 
-	/**
-	 * Given data, extract <tapset>
-	 *
-	 * @param data - hint data
-	 * @return
-	 */
-	private String getTapset(String data) {
-		int i = data.indexOf('.');
-		if (i < 0){
-			return data;
+	private String extractProbeGroupName(String probeName) {
+		int dotIndex = probeName.indexOf('.');
+		int parenIndex = probeName.indexOf('(');
+		if (dotIndex > 0 && parenIndex > 0) {
+			return probeName.substring(0, Math.min(dotIndex, parenIndex));
 		}
-
-		return data.substring(0, data.indexOf('.'));
+		if (dotIndex > 0) {
+			return probeName.substring(0, dotIndex);
+		}
+		if (parenIndex > 0) {
+			return probeName.substring(0, parenIndex);
+		}
+		return probeName;
 	}
 
 }

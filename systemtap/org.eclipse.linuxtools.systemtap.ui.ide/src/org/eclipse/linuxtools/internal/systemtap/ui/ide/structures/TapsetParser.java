@@ -96,7 +96,8 @@ public abstract class TapsetParser extends Job {
 	/**
 	 * Runs the stap with the given options and returns the output generated
 	 * @param options String[] of any optional parameters to pass to stap
-	 * @param probe String containing the script to run stap on
+	 * @param probe String containing the script to run stap on,
+	 * or <code>null</code> for scriptless commands
 	 * @param getErrors Set this to <code>true</code> if the script's error
 	 * stream contents should be returned instead of its standard output
 	 */
@@ -104,29 +105,33 @@ public abstract class TapsetParser extends Job {
 		String[] args = null;
 		String[] tapsets = IDEPlugin.getDefault().getPreferenceStore()
 				.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
+		boolean noTapsets = tapsets[0].trim().length() == 0;
+		boolean noOptions = options[0].trim().length() == 0;
 
-		int size = 2;	//start at 2 for stap, script, options will be added in later
-		if (tapsets.length > 0 && tapsets[0].trim().length() > 0) {
+		int size = probe != null ? 2 : 1;
+		if (tapsets.length > 0 && !noTapsets) {
 			size += tapsets.length<<1;
 		}
-		if (options.length > 0 && options[0].trim().length() > 0) {
+		if (options.length > 0 && !noOptions) {
 			size += options.length;
 		}
 
 		args = new String[size];
 		args[0] = "stap"; //$NON-NLS-1$
-		args[size-1] = probe;
+		if (probe != null) {
+			args[size-1] = probe;
+		}
 
 		//Add extra tapset directories
-		if(tapsets.length > 0 && tapsets[0].trim().length() > 0) {
-			for(int i=0; i<tapsets.length; i++) {
-				args[1+(i<<1)] = "-I"; //$NON-NLS-1$
-				args[2+(i<<1)] = tapsets[i];
+		if (tapsets.length > 0 && !noTapsets) {
+			for (int i = 0; i < tapsets.length; i++) {
+				args[1 + 2*i] = "-I"; //$NON-NLS-1$
+				args[2 + 2*i] = tapsets[i];
 			}
 		}
-		if(options.length > 0 && options[0].trim().length() > 0) {
-			for(int i=0; i<options.length; i++) {
-				args[size-1-options.length+i] = options[i];
+		if (options.length > 0 && !noOptions) {
+			for (int i = 0, s = noTapsets ? 1 : 1 + tapsets.length*2; i<options.length; i++) {
+				args[s + i] = options[i];
 			}
 		}
 
@@ -141,7 +146,7 @@ public abstract class TapsetParser extends Job {
 				String password = p.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
 
 				Channel channel = SystemtapProcessFactory.execRemoteAndWait(args,str, strErr, user, host, password);
-				if(channel == null){
+				if (channel == null) {
 					displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
 				}
 
@@ -180,7 +185,7 @@ public abstract class TapsetParser extends Job {
 		return null;
 	}
 
-	private void displayError(final String title, final String error){
+	private void displayError(final String title, final String error) {
     	Display.getDefault().asyncExec(new Runnable() {
     		@Override
 			public void run() {
