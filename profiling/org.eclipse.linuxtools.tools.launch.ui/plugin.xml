@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="org.eclipse.linuxtools.tools.launch.ui.properties.LinuxtoolsPathPropertyPage"
+            class="org.eclipse.linuxtools.internal.tools.launch.ui.properties.LinuxtoolsPathPropertyPage"
             id="org.eclipse.linuxtools.tools.launch.ui.LinuxtoolsPage"
             name="Linux Tools Path">
          <filter

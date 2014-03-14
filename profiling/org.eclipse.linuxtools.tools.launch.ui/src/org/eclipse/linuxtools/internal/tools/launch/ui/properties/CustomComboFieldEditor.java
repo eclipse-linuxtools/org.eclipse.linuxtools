@@ -9,7 +9,7 @@
  *    Rafael Peria de Sene <rpsene@br.ibm.com> - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.tools.launch.ui.properties;
+package org.eclipse.linuxtools.internal.tools.launch.ui.properties;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.swt.widgets.Composite;

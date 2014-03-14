@@ -9,7 +9,7 @@
  *    Otavio Busatto Pontes <obusatto@br.ibm.com> - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.tools.launch.ui;
+package org.eclipse.linuxtools.internal.tools.launch.ui;
 
 import org.eclipse.osgi.util.NLS;
 

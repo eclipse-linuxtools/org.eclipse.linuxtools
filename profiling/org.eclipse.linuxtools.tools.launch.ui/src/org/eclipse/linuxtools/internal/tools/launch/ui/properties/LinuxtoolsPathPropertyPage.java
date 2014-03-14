@@ -10,7 +10,7 @@
  *    Rafael Peria de Sene <rpsene@br.ibm.com>
  *******************************************************************************/
 
-package org.eclipse.linuxtools.tools.launch.ui.properties;
+package org.eclipse.linuxtools.internal.tools.launch.ui.properties;
 
 import java.util.LinkedList;
 
@@ -25,9 +25,9 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.linuxtools.internal.tools.launch.ui.Messages;
 import org.eclipse.linuxtools.tools.launch.core.LaunchCoreConstants;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
-import org.eclipse.linuxtools.tools.launch.ui.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

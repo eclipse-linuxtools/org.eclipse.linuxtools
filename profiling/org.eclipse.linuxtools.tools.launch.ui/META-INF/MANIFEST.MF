@@ -4,7 +4,6 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.tools.launch.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %provider
-Bundle-Activator: org.eclipse.linuxtools.tools.launch.ui.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -12,4 +11,3 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.tools.launch.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.tools.launch.ui.properties
