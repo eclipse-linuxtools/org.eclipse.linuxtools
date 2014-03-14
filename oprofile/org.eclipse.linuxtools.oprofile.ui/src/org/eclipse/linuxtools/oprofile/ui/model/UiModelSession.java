@@ -37,7 +37,6 @@ public class UiModelSession implements IUiModelElement {
 
 	/**
 	 * Constructor to the UiModelSession class
-	 * @param parent The parent element
 	 * @param session Oprofile session node in the data model
 	 */
 	public UiModelSession(OpModelSession session) {
