@@ -30,7 +30,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -236,19 +235,22 @@ public abstract class GcovTest {
 			SWTBotTreeItem treeItem) {
 		String shellTitle = "Delete Resources";
 		treeItem.contextMenu("Delete").click();
+		Matcher<Shell> withText = withText(shellTitle);
+		bot.waitUntil(Conditions.waitForShell(withText));
 		SWTBotShell deleteShell = bot.shell(shellTitle);
 		deleteShell.activate();
 		bot.button("OK").click();
 		// Another shell (with the same name!) may appear if resources aren't synced.
 		// If it does appear, it will be a child of the first shell.
 		try {
-			bot.waitUntil(Conditions.shellCloses(deleteShell), 1000);
+			bot.waitUntil(Conditions.shellCloses(deleteShell));
 		} catch (TimeoutException e) {
 			SWTBotShell deleteShell2;
 			try {
 				deleteShell2 = bot.shell(shellTitle, deleteShell.widget);
 			} catch (WidgetNotFoundException e2) {
 				// If the other shell isn't found, that means the first one just didn't close.
+				System.out.println("ERROR: \"Delete Resources\" shell did not close, and no extra shell appeared");
 				throw e;
 			}
 			System.out.println("Deleting out-of-sync resources - new \"Delete Resources\" shell found");
@@ -347,7 +349,7 @@ public abstract class GcovTest {
 		// name such as [x86_64/le].  So, we look at all nodes of the project and look for the one that
 		// starts with our binary file name.  We can then select the node.
 		projectExplorer.bot().tree().select(projectName).contextMenu("Go Into").click();
-		bot.waitUntil(Conditions.waitForWidget(WidgetMatcherFactory.withText(projectName), projectExplorer.getWidget()));
+		bot.waitUntil(Conditions.waitForWidget(withText(projectName), projectExplorer.getWidget()));
 
 		SWTBotTreeItem[] nodes = treeBot.getAllItems();
 		String binNodeName = binFile.getName();
