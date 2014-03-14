@@ -50,8 +50,8 @@
 
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <tycho-version>0.19.0</tycho-version>
-    <tycho-extras-version>0.19.0</tycho-extras-version>
+    <tycho-version>0.20.0</tycho-version>
+    <tycho-extras-version>0.20.0</tycho-extras-version>
     <platform-version-name>luna</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
