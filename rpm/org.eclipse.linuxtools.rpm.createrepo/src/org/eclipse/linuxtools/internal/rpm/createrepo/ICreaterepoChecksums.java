@@ -8,31 +8,31 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo;
+package org.eclipse.linuxtools.internal.rpm.createrepo;
 
 /**
- * Valid options available in the repo file.
+ * Valid checksums that createrepo command uses.
  */
-public interface IRepoFileConstants {
-
-	/*
-	 * Mandatory options
-	 */
+public interface ICreaterepoChecksums {
 
 	/**
-	 * A unique identifier for the repository.
+	 * Default checksum.
 	 */
-	String ID = "id"; 				//$NON-NLS-1$
+	String SHA256 = "sha256"; //$NON-NLS-1$
 
 	/**
-	 * A human-readable string describing the repository.
+	 * Old default. Older versions of yum (3.0.x) not supported.
 	 */
-	String NAME = "name"; 			//$NON-NLS-1$
+	String SHA1 = "sha1"; //$NON-NLS-1$
 
 	/**
-	 * The location of the repodata folder. It can point locally (file://),
-	 * remotely (http://), or via ftp (ftp://).
+	 * MD5.
 	 */
-	String BASE_URL = "baseurl"; 	//$NON-NLS-1$
+	String MD5 = "md5"; //$NON-NLS-1$
+
+	/**
+	 * SHA512.
+	 */
+	String SHA512 = "sha512"; //$NON-NLS-1$
 
 }

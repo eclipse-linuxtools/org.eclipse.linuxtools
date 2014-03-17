@@ -8,11 +8,8 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
 
-import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoImportRPMsPageTest;
-import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoMetadataPageTest;
-import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.CreaterepoRepoFormEditorTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.listener.tests.CreaterepoResourceListenerTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoDeltaPropertyPageTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoGeneralPropertyPageTest;

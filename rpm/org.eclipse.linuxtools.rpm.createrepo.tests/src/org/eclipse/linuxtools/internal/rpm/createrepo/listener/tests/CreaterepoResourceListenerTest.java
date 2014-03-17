@@ -17,9 +17,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.rpm.createrepo.tests.ICreaterepoTestConstants;
-import org.eclipse.linuxtools.rpm.createrepo.tests.TestCreaterepoProject;
-import org.eclipse.linuxtools.rpm.createrepo.tests.TestUtils;
+import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.ICreaterepoTestConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.TestCreaterepoProject;
+import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.TestUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;

@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoPreferenceConstants;
 import org.junit.Test;
 
 /**

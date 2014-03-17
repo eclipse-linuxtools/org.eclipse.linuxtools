@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo;
+package org.eclipse.linuxtools.internal.rpm.createrepo;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,10 +29,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
-import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
-import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoCommandCreator;
-import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.osgi.framework.FrameworkUtil;
 
 /**

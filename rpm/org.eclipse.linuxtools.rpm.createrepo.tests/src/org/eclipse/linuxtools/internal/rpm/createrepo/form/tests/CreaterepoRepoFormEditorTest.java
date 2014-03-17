@@ -15,9 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
-import org.eclipse.linuxtools.rpm.createrepo.tests.ICreaterepoTestConstants;
-import org.eclipse.linuxtools.rpm.createrepo.tests.TestCreaterepoProject;
-import org.eclipse.linuxtools.rpm.createrepo.tests.TestUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;

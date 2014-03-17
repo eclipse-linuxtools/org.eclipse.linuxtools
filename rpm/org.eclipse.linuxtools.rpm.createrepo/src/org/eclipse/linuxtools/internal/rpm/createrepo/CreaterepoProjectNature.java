@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo;
+package org.eclipse.linuxtools.internal.rpm.createrepo;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;

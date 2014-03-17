@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.internal.rpm.createrepo.preference;
 
 import org.eclipse.jface.preference.PathEditor;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.swt.widgets.Composite;
 
 /**

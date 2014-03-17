@@ -16,8 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

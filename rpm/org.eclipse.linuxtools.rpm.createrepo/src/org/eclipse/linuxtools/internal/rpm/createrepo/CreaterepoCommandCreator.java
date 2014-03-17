@@ -15,8 +15,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 
 /**
  * Class to create and format the commands.

@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoPreferenceConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProject;
+import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoConstants;
 
 /**
  * The category and tags (if any) of the metadata tree.

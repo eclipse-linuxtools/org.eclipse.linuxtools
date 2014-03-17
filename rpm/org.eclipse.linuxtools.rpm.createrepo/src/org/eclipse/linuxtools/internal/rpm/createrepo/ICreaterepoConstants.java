@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo;
+package org.eclipse.linuxtools.internal.rpm.createrepo;
 
 /**
  * Common constants used in createrepo.

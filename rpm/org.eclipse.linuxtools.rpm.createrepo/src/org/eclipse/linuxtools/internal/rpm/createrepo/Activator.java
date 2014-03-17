@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.rpm.createrepo;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 

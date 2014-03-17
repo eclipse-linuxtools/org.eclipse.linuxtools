@@ -8,9 +8,9 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
 
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoPreferenceConstants;
 
 
 /**

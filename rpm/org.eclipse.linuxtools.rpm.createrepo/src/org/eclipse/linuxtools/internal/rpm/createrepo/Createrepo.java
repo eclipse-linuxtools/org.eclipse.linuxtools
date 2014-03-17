@@ -21,9 +21,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoPreferenceConstants;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.FrameworkUtil;
 

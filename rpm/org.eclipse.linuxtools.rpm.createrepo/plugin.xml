@@ -115,7 +115,7 @@
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectNature">
+               class="org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProjectNature">
          </run>
       </runtime>
    </extension>

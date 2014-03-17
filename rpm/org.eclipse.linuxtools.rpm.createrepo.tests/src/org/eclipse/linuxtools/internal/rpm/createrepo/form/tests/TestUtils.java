@@ -9,7 +9,7 @@
  *     Neil Guzman - initial API and implementation
  *     Andrew Ferrazzutti - ongoing maintenance
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;

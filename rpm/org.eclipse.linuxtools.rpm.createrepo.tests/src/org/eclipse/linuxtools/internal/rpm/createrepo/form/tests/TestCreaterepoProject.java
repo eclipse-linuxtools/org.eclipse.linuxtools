@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.createrepo.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -25,10 +25,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProject;
-import org.eclipse.linuxtools.rpm.createrepo.CreaterepoProjectNature;
-import org.eclipse.linuxtools.rpm.createrepo.ICreaterepoConstants;
-import org.eclipse.linuxtools.rpm.createrepo.IRepoFileConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProject;
+import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProjectNature;
+import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoConstants;
+import org.eclipse.linuxtools.internal.rpm.createrepo.IRepoFileConstants;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
