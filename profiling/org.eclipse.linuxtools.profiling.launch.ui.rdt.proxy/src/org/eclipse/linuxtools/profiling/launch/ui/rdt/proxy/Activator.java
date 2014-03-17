@@ -51,15 +51,6 @@ public class Activator extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-
 	public static void log(int status, String msg, Throwable e) {
 		plugin.getLog().log(new Status(status, PLUGIN_ID, IStatus.OK, msg, e));
 	}
