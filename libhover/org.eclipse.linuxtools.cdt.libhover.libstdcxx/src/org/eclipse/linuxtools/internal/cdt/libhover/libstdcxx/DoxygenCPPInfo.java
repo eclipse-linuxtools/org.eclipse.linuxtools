@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.cdt.libhover.libstdcxx;
+package org.eclipse.linuxtools.internal.cdt.libhover.libstdcxx;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -413,10 +413,10 @@ public class DoxygenCPPInfo {
 				}
 			}
 			// Now, output the LibHoverInfo for caching later
-			FileOutputStream f = new FileOutputStream(fileName);
-			ObjectOutputStream out = new ObjectOutputStream(f);
-			out.writeObject(cppInfo);
-			out.close();
+			try (FileOutputStream f = new FileOutputStream(fileName);
+					ObjectOutputStream out = new ObjectOutputStream(f)) {
+				out.writeObject(cppInfo);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
