@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.cdt.libhover.utils;
+package org.eclipse.linuxtools.internal.cdt.libhover.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
