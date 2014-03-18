@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rdt.proxy;
+package org.eclipse.linuxtools.internal.rdt.proxy;
 
 import java.net.URI;
 import java.util.Collections;
@@ -18,8 +18,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
-import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;

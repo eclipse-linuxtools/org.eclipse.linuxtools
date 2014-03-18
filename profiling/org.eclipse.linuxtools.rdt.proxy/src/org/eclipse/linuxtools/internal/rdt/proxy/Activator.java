@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rdt.proxy;
+package org.eclipse.linuxtools.internal.rdt.proxy;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

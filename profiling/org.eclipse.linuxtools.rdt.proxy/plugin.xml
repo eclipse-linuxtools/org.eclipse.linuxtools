@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
-            class="org.eclipse.linuxtools.rdt.proxy.RDTProxyManager"
+            class="org.eclipse.linuxtools.internal.rdt.proxy.RDTProxyManager"
             scheme="rse">
       </manager>
    </extension>
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
-            class="org.eclipse.linuxtools.rdt.proxy.RDTProxyManager"
+            class="org.eclipse.linuxtools.internal.rdt.proxy.RDTProxyManager"
             scheme="remotetools">
       </manager>
    </extension>

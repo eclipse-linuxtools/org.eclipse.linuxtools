@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.ssh.proxy;
+package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

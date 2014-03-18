@@ -22,8 +22,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.linuxtools.rdt.proxy.Activator;
-import org.eclipse.linuxtools.rdt.proxy.RDTProxyManager;
 import org.eclipse.remote.core.IRemoteConnection;
 import org.eclipse.remote.core.IRemoteFileManager;
 import org.eclipse.remote.core.IRemoteResource;

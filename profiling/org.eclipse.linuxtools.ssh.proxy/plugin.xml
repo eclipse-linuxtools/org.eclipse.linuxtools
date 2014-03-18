@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
-            class="org.eclipse.linuxtools.ssh.proxy.SSHProxyManager"
+            class="org.eclipse.linuxtools.internal.ssh.proxy.SSHProxyManager"
             scheme="ssh">
       </manager>
    </extension>
@@ -13,7 +13,7 @@
       <filesystem
             scheme="ssh">
          <run
-               class="org.eclipse.linuxtools.ssh.proxy.SSHFileSystem">
+               class="org.eclipse.linuxtools.internal.ssh.proxy.SSHFileSystem">
          </run>
       </filesystem>
    </extension>

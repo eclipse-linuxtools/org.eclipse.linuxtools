@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.rdt.proxy;singleton:=true
 Bundle-Version: 1.1.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.rdt.proxy.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.rdt.proxy.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ptp.rdt.core;bundle-version="3.1.0",

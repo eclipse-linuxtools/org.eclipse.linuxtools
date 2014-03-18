@@ -9,7 +9,7 @@
  *     Red Hat Incorporated - initial API and implementation
  *     IBM Corporation - Adapting to ssh
  *******************************************************************************/
-package org.eclipse.linuxtools.ssh.proxy;
+package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.ssh.proxy.SSHCommandLauncher;
-import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;

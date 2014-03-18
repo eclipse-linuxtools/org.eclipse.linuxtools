@@ -9,7 +9,7 @@
  *     Red Hat Incorporated - initial API and implementation
  *     IBM Corporation - Adapting to ssh
  *******************************************************************************/
-package org.eclipse.linuxtools.ssh.proxy;
+package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import java.net.URI;
 

@@ -20,8 +20,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 
-import org.eclipse.linuxtools.ssh.proxy.Activator;
-
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 
