@@ -9,9 +9,9 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.editor.actions.file
 Require-Bundle: org.eclipse.core.filesystem,
  org.eclipse.core.runtime,
- org.eclipse.jface.text;visibility:=reexport,
- org.eclipse.ui.editors;visibility:=reexport,
- org.eclipse.ui.workbench.texteditor;visibility:=reexport,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
