@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- ******************************************************************************/package org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;
+ ******************************************************************************/package org.eclipse.linuxtools.internal.profiling.launch.ui.rdt.proxy;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

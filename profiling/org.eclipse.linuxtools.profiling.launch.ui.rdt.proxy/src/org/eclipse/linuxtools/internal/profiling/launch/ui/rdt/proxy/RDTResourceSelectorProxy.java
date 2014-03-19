@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  ******************************************************************************/
 
-package org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;
+package org.eclipse.linuxtools.internal.profiling.launch.ui.rdt.proxy;
 
 import java.net.URI;
 import java.net.URISyntaxException;

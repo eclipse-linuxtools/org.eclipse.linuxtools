@@ -12,7 +12,7 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteResourceSelectorProxy">
       <resourceSelectorProxy
-            class="org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy.RDTResourceSelectorProxy"
+            class="org.eclipse.linuxtools.internal.profiling.launch.ui.rdt.proxy.RDTResourceSelectorProxy"
             scheme="remotetools"
             schemeLabel="Remote Tools">
       </resourceSelectorProxy>
@@ -20,7 +20,7 @@
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteResourceSelectorProxy">
       <resourceSelectorProxy
-            class="org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy.RDTResourceSelectorProxy"
+            class="org.eclipse.linuxtools.internal.profiling.launch.ui.rdt.proxy.RDTResourceSelectorProxy"
             scheme="rse"
             schemeLabel="RSE">
       </resourceSelectorProxy>
