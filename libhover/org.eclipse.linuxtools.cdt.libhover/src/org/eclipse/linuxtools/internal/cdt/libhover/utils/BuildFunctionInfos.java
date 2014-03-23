@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.utils;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
+import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -189,15 +188,7 @@ public class BuildFunctionInfos {
 				d.buildCPPInfo(args[1]);
 			}
 			System.out.println("Built " + args[1] + " from " + args[0]); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
+		} catch (URISyntaxException|SAXException|ParserConfigurationException|IOException e) {
 			e.printStackTrace();
 		}
 

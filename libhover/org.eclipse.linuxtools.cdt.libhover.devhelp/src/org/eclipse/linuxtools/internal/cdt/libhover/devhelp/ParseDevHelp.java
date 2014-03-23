@@ -37,10 +37,8 @@ import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.LibHoverMessages;
@@ -294,20 +292,33 @@ public class ParseDevHelp {
 	    	return "funcName: <" + funcName + "> returnType: <" + returnValue +
 	    	"> prototype: <" + prototype + "> description: " + description;
 	    }
-
-	    @Override
-		public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, int pos) {
-	    	
-	    }
-
-
 	}
 	
 	public static class DevHelpParser {
 		
+		private static final class NullEntityResolver implements EntityResolver {
+			@Override
+			public InputSource resolveEntity(String publicId, String systemId)
+			    throws SAXException, IOException
+			{
+			    return new InputSource(new StringReader("")); //$NON-NLS-1$
+			}
+		}
+
+		private static final class FilenameComparator implements
+				Comparator<IFileStore> {
+			@Override
+			public int compare(IFileStore arg0, IFileStore arg1) {
+				return (arg0.getName().compareToIgnoreCase(arg1.getName()));
+			}
+		}
+
 		private String dirName;
 		private LibHoverInfo libhover;
 		private boolean debug;
+		private FilenameComparator filenameComparator = new FilenameComparator();
+		private NullEntityResolver entityResolver = new NullEntityResolver();
+		DocumentBuilderFactory factory;
 		
 		public DevHelpParser(String dirName) {
 			this(dirName, false);
@@ -317,6 +328,8 @@ public class ParseDevHelp {
 			this.dirName = dirName;
 			this.libhover = new LibHoverInfo();
 			this.debug = debug;
+			factory = DocumentBuilderFactory.newInstance();
+			factory.setValidating(false);
 		}
 
 		public LibHoverInfo getLibHoverInfo() {
@@ -330,12 +343,7 @@ public class ParseDevHelp {
 				IFileStore htmlDir = fs.getStore(dirPath);
 				IFileStore[] files = htmlDir.childStores(EFS.NONE, null);
 				monitor.beginTask(LibHoverMessages.getString(PARSING_MSG), files.length);
-				Arrays.sort(files, new Comparator<IFileStore>() {
-					@Override
-					public int compare(IFileStore arg0, IFileStore arg1) {
-						return (arg0.getName().compareToIgnoreCase(arg1.getName()));
-					}
-				});
+				Arrays.sort(files, filenameComparator);
    				for (int i = 0; i < files.length; ++i) {
 					IFileStore file = files[i];
 					String name = file.fetchInfo().getName();
@@ -353,7 +361,6 @@ public class ParseDevHelp {
 					monitor.worked(1);
    				}
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return libhover;
@@ -379,8 +386,6 @@ public class ParseDevHelp {
 							System.out.println(callback.toString());
 						libhover.functions.put(callback.getFuncName(), callback.getFunctionInfo());
 					}
-				} catch (FileNotFoundException e1) {
-					// ignore
 				} catch (IOException e) {
 					// ignore
 				}
@@ -392,18 +397,8 @@ public class ParseDevHelp {
 				Path path = new Path(fileName);
 				File f = new File(fileName);
 				FileInputStream stream = new FileInputStream(f);
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				factory.setValidating(false);
 				DocumentBuilder builder = factory.newDocumentBuilder();
-				builder.setEntityResolver(new EntityResolver()
-		        {
-		            @Override
-					public InputSource resolveEntity(String publicId, String systemId)
-		                throws SAXException, IOException
-		            {
-		                return new InputSource(new StringReader("")); //$NON-NLS-1$
-		            }
-		        });
+				builder.setEntityResolver(entityResolver);
 				Document doc = builder.parse(stream);
 				NodeList bookNodes = doc.getElementsByTagName("book"); //$NON-NLS-1$
 				for (int x = 0; x < bookNodes.getLength(); ++x) {
@@ -448,42 +443,25 @@ public class ParseDevHelp {
 				}
 			} catch (FileNotFoundException e1) {
 				// ignore
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (SAXException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (ParserConfigurationException|SAXException|IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public static class UpdateDevhelp extends Job {
-
-		public UpdateDevhelp(String name) {
-			super(name);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			
-			return null;
-		}
-	}
-	
 	public static void main(String[] args) {
-		
-		String devhelpHtmlDirectory = args[0];
-		DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory, true);
+		long startParse = System.currentTimeMillis();
+		String devhelpHtmlDirectory = "/usr/share/gtk-doc/html";
+		DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory, false);
 		File dir = new File(devhelpHtmlDirectory);
-		File[] files = dir.listFiles();
-		for (int i = 0; i < files.length; ++i) {
-			File f = files[i];
+		for (File f : dir.listFiles()) {
 			String name = f.getName();
 			p.parse(f.getAbsolutePath() + "/" + name + ".devhelp2",  //$NON-NLS-1$ //$NON-NLS-2$
 					new NullProgressMonitor());
 		}
+		long endParse = System.currentTimeMillis();
+		System.out.println("Parse Complete:"+(endParse-startParse)); //$NON-NLS-1$
+		long startSerialize = System.currentTimeMillis();
 		LibHoverInfo hover = p.getLibHoverInfo();
 		try {
 			// Now, output the LibHoverInfo for caching later
@@ -492,15 +470,16 @@ public class ParseDevHelp {
 			File ldir = new File(location.toOSString());
 			ldir.mkdir();
 			location = location.append("devhelp.libhover"); //$NON-NLS-1$
-			FileOutputStream f = new FileOutputStream(location.toOSString());
-			ObjectOutputStream out = new ObjectOutputStream(f);
-			out.writeObject(hover);
-			out.close();
+			try (FileOutputStream f = new FileOutputStream(
+					location.toOSString());
+					ObjectOutputStream out = new ObjectOutputStream(f)) {
+				out.writeObject(hover);
+			}
 		} catch(Exception e) {
-			e.printStackTrace();
 		}
+		long endSerialize = System.currentTimeMillis();
 		
-		System.out.println("Parse Complete"); //$NON-NLS-1$
+		System.out.println("Parse Complete:"+(endSerialize-startSerialize)); //$NON-NLS-1$
 
 	}
 
