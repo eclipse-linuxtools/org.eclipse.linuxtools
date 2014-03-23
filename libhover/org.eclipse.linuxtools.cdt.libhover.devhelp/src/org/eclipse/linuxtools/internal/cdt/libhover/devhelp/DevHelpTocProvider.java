@@ -50,7 +50,7 @@ public class DevHelpTocProvider extends AbstractTocProvider {
             }
             @Override
 			public String getLinkTo() {
-            	return "";
+            	return ""; //$NON-NLS-1$
             }
             @Override
             public String getContributorId() {

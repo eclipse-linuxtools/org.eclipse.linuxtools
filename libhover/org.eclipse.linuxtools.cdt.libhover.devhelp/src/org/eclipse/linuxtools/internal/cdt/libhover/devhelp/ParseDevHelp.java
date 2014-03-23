@@ -67,8 +67,8 @@ public class ParseDevHelp {
 		private String returnValue;
 		private String funcName;
 		private String rowTag;
-		private String prototype = ""; //$NON-NLS-1$
-		private String description = ""; //$NON-NLS-1$
+		private StringBuilder prototype = new StringBuilder();
+		private StringBuilder description = new StringBuilder();
 		private int divCounter;
 		private int rowItemCount;
 		
@@ -109,14 +109,14 @@ public class ParseDevHelp {
 					if (t == HTML.Tag.P) {
 						protoStart = false;
 						descStart = true;;
- 						description += "<p>"; //$NON-NLS-1$
+ 						description.append("<p>"); //$NON-NLS-1$
 					}
 				} else	if (descStart) {
 					if (t == HTML.Tag.P) {
-						description += "<p>"; //$NON-NLS-1$
+						description.append("<p>"); //$NON-NLS-1$
 					}
 					else if (t == HTML.Tag.TABLE) {
-						description += "<dl>"; //$NON-NLS-1$
+						description.append("<dl>"); //$NON-NLS-1$
 					}
 					else if (t == HTML.Tag.TR) {
 						rowItemCount = 0;
@@ -131,7 +131,7 @@ public class ParseDevHelp {
 								rowTag = "<dt>"; //$NON-NLS-1$
 							else
 								rowTag = "<dd>"; //$NON-NLS-1$
-							description += rowTag;
+							description.append(rowTag);
 						}
 					}
 				}
@@ -156,18 +156,18 @@ public class ParseDevHelp {
 	    		}
 	    		if (descStart) {
 	    			if (t == HTML.Tag.P)
- 	    				description += "</p>"; //$NON-NLS-1$
+ 	    				description.append("</p>"); //$NON-NLS-1$
 	    			else if (t == HTML.Tag.TABLE)
-	    				description += "</dl>"; //$NON-NLS-1$
+	    				description.append("</dl>"); //$NON-NLS-1$
 	    			else if (t == HTML.Tag.TR) {
 	    				rowItemCount = 0;
 	    			}
 	    			else if (t == HTML.Tag.TD) {
 	    				if (!rowIgnore) {
 	    					if (rowTag != null && rowTag.equals("<dt>")) //$NON-NLS-1$
-	    						description += "</dt>"; //$NON-NLS-1$
+	    						description.append("</dt>"); //$NON-NLS-1$
 	    					else
-	    						description += "</dd>"; //$NON-NLS-1$
+	    						description.append("</dd>"); //$NON-NLS-1$
 	    				}
 	    				rowIgnore = false;
 	    			}
@@ -203,8 +203,8 @@ public class ParseDevHelp {
 	    							parmStart = true;
 	    							protoStart = false;
 	    						}
-	    						prototype += separator + jtoken;
-	    						separator = " ";
+	    						prototype.append(separator).append(jtoken);
+	    						separator = " "; //$NON-NLS-1$
 	    					}
 	    					if (parmStart && completed) {
 	    						parmStart = false;
@@ -222,16 +222,16 @@ public class ParseDevHelp {
 	    				completed = true;
 	    				temp = temp.substring(0, temp.length() - 2);
 	    			}
-	    			String separator = " ";
-	    			while (temp.startsWith("*") || temp.startsWith("const")) { //$NON-NLS-1$
-	    				if (temp.charAt(0) == '*') { //$NON-NLS-1$
+	    			String separator = " "; //$NON-NLS-1$
+	    			while (temp.startsWith("*") || temp.startsWith("const")) { //$NON-NLS-1$ //$NON-NLS-2$
+	    				if (temp.charAt(0) == '*') {
 	    					returnValue += separator + "*"; //$NON-NLS-1$
 	    					temp = temp.substring(1).trim();
 	    					separator = ""; //$NON-NLS-1$
 	    				} else {
 	    					returnValue += "const"; //$NON-NLS-1$
 	    					temp = temp.substring(5).trim();
-	    					separator = " ";
+	    					separator = " "; //$NON-NLS-1$
 	    				}
 	    			}
 	    			int index = temp.lastIndexOf('(');
@@ -239,7 +239,7 @@ public class ParseDevHelp {
 	    			if (index2 < index) {
 	    				if (index + 1 < temp.length()) {
 	    					temp = temp.substring(index + 1).trim();
-	    					prototype += temp;
+	    					prototype.append(temp);
 	    				}
 	    				parmStart = true;
 	    				protoStart = false;
@@ -257,15 +257,15 @@ public class ParseDevHelp {
 	    				descStart = true;
 	    				parmData = parmData.substring(0, index);
 	    			}
-	    			if (!prototype.equals("")) {
-	    			   if (!parmData.equals(",") && !parmData.equals(""))
-	    				   parmData = " " + parmData;
+	    			if (prototype.length() == 0) {
+	    			   if (!parmData.equals(",") && !parmData.isEmpty()) //$NON-NLS-1$
+	    				   parmData = " " + parmData; //$NON-NLS-1$
 	    			}
-	    			prototype += parmData;
+	    			prototype.append(parmData);
 	    		}
 	    		else if (descStart) {
 	    			if (!rowIgnore)
-	    				description += String.valueOf(data);
+	    				description.append(String.valueOf(data));
 	    		}
 	    	}
 
@@ -273,13 +273,13 @@ public class ParseDevHelp {
 	    
 	    public FunctionInfo getFunctionInfo() {
 	    	if (!valid || returnValue == null ||
-	    			returnValue.startsWith("#") ||
-	    			returnValue.startsWith("typedef "))
+	    			returnValue.startsWith("#") || //$NON-NLS-1$
+	    			returnValue.startsWith("typedef ")) //$NON-NLS-1$
 	    		return null;
 	    	FunctionInfo info = new FunctionInfo(funcName);
 	    	info.setReturnType(returnValue);
-	    	info.setPrototype(prototype);
-	    	info.setDescription(description);
+	    	info.setPrototype(prototype.toString());
+	    	info.setDescription(description.toString());
 	    	return info;
 	    }
 	    
@@ -289,8 +289,8 @@ public class ParseDevHelp {
 	    
 	    @Override
 		public String toString() {
-	    	return "funcName: <" + funcName + "> returnType: <" + returnValue +
-	    	"> prototype: <" + prototype + "> description: " + description;
+	    	return "funcName: <" + funcName + "> returnType: <" + returnValue + //$NON-NLS-1$ //$NON-NLS-2$
+	    	"> prototype: <" + prototype + "> description: " + description; //$NON-NLS-1$ //$NON-NLS-2$
 	    }
 	}
 	
@@ -351,7 +351,7 @@ public class ParseDevHelp {
 						return null;
 					monitor.setTaskName(LibHoverMessages.getFormattedString(PARSING_FMT_MSG, 
 							new String[]{name}));
-					File f = new File(dirPath.append(name).append(name + ".devhelp2").toOSString());
+					File f = new File(dirPath.append(name).append(name + ".devhelp2").toOSString()); //$NON-NLS-1$
 					if (f.exists())
 						parse(dirPath.append(name).append(name + ".devhelp2").toOSString(), //$NON-NLS-1$ 
 								monitor);
@@ -405,35 +405,35 @@ public class ParseDevHelp {
 					Node n = bookNodes.item(x);
 					NamedNodeMap m = n.getAttributes();
 					Node language = m.getNamedItem("language"); //$NON-NLS-1$
-					if (language != null && !language.getNodeValue().equals("c"))
+					if (language != null && !language.getNodeValue().equals("c")) //$NON-NLS-1$
 						return;
 				}
-				if (path.lastSegment().endsWith("devhelp")) {
-					NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$
+				if (path.lastSegment().endsWith("devhelp")) { //$NON-NLS-1$
+					NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$ //$NON-NLS-1$
 					for (int i = 0; i < nl.getLength(); ++i) {
 						if (monitor.isCanceled())
 							return;
 						Node n = nl.item(i);
 						NamedNodeMap m = n.getAttributes();
-						Node name = m.getNamedItem("name"); // $NON-NLS-1$
-						Node link = m.getNamedItem("link"); // $NON-NLS-1$
+						Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
+						Node link = m.getNamedItem("link"); // $NON-NLS-1$ //$NON-NLS-1$
 						if (link != null) {
 							parseLink(link, name, path, libhover);
 						}
 					}
-				} else if (path.lastSegment().endsWith("devhelp2")) {
-					NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$
+				} else if (path.lastSegment().endsWith("devhelp2")) { //$NON-NLS-1$
+					NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$ //$NON-NLS-1$
 					for (int i = 0; i < nl.getLength(); ++i) {
 						if (monitor.isCanceled())
 							return;
 						Node n = nl.item(i);
 						NamedNodeMap m = n.getAttributes();
-						Node type = m.getNamedItem("type"); // $NON-NLS-1$
+						Node type = m.getNamedItem("type"); // $NON-NLS-1$ //$NON-NLS-1$
 						if (type != null) {
 							String typeName = type.getNodeValue();
 							if (typeName.equals("function")) { //$NON-NLS-1$
-								Node name = m.getNamedItem("name"); // $NON-NLS-1$
-								Node link = m.getNamedItem("link"); // $NON-NLS-1$
+								Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
+								Node link = m.getNamedItem("link"); // $NON-NLS-1$ //$NON-NLS-1$
 								if (link != null) {
 									parseLink(link, name, path, libhover);
 								}
@@ -451,7 +451,7 @@ public class ParseDevHelp {
 	
 	public static void main(String[] args) {
 		long startParse = System.currentTimeMillis();
-		String devhelpHtmlDirectory = "/usr/share/gtk-doc/html";
+		String devhelpHtmlDirectory = "/usr/share/gtk-doc/html"; //$NON-NLS-1$
 		DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory, false);
 		File dir = new File(devhelpHtmlDirectory);
 		for (File f : dir.listFiles()) {

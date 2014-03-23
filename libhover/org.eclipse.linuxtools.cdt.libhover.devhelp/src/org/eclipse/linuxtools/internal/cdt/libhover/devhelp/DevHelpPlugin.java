@@ -119,11 +119,11 @@ public class DevHelpPlugin extends AbstractUIPlugin implements IStartup {
 				File ldir = new File(location.toOSString());
 				ldir.mkdir();
 				location = location.append("devhelp.libhover"); //$NON-NLS-1$
-				FileOutputStream f = new FileOutputStream(
+				try (FileOutputStream f = new FileOutputStream(
 						location.toOSString());
-				ObjectOutputStream out = new ObjectOutputStream(f);
-				out.writeObject(hover);
-				out.close();
+						ObjectOutputStream out = new ObjectOutputStream(f)) {
+					out.writeObject(hover);
+				}
 				monitor.done();
 			} catch (IOException e) {
 				monitor.done();

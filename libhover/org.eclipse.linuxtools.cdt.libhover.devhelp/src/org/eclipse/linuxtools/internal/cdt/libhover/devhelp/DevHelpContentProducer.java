@@ -30,7 +30,7 @@ public class DevHelpContentProducer implements IHelpContentProducer {
 	public InputStream getInputStream(String pluginID, String href,
 			Locale locale) {
 		// Eclipse help system adds parameters to the href but this breaks our path creation so we just strip them.
-		if (href.contains("?")) {
+		if (href.contains("?")) { //$NON-NLS-1$
 			href = href.substring(0, href.indexOf('?'));
 		}
 		IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();

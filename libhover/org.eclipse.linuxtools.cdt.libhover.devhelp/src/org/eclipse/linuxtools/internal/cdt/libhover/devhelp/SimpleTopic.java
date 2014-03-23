@@ -40,7 +40,7 @@ public class SimpleTopic implements ITopic {
 	}
 
 	private void initSubtopics() {
-		NodeList nodes = xpathEvalNodes("sub", node);
+		NodeList nodes = xpathEvalNodes("sub", node); //$NON-NLS-1$
 		if (nodes != null) {
 			for (int i = 0; i < nodes.getLength(); i++) {
 				Node innerNode = nodes.item(i);
@@ -73,23 +73,23 @@ public class SimpleTopic implements ITopic {
 
 	@Override
 	public String getHref() {
-		String link = "";
+		String link = ""; //$NON-NLS-1$
 		try {
-			link = xpath.evaluate("@link", node);
+			link = xpath.evaluate("@link", node); //$NON-NLS-1$
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 		}
-		return "/" + DevHelpPlugin.PLUGIN_ID + "/" + bookName + "/" + link;
+		return "/" + DevHelpPlugin.PLUGIN_ID + "/" + bookName + "/" + link; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Override
 	public String getLabel() {
 		try {
-			return xpath.evaluate("@name", node);
+			return xpath.evaluate("@name", node); //$NON-NLS-1$
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override

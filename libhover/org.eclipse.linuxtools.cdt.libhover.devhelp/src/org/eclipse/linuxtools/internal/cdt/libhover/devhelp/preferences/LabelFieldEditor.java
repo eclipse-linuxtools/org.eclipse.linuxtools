@@ -10,7 +10,7 @@ class LabelFieldEditor extends FieldEditor {
 
 	public LabelFieldEditor( Composite parent, String title ) {
 		this.parent = parent;
-		init("org.eclipse.linuxtools.cdt.libhover.dummy", title);
+		init("org.eclipse.linuxtools.cdt.libhover.dummy", title); //$NON-NLS-1$
 		createControl(parent);
 	}
 

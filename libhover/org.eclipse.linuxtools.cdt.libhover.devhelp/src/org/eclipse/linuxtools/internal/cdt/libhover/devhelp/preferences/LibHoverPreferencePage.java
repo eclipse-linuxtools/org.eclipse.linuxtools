@@ -90,7 +90,6 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				// TODO Auto-generated method stub
 				IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
 				ParseDevHelp.DevHelpParser p =
 					new ParseDevHelp.DevHelpParser(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY));
@@ -109,10 +108,11 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
 					File ldir = new File(location.toOSString());
 					ldir.mkdir();
 					location = location.append("devhelp.libhover"); //$NON-NLS-1$
-					FileOutputStream f = new FileOutputStream(location.toOSString());
-					ObjectOutputStream out = new ObjectOutputStream(f);
-					out.writeObject(hover);
-					out.close();
+					try (FileOutputStream f = new FileOutputStream(
+							location.toOSString());
+							ObjectOutputStream out = new ObjectOutputStream(f)) {
+						out.writeObject(hover);
+					}
 					monitor.done();
 				} catch(IOException e) {
 					monitor.done();

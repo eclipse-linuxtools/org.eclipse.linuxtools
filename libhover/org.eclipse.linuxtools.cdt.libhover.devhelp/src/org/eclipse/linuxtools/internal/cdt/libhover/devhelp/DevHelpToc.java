@@ -71,7 +71,7 @@ public class DevHelpToc implements IToc {
 			for (IFileStore file: files) {
 				String name = file.fetchInfo().getName();
 				if (fs.getStore(
-						devhelpLocation.append(name).append(name + ".devhelp2"))
+						devhelpLocation.append(name).append(name + ".devhelp2")) //$NON-NLS-1$
 						.fetchInfo().exists()) {
 					ITopic topic = new DevHelpTopic(name);
 					topics.add(topic);
