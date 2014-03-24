@@ -479,7 +479,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 			return names;
 		} catch (CoreException e) {
-			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_0, e);
+			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_cantInitializeTab, e);
 		}
 		return null;
 	}
@@ -499,7 +499,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 			return parsers;
 		} catch (CoreException e) {
-			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_0, e);
+			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_cantInitializeTab, e);
 		}
 		return null;
 	}
@@ -527,7 +527,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 			return datasets;
 		} catch (CoreException e) {
-			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_1, e);
+			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_cantInitializeTab, e);
 		}
 		return null;
 	}
@@ -610,7 +610,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		top.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		this.runWithChartCheckButton = new Button(top, SWT.CHECK);
-		runWithChartCheckButton.setText(Messages.SystemTapScriptGraphOptionsTab_2);
+		runWithChartCheckButton.setText(Messages.SystemTapScriptGraphOptionsTab_graphOutputRun);
 		runWithChartCheckButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -623,10 +623,10 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 		});
 
-		runWithChartCheckButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_3);
+		runWithChartCheckButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_graphOutput);
 
 		this.outputParsingGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
-		outputParsingGroup.setText(Messages.SystemTapScriptGraphOptionsTab_4);
+		outputParsingGroup.setText(Messages.SystemTapScriptGraphOptionsTab_outputLabel);
 		outputParsingGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		this.createColumnSelector(outputParsingGroup);
 
@@ -1068,7 +1068,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	private static String checkRegex(String regex) {
 		//TODO may add more invalid regexs here, each with its own error message.
 		if (regex.contains("()")){ //$NON-NLS-1$
-			return Messages.SystemTapScriptGraphOptionsTab_6;
+			return Messages.SystemTapScriptGraphOptionsTab_emptyGroup;
 		}
 		return null;
 	}
@@ -1204,27 +1204,30 @@ public class SystemTapScriptGraphOptionsTab extends
 	}
 
 	/**
-	 * Marks all graphs belonging to the indicated regular expression that are
-	 * missing column data, or unmarks graphs that aren't missing data.
+	 * Marks all graphs belonging to the indicated regular expression that have an
+	 * error (missing column data, invalid graphID), or unmarks graphs that don't.
 	 * @param	regex The index of the regular expression to check for invalid graphs.
 	 * @return	An appropriate error message if an invalid graph is found, or if the
 	 * selected regular expression parses nothing.
 	 */
 	private String findBadGraphs(int regex) {
-		boolean foundBad = false;
+		boolean foundBadID = false;
 		int numberOfColumns = columnNamesList.get(regex).size();
 		for (GraphData gd : graphsDataList.get(regex)) {
 			boolean removed = false;
-			if (gd.xSeries >= numberOfColumns) {
-				removed = true;
-			}
-			for (int s = 0; s < gd.ySeries.length && !removed; s++) {
-				if (gd.ySeries[s] >= numberOfColumns) {
+			if (GraphFactory.getGraphName(gd.graphID) == null) {
+				foundBadID = true;
+			} else {
+				if (gd.xSeries >= numberOfColumns) {
 					removed = true;
 				}
+				for (int s = 0; s < gd.ySeries.length && !removed; s++) {
+					if (gd.ySeries[s] >= numberOfColumns) {
+						removed = true;
+					}
+				}
 			}
-			if (removed) {
-				foundBad = true;
+			if (removed || foundBadID) {
 				if (!badGraphs.contains(gd)) {
 					badGraphs.add(gd);
 					setUpGraphTableItem(findGraphTableItem(gd), null, true);
@@ -1235,10 +1238,13 @@ public class SystemTapScriptGraphOptionsTab extends
 			}
 		}
 		if (numberOfColumns == 0) {
-			return Messages.SystemTapScriptGraphOptionsTab_9;
+			return Messages.SystemTapScriptGraphOptionsTab_noGroups;
 		}
-		if (foundBad) {
-			return Messages.SystemTapScriptGraphOptionsTab_8;
+		if (foundBadID) {
+			return Messages.SystemTapScriptGraphOptionsTab_badGraphID;
+		}
+		if (!badGraphs.isEmpty()) {
+			return Messages.SystemTapScriptGraphOptionsTab_deletedGraphData;
 		}
 		return null;
 	}
@@ -1271,7 +1277,11 @@ public class SystemTapScriptGraphOptionsTab extends
 			gd = (GraphData) item.getData();
 		}
 		item.setForeground(item.getDisplay().getSystemColor(bad ? SWT.COLOR_RED : SWT.COLOR_BLACK));
-		item.setText(GraphFactory.getGraphName(gd.graphID) + ":" + gd.title //$NON-NLS-1$
+		String graphName = GraphFactory.getGraphName(gd.graphID);
+		if (graphName == null) {
+			graphName = Messages.SystemTapScriptGraphOptionsTab_invalidGraphID;
+		}
+		item.setText(graphName + ":" + gd.title //$NON-NLS-1$
 				+ (bad ? " " + Messages.SystemTapScriptGraphOptionsTab_invalidGraph : "")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -1358,7 +1368,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			this.runWithChartCheckButton.setSelection(chart);
 
 		} catch (CoreException e) {
-			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_5, e);
+			ExceptionErrorDialog.openError(Messages.SystemTapScriptGraphOptionsTab_cantInitializeTab, e);
 		} finally {
 			textListenersEnabled = true;
 		}
@@ -1568,6 +1578,9 @@ public class SystemTapScriptGraphOptionsTab extends
 
 			// Check for graphs that are missing required data.
 			for (int i = 0, g = launchConfig.getAttribute(NUMBER_OF_GRAPHS + r, 0); i < g; i++) {
+				if (launchConfig.getAttribute(get2DConfigData(GRAPH_ID, r, i), (String) null) == null) {
+					return false;
+				}
 				if (launchConfig.getAttribute(get2DConfigData(GRAPH_X_SERIES, r, i), 0) >= numberOfColumns) {
 					return false;
 				}
@@ -1584,7 +1597,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 	@Override
 	public String getName() {
-		return Messages.SystemTapScriptGraphOptionsTab_7;
+		return Messages.SystemTapScriptGraphOptionsTab_graphingTitle;
 	}
 
 	@Override
@@ -1600,7 +1613,6 @@ public class SystemTapScriptGraphOptionsTab extends
 		// Disable buttons that rely on a selected graph if no graph is selected.
 		this.setSelectionControlsEnabled(selectedTableItem != null);
 		this.addGraphButton.setEnabled(enabled && numberOfVisibleColumns > 0);
-		this.editGraphButton.setEnabled(enabled && numberOfVisibleColumns > 0);
 		this.removeRegexButton.setEnabled(enabled && getNumberOfRegexs() > 1);
 		updateLaunchConfigurationDialog();
 	}

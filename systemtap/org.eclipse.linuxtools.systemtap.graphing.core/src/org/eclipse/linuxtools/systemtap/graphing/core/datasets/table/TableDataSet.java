@@ -227,7 +227,7 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	}
 	//End IBlockDataSet Methods
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.tabledataset"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.core.datasets.tabledataset"; //$NON-NLS-1$
 	protected ArrayList<TableEntry> data;
 	private String[] titles;
 }

@@ -17,16 +17,15 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.messages"; //$NON-NLS-1$
 
-	public static String SystemTapScriptGraphOptionsTab_0;
-	public static String SystemTapScriptGraphOptionsTab_1;
-	public static String SystemTapScriptGraphOptionsTab_2;
-	public static String SystemTapScriptGraphOptionsTab_3;
-	public static String SystemTapScriptGraphOptionsTab_4;
-	public static String SystemTapScriptGraphOptionsTab_5;
-	public static String SystemTapScriptGraphOptionsTab_6;
-	public static String SystemTapScriptGraphOptionsTab_7;
-	public static String SystemTapScriptGraphOptionsTab_8;
-	public static String SystemTapScriptGraphOptionsTab_9;
+	public static String SystemTapScriptGraphOptionsTab_cantInitializeTab;
+	public static String SystemTapScriptGraphOptionsTab_graphOutputRun;
+	public static String SystemTapScriptGraphOptionsTab_graphOutput;
+	public static String SystemTapScriptGraphOptionsTab_outputLabel;
+	public static String SystemTapScriptGraphOptionsTab_emptyGroup;
+	public static String SystemTapScriptGraphOptionsTab_graphingTitle;
+	public static String SystemTapScriptGraphOptionsTab_deletedGraphData;
+	public static String SystemTapScriptGraphOptionsTab_noGroups;
+	public static String SystemTapScriptGraphOptionsTab_badGraphID;
 
 	public static String SystemTapScriptGraphOptionsTab_AddGraphButton;
 	public static String SystemTapScriptGraphOptionsTab_AddGraphButtonToolTip;
@@ -43,6 +42,7 @@ public class Messages extends NLS {
 	public static String SystemTapScriptGraphOptionsTab_RemoveGraphButton;
 	public static String SystemTapScriptGraphOptionsTab_RemoveGraphButtonToolTip;
 	public static String SystemTapScriptGraphOptionsTab_invalidGraph;
+	public static String SystemTapScriptGraphOptionsTab_invalidGraphID;
 
 	public static String SystemTapScriptGraphOptionsTab_regexErrorMsgFormat;
 	public static String SystemTapScriptGraphOptionsTab_regexLabel;
@@ -67,18 +67,18 @@ public class Messages extends NLS {
 	public static String SystemTapScriptGraphOptionsTab_generateFromPrintsError;
 	public static String SystemTapScriptGraphOptionsTab_generateFromPrintsEmpty;
 
-	public static String SystemTapScriptLaunchConfigurationTab_0;
-	public static String SystemTapScriptLaunchConfigurationTab_1;
-	public static String SystemTapScriptLaunchConfigurationTab_2;
-	public static String SystemTapScriptLaunchConfigurationTab_3;
-	public static String SystemTapScriptLaunchConfigurationTab_4;
-	public static String SystemTapScriptLaunchConfigurationTab_5;
-	public static String SystemTapScriptLaunchConfigurationTab_6;
-	public static String SystemTapScriptLaunchConfigurationTab_7;
-	public static String SystemTapScriptLaunchConfigurationTab_8;
-	public static String SystemTapScriptLaunchConfigurationTab_9;
-	public static String SystemTapScriptLaunchConfigurationTab_10;
-	public static String SystemTapScriptLaunchConfigurationTab_11;
+	public static String SystemTapScriptLaunchConfigurationTab_script;
+	public static String SystemTapScriptLaunchConfigurationTab_browse;
+	public static String SystemTapScriptLaunchConfigurationTab_currentUser;
+	public static String SystemTapScriptLaunchConfigurationTab_username;
+	public static String SystemTapScriptLaunchConfigurationTab_password;
+	public static String SystemTapScriptLaunchConfigurationTab_user;
+	public static String SystemTapScriptLaunchConfigurationTab_host;
+	public static String SystemTapScriptLaunchConfigurationTab_runLocally;
+	public static String SystemTapScriptLaunchConfigurationTab_hostname;
+	public static String SystemTapScriptLaunchConfigurationTab_general;
+	public static String SystemTapScriptLaunchConfigurationTab_tabName;
+	public static String SystemTapScriptLaunchConfigurationTab_selectScript;
 
 	public static String SystemTapScriptLaunchConfigurationTab_errorInitializingTab;
 	public static String SystemTapScriptLaunchConfigurationTab_options;
@@ -87,12 +87,13 @@ public class Messages extends NLS {
 	public static String SystemTapScriptLaunchShortcut_couldNotLaunchScript;
 	public static String SystemTapScriptLaunchConfigurationTab_fileNotFound;
 	public static String SystemTapScriptLaunchConfigurationTab_fileNotStp;
-	public static String SystemTapScriptOptionsTab_0;
-	public static String SystemTapScriptOptionsTab_1;
-	public static String SystemTapScriptOptionsTab_2;
-	public static String SystemTapScriptOptionsTab_3;
-	public static String SystemTapScriptOptionsTab_4;
-	public static String SystemTapScriptOptionsTab_5;
+
+	public static String SystemTapScriptOptionsTab_selectExec;
+	public static String SystemTapScriptOptionsTab_targetExec;
+	public static String SystemTapScriptOptionsTab_otherOptions;
+	public static String SystemTapScriptOptionsTab_dyninst;
+	public static String SystemTapScriptOptionsTab_dyninstError;
+	public static String SystemTapScriptOptionsTab_pidError;
 	public static String SystemTapScriptOptionsTab_initializeConfigurationFailed;
 	public static String SystemTapScriptOptionsTab_targetToolTip;
 

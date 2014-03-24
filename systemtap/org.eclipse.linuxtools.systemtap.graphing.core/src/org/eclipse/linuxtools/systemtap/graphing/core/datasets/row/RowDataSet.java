@@ -202,5 +202,5 @@ public class RowDataSet implements IHistoricalDataSet {
 
 	protected ArrayList<IDataEntry> data;
 	private String[] titles;
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.core.datasets.rowdataset"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.core.datasets.rowdataset"; //$NON-NLS-1$
 }

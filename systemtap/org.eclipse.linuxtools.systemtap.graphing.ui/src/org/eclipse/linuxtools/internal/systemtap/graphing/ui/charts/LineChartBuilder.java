@@ -27,7 +27,7 @@ import org.swtchart.LineStyle;
 
 public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder"; //$NON-NLS-1$
 
     public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
 		super(adapter, parent, style, title);

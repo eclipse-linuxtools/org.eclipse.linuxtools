@@ -28,7 +28,7 @@ import org.swtchart.Range;
  */
 
 public class BarChartBuilder extends AbstractChartWithAxisBuilder {
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.barchartbuilder"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.barchartbuilder"; //$NON-NLS-1$
 
 	public BarChartBuilder(Composite parent, int style, String title, IAdapter adapter) {
 		super(adapter, parent, style, title);

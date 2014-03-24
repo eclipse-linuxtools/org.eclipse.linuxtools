@@ -25,7 +25,7 @@ import org.swtchart.LineStyle;
  */
 
 public class ScatterChartBuilder extends LineChartBuilder {
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.scatterchartbuilder"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.scatterchartbuilder"; //$NON-NLS-1$
 
     public ScatterChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
 		super(parent, style, title, adapter);

@@ -60,10 +60,6 @@ public final class GraphFactory {
 		GraphingUIPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage(), //$NON-NLS-1$
 	};
 
-	/*
-	 * Note: "graphingapi" is included in chart IDs (rather than "graphing") to maintain
-	 * compatibility with launch configurations created before the project name change.
-	 */
 	private static final String[] graphIDs = new String[] {
 		ScatterChartBuilder.ID,
 		LineChartBuilder.ID,

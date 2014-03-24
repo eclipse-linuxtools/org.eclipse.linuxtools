@@ -100,7 +100,15 @@ public class TestCreateSystemtapScript {
 		private String parent;
 		private String node;
 
-		NodeAvailableAndSelect(SWTBotTree tree, String parent, String node){
+		/**
+		 * Wait for a tree node (with a known parent) to become visible, and select it
+		 * when it does. Note that this wait condition should only be used after having
+		 * made an attempt to reveal the node.
+		 * @param tree The SWTBotTree that contains the node to select.
+		 * @param parent The text of the parent node that contains the node to select.
+		 * @param node The text of the node to select.
+		 */
+		NodeAvailableAndSelect(SWTBotTree tree, String parent, String node) {
 			this.tree = tree;
 			this.node = node;
 			this.parent = parent;
@@ -355,12 +363,12 @@ public class TestCreateSystemtapScript {
 		bot.tree().select("SystemTap").contextMenu("New").click();
 
 		// Select the "Graphing" tab and enable output graphing.
-		bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7).activate();
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_graphingTitle).activate();
+		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_graphOutputRun).click();
 		return shell;
 	}
 
-	private void clearAllTerminated(){
+	private void clearAllTerminated() {
 		SWTBotView debugView = bot.viewByTitle("Debug");
 		debugView.setFocus();
 		SWTBotTree debugTable = debugView.bot().tree();
@@ -373,7 +381,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testCreateScript(){
+	public void testCreateScript() {
 		String scriptName = "testScript.stp";
 		createScript(bot, scriptName);
 
@@ -399,7 +407,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testAddProbes(){
+	public void testAddProbes() {
 		// Create a blank script and add a probe to it while it's open.
 		String scriptName = "probeScript.stp";
 		createScript(bot, scriptName);
@@ -466,7 +474,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testMissingColumns(){
+	public void testMissingColumns() {
 		SWTBotShell shell = prepareScript("missingColumns.stp", null);
 
 		// As soon as the Graphing tab is entered, no regular expression exists & nothing can be run.
@@ -497,7 +505,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testDeleteBlankRegex(){
+	public void testDeleteBlankRegex() {
 		SWTBotShell shell = prepareScript("blank.stp", null);
 
 		// Confirm that adding a new regex when the current one is blank has no effect.
@@ -560,7 +568,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testGraphScript(){
+	public void testGraphScript() {
 		String scriptName = "testGraph.stp";
 		createScript(bot, scriptName);
 
@@ -585,11 +593,11 @@ public class TestCreateSystemtapScript {
 		bot.textWithLabel("Name:").setText(scriptName);
 
 		// Select the "Graphing" tab.
-		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
+		SWTBotCTabItem tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_graphingTitle);
 		tab.activate();
 
 		// Enable output graphing.
-		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_2).click();
+		bot.checkBox(Messages.SystemTapScriptGraphOptionsTab_graphOutputRun).click();
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		combo.setText("Value:(\\d+) (\\d+)");
 		assertEquals("Value:(\\d+) (\\d+)", combo.getText());
@@ -642,7 +650,7 @@ public class TestCreateSystemtapScript {
 		shell.setFocus();
 		shell.bot().text().setText(scriptName); // Set the filter text to show configs of the current script
 		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "SystemTap", scriptName));
-		tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_7);
+		tab = bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_graphingTitle);
 		tab.activate();
 
 		combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
@@ -652,7 +660,7 @@ public class TestCreateSystemtapScript {
 		assertEquals("Value:(\\d+) (\\d+)", combo.getText());
 		assertEquals("Value:1 2", text.getText());
 		assertEquals(1, table.rowCount());
-		String graphName = GraphFactory.getGraphName("org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.scatterchartbuilder");
+		String graphName = GraphFactory.getGraphName("org.eclipse.linuxtools.systemtap.graphing.ui.charts.scatterchartbuilder");
 		assertTrue(table.containsItem(graphName.concat(":Values")));
 		combo.setSelection(1);
 		assertEquals("Other:(\\d+) (\\d+)", combo.getText());
@@ -745,7 +753,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testLabelledGraphScript(){
+	public void testLabelledGraphScript() {
 		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
 		if (!stapInstalled) {
@@ -783,13 +791,13 @@ public class TestCreateSystemtapScript {
 		assertTrue(button.isEnabled());
 		button.click();
 		String title = "Fruit Info";
-		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.barchartbuilder", false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.barchartbuilder", false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.piechartbuilder", false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.piechartbuilder", false);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder", false);
+		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder", false);
 		shell.setFocus();
 
 		bot.button("Run").click();
@@ -1049,7 +1057,7 @@ public class TestCreateSystemtapScript {
 	}
 
 	@Test
-	public void testGraphTooltips(){
+	public void testGraphTooltips() {
 		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
 		if (!stapInstalled) {
@@ -1073,10 +1081,10 @@ public class TestCreateSystemtapScript {
 		assertTrue(button.isEnabled());
 		button.click();
 		String title = "Info";
-		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.linechartbuilder", true);
+		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder", true);
 		shell.setFocus();
 		button.click();
-		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.barchartbuilder", true);
+		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.barchartbuilder", true);
 		shell.setFocus();
 
 		bot.button("Run").click();
@@ -1217,36 +1225,34 @@ public class TestCreateSystemtapScript {
 	}
 
 	/**
+	 * Deselects a radio button.
 	 * Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=344484
 	 * @param currSelection The index of the radiobutton to deselect
 	 */
 	private void deselectDefaultSelection(final int currSelection) {
-			UIThreadRunnable.syncExec(new VoidResult() {
-
-				@Override
-				public void run() {
-					@SuppressWarnings("unchecked")
-					Matcher<Widget> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"));
-					Button b = (Button) bot.widget(matcher, currSelection);
-					b.setSelection(false);
-
-				}
-
-			});
-		}
+		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
+			public void run() {
+				@SuppressWarnings("unchecked")
+				Matcher<Widget> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"));
+				Button b = (Button) bot.widget(matcher, currSelection);
+				b.setSelection(false);
+			}
+		});
+	}
 
 	public static void click(final MenuItem menuItem) {
-        final Event event = new Event();
-        event.time = (int) System.currentTimeMillis();
-        event.widget = menuItem;
-        event.display = menuItem.getDisplay();
-        event.type = SWT.Selection;
+		final Event event = new Event();
+		event.time = (int) System.currentTimeMillis();
+		event.widget = menuItem;
+		event.display = menuItem.getDisplay();
+		event.type = SWT.Selection;
 
-        UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
-                @Override
-                public void run() {
-                        menuItem.notifyListeners(SWT.Selection, event);
-                }
-        });
+		UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+			@Override
+			public void run() {
+				menuItem.notifyListeners(SWT.Selection, event);
+			}
+		});
 	}
 }

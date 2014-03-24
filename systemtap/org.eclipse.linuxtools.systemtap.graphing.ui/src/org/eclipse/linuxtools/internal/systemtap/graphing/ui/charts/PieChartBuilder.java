@@ -23,7 +23,7 @@ import org.swtchart.Range;
  * Builds Pie chart.
  */
 public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphingapi.ui.charts.piechartbuilder"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.piechartbuilder"; //$NON-NLS-1$
 
 	public PieChartBuilder(Composite parent, int style, String title, IAdapter adapter) {
 		super(adapter, parent, style, title);

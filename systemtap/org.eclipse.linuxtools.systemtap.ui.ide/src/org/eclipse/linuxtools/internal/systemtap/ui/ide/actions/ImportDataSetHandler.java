@@ -57,10 +57,6 @@ public class ImportDataSetHandler extends AbstractHandler {
 			String id = br.readLine();
 			String[] titles = br.readLine().split(", "); //$NON-NLS-1$
 
-			/*
-			 * Note: "graphingapi" is included in dataset IDs (rather than "graphing") to maintain
-			 * compatibility with graph sets created before the project name change.
-			 */
 			if (id == null && titles == null) {
 				throw new IOException();
 			} else if (id.equals(RowDataSet.ID)) {

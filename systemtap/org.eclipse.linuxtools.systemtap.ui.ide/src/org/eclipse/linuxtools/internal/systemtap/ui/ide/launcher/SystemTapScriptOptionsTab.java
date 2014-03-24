@@ -73,11 +73,11 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
 		this.fileDialog = new FileDialog(PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getShell(), SWT.OPEN);
-		fileDialog.setText(Messages.SystemTapScriptOptionsTab_0);
+		fileDialog.setText(Messages.SystemTapScriptOptionsTab_selectExec);
 		fileDialog.setFilterPath(Platform.getLocation().toOSString());
 		// Target Executable path
 		Group targetExecutableGroup = new Group(comp, SWT.SHADOW_ETCHED_IN);
-		targetExecutableGroup.setText(Messages.SystemTapScriptOptionsTab_1);
+		targetExecutableGroup.setText(Messages.SystemTapScriptOptionsTab_targetExec);
 		targetExecutableGroup
 				.setToolTipText(Messages.SystemTapScriptOptionsTab_targetToolTip);
 
@@ -96,7 +96,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
 		selectTargetProgramButton.setLayoutData(gridData);
 		selectTargetProgramButton
-				.setText(Messages.SystemTapScriptLaunchConfigurationTab_1);
+				.setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
 		selectTargetProgramButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -137,7 +137,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 					.setToolTipText(IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.TOOLTIP]);
 
 			if (IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.FLAG]
-					.contains(Messages.SystemTapScriptOptionsTab_3)) {
+					.contains(Messages.SystemTapScriptOptionsTab_dyninst)) {
 				this.dyninstCheckBox = checkBox[i];
 			}
 		}
@@ -165,7 +165,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 		}
 
 		label = new Label(cmpTxtBoxes, SWT.NONE);
-		label.setText(Messages.SystemTapScriptOptionsTab_2);
+		label.setText(Messages.SystemTapScriptOptionsTab_otherOptions);
 		this.miscCommandsText = new Text(cmpTxtBoxes, SWT.BORDER);
 		this.miscCommandsText.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING,
 				true, true));
@@ -251,7 +251,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public String getName() {
-		return Messages.SystemTapScriptLaunchConfigurationTab_10;
+		return Messages.SystemTapScriptLaunchConfigurationTab_tabName;
 	}
 
 	@Override
@@ -263,12 +263,12 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 		if (this.dyninstCheckBox.getSelection()
 				&& this.targetProgramText.getText().isEmpty()
 				&& this.targetPidText.getText().isEmpty()) {
-			setErrorMessage(Messages.SystemTapScriptOptionsTab_4);
+			setErrorMessage(Messages.SystemTapScriptOptionsTab_dyninstError);
 			return false;
 		}
 
 		if (!this.targetPidText.getText().isEmpty() && !this.targetPidText.getText().matches("[0-9]*")) { //$NON-NLS-1$
-			setErrorMessage(Messages.SystemTapScriptOptionsTab_5);
+			setErrorMessage(Messages.SystemTapScriptOptionsTab_pidError);
 			return false;
 		}
 

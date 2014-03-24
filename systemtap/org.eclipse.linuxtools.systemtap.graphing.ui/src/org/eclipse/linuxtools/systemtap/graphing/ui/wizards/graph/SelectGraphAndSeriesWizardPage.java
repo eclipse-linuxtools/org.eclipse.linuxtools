@@ -61,16 +61,18 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		cmpGraphOptsGraph.setText(Localization.getString("SelectGraphAndSeriesWizardPage.Graph")); //$NON-NLS-1$
 
 		String[] graphIDs = GraphFactory.getAvailableGraphs(wizard.model.getDataSet());
+		int btnGraphSelected = -1;
 		btnGraphs = new Button[graphIDs.length];
-		for(int i=0; i<btnGraphs.length; i++) {
+		for (int i = 0; i < btnGraphs.length; i++) {
 			btnGraphs[i] = new Button(cmpGraphOptsGraph, SWT.RADIO);
 			btnGraphs[i].setImage(GraphFactory.getGraphImage(graphIDs[i]));
 			btnGraphs[i].addListener(SWT.Selection, this);
 			btnGraphs[i].setData(graphIDs[i]);
 			btnGraphs[i].setToolTipText(GraphFactory.getGraphName(btnGraphs[i].getData().toString()) + "\n\n" + //$NON-NLS-1$
 					GraphFactory.getGraphDescription(btnGraphs[i].getData().toString()));
-			if (wizard.isEditing() && graphIDs[i].equals(wizard.model.getGraphID())) {
+			if (btnGraphSelected == -1 && wizard.isEditing() && graphIDs[i].equals(wizard.model.getGraphID())) {
 				btnGraphs[i].setSelection(true);
+				btnGraphSelected = i;
 			}
 		}
 
@@ -94,7 +96,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		txtTitle.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				checkErrors();
+				checkErrors(false);
 			}
 		});
 
@@ -113,7 +115,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		cboXItem.addSelectionListener(new ComboSelectionListener());
 		cboXItem.add(Localization.getString("SelectGraphAndSeriesWizardPage.RowID")); //$NON-NLS-1$
 
-		for(int i=0; i<cboYItems.length; i++) {
+		for (int i = 0; i < cboYItems.length; i++) {
 			lblYItems[i] = new Label(cmpGraphOptsSeries, SWT.NONE);
 			lblYItems[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 			lblYItems[i].setText(MessageFormat.format(Localization.getString("SelectGraphAndSeriesWizardPage.YSeries"), i)); //$NON-NLS-1$
@@ -121,16 +123,16 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 			cboYItems[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			cboYItems[i].addSelectionListener(new ComboSelectionListener());
 
-			if(i>0) {
+			if (i > 0) {
 				cboYItems[i].add(Localization.getString("SelectGraphAndSeriesWizardPage.NA")); //$NON-NLS-1$
 				cboYItems[i].setVisible(false);
 				lblYItems[i].setVisible(false);
 			}
 		}
 
-		for(int j,i=0; i<labels.length; i++) {
+		for (int j, i = 0; i < labels.length; i++) {
 			cboXItem.add(labels[i]);
-			for(j=0; j<lblYItems.length; j++) {
+			for (j = 0; j < lblYItems.length; j++) {
 				cboYItems[j].add(labels[i]);
 			}
 		}
@@ -158,7 +160,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 			}
 		}
 		boolean cvisible = true;
-		for(int i=1; i<cboYItems.length; i++) {
+		for (int i = 1; i < cboYItems.length; i++) {
 			if (!edit || model.getYSeries().length <= i) {
 				cboYItems[i].select(selected = 0);
 			} else {
@@ -180,20 +182,20 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		if (!edit) {
 			btnGraphs[0].setSelection(true);
 			saveDataToModelGraph(graphIDs[0]);
-		}
-		else {
-			saveDataToModelGraph(wizard.model.getGraphID());
+		} else if (btnGraphSelected == -1) {
+			saveDataToModelGraph(null);
 		}
 
 		cmpGraphOptsSeries.pack();
 		setControl(comp);
-		checkErrors();
+		checkErrors(true);
 	}
 
 	@Override
 	public void handleEvent(Event event) {
-		if(event.widget instanceof Button) {
+		if (event.widget instanceof Button) {
 			saveDataToModelGraph(((Button)event.widget).getData().toString());
+			checkErrors(false);
 			wizard.getContainer().updateButtons();
 		}
 	}
@@ -222,18 +224,18 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 	 * <code>false</code> otherwise. In the case of the latter, no data is saved.
 	 */
 	private boolean saveDataToModelSeries() {
-		if(getErrorMessage() == null) {
+		if (getErrorMessage() == null) {
 			model.setTitle(txtTitle.getText());
 			model.setXSeries(cboXItem.getSelectionIndex()-1);
 
 			int i, count;
-			for(i=1, count=1; i<cboYItems.length && 0 != cboYItems[i].getSelectionIndex(); i++) {
+			for (i = 1, count = 1; i < cboYItems.length && 0 != cboYItems[i].getSelectionIndex(); i++) {
 				count++;
 			}
 
 			int[] ySeries = new int[count];
 			ySeries[0] = cboYItems[0].getSelectionIndex();
-			for(i=1; i<count; i++) {
+			for (i = 1; i < count; i++) {
 				ySeries[i] = cboYItems[i].getSelectionIndex()-1;
 			}
 			model.setYSeries(ySeries);
@@ -246,13 +248,27 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		item.setForeground(item.getDisplay().getSystemColor(bad ? SWT.COLOR_RED : SWT.COLOR_BLACK));
 	}
 
+	private boolean isSeriesUnique() {
+		Combo item = cboXItem;
+		int i = 0;
+		do {
+			if (item.isVisible() &&
+					item.getForeground().equals(item.getDisplay().getSystemColor(SWT.COLOR_RED))) {
+				return false;
+			}
+			if (i == cboYItems.length) {
+				return true;
+			}
+			item = cboYItems[i++];
+		} while (true);
+	}
+
 	/**
-	 * Checks for conflicts in data selection. (An example of a conflict
+	 * Checks for conflicts in data selection, and marks them. (An example of a conflict
 	 * is two Y-series fields set to the same output value.)
 	 * @return <code>true</code> if there is no conflict, <code>false</code> otherwise.
-	 * Also visually marks conficting series.
 	 */
-	private boolean isSeriesUnique() {
+	private boolean findAndMarkDuplicates() {
 		boolean foundDuplicate = false;
 
 		// Undo duplicate marking, as it is to be updated.
@@ -261,16 +277,16 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 			markAsDuplicate(cboYItems[i], false);
 		}
 
-		for(int j,i=0; i<cboYItems.length; i++) {
-			if(cboYItems[i].isVisible() && !deleted[i+1]) {
+		for (int j, i = 0; i < cboYItems.length; i++) {
+			if (cboYItems[i].isVisible() && !deleted[i+1]) {
 
 				// Find duplicates by comparing selection indices. Every combo has an
 				// extra selection before column names (Row Num or NA), except Y-series 0.
 				int offset = (i == 0 ? 1 : 0);
 
-				for(j=i+1; j<cboYItems.length; j++) {
+				for (j = i+1; j < cboYItems.length; j++) {
 					try {
-						if(!deleted[j+1] && cboYItems[j].isVisible()
+						if (!deleted[j+1] && cboYItems[j].isVisible()
 								&& cboYItems[i].getSelectionIndex() + offset == cboYItems[j].getSelectionIndex()) {
 							markAsDuplicate(cboYItems[i], true);
 							markAsDuplicate(cboYItems[j], true);
@@ -286,7 +302,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 				}
 				try {
 					int selection = cboYItems[i].getSelectionIndex() + offset;
-					if(selection != 0 && selection == cboXItem.getSelectionIndex()) {
+					if (selection != 0 && selection == cboXItem.getSelectionIndex()) {
 						markAsDuplicate(cboYItems[i], true);
 						markAsDuplicate(cboXItem, true);
 						foundDuplicate = true;
@@ -315,29 +331,29 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 	@Override
 	public void dispose() {
 		super.dispose();
-		if(null != btnGraphs) {
-			for(int i=0; i<btnGraphs.length; i++) {
+		if (null != btnGraphs) {
+			for (int i = 0; i < btnGraphs.length; i++) {
 				btnGraphs[i].dispose();
 			}
 		}
 		btnGraphs = null;
 
-		if(null != txtTitle) {
+		if (null != txtTitle) {
 			txtTitle.dispose();
 		}
 		txtTitle = null;
 
-		if(null != cboXItem) {
+		if (null != cboXItem) {
 			cboXItem.dispose();
 		}
 		cboXItem = null;
-		if(null != cboYItems) {
-			for(int i=0; i<cboYItems.length; i++) {
-				if(null != cboYItems[i]) {
+		if (null != cboYItems) {
+			for (int i = 0; i < cboYItems.length; i++) {
+				if (null != cboYItems[i]) {
 					cboYItems[i].dispose();
 				}
 				cboYItems[i] = null;
-				if(null != lblYItems[i]) {
+				if (null != lblYItems[i]) {
 					lblYItems[i].dispose();
 				}
 				lblYItems[i] = null;
@@ -360,7 +376,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			Combo source = (Combo) e.getSource();
-			if(cboXItem.equals(source)) {
+			if (cboXItem.equals(source)) {
 				if (deleted[0] && cboXItem.getSelectionIndex() != 0) {
 					cboXItem.remove(0);
 					deleted[0] = false;
@@ -375,8 +391,8 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 					}
 				}
 				boolean setVisible = true;
-				if(GraphFactory.isMultiGraph(model.getGraphID())) {
-					for(int i=1; i<cboYItems.length; i++) {
+				if (GraphFactory.isMultiGraph(model.getGraphID())) {
+					for (int i = 1; i < cboYItems.length; i++) {
 						cboYItems[i].setVisible(setVisible);
 						lblYItems[i].setVisible(setVisible);
 						if (!setVisible && deleted[i+1]) {
@@ -384,7 +400,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 							deleted[i+1] = false;
 							cboYItems[i].select(0);
 						}
-						if(deleted[i+1] || (cboYItems[i].getSelectionIndex() > 0 && cboYItems[i].isVisible())) {
+						if (deleted[i+1] || (cboYItems[i].getSelectionIndex() > 0 && cboYItems[i].isVisible())) {
 							setVisible = true;
 						} else {
 							setVisible = false;
@@ -392,19 +408,22 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements Listen
 					}
 				}
 			}
-
-			checkErrors();
+			checkErrors(true);
 		}
 	}
 
-	private void checkErrors(){
-		if(!isSeriesUnique()) {
+	private void checkErrors(boolean markDuplicates) {
+		boolean isUnique = markDuplicates ? findAndMarkDuplicates() : isSeriesUnique();
+		if (model.getGraphID() == null) {
+			setErrorMessage(Localization.getString("SelectGraphAndSeriesWizardPage.NoGraphType")); //$NON-NLS-1$
+		}
+		else if (!isUnique) {
 			setErrorMessage(Localization.getString("SelectGraphAndSeriesWizardPage.SeriesNotUnique")); //$NON-NLS-1$
 		}
-		else if(isSeriesDeleted()) {
+		else if (isSeriesDeleted()) {
 			setErrorMessage(Localization.getString("SelectGraphAndSeriesWizardPage.SeriesDeleted")); //$NON-NLS-1$
 		}
-		else if(txtTitle.getText().length() == 0) {
+		else if (txtTitle.getText().length() == 0) {
 			setErrorMessage(Localization.getString("SelectGraphAndSeriesWizardPage.TitleNotSet")); //$NON-NLS-1$
 		}
 		else {
