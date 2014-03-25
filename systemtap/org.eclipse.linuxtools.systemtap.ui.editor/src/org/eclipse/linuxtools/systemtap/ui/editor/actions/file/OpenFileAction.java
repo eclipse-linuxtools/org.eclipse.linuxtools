@@ -120,10 +120,10 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 	 * @return the File object associated to the selected file.
 	 */
 	protected File queryFile() {
-		FileDialog dialog= new FileDialog(window.getShell(), SWT.OPEN);
+		FileDialog dialog = new FileDialog(window.getShell(), dialogStyle());
 		dialog.setFilterExtensions(new String[]{"*.stp"}); //$NON-NLS-1$
 		dialog.setText(dialogName());
-		String path= dialog.open();
+		String path = dialog.open();
 		if (path != null && path.length() > 0) {
 			return new File(path);
 		}

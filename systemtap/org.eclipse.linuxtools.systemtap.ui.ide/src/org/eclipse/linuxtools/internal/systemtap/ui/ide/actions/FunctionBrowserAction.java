@@ -11,17 +11,12 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView;
-import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.NewFileAction;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 
 
 
@@ -59,35 +54,13 @@ public class FunctionBrowserAction extends BrowserViewAction {
 	 */
 	@Override
 	public void run() {
-		IWorkbenchPage page = getWindow().getActivePage();
 		Object o = getSelectedElement();
 		if (o instanceof TreeNode) {
 			TreeNode t = (TreeNode) o;
-			if(t.isClickable()) {
-				IEditorInput input;
-				IEditorPart ed = page.getActiveEditor();
-				if(ed == null) {
-					NewFileAction action = new NewFileAction();
-					action.run();
-					if (action.isSuccessful())
-						ed = page.getWorkbenchWindow().getActivePage().getActiveEditor();
-					else
-						return;
-				}
-				input = ed.getEditorInput();
-				IEditorPart editor;
-				try {
-					editor = page.openEditor(input, STPEditor.ID);
-
-					if(editor instanceof STPEditor) {
-						STPEditor stpeditor = (STPEditor)editor;
-						//build the string
-						String s = t.toString() + "\n"; //$NON-NLS-1$
-						stpeditor.insertTextAtCurrent(s);
-
-					}
-				} catch (PartInitException e) {
-					ExceptionErrorDialog.openError(Localization.getString("FunctionBrowserAction.UnableToInsertFunction"), e); //$NON-NLS-1$
+			if (t.isClickable()) {
+				STPEditor stpeditor = IDESessionSettings.getOrAskForActiveSTPEditor(true);
+				if (stpeditor != null) {
+					stpeditor.insertTextAtCurrent(t.toString() + "\n"); //$NON-NLS-1$
 				}
 			} else {
 				runExpandAction();

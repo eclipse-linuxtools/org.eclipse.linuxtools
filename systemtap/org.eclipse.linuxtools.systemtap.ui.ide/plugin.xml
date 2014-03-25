@@ -152,9 +152,9 @@
 
       <menuContribution
             allPopups="true"
-            locationURI="popup:org.eclipse.ui.popup.any">
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
-               commandId="org.eclipse.linuxtools.systemtap.ui.ide.handlers.definitionMenu"
+               commandId="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu"
                style="push">
             <visibleWhen>
                <with
@@ -169,6 +169,16 @@
                   </iterate>
                </with>
             </visibleWhen>
+         </command>
+      </menuContribution>
+
+      <menuContribution
+            locationURI="popup:#CEditorRulerContext?after=additions">
+         <command
+               commandId="org.eclipse.linuxtools.systemtap.ui.ide.addStapProbe"
+               label="%command.addStapProbe.name"
+               mnemonic="%command.addStapProbe.mne"
+               style="push">
          </command>
       </menuContribution>
    </extension>
@@ -333,7 +343,20 @@
           name="%action.viewDefinition.name"
           description="%action.viewDefinition.desc"
           categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.tapset"
-          id="org.eclipse.linuxtools.systemtap.ui.ide.handlers.definitionMenu">
+          id="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu">
+      </command>
+
+      <category
+            name="%category.cfiles.name"
+            description="%category.cfiles.desc"
+            id="org.eclipse.linuxtools.systemtap.ui.ide.category.cfiles">
+      </category>
+      <command
+            name="%command.addStapProbe.name"
+            description="%command.addStapProbe.desc"
+            categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.cfiles"
+            id="org.eclipse.linuxtools.systemtap.ui.ide.addStapProbe"
+            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.AddStapProbeHandler">
       </command>
    </extension>
 
@@ -341,7 +364,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.DefinitionHandler"
-            commandId="org.eclipse.linuxtools.systemtap.ui.ide.handlers.definitionMenu">
+            commandId="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu">
          <enabledWhen>
             <with
                   variable="activeMenuSelection">
@@ -367,20 +390,6 @@
             properties="hasDefinition"
             type="org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode">
       </propertyTester>
-   </extension>
-
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <viewerContribution
-            targetID="#CEditorRulerContext"
-            id="org.eclipse.linuxtools.systemtap.ui.ide.actions">
-         <action
-               label="%action.addStapProbe.label"
-               class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.AddStapProbe"
-               menubarPath="additions"
-               id="org.eclipse.linuxtools.systemtap.ui.ide.AddStapProbe">
-         </action>
-      </viewerContribution>
    </extension>
 
    <extension

@@ -12,14 +12,11 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDESessionSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -57,16 +54,6 @@ public class KernelSourceAction extends BrowserViewAction {
 	}
 
 	/**
-	 * Creates a <code>PathEditorInput</code> for the file specified.
-	 * @param file	The <code>File</code> to create an input for.
-	 * @return	A <code>PathEditorInput</code> that represents the requested file.
-	 */
-	private IEditorInput createEditorInput(IFileStore fs) {
-		FileStoreEditorInput input= new FileStoreEditorInput(fs);
-		return input;
-	}
-
-	/**
 	 * The main code body for this action. Causes one of the following to occur:
 	 * <ul>
 	 * 	<li>If the selected node is clickable, as specified in <code>TreeNode.isClickable</code>
@@ -83,25 +70,19 @@ public class KernelSourceAction extends BrowserViewAction {
 	public void run() {
 		IWorkbench wb = PlatformUI.getWorkbench();
 		Object o = getSelectedElement();
-		if(o instanceof TreeNode) {
-			TreeNode t = (TreeNode)o;
-			if(t.isClickable()) {
-
-				IFileStore fs = (IFileStore)t.getData();
+		if (o instanceof TreeNode) {
+			TreeNode t = (TreeNode) o;
+			if (t.isClickable()) {
+				IFileStore fs = (IFileStore) t.getData();
 				if (fs != null) {
-					IEditorInput input= createEditorInput(fs);
+					IEditorInput input = new FileStoreEditorInput(fs);
 					try {
-						IEditorPart editor = wb.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-						if(editor instanceof STPEditor)
-							IDESessionSettings.setActiveSTPEditor((STPEditor)editor);
 						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
 					} catch (PartInitException e) {
 						ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
 					}
-
 				}
-			}
-			else {
+			} else {
 				runExpandAction();
 			}
 		}

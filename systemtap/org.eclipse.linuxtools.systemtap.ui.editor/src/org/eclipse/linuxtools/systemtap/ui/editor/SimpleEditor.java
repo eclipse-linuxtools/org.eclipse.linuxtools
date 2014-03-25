@@ -79,9 +79,9 @@ public class SimpleEditor extends TextEditor {
 			IRegion reg = finder.find(0, search, true, !regExSearch, false, regExSearch);
 			int offset = reg.getOffset();
 			line = doc.getLineOfOffset(offset);
-		} catch(BadLocationException ble) {
+		} catch (BadLocationException ble) {
 			// Pass
-		} catch(NullPointerException npe) {
+		} catch (NullPointerException npe) {
 			line = -1;
 		}
 
@@ -99,7 +99,7 @@ public class SimpleEditor extends TextEditor {
 		try {
 			int offset = doc.getLineOffset(line-1) + character;
 			this.getSelectionProvider().setSelection(new TextSelection(doc, offset, 0));
-		} catch(BadLocationException boe) {
+		} catch (BadLocationException boe) {
 			// Pass
 		}
 	}
@@ -113,7 +113,7 @@ public class SimpleEditor extends TextEditor {
 
 		try {
 			this.getSelectionProvider().setSelection(new TextSelection(doc, doc.getLineOffset(line-1), doc.getLineLength(line-1)-1));
-		} catch(BadLocationException boe) {
+		} catch (BadLocationException boe) {
 			// Pass
 		}
 	}
@@ -124,7 +124,7 @@ public class SimpleEditor extends TextEditor {
 	@Override
 	public void doSaveAs() {
 		File file = queryFile();
-		if(file == null) {
+		if (file == null) {
 			return;
 		}
 
@@ -137,7 +137,7 @@ public class SimpleEditor extends TextEditor {
 				PrintStream ps = new PrintStream(fos)){
 			ps.print(s);
 			ps.close();
-		} catch(IOException fnfe) {
+		} catch (IOException fnfe) {
 			// Pass
 		}
 
@@ -166,7 +166,7 @@ public class SimpleEditor extends TextEditor {
 		int offset = s.length();
 		s += text;
 		doc.set(s);
-		this.setHighlightRange(offset,0,true);
+		this.setHighlightRange(offset, 0, true);
 	}
 
 	/**
@@ -177,13 +177,13 @@ public class SimpleEditor extends TextEditor {
 		ISelection selection = this.getSelectionProvider().getSelection();
 		IDocument doc = getSourceViewer().getDocument();
 
-		if(selection instanceof ITextSelection) {
+		if (selection instanceof ITextSelection) {
 			ITextSelection s = (ITextSelection) selection;
-			StringBuffer sb = new StringBuffer(doc.get().substring(0,s.getOffset()));
+			StringBuffer sb = new StringBuffer(doc.get().substring(0, s.getOffset()));
 			sb.append(text.trim());
 			sb.append(doc.get().substring(s.getOffset() + s.getLength(), doc.get().length()));
 			doc.set(sb.toString());
-			this.setHighlightRange(s.getOffset() + text.trim().length(),0,true);
+			this.setHighlightRange(s.getOffset() + text.trim().length(), 0, true);
 		}
 	}
 

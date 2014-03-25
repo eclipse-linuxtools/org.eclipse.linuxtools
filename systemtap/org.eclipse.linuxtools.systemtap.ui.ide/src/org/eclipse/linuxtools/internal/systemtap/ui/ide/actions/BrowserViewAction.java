@@ -67,10 +67,6 @@ public abstract class BrowserViewAction extends Action implements ISelectionList
 		run();
 	}
 
-	protected IWorkbenchWindow getWindow() {
-		return window;
-	}
-
 	protected Object getSelectedElement() {
 		return ((IStructuredSelection) viewer.getViewer().getSelection()).getFirstElement();
 	}

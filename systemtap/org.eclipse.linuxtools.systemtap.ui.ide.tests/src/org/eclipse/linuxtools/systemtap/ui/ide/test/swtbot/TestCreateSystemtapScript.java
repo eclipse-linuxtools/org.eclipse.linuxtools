@@ -480,8 +480,9 @@ public class TestCreateSystemtapScript {
 		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Untitled Text File"));
 		bot.button("Finish").click();
 
+		String probeDialogTitle = "Select Script";
 		items[1].doubleClick();
-		shell = bot.shell("Add Probe To Script");
+		shell = bot.shell(probeDialogTitle);
 		shell.setFocus();
 		bot.button("Yes").click();
 		bot.waitUntil(Conditions.shellCloses(shell));
@@ -508,7 +509,7 @@ public class TestCreateSystemtapScript {
 		editor = bot.editorByTitle("Untitled 1").toTextEditor();
 		editor.show();
 		items[3].doubleClick();
-		shell = bot.shell("Add Probe To Script");
+		shell = bot.shell(probeDialogTitle);
 		shell.setFocus();
 		SWTBotTable table = bot.table();
 		assertTrue(table.containsItem(scriptName));
