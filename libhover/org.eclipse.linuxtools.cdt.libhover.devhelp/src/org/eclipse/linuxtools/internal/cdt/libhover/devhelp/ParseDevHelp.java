@@ -14,23 +14,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLEditorKit.ParserCallback;
-import javax.swing.text.html.parser.ParserDelegator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.xerces.parsers.AbstractSAXParser;
+import org.apache.xerces.xni.Augmentations;
+import org.apache.xerces.xni.QName;
+import org.apache.xerces.xni.XMLAttributes;
+import org.apache.xerces.xni.XMLString;
+import org.apache.xerces.xni.XNIException;
+import org.cyberneko.html.HTMLConfiguration;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.IFileSystem;
@@ -54,7 +55,7 @@ public class ParseDevHelp {
 	
 	private final static String PARSING_MSG = "Libhover.Devhelp.Parsing.msg"; //$NON-NLS-1$
 	private final static String PARSING_FMT_MSG = "Libhover.Devhelp.Parsing.fmt.msg"; //$NON-NLS-1$
-	private static class Parser extends ParserCallback {
+	private static class HTMLSaxParser extends AbstractSAXParser {
 		
 		private String func;
 		private boolean begin;
@@ -72,57 +73,58 @@ public class ParseDevHelp {
 		private int divCounter;
 		private int rowItemCount;
 		
-		public Parser(String func,  String funcName) {
+		public HTMLSaxParser(String func,  String funcName) {
+			super(new HTMLConfiguration());
 			this.func = func;
 			this.funcName = funcName.trim();
 			if (this.funcName.endsWith("()")) //$NON-NLS-1$
 				this.funcName = this.funcName.replaceAll("\\(\\)", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
+
 		@Override
-		public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos) {
-			if (t == HTML.Tag.A) {
-				String name = (String)(a.getAttribute(HTML.Attribute.NAME));
-				if (func.equals(name)) {
+		public void startElement(QName name, XMLAttributes a, Augmentations aug) throws XNIException {
+			if ("A".equals(name.rawname)) { //$NON-NLS-1$
+				String fname = a.getValue("name"); //$NON-NLS-1$
+				if (func.equals(fname)) {
 					begin = true;
 				}
 			}
 			if (begin) {
-				if (t == HTML.Tag.DIV) {
+				if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
 					++divCounter;
 				}
 				if (!descStart) {
-					if (t == HTML.Tag.SPAN) {
-						String type = (String)a.getAttribute(HTML.Attribute.CLASS);
+					if ("SPAN".equals(name.rawname)) { //$NON-NLS-1$
+						String type = a.getValue("class"); //$NON-NLS-1$
 						if (returnValue == null && type != null && 
 								type.equals("returnvalue")) { //$NON-NLS-1$
 							returnType = true;
 						}
 					}
-					if (t == HTML.Tag.PRE) {
-						String type = (String)a.getAttribute(HTML.Attribute.CLASS);
+					if ("PRE".equals(name.rawname)) { //$NON-NLS-1$
+						String type = a.getValue("class"); //$NON-NLS-1$
 						if (type != null && type.equals("programlisting")) //$NON-NLS-1$
 							returnType = true;
 					}
 				}
 				if (protoStart) {
-					if (t == HTML.Tag.P) {
+					if ("P".equals(name.rawname)) { //$NON-NLS-1$
 						protoStart = false;
 						descStart = true;;
  						description.append("<p>"); //$NON-NLS-1$
 					}
 				} else	if (descStart) {
-					if (t == HTML.Tag.P) {
+					if ("P".equals(name.rawname)) { //$NON-NLS-1$
 						description.append("<p>"); //$NON-NLS-1$
 					}
-					else if (t == HTML.Tag.TABLE) {
+					else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$
 						description.append("<dl>"); //$NON-NLS-1$
 					}
-					else if (t == HTML.Tag.TR) {
+					else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
 						rowItemCount = 0;
 					}
-					else if (t == HTML.Tag.TD) {
-						String type = (String)a.getAttribute(HTML.Attribute.CLASS);
+					else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
+						String type = a.getValue("class"); //$NON-NLS-1$
 						if (type != null && type.equals("listing_lines")) { //$NON-NLS-1$
 							rowIgnore = true;
 						} else {
@@ -139,30 +141,24 @@ public class ParseDevHelp {
 		}
 		
 	    @Override
-		public void handleEndTag(HTML.Tag t, int pos) {
+	    public void endElement(QName name, Augmentations aug) throws XNIException {
 	    	if (begin) {
-	    		if (t == HTML.Tag.DIV) {
+	    		if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
 	    			--divCounter;
 //	    			System.out.println("divCounter is " + divCounter);
 	    			if (divCounter <= 0) {
 	    				begin = false;
-	    				try {
-							flush();
-						} catch (BadLocationException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 	    			}
 	    		}
 	    		if (descStart) {
-	    			if (t == HTML.Tag.P)
+	    			if ("P".equals(name.rawname)) //$NON-NLS-1$
  	    				description.append("</p>"); //$NON-NLS-1$
-	    			else if (t == HTML.Tag.TABLE)
+	    			else if ("TABLE".equals(name.rawname)) //$NON-NLS-1$
 	    				description.append("</dl>"); //$NON-NLS-1$
-	    			else if (t == HTML.Tag.TR) {
+	    			else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
 	    				rowItemCount = 0;
 	    			}
-	    			else if (t == HTML.Tag.TD) {
+	    			else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
 	    				if (!rowIgnore) {
 	    					if (rowTag != null && rowTag.equals("<dt>")) //$NON-NLS-1$
 	    						description.append("</dt>"); //$NON-NLS-1$
@@ -176,11 +172,11 @@ public class ParseDevHelp {
 	    }
 
 	    @Override
-		public void handleText(char[] data, int pos) {
+	    public void characters(XMLString data, Augmentations aug) throws XNIException {
 	    	if (begin) {
 	    		if (returnType) {
 	    			returnValue = ""; //$NON-NLS-1$
-	    			String tmp = String.valueOf(data).trim();
+	    			String tmp = data.toString().trim();
 	    			boolean completed = false;
 	    			if (tmp.endsWith(");")) { //$NON-NLS-1$
 	    				completed = true;
@@ -216,7 +212,7 @@ public class ParseDevHelp {
 	    			returnType = false;
 	    		}
 	    		else if (protoStart) {
-	    			String temp = String.valueOf(data).trim();
+	    			String temp = data.toString().trim();
 	    			boolean completed = false;
 	    			if (temp.endsWith(");")) { //$NON-NLS-1$
 	    				completed = true;
@@ -250,7 +246,7 @@ public class ParseDevHelp {
 	    			}
 	    		}
 	    		else if (parmStart) {
-	    			String parmData = String.valueOf(data).trim();
+	    			String parmData = data.toString().trim();
 	    			int index = parmData.indexOf(')');
 	    			if (index >= 0) {
 	    				parmStart = false;
@@ -268,7 +264,6 @@ public class ParseDevHelp {
 	    				description.append(String.valueOf(data));
 	    		}
 	    	}
-
 	    }
 	    
 	    public FunctionInfo getFunctionInfo() {
@@ -376,18 +371,20 @@ public class ParseDevHelp {
 					if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
 							|| nameString.contains("\"")) //$NON-NLS-1$
 						return;
-					Reader reader = new FileReader(path.removeLastSegments(1).toOSString()
+					InputStream reader = new FileInputStream(path.removeLastSegments(1).toOSString()
 							+ "/" + linkParts[0]); //$NON-NLS-1$
-					Parser callback = new Parser(linkParts[1], nameString);
-					new ParserDelegator().parse(reader, callback, true);
-					FunctionInfo finfo = callback.getFunctionInfo();
+					HTMLSaxParser parser = new HTMLSaxParser(linkParts[1], nameString);
+					parser.parse(new InputSource(reader));
+					FunctionInfo finfo = parser.getFunctionInfo();
 					if (finfo != null) {
 						if (debug)
-							System.out.println(callback.toString());
-						libhover.functions.put(callback.getFuncName(), callback.getFunctionInfo());
+							System.out.println(parser.toString());
+						libhover.functions.put(parser.getFuncName(), parser.getFunctionInfo());
 					}
 				} catch (IOException e) {
 					// ignore
+				} catch (SAXException e) {
+					e.printStackTrace();
 				}
 			}
 		}
