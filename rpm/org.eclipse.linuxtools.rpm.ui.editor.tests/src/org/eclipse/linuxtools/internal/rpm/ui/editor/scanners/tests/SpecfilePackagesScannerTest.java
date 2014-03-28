@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,16 +41,17 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	private TextAttribute ta;
 
 	private static SpecfilePackagesScanner scanner;
+	private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
 
 	@BeforeClass
 	public static void init() {
 		Activator.getDefault().getPreferenceStore().setValue(
-				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist1");
+				PreferenceConstants.P_RPM_LIST_FILEPATH, P_RPM_LIST_FILEPATH);
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 
-		try(BufferedWriter out = new BufferedWriter(new FileWriter(
-				"/tmp/pkglist1"))) {
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(
+				P_RPM_LIST_FILEPATH))) {
 			out.write("setup\ntest_underscore\n");
 			out.close();
 		} catch (IOException e) {
@@ -59,6 +62,13 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 		scanner = new SpecfilePackagesScanner(new ColorManager());
 	}
 
+	@AfterClass
+	public static void cleanUp() {
+		File file = new File(P_RPM_LIST_FILEPATH);
+		if (file.exists()) {
+			file.delete();
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 *

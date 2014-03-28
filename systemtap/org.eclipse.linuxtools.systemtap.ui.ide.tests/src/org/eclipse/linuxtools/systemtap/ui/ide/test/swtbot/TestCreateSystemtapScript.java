@@ -17,6 +17,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
@@ -71,6 +73,7 @@ public class TestCreateSystemtapScript {
 
 	static SWTWorkbenchBot bot;
 	static boolean stapInstalled;
+	static SWTBotView projectExplorer;
 
 	private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
 
@@ -302,6 +305,9 @@ public class TestCreateSystemtapScript {
 		bot.textWithLabel("Project name:").setText(SYSTEMTAP_PROJECT_NAME);
 		bot.button("Finish").click();
 		bot.waitUntil(new ShellIsClosed(shell));
+		projectExplorer = bot.viewByTitle("Project Explorer");
+		projectExplorer.bot().tree().select(SYSTEMTAP_PROJECT_NAME)
+			.contextMenu("Go Into").click();
 
 		// Open the Debug view.
 		bot.menu("Window").menu("Show View").menu("Other...").click();
@@ -314,7 +320,22 @@ public class TestCreateSystemtapScript {
 
 	@After
 	public void cleanUp() {
-		bot.closeAllShells();
+		SWTBotShell[] shells = bot.shells();
+		for (final SWTBotShell shell : shells) {
+			String shellTitle = shell.getText();
+			if (shellTitle.length() > 0
+					&& !shellTitle.startsWith("SystemTap IDE")
+					&& !shellTitle.startsWith("Quick Access")) {
+				UIThreadRunnable.syncExec(new VoidResult() {
+					@Override
+					public void run() {
+						if (shell.widget.getParent() != null) {
+							shell.close();
+						}
+					}
+				});
+			}
+		}
 		bot.closeAllEditors();
 	}
 
@@ -324,6 +345,17 @@ public class TestCreateSystemtapScript {
 			ScriptConsole.stopAll();
 			bot.waitUntil(new StapHasExited());
 		}
+
+		projectExplorer.setFocus();
+		SWTBotToolbarButton forwardButton = projectExplorer.toolbarPushButton("Forward");
+		projectExplorer.toolbarPushButton("Back to Workspace").click();
+		bot.waitUntil(Conditions.widgetIsEnabled(forwardButton));
+
+		projectExplorer.bot().tree().select(SYSTEMTAP_PROJECT_NAME)
+			.contextMenu("Delete").click();
+		SWTBotShell deleteShell = bot.shell("Delete Resources");
+		deleteShell.bot().button("OK").click();
+		bot.waitUntil(Conditions.shellCloses(deleteShell));
 	}
 
 	public static void createScript(SWTWorkbenchBot bot, String scriptName) {
@@ -756,9 +788,7 @@ public class TestCreateSystemtapScript {
 	public void testLabelledGraphScript() {
 		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
-		if (!stapInstalled) {
-			return;
-		}
+		assumeTrue(stapInstalled);
 
 		String scriptName = "testLabels.stp";
 		SWTBotShell shell = prepareScript(scriptName, "#!/usr/bin/env stap"
@@ -1060,9 +1090,7 @@ public class TestCreateSystemtapScript {
 	public void testGraphTooltips() {
 		// If Systemtap is not installed, nothing can be graphed, so don't bother performing this test.
 		// Once the ability to read in pre-saved chart data is restored, this test can be run with sample data.
-		if (!stapInstalled) {
-			return;
-		}
+		assumeTrue(stapInstalled);
 
 		String scriptName = "testGraphTooltips.stp";
 		SWTBotShell shell = prepareScript(scriptName, "#!/usr/bin/env stap"
@@ -1170,9 +1198,9 @@ public class TestCreateSystemtapScript {
 
 	private void openRunConfigurations(String scriptName) {
 		// Focus on project explorer view.
-		bot.viewByTitle("Project Explorer").setFocus();
+		projectExplorer.setFocus();
 		SWTBotTree treeBot = bot.tree();
-		treeBot.expandNode(SYSTEMTAP_PROJECT_NAME).expand().select(scriptName);
+		treeBot.select(scriptName);
 		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, "Run As", "Run Configurations...");
 		click(menu);
 	}

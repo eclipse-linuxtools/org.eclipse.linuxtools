@@ -19,6 +19,7 @@ import java.io.File;
 
 import org.eclipse.linuxtools.systemtap.structures.LoggingStreamDaemon;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,8 +60,8 @@ public class LoggingStreamDaemonTest {
 		f.delete();
 	}
 
-	@Test
-	public void testDispose() {
+	@After
+	public void tearDown() {
 		daemon.dispose();
 		assertNull(daemon.getOutput());
 	}
