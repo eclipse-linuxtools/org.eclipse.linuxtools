@@ -203,7 +203,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 	 * @param toolkit The form toolkit used in creating a button.
 	 * @return The button created.
 	 */
-	private Button createPushButton(Composite parent, String buttonText, FormToolkit toolkit) {
+	private static Button createPushButton(Composite parent, String buttonText, FormToolkit toolkit) {
 		Button button = toolkit.createButton(parent, buttonText, SWT.PUSH | SWT.FLAT
 				| SWT.CENTER | SWT.LEFT_TO_RIGHT);
 		button.setFont(parent.getFont());
