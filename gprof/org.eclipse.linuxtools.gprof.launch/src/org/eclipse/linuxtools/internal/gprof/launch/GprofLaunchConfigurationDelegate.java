@@ -102,10 +102,7 @@ public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfiguration
 
 			for (ILaunch l : launches) {
 				/**
-				 * Dump samples from the daemon,
-				 * shut down the daemon,
-				 * activate the OProfile view (open it if it isn't already),
-				 * refresh the view (which parses the data/ui model and displays it).
+				 * Retrieve the gmon file, and open profiling results.
 				 */
 				if (l.equals(launch)) {
 					//need to run this in the ui thread otherwise get SWT Exceptions
@@ -124,19 +121,23 @@ public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfiguration
 								String gmonExpected = workingDirPath + "/gmon.out"; //$NON-NLS-1$
 								IFileStore f = proxy.getResource(gmonExpected);
 								if (!f.fetchInfo().exists()) {
-									String title = GprofLaunchMessages.GprofCompilerOptions_msg;
-									String message = GprofLaunchMessages.GprofCompileAgain_msg;
+									Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+									GprofNoGmonDialog dialog = new GprofNoGmonDialog(parent, getProject());
+									if (dialog.open() != 0) {
+										gmonExpected = dialog.getPathToGmon();
+										f = proxy.getResource(gmonExpected);
+									} else {
+										return;
+									}
+								}
+
+								// We found gmon.out.  Make sure it was generated after the executable was formed.
+								IFileStore exe = proxy.getResource(exePath.toString());
+								if (exe.fetchInfo().getLastModified() > f.fetchInfo().getLastModified()) {
+									String title = GprofLaunchMessages.GprofGmonStale_msg;
+									String message = GprofLaunchMessages.GprofGmonStaleExplanation_msg;
 									Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 									MessageDialog.openWarning(parent, title, message);
-								} else {
-									// We found gmon.out.  Make sure it was generated after the executable was formed.
-									IFileStore exe = proxy.getResource(exePath.toString());
-									if (exe.fetchInfo().getLastModified() > f.fetchInfo().getLastModified()) {
-										String title = GprofLaunchMessages.GprofGmonStale_msg;
-										String message = GprofLaunchMessages.GprofGmonStaleExplanation_msg;
-										Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-										MessageDialog.openWarning(parent, title, message);
-									}
 								}
 								Display.getDefault().asyncExec(new LaunchTerminationWatcherRunnable(s, gmonExpected));
 

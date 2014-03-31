@@ -19,6 +19,11 @@ public class GprofLaunchMessages extends NLS {
 	public static String GprofGmonStale_msg;
 	public static String GprofGmonStaleExplanation_msg;
 
+	public static String GprofNoGmonDialog_Browse;
+	public static String GprofNoGmonDialog_Cancel;
+	public static String GprofNoGmonDialog_OpenGmon;
+	public static String GprofNoGmonDialog_Workspace;
+
 	static {
 		NLS.initializeMessages(GprofLaunchMessages.class.getName(), GprofLaunchMessages.class);
 	}
