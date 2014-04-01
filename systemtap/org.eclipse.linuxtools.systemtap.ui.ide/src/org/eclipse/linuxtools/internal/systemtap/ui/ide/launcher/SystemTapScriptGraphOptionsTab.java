@@ -1579,7 +1579,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
 			// Check for graphs that are missing required data.
 			for (int i = 0, g = launchConfig.getAttribute(NUMBER_OF_GRAPHS + r, 0); i < g; i++) {
-				if (launchConfig.getAttribute(get2DConfigData(GRAPH_ID, r, i), (String) null) == null) {
+				if (GraphFactory.getGraphName(launchConfig.getAttribute(get2DConfigData(GRAPH_ID, r, i), (String) null)) == null) {
 					return false;
 				}
 				if (launchConfig.getAttribute(get2DConfigData(GRAPH_X_SERIES, r, i), 0) >= numberOfColumns) {
