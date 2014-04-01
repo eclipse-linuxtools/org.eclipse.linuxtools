@@ -18,10 +18,7 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConstants;
@@ -33,12 +30,10 @@ import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartLocationsDi
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.HeapChart;
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.Messages;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.junit.After;
 import org.junit.Before;
@@ -64,8 +59,7 @@ public class ChartTests extends AbstractMassifTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testEditorName"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IAction chartAction = getChartAction(view);
+		IAction chartAction = getChartAction();
 		assertNotNull(chartAction);
 		chartAction.run();
 
@@ -100,8 +94,7 @@ public class ChartTests extends AbstractMassifTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testChartCallback"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IAction chartAction = getChartAction(view);
+		IAction chartAction = getChartAction();
 		assertNotNull(chartAction);
 		chartAction.run();
 
@@ -163,8 +156,7 @@ public class ChartTests extends AbstractMassifTest {
 
 		doLaunch(config, testName);
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IAction chartAction = getChartAction(view);
+		IAction chartAction = getChartAction();
 		assertNotNull(chartAction);
 		chartAction.run();
 
@@ -176,19 +168,8 @@ public class ChartTests extends AbstractMassifTest {
 		assertEquals(HeapChart.getByteUnits()[ix], chart.getXUnits());
 	}
 
-	private IAction getChartAction(IViewPart view) {
-		IAction result = null;
-		IToolBarManager manager = view.getViewSite().getActionBars()
-				.getToolBarManager();
-		for (IContributionItem item : manager.getItems()) {
-			if (item instanceof ActionContributionItem) {
-				ActionContributionItem actionItem = (ActionContributionItem) item;
-				if (actionItem.getAction().getId()
-						.equals(MassifViewPart.CHART_ACTION)) {
-					result = actionItem.getAction();
-				}
-			}
-		}
-		return result;
+	private IAction getChartAction() {
+		return getToolbarAction(MassifViewPart.CHART_ACTION);
 	}
+
 }

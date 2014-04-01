@@ -19,7 +19,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ChartEditorInput implements IEditorInput {
-	
+
 	private HeapChart chart;
 	private MassifViewPart view;
 	private String name;
@@ -43,10 +43,10 @@ public class ChartEditorInput implements IEditorInput {
 	}
 
 	@Override
-	public String getName() {		
+	public String getName() {
 		return name;
 	}
-	
+
 	public Integer getPid() {
 		return pid;
 	}
@@ -66,11 +66,11 @@ public class ChartEditorInput implements IEditorInput {
 	public Object getAdapter(Class adapter) {
 		return null;
 	}
-	
+
 	public HeapChart getChart() {
 		return chart;
 	}
-	
+
 	public MassifViewPart getView() {
 		return view;
 	}

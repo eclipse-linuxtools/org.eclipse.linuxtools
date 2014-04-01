@@ -18,6 +18,10 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifHeapTreeNode;
@@ -25,6 +29,8 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -97,6 +103,23 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
 			assertEquals(expectedHeapExtraBytes, snapshot.getHeapExtra());
 			assertEquals(expectedHeapBytes + expectedHeapExtraBytes, snapshot.getTotal());
 		}
+	}
+
+	protected IAction getToolbarAction(String actionId) {
+		IAction result = null;
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		IToolBarManager manager = view.getViewSite().getActionBars()
+				.getToolBarManager();
+		for (IContributionItem item : manager.getItems()) {
+			if (item instanceof ActionContributionItem) {
+				ActionContributionItem actionItem = (ActionContributionItem) item;
+				if (actionItem.getAction().getId()
+						.equals(actionId)) {
+					result = actionItem.getAction();
+				}
+			}
+		}
+		return result;
 	}
 
 }

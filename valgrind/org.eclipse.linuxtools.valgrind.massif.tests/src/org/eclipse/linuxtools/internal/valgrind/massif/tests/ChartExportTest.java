@@ -14,14 +14,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
+import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartEditorInput;
-import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartPNG;
-import org.eclipse.linuxtools.internal.valgrind.massif.charting.HeapChart;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.junit.After;
@@ -29,23 +31,29 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ChartExportTest extends AbstractMassifTest {
-	private IPath pngPath;
+	private String[] pathNames = new String[]{"chart.png", "chart.jpg", "chart.jpeg", "chart.bmp"};
+	private ArrayList<IPath> paths = new ArrayList<>();
 
 	@Before
 	public void prep() throws Exception {
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
-		pngPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		assertNotNull(pngPath);
-		pngPath = pngPath.append("alloctest").append("chart.png"); //$NON-NLS-1$ //$NON-NLS-2$
+		IPath basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		assertNotNull(basePath);
+		basePath = basePath.append("alloctest");
+		for (String pathName : pathNames) {
+			paths.add(basePath.append(pathName));
+		}
 	}
 
 	@Override
 	@After
 	public void tearDown() throws CoreException {
-		File chartFile = pngPath.toFile();
-		if (chartFile.exists()) {
-			chartFile.delete();
+		for (IPath path : paths) {
+			File chartFile = path.toFile();
+			if (chartFile.exists()) {
+				chartFile.delete();
+			}
 		}
 
 		deleteProject(proj);
@@ -62,12 +70,24 @@ public class ChartExportTest extends AbstractMassifTest {
 				.getEditorInput();
 		assertTrue("input must be ChartEditorInput",
 				input instanceof ChartEditorInput);
-		HeapChart chart = ((ChartEditorInput) input).getChart();
 
-		ChartPNG png = new ChartPNG(chart);
-		png.renderPNG(pngPath);
+		Composite control = ((ChartEditorInput) input).getChart().getChartControl();
+		if (control.getSize().x == 0 || control.getSize().y == 0) {
+			// Manually resize the composite to non-zero width/height so it can be saved
+			control.setSize(10, 10);
+		}
 
-		File chartFile = pngPath.toFile();
+		SaveChartAction saveChartAction = (SaveChartAction) getToolbarAction(MassifViewPart.SAVE_CHART_ACTION);
+		assertNotNull(saveChartAction);
+
+		for (IPath path : paths) {
+			saveAsPath(saveChartAction, path);
+		}
+	}
+
+	private void saveAsPath(SaveChartAction saveChartAction, IPath path) {
+		saveChartAction.run(path.toString());
+		File chartFile = path.toFile();
 		assertTrue(chartFile.exists());
 		assertTrue(chartFile.length() > 0);
 	}
