@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.Messages;
+import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
@@ -70,32 +71,12 @@ import org.swtchart.Range;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class TestCreateSystemtapScript {
-
-	static SWTWorkbenchBot bot;
-	static boolean stapInstalled;
-	static SWTBotView projectExplorer;
-
 	private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
 
-	private static class ShellIsClosed extends DefaultCondition {
+	private static SWTWorkbenchBot bot;
+	private static boolean stapInstalled;
+	private static SWTBotView projectExplorer;
 
-		private SWTBotShell shell;
-
-		public ShellIsClosed(SWTBotShell shell) {
-			super();
-			this.shell = shell;
-		}
-
-		@Override
-		public boolean test() {
-			return !shell.isOpen();
-		}
-
-		@Override
-		public String getFailureMessage() {
-				return "Timed out waiting for " + shell + " to close."; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
 
 	private static class NodeAvailableAndSelect extends DefaultCondition {
 
@@ -310,7 +291,7 @@ public class TestCreateSystemtapScript {
 		bot.button("Next >").click();
 		bot.textWithLabel("Project name:").setText(SYSTEMTAP_PROJECT_NAME);
 		bot.button("Finish").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		projectExplorer = bot.viewByTitle("Project Explorer");
 		projectExplorer.bot().tree().select(SYSTEMTAP_PROJECT_NAME)
 			.contextMenu("Go Into").click();
@@ -382,7 +363,7 @@ public class TestCreateSystemtapScript {
 		assertEquals(SYSTEMTAP_PROJECT_NAME, text.getText());
 
 		bot.button("Finish").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 
 		assertEquals(scriptName, bot.activeEditor().getTitle());
 	}
@@ -437,7 +418,7 @@ public class TestCreateSystemtapScript {
 
 		if (stapInstalled) {
 			bot.button("Run").click();
-			bot.waitUntil(new ShellIsClosed(shell));
+			bot.waitUntil(Conditions.shellCloses(shell));
 
 			bot.waitUntil(new ConsoleIsReady(scriptName));
 			bot.waitUntil(new StapHasExited(), 10000); // The script should end on its own
@@ -474,7 +455,7 @@ public class TestCreateSystemtapScript {
 		shell = bot.shell("Add Probe To Script");
 		shell.setFocus();
 		bot.button("Yes").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 
 		// The editor containing the script should now be in focus.
 		editor = bot.activeEditor().toTextEditor();
@@ -505,40 +486,138 @@ public class TestCreateSystemtapScript {
 		assertTrue(table.containsItem(scriptName2));
 		table.select(scriptName2);
 		bot.button("OK").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		editor = bot.activeEditor().toTextEditor();
 		assertTrue(!editor.getTitle().equals("Untitled 1"));
 		assertTrue(editor.getText().contains("probe " + items[3].getText() + "\n"));
 	}
 
 	@Test
-	public void testMissingColumns() {
+	public void testGraphErrors() {
 		SWTBotShell shell = prepareScript("missingColumns.stp", null);
+
+		SWTBotButton runButton = bot.button("Run");
+		SWTBotButton addButton = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
+		SWTBotButton editButton = bot.button(Messages.SystemTapScriptGraphOptionsTab_EditGraphButton);
+		SWTBotButton dupButton = bot.button(Messages.SystemTapScriptGraphOptionsTab_DuplicateGraphButton);
+		SWTBotButton remButton = bot.button(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButton);
+		String graphID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.scatterchartbuilder";
 
 		// As soon as the Graphing tab is entered, no regular expression exists & nothing can be run.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		assertEquals("", combo.getText());
-		assertTrue(!bot.button("Run").isEnabled());
-		assertTrue(!bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
+		assertTrue(!runButton.isEnabled());
+		assertTrue(!addButton.isEnabled());
 		combo.setText("(1)(2)");
 		assertEquals("(1)(2)", combo.getText());
-		assertTrue(bot.button("Run").isEnabled());
-		assertTrue(bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
+		assertTrue(runButton.isEnabled());
+		assertTrue(addButton.isEnabled());
 
-		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		setupGraphWithTests("Graph");
-
-		shell.setFocus();
-		assertTrue(bot.button("Run").isEnabled());
+		assertTrue(runButton.isEnabled());
 
 		// Removing groups from the regex disables graphs that rely on those groups.
 		combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		combo.setText("(1)");
-		assertTrue(!bot.button("Run").isEnabled());
+		assertTrue(!runButton.isEnabled());
 		combo.setText("(1)(2)(3)");
-		assertTrue(bot.button("Run").isEnabled());
+		assertTrue(runButton.isEnabled());
 
+		final SWTBotTable table = bot.table();
+		table.select(0);
+		dupButton.click();
+		assertEquals(2, table.rowCount());
+		assertTrue(runButton.isEnabled());
+
+		combo.setText("(1)");
+		assertTrue(!runButton.isEnabled());
+		for (int i = 0, n = table.rowCount(); i < n; i++) {
+			String itemTitle = table.getTableItem(i).getText();
+			assertTrue("Graph " + i + " should be invalid, but it's not: " + itemTitle,
+					table.getTableItem(i).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph));
+		}
+
+		setupGraphGeneral("Safe", 1, graphID, true);
+		assertTrue(!table.getTableItem(2).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph));
+		combo.setText("(1)(2)(3)");
+		assertTrue(runButton.isEnabled());
+
+		setupGraphGeneral("Unsafe", 3, graphID, true);
+		assertTrue(runButton.isEnabled());
+		combo.setText("(1)(2)");
+		assertTrue(!runButton.isEnabled());
+		for (int i = 0, n = table.rowCount(); i < n; i++) {
+			String itemTitle = table.getTableItem(i).getText();
+			assertTrue("Graph " + i + " has incorrect validity: " + itemTitle,
+					!itemTitle.contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph)
+					|| itemTitle.contains("Unsafe"));
+		}
+
+		table.select(3);
+		dupButton.click();
+		remButton.click();
+		assertTrue(!runButton.isEnabled());
+
+		table.select(3);
+		editButton.click();
+		bot.waitUntil(Conditions.shellIsActive("Edit Graph"));
+		SWTBotShell graphShell = bot.activeShell();
+		SWTBotButton finishButton = bot.button("Finish");
+		assertTrue(!finishButton.isEnabled());
+		bot.comboBox("<Deleted>").setSelection("NA");
+		finishButton.click();
+		bot.waitUntil(Conditions.shellCloses(graphShell));
 		shell.setFocus();
+		assertTrue(runButton.isEnabled());
+
+		// Perform tests when graphs have an invalid graphID.
+		UIThreadRunnable.syncExec(new VoidResult() {
+
+			@Override
+			public void run() {
+				GraphData gd = (GraphData) table.getTableItem(0).widget.getData();
+				gd.graphID = "invalidID";
+				table.getTableItem(0).widget.setData(gd);
+			}
+		});
+
+		combo.setText(combo.getText().concat(" ")); // Just to refresh the dialog
+		assertTrue(!runButton.isEnabled());
+		assertTrue(table.getTableItem(0).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraphID));
+
+		table.select(0);
+		dupButton.click();
+		remButton.click();
+		assertTrue(!runButton.isEnabled());
+		assertTrue(table.getTableItem(table.rowCount() - 1).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraphID));
+
+		table.select(table.rowCount() - 1);
+		editButton.click();
+		bot.waitUntil(Conditions.shellIsActive("Edit Graph"));
+		graphShell = bot.activeShell();
+		finishButton = bot.button("Finish");
+		assertTrue(!finishButton.isEnabled());
+		bot.radio(0).click();
+		finishButton.click();
+		bot.waitUntil(Conditions.shellCloses(graphShell));
+		shell.setFocus();
+		assertTrue(runButton.isEnabled());
+
+		// Removing all invalid graphs should restore validity.
+		combo.setText("(1)");
+		assertTrue(!runButton.isEnabled());
+		for (int i = table.rowCount() - 1; i >= 0; i--) {
+			if (table.getTableItem(i).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph)) {
+				table.select(i);
+				remButton.click();
+			}
+		}
+		assertTrue(runButton.isEnabled());
+		while (table.rowCount() > 0) {
+			table.select(0);
+			remButton.click();
+		}
+
 		bot.button("Apply").click();
 	}
 
@@ -563,11 +642,12 @@ public class TestCreateSystemtapScript {
 		// Confirm that a blank regex is not removed when other data is not empty.
 		combo.setText("(a)");
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
-		SWTBotShell shell2 = bot.shell("Create Graph");
-		shell2.setFocus();
+		bot.waitUntil(Conditions.shellIsActive("Create Graph"));
+		SWTBotShell graphShell = bot.activeShell();
+		graphShell.setFocus();
 		bot.textWithLabel("Title:").setText("Test");
 		bot.button("Finish").click();
-		bot.waitUntil(new ShellIsClosed(shell2));
+		bot.waitUntil(Conditions.shellCloses(graphShell));
 		shell.setFocus();
 		combo.setText("");
 		assertEquals("", combo.getText());
@@ -581,12 +661,12 @@ public class TestCreateSystemtapScript {
 		combo.setSelection(1);
 		assertEquals(4, combo.itemCount());
 		SWTBotTable table = bot.table();
-		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButton);
-		assertTrue(!button.isEnabled());
+		SWTBotButton remButton = bot.button(Messages.SystemTapScriptGraphOptionsTab_RemoveGraphButton);
+		assertTrue(!remButton.isEnabled());
 		table.select(0);
-		assertTrue(button.isEnabled());
-		button.click();
-		assertTrue(!button.isEnabled());
+		assertTrue(remButton.isEnabled());
+		remButton.click();
+		assertTrue(!remButton.isEnabled());
 		combo.setSelection(2);
 		assertEquals(3, combo.itemCount());
 		assertEquals("sample", combo.getText());
@@ -652,7 +732,6 @@ public class TestCreateSystemtapScript {
 		assertEquals(val1, text.getText());
 
 		// Add a graph.
-		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		setupGraphWithTests("Values");
 		String setTitle1 = MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1);
 		String graphTitle1 = "Values - Scatter Graph";
@@ -677,7 +756,6 @@ public class TestCreateSystemtapScript {
 		text = bot.textWithLabel(Messages.SystemTapScriptGraphOptionsTab_sampleOutputLabel);
 		assertEquals("", text.getText());
 
-		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		setupGraphWithTests("Others");
 		String setTitle2 = MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 2);
 		String graphTitle2 = "Others - Scatter Graph";
@@ -686,7 +764,7 @@ public class TestCreateSystemtapScript {
 		shell.setFocus();
 		bot.button("Apply").click();
 		bot.button("Close").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		openRunConfigurations(scriptName);
 		shell = bot.shell("Run Configurations");
 		shell.setFocus();
@@ -716,7 +794,7 @@ public class TestCreateSystemtapScript {
 		}
 
 		bot.button("Run").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 		console.setFocus();
 		bot.waitUntil(new StapHasExited()); // The script should end on its own
@@ -782,7 +860,7 @@ public class TestCreateSystemtapScript {
 		deselectDefaultSelection(0);
 		bot.radio(1).click();
 		bot.button("Finish").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		bot.waitUntil(new TableHasUpdated(scriptName, 1, 9, true));
 		assertEquals("3", dataTable.cell(2, 1));
 		assertEquals("6", dataTable.cell(2, 2));
@@ -832,10 +910,10 @@ public class TestCreateSystemtapScript {
 		// Generate regexs.
 		bot.button(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsButton).click();
 
-		SWTBotShell shell2 = bot.shell(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle);
-		shell2.setFocus();
+		SWTBotShell dialogShell = bot.shell(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle);
+		dialogShell.setFocus();
 		bot.button("Yes").click();
-		bot.waitUntil(new ShellIsClosed(shell2));
+		bot.waitUntil(Conditions.shellCloses(dialogShell));
 		shell.setFocus();
 
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
@@ -892,20 +970,13 @@ public class TestCreateSystemtapScript {
 		combo.setText("(.*): (\\d+) (\\d+) (\\d+)");
 
 		// Add bar, pie, and line graphs that use the same column data.
-		assertTrue(button.isEnabled());
-		button.click();
 		String title = "Fruit Info";
 		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.barchartbuilder", false);
-		shell.setFocus();
-		button.click();
 		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.piechartbuilder", false);
-		shell.setFocus();
-		button.click();
 		setupGraphGeneral(title, 4, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder", false);
-		shell.setFocus();
 
 		bot.button("Run").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 		console.setFocus();
 		bot.waitUntil(new StapHasExited()); // The script should end on its own
@@ -1175,22 +1246,16 @@ public class TestCreateSystemtapScript {
 
 		// Enter a regex.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
-		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
-		assertTrue(!button.isEnabled());
+		assertTrue(!bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
 		combo.setText("(\\d+)");
 
 		// Add bar, pie, and line graphs that use the same column data.
-		assertTrue(button.isEnabled());
-		button.click();
 		String title = "Info";
 		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder", true);
-		shell.setFocus();
-		button.click();
 		setupGraphGeneral(title, 1, "org.eclipse.linuxtools.systemtap.graphing.ui.charts.barchartbuilder", true);
-		shell.setFocus();
 
 		bot.button("Run").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
 		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
 		console.setFocus();
 
@@ -1280,6 +1345,9 @@ public class TestCreateSystemtapScript {
 	}
 
 	private void setupGraphWithTests(String title) {
+		SWTBotShell firstShell = bot.activeShell();
+
+		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		SWTBotShell shell = bot.shell("Create Graph");
 		shell.setFocus();
 
@@ -1299,11 +1367,15 @@ public class TestCreateSystemtapScript {
 		comboY1.setSelection(2);
 		bot.button("Finish").click();
 
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
+		firstShell.setFocus();
 	}
 
 	private void setupGraphGeneral(String title, int numItems, String graphID, boolean useRowNum) {
 		int offset = useRowNum ? 0 : 1;
+		SWTBotShell firstShell = bot.activeShell();
+
+		bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
 		SWTBotShell shell = bot.shell("Create Graph");
 		shell.setFocus();
 
@@ -1323,7 +1395,8 @@ public class TestCreateSystemtapScript {
 			bot.comboBoxWithLabel(MessageFormat.format("Y Series {0}:", numItems - 1)).setSelection(0);
 		}
 		bot.button("Finish").click();
-		bot.waitUntil(new ShellIsClosed(shell));
+		bot.waitUntil(Conditions.shellCloses(shell));
+		firstShell.setFocus();
 	}
 
 	/**

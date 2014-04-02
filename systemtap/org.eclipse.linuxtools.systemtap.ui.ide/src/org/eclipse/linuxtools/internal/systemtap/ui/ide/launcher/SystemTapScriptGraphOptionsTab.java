@@ -394,7 +394,7 @@ public class SystemTapScriptGraphOptionsTab extends
 						if (chr != 'b' && --width > 0) {
 							if (flag == '-') {
 								target = target.concat(" {0," + width + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-							} else if (flag != '0' || chr == 's' || chr == 'c'){
+							} else if (flag != '0' || chr == 's' || chr == 'c') {
 								target = " {0," + width + "}".concat(target); //$NON-NLS-1$ //$NON-NLS-2$
 							}
 						}
@@ -634,7 +634,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		this.graphsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
 		// Set the text here just to allow proper sizing.
 		graphsGroup.setText(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase, 1));
-		graphsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		graphsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		createGraphCreateArea(graphsGroup);
 
 		setGraphingEnabled(false);
@@ -794,7 +794,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		return DataSetFactory.createDataSet(RowDataSet.ID, columnNamesList.get(selectedRegex).toArray(new String[] {}));
 	}
 
-	private void createGraphCreateArea(Composite comp){
+	private void createGraphCreateArea(Composite comp) {
 		comp.setLayout(new GridLayout(2, false));
 
 		graphsTable = new Table(comp, SWT.SINGLE | SWT.BORDER);
@@ -975,8 +975,9 @@ public class SystemTapScriptGraphOptionsTab extends
 		selectedRegex = newSelection;
 
 		boolean textListenersDisabled = !textListenersEnabled;
-		if (!textListenersDisabled)
+		if (!textListenersDisabled) {
 			textListenersEnabled = false;
+		}
 
 		sampleOutputText.setText(outputList.get(selectedRegex));
 		cachedNames = cachedNamesList.get(selectedRegex);
@@ -1008,17 +1009,17 @@ public class SystemTapScriptGraphOptionsTab extends
 		graphsGroup.setText(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_graphSetTitleBase,
 				selectedRegex + 1));
 
-		if (!textListenersDisabled)
+		if (!textListenersDisabled) {
 			textListenersEnabled = true;
+		}
 	}
 
 	private void refreshRegexRows() {
-
-		try{
+		try {
 			pattern = Pattern.compile(regularExpressionCombo.getText());
 			matcher = pattern.matcher(sampleOutputText.getText());
 			regexErrorMessages.set(selectedRegex, null);
-		}catch (PatternSyntaxException e){
+		} catch (PatternSyntaxException e) {
 			regexErrorMessages.set(selectedRegex, e.getMessage());
 			return;
 		}
@@ -1029,11 +1030,11 @@ public class SystemTapScriptGraphOptionsTab extends
 
 		int desiredNumberOfColumns = matcher.groupCount();
 
-		while (numberOfVisibleColumns < desiredNumberOfColumns){
+		while (numberOfVisibleColumns < desiredNumberOfColumns) {
 			addColumn(null);
 		}
 
-		while (numberOfVisibleColumns > desiredNumberOfColumns){
+		while (numberOfVisibleColumns > desiredNumberOfColumns) {
 			removeColumn(true);
 		}
 
@@ -1044,7 +1045,7 @@ public class SystemTapScriptGraphOptionsTab extends
 			if (matcher.matches()) {
 				sampleOutputResults = matcher.group(i+1);
 			}
-			else if (sampleOutputText.getText().length() == 0){
+			else if (sampleOutputText.getText().length() == 0) {
 				sampleOutputResults = Messages.SystemTapScriptGraphOptionsTab_sampleOutputIsEmpty;
 			} else {
 				sampleOutputResults = Messages.SystemTapScriptGraphOptionsTab_sampleOutputNoMatch;
@@ -1068,7 +1069,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 */
 	private static String checkRegex(String regex) {
 		//TODO may add more invalid regexs here, each with its own error message.
-		if (regex.contains("()")){ //$NON-NLS-1$
+		if (regex.contains("()")) { //$NON-NLS-1$
 			return Messages.SystemTapScriptGraphOptionsTab_emptyGroup;
 		}
 		return null;
@@ -1213,22 +1214,26 @@ public class SystemTapScriptGraphOptionsTab extends
 	 */
 	private String findBadGraphs(int regex) {
 		boolean foundBadID = false;
+		boolean foundRemoved = false;
 		int numberOfColumns = columnNamesList.get(regex).size();
+
 		for (GraphData gd : graphsDataList.get(regex)) {
-			boolean removed = false;
+			boolean singleBadID = false;
+			boolean singleRemoved = false;
+
 			if (GraphFactory.getGraphName(gd.graphID) == null) {
-				foundBadID = true;
+				singleBadID = true;
 			} else {
 				if (gd.xSeries >= numberOfColumns) {
-					removed = true;
+					singleRemoved = true;
 				}
-				for (int s = 0; s < gd.ySeries.length && !removed; s++) {
+				for (int s = 0; s < gd.ySeries.length && !singleRemoved; s++) {
 					if (gd.ySeries[s] >= numberOfColumns) {
-						removed = true;
+						singleRemoved = true;
 					}
 				}
 			}
-			if (removed || foundBadID) {
+			if (singleRemoved || singleBadID) {
 				if (!badGraphs.contains(gd)) {
 					badGraphs.add(gd);
 					setUpGraphTableItem(findGraphTableItem(gd), null, true);
@@ -1237,14 +1242,18 @@ public class SystemTapScriptGraphOptionsTab extends
 				badGraphs.remove(gd);
 				setUpGraphTableItem(findGraphTableItem(gd), null, false);
 			}
+
+			foundBadID |= singleBadID;
+			foundRemoved |= singleRemoved;
 		}
+
 		if (numberOfColumns == 0) {
 			return Messages.SystemTapScriptGraphOptionsTab_noGroups;
 		}
 		if (foundBadID) {
 			return Messages.SystemTapScriptGraphOptionsTab_badGraphID;
 		}
-		if (!badGraphs.isEmpty()) {
+		if (foundRemoved) {
 			return Messages.SystemTapScriptGraphOptionsTab_deletedGraphData;
 		}
 		return null;
@@ -1530,13 +1539,13 @@ public class SystemTapScriptGraphOptionsTab extends
 		setErrorMessage(null);
 
 		// If graphic is disabled then everything is valid.
-		if (!this.graphingEnabled){
+		if (!this.graphingEnabled) {
 			return true;
 		}
 
 		for (int r = 0, n = getNumberOfRegexs(); r < n; r++) {
 			String regexErrorMessage = regexErrorMessages.get(r);
-			if (regexErrorMessage != null){
+			if (regexErrorMessage != null) {
 				setErrorMessage(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_regexErrorMsgFormat,
 						regularExpressionCombo.getItems()[r], regexErrorMessage));
 				return false;
@@ -1555,7 +1564,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 */
 	public static boolean isValidLaunch(ILaunchConfiguration launchConfig) throws CoreException {
 		// If graphic is disabled then everything is valid.
-		if (!launchConfig.getAttribute(RUN_WITH_CHART, false)){
+		if (!launchConfig.getAttribute(RUN_WITH_CHART, false)) {
 			return true;
 		}
 
@@ -1607,7 +1616,7 @@ public class SystemTapScriptGraphOptionsTab extends
 				"icons/graphing_tab.gif").createImage(); //$NON-NLS-1$
 	}
 
-	private void setGraphingEnabled(boolean enabled){
+	private void setGraphingEnabled(boolean enabled) {
 		this.graphingEnabled = enabled;
 		this.setControlEnabled(outputParsingGroup, enabled);
 		this.setControlEnabled(graphsGroup, enabled);
@@ -1618,11 +1627,11 @@ public class SystemTapScriptGraphOptionsTab extends
 		updateLaunchConfigurationDialog();
 	}
 
-	private void setControlEnabled(Composite composite, boolean enabled){
+	private void setControlEnabled(Composite composite, boolean enabled) {
 		composite.setEnabled(enabled);
 		for (Control child : composite.getChildren()) {
 			child.setEnabled(enabled);
-			if(child instanceof Composite){
+			if (child instanceof Composite) {
 				setControlEnabled((Composite)child, enabled);
 			}
 		}
