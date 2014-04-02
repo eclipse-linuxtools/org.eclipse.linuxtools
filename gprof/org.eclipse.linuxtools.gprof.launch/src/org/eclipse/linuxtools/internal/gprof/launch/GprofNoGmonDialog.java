@@ -36,7 +36,7 @@ public class GprofNoGmonDialog extends MessageDialog {
 	private final IProject fProject;
 	private String fGmonPath = null;
 
-	private static String[] buildButtons(IProject project) {
+	private static String[] buildButtons() {
 		//future enhancement: add a button to edit project settings (managed make project only).
 		return new String[] {
 				GprofLaunchMessages.GprofNoGmonDialog_Cancel, GprofLaunchMessages.GprofNoGmonDialog_Browse, GprofLaunchMessages.GprofNoGmonDialog_Workspace
@@ -45,7 +45,7 @@ public class GprofNoGmonDialog extends MessageDialog {
 
 	protected GprofNoGmonDialog(Shell parentShell, IProject project) {
 		super(parentShell,  GprofLaunchMessages.GprofCompilerOptions_msg, null,
-				GprofLaunchMessages.GprofCompileAgain_msg, WARNING, buildButtons(project), 0);
+				GprofLaunchMessages.GprofCompileAgain_msg, WARNING, buildButtons(), 0);
 		this.fProject = project;
 	}
 
