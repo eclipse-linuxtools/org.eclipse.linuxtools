@@ -55,7 +55,6 @@ public class CreaterepoProjectCreator {
 		if (!repoFile.exists()) {
 			repoFile.create(stream, true, monitor);
 		}
-		new CreaterepoProject(project, repoFile);
 		return project;
 	}
 
