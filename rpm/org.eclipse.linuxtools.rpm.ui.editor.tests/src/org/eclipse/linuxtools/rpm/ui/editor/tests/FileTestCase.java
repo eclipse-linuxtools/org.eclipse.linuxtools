@@ -12,22 +12,16 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
@@ -35,7 +29,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.junit.After;
 import org.junit.Before;
 
@@ -114,28 +107,5 @@ public abstract class FileTestCase {
 		errorHandler = new SpecfileErrorHandler(fei, testDocument);
 		parser.setErrorHandler(errorHandler);
 		specfile = parser.parse(testDocument);
-	}
-
-	/**
-	 * Set the potential rpm package list to the given list. Useful for
-	 * testing package proposals.
-	 * @param packages
-	 */
-	protected void setPackageList(String[] packages) {
-		ScopedPreferenceStore prefStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
-		prefStore.setValue(PreferenceConstants.P_RPM_LIST_FILEPATH,
-						"/tmp/pkglist1");
-		prefStore.setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,
-						false);
-
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(
-				"/tmp/pkglist1"))) {
-			for (String packageName : packages){
-				out.write(packageName + "\n");
-			}
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
-		Activator.packagesList = null;
 	}
 }
