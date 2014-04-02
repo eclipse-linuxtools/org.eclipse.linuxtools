@@ -30,7 +30,6 @@ import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.XMLAttributes;
 import org.apache.xerces.xni.XMLString;
-import org.apache.xerces.xni.XNIException;
 import org.cyberneko.html.HTMLConfiguration;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -77,12 +76,13 @@ public class ParseDevHelp {
 			super(new HTMLConfiguration());
 			this.func = func;
 			this.funcName = funcName.trim();
-			if (this.funcName.endsWith("()")) //$NON-NLS-1$
+			if (this.funcName.endsWith("()")) { //$NON-NLS-1$
 				this.funcName = this.funcName.replaceAll("\\(\\)", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		}
 
 		@Override
-		public void startElement(QName name, XMLAttributes a, Augmentations aug) throws XNIException {
+		public void startElement(QName name, XMLAttributes a, Augmentations aug) {
 			if ("A".equals(name.rawname)) { //$NON-NLS-1$
 				String fname = a.getValue("name"); //$NON-NLS-1$
 				if (func.equals(fname)) {
@@ -100,11 +100,11 @@ public class ParseDevHelp {
 								type.equals("returnvalue")) { //$NON-NLS-1$
 							returnType = true;
 						}
-					}
-					if ("PRE".equals(name.rawname)) { //$NON-NLS-1$
+					} else if ("PRE".equals(name.rawname)) { //$NON-NLS-1$
 						String type = a.getValue("class"); //$NON-NLS-1$
-						if (type != null && type.equals("programlisting")) //$NON-NLS-1$
+						if (type != null && type.equals("programlisting")) { //$NON-NLS-1$
 							returnType = true;
+						}
 					}
 				}
 				if (protoStart) {
@@ -116,23 +116,21 @@ public class ParseDevHelp {
 				} else	if (descStart) {
 					if ("P".equals(name.rawname)) { //$NON-NLS-1$
 						description.append("<p>"); //$NON-NLS-1$
-					}
-					else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$
+					} else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$
 						description.append("<dl>"); //$NON-NLS-1$
-					}
-					else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
+					} else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
 						rowItemCount = 0;
-					}
-					else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
+					} else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
 						String type = a.getValue("class"); //$NON-NLS-1$
 						if (type != null && type.equals("listing_lines")) { //$NON-NLS-1$
 							rowIgnore = true;
 						} else {
 							rowIgnore = false;
-							if (rowItemCount++ == 0)
+							if (rowItemCount++ == 0) {
 								rowTag = "<dt>"; //$NON-NLS-1$
-							else
+							} else {
 								rowTag = "<dd>"; //$NON-NLS-1$
+							}
 							description.append(rowTag);
 						}
 					}
@@ -141,7 +139,7 @@ public class ParseDevHelp {
 		}
 		
 	    @Override
-	    public void endElement(QName name, Augmentations aug) throws XNIException {
+	    public void endElement(QName name, Augmentations aug) {
 	    	if (begin) {
 	    		if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
 	    			--divCounter;
@@ -151,28 +149,28 @@ public class ParseDevHelp {
 	    			}
 	    		}
 	    		if (descStart) {
-	    			if ("P".equals(name.rawname)) //$NON-NLS-1$
- 	    				description.append("</p>"); //$NON-NLS-1$
-	    			else if ("TABLE".equals(name.rawname)) //$NON-NLS-1$
-	    				description.append("</dl>"); //$NON-NLS-1$
-	    			else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
-	    				rowItemCount = 0;
-	    			}
-	    			else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
-	    				if (!rowIgnore) {
-	    					if (rowTag != null && rowTag.equals("<dt>")) //$NON-NLS-1$
-	    						description.append("</dt>"); //$NON-NLS-1$
-	    					else
-	    						description.append("</dd>"); //$NON-NLS-1$
-	    				}
-	    				rowIgnore = false;
-	    			}
+					if ("P".equals(name.rawname)) {//$NON-NLS-1$
+						description.append("</p>"); //$NON-NLS-1$
+					} else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$
+						description.append("</dl>"); //$NON-NLS-1$
+					} else if ("TR".equals(name.rawname)) { //$NON-NLS-1$
+						rowItemCount = 0;
+					} else if ("TD".equals(name.rawname)) { //$NON-NLS-1$
+						if (!rowIgnore) {
+							if (rowTag != null && rowTag.equals("<dt>")) {//$NON-NLS-1$
+								description.append("</dt>"); //$NON-NLS-1$
+							} else {
+								description.append("</dd>"); //$NON-NLS-1$
+							}
+						}
+						rowIgnore = false;
+					}
 	    		}
 	    	}
 	    }
 
 	    @Override
-	    public void characters(XMLString data, Augmentations aug) throws XNIException {
+	    public void characters(XMLString data, Augmentations aug) {
 	    	if (begin) {
 	    		if (returnType) {
 	    			returnValue = ""; //$NON-NLS-1$
@@ -210,8 +208,7 @@ public class ParseDevHelp {
 	    				}
 	    			}
 	    			returnType = false;
-	    		}
-	    		else if (protoStart) {
+	    		} else if (protoStart) {
 	    			String temp = data.toString().trim();
 	    			boolean completed = false;
 	    			if (temp.endsWith(");")) { //$NON-NLS-1$
@@ -244,8 +241,7 @@ public class ParseDevHelp {
 	    				parmStart = false;
 	    				descStart = true;
 	    			}
-	    		}
-	    		else if (parmStart) {
+	    		} else if (parmStart) {
 	    			String parmData = data.toString().trim();
 	    			int index = parmData.indexOf(')');
 	    			if (index >= 0) {
@@ -254,14 +250,15 @@ public class ParseDevHelp {
 	    				parmData = parmData.substring(0, index);
 	    			}
 	    			if (prototype.length() == 0) {
-	    			   if (!parmData.equals(",") && !parmData.isEmpty()) //$NON-NLS-1$
+	    			   if (!parmData.equals(",") && !parmData.isEmpty()) { //$NON-NLS-1$
 	    				   parmData = " " + parmData; //$NON-NLS-1$
+	    			   }
 	    			}
 	    			prototype.append(parmData);
-	    		}
-	    		else if (descStart) {
-	    			if (!rowIgnore)
+	    		} else if (descStart) {
+	    			if (!rowIgnore) {
 	    				description.append(String.valueOf(data));
+	    			}
 	    		}
 	    	}
 	    }
@@ -269,8 +266,9 @@ public class ParseDevHelp {
 	    public FunctionInfo getFunctionInfo() {
 	    	if (!valid || returnValue == null ||
 	    			returnValue.startsWith("#") || //$NON-NLS-1$
-	    			returnValue.startsWith("typedef ")) //$NON-NLS-1$
+	    			returnValue.startsWith("typedef ")) { //$NON-NLS-1$
 	    		return null;
+	    	}
 	    	FunctionInfo info = new FunctionInfo(funcName);
 	    	info.setReturnType(returnValue);
 	    	info.setPrototype(prototype.toString());
@@ -294,9 +292,8 @@ public class ParseDevHelp {
 		private static final class NullEntityResolver implements EntityResolver {
 			@Override
 			public InputSource resolveEntity(String publicId, String systemId)
-			    throws SAXException, IOException
-			{
-			    return new InputSource(new StringReader("")); //$NON-NLS-1$
+					throws SAXException, IOException {
+				return new InputSource(new StringReader("")); //$NON-NLS-1$
 			}
 		}
 
@@ -313,7 +310,7 @@ public class ParseDevHelp {
 		private boolean debug;
 		private FilenameComparator filenameComparator = new FilenameComparator();
 		private NullEntityResolver entityResolver = new NullEntityResolver();
-		DocumentBuilderFactory factory;
+		private DocumentBuilderFactory factory;
 		
 		public DevHelpParser(String dirName) {
 			this(dirName, false);
@@ -342,17 +339,20 @@ public class ParseDevHelp {
    				for (int i = 0; i < files.length; ++i) {
 					IFileStore file = files[i];
 					String name = file.fetchInfo().getName();
-					if (monitor.isCanceled())
+					if (monitor.isCanceled()) {
 						return null;
+					}
 					monitor.setTaskName(LibHoverMessages.getFormattedString(PARSING_FMT_MSG, 
 							new String[]{name}));
 					File f = new File(dirPath.append(name).append(name + ".devhelp2").toOSString()); //$NON-NLS-1$
-					if (f.exists())
-						parse(dirPath.append(name).append(name + ".devhelp2").toOSString(), //$NON-NLS-1$ 
+					if (f.exists()) {
+						parse(f.getAbsolutePath(),
 								monitor);
-					else
-						parse(dirPath.append(name).append(name + ".devhelp").toOSString(), //$NON-NLS-1$ 
+					} else {
+						parse(dirPath.append(name)
+								.append(name + ".devhelp").toOSString(), //$NON-NLS-1$ 
 								monitor);
+					}
 					monitor.worked(1);
    				}
 			} catch (CoreException e) {
@@ -369,16 +369,18 @@ public class ParseDevHelp {
 					String nameString = name.getNodeValue();
 					nameString = nameString.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 					if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
-							|| nameString.contains("\"")) //$NON-NLS-1$
+							|| nameString.contains("\"")) { //$NON-NLS-1$
 						return;
+					}
 					InputStream reader = new FileInputStream(path.removeLastSegments(1).toOSString()
 							+ "/" + linkParts[0]); //$NON-NLS-1$
 					HTMLSaxParser parser = new HTMLSaxParser(linkParts[1], nameString);
 					parser.parse(new InputSource(reader));
 					FunctionInfo finfo = parser.getFunctionInfo();
 					if (finfo != null) {
-						if (debug)
+						if (debug) {
 							System.out.println(parser.toString());
+						}
 						libhover.functions.put(parser.getFuncName(), parser.getFunctionInfo());
 					}
 				} catch (IOException e) {
@@ -402,14 +404,16 @@ public class ParseDevHelp {
 					Node n = bookNodes.item(x);
 					NamedNodeMap m = n.getAttributes();
 					Node language = m.getNamedItem("language"); //$NON-NLS-1$
-					if (language != null && !language.getNodeValue().equals("c")) //$NON-NLS-1$
+					if (language != null && !language.getNodeValue().equals("c")) { //$NON-NLS-1$
 						return;
+					}
 				}
-				if (path.lastSegment().endsWith("devhelp")) { //$NON-NLS-1$
+				if (path.getFileExtension().equals("devhelp")) { //$NON-NLS-1$
 					NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$ //$NON-NLS-1$
 					for (int i = 0; i < nl.getLength(); ++i) {
-						if (monitor.isCanceled())
+						if (monitor.isCanceled()) {
 							return;
+						}
 						Node n = nl.item(i);
 						NamedNodeMap m = n.getAttributes();
 						Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
@@ -418,7 +422,7 @@ public class ParseDevHelp {
 							parseLink(link, name, path, libhover);
 						}
 					}
-				} else if (path.lastSegment().endsWith("devhelp2")) { //$NON-NLS-1$
+				} else if (path.getFileExtension().equals("devhelp2")) { //$NON-NLS-1$
 					NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$ //$NON-NLS-1$
 					for (int i = 0; i < nl.getLength(); ++i) {
 						if (monitor.isCanceled())
