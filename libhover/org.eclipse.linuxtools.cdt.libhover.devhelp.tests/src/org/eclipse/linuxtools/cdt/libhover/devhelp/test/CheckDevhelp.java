@@ -8,20 +8,19 @@
 package org.eclipse.linuxtools.cdt.libhover.devhelp.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -61,38 +60,34 @@ public class CheckDevhelp {
 	}
 
 	@Test
-	public void testParse() {
+	public void testParse() throws IOException {
 		ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(
 				"/usr/share/gtk-doc/html"); //$NON-NLS-1$
 		LibHoverInfo hover = p.parse(new NullProgressMonitor());
-		assertTrue(hover != null);
+		assertNotNull(hover);
 		Map<String, FunctionInfo> functions = hover.functions;
-		assertTrue(functions != null);
-		assertTrue(functions.size() > 0);
-		try {
-			// Now, output the LibHoverInfo for caching later
-			IPath location = LibhoverPlugin.getDefault().getStateLocation()
-					.append("C"); //$NON-NLS-1$
-			File ldir = new File(location.toOSString());
-			ldir.mkdir();
-			location = location.append("devhelp.libhover"); //$NON-NLS-1$
-			FileOutputStream f = new FileOutputStream(location.toOSString());
-			ObjectOutputStream out = new ObjectOutputStream(f);
+		assertNotNull(functions);
+		assertFalse(functions.isEmpty());
+		// Now, output the LibHoverInfo for caching later
+		IPath location = LibhoverPlugin.getDefault().getStateLocation()
+				.append("C"); //$NON-NLS-1$
+		File ldir = new File(location.toOSString());
+		ldir.mkdir();
+		location = location.append("devhelp.libhover"); //$NON-NLS-1$
+		try (FileOutputStream f = new FileOutputStream(location.toOSString());
+				ObjectOutputStream out = new ObjectOutputStream(f)) {
 			out.writeObject(hover);
-			out.close();
-		} catch (Exception e) {
-			fail();
 		}
 		IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
 		ps.setValue(CACHE_EXT_LIBHOVER, true);
 		LibHover.getLibHoverDocs();
 		Collection<LibHoverLibrary> c = LibHover.getLibraries();
-		assertTrue(c.size() > 0);
+		assertFalse(c.isEmpty());
 		boolean found = false;
-		for (Iterator<LibHoverLibrary> i = c.iterator(); i.hasNext();) {
-			LibHoverLibrary l = i.next();
-			if (l.getName().equals("devhelp")) //$NON-NLS-1$
+		for (LibHoverLibrary l : c) {
+			if (l.getName().equals("devhelp")) { //$NON-NLS-1$
 				found = true;
+			}
 		}
 		assertTrue(found);
 	}
@@ -110,36 +105,25 @@ public class CheckDevhelp {
 		assertEquals(c.getCategoryId(), null);
 		assertEquals(c.getLocale(), "en_US"); //$NON-NLS-1$
 		String[] docs = c.getExtraDocuments();
-		assertTrue(docs.length == 0);
-		assertEquals(c.getLinkTo(), ""); //$NON-NLS-1$
+		assertEquals(docs.length, 0);
+		assertTrue(c.getLinkTo().isEmpty());
 		assertEquals(c.getContributorId(),
 				"org.eclipse.linuxtools.cdt.libhover.devhelp"); //$NON-NLS-1$
 	}
 
 	@Test
-	public void testHelpTopic() {
+	public void testHelpTopic() throws IOException {
 		// We need to have a devhelp directory with contents to test.
 		// Copy over the needed devhelp/html contents in this test plug-in,
 		// test1.devhelp2 and index.html, to the workspace.
 		ClassLoader cl = getClass().getClassLoader();
 		Bundle bundle = null;
-		if (cl instanceof BundleReference)
+		if (cl instanceof BundleReference) {
 			bundle = ((BundleReference) cl).getBundle();
-		InputStream in = null;
-		InputStream in2 = null;
-		try {
-			in = FileLocator.openStream(bundle, new Path(
-					"devhelp/html/test1/test1.devhelp2"), false); //$NON-NLS-1$
-			in2 = FileLocator.openStream(bundle, new Path(
-					"devhelp/html/test1/index.html"), false); //$NON-NLS-1$
-		} catch (IOException e) {
-			fail();
 		}
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		BufferedReader br2 = new BufferedReader(new InputStreamReader(in2));
-
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IPath wslocpath = ws.getRoot().getLocation();
+
 		IPath outfilepath = wslocpath.append("devhelp/html/test1"); //$NON-NLS-1$
 		File outfiledir = outfilepath.toFile();
 		assertTrue(outfiledir.mkdirs());
@@ -147,30 +131,15 @@ public class CheckDevhelp {
 		File outfile = outfilepath.toFile();
 		IPath outfilepath2 = wslocpath.append("devhelp/html/test1/index.html"); //$NON-NLS-1$
 		File outfile2 = outfilepath2.toFile();
-		BufferedWriter brw = null;
-		BufferedWriter brw2 = null;
-		try {
-			outfile.createNewFile();
-			brw = new BufferedWriter(new FileWriter(outfile.getAbsoluteFile()));
-			outfile2.createNewFile();
-			brw2 = new BufferedWriter(
-					new FileWriter(outfile2.getAbsoluteFile()));
-
-			for (String line = br.readLine(); line != null; line = br
-					.readLine()) {
-				brw.write(line);
-			}
-			for (String line = br2.readLine(); line != null; line = br2
-					.readLine()) {
-				brw2.write(line);
-			}
-			br.close();
-			brw.close();
-			br2.close();
-			brw2.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail();
+		outfile.createNewFile();
+		outfile2.createNewFile();
+		try (InputStream in = FileLocator.openStream(bundle, new Path(
+				"devhelp/html/test1/test1.devhelp2"), false)) { //$NON-NLS-1$
+			Files.copy(in, Paths.get(outfile.toURI()), StandardCopyOption.REPLACE_EXISTING);
+		}
+		try (InputStream in2 = FileLocator.openStream(bundle, new Path(
+				"devhelp/html/test1/index.html"), false)) { //$NON-NLS-1$
+			Files.copy(in2, Paths.get(outfile2.toURI()), StandardCopyOption.REPLACE_EXISTING);
 		}
 
 		IPath x = wslocpath.append("devhelp/html"); //$NON-NLS-1$
@@ -194,5 +163,4 @@ public class CheckDevhelp {
 				"/org.eclipse.linuxtools.cdt.libhover.devhelp/test1/index.html"); //$NON-NLS-1$
 		assertTrue(topic.isEnabled(null));
 	}
-
 }
