@@ -31,10 +31,8 @@ import org.junit.Test;
 public class ChartExportTest extends AbstractMassifTest {
 	private IPath pngPath;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
 		pngPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();

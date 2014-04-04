@@ -26,10 +26,8 @@ import org.junit.Test;
 public class MultiProcessTest extends AbstractMemcheckTest {
 	private ICProject refProj;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		refProj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
 	}

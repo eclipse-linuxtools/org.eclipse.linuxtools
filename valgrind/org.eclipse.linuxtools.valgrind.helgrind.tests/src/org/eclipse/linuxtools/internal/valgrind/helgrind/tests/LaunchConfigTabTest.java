@@ -39,10 +39,8 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 	private ValgrindOptionsTab tab;
 	private HelgrindToolPage dynamicTab;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
 		config = createConfiguration(proj.getProject());

@@ -43,10 +43,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DoubleClickTest extends AbstractCachegrindTest {
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
 

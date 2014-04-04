@@ -44,10 +44,8 @@ import org.junit.Test;
 public class MultiProcessTest extends AbstractMassifTest {
 	private ICProject refProj;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		refProj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
 	}

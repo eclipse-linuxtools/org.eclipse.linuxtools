@@ -25,10 +25,8 @@ import org.junit.Test;
 
 public class BasicCachegrindTest extends AbstractCachegrindTest {
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
 

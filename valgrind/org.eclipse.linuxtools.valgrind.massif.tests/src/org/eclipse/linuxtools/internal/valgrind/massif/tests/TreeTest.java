@@ -30,10 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TreeTest extends AbstractMassifTest {
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 	}
 

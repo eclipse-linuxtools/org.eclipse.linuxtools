@@ -44,10 +44,8 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 		return "org.eclipse.linuxtools.valgrind.launch.memcheck"; //$NON-NLS-1$
 	}
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("wrongDeallocTest"); //$NON-NLS-1$
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "wrongDeallocTest"); //$NON-NLS-1$

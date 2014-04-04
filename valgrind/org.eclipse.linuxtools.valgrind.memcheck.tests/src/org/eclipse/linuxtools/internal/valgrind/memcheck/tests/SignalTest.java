@@ -23,10 +23,8 @@ import org.junit.Test;
 
 public class SignalTest extends AbstractMemcheckTest {
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("segvtest"); //$NON-NLS-1$
 	}
 

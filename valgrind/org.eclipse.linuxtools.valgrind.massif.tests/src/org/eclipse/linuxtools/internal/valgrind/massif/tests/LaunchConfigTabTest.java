@@ -42,10 +42,8 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 	private ILaunchConfiguration config;
 	private Shell testShell;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
 		config = createConfiguration(proj.getProject());

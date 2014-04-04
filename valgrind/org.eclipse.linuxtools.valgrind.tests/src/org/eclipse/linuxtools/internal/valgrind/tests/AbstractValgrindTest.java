@@ -70,7 +70,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	private List<ILaunch> launches;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		launches = new ArrayList<>();
 
 		// Substitute Valgrind command line interaction

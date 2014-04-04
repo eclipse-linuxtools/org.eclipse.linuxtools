@@ -33,10 +33,8 @@ public class ExpandCollapseTest extends AbstractCachegrindTest {
 	private TreeViewer viewer;
 	private Menu contextMenu;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 	}
 

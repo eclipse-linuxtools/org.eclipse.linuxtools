@@ -32,10 +32,8 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 	private CoreMessagesViewer viewer;
 	private Menu contextMenu;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 
