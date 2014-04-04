@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.graphing.ui.wizards.filter;
+package org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;

@@ -12,7 +12,6 @@ Export-Package: org.eclipse.linuxtools.systemtap.graphing.ui,
  org.eclipse.linuxtools.systemtap.graphing.ui.views,
  org.eclipse.linuxtools.systemtap.graphing.ui.widgets,
  org.eclipse.linuxtools.systemtap.graphing.ui.wizards.dataset,
- org.eclipse.linuxtools.systemtap.graphing.ui.wizards.filter,
  org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph
 Require-Bundle: org.eclipse.linuxtools.systemtap.graphing.core,
  org.eclipse.linuxtools.systemtap.structures,
