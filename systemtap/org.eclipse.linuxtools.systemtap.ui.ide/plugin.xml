@@ -85,13 +85,8 @@
                icon="icons/actions/import_wiz.gif"
                label="%action.import.name"
                style="push">
-            <visibleWhen>
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <equals
-                        value="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-                  </equals>
-               </with>
+            <visibleWhen
+                  checkEnabled="true">
             </visibleWhen>
          </command>
       </menuContribution>

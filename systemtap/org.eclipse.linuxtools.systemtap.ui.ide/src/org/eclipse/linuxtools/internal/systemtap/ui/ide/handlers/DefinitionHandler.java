@@ -23,7 +23,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ISearchableNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
-import org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction;
+import org.eclipse.linuxtools.systemtap.ui.editor.handlers.file.OpenFileHandler;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -41,8 +41,8 @@ public class DefinitionHandler extends AbstractHandler {
             return null;
         }
         File file = new File(filename);
-        OpenFileAction open = new OpenFileAction();
-        open.run(file);
+        OpenFileHandler open = new OpenFileHandler();
+        open.executeOnFile(file);
         if (open.isSuccessful() && t.getData() instanceof ISearchableNode) {
             IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
             STPEditor editor = (STPEditor)editorPart;
