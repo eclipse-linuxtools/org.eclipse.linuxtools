@@ -48,7 +48,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 	private Text text[] = new Text[IDEPreferenceConstants.STAP_STRING_OPTIONS.length];
 	private Text targetProgramText;
 
-	private ModifyListener modifyListiner = new ModifyListener() {
+	private ModifyListener modifyListener = new ModifyListener() {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
@@ -90,7 +90,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 				| SWT.BORDER);
 		targetProgramText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
-		targetProgramText.addModifyListener(modifyListiner);
+		targetProgramText.addModifyListener(modifyListener);
 		Button selectTargetProgramButton = new Button(targetExecutableGroup, 0);
 		GridData gridData = new GridData();
 
@@ -155,7 +155,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.TOOLTIP]);
 			text[i] = new Text(cmpTxtBoxes, SWT.BORDER);
 			text[i].setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true));
-			text[i].addModifyListener(modifyListiner);
+			text[i].addModifyListener(modifyListener);
 			text[i].setToolTipText(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.TOOLTIP]);
 
 			if (IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.FLAG]
@@ -166,9 +166,10 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
 		label = new Label(cmpTxtBoxes, SWT.NONE);
 		label.setText(Messages.SystemTapScriptOptionsTab_otherOptions);
-		this.miscCommandsText = new Text(cmpTxtBoxes, SWT.BORDER);
-		this.miscCommandsText.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING,
+		miscCommandsText = new Text(cmpTxtBoxes, SWT.BORDER);
+		miscCommandsText.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING,
 				true, true));
+		miscCommandsText.addModifyListener(modifyListener);
 	}
 
 	@Override
