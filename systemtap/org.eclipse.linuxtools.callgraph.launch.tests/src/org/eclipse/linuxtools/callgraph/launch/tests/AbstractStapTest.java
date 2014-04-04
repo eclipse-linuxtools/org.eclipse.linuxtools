@@ -57,13 +57,13 @@ public class AbstractStapTest extends AbstractTest {
 	private List<ILaunch> launches;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp()  {
 		launches = new ArrayList<>();
 	}
 
 	@After
-	public void tearDown() throws Exception {
-		if (launches.size() > 0) {
+	public void tearDown() {
+		if (!launches.isEmpty()) {
 			DebugPlugin.getDefault().getLaunchManager().removeLaunches(launches.toArray(new ILaunch[launches.size()]));
 			launches.clear();
 		}

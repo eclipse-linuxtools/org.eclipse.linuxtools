@@ -25,18 +25,14 @@ public class LaunchShortcutsTest extends AbstractStapTest {
 	 * is sent.
 	 */
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+	public void prep() throws Exception {
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 	}
 
-	@Override
 	@After
-	public void tearDown() throws Exception {
+	public void clean() throws Exception {
 		deleteProject(proj);
-		super.tearDown();
 	}
 
 	@Test
