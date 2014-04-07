@@ -2,6 +2,7 @@ package org.eclipse.linuxtools.internal.gcov.test;
 
 import static org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper.contextMenu;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -46,7 +47,6 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
-import org.junit.Assert;
 import org.osgi.framework.FrameworkUtil;
 
 public abstract class GcovTest {
@@ -360,7 +360,7 @@ public abstract class GcovTest {
 				break;
 			}
 		}
-		Assert.assertTrue(treeBot.selectionCount() != 0);
+		assertNotEquals(treeBot.selectionCount(), 0);
 		String menuItem = "Profiling Tools";
 		String subMenuItem = "1 Profile Code Coverage";
 		click(contextMenu(treeBot, menuItem, subMenuItem));

@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.systemtap.graphing.core.tests.filters;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -198,7 +197,7 @@ public class RangeFilterTest {
 	}
 	@Test
 	public void testGetID() {
-		assertTrue(RangeFilter.ID.equals(filter.getID()));
+		assertEquals(RangeFilter.ID, filter.getID());
 	}
 
 	private RangeFilter filter;

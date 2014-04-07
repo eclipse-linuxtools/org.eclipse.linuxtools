@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.graphing.core.tests.aggregates;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.MinAggregate;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
@@ -55,7 +54,7 @@ public class MinAggregateTest  {
 	@Test
 	public void testGetID() {
 		MinAggregate aa = new MinAggregate();
-		assertTrue(MinAggregate.ID.equals(aa.getID()));
+		assertEquals(MinAggregate.ID, aa.getID());
 	}
 	
 }

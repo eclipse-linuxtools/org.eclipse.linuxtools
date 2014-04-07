@@ -125,7 +125,7 @@ public class TestChangeLogTestProject {
 	@Test
 	public void canAddCNature() throws Exception {
 		IProject cProject = this.project.getTestProject();
-		assertTrue(!CoreModel.hasCNature(cProject));
+		assertFalse(CoreModel.hasCNature(cProject));
 		// Add C nature
 		this.project.addCNature();
 		cProject = this.project.getTestProject();
@@ -140,7 +140,7 @@ public class TestChangeLogTestProject {
 	@Test
 	public void canAddCCNature() throws Exception {
 		IProject ccProject = this.project.getTestProject();
-		assertTrue(!CoreModel.hasCCNature(ccProject));
+		assertFalse(CoreModel.hasCCNature(ccProject));
 		// Add C++ nature
 		this.project.addCCNature();
 		ccProject = this.project.getTestProject();

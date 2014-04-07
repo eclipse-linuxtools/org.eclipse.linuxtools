@@ -10,8 +10,8 @@ package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
@@ -168,7 +168,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 		swtBoteditor.save();
 		// make sure some changelog like text was pasted
 		String text = eclipseEditor.getText();
-		assertTrue(!text.equals(""));
+		assertFalse(text.isEmpty());
 	}
 
 	/**

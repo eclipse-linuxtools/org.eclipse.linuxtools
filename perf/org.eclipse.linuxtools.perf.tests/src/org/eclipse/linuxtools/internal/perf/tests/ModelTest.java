@@ -285,7 +285,7 @@ public class ModelTest extends AbstractTest {
 		String expectedFilePath = "/home/user/workspace/fibonacci/Debug/../src/fibonacci.cpp";
 
 		assertTrue(expectedDsoPath.equals(dso.getPath()));
-		assertTrue(dso.getChildren().length == 2);
+		assertEquals(dso.getChildren().length, 2);
 
 		for (TreeParent dsoChild : dso.getChildren()) {
 			String filePath = ((PMFile) dsoChild).getPath();
@@ -295,18 +295,18 @@ public class ModelTest extends AbstractTest {
 			} else {
 				assertTrue(expectedFilePath.equals(filePath));
 				assertTrue(dsoChild.hasChildren());
-				assertTrue(dsoChild.getChildren().length == 1);
+				assertEquals(dsoChild.getChildren().length, 1);
 
 				TreeParent curSym = dsoChild.getChildren()[0];
 				assertTrue(curSym.hasChildren());
-				assertTrue(curSym.getChildren().length == 5);
+				assertEquals(curSym.getChildren().length, 5);
 
 				float percentCount = 0;
 				for (TreeParent symChild : curSym.getChildren()) {
 					percentCount += symChild.getPercent();
 				}
 
-				assertTrue(Math.ceil(percentCount) == 100.0);
+				assertEquals(Math.ceil(percentCount), 100.0, 0.0);
 
 			}
 		}

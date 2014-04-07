@@ -87,7 +87,7 @@ public class LaunchTest extends AbstractTest {
 				} catch (CoreException e) {
 					fail(e.getMessage());
 				}
-				assertTrue(cfg.getChildren("class").length == 1); //$NON-NLS-1$
+				assertEquals(cfg.getChildren("class").length, 1); //$NON-NLS-1$
 				IConfigurationElement elem = cfg.getChildren("class")[0]; //$NON-NLS-1$
 				for (int i = 0; i < 2; i++) {
 					assertNotNull(elem.getChildren("parameter")[i].getAttribute("name")); //$NON-NLS-1$ //$NON-NLS-2$

@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.structures.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.structures.IFormattingStyles;
 import org.eclipse.linuxtools.systemtap.structures.StringFormatter;
@@ -64,25 +63,25 @@ public class StringFormatterTest {
 
 	public void testFormat() {
 		formatter.setFormat(IFormattingStyles.BINARY);
-		assertTrue("0x1000".equals(formatter.format("8")));
+		assertEquals("0x1000", formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.HEX);
-		assertTrue("0x8".equals(formatter.format("8")));
+		assertEquals("0x8", formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.OCTAL);
-		assertTrue("0x10".equals(formatter.format("8")));
+		assertEquals("0x10",formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.STRING);
-		assertTrue("8".equals(formatter.format("8")));
+		assertEquals("8", formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.UNFORMATED);
-		assertTrue("8".equals(formatter.format("8")));
+		assertEquals("8", formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.DATE);
-		assertTrue("Dec 31, 1969 4:00:00 PM".equals(formatter.format("8")));
+		assertEquals("Dec 31, 1969 4:00:00 PM", formatter.format("8"));
 
 		formatter.setFormat(IFormattingStyles.DOUBLE);
-		assertTrue("8.0".equals(formatter.format("8")));
+		assertEquals("8.0", formatter.format("8"));
 	}
 
 	private StringFormatter formatter;

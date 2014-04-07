@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.tree.tests;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -165,7 +165,7 @@ public class CreaterepoTreeTest {
 						CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
 						// only check 1 category's tags, as all are loaded the same way
 						if (category.getName().equals(CreaterepoPreferenceConstants.PREF_DISTRO_TAG)) {
-							assertTrue(Arrays.equals(DISTRO_TAGS, category.getTags().toArray()));
+							assertArrayEquals(DISTRO_TAGS, category.getTags().toArray());
 							break;
 						}
 					}

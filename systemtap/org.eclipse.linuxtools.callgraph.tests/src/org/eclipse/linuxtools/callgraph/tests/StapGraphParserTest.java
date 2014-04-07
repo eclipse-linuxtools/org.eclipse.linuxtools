@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.callgraph.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -48,8 +49,8 @@ public class StapGraphParserTest {
 		//ALL FUNCTIONS HAVE A CUMULATIVE TIME
 		for (int val : grph.serialMap.keySet()){
 			String fname = grph.serialMap.get(val);
-			assertTrue(grph.timeMap.get(val) != null);
-			assertTrue(grph.aggregateTimeMap.get(fname) != null);
+			assertNotNull(grph.timeMap.get(val));
+			assertNotNull(grph.aggregateTimeMap.get(fname));
 		}
 	}
 

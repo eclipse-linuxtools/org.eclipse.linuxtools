@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.systemtap.graphing.core.tests.aggregates;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.SumAggregate;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
@@ -55,7 +54,7 @@ public class SumAggregateTest {
 	@Test
 	public void testGetID() {
 		SumAggregate aa = new SumAggregate();
-		assertTrue(SumAggregate.ID.equals(aa.getID()));
+		assertEquals(SumAggregate.ID, aa.getID());
 	}
 	
 	

@@ -196,14 +196,14 @@ public class DownloadPrepareSourcesTest {
 		switch (layout) {
 		case RPMBUILD:
 			assertNotNull(sourcesFolder.getParent().findMember("SOURCES"));
-			assertTrue(sourcesFolder.members().length == 1);
+			assertEquals(sourcesFolder.members().length, 1);
 			// check if the file exists under SOURCES folder
 			assertNotNull(sourcesFolder
 					.findMember(new Path("hello-2.8.tar.gz")));
 			break;
 		case FLAT:
 			// 4 = "hello-2.8.tar.gz" + ".project" + "hello-2.8-1.fc19.src.rpm" + "hello.spec"
-			assertTrue(sourcesFolder.members().length == 4);
+			assertEquals(sourcesFolder.members().length, 4);
 			assertNotNull(sourcesFolder
 					.findMember(new Path("hello-2.8.tar.gz")));
 			break;
@@ -225,7 +225,7 @@ public class DownloadPrepareSourcesTest {
 		switch (layout) {
 		case RPMBUILD:
 			assertNotNull(buildFolder.getParent().findMember("BUILD"));
-			assertTrue(buildFolder.members().length == 1);
+			assertEquals(buildFolder.members().length, 1);
 			// check if the file exists under BUILD folder
 			helloBuildFolder = buildFolder.getFolder(new Path("hello-2.8"));
 			assertTrue(helloBuildFolder.exists());
@@ -234,7 +234,7 @@ public class DownloadPrepareSourcesTest {
 			break;
 		case FLAT:
 			// 4 = "hello-2.8.tar.gz" + ".project" + "hello-2.8-1.fc19.src.rpm" + "hello.spec" + "hello-2.8/"
-			assertTrue(buildFolder.members().length == 5);
+			assertEquals(buildFolder.members().length, 5);
 			helloBuildFolder = buildFolder.getFolder(new Path("hello-2.8"));
 			assertTrue(helloBuildFolder.exists());
 			// there should be some stuff within hello-2.8/ folder
@@ -265,7 +265,7 @@ public class DownloadPrepareSourcesTest {
 		downloadJob.setUser(true);
 		downloadJob.schedule();
 		downloadJob.join();
-		assertTrue(downloadJob.getResult().equals(Status.OK_STATUS));
+		assertEquals(downloadJob.getResult(),Status.OK_STATUS);
 	}
 
 	/**

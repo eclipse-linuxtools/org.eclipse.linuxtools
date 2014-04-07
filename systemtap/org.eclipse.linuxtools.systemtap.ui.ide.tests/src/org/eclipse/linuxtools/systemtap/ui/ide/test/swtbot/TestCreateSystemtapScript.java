@@ -16,6 +16,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
@@ -395,8 +396,8 @@ public class TestCreateSystemtapScript {
 		SWTBotToolbarButton remButton = debugView.toolbarPushButton("Remove All Terminated Launches");
 		assertTrue(remButton.isEnabled());
 		remButton.click();
-		assertTrue(debugTable.getAllItems().length == 0);
-		assertTrue(!remButton.isEnabled());
+		assertEquals(debugTable.getAllItems().length, 0);
+		assertFalse(remButton.isEnabled());
 	}
 
 	@Test
@@ -472,7 +473,7 @@ public class TestCreateSystemtapScript {
 		items[2].doubleClick();
 		assertTrue(editor.getText().contains("probe " + items[2].getText() + "\n"));
 		editor = bot.editorByTitle(scriptName).toTextEditor();
-		assertTrue(!editor.getText().contains("probe " + items[2].getText() + "\n"));
+		assertFalse(editor.getText().contains("probe " + items[2].getText() + "\n"));
 
 		// Switch to the non-stp editor, and add a probe. A dialog should appear
 		// to let the user choose which of the open files to add to.
@@ -488,7 +489,7 @@ public class TestCreateSystemtapScript {
 		bot.button("OK").click();
 		bot.waitUntil(Conditions.shellCloses(shell));
 		editor = bot.activeEditor().toTextEditor();
-		assertTrue(!editor.getTitle().equals("Untitled 1"));
+		assertFalse(editor.getTitle().equals("Untitled 1"));
 		assertTrue(editor.getText().contains("probe " + items[3].getText() + "\n"));
 	}
 
@@ -506,8 +507,8 @@ public class TestCreateSystemtapScript {
 		// As soon as the Graphing tab is entered, no regular expression exists & nothing can be run.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		assertEquals("", combo.getText());
-		assertTrue(!runButton.isEnabled());
-		assertTrue(!addButton.isEnabled());
+		assertFalse(runButton.isEnabled());
+		assertFalse(addButton.isEnabled());
 		combo.setText("(1)(2)");
 		assertEquals("(1)(2)", combo.getText());
 		assertTrue(runButton.isEnabled());
@@ -519,7 +520,7 @@ public class TestCreateSystemtapScript {
 		// Removing groups from the regex disables graphs that rely on those groups.
 		combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		combo.setText("(1)");
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		combo.setText("(1)(2)(3)");
 		assertTrue(runButton.isEnabled());
 
@@ -530,7 +531,7 @@ public class TestCreateSystemtapScript {
 		assertTrue(runButton.isEnabled());
 
 		combo.setText("(1)");
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		for (int i = 0, n = table.rowCount(); i < n; i++) {
 			String itemTitle = table.getTableItem(i).getText();
 			assertTrue("Graph " + i + " should be invalid, but it's not: " + itemTitle,
@@ -538,14 +539,14 @@ public class TestCreateSystemtapScript {
 		}
 
 		setupGraphGeneral("Safe", 1, graphID, true);
-		assertTrue(!table.getTableItem(2).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph));
+		assertFalse(table.getTableItem(2).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph));
 		combo.setText("(1)(2)(3)");
 		assertTrue(runButton.isEnabled());
 
 		setupGraphGeneral("Unsafe", 3, graphID, true);
 		assertTrue(runButton.isEnabled());
 		combo.setText("(1)(2)");
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		for (int i = 0, n = table.rowCount(); i < n; i++) {
 			String itemTitle = table.getTableItem(i).getText();
 			assertTrue("Graph " + i + " has incorrect validity: " + itemTitle,
@@ -582,13 +583,13 @@ public class TestCreateSystemtapScript {
 		});
 
 		combo.setText(combo.getText().concat(" ")); // Just to refresh the dialog
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		assertTrue(table.getTableItem(0).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraphID));
 
 		table.select(0);
 		dupButton.click();
 		remButton.click();
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		assertTrue(table.getTableItem(table.rowCount() - 1).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraphID));
 
 		table.select(table.rowCount() - 1);
@@ -596,7 +597,7 @@ public class TestCreateSystemtapScript {
 		bot.waitUntil(Conditions.shellIsActive("Edit Graph"));
 		graphShell = bot.activeShell();
 		finishButton = bot.button("Finish");
-		assertTrue(!finishButton.isEnabled());
+		assertFalse(finishButton.isEnabled());
 		bot.radio(0).click();
 		finishButton.click();
 		bot.waitUntil(Conditions.shellCloses(graphShell));
@@ -605,7 +606,7 @@ public class TestCreateSystemtapScript {
 
 		// Removing all invalid graphs should restore validity.
 		combo.setText("(1)");
-		assertTrue(!runButton.isEnabled());
+		assertFalse(runButton.isEnabled());
 		for (int i = table.rowCount() - 1; i >= 0; i--) {
 			if (table.getTableItem(i).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph)) {
 				table.select(i);
@@ -966,7 +967,7 @@ public class TestCreateSystemtapScript {
 		// Enter a regex.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
 		SWTBotButton button = bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton);
-		assertTrue(!button.isEnabled());
+		assertFalse(button.isEnabled());
 		combo.setText("(.*): (\\d+) (\\d+) (\\d+)");
 
 		// Add bar, pie, and line graphs that use the same column data.
@@ -1030,18 +1031,18 @@ public class TestCreateSystemtapScript {
 		SWTBotButton leftButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Left);
 		SWTBotButton rightButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Right);
 		SWTBotButton lastButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_Last);
-		assertTrue(!firstButton.isEnabled());
-		assertTrue(!leftButton.isEnabled());
-		assertTrue(!rightButton.isEnabled());
-		assertTrue(!lastButton.isEnabled());
+		assertFalse(firstButton.isEnabled());
+		assertFalse(leftButton.isEnabled());
+		assertFalse(rightButton.isEnabled());
+		assertFalse(lastButton.isEnabled());
 
 		// Test zooming in. The amount of zoom is arbitrary for this test--just make sure zooming happened.
 		SWTBotButton zoomInButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_ZoomIn);
 		SWTBotButton zoomOutButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_ZoomOut);
 		SWTBotButton allButton = bot.button(org.eclipse.linuxtools.systemtap.graphing.ui.widgets.Messages.GraphDiscreteXControl_All);
 		assertTrue(zoomInButton.isEnabled());
-		assertTrue(!zoomOutButton.isEnabled());
-		assertTrue(!allButton.isEnabled());
+		assertFalse(zoomOutButton.isEnabled());
+		assertFalse(allButton.isEnabled());
 		zoomInButton.click();
 		assertTrue(zoomOutButton.isEnabled());
 		assertTrue(allButton.isEnabled());
@@ -1053,8 +1054,8 @@ public class TestCreateSystemtapScript {
 		// Left scrolling should now be enabled.
 		assertTrue(firstButton.isEnabled());
 		assertTrue(leftButton.isEnabled());
-		assertTrue(!rightButton.isEnabled());
-		assertTrue(!lastButton.isEnabled());
+		assertFalse(rightButton.isEnabled());
+		assertFalse(lastButton.isEnabled());
 
 		// Test scrolling left. Again, the specific amount is arbitrary, just make sure scrolling happened.
 		leftButton.click();
@@ -1069,12 +1070,12 @@ public class TestCreateSystemtapScript {
 		range = axis.getRange();
 		assertTrue(range.upper - range.lower == numAxisItems - 1 && cb.getScale() == 1.0 && cb.getScroll() < scroll);
 		assertTrue(zoomInButton.isEnabled());
-		assertTrue(!zoomOutButton.isEnabled());
-		assertTrue(!allButton.isEnabled());
-		assertTrue(!firstButton.isEnabled());
-		assertTrue(!leftButton.isEnabled());
-		assertTrue(!rightButton.isEnabled());
-		assertTrue(!lastButton.isEnabled());
+		assertFalse(zoomOutButton.isEnabled());
+		assertFalse(allButton.isEnabled());
+		assertFalse(firstButton.isEnabled());
+		assertFalse(leftButton.isEnabled());
+		assertFalse(rightButton.isEnabled());
+		assertFalse(lastButton.isEnabled());
 
 		// For convenience, zooming out after having scrolled somewhere should make zooming in
 		// zoom back to the area that was scrolled to.
@@ -1088,8 +1089,8 @@ public class TestCreateSystemtapScript {
 		assertTrue(range.upper == numAxisItems - 1 && range.lower > 0 && cb.getScroll() > scroll);
 		assertTrue(firstButton.isEnabled());
 		assertTrue(leftButton.isEnabled());
-		assertTrue(!rightButton.isEnabled());
-		assertTrue(!lastButton.isEnabled());
+		assertFalse(rightButton.isEnabled());
+		assertFalse(lastButton.isEnabled());
 
 		// Zoom in as much as possible (range should show only one item),
 		// and step right/left. Add a loop limit for safety.
@@ -1110,9 +1111,9 @@ public class TestCreateSystemtapScript {
 			leftButton.click();
 			assertTrue(axis.getRange().lower < range.lower);
 			range = axis.getRange();
-			assertTrue(range.lower == range.upper);
+			assertEquals(range.lower, range.upper, 0.0);
 		}
-		assertTrue(axis.getRange().lower == 0);
+		assertEquals(axis.getRange().lower, 0, 0.0);
 		for (int i = 0; i < numAxisItems; i++) {
 			if (axis.getRange().upper == numAxisItems - 1) {
 				break;
@@ -1120,23 +1121,23 @@ public class TestCreateSystemtapScript {
 			rightButton.click();
 			assertTrue(axis.getRange().upper > range.upper);
 			range = axis.getRange();
-			assertTrue(range.lower == range.upper);
+			assertEquals(range.lower, range.upper, 0.0);
 		}
-		assertTrue(axis.getRange().upper == numAxisItems - 1);
+		assertEquals(axis.getRange().upper, numAxisItems - 1, 0);
 
 		firstButton.click();
-		assertTrue(axis.getRange().lower == 0);
-		assertTrue(!firstButton.isEnabled());
-		assertTrue(!leftButton.isEnabled());
+		assertEquals(axis.getRange().lower, 0, 0);
+		assertFalse(firstButton.isEnabled());
+		assertFalse(leftButton.isEnabled());
 		assertTrue(rightButton.isEnabled());
 		assertTrue(lastButton.isEnabled());
 
 		lastButton.click();
-		assertTrue(axis.getRange().upper == numAxisItems - 1);
+		assertEquals(axis.getRange().upper, numAxisItems - 1, 0);
 		assertTrue(firstButton.isEnabled());
 		assertTrue(leftButton.isEnabled());
-		assertTrue(!rightButton.isEnabled());
-		assertTrue(!lastButton.isEnabled());
+		assertFalse(rightButton.isEnabled());
+		assertFalse(lastButton.isEnabled());
 	}
 
 	private double getAxisScale(AbstractChartBuilder cb, boolean isXAxis) {
@@ -1175,7 +1176,7 @@ public class TestCreateSystemtapScript {
 		int thumb = scrollBar.getThumb();
 
 		// Default range should be 100%, so zooming out shouldn't have an effect yet.
-		assertTrue(scale == 1.0);
+		assertEquals(scale, 1.0, 0);
 		int zoomValue = zoomScale.getValue();
 		Range range = axis.getRange();
 		zoomOutButton.click();
@@ -1213,7 +1214,7 @@ public class TestCreateSystemtapScript {
 		controlRange = scrollBar.getMaximum() - scrollBar.getThumb() - scrollBar.getMinimum();
 		scrollBar.setSelection(controlRange / 2);
 		bot.sleep(100);
-		assertTrue(scrollBar.getThumb() == thumb);
+		assertEquals(scrollBar.getThumb(), thumb);
 
 		// Scroll towards origin.
 		range = axis.getRange();
@@ -1246,7 +1247,7 @@ public class TestCreateSystemtapScript {
 
 		// Enter a regex.
 		SWTBotCombo combo = bot.comboBoxWithLabel(Messages.SystemTapScriptGraphOptionsTab_regexLabel);
-		assertTrue(!bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
+		assertFalse(bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).isEnabled());
 		combo.setText("(\\d+)");
 
 		// Add bar, pie, and line graphs that use the same column data.
@@ -1363,7 +1364,7 @@ public class TestCreateSystemtapScript {
 		SWTBotCombo comboY1 = bot.comboBoxWithLabel("Y Series 1:");
 		assertEquals(3, comboY1.itemCount()); // Y Series (i>0) has extra "NA" option as first entry
 		comboY1.setSelection(1);
-		assertTrue(!bot.button("Finish").isEnabled()); // Don't allow duplicate selections
+		assertFalse(bot.button("Finish").isEnabled()); // Don't allow duplicate selections
 		comboY1.setSelection(2);
 		bot.button("Finish").click();
 

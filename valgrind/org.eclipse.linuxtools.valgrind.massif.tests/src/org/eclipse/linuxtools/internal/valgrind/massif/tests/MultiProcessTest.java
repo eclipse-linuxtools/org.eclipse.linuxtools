@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -95,7 +96,7 @@ public class MultiProcessTest extends AbstractMassifTest {
 		assertTrue(snapshots1.length == 8 || snapshots1.length == 14);
 		MassifSnapshot[] snapshots2 = output.getSnapshots(pids[1]);
 		assertTrue(snapshots2.length == 8 || snapshots2.length == 14);
-		assertTrue(snapshots1.length != snapshots2.length);
+		assertNotEquals(snapshots1.length, snapshots2.length);
 
 		if (snapshots1.length == 8) {
 			checkSnapshots(snapshots1, 400, 8);
