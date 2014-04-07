@@ -45,6 +45,67 @@
             class="org.eclipse.linuxtools.internal.gcov.preferences.ColorPreferencesInitializer">
       </initializer>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.gcov.CoverageAnnotation"
+            colorPreferenceKey="coverage_color"
+            colorPreferenceValue="192,255,192"
+            contributesToHeader="false"
+            highlightPreferenceKey="coverage_highlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="coverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="coverage_isGoToPreviousNavigationTargetKey"
+            label="Coverage"
+            overviewRulerPreferenceKey="coverage_overviewRuler"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="0"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="coverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="coverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="coverage_stylePreferences"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="coverage_verticalRuler"
+            verticalRulerPreferenceValue="true"/>
+      <specification
+            annotationType="org.eclipse.gcov.NoCoverageAnnotation"
+            colorPreferenceKey="nocoverage_color"
+            colorPreferenceValue="255,160,160"
+            contributesToHeader="false"
+            highlightPreferenceKey="nocoverage_highlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="nocoverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="nocoverage_isGoToPreviousNavigationTargetKey"
+            label="No Coverage"
+            overviewRulerPreferenceKey="nocoverage_overviewRuler"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="0"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="nocoverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="nocoverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="nocoverage_stylePreferences"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="nocoverage_verticalRuler"
+            verticalRulerPreferenceValue="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            name="org.eclipse.gcov.CoverageAnnotation">
+      </type>
+      <type
+            name="org.eclipse.gcov.NoCoverageAnnotation">
+      </type>
+   </extension>
 
 
 </plugin>

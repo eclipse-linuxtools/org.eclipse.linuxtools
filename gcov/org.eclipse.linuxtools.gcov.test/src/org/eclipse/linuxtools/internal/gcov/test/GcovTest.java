@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
-import org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -331,7 +330,7 @@ public abstract class GcovTest {
 		bot.button("OK").click();
 		bot.waitUntil(Conditions.shellCloses(shell));
 
-		SWTBotEditor editor = bot.editorById(STAnnotatedSourceEditorActivator.EDITOR_ID);
+		SWTBotEditor editor = bot.activeEditor();
 		SWTBotEclipseEditor edt = editor.toTextEditor(); /* just to verify that the correct file was found */
 		edt.close();
 	}

@@ -32,6 +32,7 @@ import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.gcov.parser.CovManager;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
+import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.GcovAnnotationModelTracker;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
@@ -107,6 +108,8 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 									MessageDialog.openWarning(parent, title, message);
 								}
 								CovView.displayCovResults(s, null);
+								GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
+								GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
 							} catch (InterruptedException e) {
 								// Do nothing
 							}

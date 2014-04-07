@@ -513,7 +513,10 @@ public class STLink2SourceSupport {
         return null;
     }
 
-    private IFile getFileForPath(IPath path, IProject project) {
+    /**
+	 * @since 4.2
+	 */
+    public IFile getFileForPath(IPath path, IProject project) {
         IFile f = getFileForPathImpl(path, project);
         if (f == null) {
             Set<IProject> allProjects = new HashSet<>();
