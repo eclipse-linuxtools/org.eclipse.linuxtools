@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.perf.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,16 +96,12 @@ public class DataManipulatorTest {
 	}
 
 	@Test
-	public void testPerfStatDataOpenHandler() {
-		String resourceDirPath = "/resources/stat-data/perf_simple.stat"; //$NON-NLS-1$
-		String path;
-		try {
-			path = FileLocator.toFileURL(this.getClass().getResource(resourceDirPath)).getPath();
-			PerfStatDataOpenHandler handler = new PerfStatDataOpenHandler();
-			handler.open(new Path(path));
-		} catch (IOException e) {
-			fail();
-		}
+	public void testPerfStatDataOpenHandler() throws IOException {
+        String resourceDirPath = "/resources/stat-data/perf_simple.stat"; //$NON-NLS-1$
+        String path = FileLocator.toFileURL(
+                this.getClass().getResource(resourceDirPath)).getPath();
+        PerfStatDataOpenHandler handler = new PerfStatDataOpenHandler();
+        handler.open(new Path(path));
 	}
 
 	/**

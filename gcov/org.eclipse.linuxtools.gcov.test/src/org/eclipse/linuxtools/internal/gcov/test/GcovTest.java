@@ -2,6 +2,7 @@ package org.eclipse.linuxtools.internal.gcov.test;
 
 import static org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper.contextMenu;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.InputStream;
@@ -379,9 +380,7 @@ public abstract class GcovTest {
 				}
 			}
 		});
-		if (!result[0]) {
-			Assert.fail();
-		}
+		assertTrue(result[0]);
 		SWTBotView botView = bot.viewByTitle("gcov");
 
 		botView.close();

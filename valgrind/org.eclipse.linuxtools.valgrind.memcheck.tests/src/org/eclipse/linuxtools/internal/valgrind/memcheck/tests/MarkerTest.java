@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,9 +86,7 @@ public class MarkerTest extends AbstractMemcheckTest {
 				ix = i;
 			}
 		}
-		if (ix < 0) {
-			fail();
-		}
+		assertFalse(ix < 0);
 		markers.remove(ix);
 	}
 

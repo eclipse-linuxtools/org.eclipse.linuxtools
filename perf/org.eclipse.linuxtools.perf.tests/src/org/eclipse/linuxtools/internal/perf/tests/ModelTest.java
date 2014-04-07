@@ -232,13 +232,8 @@ public class ModelTest extends AbstractTest {
 		checkCommadLabels(cmdLabels, cmd);
 	}
 	@Test
-	public void testParseEventList() {
-		BufferedReader input = null;
-		try {
-			input = new BufferedReader(new FileReader("resources/simple-perf-event-list"));
-		} catch (FileNotFoundException e) {
-			fail();
-		}
+	public void testParseEventList() throws FileNotFoundException {
+		BufferedReader input = new BufferedReader(new FileReader("resources/simple-perf-event-list"));
 
 		HashMap<String, ArrayList<String>> eventList = PerfCore.parseEventList(input);
 		for(String key : eventList.keySet()){
@@ -263,15 +258,9 @@ public class ModelTest extends AbstractTest {
 		}
 	}
 	@Test
-	public void testParseAnnotation() {
-		BufferedReader input = null;
-
-		try {
-			input = new BufferedReader(new FileReader(
+	public void testParseAnnotation() throws FileNotFoundException {
+		BufferedReader input = new BufferedReader(new FileReader(
 					"resources/perf-annotation-data"));
-		} catch (FileNotFoundException e) {
-			fail();
-		}
 
 		// Set up arguments for the annotation parser.
 		IPath workingDir = Path.fromOSString("/working/directory/");
