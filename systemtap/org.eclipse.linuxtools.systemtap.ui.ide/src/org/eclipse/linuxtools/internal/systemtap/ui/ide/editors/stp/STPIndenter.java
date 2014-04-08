@@ -504,25 +504,6 @@ public final class STPIndenter {
 	}
 
 	/**
-	 * Computes the indentation for a continuation line at <code>offset</code>.
-	 *
-	 * @param offset the offset in the document
-	 * @return a StringBuilder which reflects the correct indentation for
-	 *         the line in  which offset resides, or <code>null</code> if it cannot be
-	 *         determined.
-	 * @throws BadLocationException
-	 */
-	public StringBuilder computeContinuationLineIndentation(int offset) throws BadLocationException {
-		StringBuilder reference= getLeadingWhitespace(offset);
-		IRegion line= fDocument.getLineInformationOfOffset(offset);
-		String string= fDocument.get(line.getOffset(), offset - line.getOffset());
-		if (string.trim().isEmpty())
-			return reference;
-		// Add additional indent
-		return createReusingIndent(reference, fPrefs.prefContinuationIndent, 0);
-	}
-
-	/**
 	 * Computes the length of a <code>CharacterSequence</code>, counting
 	 * a tab character as the size until the next tab stop and every other
 	 * character as one.

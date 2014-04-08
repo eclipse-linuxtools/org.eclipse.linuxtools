@@ -20,7 +20,6 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ILineRange;
-import org.eclipse.jface.text.source.LineRange;
 
 
 /**
@@ -43,7 +42,6 @@ public final class IndentUtil {
 		}
 		private boolean[] commentLinesAtColumnZero;
 		private boolean hasChanged;
-		private int leftmostLine= -1;
 		/**
 		 * Returns <code>true</code> if the indentation operation changed the
 		 * document, <code>false</code> if not.
@@ -96,22 +94,6 @@ public final class IndentUtil {
 	}
 
 	/**
-	 * Inserts <code>indent</code> string at the beginning of each line in <code>lines</code>.
-	 * @param document the document to be changed.
-	 * @param lines the line range to be indented.
-	 * @param indent the indent string to be inserted.
-	 * @throws BadLocationException if <code>lines</code> is not a valid line
-	 *         range on <code>document</code>
-	 */
-	public static void indentLines(IDocument document, LineRange lines, String indent) throws BadLocationException {
-		int numberOfLines= lines.getNumberOfLines();
-		for (int line= lines.getStartLine(), last= line + numberOfLines; line < last; line++) {
-			int offset= document.getLineOffset(line);
-			document.replace(offset, 0, indent);
-		}
-	}
-
-	/**
 	 * Returns <code>true</code> if line comments at column 0 should be indented inside, <code>false</code> otherwise.
 	 *
 	 * @param project  the project to get project specific options from
@@ -132,217 +114,6 @@ public final class IndentUtil {
 	 */
 	private static String getCoreOption(IProject project, String key) {
 		return "true";  //$NON-NLS-1$ // for now, just return true
-	}
-
-	/**
-	 * Shifts the line range specified by <code>lines</code> in
-	 * <code>document</code>. The amount that the lines get shifted
-	 * are determined by the first line in the range, all subsequent
-	 * lines are adjusted accordingly. The passed C project may be
-	 * <code>null</code>, it is used solely to obtain formatter
-	 * preferences.
-	 *
-	 * @param document the document to be changed
-	 * @param lines the line range to be shifted
-	 * @param project the C project to get the formatter preferences
-	 *        from, or <code>null</code> if global preferences should
-	 *        be used
-	 * @param result the result from a previous call to
-	 *        <code>shiftLines</code>, in order to maintain comment
-	 *        line properties, or <code>null</code>. Note that the
-	 *        passed result may be changed by the call.
-	 * @return an indent result that may be queried for changes and can
-	 *         be reused in subsequent indentation operations
-	 * @throws BadLocationException if <code>lines</code> is not a
-	 *         valid line range on <code>document</code>
-	 */
-	public static IndentResult shiftLines(IDocument document, ILineRange lines, IProject project, IndentResult result) throws BadLocationException {
-		int numberOfLines= lines.getNumberOfLines();
-
-		if (numberOfLines < 1)
-			return new IndentResult(null);
-
-		result= reuseOrCreateToken(result, numberOfLines);
-		result.hasChanged= false;
-
-		STPHeuristicScanner scanner= new STPHeuristicScanner(document);
-		STPIndenter indenter= new STPIndenter(document, scanner, project);
-
-		boolean indentInsideLineComments= indentInsideLineComments(project);
-		String current= getCurrentIndent(document, lines.getStartLine(), indentInsideLineComments);
-		StringBuilder correct= new StringBuilder(computeIndent(document, lines.getStartLine(), indenter, scanner));
-
-		int tabSize= CodeFormatterUtil.getTabWidth();
-		StringBuilder addition= new StringBuilder();
-		int difference= subtractIndent(correct, current, addition, tabSize);
-
-		if (difference == 0)
-			return result;
-
-		if (result.leftmostLine == -1)
-			result.leftmostLine= getLeftMostLine(document, lines, tabSize, indentInsideLineComments);
-
-		int maxReduction= computeVisualLength(getCurrentIndent(document, result.leftmostLine + lines.getStartLine(), indentInsideLineComments), tabSize);
-
-		if (difference > 0) {
-			for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++)
-				addIndent(document, line, addition, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
-		} else {
-			int reduction= Math.min(-difference, maxReduction);
-			for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++)
-				cutIndent(document, line, reduction, tabSize, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
-		}
-
-		result.hasChanged= true;
-
-		return result;
-
-	}
-
-	/**
-	 * Indents line <code>line</code> in <code>document</code> with <code>indent</code>.
-	 * Leaves leading comment signs alone.
-	 *
-	 * @param document the document
-	 * @param line the line
-	 * @param indent the indentation to insert
-	 * @param commentlines
-	 * @param relative
-	 * @param indentInsideLineComments option whether to indent inside line comments starting at column 0
-	 * @throws BadLocationException on concurrent document modification
-	 */
-	private static void addIndent(IDocument document, int line, CharSequence indent, boolean[] commentlines, int relative, boolean indentInsideLineComments) throws BadLocationException {
-		IRegion region= document.getLineInformation(line);
-		int insert= region.getOffset();
-		int endOffset= region.getOffset() + region.getLength();
-
-		if (indentInsideLineComments) {
-			// go behind line comments
-			if (!commentlines[relative]) {
-				while (insert < endOffset - 2 && document.get(insert, 2).equals(SLASHES))
-					insert += 2;
-			}
-		}
-
-		// insert indent
-		document.replace(insert, 0, indent.toString());
-	}
-
-	/**
-	 * Cuts the visual equivalent of <code>toDelete</code> characters out of the
-	 * indentation of line <code>line</code> in <code>document</code>.
-	 *
-	 * @param document
-	 * @param line
-	 * @param shiftWidth
-	 * @param tabWidth
-	 * @return number of characters deleted
-	 * @throws BadLocationException
-	 */
-	public static int cutIndent(IDocument document, int line, int shiftWidth, int tabWidth) throws BadLocationException {
-		return cutIndent(document, line, shiftWidth, tabWidth, new boolean[1], 0, false);
-	}
-
-	/**
-	 * Cuts the visual equivalent of <code>toDelete</code> characters out of the
-	 * indentation of line <code>line</code> in <code>document</code>. Leaves
-	 * leading comment signs alone if desired.
-	 *
-	 * @param document the document
-	 * @param line the line
-	 * @param toDelete the number of space equivalents to delete.
-	 * @param commentLines
-	 * @param relative
-	 * @param indentInsideLineComments option whether to indent inside line comments starting at column 0
-	 * @return number of characters deleted
-	 * @throws BadLocationException on concurrent document modification
-	 */
-	private static int cutIndent(IDocument document, int line, int toDelete, int tabSize, boolean[] commentLines, int relative, boolean indentInsideLineComments) throws BadLocationException {
-		IRegion region= document.getLineInformation(line);
-		int from= region.getOffset();
-		int endOffset= region.getOffset() + region.getLength();
-
-		if (indentInsideLineComments) {
-			// go behind line comments
-			while (from < endOffset - 2 && document.get(from, 2).equals(SLASHES))
-				from += 2;
-		}
-
-		int to= from;
-		while (toDelete > 0 && to < endOffset) {
-			char ch= document.getChar(to);
-			if (!Character.isWhitespace(ch))
-				break;
-			toDelete -= computeVisualLength(ch, tabSize);
-			if (toDelete >= 0)
-				to++;
-			else
-				break;
-		}
-
-		if (endOffset > to + 1 && document.get(to, 2).equals(SLASHES))
-			commentLines[relative]= true;
-
-		document.replace(from, to - from, ""); //$NON-NLS-1$
-		return to - from;
-	}
-
-	/**
-	 * Computes the difference of two indentations and returns the difference in
-	 * length of current and correct. If the return value is positive, <code>addition</code>
-	 * is initialized with a substring of that length of <code>correct</code>.
-	 *
-	 * @param correct the correct indentation
-	 * @param current the current indentation (migth contain non-whitespace)
-	 * @param difference a string buffer - if the return value is positive, it will be cleared and set to the substring of <code>current</code> of that length
-	 * @return the difference in lenght of <code>correct</code> and <code>current</code>
-	 */
-	private static int subtractIndent(CharSequence correct, CharSequence current, StringBuilder difference, int tabSize) {
-		int c1= computeVisualLength(correct, tabSize);
-		int c2= computeVisualLength(current, tabSize);
-		int diff= c1 - c2;
-		if (diff <= 0)
-			return diff;
-
-		difference.setLength(0);
-		int len= 0, i= 0;
-		while (len < diff) {
-			char c= correct.charAt(i++);
-			difference.append(c);
-			len += computeVisualLength(c, tabSize);
-		}
-
-
-		return diff;
-	}
-
-	private static int computeVisualLength(char ch, int tabSize) {
-		if (ch == '\t')
-			return tabSize;
-		return 1;
-	}
-
-	/**
-	 * Returns the visual length of a given <code>CharSequence</code> taking into
-	 * account the visual tabulator length.
-	 *
-	 * @param seq the string to measure
-	 * @return the visual length of <code>seq</code>
-	 */
-	public static int computeVisualLength(CharSequence seq, int tablen) {
-		int size= 0;
-
-		for (int i= 0; i < seq.length(); i++) {
-			char ch= seq.charAt(i);
-			if (ch == '\t') {
-				if (tablen != 0)
-					size += tablen - size % tablen;
-				// else: size stays the same
-			} else {
-				size++;
-			}
-		}
-		return size;
 	}
 
 	/**
@@ -376,21 +147,6 @@ public final class IndentUtil {
 		}
 
 		return document.get(from, to - from);
-	}
-
-	private static int getLeftMostLine(IDocument document, ILineRange lines, int tabSize, boolean indentInsideLineComments) throws BadLocationException {
-		int numberOfLines= lines.getNumberOfLines();
-		int first= lines.getStartLine();
-		int minLine= -1;
-		int minIndent= Integer.MAX_VALUE;
-		for (int line= 0; line < numberOfLines; line++) {
-			int length= computeVisualLength(getCurrentIndent(document, line + first, indentInsideLineComments), tabSize);
-			if (length < minIndent && document.getLineLength(line + first) > 0) {
-				minIndent= length;
-				minLine= line;
-			}
-		}
-		return minLine;
 	}
 
 	private static IndentResult reuseOrCreateToken(IndentResult token, int numberOfLines) {
@@ -607,47 +363,4 @@ public final class IndentUtil {
 		computed= new StringBuilder(previousIndent);
 		return computed.toString();
 	}
-
-	/**
-	 * Extends the string with whitespace to match displayed width.
-	 * @param prefix  add to this string
-	 * @param displayedWidth  the desired display width
-	 * @param tabWidth  the configured tab width
-	 * @param useSpaces  whether to use spaces only
-	 */
-	public static String changePrefix(String prefix, int displayedWidth, int tabWidth, boolean useSpaces) {
-		int column = computeVisualLength(prefix, tabWidth);
-		if (column > displayedWidth) {
-			return prefix;
-		}
-		final StringBuilder buffer = new StringBuilder(prefix);
-		appendIndent(buffer, displayedWidth, tabWidth, useSpaces, column);
-		return buffer.toString();
-	}
-
-	/**
-	 * Appends whitespace to given buffer such that its visual length equals the given width.
-	 * @param buffer  the buffer to add whitespace to
-	 * @param width  the desired visual indent width
-	 * @param tabWidth  the configured tab width
-	 * @param useSpaces  whether tabs should be substituted by spaces
-	 * @param startColumn  the column where to start measurement
-	 * @return StringBuilder
-	 */
-	private static StringBuilder appendIndent(StringBuilder buffer, int width, int tabWidth, boolean useSpaces, int startColumn) {
-		assert tabWidth > 0;
-		int tabStop = startColumn - startColumn % tabWidth;
-		int tabs = useSpaces ? 0 : (width-tabStop) / tabWidth;
-		for (int i = 0; i < tabs; ++i) {
-			buffer.append('\t');
-			tabStop += tabWidth;
-			startColumn = tabStop;
-		}
-		int spaces = width - startColumn;
-		for (int i = 0; i < spaces; ++i) {
-			buffer.append(' ');
-		}
-		return buffer;
-	}
-
 }

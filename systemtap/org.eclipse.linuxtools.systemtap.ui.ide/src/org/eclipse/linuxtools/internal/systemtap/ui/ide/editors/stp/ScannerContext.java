@@ -31,17 +31,6 @@ public class ScannerContext {
 		return this;
 	}
 
-	public ScannerContext initialize(Reader r, int offset) {
-		try {
-			r.skip(offset);
-		} catch (IOException exc) {
-			throw new RuntimeException(exc);
-		}
-		fReader = r;
-		fOffset = offset;
-		return this;
-	}
-
 	public int read() throws IOException {
 		++fOffset;
 		return fReader.read();
@@ -53,14 +42,6 @@ public class ScannerContext {
 	 */
 	public final int getOffset() {
 		return fOffset;
-	}
-
-	/**
-	 * Returns the reader.
-	 * @return Reader
-	 */
-	public final Reader getReader() {
-		return fReader;
 	}
 
 	public final int undoStackSize() {
