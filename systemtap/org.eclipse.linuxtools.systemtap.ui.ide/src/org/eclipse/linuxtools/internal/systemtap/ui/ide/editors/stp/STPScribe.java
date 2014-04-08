@@ -13,15 +13,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.text.Position;
-import org.eclipse.text.edits.MultiTextEdit;
-import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.text.edits.TextEdit;
 
 /**
  * This class is responsible for dumping formatted source.
@@ -31,8 +27,7 @@ import org.eclipse.text.edits.TextEdit;
 public class STPScribe {
 	private static final String EMPTY_STRING= ""; //$NON-NLS-1$
 	private static final String SPACE= " "; //$NON-NLS-1$
-
-	private static final int INITIAL_SIZE= 100;
+	private static final char[] EMPTY_CHAR_ARRAY = {};
 
 	private final STPDefaultCodeFormatterOptions preferences;
 	public final Scanner scanner;
@@ -43,12 +38,11 @@ public class STPScribe {
 	// Most specific alignment.
 	public STPAlignment currentAlignment;
 	public STPAlignment memberAlignment;
-	public AlignmentException currentAlignmentException;
 
 	/** @see Alignment#tailFormatter */
 	private Runnable tailFormatter;
 
-	public Token currentToken;
+	private Token currentToken;
 
 	// Edits management
 	private OptimizedReplaceEdit[] edits;
@@ -65,19 +59,17 @@ public class STPScribe {
 	private boolean checkLineWrapping;
 	public int lastNumberOfNewLines;
 	private boolean preserveLineBreakIndentation;
-	boolean formatBrace;
+	private boolean formatBrace;
 	public int line;
 
 	public boolean needSpace;
 	public boolean pendingSpace;
 
-	public int tabLength;
-	public int tabChar;
+	private int tabLength;
+	private int tabChar;
 	private final boolean useTabsOnlyForLeadingIndents;
 
-	private int textRegionEnd;
-	private int textRegionStart;
-	public int scannerEndPosition;
+	private int scannerEndPosition;
 
 	private List<Position> fSkipPositions= Collections.emptyList();
 
@@ -85,7 +77,6 @@ public class STPScribe {
 
 	private int fSkipStartOffset= Integer.MAX_VALUE;
 	private int fSkipEndOffset;
-	private int fSkippedIndentations;
 
 	/* Comments formatting */
 	private static final int NO_TRAILING_COMMENT = 0x0000;
@@ -94,16 +85,15 @@ public class STPScribe {
 	private int numLines;
 
 	// Class to store previous line comment information
-	static class LineComment {
+	private static class LineComment {
 		boolean contiguous;
 		int currentIndentation;
 		int indentation;
-		int lines;
-		char[] leadingSpaces = CharArrayUtils.EMPTY_CHAR_ARRAY;
+		char[] leadingSpaces = EMPTY_CHAR_ARRAY;
 	}
 	final LineComment lastLineComment = new LineComment();
 
-	STPScribe(int offset, int length) {
+	STPScribe() {
 		scanner= new Scanner();
 		preferences= new STPDefaultCodeFormatterOptions(null);
 		pageWidth= preferences.page_width;
@@ -121,8 +111,6 @@ public class STPScribe {
 		lineSeparator= preferences.line_separator;
 		indentationLevel= preferences.initial_indentation_level * indentationSize;
 		preserveNewLines = false;
-		textRegionStart= offset;
-		textRegionEnd= offset + length;
 		reset();
 	}
 
@@ -130,7 +118,7 @@ public class STPScribe {
 		addOptimizedReplaceEdit(start, end - start + 1, EMPTY_STRING);
 	}
 
-	public final void addInsertEdit(int insertPosition, CharSequence insertedString) {
+	private final void addInsertEdit(int insertPosition, CharSequence insertedString) {
 		addOptimizedReplaceEdit(insertPosition, 0, insertedString);
 	}
 
@@ -140,7 +128,7 @@ public class STPScribe {
 	 * @param end  end offset (inclusive)
 	 * @param replacement  the replacement string
 	 */
-	public final void addReplaceEdit(int start, int end, CharSequence replacement) {
+	private final void addReplaceEdit(int start, int end, CharSequence replacement) {
 		addOptimizedReplaceEdit(start, end - start + 1, replacement);
 	}
 
@@ -240,162 +228,6 @@ public class STPScribe {
 		}
 	}
 
-	public void alignFragment(STPAlignment alignment, int fragmentIndex) {
-		alignment.alignFragment(fragmentIndex);
-	}
-
-	public void consumeNextToken() {
-		printComment();
-		currentToken= scanner.nextToken();
-		addDeleteEdit(scanner.getCurrentTokenStartPosition(), scanner.getCurrentTokenEndPosition());
-	}
-
-	public STPAlignment createAlignment(String name, int mode, int count, int sourceRestart) {
-		return createAlignment(name, mode, STPAlignment.R_INNERMOST, count, sourceRestart);
-	}
-
-	public STPAlignment createAlignment(String name, int mode, int count, int sourceRestart,
-			boolean adjust) {
-		return createAlignment(name, mode, STPAlignment.R_INNERMOST, count, sourceRestart, adjust);
-	}
-
-	public STPAlignment createAlignment(String name, int mode, int tieBreakRule, int count,
-			int sourceRestart) {
-		return createAlignment(name, mode, tieBreakRule, count, sourceRestart,
-				preferences.continuation_indentation, false);
-	}
-
-	public STPAlignment createAlignment(String name, int mode, int count, int sourceRestart,
-			int continuationIndent, boolean adjust) {
-		return createAlignment(name, mode, STPAlignment.R_INNERMOST, count, sourceRestart,
-				continuationIndent, adjust);
-	}
-
-	public STPAlignment createAlignment(String name, int mode, int tieBreakRule, int count,
-			int sourceRestart, int continuationIndent, boolean adjust) {
-		STPAlignment alignment= new STPAlignment(name, mode, tieBreakRule, this, count, sourceRestart,
-				continuationIndent);
-		// adjust break indentation
-		if (adjust && memberAlignment != null) {
-			STPAlignment current= memberAlignment;
-			while (current.enclosing != null) {
-				current= current.enclosing;
-			}
-			if ((current.mode & STPAlignment.M_MULTICOLUMN) != 0) {
-				final int indentSize= indentationSize;
-				switch (current.chunkKind) {
-				case STPAlignment.CHUNK_METHOD:
-				case STPAlignment.CHUNK_TYPE:
-					if ((mode & STPAlignment.M_INDENT_BY_ONE) != 0) {
-						alignment.breakIndentationLevel= indentationLevel + indentSize;
-					} else {
-						alignment.breakIndentationLevel= indentationLevel +
-								continuationIndent * indentSize;
-					}
-					alignment.update();
-					break;
-				case STPAlignment.CHUNK_FIELD:
-					if ((mode & STPAlignment.M_INDENT_BY_ONE) != 0) {
-						alignment.breakIndentationLevel= current.originalIndentationLevel + indentSize;
-					} else {
-						alignment.breakIndentationLevel= current.originalIndentationLevel +
-								continuationIndent * indentSize;
-					}
-					alignment.update();
-					break;
-				}
-			} else {
-				switch (current.mode & STPAlignment.SPLIT_MASK) {
-				case STPAlignment.M_COMPACT_SPLIT:
-				case STPAlignment.M_COMPACT_FIRST_BREAK_SPLIT:
-				case STPAlignment.M_NEXT_PER_LINE_SPLIT:
-				case STPAlignment.M_NEXT_SHIFTED_SPLIT:
-				case STPAlignment.M_ONE_PER_LINE_SPLIT:
-					final int indentSize= indentationSize;
-					switch (current.chunkKind) {
-					case STPAlignment.CHUNK_METHOD:
-					case STPAlignment.CHUNK_TYPE:
-						if ((mode & STPAlignment.M_INDENT_BY_ONE) != 0) {
-							alignment.breakIndentationLevel= indentationLevel + indentSize;
-						} else {
-							alignment.breakIndentationLevel= indentationLevel +
-									continuationIndent * indentSize;
-						}
-						alignment.update();
-						break;
-					case STPAlignment.CHUNK_FIELD:
-						if ((mode & STPAlignment.M_INDENT_BY_ONE) != 0) {
-							alignment.breakIndentationLevel= current.originalIndentationLevel +
-									indentSize;
-						} else {
-							alignment.breakIndentationLevel= current.originalIndentationLevel +
-									continuationIndent * indentSize;
-						}
-						alignment.update();
-						break;
-					}
-					break;
-				}
-			}
-		}
-		return alignment;
-	}
-
-	public STPAlignment createMemberAlignment(String name, int mode, int count, int sourceRestart) {
-		STPAlignment alignment= createAlignment(name, mode, STPAlignment.R_INNERMOST, count, sourceRestart);
-		alignment.breakIndentationLevel= indentationLevel;
-		return alignment;
-	}
-
-	public void enterAlignment(STPAlignment alignment) {
-		alignment.enclosing= currentAlignment;
-		currentAlignment= alignment;
-	}
-
-	public void enterMemberAlignment(STPAlignment alignment) {
-		alignment.enclosing= memberAlignment;
-		memberAlignment= alignment;
-	}
-
-	public void exitAlignment(STPAlignment alignment, boolean discardAlignment) {
-		STPAlignment current= currentAlignment;
-		while (current != null) {
-			if (current == alignment)
-				break;
-			current= current.enclosing;
-		}
-		if (current == null) {
-			throw new AbortFormatting("could not find matching alignment: " + alignment); //$NON-NLS-1$
-		}
-		indentationLevel= alignment.location.outputIndentationLevel;
-		numberOfIndentations= alignment.location.numberOfIndentations;
-		if (discardAlignment) {
-			currentAlignment= alignment.enclosing;
-		}
-	}
-
-	public void exitMemberAlignment(STPAlignment alignment) {
-		STPAlignment current= memberAlignment;
-		while (current != null) {
-			if (current == alignment)
-				break;
-			current= current.enclosing;
-		}
-		if (current == null) {
-			throw new AbortFormatting("could not find matching alignment: " + alignment); //$NON-NLS-1$
-		}
-		indentationLevel= current.location.outputIndentationLevel;
-		numberOfIndentations= current.location.numberOfIndentations;
-		memberAlignment= current.enclosing;
-	}
-
-	public STPAlignment getAlignment(String name) {
-		if (currentAlignment != null) {
-			return currentAlignment.getAlignment(name);
-		}
-		return null;
-	}
-
 	private int getIndentationOfOffset(int offset) {
 		int beginningOfLine = getLineStart(offset);
 		int indent = 0;
@@ -449,7 +281,7 @@ public class STPScribe {
 		return indent;
 	}
 
-	public String getEmptyLines(int linesNumber) {
+	private String getEmptyLines(int linesNumber) {
 		StringBuilder buffer= new StringBuilder();
 		if (lastNumberOfNewLines == 0) {
 			linesNumber++; // add an extra line breaks
@@ -501,11 +333,7 @@ public class STPScribe {
 		return null;
 	}
 
-	STPAlignment getMemberAlignment() {
-		return memberAlignment;
-	}
-
-	public String getNewLine() {
+	private String getNewLine() {
 		if (lastNumberOfNewLines >= 1) {
 			column= 1; // Ensure that the scribe is at the beginning of a new line
 			return EMPTY_STRING;
@@ -566,29 +394,7 @@ public class STPScribe {
 		return EMPTY_STRING;
 	}
 
-	public TextEdit getRootEdit() {
-		MultiTextEdit edit= null;
-		int length= textRegionEnd - textRegionStart;
-		if (textRegionStart <= 0) {
-			if (length <= 0) {
-				edit= new MultiTextEdit(0, 0);
-			} else {
-				edit= new MultiTextEdit(0, textRegionEnd);
-			}
-		} else {
-			edit= new MultiTextEdit(textRegionStart, length);
-		}
-		for (int i= 0, max= editsIndex; i < max; i++) {
-			OptimizedReplaceEdit currentEdit= edits[i];
-			if (isValidEdit(currentEdit)) {
-				edit.addChild(new ReplaceEdit(currentEdit.offset, currentEdit.length, currentEdit.replacement));
-			}
-		}
-		edits= null;
-		return edit;
-	}
-
-	public void handleLineTooLong() {
+	private void handleLineTooLong() {
 		// Search for closest breakable alignment, using tie-breaking rules.
 		// Look for innermost breakable one.
 		int relativeDepth= 0;
@@ -632,47 +438,15 @@ public class STPScribe {
 
 	private void throwAlignmentException(int kind, int relativeDepth) {
 		AlignmentException e= new AlignmentException(kind, relativeDepth);
-		currentAlignmentException= e;
 		throw e;
 	}
 
-	public void indent() {
+	private void indent() {
 		if (shouldSkip(scanner.getCurrentPosition())) {
-			fSkippedIndentations++;
 			return;
 		}
 		indentationLevel += indentationSize;
 		numberOfIndentations++;
-	}
-
-	/**
-	 * @param translationUnitSource
-	 */
-	public void initializeScanner(char[] translationUnitSource) {
-		scanner.setSource(translationUnitSource);
-		scannerEndPosition= translationUnitSource.length;
-		scanner.resetTo(0, scannerEndPosition);
-		edits= new OptimizedReplaceEdit[INITIAL_SIZE];
-		// Locate line breaks.
-		lineOffsets = new int[200];
-		numLines = 0;
-		lineOffsets[numLines++] = 0;
-		for (int i = 0; i < translationUnitSource.length; i++) {
-			if (translationUnitSource[i] == '\n') {
-				int len = lineOffsets.length;
-				if (numLines >= len)
-					System.arraycopy(lineOffsets, 0, lineOffsets = new int[len + (len + 1) / 2], 0, len);
-				lineOffsets[numLines++] = i + 1;
-			}
-		}
-	}
-
-	/**
-	 * @param list
-	 */
-	public void setSkipPositions(List<Position> list) {
-		fSkipPositions= list;
-		skipOverInactive= !list.isEmpty();
 	}
 
 	/**
@@ -700,46 +474,6 @@ public class STPScribe {
 		return getLineStart(offset) == offset;
 	}
 
-	private boolean isValidEdit(OptimizedReplaceEdit edit) {
-		final int editLength= edit.length;
-		final int editReplacementLength= edit.replacement.length();
-		final int editOffset= edit.offset;
-		if (editLength != 0) {
-			if (textRegionStart <= editOffset && editOffset + editLength <= textRegionEnd) {
-				if (editReplacementLength != 0 && editLength == editReplacementLength) {
-					for (int i= editOffset, max= editOffset + editLength; i < max; i++) {
-						if (scanner.source[i] != edit.replacement.charAt(i - editOffset)) {
-							return true;
-						}
-					}
-					return false;
-				} else {
-					return true;
-				}
-			} else if (editOffset + editLength == textRegionStart) {
-				int i= editOffset;
-				for (int max= editOffset + editLength; i < max; i++) {
-					int replacementStringIndex= i - editOffset;
-					if (replacementStringIndex >= editReplacementLength
-							|| scanner.source[i] != edit.replacement.charAt(replacementStringIndex)) {
-						break;
-					}
-				}
-				if (i - editOffset != editReplacementLength && i != editOffset + editLength - 1) {
-					edit.offset= textRegionStart;
-					edit.length= 0;
-					edit.replacement= edit.replacement.substring(i - editOffset);
-					return true;
-				}
-			}
-		} else if (textRegionStart <= editOffset && editOffset < textRegionEnd) {
-			return true;
-		} else if (editOffset == scannerEndPosition && editOffset == textRegionEnd) {
-			return true;
-		}
-		return false;
-	}
-
 	private void preserveEmptyLines(int count, int insertPosition) {
 		if (count > 0) {
 			if (preferences.number_of_empty_lines_to_preserve != 0) {
@@ -753,7 +487,7 @@ public class STPScribe {
 		}
 	}
 
-	public void printRaw(int startOffset, int length) {
+	private void printRaw(int startOffset, int length) {
 		if (length <= 0) {
 			return;
 		}
@@ -863,19 +597,19 @@ public class STPScribe {
 		}
 	}
 
-	public void indentForContinuation() {
+	private void indentForContinuation() {
 		for (int i= 0; i < preferences.continuation_indentation; i++) {
 			indent();
 		}
 	}
 
-	public void unIndentForContinuation() {
+	private void unIndentForContinuation() {
 		for (int i= 0; i < preferences.continuation_indentation; i++) {
 			unIndent();
 		}
 	}
 
-	public void formatOpeningBrace(String bracePosition, boolean insertSpaceBeforeBrace) {
+	private void formatOpeningBrace(String bracePosition, boolean insertSpaceBeforeBrace) {
 		if (STPDefaultCodeFormatterConstants.NEXT_LINE.equals(bracePosition)) {
 			printNewLine();
 		} else if (STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED.equals(bracePosition)) {
@@ -887,7 +621,7 @@ public class STPScribe {
 		printTrailingComment();
 	}
 
-	public void formatClosingBrace(String block_brace_position) {
+	private void formatClosingBrace(String block_brace_position) {
 		printNextToken(Token.tRBRACE);
 		printTrailingComment();
 		if (STPDefaultCodeFormatterConstants.NEXT_LINE_SHIFTED.equals(block_brace_position)) {
@@ -1044,14 +778,7 @@ public class STPScribe {
 		scanner.resetTo(currentTokenEndPosition, scannerEndPosition);
 	}
 
-	public void printEndOfTranslationUnit() {
-		int currentTokenStartPosition= scanner.getCurrentPosition();
-		if (currentTokenStartPosition <= scannerEndPosition) {
-			printRaw(currentTokenStartPosition, scannerEndPosition - currentTokenStartPosition + 1);
-		}
-	}
-
-	public boolean printComment() {
+	private boolean printComment() {
 		return printComment(NO_TRAILING_COMMENT);
 	}
 
@@ -1060,7 +787,7 @@ public class STPScribe {
 	 *
 	 * @return {@code true} if a writespace character was encountered preceding the next token,
 	 */
-	public boolean printComment(int trailing) {
+	private boolean printComment(int trailing) {
 		// If we have a space between two tokens we ensure it will be dumped in the formatted
 		// string.
 		int currentTokenStartPosition= scanner.getCurrentPosition();
@@ -1070,7 +797,7 @@ public class STPScribe {
 		boolean hasComment= false;
 		boolean hasLineComment= false;
 		boolean hasWhitespace= false;
-		char[] whiteSpaces= CharArrayUtils.EMPTY_CHAR_ARRAY;
+		char[] whiteSpaces= EMPTY_CHAR_ARRAY;
 		int lines= 0;
 		while ((currentToken= scanner.nextToken()) != null) {
 			if (skipOverInactive) {
@@ -1229,9 +956,8 @@ public class STPScribe {
 						lastLineComment.contiguous = false;
 					}
 					lastLineComment.leadingSpaces = whiteSpaces;
-					lastLineComment.lines = lines;
 				}
-				whiteSpaces= CharArrayUtils.EMPTY_CHAR_ARRAY;
+				whiteSpaces= EMPTY_CHAR_ARRAY;
 				hasWhitespace= false;
 				printLineComment();
 				currentTokenStartPosition= scanner.getCurrentPosition();
@@ -1248,7 +974,7 @@ public class STPScribe {
 				} else if (hasWhitespace) {
 					space();
 				}
-				whiteSpaces= CharArrayUtils.EMPTY_CHAR_ARRAY;
+				whiteSpaces= EMPTY_CHAR_ARRAY;
 				hasWhitespace= false;
 				printBlockComment(false);
 				currentTokenStartPosition= scanner.getCurrentPosition();
@@ -1264,7 +990,7 @@ public class STPScribe {
 				if (lines > 1) {
 					 preserveEmptyLines(lines - 1, scanner.getCurrentTokenStartPosition());
 				}
-				whiteSpaces= CharArrayUtils.EMPTY_CHAR_ARRAY;
+				whiteSpaces= EMPTY_CHAR_ARRAY;
 				hasWhitespace= false;
 				printPreprocessorDirective();
 				printNewLine();
@@ -1452,10 +1178,6 @@ public class STPScribe {
     	scanner.resetTo(currentTokenEndPosition, scannerEndPosition);
     }
 
-	public void printEmptyLines(int linesNumber) {
-		printEmptyLines(linesNumber, scanner.getCurrentTokenEndPosition() + 1);
-	}
-
 	private void printEmptyLines(int linesNumber, int insertPosition) {
 		final String buffer= getEmptyLines(linesNumber);
 		if (!buffer.isEmpty()) {
@@ -1463,7 +1185,7 @@ public class STPScribe {
 		}
 	}
 
-	void printIndentationIfNecessary() {
+	private void printIndentationIfNecessary() {
 		if (column > indentationLevel)
 			return;
 		StringBuilder buffer= new StringBuilder();
@@ -1566,21 +1288,17 @@ public class STPScribe {
 		}
 	}
 
-	public void enterNode() {
-		lastLineComment.contiguous = false;
-	}
-
 	public void startNewLine() {
 		if (column > 1) {
 			printNewLine();
 		}
 	}
 
-	public void printNewLine() {
+	private void printNewLine() {
 		printNewLine(scanner.getCurrentPosition());
 	}
 
-	public void printNewLine(int insertPosition) {
+	private void printNewLine(int insertPosition) {
 		if (shouldSkip(scanner.getCurrentPosition())) {
 			return;
 		}
@@ -1603,11 +1321,11 @@ public class STPScribe {
 		lastLineComment.contiguous = false;
 	}
 
-	public void printNextToken(int expectedTokenType) {
+	private void printNextToken(int expectedTokenType) {
 		printNextToken(expectedTokenType, false);
 	}
 
-	public void printNextToken(int expectedTokenType, boolean considerSpaceIfAny) {
+	private void printNextToken(int expectedTokenType, boolean considerSpaceIfAny) {
 		// Set brace flag, it's useful for the scribe while preserving line breaks
 		switch (expectedTokenType) {
 		case Token.tRBRACE:
@@ -1637,35 +1355,6 @@ public class STPScribe {
 		}
 	}
 
-	public void printNextToken(int[] expectedTokenTypes) {
-		printNextToken(expectedTokenTypes, false);
-	}
-
-	public void printNextToken(int[] expectedTokenTypes, boolean considerSpaceIfAny) {
-		printComment();
-		if (shouldSkip(scanner.getCurrentPosition())) {
-			return;
-		}
-		currentToken= scanner.nextToken();
-		if (Arrays.binarySearch(expectedTokenTypes, currentToken.type) < 0) {
-			if (pendingSpace) {
-				addInsertEdit(scanner.getCurrentTokenStartPosition(), SPACE);
-			}
-			pendingSpace= false;
-			needSpace= true;
-			StringBuilder expectations= new StringBuilder(5);
-			for (int i= 0; i < expectedTokenTypes.length; i++) {
-				if (i > 0) {
-					expectations.append(',');
-				}
-				expectations.append(expectedTokenTypes[i]);
-			}
-			throw new AbortFormatting(
-					"["	+ (line + 1) + "/" + column + "] unexpected token type, expecting:[" + expectations.toString() + "], actual:" + currentToken); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-		}
-		print(currentToken.getLength(), considerSpaceIfAny);
-	}
-
 	private void printRuler(StringBuilder stringBuffer) {
 		for (int i= 0; i < pageWidth; i++) {
 			if ((i % tabLength) == 0) {
@@ -1682,47 +1371,11 @@ public class STPScribe {
 		}
 	}
 
-	public void printSpaces(int numSpaces) {
-		if (numSpaces > 0) {
-			int currentPosition= scanner.getCurrentPosition();
-			StringBuilder spaces = new StringBuilder(numSpaces);
-			for (int i = 0; i < numSpaces; i++) {
-				spaces.append(' ');
-			}
-			addInsertEdit(currentPosition, spaces);
-			pendingSpace= false;
-			needSpace= false;
-		}
-	}
-
-	public void printTrailingComment() {
+	private void printTrailingComment() {
 		printComment(BASIC_TRAILING_COMMENT);
 	}
 
-	void redoAlignment(AlignmentException e) {
-		if (e.relativeDepth > 0) { // if exception targets a distinct context
-			e.relativeDepth--; // record fact that current context got traversed
-			currentAlignment= currentAlignment.enclosing; // pop currentLocation
-			throw e; // rethrow
-		}
-		// Reset scribe/scanner to restart at this given location
-		resetAt(currentAlignment.location);
-		scanner.resetTo(currentAlignment.location.inputOffset, scanner.eofPosition);
-		// Clean alignment chunkKind so it will think it is a new chunk again
-		currentAlignment.chunkKind= 0;
-		currentAlignmentException= null;
-	}
-
-	void redoMemberAlignment(AlignmentException e) {
-		// Reset scribe/scanner to restart at this given location
-		resetAt(memberAlignment.location);
-		scanner.resetTo(memberAlignment.location.inputOffset, scanner.eofPosition);
-		// Clean alignment chunkKind so it will think it is a new chunk again
-		memberAlignment.chunkKind= 0;
-		currentAlignmentException= null;
-	}
-
-	public void reset() {
+	private void reset() {
 		checkLineWrapping= true;
 		line= 0;
 		column= 1;
@@ -1748,7 +1401,7 @@ public class STPScribe {
 		System.arraycopy(edits, 0, (edits= new OptimizedReplaceEdit[editsIndex * 2]), 0, editsIndex);
 	}
 
-	public void space() {
+	private void space() {
 		if (!needSpace)
 			return;
 		if (shouldSkip(scanner.getCurrentPosition())) {
@@ -1758,14 +1411,6 @@ public class STPScribe {
 		pendingSpace= true;
 		column++;
 		needSpace= false;
-	}
-
-	public void undoSpace() {
-		if (pendingSpace) {
-			pendingSpace = false;
-			needSpace = true;
-			column--;
-		}
 	}
 
 	@Override
@@ -1795,299 +1440,17 @@ public class STPScribe {
 		return buffer.toString();
 	}
 
-	public void unIndent() {
+	private void unIndent() {
 		if (shouldSkip(scanner.getCurrentPosition())) {
-			fSkippedIndentations--;
 			return;
 		}
 		indentationLevel-= indentationSize;
 		numberOfIndentations--;
 	}
 
-	/**
-	 */
-	public boolean printModifiers() {
-		int currentTokenStartPosition= scanner.getCurrentPosition();
-		if (shouldSkip(currentTokenStartPosition)) {
-			return false;
-		}
-		boolean isFirstModifier= true;
-		boolean hasComment= false;
-		while ((currentToken= scanner.nextToken()) != null) {
-			switch (currentToken.type) {
-			case Token.t_typedef:
-			case Token.t_extern:
-			case Token.t_static:
-			case Token.t_auto:
-			case Token.t_register:
-			case Token.t_const:
-			case Token.t_signed:
-			case Token.t_unsigned:
-			case Token.t_volatile:
-			case Token.t_virtual:
-			case Token.t_mutable:
-			case Token.t_explicit:
-			case Token.t_friend:
-			case Token.t_inline:
-			case Token.t_restrict:
-				print(currentToken.getLength(), !isFirstModifier);
-				isFirstModifier= false;
-				currentTokenStartPosition= scanner.getCurrentPosition();
-				break;
-			case Token.tBLOCKCOMMENT:
-				printBlockComment(false);
-				currentTokenStartPosition= scanner.getCurrentPosition();
-				hasComment= true;
-				break;
-			case Token.tLINECOMMENT:
-				printLineComment();
-				currentTokenStartPosition= scanner.getCurrentPosition();
-				break;
-			case Token.tWHITESPACE:
-				addDeleteEdit(scanner.getCurrentTokenStartPosition(), scanner.getCurrentTokenEndPosition());
-				int count= 0;
-				char[] whiteSpaces= scanner.getCurrentTokenSource();
-				for (int i= 0, max= whiteSpaces.length; i < max; i++) {
-					switch (whiteSpaces[i]) {
-					case '\r':
-						if ((i + 1) < max) {
-							if (whiteSpaces[i + 1] == '\n') {
-								i++;
-							}
-						}
-						count++;
-						break;
-					case '\n':
-						count++;
-					}
-				}
-				if (count >= 1 && hasComment) {
-					printNewLine();
-				}
-				currentTokenStartPosition= scanner.getCurrentPosition();
-				hasComment= false;
-				break;
-			case Token.tPREPROCESSOR:
-			case Token.tPREPROCESSOR_DEFINE:
-			case Token.tPREPROCESSOR_INCLUDE:
-				if (column != 1)
-					printNewLine(scanner.getCurrentTokenStartPosition());
-				printPreprocessorDirective();
-				printNewLine();
-				currentTokenStartPosition= scanner.getCurrentPosition();
-				hasComment= false;
-				break;
-			default:
-				if (currentToken.getType() == Token.tIDENTIFIER) {
-					if (currentToken.getText().startsWith("__")) { //$NON-NLS-1$
-						// assume this is a declspec modifier
-						print(currentToken.getLength(), !isFirstModifier);
-						isFirstModifier= false;
-						currentTokenStartPosition= scanner.getCurrentPosition();
-						if ((currentToken= scanner.nextToken()) != null) {
-							if (currentToken.getType() == Token.tLPAREN) {
-								if (skipToToken(Token.tRPAREN)) {
-									currentToken= scanner.nextToken();
-									currentToken= scanner.nextToken();
-									currentTokenStartPosition= scanner.getCurrentPosition();
-								}
-							}
-						}
-						break;
-					}
-				}
-				// Step back one token
-				scanner.resetTo(currentTokenStartPosition, scannerEndPosition);
-				return !isFirstModifier;
-			}
-		}
-		return !isFirstModifier;
-	}
 
-	/**
-	 * Skips to the next occurrence of the given token type.
-	 * If successful, the next token will be the expected token,
-	 * otherwise the scanner position is left unchanged.
-	 *
-	 * @param expectedTokenType
-	 * @return  <code>true</code> if a matching token was skipped to
-	 */
-	public boolean skipToToken(int expectedTokenType) {
-		int skipStart= scanner.getCurrentPosition();
-		if (shouldSkip(skipStart)) {
-			return true;
-		}
-		int tokenStart = findToken(expectedTokenType);
-		if (tokenStart < 0) {
-			return false;
-		}
-		printRaw(skipStart, tokenStart - skipStart);
-		currentToken= scanner.nextToken();
-		scanner.resetTo(tokenStart, scannerEndPosition);
-		return true;
-	}
-
-	/**
-	 * Searches for the next occurrence of the given token type.
-	 * If successful, returns the offset of the found token, otherwise -1.
-	 * The scanner position is left unchanged.
-	 *
-	 * @param tokenType type of the token to look for
-	 * @return the position of the matching token, if found, otherwise -1.
-	 */
-	public int findToken(int tokenType) {
-		return findToken(tokenType, scannerEndPosition - 1);
-	}
-
-	/**
-	 * Searches for the next occurrence of the given token type.
-	 * If successful, returns the offset of the found token, otherwise -1.
-	 * The scanner position is left unchanged.
-	 *
-	 * @param tokenType type of the token to look for
-	 * @param endPosition end position limiting the search
-	 * @return the position of the matching token, if found, otherwise -1.
-	 */
-	public int findToken(int tokenType, int endPosition) {
-		int startPosition= scanner.getCurrentPosition();
-		if (startPosition >= endPosition) {
-			return -1;
-		}
-		try {
-			int braceLevel= 0;
-			int parenLevel= 0;
-			switch (tokenType) {
-			case Token.tRBRACE:
-				++braceLevel;
-				break;
-			case Token.tRPAREN:
-				++parenLevel;
-				break;
-			}
-			Token token;
-			while ((token= scanner.nextToken()) != null) {
-				if (scanner.getCurrentTokenEndPosition() > endPosition)
-					return -1;
-
-				switch (token.type) {
-				case Token.tLBRACE:
-					if (tokenType != Token.tLBRACE) {
-						++braceLevel;
-					}
-					break;
-				case Token.tRBRACE:
-					--braceLevel;
-					break;
-				case Token.tLPAREN:
-					if (tokenType != Token.tLPAREN) {
-						++parenLevel;
-					}
-					break;
-				case Token.tRPAREN:
-					--parenLevel;
-					break;
-				case Token.tWHITESPACE:
-				case Token.tLINECOMMENT:
-				case Token.tBLOCKCOMMENT:
-				case Token.tPREPROCESSOR:
-				case Token.tPREPROCESSOR_DEFINE:
-				case Token.tPREPROCESSOR_INCLUDE:
-					continue;
-				}
-				if (braceLevel <= 0 && parenLevel <= 0) {
-					if (token.type == tokenType) {
-						return scanner.getCurrentTokenStartPosition();
-					}
-				}
-				if (braceLevel < 0 || parenLevel < 0) {
-					break;
-				}
-			}
-		} finally {
-			scanner.resetTo(startPosition, scannerEndPosition);
-		}
-		return -1;
-	}
-
-	/**
-	 * Searches for the next occurrence of the given token type.
-	 * If successful, returns the offset of the found token, otherwise -1.
-	 * The scanner position is left unchanged.
-	 *
-	 * @param tokenType type of the token to look for
-	 * @param startPosition position where to start the search
-	 * @param endPosition end position limiting the search
-	 * @return the position of the matching token, if found, otherwise -1.
-	 */
-	public int findToken(int tokenType, int startPosition, int endPosition) {
-		int currentPosition= scanner.getCurrentPosition();
-		try {
-			scanner.resetTo(startPosition, scannerEndPosition);
-			return findToken(tokenType, endPosition);
-		} finally {
-			scanner.resetTo(currentPosition, scannerEndPosition);
-		}
-	}
-
-	public boolean printCommentPreservingNewLines() {
-		final boolean savedPreserveNL= preserveNewLines;
-		preserveNewLines= true;
-		try {
-			return printComment();
-		} finally {
-			preserveNewLines= savedPreserveNL;
-		}
-	}
-
-	boolean shouldSkip(int offset) {
+	private boolean shouldSkip(int offset) {
 		return offset >= fSkipStartOffset && offset < fSkipEndOffset;
-	}
-
-	void skipRange(int offset, int endOffset) {
-		if (offset == fSkipStartOffset) {
-			return;
-		}
-		final int currentPosition= scanner.getCurrentPosition();
-		if (offset > currentPosition) {
-			fSkipStartOffset = Integer.MAX_VALUE;
-			printRaw(currentPosition, offset - currentPosition);
-		}
-		fSkipStartOffset= offset;
-		fSkipEndOffset= endOffset;
-	}
-
-	boolean skipRange() {
-		return fSkipEndOffset > 0;
-	}
-
-	void restartAtOffset(int offset) {
-		final int currentPosition= scanner.getCurrentPosition();
-		if (fSkipEndOffset > 0) {
-			fSkipStartOffset= Integer.MAX_VALUE;
-			fSkipEndOffset= 0;
-			while (fSkippedIndentations < 0) {
-				unIndent();
-				fSkippedIndentations++;
-			}
-			if (offset > currentPosition) {
-				printRaw(currentPosition, offset - currentPosition);
-				scanner.resetTo(offset, scannerEndPosition);
-			}
-			while (fSkippedIndentations > 0) {
-				indent();
-				fSkippedIndentations--;
-			}
-		} else if (offset > currentPosition) {
-			boolean hasSpace= printComment();
-			final int nextPosition= scanner.getCurrentPosition();
-			if (offset > nextPosition) {
-				if (hasSpace) {
-					space();
-				}
-				printRaw(nextPosition, offset - nextPosition);
-				scanner.resetTo(offset, scannerEndPosition);
-			}
-		}
 	}
 
 	/*
@@ -2104,44 +1467,15 @@ public class STPScribe {
 	}
 
 	/*
-	 * Returns the tail formatter associated with the current alignment or, if there is no current
-	 * alignment, with the scribe itself. The tail formatter associated with the alignment or
-	 * the scribe is set to {@code null}.
-	 * @see #tailFormatter
-	 */
-	public Runnable takeTailFormatter() {
-		Runnable formatter;
-		if (currentAlignment != null) {
-			formatter = currentAlignment.tailFormatter;
-			currentAlignment.tailFormatter = null;
-		} else {
-			formatter = this.tailFormatter;
-			this.tailFormatter = null;
-		}
-		return formatter;
-	}
-
-	/*
 	 * Sets the tail formatter associated with the current alignment or, if there is no current
 	 * alignment, with the scribe itself.
 	 * @see #tailFormatter
 	 */
-	public void setTailFormatter(Runnable tailFormatter) {
+	private void setTailFormatter(Runnable tailFormatter) {
 		if (currentAlignment != null) {
 			currentAlignment.tailFormatter = tailFormatter;
 		} else {
 			this.tailFormatter = tailFormatter;
 		}
-	}
-
-	/*
-	 * Runs the tail formatter associated with the current alignment or, if there is no current
-	 * alignment, with the scribe itself.
-	 * @see #tailFormatter
-	 */
-	public void runTailFormatter() {
-		Runnable formatter = getTailFormatter();
-		if (formatter != null)
-			formatter.run();
 	}
 }

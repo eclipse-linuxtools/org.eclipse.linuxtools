@@ -51,24 +51,18 @@ public class STPAlignment {
 	public Runnable tailFormatter;
 
 	// Indentation management
-	public int fragmentIndex;
-	public int fragmentCount;
-	public int[] fragmentIndentations;
-	public boolean needRedoColumnAlignment;
-
-	// Chunk management
-	public int chunkStartIndex;
-	public int chunkKind;
+	private int fragmentIndex;
+	private int fragmentCount;
+	private int[] fragmentIndentations;
 
 	// Break management
-	public int originalIndentationLevel;
 	public int breakIndentationLevel;
-	public int alternativeBreakIndentationLevel;
+	private int alternativeBreakIndentationLevel;
 	public int[] fragmentBreaks;
 	public boolean wasSplit;
-	public int currentFragmentStartLine;
+	private int currentFragmentStartLine;
 
-	public final STPScribe scribe;
+	private final STPScribe scribe;
 
 	/*
 	 * Alignment modes
@@ -134,7 +128,7 @@ public class STPAlignment {
 
 	public static final int M_NO_ALIGNMENT = 0;
 
-	public int mode;
+	private int mode;
 
 	public static final int SPLIT_MASK = M_ONE_PER_LINE_SPLIT | M_NEXT_SHIFTED_SPLIT | M_COMPACT_SPLIT | M_COMPACT_FIRST_BREAK_SPLIT | M_NEXT_PER_LINE_SPLIT;
 
@@ -148,12 +142,6 @@ public class STPAlignment {
 	public static final int NONE = 0;
 	public static final int BREAK = 2;
 
-	// Chunk kind
-	public static final int CHUNK_FIELD = 1;
-	public static final int CHUNK_METHOD = 2;
-	public static final int CHUNK_TYPE = 3;
-	public static final int CHUNK_ENUM = 4;
-
 	// Location to align and break on.
 	public STPAlignment(String name, int mode, int tieBreakRule, STPScribe scribe, int fragmentCount,
 			int sourceRestart, int continuationIndent) {
@@ -163,7 +151,6 @@ public class STPAlignment {
 		this.tieBreakRule = tieBreakRule;
 		this.fragmentCount = fragmentCount;
 		this.scribe = scribe;
-		this.originalIndentationLevel = this.scribe.indentationLevel;
 		this.wasSplit = false;
 		this.fragmentIndentations = new int[this.fragmentCount];
 		this.fragmentBreaks = new int[this.fragmentCount];
@@ -204,50 +191,6 @@ public class STPAlignment {
 		if ((this.mode & M_FORCE) != 0) {
 			this.fragmentBreaks[this.fragmentIndex] = NONE;
 			couldBreak();
-		}
-	}
-
-	public boolean checkChunkStart(int kind, int startIndex, int sourceRestart) {
-		if (this.chunkKind != kind) {
-			this.chunkKind = kind;
-
-			// When redoing same chunk alignment, must not reset
-			if (startIndex != this.chunkStartIndex) {
-				this.chunkStartIndex = startIndex;
-				this.location.update(this.scribe, sourceRestart);
-				reset();
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public void checkColumn() {
-		if ((this.mode & M_MULTICOLUMN) != 0) {
-			int currentIndentation = this.scribe.getNextIndentationLevel(this.scribe.column + (this.scribe.needSpace ? 1 : 0));
-			int fragmentIndentation = this.fragmentIndentations[this.fragmentIndex];
-			if (currentIndentation > fragmentIndentation) {
-				this.fragmentIndentations[this.fragmentIndex] =  currentIndentation;
-				if (fragmentIndentation != 0) {
-					for (int i = this.fragmentIndex + 1; i < this.fragmentCount; i++) {
-						this.fragmentIndentations[i] = 0;
-					}
-					this.needRedoColumnAlignment = true;
-				}
-			}
-			// Backtrack only once all fragments got checked
-			if (this.needRedoColumnAlignment && this.fragmentIndex == this.fragmentCount - 1) { // alignment too small
-				this.needRedoColumnAlignment = false;
-				int relativeDepth = 0;
-				STPAlignment targetAlignment = this.scribe.memberAlignment;
-				while (targetAlignment != null) {
-					if (targetAlignment == this) {
-						throw new AlignmentException(AlignmentException.ALIGN_TOO_SMALL, relativeDepth);
-					}
-					targetAlignment = targetAlignment.enclosing;
-					relativeDepth++;
-				}
-			}
 		}
 	}
 
@@ -381,32 +324,6 @@ public class STPAlignment {
 		}
 	}
 
-	public STPAlignment getAlignment(String targetName) {
-		if (targetName.equals(this.name)) return this;
-		if (this.enclosing == null) return null;
-
-		return this.enclosing.getAlignment(targetName);
-	}
-
-	public void alignFragment(int fragmentIndex) {
-		this.fragmentIndex= fragmentIndex;
-		if (this.fragmentBreaks[fragmentIndex] == BREAK_NOT_ALLOWED) {
-			this.fragmentBreaks[fragmentIndex] = NONE;	// Allow line break.
-		}
-		switch (this.mode & SPLIT_MASK) {
-		case STPAlignment.M_NEXT_PER_LINE_SPLIT:
-		case STPAlignment.M_ONE_PER_LINE_SPLIT:
-			for (int i = fragmentIndex + 1; i < this.fragmentBreaks.length; i++) {
-				if (this.fragmentBreaks[i] == BREAK_NOT_ALLOWED) {
-					this.fragmentBreaks[i] = NONE;	// Allow line break.
-				}
-			}
-			break;
-		}
-		checkColumn();
-		performFragmentEffect();
-	}
-
 	// Performs alignment effect for current fragment.
 	public void performFragmentEffect() {
 		if ((this.mode & M_MULTICOLUMN) == 0) {
@@ -436,28 +353,6 @@ public class STPAlignment {
 			this.scribe.indentationLevel = this.fragmentIndentations[this.fragmentIndex];
 		}
 		currentFragmentStartLine = this.scribe.line;
-	}
-
-	// test whether this is an 'indent-on-column' type alignment and aligns on the given column
-	public boolean isIndentOnColumn(int column) {
-		return (mode & M_INDENT_ON_COLUMN) != 0 && breakIndentationLevel == column - 1;
-	}
-
-	// reset fragment indentation/break status
-	public void reset() {
-		if (fragmentCount > 0) {
-			this.fragmentIndentations = new int[this.fragmentCount];
-			this.fragmentBreaks = new int[this.fragmentCount];
-		}
-
-		// check for forced alignments
-		if ((mode & M_FORCE) != 0) {
-			couldBreak();
-		}
-	}
-
-	public void toFragmentsString(StringBuffer buffer) {
-		// default implementation
 	}
 
 	@Override
@@ -491,22 +386,5 @@ public class STPAlignment {
 		}
 		buffer.append('\n');
 		return buffer.toString();
-	}
-
-	public void update() {
-		for (int i = 1; i < this.fragmentCount; i++) {
-		    if (this.fragmentBreaks[i] == BREAK) {
-		        this.fragmentIndentations[i] = this.breakIndentationLevel;
-		    }
-		}
-	}
-
-	public boolean isWrapped() {
-		for (int i = 0, max = this.fragmentCount; i < max; i++) {
-			if (this.fragmentBreaks[i] == BREAK) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

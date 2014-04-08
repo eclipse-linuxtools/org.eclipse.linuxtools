@@ -21,7 +21,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
-import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.TypedRegion;
 
@@ -674,7 +673,7 @@ public final class STPHeuristicScanner implements STPSymbols {
 	 * @param closingPeer the closing peer character (e.g. '}')
 	 * @return the matching peer character position, or <code>NOT_FOUND</code>
 	 */
-	public int findClosingPeer(int start, int bound, final char openingPeer, final char closingPeer) {
+	private int findClosingPeer(int start, int bound, final char openingPeer, final char closingPeer) {
 		Assert.isLegal(start >= 0);
 
 		try {
@@ -755,38 +754,6 @@ public final class STPHeuristicScanner implements STPSymbols {
 	}
 
 	/**
-	 * Computes the surrounding block around <code>offset</code>. The search is started at the
-	 * beginning of <code>offset</code>, i.e. an opening brace at <code>offset</code> will not be
-	 * part of the surrounding block, but a closing brace will.
-	 *
-	 * @param offset the offset for which the surrounding block is computed
-	 * @return a region describing the surrounding block, or <code>null</code> if none can be found
-	 */
-	public IRegion findSurroundingBlock(int offset) {
-		if (offset < 1 || offset >= fDocument.getLength())
-			return null;
-
-		int begin= findOpeningPeer(offset - 1, STPHeuristicScanner.UNBOUND, LBRACE, RBRACE);
-		int end= findClosingPeer(offset, UNBOUND, LBRACE, RBRACE);
-		if (begin == NOT_FOUND || end == NOT_FOUND)
-			return null;
-		return new Region(begin, end + 1 - begin);
-	}
-
-	/**
-	 * Finds the smallest position in <code>fDocument</code> such that the position is &gt;= <code>position</code>
-	 * and &lt; <code>bound</code> and <code>Character.isWhitespace(fDocument.getChar(pos))</code> evaluates to <code>false</code>
-	 * and the position is in the default partition.
-	 *
-	 * @param position the first character position in <code>fDocument</code> to be considered
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with <code>bound</code> &gt; <code>position</code>, or <code>UNBOUND</code>
-	 * @return the smallest position of a non-whitespace character in [<code>position</code>, <code>bound</code>) that resides in a C partition, or <code>NOT_FOUND</code> if none can be found
-	 */
-	public int findNonWhitespaceForward(int position, int bound) {
-		return scanForward(position, bound, fNonWSDefaultPart);
-	}
-
-	/**
 	 * Finds the smallest position in <code>fDocument</code> such that the position is &gt;= <code>position</code>
 	 * and &lt; <code>bound</code> and <code>Character.isWhitespace(fDocument.getChar(pos))</code> evaluates to <code>false</code>.
 	 *
@@ -820,7 +787,7 @@ public final class STPHeuristicScanner implements STPSymbols {
 	 * @param condition the <code>StopCondition</code> to check
 	 * @return the lowest position in [<code>start</code>, <code>bound</code>) for which <code>condition</code> holds, or <code>NOT_FOUND</code> if none can be found
 	 */
-	public int scanForward(int start, int bound, StopCondition condition) {
+	private int scanForward(int start, int bound, StopCondition condition) {
 		Assert.isLegal(start >= 0);
 
 		if (bound == UNBOUND)
@@ -859,20 +826,6 @@ public final class STPHeuristicScanner implements STPSymbols {
 	}
 
 	/**
-	 * Finds the lowest position in <code>fDocument</code> such that the position is &gt;= <code>position</code>
-	 * and &lt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> for at least one
-	 * ch in <code>chars</code> and the position is in the default partition.
-	 *
-	 * @param position the first character position in <code>fDocument</code> to be considered
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with <code>bound</code> &gt; <code>position</code>, or <code>UNBOUND</code>
-	 * @param chars an array of <code>char</code> to search for
-	 * @return the lowest position of a non-whitespace character in [<code>position</code>, <code>bound</code>) that resides in a C partition, or <code>NOT_FOUND</code> if none can be found
-	 */
-	public int scanForward(int position, int bound, char[] chars) {
-		return scanForward(position, bound, new CharacterMatch(chars));
-	}
-
-	/**
 	 * Finds the highest position <code>p</code> in <code>fDocument</code> such that <code>bound</code> &lt; <code>p</code> &lt;= <code>start</code>
 	 * and <code>condition.stop(fDocument.getChar(p), p)</code> evaluates to <code>true</code>.
 	 *
@@ -881,7 +834,7 @@ public final class STPHeuristicScanner implements STPSymbols {
 	 * @param condition the <code>StopCondition</code> to check
 	 * @return the highest position in (<code>bound</code>, <code>start</code> for which <code>condition</code> holds, or <code>NOT_FOUND</code> if none can be found
 	 */
-	public int scanBackward(int start, int bound, StopCondition condition) {
+	private int scanBackward(int start, int bound, StopCondition condition) {
 		if (bound == UNBOUND)
 			bound= -1;
 
@@ -904,40 +857,12 @@ public final class STPHeuristicScanner implements STPSymbols {
 	}
 
 	/**
-	 * Finds the highest position in <code>fDocument</code> such that the position is &lt;= <code>position</code>
-	 * and &gt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code>
-	 * and the position is in the default partition.
-	 *
-	 * @param position the first character position in <code>fDocument</code> to be considered
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with <code>bound</code> &lt; <code>position</code>, or <code>UNBOUND</code>
-	 * @param ch the <code>char</code> to search for
-	 * @return the highest position of one element in <code>chars</code> in (<code>bound</code>, <code>position</code>] that resides in a C partition, or <code>NOT_FOUND</code> if none can be found
-	 */
-	public int scanBackward(int position, int bound, char ch) {
-		return scanBackward(position, bound, new CharacterMatch(ch));
-	}
-
-	/**
-	 * Finds the highest position in <code>fDocument</code> such that the position is &lt;= <code>position</code>
-	 * and &gt; <code>bound</code> and <code>fDocument.getChar(position) == ch</code> evaluates to <code>true</code> for at least one
-	 * ch in <code>chars</code> and the position is in the default partition.
-	 *
-	 * @param position the first character position in <code>fDocument</code> to be considered
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with <code>bound</code> &lt; <code>position</code>, or <code>UNBOUND</code>
-	 * @param chars an array of <code>char</code> to search for
-	 * @return the highest position of one element in <code>chars</code> in (<code>bound</code>, <code>position</code>] that resides in a C partition, or <code>NOT_FOUND</code> if none can be found
-	 */
-	public int scanBackward(int position, int bound, char[] chars) {
-		return scanBackward(position, bound, new CharacterMatch(chars));
-	}
-
-	/**
 	 * Checks whether <code>position</code> resides in a default (C) partition of <code>fDocument</code>.
 	 *
 	 * @param position the position to be checked
 	 * @return <code>true</code> if <code>position</code> is in the default partition of <code>fDocument</code>, <code>false</code> otherwise
 	 */
-	public boolean isDefaultPartition(int position) {
+	private boolean isDefaultPartition(int position) {
 		String type = getPartition(position).getType();
 		return fPartition.equals(type);
 	}
@@ -1013,75 +938,6 @@ public final class STPHeuristicScanner implements STPSymbols {
 				}
 		}
 
-		return false;
-	}
-	
-	/**
-	 * Returns <code>true</code> if the document, when scanned backwards from <code>start</code>
-	 * appears to contain a class instance creation, i.e. a possibly qualified name preceded by a
-	 * <code>new</code> keyword. The <code>start</code> must be at the end of the type name, and
-	 * before any generic signature or constructor parameter list. The heuristic will return
-	 * <code>true</code> if <code>start</code> is at the following positions (|):
-	 * 
-	 * <pre>
-	 *  new std::vector&lt;std::string&gt;|(10)
-	 *  new str_vector |(10)
-	 *  new / * comment * / str_vector |(10)
-	 * </pre>
-	 * 
-	 * but not the following:
-	 * 
-	 * <pre>
-	 *  new std::vector&lt;std::string&gt;(10)|
-	 *  new std::vector&lt;std::string&gt;|(10)
-	 *  new vector (10)|
-	 *  vector |(10)
-	 * </pre>
-	 * 
-	 * @param start the position where the type name of the class instance creation supposedly ends
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with
-	 *        <code>bound</code> &lt; <code>start</code>, or <code>UNBOUND</code>
-	 * @return <code>true</code> if the current position looks like after the type name of a class
-	 *         instance creation
-	 */
-	public boolean looksLikeClassInstanceCreationBackward(int start, int bound) {
-		int token= previousToken(start - 1, bound);
-		if (token == STPSymbols.TokenIDENT) { // type name
-			token= previousToken(getPosition(), bound);
-			while (token == STPSymbols.TokenDOUBLECOLON) { // qualification
-				token= previousToken(getPosition(), bound);
-				if (token != STPSymbols.TokenIDENT) // qualification name
-					return false;
-				token= previousToken(getPosition(), bound);
-			}
-			return token == STPSymbols.TokenNEW;
-		}
-		return false;
-	}
-
-	/**
-	 * Returns <code>true</code> if the document, when scanned backwards from <code>start</code>
-	 * appears to contain a field reference, i.e. a (optional) name preceded by a <code>.</code> 
-	 * or <code>-&gt;</code> or <code>::</code>.
-	 * 
-	 * @param start the position after the field reference operator.
-	 * @param bound the first position in <code>fDocument</code> to not consider any more, with
-	 *        <code>bound</code> &lt; <code>start</code>, or <code>UNBOUND</code>
-	 * @return <code>true</code> if the current position looks like a field reference
-	 */
-	public boolean looksLikeFieldReferenceBackward(int start, int bound) {
-		int token= previousToken(start - 1, bound);
-		if (token == STPSymbols.TokenIDENT) { // field name
-			token= previousToken(getPosition(), bound);
-		}
-		if (token == STPSymbols.TokenDOT) {
-			return true;
-		}
-		if (token == STPSymbols.TokenARROW) {
-			return true;
-		} else if (token == STPSymbols.TokenDOUBLECOLON) {
-			return true;
-		}
 		return false;
 	}
 	
@@ -1207,34 +1063,6 @@ public final class STPHeuristicScanner implements STPSymbols {
 			return true;
 		default:
 			return false;
-		}
-	}
-
-	/**
-	 *  A simplified interface to CHeuristicScanner's
-	 *  nextToken() and previousToken() methods. 
-	 */
-	public static class TokenStream {
-		private STPHeuristicScanner fScanner;
-		private int fPos;
-		private final int fDocumentLength;
-
-		public TokenStream(IDocument document, int startPos) {
-			fScanner = new STPHeuristicScanner(document);
-			fPos = startPos;
-			fDocumentLength = document.getLength();
-		}
-
-		public int nextToken() {
-			int result = fScanner.nextToken(fPos, fDocumentLength);
-			fPos = fScanner.getPosition();
-			return result;
-		}
-
-		public int previousToken() {
-			int result = fScanner.previousToken(fPos, 0);
-			fPos = fScanner.getPosition();
-			return result;
 		}
 	}
 }

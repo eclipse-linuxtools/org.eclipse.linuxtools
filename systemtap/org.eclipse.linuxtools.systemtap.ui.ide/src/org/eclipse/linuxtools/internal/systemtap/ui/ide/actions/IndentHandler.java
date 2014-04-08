@@ -123,8 +123,9 @@ public class IndentHandler extends AbstractHandler {
 				public void run() {
 					IRewriteTarget target = (IRewriteTarget) getTextEditor()
 							.getAdapter(IRewriteTarget.class);
-					if (target != null)
+					if (target != null) {
 						target.beginCompoundChange();
+					}
 
 					try {
 						STPHeuristicScanner scanner = new STPHeuristicScanner(
@@ -134,9 +135,8 @@ public class IndentHandler extends AbstractHandler {
 						final boolean multiLine = nLines > 1;
 						boolean hasChanged = false;
 						for (int i = 0; i < nLines; i++) {
-							hasChanged |= indentLine(document, getTextEditor(),
-									firstLine + i, offset, indenter, scanner,
-									multiLine);
+                            hasChanged |= indentLine(document, firstLine + i,
+                                    offset, indenter, scanner, multiLine);
 						}
 
 						// update caret position: move to new position when
@@ -165,8 +165,9 @@ public class IndentHandler extends AbstractHandler {
 								"ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
 					} finally {
 						document.removePosition(end);
-						if (target != null)
+						if (target != null) {
 							target.endCompoundChange();
+						}
 					}
 				}
 			};
@@ -197,8 +198,9 @@ public class IndentHandler extends AbstractHandler {
 		Assert.isTrue(newLength >= 0);
 		if (editor instanceof STPEditor) {
 			ISourceViewer viewer = ((STPEditor) editor).getMySourceViewer();
-			if (viewer != null)
+			if (viewer != null) {
 				viewer.setSelectedRange(newOffset, newLength);
+			}
 		} else {
 			// this is too intrusive, but will never get called anyway
 			editor.selectAndReveal(newOffset, newLength);
@@ -226,7 +228,7 @@ public class IndentHandler extends AbstractHandler {
 	 * @throws BadLocationException
 	 *             if the document got changed concurrently
 	 */
-	private boolean indentLine(IDocument document, ITextEditor editor,
+	private boolean indentLine(IDocument document,
 			int line, int caret, STPIndenter indenter,
 			STPHeuristicScanner scanner, boolean multiLine)
 			throws BadLocationException {
@@ -277,10 +279,11 @@ public class IndentHandler extends AbstractHandler {
 					while (slashes > 0 && computed.length() > 0) {
 						char c = computed.charAt(0);
 						if (c == '\t') {
-							if (slashes > tabSize)
+							if (slashes > tabSize) {
 								slashes -= tabSize;
-							else
+							} else {
 								break;
+							}
 						} else if (c == ' ') {
 							slashes--;
 						} else {
@@ -298,10 +301,11 @@ public class IndentHandler extends AbstractHandler {
 		// standard C code indentation
 		if (indent == null) {
 			StringBuilder computed = indenter.computeIndentation(offset);
-			if (computed != null)
+			if (computed != null) {
 				indent = computed.toString();
-			else
+			} else {
 				indent = ""; //$NON-NLS-1$
+			}
 		}
 
 		// change document:
@@ -312,17 +316,19 @@ public class IndentHandler extends AbstractHandler {
 		if (end == STPHeuristicScanner.NOT_FOUND) {
 			// an empty line
 			end = offset + lineLength;
-			if (multiLine && !indentEmptyLines())
+			if (multiLine && !indentEmptyLines()) {
 				indent = ""; //$NON-NLS-1$
+			}
 		}
 		int length = end - offset;
 		String currentIndent = document.get(offset, length);
 
 		// set the caret offset so it can be used when setting the selection
-		if (caret >= offset && caret <= end)
+		if (caret >= offset && caret <= end) {
 			fCaretOffset = offset + indent.length();
-		else
+		} else {
 			fCaretOffset = -1;
+		}
 
 		// only change the document if it is a real change
 		if (!indent.equals(currentIndent)) {

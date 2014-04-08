@@ -29,7 +29,6 @@ public class IDESessionSettings {
 	 * {@link IDESessionSettings#getActiveSTPEditor()}
 	 */
 	private static STPEditor activeSTPEditor = null;
-	public static String password = null;
 
 	/**
 	 * Returns the most recent active {@link STPEditor} script editor if one was

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
@@ -27,12 +26,6 @@ public class STPPartitioner extends FastPartitioner {
 	 */
 	public STPPartitioner(IPartitionTokenScanner scanner, String[] legalContentTypes) {
 		super(scanner, legalContentTypes);
-	}
-
-	@Override
-	public void connect(IDocument document, boolean delayInitialization) {
-		super.connect(document, delayInitialization);
-	}
-	
+	}	
 }
 

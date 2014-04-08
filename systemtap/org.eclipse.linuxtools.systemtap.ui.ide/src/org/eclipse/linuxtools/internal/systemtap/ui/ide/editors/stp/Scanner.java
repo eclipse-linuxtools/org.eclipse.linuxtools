@@ -31,7 +31,7 @@ public class Scanner extends SimpleScanner {
     }
 
 	@Override
-	protected void init(Reader reader, String filename) {
+	protected void init(Reader reader) {
 		// not allowed
 		throw new UnsupportedOperationException();
 	}

@@ -38,20 +38,16 @@ public class STPLocation {
 	public Runnable tailFormatter;
 
 	public STPLocation(STPScribe scribe, int sourceRestart){
-		update(scribe, sourceRestart);
-	}
-	
-	public void update(STPScribe scribe, int sourceRestart){
-		this.inputOffset = sourceRestart;
-		this.outputLine = scribe.line;
-		this.outputColumn = scribe.column;
-		this.outputIndentationLevel = scribe.indentationLevel;
-		this.needSpace = scribe.needSpace;
-		this.pendingSpace = scribe.pendingSpace;
-		this.numberOfIndentations = scribe.numberOfIndentations;
-		this.lastNumberOfNewLines = scribe.lastNumberOfNewLines;
-		this.editsIndex = scribe.editsIndex;
-		this.textEdit = scribe.getLastEdit();
-		this.tailFormatter = scribe.getTailFormatter();
+	    this.inputOffset = sourceRestart;
+        this.outputLine = scribe.line;
+        this.outputColumn = scribe.column;
+        this.outputIndentationLevel = scribe.indentationLevel;
+        this.needSpace = scribe.needSpace;
+        this.pendingSpace = scribe.pendingSpace;
+        this.numberOfIndentations = scribe.numberOfIndentations;
+        this.lastNumberOfNewLines = scribe.lastNumberOfNewLines;
+        this.editsIndex = scribe.editsIndex;
+        this.textEdit = scribe.getLastEdit();
+        this.tailFormatter = scribe.getTailFormatter();
 	}
 }

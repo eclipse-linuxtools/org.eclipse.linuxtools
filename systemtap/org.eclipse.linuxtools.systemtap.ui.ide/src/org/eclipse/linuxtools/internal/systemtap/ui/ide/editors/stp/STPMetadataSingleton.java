@@ -30,7 +30,7 @@ public class STPMetadataSingleton {
 
 	private static STPMetadataSingleton instance = null;
 
-	protected STPMetadataSingleton() {
+	private STPMetadataSingleton() {
 		TapsetLibrary.init();
 	}
 

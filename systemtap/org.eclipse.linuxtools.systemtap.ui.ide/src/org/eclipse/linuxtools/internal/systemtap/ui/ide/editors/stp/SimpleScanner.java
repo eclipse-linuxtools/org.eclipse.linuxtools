@@ -50,22 +50,16 @@ public class SimpleScanner {
 	    fSplitPreprocessor= val;
 	}
 
-	protected void init(Reader reader, String filename) {
+	protected void init(Reader reader) {
 	    fReuseToken= false;
 	    fSplitPreprocessor= true;
 	    fPreprocessorToken= 0;
 	    fContext = new ScannerContext().initialize(reader);
 	}
 
-	public SimpleScanner initialize(Reader reader, String filename) {
-	    init(reader, filename);
+	public SimpleScanner initialize(Reader reader) {
+	    init(reader);
 	    return this;
-	}
-
-	public void cleanup() {
-	    fContext= null;
-	    fTokenBuffer= new StringBuilder();
-	    fCurrentToken= null;
 	}
 
 	private final void setCurrentToken(Token t) {

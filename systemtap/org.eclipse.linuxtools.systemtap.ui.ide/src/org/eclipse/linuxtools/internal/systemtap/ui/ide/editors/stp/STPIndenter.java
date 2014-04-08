@@ -82,7 +82,6 @@ public final class STPIndenter {
 
 		private final IPreferencesService preferenceService;
 		private final IScopeContext[] preferenceContexts;
-		private final IProject fProject;
 
 		/**
 		 * Returns the possibly project-specific core preference defined under <code>key</code>.
@@ -108,7 +107,6 @@ public final class STPIndenter {
 					new IScopeContext[] { new ProjectScope(project.getProject()),
 										  InstanceScope.INSTANCE, DefaultScope.INSTANCE } :
 					new IScopeContext[] { InstanceScope.INSTANCE, DefaultScope.INSTANCE };
-			fProject= project;
 			prefUseTabs= prefUseTabs();
 			prefTabSize= prefTabSize();
 			prefIndentationSize= prefIndentationSize();
@@ -150,11 +148,11 @@ public final class STPIndenter {
 		}
 
 		private int prefTabSize() {
-			return CodeFormatterUtil.getTabWidth(fProject);
+			return CodeFormatterUtil.getTabWidth();
 		}
 
 		private int prefIndentationSize() {
-			return CodeFormatterUtil.getIndentWidth(fProject);
+			return CodeFormatterUtil.getIndentWidth();
 		}
 
 		private boolean prefArrayDimensionsDeepIndent() {
@@ -787,7 +785,7 @@ public final class STPIndenter {
 	 * @return the reference statement relative to which <code>offset</code>
 	 *         should be indented, or {@link STPHeuristicScanner#NOT_FOUND NOT_FOUND}
 	 */
-	public int findReferencePosition(int offset, int nextToken) {
+	private int findReferencePosition(int offset, int nextToken) {
 		boolean danglingElse= false;
 		boolean cancelIndent= false; // If set to true, fIndent is ignored.
 		int extraIndent= 0; // Can be either positive or negative.

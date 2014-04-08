@@ -86,10 +86,9 @@ public final class IndentUtil {
 		STPHeuristicScanner scanner= new STPHeuristicScanner(document);
 		STPIndenter indenter= new STPIndenter(document, scanner, project);
 		boolean changed= false;
-		int tabSize= CodeFormatterUtil.getTabWidth(project);
 		boolean indentInsideLineComments= indentInsideLineComments(project);
 		for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++) {
-			changed |= indentLine(document, line, indenter, scanner, result.commentLinesAtColumnZero, i++, tabSize, indentInsideLineComments);
+			changed |= indentLine(document, line, indenter, scanner, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
 		}
 		result.hasChanged= changed;
 
@@ -173,7 +172,7 @@ public final class IndentUtil {
 		String current= getCurrentIndent(document, lines.getStartLine(), indentInsideLineComments);
 		StringBuilder correct= new StringBuilder(computeIndent(document, lines.getStartLine(), indenter, scanner));
 
-		int tabSize= CodeFormatterUtil.getTabWidth(project);
+		int tabSize= CodeFormatterUtil.getTabWidth();
 		StringBuilder addition= new StringBuilder();
 		int difference= subtractIndent(correct, current, addition, tabSize);
 
@@ -424,7 +423,7 @@ public final class IndentUtil {
 	 * @throws BadLocationException if the document got changed concurrently
 	 */
 	private static boolean indentLine(IDocument document, int line, STPIndenter indenter,
-			STPHeuristicScanner scanner, boolean[] commentLines, int lineIndex, int tabSize,
+			STPHeuristicScanner scanner, boolean[] commentLines, int lineIndex,
 			boolean indentInsideLineComments) throws BadLocationException {
 		IRegion currentLine= document.getLineInformation(line);
 		final int offset= currentLine.getOffset();
