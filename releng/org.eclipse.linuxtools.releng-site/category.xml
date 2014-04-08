@@ -25,6 +25,9 @@
    <feature url="features/org.eclipse.linuxtools.changelog.java_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.java" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.dataviewers.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.dataviewers.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.gprof.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -108,6 +111,9 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.ctf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.dataviewers.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.dataviewers.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.gprof.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof.feature.source" version="0.0.0">
