@@ -189,7 +189,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return;
 		}
 
-		finishLaunch(launch, config, m, true);
+		finishLaunch(launch, config, m);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config,
-			IProgressMonitor monitor, boolean retry) {
+			IProgressMonitor monitor) {
 
 		try {
 			// Check for cancellation
@@ -264,7 +264,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			//Put command into a shell script
-			String cmd = generateCommand(config);
+			String cmd = generateCommand();
 			File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh"); //$NON-NLS-1$ //$NON-NLS-2$
 			String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
 			try (FileOutputStream out = new FileOutputStream(script)){
@@ -319,7 +319,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 						return;
 					}
 
-					errorHandler.finishHandling(monitor, scriptPath);
+					errorHandler.finishHandling();
 					if (errorHandler.isErrorRecognized()) {
 						SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages(
 								Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
@@ -419,7 +419,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 	}
 
-	public String generateCommand(ILaunchConfiguration config) {
+	public String generateCommand() {
 		// Generate the command
 		cmd = SystemTapCommandGenerator.generateCommand(escapeSpecialCharacters(scriptPath), escapeSpecialCharacters(binaryPath),
 				partialCommand, needsBinary, needsArguments, escapeSpecialCharacters(arguments), binaryArguments, stap);

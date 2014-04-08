@@ -134,7 +134,7 @@ public class SystemTapErrorHandler {
      * the error pop-up message and writes to log.Currently relaunch only works 
      * for the callgraph script.
      */
-    public void finishHandling(IProgressMonitor m, String scriptPath) {
+    public void finishHandling() {
         if (!isErrorRecognized()) {
             errorMessage.append(Messages.getString("SystemTapErrorHandler.NoErrRecognized") + //$NON-NLS-1$
                     Messages.getString("SystemTapErrorHandler.NoErrRecognizedMsg")); //$NON-NLS-1$

@@ -96,7 +96,7 @@ public class ConfigurationTest extends AbstractStapTest {
 				+ " -F --skip-badvars --ignore-dwarf -q " + " -c '" + testBinaryPath
 				+ "' " + testScriptPath + " --runtime=dyninst " + testArguments + " >& "
 				+ testOutputPath,
-				del.generateCommand(config));
+				del.generateCommand());
 
 		killStap();
 	}

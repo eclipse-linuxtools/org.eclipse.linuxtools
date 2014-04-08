@@ -730,7 +730,7 @@ public class StapGraph extends Graph {
 	/**
 	 * Draws a tree roughly starting from node id
 	 */
-	public void drawBox(int id, int x, int y) {
+	public void drawBox(int id, int y) {
 		setLevelLimits(id);
 		int MaxLevelPixelWidth = 1;
 		int currPixelWidth = 1;
@@ -1202,14 +1202,14 @@ public class StapGraph extends Graph {
 
 				deleteAll(id);
 
-				drawBox(id, 0, 0);
+				drawBox(id, 0);
 
 			} else {
 				if (nodeMap.get(id) == null) {
 					nodeMap.put(id, getNodeData(id).makeNode(this));
 				}
 				deleteAll(id);
-				drawBox(id, 0, 0);
+				drawBox(id, 0);
 
 			}
 		}

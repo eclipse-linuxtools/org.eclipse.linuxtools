@@ -58,7 +58,7 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
 	 * @param first the first character to consider
 	 * @throws IllegalArgumentException if the indices are out of bounds
 	 */
-	public DocumentCharacterIterator(IDocument document, int first) throws IllegalArgumentException {
+	public DocumentCharacterIterator(IDocument document, int first) {
 		this(document, first, document.getLength());
 	}
 
@@ -71,7 +71,7 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
 	 * @param last the last character index to consider
 	 * @throws IllegalArgumentException if the indices are out of bounds
 	 */
-	public DocumentCharacterIterator(IDocument document, int first, int last) throws IllegalArgumentException {
+	public DocumentCharacterIterator(IDocument document, int first, int last) {
 		if (document == null)
 			throw new NullPointerException();
 		if (first < 0 || first > last)
