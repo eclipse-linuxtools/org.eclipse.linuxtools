@@ -27,7 +27,6 @@ public class SimpleScanner {
 	private static final int EOFCHAR= -1;
 	protected static HashMap<String, Integer> fgKeywords= new HashMap<>();
 
-    protected Token fCurrentToken;
 	protected ScannerContext fContext;
 	protected StringBuilder fTokenBuffer= new StringBuilder();
 	private final StringBuilder fUniversalCharBuffer= new StringBuilder();
