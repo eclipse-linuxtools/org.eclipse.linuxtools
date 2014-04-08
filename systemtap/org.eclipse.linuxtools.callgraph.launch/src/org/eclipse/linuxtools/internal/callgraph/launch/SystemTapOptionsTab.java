@@ -36,7 +36,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
@@ -1061,7 +1061,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 	}
 
-	private static class ListLabelProvider implements ILabelProvider {
+	private static class ListLabelProvider extends LabelProvider {
 
 		@Override
 		public Image getImage(Object element) {
@@ -1084,23 +1084,10 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		}
 		return Messages.getString("SystemTapOptionsTab.46");		} //$NON-NLS-1$
 
-		@Override
-		public void addListener(ILabelProviderListener listener) {
-
-		}
-
-		@Override
-		public void dispose() {
-		}
 
 		@Override
 		public boolean isLabelProperty(Object element, String property) {
 			return false;
 		}
-
-		@Override
-		public void removeListener(ILabelProviderListener listener) {
-		}
-
 	}
 }

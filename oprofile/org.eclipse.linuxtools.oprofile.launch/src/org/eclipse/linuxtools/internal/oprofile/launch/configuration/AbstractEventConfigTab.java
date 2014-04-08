@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -603,7 +604,7 @@ AbstractLaunchConfigurationTab {
 			gdata.verticalSpan = 5;
 			eventList.getList().setLayoutData(gdata);
 
-			eventList.setLabelProvider(new ILabelProvider(){
+			eventList.setLabelProvider(new LabelProvider(){
 				@Override
 				public String getText(Object element) {
 					OpEvent e = (OpEvent) element;
@@ -612,13 +613,7 @@ AbstractLaunchConfigurationTab {
 				@Override
 				public Image getImage(Object element) { return null; }
 				@Override
-				public void addListener(ILabelProviderListener listener) { }
-				@Override
-				public void dispose() { }
-				@Override
 				public boolean isLabelProperty(Object element, String property) { return false; }
-				@Override
-				public void removeListener(ILabelProviderListener listener) { }
 			});
 
 			eventList.setContentProvider(new IStructuredContentProvider() {

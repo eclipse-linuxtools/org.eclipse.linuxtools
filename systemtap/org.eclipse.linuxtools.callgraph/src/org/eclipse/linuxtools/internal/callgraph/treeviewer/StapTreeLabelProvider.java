@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.callgraph.treeviewer;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.internal.callgraph.StapData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-public class StapTreeLabelProvider implements ILabelProvider {
+public class StapTreeLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
@@ -36,24 +35,7 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	}
 
 	@Override
-	public void addListener(ILabelProviderListener listener) {
-		// Empty
-	}
-
-
-	@Override
-	public void dispose() {
-		// Empty
-	}
-
-	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
 	}
-
-	@Override
-	public void removeListener(ILabelProviderListener listener) {
-		// Empty
-	}
-
 }

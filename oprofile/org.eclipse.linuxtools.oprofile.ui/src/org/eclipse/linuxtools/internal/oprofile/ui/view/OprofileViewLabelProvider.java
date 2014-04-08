@@ -12,15 +12,14 @@
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.swt.graphics.Image;
 
 /**
  * Content provider for OprofileView's tree viewer.
  */
-public class OprofileViewLabelProvider implements ILabelProvider {
+public class OprofileViewLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
@@ -35,23 +34,8 @@ public class OprofileViewLabelProvider implements ILabelProvider {
 	}
 
 	@Override
-	public void addListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
-	}
-
-	@Override
-	public void removeListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
 	}
 
 }
