@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +35,8 @@ import org.eclipse.swt.widgets.Display;
  * This class represents the general flow of a perf command being
  * set up, executed, and having its data collected.
  */
-public abstract class AbstractDataManipulator extends BaseDataManipulator implements
-IPerfData {
+public abstract class AbstractDataManipulator extends BaseDataManipulator
+        implements IPerfData {
 
 	private String text;
 	private String title;
@@ -135,13 +132,10 @@ IPerfData {
 	}
 
 	public void performCommand(String[] cmd, String file) {
-		BufferedReader buffData = null;
-		BufferedReader buffTemp = null;
 		URI pathWorkDirURI = null;
+		Process proc = null;
+		RemoteConnection exeRC = null;
 		try {
-
-			Process proc = null;
-			RemoteConnection exeRC = null;
 			try {
 				pathWorkDirURI = new URI(pathWorkDir.toOSString());
 				exeRC = new RemoteConnection(pathWorkDirURI);
@@ -156,25 +150,16 @@ IPerfData {
 			proc.waitFor();
 
 			StringBuffer data = new StringBuffer();
-			buffData = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			readStream(buffData, data);
-			joinAll();
+            try (BufferedReader buffData = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file)))) {
+                readStream(buffData, data);
+                joinAll();
+            }
 			text = data.toString();
 		} catch (IOException e) {
 			text = ""; //$NON-NLS-1$
 		} catch (InterruptedException e){
 			text = ""; //$NON-NLS-1$
-		}finally {
-			try {
-				if (buffData != null) {
-					buffData.close();
-				}
-				if (buffTemp != null) {
-					buffTemp.close();
-				}
-			} catch (IOException e) {
-				// continue
-			}
 		}
 	}
 
