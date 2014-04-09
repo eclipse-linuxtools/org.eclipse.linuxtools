@@ -263,7 +263,7 @@ public class ParseDevHelp {
 	    	}
 	    }
 	    
-	    public FunctionInfo getFunctionInfo() {
+	    private FunctionInfo getFunctionInfo() {
 	    	if (!valid || returnValue == null ||
 	    			returnValue.startsWith("#") || //$NON-NLS-1$
 	    			returnValue.startsWith("typedef ")) { //$NON-NLS-1$
@@ -276,7 +276,7 @@ public class ParseDevHelp {
 	    	return info;
 	    }
 	    
-	    public String getFuncName() {
+	    private String getFuncName() {
 	    	return funcName;
 	    }
 	    
@@ -291,8 +291,7 @@ public class ParseDevHelp {
 		
 		private static final class NullEntityResolver implements EntityResolver {
 			@Override
-			public InputSource resolveEntity(String publicId, String systemId)
-					throws SAXException, IOException {
+			public InputSource resolveEntity(String publicId, String systemId) {
 				return new InputSource(new StringReader("")); //$NON-NLS-1$
 			}
 		}
@@ -391,7 +390,7 @@ public class ParseDevHelp {
 			}
 		}
 
-		public void parse(String fileName, IProgressMonitor monitor) {
+		private void parse(String fileName, IProgressMonitor monitor) {
 			try {
 				Path path = new Path(fileName);
 				File f = new File(fileName);

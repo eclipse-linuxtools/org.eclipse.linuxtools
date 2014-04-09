@@ -98,15 +98,6 @@ public class LibHoverLibrary {
 	}
 
 	/**
-	 * Set the name space of the extension used to specify this library.
-	 *
-	 * @param nameSpace The name space string
-	 */
-	public void setNameSpace(String nameSpace) {
-		this.nameSpace = nameSpace;
-	}
-
-	/**
 	 * Is this library a C++ library?
 	 *
 	 * @return true if C++ library, false otherwise

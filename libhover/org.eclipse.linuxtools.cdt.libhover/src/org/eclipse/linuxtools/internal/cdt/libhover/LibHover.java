@@ -335,10 +335,6 @@ public class LibHover implements ICHelpProvider {
 
     }
 
-	public boolean isCPPCharacter(int ch) {
-		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':';
-	}
-
 	private static class EnclosingASTNameJob extends SharedASTJob {
 		private final int tlength;
 		private final int toffset;
@@ -359,25 +355,6 @@ public class LibHover implements ICHelpProvider {
 		public IASTName getASTName() {
 			return result;
 		}
-	}
-
-	public static class ASTDeclarationFinderJob extends SharedASTJob {
-		private final IBinding binding;
-		private IASTName[] decls = null;
-		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
-			super("ASTDeclarationFinderJob", t); //$NON-NLS-1$
-			this.binding = binding;
-		}
-    	@Override
-		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
-    		if (ast != null) {
-    			decls = ast.getDeclarationsInAST(binding);
-    		}
-    		return Status.OK_STATUS;
-    	}
-    	public IASTName[] getDeclarations() {
-    		return decls;
-    	}
 	}
 
 	@Override

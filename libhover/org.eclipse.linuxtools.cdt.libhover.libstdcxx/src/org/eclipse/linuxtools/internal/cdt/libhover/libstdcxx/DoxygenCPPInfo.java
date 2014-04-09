@@ -48,10 +48,6 @@ public class DoxygenCPPInfo {
 		this.document = document;
 	}
 
-	public Document getDocument() {
-		return document;
-	}
-
 	private String[] getTypedefTypes(String def) {
 		String[] result = null;
 		if (def.startsWith("typedef ")) { //$NON-NLS-1$
@@ -105,7 +101,7 @@ public class DoxygenCPPInfo {
 		return d.toString();
 	}
 
-	public ClassInfo getClassInfo(String className) {
+	private ClassInfo getClassInfo(String className) {
 		String typedefName = className.replaceAll("<.*>", "<>"); //$NON-NLS-1$ //$NON-NLS-2$
 		TypedefInfo typedef = cppInfo.typedefs.get(typedefName);
 		if (typedef != null) {
@@ -136,11 +132,11 @@ public class DoxygenCPPInfo {
 		return cppInfo.classes.get(className);
 	}
 
-	public void buildDoxygenCPPInfo(String fileName) {
+	private void buildDoxygenCPPInfo(String fileName) {
 		try {
 			// Create a hash table of all the class nodes mapped by class name.  Trim any template info
 			// for the class name key value.
-			NodeList nl = getDocument().getElementsByTagName("compounddef");  //$NON-NLS-1$
+			NodeList nl = document.getElementsByTagName("compounddef");  //$NON-NLS-1$
 			for (int i = 0; i < nl.getLength(); ++i) {
 				Node n = nl.item(i);
 				NamedNodeMap attrs = n.getAttributes();
@@ -347,7 +343,7 @@ public class DoxygenCPPInfo {
 				}
 			}
 			// Create a hash table of all the typedefs.  Keep any template info.
-			nl = getDocument().getElementsByTagName("memberdef");  //$NON-NLS-1$
+			nl = document.getElementsByTagName("memberdef");  //$NON-NLS-1$
 			for (int i = 0; i < nl.getLength(); ++i) {
 				Node n = nl.item(i);
 				NamedNodeMap attrs = n.getAttributes();
@@ -460,7 +456,7 @@ public class DoxygenCPPInfo {
 		return desc;
 	}
 
-	public String[] getTemplateParms(Node classNode) {
+	private String[] getTemplateParms(Node classNode) {
 		Node n = null;
 		ArrayList<String> templateArray = new ArrayList<>();
 		NodeList list = classNode.getChildNodes();

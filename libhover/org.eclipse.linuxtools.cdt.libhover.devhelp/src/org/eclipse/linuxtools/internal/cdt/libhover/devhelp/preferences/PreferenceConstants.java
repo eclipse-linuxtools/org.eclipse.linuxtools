@@ -16,6 +16,5 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 public class PreferenceConstants {
 
 	public final static String DEVHELP_DIRECTORY = "org.eclipse.linuxtools.cdt.libhover.devhelp.directory"; //$NON-NLS-1$
-	public final static String DUMMY_CONSTANT = "org.eclipse.linuxtools.cdt.libhover.devhelp.dummy"; //$NON-NLS-1$
 	
 }

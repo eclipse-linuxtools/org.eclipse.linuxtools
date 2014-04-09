@@ -47,7 +47,7 @@ public class BuildFunctionInfos {
 		return document;
 	}
 
-	protected FunctionInfo getFunctionInfoFromNode(String name, Node function_node, Document document) {
+	private FunctionInfo getFunctionInfoFromNode(String name, Node function_node, Document document) {
         FunctionInfo f = new FunctionInfo(name);
         NamedNodeMap function_node_map = function_node.getAttributes();
         Node function_node_returntype_node = function_node_map.item(0);
@@ -135,7 +135,7 @@ public class BuildFunctionInfos {
         return f;
 	}
 
-	public void buildCPPInfo(String fileName) {
+	private void buildCPPInfo(String fileName) {
 		Document document = getDocument();
 		NodeList nl = document.getElementsByTagName("construct"); //$NON-NLS-1$
 		for (int i = 0; i < nl.getLength(); ++i) {

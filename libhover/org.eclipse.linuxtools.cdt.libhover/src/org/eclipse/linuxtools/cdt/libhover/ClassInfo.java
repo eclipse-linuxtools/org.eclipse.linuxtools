@@ -11,11 +11,8 @@
 package org.eclipse.linuxtools.cdt.libhover;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 
@@ -24,29 +21,17 @@ public class ClassInfo implements Serializable {
 	private String templateParms[] = new String[0];
 	private boolean templateParmsFilled = false;
 	private String className;
-	private String id;
 	private String include;
 	private ArrayList<ClassInfo> baseClasses = new ArrayList<>();
 	private HashMap<String, MemberInfo> members = new HashMap<>();
-	private transient Document document;
 	public transient Node classNode;
 	private ArrayList<ClassInfo> children = null;
 	public ClassInfo(String className, String id, Node classNode) {
 		this.className = className;
-		this.id = id;
 		this.classNode = classNode;
 	}
 	public String getClassName() {
 		return className;
-	}
-	public Node getClassNode() {
-		if (classNode == null) {
-			classNode = document.getElementById(id);
-		}
-		return classNode;
-	}
-	public void setDocument (Document d) {
-		document = d;
 	}
 	public void setClassName(String newName) {
 		className = newName;
@@ -93,30 +78,6 @@ public class ClassInfo implements Serializable {
 			member.addChild(info);
 		else
 			members.put(name, info);
-	}
-	
-	public MemberInfo[] getMembers(String nameStart) {
-		ArrayList<MemberInfo> matchList = new ArrayList<>();
-		Collection<MemberInfo> values = members.values();
-		for (Iterator<MemberInfo> i = values.iterator(); i.hasNext();) {
-			MemberInfo k = i.next();
-			if (k.getName().startsWith(nameStart)) {
-				matchList.add(k);
-				ArrayList<MemberInfo> children = k.getChildren();
-				if (children != null) {
-					for (Iterator<MemberInfo> j = children.iterator(); j.hasNext();) {
-						MemberInfo child = i.next();
-						matchList.add(child);
-					}
-				}
-			}
-		}
-		MemberInfo[] matches = new MemberInfo[matchList.size()];
-		return matchList.toArray(matches);
-	}
-	
-	public ArrayList<ClassInfo> getBaseClasses() {
-		return baseClasses;
 	}
 	
 	public void addBaseClass(ClassInfo info) {
