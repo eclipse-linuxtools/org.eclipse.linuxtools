@@ -752,7 +752,7 @@ public class STPAutoEditStrategy extends
 			int first= document.computeNumberOfLines(prefix) + firstLine; // don't format first line
 			int lines= temp.getNumberOfLines();
 			boolean changed= false;
-			boolean indentInsideLineComments= IndentUtil.indentInsideLineComments(fProject);
+			boolean indentInsideLineComments= true;
 
 			for (int l= first; l < lines; l++) { // we don't change the number of lines while adding indents
 				IRegion r= temp.getLineInformation(l);

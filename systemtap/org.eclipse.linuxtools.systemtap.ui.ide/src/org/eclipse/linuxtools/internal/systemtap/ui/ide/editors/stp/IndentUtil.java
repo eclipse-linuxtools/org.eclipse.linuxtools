@@ -41,15 +41,6 @@ public final class IndentUtil {
 			commentLinesAtColumnZero= commentLines;
 		}
 		private boolean[] commentLinesAtColumnZero;
-		private boolean hasChanged;
-		/**
-		 * Returns <code>true</code> if the indentation operation changed the
-		 * document, <code>false</code> if not.
-		 * @return <code>true</code> if the document was changed
-		 */
-		public boolean hasChanged() {
-			return hasChanged;
-		}
 	}
 
 	private IndentUtil() {
@@ -83,37 +74,12 @@ public final class IndentUtil {
 
 		STPHeuristicScanner scanner= new STPHeuristicScanner(document);
 		STPIndenter indenter= new STPIndenter(document, scanner, project);
-		boolean changed= false;
-		boolean indentInsideLineComments= indentInsideLineComments(project);
+		boolean indentInsideLineComments= true;
 		for (int line= lines.getStartLine(), last= line + numberOfLines, i= 0; line < last; line++) {
-			changed |= indentLine(document, line, indenter, scanner, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
+			indentLine(document, line, indenter, scanner, result.commentLinesAtColumnZero, i++, indentInsideLineComments);
 		}
-		result.hasChanged= changed;
 
 		return result;
-	}
-
-	/**
-	 * Returns <code>true</code> if line comments at column 0 should be indented inside, <code>false</code> otherwise.
-	 *
-	 * @param project  the project to get project specific options from
-	 * @return <code>true</code> if line comments at column 0 should be indented inside, <code>false</code> otherwise.
-	 */
-	public static boolean indentInsideLineComments(IProject project) {
-		return STPDefaultCodeFormatterConstants.TRUE.equals(getCoreOption(project, STPDefaultCodeFormatterConstants.FORMATTER_INDENT_INSIDE_LINE_COMMENTS));
-	}
-
-	/**
-	 * Returns the possibly <code>project</code>-specific core preference
-	 * defined under <code>key</code>.
-	 *
-	 * @param project the project to get the preference from, or
-	 *        <code>null</code> to get the global preference
-	 * @param key the key of the preference
-	 * @return the value of the preference
-	 */
-	private static String getCoreOption(IProject project, String key) {
-		return "true";  //$NON-NLS-1$ // for now, just return true
 	}
 
 	/**
@@ -174,11 +140,9 @@ public final class IndentUtil {
 	 * @param lineIndex the zero-based line index
 	 * @param indentInsideLineComments option whether to indent inside line comments
 	 *             starting at column 0
-	 * @return <code>true</code> if the document was modified,
-	 *         <code>false</code> if not
 	 * @throws BadLocationException if the document got changed concurrently
 	 */
-	private static boolean indentLine(IDocument document, int line, STPIndenter indenter,
+	private static void indentLine(IDocument document, int line, STPIndenter indenter,
 			STPHeuristicScanner scanner, boolean[] commentLines, int lineIndex,
 			boolean indentInsideLineComments) throws BadLocationException {
 		IRegion currentLine= document.getLineInformation(line);
@@ -195,7 +159,7 @@ public final class IndentUtil {
 			} else if (startingPartition.getType().equals(STPPartitionScanner.STP_CONDITIONAL)) {
 				indent= computePreprocessorIndent(document, line, startingPartition);
 			} else if (!commentLines[lineIndex] && startingPartition.getOffset() == offset && startingPartition.getType().equals(STPPartitionScanner.STP_COMMENT)) {
-				return false;
+				return;
 			}
 		}
 
@@ -230,10 +194,7 @@ public final class IndentUtil {
 		// only change the document if it is a real change
 		if (!indent.equals(currentIndent)) {
 			document.replace(offset, length, indent);
-			return true;
 		}
-
-		return false;
 	}
 
 	/**

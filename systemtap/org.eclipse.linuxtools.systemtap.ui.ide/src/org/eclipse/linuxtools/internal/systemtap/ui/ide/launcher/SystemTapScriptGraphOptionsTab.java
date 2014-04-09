@@ -676,9 +676,9 @@ public class SystemTapScriptGraphOptionsTab extends
 				}
 
 				// If deselecting an empty regular expression, delete it automatically.
-				if (regularExpressionCombo.getItem(selectedRegex).equals("")  //$NON-NLS-1$
+				if (regularExpressionCombo.getItem(selectedRegex).isEmpty()
 						&& graphsDataList.get(selectedRegex).size() == 0
-						&& outputList.get(selectedRegex).equals("")) { //$NON-NLS-1$
+						&& outputList.get(selectedRegex).isEmpty()) {
 
 					// If the deselected regex is the last one in the combo, just quit.
 					// Otherwise, the deleted blank entry would be replaced by another blank entry.

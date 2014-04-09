@@ -45,40 +45,38 @@ public final class STPIndenter {
 	 * The CDT Core preferences.
 	 */
 	private final class CorePrefs {
-		final boolean prefUseTabs;
-		final int prefTabSize;
-		final int prefIndentationSize;
-		final boolean prefArrayDimensionsDeepIndent;
-		final int prefArrayIndent;
-		final boolean prefArrayDeepIndent;
-		final boolean prefTernaryDeepAlign;
-		final int prefTernaryIndent;
-		final int prefCaseIndent;
-		final int prefCaseBlockIndent;
-		final int prefAssignmentIndent;
-		final int prefSimpleIndent;
-		final int prefBracketIndent;
-		final boolean prefMethodDeclDeepIndent;
-		final boolean prefMethodDeclFirstParameterDeepIndent;
-		final int prefMethodDeclIndent;
-		final boolean prefMethodCallDeepIndent;
-		final boolean prefMethodCallFirstParameterDeepIndent;
-		final int prefMethodCallIndent;
-		final boolean prefParenthesisDeepIndent;
-		final int prefParenthesisIndent;
-		final int prefBlockIndent;
-		final int prefMethodBodyIndent;
-		final int prefTypeIndent;
-		final int prefAccessSpecifierIndent;
-		final int prefAccessSpecifierExtraSpaces;
-		final int prefNamespaceBodyIndent;
-		final boolean prefIndentBracesForBlocks;
-		final boolean prefIndentBracesForArrays;
-		final boolean prefIndentBracesForMethods;
-		final boolean prefIndentBracesForTypes;
-		final int prefContinuationIndent;
-		final boolean prefHasTemplates;
-		final String prefTabChar;
+		private final boolean prefUseTabs;
+		private final boolean prefArrayDimensionsDeepIndent;
+		private final int prefArrayIndent;
+		private final boolean prefArrayDeepIndent;
+		private final boolean prefTernaryDeepAlign;
+		private final int prefTernaryIndent;
+		private final int prefCaseIndent;
+		private final int prefCaseBlockIndent;
+		private final int prefAssignmentIndent;
+		private final int prefSimpleIndent;
+		private final int prefBracketIndent;
+		private final boolean prefMethodDeclDeepIndent;
+		private final boolean prefMethodDeclFirstParameterDeepIndent;
+		private final int prefMethodDeclIndent;
+		private final boolean prefMethodCallDeepIndent;
+		private final boolean prefMethodCallFirstParameterDeepIndent;
+		private final int prefMethodCallIndent;
+		private final boolean prefParenthesisDeepIndent;
+		private final int prefParenthesisIndent;
+		private final int prefBlockIndent;
+		private final int prefMethodBodyIndent;
+		private final int prefTypeIndent;
+		private final int prefAccessSpecifierIndent;
+		private final int prefAccessSpecifierExtraSpaces;
+		private final int prefNamespaceBodyIndent;
+		private final boolean prefIndentBracesForBlocks;
+		private final boolean prefIndentBracesForArrays;
+		private final boolean prefIndentBracesForMethods;
+		private final boolean prefIndentBracesForTypes;
+		private final int prefContinuationIndent;
+		private final boolean prefHasTemplates;
+		private final String prefTabChar;
 
 		private final IPreferencesService preferenceService;
 		private final IScopeContext[] preferenceContexts;
@@ -108,8 +106,6 @@ public final class STPIndenter {
 										  InstanceScope.INSTANCE, DefaultScope.INSTANCE } :
 					new IScopeContext[] { InstanceScope.INSTANCE, DefaultScope.INSTANCE };
 			prefUseTabs= prefUseTabs();
-			prefTabSize= prefTabSize();
-			prefIndentationSize= prefIndentationSize();
 			prefArrayDimensionsDeepIndent= prefArrayDimensionsDeepIndent();
 			prefContinuationIndent= prefContinuationIndent();
 			prefBlockIndent= prefBlockIndent();
@@ -145,14 +141,6 @@ public final class STPIndenter {
 
 		private boolean prefUseTabs() {
 			return !IDEPlugin.SPACE.equals(getCoreFormatterOption(STPDefaultCodeFormatterConstants.FORMATTER_TAB_CHAR));
-		}
-
-		private int prefTabSize() {
-			return CodeFormatterUtil.getTabWidth();
-		}
-
-		private int prefIndentationSize() {
-			return CodeFormatterUtil.getIndentWidth();
 		}
 
 		private boolean prefArrayDimensionsDeepIndent() {
@@ -512,7 +500,7 @@ public final class STPIndenter {
 	 * @return the visual length in characters
 	 */
 	private int computeVisualLength(CharSequence indent) {
-		final int tabSize= fPrefs.prefTabSize;
+		final int tabSize= CodeFormatterUtil.getTabWidth();
 		int length= 0;
 		for (int i= 0; i < indent.length(); i++) {
 			char ch= indent.charAt(i);
@@ -540,7 +528,7 @@ public final class STPIndenter {
 	 * @return the stripped <code>reference</code>
 	 */
 	private StringBuilder stripExceedingChars(StringBuilder reference, int indentLength) {
-		final int tabSize= fPrefs.prefTabSize;
+		final int tabSize= CodeFormatterUtil.getTabWidth();
 		int measured= 0;
 		int chars= reference.length();
 		int i= 0;
@@ -607,7 +595,7 @@ public final class STPIndenter {
 	 */
 	private StringBuilder createIndent(int start, final int indent, final boolean convertSpaceRunsToTabs) {
 		final boolean convertTabs= fPrefs.prefUseTabs && convertSpaceRunsToTabs;
-		final int tabLen= fPrefs.prefTabSize;
+		final int tabLen= CodeFormatterUtil.getTabWidth();
 		final StringBuilder ret= new StringBuilder();
 		try {
 			int spaces= 0;
@@ -650,19 +638,19 @@ public final class STPIndenter {
 	 */
 	public StringBuilder createReusingIndent(StringBuilder buffer, int additional, int extraSpaces) {
 		int refLength= computeVisualLength(buffer);
-		int addLength= fPrefs.prefIndentationSize * additional + extraSpaces; // may be < 0
+		int addLength= CodeFormatterUtil.getIndentWidth() * additional + extraSpaces; // may be < 0
 		int totalLength= Math.max(0, refLength + addLength);
 
 		// copy the reference indentation for the indent up to the last tab
 		// stop within the maxCopy area
 		int minLength= Math.min(totalLength, refLength);
-		int tabSize= fPrefs.prefTabSize;
+		int tabSize= CodeFormatterUtil.getTabWidth();
 		int maxCopyLength= tabSize > 0 ? minLength - minLength % tabSize : minLength; // maximum indent to copy
 		stripExceedingChars(buffer, maxCopyLength);
 
 		// add additional indent
 		int missing= totalLength - maxCopyLength;
-		final int tabs, spaces;
+		int tabs, spaces;
 		if (IDEPlugin.SPACE.equals(fPrefs.prefTabChar)) {
 			tabs= 0;
 			spaces= missing;

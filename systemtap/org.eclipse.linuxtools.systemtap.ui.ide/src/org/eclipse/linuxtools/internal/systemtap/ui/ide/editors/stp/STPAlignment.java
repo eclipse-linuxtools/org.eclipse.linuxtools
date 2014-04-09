@@ -67,7 +67,5 @@ public class STPAlignment {
 	 */
 	public static final int M_NEXT_PER_LINE_SPLIT = 64 + 16; // one per line, except first fragment (if possible)
 
-	public static final int M_NO_ALIGNMENT = 0;
-
 	public static final int SPLIT_MASK = M_ONE_PER_LINE_SPLIT | M_NEXT_SHIFTED_SPLIT | M_COMPACT_SPLIT | M_COMPACT_FIRST_BREAK_SPLIT | M_NEXT_PER_LINE_SPLIT;
 }

@@ -31,6 +31,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptChartHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
@@ -81,10 +82,6 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		return true;
 	}
 
-	private String getPluginID() {
-		return this.getClass().getPackage().getName();
-	}
-
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
@@ -96,13 +93,13 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 				continue;
 			}
 			if (olaunch instanceof SystemTapScriptLaunch && ((SystemTapScriptLaunch) olaunch).getConsole() == null) {
-				throw new CoreException(new Status(IStatus.ERROR, getPluginID(),
+				throw new CoreException(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID,
 						Messages.SystemTapScriptLaunchError_waitForConsoles));
 			}
 		}
 
 		if (!SystemTapScriptGraphOptionsTab.isValidLaunch(configuration)) {
-			throw new CoreException(new Status(IStatus.ERROR, getPluginID(), Messages.SystemTapScriptLaunchError_graph));
+			throw new CoreException(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Messages.SystemTapScriptLaunchError_graph));
 		}
 
 		RunScriptHandler action;
@@ -124,12 +121,12 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		// Path
 		IPath scriptPath = new Path(configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.SCRIPT_PATH_ATTR, "")); //$NON-NLS-1$
 		if (!scriptPath.toFile().exists()) {
-			throw new CoreException(new Status(IStatus.ERROR, getPluginID(),
+			throw new CoreException(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID,
 					MessageFormat.format(Messages.SystemTapScriptLaunchError_fileNotFound, scriptPath.toString())));
 		}
 		String extension = scriptPath.getFileExtension();
 		if (extension == null || !extension.equals("stp")) { //$NON-NLS-1$
-			throw new CoreException(new Status(IStatus.ERROR, getPluginID(),
+			throw new CoreException(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID,
 					MessageFormat.format(Messages.SystemTapScriptLaunchError_fileNotStp, scriptPath.toString())));
 		}
 		action.setPath(scriptPath);
@@ -174,7 +171,7 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
 		try {
 			action.execute(null);
 		} catch (ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, getPluginID(), e.getMessage()));
+			throw new CoreException(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, e.getMessage()));
 		}
 	}
 

@@ -209,7 +209,7 @@ public final class TapsetLibrary {
 	public static File getTapsetLocation(IPreferenceStore p) {
 		File f;
 		String path = p.getString(PreferenceConstants.P_ENV[2][0]);
-		if(path.trim().equals("")) { //$NON-NLS-1$
+		if(path.trim().isEmpty()) {
 			f = new File("/usr/share/systemtap/tapset"); //$NON-NLS-1$
 			if(!f.exists()) {
 				f = new File("/usr/local/share/systemtap/tapset"); //$NON-NLS-1$

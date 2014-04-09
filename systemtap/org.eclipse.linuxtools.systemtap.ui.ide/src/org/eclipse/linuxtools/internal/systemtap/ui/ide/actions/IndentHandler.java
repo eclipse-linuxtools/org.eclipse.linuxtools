@@ -72,8 +72,6 @@ public class IndentHandler extends AbstractHandler {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-
 		}
 	}
 
@@ -114,7 +112,7 @@ public class IndentHandler extends AbstractHandler {
 			} catch (BadLocationException e) {
 				// will only happen on concurrent modification
 				IDEPlugin.log(new Status(IStatus.ERROR,
-						IDEPlugin.getPluginId(), IStatus.OK, "", e)); //$NON-NLS-1$
+						IDEPlugin.PLUGIN_ID, IStatus.OK, "", e)); //$NON-NLS-1$
 				return null;
 			}
 
@@ -161,7 +159,7 @@ public class IndentHandler extends AbstractHandler {
 					} catch (BadLocationException e) {
 						// will only happen on concurrent modification
 						IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin
-								.getPluginId(), IStatus.OK,
+								.PLUGIN_ID, IStatus.OK,
 								"ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
 					} finally {
 						document.removePosition(end);

@@ -37,7 +37,7 @@ public class STPPartitionScanner extends RuleBasedPartitionScanner {
 	/**
 	 * Detect empty comments
 	 */
-	static class EmptyCommentDetector implements IWordDetector {
+	private static class EmptyCommentDetector implements IWordDetector {
 		@Override
 		public boolean isWordStart(char c) {
 			return (c == '/');
@@ -52,7 +52,7 @@ public class STPPartitionScanner extends RuleBasedPartitionScanner {
 	/**
 	 * Cope with the empty comment issue.
 	 */
-	static class EmptyCommentRule extends WordRule implements IPredicateRule {
+	private static class EmptyCommentRule extends WordRule implements IPredicateRule {
 
 		private IToken fSuccessToken;
 
