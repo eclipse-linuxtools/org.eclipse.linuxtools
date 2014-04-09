@@ -87,7 +87,7 @@ public class Createrepo {
 			IStatus status = new Status(
 					IStatus.ERROR,
 					FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-					NLS.bind(Messages.Createrepo_errorExecuting, commandString), null);
+					NLS.bind(Messages.Createrepo_errorExecuting, commandString), e);
 			throw new CoreException(status);
 		}
 	}
@@ -114,13 +114,13 @@ public class Createrepo {
 			IStatus status = new Status(
 					IStatus.WARNING,
 					FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-					Messages.Createrepo_errorTryingToFindCommand, null);
+					Messages.Createrepo_errorTryingToFindCommand, e);
 			throw new CoreException(status);
 		} catch (InterruptedException e) {
 			IStatus status = new Status(
 					IStatus.CANCEL,
 					FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-					Messages.Createrepo_jobCancelled, null);
+					Messages.Createrepo_jobCancelled, e);
 			throw new CoreException(status);
 		}
 	}
@@ -187,13 +187,13 @@ public class Createrepo {
 			IStatus status = new Status(
 					IStatus.CANCEL,
 					FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-					Messages.Createrepo_errorCancelled, null);
+					Messages.Createrepo_errorCancelled, e);
 			throw new CoreException(status);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			IStatus status = new Status(
 					IStatus.ERROR,
 					FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-					NLS.bind(Messages.Createrepo_errorPasingVersion, new String[] {createrepoVersion, yumVersion}), null);
+					NLS.bind(Messages.Createrepo_errorPasingVersion, new String[] {createrepoVersion, yumVersion}), e);
 			throw new CoreException(status);
 		}
 	}
