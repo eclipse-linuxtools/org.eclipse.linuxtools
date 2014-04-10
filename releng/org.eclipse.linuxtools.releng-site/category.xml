@@ -92,6 +92,12 @@
    <iu id="org.apache.xerces" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
+   <feature url="features/org.eclipse.linuxtools.tracing.rcp_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp" version="0.0.0">
+      <category name="Linux Tools LTTng RCP"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.tracing.rcp.branding.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.branding.feature" version="0.0.0">
+      <category name="Linux Tools LTTng RCP"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
@@ -170,6 +176,9 @@
    <feature url="features/org.eclipse.linuxtools.gdbtrace.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gdbtrace.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.tracing.rcp.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools
@@ -183,6 +192,11 @@
    <category-def name="Linux Tools Sources" label="Linux Tools Sources">
       <description>
          Eclipse Linux Tools source features and bundles
+      </description>
+   </category-def>
+   <category-def name="Linux Tools LTTng RCP" label="Linux Tools LTTng RCP">
+      <description>
+         Optional LTTng features
       </description>
    </category-def>
 </site>
