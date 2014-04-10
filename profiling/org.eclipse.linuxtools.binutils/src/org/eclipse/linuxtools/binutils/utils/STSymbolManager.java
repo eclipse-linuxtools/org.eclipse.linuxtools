@@ -140,8 +140,10 @@ public class STSymbolManager {
             AutoDisposeAddr2line ada2l = entry.getValue();
             long diff = currentTime - ada2l.startTime;
             if (diff > AUTO_DISPOSE_TIMEOUT) {
-                ada2l.addr2line.dispose();
-                ada2l.addr2line = null;
+				if (ada2l.addr2line != null) {
+					ada2l.addr2line.dispose();
+					ada2l.addr2line = null;
+				}
                 iter.remove();
             }
         }
