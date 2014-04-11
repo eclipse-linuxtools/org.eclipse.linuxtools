@@ -20,7 +20,7 @@ public class MemcheckLaunchConfigurationTabGroup extends
 	@Override
 	public AbstractLaunchConfigurationTab[] getProfileTabs() {
 		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindSingleToolOptionsTab("org.eclipse.linuxtools.valgrind.launch.memcheck"), //$NON-NLS-1$
+			new ValgrindSingleToolOptionsTab(MemcheckPlugin.TOOL_ID)
 		};
 	}	
 	

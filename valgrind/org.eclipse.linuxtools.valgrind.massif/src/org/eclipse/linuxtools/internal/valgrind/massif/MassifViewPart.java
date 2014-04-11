@@ -330,7 +330,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 					.indexOf("[massif")); //$NON-NLS-1$
 		}
 		catch(IndexOutOfBoundsException e) {
-			launchName = "(No chart title)";
+			launchName = "(No chart title)"; //$NON-NLS-1$
 		}
 		return launchName.trim();
 	}

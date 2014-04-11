@@ -18,7 +18,7 @@ public final class MassifCommandConstants {
 	public static final String OPT_STACKS = "--stacks"; //$NON-NLS-1$
 	public static final String OPT_DEPTH = "--depth"; //$NON-NLS-1$
 	public static final String OPT_ALLOCFN = "--alloc-fn"; //$NON-NLS-1$
-	public static final String OPT_IGNOREFN = "--ignore-fn"; //<name> $NON-NLS-1$
+	public static final String OPT_IGNOREFN = "--ignore-fn"; //$NON-NLS-1$
 	public static final String OPT_THRESHOLD = "--threshold"; //$NON-NLS-1$
 	public static final String OPT_PEAKINACCURACY = "--peak-inaccuracy"; //$NON-NLS-1$
 	public static final String OPT_TIMEUNIT = "--time-unit"; //$NON-NLS-1$

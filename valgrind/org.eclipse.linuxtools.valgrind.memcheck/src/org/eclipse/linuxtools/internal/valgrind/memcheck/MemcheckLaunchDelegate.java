@@ -31,7 +31,7 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String HEX = "0x"; //$NON-NLS-1$
 
 	@Override
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) {
 	}
 	
 	@Override
@@ -76,7 +76,6 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 	}
 
 	@Override
-	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
-			throws CoreException {
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) {
 	}
 }

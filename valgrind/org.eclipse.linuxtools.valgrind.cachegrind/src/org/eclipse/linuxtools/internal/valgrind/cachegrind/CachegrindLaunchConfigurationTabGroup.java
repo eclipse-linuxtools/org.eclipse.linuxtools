@@ -20,7 +20,7 @@ public class CachegrindLaunchConfigurationTabGroup extends
 	@Override
 	public AbstractLaunchConfigurationTab[] getProfileTabs() {
 		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindSingleToolOptionsTab("org.eclipse.linuxtools.valgrind.launch.cachegrind"), //$NON-NLS-1$
+			new ValgrindSingleToolOptionsTab(CachegrindPlugin.TOOL_ID),
 		};
 	}	
 	

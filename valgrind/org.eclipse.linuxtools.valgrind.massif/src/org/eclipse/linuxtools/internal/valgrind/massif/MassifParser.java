@@ -48,7 +48,6 @@ public class MassifParser {
 	public MassifParser(File inputFile) throws IOException {
 		ArrayList<MassifSnapshot> list = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(inputFile))){
-			;
 			String line;
 			MassifSnapshot snapshot = null;
 			String cmd = null;

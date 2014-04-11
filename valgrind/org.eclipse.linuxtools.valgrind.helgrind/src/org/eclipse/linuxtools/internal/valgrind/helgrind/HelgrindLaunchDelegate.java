@@ -29,7 +29,7 @@ public class HelgrindLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String YES = "yes"; //$NON-NLS-1$
 
 	@Override
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) {
 	}
 	
 	@Override
@@ -43,7 +43,6 @@ public class HelgrindLaunchDelegate implements IValgrindLaunchDelegate {
 	}
 
 	@Override
-	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
-			throws CoreException {
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) {
 	}
 }

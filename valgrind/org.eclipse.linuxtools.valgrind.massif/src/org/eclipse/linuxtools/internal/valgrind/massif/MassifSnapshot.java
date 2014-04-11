@@ -11,8 +11,8 @@
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 public class MassifSnapshot {
-	public static enum TimeUnit { INSTRUCTIONS, MILLISECONDS, BYTES };
-	public static enum SnapshotType { EMPTY, DETAILED, PEAK };
+	public static enum TimeUnit { INSTRUCTIONS, MILLISECONDS, BYTES }
+	public static enum SnapshotType { EMPTY, DETAILED, PEAK }
 	
 	protected long number;
 	protected long time;

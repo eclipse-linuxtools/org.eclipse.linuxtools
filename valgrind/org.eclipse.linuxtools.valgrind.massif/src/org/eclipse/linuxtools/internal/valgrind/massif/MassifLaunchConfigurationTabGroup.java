@@ -20,7 +20,7 @@ public class MassifLaunchConfigurationTabGroup extends
 	@Override
 	public AbstractLaunchConfigurationTab[] getProfileTabs() {
 		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindSingleToolOptionsTab("org.eclipse.linuxtools.valgrind.launch.massif"), //$NON-NLS-1$
+			new ValgrindSingleToolOptionsTab(MassifPlugin.TOOL_ID)
 		};
 	}	
 	

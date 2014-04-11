@@ -50,9 +50,9 @@ public final class MemcheckLaunchConstants {
 	public static final boolean DEFAULT_MEMCHECK_ALIGNMENT_BOOL = false;
 	public static final int DEFAULT_MEMCHECK_ALIGNMENT_VAL = 0;
 	public static final boolean DEFAULT_MEMCHECK_MALLOCFILL_BOOL = false;
-	public static final String DEFAULT_MEMCHECK_MALLOCFILL_VAL = "";
+	public static final String DEFAULT_MEMCHECK_MALLOCFILL_VAL = ""; //$NON-NLS-1$
 	public static final boolean DEFAULT_MEMCHECK_FREEFILL_BOOL = false;
-	public static final String DEFAULT_MEMCHECK_FREEFILL_VAL = "";
+	public static final String DEFAULT_MEMCHECK_FREEFILL_VAL = ""; //$NON-NLS-1$
 	public static final List<String> DEFAULT_MEMCHECK_IGNORE_RANGES = Collections.emptyList();
 	
 	// VG >= 3.4.0

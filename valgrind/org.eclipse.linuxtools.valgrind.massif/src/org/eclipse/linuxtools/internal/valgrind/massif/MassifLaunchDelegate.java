@@ -114,7 +114,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	}
 	
 	@Override
-	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException {
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) {
 		if (output != null && view instanceof MassifViewPart) {
 			((MassifViewPart) view).setChartName(contentDescription);
 			((MassifViewPart) view).setOutput(output);

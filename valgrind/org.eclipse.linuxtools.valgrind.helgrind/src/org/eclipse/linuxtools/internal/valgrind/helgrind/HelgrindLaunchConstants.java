@@ -12,18 +12,21 @@
 package org.eclipse.linuxtools.internal.valgrind.helgrind;
 
 public final class HelgrindLaunchConstants {
-	// LaunchConfiguration attributes
-	public static final String ATTR_HELGRIND_LOCKORDERS = HelgrindPlugin.PLUGIN_ID + ".HELGRIND_LOCKORDERS";
-	public static final String ATTR_HELGRIND_HISTORYLEVEL = HelgrindPlugin.PLUGIN_ID + ".HELGRIND_HISTORYLEVEL";
-	public static final String ATTR_HELGRIND_CACHESIZE = HelgrindPlugin.PLUGIN_ID + ".HELGRIND_CACHESIZE";
-	
-	// default values
-	public static final String HISTORY_NONE = "none";
-	public static final String HISTORY_APPROX = "approx";
-	public static final String HISTORY_FULL = "full";
-	
-	public static final boolean DEFAULT_HELGRIND_LOCKORDERS = true;
-	public static final String DEFAULT_HELGRIND_HISTORYLEVEL = HISTORY_FULL;
-	public static final int DEFAULT_HELGRIND_CACHESIZE = 1000000;
+    // LaunchConfiguration attributes
+    public static final String ATTR_HELGRIND_LOCKORDERS = HelgrindPlugin.PLUGIN_ID
+            + ".HELGRIND_LOCKORDERS"; //$NON-NLS-1$
+    public static final String ATTR_HELGRIND_HISTORYLEVEL = HelgrindPlugin.PLUGIN_ID
+            + ".HELGRIND_HISTORYLEVEL"; //$NON-NLS-1$
+    public static final String ATTR_HELGRIND_CACHESIZE = HelgrindPlugin.PLUGIN_ID
+            + ".HELGRIND_CACHESIZE"; //$NON-NLS-1$
+
+    // default values
+    public static final String HISTORY_NONE = "none"; //$NON-NLS-1$
+    public static final String HISTORY_APPROX = "approx"; //$NON-NLS-1$
+    public static final String HISTORY_FULL = "full"; //$NON-NLS-1$
+
+    public static final boolean DEFAULT_HELGRIND_LOCKORDERS = true;
+    public static final String DEFAULT_HELGRIND_HISTORYLEVEL = HISTORY_FULL;
+    public static final int DEFAULT_HELGRIND_CACHESIZE = 1000000;
 
 }
