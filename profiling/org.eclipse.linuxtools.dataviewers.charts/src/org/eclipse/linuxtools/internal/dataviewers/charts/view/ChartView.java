@@ -83,13 +83,13 @@ public class ChartView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         this.parent = parent;
-        createActions(parent);
+        createActions();
         IActionBars actionBars = getViewSite().getActionBars();
         initToolBar(actionBars.getToolBarManager());
     }
 
-    protected void createActions(Composite parent) {
-        saveChartAction = new SaveChartAction(getViewSite().getShell(), this);
+    protected void createActions() {
+        saveChartAction = new SaveChartAction(getViewSite().getShell());
     }
 
     protected void initToolBar(IToolBarManager manager) {

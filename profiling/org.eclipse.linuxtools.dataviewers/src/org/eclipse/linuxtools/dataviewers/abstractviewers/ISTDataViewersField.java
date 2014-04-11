@@ -29,9 +29,6 @@ import org.eclipse.swt.graphics.Image;
  * <li>It allows a "custom rendering", for example if you want to display percentages as progress bars or to display
  * hyperlink as underlined text
  * </ul>
- * Three abstract implementations are available: {@link AbstractSTDataViewersField} for default rendering
- * {@link AbstractPercentageDrawerField} for displaying percentages as progress bars
- * {@link STDataViewersHyperLinkDrawerField} for displaying hyperlinks as underlined text
  */
 public interface ISTDataViewersField {
     /**
@@ -129,10 +126,4 @@ public interface ISTDataViewersField {
      * @return one of: SWT.LEFT, SWT.RIGHT, SWT.CENTER, SWT.NONE. Note that SWT.NONE is equivalent to SWT.LEFT
      */
     int getAlignment();
-
-    /**
-     * Indicates if the given element is a hyperlink to something as a view, editor, dialog,etc...
-     */
-    boolean isHyperLink(Object element);
-
 }

@@ -225,7 +225,7 @@ public class STAnnotatedCSourceEditor extends CEditor implements LineBackgroundL
         @Override
         protected Object getToolTipArea(Event event) {
             int line = control.toDocumentLineNumber(event.y);
-            return new ToolTipArea(line, control.getAnnotationColumn(line));
+            return new ToolTipArea(line, control.getAnnotationColumn());
         }
 
         @Override

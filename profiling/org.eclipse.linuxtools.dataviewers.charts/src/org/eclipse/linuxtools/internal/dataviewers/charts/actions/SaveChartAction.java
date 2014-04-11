@@ -21,7 +21,6 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Messages;
-import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -72,7 +71,7 @@ public class SaveChartAction extends Action {
      * @param shell
      *            the shell used by the dialogs
      */
-    public SaveChartAction(Shell shell, ChartView cview) {
+    public SaveChartAction(Shell shell) {
         super(Messages.ChartConstants_SAVE_CHART_AS + "...", Activator.getImageDescriptor("icons/save_chart.gif")); //$NON-NLS-1$ //$NON-NLS-2$
         this.setEnabled(false);
         this.shell = shell;

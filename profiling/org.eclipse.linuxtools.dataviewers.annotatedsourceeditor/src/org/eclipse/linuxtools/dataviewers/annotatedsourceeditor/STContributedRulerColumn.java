@@ -100,7 +100,7 @@ public class STContributedRulerColumn extends AbstractContributedRulerColumn imp
         return fDelegate.getControl();
     }
 
-    public ISTAnnotationColumn getAnnotationColumn(int line) {
+    public ISTAnnotationColumn getAnnotationColumn() {
         if (fDelegate != null) {
             return fDelegate.getSTAnnotationColumn();
         }

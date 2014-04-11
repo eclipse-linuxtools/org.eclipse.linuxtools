@@ -14,12 +14,9 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Tree;
@@ -37,16 +34,8 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
         super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
     }
 
-    public AbstractSTTreeViewer(Composite parent, boolean init) {
-        super(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION, init);
-    }
-
     public AbstractSTTreeViewer(Composite parent, int style) {
         super(parent, style, true);
-    }
-
-    public AbstractSTTreeViewer(Composite parent, int style, boolean init) {
-        super(parent, style, init);
     }
 
     /**
@@ -72,7 +61,7 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
      * @param style
      * @return Tree
      */
-    protected Tree createTree(Composite parent, int style) {
+    private Tree createTree(Composite parent, int style) {
         Tree tree = new Tree(parent, style);
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);
@@ -111,26 +100,6 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
             viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
         }
 
-        tree.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDoubleClick(MouseEvent e) {
-                Tree tree = (Tree) e.widget;
-                TreeItem item = tree.getItem(new Point(e.x, e.y));
-                if (item != null) {
-                    for (int i = 0; i < tree.getColumnCount(); i++) {
-                        ISTDataViewersField field = getAllFields()[i];
-                        if (field.isHyperLink(item.getData())) {
-                            Rectangle bounds = item.getBounds(i);
-                            if (bounds.contains(e.x, e.y)) {
-                                handleHyperlink(field, item.getData());
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
         tree.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
@@ -138,21 +107,7 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
                 TreeItem item = tree.getItem(new Point(e.x, e.y));
                 if (item == null)
                     return;
-
-                for (int i = 0; i < tree.getColumnCount(); i++) {
-                    ISTDataViewersField field = getAllFields()[i];
-                    Cursor cursor = null;
-                    if (field.isHyperLink(item.getData())) {
-                        Rectangle bounds = item.getBounds(i);
-                        if (bounds.contains(e.x, e.y)) {
-                            cursor = e.display.getSystemCursor(SWT.CURSOR_HAND);
-                            tree.setCursor(cursor);
-                            return;
-                        }
-                    }
-                    cursor = e.display.getSystemCursor(SWT.CURSOR_ARROW);
-                    tree.setCursor(cursor);
-                }
+                tree.setCursor(e.display.getSystemCursor(SWT.CURSOR_ARROW));
             }
 
         });
@@ -258,6 +213,4 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
         return (TreeViewer) super.getViewer();
     }
 
-    public void handleHyperlink(ISTDataViewersField field, Object data) {
-    }
 }
