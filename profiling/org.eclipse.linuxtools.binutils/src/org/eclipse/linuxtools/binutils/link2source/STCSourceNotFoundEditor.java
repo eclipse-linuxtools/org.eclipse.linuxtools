@@ -61,11 +61,6 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     public STCSourceNotFoundEditor() {
     }
 
-    @Override
-    public void createPartControl(Composite parent) {
-        super.createPartControl(parent);
-    }
-
     private IPath getMissingFile() {
         IEditorInput i = this.getEditorInput();
         if (i instanceof STCSourceNotFoundEditorInput) {
@@ -212,7 +207,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
         }
     }
 
-    protected void locateFile() {
+    private void locateFile() {
         FileDialog dialog = new FileDialog(getEditorSite().getShell(), SWT.NONE);
         IPath missingPath = getMissingFile();
         dialog.setFilterNames(new String[] { Messages.STCSourceNotFoundEditor_missing_source_file });

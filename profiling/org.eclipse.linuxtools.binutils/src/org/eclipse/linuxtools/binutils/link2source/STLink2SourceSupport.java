@@ -14,10 +14,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.cdt.core.IAddress;
-import org.eclipse.cdt.core.IAddressFactory;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
-import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
@@ -25,7 +22,6 @@ import org.eclipse.cdt.core.model.IOutputEntry;
 import org.eclipse.cdt.core.model.ISourceRoot;
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
 import org.eclipse.cdt.ui.CUIPlugin;
-import org.eclipse.cdt.utils.Addr64;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
@@ -43,7 +39,6 @@ import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.binutils.Activator;
-import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -68,33 +63,6 @@ public class STLink2SourceSupport {
     }
 
     /**
-     * Open a C Editor at the location of the given symbol
-     *
-     * @param symbol
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtSymbol(ISymbol symbol, IProject project) {
-        if (symbol == null)
-            return false;
-        return openSourceFileAtSymbol(symbol.getBinaryObject(), symbol, project);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param addr2lineOutput
-     *            a location, as returned by addr2line (/path/to/file:linenumber)
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(String binaryLoc, String addr2lineOutput) {
-        if (binaryLoc == null)
-            return false;
-        return openSourceFileAtLocation(new Path(binaryLoc), addr2lineOutput);
-    }
-
-    /**
      * Open a C Editor at the given location
      *
      * @param binaryLoc
@@ -104,120 +72,7 @@ public class STLink2SourceSupport {
      * @param lineNumber
      * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
      */
-    public boolean openSourceFileAtLocation(String binaryLoc, String sourceLoc, String lineNumber) {
-        if (binaryLoc == null)
-            return false;
-        return openSourceFileAtLocation(new Path(binaryLoc), sourceLoc, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(String binaryLoc, String sourceLoc, int lineNumber) {
-        if (binaryLoc == null)
-            return false;
-        return openSourceFileAtLocation(new Path(binaryLoc), sourceLoc, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(String binaryLoc, long address, IProject project) {
-        if (binaryLoc == null)
-            return false;
-        return openSourceFileAtAddress(new Path(binaryLoc), address, project);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(String binaryLoc, String address, IProject project) {
-        if (binaryLoc == null)
-            return false;
-        return openSourceFileAtAddress(new Path(binaryLoc), address, project);
-
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param addr2lineOutput
-     *            a location, as returned by addr2line (/path/to/file:linenumber)
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IPath binaryLoc, String addr2lineOutput) {
-        String filename = getFileName(addr2lineOutput);
-        int lineNumber = getLineNumber(addr2lineOutput);
-        return openSourceFileAtLocation(binaryLoc, filename, lineNumber);
-
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IPath binaryLoc, String sourceLoc, String lineNumber) {
-        int _lineNumber = -1;
-        try {
-            _lineNumber = Integer.parseInt(lineNumber);
-        } catch (Exception _) {
-        }
-        return openSourceFileAtLocation(binaryLoc, sourceLoc, _lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IPath binaryLoc, String sourceLoc, int lineNumber) {
-        if (sourceLoc == null)
-            return false;
-        IPath p = new Path(sourceLoc);
-        return openSourceFileAtLocation(binaryLoc, p, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
+    private boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IFile binary = root.getFileForLocation(binaryLoc);
         IProject project = null;
@@ -236,142 +91,8 @@ public class STLink2SourceSupport {
      * @param lineNumber
      * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
      */
-    public boolean openSourceFileAtLocation(IProject project, String sourceLoc, int lineNumber) {
-        if (sourceLoc == null)
-            return false;
-        IPath p = new Path(sourceLoc);
-        return openFileImpl(project, p, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param project
-     *            the parent project
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
     public boolean openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
         return openFileImpl(project, sourceLoc, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(IPath binaryLoc, long address, IProject project) {
-        IBinaryObject bf = STSymbolManager.sharedInstance.getBinaryObject(binaryLoc);
-        if (bf != null) {
-            return openSourceFileAtAddress(bf, address, project);
-        }
-        return false;
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(IPath binaryLoc, String address, IProject project) {
-        IBinaryObject bf = STSymbolManager.sharedInstance.getBinaryObject(binaryLoc);
-        if (bf != null) {
-            return openSourceFileAtAddress(bf, address, project);
-        }
-        return false;
-    }
-
-    /*
-     * Method inspired from org.eclipse.cdt.utils.Addr2line.getFileName(IAddress)
-     */
-    private String getFileName(String loc) {
-        String filename = null;
-        int index1, index2;
-        if (loc != null && (index1 = loc.lastIndexOf(':')) != -1) {
-            // we do this because addr2line on win produces
-            // <cygdrive/pathtoexc/C:/pathtofile:##>
-            index2 = loc.indexOf(':');
-            if (index1 == index2) {
-                index2 = 0;
-            } else {
-                index2--;
-            }
-            filename = loc.substring(index2, index1);
-        }
-        return filename;
-    }
-
-    /*
-     * Method inspired from org.eclipse.cdt.utils.Addr2line.getFileName(IAddress)
-     */
-    private int getLineNumber(String loc) {
-        if (loc != null) {
-            int colon = loc.lastIndexOf(':');
-            String number = loc.substring(colon + 1);
-            if (!number.startsWith("0")) { //$NON-NLS-1$
-                try {
-                    return Integer.parseInt(number);
-                } catch (Exception ex) {
-                    return -1;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Opens a C Editor pointing to the given symbol
-     *
-     * @param binary
-     * @param symbol
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtSymbol(IBinaryObject binary, ISymbol symbol, IProject project) {
-        if (symbol == null)
-            return false;
-        String loc = STSymbolManager.sharedInstance.getLine(symbol, project);
-        return openSourceFileAtLocation(binary, loc);
-    }
-
-    /**
-     * Opens a C Editor pointing to the given location
-     *
-     * @param binary
-     * @param addr2lineOutput
-     *            a location, as returned by addr2line (/path/to/file:linenumber)
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IBinaryObject binary, String addr2lineOutput) {
-        String filename = getFileName(addr2lineOutput);
-        int lineNumber = getLineNumber(addr2lineOutput);
-        return openSourceFileAtLocation(binary, filename, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given location
-     *
-     * @param binary
-     *            a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtLocation(IBinaryObject binary, String sourceLoc, String lineNumber) {
-        int i = -1;
-        try {
-            i = Integer.parseInt(lineNumber);
-        } catch (Exception _) {
-        }
-        return openSourceFileAtLocation(binary, sourceLoc, i);
     }
 
     /**
@@ -389,55 +110,6 @@ public class STLink2SourceSupport {
             return false;
         IPath p = new Path(sourceLoc);
         return openSourceFileAtLocation(binary.getPath(), p, lineNumber);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binary
-     *            a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(IBinaryObject binary, IAddress address, IProject project) {
-        if (binary == null)
-            return false;
-        String loc = STSymbolManager.sharedInstance.getLine(binary, address, project);
-        return openSourceFileAtLocation(binary, loc);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binary
-     *            a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(IBinaryObject binary, long address, IProject project) {
-        String addr = Long.toString(address);
-        return openSourceFileAtAddress(binary, addr, project);
-    }
-
-    /**
-     * Open a C Editor at the given address
-     *
-     * @param binary
-     *            a binary file
-     * @param address
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
-    public boolean openSourceFileAtAddress(IBinaryObject binary, String address, IProject project) {
-        if (binary == null)
-            return false;
-        IAddressFactory factory = binary.getAddressFactory();
-        IAddress addr;
-        if (factory == null) {
-            addr = new Addr64(address);
-        } else {
-            addr = factory.createAddress(address);
-        }
-        return openSourceFileAtAddress(binary, addr, project);
     }
 
     private boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {

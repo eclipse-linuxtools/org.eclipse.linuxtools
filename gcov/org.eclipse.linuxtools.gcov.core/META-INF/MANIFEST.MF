@@ -17,7 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.debug.ui,
  org.eclipse.linuxtools.dataviewers.charts,
- org.eclipse.linuxtools.dataviewers.annotatedsourceeditor,
  org.eclipse.ui.editors;bundle-version="3.8.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
