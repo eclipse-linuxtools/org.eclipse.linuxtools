@@ -105,34 +105,6 @@ public class StatsComparisonTest {
 	}
 
 	@Test
-	public void testStatDataCollection() {
-		IPath statData = Path.fromOSString(STAT_RES + "perf_simple.stat");
-
-		//set up expected result
-		ArrayList<PMStatEntry> expectedStatList = new ArrayList<>();
-
-		expectedStatList.add(new PMStatEntry((float) 4.78, "cpu-clock",
-				(float) 0.0, null, (float) 0.37, (float) 0.0));
-		expectedStatList.add(new PMStatEntry((float) 4.78, "task-clock",
-				(float) 0.08, "CPUs utilized", (float) 0.37, (float) 0.0));
-		expectedStatList.add(new PMStatEntry((float) 1164.0, "page-faults",
-				(float) 0.05, "M/sec", (float) 0.01, (float) 0.0));
-		expectedStatList.add(new PMStatEntry((float) 2164.0, "minor-faults",
-				(float) 0.06, "M/sec", (float) 0.01, (float) 0.0));
-		expectedStatList.add(new PMStatEntry((float) 9.6418E-4,
-				"seconds time elapsed", (float) 0.0, null, (float) 0.46,
-				(float) 0.0));
-
-		ArrayList<PMStatEntry> actualStatList = StatComparisonData.collectStats(statData);
-
-		assertFalse(actualStatList.isEmpty());
-
-		for(PMStatEntry expectedEntry : expectedStatList){
-			assertTrue(actualStatList.contains(expectedEntry));
-		}
-	}
-
-	@Test
 	public void testStatDataComparisonFieldGetters() {
 		IPath oldStatData = Path.fromOSString(STAT_RES + "perf_old.stat");
 		IPath newStatData = Path.fromOSString(STAT_RES + "perf_new.stat");

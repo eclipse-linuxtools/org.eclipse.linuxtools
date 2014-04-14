@@ -81,7 +81,7 @@ public class UiModelRoot implements IUiModelElement {
 	@Override
 	public IUiModelElement[] getChildren() {
 		if (session != null && session.length != 0) {
-			if (UiModelRoot.SORT_TYPE.SESSION == UiModelRoot.getSortingType()) {
+			if (UiModelRoot.SortType.SESSION == UiModelRoot.getSortingType()) {
 				Arrays.sort(session, UiModelSorting.getInstance());
 				return session;
 			}
@@ -122,15 +122,13 @@ public class UiModelRoot implements IUiModelElement {
 	 * @since 3.0
 	 *
 	 */
-	public static enum SORT_TYPE{DEFAULT,SESSION,EVENT,LIB,FUNCTION,LINE_NO}
-	private static SORT_TYPE sortType;
-	public static void setSortingType(SORT_TYPE sortType)
-	{
+	public static enum SortType{DEFAULT,SESSION,EVENT,LIB,FUNCTION,LINE_NO}
+	private static SortType sortType;
+	public static void setSortingType(SortType sortType) {
 		UiModelRoot.sortType = sortType;
 	}
 
-	public static SORT_TYPE getSortingType()
-	{
+	public static SortType getSortingType() {
 		return UiModelRoot.sortType;
 	}
 }

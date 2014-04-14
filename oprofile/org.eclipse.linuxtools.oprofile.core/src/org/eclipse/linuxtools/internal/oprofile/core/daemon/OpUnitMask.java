@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> 
+ *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.daemon;
@@ -16,8 +16,8 @@ package org.eclipse.linuxtools.internal.oprofile.core.daemon;
  * A class representing the unit mask that may be associated with oprofile
  * events. Note that since this class was originally written, oprofile unit
  * masks have changed -- a single unit mask may affect several bits at once.
- * Hence, instead of a certain bit being flipped, the specific bits to be changed 
- * are determined by the particular mask's index 
+ * Hence, instead of a certain bit being flipped, the specific bits to be changed
+ * are determined by the particular mask's index
  */
 public class OpUnitMask {
 	/**
@@ -34,7 +34,7 @@ public class OpUnitMask {
 		 */
 		public String description;
 	}
-	
+
 	public static final int SET_DEFAULT_MASK = -1;
 
 	/**
@@ -107,9 +107,9 @@ public class OpUnitMask {
 	 */
 	public void setDefault(int theDefault) {
 		defaultMask = theDefault;
-		setDefaultMaskValue();	
+		setDefaultMaskValue();
 	}
-	
+
 	/**
 	 * Sets the unitmask type.
 	 * Only used from the XML parsers.
@@ -118,7 +118,7 @@ public class OpUnitMask {
 	public void setType(int type) {
 		maskType = type;
 	}
-	
+
 	/**
 	 * Returns the integer value of this unitmask, suitable for passing to oprofile.
 	 * @return the integer value
@@ -130,7 +130,7 @@ public class OpUnitMask {
 	/**
 	 * Tests whether a particular mask is set in the unitmask value, based on the
 	 * value of the mask option at the given index.
-	 * 
+	 *
 	 * @param index the index of the mask option to check
 	 * @return whether the given mask option's value is set
 	 */
@@ -156,8 +156,8 @@ public class OpUnitMask {
 	}
 
 	/**
-	 * Sets the absolute unitmask value. 
-	 * 
+	 * Sets the absolute unitmask value.
+	 *
 	 * @param newValue the new value of this unitmask
 	 */
 	public void setMaskValue(int newValue) {
@@ -167,7 +167,7 @@ public class OpUnitMask {
 			mask = newValue;
 		}
 	}
-	
+
 	/**
 	 * Sets the bits of the given mask option's value in the unitmask value.
 	 * @param index the index of the mask option to set
@@ -205,7 +205,7 @@ public class OpUnitMask {
 		//type invalid or unknown, or out of bounds
 		return -1;
 	}
-	
+
 	/**
 	 * Unset the bits of the given mask option's value in the unitmask value.
 	 * @param index the index of the mask option to set
@@ -229,12 +229,13 @@ public class OpUnitMask {
 	 * @return the description
 	 */
 	public String getText(int num) {
-		if (num >= 0 && num < maskOptionDescriptions.length)
+		if (num >= 0 && num < maskOptionDescriptions.length) {
 			return maskOptionDescriptions[num];
+		}
 
 		return null;
 	}
-	
+
 	/**
 	 * Returns the number of mask options in this unitmask.
 	 * @return the number of mask options

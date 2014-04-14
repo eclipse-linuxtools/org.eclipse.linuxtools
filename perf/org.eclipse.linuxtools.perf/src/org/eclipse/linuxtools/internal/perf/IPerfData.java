@@ -19,11 +19,11 @@ public interface IPerfData {
 	 * Get string representation of the data.
 	 * @return String perf data
 	 */
-	public String getPerfData();
+	String getPerfData();
 
 	/**
 	 * Get title for this data.
 	 * @return title for perf data
 	 */
-	public String getTitle();
+	String getTitle();
 }

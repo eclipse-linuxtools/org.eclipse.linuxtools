@@ -131,7 +131,7 @@ public class UiModelSymbol implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		if (UiModelRoot.SORT_TYPE.LINE_NO == UiModelRoot.getSortingType()) {
+		if (UiModelRoot.SortType.LINE_NO == UiModelRoot.getSortingType()) {
 			Arrays.sort(samples, UiModelSorting.getInstance());
 			return samples;
 		}

@@ -113,9 +113,7 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
 			}
 			joinAll();
 			text = data.toString();
-		} catch (IOException e) {
-			text = ""; //$NON-NLS-1$
-		} catch (InterruptedException e){
+		} catch (IOException|InterruptedException e) {
 			text = ""; //$NON-NLS-1$
 		}finally {
 			try {

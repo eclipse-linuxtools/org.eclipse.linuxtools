@@ -155,7 +155,7 @@ public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarge
 	/**
 	 * Create find dialog and set is as a toolbar action.
 	 */
-	public void setupFindDialog() {
+	private void setupFindDialog() {
 		FindReplaceAction findAction = new FindReplaceAction(
 				Platform.getResourceBundle(PerfPlugin.getDefault().getBundle()),
 				null, text.getShell(), this);

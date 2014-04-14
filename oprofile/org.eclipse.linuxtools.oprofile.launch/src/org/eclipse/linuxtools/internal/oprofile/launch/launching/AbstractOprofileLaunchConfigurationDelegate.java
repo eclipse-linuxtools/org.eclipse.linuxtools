@@ -298,7 +298,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Profil
 		}
 		return null;
 	}
-	
+
 	/**
 	 *
 	 * @param config

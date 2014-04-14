@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
@@ -45,7 +46,7 @@ import org.osgi.framework.Version;
 
 public class PerfCore {
 
-	public static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
+	private static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
 
 		StringBuffer strBuf = new StringBuffer();
 		String line = null;
@@ -64,15 +65,15 @@ public class PerfCore {
 		return str;
 	}
 	// Maps event lists to host names for caching
-	private static HashMap<String,HashMap<String, ArrayList<String>>> eventsHostMap = null;
-	private static HashMap<String,ArrayList<String>> eventList = null;
+	private static Map<String,Map<String, List<String>>> eventsHostMap = null;
+	private static Map<String,List<String>> eventList = null;
 
 	/**
 	 * Gets the list of events for a given launch configuration. Uses a cache for each host
 	 * @param config
 	 * @return
 	 */
-	public static HashMap<String,ArrayList<String>> getEventList(ILaunchConfiguration config) {
+	public static Map<String,List<String>> getEventList(ILaunchConfiguration config) {
 		String projectHost = getHostName(config);
 
 		if(eventsHostMap == null){
@@ -136,8 +137,8 @@ public class PerfCore {
 		return null;
 	}
 
-	private static HashMap<String,ArrayList<String>> loadEventList(ILaunchConfiguration config){
-		HashMap<String,ArrayList<String>> events = new HashMap<>();
+	private static Map<String,List<String>> loadEventList(ILaunchConfiguration config){
+		Map<String,List<String>> events = new HashMap<>();
 		IProject project = getProject(config);
 
 		if (!PerfCore.checkPerfInPath(project)) {
@@ -163,8 +164,8 @@ public class PerfCore {
 		return parseEventList(input);
 	}
 
-	public static HashMap<String,ArrayList<String>> parseEventList (BufferedReader input){
-		HashMap<String,ArrayList<String>> events = new HashMap<>();
+	public static Map<String,List<String>> parseEventList (BufferedReader input){
+		Map<String,List<String>> events = new HashMap<>();
 		String line;
 		try {
 			// Process list of events. Each line is of the form <event>\s+<category>.
@@ -185,7 +186,7 @@ public class PerfCore {
 						}
 						category = line.replaceFirst(".*\\[(.+)\\]", "$1").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					ArrayList<String> categoryEvents = events.get(category);
+					List<String> categoryEvents = events.get(category);
 					if (categoryEvents == null) {
 						categoryEvents = new ArrayList<>();
 						events.put(category, categoryEvents);
@@ -232,15 +233,11 @@ public class PerfCore {
 	}
 
 
-	public static boolean checkPerfInPath(IProject project)
-	{
-		try
-		{
+	public static boolean checkPerfInPath(IProject project)	{
+		try	{
 			Process p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
 			return (p != null);
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e)	{
 			return false;
 		}
 	}
@@ -408,7 +405,7 @@ public class PerfCore {
 				invisibleRoot, OldPerfVersion, input, error, null);
 	}
 
-	public static void parseRemoteReport(ILaunchConfiguration config,
+	private static void parseRemoteReport(ILaunchConfiguration config,
 			IPath workingDir, IProgressMonitor monitor, String perfDataLoc,
 			PrintStream print, TreeParent invisibleRoot,
 			boolean OldPerfVersion, BufferedReader input, BufferedReader error, IProject project) {
@@ -651,7 +648,7 @@ public class PerfCore {
 		}
 	}
 
-	public static void RefreshView (final String title) {
+	public static void refreshView (final String title) {
 		Display.getDefault().syncExec(new Runnable() {
 
 			@Override

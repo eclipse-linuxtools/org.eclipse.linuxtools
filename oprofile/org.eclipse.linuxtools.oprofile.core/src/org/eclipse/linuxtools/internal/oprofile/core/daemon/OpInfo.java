@@ -8,7 +8,7 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com>
- *******************************************************************************/ 
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.daemon;
 
@@ -31,7 +31,7 @@ public class OpInfo {
 	public static final String DEFAULT_LOCK_FILE = DefaultsProcessor.LOCK_FILE;
 	public static final String DEFAULT_LOG_FILE = DefaultsProcessor.LOG_FILE;
 	public static final String DEFAULT_DUMP_STATUS = DefaultsProcessor.DUMP_STATUS;
-	
+
 	/**
 	 *  A comparator class used when sorting events
 	 *  (sorting by event name)
@@ -61,49 +61,49 @@ public class OpInfo {
 			return astr.compareTo(bstr);
 		}
 	}
-	
+
 	/**
 	 *  The number of counters supported by this configuration
 	 */
 	private int nrCounters;
-	
+
 	/**
 	 *  A HashMap of Oprofile defaults
 	 */
 	private HashMap<String,String> defaults;
-	
+
 	/**
 	 *  The permanent list of events indexed by counter
 	 */
 	private OpEvent[][] eventList;
-	
+
 	/**
 	 *  The CPU frequency of this CPU in MHz
 	 */
 	private double cpuSpeed;
-	
+
 	/**
 	 *  Whether or not oprofile is running in timer mode
 	 */
 	private boolean timerMode;
-	
+
 	/**
 	 * Return all of Oprofile's generic information.
 	 * @return a class containing the information
 	 */
-	public static OpInfo getInfo() {		
+	public static OpInfo getInfo() {
 		// Run opmxl and get the static information
 		OpInfo info = new OpInfo();
 
 		try {
 			OpInfoRunner opxml = (OpInfoRunner) OprofileCorePlugin.getDefault().getOpxmlProvider().info(info);
 			boolean ret = opxml.run0(null);
-			if (ret == false) 
+			if (ret == false) {
 				info = null;
-		} catch (InvocationTargetException e) {
-		} catch (InterruptedException e) {
+			}
+		} catch (InvocationTargetException|InterruptedException e) {
 		}
-		
+
 		return info;
 	}
 
@@ -116,7 +116,7 @@ public class OpInfo {
 	 */
 	public void setNrCounters(int ctrs) {
 		nrCounters = ctrs;
-		
+
 		// Allocate room for event lists for the counters
 		eventList = new OpEvent[nrCounters][];
 	}
@@ -152,7 +152,7 @@ public class OpInfo {
 			Arrays.sort(eventList[counterNum], new SortEventComparator());
 		}
 	}
-	
+
 	/**
 	 * Sets whether or not oprofile is operating in timer mode.
 	 * Only called from XML parsers.
@@ -169,7 +169,7 @@ public class OpInfo {
 	public int getNrCounters() {
 		return nrCounters;
 	}
-		
+
 	/**
 	 * Returns the CPU's speed in MHz
 	 * @return the speed
@@ -177,7 +177,7 @@ public class OpInfo {
 	public double getCPUSpeed() {
 		return cpuSpeed;
 	}
-	
+
 	/**
 	 * Returns the requested default. Valid defaults are <code>DEFAULT_DUMP_STATUS</code>,
 	 * <code>DEFAULT_LOCK_FILE</code>, <code>DEFAULT_LOG_FILE</code>, and
@@ -193,14 +193,15 @@ public class OpInfo {
 	 * Returns an array of events valid for the given counter number.
 	 * @param num the counter number
 	 * @return an array of valid events
-	 */ 
+	 */
 	public OpEvent[] getEvents(int num) {
-		if (num >= 0 && num < eventList.length)
+		if (num >= 0 && num < eventList.length) {
 			return eventList[num];
-		
+		}
+
 		return new OpEvent[0];
 	}
-	
+
 	/**
 	 * Returns whether or not oprofile is operating in timer mode.
 	 * @return a boolean, true if in timer mode, false if not
@@ -208,7 +209,7 @@ public class OpInfo {
 	public boolean getTimerMode() {
 		return timerMode;
 	}
-	
+
 	/**
 	 * Searches the for the event with the given name
 	 * @param name the name of the event (e.g., CPU_CLK_UNHALTED)
@@ -218,10 +219,11 @@ public class OpInfo {
 		// Search through all counters
 		for (int counter = 0; counter < getNrCounters(); ++counter) {
 			int idx = Arrays.binarySearch(getEvents(counter), name, new SearchEventComparator());
-			if (idx >= 0)
+			if (idx >= 0) {
 				return eventList[counter][idx];
+			}
 		}
-		
+
 		return null;
 	}
 }

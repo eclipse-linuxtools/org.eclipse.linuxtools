@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 import java.util.Arrays;
 
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
@@ -40,10 +39,10 @@ public class UiModelSession implements IUiModelElement {
 	 * @param session Oprofile session node in the data model
 	 */
 	public UiModelSession(OpModelSession session) {
-		if(session != null){
-			this.session = session;
-		refreshModel();
-		}
+        if (session != null) {
+            this.session = session;
+            refreshModel();
+        }
 	}
 
 	private void refreshModel() {
@@ -54,11 +53,6 @@ public class UiModelSession implements IUiModelElement {
 			events[i] = new UiModelEvent(this, dataModelEvents[i]);
 		}
 
-	}
-
-	protected OpModelSession[] getModelDataSessions() {
-		OpModelRoot modelRoot = OpModelRoot.getDefault();
-		return modelRoot.getSessions();
 	}
 
 	@Override
@@ -92,7 +86,7 @@ public class UiModelSession implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement[] getChildren() {
-		if (UiModelRoot.SORT_TYPE.EVENT == UiModelRoot.getSortingType()) {
+		if (UiModelRoot.SortType.EVENT == UiModelRoot.getSortingType()) {
 			Arrays.sort(events, UiModelSorting.getInstance());
 			return events;
 		}

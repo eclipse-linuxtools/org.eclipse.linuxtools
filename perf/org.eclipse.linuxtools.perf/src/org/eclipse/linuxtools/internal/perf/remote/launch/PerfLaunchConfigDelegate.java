@@ -222,7 +222,7 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 				info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
 				perfDataFileStore.putInfo(info, EFS.SET_ATTRIBUTES, null);				
 
-				PerfCore.RefreshView(renderProcessLabel(exeURI.getPath()));
+				PerfCore.refreshView(renderProcessLabel(exeURI.getPath()));
 				if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
 						PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
 					showSourceDisassembly(Path.fromPortableString(workingDirURI.toString() + IPath.SEPARATOR));

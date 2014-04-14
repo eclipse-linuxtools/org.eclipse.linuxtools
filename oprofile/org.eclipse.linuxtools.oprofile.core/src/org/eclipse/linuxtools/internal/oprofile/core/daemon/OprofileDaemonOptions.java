@@ -8,7 +8,7 @@
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com>
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.daemon;
 
 
@@ -21,36 +21,31 @@ public class OprofileDaemonOptions {
 	 *  Kernel image file
 	 */
 	private String kernelImageFile;
-	
-	/**
-	 *  Enable verbose logging
-	 */
-	private boolean verboseLogging;
-	
+
 	/**
 	 *  How to separate profiles (mask)
 	 */
 	private int separateProfiles;
-	
+
 	/**
 	 *  The image to profile
 	 */
 	private String binaryImage;
-	
+
 	/**
 	 * How many calls down to profile
 	 */
 	private int callgraphDepth;
-	
+
 	/**
 	 * Sample separation options. Determines how oprofiled will group
 	 *   samples for binaries which isn't the main binary being profiled.
-	 *   
+	 *
 	 * Currently only properly support:
 	 *   -none: ignore all other binaries
 	 *   -library: include shared library samples
 	 *   -kernel: include kernel module samples (which implicitly includes library)
-	 *   
+	 *
 	 *   the others probably wouldn't show nicely in the view
 	 */
 	public static final int SEPARATE_NONE = 0;
@@ -58,19 +53,18 @@ public class OprofileDaemonOptions {
 	public static final int SEPARATE_KERNEL = 2;
 	public static final int SEPARATE_THREAD = 4;
 	public static final int SEPARATE_CPU = 8;
-	
+
 	/**
 	 * Constructor
 	 */
 	public OprofileDaemonOptions() {
 		//defaults
 		kernelImageFile = ""; //$NON-NLS-1$
-		verboseLogging = false;
-		separateProfiles = SEPARATE_NONE;	
+		separateProfiles = SEPARATE_NONE;
 		binaryImage = ""; //$NON-NLS-1$
 		callgraphDepth = 0;
 	}
-	
+
 	/**
 	 * Get the kernel image file
 	 * @return the kernel image file
@@ -78,7 +72,7 @@ public class OprofileDaemonOptions {
 	public String getKernelImageFile() {
 		return kernelImageFile;
 	}
-	
+
 	/**
 	 * Set the kernel image file
 	 * @param image the kernel image
@@ -88,29 +82,13 @@ public class OprofileDaemonOptions {
 	}
 
 	/**
-	 * Get daemon verbose logging
-	 * @return whether verbose logging is enabled
-	 */
-	public boolean getVerboseLogging() {
-		return verboseLogging;
-	}
-	
-	/**
-	 * Set daemon verbose logging
-	 * @param logging whether to enable verbose logging
-	 */
-	public void setVerboseLogging(boolean logging) {
-		verboseLogging = logging;
-	}
-
-	/**
 	 * Get daemon profile separation mask
 	 * @return mask of options
 	 */
 	public int getSeparateProfilesMask() {
 		return separateProfiles;
 	}
-	
+
 	/**
 	 * Set daemon profile separation mask
 	 * @param mask the new separation mask
@@ -141,13 +119,5 @@ public class OprofileDaemonOptions {
 	 */
 	public int getCallgraphDepth() {
 		return callgraphDepth;
-	}
-
-	/**
-	 * Sets the call depth value.
-	 * @param depth integer amount of calls down to profile
-	 */
-	public void setCallgraphDepth(int depth) {
-		this.callgraphDepth = depth;
 	}
 }

@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.linux;
 
 import java.io.BufferedReader;
@@ -37,7 +37,6 @@ import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.OprofileSAXHandler;
-import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.modeldata.ModelDataAdapter;
@@ -53,22 +52,13 @@ import org.xml.sax.XMLReader;
 
 /**
  * This class will run opxml.
- * 
+ *
  * opxml is a small program which acts as a textual interface between Oprofile and
- * BFD and the oprofile plugins. 
+ * BFD and the oprofile plugins.
  */
 public class OpxmlRunner {
 	private OprofileSAXHandler handler;
-	
 
-	/**
-	 * Returns the current XMLProcessor handling parsing of opxml output.
-	 * @return the processor
-	 */
-	public XMLProcessor getProcessor() {
-		return handler.getProcessor();
-	}
-	
 	/**
 	 * Runs opxml with the given arguments.
 	 * @param args the arguments to pass to opxml
@@ -78,7 +68,7 @@ public class OpxmlRunner {
 	public boolean run(String[] args, Object callData) {
 		XMLReader reader = null;
 		handler = OprofileSAXHandler.getInstance(callData);
-		
+
 		// Create XMLReader
         SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
@@ -87,18 +77,18 @@ public class OpxmlRunner {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		// Set content/error handlers
 		reader.setContentHandler(handler);
 		reader.setErrorHandler(handler);
-		
+
 		// Check for timer support
 		InfoAdapter.checkTimerSupport();
 
 		// Run opxml
 		try {
 			File file = constructFile(args);
-			
+
 			//handle the opxml_session file
 			if (args[0].equals(SessionManager.SESSIONS)){
 				SessionManager sessManNew = new SessionManager(SessionManager.SESSION_LOCATION);
@@ -142,7 +132,7 @@ public class OpxmlRunner {
 				FileReader fr = new FileReader(file);
 				reader.parse(new InputSource(fr));
 			}
-			
+
 			return true;
 		} catch (SAXException e) {
 			e.printStackTrace();
@@ -174,7 +164,7 @@ public class OpxmlRunner {
 		}
 		return file;
 	}
-	
+
 	private File constructFile(String [] args){
 		String fileName = "";
 		for (int i = 0; i < args.length; i++){
@@ -182,7 +172,7 @@ public class OpxmlRunner {
 		}
 		return new File (SessionManager.OPXML_PREFIX + fileName);
 	}
-	
+
 	private boolean handleModelData (String [] args){
 		ArrayList<String> cmd = new ArrayList<>();
 		cmd.add("-Xdg"); //$NON-NLS-1$
@@ -204,7 +194,7 @@ public class OpxmlRunner {
 		saveOpxmlToFile(bi, args);
 		return true;
 	}
-	
+
 	/**
 	 * Add the current session to the session manager for each event
 	 * that it was profiled under.
@@ -225,7 +215,7 @@ public class OpxmlRunner {
 		try {
 			String cmd[] = {"-X", "-d"};
 			InputStream is = runOpReport(cmd);
-			
+
 			if (is != null){
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder;

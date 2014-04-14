@@ -335,7 +335,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 * @since 1.1
 	 */
-	protected boolean checkOpcontrolProcess(Process p) throws OpcontrolException {
+	private boolean checkOpcontrolProcess(Process p) throws OpcontrolException {
 		if (p != null) {
 			String errOutput = ""; //$NON-NLS-1$
 			String output = "", s; //$NON-NLS-1$
@@ -396,7 +396,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @return a string path to opcontrol executable
 	 * @since 1.1
 	 */
-	protected String findOpcontrolExecutable() {
+	private String findOpcontrolExecutable() {
 		IProject project = Oprofile.OprofileProject.getProject();
 		if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
 			return OPCONTROL_EXECUTABLE;

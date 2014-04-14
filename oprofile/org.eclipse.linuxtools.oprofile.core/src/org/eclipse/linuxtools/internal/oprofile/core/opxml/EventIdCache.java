@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/** 
+/**
  * Caches the event data used by the CheckEventAdapter. The performance
  * improvement is targeted at the first time a call with the given arguments is
  * made. The first given call to check-event will take roughly O(n), and all
@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * simply parses the XML from ophelp -X and stores it.
  */
 public class EventIdCache {
-	
+
 	private static final String HELP_EVENTS = "help_events"; //$NON-NLS-1$
 	private static final String HEADER = "header"; //$NON-NLS-1$
 	private static final String SCHEMA = "schemaversion"; //$NON-NLS-1$
@@ -63,7 +63,7 @@ public class EventIdCache {
 
 	// Map containing the caches for remote machines
 	private static HashMap<String, EventIdCache> cacheMap;
-	
+
 	public static EventIdCache getInstance(){
 
 		if (cacheMap == null) {
@@ -91,7 +91,7 @@ public class EventIdCache {
 
 		return newCache;
 	}
-	
+
 	/**
 	 * @param id the id corresponding to an event
 	 * @return the DOM Element corresponding to the event tag
@@ -145,18 +145,17 @@ public class EventIdCache {
 					eventId.eventDoc = builder.parse(p.getInputStream());
 					Element elem = (Element) eventId.eventDoc.getElementsByTagName(HELP_EVENTS).item(0);
 					eventId.eventRoot = elem;
-				} catch (IOException e) {
-				} catch (SAXException e) {
+				} catch (IOException|SAXException e) {
 				}
 			} catch (ParserConfigurationException e1) {
 				e1.printStackTrace();
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Get the unit mask type. Schema Version 1.1 and newer of ophelp XML
 	 * will list the unit mask type as an attribute. Older version will not
@@ -243,8 +242,7 @@ public class EventIdCache {
 					}
 				}
 				eventReader.close();
-			} catch (IOException e) {
-			} catch (CoreException e) {
+			} catch (IOException|CoreException e) {
 			} finally {
 				if (bi != null) {
 					try {

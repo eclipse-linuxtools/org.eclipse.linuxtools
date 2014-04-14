@@ -11,11 +11,12 @@
 package org.eclipse.linuxtools.internal.perf.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TreeParent {
 	private String name;
 	private TreeParent parent;
-	private ArrayList<TreeParent> children;
+	private List<TreeParent> children;
 	private float percent = -1;
 	private double samples = -1;
 
@@ -29,7 +30,7 @@ public class TreeParent {
 		this(name, percent);
 		this.samples = samples;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -61,16 +62,16 @@ public class TreeParent {
 
 	/**
 	 * Get the number of samples collected for this element.
-	 * 
+	 *
 	 * If this element is a child of PMSymbol (eg. PMLineRef) we should
 	 * calculate its samples using its given percentage and the number of
 	 * samples from its parent. If this element is a parent of PMSymbol we
 	 * should calculate its samples by accumulating all samples from its
 	 * children.
-	 * 
+	 *
 	 * @return the number of samples
 	 */
-	public double getSamples () {
+	private double getSamples () {
 		// Child of PMSymbol, distribute samples by percentage
 		if (this instanceof PMLineRef) {
 			if (samples == -1) {
@@ -136,7 +137,7 @@ public class TreeParent {
 		children.clear();
 	}
 
-	public void recalculatePercentage() {
+	private void recalculatePercentage() {
 		if (getPercent() != -1 && (this instanceof PMDso || this instanceof PMFile)){
 			percent = 0;
 			// Re-sum its children percentages

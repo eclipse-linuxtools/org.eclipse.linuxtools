@@ -22,7 +22,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -61,7 +60,7 @@ public class SessionManager {
 
 	/**
 	 * Session manager class constructor to manipulate the XML data
-	 * 
+	 *
 	 * @param file
 	 *            the xml file
 	 */
@@ -89,7 +88,7 @@ public class SessionManager {
 
 	/**
 	 * Add a session to the specified event element if it does not exist.
-	 * 
+	 *
 	 * @param sessionName
 	 *            the name of the session
 	 * @param eventName
@@ -115,7 +114,7 @@ public class SessionManager {
 
 	/**
 	 * Check if a session exists
-	 * 
+	 *
 	 * @param sessionName
 	 *            the name of the session
 	 * @return true if the session exists, otherwise false
@@ -126,7 +125,7 @@ public class SessionManager {
 
 	/**
 	 * Find an element in the XML
-	 * 
+	 *
 	 * @param elem
 	 *            the element to look under
 	 * @param tagName
@@ -179,7 +178,7 @@ public class SessionManager {
 
 	/**
 	 * Remove a session named sessionName that is under eventName if it exists.
-	 * 
+	 *
 	 * @param sessionName
 	 * @param eventName
 	 */
@@ -203,7 +202,7 @@ public class SessionManager {
 	/**
 	 * remove event elem for given session sessionName , also remove session if
 	 * there is no event under it.
-	 * 
+	 *
 	 * @param sessionName
 	 * @param elem
 	 *
@@ -232,7 +231,7 @@ public class SessionManager {
 
 	/**
 	 * Return a list of the events run with the given session
-	 * 
+	 *
 	 * @param sessionName
 	 *            the name of the session
 	 * @return A String ArrayList of event names that were run with the given
@@ -270,7 +269,7 @@ public class SessionManager {
 	/**
 	 * Write the contents of the given Document to a file.
 	 */
-	public void writeToFile(String filePath) {
+	private void writeToFile(String filePath) {
 		Source source = new DOMSource(doc);
 		Result result = new StreamResult(new File(filePath));
 		TransformerFactory factory = TransformerFactory.newInstance();
@@ -278,8 +277,6 @@ public class SessionManager {
 		try {
 			xformer = factory.newTransformer();
 			xformer.transform(source, result);
-		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}

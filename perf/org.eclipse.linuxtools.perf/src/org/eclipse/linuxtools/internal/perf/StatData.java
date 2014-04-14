@@ -136,9 +136,7 @@ public class StatData extends AbstractDataManipulator {
 			}
 			PerfSaveStatsHandler saveStats = new PerfSaveStatsHandler();
 			saveStats.saveData(PerfPlugin.PERF_COMMAND);
-		} catch (URISyntaxException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-		} catch (CoreException e) {
+		} catch (URISyntaxException|CoreException e) {
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
 		}
 	}

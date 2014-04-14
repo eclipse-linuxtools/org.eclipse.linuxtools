@@ -72,7 +72,7 @@ public class UiModelDependent implements IUiModelElement {
 	@Override
 	public IUiModelElement[] getChildren() {
 
-		if (UiModelRoot.SORT_TYPE.LIB == UiModelRoot.getSortingType()) {
+		if (UiModelRoot.SortType.LIB == UiModelRoot.getSortingType()) {
 			Arrays.sort(dependents, UiModelSorting.getInstance());
 			return dependents;
 		}

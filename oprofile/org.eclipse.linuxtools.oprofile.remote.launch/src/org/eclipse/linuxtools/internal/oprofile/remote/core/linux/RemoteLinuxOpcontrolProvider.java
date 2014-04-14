@@ -37,14 +37,6 @@ public class RemoteLinuxOpcontrolProvider extends LinuxOpcontrolProvider {
 		return p;
 	}
 
-	protected String findOpcontrol(){
-		return OPCONTROL_EXECUTABLE;
-	}
-
-	public static boolean isInstalled(){
-		return true;
-	}
-
 	/**
 	 * Checks if the user has permissions to execute opcontrol as root without providing password
 	 * and if opcontrol exists in the indicated path

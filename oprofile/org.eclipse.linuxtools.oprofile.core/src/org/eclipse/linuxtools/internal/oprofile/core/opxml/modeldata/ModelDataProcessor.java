@@ -59,7 +59,7 @@ public class ModelDataProcessor extends XMLProcessor {
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
 			if (imgSeen == 0) {
-				image.setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
+				image.setName(validString(attrs.getValue(ATTR_IMAGENAME)));
 				image.setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 			}
 

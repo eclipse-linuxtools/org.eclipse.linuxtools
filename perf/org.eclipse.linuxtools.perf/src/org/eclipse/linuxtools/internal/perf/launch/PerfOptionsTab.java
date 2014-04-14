@@ -47,7 +47,7 @@ import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Version;
 
 public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
-	protected ILaunchConfiguration lastConfig;
+	private ILaunchConfiguration lastConfig;
 
 	protected Text txtKernelLocation;
 	protected Button chkRecordRealtime;
@@ -62,8 +62,8 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Button chkShowStat;
 	protected Spinner statRunCount;
 
-	protected Composite top;
-	protected ScrolledComposite scrollTop;
+	private Composite top;
+	private ScrolledComposite scrollTop;
 
 	protected final Version multiplexEventsVersion = new Version (2, 6, 35);
 
@@ -220,7 +220,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 		updateLaunchConfigurationDialog();
 	}
 
-	protected void recomputeSize() {
+	private void recomputeSize() {
 		Point point = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		top.setSize(point);
 		scrollTop.setMinSize(point);
@@ -304,7 +304,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 	 * Toggle enablement of all buttons, excluding the stat button.
 	 * @param enable enablement of buttons
 	 */
-	public void toggleButtonsEnablement(boolean enable, Version version) {
+	private void toggleButtonsEnablement(boolean enable, Version version) {
 		txtKernelLocation.setEnabled(enable);
 		chkRecordRealtime.setEnabled(enable);
 		chkRecordVerbose.setEnabled(enable);

@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core;
 
@@ -40,23 +40,14 @@ public class OprofileCorePlugin extends Plugin {
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
-	private IOpxmlProvider opxmlProvider;
 
 	public static final String DEBUG_PRINT_PREFIX = "DEBUG: "; //$NON-NLS-1$
-	
+
 	/**
 	 * The constructor.
 	 */
 	public OprofileCorePlugin() {
 		plugin = this;
-	}
-	
-	/**
-	 * This method is called upon plug-in activation
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
 	}
 
 	/**
@@ -67,7 +58,7 @@ public class OprofileCorePlugin extends Plugin {
 		super.stop(context);
 		plugin = null;
 	}
-	
+
 	/**
 	 * Returns the shared instance.
 	 */
@@ -81,49 +72,21 @@ public class OprofileCorePlugin extends Plugin {
 	public static String getId() {
 		return PLUGIN_ID;
 	}
-	
+
 	/**
 	 * Returns the OpxmlProvider registered with the plugin or throws an exception
 	 * @return the OpxmlProvider
 	 */
 	public IOpxmlProvider getOpxmlProvider() {
-		opxmlProvider = new LinuxOpxmlProvider();
-		return opxmlProvider;
+		return new LinuxOpxmlProvider();
 	}
-	
+
 	/**
 	 * Returns the registered opcontrol provider or throws an exception
 	 * @return the OpcontrolProvider registered with the plugin
 	 * @throws OpcontrolException
 	 */
 	public IOpcontrolProvider getOpcontrolProvider() throws OpcontrolException {
-//		Exception except = null;
-//		
-//		if (_opcontrol == null) {
-//			IExtensionRegistry registry = Platform.getExtensionRegistry();
-//			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, "OpcontrolProvider"); //$NON-NLS-1$
-//			if (extension != null) {
-//				IExtension[] extensions = extension.getExtensions();
-//				IConfigurationElement[] configElements = extensions[0].getConfigurationElements();
-//				if (configElements.length != 0) {
-//					try {
-//						_opcontrol = (IOpcontrolProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
-//					} catch (CoreException ce) {
-//						except = ce;
-//					}
-//				}
-//			}
-//		}
-//		
-//		// If there was a problem finding opcontrol, throw an exception
-//		if (_opcontrol == null) {
-//			String msg = getResourceString("opcontrolProvider.error.missing"); //$NON-NLS-1$
-//			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, except);
-//			throw new OpcontrolException(status);
-//		}
-//
-//		return _opcontrol;
-		
 		IOpcontrolProvider opcontrolProvider = null;
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -158,7 +121,7 @@ public class OprofileCorePlugin extends Plugin {
 
 		return opcontrolProvider;
 	}
-	
+
 	/**
 	 * Creates an error status object
 	 * @param errorClassString A string of the error class
@@ -174,7 +137,7 @@ public class OprofileCorePlugin extends Plugin {
 			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, e);
 		}
 	}
-	
+
 	/**
 	 * Shows an error Dialog
 	 * @param errorClassString A string of the error class
@@ -184,14 +147,14 @@ public class OprofileCorePlugin extends Plugin {
 		final IStatus status;
 		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title"); //$NON-NLS-1$
 		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message"); //$NON-NLS-1$
-		
+
 		if (ex == null) {
 			status = createErrorStatus(errorClassString, null);
 		} else {
 			status = ex.getStatus();
 		}
 
-		//needs to be run in the ui thread otherwise swt throws invalid thread access 
+		//needs to be run in the ui thread otherwise swt throws invalid thread access
 		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -200,9 +163,9 @@ public class OprofileCorePlugin extends Plugin {
 		});
 
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return {@code true} when platform was started in debug mode ({@code -debug} switch)
 	 * and {@code org.eclipse.linuxtools.internal.oprofile.core/debug} is set in some .options file
 	 * either in $HOME/.options or $(pwd)/.options.
@@ -215,29 +178,18 @@ public class OprofileCorePlugin extends Plugin {
 
 	/**
 	 * Log a string message with the given severity in the error log.
-	 * 
+	 *
 	 * @param severity the severity of this exception
 	 * @param msg the string message to be logged
 	 */
 	public static void log(int severity, String msg) {
 	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, null));
 	}
-	
+
 	/**
-	 * Log an exception in the error log.
-	 * 
-	 * @param severity the severity of this exception
-	 * @param msg The message to be logged
-	 * @param cause object representing the cause of this exception
-	 */
-	public static void log(int severity, String msg, Throwable cause) {
-	      plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, cause));
-	}
-	
-	/**
-	 * Returns the location of the plugin by checking the path of the bundle's 
+	 * Returns the location of the plugin by checking the path of the bundle's
 	 * locationURL.
-	 * 
+	 *
 	 * @return An absolute path representing the location of this plugin
 	 */
 	public String getPluginLocation() {

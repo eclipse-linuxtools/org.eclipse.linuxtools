@@ -68,7 +68,7 @@ public class XMLProcessor {
 	 * @param source source attribute string 
 	 * @return the source string with escaped characters translated back to their single character counterpart
 	 */
-	public String valid_string(String source) {
+	public String validString(String source) {
 		final String chars_long[] = {"&amp;", "&quot;", "&apos;", "&lt;", "&gt;"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		final String chars[] = {"&", "\"", "'", "<", ">"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		for (int i = 0; i < chars_long.length; i++) {

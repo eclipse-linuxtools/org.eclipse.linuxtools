@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 
 import java.util.HashMap;
@@ -27,25 +27,25 @@ import org.xml.sax.helpers.DefaultHandler;
 public class OprofileSAXHandler extends DefaultHandler {
 	// The only allowed instance of this class
 	private static OprofileSAXHandler instance = null;
-	
+
 	// A Map of all the XML processors for opxml
 	private static HashMap<String,Class<?>> processors = new HashMap<>();
-	
+
 	// The current processor being used to parse the document
 	private XMLProcessor processor = null;
 	private Object callData;
-	
+
 	/* A stack of XML processors. This allows processors to invoke sub-processors
 	   for handling nested tags more efficiently. */
 	private Stack<XMLProcessor> processorStack = new Stack<>();
-	
+
 	// Introduced for fix of Eclipse BZ#343025
 	// As per SAX spec, SAX parsers are allowed to split character data into as many chunks as
-	// they please, and they can split the text at whichever boundaries they want. In order to 
+	// they please, and they can split the text at whichever boundaries they want. In order to
 	// handle this properly, it is needed to accumulate the text returned in each call
 	// until it recieves a callback that isn't characters.
 	private StringBuffer charactersBuffer;
-	
+
 	// A convenience class for specifying XMLProcessors
 	private static class ProcessorItem {
 		public String tagName;
@@ -55,15 +55,15 @@ public class OprofileSAXHandler extends DefaultHandler {
 			handlerClass = cls;
 		}
 	}
-	
-	// The list of all "root" XML tags and their handler classes 
+
+	// The list of all "root" XML tags and their handler classes
 	private static final ProcessorItem[] handlerList = {
 		new ProcessorItem(OpxmlConstants.INFO_TAG, OpInfoProcessor.class),
 		new ProcessorItem(OpxmlConstants.CHECKEVENTS_TAG, CheckEventsProcessor.class),
 		new ProcessorItem(OpxmlConstants.MODELDATA_TAG, ModelDataProcessor.class),
 		new ProcessorItem(OpxmlConstants.SESSIONS_TAG, SessionsProcessor.class)
 	};
-	
+
 	/**
 	 * Returns an instance of the handler. This must be used to access the parser!
 	 * @return a handler instance
@@ -71,47 +71,45 @@ public class OprofileSAXHandler extends DefaultHandler {
 	public static OprofileSAXHandler getInstance(Object callData) {
 		if (instance == null) {
 			instance = new OprofileSAXHandler();
-			
+
 			// Initialize processor map
 			for (int i = 0; i < handlerList.length; ++i) {
 				processors.put(handlerList[i].tagName, handlerList[i].handlerClass);
 			}
 		}
-		
+
 		// Set calldata into handler
 		instance.setCallData (callData);
 		return instance;
 	}
-	
+
 	/**
 	 * Sets the calldata for the processor.
 	 * @param callData the calldata to pass to the processor
 	 */
-	public void setCallData(Object callData)
-	{
+	private void setCallData(Object callData) {
 		this.callData = callData;
 	}
-	
+
 	/**
 	 * Returns the processor for a given request type.
 	 * @param type the name of the processor
 	 * @return the requested processor or null
 	 */
-	public static XMLProcessor getProcessor(String type) {
+	private static XMLProcessor getProcessor(String type) {
 		XMLProcessor processor = null;
-		
+
 		Class<?> handlerClass = processors.get(type);
 		if (handlerClass != null) {
 			try {
 				processor = (XMLProcessor) handlerClass.newInstance();
-			} catch (InstantiationException e) {
-			} catch (IllegalAccessException e) {
+			} catch (InstantiationException|IllegalAccessException e) {
 			}
 		}
-		
+
 		return processor;
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
@@ -120,14 +118,14 @@ public class OprofileSAXHandler extends DefaultHandler {
 		// Reset processor
 		processor = null;
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
 	@Override
 	public void endDocument() {
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#startElement(String, String, String, Attributes)
 	 */
@@ -138,16 +136,16 @@ public class OprofileSAXHandler extends DefaultHandler {
 			processor = getProcessor(qName);
 			processor.reset(callData);
 		}
-		
+
 		// If we already have a processor, so let it deal with this new element.
 		// Allow the processor to deal with it's own tag as well: this way it can
 		// grab attributes from it.
 		processor.startElement(qName, attrs, callData);
-		
-		// Clean up the characters buffer 
+
+		// Clean up the characters buffer
 		charactersBuffer = new StringBuffer();
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#endElement(String, String, String)
 	 */
@@ -157,7 +155,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 		processor.characters(charactersBuffer.toString(), callData);
 		processor.endElement(qName, callData);
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
 	 */
@@ -169,15 +167,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 			 // Append the character to the buffer.
 			 charactersBuffer.append(str);
 	}
-	
-	/**
-	 * Returns the processor used to parse the document.
-	 * @return the XMLProcessor
-	 */
-	public XMLProcessor getProcessor() {
-		return processor;
-	}
-	
+
 	/**
 	 * Pushes the current XMLProcessor onto the stack and installs the given
 	 * processor as the document's parser/handler.
@@ -188,7 +178,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 		processor = proc;
 		processor.reset(callData);
 	}
-	
+
 	/**
 	 * Removes the current XMLProcessor and installs the previous processor.
 	 * NOTE: This assumes that endElement caused the pop, so it calls endElement in

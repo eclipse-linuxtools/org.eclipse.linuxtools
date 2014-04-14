@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.perf;
 
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -85,7 +84,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @param file File to generate uniqure id from.
 	 * @return String unique id for specified file.
 	 */
-	public String generateFileID(IPath file) {
+	private String generateFileID(IPath file) {
 		return file.toOSString() + dataID;
 	}
 
@@ -183,7 +182,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @param file file to collect from
 	 * @return List containing statistics entries from the given file.
 	 */
-	public static ArrayList<PMStatEntry> collectStats(IPath file) {
+	private static ArrayList<PMStatEntry> collectStats(IPath file) {
 		ArrayList<PMStatEntry> result = new ArrayList<>();
 		BufferedReader statReader = null;
 		URI fileURI = null;
@@ -243,13 +242,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 				}
 			}
 			return result;
-		} catch (FileNotFoundException e) {
-			PerfPlugin.getDefault().openError(e, Messages.MsgError);
-		} catch (IOException e) {
-			PerfPlugin.getDefault().openError(e, Messages.MsgError);
-		} catch (CoreException e) {
-			PerfPlugin.getDefault().openError(e, Messages.MsgError);
-		} catch (URISyntaxException e) {
+		} catch (IOException|CoreException|URISyntaxException e) {
 			PerfPlugin.getDefault().openError(e, Messages.MsgError);
 		} finally {
 			try {
@@ -271,7 +264,7 @@ public class StatComparisonData extends BaseDataManipulator implements IPerfData
 	 * @return Formatting string representing the proper way to format the given
 	 *         table.
 	 */
-	public String getFormat(String[][] table) {
+	private String getFormat(String[][] table) {
 		// all entries have the same number of columns
 		int[] maxCharLen = new int[table[0].length];
 

@@ -23,8 +23,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
@@ -125,7 +125,7 @@ public class ModelTest extends AbstractTest {
 
 		PerfPlugin.getDefault().setModelRoot(invisibleRoot);
 		// update the model root for the view
-		PerfCore.RefreshView("resources/defaultevent-data/perf.data");
+		PerfCore.refreshView("resources/defaultevent-data/perf.data");
 
 		// number of parents excluding invisibleRoot
 		int numOfParents = getNumberOfParents(invisibleRoot) - 1;
@@ -235,7 +235,7 @@ public class ModelTest extends AbstractTest {
 	public void testParseEventList() throws FileNotFoundException {
 		BufferedReader input = new BufferedReader(new FileReader("resources/simple-perf-event-list"));
 
-		HashMap<String, ArrayList<String>> eventList = PerfCore.parseEventList(input);
+		Map<String, List<String>> eventList = PerfCore.parseEventList(input);
 		for(String key : eventList.keySet()){
 			if ("Raw hardware event descriptor".equals(key)) {
 				assertTrue(eventList.get(key).contains("rNNN"));

@@ -23,7 +23,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
-import org.eclipse.linuxtools.internal.perf.remote.launch.PerfEventsTab;
+import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;

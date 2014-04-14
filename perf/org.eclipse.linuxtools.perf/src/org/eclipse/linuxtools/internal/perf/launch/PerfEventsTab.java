@@ -14,8 +14,8 @@ package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
@@ -83,7 +83,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
 	private void createEventTabs(Composite top, ILaunchConfiguration config){
 		//Maybe not the best place to load the event list but we'll see.
-		HashMap<String,ArrayList<String>> events = PerfCore.getEventList(config);
+		Map<String,List<String>> events = PerfCore.getEventList(config);
 
 		// the special counters should be last
 		ArrayList<String> tmpTabNames = new ArrayList<>(events.keySet());
@@ -198,7 +198,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				Table table = new Table(tabFolder, SWT.CHECK);
 				eventTable[i] = table;
 
-				ArrayList<String> eventList = events.get(tabNames[i]);
+				List<String> eventList = events.get(tabNames[i]);
 				for (String event : eventList) {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(event);
@@ -216,7 +216,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	public void refreshDefaultEnabled() {
+	private void refreshDefaultEnabled() {
 		boolean state = !chkDefaultEvent.getSelection();
 		for (Table tab : eventTable) {
 			tab.setEnabled(state);
@@ -363,9 +363,9 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		}
-		if (rawhwe.size() == 0) { 
+		if (rawhwe.size() == 0) {
 			rawhwe = null; //to match with default value.
-		} 
+		}
 		wconfig.setAttribute(PerfPlugin.ATTR_RawHwEvents, rawhwe);
 	}
 
@@ -378,7 +378,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 		wconfig.setAttribute(PerfPlugin.ATTR_RawHwEvents, PerfPlugin.ATTR_RawHwEvents_default);
 	}
 
-	protected IProject getProject(ILaunchConfiguration config){
+	private IProject getProject(ILaunchConfiguration config){
 		String name = null;
 		try {
 			name = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);

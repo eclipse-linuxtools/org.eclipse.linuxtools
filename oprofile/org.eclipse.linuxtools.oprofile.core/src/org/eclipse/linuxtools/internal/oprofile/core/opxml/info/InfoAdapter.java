@@ -43,19 +43,19 @@ import org.xml.sax.SAXException;
  * data to modify it into the format expected by the SAX parser.
  */
 public class InfoAdapter extends AbstractDataAdapter{
-	
+
 	public static final String HELP_EVENTS = "help_events"; //$NON-NLS-1$
 	public static final String INFO = "info"; //$NON-NLS-1$
-	
+
 	public static final String DEFAULTS = "defaults"; //$NON-NLS-1$
 	public static final String NUM_COUNTERS = "num-counters"; //$NON-NLS-1$
 	public static final String CPU_FREQUENCY = "cpu-frequency"; //$NON-NLS-1$
 	public static final String TIMER_MODE = "timer-mode"; //$NON-NLS-1$
 	public static final String TIMER = "timer"; //$NON-NLS-1$
-	
+
 	public static final String EVENT_LIST = "event-list"; //$NON-NLS-1$
 	public static final String COUNTER = "counter"; //$NON-NLS-1$
-	
+
 	public static final String EVENT = "event"; //$NON-NLS-1$
 	public static final String EVENT_NAME = "event_name"; //$NON-NLS-1$
 	public static final String NAME = "name"; //$NON-NLS-1$
@@ -64,26 +64,26 @@ public class InfoAdapter extends AbstractDataAdapter{
 	public static final String MIN_COUNT = "min_count"; //$NON-NLS-1$
 	public static final String MINIMUM = "minimum"; //$NON-NLS-1$
 	public static final String VALUE = "value"; //$NON-NLS-1$
-	
+
 	public static final String UNIT_MASKS = "unit_masks"; //$NON-NLS-1$
 	public static final String UNITMASK = "unit-mask"; //$NON-NLS-1$
 	public static final String DEFAULT = "default"; //$NON-NLS-1$
 	public static final String TYPE = "type"; //$NON-NLS-1$
-	
+
 	public static final String UNIT_MASK = "unit_mask"; //$NON-NLS-1$
 	public static final String MASK = "mask"; //$NON-NLS-1$
-	
+
 	public static final String SAMPLE_DIR = "sample-dir"; //$NON-NLS-1$
 	public static final String LOCK_FILE = "lock-file"; //$NON-NLS-1$
 	public static final String LOG_FILE = "log-file"; //$NON-NLS-1$
 	public static final String DUMP_STATUS = "dump-status"; //$NON-NLS-1$
-	
+
 	public static final String CPUINFO = "/proc/cpuinfo"; //$NON-NLS-1$
 	public static String DEV_OPROFILE = "/dev/oprofile/"; //$NON-NLS-1$
 	public static String CPUTYPE = DEV_OPROFILE + "cpu_type"; //$NON-NLS-1$
 	public static final String OP_SHARE = "/usr/share/oprofile/"; //$NON-NLS-1$
 	public static final String EVENTS = "events"; //$NON-NLS-1$
-	
+
 	public static final String SAMPLE_DIR_VAL = "/var/lib/oprofile/samples/"; //$NON-NLS-1$
 	public static final String LOCK_FILE_VAL = "/var/lib/oprofile/lock"; //$NON-NLS-1$
 	public static final String LOG_FILE_VAL = "/var/lib/oprofile/samples/oprofiled.log"; //$NON-NLS-1$
@@ -93,7 +93,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	private Element oldRoot; // the root of the document with data from ophelp
 	private Element newRoot; // the root of the document we intent to build
 	private static IRemoteFileProxy proxy;
-	
+
 	private static boolean hasTimerSupport;
 
 	public InfoAdapter (){
@@ -183,34 +183,34 @@ public class InfoAdapter extends AbstractDataAdapter{
 		Element numCountersTag = newDoc.createElement(NUM_COUNTERS);
 		numCountersTag.setTextContent(String.valueOf(numCounters));
 		newRoot.appendChild(numCountersTag);
-		
+
 		// cpu frequency
 		int cpuFreq = getCPUFrequency();
 		Element cpuFreqTag = newDoc.createElement(CPU_FREQUENCY);
 		cpuFreqTag.setTextContent(String.valueOf(cpuFreq));
 		newRoot.appendChild(cpuFreqTag);
-		
+
 		// file defaults
 		Element defaultsTag = newDoc.createElement(DEFAULTS);
-		
+
 		Element sampleDirTag = newDoc.createElement(SAMPLE_DIR);
 		sampleDirTag.setTextContent(SAMPLE_DIR_VAL);
 		defaultsTag.appendChild(sampleDirTag);
-		
+
 		Element lockFileTag = newDoc.createElement(LOCK_FILE);
 		lockFileTag.setTextContent(LOCK_FILE_VAL);
 		defaultsTag.appendChild(lockFileTag);
-		
+
 		Element logFileTag = newDoc.createElement(LOG_FILE);
 		logFileTag.setTextContent(LOG_FILE_VAL);
 		defaultsTag.appendChild(logFileTag);
-		
+
 		Element dumpStatusTag = newDoc.createElement(DUMP_STATUS);
 		dumpStatusTag.setTextContent(DUMP_STATUS_VAL);
 		defaultsTag.appendChild(dumpStatusTag);
-		
+
 		newRoot.appendChild(defaultsTag);
-		
+
 		// timer mode
 		Element timerModeTag = newDoc.createElement(TIMER_MODE);
 		timerModeTag.setTextContent(String.valueOf(hasTimerSupport()));
@@ -354,17 +354,17 @@ public class InfoAdapter extends AbstractDataAdapter{
 	}
 
 	private void createXML() {
-		
+
 		NodeList eventList = oldRoot.getElementsByTagName(EVENT);
 		Element newEventList = newDoc.createElement(EVENT_LIST);
-		
+
 		for (int i = 0; i < eventList.getLength(); i++){
 			// get the event data
 			Element event = (Element) eventList.item(i);
-			String name = event.getAttribute(EVENT_NAME); 
+			String name = event.getAttribute(EVENT_NAME);
 			String desc = event.getAttribute(DESC);
 			String min_count = event.getAttribute(MIN_COUNT);
-			
+
 			// create the data for the new event
 			Element newEventTag = newDoc.createElement(EVENT);
 			Element nameTag = newDoc.createElement(NAME);
@@ -373,42 +373,42 @@ public class InfoAdapter extends AbstractDataAdapter{
 			descTag.setTextContent(desc);
 			Element minimumTag = newDoc.createElement(MINIMUM);
 			minimumTag.setTextContent(min_count);
-			
+
 			newEventTag.appendChild(nameTag);
 			newEventTag.appendChild(descTag);
 			newEventTag.appendChild(minimumTag);
-			
+
 			Element unitMaskTag = (Element) event.getElementsByTagName(UNIT_MASKS).item(0);
-			
+
 			// check if there are any unit masks for this event
 			if (unitMaskTag != null){
 				String defaultVal = unitMaskTag.getAttribute(DEFAULT);
 
 				// Get the unit mask type (compatible with 1.0 and 1.1 ophelp xml schemas)
 				String type = EventIdCache.getInstance().getUnitMaskType(name);
-				
+
 				Element newUnitMaskTag = newDoc.createElement(UNITMASK);
 				Element typeTag = newDoc.createElement(TYPE);
 				typeTag.setTextContent(type);
 				Element defaultValTag = newDoc.createElement(DEFAULT);
 				defaultValTag.setTextContent(defaultVal);
-				
+
 				newUnitMaskTag.appendChild(typeTag);
 				newUnitMaskTag.appendChild(defaultValTag);
 				newEventTag.appendChild(newUnitMaskTag);
-				
+
 				NodeList unitMaskList = unitMaskTag.getElementsByTagName(UNIT_MASK);
 				for (int j = 0; j < unitMaskList.getLength(); j++){
 					Element unitMask = (Element) unitMaskList.item(j);
 					String maskVal = unitMask.getAttribute(MASK);
 					String maskDesc = unitMask.getAttribute(DESC);
-					
+
 					Element newMask = newDoc.createElement(MASK);
 					Element newVal = newDoc.createElement(VALUE);
 					newVal.setTextContent(maskVal);
 					Element newDesc = newDoc.createElement(DESCRIPTION);
 					newDesc.setTextContent(maskDesc);
-					
+
 					newMask.appendChild(newVal);
 					newMask.appendChild(newDesc);
 					newUnitMaskTag.appendChild(newMask);
@@ -417,31 +417,31 @@ public class InfoAdapter extends AbstractDataAdapter{
 			}else{
 				String defaultVal = "0"; //$NON-NLS-1$
 				String type = "mandatory"; //$NON-NLS-1$
-				
+
 				Element newUnitMaskTag = newDoc.createElement(UNITMASK);
 				Element typeTag = newDoc.createElement(TYPE);
 				typeTag.setTextContent(type);
 				Element defaultValTag = newDoc.createElement(DEFAULT);
 				defaultValTag.setTextContent(defaultVal);
-				
+
 				newUnitMaskTag.appendChild(typeTag);
 				newUnitMaskTag.appendChild(defaultValTag);
 				newEventTag.appendChild(newUnitMaskTag);
-				
+
 				Element newMask = newDoc.createElement(MASK);
 				Element newVal = newDoc.createElement(VALUE);
 				newVal.setTextContent("0"); //$NON-NLS-1$
 				Element newDesc = newDoc.createElement(DESCRIPTION);
 				newDesc.setTextContent("No unit mask"); //$NON-NLS-1$
-				
+
 				newMask.appendChild(newVal);
 				newMask.appendChild(newDesc);
 				newUnitMaskTag.appendChild(newMask);
 			}
-			
+
 			newEventList.appendChild(newEventTag);
 		}
-		
+
 		for (int i = 0; i < getNrCounters(); i++){
 			Element eventListTag = (Element) newEventList.cloneNode(true);
 			eventListTag.setAttribute(COUNTER, String.valueOf(i));
@@ -457,7 +457,7 @@ public class InfoAdapter extends AbstractDataAdapter{
 	/**
 	 * @since 3.0
 	 */
-	public void setEventIdCacheDoc (Element elem) {
+	private void setEventIdCacheDoc (Element elem) {
 		EventIdCache.getInstance().setCacheDoc(elem);
 	}
 }

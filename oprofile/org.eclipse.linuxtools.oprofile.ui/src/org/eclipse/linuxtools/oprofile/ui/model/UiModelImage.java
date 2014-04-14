@@ -94,7 +94,7 @@ public class UiModelImage implements IUiModelElement {
 				children[i] = symbols[i];
 			}
 		}
-		if (UiModelRoot.SORT_TYPE.FUNCTION == UiModelRoot.getSortingType()) {
+		if (UiModelRoot.SortType.FUNCTION == UiModelRoot.getSortingType()) {
 			Arrays.sort(children, UiModelSorting.getInstance());
 			return children;
 		}

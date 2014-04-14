@@ -95,7 +95,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 		MenuManager sortMenu = new MenuManager(
 				OprofileUiMessages.getString("view.menu.sortby.label")); //$NON-NLS-1$
 
-		for (UiModelRoot.SORT_TYPE s : UiModelRoot.SORT_TYPE.values()) {
+		for (UiModelRoot.SortType s : UiModelRoot.SortType.values()) {
 			sortMenu.add(new OprofileViewSortAction(s,
 					OprofileViewSortAction.sortTypeMap.get(s)));
 		}

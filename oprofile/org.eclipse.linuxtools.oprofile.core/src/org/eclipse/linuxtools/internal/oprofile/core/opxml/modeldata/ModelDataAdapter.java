@@ -34,47 +34,47 @@ import org.xml.sax.SAXException;
  * expected by the SAX parser.
  */
 public class ModelDataAdapter extends AbstractDataAdapter {
-	
+
 	public final static String ID = "id"; //$NON-NLS-1$
 	public final static String IDREF = "idref"; //$NON-NLS-1$
 	public final static String NAME = "name"; //$NON-NLS-1$
 	public final static String COUNT = "count"; //$NON-NLS-1$
 	public final static String SAMPLE = "sample"; //$NON-NLS-1$
 	public final static String LINE = "line"; //$NON-NLS-1$
-	
+
 	public final static String SYMBOL_DATA = "symboldata"; //$NON-NLS-1$
 	public final static String SYMBOL_DETAILS = "symboldetails"; //$NON-NLS-1$
 	public final static String SYMBOL = "symbol"; //$NON-NLS-1$
-	
+
 	public final static String FILE = "file"; //$NON-NLS-1$
-	
+
 	public final static String SETUP = "setup"; //$NON-NLS-1$
 	public final static String EVENT_SETUP = "eventsetup"; //$NON-NLS-1$
 	public final static String TIMER_SETUP = "timersetup"; //$NON-NLS-1$
 	public final static String SETUP_COUNT = "setupcount"; //$NON-NLS-1$
 	public final static String EVENT_NAME = "eventname"; //$NON-NLS-1$
 	public final static String RTC_INTERRUPTS = "rtcinterrupts"; //$NON-NLS-1$
-	
+
 	public final static String PROFILE = "profile"; //$NON-NLS-1$
 	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
-	
+
 	public final static String MODULE = "module"; //$NON-NLS-1$
 	public final static String DEPENDENT = "dependent"; //$NON-NLS-1$
-	
+
 	public final static String BINARY = "binary"; //$NON-NLS-1$
 	public final static String IMAGE = "image"; //$NON-NLS-1$
-	
+
 	public final static String SYMBOLS = "symbols"; //$NON-NLS-1$
 	public final static String SYMBOL_TABLE = "symboltable"; //$NON-NLS-1$
 	public final static String DETAIL_TABLE = "detailtable"; //$NON-NLS-1$
-	
+
 	public final static String DETAIL_DATA = "detaildata"; //$NON-NLS-1$
-	
+
 	private boolean isParseable;
 	private Document newDoc; // the document we intend to build
 	private Element oldRoot; // the root of the document with data from opreport
 	private Element newRoot; // the root of the document we intent to build
-	
+
 	/**
 	 * Constructor to the ModelAdapter class
 	 * @param is The input stream to be parsed
@@ -89,7 +89,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				Document oldDoc = builder.parse(is);
 				Element elem = (Element) oldDoc.getElementsByTagName(PROFILE).item(0);
 				oldRoot = elem;
-				
+
 				newDoc = builder.newDocument();
 				newRoot = newDoc.createElement(MODEL_DATA);
 				newDoc.appendChild(newRoot);
@@ -102,25 +102,25 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void process (){
 		createXML();
 	}
 
 	private void createXML() {
-		
+
 		// get the binary name and the image count
 		Element oldImage = (Element) oldRoot.getElementsByTagName(BINARY).item(0);
 		Element newImage = newDoc.createElement(IMAGE);
-		
+
 		String binName = oldImage.getAttribute(NAME);
 		newImage.setAttribute(NAME, binName);
-		
+
 		Element countTag = (Element) oldImage.getElementsByTagName(COUNT).item(0);
 		String imageCount = countTag.getTextContent().trim();
 		newImage.setAttribute(COUNT, imageCount);
-		
+
 		// There is no setup count in timer mode
 		if (!InfoAdapter.hasTimerSupport()){
 			// get the count that was used to profile
@@ -129,34 +129,34 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			String setupcount = eventSetupTag.getAttribute(SETUP_COUNT);
 			newImage.setAttribute(SETUP_COUNT, setupcount);
 		}
-		
+
 		// these elements contain the data needed to populate the new symbol table
 		Element oldSymbolTableTag = (Element) oldRoot.getElementsByTagName(SYMBOL_TABLE).item(0);
 		NodeList oldSymbolDataList = oldSymbolTableTag.getElementsByTagName(SYMBOL_DATA);
-		
+
 		Element oldDetailTableTag = (Element) oldRoot.getElementsByTagName(DETAIL_TABLE).item(0);
 		NodeList oldDetailTableList = oldDetailTableTag.getElementsByTagName(SYMBOL_DETAILS);
-		
+
 		// parse the data into HashMaps for O(1) lookup time, as opposed to O(n).
 		HashMap<String, HashMap<String, String>> oldSymbolDataListMap = parseDataList (oldSymbolDataList);
 		HashMap<String, NodeList> oldDetailTableListMap = parseDetailTable (oldDetailTableList);
-		
+
 		// An ArrayList to hold the binary and other modules
 		ArrayList<Element> oldImageList = new ArrayList<>();
 		// The first element is the original binary!
-		oldImageList.add(oldImage); 
-		
+		oldImageList.add(oldImage);
+
 		NodeList oldModuleList = oldImage.getElementsByTagName(MODULE);
 		// Set up the dependent tag for any modules run by this binary
 		Element dependentTag = newDoc.createElement(DEPENDENT);
 		if (oldModuleList.getLength() > 0){
 			dependentTag.setAttribute(COUNT, "0"); //$NON-NLS-1$
-			
+
 			for (int t = 0; t < oldModuleList.getLength(); t++){
 				oldImageList.add((Element)oldModuleList.item(t));
 			}
 		}
-		
+
 		// iterate through all (binary/modules)
 		for (Element oldImg : oldImageList) {
 			Element newImg;
@@ -164,10 +164,10 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				newImg = newImage;
 			}else{
 				newImg = newDoc.createElement(IMAGE);
-				
+
 				String imgName = oldImg.getAttribute(NAME);
 				newImg.setAttribute(NAME, imgName);
-				
+
 				Element modCountTag = (Element) oldImg.getElementsByTagName(COUNT).item(0);
 				String imgCount = modCountTag.getTextContent().trim();
 				newImg.setAttribute(COUNT, imgCount);
@@ -181,7 +181,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			// iterate through all symbols
 			for (int i = 0; i < oldSymbolList.getLength(); i++) {
 				Element oldSymbol = (Element) oldSymbolList.item(i);
-				
+
 				/**
 				 * The original binary is a parent for all symbols
 				 * We only want library function calls under their respective
@@ -190,7 +190,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				if (!oldSymbol.getParentNode().isSameNode(oldImg)){
 					continue;
 				}
-				
+
 				Element newSymbol = newDoc.createElement(SYMBOL);
 				String idref = oldSymbol.getAttribute(IDREF);
 				String symbolCount = ((Element) oldSymbol.getElementsByTagName(COUNT).item(0)).getTextContent().trim();
@@ -267,7 +267,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 
 				newSymbolsTag.appendChild(newSymbol);
 			}
-			
+
 			newImg.appendChild(newSymbolsTag);
 			// If this is a module, attach it to the dependent tag
 			if (oldImg.getTagName().equals(MODULE)){
@@ -279,15 +279,15 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				newRoot.appendChild(newImg);
 			}
 		}
-		
+
 		if (oldModuleList.getLength() > 0){
 			newImage.appendChild(dependentTag);
 		}
-	
+
 	}
 
 	/**
-	 * 
+	 *
 	 * @param oldDetailTableList the list of 'symboldetails' tags within detailtable
 	 * @return a HashMap where the key is a function id and the value is a NodeList
 	 * containing a list of the 'detaildata' tags that contain sample information.
@@ -304,7 +304,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param oldSymbolDataList the list of 'symboldata' tags within symboltable
 	 * @return a Hashmap where the key is a function id and the value is a HashMap
 	 * with various parameters of data
@@ -336,12 +336,12 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public Document getDocument() {
 		return newDoc;
 	}
-	
+
 	/**
 	 * Helper class to sort the samples of a given symbol in descending order from largest
 	 * to smallest
 	 */
-	public static final Comparator<Element> SAMPLE_COUNT_ORDER = new Comparator<Element>()
+	private static final Comparator<Element> SAMPLE_COUNT_ORDER = new Comparator<Element>()
     {
 		@Override
 		public int compare(Element a, Element b) {
@@ -352,12 +352,12 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			Element b_countTag = (Element) b.getElementsByTagName(COUNT).item(0);
 			Element a_LineTag = (Element) a.getElementsByTagName(LINE).item(0);
 			Element b_LineTag = (Element) b.getElementsByTagName(LINE).item(0);
-			
+
 			Integer a_count = Integer.parseInt(a_countTag.getTextContent().trim());
 			Integer b_count = Integer.parseInt(b_countTag.getTextContent().trim());
 			Integer a_line = Integer.parseInt(a_LineTag.getTextContent().trim());
 			Integer b_line = Integer.parseInt(b_LineTag.getTextContent().trim());
-			
+
 			if (a_count.compareTo(b_count) == 0){
 				return a_line.compareTo(b_line);
 			}
@@ -372,5 +372,5 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public boolean isParseable() {
 		return isParseable;
 	}
-	
+
 }

@@ -74,8 +74,7 @@ public class OprofileViewDeleteSessionAction extends Action {
 		}
 	}
 
-	public static void deleteOperfDataFolder(IFolder operfData)
-	{
+	public static void deleteOperfDataFolder(IFolder operfData)	{
 		if(operfData.exists()) {
 			try {
 				operfData.delete(true,null);

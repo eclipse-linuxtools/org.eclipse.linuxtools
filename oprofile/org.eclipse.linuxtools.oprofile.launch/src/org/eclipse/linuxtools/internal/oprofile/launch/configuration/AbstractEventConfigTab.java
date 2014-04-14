@@ -223,7 +223,7 @@ AbstractLaunchConfigurationTab {
 	 * @param config
 	 * @return
 	 */
-	public boolean validateEvents(ILaunchConfiguration config) {
+	private boolean validateEvents(ILaunchConfiguration config) {
 		int numEnabledEvents = 0;
 		boolean valid = true;
 
@@ -379,7 +379,7 @@ AbstractLaunchConfigurationTab {
 	 * @return
 	 * @since 1.1
 	 */
-	protected IProject getProject(ILaunchConfiguration config){
+	private IProject getProject(ILaunchConfiguration config){
 		String name = null;
 		try {
 			name = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
@@ -1253,8 +1253,7 @@ AbstractLaunchConfigurationTab {
 		 * @since 3.0
 		 *
 		 */
-		protected class HandleButtonClick implements Listener
- {
+		protected class HandleButtonClick implements Listener {
 
 			@Override
 			public void handleEvent(Event event) {

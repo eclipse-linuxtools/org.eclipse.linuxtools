@@ -33,8 +33,7 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 /**
  * Common class wrapper for all things Oprofile.
  */
-public class Oprofile
-{
+public class Oprofile {
 	// Ugh. Need to know whether the module is loaded without running oprofile commands...
 	private static final String[] OPROFILE_CPU_TYPE_FILES = {
 		"/dev/oprofile/cpu_type", //$NON-NLS-1$
@@ -155,15 +154,6 @@ public class Oprofile
 	 */
 	public static double getCpuFrequency() {
 		return info.getCPUSpeed();
-	}
-
-	/**
-	 * Finds the event with the given name
-	 * @param name the event's name (i.e., CPU_CLK_UNHALTED)
-	 * @return the event or <code>null</code> if not found
-	 */
-	public static OpEvent findEvent(String name) {
-		return info.findEvent(name);
 	}
 
 	/**

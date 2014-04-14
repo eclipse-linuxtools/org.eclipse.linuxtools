@@ -7,16 +7,14 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.ui;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Shell;
@@ -33,7 +31,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	private static OprofileUiPlugin plugin;
 
 	private OprofileView oprofileview = null;
-	
+
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
 	public static final String ID_OPROFILE_VIEW = PLUGIN_ID + ".OProfileView"; //$NON-NLS-1$
 
@@ -45,9 +43,9 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif"; //$NON-NLS-1$
 	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif"; //$NON-NLS-1$
 	public static final String ERROR_ICON = ICON_PATH + "error.png"; //$NON-NLS-1$
-	
+
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
-	
+
 	public static final String ANNOTATION_TYPE_LT_MIN_PERCENTAGE = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.min.pct"; //$NON-NLS-1$
 	public static final String ANNOTATION_TYPE_LT_05 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.05.pct"; //$NON-NLS-1$
 	public static final String ANNOTATION_TYPE_LT_10 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.10.pct"; //$NON-NLS-1$
@@ -56,7 +54,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final String ANNOTATION_TYPE_LT_40 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.40.pct"; //$NON-NLS-1$
 	public static final String ANNOTATION_TYPE_LT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.50.pct"; //$NON-NLS-1$
 	public static final String ANNOTATION_TYPE_GT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.gt.50.pct"; //$NON-NLS-1$
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -80,8 +78,8 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		super.stop(context);
 		plugin = null;
 	}
-	
-	
+
+
 	/**
 	 * Returns the shared instance.
 	 */
@@ -90,13 +88,6 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the workspace instance.
-	 */
-	public static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
-	}
-
-	/**	
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path
 	 *
@@ -106,8 +97,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-	
-	
+
 	public OprofileView getOprofileView() {
 		return oprofileview;
 	}
@@ -119,7 +109,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
-	
+
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		if (window != null) {
@@ -127,14 +117,14 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		}
 		return null;
 	}
-	
+
 	public static String getPercentageString(double percentage) {
 		NumberFormat nf = NumberFormat.getPercentInstance();
 		if (nf instanceof DecimalFormat) {
 			nf.setMinimumFractionDigits(2);
 			nf.setMaximumFractionDigits(2);
 		}
-		
+
 		if (percentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
 			return "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
 		} else {

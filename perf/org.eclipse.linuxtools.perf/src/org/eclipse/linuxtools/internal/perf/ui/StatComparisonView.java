@@ -153,7 +153,7 @@ public class StatComparisonView extends Viewer {
 	 *
 	 * @param data IPerfData data replacement.
 	 */
-	public void updateData(IPerfData data) {
+	private void updateData(IPerfData data) {
 		if (data != null) {
 			setStyledText(data.getPerfData());
 		}

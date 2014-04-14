@@ -17,18 +17,18 @@ import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
  */
 public class OprofileViewSortAction extends Action {
 
-	public static Map<UiModelRoot.SORT_TYPE, String> sortTypeMap = new HashMap<>();
+	public static Map<UiModelRoot.SortType, String> sortTypeMap = new HashMap<>();
 	static{
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.DEFAULT, OprofileUiMessages.getString("view.actions.default.label")); //$NON-NLS-1$
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.SESSION, OprofileUiMessages.getString("view.actions.session.label")); //$NON-NLS-1$
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.EVENT, OprofileUiMessages.getString("view.actions.event.label")); //$NON-NLS-1$
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.LIB, OprofileUiMessages.getString("view.actions.lib.label")); //$NON-NLS-1$
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.FUNCTION, OprofileUiMessages.getString("view.actions.function.label")); //$NON-NLS-1$
-		sortTypeMap.put(UiModelRoot.SORT_TYPE.LINE_NO, OprofileUiMessages.getString("view.actions.line.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.DEFAULT, OprofileUiMessages.getString("view.actions.default.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.SESSION, OprofileUiMessages.getString("view.actions.session.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.EVENT, OprofileUiMessages.getString("view.actions.event.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.LIB, OprofileUiMessages.getString("view.actions.lib.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.FUNCTION, OprofileUiMessages.getString("view.actions.function.label")); //$NON-NLS-1$
+		sortTypeMap.put(UiModelRoot.SortType.LINE_NO, OprofileUiMessages.getString("view.actions.line.label")); //$NON-NLS-1$
 	}
-	private UiModelRoot.SORT_TYPE sortType;
+	private UiModelRoot.SortType sortType;
 
-	public OprofileViewSortAction(UiModelRoot.SORT_TYPE sortType, String text) {
+	public OprofileViewSortAction(UiModelRoot.SortType sortType, String text) {
 		super(text);
 		this.sortType = sortType;
 	}

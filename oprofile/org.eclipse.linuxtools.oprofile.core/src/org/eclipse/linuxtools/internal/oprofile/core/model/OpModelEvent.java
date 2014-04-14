@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
@@ -33,15 +33,10 @@ public class OpModelEvent {
 		return eventName;
 	}
 
-	public OpModelSession getSession()
-	{
+	public OpModelSession getSession() {
 		return parentSession;
 	}
 
-	public void setSession(OpModelSession session)
-	{
-		this.parentSession = session;
-	}
 	//populate all images & dependent images
 	public void refreshModel() {
 		image = getNewImage();
