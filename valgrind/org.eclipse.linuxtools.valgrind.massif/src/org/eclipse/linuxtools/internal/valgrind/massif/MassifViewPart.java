@@ -14,9 +14,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -251,6 +254,15 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				ChartEditorInput currentInput = getChartInput(pid);
+				if (currentInput.getChart().getChartControl().isDisposed()) {
+					IStatus status = new Status(IStatus.ERROR, MassifPlugin.PLUGIN_ID,
+							Messages.getString("MassifViewPart.disposed_chart_reason")); //$NON-NLS-1$
+					ErrorDialog.openError(Display.getDefault().getActiveShell(),
+							Messages.getString("MassifViewPart.Error"), //$NON-NLS-1$
+							Messages.getString("MassifViewPart.disposed_chart_title"), status); //$NON-NLS-1$
+					return;
+				}
+
 				String path = getChartSavePath(currentInput.getName() + ".png"); //$NON-NLS-1$
 				if (path != null) {
 					ChartPNG renderer = new ChartPNG(currentInput.getChart());
