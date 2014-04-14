@@ -54,187 +54,187 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * @author Otavio Pontes
  */
 public class LinuxtoolsPathPropertyPage extends PropertyPage {
-	public static final String LINUXTOOLS_PATH_COMBO_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPathCombo"; //$NON-NLS-1$
-	private static final String LINUXTOOLS_PATH_EXT_POINT = "LinuxtoolsPathOptions"; //$NON-NLS-1$
-	private static final String LINUXTOOLS_PATH_OPTION = "option"; //$NON-NLS-1$
-	private static final String LINUXTOOLS_PATH_OPTION_NAME = "name"; //$NON-NLS-1$
-	private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
+    public static final String LINUXTOOLS_PATH_COMBO_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPathCombo"; //$NON-NLS-1$
+    private static final String LINUXTOOLS_PATH_EXT_POINT = "LinuxtoolsPathOptions"; //$NON-NLS-1$
+    private static final String LINUXTOOLS_PATH_OPTION = "option"; //$NON-NLS-1$
+    private static final String LINUXTOOLS_PATH_OPTION_NAME = "name"; //$NON-NLS-1$
+    private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
 
-	private static final String[][] DEFAULT_PATHS= {
-				{"Custom", ""}, //$NON-NLS-1$  //$NON-NLS-2$
-	};
-	private StringFieldEditor linuxtoolsPath;
-	private CustomComboFieldEditor linuxtoolsPathCombo;
-	private IAdaptable element = null;
-	private Composite result;
-	private Button systemEnvButton, customButton;
-	private boolean customSelected;
+    private static final String[][] DEFAULT_PATHS= {
+                {"Custom", ""}, //$NON-NLS-1$  //$NON-NLS-2$
+    };
+    private StringFieldEditor linuxtoolsPath;
+    private CustomComboFieldEditor linuxtoolsPathCombo;
+    private IAdaptable element = null;
+    private Composite result;
+    private Button systemEnvButton, customButton;
+    private boolean customSelected;
 
-	private String [][]fillPaths() {
-		LinkedList<String[]> list = new LinkedList<>();
-		for (String[] t : DEFAULT_PATHS) {
-			list.add(t);
-		}
+    private String [][]fillPaths() {
+        LinkedList<String[]> list = new LinkedList<>();
+        for (String[] t : DEFAULT_PATHS) {
+            list.add(t);
+        }
 
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LaunchCoreConstants.PLUGIN_ID, LINUXTOOLS_PATH_EXT_POINT);
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement config : configs)
-			if (config.getName().equals(LINUXTOOLS_PATH_OPTION)) {
-				String path = config.getAttribute(LINUXTOOLS_PATH_OPTION_PATH);
-				String name = config.getAttribute(LINUXTOOLS_PATH_OPTION_NAME);
-				list.add(new String[]{name, path});
-			}
-		return list.toArray(new String[0][0]);
-	}
+        IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LaunchCoreConstants.PLUGIN_ID, LINUXTOOLS_PATH_EXT_POINT);
+        IConfigurationElement[] configs = extPoint.getConfigurationElements();
+        for (IConfigurationElement config : configs)
+            if (config.getName().equals(LINUXTOOLS_PATH_OPTION)) {
+                String path = config.getAttribute(LINUXTOOLS_PATH_OPTION_PATH);
+                String name = config.getAttribute(LINUXTOOLS_PATH_OPTION_NAME);
+                list.add(new String[]{name, path});
+            }
+        return list.toArray(new String[0][0]);
+    }
 
-	@Override
-	protected Control createContents(Composite parent) {
-		initializeDialogUnits(parent);
+    @Override
+    protected Control createContents(Composite parent) {
+        initializeDialogUnits(parent);
 
-		result= new Composite(parent, SWT.NONE);
-		GridLayout layout= new GridLayout();
-		layout.marginHeight= convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-		layout.marginWidth= 0;
-		layout.numColumns= 1;
-		result.setLayout(layout);
-		String paths[][] = fillPaths();
+        result= new Composite(parent, SWT.NONE);
+        GridLayout layout= new GridLayout();
+        layout.marginHeight= convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
+        layout.marginWidth= 0;
+        layout.numColumns= 1;
+        result.setLayout(layout);
+        String paths[][] = fillPaths();
 
-		//defaults
-		getPreferenceStore().setDefault(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
-		getPreferenceStore().setDefault(LINUXTOOLS_PATH_COMBO_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
+        //defaults
+        getPreferenceStore().setDefault(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+        getPreferenceStore().setDefault(LINUXTOOLS_PATH_COMBO_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
 
-		// Add radio buttons
-		Composite radios = new Composite(result, SWT.NONE);
-		GridLayout layoutRadios= new GridLayout();
-		layoutRadios.marginWidth= 0;
-		layoutRadios.numColumns= 1;
-		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		radios.setLayout(layoutRadios);
-		radios.setLayoutData(gridData);
+        // Add radio buttons
+        Composite radios = new Composite(result, SWT.NONE);
+        GridLayout layoutRadios= new GridLayout();
+        layoutRadios.marginWidth= 0;
+        layoutRadios.numColumns= 1;
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = 2;
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        radios.setLayout(layoutRadios);
+        radios.setLayoutData(gridData);
 
-		boolean systemPathSelected = getPreferenceStore().getBoolean(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME);
-		systemEnvButton = new Button(radios, SWT.RADIO);
-		systemEnvButton.setText(Messages.LINUXTOOLS_PATH_SYSTEM_ENV);
-		systemEnvButton.setSelection(systemPathSelected);
-		systemEnvButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					updateOptionsEnable();
-				}
-		});
+        boolean systemPathSelected = getPreferenceStore().getBoolean(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME);
+        systemEnvButton = new Button(radios, SWT.RADIO);
+        systemEnvButton.setText(Messages.LINUXTOOLS_PATH_SYSTEM_ENV);
+        systemEnvButton.setSelection(systemPathSelected);
+        systemEnvButton.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    updateOptionsEnable();
+                }
+        });
 
-		customButton = new Button(radios, SWT.RADIO);
-		customButton.setText(Messages.LINUXTOOLS_PATH_CUSTOM);
-		customButton.setToolTipText(Messages.LINUXTOOLS_PATH_CUSTOM_TOOLTIP);
-		customButton.setSelection(!systemPathSelected);
+        customButton = new Button(radios, SWT.RADIO);
+        customButton.setText(Messages.LINUXTOOLS_PATH_CUSTOM);
+        customButton.setToolTipText(Messages.LINUXTOOLS_PATH_CUSTOM_TOOLTIP);
+        customButton.setSelection(!systemPathSelected);
 
-		//Add combo box
-		linuxtoolsPathCombo = new CustomComboFieldEditor(
-									LINUXTOOLS_PATH_COMBO_NAME,
-									Messages.LINUXTOOLS_PATH_COMBO,
-									paths,
-									result);
-		linuxtoolsPathCombo.setPage(this);
-		linuxtoolsPathCombo.setPreferenceStore(getPreferenceStore());
-		linuxtoolsPathCombo.load();
-		linuxtoolsPathCombo.setPropertyChangeListener(new IPropertyChangeListener (){
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				customSelected = event.getNewValue().toString().equals(""); //$NON-NLS-1$
-				if (!customSelected){
-					linuxtoolsPath.setStringValue(event.getNewValue().toString());
-				}
-				updateOptionsEnable();
-			}
-		});
+        //Add combo box
+        linuxtoolsPathCombo = new CustomComboFieldEditor(
+                                    LINUXTOOLS_PATH_COMBO_NAME,
+                                    Messages.LINUXTOOLS_PATH_COMBO,
+                                    paths,
+                                    result);
+        linuxtoolsPathCombo.setPage(this);
+        linuxtoolsPathCombo.setPreferenceStore(getPreferenceStore());
+        linuxtoolsPathCombo.load();
+        linuxtoolsPathCombo.setPropertyChangeListener(new IPropertyChangeListener (){
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                customSelected = event.getNewValue().toString().equals(""); //$NON-NLS-1$
+                if (!customSelected){
+                    linuxtoolsPath.setStringValue(event.getNewValue().toString());
+                }
+                updateOptionsEnable();
+            }
+        });
 
-		//Add textbox
-		linuxtoolsPath = new StringFieldEditor(
-				LaunchCoreConstants.LINUXTOOLS_PATH_NAME,
-				Messages.LINUXTOOLS_PATH, result);
+        //Add textbox
+        linuxtoolsPath = new StringFieldEditor(
+                LaunchCoreConstants.LINUXTOOLS_PATH_NAME,
+                Messages.LINUXTOOLS_PATH, result);
 
-		linuxtoolsPath.setPage(this);
-		linuxtoolsPath.setPreferenceStore(getPreferenceStore());
-		linuxtoolsPath.getTextControl(result).setToolTipText(Messages.LINUXTOOLS_PATH_TOOLTIP);
+        linuxtoolsPath.setPage(this);
+        linuxtoolsPath.setPreferenceStore(getPreferenceStore());
+        linuxtoolsPath.getTextControl(result).setToolTipText(Messages.LINUXTOOLS_PATH_TOOLTIP);
 
-		String selected = getPreferenceStore().getString(LINUXTOOLS_PATH_COMBO_NAME);
-		customSelected = selected.equals(""); //$NON-NLS-1$
-		getPreferenceStore().setDefault(LaunchCoreConstants.LINUXTOOLS_PATH_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
-		linuxtoolsPath.load();
-		linuxtoolsPathCombo.setSelectedValue(linuxtoolsPath.getStringValue());
-		Dialog.applyDialogFont(result);
-		updateOptionsEnable();
-		return result;
-	}
+        String selected = getPreferenceStore().getString(LINUXTOOLS_PATH_COMBO_NAME);
+        customSelected = selected.equals(""); //$NON-NLS-1$
+        getPreferenceStore().setDefault(LaunchCoreConstants.LINUXTOOLS_PATH_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathDefault());
+        linuxtoolsPath.load();
+        linuxtoolsPathCombo.setSelectedValue(linuxtoolsPath.getStringValue());
+        Dialog.applyDialogFont(result);
+        updateOptionsEnable();
+        return result;
+    }
 
-	private void updateOptionsEnable() {
-		if (systemEnvButton.getSelection()) {
-			linuxtoolsPath.setEnabled(false, result);
-			linuxtoolsPathCombo.setEnabled(false, result);
-		} else {
-			linuxtoolsPath.setEnabled(customSelected, result);
-			linuxtoolsPathCombo.setEnabled(true, result);
-		}
-	}
+    private void updateOptionsEnable() {
+        if (systemEnvButton.getSelection()) {
+            linuxtoolsPath.setEnabled(false, result);
+            linuxtoolsPathCombo.setEnabled(false, result);
+        } else {
+            linuxtoolsPath.setEnabled(customSelected, result);
+            linuxtoolsPathCombo.setEnabled(true, result);
+        }
+    }
 
-	@Override
-	protected void performDefaults() {
-		linuxtoolsPath.loadDefault();
-		linuxtoolsPathCombo.loadDefault();
-		customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
-		systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
-		updateOptionsEnable();
-	}
+    @Override
+    protected void performDefaults() {
+        linuxtoolsPath.loadDefault();
+        linuxtoolsPathCombo.loadDefault();
+        customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+        systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+        updateOptionsEnable();
+    }
 
-	@Override
-	public boolean performOk() {
-		linuxtoolsPath.store();
-		linuxtoolsPathCombo.store();
-		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
-		return super.performOk();
-	}
+    @Override
+    public boolean performOk() {
+        linuxtoolsPath.store();
+        linuxtoolsPathCombo.store();
+        getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+        return super.performOk();
+    }
 
-	@Override
-	protected void performApply() {
-		linuxtoolsPath.store();
-		linuxtoolsPathCombo.store();
-		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
-		super.performApply();
-	}
+    @Override
+    protected void performApply() {
+        linuxtoolsPath.store();
+        linuxtoolsPathCombo.store();
+        getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+        super.performApply();
+    }
 
-	/**
-	 * Receives the object that owns the properties shown in this property page.
-	 *
-	 * @see org.eclipse.ui.IWorkbenchPropertyPage#setElement(org.eclipse.core.runtime.IAdaptable)
-	 */
-	@Override
-	public void setElement(IAdaptable element) {
-		this.element = element;
-		IAdaptable e = getElement();
-		if (e != null) {
-			setPreferenceStore(new ScopedPreferenceStore(
-						new ProjectScope((IProject) e),
-						LaunchCoreConstants.PLUGIN_ID));
-		}
-	}
+    /**
+     * Receives the object that owns the properties shown in this property page.
+     *
+     * @see org.eclipse.ui.IWorkbenchPropertyPage#setElement(org.eclipse.core.runtime.IAdaptable)
+     */
+    @Override
+    public void setElement(IAdaptable element) {
+        this.element = element;
+        IAdaptable e = getElement();
+        if (e != null) {
+            setPreferenceStore(new ScopedPreferenceStore(
+                        new ProjectScope((IProject) e),
+                        LaunchCoreConstants.PLUGIN_ID));
+        }
+    }
 
-	/**
-	 * Delivers the object that owns the properties shown in this property page.
-	 *
-	 * @see org.eclipse.ui.IWorkbenchPropertyPage#getElement()
-	 */
-	@Override
-	public IAdaptable getElement() {
-		if (element == null) {
-			return element;
-		}
-		if (!(element instanceof IProject)) {
-			return (IAdaptable) element.getAdapter(IProject.class);
-		}
-		return element;
-	}
+    /**
+     * Delivers the object that owns the properties shown in this property page.
+     *
+     * @see org.eclipse.ui.IWorkbenchPropertyPage#getElement()
+     */
+    @Override
+    public IAdaptable getElement() {
+        if (element == null) {
+            return element;
+        }
+        if (!(element instanceof IProject)) {
+            return (IAdaptable) element.getAdapter(IProject.class);
+        }
+        return element;
+    }
 
 }

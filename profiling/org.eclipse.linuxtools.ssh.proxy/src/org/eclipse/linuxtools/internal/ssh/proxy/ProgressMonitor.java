@@ -12,35 +12,37 @@ package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+
 import com.jcraft.jsch.SftpProgressMonitor;
 
 class ProgressMonitor implements SftpProgressMonitor {
-	private IProgressMonitor monitor;
-	private long max;
-	private String message;
+    private IProgressMonitor monitor;
+    private long max;
+    private String message;
 
-	public ProgressMonitor(IProgressMonitor monitor, String message) {
-		if (monitor == null)
-			monitor = new NullProgressMonitor();
-		this.monitor = monitor;
-		this.message = message;
-	}
+    public ProgressMonitor(IProgressMonitor monitor, String message) {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        this.monitor = monitor;
+        this.message = message;
+    }
 
-	@Override
-	  public void init(int op, String src, String dest, long max) {
-		 monitor.beginTask(message, 100);
-		 this.max = max;
-	  }
+    @Override
+      public void init(int op, String src, String dest, long max) {
+         monitor.beginTask(message, 100);
+         this.max = max;
+      }
 
-	@Override
-	public boolean count(long count) {
-		if (max != 0)
-			monitor.worked((int)(count/max));
-		return !monitor.isCanceled();
-	}
+    @Override
+    public boolean count(long count) {
+        if (max != 0)
+            monitor.worked((int)(count/max));
+        return !monitor.isCanceled();
+    }
 
-	@Override
-	public void end() {
-		 monitor.done();
-	}
+    @Override
+    public void end() {
+         monitor.done();
+    }
 }

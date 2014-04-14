@@ -44,7 +44,7 @@ public class ResourceSelectorWidget {
 	private ResourceType resourceType;
 	private Group mainComp;
 	private String sectionLabelText;
-	protected Label sectionLabel;
+	private Label sectionLabel;
 	private Label uriLabel;
 	private Text uriField;
 	private Button browseButton;

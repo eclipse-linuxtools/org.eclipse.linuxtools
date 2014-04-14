@@ -21,18 +21,13 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class CustomComboFieldEditor extends ComboFieldEditor {
 
-	public CustomComboFieldEditor(String name, String labelText,
-			String[][] entryNamesAndValues, Composite parent) {
-		super(name, labelText, entryNamesAndValues, parent);
-	}
+    public CustomComboFieldEditor(String name, String labelText,
+            String[][] entryNamesAndValues, Composite parent) {
+        super(name, labelText, entryNamesAndValues, parent);
+    }
 
-	public String getSelectedValue() {
-		doStore();
-		return getPreferenceStore().getString(getPreferenceName());
-	}
-
-	public void setSelectedValue(String newValue) {
-		getPreferenceStore().setValue(getPreferenceName(), newValue);
-		doLoad();
-	}
+    public void setSelectedValue(String newValue) {
+        getPreferenceStore().setValue(getPreferenceName(), newValue);
+        doLoad();
+    }
 }

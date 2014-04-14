@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.launch;
 
-import java.io.ByteArrayOutputStream;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -36,15 +33,12 @@ import org.eclipse.core.runtime.SubMonitor;
  */
 public class RemoteConnection {
 
-	private IRemoteProxyManager rmtProxyMgr;
-	private IRemoteCommandLauncher rmtCmdLauncher;
 	private IRemoteFileProxy rmtFileProxy;
 
 	public RemoteConnection(URI uri)
 			throws RemoteConnectionException {
 		try {
-			rmtProxyMgr = RemoteProxyManager.getInstance();
-			rmtCmdLauncher = rmtProxyMgr.getLauncher(uri);
+		    IRemoteProxyManager rmtProxyMgr = RemoteProxyManager.getInstance();
 			rmtFileProxy = rmtProxyMgr.getFileProxy(uri);
 		} catch (CoreException e) {
 			throw new RemoteConnectionException(
@@ -211,95 +205,6 @@ public class RemoteConnection {
 				monitor.done();
 			}
 		}
-	}
-
-	private static final String ENV_CMD = "/bin/env"; //$NON-NLS-1$
-	private static final String WHICH_CMD = "which"; //$NON-NLS-1$
-	private static final String PATH_ENV_VAR = "PATH"; //$NON-NLS-1$
-	private static final String SEPARATOR = ":"; //$NON-NLS-1$
-
-	/**
-	 * Returns the current environment from the remote host.  This method returns
-	 * the environment variables as a map to make lookups and replacements simpler.
-	 * @return Map&lt;String,String&gt; with the environment variable names as keys.
-	 * @throws CoreException
-	 */
-	public Map<String,String> getEnv() throws CoreException {
-		IPath envPath = Path.fromOSString(ENV_CMD);
-		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		ByteArrayOutputStream stderr = new ByteArrayOutputStream();
-		String empty[] = new String[0];
-
-		rmtCmdLauncher.execute(envPath, empty, empty, null, new NullProgressMonitor());
-		rmtCmdLauncher.waitAndRead(stdout, stderr, new NullProgressMonitor());
-		Map<String,String> env = new HashMap<>();
-		String envLines[] = getLines(stdout.toString());
-		// Skip the first line, which is just env command being issued
-		for (int idx = 1; idx < envLines.length; idx++) {
-			String keyAndVal[] = envLines[idx].split("=", 2); //$NON-NLS-1$
-			// If there's a full "<env_var>=<value>|<null>" expression, add this var to the map
-			// Note: <value> may be an empty string.
-			if (keyAndVal.length == 2)
-				env.put(keyAndVal[0], keyAndVal[1]);
-			else if (keyAndVal.length == 1)
-				env.put(keyAndVal[0], null);
-		}
-		return env;
-	}
-
-	/**
-	 * Translates an environment variable map back into an array usable by
-	 * IRemoteCommandLauncher.execute().
-	 * @param envMap environment variable map
-	 * @return array of Strings usable in IRemoteCommandLauncher.execute()
-	 */
-	public static String[] envMapToEnvArray(Map<String, String> envMap) {
-		String envArray[] = new String[envMap.size()];
-		int idx = 0;
-		for (Map.Entry<String, String> entry : envMap.entrySet()) {
-			envArray[idx++] = entry.getKey() + "=" + entry.getValue(); //$NON-NLS-1$
-		}
-		return envArray;
-	}
-
-	/**
-	 * Run 'which <b>command</b>' on the remote machine to find where the executable resides.
-	 * Prepend the $PATH variable with the value of <b>toolsPath</b> so that <i>which</i> may find a
-	 * particular version of the command, if it exists.
-	 * @param command the command or tool to locate on the remote system
-	 * @param toolsPath contains one or more colon-separated paths in which to search for
-	 * for the command, in addition to the default locations in $PATH.
-	 * @return location of command, if found.
-	 * @throws CoreException
-	 */
-	public IPath whichCommand(String command, String toolsPath) throws CoreException {
-		String args[] = new String[1];
-		Map<String,String> envMap = getEnv();
-
-		IPath whichPath = Path.fromOSString(WHICH_CMD);
-		args[0] = command;
-
-		if (envMap.containsKey(PATH_ENV_VAR)) {
-			String pathVal = envMap.get(PATH_ENV_VAR);
-			envMap.put(PATH_ENV_VAR, toolsPath + SEPARATOR + pathVal);
-		} else {
-			envMap.put(PATH_ENV_VAR, toolsPath);
-		}
-		String envArray[] = envMapToEnvArray(envMap);
-
-		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		ByteArrayOutputStream stderr = new ByteArrayOutputStream();
-
-		rmtCmdLauncher.execute(whichPath, args, envArray, null, new NullProgressMonitor());
-		rmtCmdLauncher.waitAndRead(stdout, stderr, new NullProgressMonitor());
-		String outputLines[] = getLines(stdout.toString());
-		// The first line of the read buffer is the command that was executed, in this case
-		// "which <command>", so use the second line, index=1
-		return Path.fromOSString(outputLines[1]);
-	}
-
-	public IRemoteCommandLauncher getRmtCmdLauncher() {
-		return rmtCmdLauncher;
 	}
 
 	public IRemoteFileProxy getRmtFileProxy() {

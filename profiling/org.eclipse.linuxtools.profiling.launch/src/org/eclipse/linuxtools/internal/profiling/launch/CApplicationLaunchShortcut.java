@@ -26,7 +26,7 @@ import org.eclipse.ui.IEditorPart;
  */
 public class CApplicationLaunchShortcut implements ILaunchShortcut2 {
 
-	private final String CDT_LAUNCH_SHORTCUT_ID = "org.eclipse.cdt.debug.ui.localCShortcut"; //$NON-NLS-1$
+	private static final String CDT_LAUNCH_SHORTCUT_ID = "org.eclipse.cdt.debug.ui.localCShortcut"; //$NON-NLS-1$
 	private ILaunchShortcut2 proxy;
 
 	private ILaunchShortcut2 getProxy() {

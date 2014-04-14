@@ -24,10 +24,10 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
  */
 public class RemoteProxyNatureMapping {
 
-	String EXTENSION_POINT_ID = "RemoteProxyNatureMapping"; //$NON-NLS-1$
-	String MANAGER_NAME = "mapping"; //$NON-NLS-1$
-	String NATURE_ID = "nature"; //$NON-NLS-1$
-	String SCHEME_ID = "schema"; //$NON-NLS-1$
+	private static final String EXTENSION_POINT_ID = "RemoteProxyNatureMapping"; //$NON-NLS-1$
+	private static final String MANAGER_NAME = "mapping"; //$NON-NLS-1$
+	private static final String NATURE_ID = "nature"; //$NON-NLS-1$
+	private static final String SCHEME_ID = "schema"; //$NON-NLS-1$
 
 	public String getSchemeFromNature(IProject project) throws CoreException {
 

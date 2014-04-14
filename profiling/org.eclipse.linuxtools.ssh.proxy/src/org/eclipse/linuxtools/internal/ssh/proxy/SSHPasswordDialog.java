@@ -24,57 +24,58 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class SSHPasswordDialog extends Dialog {
-	private String password;
-	private Text passwordField;
-	private String user, host;
-	public SSHPasswordDialog(Shell parent, String user, String host) {
-		super(parent);
-		this.user = user;
-		this.host = host;
-	}
+    private String password;
+    private Text passwordField;
+    private String user, host;
+    public SSHPasswordDialog(Shell parent, String user, String host) {
+        super(parent);
+        this.user = user;
+        this.host = host;
+    }
 
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(Messages.SSHPasswordDialog_Title);
-	}
+    @Override
+    protected void configureShell(Shell shell) {
+        super.configureShell(shell);
+        shell.setText(Messages.SSHPasswordDialog_Title);
+    }
 
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		Composite comp = (Composite) super.createDialogArea(parent);
-		
-		Layout layout = comp.getLayout();
-		if (!(layout instanceof GridLayout)) {
-			layout = new GridLayout();
-			comp.setLayout(layout);
-		}
-		((GridLayout)layout).numColumns = 2;
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite comp = (Composite) super.createDialogArea(parent);
 
-		Label passwordTitle= new Label(comp, SWT.RIGHT);
-		Label passwordLabel = new Label(comp, SWT.RIGHT);
-		GridData gridData = new GridData(GridData.VERTICAL_ALIGN_END);
-		gridData.horizontalSpan = 2;
-		gridData.horizontalAlignment = GridData.FILL;
-		passwordTitle.setLayoutData(gridData);
-		if (host != null && user != null)
-			passwordTitle.setText(MessageFormat.format(Messages.SSHPasswordDialog_Password_Title, user, host));
+        Layout layout = comp.getLayout();
+        if (!(layout instanceof GridLayout)) {
+            layout = new GridLayout();
+            comp.setLayout(layout);
+        }
+        ((GridLayout)layout).numColumns = 2;
 
-		passwordLabel.setText(Messages.SSHPasswordDialog_Password);
+        Label passwordTitle= new Label(comp, SWT.RIGHT);
+        Label passwordLabel = new Label(comp, SWT.RIGHT);
+        GridData gridData = new GridData(GridData.VERTICAL_ALIGN_END);
+        gridData.horizontalSpan = 2;
+        gridData.horizontalAlignment = GridData.FILL;
+        passwordTitle.setLayoutData(gridData);
+        if (host != null && user != null) {
+            passwordTitle.setText(MessageFormat.format(Messages.SSHPasswordDialog_Password_Title, user, host));
+        }
 
-		passwordField = new Text(comp, SWT.SINGLE | SWT.PASSWORD);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		passwordField.setLayoutData(data);
-		return comp;
-	}
+        passwordLabel.setText(Messages.SSHPasswordDialog_Password);
+
+        passwordField = new Text(comp, SWT.SINGLE | SWT.PASSWORD);
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        passwordField.setLayoutData(data);
+        return comp;
+    }
 
 
-	@Override
-	protected void okPressed() {
-		this.password = passwordField.getText();
-		super.okPressed();
-	}
+    @Override
+    protected void okPressed() {
+        this.password = passwordField.getText();
+        super.okPressed();
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 }

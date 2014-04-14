@@ -7,10 +7,9 @@
  *
  * Contributors:
  *    Thavidu Ranatunga (IBM) - Initial implementation.
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.ui;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.cdt.core.model.ICProject;
@@ -26,15 +25,14 @@ import org.eclipse.linuxtools.internal.perf.model.PMFile;
 import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
 import org.eclipse.linuxtools.internal.perf.model.PMSymbol;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
-import org.eclipse.ui.PartInitException;
 
 /**
  * Handle users clicking on model elements in the Perf Tree Viewer.
  */
 public class PerfDoubleClickAction extends Action {
-	
+
 	private TreeViewer viewer;
-	
+
 	public PerfDoubleClickAction(TreeViewer v) {
 		viewer = v;
 	}
@@ -63,7 +61,7 @@ public class PerfDoubleClickAction extends Action {
 				String binaryPath = dso.getPath();
 				ICProject project;
 				project = ProfileUIUtils.findCProjectWithAbsolutePath(binaryPath);
-				HashMap<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, sym.getFunctionName(), -1, file.getPath(), true);
+				Map<String, int[]> map = ProfileUIUtils.findFunctionsInProject(project, sym.getFunctionName(), -1, file.getPath(), true);
 				boolean bFound = false;
 				for (Map.Entry<String, int[]> entry : map.entrySet()) {
 					ProfileUIUtils.openEditorAndSelect(entry.getKey(), entry.getValue()[0], entry.getValue()[1]);
@@ -74,10 +72,7 @@ public class PerfDoubleClickAction extends Action {
 				}
 			}
 		// if we encounter an exception, act as though no corresponding source exists
-		} catch (PartInitException e) {
-		} catch (NumberFormatException e) {
-		} catch (BadLocationException e) {
-		} catch (CoreException e) {
+		} catch (NumberFormatException|BadLocationException|CoreException e) {
 		}
 	}
 

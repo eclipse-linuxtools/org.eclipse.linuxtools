@@ -474,8 +474,8 @@ public class ProviderFramework {
 							IProject project = (IProject)resource;
 							ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
 									ProviderProfileConstants.PLUGIN_ID);
-							Boolean use_project_settings = store.getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + type);
-							if (use_project_settings.booleanValue() == true) {
+							boolean use_project_settings = store.getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + type);
+							if (use_project_settings) {
 								String provider = store.getString(ProviderProfileConstants.PREFS_KEY + type);
 								if (!provider.isEmpty())
 									providerId = provider;
@@ -494,7 +494,6 @@ public class ProviderFramework {
 					ProviderProfileConstants.PLUGIN_ID).get(
 							ProviderProfileConstants.PREFS_KEY + type, ""); //$NON-NLS-1$
 			if (providerId.isEmpty() || getConfigurationDelegateFromId(providerId) == null) {
-
 				// Get highest priority provider
 				providerId = getHighestProviderId(type);
 			}

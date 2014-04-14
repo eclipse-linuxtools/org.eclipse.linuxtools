@@ -38,16 +38,11 @@ import org.eclipse.remote.core.RemoteServices;
  */
 public class RDTCommandLauncher implements IRemoteCommandLauncher {
 
-	public final static int COMMAND_CANCELED = IRemoteCommandLauncher.COMMAND_CANCELED;
-	public final static int ILLEGAL_COMMAND = IRemoteCommandLauncher.ILLEGAL_COMMAND;
-	public final static int OK = IRemoteCommandLauncher.OK;
+	private IRemoteProcess fProcess;
+	private boolean fShowCommand;
+	private String[] fCommandArgs;
 
-
-	protected IRemoteProcess fProcess;
-	protected boolean fShowCommand;
-	protected String[] fCommandArgs;
-
-	protected String fErrorMessage = ""; //$NON-NLS-1$
+	private String fErrorMessage = ""; //$NON-NLS-1$
 
 	private String lineSeparator;
 	private URI uri;
@@ -55,7 +50,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	/**
 	 * The number of milliseconds to pause between polling.
 	 */
-	protected static final long DELAY = 50L;
+	private static final long DELAY = 50L;
 
 	/**
 	 * Creates a new launcher Fills in stderr and stdout output to the given
@@ -90,10 +85,6 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 		lineSeparator = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public void showCommand(boolean show) {
-		fShowCommand = show;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.eclipse.cdt.core.ICommandLauncher#getErrorMessage()
 	 */
@@ -103,30 +94,16 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.core.ICommandLauncher#setErrorMessage(java.lang.String)
-	 */
-	public void setErrorMessage(String error) {
-		fErrorMessage = error;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.eclipse.cdt.core.ICommandLauncher#getCommandArgs()
 	 */
-	public String[] getCommandArgs() {
+	private String[] getCommandArgs() {
 		return fCommandArgs;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.cdt.core.ICommandLauncher#getCommandLine()
-	 */
-	public String getCommandLine() {
-		return getCommandLine(getCommandArgs());
 	}
 
 	/**
 	 * Constructs a command array that will be passed to the process
 	 */
-	protected String[] constructCommandArray(String command, String[] commandArgs) {
+	private static String[] constructCommandArray(String command, String[] commandArgs) {
 		String[] args = new String[1 + commandArgs.length];
 		args[0] = command;
 		System.arraycopy(commandArgs, 0, args, 1, commandArgs.length);
@@ -171,7 +148,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 			fProcess = builder.start();
 			fErrorMessage = ""; //$NON-NLS-1$
 		} catch (IOException e) {
-			setErrorMessage(e.getMessage());
+			fErrorMessage = e.getMessage();
 			return null;
 		}
 		return new RemoteProcessAdapter(fProcess);
@@ -206,7 +183,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 		if (monitor.isCanceled()) {
 			closure.terminate();
 			state = COMMAND_CANCELED;
-			setErrorMessage(Activator.getResourceString("CommandLauncher.error.commandCanceled")); //$NON-NLS-1$
+			fErrorMessage = Activator.getResourceString("CommandLauncher.error.commandCanceled"); //$NON-NLS-1$
 		}
 
 		try {
@@ -217,7 +194,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 		return state;
 	}
 
-	protected void printCommandLine(OutputStream os) {
+	private void printCommandLine(OutputStream os) {
 		if (os != null) {
 			String cmd = getCommandLine(getCommandArgs());
 			try {
@@ -229,7 +206,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
 		}
 	}
 
-	protected String getCommandLine(String[] commandArgs) {
+	private String getCommandLine(String[] commandArgs) {
 		StringBuffer buf = new StringBuffer();
 		if (fCommandArgs != null) {
 			for (String commandArg : commandArgs) {

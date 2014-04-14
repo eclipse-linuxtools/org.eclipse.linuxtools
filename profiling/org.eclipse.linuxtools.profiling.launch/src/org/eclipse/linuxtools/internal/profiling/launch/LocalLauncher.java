@@ -35,8 +35,7 @@ public class LocalLauncher implements IRemoteCommandLauncher {
 			IPath changeToDirectory, IProgressMonitor monitor)
 			throws CoreException {
 		launcher.showCommand(true);
-		Process p = launcher.execute(commandPath, args, env, changeToDirectory, monitor);
-		return p;
+		return launcher.execute(commandPath, args, env, changeToDirectory, monitor);
 	}
 
 	@Override

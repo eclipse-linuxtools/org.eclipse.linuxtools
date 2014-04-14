@@ -19,6 +19,6 @@ import org.eclipse.swt.widgets.Shell;
  * @since 2.0
  */
 public interface IRemoteResourceSelectorProxy {
-	public URI selectFile(String scheme, String initialPath, String prompt, Shell shell);
-	public URI selectDirectory(String scheme, String initialPath, String prompt, Shell shell);
+	URI selectFile(String scheme, String initialPath, String prompt, Shell shell);
+	URI selectDirectory(String scheme, String initialPath, String prompt, Shell shell);
 }

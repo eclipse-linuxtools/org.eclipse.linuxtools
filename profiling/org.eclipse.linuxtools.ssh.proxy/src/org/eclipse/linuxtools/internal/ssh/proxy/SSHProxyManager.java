@@ -12,8 +12,8 @@
 package org.eclipse.linuxtools.internal.ssh.proxy;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Collections;
@@ -65,7 +65,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 				int len;
 				while ((len = in.read(bytes)) != -1)
 					os = os + new String(bytes, 0, len);
-				os = os.substring(0, os.indexOf("\n")); //$NON-NLS-1$
+				os = os.substring(0, os.indexOf('\n'));
 			}
 		} catch (InterruptedException|IOException e) {
 		}
@@ -83,7 +83,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 		Map<String, String> env = Collections.emptyMap();
 		SSHCommandLauncher cmdLauncher = new SSHCommandLauncher(uri);
 		Process p = cmdLauncher.execute(new Path("/bin/env"), new String[] {}, new String[] {}, null, null); //$NON-NLS-1$
-		
+
 		String errorLine;
 		try (BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()))){
 			if((errorLine = error.readLine()) != null){
@@ -111,7 +111,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 		 */
 		Pattern variablePattern = Pattern.compile("^(.+)=([^\\(\\)\\s{].*|)$"); //$NON-NLS-1$
 		Matcher m;
-		
+
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
 				p.getInputStream()))) {
 			String readLine = reader.readLine();

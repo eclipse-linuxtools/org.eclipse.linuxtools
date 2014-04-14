@@ -28,7 +28,7 @@ import org.eclipse.remote.core.exception.RemoteConnectionException;
 
 public class RDTProxyManager implements IRemoteEnvProxyManager {
 
-	public final static String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
+	public static final String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
 
 	@Override
 	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
@@ -55,9 +55,10 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
 		IRemoteServices services = RemoteServices.getRemoteServices(uri);
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
 		String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
-		if (os == null || os.length() == 0)
+		if (os == null || os.isEmpty()) {
 			//FIXME: need better way to get this property
 			return "Linux"; //$NON-NLS-1$
+		}
 		return os;
 	}
 

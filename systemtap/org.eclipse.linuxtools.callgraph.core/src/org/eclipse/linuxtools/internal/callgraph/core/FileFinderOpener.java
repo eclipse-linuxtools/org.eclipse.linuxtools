@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.callgraph.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -27,7 +28,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  */
 public class FileFinderOpener {
 	
-	private static HashMap<String, int []> map = new HashMap<>();
+	private static Map<String, int []> map = new HashMap<>();
 	
 	/**
 	 * Seeks all functions in the given proejct that contains the given function name.

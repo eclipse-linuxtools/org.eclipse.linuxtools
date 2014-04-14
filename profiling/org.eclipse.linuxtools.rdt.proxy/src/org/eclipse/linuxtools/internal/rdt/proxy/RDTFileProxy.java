@@ -37,11 +37,12 @@ public class RDTFileProxy implements IRemoteFileProxy {
 	private void initialize(URI uri) throws CoreException {
 	        IRemoteServices services = RemoteServices.getRemoteServices(uri);
 		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		if (connection != null)
+		if (connection != null) {
 			manager = connection.getFileManager();
-		else
+		} else {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					Activator.getResourceString("Connection.error"))); //$NON-NLS-1$
+		}
 	}
 
 	public RDTFileProxy(URI uri) throws CoreException {
@@ -57,8 +58,8 @@ public class RDTFileProxy implements IRemoteFileProxy {
 			remoteRes = (IRemoteResource)resource.getAdapter(IRemoteResource.class);
 			if (project.hasNature(RDTProxyManager.SYNC_NATURE)) {
 				uri = remoteRes.getActiveLocationURI();
-			} 
-		} 
+			}
+		}
 		initialize(uri);
 	}
 
