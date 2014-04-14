@@ -24,14 +24,16 @@ public class MaxAggregate implements IDataAggregate {
 	 */
 	@Override
 	public Number aggregate(Number[] column) {
-		if(column == null || column.length == 0)
+		if(column == null || column.length == 0) {
 			return null;
+		}
 
 		double num = Double.NEGATIVE_INFINITY;
 
 		for(int i=0; i<column.length; i++) {
-			if(num < column[i].doubleValue())
+			if(num < column[i].doubleValue()) {
 				num = column[i].doubleValue();
+			}
 		}
 
 		return NumberType.getNumber(column[0], num);

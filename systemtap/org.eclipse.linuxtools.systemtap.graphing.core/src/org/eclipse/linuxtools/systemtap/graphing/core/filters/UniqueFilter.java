@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.filters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.GraphingCorePlugin;
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.Localization;
@@ -39,12 +40,12 @@ public class UniqueFilter implements IDataSetFilter {
 	 * @return True if the number is within bounds.
 	 */
 	@Override
-	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
+	public List<Object>[] filter(List<Object>[] data) {
 		if(column < 0 || column >= data.length) {
 			return null;
 		}
 
-		ArrayList<Object>[] newData = Copier.copy(data);
+		List<Object>[] newData = Copier.copy(data);
 		ArrayList<Object>[] aggregates = GraphingCorePlugin.createArrayList(newData.length, new Object());
 		for(int i=0; i<aggregates.length;i++) {
 			aggregates[i] = new ArrayList<>();

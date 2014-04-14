@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -107,30 +106,6 @@ public class ScpExec extends Command {
             stopped = true;
             notifyAll();
 		}
-	}
-
-	static int checkAck(InputStream in) throws IOException {
-		int b = in.read();
-		// b may be 0 for success,
-		// 1 for error,
-		// 2 for fatal error,
-		// -1
-		if (b == 0) {
-			return b;
-		}
-		if (b == -1) {
-			return b;
-		}
-
-		if (b == 1 || b == 2) {
-			StringBuilder sb = new StringBuilder();
-			int c;
-			do {
-				c = in.read();
-				sb.append((char) c);
-			} while (c != '\n');
-		}
-		return b;
 	}
 
    private String command;

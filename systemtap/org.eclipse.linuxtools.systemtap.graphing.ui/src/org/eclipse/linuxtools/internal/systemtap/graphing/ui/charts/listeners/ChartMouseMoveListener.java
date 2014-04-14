@@ -35,16 +35,9 @@ public abstract class ChartMouseMoveListener implements MouseMoveListener {
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				hoverArea.addMouseMoveListener(thisListener);
-				enter();
 			}
 		});
 	}
-
-	/**
-	 * This method is called whenever the mouse enter the plot area of the chart.
-	 * It may be overridden to add extra functionality.
-	 */
-	public void enter() { }
 
 	/**
 	 * This method is called whenever the mouse exits the plot area of the chart.

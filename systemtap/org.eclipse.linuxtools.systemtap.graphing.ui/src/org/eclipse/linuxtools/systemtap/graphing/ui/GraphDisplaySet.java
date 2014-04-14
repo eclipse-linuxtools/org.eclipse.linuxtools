@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.graphing.ui;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -92,7 +93,7 @@ public class GraphDisplaySet {
 	 * This method creates the framework for what will be displayed by this dialog box.
 	 * @param parent The composite that will contain all the elements from this dialog
 	 */
-	public void createPartControl(Composite parent) {
+	private void createPartControl(Composite parent) {
 		parent.setLayout(new FormLayout());
 		FormData data1 = new FormData();
 		Composite cmpCoolBar = new Composite(parent, SWT.NONE);
@@ -176,10 +177,6 @@ public class GraphDisplaySet {
 		return builders.get(folder.getSelectionIndex()-2);
 	}
 
-	public void setFocus() {
-		// Abstract
-	}
-
 	/**
 	 * Removes all internal references in this class.  Nothing should make any references
 	 * to anything in this class after calling the dispose method.
@@ -212,7 +209,7 @@ public class GraphDisplaySet {
 	 * When the user selects the first tab a new dialog is displayed for
 	 * them to select what they want to display for the new graph.
 	 */
-	public class ButtonClickListener extends SelectionAdapter {
+	private class ButtonClickListener extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent event) {
 			CTabFolder folder = (CTabFolder)event.getSource();
@@ -291,7 +288,7 @@ public class GraphDisplaySet {
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
-	private ArrayList<ITabListener> tabListeners;
+	private List<ITabListener> tabListeners;
 
-	private ArrayList<AbstractChartBuilder> builders;
+	private List<AbstractChartBuilder> builders;
 }

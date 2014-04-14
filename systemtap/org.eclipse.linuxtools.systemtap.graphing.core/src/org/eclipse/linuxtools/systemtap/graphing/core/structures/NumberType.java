@@ -22,16 +22,17 @@ public final class NumberType {
 	 * @return The new cast number.
 	 */
 	public static Number getNumber(Number orig, double num) {
-		if(orig instanceof Long)
+		if(orig instanceof Long) {
 			return Long.valueOf((long)num);
-		else if(orig instanceof Double)
+		} else if(orig instanceof Double) {
 			return Double.valueOf(num);
-		else if(orig instanceof Float)
+		} else if(orig instanceof Float) {
 			return Float.valueOf((float)num);
-		else if(orig instanceof Byte)
+		} else if(orig instanceof Byte) {
 			return Byte.valueOf((byte)num);
-		else if(orig instanceof Short)
+		} else if(orig instanceof Short) {
 			return Short.valueOf((short)num);
+		}
 		return Integer.valueOf((int)num);
 	}
 
@@ -44,8 +45,9 @@ public final class NumberType {
 	 */
 	public static Number[] obj2num(Object[] o) {
 		Number[] arr = new Number[o.length];
-		for(int i = 0; i < o.length; i++)
+		for(int i = 0; i < o.length; i++) {
 			arr[i] = obj2num(o[i]);
+		}
 
 		return arr;
 	}

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
@@ -38,7 +39,7 @@ public class MatchFilterTest  {
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
 		MatchFilter filter = new MatchFilter(0, data[0].get(0), MatchFilter.KEEP_MATCHING);
-		ArrayList<Object>[] data2 = filter.filter(data);
+		List<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());

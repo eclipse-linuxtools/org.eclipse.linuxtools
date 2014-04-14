@@ -29,7 +29,7 @@ public class ChartStreamDaemon implements IGobblerListener {
 	/**
 	 * Takes one line from the output data and appends it to data object.
 	 */
-	protected void pushData() {
+	private void pushData() {
 		if(null == data || null == parser)
 			return;
 
@@ -59,8 +59,8 @@ public class ChartStreamDaemon implements IGobblerListener {
 		}
 	}
 
-	protected IDataSet data;
-	protected StringBuilder outputData;
-	protected IDataSetParser parser;
+	private IDataSet data;
+	private StringBuilder outputData;
+	private IDataSetParser parser;
 	private boolean disposed;
 }

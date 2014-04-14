@@ -86,5 +86,5 @@ public class SelectFilterWizard extends Wizard implements INewWizard {
 	private FilterWizardPage[] filterOptionsPages;
 	public String[] series;
 
-	public IDataSetFilter filter;
+	private IDataSetFilter filter;
 }

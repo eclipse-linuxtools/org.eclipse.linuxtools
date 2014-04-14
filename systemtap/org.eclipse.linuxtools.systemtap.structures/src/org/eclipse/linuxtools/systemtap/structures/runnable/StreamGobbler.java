@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.systemtap.structures.runnable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 
@@ -97,14 +98,6 @@ public class StreamGobbler implements Runnable {
 		this.fireNewDataEvent();
 	}
 
-	/**	 * Method for getting the most recently read line from the stream.
-	 * @return String representing the current line being read from the
-	 * <code>InputStream</code>
-	 */
-	public String readLine() {
-		return line.toString();
-	}
-
 	/**
 	 * Gets rid of all internal references to objects.
 	 */
@@ -156,16 +149,7 @@ public class StreamGobbler implements Runnable {
 		}
 	}
 
-	/**
-	 * Returns a list of all of the <code>IGobblerListeners</code> that
-	 * are listening for data events.
-	 * @return ArrayList of all of the listeners registered.
-	 */
-	public ArrayList<IGobblerListener> getDataListeners() {
-		return listeners;
-	}
-
-	private ArrayList<IGobblerListener> listeners;
+	private List<IGobblerListener> listeners;
 	private StringBuilder line;
 	private Thread reader;
 	private InputStream is;

@@ -122,7 +122,7 @@ public class KernelBrowserView extends BrowserView {
 	/**
 	 * Wires up all of the actions for this browser, such as double and right click handlers.
 	 */
-	public void makeActions() {
+	private void makeActions() {
 		doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
 		viewer.addDoubleClickListener(doubleClickAction);
 		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);

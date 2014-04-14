@@ -116,29 +116,6 @@ public final class GraphFactory {
 		return true;
 	}
 
-	public static boolean isKeyRequired(String graphID, IDataSet data) {
-		switch(getIndex(graphID)) {
-		case 0:
-		case 1:
-			if(data instanceof IBlockDataSet) {
-				return true;
-			}
-		default:
-			return false;
-		}
-	}
-
-	public static boolean isKeyOptional(String graphID, IDataSet data) {
-		switch(getIndex(graphID)) {
-		case 2:
-			if(data instanceof IBlockDataSet) {
-				return true;
-			}
-		default:
-			return false;
-		}
-	}
-
 	public static final AbstractChartBuilder createGraph(GraphComposite comp,
 			int style, GraphData gd, IDataSet data) {
 		AbstractChartBuilder builder = null;
@@ -205,7 +182,6 @@ public final class GraphFactory {
 	}
 
 	private static int getIndex(String id) {
-
 		for(int i=0; i<graphIDs.length; i++) {
 			if(id.equals(graphIDs[i])) {
 				return i;

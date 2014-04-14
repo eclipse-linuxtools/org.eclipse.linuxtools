@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.structures;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TreeNode {
 	public TreeNode(Object d, boolean c) {
@@ -137,7 +138,7 @@ public class TreeNode {
 		return null;
 	}
 
-	private ArrayList<TreeNode> children;
+	private List<TreeNode> children;
 	private Object data;
 	private String display;
 	private boolean clickable;

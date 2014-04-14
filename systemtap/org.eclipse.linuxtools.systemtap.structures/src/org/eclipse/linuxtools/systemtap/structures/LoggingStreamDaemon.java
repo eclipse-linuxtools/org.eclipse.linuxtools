@@ -39,7 +39,7 @@ public class LoggingStreamDaemon implements IGobblerListener {
 	/**
 	 * Pushes output to log.
 	 */
-	protected void pushData() {
+	private void pushData() {
 		if(null != writer) {
 			try {
 				writer.write(output.toString());

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.RangeFilter;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
@@ -42,7 +43,7 @@ public class RangeFilterTest {
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
-		ArrayList<Object>[] data2 = filter.filter(data);
+		List<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
@@ -129,7 +130,7 @@ public class RangeFilterTest {
 		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
 
 		filter = new RangeFilter(1, 1, null, RangeFilter.INCLUSIVE);
-		ArrayList<Object>[] data2 = filter.filter(data);
+		List<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[1].size());

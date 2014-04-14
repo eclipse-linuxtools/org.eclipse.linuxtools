@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.systemtap.graphing.ui.charts;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -91,7 +92,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 */
 	protected String title = null;
 
-	private ArrayList<IUpdateListener> listeners = new ArrayList<>();
+	private List<IUpdateListener> listeners = new ArrayList<>();
 
 	/**
 	 * The mouse listener that watches for MouseMove events over a specified region.
@@ -177,7 +178,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	/**
 	 * Builds plot.
 	 */
-	protected void buildPlot() {
+	private void buildPlot() {
 		this.chart.setBackground(WHITE);
 		this.chart.setBackgroundInPlotArea(WHITE);
 	}
@@ -206,14 +207,14 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 	 * Builds legend.
 	 *
 	 */
-	protected void buildLegend() {
+	private void buildLegend() {
 		chart.getLegend().setPosition(SWT.RIGHT);
 	}
 
 	/**
 	 * Builds the chart title.
 	 */
-	protected void buildTitle() {
+	private void buildTitle() {
 		ITitle ctitle = chart.getTitle();
 		ctitle.setForeground(BLACK);
 		ctitle.setText(this.title);
@@ -354,7 +355,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
 		return listeners.remove(l);
 	}
 
-	protected void repaint() {
+	private void repaint() {
 		getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {

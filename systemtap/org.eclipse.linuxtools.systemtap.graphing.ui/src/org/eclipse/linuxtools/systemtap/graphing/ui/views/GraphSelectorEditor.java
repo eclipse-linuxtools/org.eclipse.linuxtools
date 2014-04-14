@@ -50,8 +50,8 @@ import org.eclipse.ui.part.EditorPart;
 public class GraphSelectorEditor extends EditorPart {
 
 	private CTabFolder scriptFolder;
-	private ArrayList<GraphDisplaySet> displaySets;
-	private ArrayList<ITabListener> tabListeners;
+	private List<GraphDisplaySet> displaySets;
+	private List<ITabListener> tabListeners;
 	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"; //$NON-NLS-1$
 
 	public GraphSelectorEditor() {
@@ -90,14 +90,6 @@ public class GraphSelectorEditor extends EditorPart {
 		scriptFolder.setSelection(item); // Choose the last created item.
 		fireTabOpenEvent();
 		this.setPartName(NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptName.substring(scriptName.lastIndexOf('/')+1)));
-	}
-
-	/**
-	 * @return The current number of script sets (one for each regular expression being watched).
-	 * @since 2.2
-	 */
-	public int numberOfScriptSets() {
-		return displaySets.size();
 	}
 
 	/**

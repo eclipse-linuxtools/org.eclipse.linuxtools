@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.SortFilter;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
@@ -41,7 +42,7 @@ public class SortFilterTest {
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());
-		ArrayList<Object>[] data2 = filter.filter(data);
+		List<Object>[] data2 = filter.filter(data);
 
 		assertEquals(width, data.length);
 		assertEquals(height, data[0].size());

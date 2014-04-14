@@ -51,7 +51,7 @@ public class STPEditor extends SimpleEditor {
 	}
 
 	@Override
-	protected void internal_init() {
+	protected void internalInit() {
 		configureInsertMode(SMART_INSERT, false);
 		setDocumentProvider(new STPDocumentProvider());
 	}

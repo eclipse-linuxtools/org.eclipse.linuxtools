@@ -22,13 +22,15 @@ public class CountAggregate implements IDataAggregate {
 	 */
 	@Override
 	public Number aggregate(Number[] column) {
-		if(column == null || column.length == 0)
+		if(column == null || column.length == 0) {
 			return null;
+		}
 
 		int num = 0;
 
-		for(int i=0; i<column.length; i++)
+		for(int i=0; i<column.length; i++) {
 			num++;
+		}
 
 		return Integer.valueOf(num);
 	}

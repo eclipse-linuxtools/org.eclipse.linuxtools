@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IBlockDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataEntry;
@@ -228,6 +229,6 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
 	//End IBlockDataSet Methods
 
 	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.core.datasets.tabledataset"; //$NON-NLS-1$
-	protected ArrayList<TableEntry> data;
+	protected List<TableEntry> data;
 	private String[] titles;
 }

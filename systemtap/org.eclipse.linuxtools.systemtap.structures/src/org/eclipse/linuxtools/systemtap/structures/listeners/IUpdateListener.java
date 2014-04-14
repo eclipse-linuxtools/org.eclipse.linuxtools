@@ -12,5 +12,5 @@
 package org.eclipse.linuxtools.systemtap.structures.listeners;
 
 public interface IUpdateListener {
-	abstract void handleUpdateEvent();
+	void handleUpdateEvent();
 }

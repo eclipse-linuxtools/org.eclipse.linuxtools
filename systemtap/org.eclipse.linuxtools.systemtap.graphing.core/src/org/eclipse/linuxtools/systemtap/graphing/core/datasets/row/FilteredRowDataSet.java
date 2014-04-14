@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.datasets.row;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.GraphingCorePlugin;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataEntry;
@@ -117,9 +118,10 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 			dataCount = original.getRowCount();
 			topData = top;
 
-			ArrayList<Object>[] filterData = getFilterData();
-			for(int i=0; i<filters.size(); i++)
+			List<Object>[] filterData = getFilterData();
+			for(int i=0; i<filters.size(); i++) {
 				filterData = filters.get(i).filter(filterData);
+			}
 			setFilteredData(filterData);
 		}
 	}
@@ -141,7 +143,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 		return data;
 	}
 
-	private void setFilteredData(ArrayList<?>[] data) {
+	private void setFilteredData(List<?>[] data) {
 		this.data = new ArrayList<>();
 
 		RowEntry entry;
@@ -158,7 +160,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
 	}
 
 	private RowDataSet original;
-	private ArrayList<IDataSetFilter> filters;
+	private List<IDataSetFilter> filters;
 
 	private boolean filtersChanged;
 	private int dataCount;

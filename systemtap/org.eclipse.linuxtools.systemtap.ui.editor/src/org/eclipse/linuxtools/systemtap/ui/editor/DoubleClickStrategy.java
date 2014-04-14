@@ -17,7 +17,7 @@ import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextViewer;
 
 public class DoubleClickStrategy implements ITextDoubleClickStrategy {
-	protected ITextViewer fText;
+	private ITextViewer fText;
 
 	@Override
 	public void doubleClicked(ITextViewer part) {
@@ -36,10 +36,10 @@ public class DoubleClickStrategy implements ITextDoubleClickStrategy {
 
 	/**
 	 * Method handles the selection of comments in the editor.
-	 * 
+	 *
 	 * @param caretPos postition of the caret
 	 */
-	protected boolean selectComment(int caretPos) {
+	private boolean selectComment(int caretPos) {
 		IDocument doc = fText.getDocument();
 		int startPos, endPos;
 
@@ -96,10 +96,10 @@ public class DoubleClickStrategy implements ITextDoubleClickStrategy {
 
 	/**
 	 * Method handles the selection of words in the editor.
-	 * 
+	 *
 	 * @param caretPos postition of the caret
 	 */
-	protected boolean selectWord(int caretPos) {
+	private boolean selectWord(int caretPos) {
 		IDocument doc = fText.getDocument();
 		int startPos, endPos;
 

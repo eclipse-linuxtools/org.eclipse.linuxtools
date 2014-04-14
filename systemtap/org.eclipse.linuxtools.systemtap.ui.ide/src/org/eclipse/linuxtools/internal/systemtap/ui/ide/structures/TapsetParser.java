@@ -169,9 +169,7 @@ public abstract class TapsetParser extends Job {
 				}
 			}
 
-		} catch (JSchException e) {
-			ExceptionErrorDialog.openError(Messages.TapsetParser_ErrorRunningSystemtap, e);
-		} catch (IOException e) {
+		} catch (JSchException|IOException e) {
 			ExceptionErrorDialog.openError(Messages.TapsetParser_ErrorRunningSystemtap, e);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

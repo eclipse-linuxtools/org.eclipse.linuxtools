@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.Localization;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataEntry;
@@ -67,8 +68,9 @@ public class RowDataSet implements IHistoricalDataSet {
 	@Override
 	public Object[] getRow(int row) {
 		IDataEntry entry = getEntry(row);
-		if(null != entry)
+		if(null != entry) {
 			return entry.getRow(null);
+		}
 		return null;
 	}
 
@@ -200,7 +202,7 @@ public class RowDataSet implements IHistoricalDataSet {
 	}
 	//End IHistoricalDataSet Methods
 
-	protected ArrayList<IDataEntry> data;
+	protected List<IDataEntry> data;
 	private String[] titles;
 	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.core.datasets.rowdataset"; //$NON-NLS-1$
 }

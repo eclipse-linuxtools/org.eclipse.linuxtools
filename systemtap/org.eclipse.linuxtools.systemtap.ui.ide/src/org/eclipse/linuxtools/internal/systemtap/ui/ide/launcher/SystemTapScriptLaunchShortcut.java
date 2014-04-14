@@ -69,7 +69,7 @@ public class SystemTapScriptLaunchShortcut extends ProfileLaunchShortcut impleme
 
 	}
 
-	protected ILaunchConfiguration findLaunchConfiguration(String scriptPath, String scriptProject) {
+	private ILaunchConfiguration findLaunchConfiguration(String scriptPath, String scriptProject) {
 		ILaunchConfiguration configuration = null;
 		ArrayList<ILaunchConfiguration> candidateConfigurations = new ArrayList<>();
 		try {

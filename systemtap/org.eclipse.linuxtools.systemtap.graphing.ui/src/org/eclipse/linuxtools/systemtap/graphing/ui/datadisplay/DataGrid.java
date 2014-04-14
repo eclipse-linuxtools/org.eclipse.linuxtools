@@ -23,7 +23,6 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.Localization;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter.AvailableFilterTypes;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter.SelectFilterWizard;
-import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;
 import org.eclipse.linuxtools.systemtap.structures.IFormattingStyles;
@@ -54,12 +53,11 @@ public class DataGrid implements IUpdateListener {
 	/**
 	 * @since 3.0 set must be a IFilteredDataSet.
 	 */
-	public DataGrid(Composite composite, IFilteredDataSet set, int style) {
+	public DataGrid(Composite composite, IFilteredDataSet set) {
 		prefs = GraphingUIPlugin.getDefault().getPreferenceStore();
 		manualResize = !prefs.getBoolean(GraphingPreferenceConstants.P_AUTO_RESIZE);
 
 		filteredDataSet = set;
-				this.style = style;
 				clickLocation = new Point(-1, -1);
 				createPartControl(composite);
 
@@ -74,14 +72,9 @@ public class DataGrid implements IUpdateListener {
 		prefs.addPropertyChangeListener(propertyChangeListener);
 	}
 
-	public void setLayoutData(Object data) {
-		table.setLayoutData(data);
-	}
-
-	public IDataSet getDataSet() { return filteredDataSet; }
 	public Control getControl() { return table; }
 
-	public void createPartControl(Composite parent) {
+	private void createPartControl(Composite parent) {
 		table = new Table(parent, SWT.SINGLE | SWT.FULL_SELECTION);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -116,7 +109,7 @@ public class DataGrid implements IUpdateListener {
 		handleUpdateEvent();
 	}
 
-	public Menu initMenus() {
+	private Menu initMenus() {
 		Menu menu = new Menu(table.getShell(), SWT.POP_UP);
 		menu.addMenuListener(new MainMenuListener());
 
@@ -173,7 +166,7 @@ public class DataGrid implements IUpdateListener {
 		return cols.length-1;
 	}
 
-	public class MainMenuListener extends MenuAdapter {
+	private class MainMenuListener extends MenuAdapter {
 		@Override
 		public void menuShown(MenuEvent e) {
 			MenuItem item = ((Menu)e.widget).getItem(1);
@@ -181,14 +174,14 @@ public class DataGrid implements IUpdateListener {
 		}
 	}
 
-	public class MenuManualyResizedSelection extends SelectionAdapter {
+	private class MenuManualyResizedSelection extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			manualResize = !manualResize;
 		}
 	}
 
-	public class AddFilterSelection extends SelectionAdapter {
+	private class AddFilterSelection extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			SelectFilterWizard wizard = new SelectFilterWizard(filteredDataSet.getTitles());
@@ -215,7 +208,7 @@ public class DataGrid implements IUpdateListener {
 		}
 	}
 
-	public class RemoveFilterSelection implements SelectionListener {
+	private class RemoveFilterSelection implements SelectionListener {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			IDataSetFilter idsf = (IDataSetFilter)((MenuItem)e.widget).getData();
@@ -234,7 +227,7 @@ public class DataGrid implements IUpdateListener {
 		public void widgetDefaultSelected(SelectionEvent e) {}
 	}
 
-	public class FormatMenuListener extends MenuAdapter {
+	private class FormatMenuListener extends MenuAdapter {
 		@Override
 		public void menuShown(MenuEvent e) {
 			MenuItem[] items = ((Menu)e.widget).getItems();
@@ -269,7 +262,7 @@ public class DataGrid implements IUpdateListener {
 		}
 	}
 
-	public class MenuFormatSelection extends SelectionAdapter {
+	private class MenuFormatSelection extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			int format = IFormattingStyles.UNFORMATED;
@@ -369,15 +362,13 @@ public class DataGrid implements IUpdateListener {
 		propertyChangeListener = null;
 	}
 
-	protected IFilteredDataSet filteredDataSet;
-	protected IFormattingStyles columnFormat[];
-	protected int removedItems;
-	protected Table table;
-	protected Point clickLocation;
-	protected IPreferenceStore prefs;
-	protected boolean manualResize;
-	protected Menu filterMenu;
-	protected int style;
+	private IFilteredDataSet filteredDataSet;
+	private IFormattingStyles columnFormat[];
+	private Table table;
+	private Point clickLocation;
+	private IPreferenceStore prefs;
+	private boolean manualResize;
+	private Menu filterMenu;
 
 	private MenuItem removeFiltersMenuItem;
 	private MenuItem formatMenuItem;

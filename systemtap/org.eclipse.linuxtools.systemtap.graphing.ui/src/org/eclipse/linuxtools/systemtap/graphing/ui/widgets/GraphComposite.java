@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.systemtap.graphing.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.GraphData;
@@ -73,7 +74,7 @@ public class GraphComposite extends Composite {
 	 * Toggles sidebar visible or not visible.
 	 * @param withSidebar Enables or disables the sidebar.
 	 */
-	public void configure(boolean withSidebar) {
+	private void configure(boolean withSidebar) {
 		sidebarVisible = withSidebar;
 
 		for(Button b:checkOptions) {
@@ -105,29 +106,11 @@ public class GraphComposite extends Composite {
 		configure(sidebarVisible);
 	}
 
-	public void removeCheckOption(String title) {
-		for(Button b :checkOptions) {
-			if(b.getText().equals(title)) {
-				checkOptions.remove(b);
-				b.dispose();
-				configure(sidebarVisible);
-				return;
-			}
-		}
-	}
-
 	/**
 	 * Returns the graph that is rendering to this composite.
 	 */
 	public AbstractChartBuilder getCanvas() {
 		return builder;
-	}
-
-	/**
-	 * Returns the current sidebar visibility state.
-	 */
-	public boolean isSidebarVisible() {
-		return sidebarVisible;
 	}
 
 	/**
@@ -143,6 +126,6 @@ public class GraphComposite extends Composite {
 
 	private boolean sidebarVisible = false;
 	private AbstractChartBuilder builder;
-	private ArrayList<Button> checkOptions;
+	private List<Button> checkOptions;
 	private Composite checkOptionComp;
 }

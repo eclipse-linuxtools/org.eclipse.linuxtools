@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.graphing.core.filters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.Localization;
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.NumberType;
@@ -35,11 +35,11 @@ public class SortFilter implements IDataSetFilter {
 	 * @return The filtered dataset.
 	 */
 	@Override
-	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
+	public List<Object>[] filter(List<Object>[] data) {
 		if(column < 0 || column >= data.length)
 			return null;
 
-		ArrayList<Object>[] newData = Copier.copy(data);
+		List<Object>[] newData = Copier.copy(data);
 		IndexedObject[] items = new IndexedObject[newData[0].size()];
 
 		try {

@@ -12,6 +12,6 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.aggregates;
 
 public interface IDataAggregate {
-	public Number aggregate(Number[] column);
-	public String getID();
+	Number aggregate(Number[] column);
+	String getID();
 }

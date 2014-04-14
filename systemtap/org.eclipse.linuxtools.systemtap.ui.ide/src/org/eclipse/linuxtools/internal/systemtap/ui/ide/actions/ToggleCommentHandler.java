@@ -300,7 +300,7 @@ public class ToggleCommentHandler extends AbstractHandler {
 	 *
 	 * @param editor ITextEditor editor to associate operation target to.
 	 */
-	public void updateOpTarget(ITextEditor editor) {
+	private void updateOpTarget(ITextEditor editor) {
 		if (editor != null) {
 			operationTarget = (ITextOperationTarget) editor
 					.getAdapter(ITextOperationTarget.class);

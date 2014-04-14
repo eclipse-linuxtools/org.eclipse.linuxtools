@@ -51,8 +51,9 @@ public class RowEntry implements IDataEntry {
 
 	@Override
 	public Object[] getColumn(int col) {
-		if(0 <= col && getColCount() > col)
+		if(0 <= col && getColCount() > col) {
 			return new Object[] {get(null, col)};
+		}
 		return null;
 	}
 
@@ -84,8 +85,9 @@ public class RowEntry implements IDataEntry {
 		if(row == 0) {
 			data = null;
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	private Object[] data;

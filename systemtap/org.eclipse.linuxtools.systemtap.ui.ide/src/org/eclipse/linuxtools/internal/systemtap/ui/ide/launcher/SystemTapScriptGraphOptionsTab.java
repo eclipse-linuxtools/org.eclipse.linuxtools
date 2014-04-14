@@ -472,7 +472,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param configuration
 	 * @return
 	 */
-	public static ArrayList<String> createDatasetNames(ILaunchConfiguration configuration) {
+	public static List<String> createDatasetNames(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
 			ArrayList<String> names = new ArrayList<>(numberOfRegexs);
@@ -492,7 +492,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param configuration The desired run configuration.
 	 * @return A list of parsers.
 	 */
-	public static ArrayList<IDataSetParser> createDatasetParsers(ILaunchConfiguration configuration) {
+	public static List<IDataSetParser> createDatasetParsers(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
 			ArrayList<IDataSetParser> parsers = new ArrayList<>(numberOfRegexs);
@@ -512,7 +512,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param configuration
 	 * @return
 	 */
-	public static ArrayList<IFilteredDataSet> createDataset(ILaunchConfiguration configuration) {
+	public static List<IFilteredDataSet> createDataset(ILaunchConfiguration configuration) {
 		try {
 			int numberOfRegexs = configuration.getAttribute(NUMBER_OF_REGEXS, 0);
 			ArrayList<IFilteredDataSet> datasets = new ArrayList<>(numberOfRegexs);
@@ -539,7 +539,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	 * @param configuration The desired run configuration.
 	 * @return A data set.
 	 */
-	public static ArrayList<LinkedList<GraphData>> createGraphsFromConfiguration (ILaunchConfiguration configuration)
+	public static List<LinkedList<GraphData>> createGraphsFromConfiguration (ILaunchConfiguration configuration)
 			throws CoreException {
 		// Restrict number of regexs to at least one, so at least
 		// one inner list will exist in the return value.
@@ -642,7 +642,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		runWithChartCheckButton.setSelection(false);
 	}
 
-	protected void createColumnSelector(Composite parent) {
+	private void createColumnSelector(Composite parent) {
 
 		GridLayout layout = new GridLayout();
 		parent.setLayout(layout);
@@ -1294,10 +1294,6 @@ public class SystemTapScriptGraphOptionsTab extends
 		}
 		item.setText(graphName + ":" + gd.title //$NON-NLS-1$
 				+ (bad ? " " + Messages.SystemTapScriptGraphOptionsTab_invalidGraph : "")); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public boolean canFlipToNextPage() {
-		return false;
 	}
 
 	@Override

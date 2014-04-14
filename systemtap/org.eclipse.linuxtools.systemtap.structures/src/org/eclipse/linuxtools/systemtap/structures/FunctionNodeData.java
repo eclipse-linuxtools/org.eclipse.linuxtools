@@ -25,14 +25,6 @@ public class FunctionNodeData {
 	private String type;
 
 	/**
-	 * @return <code>true</code> if this node is a parameter,
-	 * or <code>false</code> if it is a function.
-	 */
-	public boolean isParam() {
-		return line == null;
-	}
-
-	/**
 	 * Get the original script text that defines a function.
 	 * @return The entire text contents of the original function definition,
 	 * if this node is a function; <code>null</code> otherwise.

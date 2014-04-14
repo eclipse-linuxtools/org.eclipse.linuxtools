@@ -376,7 +376,7 @@ public class RunScriptHandler extends AbstractHandler {
 	 * @return The command to invoke to start the script running in stap.
 	 * @since 2.0
 	 */
-	protected String[] buildStandardScript() {
+	private String[] buildStandardScript() {
 		getImportedTapsets(cmdList);
 
 		if(isGuru()) {
@@ -392,7 +392,7 @@ public class RunScriptHandler extends AbstractHandler {
 	 * @since 2.0
 	 */
 
-	protected void getImportedTapsets(List<String> cmdList) {
+	private void getImportedTapsets(List<String> cmdList) {
 		IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
 		String[] tapsets = preferenceStore.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
@@ -457,7 +457,7 @@ public class RunScriptHandler extends AbstractHandler {
 	 * @return An array suitable to pass to <code>Runtime.exec</code> to start stap on this file.
 	 * @since 2.0
 	 */
-	protected String[] finalizeScript(List<String> cmdList) {
+	private String[] finalizeScript(List<String> cmdList) {
 
 		String[] script;
 

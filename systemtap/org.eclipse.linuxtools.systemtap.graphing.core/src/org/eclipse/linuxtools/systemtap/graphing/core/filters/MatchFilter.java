@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.filters;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.graphing.core.Localization;
 import org.eclipse.linuxtools.systemtap.structures.Copier;
@@ -34,12 +34,12 @@ public class MatchFilter implements IDataSetFilter {
 	 * @return The filtered dataset.
 	 */
 	@Override
-	public ArrayList<Object>[] filter(ArrayList<Object>[] data) {
+	public List<Object>[] filter(List<Object>[] data) {
 		if(column < 0 || column >= data.length) {
 			return null;
 		}
 
-		ArrayList<Object>[] newData = Copier.copy(data);
+		List<Object>[] newData = Copier.copy(data);
 		boolean equals;
 		for(int j, i=newData[column].size()-1; i>=0; i--) {
 			equals = newData[column].get(i).toString().equals(value.toString());	//TODO: Find better equivilance method

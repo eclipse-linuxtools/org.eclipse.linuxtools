@@ -39,21 +39,12 @@ public final class DataSetFactory {
 		return new FilteredRowDataSet(labels);
 	}
 
-	public static IFilteredDataSet createFilteredDataSet(IDataSet set) {
-		if(set instanceof RowDataSet) {
-			return new FilteredRowDataSet((RowDataSet)set);
-		} else if(set instanceof TableDataSet) {
-			return new FilteredTableDataSet((TableDataSet)set);
-		}
-		return null;
-	}
-
 	/**
 	 * @since 3.0 set must be a IFilteredDataSet.
 	 */
 	public static DataGrid getDataGrid(Composite composite, IFilteredDataSet set) {
 		if(set instanceof RowDataSet || set instanceof TableDataSet) {
-			return new DataGrid(composite, set, DataGrid.FULL_UPDATE);
+			return new DataGrid(composite, set);
 		}
 
 		return null;

@@ -81,7 +81,7 @@ public class STPConfiguration extends SourceViewerConfiguration {
 	 *
 	 * @return default element scanner.
 	 */
-	protected STPElementScanner getSTPScanner() {
+	private STPElementScanner getSTPScanner() {
 		if (scanner == null) {
 			scanner = new STPElementScanner(colorManager);
 			scanner.setDefaultReturnToken(new Token(new TextAttribute(

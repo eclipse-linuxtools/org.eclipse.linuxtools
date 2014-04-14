@@ -29,8 +29,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.editor.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
 
@@ -39,17 +37,12 @@ public class SimpleEditor extends TextEditor {
 		super();
 		// make sure we inherit all the text editing commands (delete line etc).
 		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.systemtap.ui.ide.context" }); //$NON-NLS-1$
-		internal_init();
+		internalInit();
 	}
 
-	protected void internal_init() {
+	protected void internalInit() {
 		configureInsertMode(SMART_INSERT, false);
 		setDocumentProvider(new SimpleDocumentProvider());
-	}
-
-	@Override
-	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
-		super.init(site, input);
 	}
 
 	/**

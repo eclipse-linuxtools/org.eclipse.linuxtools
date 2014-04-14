@@ -86,7 +86,7 @@ public abstract class BrowserView extends ViewPart {
 		}
 	}
 
-	abstract protected Image getEntryImage(TreeNode treeObj);
+	protected abstract Image getEntryImage(TreeNode treeObj);
 
 	/**
 	 * Provides the icon and text for each entry in the tapset tree.

@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.datasets.table;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataEntry;
 
@@ -114,5 +115,5 @@ public class TableEntry implements IDataEntry {
 		return (null != bodyContent.remove(row));
 	}
 
-	private ArrayList<Object[]> bodyContent;	//ArrayList of arrays
+	private List<Object[]> bodyContent;	//ArrayList of arrays
 }

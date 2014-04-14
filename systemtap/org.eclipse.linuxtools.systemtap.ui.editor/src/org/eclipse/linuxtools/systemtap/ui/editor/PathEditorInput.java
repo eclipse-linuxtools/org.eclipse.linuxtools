@@ -22,7 +22,6 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 
 public class PathEditorInput extends FileStoreEditorInput implements IPathEditorInput, ILocationProvider {
 	private IPath fPath;
-	public boolean temp = false;
 
 	public PathEditorInput(IPath path) {
 		super(EFS.getLocalFileSystem().getStore(path));

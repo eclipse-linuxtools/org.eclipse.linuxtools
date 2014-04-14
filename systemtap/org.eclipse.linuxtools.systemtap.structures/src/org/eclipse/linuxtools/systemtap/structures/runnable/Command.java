@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -25,8 +26,6 @@ import org.eclipse.linuxtools.internal.systemtap.structures.StructuresPlugin;
 import org.eclipse.linuxtools.systemtap.structures.LoggingStreamDaemon;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
-
-
 
 /**
  * A class to spawn a separate thread to run a <code>Process</code>.
@@ -57,8 +56,8 @@ public class Command implements Runnable {
 	protected StreamGobbler errorGobbler = null;
 
 	private boolean disposed = false;
-	private ArrayList<IGobblerListener> inputListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private ArrayList<IGobblerListener> errorListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private List<IGobblerListener> inputListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
+	private List<IGobblerListener> errorListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
 	private int returnVal = Integer.MAX_VALUE;
 
 	private String[] cmd;
@@ -270,30 +269,6 @@ public class Command implements Runnable {
 	}
 
 	/**
-	 * Returns the list of everything that is listening the the InputStream
-	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
-	 */
-	public ArrayList<IGobblerListener> getInputStreamListeners() {
-		if(null != inputGobbler) {
-			return inputGobbler.getDataListeners();
-		} else {
-			return inputListeners;
-		}
-	}
-
-	/**
-	 * Returns the list of everything that is listening the the ErrorStream
-	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
-	 */
-	public ArrayList<IGobblerListener> getErrorStreamListeners() {
-		if(null != errorGobbler) {
-			return errorGobbler.getDataListeners();
-		} else {
-			return errorListeners;
-		}
-	}
-
-	/**
 	 * Removes the provided listener from those monitoring the InputStream.
 	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
 	 */
@@ -324,18 +299,6 @@ public class Command implements Runnable {
 	 */
 	public boolean saveLog(File file) {
 		return logger.saveLog(file);
-	}
-
-	/**
-	 * Gets all of the output from the input stream.
-	 * @return String containing the entire output from the input stream.
-	 */
-	public String getOutput() {
-		if(!isDisposed()) {
-			return logger.getOutput();
-		} else {
-			return null;
-		}
 	}
 
 	/**

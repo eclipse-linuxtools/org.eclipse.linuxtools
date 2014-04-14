@@ -15,6 +15,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.structures.Copier;
 import org.junit.Test;
@@ -36,12 +37,12 @@ public class CopierTest {
 			}
 		}
 
-		ArrayList<String> list2 = Copier.copy(list);
+		List<String> list2 = Copier.copy(list);
 		for(int i=0; i<list.size(); i++) {
 			assertEquals(list2.get(i), list.get(i));
 		}
 
-		ArrayList<?>[] lists2 = Copier.copy(lists);
+		List<?>[] lists2 = Copier.copy(lists);
 		assertArrayEquals(lists, lists2);
 	}
 

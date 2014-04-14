@@ -30,9 +30,6 @@ public class BarChart extends Chart {
 			updateLayout();
 		}
 	}
-	public boolean isUpdateSuspended() {
-		return updateSuspended;
-	}
 
 	public BarChart(Composite parent, int style) {
 		super(parent, style);
@@ -84,7 +81,7 @@ public class BarChart extends Chart {
 
 	@Override
 	public void updateLayout() {
-		if (isUpdateSuspended()) {
+		if (updateSuspended) {
 			return;
 		}
 

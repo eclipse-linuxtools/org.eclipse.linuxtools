@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.structures;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -94,7 +95,7 @@ public class UpdateManager {
 	}
 
 	private Timer timer;
-	private ArrayList<IUpdateListener> updateListeners;
+	private List<IUpdateListener> updateListeners;
 	private boolean stopped;
 	private boolean disposed;
 }

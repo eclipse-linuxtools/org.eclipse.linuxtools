@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.graphing.core.datasets;
 
-
-
 public interface IDataSetParser {
 	IDataEntry parse(StringBuilder entry);
 }

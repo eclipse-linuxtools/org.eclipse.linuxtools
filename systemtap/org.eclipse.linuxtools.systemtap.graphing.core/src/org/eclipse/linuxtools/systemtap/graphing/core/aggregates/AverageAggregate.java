@@ -24,13 +24,15 @@ public class AverageAggregate implements IDataAggregate {
 	 */
 	@Override
 	public Number aggregate(Number[] column) {
-		if(column == null || column.length == 0)
+		if(column == null || column.length == 0) {
 			return null;
+		}
 
 		double num = 0;
 
-		for(int i=0; i<column.length; i++)
+		for(int i=0; i<column.length; i++) {
 			num += column[i].doubleValue();
+		}
 
 		num /= column.length;
 		return NumberType.getNumber(column[0], num);

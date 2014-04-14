@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
@@ -45,9 +45,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	protected IDocument createDocument(Object element) throws CoreException {
 		if (element instanceof IEditorInput) {
 			IDocument document= new Document();
-			if (setDocumentContent(document, (IEditorInput) element)) {
-				setupDocument(document);
-			}
+			setDocumentContent(document, (IEditorInput) element);
 			return document;
 		}
 
@@ -58,13 +56,12 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * Tries to read the file pointed at by <code>input</code> if it is an
 	 * <code>IPathEditorInput</code>. If the file does not exist, <code>true</code>
 	 * is returned.
-	 * 
+	 *
 	 * @param document the document to fill with the contents of <code>input</code>
 	 * @param input the editor input
-	 * @return <code>true</code> if setting the content was successful or no file exists, <code>false</code> otherwise
 	 * @throws CoreException if reading the file fails
 	 */
-	private static boolean setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
+	private static void setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
 		Reader reader = null;
 		try {
 			if (input instanceof FileStoreEditorInput){
@@ -72,11 +69,11 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 			} else if (input instanceof IPathEditorInput){
 				reader= new FileReader(((IPathEditorInput)input).getPath().toFile());
 			} else {
-				return false;
+				return;
 			}
 		} catch (FileNotFoundException e) {
 			// return empty document and save later
-			return true;
+			return;
 		} catch (MalformedURLException e) {
 			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID ,Localization.getString("SimpleDocumentProvider.incorrectURL"), e)); //$NON-NLS-1$
 		} catch (IOException e) {
@@ -85,7 +82,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 
 		try {
 			setDocumentContent(document, reader);
-			return true;
+			return;
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, Localization.getString("SimpleDocumentProvider.errorCreatingFile"), e)); //$NON-NLS-1$
 		}
@@ -93,7 +90,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 
 	/**
 	 * Reads in document content from a reader and fills <code>document</code>
-	 * 
+	 *
 	 * @param document the document to fill
 	 * @param reader the source
 	 * @throws IOException if reading fails
@@ -111,15 +108,6 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 
 			document.set(buffer.toString());
 		}
-	}
-
-	/**
-	 * Set up the document - default implementation does nothing.
-	 * 
-	 * @param document the new document
-	 */
-	protected void setupDocument(IDocument document) {
-		// Empty
 	}
 
 	/*
@@ -161,7 +149,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 
 	/**
 	 * Saves the document contents to a stream.
-	 * 
+	 *
 	 * @param document the document to save
 	 * @param writer the stream to save it to
 	 * @param monitor a progress monitor to report progress

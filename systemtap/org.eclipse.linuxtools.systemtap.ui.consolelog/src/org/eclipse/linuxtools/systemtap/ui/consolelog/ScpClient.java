@@ -106,7 +106,7 @@ public class ScpClient {
 
 	}
 
-	static int checkAck(InputStream in) throws IOException {
+	private static int checkAck(InputStream in) throws IOException {
 		int b = in.read();
 		// b may be 0 for success,
 		// 1 for error,

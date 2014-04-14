@@ -12,12 +12,12 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.adapters;
 
 public interface IAdapter {
-	public Number getYSeriesMax(int series, int start, int end);
-	public Number getSeriesMax(int series, int start, int end);
+	Number getYSeriesMax(int series, int start, int end);
+	Number getSeriesMax(int series, int start, int end);
 
-	public String[] getLabels();
-	public int getRecordCount();
-	public int getSeriesCount();
-	public Object[][] getData();
-	public Object[][] getData(int start, int end);
+	String[] getLabels();
+	int getRecordCount();
+	int getSeriesCount();
+	Object[][] getData();
+	Object[][] getData(int start, int end);
 }

@@ -36,12 +36,11 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 
 	private boolean successful;
 	private IAction action;
-	private boolean cancelled;
 
 	/**
 	 * @since 2.0
 	 */
-	protected IWorkbenchWindow window;
+	private IWorkbenchWindow window;
 
 	public OpenFileAction() {
 		super();
@@ -119,20 +118,9 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 		dialog.setText(dialogName());
 		String path= dialog.open();
 		if (path != null && path.length() > 0) {
-			cancelled = false;
 			return new File(path);
 		}
-		cancelled = true;
 		return null;
-	}
-
-	/**
-	 * @return <code>true</code> if the last file query was cancelled,
-	 * or <code>false</code> if a file was selected.
-	 * @since 2.2
-	 */
-	public boolean wasCancelled() {
-		return cancelled;
 	}
 
 	public boolean isSuccessful() {
