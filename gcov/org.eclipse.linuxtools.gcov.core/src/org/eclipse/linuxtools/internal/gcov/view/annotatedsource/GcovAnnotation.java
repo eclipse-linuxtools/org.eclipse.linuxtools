@@ -19,14 +19,11 @@ import org.eclipse.osgi.util.NLS;
  */
 public class GcovAnnotation extends Annotation {
 
-    private static final String COVERAGE = "org.eclipse.gcov.CoverageAnnotation"; //$NON-NLS-1$
-    private static final String NO_COVERAGE = "org.eclipse.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
-
     private final Position position;
     private final long count;
 
-    public GcovAnnotation(int offset, int length, long count) {
-        super(getAnnotationType(count), false, null);
+    public GcovAnnotation(int offset, int length, long count, String type) {
+        super(type, false, null);
         this.position = new Position(offset, length);
         this.count = count;
     }
@@ -46,12 +43,5 @@ public class GcovAnnotation extends Annotation {
         } else  {
             return Messages.CoverageAnnotationColumn_non_exec_line;
         }
-    }
-
-    private static String getAnnotationType(long count) {
-        if (count == 0) {
-            return NO_COVERAGE;
-        }
-        return COVERAGE;
     }
 }

@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.gcov.view.annotatedsource;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +48,10 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Annotation model responsible for management of GcovAnnotation elements.
  */
 public final class GcovAnnotationModel implements IAnnotationModel {
+
+	private static final String THOROUGH_COVERAGE = "org.eclipse.linuxtools.gcov.ThoroughCoverageAnnotation"; //$NON-NLS-1$
+	private static final String COVERAGE = "org.eclipse.linuxtools.gcov.CoverageAnnotation"; //$NON-NLS-1$
+	private static final String NO_COVERAGE = "org.eclipse.linuxtools.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
 
     /** Key for identifying our model from other Editor models. */
     private static final Object KEY = new Object();
@@ -194,12 +199,34 @@ public final class GcovAnnotationModel implements IAnnotationModel {
         AnnotationModelEvent event = new AnnotationModelEvent(this);
         clear(event);
         List<Line> lines = sourceFile.getLines();
+
+        List<Long> tmp = new ArrayList<>();
+        for (Line line : lines) {
+            // Remove 0 from our calculation
+            if (line.getCount() != 0) {
+                tmp.add(line.getCount());
+            }
+        }
+        Long[] counts = tmp.toArray(new Long[0]);
+        Arrays.sort(counts);
+
+        // Formula for outlier (upper quartile)
+        final int q1 = (int) Math.floor(0.25 * counts.length);
+        final int q3 = (int) Math.ceil(0.75 * counts.length);
+        final float outlierThreshold = counts[q3] + (1.5f * (counts[q3] - counts[q1]));
+
         for (int i = 0; i < lines.size(); i++) {
             try {
                 Line line = lines.get((i+1) % lines.size());
+                String type = COVERAGE;
+                if (line.getCount() == 0) {
+                    type = NO_COVERAGE;
+                } else if (line.getCount() > outlierThreshold) {
+                    type = THOROUGH_COVERAGE;
+                }
                 if (line.exists()) {
                     GcovAnnotation ca = new GcovAnnotation(document.getLineOffset(i),
-                        document.getLineLength(i), line.getCount());
+                            document.getLineLength(i), line.getCount(), type);
                     annotations.add(ca);
                     event.annotationAdded(ca);
                 }
