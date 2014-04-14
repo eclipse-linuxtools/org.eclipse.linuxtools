@@ -24,14 +24,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class CachegrindFunction implements ICachegrindElement {
-	protected CachegrindFile parent;
-	protected String name;
-	protected List<CachegrindLine> lines;
-	protected long[] totals;
+	private CachegrindFile parent;
+	private String name;
+	private List<CachegrindLine> lines;
+	private long[] totals;
 
-	protected IAdaptable model;
+	private IAdaptable model;
 
-	private static String SCOPE_RESOLUTION = "::"; //$NON-NLS-1$
+	private static final String SCOPE_RESOLUTION = "::"; //$NON-NLS-1$
 
 	public CachegrindFunction(CachegrindFile parent, String name) {
 		this.parent = parent;
@@ -44,7 +44,7 @@ public class CachegrindFunction implements ICachegrindElement {
 			try {
 				if (element instanceof ITranslationUnit) {
 					// Cachegrind labels parameter types for C++ methods
-					int paramIndex = name.indexOf("("); //$NON-NLS-1$
+					int paramIndex = name.indexOf('(');
 					if (paramIndex >= 0) {
 						name = name.substring(0, paramIndex);
 					}
@@ -75,7 +75,7 @@ public class CachegrindFunction implements ICachegrindElement {
 		}
 	}
 
-	protected ICElement findElement(String name, IParent parent)
+	private ICElement findElement(String name, IParent parent)
 	throws CModelException {
 		ICElement element = null;
 		List<ICElement> dom = parent.getChildrenOfType(ICElement.C_FUNCTION);

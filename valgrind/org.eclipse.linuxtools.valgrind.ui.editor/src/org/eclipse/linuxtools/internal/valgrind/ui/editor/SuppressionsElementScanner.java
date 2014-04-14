@@ -59,36 +59,12 @@ public class SuppressionsElementScanner extends BufferedRuleBasedScanner {
 		IToken commentToken = new Token(new TextAttribute(colorManager
 				.getColor(ISuppressionsColorConstants.COMMENT)));
 		
-		// Handle keywords				
-//		WordRule keywordsRule = new WordRule(new IWordDetector() {
-//
-//			public boolean isWordPart(char c) {
-//				return Character.isJavaIdentifierPart(c);
-//			}
-//
-//			public boolean isWordStart(char c) {
-//				return Character.isJavaIdentifierStart(c);
-//			}
-//
-//		}, defaultToken);
-		
-//		for (String tool : TOOLS) {
-//			keywordsRule.addWord(tool, toolToken);
-//		}
-//		for (String keyword : SUPP_TYPES) {
-//			keywordsRule.addWord(keyword, suppTypeToken);
-//		}
-//		for (String context : CONTEXTS) {
-//			keywordsRule.addWord(context, contextToken);
-//		}
-
 		setDefaultReturnToken(defaultToken);
 		setRules(new IRule[] {
 				new EndOfLineRule("#", commentToken), //$NON-NLS-1$
 				new SuppressionToolRule(tools, toolToken),
 				new SuppressionKindRule(kinds, suppKindToken),
 				new SuppressionToolRule(CONTEXTS, contextToken),
-//				keywordsRule,
 				new WhitespaceRule(new IWhitespaceDetector() {
 					@Override
 					public boolean isWhitespace(char c) {

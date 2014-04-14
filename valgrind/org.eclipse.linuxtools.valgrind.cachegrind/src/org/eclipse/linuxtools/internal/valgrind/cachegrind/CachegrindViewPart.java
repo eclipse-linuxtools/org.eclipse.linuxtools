@@ -52,32 +52,32 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
-	protected CachegrindOutput[] outputs;
-	protected TreeViewer viewer;
+	private CachegrindOutput[] outputs;
+	private TreeViewer viewer;
 
-	protected static final int COLUMN_SIZE = 75;
-	protected CachegrindLabelProvider labelProvider;
-	protected CachegrindTreeContentProvider contentProvider;
-	protected IDoubleClickListener doubleClickListener;
-	protected ExpandAction expandAction;
-	protected CollapseAction collapseAction;
+	private static final int COLUMN_SIZE = 75;
+	private CachegrindLabelProvider labelProvider;
+	private CachegrindTreeContentProvider contentProvider;
+	private IDoubleClickListener doubleClickListener;
+	private ExpandAction expandAction;
+	private CollapseAction collapseAction;
 	
 	// Events - Cache
-	protected static final String IR = "Ir"; //$NON-NLS-1$
-	protected static final String I1MR = "I1mr"; //$NON-NLS-1$
-	protected static final String I2MR = "I2mr"; //$NON-NLS-1$
-	protected static final String DR = "Dr"; //$NON-NLS-1$
-	protected static final String D1MR = "D1mr"; //$NON-NLS-1$
-	protected static final String D2MR = "D2mr"; //$NON-NLS-1$
-	protected static final String DW = "Dw"; //$NON-NLS-1$
-	protected static final String D1MW = "D1mw"; //$NON-NLS-1$
-	protected static final String D2MW = "D2mw"; //$NON-NLS-1$
+	private static final String IR = "Ir"; //$NON-NLS-1$
+	private static final String I1MR = "I1mr"; //$NON-NLS-1$
+	private static final String I2MR = "I2mr"; //$NON-NLS-1$
+	private static final String DR = "Dr"; //$NON-NLS-1$
+	private static final String D1MR = "D1mr"; //$NON-NLS-1$
+	private static final String D2MR = "D2mr"; //$NON-NLS-1$
+	private static final String DW = "Dw"; //$NON-NLS-1$
+	private static final String D1MW = "D1mw"; //$NON-NLS-1$
+	private static final String D2MW = "D2mw"; //$NON-NLS-1$
 	
 	// Events - Branch
-	protected static final String BC = "Bc"; //$NON-NLS-1$
-	protected static final String BCM = "Bcm"; //$NON-NLS-1$
-	protected static final String BI = "Bi"; //$NON-NLS-1$
-	protected static final String BIM = "Bim"; //$NON-NLS-1$
+	private static final String BC = "Bc"; //$NON-NLS-1$
+	private static final String BCM = "Bcm"; //$NON-NLS-1$
+	private static final String BI = "Bi"; //$NON-NLS-1$
+	private static final String BIM = "Bim"; //$NON-NLS-1$
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -286,41 +286,29 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		String result = event;
 		if (event.equals(IR)) {
 			result = Messages.getString("CachegrindViewPart.Ir_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(I1MR)) {
+		} else if (event.equals(I1MR)) {
 			result = Messages.getString("CachegrindViewPart.I1mr_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(I2MR)) {
+		} else if (event.equals(I2MR)) {
 			result = Messages.getString("CachegrindViewPart.I2mr_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(DR)) {
+		} else if (event.equals(DR)) {
 			result = Messages.getString("CachegrindViewPart.Dr_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(D1MR)) {
+		} else if (event.equals(D1MR)) {
 			result = Messages.getString("CachegrindViewPart.D1mr_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(D2MR)) {
+		} else if (event.equals(D2MR)) {
 			result = Messages.getString("CachegrindViewPart.D2mr_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(DW)) {
+		} else if (event.equals(DW)) {
 			result = Messages.getString("CachegrindViewPart.Dw_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(D1MW)) {
+		} else if (event.equals(D1MW)) {
 			result = Messages.getString("CachegrindViewPart.D1mw_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(D2MW)) {
+		} else if (event.equals(D2MW)) {
 			result = Messages.getString("CachegrindViewPart.D2mw_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(BC)) {
+		} else if (event.equals(BC)) {
 			result = Messages.getString("CachegrindViewPart.Bc_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(BCM)) {
+		} else if (event.equals(BCM)) {
 			result = Messages.getString("CachegrindViewPart.Bcm_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(BI)) {
+		} else if (event.equals(BI)) {
 			result = Messages.getString("CachegrindViewPart.Bi_long"); //$NON-NLS-1$
-		}
-		else if (event.equals(BIM)) {
+		} else if (event.equals(BIM)) {
 			result = Messages.getString("CachegrindViewPart.Bim_long"); //$NON-NLS-1$
 		}
 		return result;

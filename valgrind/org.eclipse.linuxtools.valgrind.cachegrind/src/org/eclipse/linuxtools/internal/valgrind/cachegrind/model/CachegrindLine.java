@@ -14,9 +14,9 @@ import org.eclipse.core.runtime.IAdaptable;
 
 
 public class CachegrindLine implements ICachegrindElement {
-	protected CachegrindFunction parent;
-	protected int line;
-	protected long[] values;
+	private CachegrindFunction parent;
+	private int line;
+	private long[] values;
 	
 	public CachegrindLine(CachegrindFunction parent, int line, long[] values) {
 		this.parent = parent;

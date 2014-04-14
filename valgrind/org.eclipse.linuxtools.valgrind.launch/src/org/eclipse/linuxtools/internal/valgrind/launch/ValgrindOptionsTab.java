@@ -112,31 +112,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		this.checkVersion = checkVersion;
 	}
 
-	/**
-	 * Set the version of Valgrind that the Launch UI shall use.
-	 * Since the valgrind version affects existence or non-existence of UI controls, the
-	 * version can only be changed while no version-dependent Tab is being displayed.
-	 * @param v the valgrind version, or <code>null</code> is no version is known (typically, all UI features enabled).
-	 */
-	public void setValgrindVersion(Version v) {
-		valgrindVersion = v;
-	}
-
-	/**
-	 * Return the version of Valgrind that the Launch UI is being configured against
-	 * @return the valgrind version, or <code>null</code> if no version has been detected or set.
-	 */
-	public Version getValgrindVersion() {
-		return valgrindVersion;
-	}
-
-	protected SelectionListener selectListener = new SelectionAdapter() {
+	private SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			updateLaunchConfigurationDialog();
 		}
 	};
-	protected ModifyListener modifyListener = new ModifyListener() {
+	private ModifyListener modifyListener = new ModifyListener() {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
@@ -212,7 +194,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		updateLaunchConfigurationDialog();
 	}
 
-	protected void recomputeSize() {
+	private void recomputeSize() {
 		Point point = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		top.setSize(point);
 		scrollTop.setMinSize(point);
@@ -257,7 +239,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return str;
 	}
 
-	protected void createBasicOptions(Composite top) {
+	private void createBasicOptions(Composite top) {
 		Group basicGroup = new Group(top, SWT.NONE);
 		basicGroup.setLayout(new GridLayout());
 		basicGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -285,7 +267,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		runFreeresButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
-	protected void createErrorOptions(Composite top) {
+	private void createErrorOptions(Composite top) {
 		Group errorGroup = new Group(top, SWT.NONE);
 		errorGroup.setLayout(new GridLayout());
 		errorGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -368,7 +350,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			dSymUtilButton.setVisible(false);
 	}
 
-	protected void createSuppressionsOption(Composite top) {
+	private void createSuppressionsOption(Composite top) {
 		Composite browseTop = new Composite(top, SWT.BORDER);
 		browseTop.setLayout(new GridLayout(2, false));
 		GridData browseData = new GridData(GridData.FILL_BOTH);
@@ -432,7 +414,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		});
 	}
 
-	protected void handleToolChanged() {
+	private void handleToolChanged() {
 		try {
 			// create dynamicTab
 			loadDynamicArea();
@@ -488,7 +470,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return dynamicTab;
 	}
 
-	protected ValgrindLaunchPlugin getPlugin() {
+	private ValgrindLaunchPlugin getPlugin() {
 		return ValgrindLaunchPlugin.getDefault();
 	}
 
@@ -675,13 +657,6 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			dynamicTab.dispose();
 		}
 		super.dispose();
-	}
-
-	protected void createHorizontalSpacer(Composite comp, int numlines) {
-		Label lbl = new Label(comp, SWT.NONE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = numlines;
-		lbl.setLayoutData(gd);
 	}
 
 	@Override

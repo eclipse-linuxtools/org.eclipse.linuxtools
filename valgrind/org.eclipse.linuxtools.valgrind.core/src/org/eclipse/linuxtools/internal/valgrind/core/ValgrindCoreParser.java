@@ -27,9 +27,9 @@ public class ValgrindCoreParser {
 	private static final String AT = "at"; //$NON-NLS-1$
 	private static final String BY = "by"; //$NON-NLS-1$
 
-	protected List<IValgrindMessage> messages;
-	protected int pid;
-	protected ILaunch launch;
+	private List<IValgrindMessage> messages;
+	private int pid;
+	private ILaunch launch;
 
 	public ValgrindCoreParser(File inputFile, ILaunch launch) throws IOException {
 		this.launch = launch;
@@ -97,7 +97,7 @@ public class ValgrindCoreParser {
 		}
 	}
 
-	protected IValgrindMessage getMessage(IValgrindMessage message, String line) {
+	private IValgrindMessage getMessage(IValgrindMessage message, String line) {
 		if (line.startsWith(AT) || line.startsWith(BY)) {
 			Object[] parsed = ValgrindParserUtils.parseFilename(line);
 			String filename = (String) parsed[0];
@@ -109,15 +109,5 @@ public class ValgrindCoreParser {
 	
 	public IValgrindMessage[] getMessages() {
 		return messages.toArray(new IValgrindMessage[messages.size()]);
-	}
-	
-	public void printMessages(IValgrindMessage m, int indent) {
-		for (int i = 0; i < indent; i++) {
-			System.out.print(" "); //$NON-NLS-1$
-		}
-		System.out.println(m.getText());
-		for (IValgrindMessage child : m.getChildren()) {
-			printMessages(child, indent + 1);
-		}
 	}
 }

@@ -27,10 +27,10 @@ import org.eclipse.swt.widgets.Menu;
 
 public class MassifTreeViewer {
 
-	protected IDoubleClickListener doubleClickListener;
-	protected ITreeContentProvider contentProvider;
-	protected Action expandAction;
-	protected Action collapseAction;
+	private IDoubleClickListener doubleClickListener;
+	private ITreeContentProvider contentProvider;
+	private Action expandAction;
+	private Action collapseAction;
 
 	private TreeViewer viewer;
 	

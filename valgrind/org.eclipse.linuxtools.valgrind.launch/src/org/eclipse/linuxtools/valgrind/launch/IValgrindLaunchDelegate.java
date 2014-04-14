@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.launch;
 
 import org.eclipse.core.runtime.CoreException;
@@ -35,8 +35,8 @@ public interface IValgrindLaunchDelegate {
 	 * @param monitor - to report progress
 	 * @throws CoreException - if this method fails
 	 */
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException;
-	
+	void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException;
+
 	/**
 	 * Called after handleLaunch returns control to the main Valgrind launch
 	 * delegate, and initializes the Valgrind view. This method is responsible
@@ -47,7 +47,7 @@ public interface IValgrindLaunchDelegate {
 	 * @param monitor - to report progress
 	 * @throws CoreException - if this method fails
 	 */
-	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException;
+	void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException;
 
 	/**
 	 * Parses attributes of an <code>ILaunchConfiguration</code> into an array
@@ -58,6 +58,6 @@ public interface IValgrindLaunchDelegate {
 	 * @return an array of arguments that can appended to a <code>valgrind</code> command
 	 * @throws CoreException - retrieving attributes from config failed
 	 */
-	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException;
-	
+	String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException;
+
 }

@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.launch;
 
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
@@ -18,7 +18,7 @@ import org.osgi.framework.Version;
  * into this plugin.
  */
 public interface IValgrindToolPage extends ILaunchConfigurationTab {
-	
+
 	/**
 	 * To be called before createControl. This method is used to inform extenders
 	 * which version of Valgrind is available. The extender may then perform
@@ -26,6 +26,6 @@ public interface IValgrindToolPage extends ILaunchConfigurationTab {
 	 * checking should not be performed.
 	 * @param ver - the version of Valgrind, or null
 	 */
-	public void setValgrindVersion(Version ver);
-	
+	void setValgrindVersion(Version ver);
+
 }

@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.jface.action.IAction;
@@ -17,16 +17,16 @@ import org.eclipse.ui.IViewPart;
  * Provides an interface for including controls in the Valgrind view.
  */
 public interface IValgrindToolView extends IViewPart {
-		
+
 	/**
 	 * Provides a mechanism to add actions to the Valgrind view's toolbar
 	 * @return an array of actions to add to the toolbar
 	 */
-	public IAction[] getToolbarActions();
-	
+	IAction[] getToolbarActions();
+
 	/**
 	 * Refreshes the controls within this view
 	 */
-	public void refreshView();
+	void refreshView();
 
 }

@@ -33,36 +33,33 @@ import org.osgi.framework.Version;
 
 public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		implements IValgrindToolPage {
-	public static final String CACHEGRIND = "cachegrind"; //$NON-NLS-1$
-	public static final String PLUGIN_ID = CachegrindPlugin.PLUGIN_ID;
-	
 	// Cachegrind controls
-	protected Button cacheButton;
-	protected Button branchButton;
-	protected Composite i1Top;
-	protected Spinner i1SizeSpinner;
-	protected Spinner i1AssocSpinner;
-	protected Spinner i1LineSizeSpinner;
-	protected Button i1Button;
-	protected Composite d1Top;
-	protected Spinner d1SizeSpinner;
-	protected Spinner d1AssocSpinner;
-	protected Spinner d1LineSizeSpinner;
-	protected Button d1Button;
-	protected Composite l2Top;
-	protected Spinner l2SizeSpinner;
-	protected Spinner l2AssocSpinner;
-	protected Spinner l2LineSizeSpinner;
-	protected Button l2Button;
+	private Button cacheButton;
+	private Button branchButton;
+	private Composite i1Top;
+	private Spinner i1SizeSpinner;
+	private Spinner i1AssocSpinner;
+	private Spinner i1LineSizeSpinner;
+	private Button i1Button;
+	private Composite d1Top;
+	private Spinner d1SizeSpinner;
+	private Spinner d1AssocSpinner;
+	private Spinner d1LineSizeSpinner;
+	private Button d1Button;
+	private Composite l2Top;
+	private Spinner l2SizeSpinner;
+	private Spinner l2AssocSpinner;
+	private Spinner l2LineSizeSpinner;
+	private Button l2Button;
 		
-	protected boolean isInitializing = false;
-	protected SelectionListener selectListener = new SelectionAdapter() {
+	private boolean isInitializing = false;
+	private SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			updateLaunchConfigurationDialog();
 		}
 	};
-	protected ModifyListener modifyListener = new ModifyListener() {
+	private ModifyListener modifyListener = new ModifyListener() {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();	
@@ -305,13 +302,6 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		// Not used
 	}
 
-	protected void createHorizontalSpacer(Composite comp, int numlines) {
-		Label lbl = new Label(comp, SWT.NONE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = numlines;
-		lbl.setLayoutData(gd);
-	}
-	
 	@Override
 	protected void updateLaunchConfigurationDialog() {
 		if (!isInitializing) {
@@ -319,21 +309,21 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		}
 	}
 
-	protected void checkI1Enablement() {
+	private void checkI1Enablement() {
 		boolean checked = i1Button.getSelection();
 		i1SizeSpinner.setEnabled(checked);
 		i1AssocSpinner.setEnabled(checked);
 		i1LineSizeSpinner.setEnabled(checked);
 	}
 	
-	protected void checkD1Enablement() {
+	private void checkD1Enablement() {
 		boolean checked = d1Button.getSelection();
 		d1SizeSpinner.setEnabled(checked);
 		d1AssocSpinner.setEnabled(checked);
 		d1LineSizeSpinner.setEnabled(checked);
 	}
 	
-	protected void checkL2Enablement() {
+	private void checkL2Enablement() {
 		boolean checked = l2Button.getSelection();
 		l2SizeSpinner.setEnabled(checked);
 		l2AssocSpinner.setEnabled(checked);

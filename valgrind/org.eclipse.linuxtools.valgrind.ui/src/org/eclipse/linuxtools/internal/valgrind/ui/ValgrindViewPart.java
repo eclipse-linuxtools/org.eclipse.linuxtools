@@ -33,15 +33,15 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ValgrindViewPart extends ViewPart {
 
-	protected PageBook pageBook;
-	protected Composite dynamicViewHolder;
-	protected IValgrindToolView dynamicView;
-	protected ActionContributionItem[] dynamicActions;
-	protected IValgrindMessage[] messages;
-	protected CoreMessagesViewer messagesViewer;
-	protected Action showCoreAction;
-	protected Action showToolAction;
-	protected boolean hasDynamicContent = false;
+	private PageBook pageBook;
+	private Composite dynamicViewHolder;
+	private IValgrindToolView dynamicView;
+	private ActionContributionItem[] dynamicActions;
+	private IValgrindMessage[] messages;
+	private CoreMessagesViewer messagesViewer;
+	private Action showCoreAction;
+	private Action showToolAction;
+	private boolean hasDynamicContent = false;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -120,8 +120,7 @@ public class ValgrindViewPart extends ViewPart {
 					toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
 				}
 			}
-		}
-		else {
+		} else {
 			dynamicView = null;
 		}
 

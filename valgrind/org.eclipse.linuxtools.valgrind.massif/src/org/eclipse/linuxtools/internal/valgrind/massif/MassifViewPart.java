@@ -61,19 +61,19 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
-	protected static final String TITLE_STACKS = Messages
+	private static final String TITLE_STACKS = Messages
 	.getString("MassifViewPart.Stacks"); //$NON-NLS-1$
-	protected static final String TITLE_EXTRA = Messages
+	private static final String TITLE_EXTRA = Messages
 	.getString("MassifViewPart.Extra_Heap"); //$NON-NLS-1$
-	protected static final String TITLE_USEFUL = Messages
+	private static final String TITLE_USEFUL = Messages
 	.getString("MassifViewPart.Useful_Heap"); //$NON-NLS-1$
-	protected static final String TITLE_TOTAL = Messages
+	private static final String TITLE_TOTAL = Messages
 	.getString("MassifViewPart.Total"); //$NON-NLS-1$
-	protected static final String TITLE_TIME = Messages
+	private static final String TITLE_TIME = Messages
 	.getString("MassifViewPart.Time"); //$NON-NLS-1$
-	protected static final String TITLE_NUMBER = Messages
+	private static final String TITLE_NUMBER = Messages
 	.getString("MassifViewPart.Snapshot"); //$NON-NLS-1$
-	protected static final String TREE_ACTION = MassifPlugin.PLUGIN_ID
+	private static final String TREE_ACTION = MassifPlugin.PLUGIN_ID
 	+ ".treeAction"; //$NON-NLS-1$
 	public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
 	+ ".chartAction"; //$NON-NLS-1$
@@ -82,24 +82,24 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public static final String SAVE_CHART_ACTION = MassifPlugin.PLUGIN_ID
 	+ ".saveChartAction"; //$NON-NLS-1$
 
-	protected MassifOutput output;
-	protected Integer pid;
+	private MassifOutput output;
+	private Integer pid;
 
-	protected Composite top;
-	protected StackLayout stackLayout;
-	protected TableViewer viewer;
-	protected MassifTreeViewer treeViewer;
-	protected MassifHeapTreeNode[] nodes;
-	protected String chartName;
+	private Composite top;
+	private StackLayout stackLayout;
+	private TableViewer viewer;
+	private MassifTreeViewer treeViewer;
+	private MassifHeapTreeNode[] nodes;
+	private String chartName;
 
-	protected static final int COLUMN_SIZE = 125;
+	private static final int COLUMN_SIZE = 125;
 
-	protected Action treeAction;
-	protected Action chartAction;
-	protected MassifPidMenuAction pidAction;
-	protected Action saveChartAction;
+	private Action treeAction;
+	private Action chartAction;
+	private MassifPidMenuAction pidAction;
+	private Action saveChartAction;
 
-	protected List<ChartEditorInput> chartInputs;
+	private List<ChartEditorInput> chartInputs;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -285,7 +285,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return new IAction[] { pidAction, chartAction, saveChartAction, treeAction };
 	}
 	
-	protected String getChartSavePath(String defaultName) {
+	private String getChartSavePath(String defaultName) {
 		Shell parent = new Shell(Display.getDefault());
 		FileDialog dialog = new FileDialog(parent, SWT.SAVE);
 		dialog.setText(Messages.getString("MassifViewPart.Save_chart_dialog_title")); //$NON-NLS-1$
@@ -296,7 +296,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return dialog.open();
 	}
 
-	protected void createChart(MassifSnapshot[] snapshots) {
+	private void createChart(MassifSnapshot[] snapshots) {
 		String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
 		HeapChart chart = new HeapChart(snapshots, title);
 
@@ -308,7 +308,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		displayChart(input);
 	}
 
-	protected void displayChart(final ChartEditorInput chartInput) {
+	private void displayChart(final ChartEditorInput chartInput) {
 		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -323,7 +323,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		});
 	}
 
-	protected String getInputName(String description) {
+	private String getInputName(String description) {
 		String launchName;
 		try {
 			launchName = description.substring(0, description
@@ -424,7 +424,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return treeViewer;
 	}
 
-	protected static class MassifLabelProvider extends LabelProvider implements
+	private static class MassifLabelProvider extends LabelProvider implements
 	ITableLabelProvider, IFontProvider {
 
 		@Override

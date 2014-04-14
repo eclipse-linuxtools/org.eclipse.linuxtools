@@ -63,7 +63,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 		}
 	}
 
-	protected void parseOutput(File[] cachegrindOutputs, IProgressMonitor monitor) throws IOException {
+	private void parseOutput(File[] cachegrindOutputs, IProgressMonitor monitor) throws IOException {
 		outputs = new CachegrindOutput[cachegrindOutputs.length];
 		
 		for (int i = 0; i < cachegrindOutputs.length; i++) {

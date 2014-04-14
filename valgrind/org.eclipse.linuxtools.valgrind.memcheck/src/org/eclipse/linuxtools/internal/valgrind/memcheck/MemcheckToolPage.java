@@ -41,44 +41,42 @@ import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Version;
 
 public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements IValgrindToolPage {
-	public static final String MEMCHECK = "memcheck"; //$NON-NLS-1$
-	public static final String PLUGIN_ID = MemcheckPlugin.PLUGIN_ID;
 	private static final Version VER_3_4_0 = new Version(3, 4, 0);
 	private static final Version VER_3_6_0 = new Version(3, 6, 0);
 	
 	// MEMCHECK controls
-	protected Button leakCheckButton;
-	protected Combo leakResCombo;
-	protected Button showReachableButton;
-	protected Spinner freelistSpinner;
-	protected Button partialLoadsButton;
-	protected Button undefValueButton;
-	protected Button gccWorkaroundButton;
-	protected Button alignmentButton;
-	protected Spinner alignmentSpinner;
-	protected Button mallocFillButton;
-	protected Text mallocFillText;
-	protected Button freeFillButton;
-	protected Text freeFillText;
-	protected List ignoreRangesList;
+	private Button leakCheckButton;
+	private Combo leakResCombo;
+	private Button showReachableButton;
+	private Spinner freelistSpinner;
+	private Button partialLoadsButton;
+	private Button undefValueButton;
+	private Button gccWorkaroundButton;
+	private Button alignmentButton;
+	private Spinner alignmentSpinner;
+	private Button mallocFillButton;
+	private Text mallocFillText;
+	private Button freeFillButton;
+	private Text freeFillText;
+	private List ignoreRangesList;
 	
 	// VG >= 3.4.0
-	protected Button trackOriginsButton;
+	private Button trackOriginsButton;
 	
 	// VG >= 3.6.0
-	protected Button showPossiblyLostButton;
+	private Button showPossiblyLostButton;
 	
-	protected boolean isInitializing = false;
-	protected Version valgrindVersion;
-	protected CoreException ex = null;
+	private boolean isInitializing = false;
+	private Version valgrindVersion;
+	private CoreException ex = null;
 	
-	protected SelectionListener selectListener = new SelectionAdapter() {
+	private SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			updateLaunchConfigurationDialog();
 		}
 	};
-	protected ModifyListener modifyListener = new ModifyListener() {
+	private ModifyListener modifyListener = new ModifyListener() {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();	
@@ -260,7 +258,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		
 	}
 		
-	protected void handleIgnoreNewButtonPressed() {
+	private void handleIgnoreNewButtonPressed() {
 		InputDialog dialog = new InputDialog(getShell(), Messages.getString("MemcheckToolPage.Ignore_Ranges"), Messages.getString("MemcheckToolPage.Range"), "", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (dialog.open() == Window.OK) {
 			String function = dialog.getValue();
@@ -270,7 +268,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		}
 	}
 
-	protected void handleIgnoreRemoveButtonPressed() {
+	private void handleIgnoreRemoveButtonPressed() {
 		int[] selections = ignoreRangesList.getSelectionIndices();
 		ignoreRangesList.remove(selections);
 	}
@@ -429,83 +427,50 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		valgrindVersion = ver;
 	}
 
-	protected void createHorizontalSpacer(Composite comp, int numlines) {
-		Label lbl = new Label(comp, SWT.NONE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = numlines;
-		lbl.setLayoutData(gd);
-	}
-	
 	@Override
-	protected void updateLaunchConfigurationDialog() {
+	public void updateLaunchConfigurationDialog() {
 		if (!isInitializing) {
 			super.updateLaunchConfigurationDialog();
 		}
 	}
 
-
 	public Button getLeakCheckButton() {
 		return leakCheckButton;
 	}
-	
 	
 	public Combo getLeakResCombo() {
 		return leakResCombo;
 	}
 
-
 	public Button getShowReachableButton() {
 		return showReachableButton;
 	}
-
 
 	public Spinner getFreelistSpinner() {
 		return freelistSpinner;
 	}
 
-
 	public Button getPartialLoadsButton() {
 		return partialLoadsButton;
 	}
-
 
 	public Button getUndefValueButton() {
 		return undefValueButton;
 	}
 
-
 	public Button getGccWorkaroundButton() {
 		return gccWorkaroundButton;
 	}
 
-	
 	public Button getAlignmentButton() {
 		return alignmentButton;
 	}
-
 	
 	public Spinner getAlignmentSpinner() {
 		return alignmentSpinner;
 	}
 
-
 	public Button getTrackOriginsButton() {
 		return trackOriginsButton;
-	}
-
-	public Button getShowPossiblyLostButton() {
-		return showPossiblyLostButton;
-	}
-	
-	public Text getMallocFillText() {
-		return mallocFillText;
-	}
-	
-	public Text getFreeFillText() {
-		return freeFillText;
-	}
-	
-	public List getIgnoreRangesList() {
-		return ignoreRangesList;
 	}
 }

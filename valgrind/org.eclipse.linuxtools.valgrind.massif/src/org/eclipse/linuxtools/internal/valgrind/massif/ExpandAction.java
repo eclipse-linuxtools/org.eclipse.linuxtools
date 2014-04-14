@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 public class ExpandAction extends Action {
 	
-	protected TreeViewer viewer;
+	private TreeViewer viewer;
 
 	public ExpandAction(TreeViewer viewer) {
 		super(Messages.getString("ExpandAction.Text")); //$NON-NLS-1$

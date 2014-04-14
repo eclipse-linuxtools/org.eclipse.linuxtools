@@ -32,7 +32,7 @@ import org.osgi.framework.Version;
 public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
-	protected static final FileFilter MASSIF_FILTER = new FileFilter() {
+	private static final FileFilter MASSIF_FILTER = new FileFilter() {
 		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(OUT_PREFIX);
@@ -45,12 +45,11 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final Version VER_3_6_0 = new Version(3, 6, 0);
 
 
-	protected MassifOutput output;
+	private MassifOutput output;
 
 	@Override
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor)
 	throws CoreException {
-		MassifPlugin.getDefault().setConfig(config);
 		MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
 		try {
 			monitor.beginTask(Messages.getString("MassifLaunchDelegate.Parsing_Massif_Output"), 3); //$NON-NLS-1$
@@ -68,7 +67,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		}
 	}
 
-	protected void parseOutput(File[] massifOutputs, IProgressMonitor monitor) throws IOException {
+	private void parseOutput(File[] massifOutputs, IProgressMonitor monitor) throws IOException {
 		output = new MassifOutput();
 		for (File file : massifOutputs) {
 			MassifParser parser = new MassifParser(file);

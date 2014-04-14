@@ -20,10 +20,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ChartEditorInput implements IEditorInput {
 	
-	protected HeapChart chart;
-	protected MassifViewPart view;
-	protected String name;
-	protected Integer pid;
+	private HeapChart chart;
+	private MassifViewPart view;
+	private String name;
+	private Integer pid;
 
 	public ChartEditorInput(HeapChart chart, MassifViewPart view, String name, Integer pid) {
 		this.chart = chart;

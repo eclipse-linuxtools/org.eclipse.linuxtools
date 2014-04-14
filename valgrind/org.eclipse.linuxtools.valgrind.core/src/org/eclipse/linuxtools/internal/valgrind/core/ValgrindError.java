@@ -22,10 +22,6 @@ public class ValgrindError extends AbstractValgrindMessage {
 		this.pid = pid;
 	}
 	
-	public int getPid() {
-		return pid;
-	}
-	
 	@Override
 	public String getText() {
 		return super.getText() + " [PID: " + pid + "]"; //$NON-NLS-1$ //$NON-NLS-2$

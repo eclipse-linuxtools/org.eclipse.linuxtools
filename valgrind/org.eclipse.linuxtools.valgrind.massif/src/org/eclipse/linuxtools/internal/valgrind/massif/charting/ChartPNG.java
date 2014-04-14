@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.charting;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -20,13 +19,10 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 public class ChartPNG {
 
-	protected HeapChart cm = null;
+	private HeapChart cm = null;
 	
 	public ChartPNG(HeapChart chart) {
 		cm = chart;
@@ -43,36 +39,4 @@ public class ChartPNG {
 		imageLoader.data = new ImageData[] {img.getImageData()};
 		imageLoader.save(pngPath.toOSString(), SWT.IMAGE_PNG);
 	}
-
-	public HeapChart getDesignTimeModel() {
-		return cm;
-	}
-
-	public Object peerInstance() {
-		return this;
-	}
-
-	public void regenerateChart() {
-	}
-
-	public void repaintChart() {
-	}
-	
-	/**
-	 * Shows the Valgrind view in the active page and gives it focus.
-	 */
-	public void showView() {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					activePage.showView(ValgrindUIConstants.VIEW_ID);
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				}
-			}			
-		});
-	}
-	
 }

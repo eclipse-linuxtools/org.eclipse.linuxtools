@@ -34,26 +34,21 @@ import org.eclipse.swt.widgets.Spinner;
 import org.osgi.framework.Version;
 
 public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements IValgrindToolPage {
-	public static final String HELGRIND = "helgrind"; //$NON-NLS-1$
-	public static final String PLUGIN_ID = HelgrindPlugin.PLUGIN_ID;
-	
 	// HELGRIND controls
-	protected Button lockordersButton;
-	protected Combo historyCombo;
-	protected Spinner cacheSizeSpinner;
+	private Button lockordersButton;
+	private Combo historyCombo;
+	private Spinner cacheSizeSpinner;
 	
 	
-	protected boolean isInitializing = false;
-	protected Version valgrindVersion;
-	protected CoreException ex = null;
+	private boolean isInitializing = false;
 	
-	protected SelectionListener selectListener = new SelectionAdapter() {
+	private SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			updateLaunchConfigurationDialog();
 		}
 	};
-	protected ModifyListener modifyListener = new ModifyListener() {
+	private ModifyListener modifyListener = new ModifyListener() {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
@@ -107,7 +102,6 @@ public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements 
 			historyCombo.setText(configuration.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_HISTORYLEVEL, HelgrindLaunchConstants.DEFAULT_HELGRIND_HISTORYLEVEL));
 			cacheSizeSpinner.setSelection(configuration.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_CACHESIZE, HelgrindLaunchConstants.DEFAULT_HELGRIND_CACHESIZE));
 		} catch (CoreException e) {
-			ex = e;
 		}
 		isInitializing = false;
 	}
@@ -123,11 +117,7 @@ public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements 
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		setErrorMessage(null);
 		
-		/*
-		 * Don't have any constraints at this time
-		 */
-		boolean result = true;
-		return result;
+		return true;
 	}
 	
 	@Override
@@ -140,7 +130,7 @@ public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements 
 		
 	@Override
 	public void setValgrindVersion(Version ver) {
-		valgrindVersion = ver;
+		// no constraints
 	}
 
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
@@ -161,25 +151,11 @@ public class HelgrindToolPage extends AbstractLaunchConfigurationTab implements 
 		return lockordersButton;
 	}
 
-	public void setLockordersButton(Button lockordersButton) {
-		this.lockordersButton = lockordersButton;
-	}
-
 	public Spinner getCacheSizeSpinner() {
 		return cacheSizeSpinner;
 	}
 
-	public void setCacheSizeSpinner(Spinner cacheSizeSpinner) {
-		this.cacheSizeSpinner = cacheSizeSpinner;
-	}
-	
 	public Combo getHistoryCombo() {
 		return historyCombo;
 	}
-
-	public void setHistoryCombo(Combo historyCombo) {
-		this.historyCombo = historyCombo;
-	}
-
-
 }

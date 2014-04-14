@@ -23,7 +23,7 @@ import org.eclipse.ui.dialogs.ListDialog;
 
 public class ChartLocationsDialog extends ListDialog {
 
-	protected List<MassifHeapTreeNode> allocs;
+	private List<MassifHeapTreeNode> allocs;
 
 	public ChartLocationsDialog(Shell parent) {
 		super(parent);

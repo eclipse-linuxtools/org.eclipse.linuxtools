@@ -23,11 +23,11 @@ public class CachegrindFile implements ICachegrindElement {
 	private static final String UNKNOWN_FILE = "???"; //$NON-NLS-1$
 
 
-	protected CachegrindOutput parent;
-	protected String path;
-	protected List<CachegrindFunction> functions;
+	private CachegrindOutput parent;
+	private String path;
+	private List<CachegrindFunction> functions;
 
-	protected IAdaptable model;
+	private IAdaptable model;
 
 	public CachegrindFile(CachegrindOutput parent, String path) {
 		this.parent = parent;

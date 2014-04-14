@@ -28,7 +28,6 @@ import org.eclipse.ui.editors.text.TextEditor;
 public class SuppressionsEditor extends TextEditor {
 	
 	private ColorManager colorManager;
-	private ProjectionSupport projectionSupport;
 	private ProjectionAnnotationModel annotationModel;
 	private Annotation[] oldAnnotations;
 	
@@ -43,7 +42,7 @@ public class SuppressionsEditor extends TextEditor {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		ProjectionViewer viewer =(ProjectionViewer)getSourceViewer();
-	    projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
+		ProjectionSupport projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
 	    projectionSupport.install();
 	    viewer.doOperation(ProjectionViewer.TOGGLE);
 	    annotationModel = viewer.getProjectionAnnotationModel();

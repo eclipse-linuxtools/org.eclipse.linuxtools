@@ -15,9 +15,9 @@ package org.eclipse.linuxtools.internal.valgrind.ui.editor;
 import org.eclipse.swt.graphics.RGB;
 
 public interface ISuppressionsColorConstants {
-	public static final RGB DEFAULT = new RGB(0, 0, 0);
-	public static final RGB TOOL = new RGB(153, 122, 0);
-	public static final RGB SUPP_TYPE = new RGB(0, 153, 122);
-	public static final RGB CONTEXT = new RGB(122, 0, 153);
-	public static final RGB COMMENT = new RGB(0, 99, 166);
+	RGB DEFAULT = new RGB(0, 0, 0);
+	RGB TOOL = new RGB(153, 122, 0);
+	RGB SUPP_TYPE = new RGB(0, 153, 122);
+	RGB CONTEXT = new RGB(122, 0, 153);
+	RGB COMMENT = new RGB(0, 99, 166);
 }

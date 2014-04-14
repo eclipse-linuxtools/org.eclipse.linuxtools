@@ -38,7 +38,7 @@ public class CachegrindParser {
 
 	protected static CachegrindParser instance;
 
-	protected CachegrindParser() {
+	private CachegrindParser() {
 	}
 
 	public static CachegrindParser getParser() {
@@ -58,28 +58,22 @@ public class CachegrindParser {
 			while ((line = br.readLine()) != null) {		
 				if (line.startsWith(EVENTS + COLON)) {
 					output.setEvents(ValgrindParserUtils.parseStrValue(line, COLON + SPACE).split(SPACE));
-				}
-				else if (line.startsWith(CMD + COLON)) {
-					output.setCommand(ValgrindParserUtils.parseStrValue(line, COLON + SPACE));
-				}
-				else if (line.startsWith(DESC + COLON)) {
+				} else if (line.startsWith(CMD + COLON)) {
+					//continue
+				} else if (line.startsWith(DESC + COLON)) {
 					CachegrindDescription description = parseDescription(line);
 					output.addDescription(description);
-				}
-				else if (line.startsWith(FL + EQUALS)) {
+				} else if (line.startsWith(FL + EQUALS)) {
 					curFl = new CachegrindFile(output, ValgrindParserUtils.parseStrValue(line, EQUALS));
 					output.addFile(curFl);
-				}
-				else if (line.startsWith(FN + EQUALS)) {				
+				} else if (line.startsWith(FN + EQUALS)) {				
 					if (curFl != null) {
 						curFn = new CachegrindFunction(curFl, ValgrindParserUtils.parseStrValue(line, EQUALS));
 						curFl.addFunction(curFn);
-					}
-					else {
+					} else {
 						ValgrindParserUtils.fail(line);
 					}
-				}
-				else if (line.startsWith(SUMMARY + COLON)) {
+				} else if (line.startsWith(SUMMARY + COLON)) {
 					long[] summary = parseData(line, ValgrindParserUtils.parseStrValue(line, COLON + SPACE).split(SPACE));
 					output.setSummary(summary);
 				}
@@ -91,12 +85,10 @@ public class CachegrindParser {
 						long[] data = parseData(line, tokens[1].split(SPACE));
 						if (curFn != null) {
 							curFn.addLine(new CachegrindLine(curFn, lineNo, data));
-						}
-						else {
+						} else {
 							ValgrindParserUtils.fail(line);
 						}
-					}
-					else {
+					} else {
 						ValgrindParserUtils.fail(line);
 					}
 				}
@@ -122,13 +114,11 @@ public class CachegrindParser {
 			String name = tokens[1];
 			tokens = tokens[2].split(COMMA + SPACE);
 			if (tokens.length == 3) {
-				desc = new CachegrindDescription(name, tokens[0], tokens[1], tokens[2]);
-			}
-			else {
+				desc = new CachegrindDescription(name);
+			} else {
 				ValgrindParserUtils.fail(line);
 			}
-		}
-		else {
+		} else {
 			ValgrindParserUtils.fail(line);
 		}
 		return desc;

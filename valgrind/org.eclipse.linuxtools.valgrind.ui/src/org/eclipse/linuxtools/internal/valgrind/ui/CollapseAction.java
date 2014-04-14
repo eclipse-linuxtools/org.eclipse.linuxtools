@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import org.eclipse.jface.action.Action;
@@ -17,18 +17,18 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 public class CollapseAction extends Action {
 
-	protected TreeViewer viewer;
+	private TreeViewer viewer;
 
 	public CollapseAction(TreeViewer viewer) {
 		super(Messages.getString("CollapseAction.Text")); //$NON-NLS-1$
 		this.viewer = viewer;
 	}
-	
+
 	@Override
 	public void run() {
 		ITreeSelection selection = (ITreeSelection) viewer.getSelection();
 		Object element = selection.getFirstElement();
 		viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
 	}
-	
+
 }

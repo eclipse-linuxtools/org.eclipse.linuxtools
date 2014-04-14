@@ -115,10 +115,9 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 			if (verString.indexOf(VERSION_DELIMITER) > 0) {
 				verString = verString.substring(0, verString.indexOf(VERSION_DELIMITER));
 			}
-			if (verString.length() > 0) {
+			if (!verString.isEmpty()) {
 				valgrindVersion = Version.parseVersion(verString);
-			}
-			else {
+			} else {
 				throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
@@ -251,7 +250,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return path;
 	}
 
-	protected void initializeToolMap() {
+	private void initializeToolMap() {
 		toolMap = new HashMap<>();
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, ValgrindLaunchPlugin.TOOL_EXT_ID);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
@@ -267,7 +266,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	protected HashMap<String, IConfigurationElement> getToolMap() {
+	private HashMap<String, IConfigurationElement> getToolMap() {
 		if (toolMap == null) {
 			initializeToolMap();
 		}

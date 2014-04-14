@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 
 public class ValgrindOutputDirectoryProvider implements IValgrindOutputDirectoryProvider {
-	protected IPath outputPath;
+	private IPath outputPath;
 
 	public ValgrindOutputDirectoryProvider() {
 		outputPath = ValgrindLaunchPlugin.getDefault().getStateLocation();

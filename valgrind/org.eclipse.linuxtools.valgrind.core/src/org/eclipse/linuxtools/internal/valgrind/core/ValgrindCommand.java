@@ -48,8 +48,7 @@ public class ValgrindCommand {
 		args = commandArray;
 		try {
 			process = startProcess(commandArray, env, wd, exeFile, usePty, project);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			if (process != null) {
 				process.destroy();
 			}
@@ -64,24 +63,23 @@ public class ValgrindCommand {
 	public String getCommandLine() {
 		StringBuffer ret = new StringBuffer();
 		for (String arg : args) {
-			ret.append(arg + " "); //$NON-NLS-1$
+			ret.append(arg).append(" "); //$NON-NLS-1$
 		}
 		return ret.toString().trim();
 	}
 	
-	protected Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty, IProject project) throws IOException {
+	private Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty, IProject project) throws IOException {
 		if (workDir == null) {
 			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, project);
 		}
 		if (PTY.isSupported() && usePty) {
 			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY(), project);
-		}
-		else {
+		} else {
 			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, project);
 		}
 	}
 
-	protected void readIntoBuffer(StringBuffer out, Process p) throws IOException {
+	private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
 		boolean success;
 		InputStream in, err, input;
 		if (p  == null ) {
@@ -93,8 +91,7 @@ public class ValgrindCommand {
 			err =  p.getErrorStream();
 			if (success = (p.waitFor() == 0)) {
 				in = input;
-			}
-			else {
+			} else {
 				in = err;
 			}
 			int ch;

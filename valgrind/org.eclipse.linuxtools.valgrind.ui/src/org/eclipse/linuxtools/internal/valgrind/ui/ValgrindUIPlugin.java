@@ -40,14 +40,14 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	protected static final String EXT_ATTR_ID = "definitionId"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	protected HashMap<String, IConfigurationElement> toolMap;
+	private HashMap<String, IConfigurationElement> toolMap;
 
 	// The shared instance
 	private static ValgrindUIPlugin plugin;
 
-	protected ValgrindViewPart view;
+	private ValgrindViewPart view;
 	// The page containing the created Valgrind view
-	protected IWorkbenchPage activePage;
+	private IWorkbenchPage activePage;
 
 	/*
 	 * (non-Javadoc)
@@ -92,8 +92,6 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 					view.createDynamicContent(contentDescription, toolID);
 
 					view.refreshView();
-				} catch (PartInitException e) {
-					e.printStackTrace();
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
@@ -160,7 +158,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		return view;
 	}
 
-	protected void initializeToolMap() {
+	private void initializeToolMap() {
 		toolMap = new HashMap<>();
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, VIEW_EXT_ID);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
@@ -174,7 +172,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	protected HashMap<String, IConfigurationElement> getToolMap() {
+	private HashMap<String, IConfigurationElement> getToolMap() {
 		if (toolMap == null) {
 			initializeToolMap();
 		}

@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 public class CollapseAction extends Action {
 
-	protected TreeViewer viewer;
+	private TreeViewer viewer;
 
 	public CollapseAction(TreeViewer viewer) {
 		super(Messages.getString("CollapseAction.Text")); //$NON-NLS-1$

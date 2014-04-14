@@ -62,13 +62,12 @@ import org.osgi.framework.Version;
 
 public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 
-	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	protected static final String NO = "no"; //$NON-NLS-1$
-	protected static final String YES = "yes"; //$NON-NLS-1$
-	protected static final String EQUALS = "="; //$NON-NLS-1$
+	private static final String NO = "no"; //$NON-NLS-1$
+	private static final String YES = "yes"; //$NON-NLS-1$
+	private static final String EQUALS = "="; //$NON-NLS-1$
 
-	protected static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
-	protected static final FileFilter LOG_FILTER = new FileFilter() {
+	private static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
+	private static final FileFilter LOG_FILTER = new FileFilter() {
 		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(CommandLineConstants.LOG_PREFIX);
@@ -224,7 +223,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 		return messages.toArray(new IValgrindMessage[messages.size()]);
 	}
 
-	protected void createMarkers(IValgrindMessage[] messages) throws CoreException {
+	private void createMarkers(IValgrindMessage[] messages) throws CoreException {
 		// find the topmost stack frame within the workspace to annotate with marker
 		// traverse nested errors as well
 		Stack<IValgrindMessage> messageStack = new Stack<>();
@@ -290,7 +289,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 		return getPlugin().getToolDelegate(toolID);
 	}
 
-	protected IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {
+	private IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {
 		IPath result = null;
 		String strPath = config.getAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, (String) null);
 		if (strPath != null) {
@@ -318,13 +317,12 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 					throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_delete"), outputFile.getAbsolutePath())); //$NON-NLS-1$
 				}
 			}
-		}
-		else if (!outputDir.mkdir()) {
+		} else if (!outputDir.mkdir()) {
 			throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_create"), outputDir.getAbsolutePath())); //$NON-NLS-1$
 		}
 	}
 
-	protected String createLaunchStr() {
+	private String createLaunchStr() {
 		return config.getName() + " [" + getPlugin().getToolName(toolID) + "] " + process.getLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

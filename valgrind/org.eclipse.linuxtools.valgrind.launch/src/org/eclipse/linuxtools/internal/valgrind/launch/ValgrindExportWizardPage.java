@@ -43,15 +43,11 @@ import org.eclipse.ui.PlatformUI;
 
 public class ValgrindExportWizardPage extends WizardPage {
 
-	protected IPath outputPath;
-	protected CheckboxTableViewer viewer;
-	protected Text destText;
-	protected Button selectAllButton;
-	protected Button deselectAllButton;
-
-	protected ValgrindExportWizardPage(String pageName) {
-		super(pageName);
-	}
+	private IPath outputPath;
+	private CheckboxTableViewer viewer;
+	private Text destText;
+	private Button selectAllButton;
+	private Button deselectAllButton;
 
 	protected ValgrindExportWizardPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);
@@ -186,7 +182,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 		});
 	}
 
-	protected boolean isValid() {
+	private boolean isValid() {
 		boolean valid = false;
 		int length = -1;
 
@@ -221,7 +217,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 		return valid;
 	}
 
-	protected ValgrindLaunchPlugin getPlugin() {
+	private ValgrindLaunchPlugin getPlugin() {
 		return ValgrindLaunchPlugin.getDefault();
 	}
 
@@ -232,13 +228,4 @@ public class ValgrindExportWizardPage extends WizardPage {
 	public Text getDestText() {
 		return destText;
 	}
-
-	public Button getSelectAllButton() {
-		return selectAllButton;
-	}
-
-	public Button getDeselectAllButton() {
-		return deselectAllButton;
-	}
-
 }

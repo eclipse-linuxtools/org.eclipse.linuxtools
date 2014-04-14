@@ -16,12 +16,11 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class CachegrindOutput implements ICachegrindElement {
-	protected List<CachegrindDescription> descriptions;
-	protected List<CachegrindFile> files;
-	protected Integer pid;
-	protected String cmd;
-	protected String[] events;
-	protected long[] summary;
+	private List<CachegrindDescription> descriptions;
+	private List<CachegrindFile> files;
+	private Integer pid;
+	private String[] events;
+	private long[] summary;
 	
 	public CachegrindOutput() {
 		descriptions = new ArrayList<>();
@@ -36,10 +35,6 @@ public class CachegrindOutput implements ICachegrindElement {
 		files.add(file);
 	}
 	
-	public void setCommand(String cmd) {
-		this.cmd = cmd;
-	}
-	
 	public void setEvents(String[] events) {
 		this.events = events;
 	}
@@ -50,14 +45,6 @@ public class CachegrindOutput implements ICachegrindElement {
 	
 	public void setPid(Integer pid) {
 		this.pid = pid;
-	}
-	
-	public String getCmd() {
-		return cmd;
-	}
-	
-	public CachegrindDescription[] getDescriptions() {
-		return descriptions.toArray(new CachegrindDescription[descriptions.size()]);
 	}
 	
 	public String[] getEvents() {

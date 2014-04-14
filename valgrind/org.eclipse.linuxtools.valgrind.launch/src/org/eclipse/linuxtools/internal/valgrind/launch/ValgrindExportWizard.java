@@ -33,7 +33,7 @@ import org.eclipse.ui.progress.IProgressService;
 
 public class ValgrindExportWizard extends Wizard implements IExportWizard {
 
-	protected ValgrindExportWizardPage exportPage;
+	private ValgrindExportWizardPage exportPage;
 
 	@Override
 	public boolean performFinish() {
@@ -92,7 +92,7 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 		addPage(exportPage);
 	}
 
-	protected ValgrindExportWizardPage getWizardPage() {
+	private ValgrindExportWizardPage getWizardPage() {
 		return new ValgrindExportWizardPage(Messages.getString("ValgrindExportWizard.Page_name"), ExportWizardConstants.WIZARD_TITLE, null); //$NON-NLS-1$
 	}
 

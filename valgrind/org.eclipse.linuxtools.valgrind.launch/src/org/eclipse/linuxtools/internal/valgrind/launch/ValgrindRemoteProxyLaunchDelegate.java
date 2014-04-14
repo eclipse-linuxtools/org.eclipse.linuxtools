@@ -90,7 +90,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		Version valgrindVersion;
 		String verString = whichVersion(project);
 
-		if (verString == null || verString.equals(EMPTY_STRING)){
+		if (verString == null || verString.isEmpty()){
 			throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
 		}
 
@@ -301,7 +301,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 		}
 	}
 
-	protected String createLaunchStr(IPath valgrindPath) throws CoreException {
+	private String createLaunchStr(IPath valgrindPath) throws CoreException {
 		String projectName = configUtils.getProjectName();
 		IProject project = ConfigUtils.getProject(projectName);
 		URI projectURI = project.getLocationURI();
@@ -329,9 +329,5 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 	@Override
 	protected String getPluginID() {
 		return ValgrindLaunchPlugin.PLUGIN_ID;
-	}
-
-	public void onError(Throwable t) {
-		// for now do nothing
 	}
 }

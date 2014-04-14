@@ -52,7 +52,7 @@ public abstract class AbstractValgrindMarkerResolution extends AbstractCodanCMar
 	 * @param marker The {@link IMarker} from which the {@link IASTTranslationUnit} will be obtained
 	 * @return {@link IASTTranslationUnit} containing the marker
 	 */
-	protected IASTTranslationUnit getASTTranslationUnit(IMarker marker){
+	private IASTTranslationUnit getASTTranslationUnit(IMarker marker){
 		ITranslationUnit tu = getTranslationUnitViaEditor(marker);
 		try {
 			return tu.getAST();
@@ -67,7 +67,7 @@ public abstract class AbstractValgrindMarkerResolution extends AbstractCodanCMar
 	 * @param marker {@link IMarker} from which the length will be obtained
 	 * @return length of the code enclosed in the {@link IMarker}
 	 */
-	protected int getLength(IMarker marker, IDocument document) {
+	private int getLength(IMarker marker, IDocument document) {
 		int charStart = marker.getAttribute(IMarker.CHAR_START, -1);
 		int charEnd = marker.getAttribute(IMarker.CHAR_END, -1);
 		if (charEnd != -1 && charStart != -1) {
