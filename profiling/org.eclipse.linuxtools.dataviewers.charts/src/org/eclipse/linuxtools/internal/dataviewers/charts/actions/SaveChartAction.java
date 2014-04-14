@@ -156,7 +156,7 @@ public class SaveChartAction extends Action {
     /**
      * Restores the state of this action (file dialog)
      */
-    protected void restoreState() {
+    private void restoreState() {
         IDialogSettings settings = Activator.getDefault().getDialogSettings()
                 .getSection(TAG_SECTION_CHARTS_SAVEACTION_STATE);
         if (settings == null) {
@@ -171,7 +171,7 @@ public class SaveChartAction extends Action {
     /**
      * Saves the state of this action (file dialog)
      */
-    protected void saveState() {
+    private void saveState() {
         IDialogSettings settings = Activator.getDefault().getDialogSettings()
                 .getSection(TAG_SECTION_CHARTS_SAVEACTION_STATE);
         if (settings == null) {
@@ -181,7 +181,7 @@ public class SaveChartAction extends Action {
         settings.put(TAG_IMG_FILTER_PATH, dialog.getFilterPath());
     }
 
-    protected void generateImageFile(File file, int extention) {
+    private void generateImageFile(File file, int extention) {
         Display dsp = Display.getCurrent();
         GC gc = new GC(cm);
         Image img = new Image(dsp, cm.getSize().x, cm.getSize().y);

@@ -25,16 +25,6 @@ public class STAddr2LineFactory {
     /**
      * @param cpuType
      * @param programPath
-     * @return an instance of addr2line for the given program
-     * @throws IOException
-     */
-    public static Addr2line getAddr2line(String cpuType, String programPath) throws IOException {
-        return getAddr2line(cpuType, programPath, null);
-    }
-
-    /**
-     * @param cpuType
-     * @param programPath
      * @param project
      *            The project to get the path to run addr2line
      * @return an instance of addr2line for the given program

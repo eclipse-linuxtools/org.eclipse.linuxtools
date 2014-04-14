@@ -203,56 +203,6 @@ public class STSymbolManager {
     }
 
     /**
-     * @param symbol
-     * @return the location (as returned by addr2line, e.g. file:line) of the given address
-     */
-    public synchronized String getLine(ISymbol symbol, IProject project) {
-        IBinaryObject binary = symbol.getBinaryObject();
-        IAddress address = symbol.getAddress();
-        return getLine(binary, address, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     * @return the location (as returned by addr2line, e.g. file:line) of the given address
-     */
-    public synchronized String getLine(IBinaryObject program, IAddress address, IProject project) {
-        Addr2line addr2line = getAddr2line(program, project);
-        if (addr2line == null)
-            return "??:0"; //$NON-NLS-1$
-        try {
-            return addr2line.getLine(address);
-        } catch (IOException _) {
-            // TODO: log the error ?;
-            // Perhaps log the error only once, because
-            // this method is called many many times...
-            return "??:0"; //$NON-NLS-1$
-        }
-    }
-
-    /**
-     * @param program
-     * @param address
-     *            an address, in hex, octal or decimal format (0xabcdef, 07654, 12345)
-     * @return the location (as returned by addr2line, e.g. file:line) of the given address
-     */
-    public synchronized String getLine(IBinaryObject program, String address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(address);
-        return getLine(program, addr, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     * @return the location (as returned by addr2line, e.g. file:line) of the given address
-     */
-    public synchronized String getLine(IBinaryObject program, long address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(Long.toString(address));
-        return getLine(program, addr, project);
-    }
-
-    /**
      * @param program
      * @param address
      * @return the line number of the given address
@@ -269,26 +219,6 @@ public class STSymbolManager {
             // this method is called many many times...
             return -1;
         }
-    }
-
-    /**
-     * @param program
-     * @param address
-     * @return the line number of the given address
-     */
-    public synchronized int getLineNumber(IBinaryObject program, String address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(address);
-        return getLineNumber(program, addr, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     * @return the line number of the given address
-     */
-    public synchronized int getLineNumber(IBinaryObject program, long address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(Long.toString(address));
-        return getLineNumber(program, addr, project);
     }
 
     /**
@@ -321,26 +251,6 @@ public class STSymbolManager {
     }
 
     /**
-     * @param program
-     * @param address
-     * @return the file name of the given address
-     */
-    public synchronized String getFileName(IBinaryObject program, String address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(address);
-        return getFileName(program, addr, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     * @return the file name of the given address
-     */
-    public synchronized String getFileName(IBinaryObject program, long address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(Long.toString(address));
-        return getFileName(program, addr, project);
-    }
-
-    /**
      * @param symbol
      * @return the filename of the given symbol
      */
@@ -348,48 +258,6 @@ public class STSymbolManager {
         IBinaryObject obj = symbol.getBinaryObject();
         IAddress address = symbol.getAddress();
         return getFileName(obj, address, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     *            an address
-     * @return the function name of the given address, based on addr2line output
-     */
-    public synchronized String getFunctionName(IBinaryObject program, long address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(Long.toString(address));
-        return getFunctionName(program, addr, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     *            an address, in hex, octal or decimal format (0xabcdef, 07654, 12345)
-     * @return the function name of the given address, based on addr2line output
-     */
-    public synchronized String getFunctionName(IBinaryObject program, String address, IProject project) {
-        IAddress addr = program.getAddressFactory().createAddress(address);
-        return getFunctionName(program, addr, project);
-    }
-
-    /**
-     * @param program
-     * @param address
-     *            an address
-     * @return the function name of the given address, based on addr2line output
-     */
-    public synchronized String getFunctionName(IBinaryObject program, IAddress address, IProject project) {
-        Addr2line addr2line = getAddr2line(program, project);
-        if (addr2line == null)
-            return null;
-        try {
-            return addr2line.getFunction(address);
-        } catch (IOException _) {
-            // TODO: log the error ?;
-            // Perhaps log the error only once, because
-            // this method is called many many times...
-            return null;
-        }
     }
 
     /**

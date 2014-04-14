@@ -171,14 +171,6 @@ public class STDataViewersHideShowManager {
     }
 
     /**
-     * Gets the width of all columns
-     * @return an array of width
-     */
-    public int[] getColumnsWidth() {
-        return columnsWidth;
-    }
-
-    /**
      * Gets the status ({@link #STATE_HIDDEN} or {@link #STATE_SHOWN}) of all columns.
      * @return an array of status
      */

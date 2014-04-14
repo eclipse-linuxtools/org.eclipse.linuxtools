@@ -39,19 +39,19 @@ public class STOwnerDrawLabelProvider extends OwnerDrawLabelProvider {
         }
     }
 
-    public String getText(Object element) {
+    private String getText(Object element) {
         return fields.getValue(element);
     }
 
-    public Color getBackground(Object element) {
+    private Color getBackground(Object element) {
         return fields.getBackground(element);
     }
 
-    public Color getForeground(Object element) {
+    private Color getForeground(Object element) {
         return fields.getForeground(element);
     }
 
-    public Image getImage(Object element) {
+    private Image getImage(Object element) {
         return fields.getImage(element);
     }
 

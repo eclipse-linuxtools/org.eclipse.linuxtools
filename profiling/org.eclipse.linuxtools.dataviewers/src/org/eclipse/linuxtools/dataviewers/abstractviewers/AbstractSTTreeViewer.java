@@ -105,8 +105,9 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
             public void mouseMove(MouseEvent e) {
                 Tree tree = (Tree) e.widget;
                 TreeItem item = tree.getItem(new Point(e.x, e.y));
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 tree.setCursor(e.display.getSystemCursor(SWT.CURSOR_ARROW));
             }
 
@@ -133,10 +134,11 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
     @Override
     public void updateDirectionIndicator(Item column) {
         getViewer().getTree().setSortColumn((TreeColumn) column);
-        if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING)
+        if (getTableSorter().getTopPriorityDirection() == STDataViewersComparator.ASCENDING) {
             getViewer().getTree().setSortDirection(SWT.UP);
-        else
+        } else {
             getViewer().getTree().setSortDirection(SWT.DOWN);
+        }
     }
 
     /*

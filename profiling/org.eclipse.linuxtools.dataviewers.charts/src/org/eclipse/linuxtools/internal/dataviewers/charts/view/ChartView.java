@@ -88,7 +88,7 @@ public class ChartView extends ViewPart {
         initToolBar(actionBars.getToolBarManager());
     }
 
-    protected void createActions() {
+    private void createActions() {
         saveChartAction = new SaveChartAction(getViewSite().getShell());
     }
 
@@ -114,7 +114,7 @@ public class ChartView extends ViewPart {
      *
      * @param chart
      */
-    public void setChart(Chart chart) {
+    private void setChart(Chart chart) {
         saveChartAction.setChart(chart);
     }
 

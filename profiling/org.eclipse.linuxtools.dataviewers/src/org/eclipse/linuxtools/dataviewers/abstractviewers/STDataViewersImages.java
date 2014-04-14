@@ -44,18 +44,18 @@ public class STDataViewersImages {
             imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
     }
 
-    public final static String IMG_EXPORT = "export.gif";
-    public final static String IMG_EDIT_PROPERTIES = "prop_edt.gif";
-    public final static String IMG_PERCENTAGE = "percentage.gif";
+    public static final String IMG_EXPORT = "export.gif";
+    public static final String IMG_EDIT_PROPERTIES = "prop_edt.gif";
+    public static final String IMG_PERCENTAGE = "percentage.gif";
 
-    public final static String IMG_SEARCH = "search.gif";
+    public static final String IMG_SEARCH = "search.gif";
 
-    public final static String IMG_PRINT = "printer.gif";
-    public final static String IMG_LEFT = "left.gif";
-    public final static String IMG_LEFTEND = "left-end.gif";
-    public final static String IMG_RIGHT = "right.gif";
-    public final static String IMG_RIGHTEND = "right-end.gif";
-    public final static String IMG_SAVE_TXT = "IMG_SAVE_TXT";
+    public static final String IMG_PRINT = "printer.gif";
+    public static final String IMG_LEFT = "left.gif";
+    public static final String IMG_LEFTEND = "left-end.gif";
+    public static final String IMG_RIGHT = "right.gif";
+    public static final String IMG_RIGHTEND = "right-end.gif";
+    public static final String IMG_SAVE_TXT = "IMG_SAVE_TXT";
 
     public static final String IMG_EXPANDALL = "expand_all.gif";
     public static final String IMG_COLLAPSEALL = "collapse_all.gif";
@@ -101,7 +101,7 @@ public class STDataViewersImages {
      *            The path where the image can be found. This path is relative to where this plugin class is found (i.e.
      *            typically the packages directory)
      */
-    private final static void declareRegistryImage(String key, URL path) {
+    private static void declareRegistryImage(String key, URL path) {
         ImageDescriptor desc = ImageDescriptor.getMissingImageDescriptor();
         desc = ImageDescriptor.createFromURL(path);
         imageRegistry.put(key, desc);
@@ -117,7 +117,7 @@ public class STDataViewersImages {
      *            The path where the image can be found. This path is relative to where this plugin class is found (i.e.
      *            typically the packages directory)
      */
-    private final static void declareRegistryImage(String key, String path) {
+    private static void declareRegistryImage(String key, String path) {
         try {
             URL url = makeIconFileURL(path);
             declareRegistryImage(key, url);

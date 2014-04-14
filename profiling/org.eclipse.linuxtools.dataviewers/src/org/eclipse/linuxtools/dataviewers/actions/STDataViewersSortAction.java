@@ -39,7 +39,7 @@ public class STDataViewersSortAction extends Action {
 		this.stViewer = stViewer;
 
 		// building a sort dialog
-		dialog = getSortDialog();
+		dialog = new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(), stViewer.getTableSorter());
 
 		setEnabled(true);
     }
@@ -60,14 +60,5 @@ public class STDataViewersSortAction extends Action {
             });
 
         }
-    }
-
-    /**
-     * Return a sort dialog for the receiver.
-     *
-     * @return TableSortDialog
-     */
-    protected STDataViewersSortDialog getSortDialog() {
-        return new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(), stViewer.getTableSorter());
     }
 }

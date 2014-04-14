@@ -239,16 +239,21 @@ public abstract class AbstractSTDataView extends ViewPart {
      *            the tool bar manager of this view
      */
     private void initToolBar(IToolBarManager manager) {
-        if (expandAllAction != null)
+        if (expandAllAction != null) {
             manager.add(expandAllAction);
-        if (collapseAllAction != null)
+        }
+        if (collapseAllAction != null) {
             manager.add(collapseAllAction);
-        if (hideShowColAction != null)
+        }
+        if (hideShowColAction != null) {
             manager.add(hideShowColAction);
-        if (exportToCSVAction != null)
+        }
+        if (exportToCSVAction != null) {
             manager.add(exportToCSVAction);
-        if (sortAction != null)
+        }
+        if (sortAction != null) {
             manager.add(sortAction);
+        }
         contributeToToolbar(manager);
         manager.update(true);
     }

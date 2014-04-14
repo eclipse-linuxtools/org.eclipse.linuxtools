@@ -52,10 +52,11 @@ public class STHeaderListener implements SelectionListener {
     private void resortTable(final Item column, final ISTDataViewersField field) {
         STDataViewersComparator sorter = stViewer.getTableSorter();
 
-        if (column.equals(sorter.getTopColumn()))
+        if (column.equals(sorter.getTopColumn())) {
             sorter.reverseTopPriority();
-        else
+        } else {
             sorter.setTopPriority(column, field);
+        }
 
         BusyIndicator.showWhile(null, new Runnable() {
             @Override

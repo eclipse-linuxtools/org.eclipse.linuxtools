@@ -266,13 +266,15 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
         ISTDataViewersField property = getField(columns[column]);
 
         int result;
-        if (directions[column] >= 0)
+        if (directions[column] >= 0) {
             result = property.compare(obj1, obj2);
-        else
+        } else {
             result = property.compare(obj2, obj1);
+        }
 
-        if (result == 0 && continueSearching)
+        if (result == 0 && continueSearching) {
             return compare(obj1, obj2, depth + 1, continueSearching);
+        }
 
         return result;
     }

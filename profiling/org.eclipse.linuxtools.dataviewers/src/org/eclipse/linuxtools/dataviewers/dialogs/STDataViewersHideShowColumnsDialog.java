@@ -45,10 +45,6 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
 
     private CheckboxTableViewer checkButtonsTable;
 
-    private Button selectAllButton;
-
-    private Button deselectAllButton;
-
     private AbstractSTViewer stViewer;
 
     /**
@@ -90,7 +86,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         checkButtonsTable.setInput(stViewer.getColumns());
         checkButtonsTable.addCheckStateListener(checkStateListener);
 
-        selectAllButton = new Button(composite, SWT.NONE);
+        Button selectAllButton = new Button(composite, SWT.NONE);
         selectAllButton.setText(STDataViewersMessages.selectAll_text);
         selectAllButton.addSelectionListener(new SelectionListener() {
             @Override
@@ -107,7 +103,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         layoutData = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
         selectAllButton.setLayoutData(layoutData);
 
-        deselectAllButton = new Button(composite, SWT.NONE);
+        Button deselectAllButton = new Button(composite, SWT.NONE);
         deselectAllButton.setText(STDataViewersMessages.deselectAll_text);
         deselectAllButton.addSelectionListener(new SelectionListener() {
             @Override

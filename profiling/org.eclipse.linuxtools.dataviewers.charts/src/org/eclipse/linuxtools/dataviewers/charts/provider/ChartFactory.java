@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.dataviewers.charts.provider;
 
 import java.util.List;
 
-import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
@@ -188,13 +187,5 @@ public class ChartFactory {
 
     private static int getRC() {
         return (int) (Math.random() * 255);
-    }
-
-    /**
-     * @param viewer
-     * @return the field used to provide the labels to the series
-     */
-    public ISTDataViewersField getLabelField(AbstractSTViewer viewer) {
-        return viewer.getAllFields()[0];
     }
 }

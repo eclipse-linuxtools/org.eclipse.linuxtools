@@ -46,13 +46,6 @@ public class TreeColumnViewerFilter extends ViewerFilter {
     }
 
     /**
-     * @return the matchingText
-     */
-    public String getMatchingText() {
-        return matchingText;
-    }
-
-    /**
      * @param matchingText
      *            the matchingText to set
      */

@@ -40,21 +40,6 @@ public class STNM {
      *            nm params
      * @param file
      *            file to parse
-     * @throws IOException
-     */
-    public STNM(String command, String[] params, String file, STNMSymbolsHandler handler) throws IOException {
-        this(command, params, file, handler, null);
-    }
-
-    /**
-     * Constructor
-     * 
-     * @param command
-     *            the nm to call
-     * @param params
-     *            nm params
-     * @param file
-     *            file to parse
      * @param project
      *            the project to get the path to use to run nm
      * @throws IOException

@@ -200,10 +200,6 @@ public class GmonView extends AbstractSTDataView {
     	//        return color5 == null ? DEFAULT_BG : color5;
     }
 
-    public Label getLabel() {
-        return label;
-    }
-
     @Override
     protected AbstractSTViewer createAbstractSTViewer(Composite parent) {
         return new GmonViewer(parent);
@@ -217,7 +213,7 @@ public class GmonView extends AbstractSTDataView {
      * @param titleLabel
      *            the title label
      */
-    public static void setHistTitle(GmonDecoder decoder, Label titleLabel) {
+    private static void setHistTitle(GmonDecoder decoder, Label titleLabel) {
         String title = " gmon file: " //$NON-NLS-1$
                 + decoder.getGmonFile() + "\n program file: " //$NON-NLS-1$
                 + decoder.getProgram().getPath() + "\n" //$NON-NLS-1$
