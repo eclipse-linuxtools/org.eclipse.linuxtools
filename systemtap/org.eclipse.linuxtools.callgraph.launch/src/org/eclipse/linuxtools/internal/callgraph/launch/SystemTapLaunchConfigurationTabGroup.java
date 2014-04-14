@@ -38,8 +38,6 @@ public class SystemTapLaunchConfigurationTabGroup extends ProfileLaunchConfigura
 		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
 
 		tabs.addAll(Arrays.asList(getProfileTabs()));
-
-
 		setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
 	}
 }

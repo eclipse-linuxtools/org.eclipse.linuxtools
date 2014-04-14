@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -29,48 +29,20 @@ public class DocWriter extends UIJob {
 	 * to the given console in a separate UI job. By default, DocWriter will
 	 * append to the end of the console and replace 0 characters. To change this,
 	 * see DocWriter's set methods.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param name
 	 * @param console
 	 * @param message
 	 */
 	public DocWriter(String name, TextConsole console, String message) {
-		
+
 		super(name);
 		this.console = console;
 		this.message = message;
 		this.start=-1;
 		this.length=-1;
 	}
-	
-
-	/**
-	 * Set the start location for DocWriter. Defaults to 0.
-	 * @param val
-	 */
-	public void setStart(int val) {
-		this.start =val;
-	}
-	
-	/**
-	 * Sets the number of characters to replace for DocWriter. Defaults 
-	 * @param val
-	 */
-	public void setLength(int val) {
-		this.length=val;
-	}
-	
-	/**
-	 * Convenience method to set start and length.
-	 * @param start
-	 * @param length
-	 */
-	public void setRegion(int start, int length) {
-		this.start = start;
-		this.length = length;
-	}
-	
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -80,9 +52,9 @@ public class DocWriter extends UIJob {
 		if (message == null) {
 			return Status.OK_STATUS;
 		}
-		
+
 		IDocument doc = console.getDocument();
-		
+
 		if (length < 0) {
 			length = 0;
 		}
@@ -94,9 +66,8 @@ public class DocWriter extends UIJob {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return Status.OK_STATUS;
 	}
-	
+
 }
-	

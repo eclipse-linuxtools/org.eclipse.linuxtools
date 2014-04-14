@@ -16,11 +16,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class XMLParser {
 
-	private HashMap<Integer, HashMap<String,String>> keyValues;
-	private ArrayList<Integer> idList;
+	private Map<Integer, HashMap<String,String>> keyValues;
+	private List<Integer> idList;
 	private int id;
 	private int currentlyIn;
 	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
@@ -126,7 +128,7 @@ public class XMLParser {
 	 * @param tokens
 	 * @param start
 	 */
-	public void addAttributes(int id, String[] tokens, int start) {
+	private void addAttributes(int id, String[] tokens, int start) {
 		HashMap<String,String> map = keyValues.get(id);
 		int nameless = 0;
 
@@ -164,13 +166,7 @@ public class XMLParser {
 		keyValues.put(id, map);
 	}
 
-	public HashMap<Integer, HashMap<String,String>> getKeyValues() {
-		return keyValues;
-	}
-
-
-
-	static public String getContents(File file) {
+	private static String getContents(File file) {
 		StringBuilder contents = new StringBuilder();
 
 		try (BufferedReader input = new BufferedReader(new FileReader(file))) {
@@ -186,7 +182,7 @@ public class XMLParser {
 		return contents.toString();
 	}
 
-	  public void setTextMode(boolean val) {
+	  private void setTextMode(boolean val) {
 		  textMode = val;
 	  }
 }

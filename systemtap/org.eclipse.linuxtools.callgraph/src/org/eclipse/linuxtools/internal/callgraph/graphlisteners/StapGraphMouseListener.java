@@ -205,7 +205,7 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 
-	public void controlDoubleClick() {
+	private void controlDoubleClick() {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
 			GraphNode node = getAggregateNodeFromSelection();
 

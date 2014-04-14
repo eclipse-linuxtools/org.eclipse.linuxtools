@@ -73,7 +73,7 @@ public class SystemTapErrorHandler {
 								errorMessage
 										.append(Messages
 												.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
-								setErrorRecognized(true);
+								errorRecognized = true;
 							}
 							String errorFound = line.substring(index + 1);
 
@@ -93,7 +93,7 @@ public class SystemTapErrorHandler {
         }
 
     }
-   
+
     /**
      * Append to the log contents
      */
@@ -131,7 +131,7 @@ public class SystemTapErrorHandler {
 
     /**
      * Run this method when there are no more error messages to handle. Creates
-     * the error pop-up message and writes to log.Currently relaunch only works 
+     * the error pop-up message and writes to log.Currently relaunch only works
      * for the callgraph script.
      */
     public void finishHandling() {
@@ -142,31 +142,18 @@ public class SystemTapErrorHandler {
 
         writeToLog();
     }
-   
+
     /**
      * Writes the contents of logContents to the error log, along with date and
      * time.
      */
-    public void writeToLog() {
+    private void writeToLog() {
     	IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
     	CallgraphCorePlugin.getDefault().getLog().log(status);
-    	
+
         logContents = new StringBuilder();
     }
-   
-    /**
-     * Delete the log at File and replace it with a new (empty) file
-     * @param log The File object for the log file to delete and refresh
-     */
-    public static void deleteLog(File log) {
-        log.delete();
-        try {
-            log.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-   
+
     /**
      * @return Returns true if an error matches one of the regex's in error.prop
      * and false otherwise.
@@ -176,26 +163,9 @@ public class SystemTapErrorHandler {
     }
 
     /**
-     * Convenience method to change the error recognition value.
-     * @param errorsRecognized True if the handler recognizes some error
-     * and false otherwise.
-     */
-    private void setErrorRecognized(boolean errorsRecognized) {
-        errorRecognized = errorsRecognized;
-    }
-    
-    /**
      * @return The error message string
      */
     public String getErrorMessage(){
     	return errorMessage.toString();
     }
-    
-    /**
-     * @return The string contents of what will be printed to the log
-     */
-    public String getLogContents(){
-    	return logContents.toString();
-    }
-   
 }

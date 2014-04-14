@@ -26,7 +26,6 @@ public class StapNode extends GraphNode{
 	static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
 	public StapNode(StapGraph graphModel, int style, StapData data) {
-
 		super(graphModel, style, Messages.getString("StapNode.0")); //$NON-NLS-1$
 		numberFormat.setMaximumFractionDigits(2);
 		numberFormat.setMinimumFractionDigits(2);

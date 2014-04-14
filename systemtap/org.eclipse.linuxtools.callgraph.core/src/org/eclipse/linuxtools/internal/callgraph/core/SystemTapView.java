@@ -228,7 +228,7 @@ public abstract class SystemTapView extends ViewPart {
     }
 
 
-    public void createHelpActions() {
+    private void createHelpActions() {
         helpVersion = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
             @Override
 			public void run() {
@@ -261,7 +261,7 @@ public abstract class SystemTapView extends ViewPart {
         };
     }
 
-    protected void createSaveAction() {
+    private void createSaveAction() {
         //Save callgraph.out
         saveFile = new Action(Messages.getString("SystemTapView.SaveMenu")){ //$NON-NLS-1$
             @Override
@@ -316,9 +316,9 @@ public abstract class SystemTapView extends ViewPart {
 				return;
 			}
 
-			try  (FileInputStream fileIn = new FileInputStream(sFile); FileOutputStream fileOut = new FileOutputStream(file); 
+			try  (FileInputStream fileIn = new FileInputStream(sFile); FileOutputStream fileOut = new FileOutputStream(file);
 					FileChannel channelIn = fileIn.getChannel(); FileChannel channelOut = fileOut.getChannel()){
-				
+
 				if (channelIn == null || channelOut == null) {
 					return;
 				}

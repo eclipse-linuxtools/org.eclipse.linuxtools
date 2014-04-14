@@ -60,8 +60,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private String outputPath = ""; //$NON-NLS-1$
 	private boolean needsBinary = false; // Set to false if we want to use SystemTap
 	private boolean needsArguments = false;
-	@SuppressWarnings("unused")
-	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
 	private String partialCommand = ""; //$NON-NLS-1$
 	private String stap = ""; //$NON-NLS-1$
@@ -82,7 +80,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		 outputPath = ""; //$NON-NLS-1$
 		 needsBinary = false; // Set to false if we want to use SystemTap
 		 needsArguments = false;
-		 useColour = false;
 		 binaryArguments = ""; //$NON-NLS-1$
 	}
 
@@ -105,10 +102,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		/*
 		 * Set variables
 		 */
-		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,
-				LaunchConfigurationConstants.DEFAULT_USE_COLOUR)) {
-			useColour = true;
-		}
 		if (!config.getAttribute(LaunchConfigurationConstants.ARGUMENTS,
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS).equals(
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS)) {
@@ -197,10 +190,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 	 * @return
 	 */
 	public String getCommand() {
-		if (cmd.length() > 0) {
+		if (!cmd.isEmpty()) {
 			return cmd;
-		}
-		else {
+		} else {
 			return Messages.getString("SystemTapLaunchConfigurationDelegate.NoCommand"); //$NON-NLS-1$
 		}
 	}
@@ -345,11 +337,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					(Helper.getConsoleByName(config.getName())), message);
 			dw.schedule();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
+		} catch (IOException|InterruptedException|CoreException e) {
 			e.printStackTrace();
 		} finally {
 			monitor.done();

@@ -130,7 +130,7 @@ public abstract class SystemTapParser extends Job {
 	 * Load the specified viewID by creating a StapUIJob. Does not return until the StapUIJob has.
 	 * Returns true if the makeView was successful, false otherwise.
 	 */
-	protected boolean makeView() {
+	private boolean makeView() {
 		// Create a UIJob to handle the rest
 		if (viewID != null && viewID.length() > 0) {
 			try {
@@ -222,30 +222,12 @@ public abstract class SystemTapParser extends Job {
 	}
 
 
-	public void launchFileErrorDialog() {
-		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
-				.getString("SystemTapParser.InvalidFile"), //$NON-NLS-1$
-				Messages.getString("SystemTapParser.InvalidFile"), //$NON-NLS-1$
-				Messages.getString("SystemTapParser.InvalidFileMsg1") + sourcePath + //$NON-NLS-1$
-						Messages.getString("SystemTapParser.InvalidFileMsg2")); //$NON-NLS-1$
-		err.schedule();
-	}
-
-
 	/**
 	 * @return the Data object
 	 */
 	public Object getData() {
 		return data;
 	}
-
-	/**
-	 * @return the internal data object
-	 */
-	public Object getInternalData(){
-		return internalData;
-	}
-
 
 	/**
 	 * Generic method for setting the internalData object. This will be called
@@ -257,17 +239,6 @@ public abstract class SystemTapParser extends Job {
 		File file = new File(sourcePath);
 		internalData = new BufferedReader(new FileReader(file));
 	}
-
-
-	/**
-	 * Returns the monitor
-	 *
-	 * @return
-	 */
-	public IProgressMonitor getMonitor() {
-		return monitor;
-	}
-
 
 	/**
 	 * Gets the file to read from
@@ -347,10 +318,6 @@ public abstract class SystemTapParser extends Job {
 		if (view != null) {
 			view.setKillButtonEnabled(val);
 		}
-	}
-
-	public boolean isRealTime() {
-		return realTime;
 	}
 
 	public void setSecondaryID(String secondaryID) {

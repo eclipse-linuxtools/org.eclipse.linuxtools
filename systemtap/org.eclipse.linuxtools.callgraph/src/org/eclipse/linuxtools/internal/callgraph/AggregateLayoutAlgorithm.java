@@ -25,9 +25,9 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  */
 public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 
-	protected ArrayList<Long> list;
-	protected Long totalTime;
-	protected int graphWidth;
+	private ArrayList<Long> list;
+	private Long totalTime;
+	private int graphWidth;
 
 
 	/**

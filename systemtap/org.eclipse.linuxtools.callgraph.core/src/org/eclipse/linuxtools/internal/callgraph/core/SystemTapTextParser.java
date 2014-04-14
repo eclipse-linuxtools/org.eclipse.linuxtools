@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -54,9 +54,7 @@ public class SystemTapTextParser extends SystemTapParser{
 				System.out.println(text.toString());
 			}
 			view.update();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (IOException|InterruptedException e) {
 			e.printStackTrace();
 		}
 

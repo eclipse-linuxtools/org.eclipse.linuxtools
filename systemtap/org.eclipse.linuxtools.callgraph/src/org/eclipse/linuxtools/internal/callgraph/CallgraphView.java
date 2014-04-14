@@ -11,12 +11,10 @@
 
 package org.eclipse.linuxtools.internal.callgraph;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -38,7 +36,6 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.internal.callgraph.graphlisteners.AutoScrollSelectionListener;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -84,8 +81,8 @@ public class CallgraphView extends SystemTapView {
 	private Action saveColDot;
 	private Action saveCurDot;
 	private Action saveText;
-	ImageDescriptor playImage = getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
-	ImageDescriptor pauseImage = getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
+	private ImageDescriptor playImage = getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
+	private ImageDescriptor pauseImage = getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 
 	private IMenuManager menu;
 	private IMenuManager gotoMenu;
@@ -93,7 +90,7 @@ public class CallgraphView extends SystemTapView {
 	private IMenuManager animation;
 	private IMenuManager markers; // Unused
 	private IMenuManager saveMenu;
-	public IToolBarManager mgr;
+	private IToolBarManager mgr;
 
 	private Composite graphComp;
 	private Composite treeComp;
@@ -135,7 +132,6 @@ public class CallgraphView extends SystemTapView {
 		papaGD.widthHint=160;
 		papaCanvas.setLayoutData(papaGD);
 
-
 		//Add first button
 		Image image = getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
 		Button up = new Button(papaCanvas, SWT.PUSH);
@@ -146,10 +142,8 @@ public class CallgraphView extends SystemTapView {
 		up.setImage(image);
 		up.setToolTipText(Messages.getString("CallgraphView.ThumbNailUp")); //$NON-NLS-1$
 
-
 		//Add thumb canvas
 		Canvas thumbCanvas = new Canvas(papaCanvas, SWT.NONE);
-
 
 		//Add second button
 		image = getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
@@ -161,7 +155,6 @@ public class CallgraphView extends SystemTapView {
 		down.setImage(image);
 		down.setToolTipText(Messages.getString("CallgraphView.ThumbNailDown")); //$NON-NLS-1$
 
-
 		//Initialize graph
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas, this);
 		g.setLayoutData(new GridData(masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize));
@@ -170,7 +163,6 @@ public class CallgraphView extends SystemTapView {
 				AutoScrollSelectionListener.AUTO_SCROLL_UP, g));
 		down.addSelectionListener(new AutoScrollSelectionListener(
 				AutoScrollSelectionListener.AUTO_SCROLL_DOWN, g));
-
 
 		//Initialize thumbnail
 		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
@@ -202,7 +194,7 @@ public class CallgraphView extends SystemTapView {
 
 
 		/*
-		 *                Load graph data
+		 * Load graph data
 		 */
 	    for (int id_parent : parser.serialMap.keySet()) {
 	    	if (id_parent < 0) {
@@ -346,7 +338,7 @@ public class CallgraphView extends SystemTapView {
 	 * Enable or Disable the graph options
 	 * @param visible
 	 */
-	public  void setGraphOptions (boolean visible){
+	private void setGraphOptions (boolean visible){
 		play.setEnabled(visible);
 		saveFile.setEnabled(visible);
 		saveDot.setEnabled(visible);
@@ -375,7 +367,7 @@ public class CallgraphView extends SystemTapView {
 
 
 
-	public  void makeTreeComp(int treeSize) {
+	private void makeTreeComp(int treeSize) {
 		if (treeComp != null && !treeComp.isDisposed()) {
 			treeComp.dispose();
 		}
@@ -387,7 +379,7 @@ public class CallgraphView extends SystemTapView {
 		treeComp.setLayoutData(treegd);
 	}
 
-	public  void makeGraphComp() {
+	private void makeGraphComp() {
 		if (graphComp != null && !graphComp.isDisposed()) {
 			graphComp.dispose();
 		}
@@ -573,7 +565,7 @@ public class CallgraphView extends SystemTapView {
 	}
 
 
-	public StringBuilder fixString(StringBuilder name, int length) {
+	private static StringBuilder fixString(StringBuilder name, int length) {
 		if (name.length() > length) {
 			name = new StringBuilder(name.substring(0, length - 1));
 		} else {
@@ -594,7 +586,7 @@ public class CallgraphView extends SystemTapView {
 	}
 
 
-	public void createViewActions() {
+	private void createViewActions() {
 		viewTreeview = new Action(Messages.getString("CallgraphView.TreeView")){ //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -657,42 +649,21 @@ public class CallgraphView extends SystemTapView {
 		viewLevelview.setImageDescriptor(levelImage);
 
 
-		setViewRefresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
+		this.viewRefresh = new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
 			@Override
 			public void run(){
 				g.reset();
 			}
-		});
+		};
 		ImageDescriptor refreshImage = getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
 		getViewRefresh().setImageDescriptor(refreshImage);
 
 	}
 
-
-	public void stapPermissionError() {
-		Process p = null;
-		String user = null;
-		try {
-			p = new ProcessBuilder("/usr/bin/bash", "-c", "whoami").start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			InputStreamReader isr = new InputStreamReader(p.getInputStream());
-			try (BufferedReader br = new BufferedReader(isr)) {
-				user = br.readLine();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		SystemTapUIErrorMessages message = new SystemTapUIErrorMessages(
-				Messages.getString("CallgraphView.StapError1"), //$NON-NLS-1$
-				Messages.getString("CallgraphView.StapError1"), NLS.bind( //$NON-NLS-1$
-						Messages.getString("CallgraphView.StapError2"), user)); //$NON-NLS-1$
-		message.schedule();
-	}
 	/**
 	 * Populates Animate menu.
 	 */
-	public void createAnimateActions() {
+	private void createAnimateActions() {
 		//Set animation mode to slow
 		animationSlow = new Action(Messages.getString("CallgraphView.AnimationSlow"), IAction.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			@Override
@@ -803,7 +774,7 @@ public class CallgraphView extends SystemTapView {
 /**
  * Convenience method for creating all the various actions
  */
-	public void createActions() {
+	private void createActions() {
 		createViewActions();
 		createAnimateActions();
 		createMarkerActions();
@@ -813,7 +784,7 @@ public class CallgraphView extends SystemTapView {
 
 	}
 
-	public void createMovementActions() {
+	private void createMovementActions() {
 		gotoNext = new Action(Messages.getString("CallgraphView.Next")) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -858,7 +829,7 @@ public class CallgraphView extends SystemTapView {
 	 * Toggles the play/pause image
 	 * @param play
 	 */
-	protected void togglePlayImage() {
+	private void togglePlayImage() {
 		if (play.getToolTipText() == Messages.getString("CallgraphView.Pause")) { //$NON-NLS-1$
 			play.setImageDescriptor(playImage);
 			play.setToolTipText(Messages.getString("CallgraphView.Play")); //$NON-NLS-1$
@@ -869,7 +840,7 @@ public class CallgraphView extends SystemTapView {
 		}
 	}
 
-	public void createMarkerActions() {
+	private void createMarkerActions() {
 		markersNext = new Action(Messages.getString("CallgraphView.nextMarker")) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -935,34 +906,16 @@ public class CallgraphView extends SystemTapView {
 		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		 //$NON-NLS-1$
 	}
 
-
-
 	public  Action getAnimationSlow() {
 		return animationSlow;
-	}
-
-	public  void setAnimation_slow(Action animationSlow) {
-		this.animationSlow = animationSlow;
 	}
 
 	public  Action getAnimationFast() {
 		return animationFast;
 	}
 
-	public  void setAnimation_fast(Action animationFast) {
-		this.animationFast = animationFast;
-	}
-
-	public  IMenuManager getAnimation() {
-		return animation;
-	}
-
 	public  Action getModeCollapsednodes() {
 		return modeCollapsedNodes;
-	}
-
-	public  void setViewRefresh(Action viewRefresh) {
-		this.viewRefresh = viewRefresh;
 	}
 
 	public  Action getViewRefresh() {

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -38,24 +38,20 @@ public class SystemTapUIErrorMessages extends UIJob {
 		if (!active) {
 			return Status.CANCEL_STATUS;
 		}
-		//Test that this job is running in the UI thread 
+		//Test that this job is running in the UI thread
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		
+
 		if (window == null) {
 			return Status.CANCEL_STATUS; //Something is wrong!
 		}
-		
+
 		Shell sh = new Shell();
-	
+
 		MessageDialog.openError(sh, title, message);
 		return Status.OK_STATUS;
 	}
 
-	
-	public static boolean isActive() {
-		return active;
-	}
-	
+
 	public static void setActive(boolean val) {
 		active = val;
 	}

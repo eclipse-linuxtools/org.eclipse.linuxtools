@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.callgraph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * Contains information to populate StapNodes with
@@ -90,7 +89,7 @@ public class StapData {
      * @param id
      * @return
      */
-    public int addCallee(int id) {
+    private int addCallee(int id) {
     	children.add(id);
 		return id;
     }
@@ -104,34 +103,6 @@ public class StapData {
     public StapNode makeNode(StapGraph graphModel) {
     	return new StapNode(graphModel, style, this);
     }
-
-    /**
-     * Sort the list of callees according to time
-     */
-    public void sortByTime(){
-    	TreeMap<Long,ArrayList<StapData>> tempList = new TreeMap<>();
-    	//INDEX ALL THE STAPDATA INTO AN ARRAY AT THE CALCULATED INDEX
-    	//SCATTERED INDICES : 0,1,...,5,..,10
-    	for (int val : collapsedChildren){
-    		if (tempList.get(graph.getNodeData(val).time) == null){
-    			tempList.put(graph.getNodeData(val).time, new ArrayList<StapData>());
-    		}
-
-    		tempList.get(graph.getNodeData(val).time).add(graph.getNodeData(val));
-    	}
-
-    	collapsedChildren.clear();
-    	int count = 0;
-		// ANOTHER PASS THROUGH TO INDEX CONTINUOUSLY 0,1,2,..
-		for (long i : tempList.descendingKeySet()) {
-			for (StapData j : tempList.get(i)){
-				collapsedChildren.add(count, j.id);
-			}
-			count++;
-		}
-
-    }
-
 
    /**
     * Indicate that this StapData is part of a collapsed node (will not be drawn in
@@ -164,12 +135,6 @@ public class StapData {
 	public boolean isOnlyChildWithThisName() {
 		return onlyChildWithThisName;
 	}
-
-
-	public void setOnlyChildWithThisName(boolean onlyChildWithThisName) {
-		this.onlyChildWithThisName = onlyChildWithThisName;
-	}
-
 
 	/**
 	 * If the node has not yet terminated (i.e. the time is > 1200000000000000000l) this
