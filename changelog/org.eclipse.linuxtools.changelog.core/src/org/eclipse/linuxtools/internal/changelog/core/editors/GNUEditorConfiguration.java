@@ -74,7 +74,7 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 				  GNUPartitionScanner.CHANGELOG_SRC_ENTRY};
 	}
 
-	protected GNUElementScanner getChangeLogFileScanner() {
+	private GNUElementScanner getChangeLogFileScanner() {
 		if (scanner == null) {
 			scanner = new GNUElementScanner(colorManager);
 			scanner.setDefaultReturnToken(new Token(new TextAttribute(

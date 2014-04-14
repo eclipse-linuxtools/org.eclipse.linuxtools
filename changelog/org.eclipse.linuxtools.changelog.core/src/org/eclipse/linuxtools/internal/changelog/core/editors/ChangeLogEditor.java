@@ -30,26 +30,26 @@ import org.eclipse.ui.editors.text.TextEditor;
 
 /**
  * ChangeLog editor that supports GNU format.
- * 
+ *
  * @author klee (Kyu Lee)
  */
 public class ChangeLogEditor extends TextEditor {
 
-	protected boolean forceNewLogEntry;
-	
+	private boolean forceNewLogEntry;
+
 	public ChangeLogEditor() {
 		super();
 
 		SourceViewerConfiguration config = getConfig();
 
 		if (config != null) {
-
 			setSourceViewerConfiguration(config);
-		} else
+		} else {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
 							Messages.getString("ChangeLogEditor.ErrConfiguration"), // $NON-NLS-1$
 							new Exception(Messages.getString("ChangeLogEditor.ErrConfiguration")))); // $NON-NLS-1$
+		}
 
 		setDocumentProvider(new ChangeLogDocumentProvider());
 
@@ -57,11 +57,11 @@ public class ChangeLogEditor extends TextEditor {
 
 	/**
 	 * Gets appropriate style editor from user pref.
-	 * 
+	 *
 	 * @return configuration for the Changelog editor
 	 */
-	
-	public SourceViewerConfiguration getConfig() {
+
+	private SourceViewerConfiguration getConfig() {
 
 		IExtensionPoint editorExtensions = null;
 		IEditorChangeLogContrib editorContrib = null;
@@ -79,7 +79,7 @@ public class ChangeLogEditor extends TextEditor {
 			IConfigurationElement[] elements = editorExtensions
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
-				if (elements[i].getName().equals("editor") // $NON-NLS-1$ 
+				if (elements[i].getName().equals("editor") // $NON-NLS-1$
 						&& (elements[i].getAttribute("name").equals(pref_Editor))) { //$NON-NLS-1$
 
 					try {
@@ -105,7 +105,7 @@ public class ChangeLogEditor extends TextEditor {
 	public ISourceViewer getMySourceViewer() {
 		return this.getSourceViewer();
 	}
-	
+
 	public boolean isForceNewLogEntry() {
 		return forceNewLogEntry;
 	}

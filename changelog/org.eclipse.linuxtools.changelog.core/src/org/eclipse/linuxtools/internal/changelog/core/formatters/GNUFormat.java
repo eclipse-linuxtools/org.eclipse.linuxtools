@@ -403,8 +403,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	}
 
 	private String returnDate() {
-		SimpleDateFormat date_Format;
-		date_Format = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+		SimpleDateFormat date_Format = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		return date_Format.format(new Date());
 	}
 

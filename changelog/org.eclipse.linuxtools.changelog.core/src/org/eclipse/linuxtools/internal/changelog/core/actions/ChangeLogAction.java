@@ -69,7 +69,6 @@ public abstract class ChangeLogAction extends Action {
 	// IEditorPart and IProject will be adapted to IStructuredSelection.
 
 	public ChangeLogAction() {
-
 		extensionManager = ChangeLogExtensionManager.getExtensionManager();
 	}
 
@@ -78,7 +77,7 @@ public abstract class ChangeLogAction extends Action {
 				new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, msg, e));
 	}
 
-	protected IWorkspaceRoot getWorkspaceRoot() {
+	private IWorkspaceRoot getWorkspaceRoot() {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 
@@ -153,7 +152,7 @@ public abstract class ChangeLogAction extends Action {
 
 		if (given_resource == null)
 			return null;
-		
+
 		ChangeLogContainerSelectionDialog dialog = new ChangeLogContainerSelectionDialog(ws
 				.getActiveWorkbenchWindow().getShell(), given_resource
 				.getParent(), false, Messages
@@ -262,17 +261,18 @@ public abstract class ChangeLogAction extends Action {
 		return null;
 	}
 
-	protected IFile getDocumentIFile(IEditorPart currentEditor) {
+	private IFile getDocumentIFile(IEditorPart currentEditor) {
 		IEditorInput cc = currentEditor.getEditorInput();
 
-		if (cc instanceof IFileEditorInput)
+		if (cc instanceof IFileEditorInput) {
 			return ((IFileEditorInput) cc).getFile();
+		}
 		return null;
 	}
 
 	protected String getDocumentLocation(IEditorPart currentEditor,
 			boolean appendRoot) {
-		
+
 
 		IFile loc = getDocumentIFile(currentEditor);
 		IEditorInput cc = null;
@@ -283,15 +283,15 @@ public abstract class ChangeLogAction extends Action {
 
 		if (currentEditor instanceof MultiPageEditorPart) {
 			Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
-			if (ed instanceof IEditorPart) 
+			if (ed instanceof IEditorPart)
 				cc = ((IEditorPart) ed).getEditorInput();
 			if (cc instanceof FileEditorInput)
 				return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
 					((FileEditorInput) cc).getFile().getFullPath().toOSString();
 		}
-		
+
 		cc = currentEditor.getEditorInput();
-			
+
 
 		if (cc == null)
 			return "";

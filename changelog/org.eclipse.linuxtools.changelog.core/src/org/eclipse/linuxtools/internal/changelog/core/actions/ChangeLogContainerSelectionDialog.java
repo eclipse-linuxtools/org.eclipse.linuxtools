@@ -172,15 +172,6 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
     }
 
     /**
-     * Sets the validator to use.
-     *
-     * @param validator A selection validator
-     */
-    public void setValidator(ISelectionValidator validator) {
-        this.validator = validator;
-    }
-
-    /**
      * Set whether or not closed projects should be shown
      * in the selection dialog.
      *

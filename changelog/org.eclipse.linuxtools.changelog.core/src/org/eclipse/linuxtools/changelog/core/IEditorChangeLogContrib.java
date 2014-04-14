@@ -23,37 +23,37 @@ public interface IEditorChangeLogContrib {
 
 	/**
 	 * Set TextEditor that this configuration is going to be used.
-	 * 
+	 *
 	 * @param editor The text editor for this configuration.
 	 */
-	public void setTextEditor(TextEditor editor);
+	void setTextEditor(TextEditor editor);
 
 	/**
 	 * Set default content type. GNU Changelog only has one type.
-	 * 
+	 *
 	 * @return default content type.
 	 */
-	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer);
+	String[] getConfiguredContentTypes(ISourceViewer sourceViewer);
 
 	/**
 	 * Detects hyperlinks in GNU formatted changelogs.
-	 * 
+	 *
 	 * @return link detector for GNU format.
 	 */
-	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer);
+	IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer);
 
 	/**
 	 * Hyperlink presenter (decorator).
-	 * 
+	 *
 	 * @return default presenter.
 	 */
-	public IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer);
+	IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer);
 
 	/**
 	 * Highlights GNU format changelog syntaxes.
-	 * 
+	 *
 	 * @return reconciler for GNU format changelog.
 	 */
-	public IPresentationReconciler getPresentationReconciler(
+	IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer);
 }

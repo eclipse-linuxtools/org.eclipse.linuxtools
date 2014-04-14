@@ -150,20 +150,21 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		if (parserExtensions != null) {
 			IConfigurationElement[] elements = parserExtensions
 					.getConfigurationElements();
-			for (int i = 0; i < elements.length; i++) {
-				if (elements[i].getName().equals("formatter")) //$NON-NLS-1$
-				{
+			for (IConfigurationElement element : elements) {
+				if (element.getName().equals("formatter")) {//$NON-NLS-1$
 
-					String fname = elements[i].getAttribute("name"); //$NON-NLS-1$\
+					String fname = element.getAttribute("name"); //$NON-NLS-1$\
 					// only add formatters for external files, not in-file formatters.
-					if (elements[i].getAttribute("inFile").toLowerCase().equals("false"))
+					if (element.getAttribute("inFile").equalsIgnoreCase("false")) {
 						formatterList.add(fname);
+					}
 
 					if (fname
 							.equals(store
-									.getString("IChangeLogConstants.DEFAULT_FORMATTER"))) //$NON-NLS-1$
+									.getString("IChangeLogConstants.DEFAULT_FORMATTER"))) { //$NON-NLS-1$
 						formatterList
 								.setSelection(formatterList.getItemCount() - 1);
+					}
 				}
 			}
 
@@ -178,15 +179,14 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		if (editorExtensions != null) {
 			IConfigurationElement[] elements = editorExtensions
 					.getConfigurationElements();
-			for (int i = 0; i < elements.length; i++) {
-				if (elements[i].getName().equals("editor")) //$NON-NLS-1$
-				{
-
-					String fname = elements[i].getAttribute("name"); //$NON-NLS-1$
+			for (IConfigurationElement element : elements) {
+				if (element.getName().equals("editor")) {//$NON-NLS-1$
+					String fname = element.getAttribute("name"); //$NON-NLS-1$
 					editorList.add(fname);
 					if (fname.equals(store
-							.getString("IChangeLogConstants.DEFAULT_EDITOR"))) //$NON-NLS-1$
+							.getString("IChangeLogConstants.DEFAULT_EDITOR"))) {//$NON-NLS-1$
 						editorList.setSelection(editorList.getItemCount() - 1);
+					}
 				}
 			}
 
@@ -210,11 +210,13 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 				.setValue(
 						"IChangeLogConstants.AUTHOR_EMAIL", emailField.getText()); //$NON-NLS-1$
 		String[] selection = formatterList.getSelection();
-		if (selection != null && selection.length > 0)
+		if (selection != null && selection.length > 0) {
 			store.setValue("IChangeLogConstants.DEFAULT_FORMATTER", selection[0]); //$NON-NLS-1$
+		}
 		String[] selection2 = editorList.getSelection();
-		if (selection2 != null && selection2.length > 0)
+		if (selection2 != null && selection2.length > 0) {
 			store.setValue("IChangeLogConstants.DEFAULT_EDITOR", selection2[0]); //$NON-NLS-1$
+		}
 
 	}
 

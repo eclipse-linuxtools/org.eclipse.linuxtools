@@ -58,11 +58,11 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 	}
 
 
-	IEditorPart getChangelog() {
+	private IEditorPart getChangelog() {
 
 		IConfigurationElement formatterConfigElement = extensionManager
 				.getFormatterConfigElement();
-		if (formatterConfigElement.getAttribute("inFile").toLowerCase().equals(
+		if (formatterConfigElement.getAttribute("inFile").equalsIgnoreCase(
 				"true")) {
 			return currentEditor;
 			// this formatter wants to use an external changelog file
@@ -90,7 +90,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	}
 
-	String parseFunctionName(IParserChangeLogContrib parser) {
+	private String parseFunctionName(IParserChangeLogContrib parser) {
 
 		try {
 			return parser.parseCurrentFunction(currentEditor);

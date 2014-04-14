@@ -35,24 +35,22 @@ import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 public final class ChangeLogExtensionManager {
 
 
-	private static final ChangeLogExtensionManager exm = new ChangeLogExtensionManager();
+    private static final ChangeLogExtensionManager EXM = new ChangeLogExtensionManager();
 
 
 	// These are used as a simple cache so we don't have to iterate over
 	// all extensions to formatContribution every time the action is invoked.
-	protected IConfigurationElement cachedPrefFormatter = null;
+	private IConfigurationElement cachedPrefFormatter = null;
 
-	protected IConfigurationElement[] cachedInFileFormateters = null;
+	private IConfigurationElement[] cachedInFileFormateters = null;
 
-	protected IExtensionPoint parserExtensions = null;
+	private IExtensionPoint parserExtensions = null;
 
-	protected IExtensionPoint formatterExtensions = null;
+	private IExtensionPoint formatterExtensions = null;
 
-	protected IParserChangeLogContrib parserContributor = null;
+	private IParserChangeLogContrib parserContributor = null;
 
-	protected IFormatterChangeLogContrib formatterContributor = null;
-
-	protected IConfigurationElement formatterConfigElementToUse = null;
+	private IConfigurationElement formatterConfigElementToUse = null;
 
 	private ChangeLogExtensionManager() {
 		getParserContributions();
@@ -60,17 +58,17 @@ public final class ChangeLogExtensionManager {
 	}
 
 	public static ChangeLogExtensionManager getExtensionManager() {
-		return exm;
+		return EXM;
 	}
 
-	protected void getFormatterContributions() {
+	private void getFormatterContributions() {
 		formatterExtensions = Platform
 				.getExtensionRegistry()
 				.getExtensionPoint(
 						"org.eclipse.linuxtools.changelog.core", "formatterContribution"); //$NON-NLS-1$
 	}
 
-	protected void getParserContributions() {
+	private void getParserContributions() {
 
 		parserExtensions = Platform.getExtensionRegistry().getExtensionPoint(
 				"org.eclipse.linuxtools.changelog.core", "parserContribution"); //$NON-NLS-1$
@@ -146,7 +144,7 @@ public final class ChangeLogExtensionManager {
 					IConfigurationElement formatterConfigElement = elements[i];
 					if (formatterConfigElement.getName().equals("formatter") // $NON-NLS-1$
 							&& formatterConfigElement.getAttribute("inFile") // $NON-NLS-1$
-									.toLowerCase().equals("true")) { // $NON-NLS-1$
+									.equalsIgnoreCase("true")) { // $NON-NLS-1$
 						inFileFormatters.add(elements[i]);
 					}
 				}
@@ -215,7 +213,7 @@ public final class ChangeLogExtensionManager {
 					for (int i = 0; i < elements.length; i++) {
 						IConfigurationElement formatterConfigElement = elements[i];
 						if (formatterConfigElement.getName()
-								.equals("formatter") && formatterConfigElement.getAttribute("inFile").toLowerCase().equals("false")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								.equals("formatter") && formatterConfigElement.getAttribute("inFile").equalsIgnoreCase("false")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							if (formatterConfigElement.getAttribute("name") // $NON-NLS-1$
 									.equals(formatterName))
 								cachedPrefFormatter = formatterConfigElement;
@@ -257,8 +255,6 @@ public final class ChangeLogExtensionManager {
 							.getMessage(), e));
 			e.printStackTrace();
 		}
-
-
 		return null;
 	}
 }

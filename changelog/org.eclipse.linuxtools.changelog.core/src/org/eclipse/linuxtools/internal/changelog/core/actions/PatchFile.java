@@ -118,10 +118,6 @@ public class PatchFile {
 		return resource;
 	}
 
-	public int countRanges() {
-		return pranges.size();
-	}
-
 	@Override
 	public boolean equals(Object o) {
 
@@ -131,23 +127,27 @@ public class PatchFile {
 		PatchFile that = (PatchFile) o;
 		// check  fpath  +  count
 		if (!this.resource.equals(that.resource) ||
-				this.countRanges() != that.countRanges())
+				this.pranges.size() != that.pranges.size() ) {
 			return false;
+		}
 
 		// check range elements
 		PatchRangeElement[] thatsrange = that.getRanges();
 
-		for(int i=0; i<this.countRanges();i++)
-			if (!thatsrange[i].equals(pranges.get(i)))
+		for(int i=0; i<this.pranges.size();i++) {
+			if (!thatsrange[i].equals(pranges.get(i))) {
 				return false;
+			}
+		}
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = resource.hashCode();
-		for(int i=0; i<this.countRanges();i++)
+		for(int i=0; i<this.pranges.size();i++) {
 			hash += pranges.get(i).hashCode();
+		}
 		return hash;
 	}
 }

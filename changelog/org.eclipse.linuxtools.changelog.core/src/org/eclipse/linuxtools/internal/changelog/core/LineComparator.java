@@ -122,10 +122,6 @@ public class LineComparator implements IRangeComparator {
         fLines = ar.toArray(new String[ar.size()]);
     }
 
-	String getLine(int ix) {
-        return fLines[ix];
-    }
-
     /* (non-Javadoc)
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#getRangeCount()
      */

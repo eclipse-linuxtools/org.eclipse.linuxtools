@@ -13,12 +13,11 @@ package org.eclipse.linuxtools.internal.changelog.core.editors;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
-import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.ITokenScanner;
 
 public class GNUFileEntryDamagerRepairer extends DefaultDamagerRepairer {
-	
+
 	/**
 	 * Creates a damager/repairer that uses the given scanner. The scanner may not be <code>null</code>
 	 * and is assumed to return only token that carry text attributes.
@@ -40,13 +39,5 @@ public class GNUFileEntryDamagerRepairer extends DefaultDamagerRepairer {
 		// such a case, we need to back up and find the start sequence of the
 		// rule.  It is easiest to just reparse the whole partition.
 		return partition;
-	}
-	
-	/*
-	 * @see IPresentationRepairer#createPresentation(TextPresentation, ITypedRegion)
-	 */
-	@Override
-	public void createPresentation(TextPresentation presentation, ITypedRegion region) {
-		super.createPresentation(presentation, region);
 	}
 }
