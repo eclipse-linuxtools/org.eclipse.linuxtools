@@ -220,7 +220,7 @@ public class Command implements Runnable {
 	 * Method to check whether or not the process has began to run.
 	 * @return <code>false</code> before the process begins to run or
 	 * if initialization of the process has failed; <code>true</code> otherwise.
-	 * @since 2.2
+	 * @since 3.0
 	 */
 	public boolean hasStarted() {
 		return started;
@@ -331,7 +331,7 @@ public class Command implements Runnable {
 
 	/**
 	 * @return The process of this command.
-	 * @since 2.2
+	 * @since 3.0
 	 */
 	public Process getProcess() {
 		return process;

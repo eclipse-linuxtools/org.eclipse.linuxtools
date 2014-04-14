@@ -307,7 +307,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * </p>
      *
      * @param manager
-     * @since 3.0
+     * @since 6.0
      */
     protected void fillContextMenu(IMenuManager manager) {
     	Control control = stViewer.getViewer().getControl();

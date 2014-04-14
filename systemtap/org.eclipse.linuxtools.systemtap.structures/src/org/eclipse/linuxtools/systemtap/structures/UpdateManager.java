@@ -29,7 +29,7 @@ public class UpdateManager {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 3.0
 	 */
 	public void restart(int delay) {
 		if (timer != null) {

@@ -186,7 +186,7 @@ public class STLink2SourceSupport {
     }
 
     /**
-	 * @since 4.2
+	 * @since 5.0
 	 */
     public IFile getFileForPath(IPath path, IProject project) {
         IFile f = getFileForPathImpl(path, project);

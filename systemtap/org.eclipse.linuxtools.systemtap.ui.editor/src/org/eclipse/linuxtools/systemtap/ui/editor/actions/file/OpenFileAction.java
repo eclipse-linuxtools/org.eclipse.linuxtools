@@ -94,7 +94,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 
 	/**
 	 * @return The style to use for the FileDialog when querying for a file.
-	 * @since 2.2
+	 * @since 3.0
 	 */
 	protected int dialogStyle() {
 		return SWT.OPEN;
@@ -102,7 +102,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
 
 	/**
 	 * @return The name to give to the FileDialog when querying for a file.
-	 * @since 2.2
+	 * @since 3.0
 	 */
 	protected String dialogName() {
 		return Localization.getString("OpenFileAction.OpenFile"); //$NON-NLS-1$

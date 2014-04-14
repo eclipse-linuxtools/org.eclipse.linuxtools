@@ -9,7 +9,7 @@ import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.debug.core.model.RuntimeProcess;
 
 /**
- * @since 2.2
+ * @since 3.0
  */
 public class SystemTapRuntimeProcessFactory implements IProcessFactory {
 
@@ -42,8 +42,7 @@ public class SystemTapRuntimeProcessFactory implements IProcessFactory {
 
 	@Override
 	public IProcess newProcess(ILaunch launch, Process process, String label,
-			Map<String, String> attributes) {
-
+			Map attributes) {
 		return new SystemTapRuntimeProcess(launch, process, label, attributes);
 	}
 
