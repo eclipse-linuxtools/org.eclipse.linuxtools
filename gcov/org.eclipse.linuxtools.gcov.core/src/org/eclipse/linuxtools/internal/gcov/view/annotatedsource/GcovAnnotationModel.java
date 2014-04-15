@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.view.annotatedsource;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +21,7 @@ import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.ui.CDTUITools;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
@@ -46,253 +48,251 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public final class GcovAnnotationModel implements IAnnotationModel {
 
-	/** Key for identifying our model from other Editor models. */
-	private static final Object KEY = new Object();
+    /** Key for identifying our model from other Editor models. */
+    private static final Object KEY = new Object();
 
-	/** List of GcovAnnotation elements */
-	private List<GcovAnnotation> annotations = new ArrayList<>();
+    /** List of GcovAnnotation elements */
+    private List<GcovAnnotation> annotations = new ArrayList<>();
 
-	/** List of IAnnotationModelListener */
-	private List<IAnnotationModelListener> annotationModelListeners = new ArrayList<>();
+    /** List of IAnnotationModelListener */
+    private List<IAnnotationModelListener> annotationModelListeners = new ArrayList<>();
 
-	private final ITextEditor editor;
-	private final IDocument document;
-	private int openConnections = 0;
-	private boolean annotated = false;
+    private final ITextEditor editor;
+    private final IDocument document;
+    private int openConnections = 0;
+    private boolean annotated = false;
 
-	private IDocumentListener documentListener = new IDocumentListener() {
-		@Override
-		public void documentChanged(DocumentEvent event) {
-			updateAnnotations(false);
-		}
+    private IDocumentListener documentListener = new IDocumentListener() {
+        @Override
+        public void documentChanged(DocumentEvent event) {
+            updateAnnotations(false);
+        }
 
-		@Override
-		public void documentAboutToBeChanged(DocumentEvent event) {}
-	};
+        @Override
+        public void documentAboutToBeChanged(DocumentEvent event) {}
+    };
 
-	private GcovAnnotationModel(ITextEditor editor, IDocument document) {
-		this.editor = editor;
-		this.document = document;
-		updateAnnotations(true);
-	}
+    private GcovAnnotationModel(ITextEditor editor, IDocument document) {
+        this.editor = editor;
+        this.document = document;
+        updateAnnotations(true);
+    }
 
-	/**
-	 * Attaches a coverage annotation model for the given editor if the editor
-	 * can be annotated. Does nothing if the model is already attached.
-	 * 
-	 * @param editor Editor to which an annotation model should be attached
-	 */
-	public static void attach(ITextEditor editor) {
-		IDocumentProvider provider = editor.getDocumentProvider();
-		if (provider == null) {
-			return;
-		}
-		IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
-		if (!(model instanceof IAnnotationModelExtension)) {
-			return;
-		}
-		IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
-		IDocument document = provider.getDocument(editor.getEditorInput());
+    /**
+     * Attaches a coverage annotation model for the given editor if the editor
+     * can be annotated. Does nothing if the model is already attached.
+     *
+     * @param editor Editor to which an annotation model should be attached
+     */
+    public static void attach(ITextEditor editor) {
+        IDocumentProvider provider = editor.getDocumentProvider();
+        if (provider == null) {
+            return;
+        }
+        IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
+        if (!(model instanceof IAnnotationModelExtension)) {
+            return;
+        }
+        IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
+        IDocument document = provider.getDocument(editor.getEditorInput());
 
-		GcovAnnotationModel coveragemodel = (GcovAnnotationModel) modelex.getAnnotationModel(KEY);
-		if (coveragemodel == null) {
-			coveragemodel = new GcovAnnotationModel(editor, document);
-			modelex.addAnnotationModel(KEY, coveragemodel);
-		} else {
-			coveragemodel.updateAnnotations(false);
-		}
-	}
+        GcovAnnotationModel coveragemodel = (GcovAnnotationModel) modelex.getAnnotationModel(KEY);
+        if (coveragemodel == null) {
+            coveragemodel = new GcovAnnotationModel(editor, document);
+            modelex.addAnnotationModel(KEY, coveragemodel);
+        } else {
+            coveragemodel.updateAnnotations(false);
+        }
+    }
 
-	public static void clear (ITextEditor editor) {
-		IDocumentProvider provider = editor.getDocumentProvider();
-		if (provider == null) {
-			return;
-		}
-		IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
-		if (!(model instanceof IAnnotationModelExtension)) {
-			return;
-		}
-		IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
-		IAnnotationModel coverageModel = modelex.getAnnotationModel(KEY);
-		if (coverageModel instanceof GcovAnnotationModel) {
-			((GcovAnnotationModel) coverageModel).clear();
-		}
-	}
+    public static void clear (ITextEditor editor) {
+        IDocumentProvider provider = editor.getDocumentProvider();
+        if (provider == null) {
+            return;
+        }
+        IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
+        if (!(model instanceof IAnnotationModelExtension)) {
+            return;
+        }
+        IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
+        IAnnotationModel coverageModel = modelex.getAnnotationModel(KEY);
+        if (coverageModel instanceof GcovAnnotationModel) {
+            ((GcovAnnotationModel) coverageModel).clear();
+        }
+    }
 
-	private void updateAnnotations(boolean force) {
-		// We do not annotate any editor displaying content of a project not tracked.
-		ICElement element = CDTUITools.getEditorInputCElement(editor.getEditorInput());
-		if (!GcovAnnotationModelTracker.getInstance().containsProject(element.getCProject().getProject())) {
-			return;
-		}
+    private void updateAnnotations(boolean force) {
+        // We do not annotate any editor displaying content of a project not tracked.
+        ICElement element = CDTUITools.getEditorInputCElement(editor.getEditorInput());
+        if (!GcovAnnotationModelTracker.getInstance().containsProject(element.getCProject().getProject())) {
+            return;
+        }
 
-		SourceFile coverage = findSourceCoverageForEditor();
-		if (coverage != null) {
-			if (!annotated || force) {
-				createAnnotations(coverage);
-			}
-		} else {
-			if (annotated) {
-				clear();
-			}
-		}
-	}
+        SourceFile coverage = findSourceCoverageForEditor();
+        if (coverage != null) {
+            if (!annotated || force) {
+                createAnnotations(coverage);
+            }
+        } else {
+            if (annotated) {
+                clear();
+            }
+        }
+    }
 
-	private SourceFile findSourceCoverageForEditor() {
-		if (editor.isDirty()) {
-			return null;
-		}
-		final IEditorInput input = editor.getEditorInput();
-		if (input == null) {
-			return null;
-		}
-		ICElement element = CDTUITools.getEditorInputCElement(input);
-		if (element == null) {
-			return null;
-		}
-		return findSourceCoverageForElement(element);
-	}
+    private SourceFile findSourceCoverageForEditor() {
+        if (editor.isDirty()) {
+            return null;
+        }
+        final IEditorInput input = editor.getEditorInput();
+        if (input == null) {
+            return null;
+        }
+        ICElement element = CDTUITools.getEditorInputCElement(input);
+        if (element == null) {
+            return null;
+        }
+        return findSourceCoverageForElement(element);
+    }
 
-	private SourceFile findSourceCoverageForElement(ICElement element) {
-		List<SourceFile> sources = new ArrayList<> ();
-		ICProject cProject = element.getCProject();
-		IPath target = GcovAnnotationModelTracker.getInstance().getBinaryPath(cProject.getProject());
-		try {
-			IBinary[] binaries = cProject.getBinaryContainer().getBinaries();
-			for (IBinary b : binaries) {
-				if (b.getResource().getLocation().equals(target)) {
-					CovManager covManager = new CovManager(b.getResource().getLocation().toOSString());
-					covManager.processCovFiles(covManager.getGCDALocations(), null);
-					sources.addAll(covManager.getAllSrcs());
-				}
-			}
-		} catch (Exception e) {
-		}
+    private SourceFile findSourceCoverageForElement(ICElement element) {
+        List<SourceFile> sources = new ArrayList<> ();
+        ICProject cProject = element.getCProject();
+        IPath target = GcovAnnotationModelTracker.getInstance().getBinaryPath(cProject.getProject());
+        try {
+            IBinary[] binaries = cProject.getBinaryContainer().getBinaries();
+            for (IBinary b : binaries) {
+                if (b.getResource().getLocation().equals(target)) {
+                    CovManager covManager = new CovManager(b.getResource().getLocation().toOSString());
+                    covManager.processCovFiles(covManager.getGCDALocations(), null);
+                    sources.addAll(covManager.getAllSrcs());
+                }
+            }
+        } catch (IOException|CoreException|InterruptedException e) {
+        }
 
-		for (SourceFile sf : sources) {
-			IPath sfPath = new Path(sf.getName());
-			IFile file = STLink2SourceSupport.sharedInstance.getFileForPath(sfPath, cProject.getProject());
-			if (file != null) {
-				if (element.getLocationURI().getPath().equals(file.getLocation().toOSString())) {
-					return sf;
-				}
-			}
-		}
+        for (SourceFile sf : sources) {
+            IPath sfPath = new Path(sf.getName());
+            IFile file = STLink2SourceSupport.sharedInstance.getFileForPath(sfPath, cProject.getProject());
+            if (file != null && element.getLocationURI().getPath().equals(file.getLocation().toOSString())) {
+                return sf;
+            }
+        }
 
-		IPath binFolder = target.removeLastSegments(1);
-		for (SourceFile sf : sources) {
-			String sfPath = Paths.get(binFolder.toOSString(), sf.getName()).normalize().toString();
-			if (sfPath.equals(element.getLocationURI().getPath())) {
-				return sf;
-			}
-		}
+        IPath binFolder = target.removeLastSegments(1);
+        for (SourceFile sf : sources) {
+            String sfPath = Paths.get(binFolder.toOSString(), sf.getName()).normalize().toString();
+            if (sfPath.equals(element.getLocationURI().getPath())) {
+                return sf;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private void createAnnotations(SourceFile sourceFile) {
-		AnnotationModelEvent event = new AnnotationModelEvent(this);
-		clear(event);
-		List<Line> lines = sourceFile.getLines();
-		for (int i = 0; i < lines.size(); i++) {
-			try {
-				Line line = lines.get((i+1) % lines.size());
-				if (line.exists()) {
-					GcovAnnotation ca = new GcovAnnotation(document.getLineOffset(i),
-						document.getLineLength(i), line.getCount());
-					annotations.add(ca);
-					event.annotationAdded(ca);
-				}
-			} catch (BadLocationException e) {
-			}
-		}
-		fireModelChanged(event);
-		annotated = true;
-	}
+    private void createAnnotations(SourceFile sourceFile) {
+        AnnotationModelEvent event = new AnnotationModelEvent(this);
+        clear(event);
+        List<Line> lines = sourceFile.getLines();
+        for (int i = 0; i < lines.size(); i++) {
+            try {
+                Line line = lines.get((i+1) % lines.size());
+                if (line.exists()) {
+                    GcovAnnotation ca = new GcovAnnotation(document.getLineOffset(i),
+                        document.getLineLength(i), line.getCount());
+                    annotations.add(ca);
+                    event.annotationAdded(ca);
+                }
+            } catch (BadLocationException e) {
+            }
+        }
+        fireModelChanged(event);
+        annotated = true;
+    }
 
-	private void clear() {
-		AnnotationModelEvent event = new AnnotationModelEvent(this);
-		clear(event);
-		fireModelChanged(event);
-		annotated = false;
-	}
+    private void clear() {
+        AnnotationModelEvent event = new AnnotationModelEvent(this);
+        clear(event);
+        fireModelChanged(event);
+        annotated = false;
+    }
 
-	private void clear(AnnotationModelEvent event) {
-		for (final GcovAnnotation ca : annotations) {
-			event.annotationRemoved(ca, ca.getPosition());
-		}
-		annotations.clear();
-	}
+    private void clear(AnnotationModelEvent event) {
+        for (final GcovAnnotation ca : annotations) {
+            event.annotationRemoved(ca, ca.getPosition());
+        }
+        annotations.clear();
+    }
 
-	@Override
-	public void addAnnotationModelListener(IAnnotationModelListener listener) {
-		if (!annotationModelListeners.contains(listener)) {
-			annotationModelListeners.add(listener);
-			fireModelChanged(new AnnotationModelEvent(this, true));
-		}
-	}
+    @Override
+    public void addAnnotationModelListener(IAnnotationModelListener listener) {
+        if (!annotationModelListeners.contains(listener)) {
+            annotationModelListeners.add(listener);
+            fireModelChanged(new AnnotationModelEvent(this, true));
+        }
+    }
 
-	@Override
-	public void removeAnnotationModelListener(IAnnotationModelListener listener) {
-		annotationModelListeners.remove(listener);
-	}
+    @Override
+    public void removeAnnotationModelListener(IAnnotationModelListener listener) {
+        annotationModelListeners.remove(listener);
+    }
 
-	private void fireModelChanged(AnnotationModelEvent event) {
-		event.markSealed();
-		if (!event.isEmpty()) {
-			for (final IAnnotationModelListener l : annotationModelListeners) {
-				if (l instanceof IAnnotationModelListenerExtension) {
-					((IAnnotationModelListenerExtension) l).modelChanged(event);
-				} else {
-					l.modelChanged(this);
-				}
-			}
-		}
-	}
+    private void fireModelChanged(AnnotationModelEvent event) {
+        event.markSealed();
+        if (!event.isEmpty()) {
+            for (final IAnnotationModelListener l : annotationModelListeners) {
+                if (l instanceof IAnnotationModelListenerExtension) {
+                    ((IAnnotationModelListenerExtension) l).modelChanged(event);
+                } else {
+                    l.modelChanged(this);
+                }
+            }
+        }
+    }
 
-	@Override
-	public void connect(IDocument document) {
-		if (this.document != document) {
-			throw new IllegalArgumentException("Can't connect to different document."); //$NON-NLS-1$
-		}
-		for (final GcovAnnotation ca : annotations) {
-			try {
-				document.addPosition(ca.getPosition());
-			} catch (BadLocationException ex) {
-			}
-		}
-		if (openConnections++ == 0) {
-			document.addDocumentListener(documentListener);
-		}
-	}
+    @Override
+    public void connect(IDocument document) {
+        if (this.document != document) {
+            throw new IllegalArgumentException("Can't connect to different document."); //$NON-NLS-1$
+        }
+        for (final GcovAnnotation ca : annotations) {
+            try {
+                document.addPosition(ca.getPosition());
+            } catch (BadLocationException ex) {
+            }
+        }
+        if (openConnections++ == 0) {
+            document.addDocumentListener(documentListener);
+        }
+    }
 
-	@Override
-	public void disconnect(IDocument document) {
-		if (this.document != document) {
-			throw new IllegalArgumentException("Can't disconnect from different document."); //$NON-NLS-1$
-		}
-		for (final GcovAnnotation ca : annotations) {
-			document.removePosition(ca.getPosition());
-		}
-		if (--openConnections == 0) {
-			document.removeDocumentListener(documentListener);
-		}
-	}
+    @Override
+    public void disconnect(IDocument document) {
+        if (this.document != document) {
+            throw new IllegalArgumentException("Can't disconnect from different document."); //$NON-NLS-1$
+        }
+        for (final GcovAnnotation ca : annotations) {
+            document.removePosition(ca.getPosition());
+        }
+        if (--openConnections == 0) {
+            document.removeDocumentListener(documentListener);
+        }
+    }
 
-	@Override
-	public Position getPosition(Annotation annotation) {
-		return (annotation instanceof GcovAnnotation) ? ((GcovAnnotation) annotation).getPosition() : null;
-	}
+    @Override
+    public Position getPosition(Annotation annotation) {
+        return (annotation instanceof GcovAnnotation) ? ((GcovAnnotation) annotation).getPosition() : null;
+    }
 
-	@Override
-	public Iterator<?> getAnnotationIterator() {
-		return annotations.iterator();
-	}
+    @Override
+    public Iterator<?> getAnnotationIterator() {
+        return annotations.iterator();
+    }
 
-	@Override
-	public void addAnnotation(Annotation annotation, Position position) {}
+    @Override
+    public void addAnnotation(Annotation annotation, Position position) {}
 
-	@Override
-	public void removeAnnotation(Annotation annotation) {}
+    @Override
+    public void removeAnnotation(Annotation annotation) {}
 
 }

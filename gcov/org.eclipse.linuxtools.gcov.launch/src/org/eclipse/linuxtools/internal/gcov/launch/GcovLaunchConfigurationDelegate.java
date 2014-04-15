@@ -101,7 +101,7 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 
 							try {
 								List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
-								if (gcdaPaths.size() == 0) {
+								if (gcdaPaths.isEmpty()) {
 									String title = GcovLaunchMessages.GcovCompilerOptions_msg;
 									String message = GcovLaunchMessages.GcovCompileAgain_msg;
 									Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
@@ -135,7 +135,7 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 
 	/* all these functions exist to be overridden by the test class in order to allow launch testing */
 
-	protected IProject getProject(){
+	private IProject getProject(){
 		try{
 			return CDebugUtils.verifyCProject(config).getProject();
 		} catch (CoreException e) {
@@ -151,7 +151,7 @@ public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationD
 	  * @throws CoreException
 	  * @since 1.1
 	  */
-	protected IPath getExePath(ILaunchConfiguration config) throws CoreException{
+	private static IPath getExePath(ILaunchConfiguration config) throws CoreException{
 		return CDebugUtils.verifyProgramPath( config );
 	}
 

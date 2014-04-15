@@ -19,39 +19,39 @@ import org.eclipse.osgi.util.NLS;
  */
 public class GcovAnnotation extends Annotation {
 
-	private static final String COVERAGE = "org.eclipse.gcov.CoverageAnnotation"; //$NON-NLS-1$
-	private static final String NO_COVERAGE = "org.eclipse.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
+    private static final String COVERAGE = "org.eclipse.gcov.CoverageAnnotation"; //$NON-NLS-1$
+    private static final String NO_COVERAGE = "org.eclipse.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
 
-	private final Position position;
-	private final long count;
+    private final Position position;
+    private final long count;
 
-	public GcovAnnotation(int offset, int length, long count) {
-		super(getAnnotationType(count), false, null);
-		this.position = new Position(offset, length);
-		this.count = count;
-	}
+    public GcovAnnotation(int offset, int length, long count) {
+        super(getAnnotationType(count), false, null);
+        this.position = new Position(offset, length);
+        this.count = count;
+    }
 
-	public Position getPosition() {
-		return position;
-	}
+    public Position getPosition() {
+        return position;
+    }
 
-	@Override
-	public String getText() {
-		if (count == 0) {
-			return Messages.CoverageAnnotationColumn_line_never_exec;
-		} else if (count == 1) {
-			return Messages.CoverageAnnotationColumn_line_exec_once;
-		} else if ( count > 0) {
-			return NLS.bind(Messages.CoverageAnnotationColumn_line_mulitiple_exec, Long.toString(count));
-		} else  {
-			return Messages.CoverageAnnotationColumn_non_exec_line;
-		}
-	}
+    @Override
+    public String getText() {
+        if (count == 0) {
+            return Messages.CoverageAnnotationColumn_line_never_exec;
+        } else if (count == 1) {
+            return Messages.CoverageAnnotationColumn_line_exec_once;
+        } else if ( count > 0) {
+            return NLS.bind(Messages.CoverageAnnotationColumn_line_mulitiple_exec, Long.toString(count));
+        } else  {
+            return Messages.CoverageAnnotationColumn_non_exec_line;
+        }
+    }
 
-	private static String getAnnotationType(long count) {
-		if (count == 0) {
-			return NO_COVERAGE;
-		}
-		return COVERAGE;
-	}
+    private static String getAnnotationType(long count) {
+        if (count == 0) {
+            return NO_COVERAGE;
+        }
+        return COVERAGE;
+    }
 }
