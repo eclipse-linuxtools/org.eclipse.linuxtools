@@ -22,11 +22,11 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 
-public class CachegrindParser {
+public final class CachegrindParser {
 	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EQUALS = "="; //$NON-NLS-1$
-	
+
 	private static final String CMD = "cmd"; //$NON-NLS-1$
 	private static final String DESC = "desc"; //$NON-NLS-1$
 	private static final String FL = "fl"; //$NON-NLS-1$
@@ -55,7 +55,7 @@ public class CachegrindParser {
 			String line;
 			CachegrindFile curFl = null;
 			CachegrindFunction curFn = null;
-			while ((line = br.readLine()) != null) {		
+			while ((line = br.readLine()) != null) {
 				if (line.startsWith(EVENTS + COLON)) {
 					output.setEvents(ValgrindParserUtils.parseStrValue(line, COLON + SPACE).split(SPACE));
 				} else if (line.startsWith(CMD + COLON)) {
@@ -66,7 +66,7 @@ public class CachegrindParser {
 				} else if (line.startsWith(FL + EQUALS)) {
 					curFl = new CachegrindFile(output, ValgrindParserUtils.parseStrValue(line, EQUALS));
 					output.addFile(curFl);
-				} else if (line.startsWith(FN + EQUALS)) {				
+				} else if (line.startsWith(FN + EQUALS)) {
 					if (curFl != null) {
 						curFn = new CachegrindFunction(curFl, ValgrindParserUtils.parseStrValue(line, EQUALS));
 						curFl.addFunction(curFn);

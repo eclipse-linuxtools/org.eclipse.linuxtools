@@ -46,8 +46,6 @@ public class ValgrindExportWizardPage extends WizardPage {
 	private IPath outputPath;
 	private CheckboxTableViewer viewer;
 	private Text destText;
-	private Button selectAllButton;
-	private Button deselectAllButton;
 
 	protected ValgrindExportWizardPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);
@@ -99,7 +97,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 		selectAllNoneTop.setLayout(new GridLayout(2, true));
 		selectAllNoneTop.setLayoutData(new GridData(SWT.TRAIL, SWT.DEFAULT, false, false));
 
-		selectAllButton = new Button(selectAllNoneTop, SWT.NONE);
+		Button selectAllButton = new Button(selectAllNoneTop, SWT.NONE);
 		selectAllButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		selectAllButton.setText(Messages.getString("ValgrindExportWizardPage.Select_all")); //$NON-NLS-1$
 		selectAllButton.addSelectionListener(new SelectionAdapter() {
@@ -109,7 +107,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 			}
 		});
 
-		deselectAllButton = new Button(selectAllNoneTop, SWT.NONE);
+		Button deselectAllButton = new Button(selectAllNoneTop, SWT.NONE);
 		deselectAllButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		deselectAllButton.setText(Messages.getString("ValgrindExportWizardPage.Deselect_all")); //$NON-NLS-1$
 		deselectAllButton.addSelectionListener(new SelectionAdapter() {

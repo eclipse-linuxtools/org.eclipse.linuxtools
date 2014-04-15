@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.core;
 
 import java.io.File;
@@ -44,15 +44,15 @@ public class ValgrindCommand {
 		return version;
 	}
 
-	public void execute(String[] commandArray, Object env, File wd, String exeFile, boolean usePty, IProject project) throws IOException {
+	public void execute(String[] commandArray, Object env, File wd, boolean usePty, IProject project) throws IOException {
 		args = commandArray;
 		try {
-			process = startProcess(commandArray, env, wd, exeFile, usePty, project);
+			process = startProcess(commandArray, env, wd, usePty, project);
 		} catch (IOException e) {
 			if (process != null) {
 				process.destroy();
 			}
-			throw e;		
+			throw e;
 		}
 	}
 
@@ -67,8 +67,8 @@ public class ValgrindCommand {
 		}
 		return ret.toString().trim();
 	}
-	
-	private Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty, IProject project) throws IOException {
+
+	private Process startProcess(String[] commandArray, Object env, File workDir, boolean usePty, IProject project) throws IOException {
 		if (workDir == null) {
 			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, project);
 		}

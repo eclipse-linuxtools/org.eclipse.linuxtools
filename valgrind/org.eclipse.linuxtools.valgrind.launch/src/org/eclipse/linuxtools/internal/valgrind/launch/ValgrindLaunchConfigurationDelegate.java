@@ -152,7 +152,7 @@ public class ValgrindLaunchConfigurationDelegate extends ProfileLaunchConfigurat
 			}
 			// call Valgrind
 
-			command.execute(commandArray, getEnvironment(config), workDir, valgrindCommand, usePty, project);
+			command.execute(commandArray, getEnvironment(config), workDir, usePty, project);
 			monitor.worked(3);
 			process = createNewProcess(launch, command.getProcess(), commandArray[0]);
 			// set the command line used

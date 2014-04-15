@@ -98,9 +98,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	private static final int COLUMN_SIZE = 125;
 
 	private Action treeAction;
-	private Action chartAction;
 	private MassifPidMenuAction pidAction;
-	private Action saveChartAction;
 
 	private List<ChartEditorInput> chartInputs;
 
@@ -234,12 +232,12 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		pidAction = new MassifPidMenuAction(this);
 		pidAction.setId(PID_ACTION);
 
-		chartAction = new Action(
+		Action chartAction = new Action(
 				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
 				ChartEditorInput input = getChartInput(pid);
-				if (input != null) {					
+				if (input != null) {
 					displayChart(input);
 				}
 			}
@@ -250,7 +248,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		chartAction.setToolTipText(Messages
 				.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
 
-		saveChartAction = new Action(Messages.getString("MassifViewPart.Save_Chart"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
+		Action saveChartAction = new Action(Messages.getString("MassifViewPart.Save_Chart"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
 				ChartEditorInput currentInput = getChartInput(pid);
@@ -274,7 +272,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		saveChartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
 				MassifPlugin.PLUGIN_ID, "icons/chart-save.png")); //$NON-NLS-1$
 		saveChartAction.setToolTipText(Messages.getString("MassifViewPart.Save_Chart")); //$NON-NLS-1$
-		
+
 		treeAction = new Action(
 				Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
 			@Override
@@ -296,7 +294,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 		return new IAction[] { pidAction, chartAction, saveChartAction, treeAction };
 	}
-	
+
 	private String getChartSavePath(String defaultName) {
 		Shell parent = new Shell(Display.getDefault());
 		FileDialog dialog = new FileDialog(parent, SWT.SAVE);
@@ -492,7 +490,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			return font;
 		}
 	}
-	
+
 	public void setChartName(String chartName) {
 		this.chartName = chartName;
 	}
