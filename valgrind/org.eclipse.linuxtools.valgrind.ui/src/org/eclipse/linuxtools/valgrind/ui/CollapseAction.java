@@ -22,23 +22,23 @@ import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
  */
 public class CollapseAction extends Action {
 
-	private TreeViewer viewer;
+    private TreeViewer viewer;
 
-	/**
-	 * Create the action for the particular TreeViewer.
-	 *
-	 * @param viewer The viewer to collapse.
-	 */
-	public CollapseAction(TreeViewer viewer) {
-		super(Messages.getString("CollapseAction.Text")); //$NON-NLS-1$
-		this.viewer = viewer;
-	}
+    /**
+     * Create the action for the particular TreeViewer.
+     *
+     * @param viewer The viewer to collapse.
+     */
+    public CollapseAction(TreeViewer viewer) {
+        super(Messages.getString("CollapseAction.Text")); //$NON-NLS-1$
+        this.viewer = viewer;
+    }
 
-	@Override
-	public void run() {
-	    IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-		Object element = selection.getFirstElement();
-		viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
-	}
+    @Override
+    public void run() {
+        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        Object element = selection.getFirstElement();
+        viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
+    }
 
 }

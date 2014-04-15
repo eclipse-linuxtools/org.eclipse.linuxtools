@@ -9,8 +9,8 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyProfileLaunchConfigura
  * @since 1.1
  */
 public class OprofileRemoteLaunchConfigurationTabGroup extends RemoteProxyProfileLaunchConfigurationTabGroup {
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] { new OprofileSetupTab(), new OprofileEventConfigTab() };
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] { new OprofileSetupTab(), new OprofileEventConfigTab() };
+    }
 }

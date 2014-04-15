@@ -21,23 +21,23 @@ import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
  */
 public class ExpandAction extends Action {
 
-	private TreeViewer viewer;
+    private TreeViewer viewer;
 
-	/**
+    /**
      * Create the action for the particular TreeViewer.
      *
      * @param viewer The viewer to expand.
      */
-	public ExpandAction(TreeViewer viewer) {
-		super(Messages.getString("ExpandAction.Text")); //$NON-NLS-1$
-		this.viewer = viewer;
-	}
+    public ExpandAction(TreeViewer viewer) {
+        super(Messages.getString("ExpandAction.Text")); //$NON-NLS-1$
+        this.viewer = viewer;
+    }
 
-	@Override
-	public void run() {
-		IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-		Object element = selection.getFirstElement();
-		viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
-	}
+    @Override
+    public void run() {
+        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        Object element = selection.getFirstElement();
+        viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
+    }
 
 }
