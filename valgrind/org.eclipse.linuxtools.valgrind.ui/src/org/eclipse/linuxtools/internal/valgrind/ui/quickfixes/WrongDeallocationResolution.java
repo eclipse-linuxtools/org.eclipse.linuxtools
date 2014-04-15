@@ -135,7 +135,6 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * @param marker {@link IMarker} object that points to where the wrong de-allocation function is
 	 * @return {@link String} object containing the allocation function
 	 * @throws BadLocationException
-	 * @throws ValgrindMessagesException
 	 */
 	private String getAllocFunction(IMarker marker, IDocument document) throws BadLocationException {
 		IValgrindMessage allocMessage = null;
@@ -177,7 +176,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	 * Returns all of the messages from the currently active Valgrind view that
 	 * contains a given {@link String} in their description.
 	 * @param text the {@link String} to match the Valgrind messages' descriptions
-	 * @return
+	 * @return All messages containing the given text.
 	 */
 	private IValgrindMessage[] getMessagesByText(String text) {
 		ValgrindViewPart valgrindView = ValgrindUIPlugin.getDefault().getView();
@@ -200,7 +199,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	}
 
 	/**
-	 * Return the last nested element from a given {@link ValgrindMessage}, or null if there are
+	 * Return the last nested element from a given {@link IValgrindMessage}, or null if there are
 	 * no nested messages.
 	 * @param message
 	 * @return The {@link ValgrindStackFrame} in the bottom of the nested stack
@@ -217,10 +216,10 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	}
 
 	/**
-	 * Returns the {@link ValgrindMessage} element from the Valgrind View that represents
+	 * Returns the {@link IValgrindMessage} element from the Valgrind View that represents
 	 * a given Marker
 	 * @param marker the marker to which the ValgrindMessage relates
-	 * @return {@link ValgrindMessage} that represents the {@link IMarker}
+	 * @return {@link IValgrindMessage} that represents the {@link IMarker}
 	 */
 	private IValgrindMessage getMessage(IMarker marker) {
 		IValgrindMessage message = null;

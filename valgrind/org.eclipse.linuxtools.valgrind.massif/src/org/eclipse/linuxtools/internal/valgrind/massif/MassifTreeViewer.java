@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 import org.eclipse.jface.action.Action;
@@ -21,6 +21,8 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
+import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -33,10 +35,10 @@ public class MassifTreeViewer {
 	private Action collapseAction;
 
 	private TreeViewer viewer;
-	
+
 	public MassifTreeViewer(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-		
+
 		contentProvider = new ITreeContentProvider() {
 			@Override
 			public Object[] getChildren(Object parentElement) {
@@ -77,17 +79,17 @@ public class MassifTreeViewer {
 				MassifHeapTreeNode element = (MassifHeapTreeNode) ((TreeSelection) event.getSelection()).getFirstElement();
 				if (element.hasSourceFile()) {
 					MassifPlugin.getDefault().openEditorForNode(element);
-				} 
+				}
 				if (contentProvider.hasChildren(element)) {
 					viewer.expandToLevel(element, 1);
 				}
-			}			
+			}
 		};
 		viewer.addDoubleClickListener(doubleClickListener);
-		
+
 		expandAction = new ExpandAction(viewer);
 		collapseAction = new CollapseAction(viewer);
-		
+
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
 			@Override
@@ -98,10 +100,10 @@ public class MassifTreeViewer {
 					manager.add(expandAction);
 					manager.add(collapseAction);
 				}
-			}			
+			}
 		});
-		
-		manager.setRemoveAllWhenShown(true);	
+
+		manager.setRemoveAllWhenShown(true);
 		Menu contextMenu = manager.createContextMenu(viewer.getTree());
 		viewer.getControl().setMenu(contextMenu);
 	}

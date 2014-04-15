@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
+import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -182,7 +182,7 @@ public class ChartEditor extends EditorPart {
 			public void mouseDown(MouseEvent e) {
 				showView();
 				TableViewer viewer = input.getView().getTableViewer();
-				input.getView().setTopControl(viewer.getControl());				
+				input.getView().setTopControl(viewer.getControl());
 
 				Point p = new Point(e.x, e.y);
 
@@ -241,17 +241,18 @@ public class ChartEditor extends EditorPart {
      * Shows the Valgrind view in the active page and gives it focus.
      */
     private void showView() {
-            Display.getDefault().syncExec(new Runnable() {
-                    @Override
-					public void run() {
-                            try {
-                                    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                                    activePage.showView(ValgrindUIConstants.VIEW_ID);
-                            } catch (PartInitException e) {
-                                    e.printStackTrace();
-                            }
-                    }
-            });
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    IWorkbenchPage activePage = PlatformUI.getWorkbench()
+                            .getActiveWorkbenchWindow().getActivePage();
+                    activePage.showView(IValgrindToolView.VIEW_ID);
+                } catch (PartInitException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

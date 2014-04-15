@@ -36,6 +36,8 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.ICachegrindElement;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
+import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
+import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -61,7 +63,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	private IDoubleClickListener doubleClickListener;
 	private ExpandAction expandAction;
 	private CollapseAction collapseAction;
-	
+
 	// Events - Cache
 	private static final String IR = "Ir"; //$NON-NLS-1$
 	private static final String I1MR = "I1mr"; //$NON-NLS-1$
@@ -72,13 +74,13 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	private static final String DW = "Dw"; //$NON-NLS-1$
 	private static final String D1MW = "D1mw"; //$NON-NLS-1$
 	private static final String D2MW = "D2mw"; //$NON-NLS-1$
-	
+
 	// Events - Branch
 	private static final String BC = "Bc"; //$NON-NLS-1$
 	private static final String BCM = "Bcm"; //$NON-NLS-1$
 	private static final String BI = "Bi"; //$NON-NLS-1$
 	private static final String BIM = "Bim"; //$NON-NLS-1$
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
@@ -117,14 +119,12 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				int line = 0;
 				if (selection instanceof CachegrindFile) {
 					path = ((CachegrindFile) selection).getPath();
-				}
-				else if (selection instanceof CachegrindLine) {
+				} else if (selection instanceof CachegrindLine) {
 					CachegrindLine element = (CachegrindLine) selection;
 					CachegrindFile file = (CachegrindFile) element.getParent().getParent();
 					path = file.getPath();
 					line = element.getLine();
-				}
-				else if (selection instanceof CachegrindFunction) {
+				} else if (selection instanceof CachegrindFunction) {
 					CachegrindFunction function = (CachegrindFunction) selection;
 					path = ((CachegrindFile) function.getParent()).getPath();
 					if (function.getModel() instanceof ISourceReference) {
@@ -136,25 +136,23 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 							}
 						} catch (CModelException e) {
 							e.printStackTrace();
-						}						
+						}
 					}
 				}
 				if (path != null) {
 					try {
 						ProfileUIUtils.openEditorAndSelect(path, line);
-					} catch (PartInitException e) {
-						e.printStackTrace();
-					} catch (BadLocationException e) {
+					} catch (PartInitException|BadLocationException e) {
 						e.printStackTrace();
 					}
 				}
-			}			
+			}
 		};
 		viewer.addDoubleClickListener(doubleClickListener);
-		
+
 		expandAction = new ExpandAction(viewer);
 		collapseAction = new CollapseAction(viewer);
-		
+
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
 			@Override
@@ -165,10 +163,10 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 					manager.add(expandAction);
 					manager.add(collapseAction);
 				}
-			}			
+			}
 		});
-		
-		manager.setRemoveAllWhenShown(true);	
+
+		manager.setRemoveAllWhenShown(true);
 		Menu contextMenu = manager.createContextMenu(viewer.getTree());
 		viewer.getControl().setMenu(contextMenu);
 	}
@@ -208,11 +206,11 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	public CachegrindOutput[] getOutputs() {
 		return outputs;
 	}
-	
+
 	public TreeViewer getViewer() {
 		return viewer;
 	}
-	
+
 	public IDoubleClickListener getDoubleClickListener() {
 		return doubleClickListener;
 	}
@@ -239,7 +237,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 						ICachegrindElement o1 = (ICachegrindElement) e1;
 						ICachegrindElement o2 = (ICachegrindElement) e2;
 						long result = 0;
-						
+
 						int sortIndex = Arrays.asList(tree.getColumns()).indexOf(tree.getSortColumn());
 						if (sortIndex == 0) { // use compareTo
 							result = o1.compareTo(o2);
@@ -257,24 +255,24 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 							}
 							else if (o1 instanceof CachegrindOutput && o2 instanceof CachegrindOutput) {
 								v1 = ((CachegrindOutput) o1).getSummary();
-								v2 = ((CachegrindOutput) o2).getSummary(); 
+								v2 = ((CachegrindOutput) o2).getSummary();
 							}
-							
+
 							if (v1 != null && v2 != null) {
 								result = v1[sortIndex - 1] - v2[sortIndex - 1];
 							}
 						}
-						
+
 						// ascending or descending
 						result = direction == SWT.UP ? result : -result;
-						
+
 						// overflow check
 						if (result > Integer.MAX_VALUE) {
 							result = Integer.MAX_VALUE;
 						} else if (result < Integer.MIN_VALUE) {
 							result = Integer.MIN_VALUE;
 						}
-						
+
 						return (int) result;
 					}
 				});
@@ -353,7 +351,4 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		}
 
 	}
-
-	
-
 }

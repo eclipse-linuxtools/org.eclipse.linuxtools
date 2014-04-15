@@ -8,17 +8,27 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.valgrind.ui;
+package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
-import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
 
+/**
+ * Action used for providing collapsing functionality to TreeViewer.
+ *
+ */
 public class CollapseAction extends Action {
 
 	private TreeViewer viewer;
 
+	/**
+	 * Create the action for the particular TreeViewer.
+	 *
+	 * @param viewer The viewer to collapse.
+	 */
 	public CollapseAction(TreeViewer viewer) {
 		super(Messages.getString("CollapseAction.Text")); //$NON-NLS-1$
 		this.viewer = viewer;
@@ -26,7 +36,7 @@ public class CollapseAction extends Action {
 
 	@Override
 	public void run() {
-		ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+	    IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
 		Object element = selection.getFirstElement();
 		viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
 	}

@@ -7,28 +7,37 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
-package org.eclipse.linuxtools.internal.valgrind.massif;
+ *******************************************************************************/
+package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
-import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-
+import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
+/**
+ * Action used for providing expand functionality to TreeViewer.
+ *
+ */
 public class ExpandAction extends Action {
-	
+
 	private TreeViewer viewer;
 
+	/**
+     * Create the action for the particular TreeViewer.
+     *
+     * @param viewer The viewer to expand.
+     */
 	public ExpandAction(TreeViewer viewer) {
 		super(Messages.getString("ExpandAction.Text")); //$NON-NLS-1$
 		this.viewer = viewer;
 	}
-	
+
 	@Override
 	public void run() {
-		ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+		IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
 		Object element = selection.getFirstElement();
 		viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
 	}
-	
+
 }

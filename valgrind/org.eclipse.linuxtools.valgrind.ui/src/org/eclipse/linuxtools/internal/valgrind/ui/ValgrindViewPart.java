@@ -32,7 +32,7 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
 public class ValgrindViewPart extends ViewPart {
-
+    private static final String TOOLBAR_LOC_GROUP_ID = "toolbarLocal"; //$NON-NLS-1$
 	private PageBook pageBook;
 	private Composite dynamicViewHolder;
 	private IValgrindToolView dynamicView;
@@ -117,7 +117,7 @@ public class ValgrindViewPart extends ViewPart {
 				dynamicActions = new ActionContributionItem[actions.length];
 				for (int i = 0; i < actions.length; i++) {
 					dynamicActions[i] = new ActionContributionItem(actions[i]);
-					toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
+					toolbar.appendToGroup(TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
 				}
 			}
 		} else {
