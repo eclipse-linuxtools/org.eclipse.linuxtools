@@ -25,119 +25,91 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphArc;
  */
 public class CGArc extends AbstractTreeElement {
 
-	/** The displayed arc - or function call */
-	public final CallGraphArc arc;
-	
-	/**
-	 * Constructor
-	 * @param cat the parent category of this tree node
-	 * @param arc the object to display in the tree
-	 */
-	public CGArc(CGCategory cat, CallGraphArc arc) {
-		super(cat);
-		this.arc = arc;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-	 */
-	@Override
-	public LinkedList<? extends TreeElement> getChildren() {
-		return null;
-	}
+    /** The displayed arc - or function call */
+    public final CallGraphArc arc;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
-	 */
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+    /**
+     * Constructor
+     * @param cat the parent category of this tree node
+     * @param arc the object to display in the tree
+     */
+    public CGArc(CGCategory cat, CallGraphArc arc) {
+        super(cat);
+        this.arc = arc;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
-	 */
-	@Override
-	public int getCalls() {
-		return arc.getCount();
-	}
+    @Override
+    public LinkedList<? extends TreeElement> getChildren() {
+        return null;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSamples()
-	 */
-	@Override
-	public int getSamples() {
-		Object o = this.getParent();
-		CGCategory category = (CGCategory) o;
-		ISymbol symbol;
-		if (CGCategory.CHILDREN.equals(category.category)) {
-			symbol = arc.child.getSymbol();
-		} else {
-			symbol = arc.parent.getSymbol();
-		}
-		return HistFunction.getSamples(symbol);
-	}
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
 
-	public String getFunctionName() {
-		Object o = this.getParent();
-		CGCategory category = (CGCategory) o;
-		ISymbol symbol;
-		if (CGCategory.CHILDREN.equals(category.category)) {
-			symbol = arc.child.getSymbol();
-		} else {
-			symbol = arc.parent.getSymbol();
-		}
-		String functionName = STSymbolManager.sharedInstance.demangle(symbol, arc.getProject()); 
-		return functionName;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-	 */
-	@Override
-	public String getName() {
-		String functionName = getFunctionName();
-		Path p = new Path(getSourcePath());
-		return functionName + " (" + p.lastSegment() + ":" + getSourceLine() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
+    @Override
+    public int getCalls() {
+        return arc.getCount();
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourceLine()
-	 */
-	@Override
-	public int getSourceLine() {
-		Object o = this.getParent();
-		CGCategory category = (CGCategory) o;
-		if (CGCategory.CHILDREN.equals(category.category)) {
-			ISymbol symbol = arc.child.getSymbol();
-			return STSymbolManager.sharedInstance.getLineNumber(symbol, arc.getProject());
-		} else {
-			return arc.parentLine;
-		}
-	}
+    @Override
+    public int getSamples() {
+        Object o = this.getParent();
+        CGCategory category = (CGCategory) o;
+        ISymbol symbol;
+        if (CGCategory.CHILDREN.equals(category.category)) {
+            symbol = arc.child.getSymbol();
+        } else {
+            symbol = arc.parent.getSymbol();
+        }
+        return HistFunction.getSamples(symbol);
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourcePath()
-	 */
-	@Override
-	public String getSourcePath() {
-		Object o = this.getParent();
-		CGCategory category = (CGCategory) o;
-		if (CGCategory.CHILDREN.equals(category.category)) {
-			ISymbol symbol  = arc.child.getSymbol();
-			String fileName = ((HistRoot)getRoot()).decoder.getFileName(symbol);
-			return fileName;
-		} else {
-			if (arc.parentPath == null) return "??"; //$NON-NLS-1$
-			return arc.parentPath;
-		}
-	}
+    public String getFunctionName() {
+        Object o = this.getParent();
+        CGCategory category = (CGCategory) o;
+        ISymbol symbol;
+        if (CGCategory.CHILDREN.equals(category.category)) {
+            symbol = arc.child.getSymbol();
+        } else {
+            symbol = arc.parent.getSymbol();
+        }
+        return STSymbolManager.sharedInstance.demangle(symbol, arc.getProject());
+    }
+
+    @Override
+    public String getName() {
+        String functionName = getFunctionName();
+        Path p = new Path(getSourcePath());
+        return functionName + " (" + p.lastSegment() + ":" + getSourceLine() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    @Override
+    public int getSourceLine() {
+        Object o = this.getParent();
+        CGCategory category = (CGCategory) o;
+        if (CGCategory.CHILDREN.equals(category.category)) {
+            ISymbol symbol = arc.child.getSymbol();
+            return STSymbolManager.sharedInstance.getLineNumber(symbol, arc.getProject());
+        } else {
+            return arc.parentLine;
+        }
+    }
+
+    @Override
+    public String getSourcePath() {
+        Object o = this.getParent();
+        CGCategory category = (CGCategory) o;
+        if (CGCategory.CHILDREN.equals(category.category)) {
+            ISymbol symbol  = arc.child.getSymbol();
+            return ((HistRoot)getRoot()).decoder.getFileName(symbol);
+        } else {
+            if (arc.parentPath == null) {
+                return "??"; //$NON-NLS-1$
+            }
+            return arc.parentPath;
+        }
+    }
 
 }

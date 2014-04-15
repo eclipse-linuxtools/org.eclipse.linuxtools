@@ -60,18 +60,11 @@ public class OpenGmonDialog extends Dialog {
     private Text binText;
     private String binValue;
 
-    /* buttons */
-    private Button binBrowseWorkspaceButton;
-    private Button binBrowseFileSystemButton;
-
     /* error label */
     private Label errorLabel;
 
     /* validation boolean */
     private boolean binaryValid;
-
-    /* internal listener */
-    private final BinaryModifyListener binModifyListener = new BinaryModifyListener();
 
     private final String defaultValue;
     private final IPath gmonFile;
@@ -131,13 +124,13 @@ public class OpenGmonDialog extends Dialog {
         data = new GridData(GridData.FILL_HORIZONTAL);
         data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH;
         binText.setLayoutData(data);
-        binText.addModifyListener(binModifyListener);
+        binText.addModifyListener(new BinaryModifyListener());
 
         Composite cbBin = new Composite(c, SWT.NONE);
         data = new GridData(GridData.HORIZONTAL_ALIGN_END);
         cbBin.setLayoutData(data);
         cbBin.setLayout(new GridLayout(2, true));
-        binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
+        Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGmonDialog_WORKSPACE);
         binBrowseWorkspaceButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -145,7 +138,7 @@ public class OpenGmonDialog extends Dialog {
                 handleBrowseWorkspace(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText);
             }
         });
-        binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
+        Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGmonDialog_FILE_SYSTEM);
         binBrowseFileSystemButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -200,7 +193,7 @@ public class OpenGmonDialog extends Dialog {
 
     }
 
-    protected void handleBrowseWorkspace(String msg, Text text) {
+    private void handleBrowseWorkspace(String msg, Text text) {
         ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
                 new WorkbenchContentProvider());
         dialog.setTitle(msg);
@@ -209,8 +202,9 @@ public class OpenGmonDialog extends Dialog {
         dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
         dialog.setAllowMultiple(false);
         IContainer c = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(this.gmonFile);
-        if (c != null)
+        if (c != null) {
             dialog.setInitialSelection(c.getProject());
+        }
         dialog.setValidator(new ISelectionStatusValidator() {
             @Override
             public IStatus validate(Object[] selection) {
@@ -229,7 +223,7 @@ public class OpenGmonDialog extends Dialog {
         }
     }
 
-    protected void handleBrowse(String msg, Text text) {
+    private void handleBrowse(String msg, Text text) {
         FileDialog dialog = new FileDialog(this.getShell(), SWT.OPEN);
         dialog.setText(msg);
         String t = text.getText();
@@ -246,7 +240,8 @@ public class OpenGmonDialog extends Dialog {
         }
         dialog.setFilterPath(t);
         String s = dialog.open();
-        if (s != null)
+        if (s != null) {
             text.setText(s);
+        }
     }
 }

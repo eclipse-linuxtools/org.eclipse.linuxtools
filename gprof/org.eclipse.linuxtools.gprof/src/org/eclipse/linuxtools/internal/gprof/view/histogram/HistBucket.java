@@ -23,7 +23,7 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.Bucket;
 public class HistBucket extends AbstractTreeElement {
 
 	public final Bucket bucket;
-	
+
 	/**
 	 * Constructor
 	 * @param parent the parent of this tree node
@@ -33,45 +33,27 @@ public class HistBucket extends AbstractTreeElement {
 		super(parent);
 		this.bucket = b;
 	}
-	
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#hasChildren()
-	 */
 	@Override
 	public boolean hasChildren() {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-	 */
 	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return null;
 	}
-
 
 	@Override
 	public int getCalls() {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-	 */
 	@Override
 	public String getName() {
-		return "0x" + Long.toHexString(bucket.start_addr); //$NON-NLS-1$
+		return "0x" + Long.toHexString(bucket.startAddr); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSamples()
-	 */
 	@Override
 	public int getSamples() {
 		return bucket.time;

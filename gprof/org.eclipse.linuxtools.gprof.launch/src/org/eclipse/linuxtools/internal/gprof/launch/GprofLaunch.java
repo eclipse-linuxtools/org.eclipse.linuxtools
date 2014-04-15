@@ -14,6 +14,6 @@ package org.eclipse.linuxtools.internal.gprof.launch;
  * Constants for the Gprof launcher.
  */
 public interface GprofLaunch {
-	String PLUGIN_ID = "org.eclipse.linuxtools.gprof.launch"; //$NON-NLS-1$
-	String LAUNCH_ID = PLUGIN_ID + ".gprofLaunch"; //$NON-NLS-1$
+    String PLUGIN_ID = "org.eclipse.linuxtools.gprof.launch"; //$NON-NLS-1$
+    String LAUNCH_ID = PLUGIN_ID + ".gprofLaunch"; //$NON-NLS-1$
 }

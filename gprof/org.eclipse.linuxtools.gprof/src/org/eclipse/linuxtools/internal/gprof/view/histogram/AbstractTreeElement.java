@@ -21,8 +21,7 @@ public abstract class AbstractTreeElement implements TreeElement {
 	private final TreeElement parent;
 	protected int samples = -1;
 	protected int calls = -1;
-	
-	
+
 	/**
 	 * Constructor
 	 * @param parent
@@ -49,27 +48,21 @@ public abstract class AbstractTreeElement implements TreeElement {
 	public boolean hasChildren() {
 		return true;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getCalls()
-	 */
+
 	@Override
 	public int getCalls() {
 		if (calls == -1) {
 			calls = 0;
 			for (TreeElement elem : getChildren()) {
 				int i = elem.getCalls();
-				if (i != -1) calls += elem.getCalls();
+				if (i != -1) {
+				    calls += elem.getCalls();
+				}
 			}
 		}
 		return calls;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getSamples()
-	 */
 	@Override
 	public int getSamples() {
 		if (samples == -1) {
@@ -81,32 +74,25 @@ public abstract class AbstractTreeElement implements TreeElement {
 		return samples;
 	}
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getSourceLine()
-	 */
 	@Override
 	public int getSourceLine() {
 		return 0;
 	}
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getSourcePath()
-	 */
 	@Override
 	public String getSourcePath() {
 		return null;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getRoot()
 	 */
 	@Override
 	public TreeElement getRoot() {
-		if (parent == null) return this;
+		if (parent == null) {
+		    return this;
+		}
 		return parent.getRoot();
 	}
-
 }

@@ -22,10 +22,10 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-public class FlatHistogramContentProvider extends FunctionHistogramContentProvider {
-	
+public final class FlatHistogramContentProvider extends FunctionHistogramContentProvider {
+
 	public static final FlatHistogramContentProvider sharedInstance = new FlatHistogramContentProvider();
-	
+
 	/**
 	 * Constructor
 	 */
@@ -46,7 +46,7 @@ public class FlatHistogramContentProvider extends FunctionHistogramContentProvid
 		}
 		return ret;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.linuxtools.internal.gprof.view.FunctionHistogramContentProvider#getParent(java.lang.Object)
@@ -59,5 +59,5 @@ public class FlatHistogramContentProvider extends FunctionHistogramContentProvid
 		}
 		return o;
 	}
-	
+
 }

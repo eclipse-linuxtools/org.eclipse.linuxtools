@@ -19,21 +19,21 @@ package org.eclipse.linuxtools.internal.gprof.symbolManager;
 public class Bucket {
 	
 	/** Start address of this bucket */
-	public final long start_addr;
+	public final long startAddr;
 	/** End address of this bucket */
-	public final long end_addr;
+	public final long endAddr;
 	/** time spent in this bucket */
 	public final int  time;
 	
 	/**
 	 * Constructor
-	 * @param start_addr
-	 * @param end_addr
+	 * @param startAddr
+	 * @param endAddr
 	 * @param time
 	 */
-	public Bucket(long start_addr, long end_addr, int time) {
-		this.start_addr = start_addr;
-		this.end_addr   = end_addr;
+	public Bucket(long startAddr, long endAddr, int time) {
+		this.startAddr = startAddr;
+		this.endAddr   = endAddr;
 		this.time       = time;
 	}
 

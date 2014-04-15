@@ -26,72 +26,53 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  * @author Mohamed Korbosli
  */
 public class RatioProfField extends AbstractPercentageDrawerField implements IChartField{
-	
-	/** Format to use to display percentages */
-	public final static NumberFormat nf = new DecimalFormat("##0.0#"); //$NON-NLS-1$
-	
-	
-	/**
-	 * Gets the percentage value to display
-	 * @param obj
-	 * @return the percentage value to display, as a float
-	 */
-	@Override
-	public float getPercentage(Object obj) {
-		TreeElement e = (TreeElement) obj;
-		int SamplesSum = e.getRoot().getSamples();
-		if (SamplesSum == 0) return 0;
-		else return ((100.0f*e.getSamples())/e.getRoot().getSamples());
-	}
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public int compare(Object obj1, Object obj2) {
-		TreeElement e1 = (TreeElement) obj1;
-		TreeElement e2 = (TreeElement) obj2;
-		int s1 = e1.getSamples();
-		int s2 = e2.getSamples();
-		return s1 - s2;
-	}
+    /** Format to use to display percentages */
+    public final static NumberFormat nf = new DecimalFormat("##0.0#"); //$NON-NLS-1$
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
-	 */
-	@Override
-	public String getColumnHeaderText() {
-		return Messages.RatioProfField_TIME_PERCENTAGE;
-	}
+    /**
+     * Gets the percentage value to display
+     * @param obj
+     * @return the percentage value to display, as a float
+     */
+    @Override
+    public float getPercentage(Object obj) {
+        TreeElement e = (TreeElement) obj;
+        int SamplesSum = e.getRoot().getSamples();
+        if (SamplesSum == 0) {
+            return 0;
+        }
+        else return ((100.0f*e.getSamples())/e.getRoot().getSamples());
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField#getNumberFormat()
-	 */
-	@Override
-	public NumberFormat getNumberFormat() {
-		return nf;
-	}
+    @Override
+    public int compare(Object obj1, Object obj2) {
+        TreeElement e1 = (TreeElement) obj1;
+        TreeElement e2 = (TreeElement) obj2;
+        int s1 = e1.getSamples();
+        int s2 = e2.getSamples();
+        return s1 - s2;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField#isSettedNumberFormat()
-	 */
-	@Override
-	public boolean isSettedNumberFormat() {
-		return true;
-	}
+    @Override
+    public String getColumnHeaderText() {
+        return Messages.RatioProfField_TIME_PERCENTAGE;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.charts.provider.IChartField#getNumber(java.lang.Object)
-	 */
-	@Override
-	public Number getNumber(Object obj) {
-		float f = getPercentage(obj);
-		return new Float(f);
-	}
+    @Override
+    public NumberFormat getNumberFormat() {
+        return nf;
+    }
+
+    @Override
+    public boolean isSettedNumberFormat() {
+        return true;
+    }
+
+    @Override
+    public Number getNumber(Object obj) {
+        float f = getPercentage(obj);
+        return new Float(f);
+    }
 
 }

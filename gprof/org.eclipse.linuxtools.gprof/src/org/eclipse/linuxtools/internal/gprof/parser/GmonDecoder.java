@@ -47,7 +47,7 @@ public class GmonDecoder {
 
     // header
     private String cookie;
-    private int gmon_version;
+    private int gmonVersion;
     private byte[] spare;
 
     private final IBinaryObject program;
@@ -88,8 +88,8 @@ public class GmonDecoder {
         program.getBinaryParser().getFormat();
         String cpu = program.getCPU();
         if (Platform.ARCH_X86_64.equals(cpu) || "ppc64".equals(cpu)) { //$NON-NLS-1$
-            histo = new HistogramDecoder_64(this);
-            callGraph = new CallGraphDecoder_64(this);
+            histo = new HistogramDecoder64(this);
+            callGraph = new CallGraphDecoder64(this);
             _32_bit_platform = false;
         } else {
             _32_bit_platform = true;
@@ -113,7 +113,7 @@ public class GmonDecoder {
     			leStream.mark(1000);
     			boolean gmonType = readHeader(leStream);
     			if (gmonType)
-    				ReadGmonContent(leStream);
+    				readGmonContent(leStream);
     			else {
     				leStream.reset();
     				histo.decodeOldHeader(leStream);
@@ -126,7 +126,7 @@ public class GmonDecoder {
     					// normal. End of file reached.
     				}
     				this.callGraph.populate(rootNode);
-    				this.histo.AssignSamplesSymbol();
+    				this.histo.assignSamplesSymbol();
     			}
     		} finally {
     			leStream.close();
@@ -136,7 +136,7 @@ public class GmonDecoder {
     			beStream.mark(1000);
     			boolean gmonType = readHeader(beStream);
     			if (gmonType)
-    				ReadGmonContent(beStream);
+    				readGmonContent(beStream);
     			else {
     				beStream.reset();
     				histo.decodeOldHeader(beStream);
@@ -145,11 +145,11 @@ public class GmonDecoder {
     					do {
     						this.callGraph.decodeCallGraphRecord(beStream, true);
     					} while (true);
-    				} catch (EOFException _) {
+    				} catch (EOFException e) {
     					// normal. End of file reached.
     				}
     				this.callGraph.populate(rootNode);
-    				this.histo.AssignSamplesSymbol();
+    				this.histo.assignSamplesSymbol();
     			}
     		} finally {
     			beStream.close();
@@ -165,11 +165,11 @@ public class GmonDecoder {
      * @throws IOException
      *             if an IO error occurs or if the stream is not a gmon file.
      */
-    public boolean readHeader(DataInput stream) throws IOException {
+    private boolean readHeader(DataInput stream) throws IOException {
         byte[] _cookie = new byte[4];
         stream.readFully(_cookie);
         cookie = new String(_cookie);
-        gmon_version = stream.readInt();
+        gmonVersion = stream.readInt();
         spare = new byte[12];
         stream.readFully(spare);
         return "gmon".equals(cookie); //$NON-NLS-1$
@@ -181,7 +181,7 @@ public class GmonDecoder {
      * @param stream
      * @throws IOException
      */
-    public void ReadGmonContent(DataInput stream) throws IOException {
+    private void readGmonContent(DataInput stream) throws IOException {
         do {
             // int tag = -1;
             tag = -1;
@@ -203,13 +203,14 @@ public class GmonDecoder {
                 throw new IOException(Messages.GmonDecoder_BAD_TAG_ERROR);
             }
 
-            if (shouldDump == true)
+            if (shouldDump == true) {
                 dumpGmonResult(ps == null ? System.out : ps);
+            }
 
         } while (true);
 
         this.callGraph.populate(rootNode);
-        this.histo.AssignSamplesSymbol();
+        this.histo.assignSamplesSymbol();
 
     }
 
@@ -217,7 +218,7 @@ public class GmonDecoder {
 
         ps.println("-- gmon Results --"); //$NON-NLS-1$
         ps.println("cookie " + cookie); //$NON-NLS-1$
-        ps.println("gmon_version " + gmon_version); //$NON-NLS-1$
+        ps.println("gmon_version " + gmonVersion); //$NON-NLS-1$
         // ps.println("spare "+new String(spare));
         ps.println("tag " + tag); //$NON-NLS-1$
 
@@ -239,13 +240,6 @@ public class GmonDecoder {
     }
 
     /**
-     * @return the call graph decoder
-     */
-    public CallGraphDecoder getCallGraphDecoder() {
-        return callGraph;
-    }
-
-    /**
      * @return the program
      */
     public IBinaryObject getProgram() {
@@ -257,15 +251,6 @@ public class GmonDecoder {
      */
     public HistRoot getRootNode() {
         return rootNode;
-    }
-
-    /**
-     * Gets the version number parsed in the gmon file
-     *
-     * @return a gmon version
-     */
-    public int getGmonVersion() {
-        return gmon_version;
     }
 
     /**
@@ -286,8 +271,9 @@ public class GmonDecoder {
         String ret = filenames.get(s);
         if (ret == null) {
             ret = STSymbolManager.sharedInstance.getFilename(s, project);
-            if (ret == null)
+            if (ret == null) {
                 ret = "??"; //$NON-NLS-1$
+            }
             filenames.put(s, ret);
         }
         return ret;

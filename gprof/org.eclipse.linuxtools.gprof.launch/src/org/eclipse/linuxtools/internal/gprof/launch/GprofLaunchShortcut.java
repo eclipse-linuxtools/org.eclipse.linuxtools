@@ -17,20 +17,19 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class GprofLaunchShortcut extends ProfileLaunchShortcut {
 
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) {
+        //nothing to do
+    }
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
-		//nothing to do
-	}
-
-	/**
-	 * Method getValgrindLaunchConfigType.
-	 * @return ILaunchConfigurationType
-	 */
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(GprofLaunch.LAUNCH_ID);
-	}
+    /**
+     * Method getValgrindLaunchConfigType.
+     * @return ILaunchConfigurationType
+     */
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(GprofLaunch.LAUNCH_ID);
+    }
 
 }

@@ -45,21 +45,11 @@ public class CGCategory extends AbstractTreeElement {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-     */
     @Override
     public LinkedList<? extends TreeElement> getChildren() {
         return children;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-     */
     @Override
     public String getName() {
         return category;

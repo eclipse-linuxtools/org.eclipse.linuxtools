@@ -29,132 +29,116 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphNode;
  */
 public class HistFunction extends AbstractTreeElement {
 
-	/** The sympbol to display */
-	public final ISymbol symbol;
-	private final LinkedList<HistLine> children = new LinkedList<>();
-	private CGCategory parentsFunctions;
-	private CGCategory childrenFunctions;
-	
-	private static HashMap<ISymbol, Integer> histSym = new HashMap<>();
-	
-	/**
-	 * Constructor 
-	 * @param parent
-	 * @param s
-	 */
-	public HistFunction(HistFile parent, ISymbol s) {
-		super(parent);
-		this.symbol = s;
-		histSym.put(s, 0);
-	}
-	
-	/**
-	 * Gets the tree item corresponding to the given line.
-	 * Lazily create it if needed.
-	 * @param line
-	 * @return a {@link HistFunction}
-	 */
-	private HistLine getChild(int line) {
-		for (HistLine l : this.children) {
-			if (l.line == line) return l;
-		}
-		HistLine l = new HistLine(this, line);
-		this.children.add(l);
-		return l;
-	}
-	
+    /** The sympbol to display */
+    public final ISymbol symbol;
+    private final LinkedList<HistLine> children = new LinkedList<>();
+    private CGCategory parentsFunctions;
+    private CGCategory childrenFunctions;
 
-	void addBucket(Bucket b, IBinaryObject program) {
-		int lineNumber = -1;
-		IAddress address = program.getAddressFactory().createAddress(String.valueOf(b.start_addr));
-		lineNumber = STSymbolManager.sharedInstance.getLineNumber(program, address, getProject());
-		HistLine hf = getChild(lineNumber);
-		hf.addBucket(b);
-		histSym.put(symbol, b.time + histSym.get(symbol));
-	}
+    private static HashMap<ISymbol, Integer> histSym = new HashMap<>();
 
-	void addCallGraphNode(CallGraphNode node) {
-		LinkedList<CallGraphArc> parents = node.getParents();
-		LinkedList<CallGraphArc> children = node.getChildren();
-		if (parents.size() != 0) {
-			this.parentsFunctions = new CGCategory(this, CGCategory.PARENTS, node.getParents());
-		}
-		if (children.size() != 0) {
-			this.childrenFunctions = new CGCategory(this, CGCategory.CHILDREN, node.getChildren());
-		}
-		this.calls = node.getCalls();
-	}
+    /**
+     * Constructor
+     * @param parent
+     * @param s
+     */
+    public HistFunction(HistFile parent, ISymbol s) {
+        super(parent);
+        this.symbol = s;
+        histSym.put(s, 0);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-	 */
-	@Override
-	public LinkedList<? extends TreeElement> getChildren() {
-		return this.children;
-	}
+    /**
+     * Gets the tree item corresponding to the given line.
+     * Lazily create it if needed.
+     * @param line
+     * @return a {@link HistFunction}
+     */
+    private HistLine getChild(int line) {
+        for (HistLine l : this.children) {
+            if (l.line == line) {
+                return l;
+            }
+        }
+        HistLine l = new HistLine(this, line);
+        this.children.add(l);
+        return l;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
-	 */
-	@Override
-	public int getCalls() {
-		return this.calls;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-	 */
-	@Override
-	public String getName() {
-		return STSymbolManager.sharedInstance.demangle(this.symbol, getProject());
-	}
+    void addBucket(Bucket b, IBinaryObject program) {
+        int lineNumber = -1;
+        IAddress address = program.getAddressFactory().createAddress(String.valueOf(b.startAddr));
+        lineNumber = STSymbolManager.sharedInstance.getLineNumber(program, address, getProject());
+        HistLine hf = getChild(lineNumber);
+        hf.addBucket(b);
+        histSym.put(symbol, b.time + histSym.get(symbol));
+    }
 
-	/**
-	 * @return the parentsFunctions
-	 */
-	public CGCategory getParentsFunctions() {
-		return parentsFunctions;
-	}
+    void addCallGraphNode(CallGraphNode node) {
+        LinkedList<CallGraphArc> parents = node.getParents();
+        LinkedList<CallGraphArc> children = node.getChildren();
+        if (parents.size() != 0) {
+            this.parentsFunctions = new CGCategory(this, CGCategory.PARENTS, node.getParents());
+        }
+        if (children.size() != 0) {
+            this.childrenFunctions = new CGCategory(this, CGCategory.CHILDREN, node.getChildren());
+        }
+        this.calls = node.getCalls();
+    }
 
-	/**
-	 * @return the childrenFunctions
-	 */
-	public CGCategory getChildrenFunctions() {
-		return childrenFunctions;
-	}
+    @Override
+    public LinkedList<? extends TreeElement> getChildren() {
+        return this.children;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourceLine()
-	 */
-	@Override
-	public int getSourceLine() {
-		return STSymbolManager.sharedInstance.getLineNumber(symbol, getProject());
-	}
+    @Override
+    public int getCalls() {
+        return this.calls;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourcePath()
-	 */
-	@Override
-	public String getSourcePath() {
-		return ((HistRoot)getRoot()).decoder.getFileName(symbol);
-	}
-	
-	/**
-	 * @return the function samples
-	 */
-	public static int getSamples(ISymbol sym){
-		if (histSym.containsKey(sym))
-			return histSym.get(sym);
-		else return 0;
-	}
+    @Override
+    public String getName() {
+        return STSymbolManager.sharedInstance.demangle(this.symbol, getProject());
+    }
 
-	private IProject getProject() {
-		return ((HistRoot)getParent().getParent()).getProject();
-	}
+    /**
+     * @return the parentsFunctions
+     */
+    public CGCategory getParentsFunctions() {
+        return parentsFunctions;
+    }
+
+    /**
+     * @return the childrenFunctions
+     */
+    public CGCategory getChildrenFunctions() {
+        return childrenFunctions;
+    }
+
+    @Override
+    public int getSourceLine() {
+        return STSymbolManager.sharedInstance.getLineNumber(symbol, getProject());
+    }
+
+    @Override
+    public String getSourcePath() {
+        return ((HistRoot)getRoot()).decoder.getFileName(symbol);
+    }
+
+    /**
+     * @return the function samples
+     */
+    public static int getSamples(ISymbol sym){
+        if (histSym.containsKey(sym)) {
+            return histSym.get(sym);
+        } else {
+            return 0;
+        }
+    }
+
+    private IProject getProject() {
+        return ((HistRoot)getParent().getParent()).getProject();
+    }
 
 }

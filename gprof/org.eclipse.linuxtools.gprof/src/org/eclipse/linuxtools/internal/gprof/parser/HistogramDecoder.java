@@ -33,7 +33,7 @@ public class HistogramDecoder {
 	private static final int GMON_HDRSIZE_OLDBSD_32 = (4 + 4 + 4) ;
 	private static final int GMON_HDRSIZE_OLDBSD_64 = (8 + 8 + 4);
 
-	
+
 	/** the decoder */
 	protected final GmonDecoder decoder;
 
@@ -43,13 +43,11 @@ public class HistogramDecoder {
 	/** Max pc address of sampled buffer */
 	protected long highpc;
 	/** Profiling clock rate */
-	protected int prof_rate;
-	/** physical dimension - usually "seconds" */
-	protected String dimen;
+	protected int profRate;
 	/** usually 's' for seconds, 'm' for milliseconds... */
-	protected char dimen_abbrev;
+	protected char dimenAbbrev;
 	/** used when aggregate several gmon files */
-	protected boolean initialized = false;
+	private boolean initialized = false;
 
 
 	/** Histogram samples (shorts in the file!). */
@@ -61,13 +59,13 @@ public class HistogramDecoder {
 
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 * @param decoder the Gmon decoder
 	 */
 	public HistogramDecoder(GmonDecoder decoder) {
 		this.decoder = decoder;
 	}
-	
+
 	protected long readAddress(DataInput stream) throws IOException {
 		long ret = stream.readInt() & 0xFFFFFFFFL;
 		return ret;
@@ -91,17 +89,15 @@ public class HistogramDecoder {
 		stream.readFully(bytes);
 		byte b            = stream.readByte();
 
-		if (!isCompatible(lowpc, highpc, prof_rate, hist_num_bins))
-		{
+		if (!isCompatible(lowpc, highpc, prof_rate, hist_num_bins))	{
 			// TODO exception to normalize
 			throw new RuntimeException(Messages.HistogramDecoder_INCOMPATIBLE_HIST_HEADER_ERROR_MSG);
 		}
 		this.lowpc     = lowpc;
 		this.highpc    = highpc;
-		this.prof_rate = prof_rate;
+		this.profRate = prof_rate;
 		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
-		dimen          = new String(bytes);
-		dimen_abbrev   = (char) b;
+		dimenAbbrev   = (char) b;
 		long temp = highpc - lowpc;
 		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
@@ -148,14 +144,13 @@ public class HistogramDecoder {
 
 		this.lowpc     = low_pc;
 		this.highpc    = high_pc;
-		this.prof_rate = profrate;
+		this.profRate = profrate;
 		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
-		dimen          = "s"; //$NON-NLS-1$
-		dimen_abbrev   = 's';
+		dimenAbbrev   = 's';
 		long temp = highpc - lowpc;
 		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
-	
+
 
 	/**
 	 * Checks whether the gmon file currently parsed is compatible with the previous one (if any).
@@ -165,12 +160,12 @@ public class HistogramDecoder {
 	 * @param sample_count
 	 * @return whether the gmon file currently parsed is compatible with the previous one (if any).
 	 */
-	public boolean isCompatible(long lowpc, long highpc, int profrate, int sample_count) {
+	private boolean isCompatible(long lowpc, long highpc, int profrate, int sample_count) {
 		if (!initialized) return true;
 		return (
 				(this.lowpc     == lowpc) &&
 				(this.highpc    == highpc) &&
-				(this.prof_rate == profrate) &&
+				(this.profRate == profrate) &&
 				(this.hist_sample.length == sample_count)
 		);
 	}
@@ -184,9 +179,9 @@ public class HistogramDecoder {
 	 */
 	public void decodeHistRecord(DataInput stream) throws IOException {
 		for (int i = 0; i<hist_sample.length; i++) {
-			short _rv = stream.readShort();
-			if (_rv != 0) {
-				int hist_size = (_rv & 0xFFFF);
+			short rv = stream.readShort();
+			if (rv != 0) {
+				int hist_size = (rv & 0xFFFF);
 				hist_sample[i] += hist_size;
 			}
 		}
@@ -197,8 +192,7 @@ public class HistogramDecoder {
 	 * Print the histogram header, for debug usage.
 	 * @param ps a printstream (typically System.out)
 	 */
-	public void printHistHeader(PrintStream ps)
-	{
+	public void printHistHeader(PrintStream ps)	{
 		ps.println(" \nHistogram Header : \n"); //$NON-NLS-1$
 		ps.print("  Base pc address of sample buffer = 0x"); //$NON-NLS-1$
 		ps.println(Long.toHexString(lowpc));
@@ -207,11 +201,11 @@ public class HistogramDecoder {
 		ps.print("  Number of histogram samples      = "); //$NON-NLS-1$
 		ps.println(hist_sample.length);
 		ps.print("  Profiling clock rate             = "); //$NON-NLS-1$
-		ps.println(prof_rate);
+		ps.println(profRate);
 //		ps.print("  Physical dimension usually \"seconds\" = ");
 //		ps.println(dimen);
 		ps.print("  Physical dimension abreviation : 's' for \"seconds\"  'm' for \"milliseconds\" = "); //$NON-NLS-1$
-		ps.println(dimen_abbrev);
+		ps.println(dimenAbbrev);
 	}
 
 	/**
@@ -237,10 +231,9 @@ public class HistogramDecoder {
 
 	/**
 	 * Assign the hits to the given symbols
-	 * @param symblist 
+	 * @param symblist
 	 */
-	public void AssignSamplesSymbol()
-	{
+	public void assignSamplesSymbol() {
 		if (hist_sample == null || hist_sample.length == 0) return;
 		ISymbol[] symblist = this.decoder.getProgram().getSymbols();
 		/* read samples and assign to namelist symbols */
@@ -261,17 +254,16 @@ public class HistogramDecoder {
 					svalue1 = symblist[j+1].getAddress().getValue().longValue();
 					/* if high end of tick is below entry address,
 					 * go for next tick. */
-					if(pch < svalue0)
+					if(pch < svalue0) {
 						break;
+					}
 					/* if low end of tick into next routine,
 					 * go for next routine. */
-					if(pcl < svalue1)
-					{   
+					if(pcl < svalue1) {
 						long start_addr = pcl>svalue0?pcl:svalue0;
 						long end_addr   = pch<svalue1?pch:svalue1;
 						long overlap = end_addr - start_addr;
-						if(overlap > 0)
-						{
+						if(overlap > 0)	{
 							ISymbol symbol = symblist[j];
 							int time = (int) ((overlap * ccnt) / bucketSize);
 							Bucket   bck = new Bucket(start_addr, end_addr, time);
@@ -289,18 +281,18 @@ public class HistogramDecoder {
 	}
 
 	/**
-	 * @return the prof_rate
+	 * @return the profRate
 	 */
-	public int getProf_rate() {
-		return prof_rate;
+	public int getProfRate() {
+		return profRate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @return 's' for seconds, 'm' for ms, 'u' for �s....
 	 */
 	public char getTimeDimension() {
-		return dimen_abbrev;
+		return dimenAbbrev;
 	}
 
 	/**
@@ -309,8 +301,4 @@ public class HistogramDecoder {
 	public long getBucketSize(){
 		return bucketSize;
 	}
-	
-	
-	
-	
 }

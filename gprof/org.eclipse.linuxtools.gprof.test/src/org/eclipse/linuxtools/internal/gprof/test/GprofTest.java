@@ -183,7 +183,7 @@ public class GprofTest {
 		AbstractSTTreeViewer gmonViewer = (AbstractSTTreeViewer) view
 				.getSTViewer();
 		GmonDecoder decoder = (GmonDecoder) gmonViewer.getInput();
-		int prof_rate = decoder.getHistogramDecoder().getProf_rate();
+		int prof_rate = decoder.getHistogramDecoder().getProfRate();
 		if (prof_rate == 0) {
 			return;
 		}

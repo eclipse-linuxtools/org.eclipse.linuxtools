@@ -220,7 +220,7 @@ public class GmonView extends AbstractSTDataView {
                 + " timestamp: " + decoder.getGmonFileTimeStamp(); //$NON-NLS-1$
         HistogramDecoder histo = decoder.getHistogramDecoder();
         if (histo.hasValues()) {
-            double prof_rate = histo.getProf_rate();
+            double prof_rate = histo.getProfRate();
             String period = ""; //$NON-NLS-1$
             if (prof_rate != 0) {
                 char tUnit = histo.getTimeDimension();
@@ -287,7 +287,7 @@ public class GmonView extends AbstractSTDataView {
             }
             gmonview = (GmonView) page.showView(ID, secondary_id_usually_path_to_gmon_file,
                     IWorkbenchPage.VIEW_ACTIVATE);
-            if (decoder.getHistogramDecoder().getProf_rate() == 0) {
+            if (decoder.getHistogramDecoder().getProfRate() == 0) {
                 gmonview.switchSampleTime.setToolTipText("Unable to display time, because profiling rate is null"); //$NON-NLS-1$
                 gmonview.switchSampleTime.setEnabled(false);
             }

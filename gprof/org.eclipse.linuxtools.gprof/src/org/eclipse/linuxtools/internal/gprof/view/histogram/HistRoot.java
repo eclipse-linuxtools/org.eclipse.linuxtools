@@ -28,30 +28,34 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphNode;
 public class HistRoot extends AbstractTreeElement {
 
 	private final LinkedList<HistFile> children = new LinkedList<>();
-	
+
 	/** The decoded gmon to display */
 	public final GmonDecoder decoder;
-	
+
 	/**
 	 * Constructor
-	 * @param decoder 
+	 * @param decoder
 	 */
 	public HistRoot(GmonDecoder decoder) {
 		super(null);
 		this.decoder = decoder;
 	}
-	
+
 	private HistFile getChild(String p) {
 		for (HistFile f : this.children) {
 			if (p != null) {
-				if (p.equals(f.sourcePath)) return f;
-			} else if (f.sourcePath == null) return f;
+				if (p.equals(f.sourcePath)) {
+				    return f;
+				}
+			} else if (f.sourcePath == null) {
+			    return f;
+			}
 		}
 		HistFile f = new HistFile(this, p);
 		this.children.add(f);
 		return f;
 	}
-	
+
 	/**
 	 * Add a bucket to the tree representation of the gmon file
 	 * @param b a bucket
@@ -63,7 +67,7 @@ public class HistRoot extends AbstractTreeElement {
 		HistFile hf = getChild(path);
 		hf.addBucket(b, s, program);
 	}
-	
+
 	/**
 	 * Add a callgraph node to the tree representation of the gmon file
 	 * @param node
@@ -75,28 +79,16 @@ public class HistRoot extends AbstractTreeElement {
 		hf.addCallGraphNode(node);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-	 */
 	@Override
 	public LinkedList<? extends TreeElement> getChildren() {
 		return this.children;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-	 */
 	@Override
 	public String getName() {
 		return Messages.HistRoot_Summary;
 	}
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
-	 */
 	@Override
 	public int getCalls() {
 		return -1;

@@ -33,71 +33,71 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  */
 public class GprofNoGmonDialog extends MessageDialog {
 
-	private final IProject fProject;
-	private String fGmonPath = null;
+    private final IProject project;
+    private String gmonPath = null;
 
-	private static String[] buildButtons() {
-		//future enhancement: add a button to edit project settings (managed make project only).
-		return new String[] {
-				GprofLaunchMessages.GprofNoGmonDialog_Cancel, GprofLaunchMessages.GprofNoGmonDialog_Browse, GprofLaunchMessages.GprofNoGmonDialog_Workspace
-		};
-	}
+    private static String[] buildButtons() {
+        //future enhancement: add a button to edit project settings (managed make project only).
+        return new String[] {
+                GprofLaunchMessages.GprofNoGmonDialog_Cancel, GprofLaunchMessages.GprofNoGmonDialog_Browse, GprofLaunchMessages.GprofNoGmonDialog_Workspace
+        };
+    }
 
-	protected GprofNoGmonDialog(Shell parentShell, IProject project) {
-		super(parentShell,  GprofLaunchMessages.GprofCompilerOptions_msg, null,
-				GprofLaunchMessages.GprofCompileAgain_msg, WARNING, buildButtons(), 0);
-		this.fProject = project;
-	}
+    protected GprofNoGmonDialog(Shell parentShell, IProject project) {
+        super(parentShell,  GprofLaunchMessages.GprofCompilerOptions_msg, null,
+                GprofLaunchMessages.GprofCompileAgain_msg, WARNING, buildButtons(), 0);
+        this.project = project;
+    }
 
-	@Override
-	protected void buttonPressed(int buttonId) {
-		if (buttonId == 1) {
-			FileDialog dialog = new FileDialog(this.getShell(), SWT.OPEN);
-	        dialog.setText(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
-	        if (fProject != null) {
-				dialog.setFilterPath(fProject.getLocation().toOSString());
-	        }
-	        String s = dialog.open();
-	        if (s != null) {
-	            fGmonPath = s;
-	        }
-		} else if (buttonId == 2) {
-			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
-	                new WorkbenchContentProvider());
-	        dialog.setTitle(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
-	        dialog.setMessage(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
-	        dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-	        dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-	        dialog.setAllowMultiple(false);
-	        dialog.setInitialSelection(fProject);
-	        dialog.setValidator(new ISelectionStatusValidator() {
-	            @Override
-	            public IStatus validate(Object[] selection) {
-	                if (selection.length != 1) {
-	                    return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-	                }
-	                if (!(selection[0] instanceof IFile)) {
-	                    return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-	                }
-	                return new Status(IStatus.OK, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-	            }
-	        });
-	        if (dialog.open() == IDialogConstants.OK_ID) {
-	            IResource resource = (IResource) dialog.getFirstResult();
-	            fGmonPath = resource.getLocation().toOSString();
-	        }
-		}
+    @Override
+    protected void buttonPressed(int buttonId) {
+        if (buttonId == 1) {
+            FileDialog dialog = new FileDialog(this.getShell(), SWT.OPEN);
+            dialog.setText(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
+            if (project != null) {
+                dialog.setFilterPath(project.getLocation().toOSString());
+            }
+            String s = dialog.open();
+            if (s != null) {
+                gmonPath = s;
+            }
+        } else if (buttonId == 2) {
+            ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+                    new WorkbenchContentProvider());
+            dialog.setTitle(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
+            dialog.setMessage(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
+            dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+            dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+            dialog.setAllowMultiple(false);
+            dialog.setInitialSelection(project);
+            dialog.setValidator(new ISelectionStatusValidator() {
+                @Override
+                public IStatus validate(Object[] selection) {
+                    if (selection.length != 1) {
+                        return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+                    }
+                    if (!(selection[0] instanceof IFile)) {
+                        return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+                    }
+                    return new Status(IStatus.OK, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+                }
+            });
+            if (dialog.open() == IDialogConstants.OK_ID) {
+                IResource resource = (IResource) dialog.getFirstResult();
+                gmonPath = resource.getLocation().toOSString();
+            }
+        }
 
-		if (fGmonPath == null) {
-			setReturnCode(0);
-		} else {
-			setReturnCode(buttonId);
-		}
+        if (gmonPath == null) {
+            setReturnCode(0);
+        } else {
+            setReturnCode(buttonId);
+        }
         close();
-	}
+    }
 
-	public String getPathToGmon() {
-		return fGmonPath;
-	}
+    public String getPathToGmon() {
+        return gmonPath;
+    }
 
 }

@@ -26,91 +26,72 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.CallGraphNode;
  */
 public class HistFile extends AbstractTreeElement {
 
-	/** The source path to display */
-	public final String sourcePath;
-	private final LinkedList<HistFunction> children = new LinkedList<>();
-	
-	/**
-	 * Constructor 
-	 * @param parent
-	 * @param path
-	 */
-	public HistFile(HistRoot parent, String path) {
-		super(parent);
-		this.sourcePath = path;
-	}
-	
-	/**
-	 * Gets the tree item corresponding to the given function.
-	 * Lazily create it if needed.
-	 * @param s
-	 * @return a {@link HistFunction}
-	 */
-	private HistFunction getChild(ISymbol s) {
-		for (HistFunction f : this.children) {
-			if (f.symbol == s) return f;
-		}
-		HistFunction f = new HistFunction(this, s);
-		this.children.add(f);
-		return f;
-	}
-	
-	void addBucket(Bucket b, ISymbol s, IBinaryObject program) {
-		HistFunction hf = getChild(s);
-		hf.addBucket(b, program);
-	}
+    /** The source path to display */
+    public final String sourcePath;
+    private final LinkedList<HistFunction> children = new LinkedList<>();
 
-	void addCallGraphNode(CallGraphNode node) {
-		ISymbol s = node.getSymbol();
-		HistFunction hf = getChild(s);
-		hf.addCallGraphNode(node);
-	}
+    /**
+     * Constructor
+     * @param parent
+     * @param path
+     */
+    public HistFile(HistRoot parent, String path) {
+        super(parent);
+        this.sourcePath = path;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getChildren()
-	 */
-	@Override
-	public LinkedList<? extends TreeElement> getChildren() {
-		return this.children;
-	}
+    /**
+     * Gets the tree item corresponding to the given function.
+     * Lazily create it if needed.
+     * @param s
+     * @return a {@link HistFunction}
+     */
+    private HistFunction getChild(ISymbol s) {
+        for (HistFunction f : this.children) {
+            if (f.symbol == s) {
+                return f;
+            }
+        }
+        HistFunction f = new HistFunction(this, s);
+        this.children.add(f);
+        return f;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getName()
-	 */
-	@Override
-	public String getName() {
-		Path f = new Path(sourcePath);
-		return f.lastSegment();
-	}
+    void addBucket(Bucket b, ISymbol s, IBinaryObject program) {
+        HistFunction hf = getChild(s);
+        hf.addBucket(b, program);
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourceLine()
-	 */
-	@Override
-	public int getSourceLine() {
-		return 0;
-	}
+    void addCallGraphNode(CallGraphNode node) {
+        ISymbol s = node.getSymbol();
+        HistFunction hf = getChild(s);
+        hf.addCallGraphNode(node);
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getSourcePath()
-	 */
-	@Override
-	public String getSourcePath() {
-		return this.sourcePath;
-	}
-	
+    @Override
+    public LinkedList<? extends TreeElement> getChildren() {
+        return this.children;
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.histogram.AbstractTreeElement#getCalls()
-	 */
-	@Override
-	public int getCalls() {
-		return -1;
-	}
+    @Override
+    public String getName() {
+        Path f = new Path(sourcePath);
+        return f.lastSegment();
+    }
+
+    @Override
+    public int getSourceLine() {
+        return 0;
+    }
+
+    @Override
+    public String getSourcePath() {
+        return this.sourcePath;
+    }
+
+    @Override
+    public int getCalls() {
+        return -1;
+    }
 
 }

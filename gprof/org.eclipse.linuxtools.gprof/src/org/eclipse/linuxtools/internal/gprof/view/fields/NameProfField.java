@@ -23,80 +23,56 @@ import org.eclipse.swt.graphics.Color;
  */
 public class NameProfField extends AbstractSTDataViewersField {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public int compare(Object obj1, Object obj2) {
-		TreeElement e1 = (TreeElement) obj1;
-		TreeElement e2 = (TreeElement) obj2;
-		String s1 = e1.getName();
-		String s2 = e2.getName();
-		if (s1 == null) {
-			if (s2 == null) return 0;
-			return -1;
-		}
-		if (s2 == null) return 1;
-		return s1.compareTo(s2);
-	}
+    @Override
+    public int compare(Object obj1, Object obj2) {
+        TreeElement e1 = (TreeElement) obj1;
+        TreeElement e2 = (TreeElement) obj2;
+        String s1 = e1.getName();
+        String s2 = e2.getName();
+        if (s1 == null) {
+            if (s2 == null) return 0;
+            return -1;
+        }
+        if (s2 == null) return 1;
+        return s1.compareTo(s2);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
-	 */
-	@Override
-	public String getColumnHeaderText() {
-		return Messages.NameProfField_NAME_AND_LOCATION;
-	}
+    @Override
+    public String getColumnHeaderText() {
+        return Messages.NameProfField_NAME_AND_LOCATION;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
-	 */
-	@Override
-	public String getValue(Object obj) {
-		if (obj instanceof TreeElement) {
-			TreeElement e = (TreeElement) obj;
-			return e.getName();
-		}
-		return ""; //$NON-NLS-1$
-	}
+    @Override
+    public String getValue(Object obj) {
+        if (obj instanceof TreeElement) {
+            TreeElement e = (TreeElement) obj;
+            return e.getName();
+        }
+        return ""; //$NON-NLS-1$
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getBackground(java.lang.Object)
-	 */
-	@Override
-	public Color getBackground(Object element) {
-		return GmonView.getBackground(element);
-	}
+    @Override
+    public Color getBackground(Object element) {
+        return GmonView.getBackground(element);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getToolTipText(java.lang.Object)
-	 */
-	@Override
-	public String getToolTipText(Object element) {
-		TreeElement elem = (TreeElement) element;
-		String s = elem.getSourcePath();
-		if (s != null && !"??".equals(s)) { //$NON-NLS-1$
-			int lineNumber = elem.getSourceLine();
-			if (lineNumber > 0) {
-				return s + ":" + lineNumber; //$NON-NLS-1$
-			}
-			return s;
-		}
-		return null;
-	}
+    @Override
+    public String getToolTipText(Object element) {
+        TreeElement elem = (TreeElement) element;
+        String s = elem.getSourcePath();
+        if (s != null && !"??".equals(s)) { //$NON-NLS-1$
+            int lineNumber = elem.getSourceLine();
+            if (lineNumber > 0) {
+                return s + ":" + lineNumber; //$NON-NLS-1$
+            }
+            return s;
+        }
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getPreferredWidth()
-	 */
-	@Override
-	public int getPreferredWidth() {
-		return 250;
-	}
+    @Override
+    public int getPreferredWidth() {
+        return 250;
+    }
 
 }

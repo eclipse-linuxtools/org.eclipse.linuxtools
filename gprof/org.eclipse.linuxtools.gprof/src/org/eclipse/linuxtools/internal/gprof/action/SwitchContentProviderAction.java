@@ -16,9 +16,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.gprof.Activator;
 
-
-
-
 /**
  * This action changes the content provider of
  * the {@link org.eclipse.linuxtools.internal.gprof.view.GmonView}
@@ -29,7 +26,7 @@ public class SwitchContentProviderAction extends Action {
 
 	private final ColumnViewer viewer;
 	private final ITreeContentProvider provider;
-	
+
 	/**
 	 * Constructor
 	 * @param name of the action
@@ -40,20 +37,17 @@ public class SwitchContentProviderAction extends Action {
 	public SwitchContentProviderAction(String name, String iconPath, ColumnViewer viewer, ITreeContentProvider provider) {
 		super(name, AS_RADIO_BUTTON);
 		this.setImageDescriptor(Activator.getImageDescriptor(iconPath));
-		this.setToolTipText(name);		
+		this.setToolTipText(name);
 		this.viewer = viewer;
 		this.provider = provider;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
 	@Override
 	public void run() {
 		viewer.getControl().setRedraw(false);
 		viewer.setContentProvider(provider);
 		((TreeViewer)viewer).expandToLevel(2);
-		viewer.getControl().setRedraw(true); 
+		viewer.getControl().setRedraw(true);
 	}
-	
+
 }

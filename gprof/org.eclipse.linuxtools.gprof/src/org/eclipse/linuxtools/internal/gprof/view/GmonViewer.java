@@ -46,10 +46,6 @@ public class GmonViewer extends AbstractSTTreeViewer {
 		super(parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer#createViewer(org.eclipse.swt.widgets.Composite, int)
-	 */
 	@Override
 	protected TreeViewer createViewer(Composite parent, int style) {
 		TreeViewer tv = super.createViewer(parent, style);
@@ -81,11 +77,6 @@ public class GmonViewer extends AbstractSTTreeViewer {
 		return Activator.getDefault().getDialogSettings();
 	}
 
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#handleOpenEvent(org.eclipse.jface.viewers.OpenEvent)
-	 */
 	@Override
 	protected void handleOpenEvent(OpenEvent event) {
 		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -94,9 +85,8 @@ public class GmonViewer extends AbstractSTTreeViewer {
 			String s = element.getSourcePath();
 			if (s == null || "??".equals(s)) { //$NON-NLS-1$
 				return; // nothing to do here.
-			}
-			else {
-				int lineNumber             = element.getSourceLine();
+			} else {
+				int lineNumber = element.getSourceLine();
 				IBinaryObject exec = ((HistRoot)element.getRoot()).decoder.getProgram();
 				STLink2SourceSupport.sharedInstance.openSourceFileAtLocation(exec, s, lineNumber);
 			}

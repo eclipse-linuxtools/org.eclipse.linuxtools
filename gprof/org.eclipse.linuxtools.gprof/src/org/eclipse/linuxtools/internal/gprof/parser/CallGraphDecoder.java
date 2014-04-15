@@ -32,18 +32,18 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.HistRoot;
 public class CallGraphDecoder {
 
 	protected final GmonDecoder decoder;
-	
-	
+
+
 	private final Map<ISymbol, CallGraphNode> nodes = new HashMap<>();
-	
+
 	/**
 	 * Constructor
-	 * @param decoder the Gmon decoder 
+	 * @param decoder the Gmon decoder
 	 */
 	public CallGraphDecoder(GmonDecoder decoder) {
 		this.decoder = decoder;
 	}
-	
+
 	/**
 	 * Decode call-graph record from gmon file.
 	 * @param stream
@@ -64,16 +64,15 @@ public class CallGraphDecoder {
 		}
 		addCallArc(parentSymbol, parentAddress, childSymbol, count);
 	}
-	
-	
+
+
 	protected long readAddress(DataInput stream) throws IOException {
 		long ret = stream.readInt() & 0xFFFFFFFFL;
 		return ret;
 	}
-	
-	
-	public void addCallArc(ISymbol parent, IAddress parentAddress, ISymbol child, int count)
-	{
+
+
+	private void addCallArc(ISymbol parent, IAddress parentAddress, ISymbol child, int count) {
 		CallGraphNode parentNode = nodes.get(parent);
 		CallGraphNode childNode  = nodes.get(child);
 		if (parentNode == null) {
@@ -94,18 +93,11 @@ public class CallGraphDecoder {
 		}
 	}
 
-	/**
-	 * @return the nodes
-	 */
-	public Map<ISymbol, CallGraphNode> getNodes() {
-		return nodes;
-	}
-
 	void populate(HistRoot rootNode) {
-		for (CallGraphNode callGraphNode : getNodes().values()) {
+		for (CallGraphNode callGraphNode : nodes.values()) {
 			rootNode.addCallGraphNode(callGraphNode);
 		}
 	}
-	
-	
+
+
 }
