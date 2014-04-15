@@ -21,46 +21,34 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
  *
  */
 public class NoPrepSection extends AInsertLineResolution{
-	/**
-	 * The rpmlint ID of the warning.
-	 */
-	public static final String ID = "no-%prep-section"; //$NON-NLS-1$
+    /**
+     * The rpmlint ID of the warning.
+     */
+    public static final String ID = "no-%prep-section"; //$NON-NLS-1$
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
-	 */
-	@Override
-	public String getDescription() {
-		return Messages.NoPrepSection_0;
-	}
+    @Override
+    public String getDescription() {
+        return Messages.NoPrepSection_0;
+    }
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
-	 */
-	@Override
-	public String getLabel() {
-		return ID;
-	}
+    @Override
+    public String getLabel() {
+        return ID;
+    }
 
-	/**
-	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineToInsert()
-	 */
-	@Override
-	public String getLineToInsert() {
-		return "%prep\n\n"; //$NON-NLS-1$
-	}
+    @Override
+    public String getLineToInsert() {
+        return "%prep\n\n"; //$NON-NLS-1$
+    }
 
-	/**
-	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AInsertLineResolution#getLineNumberForInsert(org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor)
-	 */
-	@Override
-	public int getLineNumberForInsert(SpecfileEditor editor) {
-		List<SpecfileSection> sections = editor.getSpecfile().getSections();
-		for (SpecfileSection section : sections) {
-			if (section.getName().equals("build")) { //$NON-NLS-1$
-				return section.getLineNumber();
-			}
-		}
-		return 0;
-	}
+    @Override
+    public int getLineNumberForInsert(SpecfileEditor editor) {
+        List<SpecfileSection> sections = editor.getSpecfile().getSections();
+        for (SpecfileSection section : sections) {
+            if (section.getName().equals("build")) { //$NON-NLS-1$
+                return section.getLineNumber();
+            }
+        }
+        return 0;
+    }
 }

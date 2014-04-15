@@ -18,9 +18,9 @@ import org.eclipse.linuxtools.rpmstubby.InputType;
  */
 public class StubifyPomHandler extends StubifyHandler {
 
-	@Override
-	protected InputType getInputType() {
-		return InputType.MAVEN_POM;
-	}
+    @Override
+    protected InputType getInputType() {
+        return InputType.MAVEN_POM;
+    }
 
 }

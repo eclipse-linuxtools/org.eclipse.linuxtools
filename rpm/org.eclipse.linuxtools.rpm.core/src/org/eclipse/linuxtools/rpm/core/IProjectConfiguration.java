@@ -19,53 +19,53 @@ import org.eclipse.core.resources.IContainer;
  *
  */
 public interface IProjectConfiguration {
-	
-	/**
-	 * Constant for the --define parameter.
-	 */
-	String DEFINE = "--define"; //$NON-NLS-1$
 
-	/**
-	 * Returns the folder to build into.
-	 * 
-	 * @return The build folder.
-	 */
-	IContainer getBuildFolder();
+    /**
+     * Constant for the --define parameter.
+     */
+    String DEFINE = "--define"; //$NON-NLS-1$
 
-	/**
-	 * Returns the folder to put built binary rpms.
-	 * 
-	 * @return The rpms folder.
-	 */
-	IContainer getRpmsFolder();
+    /**
+     * Returns the folder to build into.
+     *
+     * @return The build folder.
+     */
+    IContainer getBuildFolder();
 
-	/**
-	 * Returns the folder to retrieve sources from.
-	 * 
-	 * @return The sources folder.
-	 */
-	IContainer getSourcesFolder();
+    /**
+     * Returns the folder to put built binary rpms.
+     *
+     * @return The rpms folder.
+     */
+    IContainer getRpmsFolder();
 
-	/**
-	 * Returns the folder to retrieve spec file from.
-	 * 
-	 * @return The specs folder.
-	 */
-	IContainer getSpecsFolder();
+    /**
+     * Returns the folder to retrieve sources from.
+     *
+     * @return The sources folder.
+     */
+    IContainer getSourcesFolder();
 
-	/**
-	 * Returns the folder to put src.rpm.
-	 * 
-	 * @return The source rpms folder.
-	 */
-	IContainer getSrpmsFolder();
-	
-	
-	/**
-	 * Returns list of RPM defines to be passed wherever needed so the project structure is respected.
-	 * 
-	 * @return The defines setting various directories.
-	 */
-	List<String> getConfigDefines();
+    /**
+     * Returns the folder to retrieve spec file from.
+     *
+     * @return The specs folder.
+     */
+    IContainer getSpecsFolder();
+
+    /**
+     * Returns the folder to put src.rpm.
+     *
+     * @return The source rpms folder.
+     */
+    IContainer getSrpmsFolder();
+
+
+    /**
+     * Returns list of RPM defines to be passed wherever needed so the project structure is respected.
+     *
+     * @return The defines setting various directories.
+     */
+    List<String> getConfigDefines();
 
 }

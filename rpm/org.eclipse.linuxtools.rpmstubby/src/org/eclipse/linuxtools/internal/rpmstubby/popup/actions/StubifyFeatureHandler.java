@@ -18,9 +18,9 @@ import org.eclipse.linuxtools.rpmstubby.InputType;
  */
 public class StubifyFeatureHandler extends StubifyHandler {
 
-	@Override
-	protected InputType getInputType() {
-		return InputType.ECLIPSE_FEATURE;
-	}
+    @Override
+    protected InputType getInputType() {
+        return InputType.ECLIPSE_FEATURE;
+    }
 
 }

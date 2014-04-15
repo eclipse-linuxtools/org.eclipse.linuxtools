@@ -18,25 +18,19 @@ package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
  */
 public class PatchNotApplied extends ARemoveLineResolution {
 
-	/**
-	 * The rpmlint ID of the warning.
-	 */
-	public static final String ID = "patch-not-applied"; //$NON-NLS-1$
+    /**
+     * The rpmlint ID of the warning.
+     */
+    public static final String ID = "patch-not-applied"; //$NON-NLS-1$
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
-	 */
-	@Override
-	public String getDescription() {
-		return Messages.PatchNotApplied_0;
-	}
+    @Override
+    public String getDescription() {
+        return Messages.PatchNotApplied_0;
+    }
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
-	 */
-	@Override
-	public String getLabel() {
-		return ID;
-	}
+    @Override
+    public String getLabel() {
+        return ID;
+    }
 
 }

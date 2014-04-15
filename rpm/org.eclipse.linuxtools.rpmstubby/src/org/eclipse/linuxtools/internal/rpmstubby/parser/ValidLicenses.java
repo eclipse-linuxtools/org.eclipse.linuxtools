@@ -16,24 +16,24 @@ package org.eclipse.linuxtools.internal.rpmstubby.parser;
  */
 @SuppressWarnings("javadoc")
 public interface ValidLicenses {
-	String GPL = "GPL";
-	String ARTISTIC = "Artistic";
-	String MIT = "MIT";
-	String MPL = "MPL";
-	String APACHE = "Apache";
-	String PUBLIC_DOMAIN = "Public";
-	String ZLIB = "zlib";
-	String RICOH_SOURCE_CODE = "Ricoh";
-	String VOVIDA_SOFTWARE = "Vovida";
-	String INTEL_OPEN_SOURCE = "Intel";
-	String LGPL = "LGPL";
-	String BSD = "BSD";
-	String QPL = "QPL";
-	String IBM_PUBLIC = "IBM";
-	String PHP = "PHP";
-	String MODIFIED_CNRI_OPEN_SOURCE = "CNRI";
-	String CVW = "CVW";
-	String PYTHON = "Python";
-	String SUN_INTERNET_STANDARDS_SOURCE = "Sun";
-	String JABBER_OPEN_SOURCE = "Jabber";
+    String GPL = "GPL";
+    String ARTISTIC = "Artistic";
+    String MIT = "MIT";
+    String MPL = "MPL";
+    String APACHE = "Apache";
+    String PUBLIC_DOMAIN = "Public";
+    String ZLIB = "zlib";
+    String RICOH_SOURCE_CODE = "Ricoh";
+    String VOVIDA_SOFTWARE = "Vovida";
+    String INTEL_OPEN_SOURCE = "Intel";
+    String LGPL = "LGPL";
+    String BSD = "BSD";
+    String QPL = "QPL";
+    String IBM_PUBLIC = "IBM";
+    String PHP = "PHP";
+    String MODIFIED_CNRI_OPEN_SOURCE = "CNRI";
+    String CVW = "CVW";
+    String PYTHON = "Python";
+    String SUN_INTERNET_STANDARDS_SOURCE = "Sun";
+    String JABBER_OPEN_SOURCE = "Jabber";
 }

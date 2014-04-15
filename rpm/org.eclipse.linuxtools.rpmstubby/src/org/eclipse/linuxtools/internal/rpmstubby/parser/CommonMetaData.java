@@ -16,9 +16,9 @@ package org.eclipse.linuxtools.internal.rpmstubby.parser;
  */
 @SuppressWarnings("javadoc")
 public interface CommonMetaData {
-	String NAME = "name";
-	String DESCRIPTION = "description";
-	String VERSION = "version";
-	String LICENSE = "license";
-	String URL = "url";
+    String NAME = "name";
+    String DESCRIPTION = "description";
+    String VERSION = "version";
+    String LICENSE = "license";
+    String URL = "url";
 }

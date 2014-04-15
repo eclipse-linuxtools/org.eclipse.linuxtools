@@ -33,77 +33,74 @@ import org.eclipse.ui.ide.IDE;
 
 /**
  * Abstract class holding the common part of generators.
- *
  */
 public abstract class AbstractGenerator {
 
-	String projectName;
-	String specfileName;
+    String projectName;
+    String specfileName;
 
-	/**
-	 * Writes the given contents to a file with the given fileName in the
-	 * specified project.
-	 */
-	public void writeContent() {
-		String contents = generateSpecfile();
-		InputStream contentInputStream = new ByteArrayInputStream(
-				contents.getBytes());
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IResource resource = root.findMember(new Path(projectName));
-		if (!resource.exists() || !(resource instanceof IContainer)) {
-			IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
-					IStatus.OK, "Project \"" + projectName + "\" does not exist.", null);
-			StubbyLog.logError(new CoreException(status));
-		}
-		IContainer container = (IContainer) resource;
-		IResource specsFolder = container.getProject().findMember("SPECS"); //$NON-NLS-1$
-		IFile file = container.getFile(new Path(specfileName));
-		if (specsFolder != null) {
-			file = ((IFolder) specsFolder).getFile(new Path(specfileName));
-		}
-		final IFile openFile = file;
-		try {
-			InputStream stream = contentInputStream;
-			if (file.exists()) {
-				file.setContents(stream, true, true, null);
-			} else {
-				file.create(stream, true, null);
-			}
-			stream.close();
-		} catch (IOException e) {
-			StubbyLog.logError(e);
-		} catch (CoreException e) {
-			StubbyLog.logError(e);
-		}
-		Display.getCurrent().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						IWorkbenchPage page = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage();
-						try {
-							IDE.openEditor(page, openFile, true);
-						} catch (PartInitException e) {
-							StubbyLog.logError(e);
-						}
-					}
-				});
-	}
+    /**
+     * Writes the given contents to a file with the given fileName in the
+     * specified project.
+     */
+    public void writeContent() {
+        String contents = generateSpecfile();
+        InputStream contentInputStream = new ByteArrayInputStream(
+                contents.getBytes());
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IResource resource = root.findMember(new Path(projectName));
+        if (!resource.exists() || !(resource instanceof IContainer)) {
+            IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
+                    IStatus.OK, "Project \"" + projectName + "\" does not exist.", null);
+            StubbyLog.logError(new CoreException(status));
+        }
+        IContainer container = (IContainer) resource;
+        IResource specsFolder = container.getProject().findMember("SPECS"); //$NON-NLS-1$
+        IFile file = container.getFile(new Path(specfileName));
+        if (specsFolder != null) {
+            file = ((IFolder) specsFolder).getFile(new Path(specfileName));
+        }
+        final IFile openFile = file;
+        try {
+            InputStream stream = contentInputStream;
+            if (file.exists()) {
+                file.setContents(stream, true, true, null);
+            } else {
+                file.create(stream, true, null);
+            }
+            stream.close();
+        } catch (IOException|CoreException e) {
+            StubbyLog.logError(e);
+        }
+        Display.getCurrent().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                IWorkbenchPage page = PlatformUI.getWorkbench()
+                        .getActiveWorkbenchWindow().getActivePage();
+                try {
+                    IDE.openEditor(page, openFile, true);
+                } catch (PartInitException e) {
+                    StubbyLog.logError(e);
+                }
+            }
+        });
+    }
 
-	/**
-	 * The method that returns the string representation of the spec file.
-	 *
-	 * @return The specfile.
-	 */
-	public abstract String generateSpecfile();
+    /**
+     * The method that returns the string representation of the spec file.
+     *
+     * @return The specfile.
+     */
+    public abstract String generateSpecfile();
 
-	/**
-	 * Generate changelog
-	 *
-	 * @param buffer Buffer to write content to
-	 */
-	protected static void generateChangelog(StringBuilder buffer) {
-		buffer.append("%changelog\n");
-		buffer.append("#FIXME\n");
-	}
+    /**
+     * Generate changelog
+     *
+     * @param buffer Buffer to write content to
+     */
+    protected static void generateChangelog(StringBuilder buffer) {
+        buffer.append("%changelog\n");
+        buffer.append("#FIXME\n");
+    }
 
 }

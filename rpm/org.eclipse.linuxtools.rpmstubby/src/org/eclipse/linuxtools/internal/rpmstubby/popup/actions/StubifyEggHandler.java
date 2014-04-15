@@ -18,9 +18,9 @@ import org.eclipse.linuxtools.rpmstubby.InputType;
  */
 public class StubifyEggHandler extends StubifyHandler {
 
-	@Override
-	protected InputType getInputType() {
-		return InputType.PYTHON_EGG;
-	}
+    @Override
+    protected InputType getInputType() {
+        return InputType.PYTHON_EGG;
+    }
 
 }

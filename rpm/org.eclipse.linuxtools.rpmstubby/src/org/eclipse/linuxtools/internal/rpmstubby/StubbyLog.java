@@ -20,19 +20,9 @@ import org.eclipse.core.runtime.Status;
  */
 public final class StubbyLog {
 
-	private StubbyLog() {
-		//don't allow instantiation
-	}
-
-   /**
-    * Log the specified information.
-    *
-    * @param message A human-readable message, localized to the
-    *           current locale.
-    */
-   public static void logInfo(String message) {
-      log(IStatus.INFO, IStatus.OK, message, null);
-   }
+    private StubbyLog() {
+        //don't allow instantiation
+    }
 
    /**
     * Log the specified error.
@@ -40,19 +30,7 @@ public final class StubbyLog {
     * @param exception A low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError("Unexpected Exception", exception);
-   }
-
-   /**
-    * Log the specified error.
-    *
-    * @param message A human-readable message, localized to the
-    *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
-    *           if not applicable.
-    */
-   public static void logError(String message, Throwable exception) {
-      log(IStatus.ERROR, IStatus.OK, message, exception);
+       log(IStatus.ERROR, IStatus.OK, "Unexpected Exception", exception);
    }
 
    /**
@@ -70,9 +48,8 @@ public final class StubbyLog {
     * @param exception A low-level exception, or <code>null</code>
     *           if not applicable.
     */
-   public static void log(int severity, int code, String message,
+   private static void log(int severity, int code, String message,
          Throwable exception) {
-
       log(createStatus(severity, code, message, exception));
    }
 
@@ -92,9 +69,8 @@ public final class StubbyLog {
     *           if not applicable.
     * @return the status object (not <code>null</code>).
     */
-   public static IStatus createStatus(int severity, int code,
+   private static IStatus createStatus(int severity, int code,
          String message, Throwable exception) {
-
       return new Status(severity, StubbyPlugin.PLUGIN_ID, code,
             message, exception);
    }
@@ -104,7 +80,7 @@ public final class StubbyLog {
     *
     * @param status The status to log.
     */
-   public static void log(IStatus status) {
-	   Platform.getLog(Platform.getBundle(StubbyPlugin.PLUGIN_ID)).log(status);
+   private static void log(IStatus status) {
+       Platform.getLog(Platform.getBundle(StubbyPlugin.PLUGIN_ID)).log(status);
    }
 }

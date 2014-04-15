@@ -24,22 +24,22 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
  */
 public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
-	/**
-	 * Removes all rpmlint markers for spec and rpm files.
-	 *
-	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
-	 */
-	@Override
-	public boolean visit(IResource resource) throws CoreException {
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
-				|| Activator.RPMFILE_EXTENSION.equals(resource
-						.getFileExtension())) {
-			RpmlintParser.deleteMarkers(resource);
-			// remove internal marks
-			resource.deleteMarkers(
-					SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false,
-					IResource.DEPTH_ZERO);
-		}
-		return true;
-	}
+    /**
+     * Removes all rpmlint markers for spec and rpm files.
+     *
+     * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
+     */
+    @Override
+    public boolean visit(IResource resource) throws CoreException {
+        if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
+                || Activator.RPMFILE_EXTENSION.equals(resource
+                        .getFileExtension())) {
+            RpmlintParser.deleteMarkers(resource);
+            // remove internal marks
+            resource.deleteMarkers(
+                    SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false,
+                    IResource.DEPTH_ZERO);
+        }
+        return true;
+    }
 }

@@ -22,27 +22,24 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
  */
 public abstract class ARemoveLineResolution extends ARpmlintResolution {
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
-	 */
-	@Override
-	public void run(IMarker marker) {
+    @Override
+    public void run(IMarker marker) {
 
-		SpecfileEditor editor = getEditor(marker);
-		if (editor == null) {
-			return;
-		}
-		// Get the document
-		IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
+        SpecfileEditor editor = getEditor(marker);
+        if (editor == null) {
+            return;
+        }
+        // Get the document
+        IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
 
-		try {
-			int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));
-			int lineLength = doc.getLineLength(marker.getAttribute(IMarker.LINE_NUMBER, 0));
-			doc.replace(index, lineLength, "");  //$NON-NLS-1$
-		} catch (BadLocationException e) {
-			RpmlintLog.logError(e);
-		}
-	}
+        try {
+            int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));
+            int lineLength = doc.getLineLength(marker.getAttribute(IMarker.LINE_NUMBER, 0));
+            doc.replace(index, lineLength, "");  //$NON-NLS-1$
+        } catch (BadLocationException e) {
+            RpmlintLog.logError(e);
+        }
+    }
 
 
 }

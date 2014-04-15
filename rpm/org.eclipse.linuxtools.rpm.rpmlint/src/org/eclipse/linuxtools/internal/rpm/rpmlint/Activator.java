@@ -17,19 +17,19 @@ package org.eclipse.linuxtools.internal.rpm.rpmlint;
  */
 public class Activator {
 
-	/**
-	 * The id of this plugin.
-	 */
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpm.rpmlint"; //$NON-NLS-1$
-	
-	/**
-	 * Specfile extension constant i.e. .spec files.
-	 */
-	public static final String SPECFILE_EXTENSION = "spec"; //$NON-NLS-1$
-	
-	/**
-	 * RPM extension constant, i.e. .rpm files.
-	 */
-	public static final String RPMFILE_EXTENSION = "rpm"; //$NON-NLS-1$
+    /**
+     * The id of this plugin.
+     */
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpm.rpmlint"; //$NON-NLS-1$
+
+    /**
+     * Specfile extension constant i.e. .spec files.
+     */
+    public static final String SPECFILE_EXTENSION = "spec"; //$NON-NLS-1$
+
+    /**
+     * RPM extension constant, i.e. .rpm files.
+     */
+    public static final String RPMFILE_EXTENSION = "rpm"; //$NON-NLS-1$
 
 }

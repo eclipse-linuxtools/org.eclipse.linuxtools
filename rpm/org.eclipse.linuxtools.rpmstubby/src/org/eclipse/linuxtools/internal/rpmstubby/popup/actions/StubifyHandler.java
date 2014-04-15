@@ -27,28 +27,28 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public abstract class StubifyHandler extends AbstractHandler {
 
-	protected abstract InputType getInputType();
+    protected abstract InputType getInputType();
 
-	@Override
-	public Object execute(ExecutionEvent event) {
+    @Override
+    public Object execute(ExecutionEvent event) {
 
-		IFile featureFile = null;
-		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		if (selection instanceof IStructuredSelection) {
-			for (Object element : ((IStructuredSelection) selection).toList()) {
-				if (element instanceof IFile) {
-					featureFile = (IFile) element;
-				} else if (element instanceof IAdaptable) {
-					featureFile = (IFile) ((IAdaptable) element)
-							.getAdapter(IFile.class);
-				}
-				if (featureFile != null) {
-					Generator generator = new Generator(getInputType());
-					generator.generate(featureFile);
-				}
-			}
-		}
-		return null;
-	}
+        IFile featureFile = null;
+        ISelection selection = HandlerUtil.getCurrentSelection(event);
+        if (selection instanceof IStructuredSelection) {
+            for (Object element : ((IStructuredSelection) selection).toList()) {
+                if (element instanceof IFile) {
+                    featureFile = (IFile) element;
+                } else if (element instanceof IAdaptable) {
+                    featureFile = (IFile) ((IAdaptable) element)
+                            .getAdapter(IFile.class);
+                }
+                if (featureFile != null) {
+                    Generator generator = new Generator(getInputType());
+                    generator.generate(featureFile);
+                }
+            }
+        }
+        return null;
+    }
 
 }

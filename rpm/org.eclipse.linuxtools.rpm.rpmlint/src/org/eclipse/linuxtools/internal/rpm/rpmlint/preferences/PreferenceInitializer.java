@@ -22,16 +22,13 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * Class used to initialize default preference values.
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-	
-	/**
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
-	@Override
-	public void initializeDefaultPreferences() {
-		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID);
-		store.setDefault(PreferenceConstants.P_RPMLINT_PATH, PreferenceConstants.DP_RPMLINT_PATH);
-		store.setDefault(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES, PreferenceConstants.P_RPMLINT_SPACES);		
-		
-	}
+
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID);
+        store.setDefault(PreferenceConstants.P_RPMLINT_PATH, PreferenceConstants.DP_RPMLINT_PATH);
+        store.setDefault(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES, PreferenceConstants.P_RPMLINT_SPACES);
+
+    }
 
 }

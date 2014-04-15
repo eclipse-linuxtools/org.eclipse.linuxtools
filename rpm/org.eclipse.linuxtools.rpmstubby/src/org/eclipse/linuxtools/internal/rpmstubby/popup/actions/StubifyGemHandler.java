@@ -18,9 +18,9 @@ import org.eclipse.linuxtools.rpmstubby.InputType;
  */
 public class StubifyGemHandler extends StubifyHandler {
 
-	@Override
-	protected InputType getInputType() {
-		return InputType.RUBY_GEM;
-	}
+    @Override
+    protected InputType getInputType() {
+        return InputType.RUBY_GEM;
+    }
 
 }

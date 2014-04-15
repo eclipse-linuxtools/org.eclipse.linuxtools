@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
  */
 public class RpmlintItem {
 
-	private static final String[] sections = SpecfileParser.simpleSections;
+	private static final String[] SECTIONS = SpecfileParser.simpleSections;
 
 	private int lineNbr;
 
@@ -109,13 +109,13 @@ public class RpmlintItem {
 	 * @param refferedContent The referred content.
 	 */
 	public void setRefferedContent(String refferedContent) {
-		for (int i = 0; i < sections.length; i++) {
-			if (refferedContent.startsWith(sections[i])) {
+		for (int i = 0; i < SECTIONS.length; i++) {
+			if (refferedContent.startsWith(SECTIONS[i])) {
 				this.refferedContent = refferedContent.trim();
 				if (this.refferedContent.equals("")) {//$NON-NLS-1$
-					this.refferedContent = sections[i];
+					this.refferedContent = SECTIONS[i];
 				}
-				i = sections.length;
+				i = SECTIONS.length;
 			} else {
 				this.refferedContent = refferedContent;
 			}

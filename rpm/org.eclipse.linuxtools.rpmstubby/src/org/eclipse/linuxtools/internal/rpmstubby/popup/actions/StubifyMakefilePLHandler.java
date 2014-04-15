@@ -18,9 +18,9 @@ import org.eclipse.linuxtools.rpmstubby.InputType;
  */
 public class StubifyMakefilePLHandler extends StubifyHandler {
 
-	@Override
-	protected InputType getInputType() {
-		return InputType.PERL_MAKEFILE;
-	}
+    @Override
+    protected InputType getInputType() {
+        return InputType.PERL_MAKEFILE;
+    }
 
 }

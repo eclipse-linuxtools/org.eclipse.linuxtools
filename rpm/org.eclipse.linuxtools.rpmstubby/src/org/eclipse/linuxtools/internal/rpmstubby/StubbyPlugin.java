@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby;
 
-
 /**
  * The Stubby constants.
  */
 public interface StubbyPlugin {
 
-	/** The plug-in ID. */
-	String PLUGIN_ID = "org.eclipse.linuxtools.internal.rpmstubby";
+    /** The plug-in ID. */
+    String PLUGIN_ID = "org.eclipse.linuxtools.internal.rpmstubby";
 
 }

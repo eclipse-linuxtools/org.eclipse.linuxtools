@@ -22,24 +22,24 @@ import org.eclipse.core.resources.IResourceVisitor;
  */
 public class SpecfileVisitor implements IResourceVisitor {
 
-	private List<IResource> paths = new ArrayList<>();
+    private List<IResource> paths = new ArrayList<>();
 
-	@Override
-	public boolean visit(IResource resource) {
-		if (resource.getType() == IResource.FILE
-				&& resource.getFileExtension() != null
-				&& resource.getFileExtension().equals("spec")) { //$NON-NLS-1$
-			paths.add(resource);
-		}
-		return true;
-	}
+    @Override
+    public boolean visit(IResource resource) {
+        if (resource.getType() == IResource.FILE
+                && resource.getFileExtension() != null
+                && resource.getFileExtension().equals("spec")) { //$NON-NLS-1$
+            paths.add(resource);
+        }
+        return true;
+    }
 
-	/**
-	 * Returns a list of all spec files found.
-	 * 
-	 * @return The found spec files.
-	 */
-	public List<IResource> getSpecFiles() {
-		return paths;
-	}
+    /**
+     * Returns a list of all spec files found.
+     *
+     * @return The found spec files.
+     */
+    public List<IResource> getSpecFiles() {
+        return paths;
+    }
 }

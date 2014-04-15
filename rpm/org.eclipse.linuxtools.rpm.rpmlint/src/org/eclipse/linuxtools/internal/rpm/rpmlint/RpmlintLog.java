@@ -19,40 +19,19 @@ import org.eclipse.core.runtime.Status;
  * The logger of convenience for the Rpmlint Plug-In.
  */
 public class RpmlintLog {
-   /**
-    * Log the specified information.
-    * 
-    * @param message A human-readable message, localized to the
-    *           current locale.
-    */
-   public static void logInfo(String message) {
-      log(IStatus.INFO, IStatus.OK, message, null);
-   }
 
    /**
     * Log the specified error.
-    * 
+    *
     * @param exception A low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError(Messages.RpmlintLog_0, exception);
-   }
-
-   /**
-    * Log the specified error.
-    * 
-    * @param message A human-readable message, localized to the
-    *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
-    *           if not applicable.
-    */
-   public static void logError(String message, Throwable exception) {
-      log(IStatus.ERROR, IStatus.OK, message, exception);
+       log(IStatus.ERROR, IStatus.OK, Messages.RpmlintLog_0, exception);
    }
 
    /**
     * Log the specified information.
-    * 
+    *
     * @param severity The severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
@@ -64,7 +43,7 @@ public class RpmlintLog {
     * @param exception A low-level exception, or <code>null</code>
     *           if not applicable.
     */
-   public static void log(int severity, int code, String message,
+   private static void log(int severity, int code, String message,
          Throwable exception) {
 
       log(createStatus(severity, code, message, exception));
@@ -72,7 +51,7 @@ public class RpmlintLog {
 
    /**
     * Create a status object representing the specified information.
-    * 
+    *
     * @param severity The severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
@@ -86,7 +65,7 @@ public class RpmlintLog {
     *           if not applicable.
     * @return the status object (not <code>null</code>).
     */
-   public static IStatus createStatus(int severity, int code,
+   private static IStatus createStatus(int severity, int code,
          String message, Throwable exception) {
 
       return new Status(severity, Activator.PLUGIN_ID, code,
@@ -95,10 +74,10 @@ public class RpmlintLog {
 
    /**
     * Log the given status.
-    * 
+    *
     * @param status The status to log.
     */
-   public static void log(IStatus status) {
-	   Platform.getLog(Platform.getBundle(Activator.PLUGIN_ID)).log(status);
+   private static void log(IStatus status) {
+       Platform.getLog(Platform.getBundle(Activator.PLUGIN_ID)).log(status);
    }
 }

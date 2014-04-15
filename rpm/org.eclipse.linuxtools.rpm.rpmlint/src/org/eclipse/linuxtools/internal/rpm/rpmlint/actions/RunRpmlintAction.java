@@ -41,88 +41,87 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * Manually invoke rpmlint action, which prints the output of rpmlint execution to the console.
- *
  */
 public class RunRpmlintAction extends AbstractHandler{
-	/**
-	 * @param event The execution event.
-	 * @return Nothing.
-	 */
-	@Override
-	public Object execute(ExecutionEvent event)  {
-		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		if (selection instanceof IStructuredSelection) {
-			for (Object element : ((IStructuredSelection) selection).toList()) {
-				IFile rpmFile = null;
-				if (element instanceof IFile) {
-					rpmFile = (IFile) element;
-				} else if (element instanceof IAdaptable) {
-					rpmFile = (IFile) ((IAdaptable) element)
-							.getAdapter(IFile.class);
-				}
-				if (rpmFile != null) {
-					runRpmlint(rpmFile.getLocation().toString());
-				}
-			}
-		} else {
-			IEditorPart editor = HandlerUtil.getActiveEditor(event);
-			if (editor != null) {
-				IEditorInput editorInput = editor.getEditorInput();
-				if (editorInput instanceof IFileEditorInput) {
-					runRpmlint(((IFileEditorInput) editorInput).getFile().getLocation().toString());
-				} else if (editorInput instanceof IURIEditorInput) {
-					runRpmlint(((IURIEditorInput) editorInput).getURI().getPath());
-				}
-			}
-		}
-		return null;
+    /**
+     * @param event The execution event.
+     * @return Nothing.
+     */
+    @Override
+    public Object execute(ExecutionEvent event)  {
+        ISelection selection = HandlerUtil.getCurrentSelection(event);
+        if (selection instanceof IStructuredSelection) {
+            for (Object element : ((IStructuredSelection) selection).toList()) {
+                IFile rpmFile = null;
+                if (element instanceof IFile) {
+                    rpmFile = (IFile) element;
+                } else if (element instanceof IAdaptable) {
+                    rpmFile = (IFile) ((IAdaptable) element)
+                            .getAdapter(IFile.class);
+                }
+                if (rpmFile != null) {
+                    runRpmlint(rpmFile.getLocation().toString());
+                }
+            }
+        } else {
+            IEditorPart editor = HandlerUtil.getActiveEditor(event);
+            if (editor != null) {
+                IEditorInput editorInput = editor.getEditorInput();
+                if (editorInput instanceof IFileEditorInput) {
+                    runRpmlint(((IFileEditorInput) editorInput).getFile().getLocation().toString());
+                } else if (editorInput instanceof IURIEditorInput) {
+                    runRpmlint(((IURIEditorInput) editorInput).getURI().getPath());
+                }
+            }
+        }
+        return null;
 
-	}
+    }
 
-	private static void runRpmlint(String location) {
-		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
-				PreferenceConstants.P_RPMLINT_PATH);
-		try {
-			if (Utils.fileExist(rpmlintPath)) {
-				String output = Utils.runCommandToString(rpmlintPath,
-						"-i", location); //$NON-NLS-1$
-				MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
-				MessageConsoleStream out = myConsole
-						.newMessageStream();
-				myConsole.clearConsole();
-				myConsole.activate();
-				out.println(output);
-			} else {
-				IStatus warning = new Status(
-						IStatus.WARNING,
-						Activator.PLUGIN_ID,
-						1,
-						Messages.RunRpmlintAction_1,
-						null);
-				ErrorDialog.openError(PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getShell(),
-						Messages.RunRpmlintAction_2,
-						null, warning);
-			}
-		} catch (IOException e) {
-			// FIXME: rpmlint is not installed in the default place
-			// -> ask user to open the prefs page.
-			RpmlintLog.logError(e);
-		}
-	}
+    private static void runRpmlint(String location) {
+        String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
+                PreferenceConstants.P_RPMLINT_PATH);
+        try {
+            if (Utils.fileExist(rpmlintPath)) {
+                String output = Utils.runCommandToString(rpmlintPath,
+                        "-i", location); //$NON-NLS-1$
+                MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
+                MessageConsoleStream out = myConsole
+                        .newMessageStream();
+                myConsole.clearConsole();
+                myConsole.activate();
+                out.println(output);
+            } else {
+                IStatus warning = new Status(
+                        IStatus.WARNING,
+                        Activator.PLUGIN_ID,
+                        1,
+                        Messages.RunRpmlintAction_1,
+                        null);
+                ErrorDialog.openError(PlatformUI.getWorkbench()
+                        .getActiveWorkbenchWindow().getShell(),
+                        Messages.RunRpmlintAction_2,
+                        null, warning);
+            }
+        } catch (IOException e) {
+            // FIXME: rpmlint is not installed in the default place
+            // -> ask user to open the prefs page.
+            RpmlintLog.logError(e);
+        }
+    }
 
-	private static MessageConsole findConsole(String name) {
-		ConsolePlugin plugin = ConsolePlugin.getDefault();
-		IConsoleManager conMan = plugin.getConsoleManager();
-		IConsole[] existing = conMan.getConsoles();
-		for (int i = 0; i < existing.length; i++) {
-			if (name.equals(existing[i].getName())) {
-				return (MessageConsole) existing[i];
-			}
-		}
-		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
-		conMan.addConsoles(new IConsole[] { myConsole });
-		return myConsole;
-	}
+    private static MessageConsole findConsole(String name) {
+        ConsolePlugin plugin = ConsolePlugin.getDefault();
+        IConsoleManager conMan = plugin.getConsoleManager();
+        IConsole[] existing = conMan.getConsoles();
+        for (int i = 0; i < existing.length; i++) {
+            if (name.equals(existing[i].getName())) {
+                return (MessageConsole) existing[i];
+            }
+        }
+        // no console found, so create a new one
+        MessageConsole myConsole = new MessageConsole(name, null);
+        conMan.addConsoles(new IConsole[] { myConsole });
+        return myConsole;
+    }
 }

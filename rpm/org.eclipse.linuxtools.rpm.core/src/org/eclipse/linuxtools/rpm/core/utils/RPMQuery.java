@@ -26,112 +26,112 @@ import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 
 /**
  * Utility class for executing queries on existing binary and source RPMs
- * 
+ *
  */
-public class RPMQuery {
+public final class RPMQuery {
 
-	private static final String QF = "--qf"; //$NON-NLS-1$
-	private static final String QP = "-qp"; //$NON-NLS-1$
+    private static final String QF = "--qf"; //$NON-NLS-1$
+    private static final String QP = "-qp"; //$NON-NLS-1$
 
-	private RPMQuery() {
-	}
+    private RPMQuery() {
+    }
 
-	public static String getHeaderInfo(IFile rpmFile) {
-		return query(rpmFile, "-qip"); //$NON-NLS-1$
-	}
+    public static String getHeaderInfo(IFile rpmFile) {
+        return query(rpmFile, "-qip"); //$NON-NLS-1$
+    }
 
-	public static String getChangelog(IFile rpmFile) {
-		return query(rpmFile, "--changelog", QP); //$NON-NLS-1$
-	}
+    public static String getChangelog(IFile rpmFile) {
+        return query(rpmFile, "--changelog", QP); //$NON-NLS-1$
+    }
 
-	public static String getArch(IFile rpmFile) {
-		return query(rpmFile, QF, "%{ARCH}", QP); //$NON-NLS-1$
-	}
+    public static String getArch(IFile rpmFile) {
+        return query(rpmFile, QF, "%{ARCH}", QP); //$NON-NLS-1$
+    }
 
-	public static String getPlatform(IFile rpmFile) {
-		return query(rpmFile, QF, "%{PLATFORM}", QP); //$NON-NLS-1$
-	}
+    public static String getPlatform(IFile rpmFile) {
+        return query(rpmFile, QF, "%{PLATFORM}", QP); //$NON-NLS-1$
+    }
 
-	public static String getOS(IFile rpmFile) {
-		return query(rpmFile, QF, "%{OS}", QP); //$NON-NLS-1$
-	}
+    public static String getOS(IFile rpmFile) {
+        return query(rpmFile, QF, "%{OS}", QP); //$NON-NLS-1$
+    }
 
-	public static String getBuildHost(IFile rpmFile) {
-		return query(rpmFile, QF, "%{BUILDHOST}", QP); //$NON-NLS-1$
-	}
+    public static String getBuildHost(IFile rpmFile) {
+        return query(rpmFile, QF, "%{BUILDHOST}", QP); //$NON-NLS-1$
+    }
 
-	public static String getBuildTime(IFile rpmFile) {
-		return query(rpmFile, QF, "%{BUILDTIME:date}", QP); //$NON-NLS-1$
-	}
+    public static String getBuildTime(IFile rpmFile) {
+        return query(rpmFile, QF, "%{BUILDTIME:date}", QP); //$NON-NLS-1$
+    }
 
-	public static String getPreInstallScript(IFile rpmFile) {
-		return query(rpmFile, QF, "%{PREIN}", QP); //$NON-NLS-1$
-	}
+    public static String getPreInstallScript(IFile rpmFile) {
+        return query(rpmFile, QF, "%{PREIN}", QP); //$NON-NLS-1$
+    }
 
-	public static String getPostInstallScript(IFile rpmFile) {
-		return query(rpmFile, QF, "%{POSTIN}", QP); //$NON-NLS-1$
-	}
+    public static String getPostInstallScript(IFile rpmFile) {
+        return query(rpmFile, QF, "%{POSTIN}", QP); //$NON-NLS-1$
+    }
 
-	public static String getPreUninstallScript(IFile rpmFile) {
-		return query(rpmFile, QF, "%{PREUN}", QP); //$NON-NLS-1$
-	}
+    public static String getPreUninstallScript(IFile rpmFile) {
+        return query(rpmFile, QF, "%{PREUN}", QP); //$NON-NLS-1$
+    }
 
-	public static String getPostUninstallScript(IFile rpmFile) {
-		return query(rpmFile, QF, "%{POSTUN}", QP); //$NON-NLS-1$
-	}
+    public static String getPostUninstallScript(IFile rpmFile) {
+        return query(rpmFile, QF, "%{POSTUN}", QP); //$NON-NLS-1$
+    }
 
-	public static String getProvides(IFile rpmFile) {
-		return query(rpmFile, "-qlp"); //$NON-NLS-1$
-	}
+    public static String getProvides(IFile rpmFile) {
+        return query(rpmFile, "-qlp"); //$NON-NLS-1$
+    }
 
-	private static String query(IFile rpmFile, String... args) {
-		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
-		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-		List<String> command = new ArrayList<>();
-		command.add(rpmCmd);
-		command.addAll(Arrays.asList(args));
-		command.add(rpmFile.getLocation().toOSString());
-		try {
-			return Utils.runCommandToString(command.toArray(new String[command
-			                                                           .size()]));
-		} catch (IOException e) {
-			// ignore - nothing that deserves showing to the user 
-		}
-		return ""; //$NON-NLS-1$
-	}
+    private static String query(IFile rpmFile, String... args) {
+        IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+        String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
+        List<String> command = new ArrayList<>();
+        command.add(rpmCmd);
+        command.addAll(Arrays.asList(args));
+        command.add(rpmFile.getLocation().toOSString());
+        try {
+            return Utils.runCommandToString(command.toArray(new String[command
+                                                                       .size()]));
+        } catch (IOException e) {
+            // ignore - nothing that deserves showing to the user
+        }
+        return ""; //$NON-NLS-1$
+    }
 
-	/**
-	 * Uses RPM to eval the given string.
-	 * @param toEval The string to be evaled.
-	 * @return The value of the evaluation.
-	 * @throws CoreException If there is IOException when calling.
-	 */
-	public static String eval(String toEval) throws CoreException {
-		return eval(null, toEval);
-	}
+    /**
+     * Uses RPM to eval the given string.
+     * @param toEval The string to be evaled.
+     * @return The value of the evaluation.
+     * @throws CoreException If there is IOException when calling.
+     */
+    public static String eval(String toEval) throws CoreException {
+        return eval(null, toEval);
+    }
 
-	/**
-	 * Uses RPM to eval the given string.
-	 * @param project Underlying project.
-	 * @param toEval The string to be evaled.
-	 * @return The value of the evaluation.
-	 * @throws CoreException If there is IOException when calling.
-	 * @since 2.1
-	 */
-	public static String eval(IProject project, String toEval) throws CoreException {
-		IEclipsePreferences node = DefaultScope.INSTANCE
-				.getNode(IRPMConstants.RPM_CORE_ID);
-		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-		List<String> command = new ArrayList<>();
-		command.add(rpmCmd);
-		command.add("--eval"); //$NON-NLS-1$
-		command.add(toEval);
-		try {
-			return Utils.runCommandToString(project, command.toArray(new String[command.size()]));
-		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-		}
-	}
+    /**
+     * Uses RPM to eval the given string.
+     * @param project Underlying project.
+     * @param toEval The string to be evaled.
+     * @return The value of the evaluation.
+     * @throws CoreException If there is IOException when calling.
+     * @since 2.1
+     */
+    public static String eval(IProject project, String toEval) throws CoreException {
+        IEclipsePreferences node = DefaultScope.INSTANCE
+                .getNode(IRPMConstants.RPM_CORE_ID);
+        String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
+        List<String> command = new ArrayList<>();
+        command.add(rpmCmd);
+        command.add("--eval"); //$NON-NLS-1$
+        command.add(toEval);
+        try {
+            return Utils.runCommandToString(project, command.toArray(new String[command.size()]));
+        } catch (IOException e) {
+            throw new CoreException(new Status(IStatus.ERROR,
+                    IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+        }
+    }
 
 }

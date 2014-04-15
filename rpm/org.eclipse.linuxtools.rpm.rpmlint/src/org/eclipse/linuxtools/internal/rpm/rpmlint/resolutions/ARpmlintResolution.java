@@ -28,37 +28,37 @@ import org.eclipse.ui.ide.IDE;
 public abstract class ARpmlintResolution implements IMarkerResolution2 {
 
 
-	/**
-	 * No image for rpmlint resolutions for now.
-	 *
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	@Override
-	public Image getImage() {
-		return null;
-	}
+    /**
+     * No image for rpmlint resolutions for now.
+     *
+     * @see org.eclipse.ui.IMarkerResolution2#getImage()
+     */
+    @Override
+    public Image getImage() {
+        return null;
+    }
 
-	/**
-	 * Returns the SpecfileEditor for the given IMarker if any.
-	 *
-	 * @param marker The marker to use for retrieving the editor.
-	 * @return The SpecfileEditor this marker is from or null if it's not a SpecfileEditor.
-	 */
-	protected SpecfileEditor getEditor(IMarker marker) {
-		// Open or activate the editor.
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		IEditorPart part;
-		try {
-			part = IDE.openEditor(page, marker);
-		} catch (PartInitException e) {
-			RpmlintLog.logError(e);
-			return null;
-		}
-		// Get the editor's document.
-		if (!(part instanceof SpecfileEditor)) {
-			return null;
-		}
-		return (SpecfileEditor) part;
-	}
+    /**
+     * Returns the SpecfileEditor for the given IMarker if any.
+     *
+     * @param marker The marker to use for retrieving the editor.
+     * @return The SpecfileEditor this marker is from or null if it's not a SpecfileEditor.
+     */
+    protected SpecfileEditor getEditor(IMarker marker) {
+        // Open or activate the editor.
+        IWorkbenchPage page = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage();
+        IEditorPart part;
+        try {
+            part = IDE.openEditor(page, marker);
+        } catch (PartInitException e) {
+            RpmlintLog.logError(e);
+            return null;
+        }
+        // Get the editor's document.
+        if (!(part instanceof SpecfileEditor)) {
+            return null;
+        }
+        return (SpecfileEditor) part;
+    }
 }

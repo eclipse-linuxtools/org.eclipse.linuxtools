@@ -34,10 +34,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 */
 	public static final String RPMLINT_REFFERED_CONTENT = "rpmlintrefferedContent"; //$NON-NLS-1$
 
-
-	/**
-	 * @see org.eclipse.ui.IMarkerResolutionGenerator2#hasResolutions(org.eclipse.core.resources.IMarker)
-	 */
 	@Override
 	public boolean hasResolutions(IMarker marker) {
 		String rpmlintErrorId = getRpmlintErrorId(marker);
@@ -64,9 +60,6 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 		return false;
 	}
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolutionGenerator#getResolutions(org.eclipse.core.resources.IMarker)
-	 */
 	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
 		List<IMarkerResolution> resolutions = new ArrayList<>();
@@ -95,10 +88,10 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	}
 
 	/**
-	 * Return the rpmlint error id attribute for the specified marker
+	 * Return the rpmlint error id attribute for the specified marker.
 	 *
-	 * @param marker the marker to check
-	 * @return the rpmlint error id or <code>""</code> if none
+	 * @param marker The marker to check.
+	 * @return The rpmlint error id or <code>""</code> if none.
 	 */
 	private static String getRpmlintErrorId(IMarker marker) {
 		return marker.getAttribute(RPMLINT_ERROR_ID, ""); //$NON-NLS-1$

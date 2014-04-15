@@ -14,34 +14,34 @@ package org.eclipse.linuxtools.rpmstubby;
 
 /**
  * Supported input types and file name patterns for the corresponding files.
- * 
+ *
  */
 public enum InputType {
 
-	/** Eclipse feature.xml file. */
-	ECLIPSE_FEATURE("feature.xml"),
-	/** Maven pom.xml file. */
-	MAVEN_POM("pom.xml"),
-	/** Python Egg setup.py file */
-	PYTHON_EGG("setup.py"),
-	/** Ruby *.gemspec file */
-	RUBY_GEM("*.gemspec"),
-	/** Perl Makefile.PL file */
-	PERL_MAKEFILE("Makefile.PL");
+    /** Eclipse feature.xml file. */
+    ECLIPSE_FEATURE("feature.xml"),
+    /** Maven pom.xml file. */
+    MAVEN_POM("pom.xml"),
+    /** Python Egg setup.py file */
+    PYTHON_EGG("setup.py"),
+    /** Ruby *.gemspec file */
+    RUBY_GEM("*.gemspec"),
+    /** Perl Makefile.PL file */
+    PERL_MAKEFILE("Makefile.PL");
 
-	private String fileNamePattern;
+    private String fileNamePattern;
 
-	private InputType(String fileName) {
-		this.fileNamePattern = fileName;
-	}
+    private InputType(String fileName) {
+        this.fileNamePattern = fileName;
+    }
 
-	/**
-	 * Returns the file name pattern for the input type.
-	 * 
-	 * @return The pattern for the file name e.g. feature.xml or pom.xml.
-	 */
-	public String getFileNamePattern() {
-		return fileNamePattern;
-	}
+    /**
+     * Returns the file name pattern for the input type.
+     *
+     * @return The pattern for the file name e.g. feature.xml or pom.xml.
+     */
+    public String getFileNamePattern() {
+        return fileNamePattern;
+    }
 
 }

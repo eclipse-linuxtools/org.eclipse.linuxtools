@@ -27,38 +27,35 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.parser.RpmlintParser;
  */
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
-	private List<String> paths = new ArrayList<>();
+    private List<String> paths = new ArrayList<>();
 
-	/**
-	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
-	 */
-	@Override
-	public boolean visit(IResourceDelta delta) {
-		IResource resource = delta.getResource();
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
-				|| Activator.RPMFILE_EXTENSION.equals(resource
-						.getFileExtension())) {
-			switch (delta.getKind()) {
-			// we first visiting resources to be able to run the rpmlint command
-			// only once. That improve drastically the performance.
-			case IResourceDelta.ADDED:
-				paths.add(resource.getLocation().toOSString());
-				break;
-			case IResourceDelta.CHANGED:
-				RpmlintParser.deleteMarkers(resource);
-				paths.add(resource.getLocation().toOSString());
-				break;
-			}
-		}
-		return true;
-	}
+    @Override
+    public boolean visit(IResourceDelta delta) {
+        IResource resource = delta.getResource();
+        if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
+                || Activator.RPMFILE_EXTENSION.equals(resource
+                        .getFileExtension())) {
+            switch (delta.getKind()) {
+            // we first visiting resources to be able to run the rpmlint command
+            // only once. That improve drastically the performance.
+            case IResourceDelta.ADDED:
+                paths.add(resource.getLocation().toOSString());
+                break;
+            case IResourceDelta.CHANGED:
+                RpmlintParser.deleteMarkers(resource);
+                paths.add(resource.getLocation().toOSString());
+                break;
+            }
+        }
+        return true;
+    }
 
-	/**
-	 * Returns the visited and marked paths.
-	 * @return The marked paths.
-	 */
-	public List<String> getVisitedPaths() {
-		return paths;
-	}
+    /**
+     * Returns the visited and marked paths.
+     * @return The marked paths.
+     */
+    public List<String> getVisitedPaths() {
+        return paths;
+    }
 
 }

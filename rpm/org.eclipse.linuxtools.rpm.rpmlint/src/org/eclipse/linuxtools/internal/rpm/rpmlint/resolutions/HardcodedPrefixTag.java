@@ -16,24 +16,18 @@ package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
  *
  */
 public class HardcodedPrefixTag extends ARemoveLineResolution{
-	/**
-	 * Rpmlint warning id.
-	 */
-	public static final String ID = "hardcoded-prefix-tag"; //$NON-NLS-1$
+    /**
+     * Rpmlint warning id.
+     */
+    public static final String ID = "hardcoded-prefix-tag"; //$NON-NLS-1$
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
-	 */
-	@Override
-	public String getDescription() {
-		return Messages.HardcodedPrefixTag_0;
-	}
+    @Override
+    public String getDescription() {
+        return Messages.HardcodedPrefixTag_0;
+    }
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
-	 */
-	@Override
-	public String getLabel() {
-		return ID;
-	}
+    @Override
+    public String getLabel() {
+        return ID;
+    }
 }

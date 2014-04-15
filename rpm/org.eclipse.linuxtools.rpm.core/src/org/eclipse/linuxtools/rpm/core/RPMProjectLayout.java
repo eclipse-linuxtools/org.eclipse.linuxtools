@@ -13,15 +13,15 @@ package org.eclipse.linuxtools.rpm.core;
 /**
  * Project layouts are used to determine what settings need to be passed to
  * rpmbuild in order to make it recognize the FS layout.
- * 
+ *
  */
 public enum RPMProjectLayout {
-	/**
-	 * Default rpmbuild layout with separate SOURCES, SPECS, RPMS, SRPMS and BUILD directories.
-	 */
-	RPMBUILD, 
-	/**
-	 * Flat layout - all sources, spec file, buildroot and binary rpms are in the same directory.
-	 */
-	FLAT;
+    /**
+     * Default rpmbuild layout with separate SOURCES, SPECS, RPMS, SRPMS and BUILD directories.
+     */
+    RPMBUILD,
+    /**
+     * Flat layout - all sources, spec file, buildroot and binary rpms are in the same directory.
+     */
+    FLAT;
 }

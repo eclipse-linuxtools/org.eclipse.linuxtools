@@ -21,45 +21,42 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
  */
 public abstract class AReplaceTextResolution extends ARpmlintResolution {
 
-	/**
-	 * Returns the original string
-	 *
-	 * @return the original string
-	 */
-	public abstract String getOriginalString();
+    /**
+     * Returns the original string.
+     *
+     * @return The original string.
+     */
+    public abstract String getOriginalString();
 
-	/**
-	 * Returns the string to replace in the <code>Document</code>
-	 *
-	 * @return the string to replace
-	 *
-	 */
-	public abstract String getReplaceString();
+    /**
+     * Returns the string to replace in the <code>Document</code>.
+     *
+     * @return The string to replace.
+     *
+     */
+    public abstract String getReplaceString();
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
-	 */
-	@Override
-	public void run(IMarker marker) {
+    @Override
+    public void run(IMarker marker) {
 
-		SpecfileEditor editor = getEditor(marker);
-		if (editor == null) {
-			return;
-		}
-		IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
+        SpecfileEditor editor = getEditor(marker);
+        if (editor == null) {
+            return;
+        }
+        IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
 
-		try {
-			int lineNumber = marker.getAttribute(IMarker.LINE_NUMBER, 0);
-			int index = doc.getLineOffset(lineNumber);
-			String line = editor.getSpecfile().getLine(lineNumber);
-			int rowIndex = line.indexOf(getOriginalString());
-			if (rowIndex > -1){
-				doc.replace(index+rowIndex, getOriginalString().length(), getReplaceString());
-			}
-		} catch (BadLocationException e) {
-			RpmlintLog.logError(e);
-		}
-	}
+        try {
+            int lineNumber = marker.getAttribute(IMarker.LINE_NUMBER, 0);
+            int index = doc.getLineOffset(lineNumber);
+            String line = editor.getSpecfile().getLine(lineNumber);
+            int rowIndex = line.indexOf(getOriginalString());
+            if (rowIndex > -1){
+                doc.replace(index+rowIndex, getOriginalString().length(), getReplaceString());
+            }
+        } catch (BadLocationException e) {
+            RpmlintLog.logError(e);
+        }
+    }
 
 
 }

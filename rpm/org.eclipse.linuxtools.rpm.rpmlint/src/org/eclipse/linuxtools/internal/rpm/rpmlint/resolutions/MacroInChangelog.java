@@ -22,34 +22,22 @@ public class MacroInChangelog extends AReplaceTextResolution {
 	 */
 	public static final String ID = "macro-in-%changelog"; //$NON-NLS-1$
 
-	/**
-	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AReplaceTextResolution#getOriginalString()
-	 */
 	@Override
 	public String getOriginalString() {
 		return "%"; //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions.AReplaceTextResolution#getReplaceString()
-	 */
 	@Override
 	public String getReplaceString() {
 		return "%%"; //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
-	 */
 	@Override
 	public String getDescription() {
 		return Messages.MacroInChangelog_0
 				+ Messages.MacroInChangelog_1;
 	}
 
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return ID;
