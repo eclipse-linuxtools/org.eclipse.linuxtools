@@ -170,7 +170,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 				toolkit).addSelectionListener(new ImportButtonListener());
 		createPushButton(buttonList, Messages.ImportRPMsPage_buttonRemoveRPMs,
 				toolkit).addSelectionListener(new RemoveButtonListener());
-		createSpace(buttonList);
+		createSpace();
 
 		createPushButton(buttonList, Messages.ImportRPMsPage_buttonCreateRepo,
 				toolkit).addSelectionListener(new CreaterepoButtonListener());
@@ -217,7 +217,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 	 *
 	 * @param parent The composite to attach a space to.
 	 */
-	private void createSpace(Composite parent) {
+	private void createSpace() {
 		new Label(buttonList, SWT.NONE).setLayoutData(new GridData(0,0));
 	}
 

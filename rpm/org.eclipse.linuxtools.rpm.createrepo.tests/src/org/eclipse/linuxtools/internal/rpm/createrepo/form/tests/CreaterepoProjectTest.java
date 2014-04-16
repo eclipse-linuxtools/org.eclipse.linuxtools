@@ -203,7 +203,7 @@ public class CreaterepoProjectTest {
 		// make sure that content folder doesn't exist
 		assertFalse(createrepoProject.getContentFolder().exists());
 		// assume that there is creatrepo version of >= 0.9.8
-		IStatus validVersion = Createrepo.isCorrectVersion(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
+		IStatus validVersion = Createrepo.isCorrectVersion();
 		Assume.assumeTrue(validVersion.isOK());
 
 		IStatus status = createrepoProject.createrepo(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$

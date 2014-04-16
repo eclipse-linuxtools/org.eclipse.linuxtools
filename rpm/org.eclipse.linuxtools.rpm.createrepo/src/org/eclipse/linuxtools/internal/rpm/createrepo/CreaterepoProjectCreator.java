@@ -26,7 +26,9 @@ import org.eclipse.core.runtime.Platform;
 /**
  * Utility class to help create a createrepo project.
  */
-public class CreaterepoProjectCreator {
+public final class CreaterepoProjectCreator {
+
+    private CreaterepoProjectCreator() {}
 
 	/**
 	 * Create a createrepo project given a project name and the progress

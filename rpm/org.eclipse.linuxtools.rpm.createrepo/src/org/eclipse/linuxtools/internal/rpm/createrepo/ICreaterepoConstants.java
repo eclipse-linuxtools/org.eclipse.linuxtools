@@ -15,40 +15,40 @@ package org.eclipse.linuxtools.internal.rpm.createrepo;
  */
 public interface ICreaterepoConstants {
 
-	/**
-	 * The folder which contains the repodata folder as well as the
-	 * RPMs.
-	 */
-	String CONTENT_FOLDER = "content"; //$NON-NLS-1$
+    /**
+     * The folder which contains the repodata folder as well as the
+     * RPMs.
+     */
+    String CONTENT_FOLDER = "content"; //$NON-NLS-1$
 
-	/**
-	 * The file extension of RPM files.
-	 */
-	String REPO_FILE_EXTENSION = "repo"; //$NON-NLS-1$
+    /**
+     * The file extension of RPM files.
+     */
+    String REPO_FILE_EXTENSION = "repo"; //$NON-NLS-1$
 
-	/**
-	 * The delimiter of preferences.
-	 */
-	String DELIMITER = ";"; //$NON-NLS-1$
+    /**
+     * The delimiter of preferences.
+     */
+    String DELIMITER = ";"; //$NON-NLS-1$
 
-	/**
-	 * The file extension of RPM files.
-	 */
-	String RPM_FILE_EXTENSION = "rpm"; 	//$NON-NLS-1$
+    /**
+     * The file extension of RPM files.
+     */
+    String RPM_FILE_EXTENSION = "rpm"; 	//$NON-NLS-1$
 
-	/**
-	 * An empty string.
-	 */
-	String EMPTY_STRING = ""; //$NON-NLS-1$
+    /**
+     * An empty string.
+     */
+    String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	/**
-	 * The main createrepo command name.
-	 */
-	String CREATEREPO_COMMAND = "createrepo"; //$NON-NLS-1$
+    /**
+     * The main createrepo command name.
+     */
+    String CREATEREPO_COMMAND = "createrepo"; //$NON-NLS-1$
 
-	/**
-	 * Dashes used for commands.
-	 */
-	String DASH = "--"; //$NON-NLS-1$
+    /**
+     * Dashes used for commands.
+     */
+    String DASH = "--"; //$NON-NLS-1$
 
 }

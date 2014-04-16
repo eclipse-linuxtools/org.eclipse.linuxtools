@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProject;
-import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoUtils;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
@@ -158,7 +157,7 @@ public class CreaterepoImportRPMsPageTest {
 	@Test
 	public void testCreaterepo() throws CoreException {
 		// assume that there is creatrepo version of >= 0.9.8
-		IStatus validVersion = Createrepo.isCorrectVersion(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
+		IStatus validVersion = Createrepo.isCorrectVersion();
 		Assume.assumeTrue(validVersion.isOK());
 		importPageBot.button(Messages.ImportRPMsPage_buttonCreateRepo).click();
 		// make the bot wait until the download job shell closes before proceeding the tests

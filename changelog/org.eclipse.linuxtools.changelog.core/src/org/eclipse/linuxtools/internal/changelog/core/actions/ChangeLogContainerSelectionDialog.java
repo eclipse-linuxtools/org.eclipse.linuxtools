@@ -24,12 +24,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.ISelectionValidator;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 /**
@@ -50,10 +47,6 @@ import org.eclipse.ui.dialogs.SelectionDialog;
  * @noextend This class is not intended to be subclassed by clients.
  */
 public class ChangeLogContainerSelectionDialog extends SelectionDialog {
-    /**
-	 *
-	 */
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private static final String ContainerSelectionDialog_title = Messages.getString("ChangeLogContainerSelectionDialog.Title"); //$NON-NLS-1$
 	private static final String ContainerSelectionDialog_message = Messages.getString("ChangeLogContainerSelectionDialog.Message"); //$NON-NLS-1$
@@ -71,9 +64,6 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
 
     // the validation message
     Label statusMessage;
-
-    //for validating the selection
-    ISelectionValidator validator;
 
     // show closed projects by default
     private boolean showClosedProjects = true;
@@ -122,25 +112,8 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
         // create composite
         Composite area = (Composite) super.createDialogArea(parent);
 
-        Listener listener = new Listener() {
-            @Override
-			public void handleEvent(Event event) {
-                if (statusMessage != null && validator != null) {
-                    String errorMsg = validator.isValid(group
-                            .getContainerFullPath());
-                    if (errorMsg == null || errorMsg.equals(EMPTY_STRING)) {
-                        statusMessage.setText(EMPTY_STRING);
-                        getOkButton().setEnabled(true);
-                    } else {
-                        statusMessage.setText(errorMsg);
-                        getOkButton().setEnabled(false);
-                    }
-                }
-            }
-        };
-
         // container selection group
-        group = new ChangeLogContainerSelectionGroup(area, listener,
+        group = new ChangeLogContainerSelectionGroup(area,
                 allowNewContainerName, getMessage(), showClosedProjects, initialSelection);
         if (initialSelection != null) {
             group.setSelectedContainer(initialSelection);

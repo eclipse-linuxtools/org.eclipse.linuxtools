@@ -15,24 +15,24 @@ package org.eclipse.linuxtools.internal.rpm.createrepo;
  */
 public interface ICreaterepoCompressionTypes {
 
-	/**
-	 * Default compression type.
-	 */
-	String COMPAT = "compat"; //$NON-NLS-1$
+    /**
+     * Default compression type.
+     */
+    String COMPAT = "compat"; //$NON-NLS-1$
 
-	/**
-	 * May not be available.
-	 */
-	String XZ = "xz"; //$NON-NLS-1$
+    /**
+     * May not be available.
+     */
+    String XZ = "xz"; //$NON-NLS-1$
 
-	/**
-	 * GZ.
-	 */
-	String GZ = "gz"; //$NON-NLS-1$
+    /**
+     * GZ.
+     */
+    String GZ = "gz"; //$NON-NLS-1$
 
-	/**
-	 * BZ2.
-	 */
-	String BZ2 = "bz2"; //$NON-NLS-1$
+    /**
+     * BZ2.
+     */
+    String BZ2 = "bz2"; //$NON-NLS-1$
 
 }

@@ -4,16 +4,15 @@ import java.io.DataInput;
 import java.io.IOException;
 
 public class HistogramDecoder64 extends HistogramDecoder {
-	
-	public HistogramDecoder64(GmonDecoder decoder) {
-		super(decoder);
-	}
-	
-	@Override
-	protected long readAddress(DataInput stream) throws IOException {
-		long ret = stream.readLong();
-		return ret;
-	}
 
-	
+    public HistogramDecoder64(GmonDecoder decoder) {
+        super(decoder);
+    }
+
+    @Override
+    protected long readAddress(DataInput stream) throws IOException {
+        return stream.readLong();
+    }
+
+
 }

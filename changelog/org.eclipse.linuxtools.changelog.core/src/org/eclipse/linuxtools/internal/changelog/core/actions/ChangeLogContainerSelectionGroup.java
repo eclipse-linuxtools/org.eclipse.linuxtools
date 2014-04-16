@@ -80,9 +80,6 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	 *
 	 * @param parent
 	 *            The parent widget of the group.
-	 * @param listener
-	 *            A listener to forward events to. Can be null if no listener is
-	 *            required.
 	 * @param allowNewContainerName
 	 *            Enable the user to type in a new container name instead of
 	 *            just selecting from the existing ones.
@@ -91,10 +88,9 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	 * @param showClosedProjects
 	 *            Whether or not to show closed projects.
 	 */
-	public ChangeLogContainerSelectionGroup(Composite parent, Listener listener,
-			boolean allowNewContainerName, String message,
+	public ChangeLogContainerSelectionGroup(Composite parent, boolean allowNewContainerName, String message,
 			boolean showClosedProjects, IContainer initialSelection) {
-		this(parent, listener, allowNewContainerName, message,
+		this(parent, allowNewContainerName, message,
 				showClosedProjects, SIZING_SELECTION_PANE_HEIGHT,
 				SIZING_SELECTION_PANE_WIDTH, initialSelection);
 	}
@@ -104,9 +100,6 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	 *
 	 * @param parent
 	 *            The parent widget of the group.
-	 * @param listener
-	 *            A listener to forward events to. Can be null if no listener is
-	 *            required.
 	 * @param allowNewContainerName
 	 *            Enable the user to type in a new container name instead of
 	 *            just selecting from the existing ones.
@@ -119,11 +112,10 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	 * @param widthHint
 	 *            width hint for the drill down composite
 	 */
-	public ChangeLogContainerSelectionGroup(Composite parent, Listener listener,
+	public ChangeLogContainerSelectionGroup(Composite parent,
 			boolean allowNewContainerName, String message,
 			boolean showClosedProjects, int heightHint, int widthHint, IContainer initialSelection) {
 		super(parent, SWT.NONE);
-		this.listener = listener;
 		this.allowNewContainerName = allowNewContainerName;
 		this.showClosedProjects = showClosedProjects;
 		this.initialSelection = initialSelection;
@@ -280,15 +272,16 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 	public IPath getContainerFullPath() {
 		if (allowNewContainerName) {
 			String pathName = containerNameField.getText();
-			if (pathName == null || pathName.length() < 1) {
+			if (pathName == null || pathName.isEmpty()) {
 				return null;
 			}
 			// The user may not have made this absolute so do it for them
 			return (new Path(TextProcessor.deprocess(pathName))).makeAbsolute();
 
 		}
-		if (selectedContainer == null)
+		if (selectedContainer == null) {
 			return null;
+		}
 		return selectedContainer.getFullPath();
 
 	}
