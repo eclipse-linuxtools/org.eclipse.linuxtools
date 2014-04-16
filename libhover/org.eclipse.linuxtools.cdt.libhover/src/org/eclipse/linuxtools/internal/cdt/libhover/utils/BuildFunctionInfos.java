@@ -47,68 +47,67 @@ public class BuildFunctionInfos {
 		return document;
 	}
 
-	private FunctionInfo getFunctionInfoFromNode(String name, Node function_node, Document document) {
+	private FunctionInfo getFunctionInfoFromNode(String name, Node functionNode, Document document) {
         FunctionInfo f = new FunctionInfo(name);
-        NamedNodeMap function_node_map = function_node.getAttributes();
-        Node function_node_returntype_node = function_node_map.item(0);
-        String function_node_rt_name = function_node_returntype_node.getNodeName();
+        NamedNodeMap functionNodeMap = functionNode.getAttributes();
+        Node functionNodeReturntypeNode = functionNodeMap.item(0);
+        String functionNodeRtName = functionNodeReturntypeNode.getNodeName();
 
-        if (function_node_rt_name.equals("returntype")) { //$NON-NLS-1$
+        if (functionNodeRtName.equals("returntype")) { //$NON-NLS-1$
 
             // return type
 
-            String function_node_rt_value = function_node_returntype_node.getNodeValue();
-            f.setReturnType(function_node_rt_value);
+            String functionNodeRtValue = functionNodeReturntypeNode.getNodeValue();
+            f.setReturnType(functionNodeRtValue);
         }		// returntype
 
-        NodeList function_node_kids = function_node.getChildNodes();
-        for (int fnk = 0; fnk < function_node_kids.getLength(); fnk++) {
-        	Node function_node_kid = function_node_kids.item(fnk);
-            String function_node_kid_name = function_node_kid.getNodeName();
-            if (function_node_kid_name.equals("prototype")) { //$NON-NLS-1$
+        NodeList kids = functionNode.getChildNodes();
+        for (int fnk = 0; fnk < kids.getLength(); fnk++) {
+        	Node kid = kids.item(fnk);
+            String kidName = kid.getNodeName();
+            if (kidName.equals("prototype")) { //$NON-NLS-1$
 
                 // prototype
 
                 String prototype = null;
 
-                NodeList function_node_parms = function_node_kid.getChildNodes();
-                for (int fnp = 0; fnp < function_node_parms.getLength(); fnp++) {
-                    Node function_node_parm = function_node_parms.item(fnp);
-                    String function_node_parm_name =  function_node_parm.getNodeName();
-                    if (function_node_parm_name.equals("parameter")) { //$NON-NLS-1$
-                        NamedNodeMap function_node_parm_map = function_node_parm.getAttributes();
-                        Node function_node_parm_node = function_node_parm_map.item(0);
-                        String parameter = function_node_parm_node.getNodeValue();
-                        prototype = (null == prototype)
-                            ? parameter
-                            : prototype + ", " + parameter; //$NON-NLS-1$
+                NodeList parms = kid.getChildNodes();
+                for (int fnp = 0; fnp < parms.getLength(); fnp++) {
+                    Node parm = parms.item(fnp);
+                    String parmName =  parm.getNodeName();
+                    if (parmName.equals("parameter")) { //$NON-NLS-1$
+                        NamedNodeMap parmMap = parm.getAttributes();
+                        Node parmNode = parmMap.item(0);
+                        String parameter = parmNode.getNodeValue();
+                        prototype = (null == prototype) ? parameter : prototype
+                                + ", " + parameter; //$NON-NLS-1$
                     }
                 }
                 f.setPrototype(prototype);
             }	// prototype
 
-            else if (function_node_kid_name.equals("headers")) { //$NON-NLS-1$
+            else if (kidName.equals("headers")) { //$NON-NLS-1$
 
                 // headers
 
-                NodeList function_node_headers = function_node_kid.getChildNodes();
-                for (int fnh = 0; fnh < function_node_headers.getLength(); fnh++) {
-                    Node function_node_header = function_node_headers.item(fnh);
-                    String function_node_header_name =  function_node_header.getNodeName();
-                    if (function_node_header_name.equals("header")) { //$NON-NLS-1$
-                        NamedNodeMap function_node_header_map = function_node_header.getAttributes();
-                        Node function_node_header_node = function_node_header_map.item(0);
-                        f.addHeader(function_node_header_node.getNodeValue());
+                NodeList headers = kid.getChildNodes();
+                for (int fnh = 0; fnh < headers.getLength(); fnh++) {
+                    Node header = headers.item(fnh);
+                    String headerName =  header.getNodeName();
+                    if (headerName.equals("header")) { //$NON-NLS-1$
+                        NamedNodeMap headerMap = header.getAttributes();
+                        Node headerNode = headerMap.item(0);
+                        f.addHeader(headerNode.getNodeValue());
                     }
                 }
             }	// headers
 
 
-            else if (function_node_kid_name.equals("groupsynopsis")) { //$NON-NLS-1$
+            else if (kidName.equals("groupsynopsis")) { //$NON-NLS-1$
 
             	// group synopsis
 
-            	NamedNodeMap attr = function_node_kid.getAttributes();
+            	NamedNodeMap attr = kid.getAttributes();
             	Node idnode = attr.getNamedItem("id"); //$NON-NLS-1$
             	String id = idnode.getNodeValue();
 				if (id != null) {
@@ -122,13 +121,9 @@ public class BuildFunctionInfos {
         				}
         			}
 				}
-            }
-
-            else if (function_node_kid_name.equals("synopsis")) { //$NON-NLS-1$
-
+            } else if (kidName.equals("synopsis")) { //$NON-NLS-1$
                 // synopsis
-
-                Node textNode = function_node_kid.getLastChild();
+                Node textNode = kid.getLastChild();
                 f.setDescription(textNode.getNodeValue());
             }
         }
