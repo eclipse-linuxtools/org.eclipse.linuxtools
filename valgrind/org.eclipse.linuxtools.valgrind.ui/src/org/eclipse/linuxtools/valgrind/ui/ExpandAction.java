@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
 /**
  * Action used for providing expand functionality to TreeViewer.
+ * @since 2.0
  *
  */
 public class ExpandAction extends Action {

@@ -232,6 +232,7 @@ public class ProfileUIUtils {
      * It is null if we do not want to use this option.
      * @return a Map<String, int []> of String absolute paths of files and the
      * function's corresponding node-offset and length.
+     * @since 3.0
      */
     public static Map<String,int[]> findFunctionsInProject(ICProject project, String functionName,
             int numArgs, String fileHint)  {
@@ -279,6 +280,7 @@ public class ProfileUIUtils {
      * Helper function for findFunctionsInProject
      * @param needResult True if the function should relax constraints in order
      * to return some value. False if a failure to find the function(s) is acceptable.
+     * @since 3.0
      */
     public static Map<String,int[]> findFunctionsInProject(ICProject project, String functionName,
             int numArgs, String fileHint, boolean needResult){

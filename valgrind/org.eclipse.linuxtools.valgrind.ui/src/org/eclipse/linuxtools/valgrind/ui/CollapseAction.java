@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.internal.valgrind.ui.Messages;
 
 /**
  * Action used for providing collapsing functionality to TreeViewer.
+ * @since 2.0
  *
  */
 public class CollapseAction extends Action {

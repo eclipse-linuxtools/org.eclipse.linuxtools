@@ -21,6 +21,7 @@ public interface IValgrindToolView extends IViewPart {
 
     /**
      * The valgrind view id.
+     * @since 2.0
      */
     String VIEW_ID = ValgrindUIPlugin.PLUGIN_ID + ".valgrindview"; //$NON-NLS-1$
 

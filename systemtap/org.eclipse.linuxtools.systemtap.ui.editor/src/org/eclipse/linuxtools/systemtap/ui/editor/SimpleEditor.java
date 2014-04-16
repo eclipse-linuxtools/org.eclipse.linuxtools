@@ -40,6 +40,9 @@ public class SimpleEditor extends TextEditor {
 		internalInit();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void internalInit() {
 		configureInsertMode(SMART_INSERT, false);
 		setDocumentProvider(new SimpleDocumentProvider());

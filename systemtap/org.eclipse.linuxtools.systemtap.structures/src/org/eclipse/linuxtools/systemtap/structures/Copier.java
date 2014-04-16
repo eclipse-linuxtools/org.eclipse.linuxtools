@@ -22,6 +22,7 @@ public final class Copier {
 	 * @param list The ArrayList array object to copy.
 	 *
 	 * @return The copy of the ArrayList array.
+	 * @since 3.0
 	 */
 	public static <T> List<T>[] copy(List<T>[] list) {
 		@SuppressWarnings("unchecked")
@@ -39,6 +40,7 @@ public final class Copier {
 	 * @param list The ArrayList object to copy.
 	 *
 	 * @return The copy of the ArrayList.
+	 * @since 3.0
 	 */
 	public static<T> List<T> copy(List<T> list) {
 
