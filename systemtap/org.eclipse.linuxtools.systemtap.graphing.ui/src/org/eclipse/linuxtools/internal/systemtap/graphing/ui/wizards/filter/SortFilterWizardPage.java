@@ -26,89 +26,89 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 
 public class SortFilterWizardPage extends FilterWizardPage {
-	public SortFilterWizardPage() {
-		super("selectFilterOptions"); //$NON-NLS-1$
-		setTitle(Localization.getString("SortFilterWizardPage.CreateSortFilter")); //$NON-NLS-1$
-	}
+    public SortFilterWizardPage() {
+        super("selectFilterOptions"); //$NON-NLS-1$
+        setTitle(Localization.getString("SortFilterWizardPage.CreateSortFilter")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		super.createControl(parent);
+    @Override
+    public void createControl(Composite parent) {
+        super.createControl(parent);
 
-		Composite comp = new Composite(parent, SWT.NULL);
-		comp.setLayout(new FormLayout());
-		FormData data1 = new FormData();
-		data1.left = new FormAttachment(0, 0);
-		data1.top = new FormAttachment(0, 0);
-		data1.right = new FormAttachment(40, 0);
-		data1.bottom = new FormAttachment(100, 0);
+        Composite comp = new Composite(parent, SWT.NULL);
+        comp.setLayout(new FormLayout());
+        FormData data1 = new FormData();
+        data1.left = new FormAttachment(0, 0);
+        data1.top = new FormAttachment(0, 0);
+        data1.right = new FormAttachment(40, 0);
+        data1.bottom = new FormAttachment(100, 0);
 
-		Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
-		cmpFilterOpts.setLayoutData(data1);
-		ColumnLayout colLayout = new ColumnLayout();
-		colLayout.maxNumColumns = 1;
-		cmpFilterOpts.setLayout(colLayout);
+        Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
+        cmpFilterOpts.setLayoutData(data1);
+        ColumnLayout colLayout = new ColumnLayout();
+        colLayout.maxNumColumns = 1;
+        cmpFilterOpts.setLayout(colLayout);
 
-		//Column
-		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
-		lblColumn.setText(Localization.getString("SortFilterWizardPage.Column")); //$NON-NLS-1$
-		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cboColumn.addSelectionListener(selectionListener);
-		for(int i=0; i<wizard.series.length; i++) {
-			cboColumn.add(wizard.series[i]);
-		}
+        //Column
+        Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
+        lblColumn.setText(Localization.getString("SortFilterWizardPage.Column")); //$NON-NLS-1$
+        cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
+        cboColumn.addSelectionListener(selectionListener);
+        for(int i=0; i<wizard.series.length; i++) {
+            cboColumn.add(wizard.series[i]);
+        }
 
-		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
-		//Style
-		radAscending = new Button(cmpFilterOpts, SWT.RADIO);
-		radAscending.setText(Localization.getString("SortFilterWizardPage.Ascending")); //$NON-NLS-1$
-		radAscending.addSelectionListener(selectionListener);
-		radAscending.setSelection(true);
-		radDescending = new Button(cmpFilterOpts, SWT.RADIO);
-		radDescending.setText(Localization.getString("SortFilterWizardPage.Descending")); //$NON-NLS-1$
-		radDescending.addSelectionListener(selectionListener);
+        //Style
+        radAscending = new Button(cmpFilterOpts, SWT.RADIO);
+        radAscending.setText(Localization.getString("SortFilterWizardPage.Ascending")); //$NON-NLS-1$
+        radAscending.addSelectionListener(selectionListener);
+        radAscending.setSelection(true);
+        radDescending = new Button(cmpFilterOpts, SWT.RADIO);
+        radDescending.setText(Localization.getString("SortFilterWizardPage.Descending")); //$NON-NLS-1$
+        radDescending.addSelectionListener(selectionListener);
 
-		cboColumn.select(0);
-		createFilter();
-		setControl(comp);
-	}
+        cboColumn.select(0);
+        createFilter();
+        setControl(comp);
+    }
 
-	@Override
-	public boolean canFlipToNextPage() {
-		return false;
-	}
+    @Override
+    public boolean canFlipToNextPage() {
+        return false;
+    }
 
-	@Override
-	protected void createFilter() {
-		int selected = cboColumn.getSelectionIndex();
-		int style = (radAscending.getSelection() ? SortFilter.ASCENDING : SortFilter.DESCENDING);
-		filter = new SortFilter(selected, style);
-	}
+    @Override
+    protected void createFilter() {
+        int selected = cboColumn.getSelectionIndex();
+        int style = (radAscending.getSelection() ? SortFilter.ASCENDING : SortFilter.DESCENDING);
+        filter = new SortFilter(selected, style);
+    }
 
-	@Override
-	public void dispose() {
-		if(null != cboColumn) {
-			cboColumn.removeSelectionListener(selectionListener);
-			cboColumn.dispose();
-			cboColumn = null;
-		}
+    @Override
+    public void dispose() {
+        if(null != cboColumn) {
+            cboColumn.removeSelectionListener(selectionListener);
+            cboColumn.dispose();
+            cboColumn = null;
+        }
 
-		if(null != radAscending) {
-			radAscending.removeSelectionListener(selectionListener);
-			radAscending.dispose();
-			radAscending = null;
-		}
+        if(null != radAscending) {
+            radAscending.removeSelectionListener(selectionListener);
+            radAscending.dispose();
+            radAscending = null;
+        }
 
-		if(null != radDescending) {
-			radDescending.removeSelectionListener(selectionListener);
-			radDescending.dispose();
-			radDescending = null;
-		}
+        if(null != radDescending) {
+            radDescending.removeSelectionListener(selectionListener);
+            radDescending.dispose();
+            radDescending = null;
+        }
 
-		super.dispose();
-	}
+        super.dispose();
+    }
 
-	private Combo cboColumn;
-	private Button radAscending, radDescending;
+    private Combo cboColumn;
+    private Button radAscending, radDescending;
 }

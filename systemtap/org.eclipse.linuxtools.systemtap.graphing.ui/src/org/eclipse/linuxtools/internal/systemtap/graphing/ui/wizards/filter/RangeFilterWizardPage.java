@@ -30,174 +30,174 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 
 public class RangeFilterWizardPage extends FilterWizardPage {
-	public RangeFilterWizardPage() {
-		super("selectFilterOptions"); //$NON-NLS-1$
-		setTitle(Localization.getString("RangeFilterWizardPage.CreateRangeFilter")); //$NON-NLS-1$
-	}
+    public RangeFilterWizardPage() {
+        super("selectFilterOptions"); //$NON-NLS-1$
+        setTitle(Localization.getString("RangeFilterWizardPage.CreateRangeFilter")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		super.createControl(parent);
+    @Override
+    public void createControl(Composite parent) {
+        super.createControl(parent);
 
-		Composite comp = new Composite(parent, SWT.NULL);
-		comp.setLayout(new FormLayout());
-		FormData data1 = new FormData();
-		data1.left = new FormAttachment(0, 0);
-		data1.top = new FormAttachment(0, 0);
-		data1.right = new FormAttachment(40, 0);
-		data1.bottom = new FormAttachment(100, 0);
+        Composite comp = new Composite(parent, SWT.NULL);
+        comp.setLayout(new FormLayout());
+        FormData data1 = new FormData();
+        data1.left = new FormAttachment(0, 0);
+        data1.top = new FormAttachment(0, 0);
+        data1.right = new FormAttachment(40, 0);
+        data1.bottom = new FormAttachment(100, 0);
 
-		Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
-		cmpFilterOpts.setLayoutData(data1);
-		ColumnLayout colLayout = new ColumnLayout();
-		colLayout.maxNumColumns = 1;
-		cmpFilterOpts.setLayout(colLayout);
+        Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
+        cmpFilterOpts.setLayoutData(data1);
+        ColumnLayout colLayout = new ColumnLayout();
+        colLayout.maxNumColumns = 1;
+        cmpFilterOpts.setLayout(colLayout);
 
-		//Column
-		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
-		lblColumn.setText(Localization.getString("RangeFilterWizardPage.Column")); //$NON-NLS-1$
-		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cboColumn.addSelectionListener(selectionListener);
-		for(int i=0; i<wizard.series.length; i++) {
-			cboColumn.add(wizard.series[i]);
-		}
+        //Column
+        Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
+        lblColumn.setText(Localization.getString("RangeFilterWizardPage.Column")); //$NON-NLS-1$
+        cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
+        cboColumn.addSelectionListener(selectionListener);
+        for(int i=0; i<wizard.series.length; i++) {
+            cboColumn.add(wizard.series[i]);
+        }
 
-		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
-		//Low
-		Label lblLow = new Label(cmpFilterOpts, SWT.NONE);
-		lblLow.setText(Localization.getString("RangeFilterWizardPage.LowerBound")); //$NON-NLS-1$
-		txtLow = new Text(cmpFilterOpts, SWT.BORDER);
-		txtLow.addModifyListener(modifyListener);
-		txtLow.addKeyListener(numberKeyListener);
+        //Low
+        Label lblLow = new Label(cmpFilterOpts, SWT.NONE);
+        lblLow.setText(Localization.getString("RangeFilterWizardPage.LowerBound")); //$NON-NLS-1$
+        txtLow = new Text(cmpFilterOpts, SWT.BORDER);
+        txtLow.addModifyListener(modifyListener);
+        txtLow.addKeyListener(numberKeyListener);
 
-		//High
-		Label lblHigh = new Label(cmpFilterOpts, SWT.NONE);
-		lblHigh.setText(Localization.getString("RangeFilterWizardPage.UpperBound")); //$NON-NLS-1$
-		txtHigh = new Text(cmpFilterOpts, SWT.BORDER);
-		txtHigh.addModifyListener(modifyListener);
-		txtHigh.addKeyListener(numberKeyListener);
+        //High
+        Label lblHigh = new Label(cmpFilterOpts, SWT.NONE);
+        lblHigh.setText(Localization.getString("RangeFilterWizardPage.UpperBound")); //$NON-NLS-1$
+        txtHigh = new Text(cmpFilterOpts, SWT.BORDER);
+        txtHigh.addModifyListener(modifyListener);
+        txtHigh.addKeyListener(numberKeyListener);
 
-		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
-		//Style
-		radInside = new Button(cmpFilterOpts, SWT.RADIO);
-		radInside.setText(Localization.getString("RangeFilterWizardPage.InsideBounds")); //$NON-NLS-1$
-		radInside.addSelectionListener(selectionListener);
-		radInside.setSelection(true);
-		radOutside = new Button(cmpFilterOpts, SWT.RADIO);
-		radOutside.setText(Localization.getString("RangeFilterWizardPage.OutsideBounds")); //$NON-NLS-1$
-		radOutside.addSelectionListener(selectionListener);
+        //Style
+        radInside = new Button(cmpFilterOpts, SWT.RADIO);
+        radInside.setText(Localization.getString("RangeFilterWizardPage.InsideBounds")); //$NON-NLS-1$
+        radInside.addSelectionListener(selectionListener);
+        radInside.setSelection(true);
+        radOutside = new Button(cmpFilterOpts, SWT.RADIO);
+        radOutside.setText(Localization.getString("RangeFilterWizardPage.OutsideBounds")); //$NON-NLS-1$
+        radOutside.addSelectionListener(selectionListener);
 
-		chkInclusive = new Button(cmpFilterOpts, SWT.CHECK);
-		chkInclusive.setText(Localization.getString("RangeFilterWizardPage.Inclusive")); //$NON-NLS-1$
-		chkInclusive.addSelectionListener(selectionListener);
+        chkInclusive = new Button(cmpFilterOpts, SWT.CHECK);
+        chkInclusive.setText(Localization.getString("RangeFilterWizardPage.Inclusive")); //$NON-NLS-1$
+        chkInclusive.addSelectionListener(selectionListener);
 
-		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
-		cboColumn.select(0);
-		createFilter();
-		setControl(comp);
-	}
+        cboColumn.select(0);
+        createFilter();
+        setControl(comp);
+    }
 
-	@Override
-	public boolean canFlipToNextPage() {
-		return false;
-	}
+    @Override
+    public boolean canFlipToNextPage() {
+        return false;
+    }
 
-	@Override
-	protected void createFilter() {
-		filter = null;
-		setErrorMessage(null);
+    @Override
+    protected void createFilter() {
+        filter = null;
+        setErrorMessage(null);
 
-		String highText = txtHigh.getText().trim();
-		String lowText = txtLow.getText().trim();
+        String highText = txtHigh.getText().trim();
+        String lowText = txtLow.getText().trim();
 
-		// Allow inside/outside bounds only if the range is bounded (has upper & lower bounds)
-		boolean bounded = highText.length() * lowText.length() != 0;
-		radInside.setEnabled(bounded);
-		radOutside.setEnabled(bounded);
+        // Allow inside/outside bounds only if the range is bounded (has upper & lower bounds)
+        boolean bounded = highText.length() * lowText.length() != 0;
+        radInside.setEnabled(bounded);
+        radOutside.setEnabled(bounded);
 
-		if (highText.length() + lowText.length() == 0) {
-			setErrorMessage(Localization.getString("RangeFilterWizardPage.EmptyError")); //$NON-NLS-1$
-			return;
-		}
-		try {
-			Double high = highText.length() > 0 ? Double.parseDouble(txtHigh.getText().trim()) : null;
-			Double low = lowText.length() > 0 ? Double.parseDouble(txtLow.getText().trim()) : null;
-			if (low != null && high != null && low >= high) {
-				setErrorMessage(Localization.getString("RangeFilterWizardPage.BoundError")); //$NON-NLS-1$
-				return;
-			}
+        if (highText.length() + lowText.length() == 0) {
+            setErrorMessage(Localization.getString("RangeFilterWizardPage.EmptyError")); //$NON-NLS-1$
+            return;
+        }
+        try {
+            Double high = highText.length() > 0 ? Double.parseDouble(txtHigh.getText().trim()) : null;
+            Double low = lowText.length() > 0 ? Double.parseDouble(txtLow.getText().trim()) : null;
+            if (low != null && high != null && low >= high) {
+                setErrorMessage(Localization.getString("RangeFilterWizardPage.BoundError")); //$NON-NLS-1$
+                return;
+            }
 
-			// By default, if range is unbounded, force "inside" bounds to apply.
-			int style = (!radInside.isEnabled() || radInside.getSelection() ? RangeFilter.INSIDE_BOUNDS : RangeFilter.OUTSIDE_BOUNDS);
-			int selected = cboColumn.getSelectionIndex();
-			if(chkInclusive.getSelection()) {
-				style |= RangeFilter.INCLUSIVE;
-			}
-			filter = new RangeFilter(selected, low, high, style);
-		} catch(NumberFormatException nfe) {}
-	}
+            // By default, if range is unbounded, force "inside" bounds to apply.
+            int style = (!radInside.isEnabled() || radInside.getSelection() ? RangeFilter.INSIDE_BOUNDS : RangeFilter.OUTSIDE_BOUNDS);
+            int selected = cboColumn.getSelectionIndex();
+            if(chkInclusive.getSelection()) {
+                style |= RangeFilter.INCLUSIVE;
+            }
+            filter = new RangeFilter(selected, low, high, style);
+        } catch(NumberFormatException nfe) {}
+    }
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		if(null != cboColumn) {
-			cboColumn.removeSelectionListener(selectionListener);
-			cboColumn.dispose();
-			cboColumn = null;
-		}
+    @Override
+    public void dispose() {
+        super.dispose();
+        if(null != cboColumn) {
+            cboColumn.removeSelectionListener(selectionListener);
+            cboColumn.dispose();
+            cboColumn = null;
+        }
 
-		if(null != txtLow) {
-			txtLow.removeModifyListener(modifyListener);
-			txtLow.removeKeyListener(numberKeyListener);
-			txtLow.dispose();
-			txtLow = null;
-		}
+        if(null != txtLow) {
+            txtLow.removeModifyListener(modifyListener);
+            txtLow.removeKeyListener(numberKeyListener);
+            txtLow.dispose();
+            txtLow = null;
+        }
 
-		if(null != txtHigh) {
-			txtHigh.removeModifyListener(modifyListener);
-			txtHigh.removeKeyListener(numberKeyListener);
-			txtHigh.dispose();
-			txtHigh = null;
-		}
+        if(null != txtHigh) {
+            txtHigh.removeModifyListener(modifyListener);
+            txtHigh.removeKeyListener(numberKeyListener);
+            txtHigh.dispose();
+            txtHigh = null;
+        }
 
-		if(null != chkInclusive) {
-			chkInclusive.removeSelectionListener(selectionListener);
-			chkInclusive.dispose();
-			chkInclusive = null;
-		}
+        if(null != chkInclusive) {
+            chkInclusive.removeSelectionListener(selectionListener);
+            chkInclusive.dispose();
+            chkInclusive = null;
+        }
 
-		if(null != radInside) {
-			radInside.removeSelectionListener(selectionListener);
-			radInside.dispose();
-			radInside = null;
-		}
+        if(null != radInside) {
+            radInside.removeSelectionListener(selectionListener);
+            radInside.dispose();
+            radInside = null;
+        }
 
-		if(null != radOutside) {
-			radOutside.removeSelectionListener(selectionListener);
-			radOutside.dispose();
-			radOutside = null;
-		}
-	}
+        if(null != radOutside) {
+            radOutside.removeSelectionListener(selectionListener);
+            radOutside.dispose();
+            radOutside = null;
+        }
+    }
 
-	private final KeyListener numberKeyListener = new KeyAdapter() {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if((e.character >= ' ' && e.character <= '~')
-				&& (e.character > '9' || e.character < '0')) {
-				e.doit = false;
-			}
-			if(e.character == '.' && !((Text)e.widget).getText().contains(".")) { //$NON-NLS-1$
-				e.doit = true;
-			}
-		}
+    private final KeyListener numberKeyListener = new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if((e.character >= ' ' && e.character <= '~')
+                && (e.character > '9' || e.character < '0')) {
+                e.doit = false;
+            }
+            if(e.character == '.' && !((Text)e.widget).getText().contains(".")) { //$NON-NLS-1$
+                e.doit = true;
+            }
+        }
 
-	};
+    };
 
-	private Combo cboColumn;
-	private Text txtLow, txtHigh;
-	private Button chkInclusive;
-	private Button radInside, radOutside;
+    private Combo cboColumn;
+    private Text txtLow, txtHigh;
+    private Button chkInclusive;
+    private Button radInside, radOutside;
 }

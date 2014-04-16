@@ -84,14 +84,6 @@ public class CallgraphView extends SystemTapView {
 	private ImageDescriptor playImage = getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
 	private ImageDescriptor pauseImage = getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 
-	private IMenuManager menu;
-	private IMenuManager gotoMenu;
-	private IMenuManager view;
-	private IMenuManager animation;
-	private IMenuManager markers; // Unused
-	private IMenuManager saveMenu;
-	private IToolBarManager mgr;
-
 	private Composite graphComp;
 	private Composite treeComp;
 
@@ -480,11 +472,11 @@ public class CallgraphView extends SystemTapView {
 		createActions();
 
 		//MENU FOR SYSTEMTAP BUTTONS
-		mgr = getViewSite().getActionBars().getToolBarManager();
+		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
 
 
 		//MENU FOR SYSTEMTAP GRAPH OPTIONS
-		menu = getViewSite().getActionBars().getMenuManager();
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
 
 		// ADD OPTIONS TO THE GRAPH MENU
 		addFileMenu();
@@ -517,16 +509,16 @@ public class CallgraphView extends SystemTapView {
 				saveTextAction();
 			}
 		};
-		saveMenu = new MenuManager(Messages.getString("CallgraphView.SaveMenu")); //$NON-NLS-1$
+		IMenuManager saveMenu = new MenuManager(Messages.getString("CallgraphView.SaveMenu")); //$NON-NLS-1$
 		file.add(saveMenu);
 		saveMenu.add(saveCurDot);
 		saveMenu.add(saveColDot);
 		saveMenu.add(saveText);
 		saveMenu.add(saveDot);
-		view = new MenuManager(Messages.getString("CallgraphView.ViewMenu")); //$NON-NLS-1$
-		animation = new MenuManager(Messages.getString("CallgraphView.AnimationMenu")); //$NON-NLS-1$
-		markers = new MenuManager(Messages.getString("CallgraphView.Markers")); //$NON-NLS-1$
-		gotoMenu = new MenuManager(Messages.getString("CallgraphView.GoTo")); //$NON-NLS-1$
+		IMenuManager view = new MenuManager(Messages.getString("CallgraphView.ViewMenu")); //$NON-NLS-1$
+		IMenuManager animation = new MenuManager(Messages.getString("CallgraphView.AnimationMenu")); //$NON-NLS-1$
+		IMenuManager markers = new MenuManager(Messages.getString("CallgraphView.Markers")); //$NON-NLS-1$
+		IMenuManager gotoMenu = new MenuManager(Messages.getString("CallgraphView.GoTo")); //$NON-NLS-1$
 		menu.add(view);
 		menu.add(gotoMenu);
 		addHelpMenu();

@@ -18,7 +18,9 @@ import java.io.IOException;
 /**
  * A helper class for removing comments from a SystemTap script.
  */
-public class CommentRemover {
+public final class CommentRemover {
+
+    private CommentRemover() {}
 
 	/**
 	 * Remove comments from a .stp file in the filesystem.
@@ -71,8 +73,7 @@ public class CommentRemover {
 						c++; //Skip the * on the next character scan.
 						continue;
 					}
-				}
-				else if (curchar == '*' && nxtchar == '/') {
+				} else if (curchar == '*' && nxtchar == '/') {
 					inComment = false;
 					c++; //Skip the / on the next character scan.
 					continue;

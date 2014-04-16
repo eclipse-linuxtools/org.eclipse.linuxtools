@@ -29,133 +29,133 @@ import org.eclipse.ui.forms.widgets.ColumnLayout;
 
 
 public class UniqueFilterWizardPage extends FilterWizardPage {
-	public UniqueFilterWizardPage() {
-		super("selectFilterOptions"); //$NON-NLS-1$
-		setTitle(Localization.getString("UniqueFilterWizardPage.CreateUniqueFilter")); //$NON-NLS-1$
-		aggregateID = ""; //$NON-NLS-1$
-	}
+    public UniqueFilterWizardPage() {
+        super("selectFilterOptions"); //$NON-NLS-1$
+        setTitle(Localization.getString("UniqueFilterWizardPage.CreateUniqueFilter")); //$NON-NLS-1$
+        aggregateID = ""; //$NON-NLS-1$
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		super.createControl(parent);
+    @Override
+    public void createControl(Composite parent) {
+        super.createControl(parent);
 
-		Composite comp = new Composite(parent, SWT.NULL);
-		comp.setLayout(new FormLayout());
-		FormData data1 = new FormData();
-		data1.left = new FormAttachment(0, 0);
-		data1.top = new FormAttachment(0, 0);
-		data1.right = new FormAttachment(40, 0);
-		data1.bottom = new FormAttachment(100, 0);
+        Composite comp = new Composite(parent, SWT.NULL);
+        comp.setLayout(new FormLayout());
+        FormData data1 = new FormData();
+        data1.left = new FormAttachment(0, 0);
+        data1.top = new FormAttachment(0, 0);
+        data1.right = new FormAttachment(40, 0);
+        data1.bottom = new FormAttachment(100, 0);
 
-		Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
-		cmpFilterOpts.setLayoutData(data1);
-		ColumnLayout colLayout = new ColumnLayout();
-		colLayout.maxNumColumns = 1;
-		cmpFilterOpts.setLayout(colLayout);
+        Composite cmpFilterOpts = new Composite(comp, SWT.NONE);
+        cmpFilterOpts.setLayoutData(data1);
+        ColumnLayout colLayout = new ColumnLayout();
+        colLayout.maxNumColumns = 1;
+        cmpFilterOpts.setLayout(colLayout);
 
-		//Column
-		Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
-		lblColumn.setText(Localization.getString("UniqueFilterWizardPage.Column")); //$NON-NLS-1$
-		cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
-		cboColumn.addSelectionListener(selectionListener);
-		for (String series : wizard.series) {
-			cboColumn.add(series);
-		}
+        //Column
+        Label lblColumn = new Label(cmpFilterOpts, SWT.NONE);
+        lblColumn.setText(Localization.getString("UniqueFilterWizardPage.Column")); //$NON-NLS-1$
+        cboColumn = new Combo(cmpFilterOpts, SWT.DROP_DOWN | SWT.READ_ONLY);
+        cboColumn.addSelectionListener(selectionListener);
+        for (String series : wizard.series) {
+            cboColumn.add(series);
+        }
 
-		new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
 
-		//String to compare to
-		Label lblAggregate = new Label(cmpFilterOpts, SWT.NONE);
-		lblAggregate.setText(Localization.getString("UniqueFilterWizardPage.Aggregate")); //$NON-NLS-1$
+        //String to compare to
+        Label lblAggregate = new Label(cmpFilterOpts, SWT.NONE);
+        lblAggregate.setText(Localization.getString("UniqueFilterWizardPage.Aggregate")); //$NON-NLS-1$
 
-		btnAggregates = new Button[AggregateFactory.aggregateIDs.length];
-		for(int i=0; i<btnAggregates.length; i++) {
-			btnAggregates[i] = new Button(cmpFilterOpts, SWT.RADIO);
-			btnAggregates[i].setText(AggregateFactory.getAggregateName(AggregateFactory.aggregateIDs[i]));
-			btnAggregates[i].addSelectionListener(btnSelectionListener);
-			btnAggregates[i].setData(AggregateFactory.aggregateIDs[i]);
-		}
+        btnAggregates = new Button[AggregateFactory.AGGREGATES.length];
+        for(int i=0; i<btnAggregates.length; i++) {
+            btnAggregates[i] = new Button(cmpFilterOpts, SWT.RADIO);
+            btnAggregates[i].setText(AggregateFactory.getAggregateName(AggregateFactory.AGGREGATES[i]));
+            btnAggregates[i].addSelectionListener(btnSelectionListener);
+            btnAggregates[i].setData(AggregateFactory.AGGREGATES[i]);
+        }
 
-		FormData data2 = new FormData();
-		data2.left = new FormAttachment(cmpFilterOpts);
-		data2.top = new FormAttachment(0, 0);
-		data2.right = new FormAttachment(100, 0);
-		data2.bottom = new FormAttachment(100, 0);
+        FormData data2 = new FormData();
+        data2.left = new FormAttachment(cmpFilterOpts);
+        data2.top = new FormAttachment(0, 0);
+        data2.right = new FormAttachment(100, 0);
+        data2.bottom = new FormAttachment(100, 0);
 
-		lblDesc = new Label(comp, SWT.WRAP);
-		lblDesc.setLayoutData(data2);
+        lblDesc = new Label(comp, SWT.WRAP);
+        lblDesc.setLayoutData(data2);
 
-		cboColumn.select(0);
-		createFilter();
-		setControl(comp);
-	}
+        cboColumn.select(0);
+        createFilter();
+        setControl(comp);
+    }
 
-	@Override
-	public boolean canFlipToNextPage() {
-		return false;
-	}
+    @Override
+    public boolean canFlipToNextPage() {
+        return false;
+    }
 
-	@Override
-	protected void createFilter() {
-		int selected = cboColumn.getSelectionIndex();
-		if(selected >=0 && selected < cboColumn.getItemCount()) {
-			if(null != aggregateID && aggregateID.length() > 0) {
-				filter = new UniqueFilter(
-						selected,
-						AggregateFactory.createAggregate(aggregateID));
-			}
-		}
-	}
+    @Override
+    protected void createFilter() {
+        int selected = cboColumn.getSelectionIndex();
+        if(selected >=0 && selected < cboColumn.getItemCount()) {
+            if(null != aggregateID && !aggregateID.isEmpty()) {
+                filter = new UniqueFilter(
+                        selected,
+                        AggregateFactory.createAggregate(aggregateID));
+            }
+        }
+    }
 
-	@Override
-	public void dispose() {
-		if(null != cboColumn) {
-			cboColumn.removeSelectionListener(selectionListener);
-			cboColumn.dispose();
-			cboColumn = null;
-		}
+    @Override
+    public void dispose() {
+        if(null != cboColumn) {
+            cboColumn.removeSelectionListener(selectionListener);
+            cboColumn.dispose();
+            cboColumn = null;
+        }
 
-		if(null != lblDesc) {
-			lblDesc.dispose();
-		}
-		lblDesc = null;
+        if(null != lblDesc) {
+            lblDesc.dispose();
+        }
+        lblDesc = null;
 
-		if(null != btnAggregates) {
-			for(int i=0; i<btnAggregates.length; i++) {
-				btnAggregates[i].removeSelectionListener(btnSelectionListener);
-				btnAggregates[i].dispose();
-				btnAggregates[i] = null;
-			}
-			btnAggregates = null;
-		}
+        if(null != btnAggregates) {
+            for(int i=0; i<btnAggregates.length; i++) {
+                btnAggregates[i].removeSelectionListener(btnSelectionListener);
+                btnAggregates[i].dispose();
+                btnAggregates[i] = null;
+            }
+            btnAggregates = null;
+        }
 
-		aggregateID = null;
+        aggregateID = null;
 
-		super.dispose();
-	}
+        super.dispose();
+    }
 
-	private final SelectionListener btnSelectionListener = new SelectionAdapter() {
+    private final SelectionListener btnSelectionListener = new SelectionAdapter() {
 
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			if(e.widget instanceof Button) {
-				Button target = (Button)e.widget;
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            if(e.widget instanceof Button) {
+                Button target = (Button)e.widget;
 
-				for (Button button : btnAggregates) {
-					if(target == button) {
-						lblDesc.setText(AggregateFactory.getAggregateName(button.getData().toString()) + "\n\n" + //$NON-NLS-1$
-								AggregateFactory.getAggregateDescription(button.getData().toString()));
-						aggregateID = button.getData().toString();
-						createFilter();
-						wizard.getContainer().updateButtons();
-					}
-				}
-			}
-		}
-	};
+                for (Button button : btnAggregates) {
+                    if(target == button) {
+                        lblDesc.setText(AggregateFactory.getAggregateName(button.getData().toString()) + "\n\n" + //$NON-NLS-1$
+                                AggregateFactory.getAggregateDescription(button.getData().toString()));
+                        aggregateID = button.getData().toString();
+                        createFilter();
+                        wizard.getContainer().updateButtons();
+                    }
+                }
+            }
+        }
+    };
 
-	private Combo cboColumn;
-	private Button[] btnAggregates;
-	private Label lblDesc;
-	private String aggregateID;
+    private Combo cboColumn;
+    private Button[] btnAggregates;
+    private Label lblDesc;
+    private String aggregateID;
 }

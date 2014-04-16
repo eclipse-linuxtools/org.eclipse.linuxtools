@@ -135,8 +135,6 @@ public class StapGraph extends Graph {
     }
 
     private StapGraphMouseListener mListener;
-    private StapGraphMouseWheelListener mwListener;
-    private StapGraphKeyListener kListener;
 
     private CallgraphView callgraphView;
 
@@ -178,11 +176,9 @@ public class StapGraph extends Graph {
 
         // -------------Add listeners
         mListener = new StapGraphMouseListener(this);
-        kListener = new StapGraphKeyListener(this);
-        mwListener = new StapGraphMouseWheelListener(this);
         this.addMouseListener(mListener);
-        this.addKeyListener(kListener);
-        this.addMouseWheelListener(mwListener);
+        this.addKeyListener(new StapGraphKeyListener(this));
+        this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 
     }
 
@@ -310,7 +306,7 @@ public class StapGraph extends Graph {
         if (getNodeData(centerNode).isMarked()) {
             nodeMap.get(centerNode).setBackgroundColor(CONSTANT_MARKED);
         }
-        radialHelper(centerNode, x, y, radius, 0);
+        radialHelper(centerNode, x, y, radius);
     }
 
     /**
@@ -332,7 +328,7 @@ public class StapGraph extends Graph {
         StapNode n = nodeMap.get(centerNode);
         int x = n.getLocation().x;
         int y = n.getLocation().y;
-        radialHelper(centerNode, x, y, 0, 0);
+        radialHelper(centerNode, x, y, 0);
     }
 
     /**
@@ -342,10 +338,8 @@ public class StapGraph extends Graph {
      * @param x
      * @param y
      * @param radius
-     * @param startFromChild
      */
-    private void radialHelper(int id, int x, int y, int radius,
-            int startFromChild) {
+    private void radialHelper(int id, int x, int y, int radius) {
         // -------------Draw parent node
         // Draw caller node right beside this one, in a different color
         int callerID = nodeDataMap.get(id).parent;

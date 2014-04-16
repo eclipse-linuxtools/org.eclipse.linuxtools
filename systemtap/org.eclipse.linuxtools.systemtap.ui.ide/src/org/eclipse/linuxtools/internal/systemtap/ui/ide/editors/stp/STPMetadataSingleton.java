@@ -24,7 +24,7 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  * Build and hold completion metadata for Systemtap. This originally is generated from stap coverage data
  *
  */
-public class STPMetadataSingleton {
+public final class STPMetadataSingleton {
 
 	public static String[] NO_MATCHES = new String[0];
 

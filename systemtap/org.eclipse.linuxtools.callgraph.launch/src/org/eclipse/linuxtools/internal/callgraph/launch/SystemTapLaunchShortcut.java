@@ -31,7 +31,6 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -105,7 +104,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	protected IEditorPart editor;
-	protected ILaunchConfiguration config;
 
 	private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
 	private static final String MAIN_FUNC_NAME = "main"; //$NON-NLS-1$
@@ -116,7 +114,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	protected String arguments;
 	protected String outputPath;
 	protected String binName;
-	protected String dirPath;
 	protected String generatedScript;
 	protected String parserID;
 	protected String viewID;
@@ -127,7 +124,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	protected boolean searchForResource;
 	protected IBinary bin;
 
-	private Button OKButton;
 	private boolean testMode = false;
 	protected String secondaryID = ""; //$NON-NLS-1$
 
@@ -137,7 +133,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public void initialize() {
 		name = ""; //$NON-NLS-1$
-		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
 		outputPath = PluginConstants.getDefaultIOPath();
@@ -197,18 +192,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,parserID);
 			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
 			wc.setAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID, ""); //$NON-NLS-1$
-
-
-			/**
-			 * Enable this to save the default launch configuration
-			 */
-			/*try {
-				if (!existsConfiguration(wc)) {
-					config = wc.doSave();
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}*/
 
 			if (!testMode) {
 				DebugUITools.launch(wc, mode);
@@ -519,12 +502,12 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				(int) (topLevel.length * 1.5), 3, 13));
 
 		dialog.create();
-		OKButton = dialog.getOkButton();
+		Button okButton = dialog.getOkButton();
 
 		Object[] result = null;
 
 		if (testMode) {
-			OKButton.setSelection(true);
+			okButton.setSelection(true);
 			result = list.toArray();
 			ArrayList<Object> output = new ArrayList<>();
 			try {

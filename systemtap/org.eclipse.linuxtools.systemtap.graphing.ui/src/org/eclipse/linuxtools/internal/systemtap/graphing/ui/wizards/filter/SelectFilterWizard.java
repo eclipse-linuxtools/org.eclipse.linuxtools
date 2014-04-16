@@ -22,69 +22,69 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 public class SelectFilterWizard extends Wizard implements INewWizard {
-	public SelectFilterWizard(String[] series) {
-		filter = null;
-		this.series = Arrays.copyOf(series, series.length);
-	}
+    public SelectFilterWizard(String[] series) {
+        filter = null;
+        this.series = Arrays.copyOf(series, series.length);
+    }
 
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-	}
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+    }
 
-	@Override
-	public void addPages() {
-		setWindowTitle(Localization.getString("SelectFilterWizard.CreateFilter")); //$NON-NLS-1$
-		selectFilterPage = new SelectFilterWizardPage();
-		addPage(selectFilterPage);
+    @Override
+    public void addPages() {
+        setWindowTitle(Localization.getString("SelectFilterWizard.CreateFilter")); //$NON-NLS-1$
+        selectFilterPage = new SelectFilterWizardPage();
+        addPage(selectFilterPage);
 
-		filterOptionsPages = new FilterWizardPage[AvailableFilterTypes.filterIDs.length];
-		for(int i=0; i<AvailableFilterTypes.filterIDs.length; i++) {
-			filterOptionsPages[i] = AvailableFilterTypes.getFilterWizardPage(AvailableFilterTypes.filterIDs[i]);
-			addPage(filterOptionsPages[i]);
-		}
-	}
+        filterOptionsPages = new FilterWizardPage[AvailableFilterTypes.FILTER_IDS.length];
+        for(int i=0; i<AvailableFilterTypes.FILTER_IDS.length; i++) {
+            filterOptionsPages[i] = AvailableFilterTypes.getFilterWizardPage(AvailableFilterTypes.FILTER_IDS[i]);
+            addPage(filterOptionsPages[i]);
+        }
+    }
 
-	@Override
-	public boolean canFinish() {
-		return getCurrentFilter() != null;
-	}
+    @Override
+    public boolean canFinish() {
+        return getCurrentFilter() != null;
+    }
 
-	private IDataSetFilter getCurrentFilter() {
-		IWizardPage page = this.getContainer().getCurrentPage();
-		return page instanceof FilterWizardPage ? ((FilterWizardPage) page).getFilter() : null;
-	}
+    private IDataSetFilter getCurrentFilter() {
+        IWizardPage page = this.getContainer().getCurrentPage();
+        return page instanceof FilterWizardPage ? ((FilterWizardPage) page).getFilter() : null;
+    }
 
-	@Override
-	public boolean performFinish() {
-		filter = getCurrentFilter();
-		return true;
-	}
+    @Override
+    public boolean performFinish() {
+        filter = getCurrentFilter();
+        return true;
+    }
 
-	public IDataSetFilter getFilter() {
-		return filter;
-	}
+    public IDataSetFilter getFilter() {
+        return filter;
+    }
 
-	@Override
-	public void dispose() {
-		if(null != selectFilterPage) {
-			selectFilterPage.dispose();
-		}
-		selectFilterPage = null;
-		if(null != filterOptionsPages) {
-			for(int i=0; i<filterOptionsPages.length; i++) {
-				filterOptionsPages[i].dispose();
-				filterOptionsPages[i] = null;
-			}
-		}
-		filterOptionsPages = null;
-		series = null;
+    @Override
+    public void dispose() {
+        if(null != selectFilterPage) {
+            selectFilterPage.dispose();
+        }
+        selectFilterPage = null;
+        if(null != filterOptionsPages) {
+            for(int i=0; i<filterOptionsPages.length; i++) {
+                filterOptionsPages[i].dispose();
+                filterOptionsPages[i] = null;
+            }
+        }
+        filterOptionsPages = null;
+        series = null;
 
-		super.dispose();
-	}
+        super.dispose();
+    }
 
-	private SelectFilterWizardPage selectFilterPage;
-	private FilterWizardPage[] filterOptionsPages;
-	public String[] series;
+    private SelectFilterWizardPage selectFilterPage;
+    private FilterWizardPage[] filterOptionsPages;
+    public String[] series;
 
-	private IDataSetFilter filter;
+    private IDataSetFilter filter;
 }

@@ -21,54 +21,54 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class FilterWizardPage extends WizardPage {
-	public FilterWizardPage(String title) {
-		super("selectFilterOptions"); //$NON-NLS-1$
-		setTitle(title);
-	}
+    public FilterWizardPage(String title) {
+        super("selectFilterOptions"); //$NON-NLS-1$
+        setTitle(title);
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		wizard = (SelectFilterWizard)super.getWizard();
-	}
+    @Override
+    public void createControl(Composite parent) {
+        wizard = (SelectFilterWizard)super.getWizard();
+    }
 
-	@Override
-	public boolean canFlipToNextPage() {
-		return false;
-	}
+    @Override
+    public boolean canFlipToNextPage() {
+        return false;
+    }
 
-	abstract void createFilter();
-	IDataSetFilter getFilter() {
-		return filter;
-	}
+    abstract void createFilter();
+    IDataSetFilter getFilter() {
+        return filter;
+    }
 
-	@Override
-	public void dispose() {
-		wizard = null;
-		super.dispose();
-	}
+    @Override
+    public void dispose() {
+        wizard = null;
+        super.dispose();
+    }
 
-	protected final SelectionListener selectionListener = new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			update();
-		}
-	};
+    protected final SelectionListener selectionListener = new SelectionAdapter() {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            update();
+        }
+    };
 
-	protected final ModifyListener modifyListener = new ModifyListener() {
-		@Override
-		public void modifyText(ModifyEvent e) {
-			update();
-		}
-	};
+    protected final ModifyListener modifyListener = new ModifyListener() {
+        @Override
+        public void modifyText(ModifyEvent e) {
+            update();
+        }
+    };
 
-	private void update() {
-		createFilter();
-		wizard.getContainer().updateButtons();
-	}
+    private void update() {
+        createFilter();
+        wizard.getContainer().updateButtons();
+    }
 
-	/**
-	 * @since 3.0
-	 */
-	protected IDataSetFilter filter;
-	protected SelectFilterWizard wizard;
+    /**
+     * @since 3.0
+     */
+    protected IDataSetFilter filter;
+    protected SelectFilterWizard wizard;
 }

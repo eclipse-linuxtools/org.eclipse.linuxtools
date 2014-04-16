@@ -76,14 +76,10 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  */
 public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
-	//Control creation objects
-	private TabFolder fileFolder;
-
 	//Controls
 	private Text scriptFile;
 	private Text binaryFile;
 	private Text arguments;
-	private Text generatedScript;
 	private Text outputFile;
 	private Text button_D_text;
 	private Text binaryArguments;
@@ -92,9 +88,6 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 	private Button fileBrowseButton;
 	private Button workspaceBrowseButton;
-	private Button parserButton;
-	private Button viewerButton;
-
 
 	private Button button_k;
 	private Button button_u;
@@ -104,11 +97,10 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 	private Button button_P;
 	private Button button_t;
 	private Button button_F;
-	private Button button_skip_badvars;
-	private Button button_ignore_dwarf;
+	private Button buttonSkipBadvars;
+	private Button buttonIgnoreDwarf;
 	private Button button_q;
-	private Button needToGenerateScriptButton;
-	private Button button_graphicsMode;
+	private Button buttonGraphicsMode;
 
 
 	private Spinner button_p_Spinner;
@@ -120,7 +112,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 	//Other variables
 	private String workspacePath;
-	private boolean output_file_has_changed = false;
+	private boolean outputFileHasChanged = false;
 	private boolean needsOverwritePermission = false;
 	private boolean overwritePermission = false;
 	private boolean changeOverwrite = false;
@@ -176,7 +168,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		@Override
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
-			output_file_has_changed = true;
+			outputFileHasChanged = true;
 		}
 	};
 
@@ -184,10 +176,10 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 		@Override
 		public void focusLost(FocusEvent e) {
-			if (output_file_has_changed) {
+			if (outputFileHasChanged) {
 				checkOverwrite();
 			}
-			output_file_has_changed = false;
+			outputFileHasChanged = false;
 
 			updateLaunchConfigurationDialog();
 		}
@@ -225,7 +217,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		/*
 		 * File folder - tab for selecting binary/stp file
 		 */
-		fileFolder = new TabFolder(parent, SWT.BORDER);
+		TabFolder fileFolder = new TabFolder(parent, SWT.BORDER);
 		fileFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		setControl(fileFolder);
 
@@ -326,7 +318,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		parser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		parser.addModifyListener(modifyListener);
 
-		parserButton = createPushButton(browseTop,
+		Button parserButton = createPushButton(browseTop,
 				"Find parsers", null);  //$NON-NLS-1$
 		parserButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -353,7 +345,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		viewer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		viewer.addModifyListener(modifyListener);
 
-		viewerButton = createPushButton(browseTop,
+		Button viewerButton = createPushButton(browseTop,
 				"Find viewers", null);  //$NON-NLS-1$
 		viewerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -609,18 +601,18 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		button_F.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		button_F.setToolTipText(Messages.getString("SystemTapOptionsTab.LeaveProbesToolTip")); //$NON-NLS-1$
 
-		button_skip_badvars = new Button(buttonsTop, SWT.CHECK);
-		button_skip_badvars.setText(Messages.getString("SystemTapOptionsTab.IgnoreBadVars")); //$NON-NLS-1$
-		button_skip_badvars.addSelectionListener(selectListener);
-		button_skip_badvars.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		button_skip_badvars.setToolTipText(
+		buttonSkipBadvars = new Button(buttonsTop, SWT.CHECK);
+		buttonSkipBadvars.setText(Messages.getString("SystemTapOptionsTab.IgnoreBadVars")); //$NON-NLS-1$
+		buttonSkipBadvars.addSelectionListener(selectListener);
+		buttonSkipBadvars.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonSkipBadvars.setToolTipText(
 				Messages.getString("SystemTapOptionsTab.30")); //$NON-NLS-1$
 
-		button_ignore_dwarf = new Button(buttonsTop, SWT.CHECK);
-		button_ignore_dwarf.setText(Messages.getString("SystemTapOptionsTab.ForTesting")); //$NON-NLS-1$
-		button_ignore_dwarf.addSelectionListener(selectListener);
-		button_ignore_dwarf.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		button_ignore_dwarf.setToolTipText(Messages.getString("SystemTapOptionsTab.IgnoreDebugToolTip")); //$NON-NLS-1$
+		buttonIgnoreDwarf = new Button(buttonsTop, SWT.CHECK);
+		buttonIgnoreDwarf.setText(Messages.getString("SystemTapOptionsTab.ForTesting")); //$NON-NLS-1$
+		buttonIgnoreDwarf.addSelectionListener(selectListener);
+		buttonIgnoreDwarf.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonIgnoreDwarf.setToolTipText(Messages.getString("SystemTapOptionsTab.IgnoreDebugToolTip")); //$NON-NLS-1$
 
 		button_q = new Button(buttonsTop, SWT.CHECK);
 		button_q.setText(Messages.getString("SystemTapOptionsTab.Button_qInfo")); //$NON-NLS-1$
@@ -628,11 +620,11 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		button_q.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		button_q.setToolTipText(Messages.getString("SystemTapOptionsTab.33")); //$NON-NLS-1$
 
-		button_graphicsMode = new Button(buttonsTop, SWT.CHECK);
-		button_graphicsMode.setText(Messages.getString("SystemTapOptionsTab.3")); //$NON-NLS-1$
-		button_graphicsMode.addSelectionListener(graphicsModeListener);
-		button_graphicsMode.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		button_graphicsMode.setToolTipText(
+		buttonGraphicsMode = new Button(buttonsTop, SWT.CHECK);
+		buttonGraphicsMode.setText(Messages.getString("SystemTapOptionsTab.3")); //$NON-NLS-1$
+		buttonGraphicsMode.addSelectionListener(graphicsModeListener);
+		buttonGraphicsMode.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonGraphicsMode.setToolTipText(
 		        Messages.getString("SystemTapOptionsTab.41")); //$NON-NLS-1$
 
 		Composite button_p_Spinner_Top = new Composite(buttonsTop, SWT.NONE);
@@ -773,8 +765,8 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 			button_g.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_GURU, LaunchConfigurationConstants.DEFAULT_COMMAND_GURU));
 			button_P.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_PROLOGUE_SEARCH, LaunchConfigurationConstants.DEFAULT_COMMAND_PROLOGUE_SEARCH));
 			button_t.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_TIMING_INFO, LaunchConfigurationConstants.DEFAULT_COMMAND_TIMING_INFO));
-			button_skip_badvars.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_SKIP_BADVARS, LaunchConfigurationConstants.DEFAULT_COMMAND_SKIP_BADVARS));
-			button_ignore_dwarf.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_IGNORE_DWARF, LaunchConfigurationConstants.DEFAULT_COMMAND_IGNORE_DWARF));
+			buttonSkipBadvars.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_SKIP_BADVARS, LaunchConfigurationConstants.DEFAULT_COMMAND_SKIP_BADVARS));
+			buttonIgnoreDwarf.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_IGNORE_DWARF, LaunchConfigurationConstants.DEFAULT_COMMAND_IGNORE_DWARF));
 			button_q.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_TAPSET_COVERAGE, LaunchConfigurationConstants.DEFAULT_COMMAND_TAPSET_COVERAGE));
 			button_F.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_LEAVE_RUNNING, LaunchConfigurationConstants.DEFAULT_COMMAND_LEAVE_RUNNING));
 			button_s_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES));
@@ -792,10 +784,6 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
 			viewer.setText(configuration.getAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS));
 
-			if (generatedScript != null){
-				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
-				needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));
-			}
 			useColourButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR));
 
 		} catch (CoreException e) {
@@ -817,8 +805,8 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_DISABLE_WARNINGS, button_w.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_BULK_MODE, button_b.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TIMING_INFO, button_t.getSelection());
-		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_SKIP_BADVARS, button_skip_badvars.getSelection());
-		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_IGNORE_DWARF, button_ignore_dwarf.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_SKIP_BADVARS, buttonSkipBadvars.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_IGNORE_DWARF, buttonIgnoreDwarf.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TAPSET_COVERAGE, button_q.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LEAVE_RUNNING, button_F.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_PASS, button_p_Spinner.getSelection());
@@ -836,14 +824,9 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, binaryArguments.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputFile.getText());
 
-		if (generatedScript != null){
-			configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript.getText());
-			configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerateScriptButton.getSelection());
-		}
-
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColourButton.getSelection());
 
-		if (button_graphicsMode.getSelection()){
+		if (buttonGraphicsMode.getSelection()){
 			scriptFile.setEnabled(false);
 			workspaceBrowseButton.setEnabled(false);
 			fileBrowseButton.setEnabled(false);

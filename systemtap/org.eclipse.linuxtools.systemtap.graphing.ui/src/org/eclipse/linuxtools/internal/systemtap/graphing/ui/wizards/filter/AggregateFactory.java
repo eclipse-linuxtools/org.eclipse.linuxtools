@@ -23,7 +23,10 @@ import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.SumAggregate;
 
 
 public final class AggregateFactory {
-	private static final String[] aggregateNames = new String[] {
+
+    private AggregateFactory() {}
+
+	private static final String[] AGGREGATE_NAMES = new String[] {
 		Localization.getString("AggregateFactory.AverageAggregate"), //$NON-NLS-1$
 		Localization.getString("AggregateFactory.CountAggregate"), //$NON-NLS-1$
 		Localization.getString("AggregateFactory.MaxAggregate"), //$NON-NLS-1$
@@ -31,7 +34,7 @@ public final class AggregateFactory {
 		Localization.getString("AggregateFactory.SumAggregate") //$NON-NLS-1$
 	};
 
-	private static final String[] aggregateDescriptions = new String[] {
+	private static final String[] AGGREGATION_DESCRIPTIONS = new String[] {
 		Localization.getString("AggregateFactory.AverageDescription"), //$NON-NLS-1$
 		Localization.getString("AggregateFactory.CountDescription"), //$NON-NLS-1$
 		Localization.getString("AggregateFactory.MaxDescription"), //$NON-NLS-1$
@@ -39,7 +42,7 @@ public final class AggregateFactory {
 		Localization.getString("AggregateFactory.SumDescription") //$NON-NLS-1$
 	};
 
-	public static final String[] aggregateIDs = new String[] {
+	static final String[] AGGREGATES = new String[] {
 		AverageAggregate.ID,
 		CountAggregate.ID,
 		MaxAggregate.ID,
@@ -49,23 +52,26 @@ public final class AggregateFactory {
 
 	public static String getAggregateName(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
-			return aggregateNames[index];
+		if(index >= 0) {
+			return AGGREGATE_NAMES[index];
+		}
 		return null;
 	}
 
 	public static String getAggregateDescription(String id) {
 		int index = getIndex(id);
-		if(index >= 0)
-			return aggregateDescriptions[index];
+		if(index >= 0) {
+			return AGGREGATION_DESCRIPTIONS[index];
+		}
 		return null;
 	}
 
 	private static int getIndex(String id) {
-		for(int i=0; i< aggregateIDs.length; i++)
-			if(id.equals(aggregateIDs[i]))
+		for(int i=0; i< AGGREGATES.length; i++) {
+			if(id.equals(AGGREGATES[i])) {
 				return i;
-
+			}
+		}
 		return -1;
 	}
 
