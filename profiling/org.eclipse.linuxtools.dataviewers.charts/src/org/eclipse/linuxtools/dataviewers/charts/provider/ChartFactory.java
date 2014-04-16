@@ -35,7 +35,9 @@ import org.swtchart.LineStyle;
  * @author Marzia Maugeri <marzia.maugeri@st.com>
  *
  */
-public class ChartFactory {
+public final class ChartFactory {
+
+    private ChartFactory() {}
 
     /**
      * Produces a pie chart from the input objects.

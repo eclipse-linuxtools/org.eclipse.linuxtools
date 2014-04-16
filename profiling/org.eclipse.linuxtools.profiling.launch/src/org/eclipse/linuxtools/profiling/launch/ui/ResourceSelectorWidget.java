@@ -44,27 +44,10 @@ public class ResourceSelectorWidget {
 	private ResourceType resourceType;
 	private Group mainComp;
 	private String sectionLabelText;
-	private Label sectionLabel;
 	private Label uriLabel;
 	private Text uriField;
 	private Button browseButton;
 	private FileSystemSelectionArea fileSystemSelectionArea;
-
-	/**
-	 * Return the path on the URI field.
-	 *
-	 * @return the path or the field's text if the path is invalid
-	 */
-	public String getPathFromURIField() {
-		URI fieldURI;
-		try {
-			fieldURI = new URI(uriField.getText());
-		} catch (URISyntaxException e) {
-			return uriField.getText();
-		}
-		String path = fieldURI.getPath();
-		return path != null ? path : uriField.getText();
-	}
 
 	/**
 	 * Open an appropriate directory browser
@@ -231,9 +214,6 @@ public class ResourceSelectorWidget {
 	public void setEnabled(boolean enabled) {
 		if (mainComp != null) {
 			mainComp.setEnabled(enabled);
-		}
-		if (sectionLabel != null) {
-			sectionLabel.setEnabled(enabled);
 		}
 		if (uriLabel != null) {
 			uriLabel.setEnabled(enabled);

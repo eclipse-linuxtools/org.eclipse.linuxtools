@@ -11,12 +11,8 @@
 
 package org.eclipse.linuxtools.internal.tools.launch.ui;
 
+public interface Activator {
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator {
-
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.ui"; //$NON-NLS-1$
+    // The plug-in ID
+    String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.ui"; //$NON-NLS-1$
 }

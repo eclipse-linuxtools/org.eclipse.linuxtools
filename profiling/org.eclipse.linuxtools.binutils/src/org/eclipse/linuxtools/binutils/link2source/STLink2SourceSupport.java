@@ -113,8 +113,9 @@ public class STLink2SourceSupport {
     }
 
     private boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {
-        if (sourceLoc == null || "??".equals(sourceLoc.toString())) //$NON-NLS-1$
+        if (sourceLoc == null || "??".equals(sourceLoc.toString())) { //$NON-NLS-1$
             return false;
+        }
         try {
             IEditorInput editorInput = getEditorInput(sourceLoc, project);
             IWorkbenchPage p = CUIPlugin.getActivePage();
@@ -139,7 +140,7 @@ public class STLink2SourceSupport {
                     }
                 }
             }
-        } catch (Exception _) {
+        } catch (Exception e) {
         }
         return false;
     }
@@ -155,8 +156,8 @@ public class STLink2SourceSupport {
                 try {
                     IFileStore ifs = EFS.getStore(file.toURI());
                     return new FileStoreEditorInput(ifs);
-                } catch (CoreException _) {
-                    Activator.getDefault().getLog().log(_.getStatus());
+                } catch (CoreException e) {
+                    Activator.getDefault().getLog().log(e.getStatus());
                 }
             }
         }
@@ -179,15 +180,15 @@ public class STLink2SourceSupport {
                     }
                 }
             }
-        } catch (Exception _) {
+        } catch (Exception e) {
             // do nothing
         }
         return null;
     }
 
     /**
-	 * @since 5.0
-	 */
+     * @since 5.0
+     */
     public IFile getFileForPath(IPath path, IProject project) {
         IFile f = getFileForPathImpl(path, project);
         if (f == null) {
@@ -245,8 +246,8 @@ public class STLink2SourceSupport {
                         }
                     }
 
-                } catch (CModelException _) {
-                    Activator.getDefault().getLog().log(_.getStatus());
+                } catch (CModelException e) {
+                    Activator.getDefault().getLog().log(e.getStatus());
                 }
             }
         }
@@ -256,10 +257,10 @@ public class STLink2SourceSupport {
     private void getAllReferencedProjects(Set<IProject> all, IProject project) throws CoreException {
         if (project != null) {
             IProject[] refs = project.getReferencedProjects();
-            for (int i = 0; i < refs.length; i++) {
-                if (!all.contains(refs[i]) && refs[i].exists() && refs[i].isOpen()) {
-                    all.add(refs[i]);
-                    getAllReferencedProjects(all, refs[i]);
+            for (IProject ref : refs) {
+                if (!all.contains(ref) && ref.exists() && ref.isOpen()) {
+                    all.add(ref);
+                    getAllReferencedProjects(all, ref);
                 }
             }
         }

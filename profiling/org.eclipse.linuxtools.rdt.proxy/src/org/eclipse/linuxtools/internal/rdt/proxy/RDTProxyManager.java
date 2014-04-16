@@ -28,66 +28,66 @@ import org.eclipse.remote.core.exception.RemoteConnectionException;
 
 public class RDTProxyManager implements IRemoteEnvProxyManager {
 
-	public static final String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
+    public static final String SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
 
-	@Override
-	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
-		return new RDTFileProxy(uri);
-	}
+    @Override
+    public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
+        return new RDTFileProxy(uri);
+    }
 
-	@Override
-	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
-		return new RDTFileProxy(project);
-	}
+    @Override
+    public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
+        return new RDTFileProxy(project);
+    }
 
-	@Override
-	public IRemoteCommandLauncher getLauncher(URI uri) {
-		return new RDTCommandLauncher(uri);
-	}
+    @Override
+    public IRemoteCommandLauncher getLauncher(URI uri) {
+        return new RDTCommandLauncher(uri);
+    }
 
-	@Override
-	public IRemoteCommandLauncher getLauncher(IProject project) {
-		return new RDTCommandLauncher(project);
-	}
+    @Override
+    public IRemoteCommandLauncher getLauncher(IProject project) {
+        return new RDTCommandLauncher(project);
+    }
 
-	@Override
-	public String getOS(URI uri) {
-		IRemoteServices services = RemoteServices.getRemoteServices(uri);
-		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
-		if (os == null || os.isEmpty()) {
-			//FIXME: need better way to get this property
-			return "Linux"; //$NON-NLS-1$
-		}
-		return os;
-	}
+    @Override
+    public String getOS(URI uri) {
+        IRemoteServices services = RemoteServices.getRemoteServices(uri);
+        IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+        String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
+        if (os == null || os.isEmpty()) {
+            //FIXME: need better way to get this property
+            return "Linux"; //$NON-NLS-1$
+        }
+        return os;
+    }
 
-	@Override
-	public String getOS(IProject project) {
-		URI uri = project.getLocationURI();
-		return getOS(uri);
-	}
+    @Override
+    public String getOS(IProject project) {
+        URI uri = project.getLocationURI();
+        return getOS(uri);
+    }
 
-	@Override
-	public Map<String, String> getEnv(URI uri) {
-		IRemoteServices services = RemoteServices.getRemoteServices(uri);
-		IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
-		if(!connection.isOpen()) {
-			try {
-				connection.open(null);
-			} catch (RemoteConnectionException e) {
-				Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
-				Activator.getDefault().getLog().log(status);
-				return Collections.emptyMap();
-			}
-		}
-		return connection.getEnv();
-	}
+    @Override
+    public Map<String, String> getEnv(URI uri) {
+        IRemoteServices services = RemoteServices.getRemoteServices(uri);
+        IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+        if(!connection.isOpen()) {
+            try {
+                connection.open(null);
+            } catch (RemoteConnectionException e) {
+                Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
+                Activator.getDefault().getLog().log(status);
+                return Collections.emptyMap();
+            }
+        }
+        return connection.getEnv();
+    }
 
-	@Override
-	public Map<String, String> getEnv(IProject project) {
-		URI uri = project.getLocationURI();
-		return getEnv(uri);
-	}
+    @Override
+    public Map<String, String> getEnv(IProject project) {
+        URI uri = project.getLocationURI();
+        return getEnv(uri);
+    }
 
 }
