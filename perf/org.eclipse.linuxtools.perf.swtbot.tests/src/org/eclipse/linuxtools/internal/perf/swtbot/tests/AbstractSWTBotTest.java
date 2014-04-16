@@ -16,12 +16,15 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.perf.IPerfData;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -37,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -145,26 +149,30 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
 		 * AbstractTest#createProjectAndBuild builds a single executable binary
 		 * under "Binaries".
 		 */
-		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
-				PROJ_NAME);
+		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), PROJ_NAME);
+		try {
+			runPerfViewTestActions(bot);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			deleteProject(proj);
+		}
+	}
 
-		enterProjectFolder(bot);
-
-		// Select project binary.
-		SWTBotTree treeBot = projectExplorer.bot().tree();
-		treeBot.contextMenu("Refresh").click();
-		treeBot.expandNode("Binaries").getNode(0).select();
-
-		// Launch configuration strings
-		String menuItem = "Profiling Tools";
-		String configMenuTitle = "Profiling Tools Configurations";
-		String subMenuItem = configMenuTitle + "...";
+	private void runPerfViewTestActions(SWTWorkbenchBot bot) throws Exception {
+		projectExplorer.bot().tree().select(PROJ_NAME);
+		final Shell shellWidget = bot.activeShell().widget;
 
 		// Open profiling configurations dialog
-		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, menuItem, subMenuItem);
-		click(menu);
-
-		bot.shell(configMenuTitle).activate();
+		UIThreadRunnable.asyncExec(new VoidResult() {
+			@Override
+			public void run() {
+				DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
+						(StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].
+						getSelectionService().getSelection(), "org.eclipse.debug.ui.launchGroup.profilee");
+			}
+		});
+		bot.shell("Profiling Tools Configurations").activate();
 
 		// Create new Perf configuration
 		SWTBotTree profilingConfigs = bot.tree();
@@ -186,7 +194,6 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
 			openStubView();
 		}
 
-		exitProjectFolder(bot);
 		testPerfView();
 	}
 

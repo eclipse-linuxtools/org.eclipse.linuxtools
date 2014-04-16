@@ -294,6 +294,7 @@ public class TestCreateSystemtapScript {
 		bot.button("Finish").click();
 		bot.waitUntil(Conditions.shellCloses(shell));
 		projectExplorer = bot.viewByTitle("Project Explorer");
+		projectExplorer.setFocus();
 		projectExplorer.bot().tree().select(SYSTEMTAP_PROJECT_NAME)
 			.contextMenu("Go Into").click();
 
@@ -1257,8 +1258,6 @@ public class TestCreateSystemtapScript {
 
 		bot.button("Run").click();
 		bot.waitUntil(Conditions.shellCloses(shell));
-		SWTBotView console = bot.viewById("org.eclipse.ui.console.ConsoleView");
-		console.setFocus();
 
 		// Perform mouse hover tests on graphs as they are being updated
 		SWTBotEditor graphEditor = TestCreateSystemtapScript.bot.editorByTitle(scriptName.concat(" Graphs"));
@@ -1339,10 +1338,8 @@ public class TestCreateSystemtapScript {
 	private void openRunConfigurations(String scriptName) {
 		// Focus on project explorer view.
 		projectExplorer.setFocus();
-		SWTBotTree treeBot = bot.tree();
-		treeBot.select(scriptName);
-		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, "Run As", "Run Configurations...");
-		click(menu);
+		projectExplorer.bot().tree().select(scriptName);
+		bot.menu("Run").menu("Run Configurations...").click();
 	}
 
 	private void setupGraphWithTests(String title) {

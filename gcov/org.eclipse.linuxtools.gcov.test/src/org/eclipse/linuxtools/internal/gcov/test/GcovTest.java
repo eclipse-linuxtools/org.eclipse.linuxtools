@@ -2,6 +2,8 @@ package org.eclipse.linuxtools.internal.gcov.test;
 
 import static org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper.contextMenu;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +33,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -46,6 +49,7 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.osgi.framework.FrameworkUtil;
 
 public abstract class GcovTest {
@@ -161,11 +165,59 @@ public abstract class GcovTest {
 		return bot;
 	}
 
+	@After
+	public void cleanUp() {
+		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+		SWTBotShell[] shells = bot.shells();
+		for (final SWTBotShell shell : shells) {
+			String shellTitle = shell.getText();
+			if (shellTitle.length() > 0
+					&& !shellTitle.startsWith("SystemTap IDE")
+					&& !shellTitle.startsWith("Quick Access")) {
+				UIThreadRunnable.syncExec(new VoidResult() {
+					@Override
+					public void run() {
+						if (shell.widget.getParent() != null) {
+							shell.close();
+						}
+					}
+				});
+			}
+		}
+		bot.closeAllEditors();
+	}
+
 	public static void cleanup(SWTWorkbenchBot bot) {
 		// clear project explorer
+		exitProjectFolder(bot);
+		projectExplorer.setFocus();
 		SWTBotTree treeBot = projectExplorer.bot().tree();
 		for (SWTBotTreeItem treeItem : treeBot.getAllItems()) {
 			removeTreeItem(bot, treeItem);
+		}
+	}
+
+	/**
+	 * Enter the project folder so as to avoid expanding trees later
+	 */
+	private static SWTBotView enterProjectFolder(SWTWorkbenchBot bot, String projectName) {
+		projectExplorer.bot().tree().select(projectName).
+			contextMenu("Go Into").click();
+		bot.waitUntil(waitForWidget(WidgetMatcherFactory.withText(
+				projectName), projectExplorer.getWidget()));
+		return projectExplorer;
+	}
+
+	/**
+	 * Exit from the project tree.
+	 */
+	private static void exitProjectFolder(SWTWorkbenchBot bot) {
+		try {
+			SWTBotToolbarButton forwardButton = projectExplorer.toolbarPushButton("Forward");
+			projectExplorer.toolbarPushButton("Back to Workspace").click();
+			bot.waitUntil(widgetIsEnabled(forwardButton));
+		} catch (WidgetNotFoundException e) {
+			// Already exited from project folder
 		}
 	}
 
@@ -348,7 +400,7 @@ public abstract class GcovTest {
 		// We need to select the binary, but in the tree, it may have additional info appended to the
 		// name such as [x86_64/le].  So, we look at all nodes of the project and look for the one that
 		// starts with our binary file name.  We can then select the node.
-		projectExplorer.bot().tree().select(projectName).contextMenu("Go Into").click();
+		enterProjectFolder(bot, projectName);
 		bot.waitUntil(Conditions.waitForWidget(withText(projectName), projectExplorer.getWidget()));
 
 		SWTBotTreeItem[] nodes = treeBot.getAllItems();
@@ -383,9 +435,6 @@ public abstract class GcovTest {
 		SWTBotView botView = bot.viewByTitle("gcov");
 
 		botView.close();
-		SWTBotToolbarButton forwardButton = projectExplorer.toolbarPushButton("Forward");
-		projectExplorer.toolbarPushButton("Back to Workspace").click();
-		bot.waitUntil(Conditions.widgetIsEnabled(forwardButton));
 	}
 
 	private static void dumpCSV(SWTWorkbenchBot bot, SWTBotView botView, String projectName, String type,

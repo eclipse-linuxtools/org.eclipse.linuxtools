@@ -17,32 +17,33 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withSt
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,6 +59,44 @@ public class PreferencesTest extends AbstractTest{
 	private static final String PROFILING_PREFS_TYPE = "timing"; //$NON-NLS-1$
 	private static final String[][] PROFILING_PREFS_INFO = {
 			{ "Coverage", "coverage" }, { "Memory", "memory" },{ "Timing", "timing" } };  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+
+	private static class NodeAvailableAndSelect extends DefaultCondition {
+
+		private SWTBotTree tree;
+		private String[] nodes;
+
+		/**
+		 * Wait for a tree node (with a known parent) to become visible, and select it
+		 * when it does. Note that this wait condition should only be used after having
+		 * made an attempt to reveal the node.
+		 * @param tree The SWTBotTree that contains the node to select.
+		 * @param nodes A list of the names of each node containing the target node.
+		 */
+		NodeAvailableAndSelect(SWTBotTree tree, String ...nodes) {
+			this.tree = tree;
+			this.nodes = new String[nodes.length];
+			System.arraycopy(nodes, 0, this.nodes, 0, nodes.length);
+		}
+
+		@Override
+		public boolean test() {
+			try {
+				SWTBotTreeItem currentNode = tree.getTreeItem(nodes[0]);
+				for (int i = 1, n = nodes.length; i < n; i++) {
+					currentNode = currentNode.getNode(nodes[i]);
+				}
+				currentNode.select();
+				return true;
+			} catch (WidgetNotFoundException e) {
+				return false;
+			}
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Timed out waiting for " + nodes[nodes.length - 1]; //$NON-NLS-1$
+		}
+	}
 
 	@BeforeClass
 	public static void setUpWorkbench() throws Exception {
@@ -89,7 +128,8 @@ public class PreferencesTest extends AbstractTest{
 		windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
 		SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
 		shell.activate();
-		bot.tree().expandNode("General").select("Workspace"); //$NON-NLS-1$ //$NON-NLS-2$
+		bot.text().setText("Workspace"); //$NON-NLS-1$
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Workspace")); //$NON-NLS-1$ //$NON-NLS-2$
 		SWTBotCheckBox buildAuto = bot.checkBox("Build automatically"); //$NON-NLS-1$
 		if (buildAuto != null && buildAuto.isChecked()) {
 			buildAuto.click();
@@ -121,11 +161,9 @@ public class PreferencesTest extends AbstractTest{
 		shell.activate();
 
 		// Go to "Profiling Categories" preferences page.
-		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling").expandNode("Categories"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertNotNull(treeItem);
-
-		// Select "Timing" category page.
-		treeItem.select(PROFILING_PREFS_CATEGORY);
+		bot.text().setText(PROFILING_PREFS_CATEGORY);
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(),
+				"C/C++", "Profiling", "Categories", PROFILING_PREFS_CATEGORY)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		// Get name of default tool to deselect.
 		String defaultToolId = ProviderFramework.getProviderIdToRun(null, PROFILING_PREFS_TYPE);
@@ -145,27 +183,44 @@ public class PreferencesTest extends AbstractTest{
 	}
 
 	@Test
-	public void testProfileProject() throws InvocationTargetException, CoreException, URISyntaxException, InterruptedException, IOException {
+	public void testProfileProject() throws Exception {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), PROJ_NAME);
+		try {
+			testProfileProjectActions(bot);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			deleteProject(proj);
+		}
+	}
+
+	private void testProfileProjectActions(SWTWorkbenchBot bot) throws Exception {
 		testPreferencesPage();
 
 		// Focus on project explorer view.
-		bot.viewByTitle("Project Explorer").bot(); //$NON-NLS-1$
-		bot.activeShell();
-		SWTBotTree treeBot = bot.tree();
-		treeBot.setFocus();
+		SWTBotView projectExplorer = bot.viewByTitle("Project Explorer"); //$NON-NLS-1$
+		projectExplorer.bot().tree().select(PROJ_NAME);
+		final Shell shellWidget = bot.activeShell().widget;
 
-		// Select project binary.
-		// AbstractTest#createProjectAndBuild builds one executable binary under Binaries.
-		treeBot.expandNode(PROJ_NAME).expandNode("Binaries").getNode(0).select(); //$NON-NLS-1$
+		// Open profiling configurations dialog
+		UIThreadRunnable.asyncExec(new VoidResult() {
+			@Override
+			public void run() {
+				DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
+						(StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].
+						getSelectionService().getSelection(), "org.eclipse.debug.ui.launchGroup.profilee"); //$NON-NLS-1$
+			}
+		});
+		SWTBotShell shell = bot.shell("Profiling Tools Configurations"); //$NON-NLS-1$
+		shell.activate();
 
-		String menuItem = "Profiling Tools"; //$NON-NLS-1$
-		String subMenuItem = "3 Profile Timing"; //$NON-NLS-1$
-
-		// Click on "Profiling Tools -> 3 Profiling Timing" context menu to execute shortcut.
-		MenuItem menu = ContextMenuHelper.contextMenu(treeBot, menuItem, subMenuItem);
-		click(menu);
+		// Create new profiling configuration
+		SWTBotTree profilingConfigs = bot.tree();
+		SWTBotTree perfNode = profilingConfigs.select("Profile Timing"); //$NON-NLS-1$
+		perfNode.contextMenu("New").click(); //$NON-NLS-1$
+		bot.button("Profile").click(); //$NON-NLS-1$
+		bot.waitUntil(Conditions.shellCloses(shell));
 
 		// Assert that the expected tool is running.
 		SWTBotShell profileShell = bot.shell("Successful profile launch").activate(); //$NON-NLS-1$
@@ -173,8 +228,6 @@ public class PreferencesTest extends AbstractTest{
 
 		bot.button("OK").click(); //$NON-NLS-1$
 		bot.waitUntil(shellCloses(profileShell));
-
-		deleteProject(proj);
 	}
 
 	private static void checkDefaultPreference(String preferenceCategory, String profilingType){
@@ -187,10 +240,9 @@ public class PreferencesTest extends AbstractTest{
 		shell.activate();
 
 		// Go to specified tree item in "Profiling Categories" preferences page.
-		SWTBotTreeItem treeItem = bot.tree().expandNode("C/C++").expandNode("Profiling").expandNode("Categories"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertNotNull(treeItem);
-
-		treeItem.select(preferenceCategory);
+		bot.text().setText(preferenceCategory);
+		bot.waitUntil(new NodeAvailableAndSelect(bot.tree(),
+				"C/C++", "Profiling", "Categories", preferenceCategory)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		// Restore defaults.
 		bot.button("Restore Defaults").click(); //$NON-NLS-1$
