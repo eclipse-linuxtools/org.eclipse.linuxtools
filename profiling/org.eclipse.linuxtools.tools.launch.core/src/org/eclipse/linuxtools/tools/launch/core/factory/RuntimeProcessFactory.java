@@ -202,7 +202,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	 *
 	 * @since 1.1
 	 */
-	public Process exec(String cmd, String[] envp, IFileStore dir, IProject project)
+	private Process exec(String cmd, String[] envp, IFileStore dir, IProject project)
 		throws IOException {
 		return exec(tokenizeCommand(cmd), envp, dir, project);
 	}
@@ -290,50 +290,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	/**
 	 * Execute one command, as root, using the path selected in 'Linux Tools Path'
 	 * preference page in the informed project.
-	 * @param cmd The desired command
-	 * @param project The current project. If null, only system path will be
-	 * used to look for the command.
-	 * @return The process started by sudoExec
-	 */
-	public Process sudoExec(String cmd, IProject project) throws IOException {
-		return sudoExec(cmd, null, (IFileStore)null, project);
-	}
-
-	/**
-	 * Execute one command, as root, using the path selected in 'Linux Tools Path'
-	 * preference page in the informed project.
-	 * @param cmd The desired command
-	 * @param envp An array with extra enviroment variables to be used when running
-	 * the command
-	 * @param project The current project. If null, only system path will be
-	 * used to look for the command.
-	 * @return The process started by sudoExec
-	 */
-	public Process sudoExec(String cmd, String[] envp, IProject project) throws IOException {
-		return exec(cmd, envp, (IFileStore)null, project);
-	}
-
-	/**
-	 * Execute one command, as root, using the path selected in 'Linux Tools Path'
-	 * preference page in the informed project.
-	 * @param cmd The desired command
-	 * @param envp An array with extra enviroment variables to be used when running
-	 * the command
-	 * @param dir The directory used as current directory to run the command.
-	 * @param project The current project. If null, only system path will be
-	 * used to look for the command.
-	 * @return The process started by sudoExec
-	 *
-	 * @since 1.1
-	 */
-	public Process sudoExec(String cmd, String[] envp, IFileStore dir, IProject project)
-			throws IOException {
-			return sudoExec(tokenizeCommand(cmd), envp, dir, project);
-	}
-
-	/**
-	 * Execute one command, as root, using the path selected in 'Linux Tools Path'
-	 * preference page in the informed project.
 	 * @param cmdarray An array with the command to be executed and its params.
 	 * @param project The current project. If null, only system path will be
 	 * used to look for the command.
@@ -353,7 +309,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	 * used to look for the command.
 	 * @return The process started by sudoExec
 	 */
-	public Process sudoExec(String[] cmdarray, String[] envp, IProject project) throws IOException {
+	private Process sudoExec(String[] cmdarray, String[] envp, IProject project) throws IOException {
 		return sudoExec(cmdarray, envp, (IFileStore)null, project);
 	}
 
@@ -370,7 +326,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	 *
 	 * @since 1.1
 	 */
-	public Process sudoExec(String[] cmdarray, String[] envp, IFileStore dir, IProject project) throws IOException {
+	private Process sudoExec(String[] cmdarray, String[] envp, IFileStore dir, IProject project) throws IOException {
 		URI uri = URI.create("sudo"); //$NON-NLS-1$
 
 		List<String> cmdList = Arrays.asList(cmdarray);

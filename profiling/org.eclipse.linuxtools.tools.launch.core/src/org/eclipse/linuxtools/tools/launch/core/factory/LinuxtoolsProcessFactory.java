@@ -28,9 +28,11 @@ public abstract class LinuxtoolsProcessFactory {
 	private static final String SEPARATOR = ":"; //$NON-NLS-1$
 
 	private String getEnvpPath(String[] envp) {
-		for (String env:envp)
-			if (env.startsWith(PATH_EQUAL))
+		for (String env:envp) {
+			if (env.startsWith(PATH_EQUAL)) {
 				return env.substring(PATH_EQUAL.length());
+			}
+		}
 		return null;
 	}
 
@@ -57,11 +59,7 @@ public abstract class LinuxtoolsProcessFactory {
 			if (systemPath==null) {
 				systemPath = System.getenv(PATH);
 			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
+		} catch (InstantiationException|IllegalAccessException|CoreException e) {
 			e.printStackTrace();
 		}
 		StringBuffer newPath = new StringBuffer();
@@ -80,9 +78,10 @@ public abstract class LinuxtoolsProcessFactory {
 			newPath.append(SEPARATOR);
 		}
 
-		if (newPath.length() == PATH_EQUAL.length())
+		if (newPath.length() == PATH_EQUAL.length()) {
 			//there is nothing to add
 			return envp;
+		}
 
 		String[] newEnvp = new String[] {};
 
@@ -113,8 +112,6 @@ public abstract class LinuxtoolsProcessFactory {
 				}
 				i++;
 			}
-		} else {
-			newEnvp = new String[] {};
 		}
 		return newEnvp;
 	}

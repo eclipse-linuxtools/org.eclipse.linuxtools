@@ -36,10 +36,6 @@ public class CdtSpawnerProcessFactory extends LinuxtoolsProcessFactory {
 		return instance;
 	}
 
-	public Process exec(String cmd, IProject project) throws IOException {
-		return exec(cmd, null, project);
-	}
-
 	public Process exec(String[] cmdarray, IProject project) throws IOException {
 		return exec(cmdarray, null, project);
 	}
@@ -47,17 +43,6 @@ public class CdtSpawnerProcessFactory extends LinuxtoolsProcessFactory {
 	public Process exec(String[] cmdarray, String[] envp, IProject project) throws IOException {
 		envp = updateEnvironment(envp, project);
 		return ProcessFactory.getFactory().exec(cmdarray, envp);
-	}
-
-	public Process exec(String cmd, String[] envp, IProject project) throws IOException {
-		envp = updateEnvironment(envp, project);
-		return ProcessFactory.getFactory().exec(cmd, envp);
-	}
-
-	public Process exec(String cmd, String[] envp, File dir, IProject project)
-		throws IOException {
-		envp = updateEnvironment(envp, project);
-		return ProcessFactory.getFactory().exec(cmd, envp, dir);
 	}
 
 	public Process exec(String cmdarray[], String[] envp, File dir, IProject project)
