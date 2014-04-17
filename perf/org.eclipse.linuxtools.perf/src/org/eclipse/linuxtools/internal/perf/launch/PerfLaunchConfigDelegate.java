@@ -29,12 +29,14 @@ import java.util.List;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -44,14 +46,14 @@ import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
 import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.linuxtools.internal.perf.ui.StatView;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.IOConsole;
 import org.osgi.framework.Version;
 
-public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
+public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
 
 	@Override
 	protected String getPluginID() {
@@ -102,8 +104,9 @@ public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate
 			Process process;
 			try {
 				//Spawn the process
-				process = execute( commandArray, getEnvironment( config ), wd, usePty );
-				createNewProcess( launch, process, commandArray[0] ); //Spawn IProcess using Debug plugin (CDT)
+				process = CdtSpawnerProcessFactory.getFactory().exec( commandArray, getEnvironment( config ), wd, usePty );
+				DebugPlugin.newProcess(launch, process,
+		                renderProcessLabel(commandArray[0])); //Spawn IProcess using Debug plugin (CDT)
 
 				//Wait for recording to complete.
 				process.waitFor();

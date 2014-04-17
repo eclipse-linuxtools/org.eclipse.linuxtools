@@ -94,10 +94,10 @@ Invalid values will be assigned the lowest priority to the extension.
          <attribute name="delegate" type="string" use="required">
             <annotation>
                <documentation>
-                  specifies the fully qualified name of the Java class that extends &lt;code&gt;ProfileLaunchConfigurationDelegate&lt;/code&gt; and provides a launch delegate for profiling.
+                  specifies the fully qualified name of the Java class that extends &lt;code&gt;AbstractCLaunchDelegate&lt;/code&gt; and provides a launch delegate for profiling.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate:"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.cdt.launch.AbstractCLaunchDelegate:"/>
                </appinfo>
             </annotation>
          </attribute>

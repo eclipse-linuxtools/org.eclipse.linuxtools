@@ -56,4 +56,35 @@ public class CdtSpawnerProcessFactory extends LinuxtoolsProcessFactory {
 		envp = updateEnvironment(envp, project);
 		return ProcessFactory.getFactory().exec(cmdarray, envp, dir, pty);
 	}
+
+	/**
+     * Executes a command array using pty
+     *
+     * @param cmdarray -- Split a command string on the ' ' character
+     * @param envp -- Use <code>getEnvironment(ILaunchConfiguration)</code> in the AbstractCLaunchDelegate.
+     * @param dir -- Working directory
+     * @param usePty -- A value of 'true' usually suffices
+     * @return A properly formed process, or null
+     * @since 3.0
+     */
+    public Process exec(String[] cmdarray, String[] envp, File dir,
+            boolean usePty) {
+        Process process = null;
+        try {
+            if (dir == null) {
+                process = ProcessFactory.getFactory().exec(cmdarray, envp);
+            } else {
+                if (PTY.isSupported() && usePty) {
+                    process = ProcessFactory.getFactory().exec(cmdarray,
+                            envp, dir, new PTY());
+                } else {
+                    process = ProcessFactory.getFactory().exec(cmdarray,
+                            envp, dir);
+                }
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return process;
+    }
 }

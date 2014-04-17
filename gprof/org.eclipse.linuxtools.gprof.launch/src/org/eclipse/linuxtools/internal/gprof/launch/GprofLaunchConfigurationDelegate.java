@@ -19,6 +19,7 @@ import java.io.File;
 import java.net.URI;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -34,13 +35,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.gprof.view.GmonView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class GprofLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
+public class GprofLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
     private ILaunchConfiguration config;
 
     @Override

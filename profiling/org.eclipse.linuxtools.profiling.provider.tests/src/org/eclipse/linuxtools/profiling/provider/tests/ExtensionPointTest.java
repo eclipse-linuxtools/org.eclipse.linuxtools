@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationDelegate;
@@ -64,7 +64,7 @@ public class ExtensionPointTest {
 
 	@Test
 	public void testDelegate () {
-		ProfileLaunchConfigurationDelegate delegate = ProviderFramework.getConfigurationDelegateFromId(PLUGIN_ID + "1"); //$NON-NLS-1$
+	    AbstractCLaunchDelegate delegate = ProviderFramework.getConfigurationDelegateFromId(PLUGIN_ID + "1"); //$NON-NLS-1$
 		assertTrue(delegate instanceof StubbyLaunchConfigurationDelegate);
 	}
 

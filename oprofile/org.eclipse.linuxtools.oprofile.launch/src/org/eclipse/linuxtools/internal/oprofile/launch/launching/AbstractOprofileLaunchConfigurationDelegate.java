@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -46,13 +47,12 @@ import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCou
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
+public abstract class AbstractOprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 	protected ILaunchConfiguration config;
 	private static final String OPROFILE_DATA = "oprofile_data"; //$NON-NLS-1$
 	private static final String SESSION_DIR = "--session-dir="; //$NON-NLS-1$

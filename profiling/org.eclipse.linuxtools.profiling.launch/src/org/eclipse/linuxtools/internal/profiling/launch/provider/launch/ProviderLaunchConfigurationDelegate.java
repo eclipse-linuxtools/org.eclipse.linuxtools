@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.profiling.launch.provider.launch;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
@@ -21,12 +22,10 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.osgi.util.NLS;
 
-public class ProviderLaunchConfigurationDelegate extends
-		ProfileLaunchConfigurationDelegate {
+public class ProviderLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
@@ -81,7 +80,7 @@ public class ProviderLaunchConfigurationDelegate extends
 			}
 
 			// get delegate associated with provider id.
-			ProfileLaunchConfigurationDelegate delegate = ProviderFramework
+			AbstractCLaunchDelegate delegate = ProviderFramework
 					.getConfigurationDelegateFromId(providerId);
 
 			// launch delegate

@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
@@ -56,7 +57,6 @@ import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.linuxtools.internal.perf.ui.StatView;
 import org.eclipse.linuxtools.profiling.launch.ConfigUtils;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
 import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
@@ -70,7 +70,7 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.osgi.framework.Version;
 
-public class PerfLaunchConfigDelegate extends ProfileLaunchConfigurationDelegate {
+public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
 
 	private ConfigUtils configUtils;
 	private static String OUTPUT_STR = "--output="; //$NON-NLS-1$

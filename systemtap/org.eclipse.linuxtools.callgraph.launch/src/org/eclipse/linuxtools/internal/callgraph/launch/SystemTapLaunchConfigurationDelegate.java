@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.IStreamListener;
@@ -38,15 +40,14 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
  * and schedules a job to finish generation of the command and execute.
  *
  */
-public class SystemTapLaunchConfigurationDelegate extends
-		ProfileLaunchConfigurationDelegate {
+public class SystemTapLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
 	private static final String [] escapableChars = new String []  {"(", ")", " "}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -265,10 +266,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			String [] commandArray = new String [] {"sh", script.getAbsolutePath()}; //$NON-NLS-1$
 
-			Process subProcess = execute(commandArray, getEnvironment(config),
+			Process subProcess = CdtSpawnerProcessFactory.getFactory().exec(commandArray, getEnvironment(config),
 					workDir, true);
 
-			IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
+			IProcess process = DebugPlugin.newProcess(launch, subProcess,
+	                renderProcessLabel(commandArray[0]));
 			// set the command line used
 			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
 

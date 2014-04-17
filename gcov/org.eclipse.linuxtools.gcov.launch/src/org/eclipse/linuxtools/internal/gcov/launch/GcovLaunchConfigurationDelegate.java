@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -34,13 +35,12 @@ import org.eclipse.linuxtools.internal.gcov.parser.CovManager;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
 import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.GcovAnnotationModelTracker;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class GcovLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
+public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 	protected ILaunchConfiguration config;
 
 	@Override

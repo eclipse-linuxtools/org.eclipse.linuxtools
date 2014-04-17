@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.gprof.test;
 
 import static org.junit.Assert.fail;
 
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -38,7 +39,7 @@ import org.osgi.framework.FrameworkUtil;
 public class GprofLaunchTest extends AbstractTest {
 
 	protected ILaunchConfiguration config;
-	protected GprofLaunchConfigurationDelegate delegate;
+	protected AbstractCLaunchDelegate delegate;
 	protected ILaunch launch;
 	protected ILaunchConfigurationWorkingCopy wc;
 	private static final String ID = "org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"; //$NON-NLS-1$

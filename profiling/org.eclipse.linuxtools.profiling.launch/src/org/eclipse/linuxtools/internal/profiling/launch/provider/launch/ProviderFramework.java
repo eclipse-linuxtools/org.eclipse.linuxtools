@@ -19,6 +19,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
@@ -30,7 +31,6 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -114,11 +114,11 @@ public class ProviderFramework {
 	 *
 	 * @param id a unique identifier
 	 * @return a launch configuration delegate that implements
-	 * <code>ProfileLaunchConfigurationDelegate</code> , or <code>null</code> if
+	 * <code>AbstractCLaunchDelegate</code> , or <code>null</code> if
 	 * none could be found.
 	 * @since 1.2
 	 */
-	public static ProfileLaunchConfigurationDelegate getConfigurationDelegateFromId(
+	public static AbstractCLaunchDelegate getConfigurationDelegateFromId(
 			String id) {
 		IConfigurationElement[] configs = getConfigurationElements();
 		for (IConfigurationElement config : configs) {
@@ -130,8 +130,8 @@ public class ProviderFramework {
 					try {
 						Object obj = config
 								.createExecutableExtension("delegate"); //$NON-NLS-1$
-						if (obj instanceof ProfileLaunchConfigurationDelegate) {
-							return (ProfileLaunchConfigurationDelegate) obj;
+						if (obj instanceof AbstractCLaunchDelegate) {
+							return (AbstractCLaunchDelegate) obj;
 						}
 					} catch (CoreException e) {
 						// continue, perhaps another configuration will succeed
