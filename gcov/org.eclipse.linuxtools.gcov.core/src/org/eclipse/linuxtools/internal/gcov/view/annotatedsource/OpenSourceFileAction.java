@@ -36,18 +36,16 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class OpenSourceFileAction {
+public final class OpenSourceFileAction {
 
     /**
      * Shared instance of this class
      */
-    public static final OpenSourceFileAction sharedInstance = new OpenSourceFileAction();
-
     private OpenSourceFileAction() {
     }
 
     // FIXME: move this method in binutils plugin.
-    private IFileStore getFileStore(IProject project, IPath path) {
+    private static IFileStore getFileStore(IProject project, IPath path) {
         IEditorInput input = STLink2SourceSupport.getEditorInput(path, project);
         if (input instanceof IURIEditorInput) {
             IURIEditorInput editorInput = (IURIEditorInput) input;
@@ -62,7 +60,7 @@ public class OpenSourceFileAction {
         return null;
     }
 
-    public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, int lineNumber) {
+    public static void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, int lineNumber) {
         if (sourceFile == null) {
             return;
         }
@@ -74,7 +72,7 @@ public class OpenSourceFileAction {
         openAnnotatedSourceFile(project, binary, sourceFile, path, lineNumber);
     }
 
-    public void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, IPath realLocation,
+    public static void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, IPath realLocation,
             int lineNumber) {
         IWorkbenchPage page = CUIPlugin.getActivePage();
         if (page != null) {

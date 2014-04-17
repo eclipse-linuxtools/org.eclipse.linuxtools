@@ -25,7 +25,6 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  *
  * HistRoot => HistFunction => CGCategory (parent/children) => CGArc
  *
- * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class CallGraphContentProvider implements ITreeContentProvider {
 

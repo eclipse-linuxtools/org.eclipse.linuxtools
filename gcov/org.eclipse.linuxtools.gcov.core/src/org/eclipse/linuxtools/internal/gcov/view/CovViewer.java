@@ -42,47 +42,34 @@ public class CovViewer extends AbstractSTTreeViewer {
 	 * @param parent
 	 */
 	public CovViewer(Composite parent) {
-		super(parent, SWT.BORDER | SWT.H_SCROLL| SWT.V_SCROLL | SWT.MULTI | 
+		super(parent, SWT.BORDER | SWT.H_SCROLL| SWT.V_SCROLL | SWT.MULTI |
 				SWT.FULL_SELECTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#createContentProvider()
-	 */
 	@Override
 	protected IContentProvider createContentProvider() {
 		return CovFileContentProvider.sharedInstance;
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getAllFields()
-	 */
 	@Override
 	public ISTDataViewersField[] getAllFields() {
 		if (fields == null) {
-			fields = new ISTDataViewersField[] { 
+			fields = new ISTDataViewersField[] {
 					new FieldName(),
-					new FieldTotalLines(), 
+					new FieldTotalLines(),
 					new FieldInstrumentedLines(),
-					new FieldExecutedLines(), 
+					new FieldExecutedLines(),
 					new FieldCoveragePercentage() };
 		}
 		return fields;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getDialogSettings()
-	 */
 	@Override
 	public IDialogSettings getDialogSettings() {
 		return org.eclipse.linuxtools.internal.gcov.Activator.getDefault().getDialogSettings();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#handleOpenEvent(org.eclipse.jface.viewers.OpenEvent)
-	 */
 	@Override
 	protected void handleOpenEvent(OpenEvent event) {
 
@@ -95,10 +82,9 @@ public class CovViewer extends AbstractSTTreeViewer {
 				String sourceLoc = ""; //$NON-NLS-1$
 				long lineNumber = 0;
 
-				if (element.getClass() == CovFileTreeElement.class)
+				if (element.getClass() == CovFileTreeElement.class) {
 					sourceLoc = element.getName();
-
-				else if (element.getClass() == CovFunctionTreeElement.class) {
+				} else if (element.getClass() == CovFunctionTreeElement.class) {
 					sourceLoc = ((CovFunctionTreeElement) element).getSourceFilePath();
 					lineNumber  =((CovFunctionTreeElement)element).getFirstLnNmbr();
 				}
@@ -110,9 +96,11 @@ public class CovViewer extends AbstractSTTreeViewer {
 					IPath binaryPath = new Path(binaryLoc);
 					IFile binary = root.getFileForLocation(binaryPath);
 					IProject project = null;
-					if (binary != null) project = binary.getProject();
+					if (binary != null) {
+					    project = binary.getProject();
+					}
 
-					OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, 
+					OpenSourceFileAction.openAnnotatedSourceFile(project,
 							binary, sourceFile, (int)lineNumber);
 				}
 			}

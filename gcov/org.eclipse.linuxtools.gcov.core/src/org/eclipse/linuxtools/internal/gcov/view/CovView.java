@@ -176,7 +176,7 @@ public class CovView extends AbstractSTDataView {
             cvrgeMnger.fillGcovView();
 
             for (SourceFile sf : cvrgeMnger.getSourceMap().values()) {
-                OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, binary, sf, 0);
+                OpenSourceFileAction.openAnnotatedSourceFile(project, binary, sf, 0);
             }
         } catch (CoreException|IOException e) {
             reportError(e);

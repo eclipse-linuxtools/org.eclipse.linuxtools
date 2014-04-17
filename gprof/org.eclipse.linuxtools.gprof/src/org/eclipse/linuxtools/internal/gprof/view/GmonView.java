@@ -123,13 +123,6 @@ public class GmonView extends AbstractSTDataView {
     	});
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#contributeToToolbar(org.eclipse.jface.action
-     * .IToolBarManager)
-     */
     @Override
     protected void contributeToToolbar(IToolBarManager manager) {
         manager.add(new Separator());
@@ -144,11 +137,6 @@ public class GmonView extends AbstractSTDataView {
         manager.add(new ChartAction(getViewSite().getShell(), getSTViewer()));
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#createActions()
-     */
     @Override
     protected void createActions() {
         super.createActions();
@@ -305,11 +293,6 @@ public class GmonView extends AbstractSTDataView {
         return gmonview;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#createExportToCSVAction()
-     */
     @Override
     protected IAction createExportToCSVAction() {
         IAction action = new STExportToCSVAction(this.getSTViewer()) {

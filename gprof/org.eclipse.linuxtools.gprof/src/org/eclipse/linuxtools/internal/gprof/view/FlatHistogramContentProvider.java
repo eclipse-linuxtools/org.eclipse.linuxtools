@@ -32,10 +32,6 @@ public final class FlatHistogramContentProvider extends FunctionHistogramContent
 	private FlatHistogramContentProvider() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.FunctionHistogramContentProvider#getFunctionChildrenList(org.eclipse.linuxtools.internal.gprof.view.histogram.HistRoot)
-	 */
 	@Override
 	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
 		LinkedList<? extends TreeElement> list = super.getFunctionChildrenList(root);
@@ -47,10 +43,6 @@ public final class FlatHistogramContentProvider extends FunctionHistogramContent
 		return ret;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.gprof.view.FunctionHistogramContentProvider#getParent(java.lang.Object)
-	 */
 	@Override
 	public Object getParent(Object element) {
 		Object o = super.getParent(element);
