@@ -1094,10 +1094,9 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 		}
 
 		String projectDir = EMPTY_STRING;
-		ConfigUtils configUtils = new ConfigUtils(config);
 		IProject project = null;
 		try {
-			project = ConfigUtils.getProject(configUtils.getProjectName());
+			project = ConfigUtils.getProject(ConfigUtils.getProjectName(config));
 		} catch (CoreException e) {
 			setErrorMessage(fPreviouslyCheckedWorkingDirErrorMsg = ProxyLaunchMessages.error_accessing_working_directory);
 		}

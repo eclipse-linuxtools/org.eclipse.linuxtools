@@ -30,6 +30,7 @@ public interface IRemoteEnvProxyManager extends IRemoteProxyManager {
      * @param project
      *            The project to get env for.
      * @return Mapping of environment variables
+     * @throws CoreException If an exception occurred.
      * @since 2.1
      */
     Map<String, String> getEnv(IProject project) throws CoreException;
@@ -40,6 +41,7 @@ public interface IRemoteEnvProxyManager extends IRemoteProxyManager {
      * @param uri
      *            The uri to get env for.
      * @return Mapping of environment variables
+     * @throws CoreException If an exception occurred.
      * @since 2.1
      */
     Map<String, String> getEnv(URI uri) throws CoreException;

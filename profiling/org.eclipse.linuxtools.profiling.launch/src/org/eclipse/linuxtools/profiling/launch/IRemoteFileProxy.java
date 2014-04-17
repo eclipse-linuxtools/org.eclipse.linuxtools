@@ -23,6 +23,7 @@ public interface IRemoteFileProxy {
 	String getDirectorySeparator();
 	IFileStore getResource(String path);
 	/**
+	 * @return Returns the working directory.
 	 * @since 2.0
 	 */
 	URI getWorkingDir();

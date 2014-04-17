@@ -122,9 +122,8 @@ public class PerfCore {
 		if(config == null){
 			return null;
 		} else {
-			ConfigUtils configUtils = new ConfigUtils(config);
 			try {
-				String projectName = configUtils.getProjectName();
+				String projectName = ConfigUtils.getProjectName(config);
 				// an empty string is not a legal path to file argument for ConfigUtils.getProject
 				if (projectName != null && !projectName.isEmpty()) {
 					return ConfigUtils.getProject(projectName);
