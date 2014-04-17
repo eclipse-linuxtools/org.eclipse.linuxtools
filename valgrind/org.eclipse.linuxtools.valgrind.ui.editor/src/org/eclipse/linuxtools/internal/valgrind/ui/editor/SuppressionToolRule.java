@@ -23,15 +23,15 @@ public class SuppressionToolRule implements IRule {
 	private String[] toolList;
 	private IToken token;
 	private WordRule subrule;
-	
+
 	private static final IToken DUMMY_TOKEN = new Token(null);
 	private static final char[] COLON = new char[] { ':' };
-	
+
 	public SuppressionToolRule(String[] tools, IToken successToken) {
 		toolList = tools;
 		token = successToken;
 		subrule = new WordRule(new IWordDetector() {
-		
+
 			@Override
 			public boolean isWordStart(char c) {
 				for (String tool : toolList) {
@@ -41,25 +41,25 @@ public class SuppressionToolRule implements IRule {
 				}
 				return false;
 			}
-		
+
 			@Override
 			public boolean isWordPart(char c) {
 				return c != ':';
 			}
-			
+
 		});
-		
+
 		for (String tool : toolList) {
 			subrule.addWord(tool, DUMMY_TOKEN);
 		}
 	}
-	
+
 	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		IToken result = subrule.evaluate(scanner);
 		if (!result.isUndefined()) {
 			boolean match = true;
-			
+
 			int tokenLength = ((SuppressionsElementScanner) scanner).getTokenLength();
 			match = checkColon(scanner);
 			if (match) {
@@ -88,16 +88,15 @@ public class SuppressionToolRule implements IRule {
 					scanner.read();
 				}
 			}
-			
+
 			if (!match) {
 				unreadBuffer(scanner, tokenLength);
 				result = Token.UNDEFINED;
-			}
-			else {
+			} else {
 				result = token;
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -113,6 +112,6 @@ public class SuppressionToolRule implements IRule {
 	private void unreadBuffer(ICharacterScanner scanner, int length) {
 		for (int i = 0; i < length; i++) {
 			scanner.unread();
-		}		
+		}
 	}
 }

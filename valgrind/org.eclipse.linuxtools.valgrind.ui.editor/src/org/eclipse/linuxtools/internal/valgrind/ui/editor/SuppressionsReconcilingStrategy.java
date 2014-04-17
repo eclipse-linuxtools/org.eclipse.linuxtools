@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2009 Phil Muldoon <pkmuldoon@picobot.org>.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API.
- *    Red Hat - modifications for use with Valgrind plugins. 
+ *    Red Hat - modifications for use with Valgrind plugins.
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.ui.editor;
 
@@ -31,15 +31,15 @@ public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
 	private IDocument document;
 	private List<Position> positions;
 	private IProgressMonitor monitor;
-	
+
 	public SuppressionsReconcilingStrategy(SuppressionsEditor editor) {
 		this.editor = editor;
 		positions = new ArrayList<>();
 	}
-	
+
 	@Override
 	public void reconcile(IRegion partition) {
-		initialReconcile();		
+		initialReconcile();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
 
 	@Override
 	public void setDocument(IDocument document) {
-		this.document = document;		
+		this.document = document;
 	}
 
 	@Override
@@ -63,23 +63,22 @@ public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
 				char ch = document.getChar(pos);
 				if (ch == '{') {
 					start = pos;
-				}
-				else if (ch == '}' && start > 0) {
+				} else if (ch == '}' && start > 0) {
 					positions.add(new Position(start, pos - start + 1));
 					start = -1; // reset
 				}
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (pos * 10 / end > worked) {
 				monitor.worked(1);
 				worked++;
 			}
-		}		
+		}
 		monitor.done();
-		
-		Display.getDefault().syncExec(new Runnable() {		
+
+		Display.getDefault().syncExec(new Runnable() {
 			@Override
 			public void run() {
 				editor.updateFoldingStructure(positions.toArray(new Position[positions.size()]));

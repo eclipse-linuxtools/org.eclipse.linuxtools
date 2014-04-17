@@ -22,7 +22,6 @@ import org.eclipse.debug.core.sourcelookup.ISourceLookupParticipant;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -68,8 +67,6 @@ public class CoreMessagesViewer {
 	public static final String VALGRIND_INFO_IMAGE = "icons/valgrind-info.png"; //$NON-NLS-1$
 	private IDoubleClickListener doubleClickListener;
 	private ITreeContentProvider contentProvider;
-	private IAction expandAction;
-	private IAction collapseAction;
 
 	private TreeViewer viewer;
 
@@ -204,8 +201,8 @@ public class CoreMessagesViewer {
 		};
 		viewer.addDoubleClickListener(doubleClickListener);
 
-		expandAction = new ExpandAction(viewer);
-		collapseAction = new CollapseAction(viewer);
+		final ExpandAction expandAction = new ExpandAction(viewer);
+		final CollapseAction collapseAction = new CollapseAction(viewer);
 
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {

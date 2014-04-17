@@ -42,9 +42,6 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 	private static final String DELETE = "delete"; //$NON-NLS-1$
 	private static final String FREE = "free"; //$NON-NLS-1$
 	private static final String NEW = "new"; //$NON-NLS-1$
-	private int allocLine;
-	private int allocOffset;
-	private int allocLength;
 
 	@Override
 	public void apply(IMarker marker, IDocument document) {
@@ -83,12 +80,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 				removeMarker(nestedFile, nestedLine, marker.getType());
 				marker.delete();
 			}
-		} catch (BadLocationException e ){
-			Status status = new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, null, e);
-			String title = Messages.getString("ValgrindMemcheckQuickFixes.Valgrind_error_title"); //$NON-NLS-1$
-			String message = Messages.getString("ValgrindMemcheckQuickFixes.Error_applying_quickfix"); //$NON-NLS-1$
-			showErrorMessage(title, message, status);
-		} catch (CoreException e ){
+		} catch (BadLocationException|CoreException e ){
 			Status status = new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, null, e);
 			String title = Messages.getString("ValgrindMemcheckQuickFixes.Valgrind_error_title"); //$NON-NLS-1$
 			String message = Messages.getString("ValgrindMemcheckQuickFixes.Error_applying_quickfix"); //$NON-NLS-1$
@@ -151,9 +143,9 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
 			}
 		}
 		if(allocMessage instanceof ValgrindStackFrame){
-			allocLine = ((ValgrindStackFrame)allocMessage).getLine() - 1;
-			allocOffset = document.getLineOffset(allocLine);
-			allocLength = document.getLineLength(allocLine);
+			int allocLine = ((ValgrindStackFrame)allocMessage).getLine() - 1;
+			int allocOffset = document.getLineOffset(allocLine);
+			int allocLength = document.getLineLength(allocLine);
 			return document.get(allocOffset, allocLength);
 		}
 		return null;
