@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFacto
 import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -146,7 +147,7 @@ public abstract class TapsetParser extends Job {
 
 				return (!getErrors ? str : strErr).toString();
 			} else {
-				Process process = SystemtapProcessFactory.exec(args, null);
+				Process process = RuntimeProcessFactory.getFactory().exec(args, null, null);
 				if(process == null){
 					displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
 					return null;

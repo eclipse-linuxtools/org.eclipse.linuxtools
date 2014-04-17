@@ -11,10 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.structures.process;
 
-import java.io.IOException;
 import java.io.OutputStream;
-
-import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -29,20 +26,6 @@ import com.jcraft.jsch.Session;
  * mock objects can be provided during testing.
  */
 public class SystemtapProcessFactory {
-
-	/**
-	 * Runs systemtap locally with the given arguments.
-	 *
-	 * @param args
-	 *            arguments to run systemtap with.
-	 * @param envVars
-	 *            environment variables.
-	 * @return The newly created process.
-	 * @throws IOException
-	 */
-	public static Process exec(String[] args, String[] envVars) throws IOException {
-		return RuntimeProcessFactory.getFactory().exec(args, envVars, null);
-	}
 
 	/**
 	 * Runs stap with the given arguments on the given host using the given
