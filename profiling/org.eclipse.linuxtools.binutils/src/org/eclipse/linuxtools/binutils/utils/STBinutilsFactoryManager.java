@@ -23,23 +23,19 @@ import org.eclipse.linuxtools.binutils.Activator;
 
 /**
  * This class is on charge of managing "org.eclipse.linuxtools.binutils.crossCompilerBinutils" extension point.
- * 
- * @author Xavier Raynaud <xavier.raynaud@st.com>
- * 
+ *
  */
 public class STBinutilsFactoryManager {
-
-    public static final STBinutilsFactoryManager sharedInstance = new STBinutilsFactoryManager();
 
     /**
      * Map of CPU/ISTBinutilsFactory
      */
-    private final Map<String, ISTBinutilsFactory> map = new HashMap<>();
+    private static final Map<String, ISTBinutilsFactory> map = new HashMap<>();
 
     /**
      * Default factory
      */
-    private DefaultBinutilsFactory defaultFactory;
+    private static DefaultBinutilsFactory defaultFactory;
 
     /**
      * Private constructor: this class is implemented as a Singleton
@@ -50,8 +46,10 @@ public class STBinutilsFactoryManager {
     /**
      * Try to find an extension point matching the given cpu; Then test availability of the tools. If no match, return
      * default binutils factory
+     * @param cpu The cpu identifier.
+     * @return The factory.
      */
-    private ISTBinutilsFactory getBinutilsFactoryImpl(String cpu) {
+    private static ISTBinutilsFactory getBinutilsFactoryImpl(String cpu) {
         try {
             IExtensionRegistry reg = Platform.getExtensionRegistry();
             IExtensionPoint ep = reg.getExtensionPoint("org.eclipse.linuxtools.binutils.crossCompilerBinutils"); //$NON-NLS-1$
@@ -71,15 +69,18 @@ public class STBinutilsFactoryManager {
         } catch (CoreException e) {
             Activator.getDefault().getLog().log(e.getStatus());
         }
-        if (defaultFactory == null)
+        if (defaultFactory == null) {
             defaultFactory = new DefaultBinutilsFactory();
+        }
         return defaultFactory;
     }
 
     /**
      * Get a ISTBinutilsFactory matching the given cpu id Returns the default one if no match.
+     * @param cpu The cpu identifier.
+     * @return THe factory
      */
-    public ISTBinutilsFactory getBinutilsFactory(String cpu) {
+    public static ISTBinutilsFactory getBinutilsFactory(String cpu) {
         ISTBinutilsFactory factory = map.get(cpu);
         if (factory == null) {
             factory = getBinutilsFactoryImpl(cpu);

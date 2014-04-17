@@ -14,9 +14,6 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 
 /**
  * The interface used by the charts to get a <code>Number</code> data from a field.
- *
- * @author Marzia Maugeri <marzia.maugeri@st.com>
- *
  */
 public interface IChartField extends ISTDataViewersField {
 

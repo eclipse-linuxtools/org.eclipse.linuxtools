@@ -84,10 +84,10 @@ public abstract class AbstractSTViewer {
      * Initializes the viewers. It sets: the columns of the viewers, a viewer setting (similar to memento) a column
      * manager a viewer comparator ColumnViewerToolTipSupport an OpenListener a KeyListener a PaintListener a
      * DisposeListener the input the content provider
-     *
-     *
+     * @param parent The parent composite.
+     * @param style  SWT style to be used.
      */
-    protected void init(Composite parent, int style) {
+    private void init(Composite parent, int style) {
         viewer = createViewer(parent, style);
         viewerSettings = createSTAbstractDataViewersSettings();
 
@@ -166,20 +166,11 @@ public abstract class AbstractSTViewer {
      * Set this manager to be the new hide/show manager. This should only be called if the columns have been created.
      * This method should not be called by customers, it is used by the hide/show action to update the viewer.
      *
-     * @param manager
+     * @param manager The new manager.
      */
     public void setHideShowManager(STDataViewersHideShowManager manager) {
-        this.hideShowManager = manager;
-        updateForNewHideShowManager(hideShowManager);
-    }
-
-    /**
-     * Update the viewer for hide/show manager updates
-     *
-     * @param manager
-     */
-    protected void updateForNewHideShowManager(STDataViewersHideShowManager manager) {
-        manager.updateColumns();
+        hideShowManager = manager;
+        hideShowManager.updateColumns();
     }
 
     // //////////////////
@@ -189,7 +180,7 @@ public abstract class AbstractSTViewer {
     /**
      * Build a comparator from the default settings.
      *
-     * @return STProfTableComparator
+     * @return STProfTableComparator Newly created comparator with default settings.
      */
     protected STDataViewersComparator buildComparator() {
         return new STDataViewersComparator(getColumns());
@@ -198,7 +189,7 @@ public abstract class AbstractSTViewer {
     /**
      * Return the table sorter portion of the sorter.
      *
-     * @return TableSorter
+     * @return TableSorter The currently set comparator
      */
     public STDataViewersComparator getTableSorter() {
         return comparator;
@@ -207,7 +198,7 @@ public abstract class AbstractSTViewer {
     /**
      * Set the comparator to be the new comparator. This should only be called if the viewer has been created.
      *
-     * @param comparator
+     * @param comparator The comparator to be used.
      */
     public void setComparator(STDataViewersComparator comparator) {
         this.comparator = comparator;
@@ -460,7 +451,7 @@ public abstract class AbstractSTViewer {
      * Subclasses may override it.
      * </p>
      *
-     * @param event
+     * @param event Unused parameter.
      */
     protected void handleKeyPressed(KeyEvent event) {
         // nothing, intended to be overridden
@@ -472,7 +463,7 @@ public abstract class AbstractSTViewer {
      * Subclasses may override it.
      * </p>
      *
-     * @param event
+     * @param event Unused event.
      */
     protected void handleOpenEvent(OpenEvent event) {
         // nothing, intended to be overridden
@@ -508,8 +499,8 @@ public abstract class AbstractSTViewer {
      * This implementation is generally like:
      * </p>
      * <p>
-     * <code>protected IDialogSettings getDialogSettings() {<br/>
-     * return </code>PLUGINActivator<code>.getDefault().getDialogSettings();<br/>
+     * <code>protected IDialogSettings getDialogSettings() {<br>
+     * return </code>PLUGINActivator<code>.getDefault().getDialogSettings();<br>
      * } </code>
      * </p>
      * <p>
@@ -522,20 +513,20 @@ public abstract class AbstractSTViewer {
      * </p>
      * <p>
      * <code>
-     * protected IDialogSettings getDialogSettings() <br/>
+     * protected IDialogSettings getDialogSettings() <br>
      * IDialogSettings settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().getSection(</code>
-     * SECTION_NAME<code>); <br/>
-     * 	if (settings == null) { <br/>
+     * SECTION_NAME<code>); <br>
+     * 	if (settings == null) { <br>
      * 		settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().addNewSection(</code>SECTION_NAME
-     * <code>);<br/>
-     * 	}<br/>
+     * <code>);<br>
+     * 	}<br>
      * 	return settings;
      * </code>
      * </p>
      * <p>
      * Note that if you use multiple instantiated views (not singleton) or many views with the same viewer, using the
      * code above they will all have the same dialog settings thus the last one which is closed will save the state for
-     * all the others.<br/>
+     * all the others.<br>
      * If you want to avoid that you can add a view-dependent SECTION_NAME parameter to the constructor of the VIEWER in
      * the VIEW class and then use it in the <code>getDialogSettings()</code> method. Here is an example:
      * </p>
@@ -544,10 +535,10 @@ public abstract class AbstractSTViewer {
      * </p>
      * <p>
      * <code>
-     * private static final String SETTINGS_SECTION = </code>SECTION_NAME<code>;<br/>
-     * <br/>
-     * protected AbstractSTViewer createAbstractSTViewer(Composite parent) {<br/>
-     * return new MyViewer(parent, SETTINGS_SECTION);<br/>
+     * private static final String SETTINGS_SECTION = </code>SECTION_NAME<code>;<br>
+     * <br>
+     * protected AbstractSTViewer createAbstractSTViewer(Composite parent) {<br>
+     * return new MyViewer(parent, SETTINGS_SECTION);<br>
      * }
      * </code>
      * </p>
@@ -556,20 +547,20 @@ public abstract class AbstractSTViewer {
      * </p>
      * <p>
      * <code>
-     * private final String settingsSection;<br/>
-     * <br/>
-     * public CallHierarchyViewer(Composite parent, String settingsSection) {<br/>
-     * super(parent);<br/>
-     * this.settingsSection = settingsSection;<br/>
-     * }<br/>
-     * <br/>
-     * protected IDialogSettings getDialogSettings() <br/>
+     * private final String settingsSection;<br>
+     * <br>
+     * public CallHierarchyViewer(Composite parent, String settingsSection) {<br>
+     * super(parent);<br>
+     * this.settingsSection = settingsSection;<br>
+     * }<br>
+     * <br>
+     * protected IDialogSettings getDialogSettings() <br>
      * IDialogSettings settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().getSection(</code>
-     * this.settingsSection<code>); <br/>
-     * if (settings == null) { <br/>
+     * this.settingsSection<code>); <br>
+     * if (settings == null) { <br>
      * settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().addNewSection(</code>
-     * this.settingsSection<code>);<br/>
-     * }<br/>
+     * this.settingsSection<code>);<br>
+     * }<br>
      * return settings;
      * </code>
      * </p>
@@ -589,6 +580,9 @@ public abstract class AbstractSTViewer {
 
     /**
      * The method called to create the wrapped control (TreeViewer, TableViewer)
+     * @param parent The composite to be parent.
+     * @param style  The SWT style to be used.
+     * @return The newly created viewer.
      *
      */
     protected abstract ColumnViewer createViewer(Composite parent, int style);
@@ -624,6 +618,7 @@ public abstract class AbstractSTViewer {
     /**
      * Set the wrapped viewer's columns order. Used to set the columns order since the TreeViewer and the TableViewer
      * don't share the same API to get the columns.
+     * @param order The new column order.
      *
      */
     protected abstract void setColumnOrder(int[] order);
@@ -639,6 +634,8 @@ public abstract class AbstractSTViewer {
     /**
      * Get the wrapped viewer's column index for a given column. Used get the columns list since the TreeViewer and the
      * TableViewer don't share the same API to get the columns.
+     *
+     * @param column The column whose index is looked for.
      *
      * @return the index of the column in the viewer
      */

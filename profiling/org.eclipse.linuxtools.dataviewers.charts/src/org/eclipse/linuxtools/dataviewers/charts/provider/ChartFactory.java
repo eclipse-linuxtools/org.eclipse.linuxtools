@@ -30,10 +30,7 @@ import org.swtchart.ITitle;
 import org.swtchart.LineStyle;
 
 /**
- * A utility class that handles the charts creation (pie chart & bar chart)
- *
- * @author Marzia Maugeri <marzia.maugeri@st.com>
- *
+ * A utility class that handles the charts creation (pie chart and bar chart)
  */
 public final class ChartFactory {
 

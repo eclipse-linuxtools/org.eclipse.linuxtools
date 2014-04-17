@@ -88,7 +88,7 @@ public class GmonViewer extends AbstractSTTreeViewer {
 			} else {
 				int lineNumber = element.getSourceLine();
 				IBinaryObject exec = ((HistRoot)element.getRoot()).decoder.getProgram();
-				STLink2SourceSupport.sharedInstance.openSourceFileAtLocation(exec, s, lineNumber);
+				STLink2SourceSupport.openSourceFileAtLocation(exec, s, lineNumber);
 			}
 		}
 	}

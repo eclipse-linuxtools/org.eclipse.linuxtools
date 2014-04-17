@@ -43,7 +43,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Copy Constructor
      *
-     * @param other
+     * @param other The comparator to initialize from.
      */
     public STDataViewersComparator(STDataViewersComparator other) {
         this(other.getColumns(), other.getPriorities(), other.getDirections());
@@ -52,8 +52,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Constructor
      *
-     * @param columns
-     *            the columns properties of the viewer
+     * @param columns The columns properties of the viewer.
      */
     public STDataViewersComparator(Item[] columns) {
         this(columns, null, null);
@@ -66,7 +65,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
      * @param priorities
      * @param directions
      */
-    public STDataViewersComparator(Item[] columns, int[] priorities, int[] directions) {
+    private STDataViewersComparator(Item[] columns, int[] priorities, int[] directions) {
         this.columns = columns;
         if (priorities == null || directions == null) {
             this.priorities = new int[columns.length];
@@ -86,14 +85,6 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
                 resetState();
             }
         }
-    }
-
-    public void setPriorities(int[] priorities) {
-        this.priorities = priorities;
-    }
-
-    public void setDirections(int[] directions) {
-        this.directions = directions;
     }
 
     /**
@@ -130,26 +121,26 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     }
 
     /**
-     * Sets the top-level sorter
+     * Sets the top-level sorter.
      *
-     * @param column
-     * @param field
+     * @param column The column to make top priority.
+     * @param field The field to set priority for.
      */
     public void setTopPriority(final Item column, final ISTDataViewersField field) {
         for (int i = 0; i < columns.length; i++) {
             if (columns[i].equals(column)) {
                 setTopPriority(i, field);
-                return;
             }
         }
     }
 
     /**
-     * Sets the top-level sorter
+     * Sets the top-level sorter.
      *
-     * @param priority
+     * @param priority The new top priority.
+     * @param field The field to set priority for.
      */
-    public void setTopPriority(final int priority, final ISTDataViewersField field) {
+    private void setTopPriority(final int priority, final ISTDataViewersField field) {
         if (priority < 0 || priority >= priorities.length) {
             return;
         }
@@ -172,9 +163,9 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     }
 
     /**
-     * Changes the direction of the top-priority sorter
+     * Changes the direction of the top-priority sorter.
      *
-     * @param direction
+     * @param direction The direction of sorting - ascending or descending.
      */
     public void setTopPriorityDirection(int direction) {
         if (direction == ASCENDING || direction == DESCENDING) {
@@ -190,19 +181,12 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     }
 
     /**
-     * @return the index of the top-level sorter
-     */
-    public int getTopPriority() {
-        return priorities[0];
-    }
-
-    /**
      * Return the field at the top priority.
      *
      * @return IField
      */
     public Item getTopColumn() {
-        return columns[getTopPriority()];
+        return columns[priorities[0]];
     }
 
     /**
@@ -227,22 +211,11 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
     @Override
 	public int compare(Object o1, Object o2) {
         return compare(o1, o2, 0, true);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
         return compare(e1, e2, 0, true);
@@ -257,7 +230,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
      * @param continueSearching
      * @return int
      */
-    protected int compare(Object obj1, Object obj2, int depth, boolean continueSearching) {
+    private int compare(Object obj1, Object obj2, int depth, boolean continueSearching) {
         if (depth >= priorities.length) {
             return 0;
         }
@@ -293,7 +266,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Saves the sort order preferences of the user in the given {@link IDialogSettings}
      *
-     * @param dialogSettings
+     * @param dialogSettings The setting to save into.
      */
     public void saveState(IDialogSettings dialogSettings) {
         if (dialogSettings == null) {
@@ -312,7 +285,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     /**
      * Restore the sort order preferences of the user from the given {@link IDialogSettings}
      *
-     * @param dialogSettings
+     * @param dialogSettings The settings to restore from.
      */
     public void restoreState(IDialogSettings dialogSettings) {
         if (dialogSettings == null) {

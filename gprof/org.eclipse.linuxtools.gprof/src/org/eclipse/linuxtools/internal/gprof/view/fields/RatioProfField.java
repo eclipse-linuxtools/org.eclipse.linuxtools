@@ -22,8 +22,6 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
 
 /**
  * Column "sample ratio" of the displayed element
- *
- * @author Mohamed Korbosli
  */
 public class RatioProfField extends AbstractPercentageDrawerField implements IChartField{
 
@@ -31,9 +29,9 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
     public final static NumberFormat nf = new DecimalFormat("##0.0#"); //$NON-NLS-1$
 
     /**
-     * Gets the percentage value to display
-     * @param obj
-     * @return the percentage value to display, as a float
+     * Gets the percentage value to display.
+     * @param obj The TreeElement to retrieve percentage value for.
+     * @return The percentage value to display.
      */
     @Override
     public float getPercentage(Object obj) {
@@ -71,8 +69,7 @@ public class RatioProfField extends AbstractPercentageDrawerField implements ICh
 
     @Override
     public Number getNumber(Object obj) {
-        float f = getPercentage(obj);
-        return new Float(f);
+        return getPercentage(obj);
     }
 
 }

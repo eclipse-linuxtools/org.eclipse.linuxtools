@@ -50,69 +50,59 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * This class provides a support for link-to-source
  *
- * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class STLink2SourceSupport {
 
-    /**
-     * Shared instance of this class Note: perhaps it's better to put all methods static ?
-     */
-    public static final STLink2SourceSupport sharedInstance = new STLink2SourceSupport();
-
-    protected STLink2SourceSupport() {
+    private STLink2SourceSupport() {
     }
 
     /**
-     * Open a C Editor at the given location
+     * Open a C Editor at the given location.
      *
-     * @param binaryLoc
-     *            a path to a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
+     * @param binaryLoc A path to a binary file.
+     * @param sourceLoc The location of the source file.
+     * @param lineNumber The line to open at.
      * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
      */
-    private boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
+    private static boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IFile binary = root.getFileForLocation(binaryLoc);
         IProject project = null;
-        if (binary != null)
+        if (binary != null) {
             project = binary.getProject();
+        }
         return openFileImpl(project, sourceLoc, lineNumber);
     }
 
     /**
-     * Open a C Editor at the given location
+     * Open a C Editor at the given location.
      *
-     * @param project
-     *            the parent project
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
+     * @param project The parent project.
+     * @param sourceLoc The location of the source file.
+     * @param lineNumber The line to open at.
      * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
      */
-    public boolean openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
+    public static boolean openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
         return openFileImpl(project, sourceLoc, lineNumber);
     }
 
     /**
-     * Open a C Editor at the given location
+     * Open a C Editor at the given location.
      *
-     * @param binary
-     *            a binary file
-     * @param sourceLoc
-     *            the location of the source file
-     * @param lineNumber
+     * @param binary A binary file.
+     * @param sourceLoc The location of the source file.
+     * @param lineNumber The line to open at.
      * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
      */
-    public boolean openSourceFileAtLocation(IBinaryObject binary, String sourceLoc, int lineNumber) {
-        if (sourceLoc == null)
+    public static boolean openSourceFileAtLocation(IBinaryObject binary, String sourceLoc, int lineNumber) {
+        if (sourceLoc == null) {
             return false;
+        }
         IPath p = new Path(sourceLoc);
         return openSourceFileAtLocation(binary.getPath(), p, lineNumber);
     }
 
-    private boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {
+    private static boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {
         if (sourceLoc == null || "??".equals(sourceLoc.toString())) { //$NON-NLS-1$
             return false;
         }
@@ -145,7 +135,7 @@ public class STLink2SourceSupport {
         return false;
     }
 
-    public IEditorInput getEditorInput(IPath p, IProject project) {
+    public static IEditorInput getEditorInput(IPath p, IProject project) {
         IFile f = getFileForPath(p, project);
         if (f != null && f.exists()) {
             return new FileEditorInput(f);
@@ -164,7 +154,7 @@ public class STLink2SourceSupport {
         return findFileInCommonSourceLookup(p);
     }
 
-    private IEditorInput findFileInCommonSourceLookup(IPath path) {
+    private static IEditorInput findFileInCommonSourceLookup(IPath path) {
         try {
             AbstractSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
             ISourceContainer[] c = director.getSourceContainers();
@@ -180,36 +170,40 @@ public class STLink2SourceSupport {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (CoreException e) {
             // do nothing
         }
         return null;
     }
 
     /**
+     * @param path The path of the file.
+     * @param project The project to look into.
+     * @return The file if found of null otherwise.
      * @since 5.0
      */
-    public IFile getFileForPath(IPath path, IProject project) {
+    public static IFile getFileForPath(IPath path, IProject project) {
         IFile f = getFileForPathImpl(path, project);
         if (f == null) {
             Set<IProject> allProjects = new HashSet<>();
             try {
                 getAllReferencedProjects(allProjects, project);
-            } catch (CoreException _) {
-                Activator.getDefault().getLog().log(_.getStatus());
+            } catch (CoreException e) {
+                Activator.getDefault().getLog().log(e.getStatus());
             }
             if (allProjects != null) {
                 for (IProject project2 : allProjects) {
                     f = getFileForPathImpl(path, project2);
-                    if (f != null)
+                    if (f != null) {
                         break;
+                    }
                 }
             }
         }
         return f;
     }
 
-    private IFile getFileForPathImpl(IPath path, IProject project) {
+    private static IFile getFileForPathImpl(IPath path, IProject project) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         if (path.isAbsolute()) {
             IFile c = root.getFileForLocation(path);
@@ -254,7 +248,7 @@ public class STLink2SourceSupport {
         return null;
     }
 
-    private void getAllReferencedProjects(Set<IProject> all, IProject project) throws CoreException {
+    private static void getAllReferencedProjects(Set<IProject> all, IProject project) throws CoreException {
         if (project != null) {
             IProject[] refs = project.getReferencedProjects();
             for (IProject ref : refs) {

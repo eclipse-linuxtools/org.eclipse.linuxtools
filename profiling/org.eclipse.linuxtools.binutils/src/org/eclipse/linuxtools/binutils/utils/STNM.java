@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 
 /**
- * This class launches NM and parses output
+ * This class launches NM and parses output.
  */
 public class STNM {
 
@@ -33,22 +33,24 @@ public class STNM {
 
     /**
      * Constructor
-     * 
+     *
      * @param command
      *            the nm to call
      * @param params
      *            nm params
      * @param file
      *            file to parse
+     * @param handler The symbol handler.
      * @param project
      *            the project to get the path to use to run nm
-     * @throws IOException
+     * @throws IOException If an IOException occured.
      */
     public STNM(String command, String[] params, String file, STNMSymbolsHandler handler, IProject project)
             throws IOException {
         this.handler = handler;
-        if (handler != null)
+        if (handler != null) {
             init(command, params, file, project);
+        }
     }
 
     private void init(String command, String[] params, String file, IProject project) throws IOException {
@@ -105,9 +107,7 @@ public class STNM {
                         break;
                     }
                 }
-            } catch (NumberFormatException e) {
-                // ignore.
-            } catch (IndexOutOfBoundsException e) {
+            } catch (NumberFormatException|IndexOutOfBoundsException e) {
                 // ignore
             }
         }

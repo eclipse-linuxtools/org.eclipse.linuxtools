@@ -17,9 +17,8 @@ import org.eclipse.cdt.utils.CPPFilt;
 import org.eclipse.core.resources.IProject;
 
 /**
- * binutils factory (especially used for cross-compile tools)
- * 
- * @author Xavier Raynaud <xavier.raynaud@st.com>
+ * Binutils factory (especially used for cross-compile tools)
+ *
  */
 public interface ISTBinutilsFactory {
 

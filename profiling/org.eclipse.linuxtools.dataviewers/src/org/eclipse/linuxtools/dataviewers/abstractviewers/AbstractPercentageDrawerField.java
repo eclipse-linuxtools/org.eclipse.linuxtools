@@ -40,15 +40,16 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
     }
 
     /**
-     * Gets the percentage value for the given object, as a float
+     * Gets the percentage value for the given object, as a float.
+     * Implementations must return values between 0 and 100.
      *
-     * @param obj
-     * @return a float value, between 0 and 100, please !
+     * @param obj The object to retrieve percentage value for.
+     * @return A float value, between 0 and 100.
      */
     public abstract float getPercentage(Object obj);
 
     /**
-     * Percentage drawer
+     * Percentage drawer.
      */
     @Override
 	public void handleEvent(Event event) {

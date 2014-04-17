@@ -53,8 +53,8 @@ public class STDataViewersSortDialog extends TrayDialog {
     /**
      * Create a new instance of the receiver.
      *
-     * @param parentShell
-     * @param sorter
+     * @param parentShell The parent shell for the dialog.
+     * @param sorter The sorter to be used
      */
     public STDataViewersSortDialog(Shell parentShell, STDataViewersComparator sorter) {
         super(parentShell);

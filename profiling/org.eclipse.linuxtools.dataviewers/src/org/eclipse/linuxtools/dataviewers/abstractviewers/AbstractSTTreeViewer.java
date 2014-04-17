@@ -115,9 +115,7 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer# getColumns()
+     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getColumns()
      * @since 5.0
      */
     @Override
@@ -125,12 +123,6 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
         return getViewer().getTree().getColumns();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#
-     * updateDirectionIndicator(org.eclipse.swt.widgets.Item)
-     */
     @Override
     public void updateDirectionIndicator(Item column) {
         getViewer().getTree().setSortColumn((TreeColumn) column);
@@ -141,75 +133,36 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer# getColumnOrder()
-     */
     @Override
     public int[] getColumnOrder() {
         return getViewer().getTree().getColumnOrder();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer# setColumnOrder(int[])
-     */
     @Override
     protected void setColumnOrder(int[] order) {
         getViewer().getTree().setColumnOrder(order);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#
-     * getColumnIndex(org.eclipse.swt.widgets.Item)
-     */
     @Override
     public int getColumnIndex(Item column) {
         return getViewer().getTree().indexOf((TreeColumn) column);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#
-     * getColumnWidth(org.eclipse.swt.widgets.Item)
-     */
     @Override
     public int getColumnWidth(Item column) {
         return ((TreeColumn) column).getWidth();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#
-     * setColumnResizable(org.eclipse.swt.widgets.Item, boolean)
-     */
     @Override
     public void setColumnResizable(Item column, boolean resizable) {
         ((TreeColumn) column).setResizable(resizable);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#
-     * setColumnWidth(org.eclipse.swt.widgets.Item, int)
-     */
     @Override
     public void setColumnWidth(Item column, int width) {
         ((TreeColumn) column).setWidth(width);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer#getViewer ()
-     */
     @Override
     public TreeViewer getViewer() {
         return (TreeViewer) super.getViewer();

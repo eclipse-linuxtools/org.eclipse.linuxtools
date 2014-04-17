@@ -17,30 +17,20 @@ import org.eclipse.cdt.utils.Addr2line;
 
 /**
  * Addr2line implementation, compatible with "hostname:file:linenumber" format of addr2line output.
- * 
- * @author Xavier Raynaud <xavier.raynaud@st.com>
- * 
  */
 public class STAddr2line extends Addr2line {
 
     /**
      * Constructor
-     * 
-     * @param cmd
-     *            the command to run
-     * @param file
-     *            the binary file
-     * @throws IOException
+     *
+     * @param cmd The command to run.
+     * @param file The binary file.
+     * @throws IOException If any IOException happened.
      */
     public STAddr2line(String cmd, String file) throws IOException {
         super(cmd, file);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.cdt.utils.Addr2line#getLine(org.eclipse.cdt.core.IAddress)
-     */
     @Override
     public String getLine(IAddress address) throws IOException {
         String s = super.getLine(address);

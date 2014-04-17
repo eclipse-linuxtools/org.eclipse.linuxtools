@@ -164,8 +164,7 @@ public class ConfigUtils {
 	 * @return The name of the project.
 	 * @throws CoreException
 	 */
-	public String getProjectName()
-			throws CoreException {
+	public String getProjectName() throws CoreException {
 		return getProjectName(config);
 	}
 

@@ -25,24 +25,26 @@ import org.eclipse.jface.viewers.ViewerFilter;
  *
  * Note: content provider of the given TreeViewer must be a ITreeContentProvider
  *
- * @author Xavier Raynaud <xavier.raynaud@kalray.eu>
  * @since 5.0
  */
 public class TreeColumnViewerFilter extends ViewerFilter {
 
     private String matchingText = "";
-    private final TreeViewer fTreeViewer;
+    private final TreeViewer treeViewer;
     private final ISTDataViewersField field;
-    private final boolean fKeepAllChildIfParentMatch;
+    private final boolean keepAllChildIfParentMatch;
 
     /**
-     * Constructor
+     * Creates the filter for the given viewer and field to filter on.
+     * @param viewer The viewer to filter.
+     * @param field The field to filter on.
+     * @param keepAllChildIfParentMatch Whether to keep all children of matching element.
      */
     public TreeColumnViewerFilter(TreeViewer viewer, ISTDataViewersField field, boolean keepAllChildIfParentMatch) {
         super();
-        this.fTreeViewer = viewer;
+        this.treeViewer = viewer;
         this.field = field;
-        this.fKeepAllChildIfParentMatch = keepAllChildIfParentMatch;
+        this.keepAllChildIfParentMatch = keepAllChildIfParentMatch;
     }
 
     /**
@@ -51,18 +53,12 @@ public class TreeColumnViewerFilter extends ViewerFilter {
      */
     public void setMatchingText(String matchingText) {
         this.matchingText = matchingText;
-        fTreeViewer.refresh();
+        treeViewer.refresh();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-    	ITreeContentProvider provider = (ITreeContentProvider) fTreeViewer.getContentProvider();
+    	ITreeContentProvider provider = (ITreeContentProvider) treeViewer.getContentProvider();
         String s = field.getValue(element);
         if (s.contains(matchingText)) {
             return true;
@@ -74,7 +70,7 @@ public class TreeColumnViewerFilter extends ViewerFilter {
                 }
             }
         }
-        if (fKeepAllChildIfParentMatch) {
+        if (keepAllChildIfParentMatch) {
             while (parentElement != null) {
                 String ps = field.getValue(parentElement);
                 if (ps.contains(matchingText)) {

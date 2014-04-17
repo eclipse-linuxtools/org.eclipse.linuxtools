@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.profiling.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +88,12 @@ public class ProfileUIUtils {
     }
 
     /**
+     * Opens an editor on the given file and selects the line.
+     * @param file The file to open.
+     * @param line The line to select.
+     * @throws PartInitException If opening editor failed.
+     * @throws BadLocationException If line number is invalid.
+     *
      * @since 2.0
      */
     public static void openEditorAndSelect(IFile file, int line) throws PartInitException, BadLocationException {
@@ -230,8 +237,7 @@ public class ProfileUIUtils {
      * A value of -1 will ignore the number of arguments when searching.
      * @param fileHint : The name of the file where we expect to find functionName.
      * It is null if we do not want to use this option.
-     * @return a Map<String, int []> of String absolute paths of files and the
-     * function's corresponding node-offset and length.
+     * @return Absolute paths of files and the function's corresponding node-offset and length.
      * @since 3.0
      */
     public static Map<String,int[]> findFunctionsInProject(ICProject project, String functionName,
@@ -268,7 +274,7 @@ public class ProfileUIUtils {
                     }
                 }
 
-            } catch (Exception e) {
+            } catch (CoreException | InterruptedException | IOException e) {
                 e.printStackTrace();
             } finally{
                 index.releaseReadLock();
@@ -278,8 +284,13 @@ public class ProfileUIUtils {
 
     /**
      * Helper function for findFunctionsInProject
+     * @param project
+     * @param functionName
+     * @param numArgs
+     * @param fileHint
      * @param needResult True if the function should relax constraints in order
      * to return some value. False if a failure to find the function(s) is acceptable.
+     * @return The functions found.
      * @since 3.0
      */
     public static Map<String,int[]> findFunctionsInProject(ICProject project, String functionName,

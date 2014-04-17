@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
  * <li>the tooltip of the column header
  * <li>It computes the label to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
  * <li>It computes the tooltip to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
- * <li>It computes the background & foreground color to display for each object given by the
+ * <li>It computes the background and foreground color to display for each object given by the
  * {@link org.eclipse.jface.viewers.ITreeContentProvider}
  * <li>It computes the image to display for each object given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
  * <li>It provides a comparator, used to compare objects given by the {@link org.eclipse.jface.viewers.ITreeContentProvider}
@@ -37,7 +37,7 @@ public interface ISTDataViewersField {
     String getDescription();
 
     /**
-     * @return the image associated with the description of the field or <code>null<code>.
+     * @return the image associated with the description of the field or <code>null</code>.
      */
     Image getDescriptionImage();
 
@@ -52,28 +52,32 @@ public interface ISTDataViewersField {
     String getColumnHeaderTooltip();
 
     /**
-     * @return The image to be displayed in the column header for this field or <code>null<code>.
+     * @return The image to be displayed in the column header for this field or <code>null</code>.
      */
     Image getColumnHeaderImage();
 
     /**
-     * @param obj
+     * @param obj The object whose image is asked for.
      * @return The String value of the object for this particular field displayed to the user.
      */
     String getValue(Object obj);
 
     /**
-     * @param obj
-     * @return The image value of the object for this particular field displayed to the user or <code>null<code>.
+     * @param obj The object whose image is asked for.
+     * @return The image value of the object for this particular field displayed to the user or <code>null</code>.
      */
     Image getImage(Object obj);
 
     /**
-     * @param obj1
-     * @param obj2
-     * @return Either: <li>a negative number if the value of obj1 is less than the value of obj2 for this field. <li>
-     *         <code>0</code> if the value of obj1 and the value of obj2 are equal for this field. <li>a positive number
-     *         if the value of obj1 is greater than the value of obj2 for this field.
+     * Compares the given objects.
+     *
+     * Returns a negative number if the value of obj1 is less than the value of obj2 for this field,
+     * <code>0</code> if the value of obj1 and the value of obj2 are equal for this field or a positive number
+     * if the value of obj1 is greater than the value of obj2 for this field.
+     *
+     * @param obj1 The first object to compare.
+     * @param obj2 The second object to compare.
+     * @return The result of the comparison.
      */
     int compare(Object obj1, Object obj2);
 
@@ -98,25 +102,27 @@ public interface ISTDataViewersField {
     boolean isShowingByDefault();
 
     /**
-     * Returns special drawer, typically used to: paint percentages paint hyperlink
-     * @return a special drawer
+     * Returns special drawer, typically used paint percentages paint hyperlink.
+     *
+     * @param element The element whose special drawer is needed.
+     * @return A special drawer.
      */
     ISpecialDrawerListener getSpecialDrawer(Object element);
 
     /**
-     * @param element
+     * @param element The element whose tooltip is needed.
      * @return the tooltip to display this particular element.
      */
     String getToolTipText(Object element);
 
     /**
-     * @param element
+     * @param element The element whose background is needed.
      * @return the background color for the given element
      */
     Color getBackground(Object element);
 
     /**
-     * @param element
+     * @param element The element whose foreground is needed.
      * @return the foreground color for the given element
      */
     Color getForeground(Object element);

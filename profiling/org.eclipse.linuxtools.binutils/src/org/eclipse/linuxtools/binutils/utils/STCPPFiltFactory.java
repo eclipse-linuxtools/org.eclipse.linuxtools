@@ -17,8 +17,7 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * c++filt factory for all toolsets.
- * 
- * @author Xavier Raynaud <xavier.raynaud@st.com>
+ *
  */
 public class STCPPFiltFactory {
 
@@ -30,7 +29,7 @@ public class STCPPFiltFactory {
      * @throws IOException
      */
     public static CPPFilt getCPPFilt(String cpuType, IProject project) throws IOException {
-        ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.getBinutilsFactory(cpuType);
         return factory.getCPPFilt(project);
     }
 

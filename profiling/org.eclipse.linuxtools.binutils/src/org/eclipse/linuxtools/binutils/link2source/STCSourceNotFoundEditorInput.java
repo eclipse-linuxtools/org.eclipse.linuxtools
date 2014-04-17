@@ -20,8 +20,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Editor Input used for source not found
- *
- * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class STCSourceNotFoundEditorInput implements IEditorInput {
 
@@ -32,9 +30,9 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
     /**
      * Constructor
      *
-     * @param project
-     * @param sourcePath
-     * @param lineNumber
+     * @param project The project.
+     * @param sourcePath The path.
+     * @param lineNumber The line number.
      */
     public STCSourceNotFoundEditorInput(IProject project, IPath sourcePath, int lineNumber) {
         this.project = project;
@@ -42,61 +40,31 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
         this.lineNumber = lineNumber;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#exists()
-     */
     @Override
     public boolean exists() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
-     */
     @Override
     public ImageDescriptor getImageDescriptor() {
         return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/c_file_obj.gif"); //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getName()
-     */
     @Override
     public String getName() {
         return sourcePath.lastSegment() + ":" + lineNumber; //$NON-NLS-1$
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getPersistable()
-     */
     @Override
     public IPersistableElement getPersistable() {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IEditorInput#getToolTipText()
-     */
     @Override
     public String getToolTipText() {
         return Messages.STCSourceNotFoundEditorInput_source_not_found;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
-     */
     @Override
     @SuppressWarnings("rawtypes")
     public Object getAdapter(Class adapter) {
@@ -124,11 +92,6 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
         return lineNumber;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -138,30 +101,31 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final STCSourceNotFoundEditorInput other = (STCSourceNotFoundEditorInput) obj;
         if (project == null) {
-            if (other.project != null)
+            if (other.project != null) {
                 return false;
-        } else if (!project.equals(other.project))
+            }
+        } else if (!project.equals(other.project)) {
             return false;
+        }
         if (sourcePath == null) {
             if (other.sourcePath != null)
                 return false;
-        } else if (!sourcePath.equals(other.sourcePath))
+        } else if (!sourcePath.equals(other.sourcePath)) {
             return false;
+        }
         return true;
     }
 

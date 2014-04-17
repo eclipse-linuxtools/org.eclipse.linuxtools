@@ -22,8 +22,7 @@ import org.eclipse.linuxtools.internal.binutils.preferences.BinutilsPreferencePa
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 /**
- * Default binutils factory
- * @author Xavier Raynaud <xavier.raynaud@st.com>
+ * Default binutils factory.
  */
 public class DefaultBinutilsFactory implements ISTBinutilsFactory {
 

@@ -37,6 +37,8 @@ public class STDataViewersHideShowManager {
 
     /**
      * Creates a new instance of STDataViewersHideShowManager.
+     *
+     * @param stViewer The viewer to manage.
      */
     public STDataViewersHideShowManager(AbstractSTViewer stViewer) {
         this.stViewer = stViewer;
@@ -63,7 +65,9 @@ public class STDataViewersHideShowManager {
     }
 
     /**
-     * Saves the column width and visibility status in the given dialogSettings
+     * Saves the column width and visibility status in the given dialogSettings.
+     *
+     * @param dialogSettings The new settings to store.
      */
     public void saveState(IDialogSettings dialogSettings) {
         // delete old settings and save new ones
@@ -75,8 +79,9 @@ public class STDataViewersHideShowManager {
     }
 
     /**
-     * Restores the columns width and visibility using the given dialogSettings
-     * @param dialogSettings
+     * Restores the columns width and visibility using the given dialogSettings.
+     *
+     * @param dialogSettings The settings to restore.
      */
     public void restoreState(IDialogSettings dialogSettings) {
         if (dialogSettings == null) {
@@ -110,7 +115,6 @@ public class STDataViewersHideShowManager {
         } catch (NumberFormatException nfe) {
             // invalid entry
             resetState();
-            return;
         }
     }
 
@@ -127,16 +131,15 @@ public class STDataViewersHideShowManager {
     }
 
     /**
-     * Sets the column width
-     * @param index
-     *            index of column
-     * @param width
+     * Sets the column width. If the column is hidden width would not be set.
+     *
+     * @param index Index of column whose width to change.
+     * @param width The new width for the column
      */
     public void setWidth(int index, int width) {
         if (columnsState[index] != STATE_HIDDEN) {
             columnsWidth[index] = width;
         }
-        // ignore if this column is set to hidden
     }
 
     /**

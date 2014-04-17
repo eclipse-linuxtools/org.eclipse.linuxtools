@@ -43,7 +43,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Editor that lets you select a replacement for the missing source file and modifies the source locator accordingly.
- * 
+ *
  */
 public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
@@ -154,11 +154,6 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
         syncButtons();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor# editSourceLookupPath()
-     */
     @Override
     protected void editSourceLookupPath() {
         PreferenceDialog d = org.eclipse.ui.dialogs.PreferencesUtil.createPreferenceDialogOn(null,
@@ -244,6 +239,6 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     }
 
     protected void openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
-        STLink2SourceSupport.sharedInstance.openSourceFileAtLocation(project, sourceLoc, lineNumber);
+        STLink2SourceSupport.openSourceFileAtLocation(project, sourceLoc, lineNumber);
     }
 }

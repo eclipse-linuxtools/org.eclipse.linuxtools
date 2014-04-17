@@ -17,8 +17,7 @@ import org.eclipse.core.resources.IProject;
 
 /**
  * addr2line factory for all toolsets.
- * 
- * @author Xavier Raynaud <xavier.raynaud@st.com>
+ *
  */
 public class STAddr2LineFactory {
 
@@ -31,7 +30,7 @@ public class STAddr2LineFactory {
      * @throws IOException
      */
     public static Addr2line getAddr2line(String cpuType, String programPath, IProject project) throws IOException {
-        ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.getBinutilsFactory(cpuType);
         return factory.getAddr2line(programPath, project);
     }
 

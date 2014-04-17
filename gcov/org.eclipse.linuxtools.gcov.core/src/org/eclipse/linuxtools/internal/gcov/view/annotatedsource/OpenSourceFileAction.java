@@ -48,7 +48,7 @@ public class OpenSourceFileAction {
 
     // FIXME: move this method in binutils plugin.
     private IFileStore getFileStore(IProject project, IPath path) {
-        IEditorInput input = STLink2SourceSupport.sharedInstance.getEditorInput(path, project);
+        IEditorInput input = STLink2SourceSupport.getEditorInput(path, project);
         if (input instanceof IURIEditorInput) {
             IURIEditorInput editorInput = (IURIEditorInput) input;
             URI uri = editorInput.getURI();

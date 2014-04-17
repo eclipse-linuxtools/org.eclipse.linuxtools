@@ -52,6 +52,7 @@ public class RemoteConnection {
 	 *
 	 * @param remotePath
 	 * @param localPath
+	 * @param monitor
 	 * @throws CoreException
 	 */
 	private void copyFileFromRemoteHost(String remotePath, String localPath,

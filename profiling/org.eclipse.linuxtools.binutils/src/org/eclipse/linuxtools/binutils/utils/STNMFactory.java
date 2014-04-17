@@ -21,6 +21,7 @@ public class STNMFactory {
     /**
      * @param cpuType
      * @param programPath
+     * @param handler
      * @param project
      *            The project to get the path to be used to run nm
      * @return an instance of nm for the given program
@@ -28,7 +29,7 @@ public class STNMFactory {
      */
     public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler, IProject project)
             throws IOException {
-        ISTBinutilsFactory factory = STBinutilsFactoryManager.sharedInstance.getBinutilsFactory(cpuType);
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.getBinutilsFactory(cpuType);
         return factory.getNM(programPath, handler, project);
     }
 

@@ -139,6 +139,8 @@ public class STDataViewersImages {
      * mean the same package directory as the package holding this class. The images are declared using this.getClass()
      * to ensure they are looked up via this plugin class.
      *
+     * @return The newly initialized ImageRegistry.
+     *
      * @see org.eclipse.jface.resource.ImageRegistry
      */
     public static ImageRegistry initializeImageRegistry() {
@@ -149,6 +151,9 @@ public class STDataViewersImages {
 
     /**
      * Returns the <code>ImageDescriptor</code> identified by the given key, or <code>null</code> if it does not exist.
+     *
+     * @param key The name of the image looked.
+     * @return The ImageDescriptor if found, null otherwise.
      */
     public static ImageDescriptor getImageDescriptor(String key) {
         if (imageDescriptors == null) {

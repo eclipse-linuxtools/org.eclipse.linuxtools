@@ -41,9 +41,9 @@ public class PieChartPaintListener implements PaintListener {
     private int pieWidth;
 
     /**
-     * Handles drawing & updating of a PieChart, with titles given to its legend and
+     * Handles drawing and updating of a PieChart, with titles given to its legend and
      * to each of its pies. Pies will be drawn in the given chart's plot area.
-     * @param chart The PieChart to draw & update.
+     * @param chart The PieChart to draw and update.
      * @since 2.0
      */
     public PieChartPaintListener(PieChart chart) {
