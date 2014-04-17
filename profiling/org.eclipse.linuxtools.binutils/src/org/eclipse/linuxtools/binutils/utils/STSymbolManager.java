@@ -45,7 +45,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 
 /**
  * This class Is a utility on top of c++filt and addr2line. It allows an easy conversion between address and source
@@ -284,7 +284,7 @@ public class STSymbolManager {
         }
         if (adCppfilt.cppfilt == null) {
             try {
-                adCppfilt.cppfilt = STCPPFiltFactory.getCPPFilt(cpu, project);
+                adCppfilt.cppfilt = STBinutilsFactoryManager.getCPPFilt(cpu, project);
             } catch (IOException e) {
                 // TODO: log the error ?;
                 // Perhaps log the error only once, because
@@ -311,7 +311,7 @@ public class STSymbolManager {
         }
         if (adAddr2line.addr2line == null) {
             try {
-                adAddr2line.addr2line = STAddr2LineFactory.getAddr2line(program.getCPU(), program.getPath()
+                adAddr2line.addr2line = STBinutilsFactoryManager.getAddr2line(program.getCPU(), program.getPath()
                         .toOSString(), project);
             } catch (IOException e) {
                 // TODO: log the error ?;

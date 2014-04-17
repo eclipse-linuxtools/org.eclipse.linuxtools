@@ -38,10 +38,11 @@ import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -130,7 +131,7 @@ public class STLink2SourceSupport {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (PartInitException e) {
         }
         return false;
     }
@@ -206,8 +207,7 @@ public class STLink2SourceSupport {
     private static IFile getFileForPathImpl(IPath path, IProject project) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         if (path.isAbsolute()) {
-            IFile c = root.getFileForLocation(path);
-            return c;
+            return root.getFileForLocation(path);
         }
         if (project != null && project.exists()) {
             ICProject cproject = CoreModel.getDefault().create(project);
@@ -220,8 +220,7 @@ public class STLink2SourceSupport {
                             IContainer parent = (IContainer) r;
                             IResource res = parent.findMember(path);
                             if (res != null && res.exists() && res instanceof IFile) {
-                                IFile file = (IFile) res;
-                                return file;
+                                return (IFile) res;
                             }
                         }
                     }
@@ -234,8 +233,7 @@ public class STLink2SourceSupport {
                             IContainer parent = (IContainer) r;
                             IResource res = parent.findMember(path);
                             if (res != null && res.exists() && res instanceof IFile) {
-                                IFile file = (IFile) res;
-                                return file;
+                                return (IFile) res;
                             }
                         }
                     }

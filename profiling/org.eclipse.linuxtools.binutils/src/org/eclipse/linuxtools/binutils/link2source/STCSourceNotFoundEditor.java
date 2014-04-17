@@ -30,7 +30,7 @@ import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -96,16 +96,17 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     private boolean isValidMissingFile() {
         IPath p = getMissingFile();
-        boolean v = (p != null && p.toString().length() > 0);
-        return v;
+        return (p != null && !p.toString().isEmpty());
     }
 
     private void syncButtons() {
         boolean v = isValidMissingFile();
-        if (locateFileButton != null)
+        if (locateFileButton != null) {
             locateFileButton.setVisible(v);
-        if (editLookupButton != null)
+        }
+        if (editLookupButton != null) {
             editLookupButton.setVisible(v);
+        }
     }
 
     @Override
@@ -120,37 +121,29 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     @Override
     protected void createButtons(Composite parent) {
-        {
-            GridData data;
-            locateFileButton = new Button(parent, SWT.PUSH);
-            data = new GridData();
-            data.grabExcessHorizontalSpace = false;
-            data.grabExcessVerticalSpace = false;
-            locateFileButton.setLayoutData(data);
-            locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
-            locateFileButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent evt) {
-                    locateFile();
-                }
-            });
-        }
+        locateFileButton = new Button(parent, SWT.PUSH);
+        GridData data = new GridData();
+        data.grabExcessHorizontalSpace = false;
+        data.grabExcessVerticalSpace = false;
+        locateFileButton.setLayoutData(data);
+        locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
+        locateFileButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent evt) {
+                locateFile();
+            }
+        });
 
-        {
-            GridData data;
-            editLookupButton = new Button(parent, SWT.PUSH);
-            data = new GridData();
-            data.grabExcessHorizontalSpace = false;
-            data.grabExcessVerticalSpace = false;
-            editLookupButton.setLayoutData(data);
-            editLookupButton.setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
-            editLookupButton.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent evt) {
-                    editSourceLookupPath();
-                }
-            });
-        }
+        editLookupButton = new Button(parent, SWT.PUSH);
+        editLookupButton.setLayoutData(data);
+        editLookupButton
+                .setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
+        editLookupButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent evt) {
+                editSourceLookupPath();
+            }
+        });
         syncButtons();
     }
 
@@ -175,8 +168,9 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
             ISourceContainer container = iter.next();
             if (container instanceof MappingSourceContainer) {
                 hasFoundMappings = container.getName().equals(foundMappingsContainerName);
-                if (hasFoundMappings)
+                if (hasFoundMappings) {
                     foundMappings = (MappingSourceContainer) container;
+                }
             }
         }
 
@@ -218,8 +212,9 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
                     int newPathSegCount = newPath.segmentCount() - 2;
                     while (missingPathSegCount >= 0 && newPathSegCount >= 0) {
                         if (!newPath.segment(newPathSegCount)
-                                .equalsIgnoreCase(missingPath.segment(missingPathSegCount)))
+                                .equalsIgnoreCase(missingPath.segment(missingPathSegCount))) {
                             break;
+                        }
                         newPathSegCount--;
                         missingPathSegCount--;
                     }

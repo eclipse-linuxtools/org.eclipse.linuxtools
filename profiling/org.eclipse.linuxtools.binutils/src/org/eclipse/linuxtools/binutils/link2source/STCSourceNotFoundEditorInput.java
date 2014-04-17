@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.binutils.link2source;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -121,8 +121,9 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
             return false;
         }
         if (sourcePath == null) {
-            if (other.sourcePath != null)
+            if (other.sourcePath != null) {
                 return false;
+            }
         } else if (!sourcePath.equals(other.sourcePath)) {
             return false;
         }

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.binutils;singleton:=true
 Bundle-Version: 5.0.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.binutils.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.Activator
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.linuxtools.tools.launch.core
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.binutils,
- org.eclipse.linuxtools.binutils.link2source,
+Export-Package: org.eclipse.linuxtools.binutils.link2source,
  org.eclipse.linuxtools.binutils.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin

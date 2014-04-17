@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.internal.binutils.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@kalray.eu>

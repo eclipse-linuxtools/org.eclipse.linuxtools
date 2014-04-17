@@ -12,12 +12,12 @@ package org.eclipse.linuxtools.binutils.utils;
 
 public interface STNMSymbolsHandler {
 
-    public void foundUndefSymbol(String symbol);
+    void foundUndefSymbol(String symbol);
 
-    public void foundTextSymbol(String symbol, String address);
+    void foundTextSymbol(String symbol, String address);
 
-    public void foundBssSymbol(String symbol, String address);
+    void foundBssSymbol(String symbol, String address);
 
-    public void foundDataSymbol(String symbol, String address);
+    void foundDataSymbol(String symbol, String address);
 
 }

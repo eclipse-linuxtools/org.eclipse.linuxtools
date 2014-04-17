@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.utils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.cdt.utils.Addr2line;
+import org.eclipse.cdt.utils.CPPFilt;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.binutils.Activator;
+import org.eclipse.linuxtools.internal.Activator;
 
 /**
  * This class is on charge of managing "org.eclipse.linuxtools.binutils.crossCompilerBinutils" extension point.
@@ -87,6 +91,49 @@ public class STBinutilsFactoryManager {
             map.put(cpu, factory);
         }
         return factory;
+    }
+
+    /**
+     * @param cpuType
+     * @param programPath
+     * @param project
+     *            The project to get the path to run addr2line
+     * @return an instance of addr2line for the given program
+     * @throws IOException
+     * @since 5.0
+     */
+    public static Addr2line getAddr2line(String cpuType, String programPath, IProject project) throws IOException {
+        ISTBinutilsFactory factory = getBinutilsFactory(cpuType);
+        return factory.getAddr2line(programPath, project);
+    }
+
+    /**
+     * @param cpuType
+     * @param project
+     *            The project to get the path to run cppfilt
+     * @return an instance of cppfile for the given cpu type
+     * @throws IOException
+     * @since 5.0
+     */
+    public static CPPFilt getCPPFilt(String cpuType, IProject project) throws IOException {
+        ISTBinutilsFactory factory = getBinutilsFactory(cpuType);
+        return factory.getCPPFilt(project);
+    }
+
+    /**
+     * @param cpuType
+     * @param programPath
+     * @param handler
+     * @param project
+     *            The project to get the path to be used to run nm
+     * @return an instance of nm for the given program
+     * @throws IOException
+     * @since 5.0
+     */
+    public static STNM getNM(String cpuType, String programPath, STNMSymbolsHandler handler, IProject project)
+            throws IOException {
+        ISTBinutilsFactory factory = STBinutilsFactoryManager.getBinutilsFactory(cpuType);
+        return factory.getNM(programPath, handler, project);
     }
 
 }
