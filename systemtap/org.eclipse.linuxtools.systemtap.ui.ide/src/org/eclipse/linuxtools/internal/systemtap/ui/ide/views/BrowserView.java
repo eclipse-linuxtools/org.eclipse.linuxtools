@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.BrowserViewAction;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
@@ -25,10 +25,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPartSite;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.handlers.CollapseAllHandler;
@@ -47,6 +45,8 @@ import org.eclipse.ui.part.ViewPart;
  */
 public abstract class BrowserView extends ViewPart {
     protected TreeViewer viewer;
+    protected TreeNode tree;
+    protected BrowserViewAction doubleClickAction;
 
     private CollapseAllHandler collapseHandler;
 
@@ -96,14 +96,6 @@ public abstract class BrowserView extends ViewPart {
     }
 
     protected abstract Image getEntryImage(TreeNode treeObj);
-
-    protected Image getGenericImage(TreeNode treeObj) {
-        if (treeObj.getChildCount() == 0) {
-            return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
-        } else {
-            return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
-        }
-    }
 
     /**
      * Provides the icon and text for each entry in the tapset tree.
@@ -158,23 +150,39 @@ public abstract class BrowserView extends ViewPart {
     @Override
     public void dispose() {
         super.dispose();
-        viewer = null;
-        if(collapseHandler != null) {
+        if (collapseHandler != null) {
             collapseHandler.dispose();
+            collapseHandler = null;
+        }
+        if (tree != null) {
+            tree.dispose();
+            tree = null;
+        }
+        if (viewer != null) {
+            if (doubleClickAction != null) {
+                viewer.removeDoubleClickListener(doubleClickAction);
+            }
+            viewer = null;
+        }
+        if (doubleClickAction != null) {
+            doubleClickAction.dispose();
+            doubleClickAction = null;
         }
     }
 
     abstract void refresh();
 
-    protected class ViewUpdater implements IUpdateListener {
+    protected IUpdateListener viewUpdater = new IUpdateListener() {
         @Override
         public void handleUpdateEvent() {
-            viewer.getControl().getDisplay().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    refresh();
-                }
-            });
+            if (viewer != null) {
+                viewer.getControl().getDisplay().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        refresh();
+                    }
+                });
+            }
         }
-    }
+    };
 }

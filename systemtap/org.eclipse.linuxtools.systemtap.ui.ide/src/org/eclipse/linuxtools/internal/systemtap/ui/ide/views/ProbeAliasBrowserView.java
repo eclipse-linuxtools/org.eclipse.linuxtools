@@ -15,12 +15,15 @@ import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ProbeAliasAction;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeNodeData;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbevarNodeData;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbeNodeData;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -32,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ProbeAliasBrowserView extends BrowserView {
     public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"; //$NON-NLS-1$
-    private ProbeAliasAction doubleClickAction;
 
     /**
      * Creates the UI on the given <code>Composite</code>
@@ -40,8 +42,7 @@ public class ProbeAliasBrowserView extends BrowserView {
     @Override
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);
-        TapsetLibrary.init();
-        TapsetLibrary.addProbeListener(new ViewUpdater());
+        ProbeParser.getInstance().addListener(viewUpdater);
         refresh();
         makeActions();
     }
@@ -71,7 +72,7 @@ public class ProbeAliasBrowserView extends BrowserView {
         if (treeObj.getData() instanceof ProbeNodeData) {
             return IDEPlugin.getImageDescriptor("icons/misc/probe_obj.gif").createImage(); //$NON-NLS-1$
         }
-        return getGenericImage(treeObj);
+        return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
     }
 
     /**
@@ -79,9 +80,9 @@ public class ProbeAliasBrowserView extends BrowserView {
      */
     @Override
     public void refresh() {
-        TreeNode probes = TapsetLibrary.getProbes();
-        if (probes != null){
-            super.viewer.setInput(probes);
+        tree = TapsetLibrary.getProbes();
+        if (tree != null) {
+            viewer.setInput(tree);
         }
     }
 
@@ -97,12 +98,7 @@ public class ProbeAliasBrowserView extends BrowserView {
     @Override
     public void dispose() {
         super.dispose();
-        if (null != viewer) {
-            viewer.removeDoubleClickListener(doubleClickAction);
-        }
-        if (null != doubleClickAction) {
-            doubleClickAction.dispose();
-        }
-        doubleClickAction = null;
+        ProbeParser.getInstance().removeListener(viewUpdater);
     }
+
 }

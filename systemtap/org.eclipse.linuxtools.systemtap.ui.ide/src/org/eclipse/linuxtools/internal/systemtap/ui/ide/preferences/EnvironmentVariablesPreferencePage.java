@@ -59,10 +59,11 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
         sc.setExpandVertical(true);
         sc.setContent(c);
 
-        envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.length];
-        for (int i = 0; i < envVariables.length; i++) {
-            envVariables[i] = createStringFieldEditor(PreferenceConstants.P_ENV[i][0],
-                    PreferenceConstants.P_ENV[i][1], c);
+        envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.values().length];
+        int i = 0;
+        for (PreferenceConstants.P_ENV env : PreferenceConstants.P_ENV.values()) {
+            envVariables[i] = createStringFieldEditor(env.toPrefKey(), env.toEnvKey(), c);
+            i++;
         }
         return sc;
     }
@@ -119,17 +120,16 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
     public static String[] getEnvironmentVariables() {
         ArrayList<String> vars = new ArrayList<>();
         String[] envVars = null;
-        String var;
 
         int i;
         if (IDEPlugin.getDefault() == null || IDEPlugin.getDefault().getPreferenceStore() == null) {
             return null;
         }
         IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-        for (i = 0; i < PreferenceConstants.P_ENV.length; i++) {
-            var = p.getString(PreferenceConstants.P_ENV[i][0]).trim();
-            if (!var.isEmpty()) {
-                vars.add(PreferenceConstants.P_ENV[i][1] + "=" + var); //$NON-NLS-1$
+        for (PreferenceConstants.P_ENV env : PreferenceConstants.P_ENV.values()) {
+            String val = p.getString(env.toPrefKey()).trim();
+            if (!val.isEmpty()) {
+                vars.add(env.createKeyValString(val));
             }
         }
 

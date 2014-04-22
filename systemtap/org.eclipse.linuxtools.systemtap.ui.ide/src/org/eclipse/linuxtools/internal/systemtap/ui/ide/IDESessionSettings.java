@@ -34,8 +34,6 @@ import org.eclipse.ui.dialogs.ListDialog;
  * @author Ryan Morse
  */
 public class IDESessionSettings {
-    public static String tapsetLocation = ""; //$NON-NLS-1$
-
     /**
      * Use {@link IDESessionSettings#setActiveSTPEditor(STPEditor)} and
      * {@link IDESessionSettings#getActiveSTPEditor()}

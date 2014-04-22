@@ -36,6 +36,8 @@ import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -46,6 +48,8 @@ import org.eclipse.ui.progress.UIJob;
  */
 
 public class KernelBrowserView extends BrowserView {
+    public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
+
     private class KernelRefreshJob extends Job {
         private boolean remote;
         private URI kernelLocationURI;
@@ -97,15 +101,13 @@ public class KernelBrowserView extends BrowserView {
             if (kst == null) {
                 return Status.OK_STATUS;
             }
-            viewer.setInput(kst.getTree());
+            tree = kst.getTree();
+            viewer.setInput(tree);
             kst.dispose();
             monitor.done();
             return Status.OK_STATUS;
         }
     }
-
-    public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
-    private KernelSourceAction doubleClickAction;
 
     /**
      * Creates the UI on the given <code>Composite</code>
@@ -128,14 +130,17 @@ public class KernelBrowserView extends BrowserView {
 
     @Override
     protected Image getEntryImage(TreeNode treeObj) {
-        String item = treeObj.getData().toString();
-        if(item.endsWith(".c")) { //$NON-NLS-1$
-            return IDEPlugin.getImageDescriptor("icons/files/file_c.gif").createImage(); //$NON-NLS-1$
+        if (treeObj.toString().lastIndexOf('.') != -1) {
+            String item = treeObj.getData().toString();
+            if (item.endsWith(".c")) { //$NON-NLS-1$
+                return IDEPlugin.getImageDescriptor("icons/files/file_c.gif").createImage(); //$NON-NLS-1$
+            }
+            if (item.endsWith(".h")) { //$NON-NLS-1$
+                return IDEPlugin.getImageDescriptor("icons/files/file_h.gif").createImage(); //$NON-NLS-1$
+            }
+            return IDEPlugin.getImageDescriptor("icons/vars/var_unk.gif").createImage(); //$NON-NLS-1$
         }
-        if(item.endsWith(".h")) { //$NON-NLS-1$
-            return IDEPlugin.getImageDescriptor("icons/files/file_h.gif").createImage(); //$NON-NLS-1$
-        }
-        return getGenericImage(treeObj);
+        return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
     }
 
     /**
@@ -147,7 +152,7 @@ public class KernelBrowserView extends BrowserView {
     public void refresh() {
         IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
         String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
-        if(null == kernelSource || kernelSource.length() < 1) {
+        if (kernelSource == null || kernelSource.length() < 1) {
             showBrowserErrorMessage(Localization.getString("KernelBrowserView.NoKernelSourceFound")); //$NON-NLS-1$
             return;
         }
@@ -202,9 +207,9 @@ public class KernelBrowserView extends BrowserView {
     }
 
     private void showBrowserErrorMessage(String message) {
-        TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
-        t.add(new TreeNode("", message, false)); //$NON-NLS-1$
-        viewer.setInput(t);
+        tree = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
+        tree.add(new TreeNode("", message, false)); //$NON-NLS-1$
+        viewer.setInput(tree);
     }
 
     /**
@@ -214,24 +219,17 @@ public class KernelBrowserView extends BrowserView {
     private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
-            if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
+            if (event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
                 event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
                 event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
-                refresh();
+                viewUpdater.handleUpdateEvent();
             }
         }
     };
 
     @Override
     public void dispose() {
-        super.dispose();
         IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
-        if(null != viewer) {
-            viewer.removeDoubleClickListener(doubleClickAction);
-        }
-        if(null != doubleClickAction) {
-            doubleClickAction.dispose();
-        }
-        doubleClickAction = null;
+        super.dispose();
     }
 }

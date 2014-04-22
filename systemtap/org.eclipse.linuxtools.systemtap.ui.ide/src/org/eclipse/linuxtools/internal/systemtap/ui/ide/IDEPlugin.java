@@ -55,7 +55,6 @@ public class IDEPlugin extends AbstractUIPlugin {
 
         workbenchListener = new IDECloseMonitor();
         plugin.getWorkbench().addWorkbenchListener(workbenchListener);
-        TapsetLibrary.init();
     }
 
     /**
@@ -95,8 +94,7 @@ public class IDEPlugin extends AbstractUIPlugin {
         IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
         String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
         String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
-        if (path == null)
-         {
+        if (path == null) {
             path = ""; //$NON-NLS-1$
         }
         try {

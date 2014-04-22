@@ -9,8 +9,16 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
 
-public interface ISingleTypedNode {
-    String getType();
+import java.util.List;
+
+/**
+ * An interface for a data object associated with a list of data types.
+ */
+public interface IMultiTypedNode {
+    /**
+     * @return A list of the names of all of this object's associated data types.
+     */
+    List<String> getTypes();
 }

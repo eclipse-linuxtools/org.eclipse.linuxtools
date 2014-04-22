@@ -13,8 +13,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.FunctionBrowserAction;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ISingleTypedNode;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ISingleTypedNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -29,9 +30,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class FunctionBrowserView extends BrowserView {
     public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"; //$NON-NLS-1$
-    private FunctionBrowserAction doubleClickAction;
-    private TreeNode functions;
-    private TreeNode localFunctions;
 
     /**
      * Creates the UI on the given <code>Composite</code>
@@ -39,8 +37,7 @@ public class FunctionBrowserView extends BrowserView {
     @Override
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);
-        TapsetLibrary.init();
-        TapsetLibrary.addFunctionListener(new ViewUpdater());
+        FunctionParser.getInstance().addListener(viewUpdater);
         refresh();
         makeActions();
     }
@@ -67,31 +64,10 @@ public class FunctionBrowserView extends BrowserView {
      */
     @Override
     public void refresh() {
-        functions = TapsetLibrary.getFunctions();
-        if (functions != null){
-            addLocalFunctions(localFunctions);
+        tree = TapsetLibrary.getFunctions();
+        if (tree != null) {
+            viewer.setInput(tree);
         }
-    }
-
-    /**
-     * Adds the local functions specified in the argument to the viewer.
-     * @param localFunctionTree A tree of the local functions.
-     */
-    public void addLocalFunctions(TreeNode localFunctionTree) {
-        if(functions.getChildCount() > 0) {
-            TreeNode localFuncs = functions.getChildAt(0);
-
-            if("<local>".equals(localFuncs.toString())) { //$NON-NLS-1$
-                functions.remove(0);
-            }
-
-            if(null != localFunctions) {
-                localFunctions = localFunctionTree;
-                localFunctions.setDisplay("<local>"); //$NON-NLS-1$
-                functions.addAt(localFunctions, 0);
-            }
-        }
-        viewer.setInput(functions);
     }
 
     /**
@@ -106,21 +82,7 @@ public class FunctionBrowserView extends BrowserView {
     @Override
     public void dispose() {
         super.dispose();
-        if(null != viewer) {
-            viewer.removeDoubleClickListener(doubleClickAction);
-        }
-        if(null != doubleClickAction) {
-            doubleClickAction.dispose();
-        }
-        doubleClickAction = null;
-        if(null != localFunctions) {
-            localFunctions.dispose();
-        }
-        localFunctions = null;
-        if(null != functions) {
-            functions.dispose();
-        }
-        functions = null;
-        TapsetLibrary.stop();
+        FunctionParser.getInstance().removeListener(viewUpdater);
     }
+
 }

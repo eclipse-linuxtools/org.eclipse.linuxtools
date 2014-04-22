@@ -8,20 +8,23 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
+
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
+import org.eclipse.linuxtools.systemtap.structures.TreeNode;
+
 
 /**
  * A structure for containing extra information of SystemTap function parameters.
  * @since 3.0
  */
 public class FuncparamNodeData implements ISingleTypedNode {
-
-    private final String line;
+    static final String ID = "FuncparamNodeData"; //$NON-NLS-1$
     private final String type;
 
     @Override
     public String toString() {
-        return line;
+        return getType();
     }
 
     @Override
@@ -31,12 +34,11 @@ public class FuncparamNodeData implements ISingleTypedNode {
 
     /**
      * Create a new instance of function parameter information. (Note that the name of a function
-     * or parameter is stored in a {@link org.eclipse.linuxtools.systemtap.structures.TreeNode}, not here.)
-     * @param line The <code>String</code> representation of the entire parameter.
-     * @param type The <code>String</code> representation of only the parameter's type.
+     * or parameter is stored in a {@link TreeNode}, not here.)
+     * @param type The <code>String</code> representation of the parameter's type.
+     * Pass <code>null</code> if the type is unknown.
      */
-    public FuncparamNodeData(String line, String type) {
-        this.line = line;
+    public FuncparamNodeData(String type) {
         this.type = type == null ? FunctionParser.UNKNOWN_TYPE : type; // Parameters can't be void.
     }
 }

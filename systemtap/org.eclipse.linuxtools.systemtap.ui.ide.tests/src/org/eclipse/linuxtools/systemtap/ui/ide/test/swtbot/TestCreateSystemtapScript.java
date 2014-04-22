@@ -266,18 +266,6 @@ public class TestCreateSystemtapScript {
         bot = new SWTWorkbenchBot();
         stapInstalled = true;
 
-        // Dismiss "Systemtap not installed" dialog(s) if present.
-        try {
-            SWTBotShell shell = bot.shell("Cannot Run SystemTap").activate();
-            stapInstalled = false;
-            shell.close();
-
-            shell = bot.shell("Cannot Run SystemTap").activate();
-            shell.close();
-        } catch (WidgetNotFoundException e) {
-            //ignore
-        }
-
         try {
             bot.viewByTitle("Welcome").close();
             // hide Subclipse Usage stats popup if present/installed
@@ -296,6 +284,18 @@ public class TestCreateSystemtapScript {
                 bot.sleep(500);
                 break;
             }
+        }
+
+        // Dismiss "Systemtap not installed" dialog(s) if present.
+        try {
+            SWTBotShell shell = bot.shell("Cannot Run SystemTap").activate();
+            stapInstalled = false;
+            shell.close();
+
+            shell = bot.shell("Cannot Run SystemTap").activate();
+            shell.close();
+        } catch (WidgetNotFoundException e) {
+            //ignore
         }
 
         // Create a Systemtap project.

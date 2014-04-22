@@ -17,11 +17,35 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 public class PreferenceConstants {
 
     //environmentvariables
-    public static final String[][] P_ENV = new String[][] {
-        {"EnvLdLibraryPath", "LD_LIBRARY_PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"EnvPath", "PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"}, //$NON-NLS-1$ //$NON-NLS-2$
-    };
+    public static enum P_ENV {
+        LD_LIBRARY_PATH {
+            @Override
+            public String toPrefKey() {
+                return "EnvLdLibraryPath"; //$NON-NLS-1$
+            }
+        }, PATH {
+            @Override
+            public String toPrefKey() {
+                return "EnvPath"; //$NON-NLS-1$
+            }
+        }, SYSTEMTAP_TAPSET {
+            @Override
+            public String toPrefKey() {
+                return "EnvSystemtapTapset"; //$NON-NLS-1$
+            }
+        }, SYSTEMTAP_RUNTIME {
+            @Override
+            public String toPrefKey() {
+                return "EnvSystemtapRuntime"; //$NON-NLS-1$
+            }
+        };
+        public abstract String toPrefKey();
+        public String toEnvKey() {
+            return toString();
+        }
+        public String createKeyValString(String value) {
+            return toEnvKey() + '=' + value.trim();
+        }
+    }
 
 }

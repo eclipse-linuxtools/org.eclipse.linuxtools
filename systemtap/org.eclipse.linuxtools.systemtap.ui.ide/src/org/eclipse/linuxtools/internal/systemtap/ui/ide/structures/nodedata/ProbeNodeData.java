@@ -9,13 +9,16 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
 
 import java.text.MessageFormat;
 
-public class ProbeNodeData implements ISearchableNode {
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeParser;
 
+public class ProbeNodeData implements ISearchableNode {
+    static final String ID = "ProbeNodeData"; //$NON-NLS-1$
     private final String name;
+    private final String line;
 
     @Override
     public boolean isRegexSearch() {
@@ -32,7 +35,7 @@ public class ProbeNodeData implements ISearchableNode {
 
     @Override
     public String toString() {
-        return getSearchToken();
+        return line;
     }
 
     /**
@@ -43,7 +46,8 @@ public class ProbeNodeData implements ISearchableNode {
      */
     public ProbeNodeData(String line) {
         int spaceIndex = line.indexOf(' ');
-        name = (spaceIndex != -1 ? line.substring(0, spaceIndex) : line).trim();
+        this.line = line;
+        this.name = (spaceIndex != -1 ? line.substring(0, spaceIndex) : line).trim();
     }
 
 }

@@ -18,9 +18,17 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 
+/**
+ * A helper class for performing tapset-loading operations,
+ * and sharing the results with other {@link TapsetParser}s.
+ * Note that class this does not implement {@link ITreeParser},
+ * as no front-end operations are performed.
+ */
 public final class SharedParser extends TapsetParser {
 
     static final String TAG_FILE = "# file"; //$NON-NLS-1$
+    private static final String[] STAP_OPTIONS = new String[] {"-v", "-p1", "-e"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final String STAP_DUMMYPROBE = "probe begin{}"; //$NON-NLS-1$
     /**
      * A pattern that can be used to locate file paths listed in stap tapset dumps.
      */
@@ -66,10 +74,19 @@ public final class SharedParser extends TapsetParser {
 
     @Override
     protected IStatus run(IProgressMonitor monitor) {
-        tapsetContents = runStap(new String[] {"-v", "-p1", "-e"}, "probe begin{}", false); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+        String contents = runStap(STAP_OPTIONS, STAP_DUMMYPROBE, false);
+        if (contents == null) {
+            return new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, Messages.SharedParser_NoOutput);
+        }
         // Exclude the dump of the test script by excluding everything before the second pathname
         // (which is the first actual tapset file, not the input script).
-        tapsetContents = tapsetContents.substring(tapsetContents.indexOf(TAG_FILE, tapsetContents.indexOf(TAG_FILE)+1));
+        int firstTagIndex = contents.indexOf(TAG_FILE);
+        if (firstTagIndex != -1) {
+            int beginIndex = contents.indexOf(TAG_FILE, firstTagIndex + 1);
+            if (beginIndex != -1) {
+                tapsetContents = contents.substring(beginIndex);
+            }
+        }
         return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
     }
 

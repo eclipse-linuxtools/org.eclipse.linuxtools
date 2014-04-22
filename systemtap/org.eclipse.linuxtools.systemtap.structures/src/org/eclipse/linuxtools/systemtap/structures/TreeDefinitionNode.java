@@ -11,8 +11,9 @@
 
 package org.eclipse.linuxtools.systemtap.structures;
 
-
 public class TreeDefinitionNode extends TreeNode {
+    private String definition;
+
     public TreeDefinitionNode(Object d, String disp, String def, boolean c) {
         super(d, disp, c);
         definition = def;
@@ -31,6 +32,4 @@ public class TreeDefinitionNode extends TreeNode {
         super.dispose();
         definition = null;
     }
-
-    private String definition;
 }

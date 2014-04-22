@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ISearchableNode;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ISearchableNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.ui.editor.handlers.file.OpenFileHandler;
 import org.eclipse.ui.IEditorPart;

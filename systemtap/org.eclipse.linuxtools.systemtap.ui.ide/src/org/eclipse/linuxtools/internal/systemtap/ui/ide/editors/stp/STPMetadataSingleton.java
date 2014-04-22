@@ -33,9 +33,7 @@ public final class STPMetadataSingleton {
 
     private static STPMetadataSingleton instance = null;
 
-    private STPMetadataSingleton() {
-        TapsetLibrary.init();
-    }
+    private STPMetadataSingleton() {}
 
     public static STPMetadataSingleton getInstance() {
         if (instance == null) {
@@ -57,7 +55,7 @@ public final class STPMetadataSingleton {
         List<String> matches = new LinkedList<>();
         String groupName = extractProbeGroupName(prefix);
 
-        for (TreeNode node : getEachProbeCategoryNode()) {
+        for (TreeNode node : TapsetLibrary.getProbeCategoryNodes()) {
             if (node == null) {
                 continue;
             }
@@ -97,10 +95,6 @@ public final class STPMetadataSingleton {
         }
 
         return getMatchingChildren(node, prefix);
-    }
-
-    private TreeNode[] getEachProbeCategoryNode() {
-        return new TreeNode[]{TapsetLibrary.getStaticProbes(), TapsetLibrary.getProbeAliases()};
     }
 
     private String[] getMatchingChildren(TreeNode node, String prefix) {

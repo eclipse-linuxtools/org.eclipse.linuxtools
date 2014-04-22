@@ -9,9 +9,21 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
 
+/**
+ * An interface for a data object that stores a <code>String</code> token
+ * that should be searched for in a text file.
+ */
 public interface ISearchableNode {
+    /**
+     * @return The token to search a text file for.
+     */
     String getSearchToken();
+
+    /**
+     * @return <code>true</code> if {@link #getSearchToken()} is a regular expression,
+     * or <code>false</code> if it is a plain-text search token.
+     */
     boolean isRegexSearch();
 }

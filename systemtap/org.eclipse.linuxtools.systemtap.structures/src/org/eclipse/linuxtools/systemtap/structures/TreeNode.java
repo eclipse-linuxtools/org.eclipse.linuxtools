@@ -15,12 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode {
+    private List<TreeNode> children;
+    private Object data;
+    private String display;
+    private boolean clickable;
+
     public TreeNode(Object d, boolean c) {
         children = new ArrayList<>();
         data = d;
         clickable = c;
 
-        if(null == data) {
+        if (data == null) {
             display = null;
         } else {
             display = d.toString();
@@ -46,8 +51,8 @@ public class TreeNode {
         return children.size();
     }
 
-    public TreeNode getChildAt(int i){
-        if(children.size() > i) {
+    public TreeNode getChildAt(int i) {
+        if (children.size() > i) {
             return children.get(i);
         } else {
             return null;
@@ -63,15 +68,15 @@ public class TreeNode {
     }
 
     public boolean remove(int i) {
-        if(children.size() > i) {
-            return(null != children.remove(i));
+        if (children.size() > i) {
+            return (null != children.remove(i));
         } else {
             return false;
         }
     }
 
     public boolean removeAll() {
-        for(int i=children.size()-1; i>=0; i--) {
+        for (int i = children.size() - 1; i >= 0; i--) {
             remove(i);
         }
         return true;
@@ -86,8 +91,8 @@ public class TreeNode {
     }
 
     /**
-     * Restructures the tree so that probes are grouped by type and
-     * functions are sorted alphabetically.
+     * Restructures the tree so that probes are grouped by type and functions
+     * are sorted alphabetically.
      */
     public void sortTree() {
         sortLevel();
@@ -115,7 +120,7 @@ public class TreeNode {
     }
 
     public void dispose() {
-        if (null != children) {
+        if (children != null) {
             for (TreeNode child : children) {
                 child.dispose();
             }
@@ -128,7 +133,7 @@ public class TreeNode {
     /**
      * @since 2.0
      */
-    public TreeNode getChildByName(String name){
+    public TreeNode getChildByName(String name) {
         for (TreeNode child : children) {
             if (child.toString().equals(name)) {
                 return child;
@@ -137,9 +142,4 @@ public class TreeNode {
 
         return null;
     }
-
-    private List<TreeNode> children;
-    private Object data;
-    private String display;
-    private boolean clickable;
 }
