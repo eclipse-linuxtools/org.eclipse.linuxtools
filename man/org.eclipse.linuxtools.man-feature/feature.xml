@@ -5,7 +5,7 @@
       version="1.0.0.qualifier"
       provider-name="%provider"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description url="http://www.eclipse.org/linuxtools/projectPages/manpage/">
       %description

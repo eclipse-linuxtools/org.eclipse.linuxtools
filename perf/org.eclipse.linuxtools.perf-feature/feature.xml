@@ -6,7 +6,7 @@
       provider-name="%provider"
       os="linux"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.0.qualifier">
+      license-feature-version="0.0.0">
 
    <description url="http://www.eclipse.org/linuxtools/">
       %description
