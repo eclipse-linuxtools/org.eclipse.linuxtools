@@ -55,7 +55,7 @@
    <feature url="features/org.eclipse.linuxtools.gcov_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.lttng2.control_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.control" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.lttng2.kernel_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.kernel" version="0.0.0">
@@ -146,7 +146,7 @@
    <feature url="features/org.eclipse.linuxtools.valgrind.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.source" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.lttng2.control.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.control.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.lttng2.kernel.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.kernel.source" version="0.0.0">
