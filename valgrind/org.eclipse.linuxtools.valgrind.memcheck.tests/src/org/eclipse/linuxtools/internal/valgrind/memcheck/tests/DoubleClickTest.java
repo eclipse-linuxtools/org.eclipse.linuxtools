@@ -42,115 +42,115 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DoubleClickTest extends AbstractMemcheckTest {
-	private ValgrindStackFrame frame;
+    private ValgrindStackFrame frame;
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    }
 
-	private void doDoubleClick() {
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		CoreMessagesViewer viewer = view.getMessagesViewer();
+    private void doDoubleClick() {
+        ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+        CoreMessagesViewer viewer = view.getMessagesViewer();
 
-		// get first leaf
-		IValgrindMessage[] elements = (IValgrindMessage[]) viewer
-				.getTreeViewer().getInput();
-		IValgrindMessage element = elements[0];
-		TreePath path = new TreePath(new Object[] { element });
-		frame = null;
-		while (element.getChildren().length > 0) {
-			element = element.getChildren()[0];
-			path = path.createChildPath(element);
-			if (element instanceof ValgrindStackFrame) {
-				frame = (ValgrindStackFrame) element;
-			}
-		}
-		assertNotNull(frame);
+        // get first leaf
+        IValgrindMessage[] elements = (IValgrindMessage[]) viewer
+                .getTreeViewer().getInput();
+        IValgrindMessage element = elements[0];
+        TreePath path = new TreePath(new Object[] { element });
+        frame = null;
+        while (element.getChildren().length > 0) {
+            element = element.getChildren()[0];
+            path = path.createChildPath(element);
+            if (element instanceof ValgrindStackFrame) {
+                frame = (ValgrindStackFrame) element;
+            }
+        }
+        assertNotNull(frame);
 
-		viewer.getTreeViewer().expandToLevel(frame,
-				AbstractTreeViewer.ALL_LEVELS);
-		TreeSelection selection = new TreeSelection(path);
+        viewer.getTreeViewer().expandToLevel(frame,
+                AbstractTreeViewer.ALL_LEVELS);
+        TreeSelection selection = new TreeSelection(path);
 
-		// do double click
-		IDoubleClickListener listener = viewer.getDoubleClickListener();
-		listener.doubleClick(new DoubleClickEvent(viewer.getTreeViewer(),
-				selection));
-	}
+        // do double click
+        IDoubleClickListener listener = viewer.getDoubleClickListener();
+        listener.doubleClick(new DoubleClickEvent(viewer.getTreeViewer(),
+                selection));
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testDoubleClickFile() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
+    @Test
+    public void testDoubleClickFile() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
-		doDoubleClick();
+        doDoubleClick();
 
-		IEditorPart editor = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		IEditorInput input = editor.getEditorInput();
+        IEditorPart editor = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        IEditorInput input = editor.getEditorInput();
 
-		assertTrue("Input should be IFileEditorInput",
-				input instanceof IFileEditorInput);
-		IFileEditorInput fileInput = (IFileEditorInput) input;
-		File expectedFile = new File(proj.getProject().getLocation()
-				.toOSString(), frame.getFile());
-		File actualFile = fileInput.getFile().getLocation().toFile();
+        assertTrue("Input should be IFileEditorInput",
+                input instanceof IFileEditorInput);
+        IFileEditorInput fileInput = (IFileEditorInput) input;
+        File expectedFile = new File(proj.getProject().getLocation()
+                .toOSString(), frame.getFile());
+        File actualFile = fileInput.getFile().getLocation().toFile();
 
-		assertEquals(expectedFile.getCanonicalPath(),
-				actualFile.getCanonicalPath());
-	}
+        assertEquals(expectedFile.getCanonicalPath(),
+                actualFile.getCanonicalPath());
+    }
 
-	@Test
-	public void testDoubleClickLine() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+    @Test
+    public void testDoubleClickLine() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
 
-		doDoubleClick();
+        doDoubleClick();
 
-		IEditorPart editor = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		assertTrue("editor should be ITextEditor",
-				editor instanceof ITextEditor);
-		ITextEditor textEditor = (ITextEditor) editor;
+        IEditorPart editor = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        assertTrue("editor should be ITextEditor",
+                editor instanceof ITextEditor);
+        ITextEditor textEditor = (ITextEditor) editor;
 
-		ISelection selection = textEditor.getSelectionProvider().getSelection();
-		assertTrue("selection must be TextSelection",
-				selection instanceof TextSelection);
-		TextSelection textSelection = (TextSelection) selection;
-		int line = textSelection.getStartLine() + 1; // zero-indexed
+        ISelection selection = textEditor.getSelectionProvider().getSelection();
+        assertTrue("selection must be TextSelection",
+                selection instanceof TextSelection);
+        TextSelection textSelection = (TextSelection) selection;
+        int line = textSelection.getStartLine() + 1; // zero-indexed
 
-		assertEquals(frame.getLine(), line);
-	}
+        assertEquals(frame.getLine(), line);
+    }
 
-	@Test
-	public void testDoubleClickLaunchRemoved() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+    @Test
+    public void testDoubleClickLaunchRemoved() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
 
-		// Remove launch - tests #284919
-		DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
+        // Remove launch - tests #284919
+        DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
 
-		doDoubleClick();
+        doDoubleClick();
 
-		IEditorPart editor = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		assertTrue("editor should be ITextEditor",
-				editor instanceof ITextEditor);
-		ITextEditor textEditor = (ITextEditor) editor;
+        IEditorPart editor = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        assertTrue("editor should be ITextEditor",
+                editor instanceof ITextEditor);
+        ITextEditor textEditor = (ITextEditor) editor;
 
-		ISelection selection = textEditor.getSelectionProvider().getSelection();
-		assertTrue("selection must be TextSelection",
-				selection instanceof TextSelection);
-		TextSelection textSelection = (TextSelection) selection;
-		int line = textSelection.getStartLine() + 1; // zero-indexed
+        ISelection selection = textEditor.getSelectionProvider().getSelection();
+        assertTrue("selection must be TextSelection",
+                selection instanceof TextSelection);
+        TextSelection textSelection = (TextSelection) selection;
+        int line = textSelection.getStartLine() + 1; // zero-indexed
 
-		assertEquals(frame.getLine(), line);
-	}
+        assertEquals(frame.getLine(), line);
+    }
 }

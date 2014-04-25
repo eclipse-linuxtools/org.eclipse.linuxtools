@@ -13,23 +13,23 @@ package org.eclipse.linuxtools.internal.perf.launch;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.perf.launch.messages"; //$NON-NLS-1$
-	public static String MsgProxyError;
-	public static String PerfLaunchConfigDelegate_perf_not_found;
-	public static String PerfLaunchConfigDelegate_analyzing;
-	public static String PerfLaunchConfigDelegate_stat_title;
-	public static String PerfOptionsTab_Browse;
-	public static String PerfOptionsTab_File_DNE;
-	public static String PerfOptionsTab_Kernel_Prompt;
-	public static String PerfOptionsTab_Loc_DNE;
-	public static String PerfOptionsTab_Options;
-	public static String PerfOptionsTab_Requires_LTE;
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.perf.launch.messages"; //$NON-NLS-1$
+    public static String MsgProxyError;
+    public static String PerfLaunchConfigDelegate_perf_not_found;
+    public static String PerfLaunchConfigDelegate_analyzing;
+    public static String PerfLaunchConfigDelegate_stat_title;
+    public static String PerfOptionsTab_Browse;
+    public static String PerfOptionsTab_File_DNE;
+    public static String PerfOptionsTab_Kernel_Prompt;
+    public static String PerfOptionsTab_Loc_DNE;
+    public static String PerfOptionsTab_Options;
+    public static String PerfOptionsTab_Requires_LTE;
 
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 }

@@ -24,28 +24,28 @@ import org.eclipse.swt.widgets.Text;
  */
 public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
-	private static final int QI_FIELD_WIDTH = 80;
+    private static final int QI_FIELD_WIDTH = 80;
 
-	private static final int QI_FIELD_HEIGHT = 40;
+    private static final int QI_FIELD_HEIGHT = 40;
 
-	@Override
-	protected void addFields(Composite composite) {
+    @Override
+    protected void addFields(Composite composite) {
 
-		// RPM labels and text fields setup
+        // RPM labels and text fields setup
 
-		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-		rpmDescriptionLabel.setText(Messages
-				.getString("SpecFileHeaderPage.info")); //$NON-NLS-1$
-		Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER
-				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdQI = new GridData();
-		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
-		gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
-		rpmQiText.setLayoutData(gdQI);
+        Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
+        rpmDescriptionLabel.setText(Messages
+                .getString("SpecFileHeaderPage.info")); //$NON-NLS-1$
+        Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER
+                | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
+        GridData gdQI = new GridData();
+        gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
+        gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
+        rpmQiText.setLayoutData(gdQI);
 
-		// Populate RPM text field
-		String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
-		rpmQiText.setText(rpm_qi);
-	}
+        // Populate RPM text field
+        String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
+        rpmQiText.setText(rpm_qi);
+    }
 
 }

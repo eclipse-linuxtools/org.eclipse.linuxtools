@@ -21,18 +21,18 @@ import org.junit.Test;
 
 public class ScriptConsoleTest {
 
-	@Before
-	public void setUp() {
-		console = ScriptConsole.getInstance("test");
-	}
-	@Test
-	public void testGetInstance() {
-		assertNotNull(console);
-		assertSame(console, ScriptConsole.getInstance("test"));
-		ScriptConsole console2 = ScriptConsole.getInstance("a");
-		assertNotNull(console2);
-		assertNotSame(console, console2);
-	}
+    @Before
+    public void setUp() {
+        console = ScriptConsole.getInstance("test");
+    }
+    @Test
+    public void testGetInstance() {
+        assertNotNull(console);
+        assertSame(console, ScriptConsole.getInstance("test"));
+        ScriptConsole console2 = ScriptConsole.getInstance("a");
+        assertNotNull(console2);
+        assertNotSame(console, console2);
+    }
 
-	private ScriptConsole console;
+    private ScriptConsole console;
 }

@@ -11,5 +11,5 @@
 package org.eclipse.linuxtools.internal.gcov.utils;
 
 public class MasksGenerator {
-	public static final long UNSIGNED_INT_MASK = 0xffffffffL;
+    public static final long UNSIGNED_INT_MASK = 0xffffffffL;
 }

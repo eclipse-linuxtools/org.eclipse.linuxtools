@@ -133,14 +133,14 @@ public abstract class AbstractSTViewer {
 
         viewer.addOpenListener(new IOpenListener() {
             @Override
-			public void open(OpenEvent event) {
+            public void open(OpenEvent event) {
                 handleOpenEvent(event);
             }
         });
 
         viewer.getControl().addKeyListener(new KeyAdapter() {
             @Override
-			public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 handleKeyPressed(e);
             }
         });
@@ -516,11 +516,11 @@ public abstract class AbstractSTViewer {
      * protected IDialogSettings getDialogSettings() <br>
      * IDialogSettings settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().getSection(</code>
      * SECTION_NAME<code>); <br>
-     * 	if (settings == null) { <br>
-     * 		settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().addNewSection(</code>SECTION_NAME
+     *     if (settings == null) { <br>
+     *         settings = </code>PLUGINActivator<code>.getDefault().getDialogSettings().addNewSection(</code>SECTION_NAME
      * <code>);<br>
-     * 	}<br>
-     * 	return settings;
+     *     }<br>
+     *     return settings;
      * </code>
      * </p>
      * <p>

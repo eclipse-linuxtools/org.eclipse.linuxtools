@@ -16,20 +16,20 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.messages"; //$NON-NLS-1$
-	public static String SelectServerDialog_RemoteServerDetails;
-	public static String SelectServerDialog_Host;
-	public static String SelectServerDialog_User;
-	public static String SelectServerDialog_Password;
-	public static String SelectServerDialog_AlwaysConnectToHost;
-	public static String SelectServerDialog_Cancel;
-	public static String SelectServerDialog_Connect;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.messages"; //$NON-NLS-1$
+    public static String SelectServerDialog_RemoteServerDetails;
+    public static String SelectServerDialog_Host;
+    public static String SelectServerDialog_User;
+    public static String SelectServerDialog_Password;
+    public static String SelectServerDialog_AlwaysConnectToHost;
+    public static String SelectServerDialog_Cancel;
+    public static String SelectServerDialog_Connect;
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 
 }

@@ -31,71 +31,71 @@ import org.eclipse.ui.part.IPageBookViewPage;
  */
 public class ScriptConsolePageParticipant implements IConsolePageParticipant, IDebugContextListener {
 
-	private IPageBookViewPage fPage;
-	private IConsoleView fView;
-	private ScriptConsole fConsole;
+    private IPageBookViewPage fPage;
+    private IConsoleView fView;
+    private ScriptConsole fConsole;
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(Class adapter) {
+        return null;
+    }
 
-	@Override
-	public void init(IPageBookViewPage page, IConsole iConsole) {
-		if (!(iConsole instanceof ScriptConsole)){
-			return;
-		}
+    @Override
+    public void init(IPageBookViewPage page, IConsole iConsole) {
+        if (!(iConsole instanceof ScriptConsole)){
+            return;
+        }
 
-		fPage = page;
-		fConsole = (ScriptConsole) iConsole;
-		fView = (IConsoleView) fPage.getSite().getPage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
+        fPage = page;
+        fConsole = (ScriptConsole) iConsole;
+        fView = (IConsoleView) fPage.getSite().getPage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
 
-		StopScriptAction stopScriptAction = new StopScriptAction(fConsole);
-		CloseStapConsoleAction closeConsoleAction = new CloseStapConsoleAction(fConsole);
-		SaveLogAction saveLogAction = new SaveLogAction(fConsole);
+        StopScriptAction stopScriptAction = new StopScriptAction(fConsole);
+        CloseStapConsoleAction closeConsoleAction = new CloseStapConsoleAction(fConsole);
+        SaveLogAction saveLogAction = new SaveLogAction(fConsole);
 
-		// contribute to toolbar
-		IToolBarManager manager = fPage.getSite().getActionBars().getToolBarManager();
-		manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, stopScriptAction);
-		manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, closeConsoleAction);
-		manager.appendToGroup(IConsoleConstants.OUTPUT_GROUP, saveLogAction);
+        // contribute to toolbar
+        IToolBarManager manager = fPage.getSite().getActionBars().getToolBarManager();
+        manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, stopScriptAction);
+        manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, closeConsoleAction);
+        manager.appendToGroup(IConsoleConstants.OUTPUT_GROUP, saveLogAction);
 
-		//TODO if {@link ModifyParsingAction} is restored, it is to be used here,
-		//in the same way stopScriptAction and saveLogAction are used.
+        //TODO if {@link ModifyParsingAction} is restored, it is to be used here,
+        //in the same way stopScriptAction and saveLogAction are used.
 
-		DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).addDebugContextListener(this);
-	}
+        DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).addDebugContextListener(this);
+    }
 
-	@Override
-	public void dispose() {
-		DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).removeDebugContextListener(this);
-		fConsole = null;
-	}
+    @Override
+    public void dispose() {
+        DebugUITools.getDebugContextManager().getContextService(fPage.getSite().getWorkbenchWindow()).removeDebugContextListener(this);
+        fConsole = null;
+    }
 
-	@Override
-	public void activated() {
-	}
+    @Override
+    public void activated() {
+    }
 
-	@Override
-	public void deactivated() {
-	}
+    @Override
+    public void deactivated() {
+    }
 
-	/**
-	 * @since 3.0
-	 */
-	@Override
-	public void debugContextChanged(DebugContextEvent event) {
-		if ((event.getFlags() & DebugContextEvent.ACTIVATED) > 0) {
-			if (fView != null && fConsole != null) {
-				IProcess process = DebugUITools.getCurrentProcess();
-				if (process instanceof SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess
-						&& ((SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess) process)
-								.matchesProcess(fConsole.getProcess())) {
-					fView.display(fConsole);
-				}
-			}
-		}
-	}
+    /**
+     * @since 3.0
+     */
+    @Override
+    public void debugContextChanged(DebugContextEvent event) {
+        if ((event.getFlags() & DebugContextEvent.ACTIVATED) > 0) {
+            if (fView != null && fConsole != null) {
+                IProcess process = DebugUITools.getCurrentProcess();
+                if (process instanceof SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess
+                        && ((SystemTapRuntimeProcessFactory.SystemTapRuntimeProcess) process)
+                                .matchesProcess(fConsole.getProcess())) {
+                    fView.display(fConsole);
+                }
+            }
+        }
+    }
 
 }

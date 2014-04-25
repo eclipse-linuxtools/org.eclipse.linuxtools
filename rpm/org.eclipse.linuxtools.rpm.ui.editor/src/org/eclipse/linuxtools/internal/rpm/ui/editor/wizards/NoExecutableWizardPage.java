@@ -21,34 +21,34 @@ import org.eclipse.swt.widgets.Label;
 
 public class NoExecutableWizardPage extends WizardPage {
 
-	protected NoExecutableWizardPage() {
-		super(Messages.NoExecutableWizardPage_0);
-		this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
-				"/icons/rpm.gif")); //$NON-NLS-1$
-	}
+    protected NoExecutableWizardPage() {
+        super(Messages.NoExecutableWizardPage_0);
+        this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
+                "/icons/rpm.gif")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		final Composite container = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
-		container.setLayout(layout);
-		layout.numColumns = 3;
-		layout.verticalSpacing = 9;
+    @Override
+    public void createControl(Composite parent) {
+        final Composite container = new Composite(parent, SWT.NULL);
+        GridLayout layout = new GridLayout();
+        container.setLayout(layout);
+        layout.numColumns = 3;
+        layout.verticalSpacing = 9;
 
-		// Project
-		Label label = new Label(container, SWT.NULL);
-		label
-				.setText(Messages.NoExecutableWizardPage_1);
-		// empty label for the last row.
-		new Label(container, SWT.NULL);
-		setControl(container);
-		this.setTitle(Messages.NoExecutableWizardPage_2);
-	}
+        // Project
+        Label label = new Label(container, SWT.NULL);
+        label
+                .setText(Messages.NoExecutableWizardPage_1);
+        // empty label for the last row.
+        new Label(container, SWT.NULL);
+        setControl(container);
+        this.setTitle(Messages.NoExecutableWizardPage_2);
+    }
 
-	@Override
-	public boolean isPageComplete() {
-		return false;
-	}
+    @Override
+    public boolean isPageComplete() {
+        return false;
+    }
 
 
 

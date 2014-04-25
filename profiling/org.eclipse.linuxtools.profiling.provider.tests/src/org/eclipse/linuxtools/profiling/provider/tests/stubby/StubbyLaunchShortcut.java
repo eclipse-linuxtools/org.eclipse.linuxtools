@@ -16,15 +16,15 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class StubbyLaunchShortcut extends ProfileLaunchShortcut {
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType("org.eclipse.linuxtools.profiling.stubby.launchConfigurationType"); //$NON-NLS-1$
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType("org.eclipse.linuxtools.profiling.stubby.launchConfigurationType"); //$NON-NLS-1$
+    }
 
-	@Override
-	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc)  {
-		// Set this for testing purposes
-		wc.setAttribute("foo", "bar"); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    @Override
+    protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc)  {
+        // Set this for testing purposes
+        wc.setAttribute("foo", "bar"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
 }

@@ -27,65 +27,65 @@ import org.eclipse.cdt.utils.elf.parser.ElfBinaryObject;
 import org.eclipse.core.runtime.IPath;
 
 public class PPC64ElfBinaryObjectWrapper extends ElfBinaryObject {
-	private Elf.Section dataSection = null;
-	private ISymbol[] symbols = null;
+    private Elf.Section dataSection = null;
+    private ISymbol[] symbols = null;
 
-	public PPC64ElfBinaryObjectWrapper(IBinaryParser parser, IPath path, int type) {
-		super(parser, path, type);
-	}
+    public PPC64ElfBinaryObjectWrapper(IBinaryParser parser, IPath path, int type) {
+        super(parser, path, type);
+    }
 
-	private IAddress fixAddr(IAddress addr) {
-		try {
-			//PPC64 is big endian, so we don't need to worry with byte order
-			InputStream input = getContents();
-			byte bytes[]=new byte[8];
-			long index = addr.getValue().longValue() - dataSection.sh_addr.getValue().longValue() +
-					dataSection.sh_offset;
+    private IAddress fixAddr(IAddress addr) {
+        try {
+            //PPC64 is big endian, so we don't need to worry with byte order
+            InputStream input = getContents();
+            byte bytes[]=new byte[8];
+            long index = addr.getValue().longValue() - dataSection.sh_addr.getValue().longValue() +
+                    dataSection.sh_offset;
 
-			input.skip(index);
-			input.read(bytes);
-			return new Addr64(new BigInteger(bytes));
-		} catch(IOException e) {
-			return null;
-		}
-	}
+            input.skip(index);
+            input.read(bytes);
+            return new Addr64(new BigInteger(bytes));
+        } catch(IOException e) {
+            return null;
+        }
+    }
 
-	@Override
-	public ISymbol[] getSymbols() {
-		if (symbols != null) {
-			return symbols;
-		}
+    @Override
+    public ISymbol[] getSymbols() {
+        if (symbols != null) {
+            return symbols;
+        }
 
-		symbols = super.getSymbols();
-		try {
-			if (dataSection == null) {
-				Elf elf = new Elf(getPath().toOSString());
-				dataSection = elf.getSectionByName(".data"); //$NON-NLS-1$
-			}
-		} catch  (IOException e) {
-		}
+        symbols = super.getSymbols();
+        try {
+            if (dataSection == null) {
+                Elf elf = new Elf(getPath().toOSString());
+                dataSection = elf.getSectionByName(".data"); //$NON-NLS-1$
+            }
+        } catch  (IOException e) {
+        }
 
-		//Failed to load data Section
-		if (dataSection == null) {
-			return symbols;
-		}
+        //Failed to load data Section
+        if (dataSection == null) {
+            return symbols;
+        }
 
-		LinkedList<ISymbol> list = new LinkedList<>();
-		for (ISymbol s : symbols) {
-			if (s.getType() == ISymbol.FUNCTION && s instanceof Symbol){
-				IAddress addr = fixAddr(s.getAddress());
-				if (addr == null) {
-					addr = s.getAddress();
-				}
-				list.add(new Symbol((BinaryObjectAdapter)s.getBinaryObject(), s.getName(), s.getType(), addr, s.getSize()));
-			} else {
-				list.add(s);
-			}
-		}
+        LinkedList<ISymbol> list = new LinkedList<>();
+        for (ISymbol s : symbols) {
+            if (s.getType() == ISymbol.FUNCTION && s instanceof Symbol){
+                IAddress addr = fixAddr(s.getAddress());
+                if (addr == null) {
+                    addr = s.getAddress();
+                }
+                list.add(new Symbol((BinaryObjectAdapter)s.getBinaryObject(), s.getName(), s.getType(), addr, s.getSize()));
+            } else {
+                list.add(s);
+            }
+        }
 
-		symbols = list.toArray(new Symbol[0]);
-		Arrays.sort(symbols);
+        symbols = list.toArray(new Symbol[0]);
+        Arrays.sort(symbols);
 
-		return symbols;
-	}
+        return symbols;
+    }
 }

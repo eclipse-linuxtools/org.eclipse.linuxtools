@@ -19,19 +19,19 @@ import java.io.InputStream;
  *
  */
 public class StringStreamGobbler extends StreamGobbler {
-	StringBuilder output;
+    StringBuilder output;
 
-	public StringStreamGobbler(InputStream is) {
-		super(is);
-		this.output = new StringBuilder();
-	}
+    public StringStreamGobbler(InputStream is) {
+        super(is);
+        this.output = new StringBuilder();
+    }
 
-	@Override
-	public void fireNewDataEvent(String line) {
-		output.append(line);
-	}
+    @Override
+    public void fireNewDataEvent(String line) {
+        output.append(line);
+    }
 
-	public StringBuilder getOutput() {
-		return output;
-	}
+    public StringBuilder getOutput() {
+        return output;
+    }
 }

@@ -94,7 +94,7 @@ public abstract class AbstractSTDataView extends ViewPart {
     protected abstract void contributeToToolbar(IToolBarManager manager);
 
     @Override
-	public void createPartControl(Composite parent) {
+    public void createPartControl(Composite parent) {
         GridLayout gridLayout = new GridLayout(1, true);
         parent.setLayout(gridLayout);
         createTitle(parent);
@@ -215,7 +215,7 @@ public abstract class AbstractSTDataView extends ViewPart {
         mgr.setRemoveAllWhenShown(true);
         mgr.addMenuListener(new IMenuListener() {
             @Override
-			public void menuAboutToShow(IMenuManager mgr) {
+            public void menuAboutToShow(IMenuManager mgr) {
                 getSTViewer().getViewer().cancelEditing();
                 fillContextMenu(mgr);
             }
@@ -263,7 +263,7 @@ public abstract class AbstractSTDataView extends ViewPart {
     }
 
     @Override
-	public void setFocus() {
+    public void setFocus() {
         Viewer viewer = getSTViewer().getViewer();
         if (viewer != null && !viewer.getControl().isDisposed()) {
             viewer.getControl().setFocus();
@@ -299,7 +299,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * @since 6.0
      */
     protected void fillContextMenu(IMenuManager manager) {
-    	Control control = stViewer.getViewer().getControl();
+        Control control = stViewer.getViewer().getControl();
         if (control instanceof Tree) {
             Tree tree = (Tree) control;
             TreeItem[] selection = tree.getSelection();

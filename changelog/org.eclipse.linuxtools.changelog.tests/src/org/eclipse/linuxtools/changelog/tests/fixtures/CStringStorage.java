@@ -18,35 +18,35 @@ import org.eclipse.core.runtime.IPath;
  *
  */
 public class CStringStorage implements IStorage {
-	private String string;
+    private String string;
 
-	public CStringStorage(String input) {
-		this.string = input;
-	}
+    public CStringStorage(String input) {
+        this.string = input;
+    }
 
-	@Override
-	public InputStream getContents() {
-		return new ByteArrayInputStream(string.getBytes());
-	}
+    @Override
+    public InputStream getContents() {
+        return new ByteArrayInputStream(string.getBytes());
+    }
 
-	@Override
-	public IPath getFullPath() {
-		return null;
-	}
+    @Override
+    public IPath getFullPath() {
+        return null;
+    }
 
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
-		return null;
-	}
+    @Override
+    public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+        return null;
+    }
 
-	@Override
-	public String getName() {
-		int len = Math.min(5, string.length());
-		return string.substring(0, len).concat("..."); //$NON-NLS-1$
-	}
+    @Override
+    public String getName() {
+        int len = Math.min(5, string.length());
+        return string.substring(0, len).concat("..."); //$NON-NLS-1$
+    }
 
-	@Override
-	public boolean isReadOnly() {
-		return true;
-	}
+    @Override
+    public boolean isReadOnly() {
+        return true;
+    }
 }

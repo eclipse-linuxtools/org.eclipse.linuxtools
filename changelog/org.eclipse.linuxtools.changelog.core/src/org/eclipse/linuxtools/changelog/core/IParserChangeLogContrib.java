@@ -19,26 +19,26 @@ import org.eclipse.ui.IEditorPart;
  */
 public interface IParserChangeLogContrib {
 
-	/**
-	 * Used to determine function name from a currently open editor, where the
-	 * cursor is at. Used by KeyAction.
-	 *
-	 * @param editor The editor to check for the function.
-	 * @return The name of the function.
-	 * @throws CoreException If unexpected error happens in the underlying Eclipse APIs.
-	 */
-	String parseCurrentFunction(IEditorPart editor) throws CoreException;
+    /**
+     * Used to determine function name from a currently open editor, where the
+     * cursor is at. Used by KeyAction.
+     *
+     * @param editor The editor to check for the function.
+     * @return The name of the function.
+     * @throws CoreException If unexpected error happens in the underlying Eclipse APIs.
+     */
+    String parseCurrentFunction(IEditorPart editor) throws CoreException;
 
-	/**
-	 * Used to determine function name from and editor input, with offset
-	 * supplied manualy. Used by prepare changelog.
-	 *
-	 * @param input If unexpected error happens in the underlying Eclipse APIs.
-	 * @param offset The offset at which to start.
-	 * @return The name of the function.
-	 * @throws CoreException If unexpected error happens in the underlying Eclipse APIs.
-	 */
-	String parseCurrentFunction(IEditorInput input, int offset)
-			throws CoreException;
+    /**
+     * Used to determine function name from and editor input, with offset
+     * supplied manualy. Used by prepare changelog.
+     *
+     * @param input If unexpected error happens in the underlying Eclipse APIs.
+     * @param offset The offset at which to start.
+     * @return The name of the function.
+     * @throws CoreException If unexpected error happens in the underlying Eclipse APIs.
+     */
+    String parseCurrentFunction(IEditorInput input, int offset)
+            throws CoreException;
 
 }

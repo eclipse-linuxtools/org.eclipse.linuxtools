@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="org.eclipse.linuxtools.changelog.doc" default="all">
-	<description>
+    <description>
             Generate Eclipse help content for the Linux Tools changelog user guide
     </description>
 
-	<property name="help.doc.url.base" value="http://wiki.eclipse.org" />
+    <property name="help.doc.url.base" value="http://wiki.eclipse.org" />
 
-	<path id="tasks.classpath" path="bin" />
-	<path id="wikitext.tasks.classpath">
-		<!-- Replace dir with the dir you have wikitext installed into.-->
-		<fileset dir="/usr/share/eclipse/dropins/mylyn/eclipse/plugins">
-			<include name="org.eclipse.mylyn.wikitext.*core*.jar" />
-		</fileset>
-	</path>
+    <path id="tasks.classpath" path="bin" />
+    <path id="wikitext.tasks.classpath">
+        <!-- Replace dir with the dir you have wikitext installed into.-->
+        <fileset dir="/usr/share/eclipse/dropins/mylyn/eclipse/plugins">
+            <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
+        </fileset>
+    </path>
 
-	<taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
-	<taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
+    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
 
-	<target name="all" description="Generate Eclipse help content for the Linux Tools changelog user guide">
-		<mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="ChangeLog Editor User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*,Linux_Tools">
+    <target name="all" description="Generate Eclipse help content for the Linux Tools changelog user guide">
+        <mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="ChangeLog Editor User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*,Linux_Tools">
 
-			<path name="Linux_Tools_Project/ChangeLog/User_Guide" title="ChangeLog Editor User Guide" generateToc="false" />
-			<stylesheet url="book.css" />
-			<pageAppendum>
-	= Updating This Document =
+            <path name="Linux_Tools_Project/ChangeLog/User_Guide" title="ChangeLog Editor User Guide" generateToc="false" />
+            <stylesheet url="book.css" />
+            <pageAppendum>
+    = Updating This Document =
 
-	This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit 
-	http://wiki.eclipse.org/Linux_Tools_Project/ChangeLog/User_Guide .
-			                         </pageAppendum>
-		</mediawiki-to-eclipse-help>
-		<antcall target="test" />
-	</target>
+    This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
+    http://wiki.eclipse.org/Linux_Tools_Project/ChangeLog/User_Guide .
+                                     </pageAppendum>
+        </mediawiki-to-eclipse-help>
+        <antcall target="test" />
+    </target>
 
-	<target name="test" description="verify that all of the HTML files are well-formed XML">
-		<echo level="info">
+    <target name="test" description="verify that all of the HTML files are well-formed XML">
+        <echo level="info">
 Validating help content XML and HTML files: The Eclipse help system expects well-formed XML
-			
+
 If validation fails it is because either:
-			
+
 * the userguide source code is poorly formed, or
 * the WikiText MediaWiki parser has a bug
-			
+
 Problems with userguide source are usually caused by improper use of HTML markup in the MediaWiki source,
 or inadvertently starting a line with a space character (in MediaWiki this starts a preformatted block)
-		</echo>
+        </echo>
 
-		<!-- 
-		Don't bother with DTD validation: we only care if the files are well-formed.
-		We therefore provide an empty DTD 
-		-->
-		<echo file="tmp/__empty.dtd" message="" />
-		<xmlvalidate lenient="true">
-			<fileset dir="Linux_Tools_Project">
-				<include name="**/*.html" />
-			</fileset>
-			<dtd publicid="-//W3C//DTD XHTML 1.0 Transitional//EN" location="${basedir}/tmp/__empty.dtd" />
-		</xmlvalidate>
-		<delete dir="tmp" />
-	</target>
+        <!--
+        Don't bother with DTD validation: we only care if the files are well-formed.
+        We therefore provide an empty DTD
+        -->
+        <echo file="tmp/__empty.dtd" message="" />
+        <xmlvalidate lenient="true">
+            <fileset dir="Linux_Tools_Project">
+                <include name="**/*.html" />
+            </fileset>
+            <dtd publicid="-//W3C//DTD XHTML 1.0 Transitional//EN" location="${basedir}/tmp/__empty.dtd" />
+        </xmlvalidate>
+        <delete dir="tmp" />
+    </target>
 </project>

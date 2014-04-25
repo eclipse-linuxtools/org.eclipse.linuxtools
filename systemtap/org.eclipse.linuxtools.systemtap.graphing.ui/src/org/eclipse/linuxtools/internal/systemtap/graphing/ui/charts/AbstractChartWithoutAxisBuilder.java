@@ -28,6 +28,6 @@ public abstract class AbstractChartWithoutAxisBuilder extends AbstractChartBuild
      */
 
     public AbstractChartWithoutAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
-    	 super(adapter, parent, style, title);
-	}
+         super(adapter, parent, style, title);
+    }
 }

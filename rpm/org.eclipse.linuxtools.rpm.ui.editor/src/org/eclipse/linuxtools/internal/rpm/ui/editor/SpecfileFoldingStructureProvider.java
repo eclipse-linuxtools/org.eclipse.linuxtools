@@ -34,106 +34,106 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 public class SpecfileFoldingStructureProvider {
 
 
-	private static class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
-		@Override
-		public int compare(SpecfileElement element1, SpecfileElement element2) {
-			Integer lineNbr1 = element1.getLineNumber();
-			Integer lineNbr2 = element2.getLineNumber();
-			return lineNbr1.compareTo(lineNbr2);
-		}
-	}
+    private static class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
+        @Override
+        public int compare(SpecfileElement element1, SpecfileElement element2) {
+            Integer lineNbr1 = element1.getLineNumber();
+            Integer lineNbr2 = element2.getLineNumber();
+            return lineNbr1.compareTo(lineNbr2);
+        }
+    }
 
-	private static final Annotation[] EMPTY = new Annotation[] {};
-	private SpecfileEditor sEditor;
-	private IDocument sDocument;
-	private IProgressMonitor sProgressMonitor;
+    private static final Annotation[] EMPTY = new Annotation[] {};
+    private SpecfileEditor sEditor;
+    private IDocument sDocument;
+    private IProgressMonitor sProgressMonitor;
 
-	public SpecfileFoldingStructureProvider(SpecfileEditor editor) {
-		sEditor = editor;
-	}
+    public SpecfileFoldingStructureProvider(SpecfileEditor editor) {
+        sEditor = editor;
+    }
 
-	public void setProgressMonitor(IProgressMonitor progressMonitor) {
-		sProgressMonitor = progressMonitor;
-	}
+    public void setProgressMonitor(IProgressMonitor progressMonitor) {
+        sProgressMonitor = progressMonitor;
+    }
 
-	public void setDocument(IDocument document) {
-		sDocument = document;
-	}
+    public void setDocument(IDocument document) {
+        sDocument = document;
+    }
 
-	public void updateFoldingRegions() {
-		ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
-				.getAdapter(ProjectionAnnotationModel.class);
-		if (model != null) {
-			updateFoldingRegions(model);
-		}
-	}
+    public void updateFoldingRegions() {
+        ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
+                .getAdapter(ProjectionAnnotationModel.class);
+        if (model != null) {
+            updateFoldingRegions(model);
+        }
+    }
 
-	void updateFoldingRegions(ProjectionAnnotationModel model) {
-		Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
-		Annotation[] deletions = computeDifferences(model, structure);
-		Map<Annotation,Position> additions = computeAdditions(structure);
-		if ((deletions.length != 0 || !additions.isEmpty())
-				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled())) {
-			model.modifyAnnotations(deletions, additions, EMPTY);
-		}
-	}
+    void updateFoldingRegions(ProjectionAnnotationModel model) {
+        Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
+        Annotation[] deletions = computeDifferences(model, structure);
+        Map<Annotation,Position> additions = computeAdditions(structure);
+        if ((deletions.length != 0 || !additions.isEmpty())
+                && (sProgressMonitor == null || !sProgressMonitor.isCanceled())) {
+            model.modifyAnnotations(deletions, additions, EMPTY);
+        }
+    }
 
-	private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
-		Map<Annotation,Position> additionsMap = new HashMap<>();
-		for (Position position: currentRegions) {
-			additionsMap.put(new ProjectionAnnotation(), position);
-		}
-		return additionsMap;
-	}
+    private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
+        Map<Annotation,Position> additionsMap = new HashMap<>();
+        for (Position position: currentRegions) {
+            additionsMap.put(new ProjectionAnnotation(), position);
+        }
+        return additionsMap;
+    }
 
-	private Annotation[] computeDifferences(ProjectionAnnotationModel model,
-			Set<Position> current) {
-		List<Annotation> deletions = new ArrayList<>();
-		for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) {
-			Annotation annotation = iter.next();
-			if (annotation instanceof ProjectionAnnotation) {
-				Position position = model.getPosition(annotation);
-				if (current.contains(position)) {
-					current.remove(position);
-				} else {
-					deletions.add(annotation);
-				}
-			}
-		}
-		return deletions.toArray(new Annotation[deletions.size()]);
-	}
+    private Annotation[] computeDifferences(ProjectionAnnotationModel model,
+            Set<Position> current) {
+        List<Annotation> deletions = new ArrayList<>();
+        for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) {
+            Annotation annotation = iter.next();
+            if (annotation instanceof ProjectionAnnotation) {
+                Position position = model.getPosition(annotation);
+                if (current.contains(position)) {
+                    current.remove(position);
+                } else {
+                    deletions.add(annotation);
+                }
+            }
+        }
+        return deletions.toArray(new Annotation[deletions.size()]);
+    }
 
-	private Set<Position> createFoldingStructure(Specfile specfile) {
-		List<SpecfileElement> elements = new ArrayList<>();
-		elements.addAll(specfile.getSections());
-		elements.addAll(specfile.getComplexSections());
-		Collections.sort(elements, new ElementByLineNbrComparator());
-		return addFoldingRegions(elements);
-	}
+    private Set<Position> createFoldingStructure(Specfile specfile) {
+        List<SpecfileElement> elements = new ArrayList<>();
+        elements.addAll(specfile.getSections());
+        elements.addAll(specfile.getComplexSections());
+        Collections.sort(elements, new ElementByLineNbrComparator());
+        return addFoldingRegions(elements);
+    }
 
-	private Set<Position> addFoldingRegions(List<SpecfileElement> elements) {
-		Set<Position> regions = new HashSet<>();
-		// add folding on the preamble section
-		Position position;
-		if (elements.size() > 0) {
-			SpecfileElement element = elements.get(0);
-			position = new Position(0, element.getLineStartPosition() - 1);
-			regions.add(position);
-		}
+    private Set<Position> addFoldingRegions(List<SpecfileElement> elements) {
+        Set<Position> regions = new HashSet<>();
+        // add folding on the preamble section
+        Position position;
+        if (elements.size() > 0) {
+            SpecfileElement element = elements.get(0);
+            position = new Position(0, element.getLineStartPosition() - 1);
+            regions.add(position);
+        }
 
-		for (int i = 0; i < elements.size(); i++) {
-			SpecfileElement startElement = elements.get(i);
-			int offsetPos = startElement.getLineStartPosition();
-			int lenghtPos;
-			if (i < elements.size() -1) {
-				SpecfileElement endElement = elements.get(i+1);
-				lenghtPos = endElement.getLineStartPosition() - startElement.getLineStartPosition() - 1;
-			} else {
-				lenghtPos = sDocument.getLength() - startElement.getLineStartPosition();
-			}
-			position = new Position(offsetPos, lenghtPos);
-			regions.add(position);
-		}
-		return regions;
-	}
+        for (int i = 0; i < elements.size(); i++) {
+            SpecfileElement startElement = elements.get(i);
+            int offsetPos = startElement.getLineStartPosition();
+            int lenghtPos;
+            if (i < elements.size() -1) {
+                SpecfileElement endElement = elements.get(i+1);
+                lenghtPos = endElement.getLineStartPosition() - startElement.getLineStartPosition() - 1;
+            } else {
+                lenghtPos = sDocument.getLength() - startElement.getLineStartPosition();
+            }
+            position = new Position(offsetPos, lenghtPos);
+            regions.add(position);
+        }
+        return regions;
+    }
 }

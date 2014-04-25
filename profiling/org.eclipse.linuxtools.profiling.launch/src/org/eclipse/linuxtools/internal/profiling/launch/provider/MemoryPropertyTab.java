@@ -13,19 +13,19 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 public class MemoryPropertyTab extends AbstractProviderPropertyTab {
 
-	public MemoryPropertyTab() {
-		super();
-	}
+    public MemoryPropertyTab() {
+        super();
+    }
 
-	@Override
-	protected String getType() {
-		return "memory"; //$NON-NLS-01$
-	}
-	
-	@Override
-	protected String getPrefPageId() {
-		return "org.eclipse.linuxtools.profiling.provider.MemoryPreferencePage"; //$NON-NLS-1$
-	}
+    @Override
+    protected String getType() {
+        return "memory"; //$NON-NLS-01$
+    }
+
+    @Override
+    protected String getPrefPageId() {
+        return "org.eclipse.linuxtools.profiling.provider.MemoryPreferencePage"; //$NON-NLS-1$
+    }
 
 
 }

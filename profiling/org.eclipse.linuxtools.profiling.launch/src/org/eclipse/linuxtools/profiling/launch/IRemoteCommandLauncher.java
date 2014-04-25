@@ -18,17 +18,17 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IRemoteCommandLauncher {
-	
-	int OK = 0;
-	int COMMAND_CANCELED = 1;
-	int ILLEGAL_COMMAND = -1;
-	
-	Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
-	/**
-	 * @since 3.0
-	 */
-	Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor, PTY pty) throws CoreException;
-	int waitAndRead(OutputStream output, OutputStream err, IProgressMonitor monitor);
-	String getErrorMessage();
-	
+
+    int OK = 0;
+    int COMMAND_CANCELED = 1;
+    int ILLEGAL_COMMAND = -1;
+
+    Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
+    /**
+     * @since 3.0
+     */
+    Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor, PTY pty) throws CoreException;
+    int waitAndRead(OutputStream output, OutputStream err, IProgressMonitor monitor);
+    String getErrorMessage();
+
 }

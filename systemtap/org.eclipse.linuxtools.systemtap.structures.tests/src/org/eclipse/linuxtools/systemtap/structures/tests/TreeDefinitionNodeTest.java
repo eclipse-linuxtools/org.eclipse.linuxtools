@@ -23,58 +23,58 @@ import org.junit.Test;
 
 public class TreeDefinitionNodeTest {
 
-	@Before
-	public void setUp() {
-		data = new StringBuilder("Object");
-		data2 = "Data";
-		d = "/usr/share";
-		d2 = "/usr";
-		s = "String";
-		s2 = "bah";
+    @Before
+    public void setUp() {
+        data = new StringBuilder("Object");
+        data2 = "Data";
+        d = "/usr/share";
+        d2 = "/usr";
+        s = "String";
+        s2 = "bah";
 
-		t = new TreeDefinitionNode(data, s, d, true);
-		child = new TreeDefinitionNode(data2, s2, d2, false);
-		t.add(child);
-	}
+        t = new TreeDefinitionNode(data, s, d, true);
+        child = new TreeDefinitionNode(data2, s2, d2, false);
+        t.add(child);
+    }
 
-	@Test
-	public void testTreeDefinitionNode() {
-		String d1 = "One";
-		String d2 = "two";
-		String s1 = "one";
+    @Test
+    public void testTreeDefinitionNode() {
+        String d1 = "One";
+        String d2 = "two";
+        String s1 = "one";
 
-		TreeDefinitionNode t = new TreeDefinitionNode(d1, s1, d2, false);
-		assertEquals("Create child count", 0, t.getChildCount());
-		assertEquals("Create child string", s1, t.toString());
-		assertEquals("Create child data", d1, t.getData());
-		assertEquals("Create child definition", d2, t.getDefinition());
-		assertFalse("Create child clickable", t.isClickable());
-	}
+        TreeDefinitionNode t = new TreeDefinitionNode(d1, s1, d2, false);
+        assertEquals("Create child count", 0, t.getChildCount());
+        assertEquals("Create child string", s1, t.toString());
+        assertEquals("Create child data", d1, t.getData());
+        assertEquals("Create child definition", d2, t.getDefinition());
+        assertFalse("Create child clickable", t.isClickable());
+    }
 
-	@Test
-	public void testGetDefinition() {
-		assertNotSame("Correct definition", d2, t.getDefinition());
-		assertEquals("Correct definition2", d2, ((TreeDefinitionNode)t.getChildAt(0)).getDefinition());
-	}
+    @Test
+    public void testGetDefinition() {
+        assertNotSame("Correct definition", d2, t.getDefinition());
+        assertEquals("Correct definition2", d2, ((TreeDefinitionNode)t.getChildAt(0)).getDefinition());
+    }
 
-	@Test
-	public void testSetDefinition() {
-		String s1 = "/user/share/systemtap";
-		t.setDefinition(s1);
-		assertEquals("Replaced definition", s1, t.getDefinition());
-	}
+    @Test
+    public void testSetDefinition() {
+        String s1 = "/user/share/systemtap";
+        t.setDefinition(s1);
+        assertEquals("Replaced definition", s1, t.getDefinition());
+    }
 
-	@Test
-	public void testDispose() {
-		assertNotNull(t.getDefinition());
-		t.dispose();
-		assertNull(t.getDefinition());
-	}
+    @Test
+    public void testDispose() {
+        assertNotNull(t.getDefinition());
+        t.dispose();
+        assertNull(t.getDefinition());
+    }
 
-	private TreeDefinitionNode t;
-	private TreeDefinitionNode child;
-	private Object data;
-	private String data2;
-	private String s, s2;
-	private String d, d2;
+    private TreeDefinitionNode t;
+    private TreeDefinitionNode child;
+    private Object data;
+    private String data2;
+    private String s, s2;
+    private String d, d2;
 }

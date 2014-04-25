@@ -13,18 +13,18 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 public class TimingPropertyTab extends AbstractProviderPropertyTab {
 
-	public TimingPropertyTab() {
-		super();
-	}
+    public TimingPropertyTab() {
+        super();
+    }
 
-	@Override
-	protected String getType() {
-		return "timing"; //$NON-NLS-1$
-	}
+    @Override
+    protected String getType() {
+        return "timing"; //$NON-NLS-1$
+    }
 
-	@Override
-	protected String getPrefPageId() {
-		return "org.eclipse.linuxtools.profiling.provider.TimingPreferencePage"; //$NON-NLS-1$
-	}
+    @Override
+    protected String getPrefPageId() {
+        return "org.eclipse.linuxtools.profiling.provider.TimingPreferencePage"; //$NON-NLS-1$
+    }
 
 }

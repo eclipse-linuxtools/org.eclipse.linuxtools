@@ -18,40 +18,40 @@ import org.eclipse.core.resources.IProjectNature;
  */
 public class CreaterepoProjectNature implements IProjectNature {
 
-	public static final String CREATEREPO_NATURE_ID = "org.eclipse.linuxtools.rpm.createrepo.createreponature"; //$NON-NLS-1$
+    public static final String CREATEREPO_NATURE_ID = "org.eclipse.linuxtools.rpm.createrepo.createreponature"; //$NON-NLS-1$
 
-	private IProject project;
+    private IProject project;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.IProjectNature#configure()
-	 */
-	@Override
-	public void configure(){/* not implemented */}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.core.resources.IProjectNature#configure()
+     */
+    @Override
+    public void configure(){/* not implemented */}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
-	 */
-	@Override
-	public void deconfigure() {/* not implemented */}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.core.resources.IProjectNature#deconfigure()
+     */
+    @Override
+    public void deconfigure() {/* not implemented */}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.IProjectNature#getProject()
-	 */
-	@Override
-	public IProject getProject() {
-		return project;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.core.resources.IProjectNature#getProject()
+     */
+    @Override
+    public IProject getProject() {
+        return project;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.IProjectNature#setProject(org.eclipse.core.resources.IProject)
-	 */
-	@Override
-	public void setProject(IProject project) {
-		this.project = project;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.core.resources.IProjectNature#setProject(org.eclipse.core.resources.IProject)
+     */
+    @Override
+    public void setProject(IProject project) {
+        this.project = project;
+    }
 
 }

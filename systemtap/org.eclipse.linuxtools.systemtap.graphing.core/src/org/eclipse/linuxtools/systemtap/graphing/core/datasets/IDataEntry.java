@@ -12,14 +12,14 @@
 package org.eclipse.linuxtools.systemtap.graphing.core.datasets;
 
 public interface IDataEntry {
-	int getRowCount();
-	int getColCount();
-	Object get(String key, int col);
-	Object[] getRow(int row);
-	Object[] getRow(String key);
-	Object[] getColumn(int col);
-	Object[][] getData();
-	IDataEntry copy();
-	void putRow(int row, Object[] data);
-	boolean remove(int row);
+    int getRowCount();
+    int getColCount();
+    Object get(String key, int col);
+    Object[] getRow(int row);
+    Object[] getRow(String key);
+    Object[] getColumn(int col);
+    Object[][] getData();
+    IDataEntry copy();
+    void putRow(int row, Object[] data);
+    boolean remove(int row);
 }

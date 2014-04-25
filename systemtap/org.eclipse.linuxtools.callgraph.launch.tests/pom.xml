@@ -35,7 +35,7 @@
           </excludes>
           <testSuite>org.eclipse.linuxtools.callgraph.launch.tests</testSuite>
           <testClass>org.eclipse.linuxtools.callgraph.launch.tests.AllTests</testClass>
-       	  <useUIHarness>true</useUIHarness>
+             <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
         </configuration>

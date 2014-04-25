@@ -21,24 +21,24 @@ import org.eclipse.swt.program.Program;
 public class MailHyperlink extends URLHyperlink {
 
 
-	private String fURLString;
+    private String fURLString;
 
-	
-	public MailHyperlink(IRegion region, String urlString) {
-		super(region, urlString);
-		fURLString = urlString;
-	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.hyperlink.URLHyperlink#open()
-	 */
-	@Override
-	public void open() {
-		if (fURLString != null) {
-			Program.launch(fURLString);
-			fURLString= null;
-			return;
-		}
-	}
+    public MailHyperlink(IRegion region, String urlString) {
+        super(region, urlString);
+        fURLString = urlString;
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.text.hyperlink.URLHyperlink#open()
+     */
+    @Override
+    public void open() {
+        if (fURLString != null) {
+            Program.launch(fURLString);
+            fURLString= null;
+            return;
+        }
+    }
 
 }

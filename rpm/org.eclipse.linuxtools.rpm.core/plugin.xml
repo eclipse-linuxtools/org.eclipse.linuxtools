@@ -5,7 +5,7 @@
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-   
+
     Contributors:
         Red Hat - initial API and implementation
  -->
@@ -16,13 +16,13 @@
          name="%extension.name"
          point="org.eclipse.core.resources.natures">
          <runtime>
-         	<run class="org.eclipse.linuxtools.rpm.core.RPMProjectNature"></run>
+             <run class="org.eclipse.linuxtools.rpm.core.RPMProjectNature"></run>
          </runtime>
    </extension>
 <extension point="org.eclipse.core.runtime.preferences">
-		<initializer
-			class="org.eclipse.linuxtools.internal.rpm.core.RPMCoreInitializer" />
-	</extension>
+        <initializer
+            class="org.eclipse.linuxtools.internal.rpm.core.RPMCoreInitializer" />
+    </extension>
 <extension
       point="org.eclipse.core.expressions.definitions">
    <definition

@@ -33,308 +33,308 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
  * @since 2.0
  */
 public class Command implements Runnable {
-	/*
-	 * Bug in the exec command prevents using a single string.  Forced
-	 * to use a workaround in order to run commands with spaces.
-	 *
-	 * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4365120
-	 * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4109888
-	 */
+    /*
+     * Bug in the exec command prevents using a single string.  Forced
+     * to use a workaround in order to run commands with spaces.
+     *
+     * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4365120
+     * http://bugs.sun.com/bugdatabase/view_bug.do;:WuuT?bug_id=4109888
+     */
 
-	/**
-	 * @since 2.0
-	 */
-	protected boolean stopped = false;
-	private boolean started = false;
-	/**
-	 * @since 2.0
-	 */
-	protected StreamGobbler inputGobbler = null;
-	/**
-	 * @since 2.0
-	 */
-	protected StreamGobbler errorGobbler = null;
+    /**
+     * @since 2.0
+     */
+    protected boolean stopped = false;
+    private boolean started = false;
+    /**
+     * @since 2.0
+     */
+    protected StreamGobbler inputGobbler = null;
+    /**
+     * @since 2.0
+     */
+    protected StreamGobbler errorGobbler = null;
 
-	private boolean disposed = false;
-	private List<IGobblerListener> inputListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private List<IGobblerListener> errorListeners = new ArrayList<>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private int returnVal = Integer.MAX_VALUE;
+    private boolean disposed = false;
+    private List<IGobblerListener> inputListeners = new ArrayList<>();    //Only used to allow adding listeners before creating the StreamGobbler
+    private List<IGobblerListener> errorListeners = new ArrayList<>();    //Only used to allow adding listeners before creating the StreamGobbler
+    private int returnVal = Integer.MAX_VALUE;
 
-	private String[] cmd;
-	private String[] envVars;
-	protected Process process;
-	/**
-	 * @since 2.1
-	 */
-	protected IProject project = null;
-	private final LoggingStreamDaemon logger;
+    private String[] cmd;
+    private String[] envVars;
+    protected Process process;
+    /**
+     * @since 2.1
+     */
+    protected IProject project = null;
+    private final LoggingStreamDaemon logger;
 
-	public static final int ERROR_STREAM = 0;
-	public static final int INPUT_STREAM = 1;
+    public static final int ERROR_STREAM = 0;
+    public static final int INPUT_STREAM = 1;
 
-	/**
-	 * Spawns the new thread that this class will run in.  From the Runnable
-	 * interface spawning the new thread automatically calls the run() method.
-	 * This must be called by the implementing class in order to start the
-	 * StreamGobbler.
-	 * @param cmd The entire command to run
-	 * @param envVars List of all environment variables to use
-	 * @since 2.0
-	 */
-	public Command(String[] cmd, String[] envVars) {
-		this(cmd, envVars, null);
-	}
+    /**
+     * Spawns the new thread that this class will run in.  From the Runnable
+     * interface spawning the new thread automatically calls the run() method.
+     * This must be called by the implementing class in order to start the
+     * StreamGobbler.
+     * @param cmd The entire command to run
+     * @param envVars List of all environment variables to use
+     * @since 2.0
+     */
+    public Command(String[] cmd, String[] envVars) {
+        this(cmd, envVars, null);
+    }
 
-	/**
-	 * Spawns the new thread that this class will run in.  From the Runnable
-	 * interface spawning the new thread automatically calls the run() method.
-	 * This must be called by the implementing class in order to start the
-	 * StreamGobbler.
-	 * @param cmd The entire command to run
-	 * @param envVars List of all environment variables to use
-	 * @param project The project this script belongs to or null
-	 * @since 2.1
-	 */
-	public Command(String[] cmd, String[] envVars, IProject project) {
-		if (cmd != null) {
-			this.cmd = Arrays.copyOf(cmd, cmd.length);
-		}
+    /**
+     * Spawns the new thread that this class will run in.  From the Runnable
+     * interface spawning the new thread automatically calls the run() method.
+     * This must be called by the implementing class in order to start the
+     * StreamGobbler.
+     * @param cmd The entire command to run
+     * @param envVars List of all environment variables to use
+     * @param project The project this script belongs to or null
+     * @since 2.1
+     */
+    public Command(String[] cmd, String[] envVars, IProject project) {
+        if (cmd != null) {
+            this.cmd = Arrays.copyOf(cmd, cmd.length);
+        }
 
-		if (envVars != null) {
-			this.envVars = Arrays.copyOf(envVars, envVars.length);
-		}
-		this.project = project;
-		logger = new LoggingStreamDaemon();
-		addInputStreamListener(logger);
-	}
+        if (envVars != null) {
+            this.envVars = Arrays.copyOf(envVars, envVars.length);
+        }
+        this.project = project;
+        logger = new LoggingStreamDaemon();
+        addInputStreamListener(logger);
+    }
 
-	/**
-	 * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
-	 * This must be called in order to get the process to start running.
-	 * @throws CoreException
-	 */
-	public void start() throws CoreException {
-		IStatus status = init();
-		if(status.isOK()) {
-			Thread t = new Thread(this, cmd[0]);
-			t.start();
-			started = true;
-		} else {
-			stop();
-			returnVal = Integer.MIN_VALUE;
-			throw new CoreException(status);
-		}
-	}
+    /**
+     * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
+     * This must be called in order to get the process to start running.
+     * @throws CoreException
+     */
+    public void start() throws CoreException {
+        IStatus status = init();
+        if(status.isOK()) {
+            Thread t = new Thread(this, cmd[0]);
+            t.start();
+            started = true;
+        } else {
+            stop();
+            returnVal = Integer.MIN_VALUE;
+            throw new CoreException(status);
+        }
+    }
 
-	/**
-	 * Starts up the process that will execute the provided command and registers
-	 * the <code>StreamGobblers</code> with their respective streams.
-	 * @since 2.0
-	 */
-	protected IStatus init() {
-		try {
-			process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, project);
+    /**
+     * Starts up the process that will execute the provided command and registers
+     * the <code>StreamGobblers</code> with their respective streams.
+     * @since 2.0
+     */
+    protected IStatus init() {
+        try {
+            process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, project);
 
-			if (process == null){
-				return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
-			}
+            if (process == null){
+                return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
+            }
 
-			errorGobbler = new StreamGobbler(process.getErrorStream());
-			inputGobbler = new StreamGobbler(process.getInputStream());
+            errorGobbler = new StreamGobbler(process.getErrorStream());
+            inputGobbler = new StreamGobbler(process.getInputStream());
 
-			this.transferListeners();
-			return Status.OK_STATUS;
-		} catch (IOException e) {
-			return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
-		}
-	}
+            this.transferListeners();
+            return Status.OK_STATUS;
+        } catch (IOException e) {
+            return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * This transfers any listeners which may have been added
-	 * to the command before the process has been constructed
-	 * properly to the process itself.
-	 * @since 2.0
-	 */
-	protected void transferListeners(){
-		for(IGobblerListener listener :inputListeners) {
-			inputGobbler.addDataListener(listener);
-		}
-		for(IGobblerListener listener: errorListeners) {
-			errorGobbler.addDataListener(listener);
-		}
-	}
+    /**
+     * This transfers any listeners which may have been added
+     * to the command before the process has been constructed
+     * properly to the process itself.
+     * @since 2.0
+     */
+    protected void transferListeners(){
+        for(IGobblerListener listener :inputListeners) {
+            inputGobbler.addDataListener(listener);
+        }
+        for(IGobblerListener listener: errorListeners) {
+            errorGobbler.addDataListener(listener);
+        }
+    }
 
-	/**
-	 * This method handles checking the status of the running <code>Process</code>. It
-	 * is called when the new Thread is created, and thus should never be called by
-	 * any implementing program. To run call the <code>start</code> method.
-	 */
-	@Override
-	public void run() {
-		errorGobbler.start();
-		inputGobbler.start();
-		try {
-			process.waitFor();
-		} catch (InterruptedException e) {}
-		stop();
-	}
+    /**
+     * This method handles checking the status of the running <code>Process</code>. It
+     * is called when the new Thread is created, and thus should never be called by
+     * any implementing program. To run call the <code>start</code> method.
+     */
+    @Override
+    public void run() {
+        errorGobbler.start();
+        inputGobbler.start();
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {}
+        stop();
+    }
 
-	/**
-	 * Stops the process from running and stops the <code>StreamGobblers</code> from monitering
-	 * the dead process and unregisters the StreamListener. Also wakes up any threads waiting
-	 * on this command.
-	 */
-	public synchronized void stop() {
-		if(!stopped) {
-			if(null != errorGobbler) {
-				errorGobbler.stop();
-			}
-			if(null != inputGobbler) {
-				inputGobbler.stop();
-			}
-			try {
-				if(process != null){
-					process.waitFor();
-				}
-			} catch (InterruptedException e) {
-				// This thread was interrupted while waiting for
-				// the process to exit. Destroy the process just
-				// to make sure it exits.
-				process.destroy();
-			}
-			removeInputStreamListener(logger);
-			stopped = true;
-			notifyAll(); // Wake up threads waiting for this command to stop.
-		}
-	}
+    /**
+     * Stops the process from running and stops the <code>StreamGobblers</code> from monitering
+     * the dead process and unregisters the StreamListener. Also wakes up any threads waiting
+     * on this command.
+     */
+    public synchronized void stop() {
+        if(!stopped) {
+            if(null != errorGobbler) {
+                errorGobbler.stop();
+            }
+            if(null != inputGobbler) {
+                inputGobbler.stop();
+            }
+            try {
+                if(process != null){
+                    process.waitFor();
+                }
+            } catch (InterruptedException e) {
+                // This thread was interrupted while waiting for
+                // the process to exit. Destroy the process just
+                // to make sure it exits.
+                process.destroy();
+            }
+            removeInputStreamListener(logger);
+            stopped = true;
+            notifyAll(); // Wake up threads waiting for this command to stop.
+        }
+    }
 
-	/**
-	 * Method to check whether or not the process is running.
-	 * @return The execution status.
-	 */
-	public boolean isRunning() {
-		return !stopped;
-	}
+    /**
+     * Method to check whether or not the process is running.
+     * @return The execution status.
+     */
+    public boolean isRunning() {
+        return !stopped;
+    }
 
-	/**
-	 * Method to check whether or not the process has began to run.
-	 * @return <code>false</code> before the process begins to run or
-	 * if initialization of the process has failed; <code>true</code> otherwise.
-	 * @since 3.0
-	 */
-	public boolean hasStarted() {
-		return started;
-	}
+    /**
+     * Method to check whether or not the process has began to run.
+     * @return <code>false</code> before the process begins to run or
+     * if initialization of the process has failed; <code>true</code> otherwise.
+     * @since 3.0
+     */
+    public boolean hasStarted() {
+        return started;
+    }
 
-	/**
-	 * Method to check if this class has already been disposed.
-	 * @return Status of the class.
-	 */
-	public boolean isDisposed() {
-		return disposed;
-	}
+    /**
+     * Method to check if this class has already been disposed.
+     * @return Status of the class.
+     */
+    public boolean isDisposed() {
+        return disposed;
+    }
 
-	/**
-	 * The return value of the process.
-	 * 2^231-1 if the process is still running.
-	 * -2^231 if there was an error creating the process
-	 * @return The return value generated from running the provided command.
-	 */
-	public int getReturnValue() {
-		return returnVal;
-	}
+    /**
+     * The return value of the process.
+     * 2^231-1 if the process is still running.
+     * -2^231 if there was an error creating the process
+     * @return The return value generated from running the provided command.
+     */
+    public int getReturnValue() {
+        return returnVal;
+    }
 
-	/**
-	 * Registers the provided <code>IGobblerListener</code> with the InputStream
-	 * @param listener A listener to monitor the InputStream from the Process
-	 */
-	public void addInputStreamListener(IGobblerListener listener) {
-		if(null != inputGobbler) {
-			inputGobbler.addDataListener(listener);
-		} else {
-			inputListeners.add(listener);
-		}
-	}
+    /**
+     * Registers the provided <code>IGobblerListener</code> with the InputStream
+     * @param listener A listener to monitor the InputStream from the Process
+     */
+    public void addInputStreamListener(IGobblerListener listener) {
+        if(null != inputGobbler) {
+            inputGobbler.addDataListener(listener);
+        } else {
+            inputListeners.add(listener);
+        }
+    }
 
-	/**
-	 * Registers the provided <code>IGobblerListener</code> with the ErrorStream
-	 * @param listener A listener to monitor the ErrorStream from the Process
-	 */
-	public void addErrorStreamListener(IGobblerListener listener) {
-		if(null != errorGobbler) {
-			errorGobbler.addDataListener(listener);
-		} else {
-			errorListeners.add(listener);
-		}
-	}
+    /**
+     * Registers the provided <code>IGobblerListener</code> with the ErrorStream
+     * @param listener A listener to monitor the ErrorStream from the Process
+     */
+    public void addErrorStreamListener(IGobblerListener listener) {
+        if(null != errorGobbler) {
+            errorGobbler.addDataListener(listener);
+        } else {
+            errorListeners.add(listener);
+        }
+    }
 
-	/**
-	 * Removes the provided listener from those monitoring the InputStream.
-	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
-	 */
-	public void removeInputStreamListener(IGobblerListener listener) {
-		if(null != inputGobbler) {
-			inputGobbler.removeDataListener(listener);
-		} else {
-			inputListeners.remove(listener);
-		}
-	}
+    /**
+     * Removes the provided listener from those monitoring the InputStream.
+     * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
+     */
+    public void removeInputStreamListener(IGobblerListener listener) {
+        if(null != inputGobbler) {
+            inputGobbler.removeDataListener(listener);
+        } else {
+            inputListeners.remove(listener);
+        }
+    }
 
-	/**
-	 * Removes the provided listener from those monitoring the ErrorStream.
-	 * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
-	 */
-	public void removeErrorStreamListener(IGobblerListener listener) {
-		if(null != errorGobbler) {
-			errorGobbler.removeDataListener(listener);
-		} else {
-			errorListeners.remove(listener);
-		}
-	}
+    /**
+     * Removes the provided listener from those monitoring the ErrorStream.
+     * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
+     */
+    public void removeErrorStreamListener(IGobblerListener listener) {
+        if(null != errorGobbler) {
+            errorGobbler.removeDataListener(listener);
+        } else {
+            errorListeners.remove(listener);
+        }
+    }
 
-	/**
-	 * Saves the input stream data to a permanent file.  Any new data on the
-	 * stream will automatically be saved to the file.
-	 * @param file The file to save the InputStream to.
-	 */
-	public boolean saveLog(File file) {
-		return logger.saveLog(file);
-	}
+    /**
+     * Saves the input stream data to a permanent file.  Any new data on the
+     * stream will automatically be saved to the file.
+     * @param file The file to save the InputStream to.
+     */
+    public boolean saveLog(File file) {
+        return logger.saveLog(file);
+    }
 
-	/**
-	 * Disposes of all internal components of this class. Nothing in the class should be
-	 * referenced after this is called.
-	 */
-	public void dispose() {
-		if(!disposed) {
-			stop();
-			disposed = true;
+    /**
+     * Disposes of all internal components of this class. Nothing in the class should be
+     * referenced after this is called.
+     */
+    public void dispose() {
+        if(!disposed) {
+            stop();
+            disposed = true;
 
-			inputListeners.clear();
-			errorListeners.clear();
+            inputListeners.clear();
+            errorListeners.clear();
 
-			inputListeners = null;
-			errorListeners = null;
+            inputListeners = null;
+            errorListeners = null;
 
-			if(null != inputGobbler) {
-				inputGobbler.dispose();
-			}
-			inputGobbler = null;
+            if(null != inputGobbler) {
+                inputGobbler.dispose();
+            }
+            inputGobbler = null;
 
-			if(null != errorGobbler) {
-				errorGobbler.dispose();
-			}
-			errorGobbler = null;
-			logger.dispose();
-		}
-	}
+            if(null != errorGobbler) {
+                errorGobbler.dispose();
+            }
+            errorGobbler = null;
+            logger.dispose();
+        }
+    }
 
-	/**
-	 * @return The process of this command.
-	 * @since 3.0
-	 */
-	public Process getProcess() {
-		return process;
-	}
+    /**
+     * @return The process of this command.
+     * @since 3.0
+     */
+    public Process getProcess() {
+        return process;
+    }
 
 }

@@ -30,75 +30,75 @@ import org.junit.Test;
 
 public class MinVersionTest extends AbstractMemcheckTest {
 
-	static class ValgrindIncorrectVersion extends ValgrindStubCommand {
-		@Override
-		public String whichVersion(IProject project) {
-			return "valgrind-3.2.1"; //$NON-NLS-1$
-		}
-	}
+    static class ValgrindIncorrectVersion extends ValgrindStubCommand {
+        @Override
+        public String whichVersion(IProject project) {
+            return "valgrind-3.2.1"; //$NON-NLS-1$
+        }
+    }
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
-		saveVersion();
-	}
+        saveVersion();
+    }
 
-	private void saveVersion() {
-		ValgrindLaunchPlugin.getDefault().setValgrindCommand(
-				new ValgrindIncorrectVersion());
-	}
+    private void saveVersion() {
+        ValgrindLaunchPlugin.getDefault().setValgrindCommand(
+                new ValgrindIncorrectVersion());
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		restoreVersion();
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        restoreVersion();
 
-		deleteProject(proj);
-		super.tearDown();
-	}
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	private void restoreVersion() {
-		ValgrindLaunchPlugin.getDefault().setValgrindCommand(
-				new ValgrindCommand());
-	}
+    private void restoreVersion() {
+        ValgrindLaunchPlugin.getDefault().setValgrindCommand(
+                new ValgrindCommand());
+    }
 
-	@Test
-	public void testLaunchBadVersion() throws Exception {
-		// Put this back so we can make a valid config
-		restoreVersion();
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		// For some reason we downgraded
-		saveVersion();
+    @Test
+    public void testLaunchBadVersion() throws Exception {
+        // Put this back so we can make a valid config
+        restoreVersion();
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        // For some reason we downgraded
+        saveVersion();
 
-		try {
-			doLaunch(config, "testDefaults"); //$NON-NLS-1$
-		} catch (CoreException e) {
-			assertNotNull(e);
-		}
+        try {
+            doLaunch(config, "testDefaults"); //$NON-NLS-1$
+        } catch (CoreException e) {
+            assertNotNull(e);
+        }
 
-	}
+    }
 
-	@Test
-	public void testTabsBadVersion() throws Exception {
-		Shell testShell = new Shell(Display.getDefault());
-		testShell.setLayout(new GridLayout());
-		ValgrindOptionsTab tab = new ValgrindOptionsTab();
+    @Test
+    public void testTabsBadVersion() throws Exception {
+        Shell testShell = new Shell(Display.getDefault());
+        testShell.setLayout(new GridLayout());
+        ValgrindOptionsTab tab = new ValgrindOptionsTab();
 
-		ILaunchConfiguration config = getLaunchConfigType().newInstance(
-				null,
-				getLaunchManager().generateLaunchConfigurationName(
-						proj.getProject().getName()));
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		tab.setDefaults(wc);
-		tab.createControl(testShell);
-		tab.initializeFrom(config);
-		tab.performApply(wc);
+        ILaunchConfiguration config = getLaunchConfigType().newInstance(
+                null,
+                getLaunchManager().generateLaunchConfigurationName(
+                        proj.getProject().getName()));
+        ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+        tab.setDefaults(wc);
+        tab.createControl(testShell);
+        tab.initializeFrom(config);
+        tab.performApply(wc);
 
-		assertFalse(tab.isValid(config));
-		assertNotNull(tab.getErrorMessage());
+        assertFalse(tab.isValid(config));
+        assertNotNull(tab.getErrorMessage());
 
-		testShell.dispose();
-	}
+        testShell.dispose();
+    }
 
 }

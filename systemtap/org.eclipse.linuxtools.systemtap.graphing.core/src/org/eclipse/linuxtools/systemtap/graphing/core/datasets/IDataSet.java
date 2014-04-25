@@ -15,20 +15,20 @@ import java.io.File;
 
 
 public interface IDataSet {
-	String[] getTitles();
-	String getID();
-	boolean writeToFile(File file);
-	boolean readFromFile(File file);
+    String[] getTitles();
+    String getID();
+    boolean writeToFile(File file);
+    boolean readFromFile(File file);
 
-	int getRowCount();
-	int getColCount();
+    int getRowCount();
+    int getColCount();
 
-	Object[] getRow(int row);
-	Object[] getColumn(int col);
-	Object[] getColumn(int col, int start, int end);
+    Object[] getRow(int row);
+    Object[] getColumn(int col);
+    Object[] getColumn(int col, int start, int end);
 
-	void setData(IDataEntry entry);
-	boolean remove(IDataEntry entry);
+    void setData(IDataEntry entry);
+    boolean remove(IDataEntry entry);
 
-	int COL_ROW_NUM = -1;
+    int COL_ROW_NUM = -1;
 }

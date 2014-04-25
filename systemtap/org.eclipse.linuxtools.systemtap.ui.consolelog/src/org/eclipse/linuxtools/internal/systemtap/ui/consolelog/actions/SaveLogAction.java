@@ -26,45 +26,45 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SaveLogAction extends ConsoleAction {
 
-	/**
-	 * @since 2.0
-	 */
-	public SaveLogAction(ScriptConsole fConsole) {
-		super(fConsole,
-				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/save_log.gif"), //$NON-NLS-1$
-				Localization.getString("action.saveLog.name"), //$NON-NLS-1$
-				Localization.getString("action.saveLog.desc")); //$NON-NLS-1$
-	}
+    /**
+     * @since 2.0
+     */
+    public SaveLogAction(ScriptConsole fConsole) {
+        super(fConsole,
+                ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/save_log.gif"), //$NON-NLS-1$
+                Localization.getString("action.saveLog.name"), //$NON-NLS-1$
+                Localization.getString("action.saveLog.desc")); //$NON-NLS-1$
+    }
 
-	/**
-	 * The main method of this class. Handles getting the current <code>ScriptConsole</code>
-	 * and telling it to save the output to the selected file.
-	 */
-	@Override
-	public void run() {
-		if(null != console) {
-			File file = getFile();
-			if(null != file){
-				console.saveStream(file);
-			}
-		}
-	}
+    /**
+     * The main method of this class. Handles getting the current <code>ScriptConsole</code>
+     * and telling it to save the output to the selected file.
+     */
+    @Override
+    public void run() {
+        if(null != console) {
+            File file = getFile();
+            if(null != file){
+                console.saveStream(file);
+            }
+        }
+    }
 
-	/**
-	 * Brings up a dialog box for the user to select a place to save the log output.
-	 * @return File representing the desired destination for the log.
-	 */
-	private File getFile() {
-		String path = null;
-		FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-		dialog.setText(Localization.getString("SaveLogAction.OutputFile")); //$NON-NLS-1$
+    /**
+     * Brings up a dialog box for the user to select a place to save the log output.
+     * @return File representing the desired destination for the log.
+     */
+    private File getFile() {
+        String path = null;
+        FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
+        dialog.setText(Localization.getString("SaveLogAction.OutputFile")); //$NON-NLS-1$
 
-		path = dialog.open();
+        path = dialog.open();
 
-		if(null == path){
-			return null;
-		}
+        if(null == path){
+            return null;
+        }
 
-		return new File(path);
-	}
+        return new File(path);
+    }
 }

@@ -24,51 +24,51 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  */
 public class FunctionHistogramContentProvider extends FileHistogramContentProvider {
 
-	public static final FunctionHistogramContentProvider sharedInstance = new FunctionHistogramContentProvider();
+    public static final FunctionHistogramContentProvider sharedInstance = new FunctionHistogramContentProvider();
 
-	/**
-	 * Constructor
-	 */
-	FunctionHistogramContentProvider() {
-	}
+    /**
+     * Constructor
+     */
+    FunctionHistogramContentProvider() {
+    }
 
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof HistRoot) {
-			HistRoot root = (HistRoot) parentElement;
-			LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
-			return ret.toArray();
-		}
-		return super.getChildren(parentElement);
-	}
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        if (parentElement instanceof HistRoot) {
+            HistRoot root = (HistRoot) parentElement;
+            LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
+            return ret.toArray();
+        }
+        return super.getChildren(parentElement);
+    }
 
-	@Override
-	public boolean hasChildren(Object element) {
-		if (element instanceof HistRoot) {
-			HistRoot root = (HistRoot) element;
-			LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
-			return !ret.isEmpty();
-		}
-		return super.hasChildren(element);
-	}
+    @Override
+    public boolean hasChildren(Object element) {
+        if (element instanceof HistRoot) {
+            HistRoot root = (HistRoot) element;
+            LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
+            return !ret.isEmpty();
+        }
+        return super.hasChildren(element);
+    }
 
-	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
-		LinkedList<TreeElement> ret = new LinkedList<>();
-		LinkedList<? extends TreeElement> list = root.getChildren();
-		for (TreeElement histTreeElem : list) {
-			LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
-			ret.addAll(partialList);
-		}
-		return ret;
-	}
+    protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
+        LinkedList<TreeElement> ret = new LinkedList<>();
+        LinkedList<? extends TreeElement> list = root.getChildren();
+        for (TreeElement histTreeElem : list) {
+            LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
+            ret.addAll(partialList);
+        }
+        return ret;
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		Object o = super.getParent(element);
-		if (o instanceof HistFile) {
-			o = super.getParent(o);
-		}
-		return o;
-	}
+    @Override
+    public Object getParent(Object element) {
+        Object o = super.getParent(element);
+        if (o instanceof HistFile) {
+            o = super.getParent(o);
+        }
+        return o;
+    }
 
 }

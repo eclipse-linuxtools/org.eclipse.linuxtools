@@ -40,10 +40,10 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public abstract class AbstractMassifTest extends AbstractValgrindTest {
 
-	@Override
-	protected String getToolID() {
-		return MassifPlugin.TOOL_ID;
-	}
+    @Override
+    protected String getToolID() {
+        return MassifPlugin.TOOL_ID;
+    }
 
     protected void checkFile(IProject proj, MassifHeapTreeNode node) {
         IEditorPart editor = PlatformUI.getWorkbench()
@@ -72,54 +72,54 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
         assertEquals(node.getLine(), line);
     }
 
-	/**
-	 * Check snapshots contain the expected used bytes.
-	 *
-	 * @param snapshots MassifSnapshots to check
-	 * @param usefulBytesDelta scale of useful bytes
-	 * @param extraBytesDelta scale of extra bytes
-	 */
-	protected void checkSnapshots(MassifSnapshot[] snapshots, int usefulBytesDelta, int extraBytesDelta){
-		long expectedHeapBytes = 0;
-		long expectedHeapExtraBytes = 0;
-		boolean pastPeakUsage = false;
+    /**
+     * Check snapshots contain the expected used bytes.
+     *
+     * @param snapshots MassifSnapshots to check
+     * @param usefulBytesDelta scale of useful bytes
+     * @param extraBytesDelta scale of extra bytes
+     */
+    protected void checkSnapshots(MassifSnapshot[] snapshots, int usefulBytesDelta, int extraBytesDelta){
+        long expectedHeapBytes = 0;
+        long expectedHeapExtraBytes = 0;
+        boolean pastPeakUsage = false;
 
-		for (MassifSnapshot snapshot : snapshots) {
-			if (snapshot.getTime() == 0) {
-				// no need to update expected values
-			} else if (snapshot.getType().compareTo(SnapshotType.PEAK) == 0) {
-				pastPeakUsage = true;
-				// no need to update expected values
-			} else if (!pastPeakUsage) {
-				expectedHeapBytes += usefulBytesDelta;
-				expectedHeapExtraBytes += extraBytesDelta;
-			} else {
-				// past the peak , heap bytes used begin to decrease
-				expectedHeapBytes -= usefulBytesDelta;
-				expectedHeapExtraBytes -= extraBytesDelta;
-			}
+        for (MassifSnapshot snapshot : snapshots) {
+            if (snapshot.getTime() == 0) {
+                // no need to update expected values
+            } else if (snapshot.getType().compareTo(SnapshotType.PEAK) == 0) {
+                pastPeakUsage = true;
+                // no need to update expected values
+            } else if (!pastPeakUsage) {
+                expectedHeapBytes += usefulBytesDelta;
+                expectedHeapExtraBytes += extraBytesDelta;
+            } else {
+                // past the peak , heap bytes used begin to decrease
+                expectedHeapBytes -= usefulBytesDelta;
+                expectedHeapExtraBytes -= extraBytesDelta;
+            }
 
-			assertEquals(expectedHeapBytes, snapshot.getHeapBytes());
-			assertEquals(expectedHeapExtraBytes, snapshot.getHeapExtra());
-			assertEquals(expectedHeapBytes + expectedHeapExtraBytes, snapshot.getTotal());
-		}
-	}
+            assertEquals(expectedHeapBytes, snapshot.getHeapBytes());
+            assertEquals(expectedHeapExtraBytes, snapshot.getHeapExtra());
+            assertEquals(expectedHeapBytes + expectedHeapExtraBytes, snapshot.getTotal());
+        }
+    }
 
-	protected IAction getToolbarAction(String actionId) {
-		IAction result = null;
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IToolBarManager manager = view.getViewSite().getActionBars()
-				.getToolBarManager();
-		for (IContributionItem item : manager.getItems()) {
-			if (item instanceof ActionContributionItem) {
-				ActionContributionItem actionItem = (ActionContributionItem) item;
-				if (actionItem.getAction().getId()
-						.equals(actionId)) {
-					result = actionItem.getAction();
-				}
-			}
-		}
-		return result;
-	}
+    protected IAction getToolbarAction(String actionId) {
+        IAction result = null;
+        ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+        IToolBarManager manager = view.getViewSite().getActionBars()
+                .getToolBarManager();
+        for (IContributionItem item : manager.getItems()) {
+            if (item instanceof ActionContributionItem) {
+                ActionContributionItem actionItem = (ActionContributionItem) item;
+                if (actionItem.getAction().getId()
+                        .equals(actionId)) {
+                    result = actionItem.getAction();
+                }
+            }
+        }
+        return result;
+    }
 
 }

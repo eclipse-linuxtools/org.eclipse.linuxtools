@@ -11,341 +11,239 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
-import junit.framework.TestCase;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.LineRange;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.IndentUtil;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
-import org.junit.Assert;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleReference;
+import org.junit.Test;
 
 /**
  * Tests for the CIndenter.
  *
  * @since 4.0
  */
-public class STPIndenterTest extends TestCase {
+public class STPIndenterTest {
 
-	private static class MockSTPDocumentProvider extends STPDocumentProvider{
-		MockSTPDocumentProvider(IDocument document){
-			this.setupDocument(document);
-		}
-	}
+    private static class MockSTPDocumentProvider extends STPDocumentProvider{
+        MockSTPDocumentProvider(IDocument document){
+            this.setupDocument(document);
+        }
+    }
 
-    /**
-     * Reads multiple sections in comments from the source of the given class.
-     * @since 4.0
-     */
-	public StringBuilder[] getContentsForTest(int sections) throws IOException {
-		ClassLoader cl = getClass().getClassLoader();
-		Bundle bundle = null;
-		if (cl instanceof BundleReference)
-			bundle = ((BundleReference) cl).getBundle();
+    protected void assertIndenterResult(String before, String expected) throws Exception {
+        IDocument document= new Document(before);
+        new MockSTPDocumentProvider(document);
+        int numLines = document.getNumberOfLines();
+        if (document.getLineLength(numLines - 1) == 0) {
+            numLines--;  // Exclude an empty line at the end.
+        }
+        IndentUtil.indentLines(document, new LineRange(0, numLines), null, null);
+        assertEquals(expected, document.get());
+    }
 
-		return getContentsForTest(bundle, "src",  //$NON-NLs-1$
-				getClass(), getName(), sections);
-	}
+    @Test
+    public void testIfStatement() throws Exception {
+        assertIndenterResult(
+                "if (a == b) {\n" +
+                " k = 7",
 
-	/**
-	 * Returns an array of StringBuilder objects for each comment section found preceding the named
-	 * test in the source code.
-	 *
-	 * @param bundle the bundle containing the source, if {@code null} can try to load using
-	 *      classpath (source folder has to be in the classpath for this to work)
-	 * @param srcRoot the directory inside the bundle containing the packages
-	 * @param clazz the name of the class containing the test
-	 * @param testName the name of the test
-	 * @param numSections the number of comment sections preceding the named test to return.
-	 *     Pass zero to get all available sections.
-	 * @return an array of StringBuilder objects for each comment section found preceding the named
-	 *     test in the source code.
-	 * @throws IOException
-	 */
-	public static StringBuilder[] getContentsForTest(Bundle bundle, String srcRoot, Class<?> clazz,
-			final String testName, int numSections) throws IOException {
-		// Walk up the class inheritance chain until we find the test method.
-		try {
-			while (clazz.getMethod(testName).getDeclaringClass() != clazz) {
-				clazz = clazz.getSuperclass();
-			}
-		} catch (SecurityException e) {
-			Assert.fail(e.getMessage());
-		} catch (NoSuchMethodException e) {
-			Assert.fail(e.getMessage());
-		}
+                "if (a == b) {\n" +
+                "\tk = 7");
+    }
 
-		while (true) {
-			// Find and open the .java file for the class clazz.
-			String fqn = clazz.getName().replace('.', '/');
-			fqn = fqn.indexOf("$") == -1 ? fqn : fqn.substring(0, fqn.indexOf("$"));
-			String classFile = fqn + ".java";
-			IPath filePath= new Path(srcRoot + '/' + classFile);
+    @Test
+    public void testIfElseStatement() throws Exception {
+        assertIndenterResult(
+                "if (a == b)\n" +
+                " k = 7\n" +
+                "   else\n" +
+                "k = 9",
 
-			InputStream in;
-			Class<?> superclass = clazz.getSuperclass();
-			try {
-				if (bundle != null) {
-					in = FileLocator.openStream(bundle, filePath, false);
-				} else {
-					try (InputStream inTry = clazz.getResourceAsStream('/' + classFile)) {
-						in = inTry;
-					}
-				}
-			} catch (IOException e) {
-				if (superclass == null || !superclass.getPackage().equals(clazz.getPackage())) {
-					throw e;
-				}
-				clazz = superclass;
-				continue;
-			}
+                "if (a == b)\n" +
+                "\tk = 7\n" +
+                "else\n" +
+                "\tk = 9");
+    }
 
-		    try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-		    	// Read the java file collecting comments until we encounter the test method.
-			    List<StringBuilder> contents = new ArrayList<>();
-			    StringBuilder content = new StringBuilder();
-			    for (String line = br.readLine(); line != null; line = br.readLine()) {
-			    	line = line.replaceFirst("^\\s*", ""); // Replace leading whitespace, preserve trailing
-			    	if (line.startsWith("//")) {
-			    		content.append(line.substring(2) + "\n");
-			    	} else {
-			    		if (!line.startsWith("@") && content.length() > 0) {
-			    			contents.add(content);
-			    			if (numSections > 0 && contents.size() == numSections + 1)
-			    				contents.remove(0);
-			    			content = new StringBuilder();
-			    		}
-			    		if (line.length() > 0 && !contents.isEmpty()) {
-			    			int idx= line.indexOf(testName);
-			    			if (idx != -1 && !Character.isJavaIdentifierPart(line.charAt(idx + testName.length()))) {
-			    				return contents.toArray(new StringBuilder[contents.size()]);
-			    			}
-			    			if (!line.startsWith("@")) {
-			    				contents.clear();
-			    			}
-			    		}
-			    	}
-			    }
-		    }
+    @Test
+    public void testForStatement() throws Exception {
+        assertIndenterResult(
+                "for (i = 0; i < 3; ++i) {\n" +
+                " k = 7",
 
-			if (superclass == null || !superclass.getPackage().equals(clazz.getPackage())) {
-			    throw new IOException("Test data not found for " + clazz.getName() + "." + testName);
-			}
-			clazz = superclass;
-		}
-	}
+                "for (i = 0; i < 3; ++i) {\n" +
+                "\tk = 7");
+    }
 
-	protected void assertIndenterResult() throws Exception {
-		StringBuilder[] contents= getContentsForTest(2);
-		String before= contents[0].toString();
-		IDocument document= new Document(before);
-		String expected= contents[1].toString();
-		new MockSTPDocumentProvider(document);
-		int numLines = document.getNumberOfLines();
-		if (document.getLineLength(numLines - 1) == 0) {
-			numLines--;  // Exclude an empty line at the end.
-		}
-		IndentUtil.indentLines(document, new LineRange(0, numLines), null, null);
-		assertEquals(expected, document.get());
-	}
+    @Test
+    public void testWhileStatement() throws Exception {
+        assertIndenterResult(
+                "while (i < 3) {\n" +
+                " k = 7",
 
-	//if (a == b) {
-	// k = 7
+                "while (i < 3) {\n" +
+                "\tk = 7");
+    }
 
-	//if (a == b) {
-	//	k = 7
-	public void testIfStatement() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testForeachStatement() throws Exception {
+        assertIndenterResult(
+                "foreach (i+ in arr) {\n" +
+                " k = 7",
 
-	//if (a == b)
-	// k = 7
-	//   else
-	//k = 9
+                "foreach (i+ in arr) {\n" +
+                "\tk = 7");
+    }
 
-	//if (a == b)
-	//	k = 7
-	//else
-	//	k = 9
-	public void testIfElseStatement() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testStringLiteralAsLastArgument_1_Bug192412() throws Exception {
+        assertIndenterResult(
+                "foo(arg,\n" +
+                "\"string\"",
 
-	//for (i = 0; i < 3; ++i) {
-	// k = 7
+                "foo(arg,\n" +
+                "\t\"string\"");
+    }
 
-	//for (i = 0; i < 3; ++i) {
-	//	k = 7
-	public void testForStatement() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testIndentationAfterArrowOperator_Bug192412() throws Exception {
+        assertIndenterResult(
+                "if (1)\n" +
+                "foo->bar();\n" +
+                "dontIndent();",
 
-	//while (i < 3) {
-	// k = 7
+                "if (1)\n" +
+                "\tfoo->bar();\n" +
+                "dontIndent();");
+    }
 
-	//while (i < 3) {
-	//	k = 7
-	public void testWhileStatement() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testIndentationAfterShiftRight_Bug192412() throws Exception {
+        assertIndenterResult(
+                "if (1)\n" +
+                "foo>>bar();\n" +
+                "  dontIndent();",
 
-	//foreach (i+ in arr) {
-	// k = 7
+                "if (1)\n" +
+                "\tfoo>>bar();\n" +
+                "dontIndent();");
+    }
 
-	//foreach (i+ in arr) {
-	//	k = 7
-	public void testForeachStatement() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testIndentationAfterGreaterOrEquals_Bug192412() throws Exception {
+        assertIndenterResult(
+                "if (1)\n" +
+                "foo >= bar();\n" +
+                "  dontIndent();",
 
-	//foo(arg,
-	//"string");
+                "if (1)\n" +
+                "\tfoo >= bar();\n" +
+                "dontIndent();");
+    }
 
-	//foo(arg,
-	//	"string");
-	public void testStringLiteralAsLastArgument_1_Bug192412() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testInitializerLists_Bug194585() throws Exception {
+        assertIndenterResult(
+                "int a[]=\n" +
+                "{\n" +
+                "1,\n" +
+                "2\n" +
+                "}",
 
+                "int a[]=\n" +
+                "{\n" +
+                " 1,\n" +
+                " 2\n" +
+                "}");
+    }
 
-	//if (1)
-	//foo->bar();
-	//dontIndent();
+    @Test
+    public void testWrappedAssignment_1_Bug277624() throws Exception {
+        assertIndenterResult(
+                "x =\n" +
+                "0;",
 
-	//if (1)
-	//	foo->bar();
-	//dontIndent();
-	public void testIndentationAfterArrowOperator_Bug192412() throws Exception {
-		assertIndenterResult();
-	}
+                "x =\n" +
+                "\t\t0;");
+    }
 
-	//if (1)
-	//foo>>bar;
-	//  dontIndent();
+    @Test
+    public void testWrappedAssignment_2_Bug277624() throws Exception {
+        assertIndenterResult(
+                "{\n" +
+                "a = 0;\n" +
+                "x = 2 +\n" +
+                "2 +\n" +
+                "2;",
 
-	//if (1)
-	//	foo>>bar;
-	//dontIndent();
-	public void testIndentationAfterShiftRight_Bug192412() throws Exception {
-		assertIndenterResult();
-	}
+                "{\n" +
+                "\ta = 0;\n" +
+                "\tx = 2 +\n" +
+                "\t\t\t2 +\n" +
+                "\t\t\t2;");
+    }
 
-	//if (1)
-	//foo >= bar();
-	//  dontIndent();
+    @Test
+    public void testWrappedAssignment_3_Bug277624() throws Exception {
+        assertIndenterResult(
+                "if (1 > 0) {\n" +
+                "double d = a * b /\n" +
+                "c",
 
-	//if (1)
-	//	foo >= bar();
-	//dontIndent();
-	public void testIndentationAfterGreaterOrEquals_Bug192412() throws Exception {
-		assertIndenterResult();
-	}
+                "if (1 > 0) {\n" +
+                "\tdouble d = a * b /\n" +
+                "\t\t\tc");
+    }
 
-	//int a[]=
-	//{
-	//1,
-	//2
-	//};
+    @Test
+    public void testConditionalExpression_Bug283970() throws Exception {
+        assertIndenterResult(
+                "int x = 1 < 2 ?\n" +
+                "f(0) :\n" +
+                "1;\n" +
+                "g();",
 
-	//int a[]=
-	//{
-	// 1,
-	// 2
-	//};
-	public void testInitializerLists_Bug194585() throws Exception {
-		assertIndenterResult();
-	}
+                "int x = 1 < 2 ?\n" +
+                "\t\tf(0) :\n" +
+                "\t\t1;\n" +
+                "g();");
+    }
 
+    @Test
+    public void testWrappedFor_1_Bug277625() throws Exception {
+        assertIndenterResult(
+                "for (int i = 0;\n" +
+                "i < 2; i++)",
 
-	//x =
-	//0;
+                "for (int i = 0;\n" +
+                "\t\ti < 2; i++)");
+    }
 
-	//x =
-	//		0;
-	public void testWrappedAssignment_1_Bug277624() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testWrappedFor_2_Bug277625() throws Exception {
+        assertIndenterResult(
+                "for (int i = 0; i < 2;\n" +
+                "i++)",
 
-	//{
-	//a = 0;
-	//x = 2 +
-	//2 +
-	//2;
+                "for (int i = 0; i < 2;\n" +
+                "\t\ti++)");
+    }
 
-	//{
-	//	a = 0;
-	//	x = 2 +
-	//			2 +
-	//			2;
-	public void testWrappedAssignment_2_Bug277624() throws Exception {
-		assertIndenterResult();
-	}
+    @Test
+    public void testWrappedFor_3_Bug277625() throws Exception {
+        assertIndenterResult(
+                "for (int i = 0;\n" +
+                "i < 2;\n" +
+                "i++)\n" +
+                "{",
 
-	//if (1 > 0) {
-	//double d = a * b /
-	//c;
-
-	//if (1 > 0) {
-	//	double d = a * b /
-	//			c;
-	public void testWrappedAssignment_3_Bug277624() throws Exception {
-		assertIndenterResult();
-	}
-
-	//int x = 1 < 2 ?
-	//f(0) :
-	//1;
-	//g();
-
-	//int x = 1 < 2 ?
-	//		f(0) :
-	//		1;
-	//g();
-	public void testConditionalExpression_Bug283970() throws Exception {
-		assertIndenterResult();
-	}
-
-	//for (int i = 0;
-	//i < 2; i++)
-
-	//for (int i = 0;
-	//		i < 2; i++)
-	public void testWrappedFor_1_Bug277625() throws Exception {
-		assertIndenterResult();
-	}
-
-	//for (int i = 0; i < 2;
-	//i++)
-
-	//for (int i = 0; i < 2;
-	//		i++)
-	public void testWrappedFor_2_Bug277625() throws Exception {
-		assertIndenterResult();
-	}
-
-	//for (int i = 0;
-	//i < 2;
-	//i++)
-	//{
-
-	//for (int i = 0;
-	//		i < 2;
-	//		i++)
-	//{
-	public void testWrappedFor_3_Bug277625() throws Exception {
-		assertIndenterResult();
-	}
+                "for (int i = 0;\n" +
+                "\t\ti < 2;\n" +
+                "\t\ti++)\n" +
+                "{");
+    }
 
 }

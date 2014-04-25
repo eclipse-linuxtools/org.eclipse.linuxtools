@@ -17,121 +17,121 @@ import java.util.List;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
 
 public class SpecfilePackage extends SpecfileSection {
-	private String description;
-	private List<SpecfileSection> sections;
-	private List<SpecfileTag> requires;
- 	private String packageName;
-	private String summary;
-	private String group;
+    private String description;
+    private List<SpecfileSection> sections;
+    private List<SpecfileTag> requires;
+     private String packageName;
+    private String summary;
+    private String group;
 
-	public SpecfilePackage(String packageName, Specfile specfile) {
-		super("package", specfile); //$NON-NLS-1$
-		super.setSpecfile(specfile);
-		setPackageName(packageName);
+    public SpecfilePackage(String packageName, Specfile specfile) {
+        super("package", specfile); //$NON-NLS-1$
+        super.setSpecfile(specfile);
+        setPackageName(packageName);
         setPackage(this);
         sections = new ArrayList<>();
         requires = new ArrayList<>();
-	}
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Override
-	public String toString() {
-		return getPackageName();
-	}
-
-	public void addSection(SpecfileSection section) {
-		sections.add(section);
-	}
-
-
-	public SpecfileSection[] getSections() {
-		SpecfileSection[] toReturn = new SpecfileSection[sections.size()];
-		return sections.toArray(toReturn);
-	}
-
-	public boolean hasChildren() {
-		if (sections != null && sections.size() > 0) {
-			return true;
-		}
-		return false;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
-	public SpecfilePackage getPackage() {
-		return this;
-	}
+    public String toString() {
+        return getPackageName();
+    }
 
-	@Override
-	public String getPackageName() {
-		return resolve(this.packageName);
-	}
+    public void addSection(SpecfileSection section) {
+        sections.add(section);
+    }
 
-	/**
-	 * Returns the full package name.
-	 *
-	 * @return The name of the package with the common part appended in front.
-	 */
-	public String getFullPackageName() {
-		if (getSpecfile().getName().equals(getPackageName())){
-			return getPackageName();
-		}
-		return getSpecfile().getName()+"-" + getPackageName(); //$NON-NLS-1$
-	}
 
-	public final void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
+    public SpecfileSection[] getSections() {
+        SpecfileSection[] toReturn = new SpecfileSection[sections.size()];
+        return sections.toArray(toReturn);
+    }
 
-	/**
-	 * @param summary the summary to set
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+    public boolean hasChildren() {
+        if (sections != null && sections.size() > 0) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * @return the summary
-	 */
-	public String getSummary() {
-		return summary;
-	}
+    @Override
+    public SpecfilePackage getPackage() {
+        return this;
+    }
 
-	/**
-	 * @param group the group to set
-	 */
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    @Override
+    public String getPackageName() {
+        return resolve(this.packageName);
+    }
 
-	/**
-	 * @return the group
-	 */
-	public String getGroup() {
-		return group;
-	}
+    /**
+     * Returns the full package name.
+     *
+     * @return The name of the package with the common part appended in front.
+     */
+    public String getFullPackageName() {
+        if (getSpecfile().getName().equals(getPackageName())){
+            return getPackageName();
+        }
+        return getSpecfile().getName()+"-" + getPackageName(); //$NON-NLS-1$
+    }
 
-	public boolean isMainPackage() {
-		if (getSpecfile().getName().equals(getPackageName())){
-			return true;
-		}
-		return false;
-	}
+    public final void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
-	/**
-	 * @param require the require to add
-	 */
-	public void addRequire(SpecfileTag require) {
-		requires.add(require);
-	}
+    /**
+     * @param summary the summary to set
+     */
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	public List<SpecfileTag> getRequires() {
-		return requires;
-	}
+    /**
+     * @return the summary
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    /**
+     * @return the group
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    public boolean isMainPackage() {
+        if (getSpecfile().getName().equals(getPackageName())){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param require the require to add
+     */
+    public void addRequire(SpecfileTag require) {
+        requires.add(require);
+    }
+
+    public List<SpecfileTag> getRequires() {
+        return requires;
+    }
 }

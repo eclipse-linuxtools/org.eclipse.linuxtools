@@ -18,28 +18,28 @@ import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
-	/**
-	 * This action changes the content provider
-	 */
+    /**
+     * This action changes the content provider
+     */
 
-	public class SwitchContentProviderAction extends Action {
+    public class SwitchContentProviderAction extends Action {
 
-		private final ColumnViewer viewer;
-		private final IContentProvider provider;
+        private final ColumnViewer viewer;
+        private final IContentProvider provider;
 
-		public SwitchContentProviderAction(String name, String iconPath, ColumnViewer viewer, IContentProvider provider) {
-			super(name, AS_RADIO_BUTTON);
-			this.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, iconPath));
-			this.setToolTipText(name);
-			this.viewer = viewer;
-			this.provider = provider;
-		}
+        public SwitchContentProviderAction(String name, String iconPath, ColumnViewer viewer, IContentProvider provider) {
+            super(name, AS_RADIO_BUTTON);
+            this.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, iconPath));
+            this.setToolTipText(name);
+            this.viewer = viewer;
+            this.provider = provider;
+        }
 
-		@Override
-		public void run() {
-			viewer.getControl().setRedraw(false);
-			viewer.setContentProvider(provider);
-			((TreeViewer)viewer).expandToLevel(2);
-			viewer.getControl().setRedraw(true);
-		}
-	}
+        @Override
+        public void run() {
+            viewer.getControl().setRedraw(false);
+            viewer.setContentProvider(provider);
+            ((TreeViewer)viewer).expandToLevel(2);
+            viewer.getControl().setRedraw(true);
+        }
+    }

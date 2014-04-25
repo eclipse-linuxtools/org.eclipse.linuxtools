@@ -20,41 +20,41 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 public class CovFileContentProvider extends CovFolderContentProvider {
 
-	public static final CovFileContentProvider sharedInstance = new CovFileContentProvider();
-	
-	/**
-	 * Constructor
-	 */
-	protected CovFileContentProvider() {
-	}
-	
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof CovRootTreeElement) {
-			CovRootTreeElement root = (CovRootTreeElement) parentElement;
-			LinkedList<? extends TreeElement> ret = getElementChildrenList(root);
-			return ret.toArray();
-		}
-		return super.getChildren(parentElement);
-	}
+    public static final CovFileContentProvider sharedInstance = new CovFileContentProvider();
 
-	protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
-		LinkedList<TreeElement> ret = new LinkedList<>();
-		LinkedList<? extends TreeElement> list = root.getChildren();
-		for (TreeElement folderlist : list) {
-			LinkedList<? extends TreeElement> partialList = folderlist.getChildren();
-			ret.addAll(partialList);
-		}
-		return ret;
-	}
+    /**
+     * Constructor
+     */
+    protected CovFileContentProvider() {
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		Object o = super.getParent(element);
-		if (o instanceof CovFolderTreeElement) {
-			o = super.getParent(o);
-		}
-		return o;
-	}
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        if (parentElement instanceof CovRootTreeElement) {
+            CovRootTreeElement root = (CovRootTreeElement) parentElement;
+            LinkedList<? extends TreeElement> ret = getElementChildrenList(root);
+            return ret.toArray();
+        }
+        return super.getChildren(parentElement);
+    }
+
+    protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
+        LinkedList<TreeElement> ret = new LinkedList<>();
+        LinkedList<? extends TreeElement> list = root.getChildren();
+        for (TreeElement folderlist : list) {
+            LinkedList<? extends TreeElement> partialList = folderlist.getChildren();
+            ret.addAll(partialList);
+        }
+        return ret;
+    }
+
+    @Override
+    public Object getParent(Object element) {
+        Object o = super.getParent(element);
+        if (o instanceof CovFolderTreeElement) {
+            o = super.getParent(o);
+        }
+        return o;
+    }
 
 }

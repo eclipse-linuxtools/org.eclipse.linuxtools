@@ -18,6 +18,6 @@ package org.eclipse.linuxtools.internal.systemtap.structures;
  */
 public interface StructuresPlugin {
 
-	String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.structures"; //$NON-NLS-1$
+    String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.structures"; //$NON-NLS-1$
 
 }

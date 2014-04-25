@@ -19,35 +19,35 @@ import org.osgi.framework.BundleContext;
  */
 public class ConsoleLogPlugin extends AbstractUIPlugin {
 
-	/**
-	 * @since 2.0
-	 */
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.consolelog"; //$NON-NLS-1$
+    /**
+     * @since 2.0
+     */
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.consolelog"; //$NON-NLS-1$
 
-	//The shared instance.
-	private static ConsoleLogPlugin plugin;
+    //The shared instance.
+    private static ConsoleLogPlugin plugin;
 
-	/**
-	 * The constructor.
-	 */
-	public ConsoleLogPlugin() {
-		plugin = this;
-	}
+    /**
+     * The constructor.
+     */
+    public ConsoleLogPlugin() {
+        plugin = this;
+    }
 
-	/**
-	 * This method is called when the plug-in is stopped
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-		plugin = null;
-	}
+    /**
+     * This method is called when the plug-in is stopped
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        super.stop(context);
+        plugin = null;
+    }
 
-	/**
-	 * Returns the shared instance.
-	 */
-	public static ConsoleLogPlugin getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance.
+     */
+    public static ConsoleLogPlugin getDefault() {
+        return plugin;
+    }
 
 }

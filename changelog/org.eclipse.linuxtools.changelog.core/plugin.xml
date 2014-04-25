@@ -5,34 +5,34 @@
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-   
+
     Contributors:
         Alexander Kurtakov (Red Hat) - initial API and implementation
  -->
 
 <plugin>
 
-    <extension-point id="parserContribution" 
-    	name="%extension-point.name" 
-    	schema="schema/parserContribution.exsd"/>
+    <extension-point id="parserContribution"
+        name="%extension-point.name"
+        schema="schema/parserContribution.exsd"/>
     <extension-point id="formatterContribution" name="%extension-point.name.0" schema="schema/formatterContribution.exsd"/>
     <extension-point id="editorContribution" name="%extension-point.name.1" schema="schema/editorContribution.exsd"/>
-  
-    <extension
-  		point="org.eclipse.ui.commands">
-		
-		<category
-			name="%category.name"
-			description="%category.description"
-			id="org.eclipse.linuxtools.changelog">
-		</category>
 
-		<command
+    <extension
+          point="org.eclipse.ui.commands">
+
+        <category
+            name="%category.name"
+            description="%category.description"
+            id="org.eclipse.linuxtools.changelog">
+        </category>
+
+        <command
         categoryId="org.eclipse.linuxtools.changelog"
         description="%insertCLEntryDesc"
         id="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
         name="%insertCLEntry">
-		</command>
+        </command>
   <command
         categoryId="org.eclipse.linuxtools.changelog"
         description="%command.description"
@@ -54,16 +54,16 @@
         id="org.eclipse.linuxtools.changelog.core.preparechangelog2"
         name="%command.name.2">
   </command>
-	</extension>
-	
-	<extension point = "org.eclipse.ui.preferencePages">
-		<page 
-			id="org.eclipse.linuxtools.changelog.core.Page1"
-			class="org.eclipse.linuxtools.internal.changelog.core.ChangeLogPreferencesPage"
-			name="%prefTitle">
-       	</page>
-	</extension>
-   		
+    </extension>
+
+    <extension point = "org.eclipse.ui.preferencePages">
+        <page
+            id="org.eclipse.linuxtools.changelog.core.Page1"
+            class="org.eclipse.linuxtools.internal.changelog.core.ChangeLogPreferencesPage"
+            name="%prefTitle">
+           </page>
+    </extension>
+
 
     <extension
         point="org.eclipse.linuxtools.changelog.core.formatterContribution">
@@ -72,8 +72,8 @@
               class="org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat"
               id="org.eclipse.linuxtools.changelog.GNUFormat"
               name="%gnuFormatter">
-              <fileName name="ChangeLog" />  
-        </formatter>        
+              <fileName name="ChangeLog" />
+        </formatter>
   </extension>
     <extension
           id="org.eclipse.linuxtools.changelog.core.editor"
@@ -191,20 +191,20 @@
        </participant>
     </extension>
     <extension point="org.eclipse.core.runtime.preferences">
-		<initializer
-			class="org.eclipse.linuxtools.internal.changelog.core.ChangelogPreferenceInitializer" />
-	</extension>
-	
-	<extension 
-	point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
-<target id="org.eclipse.changelog.editor.target" 
-	name="%target.name">
+        <initializer
+            class="org.eclipse.linuxtools.internal.changelog.core.ChangelogPreferenceInitializer" />
+    </extension>
+
+    <extension
+    point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+<target id="org.eclipse.changelog.editor.target"
+    name="%target.name">
 <context type="org.eclipse.ui.texteditor.ITextEditor"/>
 </target>
 </extension>
 
-	
-	<extension
+
+    <extension
   point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
   <hyperlinkDetector
     id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
@@ -216,14 +216,14 @@
 <extension point="org.eclipse.ui.menus">
   <menuContribution locationURI="popup:#TextEditorContext?endof=group.edit">
         <command commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog">
-        	<visibleWhen
+            <visibleWhen
                checkEnabled="false">
                <and>
-   					<with variable="activeEditorId">
-     				<equals value="org.eclipse.linuxtools.changelog.core.editor6"/>
-   					</with>
-   				</and>
-        	</visibleWhen>
+                       <with variable="activeEditorId">
+                     <equals value="org.eclipse.linuxtools.changelog.core.editor6"/>
+                       </with>
+                   </and>
+            </visibleWhen>
         </command>
   </menuContribution>
   <menuContribution
@@ -244,50 +244,50 @@
            checkEnabled="false">
               <with variable="selection">
                  <iterate operator="and" ifEmpty="false">
-	                <or>
+                    <or>
                        <adapt
                              type="java.lang.Object">
                        </adapt>
-                       	<adapt type="org.eclipse.core.resources.IResource">
-                        	  <test
-                               		property="org.eclipse.core.resources.projectNature"
-                               		value="org.eclipse.cdt.core.cnature"/>
+                           <adapt type="org.eclipse.core.resources.IResource">
+                              <test
+                                       property="org.eclipse.core.resources.projectNature"
+                                       value="org.eclipse.cdt.core.cnature"/>
                        </adapt>
                        <adapt type="org.eclipse.core.resources.IResource">
                           <test
                                 property="org.eclipse.core.resources.projectNature"
                                 value="org.eclipse.jdt.core.javanature"/>
                        </adapt>
-		            </or>
-	                <or>
-                       	<adapt type="org.eclipse.core.resources.IResource">
-	                    <test
+                    </or>
+                    <or>
+                           <adapt type="org.eclipse.core.resources.IResource">
+                        <test
                            args="org.eclipse.team.core.repository"
                            property="org.eclipse.core.resources.projectPersistentProperty"
                            value="org.eclipse.team.svn.core.svnnature"/>
                         </adapt>
-                       	<adapt type="org.eclipse.core.resources.IResource">
-	              		<test
-                   		   args="org.eclipse.team.core.repository"
+                           <adapt type="org.eclipse.core.resources.IResource">
+                          <test
+                              args="org.eclipse.team.core.repository"
                            property="org.eclipse.core.resources.projectPersistentProperty"
                            value="org.eclipse.team.cvs.core.cvsnature"/>
                         </adapt>
-                       	<adapt type="org.eclipse.core.resources.IResource">
-	              		<test
+                           <adapt type="org.eclipse.core.resources.IResource">
+                          <test
                            args="org.eclipse.team.core.repository"
                            property="org.eclipse.core.resources.projectPersistentProperty"
                            value="org.tigris.subversion.subclipse.core.svnnature"/>
                         </adapt>
-                       	<adapt type="org.eclipse.core.resources.IResource">
-	              		<test
+                           <adapt type="org.eclipse.core.resources.IResource">
+                          <test
                            args="org.eclipse.team.core.repository"
                            property="org.eclipse.core.resources.projectPersistentProperty"
                            value="org.eclipse.egit.core.GitProvider"/>
                         </adapt>
-	           		</or>
-	           </iterate>
-	           </with>
-	        </visibleWhen>
+                       </or>
+               </iterate>
+               </with>
+            </visibleWhen>
      </command>
   </menuContribution>
 </extension>

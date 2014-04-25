@@ -16,48 +16,48 @@ import org.eclipse.help.ITocContribution;
 
 public class DevHelpTocProvider extends AbstractTocProvider {
 
-	@Override
-	public ITocContribution[] getTocContributions(String locale) {
+    @Override
+    public ITocContribution[] getTocContributions(String locale) {
         ITocContribution contribution = new ITocContribution() {
             @Override
-			public String getId() {
+            public String getId() {
                // a way to identify our book
                return "org.eclipse.linuxtools.cdt.libhover.devhelp.toc"; //$NON-NLS-1$
             }
             @Override
-			public String getCategoryId() {
+            public String getCategoryId() {
                // our book does not belong to any category of books
                return null;
             }
             @Override
-			public boolean isPrimary() {
+            public boolean isPrimary() {
                // this is a primary, top-level contribution (a book)
                return true;
             }
             @Override
-			public IToc getToc() {
-            	return new DevHelpToc();
+            public IToc getToc() {
+                return new DevHelpToc();
             }
             @Override
-			public String getLocale() {
-            	// this provider only provides content for the en_US locale
-            	return "en_US"; //$NON-NLS-1$
+            public String getLocale() {
+                // this provider only provides content for the en_US locale
+                return "en_US"; //$NON-NLS-1$
             }
             @Override
-			public String[] getExtraDocuments() {
-            	// there are no extra documents associated with this book
-            	return new String[0];
+            public String[] getExtraDocuments() {
+                // there are no extra documents associated with this book
+                return new String[0];
             }
             @Override
-			public String getLinkTo() {
-            	return ""; //$NON-NLS-1$
+            public String getLinkTo() {
+                return ""; //$NON-NLS-1$
             }
             @Override
             public String getContributorId() {
-            	return "org.eclipse.linuxtools.cdt.libhover.devhelp"; //$NON-NLS-1$
+                return "org.eclipse.linuxtools.cdt.libhover.devhelp"; //$NON-NLS-1$
             }
         };
         return new ITocContribution[] { contribution };
-	}
+    }
 
 }

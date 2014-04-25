@@ -12,7 +12,7 @@
 package org.eclipse.linuxtools.systemtap.structures.listeners;
 
 public interface ITabListener {
-	void tabOpened();
-	void tabClosed();
-	void tabChanged();
+    void tabOpened();
+    void tabClosed();
+    void tabChanged();
 }

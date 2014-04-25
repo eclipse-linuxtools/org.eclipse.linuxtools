@@ -26,61 +26,61 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  */
 public class FileHistogramContentProvider implements ITreeContentProvider {
 
-	public static final FileHistogramContentProvider sharedInstance = new FileHistogramContentProvider();
+    public static final FileHistogramContentProvider sharedInstance = new FileHistogramContentProvider();
 
-	/**
-	 * Constructor
-	 */
-	FileHistogramContentProvider() {
-	}
+    /**
+     * Constructor
+     */
+    FileHistogramContentProvider() {
+    }
 
-	@Override
-	public Object[] getChildren(Object parentElement) {
-	    if (parentElement instanceof AbstractTreeElement) {
-	        AbstractTreeElement elem = (AbstractTreeElement) parentElement;
-	        LinkedList<? extends TreeElement> list = elem.getChildren();
-	        return list.toArray();
-	    }
-	    return null;
-	}
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        if (parentElement instanceof AbstractTreeElement) {
+            AbstractTreeElement elem = (AbstractTreeElement) parentElement;
+            LinkedList<? extends TreeElement> list = elem.getChildren();
+            return list.toArray();
+        }
+        return null;
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		if (element instanceof AbstractTreeElement) {
-			AbstractTreeElement elem = (AbstractTreeElement) element;
-			return elem.getParent();
-		}
-		return null;
-	}
+    @Override
+    public Object getParent(Object element) {
+        if (element instanceof AbstractTreeElement) {
+            AbstractTreeElement elem = (AbstractTreeElement) element;
+            return elem.getParent();
+        }
+        return null;
+    }
 
-	@Override
-	public boolean hasChildren(Object element) {
-	    if (element instanceof AbstractTreeElement) {
-	        AbstractTreeElement elem = (AbstractTreeElement) element;
-	        return elem.hasChildren() && !elem.getChildren().isEmpty();
-	    }
-	    return false;
-	}
+    @Override
+    public boolean hasChildren(Object element) {
+        if (element instanceof AbstractTreeElement) {
+            AbstractTreeElement elem = (AbstractTreeElement) element;
+            return elem.hasChildren() && !elem.getChildren().isEmpty();
+        }
+        return false;
+    }
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof GmonDecoder) {
-		    GmonDecoder obj = (GmonDecoder) inputElement;
-	        HistRoot root = obj.getRootNode();
-	        return new Object[] {
-	                root
-	        };
-		}
+    @Override
+    public Object[] getElements(Object inputElement) {
+        if (inputElement instanceof GmonDecoder) {
+            GmonDecoder obj = (GmonDecoder) inputElement;
+            HistRoot root = obj.getRootNode();
+            return new Object[] {
+                    root
+            };
+        }
         return new Object[0];
 
-	}
+    }
 
-	@Override
-	public void dispose() {
-	}
+    @Override
+    public void dispose() {
+    }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-	}
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+    }
 
 }

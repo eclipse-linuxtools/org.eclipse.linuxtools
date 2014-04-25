@@ -17,13 +17,13 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyProfileLaunchConfigura
  * @since 1.1
  */
 public class ValgrindRemoteProxyLaunchConfigurationTabGroup extends
-		RemoteProxyProfileLaunchConfigurationTabGroup {
+        RemoteProxyProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindOptionsTab()
-		};
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] {
+            new ValgrindOptionsTab()
+        };
+    }
 
 }

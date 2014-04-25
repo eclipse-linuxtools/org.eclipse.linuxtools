@@ -35,44 +35,44 @@ import org.eclipse.swt.SWT;
  */
 public class SpecfileChangelogScanner extends RuleBasedScanner {
 
-	private IToken fLastToken;
+    private IToken fLastToken;
 
-	public SpecfileChangelogScanner(ColorManager manager) {
-		super();
-		IToken sectionToken = new Token(new TextAttribute(manager
-				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
+    public SpecfileChangelogScanner(ColorManager manager) {
+        super();
+        IToken sectionToken = new Token(new TextAttribute(manager
+                .getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 
-		IToken authorEmail = new Token(new TextAttribute(manager
-				.getColor(ISpecfileColorConstants.AUTHOR_MAIL), null, SWT.NONE));
+        IToken authorEmail = new Token(new TextAttribute(manager
+                .getColor(ISpecfileColorConstants.AUTHOR_MAIL), null, SWT.NONE));
 
-		IToken versionRelease = new Token(new TextAttribute(manager
-				.getColor(ISpecfileColorConstants.VER_REL), null, SWT.NONE));
+        IToken versionRelease = new Token(new TextAttribute(manager
+                .getColor(ISpecfileColorConstants.VER_REL), null, SWT.NONE));
 
-		List<IRule> rules = new ArrayList<>();
+        List<IRule> rules = new ArrayList<>();
 
-		// %prep, %build, ...
-		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		wordRule.addWord(RpmSections.CHANGELOG_SECTION, sectionToken);
-		rules.add(wordRule);
+        // %prep, %build, ...
+        WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
+        wordRule.addWord(RpmSections.CHANGELOG_SECTION, sectionToken);
+        rules.add(wordRule);
 
-		AuthorEmailRule emailRule= new AuthorEmailRule(authorEmail);
-		rules.add(emailRule);
+        AuthorEmailRule emailRule= new AuthorEmailRule(authorEmail);
+        rules.add(emailRule);
 
-		VersionReleaseRule verRelRule = new VersionReleaseRule(versionRelease, authorEmail, this);
-		rules.add(verRelRule);
+        VersionReleaseRule verRelRule = new VersionReleaseRule(versionRelease, authorEmail, this);
+        rules.add(verRelRule);
 
-		IRule[] result = new IRule[rules.size()];
-		rules.toArray(result);
-		setRules(result);
-	}
+        IRule[] result = new IRule[rules.size()];
+        rules.toArray(result);
+        setRules(result);
+    }
 
-	public IToken getLastToken (){
-		return fLastToken;
-	}
+    public IToken getLastToken (){
+        return fLastToken;
+    }
 
-	@Override
-	public IToken nextToken() {
-		fLastToken = super.nextToken();
-		return fLastToken;
-	}
+    @Override
+    public IToken nextToken() {
+        fLastToken = super.nextToken();
+        return fLastToken;
+    }
 }

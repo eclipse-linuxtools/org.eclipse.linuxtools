@@ -24,27 +24,27 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ProvidesPage extends AbstractRPMPropertyPage {
 
-	private static final int QL_FIELD_WIDTH = 80;
+    private static final int QL_FIELD_WIDTH = 80;
 
-	private static final int QL_FIELD_HEIGHT = 40;
+    private static final int QL_FIELD_HEIGHT = 40;
 
-	@Override
-	protected void addFields(Composite composite) {
-		// RPM labels and text fields setup
+    @Override
+    protected void addFields(Composite composite) {
+        // RPM labels and text fields setup
 
-		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-		rpmDescriptionLabel
-				.setText(Messages.getString("ProvidesPage.Provides")); //$NON-NLS-1$
-		Text rpmQlText = new Text(composite, SWT.MULTI | SWT.BORDER
-				| SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		GridData gdQL = new GridData();
-		gdQL.widthHint = convertWidthInCharsToPixels(QL_FIELD_WIDTH);
-		gdQL.heightHint = convertWidthInCharsToPixels(QL_FIELD_HEIGHT);
-		rpmQlText.setLayoutData(gdQL);
+        Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
+        rpmDescriptionLabel
+                .setText(Messages.getString("ProvidesPage.Provides")); //$NON-NLS-1$
+        Text rpmQlText = new Text(composite, SWT.MULTI | SWT.BORDER
+                | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
+        GridData gdQL = new GridData();
+        gdQL.widthHint = convertWidthInCharsToPixels(QL_FIELD_WIDTH);
+        gdQL.heightHint = convertWidthInCharsToPixels(QL_FIELD_HEIGHT);
+        rpmQlText.setLayoutData(gdQL);
 
-		// Populate RPM text fields
-		String rpm_ql = RPMQuery.getProvides((IFile) getElement());
-		rpmQlText.setText(rpm_ql);
-	}
+        // Populate RPM text fields
+        String rpm_ql = RPMQuery.getProvides((IFile) getElement());
+        rpmQlText.setText(rpm_ql);
+    }
 
 }

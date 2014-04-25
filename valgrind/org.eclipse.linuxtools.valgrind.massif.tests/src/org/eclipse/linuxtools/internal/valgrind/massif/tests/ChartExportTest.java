@@ -31,65 +31,65 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ChartExportTest extends AbstractMassifTest {
-	private String[] pathNames = new String[]{"chart.png", "chart.jpg", "chart.jpeg", "chart.bmp"};
-	private ArrayList<IPath> paths = new ArrayList<>();
+    private String[] pathNames = new String[]{"chart.png", "chart.jpg", "chart.jpeg", "chart.bmp"};
+    private ArrayList<IPath> paths = new ArrayList<>();
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
-		IPath basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		assertNotNull(basePath);
-		basePath = basePath.append("alloctest");
-		for (String pathName : pathNames) {
-			paths.add(basePath.append(pathName));
-		}
-	}
+        IPath basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+        assertNotNull(basePath);
+        basePath = basePath.append("alloctest");
+        for (String pathName : pathNames) {
+            paths.add(basePath.append(pathName));
+        }
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		for (IPath path : paths) {
-			File chartFile = path.toFile();
-			if (chartFile.exists()) {
-				chartFile.delete();
-			}
-		}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        for (IPath path : paths) {
+            File chartFile = path.toFile();
+            if (chartFile.exists()) {
+                chartFile.delete();
+            }
+        }
 
-		deleteProject(proj);
-		super.tearDown();
-	}
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testChartExportPNG() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDefaults"); //$NON-NLS-1$
+    @Test
+    public void testChartExportPNG() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDefaults"); //$NON-NLS-1$
 
-		IEditorInput input = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor()
-				.getEditorInput();
-		assertTrue("input must be ChartEditorInput",
-				input instanceof ChartEditorInput);
+        IEditorInput input = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getActiveEditor()
+                .getEditorInput();
+        assertTrue("input must be ChartEditorInput",
+                input instanceof ChartEditorInput);
 
-		Composite control = ((ChartEditorInput) input).getChart().getChartControl();
-		if (control.getSize().x == 0 || control.getSize().y == 0) {
-			// Manually resize the composite to non-zero width/height so it can be saved
-			control.setSize(10, 10);
-		}
+        Composite control = ((ChartEditorInput) input).getChart().getChartControl();
+        if (control.getSize().x == 0 || control.getSize().y == 0) {
+            // Manually resize the composite to non-zero width/height so it can be saved
+            control.setSize(10, 10);
+        }
 
-		SaveChartAction saveChartAction = (SaveChartAction) getToolbarAction(MassifViewPart.SAVE_CHART_ACTION);
-		assertNotNull(saveChartAction);
+        SaveChartAction saveChartAction = (SaveChartAction) getToolbarAction(MassifViewPart.SAVE_CHART_ACTION);
+        assertNotNull(saveChartAction);
 
-		for (IPath path : paths) {
-			saveAsPath(saveChartAction, path);
-		}
-	}
+        for (IPath path : paths) {
+            saveAsPath(saveChartAction, path);
+        }
+    }
 
-	private void saveAsPath(SaveChartAction saveChartAction, IPath path) {
-		saveChartAction.run(path.toString());
-		File chartFile = path.toFile();
-		assertTrue(chartFile.exists());
-		assertTrue(chartFile.length() > 0);
-	}
+    private void saveAsPath(SaveChartAction saveChartAction, IPath path) {
+        saveChartAction.run(path.toString());
+        File chartFile = path.toFile();
+        assertTrue(chartFile.exists());
+        assertTrue(chartFile.length() > 0);
+    }
 
 }

@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Red Hat Inc - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 import org.eclipse.core.runtime.CoreException;
@@ -21,22 +21,22 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class MassifLaunchShortcut extends ProfileLaunchShortcut {
 
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
-		ValgrindOptionsTab tab = new ValgrindOptionsTab();
-		tab.setDefaults(wc);
-		ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(MassifPlugin.TOOL_ID);
-		defaultTab.setDefaults(wc);
-	}
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) throws CoreException {
+        ValgrindOptionsTab tab = new ValgrindOptionsTab();
+        tab.setDefaults(wc);
+        ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(MassifPlugin.TOOL_ID);
+        defaultTab.setDefaults(wc);
+    }
 
-	/**
-	 * Method getValgrindLaunchConfigType.
-	 * @return ILaunchConfigurationType
-	 */
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
-	}
+    /**
+     * Method getValgrindLaunchConfigType.
+     * @return ILaunchConfigurationType
+     */
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
+    }
 
 }

@@ -10,15 +10,15 @@
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
  *    Thavidu Ranatunga (IBM) - derived from
  *        org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class PerfLaunchConfigurationTabGroup extends ProfileLaunchConfigurationTabGroup {
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] { new PerfOptionsTab(), new PerfEventsTab() };
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] { new PerfOptionsTab(), new PerfEventsTab() };
+    }
 }

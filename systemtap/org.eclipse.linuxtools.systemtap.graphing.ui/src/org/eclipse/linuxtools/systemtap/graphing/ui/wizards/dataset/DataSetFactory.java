@@ -21,33 +21,33 @@ import org.eclipse.linuxtools.systemtap.graphing.ui.datadisplay.DataGrid;
 import org.eclipse.swt.widgets.Composite;
 
 public final class DataSetFactory {
-	public static IDataSet createDataSet(String id, String[] labels) {
-		if(id.equals(RowDataSet.ID)) {
-			return new RowDataSet(labels);
-		} else if(id.equals(TableDataSet.ID)) {
-			return new TableDataSet(labels);
-		}
-		return null;
-	}
+    public static IDataSet createDataSet(String id, String[] labels) {
+        if(id.equals(RowDataSet.ID)) {
+            return new RowDataSet(labels);
+        } else if(id.equals(TableDataSet.ID)) {
+            return new TableDataSet(labels);
+        }
+        return null;
+    }
 
-	public static IFilteredDataSet createFilteredDataSet(String id, String[] labels) {
-		if(id.equals(RowDataSet.ID)) {
-			return new FilteredRowDataSet(labels);
-		} else if(id.equals(TableDataSet.ID)) {
-			return new FilteredTableDataSet(labels);
-		}
-		return new FilteredRowDataSet(labels);
-	}
+    public static IFilteredDataSet createFilteredDataSet(String id, String[] labels) {
+        if(id.equals(RowDataSet.ID)) {
+            return new FilteredRowDataSet(labels);
+        } else if(id.equals(TableDataSet.ID)) {
+            return new FilteredTableDataSet(labels);
+        }
+        return new FilteredRowDataSet(labels);
+    }
 
-	/**
-	 * @since 3.0 set must be a IFilteredDataSet.
-	 */
-	public static DataGrid getDataGrid(Composite composite, IFilteredDataSet set) {
-		if(set instanceof RowDataSet || set instanceof TableDataSet) {
-			return new DataGrid(composite, set);
-		}
+    /**
+     * @since 3.0 set must be a IFilteredDataSet.
+     */
+    public static DataGrid getDataGrid(Composite composite, IFilteredDataSet set) {
+        if(set instanceof RowDataSet || set instanceof TableDataSet) {
+            return new DataGrid(composite, set);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

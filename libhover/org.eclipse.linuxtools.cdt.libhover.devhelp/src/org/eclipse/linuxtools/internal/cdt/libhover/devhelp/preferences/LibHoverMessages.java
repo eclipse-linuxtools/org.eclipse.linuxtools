@@ -21,41 +21,41 @@ import java.util.ResourceBundle;
  */
 public class LibHoverMessages {
 
-	/**
-	 * 
-	 */
+    /**
+     *
+     */
 
-	private static final String RESOURCE_BUNDLE= LibHoverMessages.class.getName();
+    private static final String RESOURCE_BUNDLE= LibHoverMessages.class.getName();
 
-	private static ResourceBundle fgResourceBundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    private static ResourceBundle fgResourceBundle= ResourceBundle.getBundle(RESOURCE_BUNDLE);
 
-	private LibHoverMessages() {
-	}
+    private LibHoverMessages() {
+    }
 
-	public static ResourceBundle getResourceBundle() {
-		return fgResourceBundle;
-	}
+    public static ResourceBundle getResourceBundle() {
+        return fgResourceBundle;
+    }
 
-	public static String getString(String key) {
-		try {
-			return fgResourceBundle.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		} catch (NullPointerException e) {
-			return '#' + key + '#';
-		}
-	}	
+    public static String getString(String key) {
+        try {
+            return fgResourceBundle.getString(key);
+        } catch (MissingResourceException e) {
+            return '!' + key + '!';
+        } catch (NullPointerException e) {
+            return '#' + key + '#';
+        }
+    }
 
-	/**
-	 * Returns the formatted string from the resource bundle,
-	 * or 'key' if not found.
-	 * 
-	 * @param key the message key
-	 * @param args an array of substituition strings
-	 * @return the resource bundle message
-	 */
-	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getString(key), (Object[])args);
-	}
+    /**
+     * Returns the formatted string from the resource bundle,
+     * or 'key' if not found.
+     *
+     * @param key the message key
+     * @param args an array of substituition strings
+     * @return the resource bundle message
+     */
+    public static String getFormattedString(String key, String[] args) {
+        return MessageFormat.format(getString(key), (Object[])args);
+    }
 
 }

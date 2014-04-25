@@ -62,311 +62,311 @@ import org.osgi.framework.Bundle;
  */
 public class CProjectHelper {
 
-	public final static String PLUGIN_ID = "org.eclipse.linuxtools.profiling.tests"; //$NON-NLS-1$
+    public final static String PLUGIN_ID = "org.eclipse.linuxtools.profiling.tests"; //$NON-NLS-1$
 
-	private final static IOverwriteQuery OVERWRITE_QUERY= new IOverwriteQuery() {
-		@Override
-		public String queryOverwrite(String file) {
-			return ALL;
-		}
-	};
+    private final static IOverwriteQuery OVERWRITE_QUERY= new IOverwriteQuery() {
+        @Override
+        public String queryOverwrite(String file) {
+            return ALL;
+        }
+    };
 
-	public static ICProject createCProject(final String projectName, String binFolderName) throws CoreException {
-		return createCCProject(projectName, binFolderName);
-	}
+    public static ICProject createCProject(final String projectName, String binFolderName) throws CoreException {
+        return createCCProject(projectName, binFolderName);
+    }
 
-	/**
-	 * Creates a ICProject.
-	 */
-	private static ICProject createCProject2(final String projectName, String binFolderName) throws CoreException {
-		final IWorkspace ws = ResourcesPlugin.getWorkspace();
-		final ICProject newProject[] = new ICProject[1];
-		ws.run(new IWorkspaceRunnable() {
+    /**
+     * Creates a ICProject.
+     */
+    private static ICProject createCProject2(final String projectName, String binFolderName) throws CoreException {
+        final IWorkspace ws = ResourcesPlugin.getWorkspace();
+        final ICProject newProject[] = new ICProject[1];
+        ws.run(new IWorkspaceRunnable() {
 
-			@Override
-			public void run(IProgressMonitor monitor) throws CoreException {
-				IWorkspaceRoot root = ws.getRoot();
-				IProject project = root.getProject(projectName);
-				if (!project.exists()) {
-					project.create(null);
-				} else {
-					project.refreshLocal(IResource.DEPTH_INFINITE, null);
-				}
-				if (!project.isOpen()) {
-					project.open(null);
-				}
-				if (!project.hasNature(CProjectNature.C_NATURE_ID)) {
-					String projectId = PLUGIN_ID + ".TestProject"; //$NON-NLS-1$
-					addNatureToProject(project, CProjectNature.C_NATURE_ID, null);
-					CCorePlugin.getDefault().mapCProjectOwner(project, projectId, false);
-				}
-				addDefaultBinaryParser(project);
-				newProject[0] = CCorePlugin.getDefault().getCoreModel().create(project);
-			}
-		}, null);
+            @Override
+            public void run(IProgressMonitor monitor) throws CoreException {
+                IWorkspaceRoot root = ws.getRoot();
+                IProject project = root.getProject(projectName);
+                if (!project.exists()) {
+                    project.create(null);
+                } else {
+                    project.refreshLocal(IResource.DEPTH_INFINITE, null);
+                }
+                if (!project.isOpen()) {
+                    project.open(null);
+                }
+                if (!project.hasNature(CProjectNature.C_NATURE_ID)) {
+                    String projectId = PLUGIN_ID + ".TestProject"; //$NON-NLS-1$
+                    addNatureToProject(project, CProjectNature.C_NATURE_ID, null);
+                    CCorePlugin.getDefault().mapCProjectOwner(project, projectId, false);
+                }
+                addDefaultBinaryParser(project);
+                newProject[0] = CCorePlugin.getDefault().getCoreModel().create(project);
+            }
+        }, null);
 
-		return newProject[0];
-	}
+        return newProject[0];
+    }
 
-	/**
-	 * Add the default binary parser if no binary parser configured.
-	 *
-	 * @param project
-	 * @throws CoreException
-	 */
-	public static boolean addDefaultBinaryParser(IProject project) throws CoreException {
-		ICConfigExtensionReference[] binaryParsers= CCorePlugin.getDefault().getDefaultBinaryParserExtensions(project);
-		if (binaryParsers == null || binaryParsers.length == 0) {
-			ICProjectDescription desc= CCorePlugin.getDefault().getProjectDescription(project);
-			if (desc == null) {
-				return false;
-			}
+    /**
+     * Add the default binary parser if no binary parser configured.
+     *
+     * @param project
+     * @throws CoreException
+     */
+    public static boolean addDefaultBinaryParser(IProject project) throws CoreException {
+        ICConfigExtensionReference[] binaryParsers= CCorePlugin.getDefault().getDefaultBinaryParserExtensions(project);
+        if (binaryParsers == null || binaryParsers.length == 0) {
+            ICProjectDescription desc= CCorePlugin.getDefault().getProjectDescription(project);
+            if (desc == null) {
+                return false;
+            }
 
-			desc.getDefaultSettingConfiguration().create(CCorePlugin.BINARY_PARSER_UNIQ_ID, CCorePlugin.DEFAULT_BINARY_PARSER_UNIQ_ID);
-			CCorePlugin.getDefault().setProjectDescription(project, desc);
-		}
-		return true;
-	}
-
-
-	private static String getMessage(IStatus status) {
-		StringBuffer message = new StringBuffer("[");
-		message.append(status.getMessage());
-		if (status.isMultiStatus()) {
-			IStatus children[] = status.getChildren();
-			for( int i = 0; i < children.length; i++) {
-				message.append(getMessage(children[i]));
-			}
-		}
-		message.append("]");
-		return message.toString();
-	}
-
-	public static ICProject createCCProject(final String projectName, final String binFolderName) throws CoreException {
-		final IWorkspace ws = ResourcesPlugin.getWorkspace();
-		final ICProject newProject[] = new ICProject[1];
-		ws.run(new IWorkspaceRunnable() {
-
-			@Override
-			public void run(IProgressMonitor monitor) throws CoreException {
-				ICProject cproject = createCProject2(projectName, binFolderName);
-				if (!cproject.getProject().hasNature(CCProjectNature.CC_NATURE_ID)) {
-					addNatureToProject(cproject.getProject(), CCProjectNature.CC_NATURE_ID, null);
-				}
-				newProject[0] = cproject;
-			}
-		}, null);
-		return newProject[0];
-	}
-
-	/**
-	 * Removes a ICProject.
-	 */
-	public static void delete(ICProject cproject) {
-		try {
-			cproject.getProject().delete(true, true, null);
-		} catch (CoreException e) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
-			} finally {
-				try {
-					System.gc();
-					System.runFinalization();
-					cproject.getProject().delete(true, true, null);
-				} catch (CoreException e2) {
-					fail(getMessage(e2.getStatus()));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Adds a folder container to a ICProject.
-	 */
-	public static ICContainer addCContainer(ICProject cproject, String containerName) throws CoreException {
-		IProject project = cproject.getProject();
-		ICContainer container = null;
-		if (containerName == null || containerName.length() == 0) {
-			ICContainer[] conts = cproject.getSourceRoots();
-			if (conts.length > 0) {
-				container = conts[0];
-			}
-		} else {
-			IFolder folder = project.getFolder(containerName);
-			if (!folder.exists()) {
-				folder.create(false, true, null);
-			}
-			container = CoreModel.getDefault().create(folder);
-		}
-		return container;
-	}
-
-	/**
-	 * Adds a folder container to a ICProject and imports all files contained in the given Zip file.
-	 */
-	public static ICContainer addCContainerWithImport(ICProject cproject, String containerName, ZipFile zipFile)
-			throws InvocationTargetException, CoreException {
-		ICContainer root = addCContainer(cproject, containerName);
-		importFilesFromZip(zipFile, root.getPath(), null);
-		return root;
-	}
-
-	/**
-	 * Removes a folder from a ICProject.
-	 */
-	public static void removeCContainer(ICProject cproject, String containerName) throws CoreException {
-		IFolder folder = cproject.getProject().getFolder(containerName);
-		folder.delete(true, null);
-	}
-
-	/**
-	 * Attempts to find an archive with the given name in the workspace
-	 */
-	public static IArchive findArchive(ICProject testProject, String name) throws CModelException {
-		int x;
-		IArchive[] myArchives;
-		IArchiveContainer archCont;
-		/***************************************************************************************************************************
-		 * Since ArchiveContainer.getArchives does not wait until all the archives in the project have been parsed before returning
-		 * the list, we have to do a sync ArchiveContainer.getChildren first to make sure we find all the archives.
-		 */
-		archCont = testProject.getArchiveContainer();
-		myArchives = archCont.getArchives();
-		if (myArchives.length < 1)
-			return (null);
-		for (x = 0; x < myArchives.length; x++) {
-			if (myArchives[x].getElementName().equals(name))
-				return (myArchives[x]);
-		}
-		return (null);
-	}
-
-	/**
-	 * Attempts to find a binary with the given name in the workspace
-	 */
-	public static IBinary findBinary(ICProject testProject, String name) throws CModelException {
-		IBinaryContainer binCont;
-		int x;
-		IBinary[] myBinaries;
-		binCont = testProject.getBinaryContainer();
-		myBinaries = binCont.getBinaries();
-		if (myBinaries.length < 1)
-			return (null);
-		for (x = 0; x < myBinaries.length; x++) {
-			if (myBinaries[x].getElementName().equals(name))
-				return (myBinaries[x]);
-		}
-		return (null);
-	}
-
-	/**
-	 * Attempts to find an object with the given name in the workspace
-	 */
-	public static IBinary findObject(ICProject testProject, String name) throws CModelException {
-		ICElement[] sourceRoots = testProject.getChildren();
-		for (int i = 0; i < sourceRoots.length; i++) {
-			ISourceRoot root = (ISourceRoot) sourceRoots[i];
-			ICElement[] myElements = root.getChildren();
-			for (int x = 0; x < myElements.length; x++) {
-				if (myElements[x].getElementName().equals(name)) {
-					if (myElements[x] instanceof IBinary) {
-						return ((IBinary) myElements[x]);
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Attempts to find a TranslationUnit with the given name in the workspace
-	 * @throws InterruptedException
-	 */
-	public static ITranslationUnit findTranslationUnit(ICProject testProject, String name) throws CModelException, InterruptedException {
-		for (int j=0; j<20; j++) {
-			ICElement[] sourceRoots = testProject.getChildren();
-			for (int i = 0; i < sourceRoots.length; i++) {
-				ISourceRoot root = (ISourceRoot) sourceRoots[i];
-				ICElement[] myElements = root.getChildren();
-				for (int x = 0; x < myElements.length; x++) {
-					if (myElements[x].getElementName().equals(name)) {
-						if (myElements[x] instanceof ITranslationUnit) {
-							return ((ITranslationUnit) myElements[x]);
-						}
-					}
-				}
-			}
-			Thread.sleep(100);
-		}
-		return null;
-	}
-
-	/**
-	 * Attempts to find an element with the given name in the workspace
-	 */
-	public static ICElement findElement(ICProject testProject, String name) throws CModelException {
-		ICElement[] sourceRoots = testProject.getChildren();
-		for (int i = 0; i < sourceRoots.length; i++) {
-			ISourceRoot root = (ISourceRoot) sourceRoots[i];
-			ICElement[] myElements = root.getChildren();
-			for (int x = 0; x < myElements.length; x++) {
-				if (myElements[x].getElementName().equals(name)) {
-					return myElements[x];
-				}
-			}
-		}
-		return null;
-	}
-
-	public static void addNatureToProject(IProject proj, String natureId, IProgressMonitor monitor) throws CoreException {
-		IProjectDescription description = proj.getDescription();
-		String[] prevNatures = description.getNatureIds();
-		String[] newNatures = new String[prevNatures.length + 1];
-		System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
-		newNatures[prevNatures.length] = natureId;
-		description.setNatureIds(newNatures);
-		proj.setDescription(description, monitor);
-	}
-
-	private static void importFilesFromZip(ZipFile srcZipFile, IPath destPath, IProgressMonitor monitor)
-			throws InvocationTargetException {
-		ZipFileStructureProvider structureProvider = new ZipFileStructureProvider(srcZipFile);
-		try {
-			ImportOperation op = new ImportOperation(destPath, structureProvider.getRoot(), structureProvider,
-					OVERWRITE_QUERY);
-			op.run(monitor);
-		} catch (InterruptedException e) {
-			// should not happen
-		}
-	}
+            desc.getDefaultSettingConfiguration().create(CCorePlugin.BINARY_PARSER_UNIQ_ID, CCorePlugin.DEFAULT_BINARY_PARSER_UNIQ_ID);
+            CCorePlugin.getDefault().setProjectDescription(project, desc);
+        }
+        return true;
+    }
 
 
-	public static void importSourcesFromPlugin(ICProject project, Bundle bundle, String sources) throws CoreException {
-		try {
-			String baseDir= FileLocator.toFileURL(FileLocator.find(bundle, new Path(sources), null)).getFile();
-			ImportOperation importOp = new ImportOperation(project.getProject().getFullPath(),
-					new File(baseDir), FileSystemStructureProvider.INSTANCE, OVERWRITE_QUERY);
-			importOp.setCreateContainerStructure(false);
-			importOp.run(new NullProgressMonitor());
-		}
-		catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, 0, "Import Interrupted", e));
-		}
-	}
+    private static String getMessage(IStatus status) {
+        StringBuffer message = new StringBuffer("[");
+        message.append(status.getMessage());
+        if (status.isMultiStatus()) {
+            IStatus children[] = status.getChildren();
+            for( int i = 0; i < children.length; i++) {
+                message.append(getMessage(children[i]));
+            }
+        }
+        message.append("]");
+        return message.toString();
+    }
 
-	/**
-	 * @return the location of a newly created directory in temporary area.
-	 *    Note that cleanup should be done with {@link ResourceHelper#cleanUp()}.
-	 * @throws CoreException
-	 */
-	public static File freshDir() throws CoreException {
-		IPath folderPath = ResourceHelper.createTemporaryFolder();
-		File folder = new File(folderPath.toOSString());
-		assertTrue(folder.exists());
-		assertTrue(folder.isDirectory());
-		assertTrue(folder.canWrite());
+    public static ICProject createCCProject(final String projectName, final String binFolderName) throws CoreException {
+        final IWorkspace ws = ResourcesPlugin.getWorkspace();
+        final ICProject newProject[] = new ICProject[1];
+        ws.run(new IWorkspaceRunnable() {
 
-		return folder;
-	}
+            @Override
+            public void run(IProgressMonitor monitor) throws CoreException {
+                ICProject cproject = createCProject2(projectName, binFolderName);
+                if (!cproject.getProject().hasNature(CCProjectNature.CC_NATURE_ID)) {
+                    addNatureToProject(cproject.getProject(), CCProjectNature.CC_NATURE_ID, null);
+                }
+                newProject[0] = cproject;
+            }
+        }, null);
+        return newProject[0];
+    }
+
+    /**
+     * Removes a ICProject.
+     */
+    public static void delete(ICProject cproject) {
+        try {
+            cproject.getProject().delete(true, true, null);
+        } catch (CoreException e) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+            } finally {
+                try {
+                    System.gc();
+                    System.runFinalization();
+                    cproject.getProject().delete(true, true, null);
+                } catch (CoreException e2) {
+                    fail(getMessage(e2.getStatus()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Adds a folder container to a ICProject.
+     */
+    public static ICContainer addCContainer(ICProject cproject, String containerName) throws CoreException {
+        IProject project = cproject.getProject();
+        ICContainer container = null;
+        if (containerName == null || containerName.length() == 0) {
+            ICContainer[] conts = cproject.getSourceRoots();
+            if (conts.length > 0) {
+                container = conts[0];
+            }
+        } else {
+            IFolder folder = project.getFolder(containerName);
+            if (!folder.exists()) {
+                folder.create(false, true, null);
+            }
+            container = CoreModel.getDefault().create(folder);
+        }
+        return container;
+    }
+
+    /**
+     * Adds a folder container to a ICProject and imports all files contained in the given Zip file.
+     */
+    public static ICContainer addCContainerWithImport(ICProject cproject, String containerName, ZipFile zipFile)
+            throws InvocationTargetException, CoreException {
+        ICContainer root = addCContainer(cproject, containerName);
+        importFilesFromZip(zipFile, root.getPath(), null);
+        return root;
+    }
+
+    /**
+     * Removes a folder from a ICProject.
+     */
+    public static void removeCContainer(ICProject cproject, String containerName) throws CoreException {
+        IFolder folder = cproject.getProject().getFolder(containerName);
+        folder.delete(true, null);
+    }
+
+    /**
+     * Attempts to find an archive with the given name in the workspace
+     */
+    public static IArchive findArchive(ICProject testProject, String name) throws CModelException {
+        int x;
+        IArchive[] myArchives;
+        IArchiveContainer archCont;
+        /***************************************************************************************************************************
+         * Since ArchiveContainer.getArchives does not wait until all the archives in the project have been parsed before returning
+         * the list, we have to do a sync ArchiveContainer.getChildren first to make sure we find all the archives.
+         */
+        archCont = testProject.getArchiveContainer();
+        myArchives = archCont.getArchives();
+        if (myArchives.length < 1)
+            return (null);
+        for (x = 0; x < myArchives.length; x++) {
+            if (myArchives[x].getElementName().equals(name))
+                return (myArchives[x]);
+        }
+        return (null);
+    }
+
+    /**
+     * Attempts to find a binary with the given name in the workspace
+     */
+    public static IBinary findBinary(ICProject testProject, String name) throws CModelException {
+        IBinaryContainer binCont;
+        int x;
+        IBinary[] myBinaries;
+        binCont = testProject.getBinaryContainer();
+        myBinaries = binCont.getBinaries();
+        if (myBinaries.length < 1)
+            return (null);
+        for (x = 0; x < myBinaries.length; x++) {
+            if (myBinaries[x].getElementName().equals(name))
+                return (myBinaries[x]);
+        }
+        return (null);
+    }
+
+    /**
+     * Attempts to find an object with the given name in the workspace
+     */
+    public static IBinary findObject(ICProject testProject, String name) throws CModelException {
+        ICElement[] sourceRoots = testProject.getChildren();
+        for (int i = 0; i < sourceRoots.length; i++) {
+            ISourceRoot root = (ISourceRoot) sourceRoots[i];
+            ICElement[] myElements = root.getChildren();
+            for (int x = 0; x < myElements.length; x++) {
+                if (myElements[x].getElementName().equals(name)) {
+                    if (myElements[x] instanceof IBinary) {
+                        return ((IBinary) myElements[x]);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to find a TranslationUnit with the given name in the workspace
+     * @throws InterruptedException
+     */
+    public static ITranslationUnit findTranslationUnit(ICProject testProject, String name) throws CModelException, InterruptedException {
+        for (int j=0; j<20; j++) {
+            ICElement[] sourceRoots = testProject.getChildren();
+            for (int i = 0; i < sourceRoots.length; i++) {
+                ISourceRoot root = (ISourceRoot) sourceRoots[i];
+                ICElement[] myElements = root.getChildren();
+                for (int x = 0; x < myElements.length; x++) {
+                    if (myElements[x].getElementName().equals(name)) {
+                        if (myElements[x] instanceof ITranslationUnit) {
+                            return ((ITranslationUnit) myElements[x]);
+                        }
+                    }
+                }
+            }
+            Thread.sleep(100);
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to find an element with the given name in the workspace
+     */
+    public static ICElement findElement(ICProject testProject, String name) throws CModelException {
+        ICElement[] sourceRoots = testProject.getChildren();
+        for (int i = 0; i < sourceRoots.length; i++) {
+            ISourceRoot root = (ISourceRoot) sourceRoots[i];
+            ICElement[] myElements = root.getChildren();
+            for (int x = 0; x < myElements.length; x++) {
+                if (myElements[x].getElementName().equals(name)) {
+                    return myElements[x];
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void addNatureToProject(IProject proj, String natureId, IProgressMonitor monitor) throws CoreException {
+        IProjectDescription description = proj.getDescription();
+        String[] prevNatures = description.getNatureIds();
+        String[] newNatures = new String[prevNatures.length + 1];
+        System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
+        newNatures[prevNatures.length] = natureId;
+        description.setNatureIds(newNatures);
+        proj.setDescription(description, monitor);
+    }
+
+    private static void importFilesFromZip(ZipFile srcZipFile, IPath destPath, IProgressMonitor monitor)
+            throws InvocationTargetException {
+        ZipFileStructureProvider structureProvider = new ZipFileStructureProvider(srcZipFile);
+        try {
+            ImportOperation op = new ImportOperation(destPath, structureProvider.getRoot(), structureProvider,
+                    OVERWRITE_QUERY);
+            op.run(monitor);
+        } catch (InterruptedException e) {
+            // should not happen
+        }
+    }
+
+
+    public static void importSourcesFromPlugin(ICProject project, Bundle bundle, String sources) throws CoreException {
+        try {
+            String baseDir= FileLocator.toFileURL(FileLocator.find(bundle, new Path(sources), null)).getFile();
+            ImportOperation importOp = new ImportOperation(project.getProject().getFullPath(),
+                    new File(baseDir), FileSystemStructureProvider.INSTANCE, OVERWRITE_QUERY);
+            importOp.setCreateContainerStructure(false);
+            importOp.run(new NullProgressMonitor());
+        }
+        catch (Exception e) {
+            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, 0, "Import Interrupted", e));
+        }
+    }
+
+    /**
+     * @return the location of a newly created directory in temporary area.
+     *    Note that cleanup should be done with {@link ResourceHelper#cleanUp()}.
+     * @throws CoreException
+     */
+    public static File freshDir() throws CoreException {
+        IPath folderPath = ResourceHelper.createTemporaryFolder();
+        File folder = new File(folderPath.toOSString());
+        assertTrue(folder.exists());
+        assertTrue(folder.isDirectory());
+        assertTrue(folder.canWrite());
+
+        return folder;
+    }
 }

@@ -71,7 +71,7 @@ public class Utils {
      * @param outStream
      *            The stream to write the output to.
      * @param project
-     * 			  The project which is executing this command.
+     *               The project which is executing this command.
      * @param command
      *            The command with all parameters.
      * @return int The return value of the command.

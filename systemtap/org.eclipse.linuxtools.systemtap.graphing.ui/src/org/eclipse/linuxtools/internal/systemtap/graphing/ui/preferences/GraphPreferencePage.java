@@ -22,45 +22,45 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class GraphPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public GraphPreferencePage() {
-		super(GRID);
-		setPreferenceStore(GraphingUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
-	}
+    public GraphPreferencePage() {
+        super(GRID);
+        setPreferenceStore(GraphingUIPlugin.getDefault().getPreferenceStore());
+        setDescription(Localization.getString("GraphPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void createFieldEditors() {
-		addField(new BooleanFieldEditor(
-				GraphingPreferenceConstants.P_SHOW_X_GRID_LINES,
-				Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
-				getFieldEditorParent()));
+    @Override
+    public void createFieldEditors() {
+        addField(new BooleanFieldEditor(
+                GraphingPreferenceConstants.P_SHOW_X_GRID_LINES,
+                Localization.getString("GraphPreferencePage.ShowXGridLines"), //$NON-NLS-1$
+                getFieldEditorParent()));
 
-		addField(new BooleanFieldEditor(
-				GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES,
-				Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
-				getFieldEditorParent()));
+        addField(new BooleanFieldEditor(
+                GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES,
+                Localization.getString("GraphPreferencePage.ShowYGridLines"), //$NON-NLS-1$
+                getFieldEditorParent()));
 
-		addField(
-				new IntegerFieldEditor(
-				GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
-				Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
-				getFieldEditorParent()));
+        addField(
+                new IntegerFieldEditor(
+                GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS,
+                Localization.getString("GraphPreferencePage.ViewableDataItems"), //$NON-NLS-1$
+                getFieldEditorParent()));
 
-		addField(
-				new IntegerFieldEditor(
-				GraphingPreferenceConstants.P_X_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.XSeriesTicks"), //$NON-NLS-1$
-				getFieldEditorParent()));
+        addField(
+                new IntegerFieldEditor(
+                GraphingPreferenceConstants.P_X_SERIES_TICKS,
+                Localization.getString("GraphPreferencePage.XSeriesTicks"), //$NON-NLS-1$
+                getFieldEditorParent()));
 
-		addField(
-				new IntegerFieldEditor(
-				GraphingPreferenceConstants.P_Y_SERIES_TICKS,
-				Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
-				getFieldEditorParent()));
-	}
+        addField(
+                new IntegerFieldEditor(
+                GraphingPreferenceConstants.P_Y_SERIES_TICKS,
+                Localization.getString("GraphPreferencePage.YSeriesTicks"), //$NON-NLS-1$
+                getFieldEditorParent()));
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {}
+    @Override
+    public void init(IWorkbench workbench) {}
 
 }
 

@@ -29,14 +29,14 @@ public class ListEditor extends org.eclipse.jface.preference.ListEditor {
     }
 
     /**
-	 * Creates and populates a StringBuffer with the supplied items.
-	 *
-	 * @param items An array of strings to make the StringBuffer with.
-	 *
-	 * @return Returns the StringBuffer.
-	 */
-	 @Override
-	protected String createList(String[] items) {
+     * Creates and populates a StringBuffer with the supplied items.
+     *
+     * @param items An array of strings to make the StringBuffer with.
+     *
+     * @return Returns the StringBuffer.
+     */
+     @Override
+    protected String createList(String[] items) {
         StringBuffer path = new StringBuffer();
 
         for (String item: items) {
@@ -47,22 +47,22 @@ public class ListEditor extends org.eclipse.jface.preference.ListEditor {
     }
 
     @Override
-	protected String getNewInputObject() {
-    	InputDialog dialog = new InputDialog(getShell(), dialogTitle, null, initialVal, validator);
-    	dialog.open();
+    protected String getNewInputObject() {
+        InputDialog dialog = new InputDialog(getShell(), dialogTitle, null, initialVal, validator);
+        dialog.open();
 
         return dialog.getValue();
     }
 
     /**
-	 * Parses the passed in string into an array of strings.
-	 *
-	 * @param stringList The string to pass parse.
-	 *
-	 * @return Returns the array of strings.
-	 */
-	 @Override
-	protected String[] parseString(String stringList) {
+     * Parses the passed in string into an array of strings.
+     *
+     * @param stringList The string to pass parse.
+     *
+     * @return Returns the array of strings.
+     */
+     @Override
+    protected String[] parseString(String stringList) {
         StringTokenizer st = new StringTokenizer(stringList, File.pathSeparator + "\n\r"); //$NON-NLS-1$
         ArrayList<Object> v = new ArrayList<>();
         while (st.hasMoreElements()) {

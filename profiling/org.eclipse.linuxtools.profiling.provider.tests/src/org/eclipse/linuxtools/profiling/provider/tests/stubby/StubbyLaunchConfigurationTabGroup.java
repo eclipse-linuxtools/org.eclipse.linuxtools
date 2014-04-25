@@ -14,11 +14,11 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class StubbyLaunchConfigurationTabGroup extends
-		ProfileLaunchConfigurationTabGroup {
+        ProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab [] {};
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab [] {};
+    }
 
 }

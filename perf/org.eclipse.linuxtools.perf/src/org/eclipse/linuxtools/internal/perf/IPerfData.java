@@ -15,15 +15,15 @@ package org.eclipse.linuxtools.internal.perf;
  */
 public interface IPerfData {
 
-	/**
-	 * Get string representation of the data.
-	 * @return String perf data
-	 */
-	String getPerfData();
+    /**
+     * Get string representation of the data.
+     * @return String perf data
+     */
+    String getPerfData();
 
-	/**
-	 * Get title for this data.
-	 * @return title for perf data
-	 */
-	String getTitle();
+    /**
+     * Get title for this data.
+     * @return title for perf data
+     */
+    String getTitle();
 }

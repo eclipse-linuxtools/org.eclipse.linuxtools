@@ -19,38 +19,38 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
  */
 public class ProjectExplorerTreeItemAppearsCondition implements ICondition {
 
-	private SWTBotTreeItem treeItem;
-	private String itemName;
-	private String parent;
-	private String teamDirt;
-	private SWTBotTree projectExplorerTree;
+    private SWTBotTreeItem treeItem;
+    private String itemName;
+    private String parent;
+    private String teamDirt;
+    private SWTBotTree projectExplorerTree;
 
-	public ProjectExplorerTreeItemAppearsCondition(SWTBotTree projectExplorerTree, String parent, String teamDirt, String treeItemName) {
-		this.itemName = treeItemName;
-		this.parent = parent;
-		this.teamDirt = teamDirt;
-		this.projectExplorerTree = projectExplorerTree;
-	}
+    public ProjectExplorerTreeItemAppearsCondition(SWTBotTree projectExplorerTree, String parent, String teamDirt, String treeItemName) {
+        this.itemName = treeItemName;
+        this.parent = parent;
+        this.teamDirt = teamDirt;
+        this.projectExplorerTree = projectExplorerTree;
+    }
 
-	@Override
-	public boolean test() {
-		treeItem = ProjectExplorer.expandProject(projectExplorerTree, parent, teamDirt);
-		for (SWTBotTreeItem i : treeItem.getItems()) {
-			if (i.getText().contains(itemName)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean test() {
+        treeItem = ProjectExplorer.expandProject(projectExplorerTree, parent, teamDirt);
+        for (SWTBotTreeItem i : treeItem.getItems()) {
+            if (i.getText().contains(itemName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public void init(SWTBot bot) {
-		// no initialization
-	}
+    @Override
+    public void init(SWTBot bot) {
+        // no initialization
+    }
 
-	@Override
-	public String getFailureMessage() {
-		return null;
-	}
+    @Override
+    public String getFailureMessage() {
+        return null;
+    }
 
 }

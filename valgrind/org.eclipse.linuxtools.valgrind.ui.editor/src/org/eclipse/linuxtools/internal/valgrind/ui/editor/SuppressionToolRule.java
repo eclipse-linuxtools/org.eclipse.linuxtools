@@ -20,98 +20,98 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 
 public class SuppressionToolRule implements IRule {
-	private String[] toolList;
-	private IToken token;
-	private WordRule subrule;
+    private String[] toolList;
+    private IToken token;
+    private WordRule subrule;
 
-	private static final IToken DUMMY_TOKEN = new Token(null);
-	private static final char[] COLON = new char[] { ':' };
+    private static final IToken DUMMY_TOKEN = new Token(null);
+    private static final char[] COLON = new char[] { ':' };
 
-	public SuppressionToolRule(String[] tools, IToken successToken) {
-		toolList = tools;
-		token = successToken;
-		subrule = new WordRule(new IWordDetector() {
+    public SuppressionToolRule(String[] tools, IToken successToken) {
+        toolList = tools;
+        token = successToken;
+        subrule = new WordRule(new IWordDetector() {
 
-			@Override
-			public boolean isWordStart(char c) {
-				for (String tool : toolList) {
-					if (c == tool.charAt(0)) {
-						return true;
-					}
-				}
-				return false;
-			}
+            @Override
+            public boolean isWordStart(char c) {
+                for (String tool : toolList) {
+                    if (c == tool.charAt(0)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
-			@Override
-			public boolean isWordPart(char c) {
-				return c != ':';
-			}
+            @Override
+            public boolean isWordPart(char c) {
+                return c != ':';
+            }
 
-		});
+        });
 
-		for (String tool : toolList) {
-			subrule.addWord(tool, DUMMY_TOKEN);
-		}
-	}
+        for (String tool : toolList) {
+            subrule.addWord(tool, DUMMY_TOKEN);
+        }
+    }
 
-	@Override
-	public IToken evaluate(ICharacterScanner scanner) {
-		IToken result = subrule.evaluate(scanner);
-		if (!result.isUndefined()) {
-			boolean match = true;
+    @Override
+    public IToken evaluate(ICharacterScanner scanner) {
+        IToken result = subrule.evaluate(scanner);
+        if (!result.isUndefined()) {
+            boolean match = true;
 
-			int tokenLength = ((SuppressionsElementScanner) scanner).getTokenLength();
-			match = checkColon(scanner);
-			if (match) {
-				// move to beginning of token
-				for (int i = 0; i < tokenLength; i++) {
-					scanner.unread();
-				}
+            int tokenLength = ((SuppressionsElementScanner) scanner).getTokenLength();
+            match = checkColon(scanner);
+            if (match) {
+                // move to beginning of token
+                for (int i = 0; i < tokenLength; i++) {
+                    scanner.unread();
+                }
 
-				// move to beginning of line
-				int indentLength = 0;
-				while (scanner.getColumn() > 0) {
-					scanner.unread();
-					indentLength++;
-				}
+                // move to beginning of line
+                int indentLength = 0;
+                while (scanner.getColumn() > 0) {
+                    scanner.unread();
+                    indentLength++;
+                }
 
-				// ensure any leading characters are whitespace
-				while (indentLength-- > 0) {
-					int ch = scanner.read();
-					if (!Character.isWhitespace(ch)) {
-						match = false;
-					}
-				}
+                // ensure any leading characters are whitespace
+                while (indentLength-- > 0) {
+                    int ch = scanner.read();
+                    if (!Character.isWhitespace(ch)) {
+                        match = false;
+                    }
+                }
 
-				// reset to end of token
-				for (int i = 0; i < tokenLength; i++) {
-					scanner.read();
-				}
-			}
+                // reset to end of token
+                for (int i = 0; i < tokenLength; i++) {
+                    scanner.read();
+                }
+            }
 
-			if (!match) {
-				unreadBuffer(scanner, tokenLength);
-				result = Token.UNDEFINED;
-			} else {
-				result = token;
-			}
-		}
+            if (!match) {
+                unreadBuffer(scanner, tokenLength);
+                result = Token.UNDEFINED;
+            } else {
+                result = token;
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private boolean checkColon(ICharacterScanner scanner) {
-		int ch = scanner.read();
-		if (ch == ICharacterScanner.EOF) {
-			return false;
-		}
-		scanner.unread();
-		return Arrays.equals(Character.toChars(ch), COLON);
-	}
+    private boolean checkColon(ICharacterScanner scanner) {
+        int ch = scanner.read();
+        if (ch == ICharacterScanner.EOF) {
+            return false;
+        }
+        scanner.unread();
+        return Arrays.equals(Character.toChars(ch), COLON);
+    }
 
-	private void unreadBuffer(ICharacterScanner scanner, int length) {
-		for (int i = 0; i < length; i++) {
-			scanner.unread();
-		}
-	}
+    private void unreadBuffer(ICharacterScanner scanner, int length) {
+        for (int i = 0; i < length; i++) {
+            scanner.unread();
+        }
+    }
 }

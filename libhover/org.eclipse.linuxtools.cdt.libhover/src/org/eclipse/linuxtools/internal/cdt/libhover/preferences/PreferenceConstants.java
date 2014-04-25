@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.cdt.libhover.preferences;
  */
 public class PreferenceConstants {
 
-	public final static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.cacheExtLibhover"; //$NON-NLS-1$
-	public final static String LAZY_LOAD = "org.eclipse.linuxtools.cdt.libhover.lazyLoad"; //$NON-NLS-1$
-	
+    public final static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.cacheExtLibhover"; //$NON-NLS-1$
+    public final static String LAZY_LOAD = "org.eclipse.linuxtools.cdt.libhover.lazyLoad"; //$NON-NLS-1$
+
 }

@@ -2,6 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="glibc library" link_to="../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#moreclibdocs">
-	<topic href="http://www.gnu.org/software/libc/manual/html_node/index.html" label="glibc">
+    <topic href="http://www.gnu.org/software/libc/manual/html_node/index.html" label="glibc">
  </topic>
 </toc>

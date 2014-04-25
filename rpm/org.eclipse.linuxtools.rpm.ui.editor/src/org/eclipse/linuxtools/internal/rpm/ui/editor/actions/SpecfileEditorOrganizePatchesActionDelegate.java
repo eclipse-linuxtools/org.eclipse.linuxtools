@@ -20,17 +20,17 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorOrganizePatchesActionDelegate extends AbstractHandler {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Specfile specfile = ((SpecfileEditor)HandlerUtil.getActiveEditor(event)).getSpecfile();
-		if (specfile != null) {
-			specfile.organizePatches();
-		}
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     */
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        Specfile specfile = ((SpecfileEditor)HandlerUtil.getActiveEditor(event)).getSpecfile();
+        if (specfile != null) {
+            specfile.organizePatches();
+        }
+        return null;
+    }
 }

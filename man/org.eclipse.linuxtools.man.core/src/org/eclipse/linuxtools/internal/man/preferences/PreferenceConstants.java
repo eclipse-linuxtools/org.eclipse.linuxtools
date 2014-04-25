@@ -15,9 +15,9 @@ package org.eclipse.linuxtools.internal.man.preferences;
  */
 public class PreferenceConstants {
 
-	/**
-	 * Path preference constant.
-	 */
-	public static final String P_PATH = "pathPreference"; //$NON-NLS-1$
+    /**
+     * Path preference constant.
+     */
+    public static final String P_PATH = "pathPreference"; //$NON-NLS-1$
 
 }

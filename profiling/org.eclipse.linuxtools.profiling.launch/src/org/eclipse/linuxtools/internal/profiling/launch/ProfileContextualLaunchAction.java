@@ -14,7 +14,7 @@ import org.eclipse.debug.ui.actions.ContextualLaunchAction;
 
 public class ProfileContextualLaunchAction extends ContextualLaunchAction {
 
-	public ProfileContextualLaunchAction() {
-		super(ProfileLaunchPlugin.LAUNCH_MODE);
-	}
+    public ProfileContextualLaunchAction() {
+        super(ProfileLaunchPlugin.LAUNCH_MODE);
+    }
 }

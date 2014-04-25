@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *    Rafael Teixeira <rafaelmt@linux.vnet.ibm.com> - Switched to
- * 	RemoteProxyCMainTab
+ *     RemoteProxyCMainTab
  *******************************************************************************/
 
 package org.eclipse.linuxtools.profiling.launch;
@@ -29,21 +29,21 @@ import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
  */
 public abstract class RemoteProxyProfileLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
-		tabs.add(new RemoteProxyCMainTab());
-		tabs.add(new CArgumentsTab());
+    @Override
+    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+        ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
+        tabs.add(new RemoteProxyCMainTab());
+        tabs.add(new CArgumentsTab());
 
-		tabs.addAll(Arrays.asList(getProfileTabs()));
+        tabs.addAll(Arrays.asList(getProfileTabs()));
 
-		tabs.add(new EnvironmentTab());
-		tabs.add(new SourceLookupTab());
-		tabs.add(new CommonTab());
+        tabs.add(new EnvironmentTab());
+        tabs.add(new SourceLookupTab());
+        tabs.add(new CommonTab());
 
-		setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
-	}
+        setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
+    }
 
-	public abstract AbstractLaunchConfigurationTab[] getProfileTabs();
+    public abstract AbstractLaunchConfigurationTab[] getProfileTabs();
 
 }

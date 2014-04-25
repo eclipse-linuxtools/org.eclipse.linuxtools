@@ -55,177 +55,177 @@ import org.osgi.framework.Version;
 
 public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
 
-	@Override
-	protected String getPluginID() {
-		return PerfPlugin.PLUGIN_ID;
-	}
+    @Override
+    protected String getPluginID() {
+        return PerfPlugin.PLUGIN_ID;
+    }
 
-	@Override
-	public void launch(ILaunchConfiguration config, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		// check if Perf exists in $PATH
-		if (! PerfCore.checkPerfInPath(null)) {
-			IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID,
-					Messages.PerfLaunchConfigDelegate_perf_not_found);
-			throw new CoreException(status);
-		}
+    @Override
+    public void launch(ILaunchConfiguration config, String mode,
+            ILaunch launch, IProgressMonitor monitor) throws CoreException {
+        // check if Perf exists in $PATH
+        if (! PerfCore.checkPerfInPath(null)) {
+            IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID,
+                    Messages.PerfLaunchConfigDelegate_perf_not_found);
+            throw new CoreException(status);
+        }
 
-		// Get working directory
-		File wd = getWorkingDirectory(config);
-		if (wd == null) {
-			wd = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		IPath workingDir = Path.fromOSString(wd.toURI().getPath());
-		PerfPlugin.getDefault().setWorkingDir(workingDir);
+        // Get working directory
+        File wd = getWorkingDirectory(config);
+        if (wd == null) {
+            wd = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        IPath workingDir = Path.fromOSString(wd.toURI().getPath());
+        PerfPlugin.getDefault().setWorkingDir(workingDir);
 
-		if (config.getAttribute(PerfPlugin.ATTR_ShowStat,
-				PerfPlugin.ATTR_ShowStat_default)) {
-			showStat(config, launch);
-		} else {
+        if (config.getAttribute(PerfPlugin.ATTR_ShowStat,
+                PerfPlugin.ATTR_ShowStat_default)) {
+            showStat(config, launch);
+        } else {
 
-			//Find the binary path
-			IPath exePath = CDebugUtils.verifyProgramPath( config );
+            //Find the binary path
+            IPath exePath = CDebugUtils.verifyProgramPath( config );
 
-			// Build the commandline string to run perf recording the given project
-			// Program args from launch config.
-			String arguments[] = getProgramArgumentsArray(config);
+            // Build the commandline string to run perf recording the given project
+            // Program args from launch config.
+            String arguments[] = getProgramArgumentsArray(config);
 
-			ArrayList<String> command = new ArrayList<>();
-			// Get the base commandline string (with flags/options based on config)
-			Version perfVersion = PerfCore.getPerfVersion(config);
-			command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion)));
-			// Add the path to the executable
-			command.add(exePath.toOSString());
-			command.addAll(Arrays.asList( arguments));
-			String[] commandArray = command.toArray(new String[] {});
-			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
-					ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
+            ArrayList<String> command = new ArrayList<>();
+            // Get the base commandline string (with flags/options based on config)
+            Version perfVersion = PerfCore.getPerfVersion(config);
+            command.addAll(Arrays.asList(PerfCore.getRecordString(config, perfVersion)));
+            // Add the path to the executable
+            command.add(exePath.toOSString());
+            command.addAll(Arrays.asList( arguments));
+            String[] commandArray = command.toArray(new String[] {});
+            boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
+                    ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 
-			Process process;
-			try {
-				//Spawn the process
-				process = CdtSpawnerProcessFactory.getFactory().exec( commandArray, getEnvironment( config ), wd, usePty );
-				DebugPlugin.newProcess(launch, process,
-		                renderProcessLabel(commandArray[0])); //Spawn IProcess using Debug plugin (CDT)
+            Process process;
+            try {
+                //Spawn the process
+                process = CdtSpawnerProcessFactory.getFactory().exec( commandArray, getEnvironment( config ), wd, usePty );
+                DebugPlugin.newProcess(launch, process,
+                        renderProcessLabel(commandArray[0])); //Spawn IProcess using Debug plugin (CDT)
 
-				//Wait for recording to complete.
-				process.waitFor();
-				PrintStream print = null;
-				if (config.getAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true)) {
-					//Get the console to output to.
-					//This may not be the best way to accomplish this but it shall do for now.
-					ConsolePlugin plugin = ConsolePlugin.getDefault();
-					IConsoleManager conMan = plugin.getConsoleManager();
-					IConsole[] existing = conMan.getConsoles();
-					IOConsole binaryOutCons = null;
+                //Wait for recording to complete.
+                process.waitFor();
+                PrintStream print = null;
+                if (config.getAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true)) {
+                    //Get the console to output to.
+                    //This may not be the best way to accomplish this but it shall do for now.
+                    ConsolePlugin plugin = ConsolePlugin.getDefault();
+                    IConsoleManager conMan = plugin.getConsoleManager();
+                    IConsole[] existing = conMan.getConsoles();
+                    IOConsole binaryOutCons = null;
 
-					// Find the console
-					for(IConsole x : existing) {
-						if (x.getName().contains(renderProcessLabel(commandArray[0]))
-								&& x instanceof IOConsole) {
-							binaryOutCons = (IOConsole)x;
-						}
-					}
-					// If can't be found get the most recent opened, this should probably never happen.
-					if ((binaryOutCons == null) && (existing.length != 0)) {
-						if (existing[existing.length - 1] instanceof IOConsole)
-							binaryOutCons = (IOConsole)existing[existing.length - 1];
-					}
+                    // Find the console
+                    for(IConsole x : existing) {
+                        if (x.getName().contains(renderProcessLabel(commandArray[0]))
+                                && x instanceof IOConsole) {
+                            binaryOutCons = (IOConsole)x;
+                        }
+                    }
+                    // If can't be found get the most recent opened, this should probably never happen.
+                    if ((binaryOutCons == null) && (existing.length != 0)) {
+                        if (existing[existing.length - 1] instanceof IOConsole)
+                            binaryOutCons = (IOConsole)existing[existing.length - 1];
+                    }
 
-					//Get the printstream via the outputstream.
-					//Get ouput stream
-					OutputStream outputTo;
-					if (binaryOutCons != null) {
-						outputTo = binaryOutCons.newOutputStream();
-						print = new PrintStream(outputTo);
+                    //Get the printstream via the outputstream.
+                    //Get ouput stream
+                    OutputStream outputTo;
+                    if (binaryOutCons != null) {
+                        outputTo = binaryOutCons.newOutputStream();
+                        print = new PrintStream(outputTo);
 
-						for (int i = 0; i < commandArray.length; i++) {
-							print.print(commandArray[i] + " "); //$NON-NLS-1$
-						}
+                        for (int i = 0; i < commandArray.length; i++) {
+                            print.print(commandArray[i] + " "); //$NON-NLS-1$
+                        }
 
-						// Print Message
-						print.println();
-						print.println(Messages.PerfLaunchConfigDelegate_analyzing);
-						// Possibly should pass this (the console reference) on to
-						// PerfCore.Report if theres anything we ever want to spit
-						// out to user.
-					}
-				}
+                        // Print Message
+                        print.println();
+                        print.println(Messages.PerfLaunchConfigDelegate_analyzing);
+                        // Possibly should pass this (the console reference) on to
+                        // PerfCore.Report if theres anything we ever want to spit
+                        // out to user.
+                    }
+                }
 
-				PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
-				PerfPlugin.getDefault().getPerfProfileData().toFile().setReadOnly();
-				PerfCore.refreshView(renderProcessLabel(exePath.toOSString()));
+                PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
+                PerfPlugin.getDefault().getPerfProfileData().toFile().setReadOnly();
+                PerfCore.refreshView(renderProcessLabel(exePath.toOSString()));
 
-				if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
-						PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
-					showSourceDisassembly(workingDir);
-				}
+                if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
+                        PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
+                    showSourceDisassembly(workingDir);
+                }
 
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
-	/**
-	 * Show source disassembly view.
-	 * @param workingDir working directory.
-	 */
-	private void showSourceDisassembly(IPath workingDir) {
-		String title = renderProcessLabel(workingDir + "perf.data"); //$NON-NLS-1$
-		SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir);
-		sdData.parse();
-		PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
-		SourceDisassemblyView.refreshView();
-	}
+    /**
+     * Show source disassembly view.
+     * @param workingDir working directory.
+     */
+    private void showSourceDisassembly(IPath workingDir) {
+        String title = renderProcessLabel(workingDir + "perf.data"); //$NON-NLS-1$
+        SourceDisassemblyData sdData = new SourceDisassemblyData(title, workingDir);
+        sdData.parse();
+        PerfPlugin.getDefault().setSourceDisassemblyData(sdData);
+        SourceDisassemblyView.refreshView();
+    }
 
-	/**
-	 * Show statistics view.
-	 * @param config launch configuration
-	 * @param launch launch
-	 * @throws CoreException
-	 */
-	private void showStat(ILaunchConfiguration config, ILaunch launch)
-			throws CoreException {
-		//Find the binary path
-		IPath exePath = CDebugUtils.verifyProgramPath( config );
+    /**
+     * Show statistics view.
+     * @param config launch configuration
+     * @param launch launch
+     * @throws CoreException
+     */
+    private void showStat(ILaunchConfiguration config, ILaunch launch)
+            throws CoreException {
+        //Find the binary path
+        IPath exePath = CDebugUtils.verifyProgramPath( config );
 
-		// Build the command line string
-		String arguments[] = getProgramArgumentsArray(config);
+        // Build the command line string
+        String arguments[] = getProgramArgumentsArray(config);
 
-		// Get working directory
-		IPath workingDir = PerfPlugin.getDefault().getWorkingDir();
+        // Get working directory
+        IPath workingDir = PerfPlugin.getDefault().getWorkingDir();
 
-		int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount,
-				PerfPlugin.ATTR_StatRunCount_default);
-		StringBuffer args = new StringBuffer();
-		for (String arg : arguments) {
-			args.append(arg);
-			args.append(" "); //$NON-NLS-1$
-		}
+        int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount,
+                PerfPlugin.ATTR_StatRunCount_default);
+        StringBuffer args = new StringBuffer();
+        for (String arg : arguments) {
+            args.append(arg);
+            args.append(" "); //$NON-NLS-1$
+        }
 
-		Object[] titleArgs = new Object[]{exePath.toOSString(), args.toString(), String.valueOf(runCount)};
-		String title = renderProcessLabel(MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs));
+        Object[] titleArgs = new Object[]{exePath.toOSString(), args.toString(), String.valueOf(runCount)};
+        String title = renderProcessLabel(MessageFormat.format(Messages.PerfLaunchConfigDelegate_stat_title, titleArgs));
 
-		List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
-				PerfPlugin.ATTR_SelectedEvents_default);
+        List<String> configEvents = config.getAttribute(PerfPlugin.ATTR_SelectedEvents,
+                PerfPlugin.ATTR_SelectedEvents_default);
 
-		String[] statEvents  = new String [] {};
+        String[] statEvents  = new String [] {};
 
-		if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
-			// gather selected events
-			statEvents = (configEvents == null) ? statEvents : configEvents.toArray(new String[]{});
-		}
+        if(!config.getAttribute(PerfPlugin.ATTR_DefaultEvent, PerfPlugin.ATTR_DefaultEvent_default)){
+            // gather selected events
+            statEvents = (configEvents == null) ? statEvents : configEvents.toArray(new String[]{});
+        }
 
-		StatData sd = new StatData(title, workingDir, exePath.toOSString(), arguments, runCount, statEvents);
-		sd.setLaunch(launch);
-		sd.parse();
-		PerfPlugin.getDefault().setStatData(sd);
+        StatData sd = new StatData(title, workingDir, exePath.toOSString(), arguments, runCount, statEvents);
+        sd.setLaunch(launch);
+        sd.parse();
+        PerfPlugin.getDefault().setStatData(sd);
 
-		sd.updateStatData();
+        sd.updateStatData();
 
-		StatView.refreshView();
-	}
+        StatView.refreshView();
+    }
 
 }

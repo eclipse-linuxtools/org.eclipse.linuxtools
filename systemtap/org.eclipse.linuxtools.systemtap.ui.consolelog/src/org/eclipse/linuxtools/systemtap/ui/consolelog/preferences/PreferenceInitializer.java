@@ -19,20 +19,20 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-	@Override
-	public void initializeDefaultPreferences() {
-		IPreferenceStore store = ConsoleLogPlugin.getDefault().getPreferenceStore();
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = ConsoleLogPlugin.getDefault().getPreferenceStore();
 
-		//ide
-		store.setDefault(ConsoleLogPreferenceConstants.HOST_NAME, "localhost"); //$NON-NLS-1$
-		store.setDefault(ConsoleLogPreferenceConstants.PORT_NUMBER, 22462);
-		store.setDefault(ConsoleLogPreferenceConstants.DB_COMMIT, false);
-		store.setDefault(ConsoleLogPreferenceConstants.SAVE_LENGTH, 5);
-		store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SERVER, false);
-		store.setDefault(ConsoleLogPreferenceConstants.SCP_USER, "guest"); //$NON-NLS-1$
-		store.setDefault(ConsoleLogPreferenceConstants.SCP_PASSWORD, "welcome"); //$NON-NLS-1$
-		store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SCPUSER, false);
+        //ide
+        store.setDefault(ConsoleLogPreferenceConstants.HOST_NAME, "localhost"); //$NON-NLS-1$
+        store.setDefault(ConsoleLogPreferenceConstants.PORT_NUMBER, 22462);
+        store.setDefault(ConsoleLogPreferenceConstants.DB_COMMIT, false);
+        store.setDefault(ConsoleLogPreferenceConstants.SAVE_LENGTH, 5);
+        store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SERVER, false);
+        store.setDefault(ConsoleLogPreferenceConstants.SCP_USER, "guest"); //$NON-NLS-1$
+        store.setDefault(ConsoleLogPreferenceConstants.SCP_PASSWORD, "welcome"); //$NON-NLS-1$
+        store.setDefault(ConsoleLogPreferenceConstants.REMEMBER_SCPUSER, false);
 
 
-		}
+        }
 }

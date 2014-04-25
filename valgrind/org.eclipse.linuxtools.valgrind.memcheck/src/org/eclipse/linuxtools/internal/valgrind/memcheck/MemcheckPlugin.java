@@ -16,17 +16,17 @@ import org.eclipse.swt.widgets.Control;
 
 public class MemcheckPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.memcheck"; //$NON-NLS-1$
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.memcheck"; //$NON-NLS-1$
 
-	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.memcheck"; //$NON-NLS-1$
+    public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.memcheck"; //$NON-NLS-1$
 
-	public static FontMetrics getFontMetrics(Control control) {
-		 GC gc = new GC(control);
-		 gc.setFont(control.getFont());
-		 FontMetrics fontMetrics = gc.getFontMetrics();
-		 gc.dispose();
-		 return fontMetrics;
-	}
+    public static FontMetrics getFontMetrics(Control control) {
+         GC gc = new GC(control);
+         gc.setFont(control.getFont());
+         FontMetrics fontMetrics = gc.getFontMetrics();
+         gc.dispose();
+         return fontMetrics;
+    }
 
 }

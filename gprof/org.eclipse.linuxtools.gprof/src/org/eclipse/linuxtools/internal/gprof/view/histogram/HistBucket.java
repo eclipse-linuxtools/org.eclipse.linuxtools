@@ -22,41 +22,41 @@ import org.eclipse.linuxtools.internal.gprof.symbolManager.Bucket;
  */
 public class HistBucket extends AbstractTreeElement {
 
-	public final Bucket bucket;
+    public final Bucket bucket;
 
-	/**
-	 * Constructor
-	 * @param parent the parent of this tree node
-	 * @param b the object to display in the tree
-	 */
-	public HistBucket(HistLine parent, Bucket b) {
-		super(parent);
-		this.bucket = b;
-	}
+    /**
+     * Constructor
+     * @param parent the parent of this tree node
+     * @param b the object to display in the tree
+     */
+    public HistBucket(HistLine parent, Bucket b) {
+        super(parent);
+        this.bucket = b;
+    }
 
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
 
-	@Override
-	public LinkedList<? extends TreeElement> getChildren() {
-		return null;
-	}
+    @Override
+    public LinkedList<? extends TreeElement> getChildren() {
+        return null;
+    }
 
-	@Override
-	public int getCalls() {
-		return -1;
-	}
+    @Override
+    public int getCalls() {
+        return -1;
+    }
 
-	@Override
-	public String getName() {
-		return "0x" + Long.toHexString(bucket.startAddr); //$NON-NLS-1$
-	}
+    @Override
+    public String getName() {
+        return "0x" + Long.toHexString(bucket.startAddr); //$NON-NLS-1$
+    }
 
-	@Override
-	public int getSamples() {
-		return bucket.time;
-	}
+    @Override
+    public int getSamples() {
+        return bucket.time;
+    }
 
 }

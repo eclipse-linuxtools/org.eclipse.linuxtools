@@ -21,39 +21,39 @@ import org.eclipse.ui.editors.text.TextEditor;
  */
 public interface IEditorChangeLogContrib {
 
-	/**
-	 * Set TextEditor that this configuration is going to be used.
-	 *
-	 * @param editor The text editor for this configuration.
-	 */
-	void setTextEditor(TextEditor editor);
+    /**
+     * Set TextEditor that this configuration is going to be used.
+     *
+     * @param editor The text editor for this configuration.
+     */
+    void setTextEditor(TextEditor editor);
 
-	/**
-	 * Set default content type. GNU Changelog only has one type.
-	 *
-	 * @return default content type.
-	 */
-	String[] getConfiguredContentTypes(ISourceViewer sourceViewer);
+    /**
+     * Set default content type. GNU Changelog only has one type.
+     *
+     * @return default content type.
+     */
+    String[] getConfiguredContentTypes(ISourceViewer sourceViewer);
 
-	/**
-	 * Detects hyperlinks in GNU formatted changelogs.
-	 *
-	 * @return link detector for GNU format.
-	 */
-	IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer);
+    /**
+     * Detects hyperlinks in GNU formatted changelogs.
+     *
+     * @return link detector for GNU format.
+     */
+    IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer);
 
-	/**
-	 * Hyperlink presenter (decorator).
-	 *
-	 * @return default presenter.
-	 */
-	IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer);
+    /**
+     * Hyperlink presenter (decorator).
+     *
+     * @return default presenter.
+     */
+    IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer);
 
-	/**
-	 * Highlights GNU format changelog syntaxes.
-	 *
-	 * @return reconciler for GNU format changelog.
-	 */
-	IPresentationReconciler getPresentationReconciler(
-			ISourceViewer sourceViewer);
+    /**
+     * Highlights GNU format changelog syntaxes.
+     *
+     * @return reconciler for GNU format changelog.
+     */
+    IPresentationReconciler getPresentationReconciler(
+            ISourceViewer sourceViewer);
 }

@@ -13,37 +13,37 @@ import org.eclipse.debug.core.model.RuntimeProcess;
  */
 public class SystemTapRuntimeProcessFactory implements IProcessFactory {
 
-	public static final String PROCESS_FACTORY_ID = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapRuntimeProcessFactory"; //$NON-NLS-1$
+    public static final String PROCESS_FACTORY_ID = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapRuntimeProcessFactory"; //$NON-NLS-1$
 
-	public static class SystemTapRuntimeProcess extends RuntimeProcess {
+    public static class SystemTapRuntimeProcess extends RuntimeProcess {
 
-		private Process originalProcess = null;
+        private Process originalProcess = null;
 
-		public SystemTapRuntimeProcess(ILaunch launch, Process process,
-				String name, Map<String, String> attributes) {
-			super(launch, process, name, attributes);
-			originalProcess = process;
-		}
+        public SystemTapRuntimeProcess(ILaunch launch, Process process,
+                String name, Map<String, String> attributes) {
+            super(launch, process, name, attributes);
+            originalProcess = process;
+        }
 
-		public boolean matchesProcess(Process process) {
-			return originalProcess.equals(process);
-		}
+        public boolean matchesProcess(Process process) {
+            return originalProcess.equals(process);
+        }
 
-		/**
-		 * SystemTap scripts use a ScriptConsole instance as their output stream,
-		 * so don't use the default stream.
-		 */
-		@Override
-		protected IStreamsProxy createStreamsProxy() {
-			return null;
-		}
+        /**
+         * SystemTap scripts use a ScriptConsole instance as their output stream,
+         * so don't use the default stream.
+         */
+        @Override
+        protected IStreamsProxy createStreamsProxy() {
+            return null;
+        }
 
-	}
+    }
 
-	@Override
-	public IProcess newProcess(ILaunch launch, Process process, String label,
-			Map<String, String> attributes) {
-		return new SystemTapRuntimeProcess(launch, process, label, attributes);
-	}
+    @Override
+    public IProcess newProcess(ILaunch launch, Process process, String label,
+            Map<String, String> attributes) {
+        return new SystemTapRuntimeProcess(launch, process, label, attributes);
+    }
 
 }

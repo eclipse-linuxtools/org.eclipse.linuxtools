@@ -17,22 +17,22 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
  * The sole purpose of this page is to create a new project for createrepo.
  */
 public class CreaterepoNewWizardPageOne extends
-		WizardNewProjectCreationPage {
+        WizardNewProjectCreationPage {
 
-	/*
-	 * TODO: add in working sets
-	 */
+    /*
+     * TODO: add in working sets
+     */
 
-	/**
-	 * Constructor for CreaterepoWizardPage. Will set the page name, title, and
-	 * description.
-	 *
-	 * @param pageName The wizard page's name.
-	 */
-	public CreaterepoNewWizardPageOne(String pageName) {
-		super(pageName);
-		setTitle(Messages.CreaterepoNewWizardPageOne_wizardPageTitle);
-		setDescription(Messages.CreaterepoNewWizardPageOne_wizardPageDescription);
-	}
+    /**
+     * Constructor for CreaterepoWizardPage. Will set the page name, title, and
+     * description.
+     *
+     * @param pageName The wizard page's name.
+     */
+    public CreaterepoNewWizardPageOne(String pageName) {
+        super(pageName);
+        setTitle(Messages.CreaterepoNewWizardPageOne_wizardPageTitle);
+        setDescription(Messages.CreaterepoNewWizardPageOne_wizardPageDescription);
+    }
 
 }

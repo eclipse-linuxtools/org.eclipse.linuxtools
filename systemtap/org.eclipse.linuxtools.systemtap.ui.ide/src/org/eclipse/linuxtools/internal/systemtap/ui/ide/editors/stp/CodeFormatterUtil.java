@@ -13,12 +13,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
 public class CodeFormatterUtil {
 
-	public static int getTabWidth() {
-		return 4;
-	}
+    public static int getTabWidth() {
+        return 4;
+    }
 
-	public static int getIndentWidth() {
-		return 4;
-	}
+    public static int getIndentWidth() {
+        return 4;
+    }
 
 }

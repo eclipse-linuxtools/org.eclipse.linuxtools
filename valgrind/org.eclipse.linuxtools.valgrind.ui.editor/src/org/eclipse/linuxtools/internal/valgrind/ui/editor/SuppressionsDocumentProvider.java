@@ -19,21 +19,21 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 public class SuppressionsDocumentProvider extends TextFileDocumentProvider {
 
-	@Override
-	public IDocument getDocument(Object element) {
-		IDocument document = super.getDocument(element);
-		if (document != null) {
-			FastPartitioner partitioner = new FastPartitioner(
-					new RuleBasedPartitionScanner(),
-				SuppressionsPartitionScanner.SUPP_CONTENT_TYPES);
+    @Override
+    public IDocument getDocument(Object element) {
+        IDocument document = super.getDocument(element);
+        if (document != null) {
+            FastPartitioner partitioner = new FastPartitioner(
+                    new RuleBasedPartitionScanner(),
+                SuppressionsPartitionScanner.SUPP_CONTENT_TYPES);
 
-			partitioner.connect(document, false);
-			if (document.getDocumentPartitioner() == null) {
-				document.setDocumentPartitioner(partitioner);
-			}
-		}
-		return document;
+            partitioner.connect(document, false);
+            if (document.getDocumentPartitioner() == null) {
+                document.setDocumentPartitioner(partitioner);
+            }
+        }
+        return document;
 
-	}
+    }
 
 }

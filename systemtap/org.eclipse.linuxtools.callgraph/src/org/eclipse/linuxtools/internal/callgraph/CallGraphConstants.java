@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.callgraph;
 
 public interface CallGraphConstants {
 
-	String VIEW_ID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
-	String PLUGIN_ID = "org.eclipse.linuxtools.callgraph"; //$NON-NLS-1$
+    String VIEW_ID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
+    String PLUGIN_ID = "org.eclipse.linuxtools.callgraph"; //$NON-NLS-1$
 
 }

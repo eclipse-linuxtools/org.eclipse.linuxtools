@@ -140,7 +140,7 @@ public abstract class SystemTapView extends ViewPart {
      * @return
      */
     public SystemTapParser getParser() {
-    	return parser;
+        return parser;
     }
 
     /**
@@ -152,11 +152,11 @@ public abstract class SystemTapView extends ViewPart {
      * @return
      */
     public boolean setParser(SystemTapParser parser) {
-    	this.parser = parser;
-    	if (this.parser == null) {
-    		return false;
+        this.parser = parser;
+        if (this.parser == null) {
+            return false;
         }
-    	return true;
+        return true;
     }
 
     /**
@@ -231,9 +231,9 @@ public abstract class SystemTapView extends ViewPart {
     private void createHelpActions() {
         helpVersion = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
             @Override
-			public void run() {
+            public void run() {
                 try {
-                	Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null); //$NON-NLS-1$
+                    Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null); //$NON-NLS-1$
                     BufferedReader buf = new BufferedReader(
                             new InputStreamReader(pr.getErrorStream()));
                     String line = ""; //$NON-NLS-1$
@@ -265,7 +265,7 @@ public abstract class SystemTapView extends ViewPart {
         //Save callgraph.out
         saveFile = new Action(Messages.getString("SystemTapView.SaveMenu")){ //$NON-NLS-1$
             @Override
-			public void run(){
+            public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
                 String filePath = dialog.open();
@@ -283,7 +283,7 @@ public abstract class SystemTapView extends ViewPart {
         kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
                 AbstractUIPlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
             @Override
-			public void run() {
+            public void run() {
                 getParser().cancelJob();
             }
         };
@@ -306,33 +306,33 @@ public abstract class SystemTapView extends ViewPart {
      * @param sourcePath
      */
     public void saveData(String targetFile) {
-		try {
-			File file = new File(targetFile);
-			file.delete();
-			file.createNewFile();
+        try {
+            File file = new File(targetFile);
+            file.delete();
+            file.createNewFile();
 
-			File sFile = new File(sourcePath);
-			if (!sFile.exists()) {
-				return;
-			}
+            File sFile = new File(sourcePath);
+            if (!sFile.exists()) {
+                return;
+            }
 
-			try  (FileInputStream fileIn = new FileInputStream(sFile); FileOutputStream fileOut = new FileOutputStream(file);
-					FileChannel channelIn = fileIn.getChannel(); FileChannel channelOut = fileOut.getChannel()){
+            try  (FileInputStream fileIn = new FileInputStream(sFile); FileOutputStream fileOut = new FileOutputStream(file);
+                    FileChannel channelIn = fileIn.getChannel(); FileChannel channelOut = fileOut.getChannel()){
 
-				if (channelIn == null || channelOut == null) {
-					return;
-				}
+                if (channelIn == null || channelOut == null) {
+                    return;
+                }
 
-				long size = channelIn.size();
-				MappedByteBuffer buf = channelIn.map(
-						FileChannel.MapMode.READ_ONLY, 0, size);
+                long size = channelIn.size();
+                MappedByteBuffer buf = channelIn.map(
+                        FileChannel.MapMode.READ_ONLY, 0, size);
 
-				channelOut.write(buf);
-			}
-		} catch (IOException e) {
-			CallgraphCorePlugin.logException(e);
-		}
-	}
+                channelOut.write(buf);
+            }
+        } catch (IOException e) {
+            CallgraphCorePlugin.logException(e);
+        }
+    }
 
     public void setSourcePath(String file) {
         sourcePath = file;

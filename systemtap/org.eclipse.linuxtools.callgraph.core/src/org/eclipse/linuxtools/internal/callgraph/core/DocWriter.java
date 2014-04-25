@@ -19,55 +19,55 @@ import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
 
 public class DocWriter extends UIJob {
-	private TextConsole console;
-	private String message;
-	private int length;
-	private int start;
+    private TextConsole console;
+    private String message;
+    private int length;
+    private int start;
 
-	/**
-	 * Initiate DocWriter class. DocWriter will append the given message
-	 * to the given console in a separate UI job. By default, DocWriter will
-	 * append to the end of the console and replace 0 characters. To change this,
-	 * see DocWriter's set methods.
-	 *
-	 *
-	 * @param name
-	 * @param console
-	 * @param message
-	 */
-	public DocWriter(String name, TextConsole console, String message) {
+    /**
+     * Initiate DocWriter class. DocWriter will append the given message
+     * to the given console in a separate UI job. By default, DocWriter will
+     * append to the end of the console and replace 0 characters. To change this,
+     * see DocWriter's set methods.
+     *
+     *
+     * @param name
+     * @param console
+     * @param message
+     */
+    public DocWriter(String name, TextConsole console, String message) {
 
-		super(name);
-		this.console = console;
-		this.message = message;
-		this.start=-1;
-		this.length=-1;
-	}
+        super(name);
+        this.console = console;
+        this.message = message;
+        this.start=-1;
+        this.length=-1;
+    }
 
-	@Override
-	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (console == null) {
-			return Status.CANCEL_STATUS;
-		}
-		if (message == null) {
-			return Status.OK_STATUS;
-		}
+    @Override
+    public IStatus runInUIThread(IProgressMonitor monitor) {
+        if (console == null) {
+            return Status.CANCEL_STATUS;
+        }
+        if (message == null) {
+            return Status.OK_STATUS;
+        }
 
-		IDocument doc = console.getDocument();
+        IDocument doc = console.getDocument();
 
-		if (length < 0) {
-			length = 0;
-		}
-		if (start < 0) {
-			start = doc.getLength();
-		}
-		try {
-			doc.replace(start, length, message);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
+        if (length < 0) {
+            length = 0;
+        }
+        if (start < 0) {
+            start = doc.getLength();
+        }
+        try {
+            doc.replace(start, length, message);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
 
-		return Status.OK_STATUS;
-	}
+        return Status.OK_STATUS;
+    }
 
 }

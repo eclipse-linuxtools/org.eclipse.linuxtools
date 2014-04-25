@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ SystemTapCommandTest.class, ConfigurationTest.class,
-		SystemTapCommandGeneratorTest.class, SystemTapTabTest.class,
-		LaunchShortcutsTest.class, SystemTapErrorHandlerTest.class })
+        SystemTapCommandGeneratorTest.class, SystemTapTabTest.class,
+        LaunchShortcutsTest.class, SystemTapErrorHandlerTest.class })
 public class AllTests {
 }

@@ -20,55 +20,55 @@ import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
 public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 
-	@Override
-	public String getToolID() {
-		return MemcheckPlugin.TOOL_ID;
-	}
+    @Override
+    public String getToolID() {
+        return MemcheckPlugin.TOOL_ID;
+    }
 
-	/**
-	 * Check messages appear as expected for the specified test.
-	 *
-	 * @param messages IValgrindMessage messages
-	 * @param testName test name
-	 */
-	public void checkTestMessages(IValgrindMessage[] messages, String testName) {
-		assertTrue(messages.length > 0);
-		String lostBytesMsg = "10 bytes in 1 blocks are definitely lost in loss record 1 of 1"; //$NON-NLS-1$
-		String invalidReadMsg = "Invalid read of size 1"; //$NON-NLS-1$
-		String invalidWriteMsg = "Invalid write of size 1"; //$NON-NLS-1$
+    /**
+     * Check messages appear as expected for the specified test.
+     *
+     * @param messages IValgrindMessage messages
+     * @param testName test name
+     */
+    public void checkTestMessages(IValgrindMessage[] messages, String testName) {
+        assertTrue(messages.length > 0);
+        String lostBytesMsg = "10 bytes in 1 blocks are definitely lost in loss record 1 of 1"; //$NON-NLS-1$
+        String invalidReadMsg = "Invalid read of size 1"; //$NON-NLS-1$
+        String invalidWriteMsg = "Invalid write of size 1"; //$NON-NLS-1$
 
-		for (IValgrindMessage message : messages) {
-			for (IValgrindMessage child : message.getChildren()) {
-				if (child instanceof ValgrindStackFrame) {
-					ValgrindStackFrame stackFrameMsg = (ValgrindStackFrame) child;
+        for (IValgrindMessage message : messages) {
+            for (IValgrindMessage child : message.getChildren()) {
+                if (child instanceof ValgrindStackFrame) {
+                    ValgrindStackFrame stackFrameMsg = (ValgrindStackFrame) child;
 
-					// check expected error messages exist for basicTest (child process in multiProcTest)
-					if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
-							&& "test.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
-						assertTrue(stackFrameMsg.getLine() >= 15);
-						switch (stackFrameMsg.getLine()) {
-							case 15:
-								assertTrue(message.getText().contains(lostBytesMsg));
-								break;
-							case 16:
-								assertTrue(message.getText().contains(invalidReadMsg));
-								break;
-							case 17:
-								assertTrue(message.getText().contains(invalidWriteMsg));
-								break;
-							default:
-								break;
-						}
-					}
+                    // check expected error messages exist for basicTest (child process in multiProcTest)
+                    if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
+                            && "test.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
+                        assertTrue(stackFrameMsg.getLine() >= 15);
+                        switch (stackFrameMsg.getLine()) {
+                            case 15:
+                                assertTrue(message.getText().contains(lostBytesMsg));
+                                break;
+                            case 16:
+                                assertTrue(message.getText().contains(invalidReadMsg));
+                                break;
+                            case 17:
+                                assertTrue(message.getText().contains(invalidWriteMsg));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
 
-					// check expected error messages exist for parent process in multiProcTest
-					if (("testNoExec".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
-							&& "parent.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
-						assertEquals(8, stackFrameMsg.getLine());
-						assertTrue(child.getParent().getText().contains(lostBytesMsg));
-					}
-				}
-			}
-		}
-	}
+                    // check expected error messages exist for parent process in multiProcTest
+                    if (("testNoExec".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
+                            && "parent.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
+                        assertEquals(8, stackFrameMsg.getLine());
+                        assertTrue(child.getParent().getText().contains(lostBytesMsg));
+                    }
+                }
+            }
+        }
+    }
 }

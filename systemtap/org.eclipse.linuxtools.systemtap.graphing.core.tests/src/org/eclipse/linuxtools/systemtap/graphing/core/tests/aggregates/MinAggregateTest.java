@@ -20,41 +20,41 @@ import org.junit.Test;
 
 public class MinAggregateTest  {
 
-	@Test
-	public void testAggregate() {
-		MinAggregate aa = new MinAggregate();
-		Number num;
+    @Test
+    public void testAggregate() {
+        MinAggregate aa = new MinAggregate();
+        Number num;
 
-		num = aa.aggregate(null);
-		assertNull(num);
+        num = aa.aggregate(null);
+        assertNull(num);
 
-		num = aa.aggregate(new Number[] {});
-		assertNull(num);
+        num = aa.aggregate(new Number[] {});
+        assertNull(num);
 
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,0}));
-		assertEquals(0, num.intValue());
-		
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {-1,0,1}));
-		assertEquals(-1, num.intValue());
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,0}));
+        assertEquals(0, num.intValue());
 
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,1}));
-		assertEquals(0, num.intValue());
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {-1,0,1}));
+        assertEquals(-1, num.intValue());
+
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,1}));
+        assertEquals(0, num.intValue());
 
 
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,0}));
-		assertEquals(0.0, num.doubleValue(), 0.0);
-		
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {-1,0,1}));
-		assertEquals(-1.0, num.doubleValue(), 0.0);
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,0}));
+        assertEquals(0.0, num.doubleValue(), 0.0);
 
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,1}));
-		assertEquals(0.0, num.doubleValue(), 0.0);
-	}
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {-1,0,1}));
+        assertEquals(-1.0, num.doubleValue(), 0.0);
 
-	@Test
-	public void testGetID() {
-		MinAggregate aa = new MinAggregate();
-		assertEquals(MinAggregate.ID, aa.getID());
-	}
-	
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,1}));
+        assertEquals(0.0, num.doubleValue(), 0.0);
+    }
+
+    @Test
+    public void testGetID() {
+        MinAggregate aa = new MinAggregate();
+        assertEquals(MinAggregate.ID, aa.getID());
+    }
+
 }

@@ -2,7 +2,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="newlib library" link_to="../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#moreclibdocs">
-	<topic href="http://www.sourceware.org/newlib/libc.html" label="newlib libc">
+    <topic href="http://www.sourceware.org/newlib/libc.html" label="newlib libc">
  </topic>
  <topic href="http://www.sourceware.org/newlib/libm.html" label="newlib libm">
  </topic>

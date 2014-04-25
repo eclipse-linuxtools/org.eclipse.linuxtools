@@ -21,24 +21,24 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class GraphingPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public GraphingPreferencePage() {
-		super(GRID);
-		setPreferenceStore(GraphingUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("GraphingPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
-	}
+    public GraphingPreferencePage() {
+        super(GRID);
+        setPreferenceStore(GraphingUIPlugin.getDefault().getPreferenceStore());
+        setDescription(Localization.getString("GraphingPreferencePage.GraphDisplayPreferences")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void createFieldEditors() {
-		addField(
-				new IntegerFieldEditor(
-				GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY,
-				Localization.getString("GraphingPreferencePage.RefreshDelay"), //$NON-NLS-1$
-				getFieldEditorParent()));
-	}
+    @Override
+    public void createFieldEditors() {
+        addField(
+                new IntegerFieldEditor(
+                GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY,
+                Localization.getString("GraphingPreferencePage.RefreshDelay"), //$NON-NLS-1$
+                getFieldEditorParent()));
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-		// Empty
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+        // Empty
+    }
 
 }

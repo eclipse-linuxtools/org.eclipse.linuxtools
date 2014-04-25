@@ -15,24 +15,24 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class AutoScrollSelectionListener extends SelectionAdapter{
-	public static final int AUTO_SCROLL_UP = 0;
-	public static final int AUTO_SCROLL_DOWN = 1;
-	private final int type;
-	private final StapGraph graph;
+    public static final int AUTO_SCROLL_UP = 0;
+    public static final int AUTO_SCROLL_DOWN = 1;
+    private final int type;
+    private final StapGraph graph;
 
-	public AutoScrollSelectionListener(int type, StapGraph g) {
-		this.type = type;
-		this.graph = g;
-	}
+    public AutoScrollSelectionListener(int type, StapGraph g) {
+        this.type = type;
+        this.graph = g;
+    }
 
-	@Override
-	public void widgetSelected(SelectionEvent e) {
-		if (type == AUTO_SCROLL_UP) {
-			AutoScrollHelper.scrollUp(graph);
-		}
-		if (type == AUTO_SCROLL_DOWN) {
-			AutoScrollHelper.scrollDown(graph);
-		}
-	}
+    @Override
+    public void widgetSelected(SelectionEvent e) {
+        if (type == AUTO_SCROLL_UP) {
+            AutoScrollHelper.scrollUp(graph);
+        }
+        if (type == AUTO_SCROLL_DOWN) {
+            AutoScrollHelper.scrollDown(graph);
+        }
+    }
 
 }

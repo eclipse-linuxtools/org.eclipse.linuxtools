@@ -15,26 +15,26 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileTag;
 
 public class SpecfileDefine extends SpecfileTag {
 
-	public SpecfileDefine(String name, int value, Specfile specfile, SpecfilePackage parent) {
-		super(name, value, specfile, parent);
-	}
+    public SpecfileDefine(String name, int value, Specfile specfile, SpecfilePackage parent) {
+        super(name, value, specfile, parent);
+    }
 
-	public SpecfileDefine(String name, String value, Specfile specfile, SpecfilePackage parent) {
-		super(name, value, specfile, parent);
-	}
+    public SpecfileDefine(String name, String value, Specfile specfile, SpecfilePackage parent) {
+        super(name, value, specfile, parent);
+    }
 
-	public SpecfileDefine(SpecfileTag tag) {
-		super();
-		setName(tag.getName().toLowerCase());
-		setSpecfile(tag.getSpecfile());
-		setLineNumber(tag.getLineNumber());
-		setParent(tag.getParent());
-		if (tag.getTagType().equals(TagType.STRING)) {
-			setValue(tag.getStringValue());
-		}
-		if (tag.getTagType().equals(TagType.INT)) {
-			setValue(tag.getIntValue());
-		}
-	}
+    public SpecfileDefine(SpecfileTag tag) {
+        super();
+        setName(tag.getName().toLowerCase());
+        setSpecfile(tag.getSpecfile());
+        setLineNumber(tag.getLineNumber());
+        setParent(tag.getParent());
+        if (tag.getTagType().equals(TagType.STRING)) {
+            setValue(tag.getStringValue());
+        }
+        if (tag.getTagType().equals(TagType.INT)) {
+            setValue(tag.getIntValue());
+        }
+    }
 
 }

@@ -19,57 +19,57 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class ProviderLaunchConfigurationTabGroup extends
-		ProfileLaunchConfigurationTabGroup implements IExecutableExtension {
+        ProfileLaunchConfigurationTabGroup implements IExecutableExtension {
 
-	// Profiling type.
-	private String type;
+    // Profiling type.
+    private String type;
 
-	// Profiling type name to be displayed.
-	private String name;
+    // Profiling type name to be displayed.
+    private String name;
 
-	@Override
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) {
-		Map<String, String> parameters = (Map<String, String>) data;
-		String profilingType = parameters
-				.get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);
-		String profilingTypeName = parameters
-				.get(ProviderProfileConstants.INIT_DATA_NAME_KEY);
+    @Override
+    public void setInitializationData(IConfigurationElement config,
+            String propertyName, Object data) {
+        Map<String, String> parameters = (Map<String, String>) data;
+        String profilingType = parameters
+                .get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);
+        String profilingTypeName = parameters
+                .get(ProviderProfileConstants.INIT_DATA_NAME_KEY);
 
-		if (profilingType == null) {
-			profilingType = ""; //$NON-NLS-1$
-		}
-		if (profilingTypeName == null) {
-			profilingTypeName = ""; //$NON-NLS-1$
-		}
+        if (profilingType == null) {
+            profilingType = ""; //$NON-NLS-1$
+        }
+        if (profilingTypeName == null) {
+            profilingTypeName = ""; //$NON-NLS-1$
+        }
 
-		setProfilingType(profilingType);
-		setProfilingTypeName(profilingTypeName);
-	}
+        setProfilingType(profilingType);
+        setProfilingTypeName(profilingTypeName);
+    }
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
-		tabs.add(new ProviderOptionsTab(type, name));
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
+        tabs.add(new ProviderOptionsTab(type, name));
 
-		return tabs.toArray(new AbstractLaunchConfigurationTab [] {});
-	}
+        return tabs.toArray(new AbstractLaunchConfigurationTab [] {});
+    }
 
-	/**
-	 * Set profiling type.
-	 *
-	 * @param profilingType
-	 */
-	private void setProfilingType(String profilingType) {
-		type = profilingType;
-	}
+    /**
+     * Set profiling type.
+     *
+     * @param profilingType
+     */
+    private void setProfilingType(String profilingType) {
+        type = profilingType;
+    }
 
-	/**
-	 * Set profiling type name to be displayed.
-	 *
-	 * @param profilingTypeName
-	 */
-	private void setProfilingTypeName(String profilingTypeName) {
-		name = profilingTypeName;
-	}
+    /**
+     * Set profiling type name to be displayed.
+     *
+     * @param profilingTypeName
+     */
+    private void setProfilingTypeName(String profilingTypeName) {
+        name = profilingTypeName;
+    }
 }

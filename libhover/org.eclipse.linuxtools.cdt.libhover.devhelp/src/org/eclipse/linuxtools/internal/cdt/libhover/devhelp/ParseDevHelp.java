@@ -113,7 +113,7 @@ public class ParseDevHelp {
                         descStart = true;;
                          description.append("<p>"); //$NON-NLS-1$
                     }
-                } else	if (descStart) {
+                } else    if (descStart) {
                     if ("P".equals(name.rawname)) { //$NON-NLS-1$
                         description.append("<p>"); //$NON-NLS-1$
                     } else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$
@@ -143,7 +143,7 @@ public class ParseDevHelp {
             if (begin) {
                 if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
                     --divCounter;
-//	    			System.out.println("divCounter is " + divCounter);
+//                    System.out.println("divCounter is " + divCounter);
                     if (divCounter <= 0) {
                         begin = false;
                     }

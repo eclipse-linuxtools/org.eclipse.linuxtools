@@ -17,24 +17,24 @@ package org.eclipse.linuxtools.internal.gprof.symbolManager;
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
 public class Bucket {
-	
-	/** Start address of this bucket */
-	public final long startAddr;
-	/** End address of this bucket */
-	public final long endAddr;
-	/** time spent in this bucket */
-	public final int  time;
-	
-	/**
-	 * Constructor
-	 * @param startAddr
-	 * @param endAddr
-	 * @param time
-	 */
-	public Bucket(long startAddr, long endAddr, int time) {
-		this.startAddr = startAddr;
-		this.endAddr   = endAddr;
-		this.time       = time;
-	}
+
+    /** Start address of this bucket */
+    public final long startAddr;
+    /** End address of this bucket */
+    public final long endAddr;
+    /** time spent in this bucket */
+    public final int  time;
+
+    /**
+     * Constructor
+     * @param startAddr
+     * @param endAddr
+     * @param time
+     */
+    public Bucket(long startAddr, long endAddr, int time) {
+        this.startAddr = startAddr;
+        this.endAddr   = endAddr;
+        this.time       = time;
+    }
 
 }

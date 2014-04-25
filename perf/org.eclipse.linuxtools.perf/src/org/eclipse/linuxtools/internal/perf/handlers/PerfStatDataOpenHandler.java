@@ -30,53 +30,53 @@ import org.eclipse.ui.IEditorLauncher;
  */
 public class PerfStatDataOpenHandler implements IEditorLauncher {
 
-	private static final String TITLE_EXCERPT = "Performance counter stats for"; //$NON-NLS-1$
+    private static final String TITLE_EXCERPT = "Performance counter stats for"; //$NON-NLS-1$
 
-	@Override
-	public void open(IPath file) {
-		File statFile = file.toFile();
-		try (BufferedReader fileReader = new BufferedReader(new FileReader(statFile))) {
-			final StringBuilder contents = new StringBuilder();
-			final StringBuilder title = new StringBuilder();
-			String line;
+    @Override
+    public void open(IPath file) {
+        File statFile = file.toFile();
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(statFile))) {
+            final StringBuilder contents = new StringBuilder();
+            final StringBuilder title = new StringBuilder();
+            String line;
 
-			// read file contents
-			while ((line = fileReader.readLine()) != null) {
-				// set data title
-				if (title.length() == 0 && line.contains(TITLE_EXCERPT)) {
-					title.append(line);
-				}
-				contents.append(line);
-				contents.append("\n"); //$NON-NLS-1$
-			}
+            // read file contents
+            while ((line = fileReader.readLine()) != null) {
+                // set data title
+                if (title.length() == 0 && line.contains(TITLE_EXCERPT)) {
+                    title.append(line);
+                }
+                contents.append(line);
+                contents.append("\n"); //$NON-NLS-1$
+            }
 
-			// construct basic title if none was found in the file
-			if (title.length() == 0) {
-				title.append(NLS.bind(Messages.PerfEditorLauncher_stat_title,
-						statFile.getName()));
-			}
+            // construct basic title if none was found in the file
+            if (title.length() == 0) {
+                title.append(NLS.bind(Messages.PerfEditorLauncher_stat_title,
+                        statFile.getName()));
+            }
 
-			final String timestamp = DateFormat.getInstance().format(new Date(statFile.lastModified()));
-			PerfPlugin.getDefault().setStatData(new IPerfData() {
+            final String timestamp = DateFormat.getInstance().format(new Date(statFile.lastModified()));
+            PerfPlugin.getDefault().setStatData(new IPerfData() {
 
-				@Override
-				public String getTitle() {
-					return title.toString() + " (" + timestamp + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-				}
+                @Override
+                public String getTitle() {
+                    return title.toString() + " (" + timestamp + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                }
 
-				@Override
-				public String getPerfData() {
-					return contents.toString();
-				}
-			});
+                @Override
+                public String getPerfData() {
+                    return contents.toString();
+                }
+            });
 
-			StatView.refreshView();
-		} catch (FileNotFoundException e) {
-			PerfPlugin.getDefault().openError(e,
-					NLS.bind(Messages.PerfEditorLauncher_file_dne_error, statFile.getName()));
-		} catch (IOException e) {
-			PerfPlugin.getDefault().openError(e,
-					NLS.bind(Messages.PerfEditorLauncher_file_read_error, statFile.getName()));
-		} 
-	}
+            StatView.refreshView();
+        } catch (FileNotFoundException e) {
+            PerfPlugin.getDefault().openError(e,
+                    NLS.bind(Messages.PerfEditorLauncher_file_dne_error, statFile.getName()));
+        } catch (IOException e) {
+            PerfPlugin.getDefault().openError(e,
+                    NLS.bind(Messages.PerfEditorLauncher_file_read_error, statFile.getName()));
+        }
+    }
 }

@@ -32,62 +32,62 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DoubleClickTest extends AbstractMassifTest {
-	private MassifHeapTreeNode node;
+    private MassifHeapTreeNode node;
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	private void doDoubleClick() {
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		MassifTreeViewer treeViewer = view.getTreeViewer();
+    private void doDoubleClick() {
+        MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        MassifTreeViewer treeViewer = view.getTreeViewer();
 
-		MassifSnapshot[] snapshots = view.getSnapshots();
-		node = snapshots[1].getRoot(); // first detailed
-		TreePath path = new TreePath(new Object[] { node });
-		while (node.getChildren().length > 0 && !node.hasSourceFile()) {
-			node = node.getChildren()[0];
-			path = path.createChildPath(node);
-		}
-		assertTrue(node.hasSourceFile());
-		treeViewer.getViewer().expandToLevel(node,
-				AbstractTreeViewer.ALL_LEVELS);
-		TreeSelection selection = new TreeSelection(path);
+        MassifSnapshot[] snapshots = view.getSnapshots();
+        node = snapshots[1].getRoot(); // first detailed
+        TreePath path = new TreePath(new Object[] { node });
+        while (node.getChildren().length > 0 && !node.hasSourceFile()) {
+            node = node.getChildren()[0];
+            path = path.createChildPath(node);
+        }
+        assertTrue(node.hasSourceFile());
+        treeViewer.getViewer().expandToLevel(node,
+                AbstractTreeViewer.ALL_LEVELS);
+        TreeSelection selection = new TreeSelection(path);
 
-		// do double click
-		IDoubleClickListener listener = treeViewer.getDoubleClickListener();
-		listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
-	}
-	@Test
-	public void testDoubleClickFile() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
-		wc.doSave();
-		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
+        // do double click
+        IDoubleClickListener listener = treeViewer.getDoubleClickListener();
+        listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
+    }
+    @Test
+    public void testDoubleClickFile() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+        wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
+        wc.doSave();
+        doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
-		doDoubleClick();
+        doDoubleClick();
 
-		checkFile(proj.getProject(), node);
-	}
-	@Test
-	public void testDoubleClickLine() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
-		wc.doSave();
-		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+        checkFile(proj.getProject(), node);
+    }
+    @Test
+    public void testDoubleClickLine() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+        wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
+        wc.doSave();
+        doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
 
-		doDoubleClick();
+        doDoubleClick();
 
-		checkLine(node);
-	}
+        checkLine(node);
+    }
 }

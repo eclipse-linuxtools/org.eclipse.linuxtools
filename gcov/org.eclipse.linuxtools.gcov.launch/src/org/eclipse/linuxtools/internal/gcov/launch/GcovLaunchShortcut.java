@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *    Red Hat Inc. - modification to use code in this plug-in
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.launch;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -18,18 +18,18 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class GcovLaunchShortcut extends ProfileLaunchShortcut {
 
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
-	}
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) {
+    }
 
-	/**
-	 * Method getValgrindLaunchConfigType.
-	 * @return ILaunchConfigurationType
-	 */
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(GcovLaunchPlugin.LAUNCH_ID);
-	}
+    /**
+     * Method getValgrindLaunchConfigType.
+     * @return ILaunchConfigurationType
+     */
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(GcovLaunchPlugin.LAUNCH_ID);
+    }
 
 }

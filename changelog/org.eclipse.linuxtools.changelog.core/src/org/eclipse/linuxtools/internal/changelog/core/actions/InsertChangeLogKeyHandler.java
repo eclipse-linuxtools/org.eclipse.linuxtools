@@ -32,179 +32,179 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * @author pmuldoon (Phil Muldoon)
  */
 public class InsertChangeLogKeyHandler extends ChangeLogAction implements
-		IHandler, IWorkbenchWindowActionDelegate {
+        IHandler, IWorkbenchWindowActionDelegate {
 
-	private IEditorPart currentEditor;
+    private IEditorPart currentEditor;
 
-	private String getEditorName() {
-		if (currentEditor != null)
-			return returnQualifedEditor(currentEditor.getClass());
-		else
-			return "";
+    private String getEditorName() {
+        if (currentEditor != null)
+            return returnQualifedEditor(currentEditor.getClass());
+        else
+            return "";
 
-	}
+    }
 
-	private String getEntryFilePath() {
-		if (currentEditor != null)
-			return getDocumentLocation(currentEditor, false);
-		else
-			return "";
-	}
+    private String getEntryFilePath() {
+        if (currentEditor != null)
+            return getDocumentLocation(currentEditor, false);
+        else
+            return "";
+    }
 
-	private String returnQualifedEditor(Class<?> ClassName) {
-		return ClassName.toString().substring(
-				ClassName.getPackage().toString().length() - 1,
-				ClassName.toString().length());
-	}
+    private String returnQualifedEditor(Class<?> ClassName) {
+        return ClassName.toString().substring(
+                ClassName.getPackage().toString().length() - 1,
+                ClassName.toString().length());
+    }
 
 
-	private IEditorPart getChangelog() {
+    private IEditorPart getChangelog() {
 
-		IConfigurationElement formatterConfigElement = extensionManager
-				.getFormatterConfigElement();
-		if (formatterConfigElement.getAttribute("inFile").equalsIgnoreCase(
-				"true")) {
-			return currentEditor;
-			// this formatter wants to use an external changelog file
-		} else {
-			IEditorPart changelog = null;
+        IConfigurationElement formatterConfigElement = extensionManager
+                .getFormatterConfigElement();
+        if (formatterConfigElement.getAttribute("inFile").equalsIgnoreCase(
+                "true")) {
+            return currentEditor;
+            // this formatter wants to use an external changelog file
+        } else {
+            IEditorPart changelog = null;
 
-			IConfigurationElement nameElement = formatterConfigElement
-					.getChildren()[0];
-			if (nameElement.getAttribute("name") == null) {
-				reportErr("Got non-name child with inFile set to False", null);
-				return null;
-			} else {
-				pref_ChangeLogName = nameElement.getAttribute("name");
-				changelog = getChangelog(getDocumentLocation(currentEditor,
-						false));
+            IConfigurationElement nameElement = formatterConfigElement
+                    .getChildren()[0];
+            if (nameElement.getAttribute("name") == null) {
+                reportErr("Got non-name child with inFile set to False", null);
+                return null;
+            } else {
+                pref_ChangeLogName = nameElement.getAttribute("name");
+                changelog = getChangelog(getDocumentLocation(currentEditor,
+                        false));
 
-				if (changelog == null) {
-					changelog = askChangeLogLocation(getDocumentLocation(
-							currentEditor, false));
-				}
+                if (changelog == null) {
+                    changelog = askChangeLogLocation(getDocumentLocation(
+                            currentEditor, false));
+                }
 
-				return changelog;
-			}
-		}
+                return changelog;
+            }
+        }
 
-	}
+    }
 
-	private String parseFunctionName(IParserChangeLogContrib parser) {
+    private String parseFunctionName(IParserChangeLogContrib parser) {
 
-		try {
-			return parser.parseCurrentFunction(currentEditor);
-		} catch (CoreException e) {
-			reportErr("Couldn't parse function name with "
-					+ parser.getClass().toString(), null);
-			return "";
-		}
+        try {
+            return parser.parseCurrentFunction(currentEditor);
+        } catch (CoreException e) {
+            reportErr("Couldn't parse function name with "
+                    + parser.getClass().toString(), null);
+            return "";
+        }
 
-	}
+    }
 
-	@Override
-	public Object execute(ExecutionEvent event) {
+    @Override
+    public Object execute(ExecutionEvent event) {
 
-		currentEditor = HandlerUtil.getActiveEditor(event);
+        currentEditor = HandlerUtil.getActiveEditor(event);
 
-		// make sure an editor is selected.
-		if (currentEditor == null) {
-			return null;
-		}
+        // make sure an editor is selected.
+        if (currentEditor == null) {
+            return null;
+        }
 
-		ChangeLogWriter clw = new ChangeLogWriter();
+        ChangeLogWriter clw = new ChangeLogWriter();
 
-		// load settings from extensions + user pref.
-		loadPreferences();
+        // load settings from extensions + user pref.
+        loadPreferences();
 
-		// get file path from target file
-		clw.setEntryFilePath(getEntryFilePath());
+        // get file path from target file
+        clw.setEntryFilePath(getEntryFilePath());
 
-		// err check. do nothing if no file is being open/edited
-		if (clw.getEntryFilePath() == "") {
-			return null;
-		}
+        // err check. do nothing if no file is being open/edited
+        if (clw.getEntryFilePath() == "") {
+            return null;
+        }
 
-		String editorName = getEditorName();
+        String editorName = getEditorName();
 
-		// get a parser for this file
-		IParserChangeLogContrib parser = extensionManager
-				.getParserContributor(editorName);
+        // get a parser for this file
+        IParserChangeLogContrib parser = extensionManager
+                .getParserContributor(editorName);
 
-		// if no parser for this type of document, then don't guess function
-		// name
-		// and set it as "".
-		if (parser == null) {
-			clw.setGuessedFName("");
-		} else {
-			// guess function name
-			clw.setGuessedFName(parseFunctionName(parser));
-		}
+        // if no parser for this type of document, then don't guess function
+        // name
+        // and set it as "".
+        if (parser == null) {
+            clw.setGuessedFName("");
+        } else {
+            // guess function name
+            clw.setGuessedFName(parseFunctionName(parser));
+        }
 
-		// get formatter
-		clw.setFormatter(extensionManager.getFormatterContributor(clw
-				.getEntryFilePath(), pref_Formatter));
+        // get formatter
+        clw.setFormatter(extensionManager.getFormatterContributor(clw
+                .getEntryFilePath(), pref_Formatter));
 
-		// select changelog
-		clw.setChangelog(getChangelog());
-		if (clw.getChangelog() == null)
-			return null;
+        // select changelog
+        clw.setChangelog(getChangelog());
+        if (clw.getChangelog() == null)
+            return null;
 
-		// write to changelog
-		clw.setDateLine(clw.getFormatter().formatDateLine(pref_AuthorName,
-				pref_AuthorEmail));
+        // write to changelog
+        clw.setDateLine(clw.getFormatter().formatDateLine(pref_AuthorName,
+                pref_AuthorEmail));
 
-		clw.setChangelogLocation(getDocumentLocation(clw.getChangelog(), true));
+        clw.setChangelogLocation(getDocumentLocation(clw.getChangelog(), true));
 
-		clw.writeChangeLog();
+        clw.writeChangeLog();
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
+    @Override
+    public void addHandlerListener(IHandlerListener handlerListener) {
 
-	}
+    }
 
-	@Override
-	public boolean isEnabled() {
-		IEditorReference[] refs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
-		for (int i = 0; i < refs.length; ++i) {
-			IEditorReference ref = refs[i];
-			String id = ref.getId();
-			System.out.println(id);
-		}
-		return true;
-	}
+    @Override
+    public boolean isEnabled() {
+        IEditorReference[] refs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
+        for (int i = 0; i < refs.length; ++i) {
+            IEditorReference ref = refs[i];
+            String id = ref.getId();
+            System.out.println(id);
+        }
+        return true;
+    }
 
-	@Override
-	public boolean isHandled() {
-		return true;
-	}
+    @Override
+    public boolean isHandled() {
+        return true;
+    }
 
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
+    @Override
+    public void removeHandlerListener(IHandlerListener handlerListener) {
 
-	}
+    }
 
-	@Override
-	public void dispose() {
+    @Override
+    public void dispose() {
 
-	}
+    }
 
-	@Override
-	public void init(IWorkbenchWindow window) {
+    @Override
+    public void init(IWorkbenchWindow window) {
 
-	}
+    }
 
-	@Override
-	public void run(IAction action) {
+    @Override
+    public void run(IAction action) {
 
-			execute(null);
-	}
+            execute(null);
+    }
 
-	@Override
-	public void selectionChanged(IAction action, ISelection selection) {
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
 
-	}
+    }
 }

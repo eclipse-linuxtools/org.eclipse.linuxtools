@@ -49,9 +49,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public final class GcovAnnotationModel implements IAnnotationModel {
 
-	private static final String THOROUGH_COVERAGE = "org.eclipse.linuxtools.gcov.ThoroughCoverageAnnotation"; //$NON-NLS-1$
-	private static final String COVERAGE = "org.eclipse.linuxtools.gcov.CoverageAnnotation"; //$NON-NLS-1$
-	private static final String NO_COVERAGE = "org.eclipse.linuxtools.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
+    private static final String THOROUGH_COVERAGE = "org.eclipse.linuxtools.gcov.ThoroughCoverageAnnotation"; //$NON-NLS-1$
+    private static final String COVERAGE = "org.eclipse.linuxtools.gcov.CoverageAnnotation"; //$NON-NLS-1$
+    private static final String NO_COVERAGE = "org.eclipse.linuxtools.gcov.NoCoverageAnnotation"; //$NON-NLS-1$
 
     /** Key for identifying our model from other Editor models. */
     private static final Object KEY = new Object();

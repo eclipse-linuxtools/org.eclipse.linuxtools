@@ -21,33 +21,33 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 public class CovFunctionContentProvider extends CovFileContentProvider {
 
-	public static final CovFunctionContentProvider sharedInstance = new CovFunctionContentProvider();
-	
-	/**
-	 * Constructor
-	 */
-	protected CovFunctionContentProvider() {
-	}
-	
-	@Override
-	protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
-		LinkedList<? extends TreeElement> list = super.getElementChildrenList(root);
-		LinkedList<TreeElement> ret = new LinkedList<>();
-		for (TreeElement histTreeElem : list) {
-			LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
-			ret.addAll(partialList);
-		}
-		return ret;
-	}
-	
+    public static final CovFunctionContentProvider sharedInstance = new CovFunctionContentProvider();
 
-	@Override
-	public Object getParent(Object element) {
-		Object o = super.getParent(element);
-		if (o instanceof CovFileTreeElement) {
-			o = super.getParent(o);
-		}
-		return o;
-	}
+    /**
+     * Constructor
+     */
+    protected CovFunctionContentProvider() {
+    }
+
+    @Override
+    protected LinkedList<? extends TreeElement> getElementChildrenList(CovRootTreeElement root) {
+        LinkedList<? extends TreeElement> list = super.getElementChildrenList(root);
+        LinkedList<TreeElement> ret = new LinkedList<>();
+        for (TreeElement histTreeElem : list) {
+            LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
+            ret.addAll(partialList);
+        }
+        return ret;
+    }
+
+
+    @Override
+    public Object getParent(Object element) {
+        Object o = super.getParent(element);
+        if (o instanceof CovFileTreeElement) {
+            o = super.getParent(o);
+        }
+        return o;
+    }
 
 }

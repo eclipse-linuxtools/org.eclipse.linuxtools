@@ -5,7 +5,7 @@
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-    
+
     Contributors:
         Red Hat - initial API and implementation
  -->
@@ -19,7 +19,7 @@
             parentId="org.eclipse.ui.textEditorScope">
       </context>
    </extension>
-   
+
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -39,12 +39,12 @@
             id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
       </editor>
    </extension>
-   
-   	<!-- Hyperlink targets and detectors -->
-	<extension 
-	point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
-<target id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget" 
-	name="RPM Editor Target">
+
+       <!-- Hyperlink targets and detectors -->
+    <extension
+    point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+<target id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget"
+    name="RPM Editor Target">
 <context type="org.eclipse.ui.texteditor.ITextEditor"/>
 </target>
 </extension>
@@ -77,20 +77,20 @@
 </extension>
 
    <extension
-	   id="specfileerror"
-	   point="org.eclipse.core.resources.markers"
-	   name="%extension.name">
-	   <super type="org.eclipse.core.resources.problemmarker"/>
-	   <super type="org.eclipse.core.resources.textmarker"/>
-	   <persistent value="true"/>
-	</extension>
-	 <extension
-	   id="specfiletask"
-	   point="org.eclipse.core.resources.markers"
-	   name="%extension.name.0">
-	   <super type="org.eclipse.core.resources.taskmarker"/>
-	   <persistent value="true"/>
-	</extension>
+       id="specfileerror"
+       point="org.eclipse.core.resources.markers"
+       name="%extension.name">
+       <super type="org.eclipse.core.resources.problemmarker"/>
+       <super type="org.eclipse.core.resources.textmarker"/>
+       <persistent value="true"/>
+    </extension>
+     <extension
+       id="specfiletask"
+       point="org.eclipse.core.resources.markers"
+       name="%extension.name.0">
+       <super type="org.eclipse.core.resources.taskmarker"/>
+       <persistent value="true"/>
+    </extension>
    <extension
          point="org.eclipse.ui.editors.documentProviders">
       <provider
@@ -116,7 +116,7 @@
          <filePattern pattern=".*\.spec"/>
       </formatter>
    </extension>
-  
+
    <extension
          point="org.eclipse.ui.editors.templates">
       <contextType
@@ -187,7 +187,7 @@
              <!--markerSeverity="0"-->
          </type>
    </extension>
-   
+
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
@@ -239,7 +239,7 @@
             name="%command.name.0"
             id="rpmEditor.organizePatches.command"/>
          <command
-         	categoryId="rpmEditor.category"
+             categoryId="rpmEditor.category"
             id="rpmEditor.showOutline.command"
             name="%command.name.1"/>
          <command
@@ -254,15 +254,15 @@
          </command>
    </extension>
    <extension point="org.eclipse.ui.handlers">
-    	<handler
-         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-         	commandId="rpmEditor.toggleComment.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-         	commandId="rpmEditor.organizePatches.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
-         	commandId="rpmEditor.showOutline.command" />
+        <handler
+             class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+             commandId="rpmEditor.toggleComment.command" />
+           <handler
+             class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+             commandId="rpmEditor.organizePatches.command" />
+           <handler
+             class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+             commandId="rpmEditor.showOutline.command" />
      <handler
            class="org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileEditorDownloadSourcesActionDelegate"
            commandId="rpmEditor.downloadSources.command">
@@ -286,7 +286,7 @@
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
       <key
-      	   sequence="Ctrl+O"
+             sequence="Ctrl+O"
            commandId="rpmEditor.showOutline.command"
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
@@ -425,21 +425,21 @@
    </extension>
    <!-- Compare support-->
    <extension point="org.eclipse.compare.contentMergeViewers">
-	  <viewer
-		id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
-		extensions="spec,spec2"
-		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecMergeViewerCreator">
-	  </viewer>
+      <viewer
+        id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
+        extensions="spec,spec2"
+        class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecMergeViewerCreator">
+      </viewer>
    </extension>
    <extension point="org.eclipse.compare.structureMergeViewers">
-	  <viewer
-		id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureMergeViewer"
-		extensions="spec"
-		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
-	  </viewer>
+      <viewer
+        id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureMergeViewer"
+        extensions="spec"
+        class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
+      </viewer>
    </extension>
    <extension point ="org.eclipse.compare.structureCreators">
- 		<structureCreator id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureCreator" 
-		class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
+         <structureCreator id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureCreator"
+        class="org.eclipse.linuxtools.internal.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
    </extension>
 </plugin>

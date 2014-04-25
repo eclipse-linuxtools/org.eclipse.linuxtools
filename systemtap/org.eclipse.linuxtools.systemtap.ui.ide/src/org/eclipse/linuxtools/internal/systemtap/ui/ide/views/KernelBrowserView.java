@@ -46,192 +46,192 @@ import org.eclipse.ui.progress.UIJob;
  */
 
 public class KernelBrowserView extends BrowserView {
-	private class KernelRefreshJob extends Job {
-		private boolean remote;
-		private URI kernelLocationURI;
-		private IRemoteFileProxy proxy;
-		private String kernelSource;
+    private class KernelRefreshJob extends Job {
+        private boolean remote;
+        private URI kernelLocationURI;
+        private IRemoteFileProxy proxy;
+        private String kernelSource;
 
-		public KernelRefreshJob(boolean remote, URI kernelLocationURI, IRemoteFileProxy proxy, String kernelSource) {
-			super(Localization.getString("KernelBrowserView.RefreshingKernelSource")); //$NON-NLS-1$
-			this.remote = remote;
-			this.kernelLocationURI = kernelLocationURI;
-			this.proxy = proxy;
-			this.kernelSource = kernelSource;
-		}
+        public KernelRefreshJob(boolean remote, URI kernelLocationURI, IRemoteFileProxy proxy, String kernelSource) {
+            super(Localization.getString("KernelBrowserView.RefreshingKernelSource")); //$NON-NLS-1$
+            this.remote = remote;
+            this.kernelLocationURI = kernelLocationURI;
+            this.proxy = proxy;
+            this.kernelSource = kernelSource;
+        }
 
-		@Override
-		public IStatus run(IProgressMonitor monitor) {
-			IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-			KernelSourceTree kst = new KernelSourceTree();
-			String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
-			if (remote) {
-				try {
-					kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
-				} catch (CoreException e) {
-					ExceptionErrorDialog.openError(Localization.getString("KernelBrowserView.CouldNotInitializeTree"), e); //$NON-NLS-1$
-				}
-			} else {
-				kst.buildKernelTree(kernelSource, excluded);
-			}
-			if (monitor.isCanceled()) {
-				return Status.CANCEL_STATUS;
-			}
-			UpdateKernelBrowserJob job = new UpdateKernelBrowserJob(kst);
-			job.schedule();
-			monitor.done();
-			return Status.OK_STATUS;
-		}
-	}
+        @Override
+        public IStatus run(IProgressMonitor monitor) {
+            IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
+            KernelSourceTree kst = new KernelSourceTree();
+            String excluded[] = p.getString(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE).split(File.pathSeparator);
+            if (remote) {
+                try {
+                    kst.buildKernelTree(kernelLocationURI, excluded, proxy, monitor);
+                } catch (CoreException e) {
+                    ExceptionErrorDialog.openError(Localization.getString("KernelBrowserView.CouldNotInitializeTree"), e); //$NON-NLS-1$
+                }
+            } else {
+                kst.buildKernelTree(kernelSource, excluded);
+            }
+            if (monitor.isCanceled()) {
+                return Status.CANCEL_STATUS;
+            }
+            UpdateKernelBrowserJob job = new UpdateKernelBrowserJob(kst);
+            job.schedule();
+            monitor.done();
+            return Status.OK_STATUS;
+        }
+    }
 
-	private class UpdateKernelBrowserJob extends UIJob {
-		KernelSourceTree kst;
-		public UpdateKernelBrowserJob(KernelSourceTree kst) {
-			super(Localization.getString("KernelBrowserView.UpdateKernelBrowser")); //$NON-NLS-1$
-			this.kst = kst;
-		}
+    private class UpdateKernelBrowserJob extends UIJob {
+        KernelSourceTree kst;
+        public UpdateKernelBrowserJob(KernelSourceTree kst) {
+            super(Localization.getString("KernelBrowserView.UpdateKernelBrowser")); //$NON-NLS-1$
+            this.kst = kst;
+        }
 
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			monitor.beginTask(Localization.getString("KernelBrowserView.UpdateKernelBrowser"), 100); //$NON-NLS-1$
-			if (kst == null) {
-				return Status.OK_STATUS;
-			}
-			viewer.setInput(kst.getTree());
-			kst.dispose();
-			monitor.done();
-			return Status.OK_STATUS;
-		}
-	}
+        @Override
+        public IStatus runInUIThread(IProgressMonitor monitor) {
+            monitor.beginTask(Localization.getString("KernelBrowserView.UpdateKernelBrowser"), 100); //$NON-NLS-1$
+            if (kst == null) {
+                return Status.OK_STATUS;
+            }
+            viewer.setInput(kst.getTree());
+            kst.dispose();
+            monitor.done();
+            return Status.OK_STATUS;
+        }
+    }
 
-	public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
-	private KernelSourceAction doubleClickAction;
+    public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView"; //$NON-NLS-1$
+    private KernelSourceAction doubleClickAction;
 
-	/**
-	 * Creates the UI on the given <code>Composite</code>
-	 */
-	@Override
-	public void createPartControl(Composite parent) {
-		super.createPartControl(parent);
-		refresh();
-		makeActions();
-	}
+    /**
+     * Creates the UI on the given <code>Composite</code>
+     */
+    @Override
+    public void createPartControl(Composite parent) {
+        super.createPartControl(parent);
+        refresh();
+        makeActions();
+    }
 
-	/**
-	 * Wires up all of the actions for this browser, such as double and right click handlers.
-	 */
-	private void makeActions() {
-		doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
-		viewer.addDoubleClickListener(doubleClickAction);
-		IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
-	}
+    /**
+     * Wires up all of the actions for this browser, such as double and right click handlers.
+     */
+    private void makeActions() {
+        doubleClickAction = new KernelSourceAction(getSite().getWorkbenchWindow(), this);
+        viewer.addDoubleClickListener(doubleClickAction);
+        IDEPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
+    }
 
-	@Override
-	protected Image getEntryImage(TreeNode treeObj) {
-		String item = treeObj.getData().toString();
-		if(item.endsWith(".c")) { //$NON-NLS-1$
-			return IDEPlugin.getImageDescriptor("icons/files/file_c.gif").createImage(); //$NON-NLS-1$
-		}
-		if(item.endsWith(".h")) { //$NON-NLS-1$
-			return IDEPlugin.getImageDescriptor("icons/files/file_h.gif").createImage(); //$NON-NLS-1$
-		}
-		return getGenericImage(treeObj);
-	}
+    @Override
+    protected Image getEntryImage(TreeNode treeObj) {
+        String item = treeObj.getData().toString();
+        if(item.endsWith(".c")) { //$NON-NLS-1$
+            return IDEPlugin.getImageDescriptor("icons/files/file_c.gif").createImage(); //$NON-NLS-1$
+        }
+        if(item.endsWith(".h")) { //$NON-NLS-1$
+            return IDEPlugin.getImageDescriptor("icons/files/file_h.gif").createImage(); //$NON-NLS-1$
+        }
+        return getGenericImage(treeObj);
+    }
 
-	/**
-	 * Updates the kernel source displayed to the user with the new kernel source tree. Usually
-	 * a response to the user changing the preferences related to the kernel source location, requiring
-	 * that the application update the kernel source information.
-	 */
-	@Override
-	public void refresh() {
-		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-		String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
-		if(null == kernelSource || kernelSource.length() < 1) {
-			showBrowserErrorMessage(Localization.getString("KernelBrowserView.NoKernelSourceFound")); //$NON-NLS-1$
-			return;
-		}
+    /**
+     * Updates the kernel source displayed to the user with the new kernel source tree. Usually
+     * a response to the user changing the preferences related to the kernel source location, requiring
+     * that the application update the kernel source information.
+     */
+    @Override
+    public void refresh() {
+        IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
+        String kernelSource = p.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
+        if(null == kernelSource || kernelSource.length() < 1) {
+            showBrowserErrorMessage(Localization.getString("KernelBrowserView.NoKernelSourceFound")); //$NON-NLS-1$
+            return;
+        }
 
-		String localOrRemote = p.getString(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE);
-		URI kernelLocationURI = null;
-		IRemoteFileProxy proxy = null;
-		boolean remote = localOrRemote.equals(PathPreferencePage.REMOTE);
-		if (remote) {
-			boolean error = false;
-			try {
-				kernelLocationURI = IDEPlugin.getDefault().createRemoteUri(kernelSource);
-				if (kernelLocationURI == null) {
-					error = true;
-				} else {
-					proxy = RemoteProxyManager.getInstance().getFileProxy(kernelLocationURI);
-					if (!validateProxy(proxy, kernelSource)) {
-						error = true;
-					}
-				}
-			} catch (CoreException e2) {
-				error = true;
-			}
-			if (error) {
-				showBrowserErrorMessage(Localization.getString("KernelBrowserView.KernelSourceDirNotFound")); //$NON-NLS-1$
-				return;
-			}
-		}
+        String localOrRemote = p.getString(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE);
+        URI kernelLocationURI = null;
+        IRemoteFileProxy proxy = null;
+        boolean remote = localOrRemote.equals(PathPreferencePage.REMOTE);
+        if (remote) {
+            boolean error = false;
+            try {
+                kernelLocationURI = IDEPlugin.getDefault().createRemoteUri(kernelSource);
+                if (kernelLocationURI == null) {
+                    error = true;
+                } else {
+                    proxy = RemoteProxyManager.getInstance().getFileProxy(kernelLocationURI);
+                    if (!validateProxy(proxy, kernelSource)) {
+                        error = true;
+                    }
+                }
+            } catch (CoreException e2) {
+                error = true;
+            }
+            if (error) {
+                showBrowserErrorMessage(Localization.getString("KernelBrowserView.KernelSourceDirNotFound")); //$NON-NLS-1$
+                return;
+            }
+        }
 
-		KernelRefreshJob refreshJob = new KernelRefreshJob(remote, kernelLocationURI, proxy, kernelSource);
-		refreshJob.setUser(true);
-		refreshJob.setPriority(Job.SHORT);
-		refreshJob.schedule();
-	}
+        KernelRefreshJob refreshJob = new KernelRefreshJob(remote, kernelLocationURI, proxy, kernelSource);
+        refreshJob.setUser(true);
+        refreshJob.setPriority(Job.SHORT);
+        refreshJob.schedule();
+    }
 
-	private boolean validateProxy(IRemoteFileProxy proxy, String kernelSource) {
-		if (proxy == null) {
-			return false;
-		}
-		IFileStore fs = proxy.getResource(kernelSource);
-		if (fs == null) {
-			return false;
-		}
-		IFileInfo info = fs.fetchInfo();
-		if (info == null) {
-			return false;
-		}
-		if (!info.exists()) {
-			return false;
-		}
-		return true;
-	}
+    private boolean validateProxy(IRemoteFileProxy proxy, String kernelSource) {
+        if (proxy == null) {
+            return false;
+        }
+        IFileStore fs = proxy.getResource(kernelSource);
+        if (fs == null) {
+            return false;
+        }
+        IFileInfo info = fs.fetchInfo();
+        if (info == null) {
+            return false;
+        }
+        if (!info.exists()) {
+            return false;
+        }
+        return true;
+    }
 
-	private void showBrowserErrorMessage(String message) {
-		TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
-		t.add(new TreeNode("", message, false)); //$NON-NLS-1$
-		viewer.setInput(t);
-	}
+    private void showBrowserErrorMessage(String message) {
+        TreeNode t = new TreeNode("", "", false); //$NON-NLS-1$ //$NON-NLS-2$
+        t.add(new TreeNode("", message, false)); //$NON-NLS-1$
+        viewer.setInput(t);
+    }
 
-	/**
-	 * A <code>IPropertyChangeListener</code> that detects changes to the Kernel Source location
-	 * and runs the <code>updateKernelSourceTree</code> method.
-	 */
-	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
-				event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
-				event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
-				refresh();
-			}
-		}
-	};
+    /**
+     * A <code>IPropertyChangeListener</code> that detects changes to the Kernel Source location
+     * and runs the <code>updateKernelSourceTree</code> method.
+     */
+    private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            if(event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
+                event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
+                event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
+                refresh();
+            }
+        }
+    };
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
-		if(null != viewer) {
-			viewer.removeDoubleClickListener(doubleClickAction);
-		}
-		if(null != doubleClickAction) {
-			doubleClickAction.dispose();
-		}
-		doubleClickAction = null;
-	}
+    @Override
+    public void dispose() {
+        super.dispose();
+        IDEPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
+        if(null != viewer) {
+            viewer.removeDoubleClickListener(doubleClickAction);
+        }
+        if(null != doubleClickAction) {
+            doubleClickAction.dispose();
+        }
+        doubleClickAction = null;
+    }
 }

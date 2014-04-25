@@ -55,21 +55,21 @@
       <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
-      		annotationType="org.eclipse.linuxtools.valgrind.annotation.error"
+              annotationType="org.eclipse.linuxtools.valgrind.annotation.error"
             label="%marker.editor.error"
             icon="icons/valgrind-error.png"
             quickFixIcon="icons/valgrind-error.png"
             presentationLayer="6">
       </specification>
             <specification
-      		annotationType="org.eclipse.linuxtools.valgrind.annotation.warning"
+              annotationType="org.eclipse.linuxtools.valgrind.annotation.warning"
             label="%marker.editor.warning"
             icon="icons/valgrind-warning.png"
             quickFixIcon="icons/valgrind-warning.png"
             presentationLayer="5">
       </specification>
             <specification
-      		annotationType="org.eclipse.linuxtools.valgrind.annotation.info"
+              annotationType="org.eclipse.linuxtools.valgrind.annotation.info"
             label="%marker.editor.info"
             icon="icons/valgrind-info.png"
             presentationLayer="4">

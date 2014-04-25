@@ -12,5 +12,5 @@
             tabgroup="org.eclipse.linuxtools.internal.gcov.launch.GcovLaunchConfigurationTabGroup"
             type="coverage">
       </provider>
-   </extension>   
+   </extension>
 </plugin>

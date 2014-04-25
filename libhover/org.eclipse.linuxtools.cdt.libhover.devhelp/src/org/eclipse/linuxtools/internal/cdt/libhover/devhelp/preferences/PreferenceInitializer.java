@@ -19,15 +19,15 @@ import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpPlugin;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
-	@Override
-	public void initializeDefaultPreferences() {
-		IPreferenceStore store = DevHelpPlugin.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.DEVHELP_DIRECTORY, "/usr/share/gtk-doc/html"); //$NON-NLS-1$
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
+     */
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = DevHelpPlugin.getDefault().getPreferenceStore();
+        store.setDefault(PreferenceConstants.DEVHELP_DIRECTORY, "/usr/share/gtk-doc/html"); //$NON-NLS-1$
+    }
 
 }

@@ -11,6 +11,6 @@
 package org.eclipse.linuxtools.internal.valgrind.core;
 
 public interface PluginConstants {
-	// IDs for important plugins
-	String CORE_PLUGIN_ID = "org.eclipse.linuxtools.valgrind.core"; //$NON-NLS-1$
+    // IDs for important plugins
+    String CORE_PLUGIN_ID = "org.eclipse.linuxtools.valgrind.core"; //$NON-NLS-1$
 }

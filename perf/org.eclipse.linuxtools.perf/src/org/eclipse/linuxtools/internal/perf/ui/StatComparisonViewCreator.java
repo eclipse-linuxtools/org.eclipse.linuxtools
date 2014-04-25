@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class StatComparisonViewCreator implements IViewerCreator {
 
-	@Override
-	public Viewer createViewer(Composite parent, CompareConfiguration config) {
-		return new StatComparisonView(parent, config);
-	}
+    @Override
+    public Viewer createViewer(Composite parent, CompareConfiguration config) {
+        return new StatComparisonView(parent, config);
+    }
 }

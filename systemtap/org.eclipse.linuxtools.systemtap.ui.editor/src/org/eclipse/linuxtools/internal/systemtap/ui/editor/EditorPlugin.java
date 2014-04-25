@@ -16,5 +16,5 @@ package org.eclipse.linuxtools.internal.systemtap.ui.editor;
  */
 public interface EditorPlugin {
 
-	String ID = "org.eclipse.linuxtools.systemtap.ui.editor"; //$NON-NLS-1$
+    String ID = "org.eclipse.linuxtools.systemtap.ui.editor"; //$NON-NLS-1$
 }

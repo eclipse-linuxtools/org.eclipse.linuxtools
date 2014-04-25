@@ -53,180 +53,180 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CoreMessagesViewer {
 
-	static ImageRegistry imageRegistry = new ImageRegistry();
+    static ImageRegistry imageRegistry = new ImageRegistry();
 
-	private static final String VALGRIND_ERROR = "Valgrind_Error"; //$NON-NLS-1$
-	/**
-	 * @since 0.10
-	 */
-	private static final String VALGRIND_INFO = "Valgrind_Info"; //$NON-NLS-1$
-	private static final String VALGRIND_ERROR_IMAGE = "icons/valgrind-error.png"; //$NON-NLS-1$
-	/**
-	 * @since 0.10
-	 */
-	public static final String VALGRIND_INFO_IMAGE = "icons/valgrind-info.png"; //$NON-NLS-1$
-	private IDoubleClickListener doubleClickListener;
-	private ITreeContentProvider contentProvider;
+    private static final String VALGRIND_ERROR = "Valgrind_Error"; //$NON-NLS-1$
+    /**
+     * @since 0.10
+     */
+    private static final String VALGRIND_INFO = "Valgrind_Info"; //$NON-NLS-1$
+    private static final String VALGRIND_ERROR_IMAGE = "icons/valgrind-error.png"; //$NON-NLS-1$
+    /**
+     * @since 0.10
+     */
+    public static final String VALGRIND_INFO_IMAGE = "icons/valgrind-info.png"; //$NON-NLS-1$
+    private IDoubleClickListener doubleClickListener;
+    private ITreeContentProvider contentProvider;
 
-	private TreeViewer viewer;
+    private TreeViewer viewer;
 
-	public CoreMessagesViewer(Composite parent, int style) {
-		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
-		viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-		if (imageRegistry.getDescriptor(VALGRIND_ERROR) == null) {
-			ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_ERROR_IMAGE);
-			if (d != null) {
-				imageRegistry.put(VALGRIND_ERROR, d);
-			}
-		}
-		if (imageRegistry.getDescriptor(VALGRIND_INFO) == null) {
-			ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_INFO_IMAGE);
-			if (d != null) {
-				imageRegistry.put(VALGRIND_INFO, d);
-			}
-		}
-		contentProvider = new ITreeContentProvider() {
+    public CoreMessagesViewer(Composite parent, int style) {
+        viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
+        viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+        if (imageRegistry.getDescriptor(VALGRIND_ERROR) == null) {
+            ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_ERROR_IMAGE);
+            if (d != null) {
+                imageRegistry.put(VALGRIND_ERROR, d);
+            }
+        }
+        if (imageRegistry.getDescriptor(VALGRIND_INFO) == null) {
+            ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_INFO_IMAGE);
+            if (d != null) {
+                imageRegistry.put(VALGRIND_INFO, d);
+            }
+        }
+        contentProvider = new ITreeContentProvider() {
 
-			@Override
-			public Object[] getChildren(Object parentElement) {
-				if (parentElement instanceof Object[]) {
-					return (Object[]) parentElement;
-				}
-				return ((IValgrindMessage) parentElement).getChildren();
-			}
+            @Override
+            public Object[] getChildren(Object parentElement) {
+                if (parentElement instanceof Object[]) {
+                    return (Object[]) parentElement;
+                }
+                return ((IValgrindMessage) parentElement).getChildren();
+            }
 
-			@Override
-			public Object getParent(Object element) {
-				return ((IValgrindMessage) element).getParent();
-			}
+            @Override
+            public Object getParent(Object element) {
+                return ((IValgrindMessage) element).getParent();
+            }
 
-			@Override
-			public boolean hasChildren(Object element) {
-				return getChildren(element).length > 0;
-			}
+            @Override
+            public boolean hasChildren(Object element) {
+                return getChildren(element).length > 0;
+            }
 
-			@Override
-			public Object[] getElements(Object inputElement) {
-				return getChildren(inputElement);
-			}
+            @Override
+            public Object[] getElements(Object inputElement) {
+                return getChildren(inputElement);
+            }
 
-			@Override
-			public void dispose() {}
+            @Override
+            public void dispose() {}
 
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {}
+            @Override
+            public void inputChanged(Viewer viewer, Object oldInput,
+                    Object newInput) {}
 
-		};
-		viewer.setContentProvider(contentProvider);
+        };
+        viewer.setContentProvider(contentProvider);
 
-		viewer.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((IValgrindMessage) element).getText();
-			}
+        viewer.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(Object element) {
+                return ((IValgrindMessage) element).getText();
+            }
 
-			@Override
-			public Image getImage(Object element) {
-				Image image;
-				if (element instanceof ValgrindStackFrame) {
-					image = DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_STACKFRAME);
-				} else if (element instanceof ValgrindError)  {
-					image = imageRegistry.get(VALGRIND_ERROR);
-				} else {
-					image = imageRegistry.get(VALGRIND_INFO);
-				}
-				return image;
-			}
+            @Override
+            public Image getImage(Object element) {
+                Image image;
+                if (element instanceof ValgrindStackFrame) {
+                    image = DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_STACKFRAME);
+                } else if (element instanceof ValgrindError)  {
+                    image = imageRegistry.get(VALGRIND_ERROR);
+                } else {
+                    image = imageRegistry.get(VALGRIND_INFO);
+                }
+                return image;
+            }
 
-		});
+        });
 
-		doubleClickListener = new IDoubleClickListener() {
+        doubleClickListener = new IDoubleClickListener() {
 
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				Object element = ((TreeSelection) event.getSelection()).getFirstElement();
-				if (element instanceof ValgrindStackFrame) {
-					ValgrindStackFrame frame = (ValgrindStackFrame) element;
-					ILaunch launch = frame.getLaunch();
-					ISourceLocator locator = launch.getSourceLocator();
-					if (locator instanceof AbstractSourceLookupDirector) {
-						AbstractSourceLookupDirector director = (AbstractSourceLookupDirector) locator;
-						ISourceLookupParticipant[] participants = director.getParticipants();
-						if (participants.length == 0) {
-							// source locator likely disposed, try recreating it
-							IPersistableSourceLocator sourceLocator;
-							ILaunchConfiguration config = launch.getLaunchConfiguration();
-							if (config != null) {
-								try {
-									String id = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_ID, (String) null);
-									if (id == null) {
-										sourceLocator = CDebugUIPlugin.createDefaultSourceLocator();
-										sourceLocator.initializeDefaults(config);
-									} else {
-										sourceLocator = DebugPlugin.getDefault().getLaunchManager().newSourceLocator(id);
-										String memento = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_MEMENTO, (String) null);
-										if (memento == null) {
-											sourceLocator.initializeDefaults(config);
-										} else {
-											sourceLocator.initializeFromMemento(memento);
-										}
-									}
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                Object element = ((TreeSelection) event.getSelection()).getFirstElement();
+                if (element instanceof ValgrindStackFrame) {
+                    ValgrindStackFrame frame = (ValgrindStackFrame) element;
+                    ILaunch launch = frame.getLaunch();
+                    ISourceLocator locator = launch.getSourceLocator();
+                    if (locator instanceof AbstractSourceLookupDirector) {
+                        AbstractSourceLookupDirector director = (AbstractSourceLookupDirector) locator;
+                        ISourceLookupParticipant[] participants = director.getParticipants();
+                        if (participants.length == 0) {
+                            // source locator likely disposed, try recreating it
+                            IPersistableSourceLocator sourceLocator;
+                            ILaunchConfiguration config = launch.getLaunchConfiguration();
+                            if (config != null) {
+                                try {
+                                    String id = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_ID, (String) null);
+                                    if (id == null) {
+                                        sourceLocator = CDebugUIPlugin.createDefaultSourceLocator();
+                                        sourceLocator.initializeDefaults(config);
+                                    } else {
+                                        sourceLocator = DebugPlugin.getDefault().getLaunchManager().newSourceLocator(id);
+                                        String memento = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_MEMENTO, (String) null);
+                                        if (memento == null) {
+                                            sourceLocator.initializeDefaults(config);
+                                        } else {
+                                            sourceLocator.initializeFromMemento(memento);
+                                        }
+                                    }
 
-									// replace old source locator
-									locator = sourceLocator;
-									launch.setSourceLocator(sourceLocator);
-								} catch (CoreException e) {
-									e.printStackTrace();
-								}
-							}
-						}
-					}
-					ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);
+                                    // replace old source locator
+                                    locator = sourceLocator;
+                                    launch.setSourceLocator(sourceLocator);
+                                } catch (CoreException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                    ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);
 
-					try {
-						ProfileUIUtils.openEditorAndSelect(result, frame.getLine());
-					} catch (PartInitException|BadLocationException e) {
-						e.printStackTrace();
-					}
-				}
-				else {
-					if (viewer.getExpandedState(element)) {
-						viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
-					} else {
-						viewer.expandToLevel(element, 1);
-					}
-				}
-			}
-		};
-		viewer.addDoubleClickListener(doubleClickListener);
+                    try {
+                        ProfileUIUtils.openEditorAndSelect(result, frame.getLine());
+                    } catch (PartInitException|BadLocationException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    if (viewer.getExpandedState(element)) {
+                        viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
+                    } else {
+                        viewer.expandToLevel(element, 1);
+                    }
+                }
+            }
+        };
+        viewer.addDoubleClickListener(doubleClickListener);
 
-		final ExpandAction expandAction = new ExpandAction(viewer);
-		final CollapseAction collapseAction = new CollapseAction(viewer);
+        final ExpandAction expandAction = new ExpandAction(viewer);
+        final CollapseAction collapseAction = new CollapseAction(viewer);
 
-		MenuManager manager = new MenuManager();
-		manager.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
-				Object element = selection.getFirstElement();
-				if (contentProvider.hasChildren(element)) {
-					manager.add(expandAction);
-					manager.add(collapseAction);
-				}
-			}
-		});
+        MenuManager manager = new MenuManager();
+        manager.addMenuListener(new IMenuListener() {
+            @Override
+            public void menuAboutToShow(IMenuManager manager) {
+                ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+                Object element = selection.getFirstElement();
+                if (contentProvider.hasChildren(element)) {
+                    manager.add(expandAction);
+                    manager.add(collapseAction);
+                }
+            }
+        });
 
-		manager.setRemoveAllWhenShown(true);
-		Menu contextMenu = manager.createContextMenu(viewer.getTree());
-		viewer.getControl().setMenu(contextMenu);
-	}
+        manager.setRemoveAllWhenShown(true);
+        Menu contextMenu = manager.createContextMenu(viewer.getTree());
+        viewer.getControl().setMenu(contextMenu);
+    }
 
-	public IDoubleClickListener getDoubleClickListener() {
-		return doubleClickListener;
-	}
+    public IDoubleClickListener getDoubleClickListener() {
+        return doubleClickListener;
+    }
 
-	public TreeViewer getTreeViewer() {
-		return viewer;
-	}
+    public TreeViewer getTreeViewer() {
+        return viewer;
+    }
 }

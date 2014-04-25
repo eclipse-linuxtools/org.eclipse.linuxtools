@@ -16,12 +16,12 @@ import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 
 public class DefinitionMenuTester extends PropertyTester {
 
-	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
-		return receiver instanceof TreeDefinitionNode
-				? ((TreeDefinitionNode) receiver).getDefinition() != null
-				: false;
-	}
+    @Override
+    public boolean test(Object receiver, String property, Object[] args,
+            Object expectedValue) {
+        return receiver instanceof TreeDefinitionNode
+                ? ((TreeDefinitionNode) receiver).getDefinition() != null
+                : false;
+    }
 
 }

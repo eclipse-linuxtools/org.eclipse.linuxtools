@@ -27,127 +27,127 @@ import org.eclipse.core.runtime.IPath;
  */
 public class PatchFile {
 
-	private static class EmptyStorage implements IStorage {
+    private static class EmptyStorage implements IStorage {
 
-		public EmptyStorage() {
-		}
+        public EmptyStorage() {
+        }
 
-		@Override
-		public InputStream getContents() {
-			return new ByteArrayInputStream(new byte[0]);
-		}
+        @Override
+        public InputStream getContents() {
+            return new ByteArrayInputStream(new byte[0]);
+        }
 
-		@Override
-		public IPath getFullPath() {
-			return null;
-		}
+        @Override
+        public IPath getFullPath() {
+            return null;
+        }
 
-		@Override
-		public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
-			return null;
-		}
+        @Override
+        public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+            return null;
+        }
 
-		@Override
-		public String getName() {
-			return "__emptyStorage__";
-		}
+        @Override
+        public String getName() {
+            return "__emptyStorage__";
+        }
 
-		@Override
-		public boolean isReadOnly() {
-			return true;
-		}
-	}
+        @Override
+        public boolean isReadOnly() {
+            return true;
+        }
+    }
 
-	private IStorage storage = new EmptyStorage();
-	private ArrayList<PatchRangeElement> pranges = new ArrayList<>();
+    private IStorage storage = new EmptyStorage();
+    private ArrayList<PatchRangeElement> pranges = new ArrayList<>();
 
-	private boolean newfile = false;
-	private boolean removedfile = false;
-	private IResource resource; // required only if dealing with change
-
-
-	public boolean isNewfile() {
-		return newfile;
-	}
-
-	public void setNewfile(boolean newfile) {
-		this.newfile = newfile;
-	}
-
-	public boolean isRemovedFile() {
-		return removedfile;
-	}
-
-	public void setRemovedFile(boolean removedfile) {
-		this.removedfile = removedfile;
-	}
-
-	public PatchFile(IResource resource) {
-		this.resource = resource;
-	}
-
-	public void addLineRange(int from, int to, boolean localChange) {
-
-		pranges.add(new PatchRangeElement(from, to, localChange));
-	}
-
-	public PatchRangeElement[] getRanges() {
-		Object[] tmpEle = pranges.toArray();
-		PatchRangeElement[] ret = new PatchRangeElement[tmpEle.length];
-
-		for (int i = 0; i < tmpEle.length; i++) {
-			ret[i] = (PatchRangeElement) tmpEle[i];
-		}
-		return ret;
-	}
+    private boolean newfile = false;
+    private boolean removedfile = false;
+    private IResource resource; // required only if dealing with change
 
 
-	public IPath getPath() {
-		return resource.getFullPath();
-	}
+    public boolean isNewfile() {
+        return newfile;
+    }
 
-	public IStorage getStorage() {
-		return storage;
-	}
+    public void setNewfile(boolean newfile) {
+        this.newfile = newfile;
+    }
 
-	public void setStorage(IStorage storage) {
-		this.storage = storage;
-	}
+    public boolean isRemovedFile() {
+        return removedfile;
+    }
 
-	public IResource getResource() {
-		return resource;
-	}
+    public void setRemovedFile(boolean removedfile) {
+        this.removedfile = removedfile;
+    }
 
-	@Override
-	public boolean equals(Object o) {
+    public PatchFile(IResource resource) {
+        this.resource = resource;
+    }
 
-		if (!(o instanceof PatchFile))
-			return false;
+    public void addLineRange(int from, int to, boolean localChange) {
 
-		PatchFile that = (PatchFile) o;
-		// check  fpath  +  count
-		if (!this.resource.equals(that.resource) ||
-				this.pranges.size() != that.pranges.size() ) {
-			return false;
-		}
+        pranges.add(new PatchRangeElement(from, to, localChange));
+    }
 
-		// check range elements
-		PatchRangeElement[] thatsrange = that.getRanges();
+    public PatchRangeElement[] getRanges() {
+        Object[] tmpEle = pranges.toArray();
+        PatchRangeElement[] ret = new PatchRangeElement[tmpEle.length];
 
-		for(int i=0; i<this.pranges.size();i++) {
-			if (!thatsrange[i].equals(pranges.get(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
+        for (int i = 0; i < tmpEle.length; i++) {
+            ret[i] = (PatchRangeElement) tmpEle[i];
+        }
+        return ret;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = resource.hashCode();
-		for(int i=0; i<this.pranges.size();i++) {
-			hash += pranges.get(i).hashCode();
-		}
-		return hash;
-	}
+
+    public IPath getPath() {
+        return resource.getFullPath();
+    }
+
+    public IStorage getStorage() {
+        return storage;
+    }
+
+    public void setStorage(IStorage storage) {
+        this.storage = storage;
+    }
+
+    public IResource getResource() {
+        return resource;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!(o instanceof PatchFile))
+            return false;
+
+        PatchFile that = (PatchFile) o;
+        // check  fpath  +  count
+        if (!this.resource.equals(that.resource) ||
+                this.pranges.size() != that.pranges.size() ) {
+            return false;
+        }
+
+        // check range elements
+        PatchRangeElement[] thatsrange = that.getRanges();
+
+        for(int i=0; i<this.pranges.size();i++) {
+            if (!thatsrange[i].equals(pranges.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = resource.hashCode();
+        for(int i=0; i<this.pranges.size();i++) {
+            hash += pranges.get(i).hashCode();
+        }
+        return hash;
+    }
 }

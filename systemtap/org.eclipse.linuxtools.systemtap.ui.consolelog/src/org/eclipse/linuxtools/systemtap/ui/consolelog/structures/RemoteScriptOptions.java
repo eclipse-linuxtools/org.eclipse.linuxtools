@@ -20,44 +20,44 @@ import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures.Messag
  */
 public class RemoteScriptOptions {
 
-	private String userName = null;
-	private String password = null;
-	private String hostName = null;
+    private String userName = null;
+    private String password = null;
+    private String hostName = null;
 
-	public String getUserName() {
-		return userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getHostName() {
-		return hostName;
-	}
+    public String getHostName() {
+        return hostName;
+    }
 
-	public RemoteScriptOptions(String userName, String password, String hostName) {
-		if (userName == null || password == null || hostName == null) {
-			throw new IllegalArgumentException(Messages.RemoteScriptOptions_invalidArguments);
-		}
-		this.userName = userName;
-		this.password = password;
-		this.hostName = hostName;
-	}
+    public RemoteScriptOptions(String userName, String password, String hostName) {
+        if (userName == null || password == null || hostName == null) {
+            throw new IllegalArgumentException(Messages.RemoteScriptOptions_invalidArguments);
+        }
+        this.userName = userName;
+        this.password = password;
+        this.hostName = hostName;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof RemoteScriptOptions) {
-			return false;
-		}
-		RemoteScriptOptions other = (RemoteScriptOptions) obj;
-		return this.userName.equals(other.userName)
-				&& this.password.equals(other.password)
-				&& this.hostName.equals(other.hostName);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof RemoteScriptOptions) {
+            return false;
+        }
+        RemoteScriptOptions other = (RemoteScriptOptions) obj;
+        return this.userName.equals(other.userName)
+                && this.password.equals(other.password)
+                && this.hostName.equals(other.hostName);
+    }
 
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

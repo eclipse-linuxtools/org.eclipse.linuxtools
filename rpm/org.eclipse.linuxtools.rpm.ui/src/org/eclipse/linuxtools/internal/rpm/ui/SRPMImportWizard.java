@@ -23,47 +23,47 @@ import org.eclipse.ui.IWorkbench;
  * for the import rpm plug-in.
  */
 public class SRPMImportWizard extends Wizard implements IImportWizard {
-	private SRPMImportPage mainPage;
+    private SRPMImportPage mainPage;
 
-	/**
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
-	 */
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
-		setWindowTitle(Messages.getString("SRPMImportwizard.Import_an_SRPM")); //$NON-NLS-1$
-		setNeedsProgressMonitor(true);
-	}
+    /**
+     * @see org.eclipse.ui.IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
+     */
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
+        setWindowTitle(Messages.getString("SRPMImportwizard.Import_an_SRPM")); //$NON-NLS-1$
+        setNeedsProgressMonitor(true);
+    }
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
+    /**
+     * @see org.eclipse.jface.wizard.IWizard#performFinish()
+     */
 
-	// We have elected to do the Finish button clickin in the SRPMImportPage. So override
-	//the default and point to SRPMImport finish()
-	@Override
-	public boolean performFinish() {
-		return mainPage.finish();
-	}
+    // We have elected to do the Finish button clickin in the SRPMImportPage. So override
+    //the default and point to SRPMImport finish()
+    @Override
+    public boolean performFinish() {
+        return mainPage.finish();
+    }
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
-	 *
-	 * Select to finish validation in the SRPMImportPage
-	 */
-	@Override
-	public boolean canFinish() {
-		return mainPage.canFinish();
-	}
+    /**
+     * @see org.eclipse.jface.wizard.IWizard#canFinish()
+     *
+     * Select to finish validation in the SRPMImportPage
+     */
+    @Override
+    public boolean canFinish() {
+        return mainPage.canFinish();
+    }
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#addPages()
-	 */
+    /**
+     * @see org.eclipse.jface.wizard.IWizard#addPages()
+     */
 
-	// Add the SRPMImportPage as the only page in this wizard.
-	@Override
-	public void addPages() {
-		mainPage = new SRPMImportPage();
-		addPage(mainPage);
-		super.addPages();
-	}
+    // Add the SRPMImportPage as the only page in this wizard.
+    @Override
+    public void addPages() {
+        mainPage = new SRPMImportPage();
+        addPage(mainPage);
+        super.addPages();
+    }
 }

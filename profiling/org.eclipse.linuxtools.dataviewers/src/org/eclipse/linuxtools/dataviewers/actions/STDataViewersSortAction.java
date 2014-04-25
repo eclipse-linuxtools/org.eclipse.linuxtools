@@ -33,23 +33,23 @@ public class STDataViewersSortAction extends Action {
      * @param stViewer The AbstractSTViewer to create the action for.
      */
     public STDataViewersSortAction(AbstractSTViewer stViewer) {
-		super(STDataViewersMessages.sortAction_title, STDataViewersImages
-				.getImageDescriptor(STDataViewersImages.IMG_SORT));
-		super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
-		this.stViewer = stViewer;
+        super(STDataViewersMessages.sortAction_title, STDataViewersImages
+                .getImageDescriptor(STDataViewersImages.IMG_SORT));
+        super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
+        this.stViewer = stViewer;
 
-		// building a sort dialog
-		dialog = new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(), stViewer.getTableSorter());
+        // building a sort dialog
+        dialog = new STDataViewersSortDialog(stViewer.getViewer().getControl().getShell(), stViewer.getTableSorter());
 
-		setEnabled(true);
+        setEnabled(true);
     }
 
     @Override
-	public void run() {
+    public void run() {
         if (dialog.open() == Window.OK && dialog.isDirty()) {
             BusyIndicator.showWhile(null, new Runnable() {
                 @Override
-				public void run() {
+                public void run() {
                     stViewer.setComparator(dialog.getSorter());
                 }
             });

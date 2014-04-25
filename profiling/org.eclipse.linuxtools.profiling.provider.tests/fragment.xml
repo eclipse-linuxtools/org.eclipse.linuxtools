@@ -9,11 +9,11 @@
             label="Profile As Stub"
             modes="linuxtools">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
-               <parameter 
+               <parameter
                      name="type"
                      value="stub"/>
-               <parameter 
-                     name="configurationId" 
+               <parameter
+                     name="configurationId"
                      value="org.eclipse.linuxtools.profiling.stub.launchConfigurationType"/>
             </class>
 
@@ -105,10 +105,10 @@
             id="org.eclipse.linuxtools.profiling.stub.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.profiling.stub.launchConfigurationType">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup">
-               <parameter 
+               <parameter
                      name="type"
                      value="stub"/>
-               <parameter 
+               <parameter
                      name="name"
                      value="Stub"/>
             </class>

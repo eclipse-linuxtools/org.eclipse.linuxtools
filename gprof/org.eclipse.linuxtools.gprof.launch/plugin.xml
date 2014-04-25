@@ -12,5 +12,5 @@
             tabgroup="org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationTabGroup"
             type="timing">
       </provider>
-   </extension>   
+   </extension>
 </plugin>

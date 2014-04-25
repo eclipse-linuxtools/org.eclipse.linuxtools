@@ -33,43 +33,43 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenGmonAction implements IEditorLauncher {
 
-	@Override
-	public void open(IPath file) {
-		String s = getDefaultBinary(file);
-		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		OpenGmonDialog d = new OpenGmonDialog(shell, s, file);
-		if (d.open() != Window.OK) {
-			return;
-		}
-		String binaryPath = d.getBinaryFile();
-		IProject project = null;
-		IFile f = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
-		if (f != null) {
-		    project = f.getProject();
-		}
-		GmonView.displayGprofView(binaryPath, file.toOSString(), project);
-	}
+    @Override
+    public void open(IPath file) {
+        String s = getDefaultBinary(file);
+        Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+        OpenGmonDialog d = new OpenGmonDialog(shell, s, file);
+        if (d.open() != Window.OK) {
+            return;
+        }
+        String binaryPath = d.getBinaryFile();
+        IProject project = null;
+        IFile f = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
+        if (f != null) {
+            project = f.getProject();
+        }
+        GmonView.displayGprofView(binaryPath, file.toOSString(), project);
+    }
 
-	private String getDefaultBinary(IPath file) {
-		IProject project = null;
-		IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
-		if (c != null) {
-		    project = c.getProject();
-		    if (project != null && project.exists()) {
-		        ICProject cproject = CoreModel.getDefault().create(project);
-		        if (cproject != null) {
-		            try {
-		                IBinary[] b = cproject.getBinaryContainer()
-		                        .getBinaries();
-		                if (b != null && b.length > 0 && b[0] != null) {
-		                    IResource r = b[0].getResource();
-		                    return r.getLocation().toOSString();
-		                }
-		            } catch (CModelException _) {
-		            }
-		        }
-		    }
-		}
-		return ""; //$NON-NLS-1$
-	}
+    private String getDefaultBinary(IPath file) {
+        IProject project = null;
+        IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
+        if (c != null) {
+            project = c.getProject();
+            if (project != null && project.exists()) {
+                ICProject cproject = CoreModel.getDefault().create(project);
+                if (cproject != null) {
+                    try {
+                        IBinary[] b = cproject.getBinaryContainer()
+                                .getBinaries();
+                        if (b != null && b.length > 0 && b[0] != null) {
+                            IResource r = b[0].getResource();
+                            return r.getLocation().toOSString();
+                        }
+                    } catch (CModelException _) {
+                    }
+                }
+            }
+        }
+        return ""; //$NON-NLS-1$
+    }
 }

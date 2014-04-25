@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
     /**
-	 * 
-	 */
+     *
+     */
     private static final long serialVersionUID = -4159055012321132651L;
 
     private final long ident;

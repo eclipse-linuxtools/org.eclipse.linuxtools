@@ -17,15 +17,15 @@ import org.eclipse.core.runtime.IPath;
 
 public interface IRemoteFileProxy {
 
-	URI toURI(IPath path);
-	URI toURI(String path);
-	String toPath(URI uri);
-	String getDirectorySeparator();
-	IFileStore getResource(String path);
-	/**
-	 * @return Returns the working directory.
-	 * @since 2.0
-	 */
-	URI getWorkingDir();
+    URI toURI(IPath path);
+    URI toURI(String path);
+    String toPath(URI uri);
+    String getDirectorySeparator();
+    IFileStore getResource(String path);
+    /**
+     * @return Returns the working directory.
+     * @since 2.0
+     */
+    URI getWorkingDir();
 
 }

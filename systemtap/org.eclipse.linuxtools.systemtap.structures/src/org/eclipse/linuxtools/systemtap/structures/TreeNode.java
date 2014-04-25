@@ -15,131 +15,131 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode {
-	public TreeNode(Object d, boolean c) {
-		children = new ArrayList<>();
-		data = d;
-		clickable = c;
+    public TreeNode(Object d, boolean c) {
+        children = new ArrayList<>();
+        data = d;
+        clickable = c;
 
-		if(null == data) {
-			display = null;
-		} else {
-			display = d.toString();
-		}
-	}
+        if(null == data) {
+            display = null;
+        } else {
+            display = d.toString();
+        }
+    }
 
-	public TreeNode(Object d, String disp, boolean c) {
-		children = new ArrayList<>();
-		data = d;
-		display = disp;
-		clickable = c;
-	}
+    public TreeNode(Object d, String disp, boolean c) {
+        children = new ArrayList<>();
+        data = d;
+        display = disp;
+        clickable = c;
+    }
 
-	public void add(TreeNode item) {
-		children.add(item);
-	}
+    public void add(TreeNode item) {
+        children.add(item);
+    }
 
-	public void addAt(TreeNode item, int location) {
-		children.add(Math.min(children.size(), location), item);
-	}
+    public void addAt(TreeNode item, int location) {
+        children.add(Math.min(children.size(), location), item);
+    }
 
-	public int getChildCount() {
-		return children.size();
-	}
+    public int getChildCount() {
+        return children.size();
+    }
 
-	public TreeNode getChildAt(int i){
-		if(children.size() > i) {
-			return children.get(i);
-		} else {
-			return null;
-		}
-	}
+    public TreeNode getChildAt(int i){
+        if(children.size() > i) {
+            return children.get(i);
+        } else {
+            return null;
+        }
+    }
 
-	public Object getData() {
-		return data;
-	}
+    public Object getData() {
+        return data;
+    }
 
-	public boolean isClickable() {
-		return clickable;
-	}
+    public boolean isClickable() {
+        return clickable;
+    }
 
-	public boolean remove(int i) {
-		if(children.size() > i) {
-			return(null != children.remove(i));
-		} else {
-			return false;
-		}
-	}
+    public boolean remove(int i) {
+        if(children.size() > i) {
+            return(null != children.remove(i));
+        } else {
+            return false;
+        }
+    }
 
-	public boolean removeAll() {
-		for(int i=children.size()-1; i>=0; i--) {
-			remove(i);
-		}
-		return true;
-	}
+    public boolean removeAll() {
+        for(int i=children.size()-1; i>=0; i--) {
+            remove(i);
+        }
+        return true;
+    }
 
-	public void setData(Object d) {
-		data = d;
-	}
+    public void setData(Object d) {
+        data = d;
+    }
 
-	public void setDisplay(String disp) {
-		display = disp;
-	}
+    public void setDisplay(String disp) {
+        display = disp;
+    }
 
-	/**
-	 * Restructures the tree so that probes are grouped by type and
-	 * functions are sorted alphabetically.
-	 */
-	public void sortTree() {
-		sortLevel();
-		for (TreeNode temp : children) {
-			temp.sortTree();
-		}
-	}
+    /**
+     * Restructures the tree so that probes are grouped by type and
+     * functions are sorted alphabetically.
+     */
+    public void sortTree() {
+        sortLevel();
+        for (TreeNode temp : children) {
+            temp.sortTree();
+        }
+    }
 
-	/**
-	 * Performs quicksort on the level.
-	 */
-	public void sortLevel() {
-		TreeNode[] children = this.children.toArray(new TreeNode[0]);
-		removeAll();
-		Sort.quicksort(children, 0, children.length - 1);
+    /**
+     * Performs quicksort on the level.
+     */
+    public void sortLevel() {
+        TreeNode[] children = this.children.toArray(new TreeNode[0]);
+        removeAll();
+        Sort.quicksort(children, 0, children.length - 1);
 
-		for (TreeNode child : children) {
-			add(child);
-		}
-	}
+        for (TreeNode child : children) {
+            add(child);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return display;
-	}
+    @Override
+    public String toString() {
+        return display;
+    }
 
-	public void dispose() {
-		if (null != children) {
-			for (TreeNode child : children) {
-				child.dispose();
-			}
-		}
-		children = null;
-		data = null;
-		display = null;
-	}
+    public void dispose() {
+        if (null != children) {
+            for (TreeNode child : children) {
+                child.dispose();
+            }
+        }
+        children = null;
+        data = null;
+        display = null;
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	public TreeNode getChildByName(String name){
-		for (TreeNode child : children) {
-			if (child.toString().equals(name)) {
-				return child;
-			}
-		}
+    /**
+     * @since 2.0
+     */
+    public TreeNode getChildByName(String name){
+        for (TreeNode child : children) {
+            if (child.toString().equals(name)) {
+                return child;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private List<TreeNode> children;
-	private Object data;
-	private String display;
-	private boolean clickable;
+    private List<TreeNode> children;
+    private Object data;
+    private String display;
+    private boolean clickable;
 }

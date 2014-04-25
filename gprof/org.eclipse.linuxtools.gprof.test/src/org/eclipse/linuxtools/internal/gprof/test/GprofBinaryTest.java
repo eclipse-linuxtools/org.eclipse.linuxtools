@@ -26,24 +26,24 @@ import org.osgi.framework.FrameworkUtil;
 @RunWith(Parameterized.class)
 public class GprofBinaryTest {
 
-	@Parameters
+    @Parameters
     public static Collection<Object[]> data() {
-    	List<Object[]> params = new ArrayList<>();
-		for (File testDir : STJunitUtils.getTestDirs()) {
-			params.add(new Object[]{testDir.getName()+File.separator+BINARY_FILE});
-		}
-		return params;
-	}
+        List<Object[]> params = new ArrayList<>();
+        for (File testDir : STJunitUtils.getTestDirs()) {
+            params.add(new Object[]{testDir.getName()+File.separator+BINARY_FILE});
+        }
+        return params;
+    }
 
     private String path;
     public GprofBinaryTest(String path){
-    	this.path = path;
+        this.path = path;
     }
 
     @Test
-	public void testValidBinary() {
-		STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), path);
-	}
+    public void testValidBinary() {
+        STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), path);
+    }
 
 }
 

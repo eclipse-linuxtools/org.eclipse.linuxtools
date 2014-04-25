@@ -22,43 +22,43 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ManView extends ViewPart {
 
-	/**
-	 * The ID of the view as specified by the extension.
-	 */
-	public static final String ID = "org.eclipse.linuxtools.man.views.ManView"; //$NON-NLS-1$
+    /**
+     * The ID of the view as specified by the extension.
+     */
+    public static final String ID = "org.eclipse.linuxtools.man.views.ManView"; //$NON-NLS-1$
 
-	private ManTextViewer viewer;
+    private ManTextViewer viewer;
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize
-	 * it.
-	 */
-	@Override
-	public void createPartControl(Composite parent) {
-		viewer = new ManTextViewer(parent);
-		// Create the help context id for the viewer's control
-		PlatformUI
-				.getWorkbench()
-				.getHelpSystem()
-				.setHelp(viewer.getControl(),
-						"org.eclipse.linuxtools.man.viewer"); //$NON-NLS-1$
-	}
+    /**
+     * This is a callback that will allow us to create the viewer and initialize
+     * it.
+     */
+    @Override
+    public void createPartControl(Composite parent) {
+        viewer = new ManTextViewer(parent);
+        // Create the help context id for the viewer's control
+        PlatformUI
+                .getWorkbench()
+                .getHelpSystem()
+                .setHelp(viewer.getControl(),
+                        "org.eclipse.linuxtools.man.viewer"); //$NON-NLS-1$
+    }
 
-	/**
-	 * Sets the man page to dispaly
-	 * 
-	 * @param manPageName
-	 *            The name of the man page to display.
-	 */
-	public void setManPageName(String manPageName) {
-		viewer.setDocument(new ManDocument(manPageName));
-	}
+    /**
+     * Sets the man page to dispaly
+     *
+     * @param manPageName
+     *            The name of the man page to display.
+     */
+    public void setManPageName(String manPageName) {
+        viewer.setDocument(new ManDocument(manPageName));
+    }
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	@Override
-	public void setFocus() {
-		viewer.getControl().setFocus();
-	}
+    /**
+     * Passing the focus request to the viewer's control.
+     */
+    @Override
+    public void setFocus() {
+        viewer.getControl().setFocus();
+    }
 }

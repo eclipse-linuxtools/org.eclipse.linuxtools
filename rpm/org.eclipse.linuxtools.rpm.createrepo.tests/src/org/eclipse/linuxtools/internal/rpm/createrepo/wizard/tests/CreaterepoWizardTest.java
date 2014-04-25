@@ -47,98 +47,98 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class CreaterepoWizardTest {
 
-	private static final String REPO_ID = "createrepo-test-repo"; //$NON-NLS-1$
-	private static final String REPO_FILE = REPO_ID.concat(".repo"); //$NON-NLS-1$
+    private static final String REPO_ID = "createrepo-test-repo"; //$NON-NLS-1$
+    private static final String REPO_FILE = REPO_ID.concat(".repo"); //$NON-NLS-1$
 
-	private static final String REPO_WIZARD_NAME = "Test repository for createrepo plugin"; //$NON-NLS-1$
-	private static final String REPO_WIZARD_URL = "http://www.example.com/test"; //$NON-NLS-1$
-	private static final String REPO_FILE_CONTENTS =
-			String.format("[%s]%s=%s%s=%s", REPO_ID, IRepoFileConstants.NAME,  //$NON-NLS-1$
-			REPO_WIZARD_NAME, IRepoFileConstants.BASE_URL, REPO_WIZARD_URL);
+    private static final String REPO_WIZARD_NAME = "Test repository for createrepo plugin"; //$NON-NLS-1$
+    private static final String REPO_WIZARD_URL = "http://www.example.com/test"; //$NON-NLS-1$
+    private static final String REPO_FILE_CONTENTS =
+            String.format("[%s]%s=%s%s=%s", REPO_ID, IRepoFileConstants.NAME,  //$NON-NLS-1$
+            REPO_WIZARD_NAME, IRepoFileConstants.BASE_URL, REPO_WIZARD_URL);
 
-	private static SWTWorkbenchBot bot;
-	private static IWorkspaceRoot root;
-	private static NullProgressMonitor monitor;
-	private IProject project;
+    private static SWTWorkbenchBot bot;
+    private static IWorkspaceRoot root;
+    private static NullProgressMonitor monitor;
+    private IProject project;
 
-	/**
-	 * Setup the bot, monitor and workspace root.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		bot = new SWTWorkbenchBot();
-		root = ResourcesPlugin.getWorkspace().getRoot();
-		monitor = new NullProgressMonitor();
-		try {
-			bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
-		} catch (WidgetNotFoundException e) {
-			// cannot activate main shell, continue anyways
-		}
-	}
+    /**
+     * Setup the bot, monitor and workspace root.
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        bot = new SWTWorkbenchBot();
+        root = ResourcesPlugin.getWorkspace().getRoot();
+        monitor = new NullProgressMonitor();
+        try {
+            bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
+        } catch (WidgetNotFoundException e) {
+            // cannot activate main shell, continue anyways
+        }
+    }
 
-	/**
-	 * Delete the project and its contents for each test itereation.
-	 *
-	 * @throws CoreException
-	 */
-	@After
-	public void tearDown() throws CoreException {
-		if (project != null && project.exists()) {
-			project.delete(true, true, monitor);
-		}
-		assertFalse(project.exists());
-	}
+    /**
+     * Delete the project and its contents for each test itereation.
+     *
+     * @throws CoreException
+     */
+    @After
+    public void tearDown() throws CoreException {
+        if (project != null && project.exists()) {
+            project.delete(true, true, monitor);
+        }
+        assertFalse(project.exists());
+    }
 
-	/**
-	 * Go through the project creation wizard process of creating a new
-	 * createrepo project.
-	 *
-	 * @throws CoreException
-	 * @throws IOException
-	 */
-	@Test
-	public void testCreaterepoWizardProjectCreation() throws CoreException, IOException {
-		// go through the process of creating a new createrepo project
-		bot.menu(ICreaterepoTestConstants.FILE).menu(ICreaterepoTestConstants.NEW).menu(ICreaterepoTestConstants.OTHER).click();
-		SWTBotShell shell = bot.shell(ICreaterepoTestConstants.NEW);
-		shell.activate();
-		bot.text().setText(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
-		bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));
-		bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
-		bot.textWithLabel(ICreaterepoTestConstants.PROJECT_NAME_LABEL).setText(ICreaterepoTestConstants.PROJECT_NAME);
-		bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
-		bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelID).setText(REPO_ID);
-		bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelName).setText(REPO_WIZARD_NAME);
-		bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelURL).setText(REPO_WIZARD_URL);
-		bot.button(ICreaterepoTestConstants.FINISH_BUTTON).click();
+    /**
+     * Go through the project creation wizard process of creating a new
+     * createrepo project.
+     *
+     * @throws CoreException
+     * @throws IOException
+     */
+    @Test
+    public void testCreaterepoWizardProjectCreation() throws CoreException, IOException {
+        // go through the process of creating a new createrepo project
+        bot.menu(ICreaterepoTestConstants.FILE).menu(ICreaterepoTestConstants.NEW).menu(ICreaterepoTestConstants.OTHER).click();
+        SWTBotShell shell = bot.shell(ICreaterepoTestConstants.NEW);
+        shell.activate();
+        bot.text().setText(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
+        bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));
+        bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
+        bot.textWithLabel(ICreaterepoTestConstants.PROJECT_NAME_LABEL).setText(ICreaterepoTestConstants.PROJECT_NAME);
+        bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
+        bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelID).setText(REPO_ID);
+        bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelName).setText(REPO_WIZARD_NAME);
+        bot.textWithLabel(Messages.CreaterepoNewWizardPageTwo_labelURL).setText(REPO_WIZARD_URL);
+        bot.button(ICreaterepoTestConstants.FINISH_BUTTON).click();
 
-		// verify that project has been initialized properly
-		project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
-		assertTrue(project.exists());
-		assertTrue(project.hasNature(CreaterepoProjectNature.CREATEREPO_NATURE_ID));
-		// 3 = .project + content folder + .repo file
-		assertEquals(3, project.members().length);
+        // verify that project has been initialized properly
+        project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
+        assertTrue(project.exists());
+        assertTrue(project.hasNature(CreaterepoProjectNature.CREATEREPO_NATURE_ID));
+        // 3 = .project + content folder + .repo file
+        assertEquals(3, project.members().length);
 
-		// contains the content folder and repo file
-		assertTrue(project.findMember(ICreaterepoConstants.CONTENT_FOLDER).exists());
-		assertTrue(project.findMember(REPO_FILE).exists());
+        // contains the content folder and repo file
+        assertTrue(project.findMember(ICreaterepoConstants.CONTENT_FOLDER).exists());
+        assertTrue(project.findMember(REPO_FILE).exists());
 
-		// content folder has nothing in it
-		IFolder contentFolder = (IFolder) project.findMember(ICreaterepoConstants.CONTENT_FOLDER);
-		assertEquals(0, contentFolder.members().length);
+        // content folder has nothing in it
+        IFolder contentFolder = (IFolder) project.findMember(ICreaterepoConstants.CONTENT_FOLDER);
+        assertEquals(0, contentFolder.members().length);
 
-		// get the created .repo file contents
-		IFile repoFile = (IFile) project.findMember(REPO_FILE);
-		// repo file should not be empty
-		assertNotEquals(0, repoFile.getContents().available());
-		StringBuilder sb = new StringBuilder();
-		BufferedReader br = new BufferedReader(new InputStreamReader(repoFile.getContents()));
-		String line;
-		while ((line = br.readLine()) != null) {
-			// disregards newline
-			sb.append(line);
-		}
-		assertEquals(REPO_FILE_CONTENTS, sb.toString());
-	}
+        // get the created .repo file contents
+        IFile repoFile = (IFile) project.findMember(REPO_FILE);
+        // repo file should not be empty
+        assertNotEquals(0, repoFile.getContents().available());
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(repoFile.getContents()));
+        String line;
+        while ((line = br.readLine()) != null) {
+            // disregards newline
+            sb.append(line);
+        }
+        assertEquals(REPO_FILE_CONTENTS, sb.toString());
+    }
 
 }

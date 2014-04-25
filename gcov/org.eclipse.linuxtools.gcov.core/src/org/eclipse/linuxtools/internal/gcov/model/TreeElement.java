@@ -14,14 +14,14 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 public interface TreeElement extends Serializable{
-	TreeElement getParent();
-	LinkedList<? extends TreeElement> getChildren();
-	boolean hasChildren();
-	TreeElement getRoot();
+    TreeElement getParent();
+    LinkedList<? extends TreeElement> getChildren();
+    boolean hasChildren();
+    TreeElement getRoot();
 
-	String getName();
-	int getExecutedLines();
-	int getInstrumentedLines();
-	int getTotalLines();
-	float getCoveragePercentage();
+    String getName();
+    int getExecutedLines();
+    int getInstrumentedLines();
+    int getTotalLines();
+    float getCoveragePercentage();
 }

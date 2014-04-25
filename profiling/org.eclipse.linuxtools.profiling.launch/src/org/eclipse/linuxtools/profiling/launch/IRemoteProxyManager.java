@@ -16,13 +16,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
 public interface IRemoteProxyManager {
-	String EXTENSION_POINT_ID = "RemoteProxyManager"; //$NON-NLS-1$
-	String MANAGER_NAME = "manager"; //$NON-NLS-1$
-	String SCHEME_ID = "scheme"; //$NON-NLS-1$ 
-	IRemoteFileProxy getFileProxy(IProject project) throws CoreException;
-	IRemoteFileProxy getFileProxy(URI uri) throws CoreException;
-	IRemoteCommandLauncher getLauncher(IProject project) throws CoreException;
-	IRemoteCommandLauncher getLauncher(URI uri) throws CoreException;
-	String getOS(IProject project) throws CoreException;
-	String getOS(URI uri) throws CoreException;
+    String EXTENSION_POINT_ID = "RemoteProxyManager"; //$NON-NLS-1$
+    String MANAGER_NAME = "manager"; //$NON-NLS-1$
+    String SCHEME_ID = "scheme"; //$NON-NLS-1$
+    IRemoteFileProxy getFileProxy(IProject project) throws CoreException;
+    IRemoteFileProxy getFileProxy(URI uri) throws CoreException;
+    IRemoteCommandLauncher getLauncher(IProject project) throws CoreException;
+    IRemoteCommandLauncher getLauncher(URI uri) throws CoreException;
+    String getOS(IProject project) throws CoreException;
+    String getOS(URI uri) throws CoreException;
 }

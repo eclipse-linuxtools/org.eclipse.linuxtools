@@ -20,15 +20,15 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	ChangeLogWriterTest.class,
-	GNUFormatTest.class,
-	JavaParserTest.class,
-	CParserTest.class,
-	// A small test for the fixture
-	TestChangeLogTestProject.class
-	}
+    ChangeLogWriterTest.class,
+    GNUFormatTest.class,
+    JavaParserTest.class,
+    CParserTest.class,
+    // A small test for the fixture
+    TestChangeLogTestProject.class
+    }
 )
 
 public class AllTests {
-	// empty
+    // empty
 }

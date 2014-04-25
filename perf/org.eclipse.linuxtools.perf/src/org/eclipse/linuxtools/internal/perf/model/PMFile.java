@@ -11,23 +11,23 @@
 package org.eclipse.linuxtools.internal.perf.model;
 
 public class PMFile extends TreeParent {
-	private String path;
-	
-	public PMFile(String fileName) {
-		super(fileName, 0);
-		path = fileName;
-	}
+    private String path;
 
-	public String getPath() {
-		return this.path;
-	}
-	
-	@Override
-	public String toString() {
-		String prefix = ""; //$NON-NLS-1$
-		if (getPercent() != -1) {
-			prefix = getPercent() + "% in "; //$NON-NLS-1$
-		}
-		return prefix + path;
-	}
+    public PMFile(String fileName) {
+        super(fileName, 0);
+        path = fileName;
+    }
+
+    public String getPath() {
+        return this.path;
+    }
+
+    @Override
+    public String toString() {
+        String prefix = ""; //$NON-NLS-1$
+        if (getPercent() != -1) {
+            prefix = getPercent() + "% in "; //$NON-NLS-1$
+        }
+        return prefix + path;
+    }
 }

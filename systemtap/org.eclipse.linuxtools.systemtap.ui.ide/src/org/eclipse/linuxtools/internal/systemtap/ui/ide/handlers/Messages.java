@@ -16,16 +16,16 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.messages"; //$NON-NLS-1$
-	public static String AddStapProbe_editorError;
-	public static String AddStapProbe_unableToInsertProbe;
-	public static String CEditor_probeInsertFailed;
-	public static String CEditor_canNotProbeLine;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.messages"; //$NON-NLS-1$
+    public static String AddStapProbe_editorError;
+    public static String AddStapProbe_unableToInsertProbe;
+    public static String CEditor_probeInsertFailed;
+    public static String CEditor_canNotProbeLine;
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 }

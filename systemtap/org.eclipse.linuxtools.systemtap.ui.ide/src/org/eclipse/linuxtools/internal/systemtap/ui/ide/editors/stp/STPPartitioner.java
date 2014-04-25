@@ -15,17 +15,17 @@ import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
 public class STPPartitioner extends FastPartitioner {
 
-	/**
-	 * Straight forward FastPartitioner, with debug output.
-	 * 
-	 *  Taken directly from org.eclipse.linuxtools.rpm.ui.editor.SpecFilePartitioner.
-	 *  No noteworthy alterations so Copyright header and license text untouched.
-	 *
-	 * @param scanner
-	 * @param legalContentTypes
-	 */
-	public STPPartitioner(IPartitionTokenScanner scanner, String[] legalContentTypes) {
-		super(scanner, legalContentTypes);
-	}	
+    /**
+     * Straight forward FastPartitioner, with debug output.
+     *
+     *  Taken directly from org.eclipse.linuxtools.rpm.ui.editor.SpecFilePartitioner.
+     *  No noteworthy alterations so Copyright header and license text untouched.
+     *
+     * @param scanner
+     * @param legalContentTypes
+     */
+    public STPPartitioner(IPartitionTokenScanner scanner, String[] legalContentTypes) {
+        super(scanner, legalContentTypes);
+    }
 }
 

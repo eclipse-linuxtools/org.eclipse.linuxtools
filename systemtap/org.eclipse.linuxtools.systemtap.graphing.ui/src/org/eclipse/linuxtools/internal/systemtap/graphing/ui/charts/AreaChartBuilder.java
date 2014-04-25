@@ -25,16 +25,16 @@ import org.swtchart.ISeries;
 
 public class AreaChartBuilder extends LineChartBuilder {
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.areachartbuilder"; //$NON-NLS-1$
+    public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.areachartbuilder"; //$NON-NLS-1$
 
     public AreaChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-		super(parent, style, title, adapter);
+        super(parent, style, title, adapter);
     }
 
-	@Override
-	protected ISeries createChartISeries(int i) {
-		ILineSeries series = (ILineSeries) super.createChartISeries(i);
-		series.enableArea(true);
-		return series;
-	}
+    @Override
+    protected ISeries createChartISeries(int i) {
+        ILineSeries series = (ILineSeries) super.createChartISeries(i);
+        series.enableArea(true);
+        return series;
+    }
 }

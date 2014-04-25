@@ -18,19 +18,19 @@ import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
 import org.junit.Test;
 
 public class SystemTapGraphViewTest {
-	private SystemTapTextView stapView = new SystemTapTextView();
-	private String testText = "blah";
+    private SystemTapTextView stapView = new SystemTapTextView();
+    private String testText = "blah";
 
-	//TODO: write some better tests here
-	@Test
-	public void test() {
-		stapView = (SystemTapTextView)  ViewFactory.createView("org.eclipse.linuxtools.callgraph.core.staptextview");
+    //TODO: write some better tests here
+    @Test
+    public void test() {
+        stapView = (SystemTapTextView)  ViewFactory.createView("org.eclipse.linuxtools.callgraph.core.staptextview");
 
-		stapView.println(testText);
-		assertEquals(stapView.getText(), testText);
+        stapView.println(testText);
+        assertEquals(stapView.getText(), testText);
 
-		stapView.clearAll();
-		assertEquals(stapView.getText(), "");
-	}
+        stapView.clearAll();
+        assertEquals(stapView.getText(), "");
+    }
 
 }

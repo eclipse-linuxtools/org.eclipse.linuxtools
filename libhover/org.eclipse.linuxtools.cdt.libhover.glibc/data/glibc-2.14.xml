@@ -545,7 +545,7 @@ b. Give prominent notice with the combined library of the fact
 that part of it is a work based on the Library, and explaining
 where to find the accompanying uncombined form of the same work.
 
-8. 
+8.
 You may not copy, modify, sublicense, link with, or distribute
 the Library except as expressly provided under this License.  Any
 attempt otherwise to copy, modify, sublicense, link with, or
@@ -678,23 +678,23 @@ safest to attach them to the start of each source file to most effectively
 convey the exclusion of warranty; and each file should have at least the
 ``copyright'' line and a pointer to where the full notice is found.
 
-	one line to give the library's name and an idea of what it does.
-	Copyright (C) year name of author
+    one line to give the library's name and an idea of what it does.
+    Copyright (C) year name of author
 
-	This library is free software; you can redistribute it and/or modify it
-	under the terms of the GNU Lesser General Public License as published by
-	the Free Software Foundation; either version 2.1 of the License, or (at
-	your option) any later version.
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation; either version 2.1 of the License, or (at
+    your option) any later version.
 
-	This library is distributed in the hope that it will be useful, but
-	WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with this library; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
-	USA.
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+    USA.
 
 Also add information on how to contact you by electronic and paper mail.
 
@@ -702,11 +702,11 @@ You should also get your employer (if you work as a programmer) or your
 school, if any, to sign a ``copyright disclaimer'' for the library, if
 necessary.  Here is a sample; alter the names:
 
-	Yoyodyne, Inc., hereby disclaims all copyright interest in the library
-	`Frob' (a library for tweaking knobs) written by James Random Hacker.
+    Yoyodyne, Inc., hereby disclaims all copyright interest in the library
+    `Frob' (a library for tweaking knobs) written by James Random Hacker.
 
-	signature of Ty Coon, 1 April 1990
-	Ty Coon, President of Vice
+    signature of Ty Coon, 1 April 1990
+    Ty Coon, President of Vice
 
 That's all there is to it!
 
@@ -1102,7 +1102,7 @@ to permit their use in free software.
 ========================================================================================
 
 A transparent copy of this modified document can be found along-side the binary .libhover file
-in the org.eclipse.cdt.libhover.glibc plug-in jar under the data directory.  The plug-in can be 
+in the org.eclipse.cdt.libhover.glibc plug-in jar under the data directory.  The plug-in can be
 unzipped via "unzip".  The original un-modified document can be generated from the sources which
 can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
@@ -1417,7 +1417,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;ENAMETOOLONG&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;size&lt;/VAR&gt; argument is less than the size of the host name plus one.
-         
+
          &lt;br&gt;&lt;br&gt; On some systems, there is a symbol for the maximum possible host name
          length: &lt;CODE&gt;MAXHOSTNAMELEN&lt;/CODE&gt;.  It is defined in &lt;TT&gt;sys/param.h&lt;/TT&gt;.
          But you can't count on this to exist, so it is cleaner to handle
@@ -1455,7 +1455,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EPERM&lt;/CODE&gt;
 &lt;DD&gt;
          This process cannot set the host name because it is not privileged.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -1549,7 +1549,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The operating system does not support setting the host ID.  On some
          systems, the host ID is a meaningless but unique number hard-coded for
          each machine.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -1596,14 +1596,14 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
              &lt;br&gt;&lt;br&gt; Since the value in &lt;CODE&gt;machine&lt;/CODE&gt; is supposed to describe just the
              hardware, it consists of the first two parts of the configuration name:
              &lt;samp&gt;&lt;VAR&gt;cpu&lt;/VAR&gt;-&lt;VAR&gt;manufacturer&lt;/VAR&gt;&lt;/samp&gt;.  For example, it might be one of these:
-             &lt;br&gt;&lt;br&gt; 
+             &lt;br&gt;&lt;br&gt;
              &lt;CODE&gt;"sparc-sun"&lt;/CODE&gt;,
              &lt;CODE&gt;"i386-&lt;VAR&gt;anything&lt;/VAR&gt;"&lt;/CODE&gt;,
              &lt;CODE&gt;"m68k-hp"&lt;/CODE&gt;,
              &lt;CODE&gt;"m68k-sony"&lt;/CODE&gt;,
              &lt;CODE&gt;"m68k-sun"&lt;/CODE&gt;,
              &lt;CODE&gt;"mips-dec"&lt;/CODE&gt;
-             
+
              &lt;br&gt;&lt;br&gt;
             </synopsis>
         </element>
@@ -2209,7 +2209,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; MS_NODIRATIME
          This bit on specifies that access times of directories shall not be updated
          when the directories are accessed while the filesystem in mounted.
-         &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; Any bits not covered by the above masks should be set off; otherwise,
          results are undefined.
          &lt;br&gt;&lt;br&gt; The meaning of &lt;VAR&gt;data&lt;/VAR&gt; depends on the filesystem type and is controlled
@@ -2269,7 +2269,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The table of dummy devices is full.  &lt;CODE&gt;mount&lt;/CODE&gt; needs to create a
          dummy device (aka ``unnamed'' device) if the filesystem being mounted is
          not one that uses a device.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -2298,7 +2298,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          busy, by making it unbusy first.  If the bit is off and the filesystem is
          busy, &lt;CODE&gt;umount2&lt;/CODE&gt; fails with &lt;CODE&gt;errno&lt;/CODE&gt; = &lt;CODE&gt;EBUSY&lt;/CODE&gt;.  Depending
          on the filesystem, this may override all, some, or no busy conditions.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; All other bits in &lt;VAR&gt;flags&lt;/VAR&gt; should be set to zero; otherwise, the result
          is undefined.
          &lt;br&gt;&lt;br&gt; Example:
@@ -2326,7 +2326,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          &lt;VAR&gt;file&lt;/VAR&gt; validly refers to a file, but that file is neither a mount
          point nor a device special file of a currently mounted filesystem.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
 &lt;/DL&gt;
          &lt;br&gt;&lt;br&gt; This function is not available on all systems.
         </synopsis>
@@ -2444,7 +2444,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          This value may be returned instead of the more correct &lt;CODE&gt;EINVAL&lt;/CODE&gt; in some
          cases where the space provided for the return of the system parameter is too
          small.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -2578,7 +2578,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The value of the &lt;VAR&gt;newuid&lt;/VAR&gt; argument is invalid.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EPERM
          The process may not change to the specified ID.
-         
+
          &lt;br&gt;&lt;br&gt; Older systems (those without the &lt;CODE&gt;_POSIX_SAVED_IDS&lt;/CODE&gt; feature) do not
          have this function.
         </synopsis>
@@ -2633,7 +2633,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The process does not have the appropriate privileges; you do not
          have permission to change to the specified ID.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -2725,7 +2725,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EPERM&lt;/CODE&gt;
 &lt;DD&gt;
          The calling process is not privileged.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -3062,7 +3062,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The process does not have the appropriate privileges; you cannot modify
          the user accounting database.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -3149,10 +3149,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; The following macros are defined for use as the &lt;VAR&gt;file&lt;/VAR&gt; argument:
          &lt;br&gt;&lt;br&gt; Macro {char *} _PATH_UTMP
          This macro is used to specify the user accounting database.
-         
+
          &lt;br&gt;&lt;br&gt; Macro {char *} _PATH_WTMP
          This macro is used to specify the user accounting log file.
-         
+
          &lt;br&gt;&lt;br&gt; The &lt;CODE&gt;utmpname&lt;/CODE&gt; function returns a value of &lt;CODE&gt;0&lt;/CODE&gt; if the new name
          was successfully stored, and a value of &lt;CODE&gt;-1&lt;/CODE&gt; to indicate an error.
          Note that &lt;CODE&gt;utmpname&lt;/CODE&gt; does not try to open the database, and that
@@ -4095,7 +4095,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Internet domain, only the super-user is allowed to specify a port number
          in the range 0 through &lt;CODE&gt;IPPORT_RESERVED&lt;/CODE&gt; minus one; see
          Ports.)
-         
+
          &lt;br&gt;&lt;br&gt; Additional conditions may be possible depending on the particular namespace
          of the socket.
         </synopsis>
@@ -4135,7 +4135,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The descriptor &lt;VAR&gt;socket&lt;/VAR&gt; is not a socket.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOBUFS
          There are not enough internal buffers available for the operation.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5037,7 +5037,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;VAR&gt;style&lt;/VAR&gt; or &lt;VAR&gt;protocol&lt;/VAR&gt;.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOBUFS
          The system ran out of internal buffer space.
-         
+
          &lt;br&gt;&lt;br&gt; The file descriptor returned by the &lt;CODE&gt;socket&lt;/CODE&gt; function supports both
          read and write operations.  However, like pipes, sockets do not support file
          positioning operations.
@@ -5070,7 +5070,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          sent; don't retransmit it if it is lost.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; 2
          Stop both reception and transmission.
-         
+
          &lt;br&gt;&lt;br&gt; The return value is &lt;CODE&gt;0&lt;/CODE&gt; on success and &lt;CODE&gt;-1&lt;/CODE&gt; on failure.  The
          following &lt;CODE&gt;errno&lt;/CODE&gt; error conditions are defined for this function:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
@@ -5081,7 +5081,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;VAR&gt;socket&lt;/VAR&gt; is not a socket.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTCONN
          &lt;VAR&gt;socket&lt;/VAR&gt; is not connected.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5125,7 +5125,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The specified protocol is not supported.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EOPNOTSUPP
          The specified protocol does not support the creation of socket pairs.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5184,7 +5184,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EALREADY
          The socket &lt;VAR&gt;socket&lt;/VAR&gt; is non-blocking and already has a pending
          connection in progress (see &lt;CODE&gt;EINPROGRESS&lt;/CODE&gt; above).
-         
+
          &lt;br&gt;&lt;br&gt; This function is defined as a cancellation point in multi-threaded
          programs, so one has to be prepared for this and make sure that
          allocated resources (like memory, files descriptors, semaphores or
@@ -5220,7 +5220,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The argument &lt;VAR&gt;socket&lt;/VAR&gt; is not a socket.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EOPNOTSUPP
          The socket &lt;VAR&gt;socket&lt;/VAR&gt; does not support this operation.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5268,7 +5268,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EWOULDBLOCK
          &lt;VAR&gt;socket&lt;/VAR&gt; has nonblocking mode set, and there are no pending
          connections immediately available.
-         
+
          &lt;br&gt;&lt;br&gt; This function is defined as a cancellation point in multi-threaded
          programs, so one has to be prepared for this and make sure that
          allocated resources (like memory, files descriptors, semaphores or
@@ -5307,7 +5307,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The socket &lt;VAR&gt;socket&lt;/VAR&gt; is not connected.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOBUFS
          There are not enough internal buffers available.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5360,7 +5360,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          case, &lt;CODE&gt;send&lt;/CODE&gt; generates a &lt;CODE&gt;SIGPIPE&lt;/CODE&gt; signal first; if that
          signal is ignored or blocked, or if its handler returns, then
          &lt;CODE&gt;send&lt;/CODE&gt; fails with &lt;CODE&gt;EPIPE&lt;/CODE&gt;.
-         
+
          &lt;br&gt;&lt;br&gt; This function is defined as a cancellation point in multi-threaded
          programs, so one has to be prepared for this and make sure that
          allocated resources (like memory, files descriptors, semaphores or
@@ -5403,7 +5403,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          .
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTCONN
          You never connected this socket.
-         
+
          &lt;br&gt;&lt;br&gt; This function is defined as a cancellation point in multi-threaded
          programs, so one has to be prepared for this and make sure that
          allocated resources (like memory, files descriptors, semaphores or
@@ -5553,7 +5553,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The descriptor &lt;VAR&gt;socket&lt;/VAR&gt; is not a socket.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOPROTOOPT
          The &lt;VAR&gt;optname&lt;/VAR&gt; doesn't make sense for the given &lt;VAR&gt;level&lt;/VAR&gt;.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5573,11 +5573,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         This function is used to set the socket option &lt;VAR&gt;optname&lt;/VAR&gt; at level
          &lt;VAR&gt;level&lt;/VAR&gt; for socket &lt;VAR&gt;socket&lt;/VAR&gt;.  The value of the option is passed
          in the buffer &lt;VAR&gt;optval&lt;/VAR&gt; of size &lt;VAR&gt;optlen&lt;/VAR&gt;.
-         &lt;br&gt;&lt;br&gt; 
-         
+         &lt;br&gt;&lt;br&gt;
+
          The return value and error codes for &lt;CODE&gt;setsockopt&lt;/CODE&gt; are the same as
          for &lt;CODE&gt;getsockopt&lt;/CODE&gt;.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -5732,7 +5732,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
   <construct id="struct-timeval" type="struct">
     <structure>
         <synopsis>
-        
+
          The &lt;CODE&gt;struct timeval&lt;/CODE&gt; structure represents an elapsed time.  It is
          declared in &lt;TT&gt;sys/time.h&lt;/TT&gt; and has the following members:
          &lt;br&gt;&lt;br&gt;
@@ -5750,7 +5750,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
   <construct id="struct-timespec" type="struct">
     <structure>
         <synopsis>
-        
+
          The &lt;CODE&gt;struct timespec&lt;/CODE&gt; structure represents an elapsed time.  It is
          declared in &lt;TT&gt;time.h&lt;/TT&gt; and has the following members:
          &lt;br&gt;&lt;br&gt;
@@ -5885,7 +5885,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EPERM&lt;/CODE&gt;
 &lt;DD&gt;
          The process is not superuser.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5933,7 +5933,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          support using &lt;CODE&gt;struct timezone&lt;/CODE&gt; to represent time zone
          information; that is an obsolete feature of 4.3 BSD.
          Instead, use the facilities described in Time Zone Functions.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -5976,7 +5976,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOSYS
          The operating system does not support setting time zone information, and
          &lt;VAR&gt;tzp&lt;/VAR&gt; is not a null pointer.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -6012,7 +6012,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EPERM&lt;/CODE&gt;
 &lt;DD&gt;
          You do not have privilege to set the time.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -6321,7 +6321,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The precision clock model is not properly set up at the moment, thus the
          clock must be considered unsynchronized, and the values should be
          treated with care.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -6504,7 +6504,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          are not allowed.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EPERM
          The process specified a settings update, but is not superuser.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; For more details see RFC1305 (Network Time Protocol, Version 3) and
          related documents.
          &lt;br&gt;&lt;br&gt; Portability note: Early versions of the GNU C library did not
@@ -6638,7 +6638,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ^
          The output uses uppercase characters, but only if this is possible
          .
-         
+
          &lt;br&gt;&lt;br&gt; The default action is to pad the number with zeros to keep it a constant
          width.  Numbers that do not have a range indicated below are never
          padded, since there is no natural width for them.
@@ -6661,7 +6661,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; O
          Use the locale's alternate numeric symbols for numbers.  This modifier
          applies only to numeric format specifiers.
-         
+
          &lt;br&gt;&lt;br&gt; If the format supports the modifier but no alternate representation
          is available, it is ignored.
          &lt;br&gt;&lt;br&gt; The conversion specifier ends with a format specifier taken from the
@@ -6744,7 +6744,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;samp&gt;PM&lt;/samp&gt; and midnight as &lt;samp&gt;AM&lt;/samp&gt;.  In most locales
          &lt;samp&gt;AM&lt;/samp&gt;/&lt;samp&gt;PM&lt;/samp&gt; format is not supported, in such cases &lt;CODE&gt;"%p"&lt;/CODE&gt;
          yields an empty string.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; %P
          Either &lt;samp&gt;am&lt;/samp&gt; or &lt;samp&gt;pm&lt;/samp&gt;, according to the given time value; or the
          corresponding strings for the current locale, printed in lowercase
@@ -6823,7 +6823,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The time zone abbreviation (empty if the time zone can't be determined).
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; %%
          A literal &lt;samp&gt;%&lt;/samp&gt; character.
-         
+
          &lt;br&gt;&lt;br&gt; The &lt;VAR&gt;size&lt;/VAR&gt; parameter can be used to specify the maximum number of
          characters to be stored in the array &lt;VAR&gt;s&lt;/VAR&gt;, including the terminating
          null character.  If the formatted time requires more than &lt;VAR&gt;size&lt;/VAR&gt;
@@ -7103,7 +7103,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          recognized, input is consumed but no field in &lt;VAR&gt;tm&lt;/VAR&gt; is set.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; %%
          A literal &lt;samp&gt;%&lt;/samp&gt; character.
-         
+
          &lt;br&gt;&lt;br&gt; All other characters in the format string must have a matching character
          in the input string.  Exceptions are white spaces in the input string
          which can match zero or more whitespace characters in the format string.
@@ -7313,7 +7313,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          The timer period is too large.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -7407,7 +7407,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The nanosecond value in the &lt;VAR&gt;requested_time&lt;/VAR&gt; parameter contains an
          illegal value.  Either the value is negative or greater than or equal to
          1000 million.
-         
+
          &lt;br&gt;&lt;br&gt; This function is a cancellation point in multi-threaded programs.  This
          is a problem if the thread allocates some resources (like memory, file
          descriptors, semaphores or whatever) at the time &lt;CODE&gt;nanosleep&lt;/CODE&gt; is
@@ -7518,7 +7518,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          .
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOMEM
          The process requires more space than the system can supply.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -7732,7 +7732,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          is not a child of the calling process.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          An invalid value was provided for the &lt;VAR&gt;options&lt;/VAR&gt; argument.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -7868,7 +7868,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          name.  You need to allocate a bigger array and try again.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EACCES
          Permission to read or search a component of the file name was denied.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -7881,7 +7881,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "unistd.h"/>
       </headers>
         <synopsis>
-        
+
          This &lt;CODE&gt;get_current_dir_name&lt;/CODE&gt; function is basically equivalent to
          &lt;CODE&gt;getcwd (NULL, 0)&lt;/CODE&gt;.  The only difference is that the value of
          the &lt;CODE&gt;PWD&lt;/CODE&gt; variable is returned if this value is correct.  This is a
@@ -7939,7 +7939,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The function call was interrupt by a signal.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EIO
          An I/O error occurred.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8009,7 +8009,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         </element>
         <element content="DT_SOCK">
             <synopsis>
-            A local-domain socket.  
+            A local-domain socket.
              &lt;br&gt;&lt;br&gt;
             </synopsis>
         </element>
@@ -8054,7 +8054,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          (This problem cannot happen on the GNU system.)
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOMEM
          Not enough memory available.
-         
+
          &lt;br&gt;&lt;br&gt; The &lt;CODE&gt;DIR&lt;/CODE&gt; type is typically implemented using a file descriptor,
          and the &lt;CODE&gt;opendir&lt;/CODE&gt; function in terms of the &lt;CODE&gt;open&lt;/CODE&gt; function.
          .  Directory streams and the underlying
@@ -8096,7 +8096,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The descriptor does not allow reading the directory content.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOMEM
          Not enough memory available.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8141,7 +8141,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EBADF&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;dirstream&lt;/VAR&gt; argument is not valid.
-         
+
          &lt;br&gt;&lt;br&gt; &lt;CODE&gt;readdir&lt;/CODE&gt; is not thread safe.  Multiple threads using
          &lt;CODE&gt;readdir&lt;/CODE&gt; on the same &lt;VAR&gt;dirstream&lt;/VAR&gt; may overwrite the return
          value.  Use &lt;CODE&gt;readdir_r&lt;/CODE&gt; when this is critical.
@@ -8250,7 +8250,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EBADF&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;dirstream&lt;/VAR&gt; argument is not valid.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8427,7 +8427,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          first parameter points to the file name, the second parameter to an
          object of type &lt;CODE&gt;struct stat&lt;/CODE&gt; which is filled in for the file named
          in the first parameter.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          The last parameter is a flag giving more information about the current
          file.  It can have the following values:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
@@ -8469,8 +8469,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          int (*) (const char *, const struct stat *, int, struct FTW *)&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
-         
+         &lt;br&gt;&lt;br&gt;
+
          The first three arguments are the same as for the &lt;CODE&gt;__ftw_func_t&lt;/CODE&gt;
          type.  However for the third argument some additional values are defined
          to allow finer differentiation:
@@ -8702,7 +8702,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          You are not allowed to write to the directory in which the new link is
          to be written.
-         
+
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EEXIST
          There is already a file named &lt;VAR&gt;newname&lt;/VAR&gt;.  If you want to replace
          this link with a new link, you must remove the old link explicitly first.
@@ -8728,7 +8728,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          than the existing file.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EIO
          A hardware error occurred while trying to read or write the to filesystem.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8760,8 +8760,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The directory or file system cannot be extended to make the new link.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EIO
          A hardware error occurred while reading or writing data on the disk.
-         &lt;br&gt;&lt;br&gt; 
-         
+         &lt;br&gt;&lt;br&gt;
+
         </synopsis>
     </function>
   </construct>
@@ -8816,7 +8816,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The named file is not a symbolic link.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EIO
          A hardware error occurred while reading or writing data on the disk.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8853,7 +8853,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          At least one of the path components does not exist.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ELOOP
          More than &lt;CODE&gt;MAXSYMLINKS&lt;/CODE&gt; many symlinks have been followed.
-         
+
          &lt;br&gt;&lt;br&gt; This function is a GNU extension and is declared in &lt;TT&gt;stdlib.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -8925,7 +8925,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The directory containing the file name to be deleted is on a read-only
          file system and can't be modified.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -8952,7 +8952,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          &lt;LI&gt;x EEXIST
          The directory to be deleted is not empty.
-         
+
          &lt;br&gt;&lt;br&gt; These two error codes are synonymous; some systems use one, and some use
          the other.  The GNU system always uses &lt;CODE&gt;ENOTEMPTY&lt;/CODE&gt;.
          &lt;br&gt;&lt;br&gt; The prototype for this function is declared in the header file
@@ -9050,7 +9050,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EXDEV
          The two file names &lt;VAR&gt;newname&lt;/VAR&gt; and &lt;VAR&gt;oldname&lt;/VAR&gt; are on different
          file systems.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9092,7 +9092,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The parent directory of the directory being created is on a read-only
          file system and cannot be modified.
-         
+
          &lt;br&gt;&lt;br&gt; To use this function, your program should include the header file
          &lt;TT&gt;sys/stat.h&lt;/TT&gt;.
         </synopsis>
@@ -9198,7 +9198,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
             <synopsis>
             This is the fractional part of the time of the last modification to the
              attributes of the file.  .
-             &lt;br&gt;&lt;br&gt; 
+             &lt;br&gt;&lt;br&gt;
             </synopsis>
         </element>
         <element content="blkcnt_t st_blocks">
@@ -9326,7 +9326,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
             <synopsis>
             This is the fractional part of the time of the last modification to the
              attributes of the file.  .
-             &lt;br&gt;&lt;br&gt; 
+             &lt;br&gt;&lt;br&gt;
             </synopsis>
         </element>
         <element content="blkcnt64_t st_blocks">
@@ -9393,7 +9393,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;ENOENT&lt;/CODE&gt;
 &lt;DD&gt;
          The file named by &lt;VAR&gt;filename&lt;/VAR&gt; doesn't exist.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; this
          function is in fact &lt;CODE&gt;stat64&lt;/CODE&gt; since the LFS interface transparently
          replaces the normal implementation.
@@ -9441,7 +9441,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EBADF&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;filedes&lt;/VAR&gt; argument is not a valid file descriptor.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; this
          function is in fact &lt;CODE&gt;fstat64&lt;/CODE&gt; since the LFS interface transparently
          replaces the normal implementation.
@@ -9544,7 +9544,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;CODE&gt;_POSIX_CHOWN_RESTRICTED&lt;/CODE&gt; macro.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The file is on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9577,7 +9577,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          see &lt;CODE&gt;chmod&lt;/CODE&gt; above.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The file resides on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9604,7 +9604,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
            return mask;&lt;br&gt;
          }&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          However, it is better to use &lt;CODE&gt;getumask&lt;/CODE&gt; if you just want to read
          the mask value, because it is reentrant (at least if you use the GNU
          operating system).
@@ -9663,7 +9663,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          meaning for non-directory files, so it is always safe to just clear the
          bit in &lt;VAR&gt;mode&lt;/VAR&gt; and call &lt;CODE&gt;chmod&lt;/CODE&gt; again.  ,
          for full details on the sticky bit.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9696,7 +9696,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          of the process) or a privileged user can change them.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The file resides on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9734,7 +9734,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The file doesn't exist.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          Write permission was requested for a file on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9795,7 +9795,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          the owner of the file or be a privileged user.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The file lives on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9874,7 +9874,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          the owner of the file or be a privileged user.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The file lives on a read-only file system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -9915,7 +9915,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The file is "append-only" or "immutable".
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINTR
          The operation was interrupted by a signal.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -9989,7 +9989,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The file is "append-only" or "immutable".
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINTR
          The operation was interrupted by a signal.
-         &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -10049,7 +10049,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EEXIST
          There is already a file named &lt;VAR&gt;filename&lt;/VAR&gt;.  If you want to replace
          this file, you must remove the old file explicitly first.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10322,14 +10322,14 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
          &lt;DT&gt;&lt;CODE&gt;SIG_DFL&lt;/CODE&gt;
 &lt;DD&gt;
-         
+
           action for a signal
          &lt;CODE&gt;SIG_DFL&lt;/CODE&gt; specifies the default action for the particular signal.
          The default actions for various kinds of signals are stated in
          Standard Signals.
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;CODE&gt;SIG_IGN&lt;/CODE&gt;
 &lt;DD&gt;
-         
+
           action for a signal
          &lt;CODE&gt;SIG_IGN&lt;/CODE&gt; specifies that the signal should be ignored.
          &lt;br&gt;&lt;br&gt; Your program generally should not ignore signals that represent serious
@@ -10347,7 +10347,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          running this handler as the way to deliver the signal.
          &lt;br&gt;&lt;br&gt; For more information about defining signal handler functions,
          see Defining Handlers.
-         
+
          &lt;br&gt;&lt;br&gt; If you set the action for a signal to &lt;CODE&gt;SIG_IGN&lt;/CODE&gt;, or if you set it
          to &lt;CODE&gt;SIG_DFL&lt;/CODE&gt; and the default action is to ignore that signal, then
          any pending signals of that type are discarded (even if they are
@@ -10365,7 +10365,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;LI&gt; EINVAL
          You specified an invalid &lt;VAR&gt;signum&lt;/VAR&gt;; or you tried to ignore or provide
          a handler for &lt;CODE&gt;SIGKILL&lt;/CODE&gt; or &lt;CODE&gt;SIGSTOP&lt;/CODE&gt;.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10468,7 +10468,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The &lt;VAR&gt;signum&lt;/VAR&gt; argument is not valid, or you are trying to
          trap or ignore &lt;CODE&gt;SIGKILL&lt;/CODE&gt; or &lt;CODE&gt;SIGSTOP&lt;/CODE&gt;.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10537,7 +10537,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          If the process is privileged, send the signal to all processes except
          for some special system processes.  Otherwise, send the signal to all
          processes with the same effective user ID.
-         
+
          &lt;br&gt;&lt;br&gt; A process can send a signal to itself with a call like &lt;CODE&gt;kill
          (getpid(), &lt;VAR&gt;signum&lt;/VAR&gt;)&lt;/CODE&gt;.  If &lt;CODE&gt;kill&lt;/CODE&gt; is used by a process to send
          a signal to itself, and the signal is not blocked, then &lt;CODE&gt;kill&lt;/CODE&gt;
@@ -10560,7 +10560,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          the processes in the process group named by &lt;VAR&gt;pid&lt;/VAR&gt;.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ESRCH
          The &lt;VAR&gt;pid&lt;/VAR&gt; argument does not refer to an existing process or group.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10632,7 +10632,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;signum&lt;/VAR&gt; argument doesn't specify a valid signal.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10672,7 +10672,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          The &lt;VAR&gt;signum&lt;/VAR&gt; argument doesn't specify a valid signal.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -10692,20 +10692,20 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          mask is changed, and must be one of the following values:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
-         
+
          &lt;DT&gt;&lt;CODE&gt;SIG_BLOCK&lt;/CODE&gt;
 &lt;DD&gt;
          Block the signals in &lt;CODE&gt;set&lt;/CODE&gt;---add them to the existing mask.  In
          other words, the new mask is the union of the existing mask and
          &lt;VAR&gt;set&lt;/VAR&gt;.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;DT&gt;&lt;CODE&gt;SIG_UNBLOCK&lt;/CODE&gt;
 &lt;DD&gt;
          Unblock the signals in &lt;VAR&gt;set&lt;/VAR&gt;---remove them from the existing mask.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; SIG_SETMASK
          Use &lt;VAR&gt;set&lt;/VAR&gt; for the mask; ignore the previous value of the mask.
-         
+
          &lt;br&gt;&lt;br&gt; The last argument, &lt;VAR&gt;oldset&lt;/VAR&gt;, is used to return information about the
          old process signal mask.  If you just want to change the mask without
          looking at it, pass a null pointer as the &lt;VAR&gt;oldset&lt;/VAR&gt; argument.
@@ -10728,7 +10728,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
          &lt;LI&gt; EINVAL
          The &lt;VAR&gt;how&lt;/VAR&gt; argument is invalid.
-         
+
          &lt;br&gt;&lt;br&gt; You can't block the &lt;CODE&gt;SIGKILL&lt;/CODE&gt; and &lt;CODE&gt;SIGSTOP&lt;/CODE&gt; signals, but
          if the signal set includes these, &lt;CODE&gt;sigprocmask&lt;/CODE&gt; just ignores
          them instead of returning an error status.
@@ -10783,7 +10783,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINTR&lt;/CODE&gt;
 &lt;DD&gt;
          The function was interrupted by delivery of a signal.
-         
+
          &lt;br&gt;&lt;br&gt; If the signal causes program termination, &lt;CODE&gt;pause&lt;/CODE&gt; doesn't return
          (obviously).
          &lt;br&gt;&lt;br&gt; This function is a cancellation point in multithreaded programs.  This
@@ -10909,7 +10909,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOMEM
          The size of the alternate stack was too small.
          It must be greater than &lt;CODE&gt;MINSIGSTKSZ&lt;/CODE&gt;.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -11085,7 +11085,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          There are too many open files in the entire system.  ,
          for more information about &lt;CODE&gt;ENFILE&lt;/CODE&gt;.  This error never occurs in
          the GNU system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -11159,7 +11159,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EROFS
          The directory that would contain the file resides on a read-only file
          system.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -11327,7 +11327,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;pre&gt;&lt;br&gt;
            error (0, errno, format, the parameters)&lt;br&gt;
          &lt;/pre&gt;
-         
+
          except that the global variables &lt;CODE&gt;error&lt;/CODE&gt; respects and modifies
          are not used.
         </synopsis>
@@ -11363,7 +11363,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;pre&gt;&lt;br&gt;
            error (0, 0, format, the parameters)&lt;br&gt;
          &lt;/pre&gt;
-         
+
          except that the global variables &lt;CODE&gt;error&lt;/CODE&gt; respects and modifies
          are not used.  The difference to &lt;CODE&gt;warn&lt;/CODE&gt; is that no error number
          string is printed.
@@ -11401,7 +11401,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;pre&gt;&lt;br&gt;
            error (status, errno, format, the parameters)&lt;br&gt;
          &lt;/pre&gt;
-         
+
          except that the global variables &lt;CODE&gt;error&lt;/CODE&gt; respects and modifies
          are not used and that the program is exited even if &lt;VAR&gt;status&lt;/VAR&gt; is zero.
         </synopsis>
@@ -11439,7 +11439,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;pre&gt;&lt;br&gt;
            error (status, 0, format, the parameters)&lt;br&gt;
          &lt;/pre&gt;
-         
+
          except that the global variables &lt;CODE&gt;error&lt;/CODE&gt; respects and modifies
          are not used and that the program is exited even if &lt;VAR&gt;status&lt;/VAR&gt;
          is zero.  The difference to &lt;CODE&gt;err&lt;/CODE&gt; is that no error number
@@ -11693,10 +11693,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          There was an error opening a directory, and you used the flag
          &lt;CODE&gt;GLOB_ERR&lt;/CODE&gt; or your specified &lt;VAR&gt;errfunc&lt;/VAR&gt; returned a nonzero
          value.
-         
-         
+
+
          ,
-         
+
          for an explanation of the &lt;CODE&gt;GLOB_ERR&lt;/CODE&gt; flag and &lt;VAR&gt;errfunc&lt;/VAR&gt;.
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;CODE&gt;GLOB_NOMATCH&lt;/CODE&gt;
 &lt;DD&gt;
@@ -12009,7 +12009,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; WRDE_SYNTAX
          There was a syntax error in the input string.  For example, an unmatched
          quoting character is a syntax error.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12158,7 +12158,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The calling process is already a process group leader, or there is
          already another process group around that has the same process group ID.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12187,7 +12187,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          different sessions, and the implementation doesn't allow to access the
          process group ID of the session leader of the process with ID &lt;VAR&gt;pid&lt;/VAR&gt;
          from the calling process.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12227,7 +12227,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ESRCH
          The process indicated by the &lt;VAR&gt;pid&lt;/VAR&gt; argument is not the calling
          process or a child of the calling process.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12274,7 +12274,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTTY
          The terminal file associated with the &lt;VAR&gt;filedes&lt;/VAR&gt; argument isn't the
          controlling terminal of the calling process.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12316,7 +12316,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EPERM
          The &lt;VAR&gt;pgid&lt;/VAR&gt; isn't a process group in the same session as the calling
          process.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12342,7 +12342,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTTY
          The calling process does not have a controlling terminal, or the file
          is not the controlling terminal.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12479,7 +12479,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          horizontal tab
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; '\v'
          vertical tab
-         
+
         </synopsis>
     </function>
   </construct>
@@ -12645,7 +12645,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          some standard properties each locale can define its own ones.  In case
          no property with the given name is known for the current locale
          selected for the &lt;CODE&gt;LC_CTYPE&lt;/CODE&gt; category, the function returns zero.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          The properties known in every locale are:
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;pre&gt;&lt;/pre&gt;
 &lt;DD&gt;&lt;br&gt;
@@ -12683,7 +12683,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          character (a letter or number); in other words, if either &lt;CODE&gt;iswalpha&lt;/CODE&gt;
          or &lt;CODE&gt;iswdigit&lt;/CODE&gt; is true of a character, then &lt;CODE&gt;iswalnum&lt;/CODE&gt; is also
          true.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("alnum"))&lt;br&gt;
@@ -12708,7 +12708,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;CODE&gt;iswalpha&lt;/CODE&gt; is true---letters which are neither upper case nor lower
          case.  But in the standard &lt;CODE&gt;"C"&lt;/CODE&gt; locale, there are no such
          additional characters.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("alpha"))&lt;br&gt;
@@ -12728,7 +12728,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is a control character (that is, a character that
          is not a printing character).
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("cntrl"))&lt;br&gt;
@@ -12780,7 +12780,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is a graphic character; that is, a character
          that has a glyph associated with it.  The whitespace characters are not
          considered graphic.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("graph"))&lt;br&gt;
@@ -12800,7 +12800,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is a lower-case letter.  The letter need not be
          from the Latin alphabet, any alphabet representable is valid.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("lower"))&lt;br&gt;
@@ -12820,7 +12820,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is a printing character.  Printing characters
          include all the graphic characters, plus the space (&lt;samp&gt; &lt;/samp&gt;) character.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("print"))&lt;br&gt;
@@ -12841,7 +12841,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is a punctuation character.
          This means any printing character that is not alphanumeric or a space
          character.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("punct"))&lt;br&gt;
@@ -12877,8 +12877,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          horizontal tab
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; L'\v'
          vertical tab
-         
-         &lt;br&gt;&lt;br&gt; 
+
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("space"))&lt;br&gt;
@@ -12898,7 +12898,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         Returns true if &lt;VAR&gt;wc&lt;/VAR&gt; is an upper-case letter.  The letter need not be
          from the Latin alphabet, any alphabet representable is valid.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("upper"))&lt;br&gt;
@@ -12920,7 +12920,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Hexadecimal digits include the normal decimal digits &lt;samp&gt;0&lt;/samp&gt; through
          &lt;samp&gt;9&lt;/samp&gt; and the letters &lt;samp&gt;A&lt;/samp&gt; through &lt;samp&gt;F&lt;/samp&gt; and
          &lt;samp&gt;a&lt;/samp&gt; through &lt;samp&gt;f&lt;/samp&gt;.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          iswctype (wc, wctype ("xdigit"))&lt;br&gt;
@@ -12966,7 +12966,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          guaranteed to be available in every locale:
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;pre&gt;&lt;/pre&gt;
 &lt;DD&gt;&lt;br&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          These functions are declared in &lt;TT&gt;wctype.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -12985,7 +12985,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          according to the rules of the mapping for which &lt;VAR&gt;desc&lt;/VAR&gt; is a
          descriptor, and returns the value it finds.  &lt;VAR&gt;desc&lt;/VAR&gt; must be
          obtained by a successful call to &lt;CODE&gt;wctrans&lt;/CODE&gt;.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function is declared in &lt;TT&gt;wctype.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -13002,12 +13002,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         If &lt;VAR&gt;wc&lt;/VAR&gt; is an upper-case letter, &lt;CODE&gt;towlower&lt;/CODE&gt; returns the corresponding
          lower-case letter.  If &lt;VAR&gt;wc&lt;/VAR&gt; is not an upper-case letter,
          &lt;VAR&gt;wc&lt;/VAR&gt; is returned unchanged.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;towlower&lt;/CODE&gt; can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          towctrans (wc, wctrans ("tolower"))&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function is declared in &lt;TT&gt;wctype.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -13023,12 +13023,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         If &lt;VAR&gt;wc&lt;/VAR&gt; is a lower-case letter, &lt;CODE&gt;towupper&lt;/CODE&gt; returns the corresponding
          upper-case letter.  Otherwise &lt;VAR&gt;wc&lt;/VAR&gt; is returned unchanged.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;towupper&lt;/CODE&gt; can be implemented using
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          towctrans (wc, wctrans ("toupper"))&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          This function is declared in &lt;TT&gt;wctype.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -13154,7 +13154,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
              }&lt;br&gt;
          }&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          When an error occurred the global variable &lt;VAR&gt;errno&lt;/VAR&gt; is set to
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
@@ -13163,7 +13163,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;LI&gt; ENOMSG
          The set/message tuple does not name an existing element in the
          message catalog.
-         
+
          &lt;br&gt;&lt;br&gt; While it sometimes can be useful to test for errors programs normally
          will avoid any test.  If the translation is not available it is no big
          problem if the original, untranslated message is printed.  Either the
@@ -13723,7 +13723,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The file resides on a read-only file system and any of &lt;CODE&gt;O_WRONLY&lt;/CODE&gt;,
          &lt;CODE&gt;O_RDWR&lt;/CODE&gt;, and &lt;CODE&gt;O_TRUNC&lt;/CODE&gt; are set in the &lt;VAR&gt;flags&lt;/VAR&gt; argument,
          or &lt;CODE&gt;O_CREAT&lt;/CODE&gt; is set and the file does not already exist.
-         
+
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; If on a 32 bit machine the sources are translated with
          &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; the function &lt;CODE&gt;open&lt;/CODE&gt; returns a file
          descriptor opened in the large file mode which enables the file handling
@@ -13810,7 +13810,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          When the file is accessed by NFS, these errors from &lt;CODE&gt;write&lt;/CODE&gt; can sometimes
          not be detected until &lt;CODE&gt;close&lt;/CODE&gt;.  , for details
          on their meaning.
-         
+
          &lt;br&gt;&lt;br&gt; Please note that there is &lt;EM&gt;no&lt;/EM&gt; separate &lt;CODE&gt;close64&lt;/CODE&gt; function.
          This is not necessary since this function does not determine nor depend
          on the mode of the file.  The kernel which performs the &lt;CODE&gt;close&lt;/CODE&gt;
@@ -13896,7 +13896,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          In some systems, when reading from a character or block device, position
          and size offsets must be aligned to a particular block size.  This error
          indicates that the offsets were not properly aligned.
-         
+
          &lt;br&gt;&lt;br&gt; Please note that there is no function named &lt;CODE&gt;read64&lt;/CODE&gt;.  This is not
          necessary since this function does not directly modify or handle the
          possibly wide file offset.  Since the kernel handles this state
@@ -13947,7 +13947,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ESPIPE
          The file descriptor &lt;VAR&gt;filedes&lt;/VAR&gt; is associate with a pipe or a FIFO and
          this device does not allow positioning of the file pointer.
-         
+
          &lt;br&gt;&lt;br&gt; The function is an extension defined in the Unix Single Specification
          version 2.
         </synopsis>
@@ -14054,7 +14054,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          In some systems, when writing to a character or block device, position
          and size offsets must be aligned to a particular block size.  This error
          indicates that the offsets were not properly aligned.
-         
+
          &lt;br&gt;&lt;br&gt; Unless you have arranged to prevent &lt;CODE&gt;EINTR&lt;/CODE&gt; failures, you should
          check &lt;CODE&gt;errno&lt;/CODE&gt; after each failing call to &lt;CODE&gt;write&lt;/CODE&gt;, and if the
          error was &lt;CODE&gt;EINTR&lt;/CODE&gt;, you should simply repeat the call.
@@ -14113,7 +14113,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ESPIPE
          The file descriptor &lt;VAR&gt;filedes&lt;/VAR&gt; is associated with a pipe or a FIFO and
          this device does not allow positioning of the file pointer.
-         
+
          &lt;br&gt;&lt;br&gt; The function is an extension defined in the Unix Single Specification
          version 2.
         </synopsis>
@@ -14178,7 +14178,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          current end.  If you set the position past the current end, and
          actually write data, you will extend the file with zeros up to that
          position.
-         
+
          &lt;br&gt;&lt;br&gt; The return value from &lt;CODE&gt;lseek&lt;/CODE&gt; is normally the resulting file
          position, measured in bytes from the beginning of the file.
          You can use this feature together with &lt;CODE&gt;SEEK_CUR&lt;/CODE&gt; to read the
@@ -14213,7 +14213,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          such as a pipe, FIFO or terminal device.  (POSIX.1 specifies this error
          only for pipes and FIFOs, but in the GNU system, you always get
          &lt;CODE&gt;ESPIPE&lt;/CODE&gt; if the object is not seekable.)
-         
+
          &lt;br&gt;&lt;br&gt; When the source file is compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; the
          &lt;CODE&gt;lseek&lt;/CODE&gt; function is in fact &lt;CODE&gt;lseek64&lt;/CODE&gt; and the type
          &lt;CODE&gt;off_t&lt;/CODE&gt; has 64 bits which makes it possible to handle files up to
@@ -14427,9 +14427,9 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;CODE&gt;NULL&lt;/CODE&gt; expresses no preference. Any previous mapping at that
          address is automatically removed. The address you give may still be
          changed, unless you use the &lt;CODE&gt;MAP_FIXED&lt;/CODE&gt; flag.
-         &lt;br&gt;&lt;br&gt; 
-         
-         
+         &lt;br&gt;&lt;br&gt;
+
+
          &lt;VAR&gt;protect&lt;/VAR&gt; contains flags that control what kind of access is
          permitted.  They include &lt;CODE&gt;PROT_READ&lt;/CODE&gt;, &lt;CODE&gt;PROT_WRITE&lt;/CODE&gt;, and
          &lt;CODE&gt;PROT_EXEC&lt;/CODE&gt;, which permit reading, writing, and execution,
@@ -14495,8 +14495,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; This file is of a type that doesn't support mapping.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOEXEC
          &lt;br&gt;&lt;br&gt; The file is on a filesystem that doesn't support mapping.
-         &lt;br&gt;&lt;br&gt; 
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -14551,7 +14551,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The memory range given was outside the user mmap range or wasn't page
          aligned.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -14596,7 +14596,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          An invalid region was given, or the &lt;VAR&gt;flags&lt;/VAR&gt; were invalid.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EFAULT
          There is no existing mapping in at least part of the given region.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -14638,7 +14638,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          available to extend it.  Also, this error will occur if
          &lt;CODE&gt;MREMAP_MAYMOVE&lt;/CODE&gt; is not given and the extension would collide with
          another mapped region.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
   </construct>
@@ -14678,7 +14678,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The region is no longer needed.  The kernel may free these pages,
          causing any changes to the pages to be lost, as well as swapped
          out pages to be discarded.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; The POSIX names are slightly different, but with the same meanings:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
@@ -14692,7 +14692,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          This corresponds with BSD's &lt;CODE&gt;MADV_WILLNEED&lt;/CODE&gt;.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; POSIX_MADV_DONTNEED
          This corresponds with BSD's &lt;CODE&gt;MADV_DONTNEED&lt;/CODE&gt;.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; &lt;CODE&gt;msync&lt;/CODE&gt; returns 0 for success and -1 for
          error.  Errors include:
          &lt;DL&gt;
@@ -14701,7 +14701,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          An invalid region was given, or the &lt;VAR&gt;advice&lt;/VAR&gt; was invalid.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EFAULT
          There is no existing mapping in at least part of the given region.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
   </construct>
@@ -14779,7 +14779,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          The &lt;VAR&gt;timeout&lt;/VAR&gt; argument is invalid; one of the components is negative
          or too large.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -14831,7 +14831,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The descriptor &lt;VAR&gt;fildes&lt;/VAR&gt; is not valid.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          No synchronization is possible since the system does not implement this.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -14862,7 +14862,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The descriptor &lt;VAR&gt;fildes&lt;/VAR&gt; is not valid.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          No synchronization is possible since the system does not implement this.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -15065,7 +15065,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;CODE&gt;aiocbp-&gt;aio_offset&lt;/CODE&gt; or &lt;CODE&gt;aiocbp-&gt;aio_reqpiro&lt;/CODE&gt; value is
          invalid.  This condition need not be recognized before enqueueing the
          request and so this error might also be signaled asynchronously.
-         
+
          &lt;br&gt;&lt;br&gt; If &lt;CODE&gt;aio_read&lt;/CODE&gt; returns zero, the current status of the request
          can be queried using &lt;CODE&gt;aio_error&lt;/CODE&gt; and &lt;CODE&gt;aio_return&lt;/CODE&gt; functions.
          As long as the value returned by &lt;CODE&gt;aio_error&lt;/CODE&gt; is &lt;CODE&gt;EINPROGRESS&lt;/CODE&gt;
@@ -15081,10 +15081,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;CODE&gt;aiocbp-&gt;aio_fildes&lt;/CODE&gt; descriptor is not valid.
          &lt;LI&gt; ECANCELED
          The operation was canceled before the operation was finished
-         
+
          &lt;LI&gt; EINVAL
          The &lt;CODE&gt;aiocbp-&gt;aio_offset&lt;/CODE&gt; value is invalid.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; this
          function is in fact &lt;CODE&gt;aio_read64&lt;/CODE&gt; since the LFS interface transparently
          replaces the normal implementation.
@@ -15153,7 +15153,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;CODE&gt;aiocbp-&gt;aio_offset&lt;/CODE&gt; or &lt;CODE&gt;aiocbp-&gt;aio_reqprio&lt;/CODE&gt; value is
          invalid.  This condition may not be recognized before enqueueing the
          request and so this error might also be signaled asynchronously.
-         
+
          &lt;br&gt;&lt;br&gt; In the case &lt;CODE&gt;aio_write&lt;/CODE&gt; returns zero, the current status of the
          request can be queried using &lt;CODE&gt;aio_error&lt;/CODE&gt; and &lt;CODE&gt;aio_return&lt;/CODE&gt;
          functions.  As long as the value returned by &lt;CODE&gt;aio_error&lt;/CODE&gt; is
@@ -15170,10 +15170,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;CODE&gt;aiocbp-&gt;aio_fildes&lt;/CODE&gt; descriptor is not valid.
          &lt;LI&gt; ECANCELED
          The operation was canceled before the operation was finished.
-         
+
          &lt;LI&gt; EINVAL
          The &lt;CODE&gt;aiocbp-&gt;aio_offset&lt;/CODE&gt; value is invalid.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt;, this
          function is in fact &lt;CODE&gt;aio_write64&lt;/CODE&gt; since the LFS interface transparently
          replaces the normal implementation.
@@ -15274,7 +15274,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          each request should be checked to determine which one failed.
          &lt;LI&gt; ENOSYS
          The &lt;CODE&gt;lio_listio&lt;/CODE&gt; function is not supported.
-         
+
          &lt;br&gt;&lt;br&gt; If the &lt;VAR&gt;mode&lt;/VAR&gt; parameter is &lt;CODE&gt;LIO_NOWAIT&lt;/CODE&gt; and the caller cancels
          a request, the error status for this request returned by
          &lt;CODE&gt;aio_error&lt;/CODE&gt; is &lt;CODE&gt;ECANCELED&lt;/CODE&gt;.
@@ -15446,7 +15446,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          parameter is other than &lt;CODE&gt;O_DSYNC&lt;/CODE&gt; and &lt;CODE&gt;O_SYNC&lt;/CODE&gt;.
          &lt;LI&gt; ENOSYS
          This function is not implemented.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; this
          function is in fact &lt;CODE&gt;aio_fsync64&lt;/CODE&gt; since the LFS interface
          transparently replaces the normal implementation.
@@ -15511,7 +15511,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          of one of the requests.
          &lt;LI&gt; ENOSYS
          The &lt;CODE&gt;aio_suspend&lt;/CODE&gt; function is not implemented.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; this
          function is in fact &lt;CODE&gt;aio_suspend64&lt;/CODE&gt; since the LFS interface
          transparently replaces the normal implementation.
@@ -15583,7 +15583,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The file descriptor &lt;VAR&gt;fildes&lt;/VAR&gt; is not valid.
          &lt;LI&gt; ENOSYS
          &lt;CODE&gt;aio_cancel&lt;/CODE&gt; is not implemented.
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt;, this
          function is in fact &lt;CODE&gt;aio_cancel64&lt;/CODE&gt; since the LFS interface
          transparently replaces the normal implementation.
@@ -15720,7 +15720,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; F_SETOWN
          Set process or process group ID to receive &lt;CODE&gt;SIGIO&lt;/CODE&gt; signals.
          .
-         
+
          &lt;br&gt;&lt;br&gt; This function is a cancellation point in multi-threaded programs.  This
          is a problem if the thread allocates some resources (like memory, file
          descriptors, semaphores or whatever) at the time &lt;CODE&gt;fcntl&lt;/CODE&gt; is
@@ -16719,7 +16719,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          determined by the currently selected locale.  In the standard &lt;CODE&gt;"C"&lt;/CODE&gt;
          locale the characters "A and "a do not match but in a locale which
          regards these characters as parts of the alphabet they do match.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;strcasecmp&lt;/CODE&gt; is derived from BSD.
         </synopsis>
     </function>
@@ -16739,7 +16739,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          determined by the currently selected locale.  In the standard &lt;CODE&gt;"C"&lt;/CODE&gt;
          locale the characters "A and "a do not match but in a locale which
          regards these characters as parts of the alphabet they do match.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;wcscasecmp&lt;/CODE&gt; is a GNU extension.
         </synopsis>
     </function>
@@ -16794,7 +16794,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         This function is like &lt;CODE&gt;strncmp&lt;/CODE&gt;, except that differences in case
          are ignored.  Like &lt;CODE&gt;strcasecmp&lt;/CODE&gt;, it is locale dependent how
          uppercase and lowercase characters are related.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;strncasecmp&lt;/CODE&gt; is a GNU extension.
         </synopsis>
     </function>
@@ -16813,7 +16813,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         This function is like &lt;CODE&gt;wcsncmp&lt;/CODE&gt;, except that differences in case
          are ignored.  Like &lt;CODE&gt;wcscasecmp&lt;/CODE&gt;, it is locale dependent how
          uppercase and lowercase characters are related.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;wcsncasecmp&lt;/CODE&gt; is a GNU extension.
         </synopsis>
     </function>
@@ -17049,7 +17049,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
             rawmemchr (str, '\0')&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          will never go beyond the end of the string.
          &lt;br&gt;&lt;br&gt; This function is a GNU extension.
         </synopsis>
@@ -18331,7 +18331,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
            app -foo&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          the &lt;CODE&gt;getopt_long_only&lt;/CODE&gt; will first look for a long option named
          &lt;samp&gt;foo&lt;/samp&gt;.  If this is not found, the short options &lt;samp&gt;f&lt;/samp&gt;, &lt;samp&gt;o&lt;/samp&gt;,
          and again &lt;samp&gt;o&lt;/samp&gt; are recognized.
@@ -18375,7 +18375,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          div_t result;&lt;br&gt;
          result = div (20, -6);&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          Now &lt;CODE&gt;result.quot&lt;/CODE&gt; is &lt;CODE&gt;-3&lt;/CODE&gt; and &lt;CODE&gt;result.rem&lt;/CODE&gt; is &lt;CODE&gt;2&lt;/CODE&gt;.
         </synopsis>
     </function>
@@ -20475,7 +20475,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "math.h"/>
       </headers>
         <synopsis>
-        
+
          The &lt;CODE&gt;fma&lt;/CODE&gt; function performs floating-point multiply-add.  This is
          the operation (&lt;VAR&gt;x&lt;/VAR&gt;  &lt;VAR&gt;y&lt;/VAR&gt;) + &lt;VAR&gt;z&lt;/VAR&gt;, but the
          intermediate result is not rounded to the destination type.  This can
@@ -20485,7 +20485,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          directly, because the expression &lt;samp&gt;x*y + z&lt;/samp&gt; is defined to round the
          intermediate result.  &lt;CODE&gt;fma&lt;/CODE&gt; lets you choose when you want to round
          only once.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          On processors which do not implement multiply-add in hardware,
          &lt;CODE&gt;fma&lt;/CODE&gt; can be very slow since it must avoid intermediate rounding.
          &lt;TT&gt;math.h&lt;/TT&gt; defines the symbols &lt;CODE&gt;FP_FAST_FMA&lt;/CODE&gt;,
@@ -20507,7 +20507,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "math.h"/>
       </headers>
         <synopsis>
-        
+
          The &lt;CODE&gt;fma&lt;/CODE&gt; function performs floating-point multiply-add.  This is
          the operation (&lt;VAR&gt;x&lt;/VAR&gt;  &lt;VAR&gt;y&lt;/VAR&gt;) + &lt;VAR&gt;z&lt;/VAR&gt;, but the
          intermediate result is not rounded to the destination type.  This can
@@ -20517,7 +20517,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          directly, because the expression &lt;samp&gt;x*y + z&lt;/samp&gt; is defined to round the
          intermediate result.  &lt;CODE&gt;fma&lt;/CODE&gt; lets you choose when you want to round
          only once.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          On processors which do not implement multiply-add in hardware,
          &lt;CODE&gt;fma&lt;/CODE&gt; can be very slow since it must avoid intermediate rounding.
          &lt;TT&gt;math.h&lt;/TT&gt; defines the symbols &lt;CODE&gt;FP_FAST_FMA&lt;/CODE&gt;,
@@ -20539,7 +20539,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "math.h"/>
       </headers>
         <synopsis>
-        
+
          The &lt;CODE&gt;fma&lt;/CODE&gt; function performs floating-point multiply-add.  This is
          the operation (&lt;VAR&gt;x&lt;/VAR&gt;  &lt;VAR&gt;y&lt;/VAR&gt;) + &lt;VAR&gt;z&lt;/VAR&gt;, but the
          intermediate result is not rounded to the destination type.  This can
@@ -20549,7 +20549,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          directly, because the expression &lt;samp&gt;x*y + z&lt;/samp&gt; is defined to round the
          intermediate result.  &lt;CODE&gt;fma&lt;/CODE&gt; lets you choose when you want to round
          only once.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          On processors which do not implement multiply-add in hardware,
          &lt;CODE&gt;fma&lt;/CODE&gt; can be very slow since it must avoid intermediate rounding.
          &lt;TT&gt;math.h&lt;/TT&gt; defines the symbols &lt;CODE&gt;FP_FAST_FMA&lt;/CODE&gt;,
@@ -21663,7 +21663,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "wchar.h"/>
       </headers>
         <synopsis>
-        
+
          The &lt;CODE&gt;mbrtowc&lt;/CODE&gt; function (``multibyte restartable to wide
          character'') converts the next multibyte character in the string pointed
          to by &lt;VAR&gt;s&lt;/VAR&gt; into a wide character and stores it in the wide character
@@ -21749,7 +21749,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          wcrtombs (temp_buf, L'\0', ps)&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          since, if &lt;VAR&gt;s&lt;/VAR&gt; is a null pointer, &lt;CODE&gt;wcrtomb&lt;/CODE&gt; performs as if it
          writes into an internal buffer, which is guaranteed to be large enough.
          &lt;br&gt;&lt;br&gt; If &lt;VAR&gt;wc&lt;/VAR&gt; is the NUL wide character, &lt;CODE&gt;wcrtomb&lt;/CODE&gt; emits, if
@@ -22130,7 +22130,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Not enough memory to carry out the operation.
          &lt;LI&gt; EINVAL
          The conversion from &lt;VAR&gt;fromcode&lt;/VAR&gt; to &lt;VAR&gt;tocode&lt;/VAR&gt; is not supported.
-         
+
          &lt;br&gt;&lt;br&gt; It is not possible to use the same descriptor in different threads to
          perform independent conversions.  The data structures associated
          with the descriptor include information about the conversion state.
@@ -22183,7 +22183,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EBADF&lt;/CODE&gt;
 &lt;DD&gt;
          The conversion descriptor is invalid.
-         
+
          &lt;br&gt;&lt;br&gt; The &lt;CODE&gt;iconv_close&lt;/CODE&gt; function was introduced together with the rest
          of the &lt;CODE&gt;iconv&lt;/CODE&gt; functions in XPG2 and is declared in &lt;TT&gt;iconv.h&lt;/TT&gt;.
         </synopsis>
@@ -22202,7 +22202,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <header filename = "iconv.h"/>
       </headers>
         <synopsis>
-        
+
          The &lt;CODE&gt;iconv&lt;/CODE&gt; function converts the text in the input buffer
          according to the rules associated with the descriptor &lt;VAR&gt;cd&lt;/VAR&gt; and
          stores the result in the output buffer.  It is possible to call the
@@ -22272,7 +22272,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          of the input buffer.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EBADF
          The &lt;VAR&gt;cd&lt;/VAR&gt; argument is invalid.
-         
+
          &lt;br&gt;&lt;br&gt; The &lt;CODE&gt;iconv&lt;/CODE&gt; function was introduced in the XPG2 standard and is
          declared in the &lt;TT&gt;iconv.h&lt;/TT&gt; header.
         </synopsis>
@@ -23035,7 +23035,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          low order bits of this parameter when they are allocated (except when
          allocated by &lt;CODE&gt;calloc&lt;/CODE&gt;) and freed.  This can be used to debug the
          use of uninitialized or freed heap memory.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -23670,7 +23670,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The request would cause the data segment to overlap another segment or
          exceed the process' data storage limit.
-         
+
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -23716,7 +23716,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;VAR&gt;len&lt;/VAR&gt; is not positive.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOSYS
          The kernel does not provide &lt;CODE&gt;mlock&lt;/CODE&gt; capability.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; You can lock &lt;EM&gt;all&lt;/EM&gt; a process' memory with &lt;CODE&gt;mlockall&lt;/CODE&gt;.  You
          unlock memory with &lt;CODE&gt;munlock&lt;/CODE&gt; or &lt;CODE&gt;munlockall&lt;/CODE&gt;.
          &lt;br&gt;&lt;br&gt; To avoid all page faults in a C program, you have to use
@@ -23774,7 +23774,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          affect future address spaces owned by the same process so exec, which
          replaces a process' address space, wipes out &lt;CODE&gt;MCL_FUTURE&lt;/CODE&gt;.
          .
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; When the function returns successfully, and you specified
          &lt;CODE&gt;MCL_CURRENT&lt;/CODE&gt;, all of the process' pages are backed by (connected
          to) real frames (they are resident) and are marked to stay that way.
@@ -23808,7 +23808,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Undefined bits in &lt;VAR&gt;flags&lt;/VAR&gt; are not zero.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOSYS
          The kernel does not provide &lt;CODE&gt;mlockall&lt;/CODE&gt; capability.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; You can lock just specific pages with &lt;CODE&gt;mlock&lt;/CODE&gt;.  You unlock pages
          with &lt;CODE&gt;munlockall&lt;/CODE&gt; and &lt;CODE&gt;munlock&lt;/CODE&gt;.
          &lt;br&gt;&lt;br&gt;
@@ -23856,7 +23856,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;CODE&gt;RUSAGE_CHILDREN&lt;/CODE&gt;
 &lt;DD&gt;
          All child processes (direct and indirect) that have already terminated.
-         
+
          &lt;br&gt;&lt;br&gt; In the GNU system, you can also inquire about a particular child process
          by specifying its process ID.
          &lt;br&gt;&lt;br&gt; The return value of &lt;CODE&gt;getrusage&lt;/CODE&gt; is zero for success, and &lt;CODE&gt;-1&lt;/CODE&gt;
@@ -23865,7 +23865,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
          &lt;LI&gt; EINVAL
          The argument &lt;VAR&gt;processes&lt;/VAR&gt; is not valid.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -24025,8 +24025,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Disk reads.  Analogous to &lt;CODE&gt;ru_inblk&lt;/CODE&gt; in &lt;CODE&gt;struct rusage&lt;/CODE&gt;
          &lt;LI&gt; vm_oublk
          Disk writes.  Analogous to &lt;CODE&gt;ru_oublk&lt;/CODE&gt; in &lt;CODE&gt;struct rusage&lt;/CODE&gt;
-         
-         
+
+
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; The return value is zero if the function succeeds; &lt;CODE&gt;-1&lt;/CODE&gt; otherwise.
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;
         </synopsis>
@@ -24096,7 +24096,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt;
          The process tried to raise a maximum limit, but is not superuser.
          &lt;/OL&gt;
-         
+
          &lt;br&gt;&lt;br&gt; When the sources are compiled with &lt;CODE&gt;_FILE_OFFSET_BITS == 64&lt;/CODE&gt; on a
          32-bit system this function is in fact &lt;CODE&gt;setrlimit64&lt;/CODE&gt;.  Thus, the
          LFS interface transparently replaces the old interface.
@@ -24186,7 +24186,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          Set the current and maximum limit on the size of a file to &lt;VAR&gt;limit&lt;/VAR&gt; *
          512 bytes.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; There are also some other &lt;VAR&gt;cmd&lt;/VAR&gt; values that may do things on some
          systems, but they are not supported.
          &lt;br&gt;&lt;br&gt; Only the superuser may increase a maximum limit.
@@ -24198,7 +24198,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
          &lt;LI&gt; EPERM
          A process tried to increase a maximum limit, but is not superuser.
-         
+
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24231,14 +24231,14 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          Maximum core file size.  Same as &lt;CODE&gt;RLIMIT_COR&lt;/CODE&gt; for &lt;CODE&gt;setrlimit&lt;/CODE&gt;.
          &lt;LI&gt; LIM_MAXRSS
          Maximum physical memory.  Same as &lt;CODE&gt;RLIMIT_RSS&lt;/CODE&gt; for &lt;CODE&gt;setrlimit&lt;/CODE&gt;.
-         
+
          &lt;br&gt;&lt;br&gt; The return value is zero for success, and &lt;CODE&gt;-1&lt;/CODE&gt; with &lt;CODE&gt;errno&lt;/CODE&gt; set
          accordingly for failure:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
          &lt;LI&gt; EPERM
          The process tried to set its current limit beyond its maximum limit.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24278,7 +24278,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          First In First Out
          &lt;LI&gt; SCHED_RR
          Round Robin
-         
+
          &lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt; On success, the return value is &lt;CODE&gt;0&lt;/CODE&gt;.  Otherwise, it is &lt;CODE&gt;-1&lt;/CODE&gt;
          and &lt;CODE&gt;ERRNO&lt;/CODE&gt; is set accordingly.  The &lt;CODE&gt;errno&lt;/CODE&gt; values specific
          to this function are:
@@ -24311,7 +24311,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt;
          &lt;VAR&gt;pid&lt;/VAR&gt; is negative.
          &lt;/OL&gt;
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24339,7 +24339,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          There is no process with pid &lt;VAR&gt;pid&lt;/VAR&gt; and it is not zero.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          &lt;VAR&gt;pid&lt;/VAR&gt; is negative.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; Note that this function is not an exact mate to &lt;CODE&gt;sched_setscheduler&lt;/CODE&gt;
          because while that function sets the scheduling policy and the absolute
          priority, this function gets only the scheduling policy.  To get the
@@ -24390,7 +24390,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          There is no process with pid &lt;VAR&gt;pid&lt;/VAR&gt; and it is not zero.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          &lt;VAR&gt;pid&lt;/VAR&gt; is negative.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24415,7 +24415,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          &lt;VAR&gt;policy&lt;/VAR&gt; does not identify an existing scheduling policy.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24440,7 +24440,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          &lt;VAR&gt;policy&lt;/VAR&gt; does not identify an existing scheduling policy.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24525,7 +24525,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          process.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          The value of &lt;VAR&gt;class&lt;/VAR&gt; is not valid.
-         
+
          &lt;br&gt;&lt;br&gt; If the return value is &lt;CODE&gt;-1&lt;/CODE&gt;, it could indicate failure, or it could
          be the nice value.  The only way to make certain is to set &lt;CODE&gt;errno =
          0&lt;/CODE&gt; before calling &lt;CODE&gt;getpriority&lt;/CODE&gt;, then use &lt;CODE&gt;errno != 0&lt;/CODE&gt;
@@ -24565,7 +24565,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EACCES
          The call would lower the process' nice value and the process does not have
          &lt;CODE&gt;CAP_SYS_NICE&lt;/CODE&gt; permission.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -24629,7 +24629,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          No process or thread with the given ID found.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EFAULT
          The pointer &lt;VAR&gt;cpuset&lt;/VAR&gt; is does not point to a valid object.
-         
+
          &lt;br&gt;&lt;br&gt; This function is a GNU extension and is declared in &lt;TT&gt;sched.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -24661,7 +24661,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          The bitset is not valid.  This might mean that the affinity set might
          not leave a processor for the process or thread to run on.
-         
+
          &lt;br&gt;&lt;br&gt; This function is a GNU extension and is declared in &lt;TT&gt;sched.h&lt;/TT&gt;.
         </synopsis>
     </function>
@@ -24820,7 +24820,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ERANGE
          The buffer length &lt;VAR&gt;len&lt;/VAR&gt; is too small to store the string to be
          returned.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -24890,7 +24890,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;VAR&gt;filedes&lt;/VAR&gt; argument is not a valid file descriptor.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTTY
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not associated with a terminal.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -24914,19 +24914,19 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 
          &lt;DT&gt;&lt;CODE&gt;TCSANOW&lt;/CODE&gt;
 &lt;DD&gt;
-         
+
          Make the change immediately.
          &lt;br&gt;&lt;br&gt; &lt;DT&gt;&lt;CODE&gt;TCSADRAIN&lt;/CODE&gt;
 &lt;DD&gt;
-         
+
          Make the change after waiting until all queued output has been written.
          You should usually use this option when changing parameters that affect
          output.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; TCSAFLUSH
-         
+
          This is like &lt;CODE&gt;TCSADRAIN&lt;/CODE&gt;, but also discards any queued input.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; TCSASOFT
-         
+
          This is a flag bit that you can add to any of the above alternatives.
          Its meaning is to inhibit alteration of the state of the terminal
          hardware.  It is a BSD extension; it is only supported on BSD systems
@@ -24934,7 +24934,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; Using &lt;CODE&gt;TCSASOFT&lt;/CODE&gt; is exactly the same as setting the &lt;CODE&gt;CIGNORE&lt;/CODE&gt;
          bit in the &lt;CODE&gt;c_cflag&lt;/CODE&gt; member of the structure &lt;VAR&gt;termios-p&lt;/VAR&gt; points
          to.  , for a description of &lt;CODE&gt;CIGNORE&lt;/CODE&gt;.
-         
+
          &lt;br&gt;&lt;br&gt; If this function is called from a background process on its controlling
          terminal, normally all processes in the process group are sent a
          &lt;CODE&gt;SIGTTOU&lt;/CODE&gt; signal, in the same way as if the process were trying to
@@ -24953,7 +24953,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          Either the value of the &lt;CODE&gt;when&lt;/CODE&gt; argument is not valid, or there is
          something wrong with the data in the &lt;VAR&gt;termios-p&lt;/VAR&gt; argument.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -25157,7 +25157,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not a valid file descriptor.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; ENOTTY
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not associated with a terminal device.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -25191,7 +25191,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINTR
          The operation was interrupted by delivery of a signal.
          .
-         
+
         </synopsis>
     </function>
   </construct>
@@ -25211,18 +25211,18 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          following values:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
-         
+
          &lt;DT&gt;&lt;CODE&gt;TCIFLUSH&lt;/CODE&gt;
 &lt;DD&gt;
          &lt;br&gt;&lt;br&gt; Clear any input data received, but not yet read.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;DT&gt;&lt;CODE&gt;TCOFLUSH&lt;/CODE&gt;
 &lt;DD&gt;
          &lt;br&gt;&lt;br&gt; Clear any output data written, but not yet transmitted.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; TCIOFLUSH
          &lt;br&gt;&lt;br&gt; Clear both queued input and output.
-         
+
          &lt;br&gt;&lt;br&gt; The return value is normally zero.  In the event of an error, a value
          of -1 is returned.  The following &lt;CODE&gt;errno&lt;/CODE&gt; error conditions
          are defined for this function:
@@ -25234,7 +25234,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not associated with a terminal device.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          A bad value was supplied as the &lt;VAR&gt;queue&lt;/VAR&gt; argument.
-         
+
          &lt;br&gt;&lt;br&gt; It is unfortunate that this function is named &lt;CODE&gt;tcflush&lt;/CODE&gt;, because
          the term ``flush'' is normally used for quite another operation---waiting
          until all output is transmitted---and using it for discarding input or
@@ -25259,21 +25259,21 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          be one of the following values:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
-         
+
          &lt;DT&gt;&lt;CODE&gt;TCOOFF&lt;/CODE&gt;
 &lt;DD&gt;
          Suspend transmission of output.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;DT&gt;&lt;CODE&gt;TCOON&lt;/CODE&gt;
 &lt;DD&gt;
          Restart transmission of output.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; TCIOFF
          Transmit a STOP character.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; TCION
          Transmit a START character.
-         
+
          &lt;br&gt;&lt;br&gt; For more information about the STOP and START characters, see Special
          Characters.
          &lt;br&gt;&lt;br&gt; The return value is normally zero.  In the event of an error, a value
@@ -25281,16 +25281,16 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          are defined for this function:
          &lt;br&gt;&lt;br&gt; &lt;DL&gt;
 
-         
+
          &lt;LI&gt; EBADF
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not a valid file descriptor.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; ENOTTY
          The &lt;VAR&gt;filedes&lt;/VAR&gt; is not associated with a terminal device.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;LI&gt; EINVAL
          A bad value was supplied as the &lt;VAR&gt;action&lt;/VAR&gt; argument.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -25313,7 +25313,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;ENOENT&lt;/CODE&gt;
 &lt;DD&gt;
          There are no free master pseudo-terminals available.
-         
+
          &lt;br&gt;&lt;br&gt; This function is a GNU extension.
         </synopsis>
     </function>
@@ -25354,7 +25354,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EACCES
          The slave pseudo-terminal device corresponding to the master associated
          with &lt;VAR&gt;filedes&lt;/VAR&gt; could not be accessed.
-         
+
          &lt;br&gt;&lt;br&gt;
         </synopsis>
     </function>
@@ -25384,7 +25384,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          The &lt;VAR&gt;filedes&lt;/VAR&gt; argument is not associated with a master pseudo-terminal
          device.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -25454,7 +25454,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;ENOENT&lt;/CODE&gt;
 &lt;DD&gt;
          There are no free pseudo-terminal pairs available.
-         
+
          &lt;br&gt;&lt;br&gt; Warning: Using the &lt;CODE&gt;openpty&lt;/CODE&gt; function with &lt;VAR&gt;name&lt;/VAR&gt; not
          set to &lt;CODE&gt;NULL&lt;/CODE&gt; is very dangerous because it provides no
          protection against overflowing the string &lt;VAR&gt;name&lt;/VAR&gt;.  You should use
@@ -25576,7 +25576,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          exactly the opposite.
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; LOG_ODELAY
          This bit does nothing.  It exists for backward compatibility.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; If any other bit in &lt;VAR&gt;options&lt;/VAR&gt; is on, the result is undefined.
          &lt;br&gt;&lt;br&gt; &lt;VAR&gt;facility&lt;/VAR&gt; is the default facility code for this connection.  A
          &lt;CODE&gt;syslog&lt;/CODE&gt; on this connection that specifies default facility causes
@@ -25994,7 +25994,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          system call failed.  In that case, &lt;CODE&gt;syscall&lt;/CODE&gt; returns &lt;CODE&gt;-1&lt;/CODE&gt; and
          sets &lt;CODE&gt;errno&lt;/CODE&gt; to an error code that the system call returned.  Note
          that system calls do not return &lt;CODE&gt;-1&lt;/CODE&gt; when they succeed.
-         
+
          &lt;br&gt;&lt;br&gt; If you specify an invalid &lt;VAR&gt;sysno&lt;/VAR&gt;, &lt;CODE&gt;syscall&lt;/CODE&gt; returns &lt;CODE&gt;-1&lt;/CODE&gt;
          with &lt;CODE&gt;errno&lt;/CODE&gt; = &lt;CODE&gt;ENOSYS&lt;/CODE&gt;.
          &lt;br&gt;&lt;br&gt; Example:
@@ -26336,10 +26336,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex sine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex sine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          sin (z) = 1/(2*i) * (exp (z*i) - exp (-z*i)).
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26354,10 +26354,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex sine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex sine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          sin (z) = 1/(2*i) * (exp (z*i) - exp (-z*i)).
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26372,10 +26372,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex sine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex sine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          sin (z) = 1/(2*i) * (exp (z*i) - exp (-z*i)).
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26390,10 +26390,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex cosine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex cosine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          cos (z) = 1/2 * (exp (z*i) + exp (-z*i))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26408,10 +26408,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex cosine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex cosine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          cos (z) = 1/2 * (exp (z*i) + exp (-z*i))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26426,10 +26426,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex cosine of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex cosine is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          cos (z) = 1/2 * (exp (z*i) + exp (-z*i))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -26444,11 +26444,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex tangent of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex tangent is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          tan (z) = -i * (exp (z*i) - exp (-z*i)) / (exp (z*i) + exp (-z*i))
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          The complex tangent has poles at pi/2 + 2n, where n is an
          integer.  &lt;CODE&gt;ctan&lt;/CODE&gt; may signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; is too close to a
          pole.
@@ -26466,11 +26466,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex tangent of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex tangent is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          tan (z) = -i * (exp (z*i) - exp (-z*i)) / (exp (z*i) + exp (-z*i))
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          The complex tangent has poles at pi/2 + 2n, where n is an
          integer.  &lt;CODE&gt;ctan&lt;/CODE&gt; may signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; is too close to a
          pole.
@@ -26488,11 +26488,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the complex tangent of &lt;VAR&gt;z&lt;/VAR&gt;.
          The mathematical definition of the complex tangent is
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          tan (z) = -i * (exp (z*i) - exp (-z*i)) / (exp (z*i) + exp (-z*i))
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          The complex tangent has poles at pi/2 + 2n, where n is an
          integer.  &lt;CODE&gt;ctan&lt;/CODE&gt; may signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; is too close to a
          pole.
@@ -27603,10 +27603,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         These functions return &lt;CODE&gt;e&lt;/CODE&gt; (the base of natural
          logarithms) raised to the power of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          exp (z) = exp (creal (z)) * (cos (cimag (z)) + I * sin (cimag (z)))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -27622,10 +27622,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         These functions return &lt;CODE&gt;e&lt;/CODE&gt; (the base of natural
          logarithms) raised to the power of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          exp (z) = exp (creal (z)) * (cos (cimag (z)) + I * sin (cimag (z)))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -27641,10 +27641,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         These functions return &lt;CODE&gt;e&lt;/CODE&gt; (the base of natural
          logarithms) raised to the power of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          exp (z) = exp (creal (z)) * (cos (cimag (z)) + I * sin (cimag (z)))
-         
-         
+
+
         </synopsis>
     </function>
   </construct>
@@ -27659,11 +27659,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the natural logarithm of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log (cabs (z)) + I * carg (z)
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;clog&lt;/CODE&gt; has a pole at 0, and will signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; equals
          or is very close to 0.  It is well-defined for all other values of
          &lt;VAR&gt;z&lt;/VAR&gt;.
@@ -27681,11 +27681,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the natural logarithm of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log (cabs (z)) + I * carg (z)
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;clog&lt;/CODE&gt; has a pole at 0, and will signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; equals
          or is very close to 0.  It is well-defined for all other values of
          &lt;VAR&gt;z&lt;/VAR&gt;.
@@ -27703,11 +27703,11 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the natural logarithm of &lt;VAR&gt;z&lt;/VAR&gt;.
          Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log (cabs (z)) + I * carg (z)
-         
-         
-         &lt;br&gt;&lt;br&gt; 
+
+
+         &lt;br&gt;&lt;br&gt;
          &lt;CODE&gt;clog&lt;/CODE&gt; has a pole at 0, and will signal overflow if &lt;VAR&gt;z&lt;/VAR&gt; equals
          or is very close to 0.  It is well-defined for all other values of
          &lt;VAR&gt;z&lt;/VAR&gt;.
@@ -27725,10 +27725,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the base 10 logarithm of the complex value
          &lt;VAR&gt;z&lt;/VAR&gt;. Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log10 (cabs (z)) + I * carg (z)
-         
-         
+
+
          &lt;br&gt;&lt;br&gt; These functions are GNU extensions.
         </synopsis>
     </function>
@@ -27744,10 +27744,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the base 10 logarithm of the complex value
          &lt;VAR&gt;z&lt;/VAR&gt;. Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log10 (cabs (z)) + I * carg (z)
-         
-         
+
+
          &lt;br&gt;&lt;br&gt; These functions are GNU extensions.
         </synopsis>
     </function>
@@ -27763,10 +27763,10 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         These functions return the base 10 logarithm of the complex value
          &lt;VAR&gt;z&lt;/VAR&gt;. Mathematically, this corresponds to the value
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          log (z) = log10 (cabs (z)) + I * carg (z)
-         
-         
+
+
          &lt;br&gt;&lt;br&gt; These functions are GNU extensions.
         </synopsis>
     </function>
@@ -28400,12 +28400,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;erf&lt;/CODE&gt; returns the error function of &lt;VAR&gt;x&lt;/VAR&gt;.  The error
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          erf (x) = 2/sqrt(pi) * integral from 0 to x of exp(-t^2) dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
         </synopsis>
     </function>
   </construct>
@@ -28420,12 +28420,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;erf&lt;/CODE&gt; returns the error function of &lt;VAR&gt;x&lt;/VAR&gt;.  The error
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          erf (x) = 2/sqrt(pi) * integral from 0 to x of exp(-t^2) dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
         </synopsis>
     </function>
   </construct>
@@ -28440,12 +28440,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;erf&lt;/CODE&gt; returns the error function of &lt;VAR&gt;x&lt;/VAR&gt;.  The error
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          erf (x) = 2/sqrt(pi) * integral from 0 to x of exp(-t^2) dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
         </synopsis>
     </function>
   </construct>
@@ -28502,8 +28502,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;lgamma&lt;/CODE&gt; returns the natural logarithm of the absolute value of
          the gamma function of &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;&lt;br&gt;
@@ -28536,8 +28536,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;lgamma&lt;/CODE&gt; returns the natural logarithm of the absolute value of
          the gamma function of &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;&lt;br&gt;
@@ -28570,8 +28570,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;lgamma&lt;/CODE&gt; returns the natural logarithm of the absolute value of
          the gamma function of &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;&lt;br&gt;
@@ -28700,12 +28700,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;tgamma&lt;/CODE&gt; applies the gamma function to &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
          &lt;br&gt;&lt;br&gt; This function was introduced in ISO C99.
         </synopsis>
     </function>
@@ -28721,12 +28721,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;tgamma&lt;/CODE&gt; applies the gamma function to &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
          &lt;br&gt;&lt;br&gt; This function was introduced in ISO C99.
         </synopsis>
     </function>
@@ -28742,12 +28742,12 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
         <synopsis>
         &lt;CODE&gt;tgamma&lt;/CODE&gt; applies the gamma function to &lt;VAR&gt;x&lt;/VAR&gt;.  The gamma
          function is defined as
-         
-         
+
+
          &lt;pre&gt;&lt;br&gt;
          gamma (x) = integral from 0 to infinity{} of t^(x-1) e^-t dt&lt;br&gt;
          &lt;/pre&gt;
-         
+
          &lt;br&gt;&lt;br&gt; This function was introduced in ISO C99.
         </synopsis>
     </function>
@@ -29625,7 +29625,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          The value of the &lt;VAR&gt;parameter&lt;/VAR&gt; is invalid.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -29662,7 +29662,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;
          The value of &lt;VAR&gt;parameter&lt;/VAR&gt; is invalid, or the implementation doesn't
          support the &lt;VAR&gt;parameter&lt;/VAR&gt; for the specific file.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -29688,7 +29688,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; EINVAL
          The value of &lt;VAR&gt;parameter&lt;/VAR&gt; is invalid, or the implementation doesn't
          support the &lt;VAR&gt;parameter&lt;/VAR&gt; for the specific file.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -29723,7 +29723,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;DT&gt;&lt;CODE&gt;EINVAL&lt;/CODE&gt;
 &lt;DD&gt;
          The value of the &lt;VAR&gt;parameter&lt;/VAR&gt; is invalid.
-         
+
         </synopsis>
     </function>
   </construct>
@@ -30221,7 +30221,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;LI&gt; -1
          The answer matched neither the &lt;CODE&gt;YESEXPR&lt;/CODE&gt; nor the &lt;CODE&gt;NOEXPR&lt;/CODE&gt;
          regular expression.
-         
+
          &lt;br&gt;&lt;br&gt; This function is not standardized but available beside in GNU libc at
          least also in the IBM AIX library.
         </synopsis>
@@ -30843,7 +30843,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          fputs ("you ", stdout);&lt;br&gt;
          fputs ("hungry?\n", stdout);&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          outputs the text &lt;samp&gt;Are you hungry?&lt;/samp&gt; followed by a newline.
         </synopsis>
     </function>
@@ -30917,7 +30917,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          puts ("This is a message.");&lt;br&gt;
          &lt;/pre&gt;
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          outputs the text &lt;samp&gt;This is a message.&lt;/samp&gt; followed by a newline.
         </synopsis>
     </function>
@@ -31597,19 +31597,19 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
              return NULL;&lt;br&gt;
          &lt;br&gt;&lt;br&gt;  /* Try to print in the allocated space. */&lt;br&gt;
            nchars = snprintf (buffer, size, "value of %s is %s",&lt;br&gt;
-         		     name, value);&lt;br&gt;
+                      name, value);&lt;br&gt;
          &lt;br&gt;
          &lt;br&gt;
            if (nchars &gt;= size)&lt;br&gt;
              {&lt;br&gt;
                /* Reallocate buffer now that we know&lt;br&gt;
-         	 how much space is needed. */&lt;br&gt;
+              how much space is needed. */&lt;br&gt;
                size = nchars + 1;&lt;br&gt;
                buffer = (char *) xrealloc (buffer, size);&lt;br&gt;
          &lt;br&gt;&lt;br&gt;       if (buffer != NULL)&lt;br&gt;
-         	/* Try again. */&lt;br&gt;
-         	snprintf (buffer, size, "value of %s is %s",&lt;br&gt;
-         		  name, value);&lt;br&gt;
+             /* Try again. */&lt;br&gt;
+             snprintf (buffer, size, "value of %s is %s",&lt;br&gt;
+                   name, value);&lt;br&gt;
              }&lt;br&gt;
            /* The last call worked, return the string. */&lt;br&gt;
            return buffer;&lt;br&gt;
@@ -31883,7 +31883,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;CODE&gt;parse_printf_format&lt;/CODE&gt; when this conversion appears in a
          template string.  , for information
          about this.
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;br&gt;&lt;br&gt; Attention: In the GNU C library versions before 2.0 the
          &lt;VAR&gt;arginfo-function&lt;/VAR&gt; function did not need to be installed unless
          the user used the &lt;CODE&gt;parse_printf_format&lt;/CODE&gt; function.  This has changed.
@@ -32041,7 +32041,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          1000 is used.
          &lt;br&gt;&lt;br&gt; The postfix tag corresponds to bytes, kilobytes, megabytes, gigabytes,
          etc.  The full table is:
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          &lt;DL&gt;
 &lt;DT&gt;&lt;pre&gt;low  Multiplier   From   Upper  Multiplier&lt;/pre&gt;
 &lt;DD&gt;&lt;br&gt; &lt;DT&gt;&lt;pre&gt;' '  1                   ' '    1&lt;/pre&gt;
@@ -32054,8 +32054,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
 &lt;DD&gt;&lt;br&gt; &lt;DT&gt;&lt;pre&gt;z    2^70         zetta  Z      10^21&lt;/pre&gt;
 &lt;DD&gt;&lt;br&gt; &lt;DT&gt;&lt;pre&gt;y    2^80         yotta  Y      10^24&lt;/pre&gt;
 &lt;DD&gt;&lt;br&gt; &lt;/DL&gt;
-         
-         
+
+
          &lt;br&gt;&lt;br&gt; The default precision is 3, i.e., 1024 is printed with a lower-case
          format character as if it were &lt;CODE&gt;%.3fk&lt;/CODE&gt; and will yield &lt;CODE&gt;1.000k&lt;/CODE&gt;.
         </synopsis>
@@ -33095,7 +33095,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;CODE&gt;addseverity&lt;/CODE&gt; function one can add more severity levels with their
          corresponding string to print.  This is described below
          .
-         &lt;br&gt;&lt;br&gt; 
+         &lt;br&gt;&lt;br&gt;
          If no parameter is ignored the output looks like this:
          &lt;br&gt;&lt;br&gt; &lt;pre&gt;&lt;br&gt;
          &lt;VAR&gt;label&lt;/VAR&gt;: &lt;VAR&gt;severity-string&lt;/VAR&gt;: &lt;VAR&gt;text&lt;/VAR&gt;&lt;br&gt;
@@ -33458,7 +33458,7 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
          &lt;LI&gt; ESRCH
          The &lt;VAR&gt;action&lt;/VAR&gt; parameter is &lt;CODE&gt;FIND&lt;/CODE&gt; and no corresponding element
          is found in the table.
-         
+
         </synopsis>
     </function>
   </construct>

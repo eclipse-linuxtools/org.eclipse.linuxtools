@@ -23,27 +23,27 @@ import org.junit.Test;
 
 public class BasicMassifTest extends AbstractMassifTest {
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testNumSnapshots() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNumSnapshots"); //$NON-NLS-1$
+    @Test
+    public void testNumSnapshots() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNumSnapshots"); //$NON-NLS-1$
 
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		MassifSnapshot[] snapshots = view.getSnapshots();
-		assertEquals(14, snapshots.length);
-		checkSnapshots(snapshots , 40, 16);
-	}
+        MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        MassifSnapshot[] snapshots = view.getSnapshots();
+        assertEquals(14, snapshots.length);
+        checkSnapshots(snapshots , 40, 16);
+    }
 }
 

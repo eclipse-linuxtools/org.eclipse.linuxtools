@@ -21,47 +21,47 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class GraphSelectorEditorInput implements IEditorInput {
 
-	private String title = null;
+    private String title = null;
 
-	public GraphSelectorEditorInput() {
-		title = Messages.GraphSelectorEditor_graphsEditorDefaultTitle;
-	}
+    public GraphSelectorEditorInput() {
+        title = Messages.GraphSelectorEditor_graphsEditorDefaultTitle;
+    }
 
-	/**
-	 * @since 2.2
-	 */
-	public GraphSelectorEditorInput(String scriptTitle) {
-		title = NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptTitle);
-	}
+    /**
+     * @since 2.2
+     */
+    public GraphSelectorEditorInput(String scriptTitle) {
+        title = NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptTitle);
+    }
 
-	@Override
-	public Object getAdapter(Class adapter) {
-		return null;
-	}
+    @Override
+    public Object getAdapter(Class adapter) {
+        return null;
+    }
 
-	@Override
-	public boolean exists() {
-		return false;
-	}
+    @Override
+    public boolean exists() {
+        return false;
+    }
 
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return null;
-	}
+    @Override
+    public ImageDescriptor getImageDescriptor() {
+        return null;
+    }
 
-	@Override
-	public String getName() {
-		return null;
-	}
+    @Override
+    public String getName() {
+        return null;
+    }
 
-	@Override
-	public IPersistableElement getPersistable() {
-		return null;
-	}
+    @Override
+    public IPersistableElement getPersistable() {
+        return null;
+    }
 
-	@Override
-	public String getToolTipText() {
-		return title;
-	}
+    @Override
+    public String getToolTipText() {
+        return title;
+    }
 
 }

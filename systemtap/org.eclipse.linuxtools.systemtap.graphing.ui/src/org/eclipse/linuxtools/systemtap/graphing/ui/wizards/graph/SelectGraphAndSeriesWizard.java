@@ -25,63 +25,63 @@ import org.eclipse.ui.IWorkbench;
  * @since 2.1
  */
 public class SelectGraphAndSeriesWizard extends Wizard implements INewWizard {
-	/**
-	 * The wizard for creating a new graph.
-	 * @param data An IDataSet that contains the names of all possible series values (columns).
-	 * @param gdata A GraphData instance that contains the saved settings of a previously-created graph.
-	 * If this wizard is for creating a new graph, set this parameter to null.
-	 */
-	public SelectGraphAndSeriesWizard(IDataSet data, GraphData gdata) {
-		model = new GraphModel(data);
-		edit = (gdata != null);
-		if (edit) {
-			model.setGraph(gdata.graphID);
-			model.setKey(gdata.key);
-			model.setTitle(gdata.title);
-			model.setXSeries(gdata.xSeries);
-			model.setYSeries(gdata.ySeries);
-		}
-	}
+    /**
+     * The wizard for creating a new graph.
+     * @param data An IDataSet that contains the names of all possible series values (columns).
+     * @param gdata A GraphData instance that contains the saved settings of a previously-created graph.
+     * If this wizard is for creating a new graph, set this parameter to null.
+     */
+    public SelectGraphAndSeriesWizard(IDataSet data, GraphData gdata) {
+        model = new GraphModel(data);
+        edit = (gdata != null);
+        if (edit) {
+            model.setGraph(gdata.graphID);
+            model.setKey(gdata.key);
+            model.setTitle(gdata.title);
+            model.setXSeries(gdata.xSeries);
+            model.setYSeries(gdata.ySeries);
+        }
+    }
 
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-	}
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+    }
 
-	@Override
-	public void addPages() {
-		setWindowTitle(Localization.getString(!edit ? "SelectGraphAndSeriesWizard.CreateGraph" : "SelectGraphAndSeriesWizard.EditGraph"));  //$NON-NLS-1$//$NON-NLS-2$
-		selectGraphandSeriesPage = new SelectGraphAndSeriesWizardPage();
-		addPage(selectGraphandSeriesPage);
-	}
+    @Override
+    public void addPages() {
+        setWindowTitle(Localization.getString(!edit ? "SelectGraphAndSeriesWizard.CreateGraph" : "SelectGraphAndSeriesWizard.EditGraph"));  //$NON-NLS-1$//$NON-NLS-2$
+        selectGraphandSeriesPage = new SelectGraphAndSeriesWizardPage();
+        addPage(selectGraphandSeriesPage);
+    }
 
-	@Override
-	public boolean canFinish() {
-		if (selectGraphandSeriesPage.isPageComplete()) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean canFinish() {
+        if (selectGraphandSeriesPage.isPageComplete()) {
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean performCancel() {
-		model.destroy();
-		return true;
-	}
+    @Override
+    public boolean performCancel() {
+        model.destroy();
+        return true;
+    }
 
-	@Override
-	public boolean performFinish() {
-		return true;
-	}
+    @Override
+    public boolean performFinish() {
+        return true;
+    }
 
-	public GraphData getGraphData() {
-		return model.getGraphData();
-	}
+    public GraphData getGraphData() {
+        return model.getGraphData();
+    }
 
-	public boolean isEditing() {
-		return edit;
-	}
+    public boolean isEditing() {
+        return edit;
+    }
 
-	public SelectGraphAndSeriesWizardPage selectGraphandSeriesPage;
-	public GraphModel model;
-	private boolean edit;
+    public SelectGraphAndSeriesWizardPage selectGraphandSeriesPage;
+    public GraphModel model;
+    private boolean edit;
 }

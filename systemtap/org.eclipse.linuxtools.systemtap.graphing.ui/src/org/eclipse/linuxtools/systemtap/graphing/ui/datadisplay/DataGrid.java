@@ -50,330 +50,330 @@ import org.eclipse.ui.PlatformUI;
 
 
 public class DataGrid implements IUpdateListener {
-	/**
-	 * @since 3.0 set must be a IFilteredDataSet.
-	 */
-	public DataGrid(Composite composite, IFilteredDataSet set) {
-		prefs = GraphingUIPlugin.getDefault().getPreferenceStore();
-		manualResize = !prefs.getBoolean(GraphingPreferenceConstants.P_AUTO_RESIZE);
+    /**
+     * @since 3.0 set must be a IFilteredDataSet.
+     */
+    public DataGrid(Composite composite, IFilteredDataSet set) {
+        prefs = GraphingUIPlugin.getDefault().getPreferenceStore();
+        manualResize = !prefs.getBoolean(GraphingPreferenceConstants.P_AUTO_RESIZE);
 
-		filteredDataSet = set;
-				clickLocation = new Point(-1, -1);
-				createPartControl(composite);
+        filteredDataSet = set;
+                clickLocation = new Point(-1, -1);
+                createPartControl(composite);
 
-		propertyChangeListener = new IPropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
-					handleUpdateEvent();
-				}
-			}
-		};
-		prefs.addPropertyChangeListener(propertyChangeListener);
-	}
+        propertyChangeListener = new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                if (event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
+                    handleUpdateEvent();
+                }
+            }
+        };
+        prefs.addPropertyChangeListener(propertyChangeListener);
+    }
 
-	public Control getControl() { return table; }
+    public Control getControl() { return table; }
 
-	private void createPartControl(Composite parent) {
-		table = new Table(parent, SWT.SINGLE | SWT.FULL_SELECTION);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		table.getVerticalBar().setVisible(true);
+    private void createPartControl(Composite parent) {
+        table = new Table(parent, SWT.SINGLE | SWT.FULL_SELECTION);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+        table.getVerticalBar().setVisible(true);
 
-		String[] names = filteredDataSet.getTitles();
-		TableColumn column = new TableColumn(table, SWT.LEFT);
-		column.setText(Localization.getString("DataGrid.Row")); //$NON-NLS-1$
-		column.pack();
-		column.setMoveable(false);
-		column.setResizable(false);
+        String[] names = filteredDataSet.getTitles();
+        TableColumn column = new TableColumn(table, SWT.LEFT);
+        column.setText(Localization.getString("DataGrid.Row")); //$NON-NLS-1$
+        column.pack();
+        column.setMoveable(false);
+        column.setResizable(false);
 
-		columnFormat = new IFormattingStyles[names.length];
-		for(int i=0; i<names.length; i++) {
-			column = new TableColumn(table, SWT.LEFT);
-			column.setText(names[i]);
-			column.pack();
-			column.setMoveable(true);
+        columnFormat = new IFormattingStyles[names.length];
+        for(int i=0; i<names.length; i++) {
+            column = new TableColumn(table, SWT.LEFT);
+            column.setText(names[i]);
+            column.pack();
+            column.setMoveable(true);
 
-			columnFormat[i] = new StringFormatter();
-		}
+            columnFormat[i] = new StringFormatter();
+        }
 
-		table.setMenu(this.initMenus());
+        table.setMenu(this.initMenus());
 
-		table.addListener(SWT.MouseDown, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				clickLocation.x = event.x;
-				clickLocation.y = event.y;
-			}
-		});
-		handleUpdateEvent();
-	}
+        table.addListener(SWT.MouseDown, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                clickLocation.x = event.x;
+                clickLocation.y = event.y;
+            }
+        });
+        handleUpdateEvent();
+    }
 
-	private Menu initMenus() {
-		Menu menu = new Menu(table.getShell(), SWT.POP_UP);
-		menu.addMenuListener(new MainMenuListener());
+    private Menu initMenus() {
+        Menu menu = new Menu(table.getShell(), SWT.POP_UP);
+        menu.addMenuListener(new MainMenuListener());
 
-		Menu formatMenu = new Menu(menu);
-		formatMenuItem = new MenuItem(menu, SWT.CASCADE);
-		formatMenuItem.setText(Localization.getString("DataGrid.FormatAs")); //$NON-NLS-1$
-		formatMenuItem.setMenu(formatMenu);
+        Menu formatMenu = new Menu(menu);
+        formatMenuItem = new MenuItem(menu, SWT.CASCADE);
+        formatMenuItem.setText(Localization.getString("DataGrid.FormatAs")); //$NON-NLS-1$
+        formatMenuItem.setMenu(formatMenu);
 
-		filterMenu = new Menu(menu);
-		MenuItem item = new MenuItem(menu, SWT.CASCADE);
-		item.setText(Localization.getString("DataGrid.AddFilter")); //$NON-NLS-1$
-		item.addSelectionListener(new AddFilterSelection());
+        filterMenu = new Menu(menu);
+        MenuItem item = new MenuItem(menu, SWT.CASCADE);
+        item.setText(Localization.getString("DataGrid.AddFilter")); //$NON-NLS-1$
+        item.addSelectionListener(new AddFilterSelection());
 
-		removeFiltersMenuItem = new MenuItem(menu, SWT.CASCADE);
-		removeFiltersMenuItem.setText(Localization.getString("DataGrid.RemoveFilter")); //$NON-NLS-1$
-		removeFiltersMenuItem.setMenu(filterMenu);
+        removeFiltersMenuItem = new MenuItem(menu, SWT.CASCADE);
+        removeFiltersMenuItem.setText(Localization.getString("DataGrid.RemoveFilter")); //$NON-NLS-1$
+        removeFiltersMenuItem.setMenu(filterMenu);
 
-		IDataSetFilter[] filters = filteredDataSet.getFilters();
-		if(null != filters && filters.length > 0) {
-			for(int i=0; i<filters.length; i++) {
-				item = new MenuItem(filterMenu, SWT.CASCADE);
-				item.setText(AvailableFilterTypes.getFilterName(filters[i].getID()));
-				item.setData(filters[i]);
-				item.addSelectionListener(new RemoveFilterSelection());
-			}
-		} else {
-			removeFiltersMenuItem.setEnabled(false);
-		}
+        IDataSetFilter[] filters = filteredDataSet.getFilters();
+        if(null != filters && filters.length > 0) {
+            for(int i=0; i<filters.length; i++) {
+                item = new MenuItem(filterMenu, SWT.CASCADE);
+                item.setText(AvailableFilterTypes.getFilterName(filters[i].getID()));
+                item.setData(filters[i]);
+                item.addSelectionListener(new RemoveFilterSelection());
+            }
+        } else {
+            removeFiltersMenuItem.setEnabled(false);
+        }
 
-		item = new MenuItem(menu, SWT.CHECK);
-		item.setText(Localization.getString("DataGrid.ManualyResize")); //$NON-NLS-1$
-		item.addSelectionListener(new MenuManualyResizedSelection());
+        item = new MenuItem(menu, SWT.CHECK);
+        item.setText(Localization.getString("DataGrid.ManualyResize")); //$NON-NLS-1$
+        item.addSelectionListener(new MenuManualyResizedSelection());
 
-		for(int i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++) {
-			item = new MenuItem(formatMenu, SWT.RADIO);
-			item.setText(IFormattingStyles.FORMAT_TITLES[i]);
-			item.addSelectionListener(new MenuFormatSelection());
-		}
+        for(int i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++) {
+            item = new MenuItem(formatMenu, SWT.RADIO);
+            item.setText(IFormattingStyles.FORMAT_TITLES[i]);
+            item.addSelectionListener(new MenuFormatSelection());
+        }
 
-		formatMenuItem.setEnabled(filteredDataSet.getRowCount() > 0);
-		formatMenu.addMenuListener(new FormatMenuListener());
-		return menu;
-	}
+        formatMenuItem.setEnabled(filteredDataSet.getRowCount() > 0);
+        formatMenu.addMenuListener(new FormatMenuListener());
+        return menu;
+    }
 
-	private int getSelectedColumn() {
-		TableColumn[] cols = table.getColumns();
-		int location = 0;
-		for(int i=0; i<cols.length; i++) {
-			if(clickLocation.x > location && clickLocation.x < (location+=cols[i].getWidth())) {
-				return i;
-			}
-		}
+    private int getSelectedColumn() {
+        TableColumn[] cols = table.getColumns();
+        int location = 0;
+        for(int i=0; i<cols.length; i++) {
+            if(clickLocation.x > location && clickLocation.x < (location+=cols[i].getWidth())) {
+                return i;
+            }
+        }
 
-		return cols.length-1;
-	}
+        return cols.length-1;
+    }
 
-	private class MainMenuListener extends MenuAdapter {
-		@Override
-		public void menuShown(MenuEvent e) {
-			MenuItem item = ((Menu)e.widget).getItem(1);
-			item.setSelection(manualResize);
-		}
-	}
+    private class MainMenuListener extends MenuAdapter {
+        @Override
+        public void menuShown(MenuEvent e) {
+            MenuItem item = ((Menu)e.widget).getItem(1);
+            item.setSelection(manualResize);
+        }
+    }
 
-	private class MenuManualyResizedSelection extends SelectionAdapter {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			manualResize = !manualResize;
-		}
-	}
+    private class MenuManualyResizedSelection extends SelectionAdapter {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            manualResize = !manualResize;
+        }
+    }
 
-	private class AddFilterSelection extends SelectionAdapter {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			SelectFilterWizard wizard = new SelectFilterWizard(filteredDataSet.getTitles());
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			wizard.init(workbench, null);
-			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
-			dialog.create();
-			int result = dialog.open();
+    private class AddFilterSelection extends SelectionAdapter {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            SelectFilterWizard wizard = new SelectFilterWizard(filteredDataSet.getTitles());
+            IWorkbench workbench = PlatformUI.getWorkbench();
+            wizard.init(workbench, null);
+            WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
+            dialog.create();
+            int result = dialog.open();
 
-			if(result != Window.CANCEL) {
-				IDataSetFilter filter = wizard.getFilter();
-				removeFiltersMenuItem.setEnabled(true);
-				filteredDataSet.addFilter(filter);
-				table.removeAll();
-				handleUpdateEvent();
+            if(result != Window.CANCEL) {
+                IDataSetFilter filter = wizard.getFilter();
+                removeFiltersMenuItem.setEnabled(true);
+                filteredDataSet.addFilter(filter);
+                table.removeAll();
+                handleUpdateEvent();
 
-				MenuItem item = new MenuItem(filterMenu, SWT.CASCADE);
-				item.setText(MessageFormat.format(Localization.getString("DataGrid.FilterLabel"), //$NON-NLS-1$
-						AvailableFilterTypes.getFilterName(filter.getID()), filteredDataSet.getTitles()[filter.getColumn()], filter.getInfo()));
-				item.setData(filter);
-				item.addSelectionListener(new RemoveFilterSelection());
-			}
-			wizard.dispose();
-		}
-	}
+                MenuItem item = new MenuItem(filterMenu, SWT.CASCADE);
+                item.setText(MessageFormat.format(Localization.getString("DataGrid.FilterLabel"), //$NON-NLS-1$
+                        AvailableFilterTypes.getFilterName(filter.getID()), filteredDataSet.getTitles()[filter.getColumn()], filter.getInfo()));
+                item.setData(filter);
+                item.addSelectionListener(new RemoveFilterSelection());
+            }
+            wizard.dispose();
+        }
+    }
 
-	private class RemoveFilterSelection implements SelectionListener {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			IDataSetFilter idsf = (IDataSetFilter)((MenuItem)e.widget).getData();
-			e.widget.dispose();
-			if (filterMenu.getItemCount() == 0) {
-				removeFiltersMenuItem.setEnabled(false);
-			}
+    private class RemoveFilterSelection implements SelectionListener {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            IDataSetFilter idsf = (IDataSetFilter)((MenuItem)e.widget).getData();
+            e.widget.dispose();
+            if (filterMenu.getItemCount() == 0) {
+                removeFiltersMenuItem.setEnabled(false);
+            }
 
-			if(filteredDataSet.removeFilter(idsf)) {
-				table.removeAll();
-				handleUpdateEvent();
-			}
-		}
+            if(filteredDataSet.removeFilter(idsf)) {
+                table.removeAll();
+                handleUpdateEvent();
+            }
+        }
 
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {}
-	}
+        @Override
+        public void widgetDefaultSelected(SelectionEvent e) {}
+    }
 
-	private class FormatMenuListener extends MenuAdapter {
-		@Override
-		public void menuShown(MenuEvent e) {
-			MenuItem[] items = ((Menu)e.widget).getItems();
-			boolean doubleValid = false, longValid = false;
-			String itemText;
+    private class FormatMenuListener extends MenuAdapter {
+        @Override
+        public void menuShown(MenuEvent e) {
+            MenuItem[] items = ((Menu)e.widget).getItems();
+            boolean doubleValid = false, longValid = false;
+            String itemText;
 
-			int selectedCol = Math.max(1, getSelectedColumn());
+            int selectedCol = Math.max(1, getSelectedColumn());
 
-			for(int i=0; i<items.length; i++) {
-				items[i].setSelection(false);
-			}
-			items[columnFormat[selectedCol-1].getFormat()].setSelection(true);
+            for(int i=0; i<items.length; i++) {
+                items[i].setSelection(false);
+            }
+            items[columnFormat[selectedCol-1].getFormat()].setSelection(true);
 
-			items[IFormattingStyles.UNFORMATED].setEnabled(true);
-			items[IFormattingStyles.STRING].setEnabled(true);
+            items[IFormattingStyles.UNFORMATED].setEnabled(true);
+            items[IFormattingStyles.STRING].setEnabled(true);
 
-			itemText = filteredDataSet.getRow(0)[selectedCol-1].toString();
-			try {
-				Double.parseDouble(itemText);
-				doubleValid = true;
-			} catch(NumberFormatException nfe) {}
-			try {
-				Long.parseLong(itemText);
-				longValid = true;
-			} catch(NumberFormatException nfe) {}
+            itemText = filteredDataSet.getRow(0)[selectedCol-1].toString();
+            try {
+                Double.parseDouble(itemText);
+                doubleValid = true;
+            } catch(NumberFormatException nfe) {}
+            try {
+                Long.parseLong(itemText);
+                longValid = true;
+            } catch(NumberFormatException nfe) {}
 
-			items[IFormattingStyles.DOUBLE].setEnabled(doubleValid);
-			items[IFormattingStyles.HEX].setEnabled(longValid);
-			items[IFormattingStyles.OCTAL].setEnabled(longValid);
-			items[IFormattingStyles.BINARY].setEnabled(longValid);
-			items[IFormattingStyles.DATE].setEnabled(longValid);
-		}
-	}
+            items[IFormattingStyles.DOUBLE].setEnabled(doubleValid);
+            items[IFormattingStyles.HEX].setEnabled(longValid);
+            items[IFormattingStyles.OCTAL].setEnabled(longValid);
+            items[IFormattingStyles.BINARY].setEnabled(longValid);
+            items[IFormattingStyles.DATE].setEnabled(longValid);
+        }
+    }
 
-	private class MenuFormatSelection extends SelectionAdapter {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			int format = IFormattingStyles.UNFORMATED;
-			int column = Math.max(1, getSelectedColumn());
-			int i;
-			for(i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++) {
-				if(IFormattingStyles.FORMAT_TITLES[i].equals(((MenuItem)e.getSource()).getText())) {
-					format = i;
-				}
-			}
+    private class MenuFormatSelection extends SelectionAdapter {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            int format = IFormattingStyles.UNFORMATED;
+            int column = Math.max(1, getSelectedColumn());
+            int i;
+            for(i=0; i<IFormattingStyles.FORMAT_TITLES.length; i++) {
+                if(IFormattingStyles.FORMAT_TITLES[i].equals(((MenuItem)e.getSource()).getText())) {
+                    format = i;
+                }
+            }
 
-			Object[] data = filteredDataSet.getColumn(column-1);
-			columnFormat[column-1].setFormat(format);
-			for(i=0; i<table.getItemCount(); i++) {
-				table.getItem(i).setText(column, columnFormat[column-1].format(data[i].toString()));
-			}
-			table.redraw();
-		}
-	}
+            Object[] data = filteredDataSet.getColumn(column-1);
+            columnFormat[column-1].setFormat(format);
+            for(i=0; i<table.getItemCount(); i++) {
+                table.getItem(i).setText(column, columnFormat[column-1].format(data[i].toString()));
+            }
+            table.redraw();
+        }
+    }
 
-	@Override
-	public void handleUpdateEvent() {
-		if(table.isDisposed()) {
-			return;
-		}
+    @Override
+    public void handleUpdateEvent() {
+        if(table.isDisposed()) {
+            return;
+        }
 
-		table.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (table.isDisposed()) {
-					return;
-				}
-				TableItem item;
-				int startLocation;
-				int endLocation = filteredDataSet.getRowCount();
-				int maxItems = prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
-				int oldSelection = table.getSelectionIndex();
+        table.getDisplay().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                if (table.isDisposed()) {
+                    return;
+                }
+                TableItem item;
+                int startLocation;
+                int endLocation = filteredDataSet.getRowCount();
+                int maxItems = prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
+                int oldSelection = table.getSelectionIndex();
 
-				//Remove old items to refresh table, and only read in as many items as will fit.
-				//Note that a full refresh is necessary in order for filtered data to appear correctly.
-				table.removeAll();
-				startLocation = Math.max(endLocation-maxItems, 0);
+                //Remove old items to refresh table, and only read in as many items as will fit.
+                //Note that a full refresh is necessary in order for filtered data to appear correctly.
+                table.removeAll();
+                startLocation = Math.max(endLocation-maxItems, 0);
 
-				//Add all the new items to the table
-				Object[] os;
-				for(int j,i=startLocation; i<endLocation; i++) {
-					item = new TableItem(table, SWT.NONE);
-					os = filteredDataSet.getRow(i);
+                //Add all the new items to the table
+                Object[] os;
+                for(int j,i=startLocation; i<endLocation; i++) {
+                    item = new TableItem(table, SWT.NONE);
+                    os = filteredDataSet.getRow(i);
 
-					//Add 1 to the index/row num since graphs start counting rows at 1, not 0.
-					item.setText(0, Integer.toString(i + 1));
-					for(j=0; j<os.length; j++) {
-						//Ignore null items
-						if (os[j] != null) {
-							item.setText(j+1, columnFormat[j].format(os[j].toString()));
-						}
-					}
-				}
-				//Re-select the old table selection, if there was one
-				if (oldSelection != -1) {
-					table.select(oldSelection);
-				}
+                    //Add 1 to the index/row num since graphs start counting rows at 1, not 0.
+                    item.setText(0, Integer.toString(i + 1));
+                    for(j=0; j<os.length; j++) {
+                        //Ignore null items
+                        if (os[j] != null) {
+                            item.setText(j+1, columnFormat[j].format(os[j].toString()));
+                        }
+                    }
+                }
+                //Re-select the old table selection, if there was one
+                if (oldSelection != -1) {
+                    table.select(oldSelection);
+                }
 
-				//Resize the columns
-				TableColumn col = table.getColumn(0);
-				col.pack();
-				if(!manualResize) {
-					TableColumn[] cols = table.getColumns();
-					for(int i=1; i<cols.length; i++) {
-						cols[i].pack();
-					}
-				}
+                //Resize the columns
+                TableColumn col = table.getColumn(0);
+                col.pack();
+                if(!manualResize) {
+                    TableColumn[] cols = table.getColumns();
+                    for(int i=1; i<cols.length; i++) {
+                        cols[i].pack();
+                    }
+                }
 
-				//Use if we want to set focus to newly added item.
-				//Run async so the table can be fully constructed before jumping to an entry.
-				if(prefs.getBoolean(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
-						&& table.getItemCount() > 0) {
-					table.getDisplay().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							table.showItem(table.getItem(table.getItemCount()-1));
-						}
-					});
-				}
-				formatMenuItem.setEnabled(table.getItemCount() > 0);
-			}
-		});
-	}
+                //Use if we want to set focus to newly added item.
+                //Run async so the table can be fully constructed before jumping to an entry.
+                if(prefs.getBoolean(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY)
+                        && table.getItemCount() > 0) {
+                    table.getDisplay().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            table.showItem(table.getItem(table.getItemCount()-1));
+                        }
+                    });
+                }
+                formatMenuItem.setEnabled(table.getItemCount() > 0);
+            }
+        });
+    }
 
-	public void dispose() {
-		filteredDataSet = null;
-		table.dispose();
-		table = null;
-		clickLocation = null;
-		columnFormat = null;
-		prefs.removePropertyChangeListener(propertyChangeListener);
-		propertyChangeListener = null;
-	}
+    public void dispose() {
+        filteredDataSet = null;
+        table.dispose();
+        table = null;
+        clickLocation = null;
+        columnFormat = null;
+        prefs.removePropertyChangeListener(propertyChangeListener);
+        propertyChangeListener = null;
+    }
 
-	private IFilteredDataSet filteredDataSet;
-	private IFormattingStyles columnFormat[];
-	private Table table;
-	private Point clickLocation;
-	private IPreferenceStore prefs;
-	private boolean manualResize;
-	private Menu filterMenu;
+    private IFilteredDataSet filteredDataSet;
+    private IFormattingStyles columnFormat[];
+    private Table table;
+    private Point clickLocation;
+    private IPreferenceStore prefs;
+    private boolean manualResize;
+    private Menu filterMenu;
 
-	private MenuItem removeFiltersMenuItem;
-	private MenuItem formatMenuItem;
-	private IPropertyChangeListener propertyChangeListener;
+    private MenuItem removeFiltersMenuItem;
+    private MenuItem formatMenuItem;
+    private IPropertyChangeListener propertyChangeListener;
 
-	public static final int NONE = 0;
-	public static final int FULL_UPDATE = 1;
+    public static final int NONE = 0;
+    public static final int FULL_UPDATE = 1;
 }

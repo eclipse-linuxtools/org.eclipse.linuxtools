@@ -42,165 +42,165 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class CreaterepoDeltaPropertyPageTest {
 
-	private static TestCreaterepoProject testProject;
-	private static SWTWorkbenchBot bot;
-	private static SWTBotView navigator;
-	private CreaterepoProject project;
+    private static TestCreaterepoProject testProject;
+    private static SWTWorkbenchBot bot;
+    private static SWTBotView navigator;
+    private CreaterepoProject project;
 
-	/**
-	 * Initialize the test project.
-	 *
-	 * @throws CoreException
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws CoreException {
-		testProject = new TestCreaterepoProject();
-		assertTrue(testProject.getProject().exists());
-		bot = new SWTWorkbenchBot();
-		testProject.restoreDefaults();
-		try {
-			bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
-		} catch (WidgetNotFoundException e) {
-			// cannot activate main shell, continue anyways
-		}
-		TestUtils.openResourcePerspective(bot);
-		navigator = TestUtils.enterProjectFolder(bot);
-	}
+    /**
+     * Initialize the test project.
+     *
+     * @throws CoreException
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() throws CoreException {
+        testProject = new TestCreaterepoProject();
+        assertTrue(testProject.getProject().exists());
+        bot = new SWTWorkbenchBot();
+        testProject.restoreDefaults();
+        try {
+            bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
+        } catch (WidgetNotFoundException e) {
+            // cannot activate main shell, continue anyways
+        }
+        TestUtils.openResourcePerspective(bot);
+        navigator = TestUtils.enterProjectFolder(bot);
+    }
 
-	/**
-	 * Delete the project when tests are done.
-	 *
-	 * @throws CoreException
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws CoreException {
-		TestUtils.exitProjectFolder(bot, navigator);
-		testProject.dispose();
-		assertFalse(testProject.getProject().exists());
-	}
+    /**
+     * Delete the project when tests are done.
+     *
+     * @throws CoreException
+     */
+    @AfterClass
+    public static void tearDownAfterClass() throws CoreException {
+        TestUtils.exitProjectFolder(bot, navigator);
+        testProject.dispose();
+        assertFalse(testProject.getProject().exists());
+    }
 
-	/**
-	 * Get the CreaterepoProject at the beginning of each test.
-	 *
-	 * @throws CoreException
-	 * @throws IOException
-	 */
-	@Before
-	public void setUp() throws CoreException {
-		project = testProject.getCreaterepoProject();
-		assertNotNull(project);
-		// before doing anything with SWTBot, activate the main shell
-		try {
-			bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
-		} catch (WidgetNotFoundException e) {
-			// cannot activate main shell, continue anyways
-		}
-		openPropertyPage();
-	}
+    /**
+     * Get the CreaterepoProject at the beginning of each test.
+     *
+     * @throws CoreException
+     * @throws IOException
+     */
+    @Before
+    public void setUp() throws CoreException {
+        project = testProject.getCreaterepoProject();
+        assertNotNull(project);
+        // before doing anything with SWTBot, activate the main shell
+        try {
+            bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
+        } catch (WidgetNotFoundException e) {
+            // cannot activate main shell, continue anyways
+        }
+        openPropertyPage();
+    }
 
-	/**
-	 * Restore the defaults for the general preference page.
-	 *
-	 * @throws BackingStoreException
-	 */
-	@After
-	public void tearDown() throws BackingStoreException {
-		try {
-			if (bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
-					ICreaterepoTestConstants.REPO_NAME)).isActive()) {
-				bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
-						ICreaterepoTestConstants.REPO_NAME)).close();
-			}
-		} catch (WidgetNotFoundException e) {
-			// cannot close property shell
-		}
-		testProject.restoreDefaults();
-		IEclipsePreferences pref = project.getEclipsePreferences();
-		pref.clear();
-		pref.flush();
-		assertEquals(0, pref.keys().length);
-	}
+    /**
+     * Restore the defaults for the general preference page.
+     *
+     * @throws BackingStoreException
+     */
+    @After
+    public void tearDown() throws BackingStoreException {
+        try {
+            if (bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
+                    ICreaterepoTestConstants.REPO_NAME)).isActive()) {
+                bot.shell(String.format(ICreaterepoTestConstants.PROPERTIES_SHELL,
+                        ICreaterepoTestConstants.REPO_NAME)).close();
+            }
+        } catch (WidgetNotFoundException e) {
+            // cannot close property shell
+        }
+        testProject.restoreDefaults();
+        IEclipsePreferences pref = project.getEclipsePreferences();
+        pref.clear();
+        pref.flush();
+        assertEquals(0, pref.keys().length);
+    }
 
-	/**
-	 * Test if all preferences modified in the deltas createrepo property
-	 * page persist to project preferences.
-	 */
-	@Test
-	public void testChangePreferences() {
-		bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
-		openPropertyPage();
-		IEclipsePreferences pref = project.getEclipsePreferences();
-		IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
-		assertEquals(prefStore.getBoolean(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE),
-				bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).isChecked());
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
-				Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).getText()));
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
-				Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).getText()));
-	}
+    /**
+     * Test if all preferences modified in the deltas createrepo property
+     * page persist to project preferences.
+     */
+    @Test
+    public void testChangePreferences() {
+        bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
+        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        openPropertyPage();
+        IEclipsePreferences pref = project.getEclipsePreferences();
+        IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
+        assertEquals(prefStore.getBoolean(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE),
+                bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).isChecked());
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
+                Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).getText()));
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
+                Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).getText()));
+    }
 
-	/**
-	 * Test if all preferences modified in the deltas createrepo property
-	 * page will reset to default.
-	 */
-	@Test
-	public void testRestoreDefaults() {
-		bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
-		openPropertyPage();
-		bot.button(ICreaterepoTestConstants.DEFAULTS).click();
-		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
-		IEclipsePreferences pref = project.getEclipsePreferences();
-		IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
-		assertTrue(prefStore.isDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE));
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
-				prefStore.getDefaultInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS));
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
-				prefStore.getDefaultInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE));
-	}
+    /**
+     * Test if all preferences modified in the deltas createrepo property
+     * page will reset to default.
+     */
+    @Test
+    public void testRestoreDefaults() {
+        bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
+        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        openPropertyPage();
+        bot.button(ICreaterepoTestConstants.DEFAULTS).click();
+        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        IEclipsePreferences pref = project.getEclipsePreferences();
+        IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
+        assertTrue(prefStore.isDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE));
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
+                prefStore.getDefaultInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS));
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
+                prefStore.getDefaultInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE));
+    }
 
-	/**
-	 * Test if all preferences stay the same as it was after pressing cancel
-	 * instead of ok.
-	 */
-	@Test
-	public void testCancel() {
-		bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
-		bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-		bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
-		openPropertyPage();
-		bot.button(ICreaterepoTestConstants.DEFAULTS).click();
-		bot.button(ICreaterepoTestConstants.CANCEL_BUTTON).click();
-		openPropertyPage();
-		IEclipsePreferences pref = project.getEclipsePreferences();
-		IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
-		assertEquals(prefStore.getBoolean(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE),
-				bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).isChecked());
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
-				Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).getText()));
-		assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
-				prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
-				Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).getText()));
-	}
+    /**
+     * Test if all preferences stay the same as it was after pressing cancel
+     * instead of ok.
+     */
+    @Test
+    public void testCancel() {
+        bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
+        bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
+        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        openPropertyPage();
+        bot.button(ICreaterepoTestConstants.DEFAULTS).click();
+        bot.button(ICreaterepoTestConstants.CANCEL_BUTTON).click();
+        openPropertyPage();
+        IEclipsePreferences pref = project.getEclipsePreferences();
+        IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
+        assertEquals(prefStore.getBoolean(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE),
+                bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).isChecked());
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_NUM_DELTAS)),
+                Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).getText()));
+        assertEquals(pref.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE,
+                prefStore.getInt(CreaterepoPreferenceConstants.PREF_MAX_DELTA_SIZE)),
+                Integer.parseInt(bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).getText()));
+    }
 
-	/**
-	 * Open the property page.
-	 */
-	private static void openPropertyPage() {
-		TestUtils.openPropertyPage(bot, navigator);
-		bot.text().setText(ICreaterepoTestConstants.DELTAS);
-		bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.DELTAS));
-	}
+    /**
+     * Open the property page.
+     */
+    private static void openPropertyPage() {
+        TestUtils.openPropertyPage(bot, navigator);
+        bot.text().setText(ICreaterepoTestConstants.DELTAS);
+        bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.DELTAS));
+    }
 
 }

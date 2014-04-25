@@ -16,14 +16,14 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchShortcut;
 
 public class ValgrindTestLaunchShortcut extends ValgrindLaunchShortcut {
 
-	private ILaunchConfiguration config;
+    private ILaunchConfiguration config;
 
-	@Override
-	public void launch(IBinary bin, String mode) {
-		config = findLaunchConfiguration(bin, mode);
-	}
-	
-	public ILaunchConfiguration getConfig() {
-		return config;
-	}
+    @Override
+    public void launch(IBinary bin, String mode) {
+        config = findLaunchConfiguration(bin, mode);
+    }
+
+    public ILaunchConfiguration getConfig() {
+        return config;
+    }
 }

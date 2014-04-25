@@ -17,114 +17,114 @@ import org.eclipse.ui.IEditorPart;
 
 /**
  * Writes changelog using extension point IFormatterChangeLogContrib.
- * 
+ *
  * @author klee
  *
  */
 public class ChangeLogWriter {
-	
-	private String defaultContent = ""; // $NON-NLS-1$
 
-	private String entryFilePath = null;
+    private String defaultContent = ""; // $NON-NLS-1$
 
-	private String guessedFName = null;
+    private String entryFilePath = null;
 
-	private IFormatterChangeLogContrib formatter = null;
+    private String guessedFName = null;
 
-	private IEditorPart changelog = null;
+    private IFormatterChangeLogContrib formatter = null;
 
-	private String dateLine = null;
+    private IEditorPart changelog = null;
 
-	private String changelogLocation = null;
+    private String dateLine = null;
 
-	public IEditorPart getChangelog() {
-		return changelog;
-	}
+    private String changelogLocation = null;
 
-	public void setChangelog(IEditorPart changelog) {
-		this.changelog = changelog;
-	}
+    public IEditorPart getChangelog() {
+        return changelog;
+    }
 
-	public String getChangelogLocation() {
-		return changelogLocation;
-	}
+    public void setChangelog(IEditorPart changelog) {
+        this.changelog = changelog;
+    }
 
-	public void setChangelogLocation(String changelogLocation) {
-		this.changelogLocation = changelogLocation;
-	}
+    public String getChangelogLocation() {
+        return changelogLocation;
+    }
 
-	public String getDateLine() {
-		return dateLine;
-	}
+    public void setChangelogLocation(String changelogLocation) {
+        this.changelogLocation = changelogLocation;
+    }
 
-	public void setDateLine(String dateLine) {
-		this.dateLine = dateLine;
-	}
+    public String getDateLine() {
+        return dateLine;
+    }
 
-	public String getEntryFilePath() {
-		return entryFilePath;
-	}
+    public void setDateLine(String dateLine) {
+        this.dateLine = dateLine;
+    }
 
-	public void setEntryFilePath(String entryFilePath) {
-		// Replace characters in the name that are supposed to be
-		// token markers such as blanks, parentheses, and colon with
-		// escaped characters so they won't fool the colorization or
-		// other parsing.
-		String resolvedPath = entryFilePath.replace("(", "\\(");
-		resolvedPath = resolvedPath.replace(")", "\\)");
-		resolvedPath = resolvedPath.replace(":", "\\:");
-		resolvedPath = resolvedPath.replace(" ", "\\ ");
-		this.entryFilePath = resolvedPath;
-	}
+    public String getEntryFilePath() {
+        return entryFilePath;
+    }
 
-	public IFormatterChangeLogContrib getFormatter() {
-		return formatter;
-	}
+    public void setEntryFilePath(String entryFilePath) {
+        // Replace characters in the name that are supposed to be
+        // token markers such as blanks, parentheses, and colon with
+        // escaped characters so they won't fool the colorization or
+        // other parsing.
+        String resolvedPath = entryFilePath.replace("(", "\\(");
+        resolvedPath = resolvedPath.replace(")", "\\)");
+        resolvedPath = resolvedPath.replace(":", "\\:");
+        resolvedPath = resolvedPath.replace(" ", "\\ ");
+        this.entryFilePath = resolvedPath;
+    }
 
-	public void setFormatter(IFormatterChangeLogContrib formatter) {
-		this.formatter = formatter;
-	}
+    public IFormatterChangeLogContrib getFormatter() {
+        return formatter;
+    }
 
-	public String getGuessedFName() {
-		return guessedFName;
-	}
+    public void setFormatter(IFormatterChangeLogContrib formatter) {
+        this.formatter = formatter;
+    }
 
-	public void setGuessedFName(String guessedFName) {
-		this.guessedFName = guessedFName;
-	}
+    public String getGuessedFName() {
+        return guessedFName;
+    }
 
-	public void writeChangeLog() {
+    public void setGuessedFName(String guessedFName) {
+        this.guessedFName = guessedFName;
+    }
 
-		// System.out.println("Debug Output :");
-		// System.out.println(entryFilePath);
-		// System.out.println(guessedFName);
-		// System.out.println(formatter);
-		// System.out.println(changelog);
-		// System.out.println(dateLine);
-		// System.out.println(changelogLocation);
-		// System.out.println("\n");
+    public void writeChangeLog() {
 
-		if (entryFilePath == null || guessedFName == null || formatter == null
-				|| changelog == null || dateLine == null
-				|| changelogLocation == null) {
-			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-							Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
+        // System.out.println("Debug Output :");
+        // System.out.println(entryFilePath);
+        // System.out.println(guessedFName);
+        // System.out.println(formatter);
+        // System.out.println(changelog);
+        // System.out.println(dateLine);
+        // System.out.println(changelogLocation);
+        // System.out.println("\n");
 
-			return;
-		}
+        if (entryFilePath == null || guessedFName == null || formatter == null
+                || changelog == null || dateLine == null
+                || changelogLocation == null) {
+            ChangelogPlugin.getDefault().getLog().log(
+                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+                            Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
 
-		formatter.mergeChangelog(dateLine, guessedFName, defaultContent, changelog,
-				changelogLocation, entryFilePath);
+            return;
+        }
 
-	}
+        formatter.mergeChangelog(dateLine, guessedFName, defaultContent, changelog,
+                changelogLocation, entryFilePath);
 
-	public String getDefaultContent() {
-		return defaultContent;
-	}
+    }
 
-	public void setDefaultContent(String defaultContent) {
-		this.defaultContent = defaultContent;
-	}
+    public String getDefaultContent() {
+        return defaultContent;
+    }
+
+    public void setDefaultContent(String defaultContent) {
+        this.defaultContent = defaultContent;
+    }
 
 }

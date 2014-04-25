@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<extension
-		point="org.eclipse.ui.preferencePages">
-		<page
-			name="%preference.dataTable.name"
-			id="org.eclipse.linuxtools.generic.prefs.graphing.datatable"
-			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.DataTablePreferencePage"
-			category="org.eclipse.linuxtools.generic.prefs.graphing"/>
-		<page
-			name="%preference.graph.name"
-			id="org.eclipse.linuxtools.generic.prefs.graphing.graph"
-			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphPreferencePage"
-			category="org.eclipse.linuxtools.generic.prefs.graphing"/>
-		<page
-			name="%preference.graphing.name"
-			class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.view"
+    <extension
+        point="org.eclipse.ui.preferencePages">
+        <page
+            name="%preference.dataTable.name"
+            id="org.eclipse.linuxtools.generic.prefs.graphing.datatable"
+            class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.DataTablePreferencePage"
+            category="org.eclipse.linuxtools.generic.prefs.graphing"/>
+        <page
+            name="%preference.graph.name"
+            id="org.eclipse.linuxtools.generic.prefs.graphing.graph"
+            class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphPreferencePage"
+            category="org.eclipse.linuxtools.generic.prefs.graphing"/>
+        <page
+            name="%preference.graphing.name"
+            class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferencePage"
+            category="org.eclipse.linuxtools.systemtap.prefs.view"
             id="org.eclipse.linuxtools.generic.prefs.graphing"/>
-	</extension>
+    </extension>
 
-	<extension
-		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.PreferenceInitializer"/>
-	</extension>
+    <extension
+        point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.PreferenceInitializer"/>
+    </extension>
 
-	<extension
-		point="org.eclipse.ui.commands">
-		<category
-			name="%category.file.name"
-			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"/>
-		<command
-			name="%command.save.name"
-			description="%command.save.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"
-			id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
-			defaultHandler="org.eclipse.linuxtools.internal.systemtap.graphing.ui.handlers.SaveGraphImageHandler"/>
-	</extension>
+    <extension
+        point="org.eclipse.ui.commands">
+        <category
+            name="%category.file.name"
+            description="%category.file.desc"
+            id="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"/>
+        <command
+            name="%command.save.name"
+            description="%command.save.desc"
+            categoryId="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"
+            id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
+            defaultHandler="org.eclipse.linuxtools.internal.systemtap.graphing.ui.handlers.SaveGraphImageHandler"/>
+    </extension>
 
-	<extension
-		point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=chartGroup">
-			<command
-				commandId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
-				label="%command.save.name"
-				icon="icons/actions/chart-save.png">
-				<visibleWhen checkEnabled="true"/>
-			</command>
-		</menuContribution>
-	</extension>
+    <extension
+        point="org.eclipse.ui.menus">
+        <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=chartGroup">
+            <command
+                commandId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
+                label="%command.save.name"
+                icon="icons/actions/chart-save.png">
+                <visibleWhen checkEnabled="true"/>
+            </command>
+        </menuContribution>
+    </extension>
 
-	<extension
-		point="org.eclipse.ui.editors">
-		<editor
-			class="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
-			default="false"
-			id="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
-			name="Graphs">
-		</editor>
-	</extension>
+    <extension
+        point="org.eclipse.ui.editors">
+        <editor
+            class="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
+            default="false"
+            id="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
+            name="Graphs">
+        </editor>
+    </extension>
 
 </plugin>

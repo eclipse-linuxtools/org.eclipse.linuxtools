@@ -12,5 +12,5 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 public interface ISingleTypedNode {
-	String getType();
+    String getType();
 }

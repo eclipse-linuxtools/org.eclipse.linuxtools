@@ -27,105 +27,105 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MultiProcessTest extends AbstractCachegrindTest {
-	private ICProject refProj;
+    private ICProject refProj;
 
-	@Before
-	public void prep() throws Exception {
-		refProj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
-		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        refProj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
+        proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		deleteProject(refProj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        deleteProject(refProj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testNoExec() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNoExec"); //$NON-NLS-1$
+    @Test
+    public void testNoExec() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
-		assertEquals(1, view.getOutputs().length);
-	}
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
+        assertEquals(1, view.getOutputs().length);
+    }
 
-	@Test
-	public void testNumPids() throws Exception {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(
-				proj.getProject()).getWorkingCopy();
-		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+    @Test
+    public void testNumPids() throws Exception {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(
+                proj.getProject()).getWorkingCopy();
+        config.setAttribute(
+                LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
-		assertEquals(2, view.getOutputs().length);
-	}
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
+        assertEquals(2, view.getOutputs().length);
+    }
 
-	@Test
-	public void testFileNames() throws Exception {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(
-				proj.getProject()).getWorkingCopy();
-		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+    @Test
+    public void testFileNames() throws Exception {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(
+                proj.getProject()).getWorkingCopy();
+        config.setAttribute(
+                LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
 
-		int pidIx = 0;
-		CachegrindOutput output = view.getOutputs()[pidIx];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		if (file == null) {
-			pidIx = 1;
-			output = view.getOutputs()[pidIx];
-			file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		}
-		assertNotNull(file);
-		file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
-		assertNotNull(file);
+        int pidIx = 0;
+        CachegrindOutput output = view.getOutputs()[pidIx];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        if (file == null) {
+            pidIx = 1;
+            output = view.getOutputs()[pidIx];
+            file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        }
+        assertNotNull(file);
+        file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
+        assertNotNull(file);
 
-		// test other pid
-		pidIx = (pidIx + 1) % 2;
-		output = view.getOutputs()[pidIx];
-		file = getFileByName(output, "parent.cpp"); //$NON-NLS-1$
-		assertNotNull(file);
-	}
+        // test other pid
+        pidIx = (pidIx + 1) % 2;
+        output = view.getOutputs()[pidIx];
+        file = getFileByName(output, "parent.cpp"); //$NON-NLS-1$
+        assertNotNull(file);
+    }
 
-	@Test
-	public void testNumFunctions() throws Exception {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(
-				proj.getProject()).getWorkingCopy();
-		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+    @Test
+    public void testNumFunctions() throws Exception {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(
+                proj.getProject()).getWorkingCopy();
+        config.setAttribute(
+                LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
 
-		int pidIx = 0;
-		CachegrindOutput output = view.getOutputs()[pidIx];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		if (file == null) {
-			pidIx = 1;
-			output = view.getOutputs()[pidIx];
-			file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		}
-		assertNotNull(file);
-		assertEquals(8, file.getFunctions().length);
+        int pidIx = 0;
+        CachegrindOutput output = view.getOutputs()[pidIx];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        if (file == null) {
+            pidIx = 1;
+            output = view.getOutputs()[pidIx];
+            file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        }
+        assertNotNull(file);
+        assertEquals(8, file.getFunctions().length);
 
-		// test other pid
-		pidIx = (pidIx + 1) % 2;
-		output = view.getOutputs()[pidIx];
-		file = getFileByName(output, "parent.cpp"); //$NON-NLS-1$
-		assertNotNull(file);
-		assertEquals(6, file.getFunctions().length);
-	}
+        // test other pid
+        pidIx = (pidIx + 1) % 2;
+        output = view.getOutputs()[pidIx];
+        file = getFileByName(output, "parent.cpp"); //$NON-NLS-1$
+        assertNotNull(file);
+        assertEquals(6, file.getFunctions().length);
+    }
 }

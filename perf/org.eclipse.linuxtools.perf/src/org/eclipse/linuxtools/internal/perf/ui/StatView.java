@@ -29,66 +29,66 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class StatView extends ViewPart {
 
-	private StyledText text;
+    private StyledText text;
 
-	public StatView() {
-	}
+    public StatView() {
+    }
 
-	@Override
-	public void createPartControl(Composite parent) {
-		parent.setLayoutData(new GridLayout(1, true));
+    @Override
+    public void createPartControl(Composite parent) {
+        parent.setLayoutData(new GridLayout(1, true));
 
-		text = new StyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		text.setEditable(false);
+        text = new StyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+        text.setEditable(false);
 
-		IPerfData data = PerfPlugin.getDefault().getStatData();
-		if (data != null) {
-			setStyledText(data.getPerfData());
-			setContentDescription(data.getTitle());
-		}
-	}
+        IPerfData data = PerfPlugin.getDefault().getStatData();
+        if (data != null) {
+            setStyledText(data.getPerfData());
+            setContentDescription(data.getTitle());
+        }
+    }
 
-	@Override
-	public void setFocus() {
-		return;
-	}
+    @Override
+    public void setFocus() {
+        return;
+    }
 
-	private void setStyledText (String input) {
-		text.setText(input);
+    private void setStyledText (String input) {
+        text.setText(input);
 
-		// the default TextConsole font (we want monospaced)
-		text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
-	}
-	/**
-	 * Update to most recent statistics data.
-	 */
-	private void updateData(){
-		IPerfData data = PerfPlugin.getDefault().getStatData();
-		if (data != null) {
-			setStyledText(data.getPerfData());
-			setContentDescription(data.getTitle());
-		}
-	}
+        // the default TextConsole font (we want monospaced)
+        text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
+    }
+    /**
+     * Update to most recent statistics data.
+     */
+    private void updateData(){
+        IPerfData data = PerfPlugin.getDefault().getStatData();
+        if (data != null) {
+            setStyledText(data.getPerfData());
+            setContentDescription(data.getTitle());
+        }
+    }
 
-	/**
-	 * Refresh perf statistics view.
-	 */
-	public static void refreshView () {
-		Display.getDefault().syncExec(new Runnable() {
+    /**
+     * Refresh perf statistics view.
+     */
+    public static void refreshView () {
+        Display.getDefault().syncExec(new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-					// A new view is created every time
-					StatView view = (StatView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView(PerfPlugin.STAT_VIEW_ID);
-					view.updateData();
-				} catch (PartInitException e) {
-					IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-					PerfPlugin.getDefault().getLog().log(status);
-				}
-			}
-		});
-	}
+            @Override
+            public void run() {
+                try {
+                    // A new view is created every time
+                    StatView view = (StatView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(PerfPlugin.STAT_VIEW_ID);
+                    view.updateData();
+                } catch (PartInitException e) {
+                    IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
+                    PerfPlugin.getDefault().getLog().log(status);
+                }
+            }
+        });
+    }
 
 }

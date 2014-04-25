@@ -35,97 +35,97 @@ import org.eclipse.swt.widgets.Composite;
  * @author Ryan Morse
  */
 public class GraphComposite extends Composite {
-	/**
-	 * The default constructor: creates an internal composite for the Graph to render on, asks GraphFactory
-	 * to create the graph from the given GraphData and DataSet, then initializes all buttons and listeners.
-	 */
-	public GraphComposite(Composite parent, int style, GraphData gd, IDataSet ds) {
-		super(parent, style);
-		FormLayout layout = new FormLayout();
-		layout.marginWidth = 5;
-		layout.marginHeight = 5;
-		this.setLayout(layout);
-		checkOptions = new ArrayList<>();
+    /**
+     * The default constructor: creates an internal composite for the Graph to render on, asks GraphFactory
+     * to create the graph from the given GraphData and DataSet, then initializes all buttons and listeners.
+     */
+    public GraphComposite(Composite parent, int style, GraphData gd, IDataSet ds) {
+        super(parent, style);
+        FormLayout layout = new FormLayout();
+        layout.marginWidth = 5;
+        layout.marginHeight = 5;
+        this.setLayout(layout);
+        checkOptions = new ArrayList<>();
 
-		checkOptionComp = new Composite(this, style);
-		checkOptionComp.setLayout(new RowLayout(SWT.VERTICAL));
-		FormData data = new FormData();
-		data.bottom = new FormAttachment(100, 0);
-		data.right = new FormAttachment(100, 0);
-		checkOptionComp.setLayoutData(data);
+        checkOptionComp = new Composite(this, style);
+        checkOptionComp.setLayout(new RowLayout(SWT.VERTICAL));
+        FormData data = new FormData();
+        data.bottom = new FormAttachment(100, 0);
+        data.right = new FormAttachment(100, 0);
+        checkOptionComp.setLayoutData(data);
 
-		builder = GraphFactory.createGraph(this, style, gd, ds);
-		xControl = GraphFactory.createGraphXControl(this, style);
-		yControl = GraphFactory.createGraphYControl(this, style);
+        builder = GraphFactory.createGraph(this, style, gd, ds);
+        xControl = GraphFactory.createGraphXControl(this, style);
+        yControl = GraphFactory.createGraphYControl(this, style);
 
-		if (xControl instanceof IUpdateListener) {
-			builder.addUpdateListener((IUpdateListener) xControl);
-		}
-		if (yControl instanceof IUpdateListener) {
-			builder.addUpdateListener((IUpdateListener) yControl);
-		}
+        if (xControl instanceof IUpdateListener) {
+            builder.addUpdateListener((IUpdateListener) xControl);
+        }
+        if (yControl instanceof IUpdateListener) {
+            builder.addUpdateListener((IUpdateListener) yControl);
+        }
 
-		configure(true);
+        configure(true);
 
-		builder.build();
-	}
+        builder.build();
+    }
 
-	/**
-	 * Toggles sidebar visible or not visible.
-	 * @param withSidebar Enables or disables the sidebar.
-	 */
-	private void configure(boolean withSidebar) {
-		sidebarVisible = withSidebar;
+    /**
+     * Toggles sidebar visible or not visible.
+     * @param withSidebar Enables or disables the sidebar.
+     */
+    private void configure(boolean withSidebar) {
+        sidebarVisible = withSidebar;
 
-		for(Button b:checkOptions) {
-			b.setVisible(withSidebar);
-		}
+        for(Button b:checkOptions) {
+            b.setVisible(withSidebar);
+        }
 
-		if (xControl != null) {
-			xControl.setVisible(withSidebar);
-		}
-		if (yControl != null) {
-			yControl.setVisible(withSidebar);
-		}
+        if (xControl != null) {
+            xControl.setVisible(withSidebar);
+        }
+        if (yControl != null) {
+            yControl.setVisible(withSidebar);
+        }
 
-		FormData data = new FormData();
-		data.top = new FormAttachment(0,0);
-		data.right = withSidebar ? new FormAttachment(checkOptionComp, 0) : new FormAttachment(100, 0);
-		data.bottom = withSidebar && xControl != null ? new FormAttachment(xControl, 0) : new FormAttachment(100, 0);
-		data.left = withSidebar && yControl != null ? new FormAttachment(yControl, 0) : new FormAttachment(0, 0);
-		builder.setLayoutData(data);
-		layout(true, true);
-	}
+        FormData data = new FormData();
+        data.top = new FormAttachment(0,0);
+        data.right = withSidebar ? new FormAttachment(checkOptionComp, 0) : new FormAttachment(100, 0);
+        data.bottom = withSidebar && xControl != null ? new FormAttachment(xControl, 0) : new FormAttachment(100, 0);
+        data.left = withSidebar && yControl != null ? new FormAttachment(yControl, 0) : new FormAttachment(0, 0);
+        builder.setLayoutData(data);
+        layout(true, true);
+    }
 
-	public void addCheckOption(String title, SelectionListener listener) {
-		Button b = new Button(checkOptionComp, SWT.CHECK);
-		b.setText(title);
-		b.addSelectionListener(listener);
-		checkOptions.add(b);
-		b.setSelection(true);
-		configure(sidebarVisible);
-	}
+    public void addCheckOption(String title, SelectionListener listener) {
+        Button b = new Button(checkOptionComp, SWT.CHECK);
+        b.setText(title);
+        b.addSelectionListener(listener);
+        checkOptions.add(b);
+        b.setSelection(true);
+        configure(sidebarVisible);
+    }
 
-	/**
-	 * Returns the graph that is rendering to this composite.
-	 */
-	public AbstractChartBuilder getCanvas() {
-		return builder;
-	}
+    /**
+     * Returns the graph that is rendering to this composite.
+     */
+    public AbstractChartBuilder getCanvas() {
+        return builder;
+    }
 
-	/**
-	 * @since 3.0
-	 */
-	public void setLegendVisible(boolean visible) {
-		builder.getChart().getLegend().setVisible(visible);
-		builder.handleUpdateEvent();
-	}
+    /**
+     * @since 3.0
+     */
+    public void setLegendVisible(boolean visible) {
+        builder.getChart().getLegend().setVisible(visible);
+        builder.handleUpdateEvent();
+    }
 
-	private final Composite xControl;
-	private final Composite yControl;
+    private final Composite xControl;
+    private final Composite yControl;
 
-	private boolean sidebarVisible = false;
-	private AbstractChartBuilder builder;
-	private List<Button> checkOptions;
-	private Composite checkOptionComp;
+    private boolean sidebarVisible = false;
+    private AbstractChartBuilder builder;
+    private List<Button> checkOptions;
+    private Composite checkOptionComp;
 }

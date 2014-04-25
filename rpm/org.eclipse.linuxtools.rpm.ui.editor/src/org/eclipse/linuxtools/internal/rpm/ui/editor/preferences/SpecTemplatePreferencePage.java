@@ -21,40 +21,40 @@ import org.osgi.service.prefs.BackingStoreException;
  *
  */
 public class SpecTemplatePreferencePage extends TemplatePreferencePage {
-	
-	/**
-	 * Default constructor
-	 */
-	public SpecTemplatePreferencePage() {
-		super();
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTemplateStore(Activator.getDefault().getTemplateStore());
-		setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#isShowFormatterSetting()
-	 */
-	@Override
-	protected boolean isShowFormatterSetting() {
-		return true;
-	}
+
+    /**
+     * Default constructor
+     */
+    public SpecTemplatePreferencePage() {
+        super();
+        setPreferenceStore(Activator.getDefault().getPreferenceStore());
+        setTemplateStore(Activator.getDefault().getTemplateStore());
+        setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#isShowFormatterSetting()
+     */
+    @Override
+    protected boolean isShowFormatterSetting() {
+        return true;
+    }
 
 
-	/**
-	 * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#performOk()
-	 */
-	@Override
-	public boolean performOk() {
-		boolean ok= super.performOk();
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			//Error while saving.
-			ok = false;
-		}
-		return ok;
-	}
+    /**
+     * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#performOk()
+     */
+    @Override
+    public boolean performOk() {
+        boolean ok= super.performOk();
+        try {
+            InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
+        } catch (BackingStoreException e) {
+            //Error while saving.
+            ok = false;
+        }
+        return ok;
+    }
 
 
 }

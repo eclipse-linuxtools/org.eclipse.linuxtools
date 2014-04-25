@@ -23,21 +23,21 @@ import org.eclipse.swt.widgets.Display;
 
 public class ColorManager {
 
-	private Map<RGB, Color> colorTable = new HashMap<>(10);
+    private Map<RGB, Color> colorTable = new HashMap<>(10);
 
-	public void dispose() {
-		Iterator<Color> e = colorTable.values().iterator();
-		while (e.hasNext()) {
-			e.next().dispose();
-		}
-	}
+    public void dispose() {
+        Iterator<Color> e = colorTable.values().iterator();
+        while (e.hasNext()) {
+            e.next().dispose();
+        }
+    }
 
-	public Color getColor(RGB rgb) {
-		Color color = colorTable.get(rgb);
-		if (color == null) {
-			color = new Color(Display.getCurrent(), rgb);
-			colorTable.put(rgb, color);
-		}
-		return color;
-	}
+    public Color getColor(RGB rgb) {
+        Color color = colorTable.get(rgb);
+        if (color == null) {
+            color = new Color(Display.getCurrent(), rgb);
+            colorTable.put(rgb, color);
+        }
+        return color;
+    }
 }

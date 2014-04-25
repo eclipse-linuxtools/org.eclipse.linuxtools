@@ -20,25 +20,25 @@ import org.eclipse.core.runtime.jobs.Job;
 
 public class LibHoverLoadJob extends Job {
 
-	private static final String LOADING = "LibHover.Loading.msg"; //$NON-NLS-1$
-	public LibHoverLoadJob(String title) {
-		super(title);
-	}
-	
-	@Override
-	protected IStatus run(IProgressMonitor monitor) {
-		// Load all libhover docs now
-		monitor.beginTask(LibHoverMessages.getString(LOADING), 
-				IProgressMonitor.UNKNOWN);
-		monitor.worked(1);
-		LibHover.getLibHoverDocs();
-		Collection<LibHoverLibrary> c = LibHover.getLibraries();
-		for (Iterator<LibHoverLibrary> i = c.iterator(); i.hasNext();) {
-			LibHoverLibrary l = i.next();
-			l.getHoverInfo();
-		}
-		monitor.done();
-		return Status.OK_STATUS;
-	}
+    private static final String LOADING = "LibHover.Loading.msg"; //$NON-NLS-1$
+    public LibHoverLoadJob(String title) {
+        super(title);
+    }
+
+    @Override
+    protected IStatus run(IProgressMonitor monitor) {
+        // Load all libhover docs now
+        monitor.beginTask(LibHoverMessages.getString(LOADING),
+                IProgressMonitor.UNKNOWN);
+        monitor.worked(1);
+        LibHover.getLibHoverDocs();
+        Collection<LibHoverLibrary> c = LibHover.getLibraries();
+        for (Iterator<LibHoverLibrary> i = c.iterator(); i.hasNext();) {
+            LibHoverLibrary l = i.next();
+            l.getHoverInfo();
+        }
+        monitor.done();
+        return Status.OK_STATUS;
+    }
 
 }

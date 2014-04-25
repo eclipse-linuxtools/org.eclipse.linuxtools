@@ -30,111 +30,111 @@ import org.junit.After;
 import org.junit.Test;
 
 public class SaveSessionTest {
-	private static final String WORKING_DIR = "resources/"; //$NON-NLS-1$
-	private static final String DATA_FILE_PATH = "/mock/data/path"; //$NON-NLS-1$
-	private static final String PERF_DATA_FILE_PATH = "resources/perf.data"; //$NON-NLS-1$
-	private static final String PERF_STATS_FILE_PATH = "stat_data"; //$NON-NLS-1$
-	private static final String DATA_FILE_NAME = "data"; //$NON-NLS-1$
-	private static final String DATA_FILE_EXT = "ext"; //$NON-NLS-1$
-	private ArrayList<IPath> testFiles = new ArrayList<>();
+    private static final String WORKING_DIR = "resources/"; //$NON-NLS-1$
+    private static final String DATA_FILE_PATH = "/mock/data/path"; //$NON-NLS-1$
+    private static final String PERF_DATA_FILE_PATH = "resources/perf.data"; //$NON-NLS-1$
+    private static final String PERF_STATS_FILE_PATH = "stat_data"; //$NON-NLS-1$
+    private static final String DATA_FILE_NAME = "data"; //$NON-NLS-1$
+    private static final String DATA_FILE_EXT = "ext"; //$NON-NLS-1$
+    private ArrayList<IPath> testFiles = new ArrayList<>();
 
-	@After
-	public void tearDown(){
-		for (IPath f : testFiles) {
-			File file = f.toFile();
-			assertTrue(file.delete());
-		}
-	}
+    @After
+    public void tearDown(){
+        for (IPath f : testFiles) {
+            File file = f.toFile();
+            assertTrue(file.delete());
+        }
+    }
 
-	@Test
-	public void testGenericHandler() {
-		GenericSaveDataHandler handler = new GenericSaveDataHandler();
-		assertTrue(handler.canSave(Path.fromOSString(DATA_FILE_PATH)));
-		assertEquals(WORKING_DIR, handler.getWorkingDir().toOSString());
+    @Test
+    public void testGenericHandler() {
+        GenericSaveDataHandler handler = new GenericSaveDataHandler();
+        assertTrue(handler.canSave(Path.fromOSString(DATA_FILE_PATH)));
+        assertEquals(WORKING_DIR, handler.getWorkingDir().toOSString());
 
-		IPath path = handler.getNewDataLocation(DATA_FILE_NAME, DATA_FILE_EXT);
-		assertEquals(WORKING_DIR + DATA_FILE_NAME + '.' + DATA_FILE_EXT,
-				path.toOSString());
+        IPath path = handler.getNewDataLocation(DATA_FILE_NAME, DATA_FILE_EXT);
+        assertEquals(WORKING_DIR + DATA_FILE_NAME + '.' + DATA_FILE_EXT,
+                path.toOSString());
 
-		assertTrue(handler.isEnabled());
-		assertTrue(handler.isHandled());
-	}
-	@Test
-	public void testPerfSaveSessionHandler() {
-		PerfSaveSessionTestHandler handler = new PerfSaveSessionTestHandler();
+        assertTrue(handler.isEnabled());
+        assertTrue(handler.isHandled());
+    }
+    @Test
+    public void testPerfSaveSessionHandler() {
+        PerfSaveSessionTestHandler handler = new PerfSaveSessionTestHandler();
 
-		PerfPlugin.getDefault().setPerfProfileData(null);
-		assertFalse(handler.verifyData());
+        PerfPlugin.getDefault().setPerfProfileData(null);
+        assertFalse(handler.verifyData());
 
-		PerfPlugin.getDefault().setPerfProfileData(
-				new Path(PERF_DATA_FILE_PATH));
-		assertTrue(handler.verifyData());
+        PerfPlugin.getDefault().setPerfProfileData(
+                new Path(PERF_DATA_FILE_PATH));
+        assertTrue(handler.verifyData());
 
-		IPath data = handler.saveData(DATA_FILE_NAME);
-		assertNotNull(data);
-		assertTrue(!data.toFile().canWrite());
-		testFiles.add(data);
+        IPath data = handler.saveData(DATA_FILE_NAME);
+        assertNotNull(data);
+        assertTrue(!data.toFile().canWrite());
+        testFiles.add(data);
 
-	}
+    }
 
-	// mock handlers
-	@Test
-	public void testPerfSaveStatsHandler() {
-		PerfSaveStatsTestHandler handler = new PerfSaveStatsTestHandler();
+    // mock handlers
+    @Test
+    public void testPerfSaveStatsHandler() {
+        PerfSaveStatsTestHandler handler = new PerfSaveStatsTestHandler();
 
-		PerfPlugin.getDefault().setStatData(null);
-		assertFalse(handler.verifyData());
+        PerfPlugin.getDefault().setStatData(null);
+        assertFalse(handler.verifyData());
 
-		PerfPlugin.getDefault().setStatData(
-				new StatData("title", null, "prog", new String[] {}, 1, null) { //$NON-NLS-1$ //$NON-NLS-2$
-					@Override
-					public String getPerfData() {
-						return PERF_STATS_FILE_PATH;
-					}
-				});
-		assertTrue(handler.verifyData());
+        PerfPlugin.getDefault().setStatData(
+                new StatData("title", null, "prog", new String[] {}, 1, null) { //$NON-NLS-1$ //$NON-NLS-2$
+                    @Override
+                    public String getPerfData() {
+                        return PERF_STATS_FILE_PATH;
+                    }
+                });
+        assertTrue(handler.verifyData());
 
-		IPath stats = handler.saveData(DATA_FILE_NAME);
-		assertNotNull(stats);
-		assertTrue(!stats.toFile().canWrite());
+        IPath stats = handler.saveData(DATA_FILE_NAME);
+        assertNotNull(stats);
+        assertTrue(!stats.toFile().canWrite());
 
-		testFiles.add(stats);
-	}
+        testFiles.add(stats);
+    }
 
-	private static class GenericSaveDataHandler extends AbstractSaveDataHandler {
-		@Override
-		public Object execute(ExecutionEvent event) {
-			return null;
-		}
+    private static class GenericSaveDataHandler extends AbstractSaveDataHandler {
+        @Override
+        public Object execute(ExecutionEvent event) {
+            return null;
+        }
 
-		@Override
-		public IPath saveData(String filename) {
-			return null;
-		}
+        @Override
+        public IPath saveData(String filename) {
+            return null;
+        }
 
-		@Override
-		public boolean verifyData() {
-			return true;
-		}
+        @Override
+        public boolean verifyData() {
+            return true;
+        }
 
-		@Override
-		protected IPath getWorkingDir() {
-			return new Path(WORKING_DIR);
-		}
-	}
+        @Override
+        protected IPath getWorkingDir() {
+            return new Path(WORKING_DIR);
+        }
+    }
 
-	private static class PerfSaveSessionTestHandler extends PerfSaveSessionHandler {
-		@Override
-		protected IPath getWorkingDir() {
-			return new Path(WORKING_DIR);
-		}
-	}
+    private static class PerfSaveSessionTestHandler extends PerfSaveSessionHandler {
+        @Override
+        protected IPath getWorkingDir() {
+            return new Path(WORKING_DIR);
+        }
+    }
 
-	private static class PerfSaveStatsTestHandler extends PerfSaveStatsHandler {
-		@Override
-		protected IPath getWorkingDir() {
-			return new Path(WORKING_DIR);
-		}
-	}
+    private static class PerfSaveStatsTestHandler extends PerfSaveStatsHandler {
+        @Override
+        protected IPath getWorkingDir() {
+            return new Path(WORKING_DIR);
+        }
+    }
 
 }

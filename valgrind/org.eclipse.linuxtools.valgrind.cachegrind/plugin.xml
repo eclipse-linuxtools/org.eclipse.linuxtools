@@ -30,6 +30,6 @@
             tabgroup="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindLaunchConfigurationTabGroup"
             type="timing">
       </provider>
-   </extension>   
+   </extension>
 
 </plugin>

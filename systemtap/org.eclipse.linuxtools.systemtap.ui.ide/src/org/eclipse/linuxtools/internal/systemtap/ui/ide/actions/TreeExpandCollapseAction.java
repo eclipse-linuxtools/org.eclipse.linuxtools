@@ -28,67 +28,67 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class TreeExpandCollapseAction extends Action implements
-		ISelectionListener {
-	private final IWorkbenchWindow fWindow;
-	private IStructuredSelection selection;
-	private final BrowserView viewer;
+        ISelectionListener {
+    private final IWorkbenchWindow fWindow;
+    private IStructuredSelection selection;
+    private final BrowserView viewer;
 
-	/**
-	 * The default constructor. Takes a <code>Class</code> representing the viewer that it is to expand
-	 * or collapse, as there is only one in the workbench at a time.
-	 * @param cls	<code>Class</code> of the viewer to expand/collapse
-	 */
-	public TreeExpandCollapseAction(BrowserView view) {
-		super();
-		fWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		fWindow.getSelectionService().addSelectionListener(this);
-		this.viewer = view;
-	}
+    /**
+     * The default constructor. Takes a <code>Class</code> representing the viewer that it is to expand
+     * or collapse, as there is only one in the workbench at a time.
+     * @param cls    <code>Class</code> of the viewer to expand/collapse
+     */
+    public TreeExpandCollapseAction(BrowserView view) {
+        super();
+        fWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        fWindow.getSelectionService().addSelectionListener(this);
+        this.viewer = view;
+    }
 
-	/**
-	 * Updates <code>selection</code> with the current selection whenever the user changes
-	 * the current selection.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		if (incoming instanceof IStructuredSelection) {
-			selection = (IStructuredSelection) incoming;
-			setEnabled(selection.size() == 1);
-		} else {
-			// Other selections, for example containing text or of other kinds.
-			setEnabled(false);
-		}
-	}
+    /**
+     * Updates <code>selection</code> with the current selection whenever the user changes
+     * the current selection.
+     */
+    @Override
+    public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
+        if (incoming instanceof IStructuredSelection) {
+            selection = (IStructuredSelection) incoming;
+            setEnabled(selection.size() == 1);
+        } else {
+            // Other selections, for example containing text or of other kinds.
+            setEnabled(false);
+        }
+    }
 
-	public void dispose() {
-		fWindow.getSelectionService().removeSelectionListener(this);
-	}
+    public void dispose() {
+        fWindow.getSelectionService().removeSelectionListener(this);
+    }
 
-	/**
-	 * The main body of the action. Expands or Collapses the viewer specified at construction to
-	 * the level of the current selection.
-	 */
-	@Override
-	public void run() {
-		ISelection incoming = viewer.getViewer().getSelection();
-		IStructuredSelection selection = (IStructuredSelection)incoming;
-		Object o = selection.getFirstElement();
+    /**
+     * The main body of the action. Expands or Collapses the viewer specified at construction to
+     * the level of the current selection.
+     */
+    @Override
+    public void run() {
+        ISelection incoming = viewer.getViewer().getSelection();
+        IStructuredSelection selection = (IStructuredSelection)incoming;
+        Object o = selection.getFirstElement();
 
-		if(o == null) {
-			return;
-		}
+        if(o == null) {
+            return;
+        }
 
-		Object[] objs = viewer.getViewer().getVisibleExpandedElements();
-		boolean doExpand = true;
+        Object[] objs = viewer.getViewer().getVisibleExpandedElements();
+        boolean doExpand = true;
 
-		for(int i = 0; i < objs.length; i++)
-			if(objs[i] == o)
-				doExpand = false;
+        for(int i = 0; i < objs.length; i++)
+            if(objs[i] == o)
+                doExpand = false;
 
-		if(doExpand) {
-			viewer.getViewer().expandToLevel(o,1);
-		} else {
-			viewer.getViewer().collapseToLevel(o,1);
-		}
-	}
+        if(doExpand) {
+            viewer.getViewer().expandToLevel(o,1);
+        } else {
+            viewer.getViewer().collapseToLevel(o,1);
+        }
+    }
 }

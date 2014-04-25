@@ -23,62 +23,62 @@ import org.eclipse.ui.console.TextConsole;
 
 public class Helper {
 
-	/**
-	 * @param name : A String that can be found in the console (BE AS SPECIFIC AS POSSIBLE)
-	 * @return The TextConsole having 'name' somewhere within it's name
-	 */
-	public static TextConsole getConsoleByName(String name) {
-		for (int i = 0; i < ConsolePlugin.getDefault().getConsoleManager()
-				.getConsoles().length; i++) {
-			if (ConsolePlugin.getDefault().getConsoleManager().
-					getConsoles()[i].getName().contains(name)) {
-				return (TextConsole)ConsolePlugin.getDefault().getConsoleManager().getConsoles()[i];
-			}
-		}
-		return null;
-	}
+    /**
+     * @param name : A String that can be found in the console (BE AS SPECIFIC AS POSSIBLE)
+     * @return The TextConsole having 'name' somewhere within it's name
+     */
+    public static TextConsole getConsoleByName(String name) {
+        for (int i = 0; i < ConsolePlugin.getDefault().getConsoleManager()
+                .getConsoles().length; i++) {
+            if (ConsolePlugin.getDefault().getConsoleManager().
+                    getConsoles()[i].getName().contains(name)) {
+                return (TextConsole)ConsolePlugin.getDefault().getConsoleManager().getConsoles()[i];
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Read the contents of a file
-	 * @param absoluteFilePath : The absolute path of the file from which to read.
-	 * @return : The contents of the file as a String.
-	 */
-	public static String readFile(String absoluteFilePath) {
+    /**
+     * Read the contents of a file
+     * @param absoluteFilePath : The absolute path of the file from which to read.
+     * @return : The contents of the file as a String.
+     */
+    public static String readFile(String absoluteFilePath) {
 
-		try (BufferedReader bw = new BufferedReader(new FileReader(new File(absoluteFilePath)))) {
-			String output = ""; //$NON-NLS-1$
-			String tmp = ""; //$NON-NLS-1$
-			while ((tmp = bw.readLine()) != null) {
-				output+=tmp + "\n"; //$NON-NLS-1$
-			}
-			bw.close();
+        try (BufferedReader bw = new BufferedReader(new FileReader(new File(absoluteFilePath)))) {
+            String output = ""; //$NON-NLS-1$
+            String tmp = ""; //$NON-NLS-1$
+            while ((tmp = bw.readLine()) != null) {
+                output+=tmp + "\n"; //$NON-NLS-1$
+            }
+            bw.close();
 
-			return output;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            return output;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public static BufferedWriter setBufferedWriter(String absoluteFilePath) {
-		try {
-			File f = new File(absoluteFilePath);
-			f.delete();
-			f.createNewFile();
-			FileWriter fstream;
-			fstream = new FileWriter(absoluteFilePath, true);
-			return new BufferedWriter(fstream);
-		} catch (IOException e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
-					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
-					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
-					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
-			err.schedule();
-			e.printStackTrace();
-			return null;
-		}
-	}
+    public static BufferedWriter setBufferedWriter(String absoluteFilePath) {
+        try {
+            File f = new File(absoluteFilePath);
+            f.delete();
+            f.createNewFile();
+            FileWriter fstream;
+            fstream = new FileWriter(absoluteFilePath, true);
+            return new BufferedWriter(fstream);
+        } catch (IOException e) {
+            SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+                    (Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
+                    Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$
+                    Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
+            err.schedule();
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

@@ -24,56 +24,56 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class CProfilingOptionsTab extends AbstractProfilingOptionsTab {
 
-	String defaultType;
+    String defaultType;
 
-	public static final String TAB_ID = "org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.profilingTab"; //$NON-NLS-1$
+    public static final String TAB_ID = "org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.profilingTab"; //$NON-NLS-1$
 
-	/**
-	 * ProviderOptionsTab constructor.
-	 *
-	 */
-	public CProfilingOptionsTab() {
-		setName(Messages.ProfilingTabName);
-		setId(TAB_ID);
-	}
+    /**
+     * ProviderOptionsTab constructor.
+     *
+     */
+    public CProfilingOptionsTab() {
+        setName(Messages.ProfilingTabName);
+        setId(TAB_ID);
+    }
 
-	@Override
-	protected SortedMap<String, String> getProviders() {
-		return ProviderFramework.getAllProviderNames();
-	}
+    @Override
+    protected SortedMap<String, String> getProviders() {
+        return ProviderFramework.getAllProviderNames();
+    }
 
-	@Override
-	protected String getDefaultProviderId() {
-		// get the id of a provider
-		if (defaultType == null) {
-			String[] categories = ProviderFramework.getProviderCategories();
-			if (categories.length == 0) {
-				setErrorMessage(Messages.ProfilingTab_no_profilers_installed);
-				return ""; //$NON-NLS-1$
-			}
-			for (String category : categories) {
-				// Give precedence to timing category if present
-				if (category.equals("timing")){ //$NON-NLS-1$
-					defaultType = "timing"; //$NON-NLS-1$
-				}
-			}
-			// if default category still not set, take first one found
-			if (defaultType == null)
-				defaultType = categories[0];
-		}
-		return ProviderFramework.getProviderIdToRun(null, defaultType);
-	}
+    @Override
+    protected String getDefaultProviderId() {
+        // get the id of a provider
+        if (defaultType == null) {
+            String[] categories = ProviderFramework.getProviderCategories();
+            if (categories.length == 0) {
+                setErrorMessage(Messages.ProfilingTab_no_profilers_installed);
+                return ""; //$NON-NLS-1$
+            }
+            for (String category : categories) {
+                // Give precedence to timing category if present
+                if (category.equals("timing")){ //$NON-NLS-1$
+                    defaultType = "timing"; //$NON-NLS-1$
+                }
+            }
+            // if default category still not set, take first one found
+            if (defaultType == null)
+                defaultType = categories[0];
+        }
+        return ProviderFramework.getProviderIdToRun(null, defaultType);
+    }
 
-	@Override
-	protected void setConfigurationName(String newToolName) {
-		// do nothing
-	}
+    @Override
+    protected void setConfigurationName(String newToolName) {
+        // do nothing
+    }
 
-	@Override
-	public Image getImage() {
-		if (img == null)
-		   img = AbstractUIPlugin.imageDescriptorFromPlugin(ProfileLaunchPlugin.PLUGIN_ID,
-				"icons/time_obj.gif").createImage(); //$NON-NLS-1$
-		return img;
-	}
+    @Override
+    public Image getImage() {
+        if (img == null)
+           img = AbstractUIPlugin.imageDescriptorFromPlugin(ProfileLaunchPlugin.PLUGIN_ID,
+                "icons/time_obj.gif").createImage(); //$NON-NLS-1$
+        return img;
+    }
 }

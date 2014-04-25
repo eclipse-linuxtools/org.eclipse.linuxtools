@@ -14,18 +14,18 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 
 public class ValgrindOutputDirectoryProvider implements IValgrindOutputDirectoryProvider {
-	private IPath outputPath;
+    private IPath outputPath;
 
-	public ValgrindOutputDirectoryProvider() {
-		outputPath = ValgrindLaunchPlugin.getDefault().getStateLocation();
-	}
+    public ValgrindOutputDirectoryProvider() {
+        outputPath = ValgrindLaunchPlugin.getDefault().getStateLocation();
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider#getOutputPath()
-	 */
-	@Override
-	public IPath getOutputPath() {
-		return outputPath;
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider#getOutputPath()
+     */
+    @Override
+    public IPath getOutputPath() {
+        return outputPath;
+    }
 
 }

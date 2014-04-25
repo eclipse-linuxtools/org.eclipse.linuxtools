@@ -35,105 +35,105 @@ import org.eclipse.ui.part.ViewPart;
 
 public class PerfProfileView extends ViewPart {
 
-	/**
-	 * The ID of the view as specified by the extension.
-	 */
-	public static final String ID = "org.eclipse.linuxtools.internal.perf.views.ProfileView"; //$NON-NLS-1$
+    /**
+     * The ID of the view as specified by the extension.
+     */
+    public static final String ID = "org.eclipse.linuxtools.internal.perf.views.ProfileView"; //$NON-NLS-1$
 
-	private TreeViewer viewer;
-	private DrillDownAdapter drillDownAdapter;
-	private Action doubleClickAction;
+    private TreeViewer viewer;
+    private DrillDownAdapter drillDownAdapter;
+    private Action doubleClickAction;
 
-	static class NameSorter extends ViewerSorter {
-		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			return (((TreeParent) e1).getPercent()
-					<= ((TreeParent) e2).getPercent()) ? 1 : -1;
-		}
-	}
+    static class NameSorter extends ViewerSorter {
+        @Override
+        public int compare(Viewer viewer, Object e1, Object e2) {
+            return (((TreeParent) e1).getPercent()
+                    <= ((TreeParent) e2).getPercent()) ? 1 : -1;
+        }
+    }
 
-	/**
-	 * This is a callback that will allow us
-	 * to create the viewer and initialize it.
-	 */
-	@Override
-	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		drillDownAdapter = new DrillDownAdapter(viewer);
-		viewer.setContentProvider(new PerfViewContentProvider());
+    /**
+     * This is a callback that will allow us
+     * to create the viewer and initialize it.
+     */
+    @Override
+    public void createPartControl(Composite parent) {
+        viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+        drillDownAdapter = new DrillDownAdapter(viewer);
+        viewer.setContentProvider(new PerfViewContentProvider());
 
-		viewer.setLabelProvider(new PerfViewLabelProvider());
-		viewer.setSorter(new NameSorter());
+        viewer.setLabelProvider(new PerfViewLabelProvider());
+        viewer.setSorter(new NameSorter());
 
-		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer"); //$NON-NLS-1$
-		hookContextMenu();
-		hookDoubleClickAction();
-		contributeToActionBars();
-	}
+        // Create the help context id for the viewer's control
+        PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer"); //$NON-NLS-1$
+        hookContextMenu();
+        hookDoubleClickAction();
+        contributeToActionBars();
+    }
 
-	public void refreshModel() {
-		viewer.setInput(PerfPlugin.getDefault().getModelRoot());
-		viewer.refresh();
-	}
+    public void refreshModel() {
+        viewer.setInput(PerfPlugin.getDefault().getModelRoot());
+        viewer.refresh();
+    }
 
-	private void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
-		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				PerfProfileView.this.fillContextMenu(manager);
-			}
-		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
-	}
+    private void hookContextMenu() {
+        MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+        menuMgr.setRemoveAllWhenShown(true);
+        menuMgr.addMenuListener(new IMenuListener() {
+            @Override
+            public void menuAboutToShow(IMenuManager manager) {
+                PerfProfileView.this.fillContextMenu(manager);
+            }
+        });
+        Menu menu = menuMgr.createContextMenu(viewer.getControl());
+        viewer.getControl().setMenu(menu);
+        getSite().registerContextMenu(menuMgr, viewer);
+    }
 
-	private void contributeToActionBars() {
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalPullDown(bars.getMenuManager());
-		fillLocalToolBar(bars.getToolBarManager());
-	}
+    private void contributeToActionBars() {
+        IActionBars bars = getViewSite().getActionBars();
+        fillLocalPullDown(bars.getMenuManager());
+        fillLocalToolBar(bars.getToolBarManager());
+    }
 
-	private void fillLocalPullDown(IMenuManager manager) {
-	}
+    private void fillLocalPullDown(IMenuManager manager) {
+    }
 
-	private void fillContextMenu(IMenuManager manager) {
-		drillDownAdapter.addNavigationActions(manager);
-		// Other plug-ins can contribute there actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-	}
+    private void fillContextMenu(IMenuManager manager) {
+        drillDownAdapter.addNavigationActions(manager);
+        // Other plug-ins can contribute there actions here
+        manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+    }
 
-	private void fillLocalToolBar(IToolBarManager manager) {
-		drillDownAdapter.addNavigationActions(manager);
-	}
+    private void fillLocalToolBar(IToolBarManager manager) {
+        drillDownAdapter.addNavigationActions(manager);
+    }
 
-	private void hookDoubleClickAction() {
-		doubleClickAction = new PerfDoubleClickAction(viewer);
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
-	}
+    private void hookDoubleClickAction() {
+        doubleClickAction = new PerfDoubleClickAction(viewer);
+        viewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                doubleClickAction.run();
+            }
+        });
+    }
 
-	public TreeViewer getTreeViewer () {
-		return viewer;
-	}
+    public TreeViewer getTreeViewer () {
+        return viewer;
+    }
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	@Override
-	public void setFocus() {
-		viewer.getControl().setFocus();
-	}
+    /**
+     * Passing the focus request to the viewer's control.
+     */
+    @Override
+    public void setFocus() {
+        viewer.getControl().setFocus();
+    }
 
-	@Override
-	public void setContentDescription (String name) {
-		super.setContentDescription(name);
-	}
+    @Override
+    public void setContentDescription (String name) {
+        super.setContentDescription(name);
+    }
 }

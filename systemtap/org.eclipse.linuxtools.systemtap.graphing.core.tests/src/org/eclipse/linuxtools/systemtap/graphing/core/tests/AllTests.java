@@ -36,31 +36,31 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({// Aggregates
-		AverageAggregateTest.class,
-		CountAggregateTest.class,
-		MaxAggregateTest.class,
-		MinAggregateTest.class,
-		SumAggregateTest.class,
+        AverageAggregateTest.class,
+        CountAggregateTest.class,
+        MaxAggregateTest.class,
+        MinAggregateTest.class,
+        SumAggregateTest.class,
 
-		// DataSets
+        // DataSets
 
-		// DataSets.Row
-		FilteredRowDataSetTest.class,
-		RowDataSetTest.class,
-		RowEntryTest.class,
-		RowParserTest.class,
+        // DataSets.Row
+        FilteredRowDataSetTest.class,
+        RowDataSetTest.class,
+        RowEntryTest.class,
+        RowParserTest.class,
 
-		// DataSets.Table
-		FilteredTableDataSetTest.class, TableDataSetTest.class,
-		TableEntryTest.class,
-		TableParserTest.class,
+        // DataSets.Table
+        FilteredTableDataSetTest.class, TableDataSetTest.class,
+        TableEntryTest.class,
+        TableParserTest.class,
 
-		// Filters
-		MatchFilterTest.class, RangeFilterTest.class, SortFilterTest.class,
-		UniqueFilterTest.class,
+        // Filters
+        MatchFilterTest.class, RangeFilterTest.class, SortFilterTest.class,
+        UniqueFilterTest.class,
 
-		// Structures
-		ChartStreamDaemonTest.class, NumberTypeTest.class,
-		UpdateManagerTest.class })
+        // Structures
+        ChartStreamDaemonTest.class, NumberTypeTest.class,
+        UpdateManagerTest.class })
 public class AllTests {
 }

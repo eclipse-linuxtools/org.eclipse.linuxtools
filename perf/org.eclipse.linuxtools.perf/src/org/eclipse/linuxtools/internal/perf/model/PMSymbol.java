@@ -13,45 +13,45 @@ package org.eclipse.linuxtools.internal.perf.model;
 import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
 
 public class PMSymbol extends TreeParent {
-	private boolean pathConflictFound = false;
+    private boolean pathConflictFound = false;
 
-	public String getFunctionName() {
-		String tmpName = getName();
-		if (tmpName.startsWith("[")) { // filer out the "[.] " //$NON-NLS-1$
-			tmpName = tmpName.substring(4);
-		}
-		int argloc = tmpName.indexOf("("); // and the (.... //$NON-NLS-1$
-		if (argloc != -1) {
-			tmpName = tmpName.substring(0,argloc);
-		}
-		return tmpName;
-	}
+    public String getFunctionName() {
+        String tmpName = getName();
+        if (tmpName.startsWith("[")) { // filer out the "[.] " //$NON-NLS-1$
+            tmpName = tmpName.substring(4);
+        }
+        int argloc = tmpName.indexOf("("); // and the (.... //$NON-NLS-1$
+        if (argloc != -1) {
+            tmpName = tmpName.substring(0,argloc);
+        }
+        return tmpName;
+    }
 
-	public PMSymbol(String symbolName, float pc, double samples) {
-		super(symbolName, pc, samples);
-	}
+    public PMSymbol(String symbolName, float pc, double samples) {
+        super(symbolName, pc, samples);
+    }
 
-	public void addPercent(Integer lineNum, Float percent) {  //Adds percent to a lineref within this symbol.
-		PMLineRef current = (PMLineRef)getChild(lineNum.toString());
-		if (current == null) {
-			current = new PMLineRef(lineNum, percent);
-			addChild(current);
-		} else {
-			current.addPercent(percent);
-		}
-	}
+    public void addPercent(Integer lineNum, Float percent) {  //Adds percent to a lineref within this symbol.
+        PMLineRef current = (PMLineRef)getChild(lineNum.toString());
+        if (current == null) {
+            current = new PMLineRef(lineNum, percent);
+            addChild(current);
+        } else {
+            current.addPercent(percent);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return getPercent()
-				+ "% (" + getFormattedSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	}
+    @Override
+    public String toString() {
+        return getPercent()
+                + "% (" + getFormattedSamples() + " samples) in " + getName() + (pathConflictFound ? "(Warning multiple paths found for this symbol!)" : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    }
 
-	public void markConflict() {
-		pathConflictFound = true;
-	}
+    public void markConflict() {
+        pathConflictFound = true;
+    }
 
-	public boolean conflicted() {
-		return pathConflictFound;
-	}
+    public boolean conflicted() {
+        return pathConflictFound;
+    }
 }

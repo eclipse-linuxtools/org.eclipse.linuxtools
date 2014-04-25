@@ -38,92 +38,92 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SortTest extends AbstractMassifTest {
 
-	private int column;
+    private int column;
 
-	public SortTest(int number) {
-		this.column = number;
-	}
+    public SortTest(int number) {
+        this.column = number;
+    }
 
-	@Parameters
-	public static Collection<Object[]> data() {
-		return Arrays.asList(new Object[][] {
-		{ 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-	}
+    @Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+    }
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, true);
-		wc.doSave();
-		doLaunch(config, "testStacks"); //$NON-NLS-1$
-	}
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+        wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, true);
+        wc.doSave();
+        doLaunch(config, "testStacks"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void checkSortColumn() {
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
-				.getView().getDynamicView();
-		TableViewer viewer = view.getTableViewer();
-		TableColumn control = viewer.getTable().getColumn(column);
+    @Test
+    public void checkSortColumn() {
+        MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
+                .getView().getDynamicView();
+        TableViewer viewer = view.getTableViewer();
+        TableColumn control = viewer.getTable().getColumn(column);
 
-		// Test ascending
-		control.notifyListeners(SWT.Selection, null);
-		assertEquals(SWT.UP, viewer.getTable().getSortDirection());
-		assertEquals(control, viewer.getTable().getSortColumn());
-		checkOrder(viewer, column, true);
+        // Test ascending
+        control.notifyListeners(SWT.Selection, null);
+        assertEquals(SWT.UP, viewer.getTable().getSortDirection());
+        assertEquals(control, viewer.getTable().getSortColumn());
+        checkOrder(viewer, column, true);
 
-		// Test descending
-		control.notifyListeners(SWT.Selection, null);
-		assertEquals(SWT.DOWN, viewer.getTable().getSortDirection());
-		assertEquals(control, viewer.getTable().getSortColumn());
-		checkOrder(viewer, column, false);
-	}
+        // Test descending
+        control.notifyListeners(SWT.Selection, null);
+        assertEquals(SWT.DOWN, viewer.getTable().getSortDirection());
+        assertEquals(control, viewer.getTable().getSortColumn());
+        checkOrder(viewer, column, false);
+    }
 
-	private void checkOrder(TableViewer viewer, int column, boolean ascending) {
-		TableItem[] items = viewer.getTable().getItems();
-		for (int i = 0; i < items.length - 1; i++) {
-			MassifSnapshot first = (MassifSnapshot) items[i].getData();
-			MassifSnapshot second = (MassifSnapshot) items[i + 1].getData();
+    private void checkOrder(TableViewer viewer, int column, boolean ascending) {
+        TableItem[] items = viewer.getTable().getItems();
+        for (int i = 0; i < items.length - 1; i++) {
+            MassifSnapshot first = (MassifSnapshot) items[i].getData();
+            MassifSnapshot second = (MassifSnapshot) items[i + 1].getData();
 
-			switch (column) {
-			case 0:
-				assertTrue(ascending ? first.getNumber() <= second.getNumber()
-						: first.getNumber() >= second.getNumber());
-				break;
-			case 1:
-				assertTrue(ascending ? first.getTime() <= second.getTime()
-						: first.getTime() >= second.getTime());
-				break;
-			case 2:
-				assertTrue(ascending ? first.getTotal() <= second.getTotal()
-						: first.getTotal() >= second.getTotal());
-				break;
-			case 3:
-				assertTrue(ascending ? first.getHeapBytes() <= second
-						.getHeapBytes() : first.getHeapBytes() >= second
-						.getHeapBytes());
-				break;
-			case 4:
-				assertTrue(ascending ? first.getHeapExtra() <= second
-						.getHeapExtra() : first.getHeapExtra() >= second
-						.getHeapExtra());
-				break;
-			case 5:
-				assertTrue(ascending ? first.getStacks() <= second.getStacks()
-						: first.getStacks() >= second.getStacks());
-				break;
-			default:
-				fail();
-			}
-		}
-	}
+            switch (column) {
+            case 0:
+                assertTrue(ascending ? first.getNumber() <= second.getNumber()
+                        : first.getNumber() >= second.getNumber());
+                break;
+            case 1:
+                assertTrue(ascending ? first.getTime() <= second.getTime()
+                        : first.getTime() >= second.getTime());
+                break;
+            case 2:
+                assertTrue(ascending ? first.getTotal() <= second.getTotal()
+                        : first.getTotal() >= second.getTotal());
+                break;
+            case 3:
+                assertTrue(ascending ? first.getHeapBytes() <= second
+                        .getHeapBytes() : first.getHeapBytes() >= second
+                        .getHeapBytes());
+                break;
+            case 4:
+                assertTrue(ascending ? first.getHeapExtra() <= second
+                        .getHeapExtra() : first.getHeapExtra() >= second
+                        .getHeapExtra());
+                break;
+            case 5:
+                assertTrue(ascending ? first.getStacks() <= second.getStacks()
+                        : first.getStacks() >= second.getStacks());
+                break;
+            default:
+                fail();
+            }
+        }
+    }
 }

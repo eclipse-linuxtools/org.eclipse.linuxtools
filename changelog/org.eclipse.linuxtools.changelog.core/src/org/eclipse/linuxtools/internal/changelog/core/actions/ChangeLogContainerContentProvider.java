@@ -39,21 +39,21 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
      * to be disposed. Deallocate all allocated SWT resources.
      */
     @Override
-	public void dispose() {
+    public void dispose() {
     }
 
     /*
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
     @Override
-	public Object[] getChildren(Object element) {
+    public Object[] getChildren(Object element) {
         if (element instanceof IWorkspace) {
             // check if closed projects should be shown
             IProject[] allProjects = ((IWorkspace) element).getRoot()
                     .getProjects();
             if (showClosedProjects) {
-				return allProjects;
-			}
+                return allProjects;
+            }
 
             ArrayList<IProject> accessibleProjects = new ArrayList<>();
             for (int i = 0; i < allProjects.length; i++) {
@@ -79,15 +79,15 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
                 }
             }
         } else if (element instanceof ChangeLogRootContainer) {
-        	ChangeLogRootContainer container = (ChangeLogRootContainer) element;
-        	List<IResource> children = new ArrayList<>();
-        	IResource[] members = container.members();
-        	for (int i = 0; i < members.length; i++) {
-        		if (members[i].getType() != IResource.FILE) {
-        			children.add(members[i]);
-        		}
-        	}
-        	return children.toArray();
+            ChangeLogRootContainer container = (ChangeLogRootContainer) element;
+            List<IResource> children = new ArrayList<>();
+            IResource[] members = container.members();
+            for (int i = 0; i < members.length; i++) {
+                if (members[i].getType() != IResource.FILE) {
+                    children.add(members[i]);
+                }
+            }
+            return children.toArray();
         }
       return new Object[0];
     }
@@ -96,7 +96,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
     @Override
-	public Object[] getElements(Object element) {
+    public Object[] getElements(Object element) {
         return getChildren(element);
     }
 
@@ -104,10 +104,10 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
      */
     @Override
-	public Object getParent(Object element) {
+    public Object getParent(Object element) {
         if (element instanceof IResource) {
-			return ((IResource) element).getParent();
-		}
+            return ((IResource) element).getParent();
+        }
         return null;
     }
 
@@ -115,7 +115,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
      * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
      */
     @Override
-	public boolean hasChildren(Object element) {
+    public boolean hasChildren(Object element) {
         return getChildren(element).length > 0;
     }
 
@@ -123,7 +123,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
      * @see org.eclipse.jface.viewers.IContentProvider#inputChanged
      */
     @Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }
 
     /**

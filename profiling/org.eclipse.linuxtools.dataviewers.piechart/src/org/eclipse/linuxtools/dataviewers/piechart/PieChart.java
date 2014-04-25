@@ -24,15 +24,15 @@ import org.swtchart.ISeries;
 
 public class PieChart extends Chart {
 
-	protected List<RGB> colorList = new ArrayList<>();
-	private Color[] customColors = null;
-	private PieChartPaintListener pieChartPaintListener;
+    protected List<RGB> colorList = new ArrayList<>();
+    private Color[] customColors = null;
+    private PieChartPaintListener pieChartPaintListener;
 
     public PieChart(Composite parent, int style) {
         super(parent, style);
         // Hide all original axes and plot area
         for (IAxis axis : getAxisSet().getAxes()) {
-        	axis.getTitle().setVisible(false);
+            axis.getTitle().setVisible(false);
         }
         getPlotArea().setVisible(false);
         addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
@@ -44,13 +44,13 @@ public class PieChart extends Chart {
     @Override
     public void addPaintListener(PaintListener listener) {
         if (!listener.getClass().getName().startsWith("org.swtchart.internal.axis")) { //$NON-NLS-1$
-			super.addPaintListener(listener);
-		}
+            super.addPaintListener(listener);
+        }
     }
 
     /**
-	 * @since 2.0
-	 */
+     * @since 2.0
+     */
     public void setCustomColors(Color[] customColors) {
         this.customColors = customColors.clone();
     }
@@ -65,21 +65,21 @@ public class PieChart extends Chart {
     public void addPieChartSeries(String labels[], double val[][]) {
         setSeriesNames(val[0].length);
         for (ISeries s : this.getSeriesSet().getSeries()) {
-			this.getSeriesSet().deleteSeries(s.getId());
-		}
+            this.getSeriesSet().deleteSeries(s.getId());
+        }
 
         int size = Math.min(labels.length, val.length);
         for (int i = 0; i < size; i++) {
             IBarSeries s = (IBarSeries) this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
             double d[] = new double[val[i].length];
             for (int j = 0; j < val[i].length; j++) {
-				d[j] = val[i][j];
-			}
+                d[j] = val[i][j];
+            }
             s.setXSeries(d);
             if (customColors != null) {
-            	s.setBarColor(customColors[i % customColors.length]);
+                s.setBarColor(customColors[i % customColors.length]);
             } else {
-            	s.setBarColor(new Color(this.getDisplay(), sliceColor(i)));
+                s.setBarColor(new Color(this.getDisplay(), sliceColor(i)));
             }
         }
     }
@@ -91,27 +91,27 @@ public class PieChart extends Chart {
      * @param numExpected The number of pies / the expected number of category names.
      */
     private void setSeriesNames(int numExpected) {
-    	IAxis xAxis = getAxisSet().getXAxis(0);
-    	if (xAxis.getCategorySeries().length != numExpected) {
-    		String[] seriesNames = new String[numExpected];
-    		for (int i = 0, n = Math.min(xAxis.getCategorySeries().length, numExpected); i < n; i++) {
-    			seriesNames[i] = xAxis.getCategorySeries()[i];
-    		}
-    		for (int i = xAxis.getCategorySeries().length; i < numExpected; i++) {
-    			seriesNames[i] = ""; //$NON-NLS-1$
-    		}
-    		xAxis.setCategorySeries(seriesNames);
-    	}
+        IAxis xAxis = getAxisSet().getXAxis(0);
+        if (xAxis.getCategorySeries().length != numExpected) {
+            String[] seriesNames = new String[numExpected];
+            for (int i = 0, n = Math.min(xAxis.getCategorySeries().length, numExpected); i < n; i++) {
+                seriesNames[i] = xAxis.getCategorySeries()[i];
+            }
+            for (int i = xAxis.getCategorySeries().length; i < numExpected; i++) {
+                seriesNames[i] = ""; //$NON-NLS-1$
+            }
+            xAxis.setCategorySeries(seriesNames);
+        }
     }
 
     protected RGB sliceColor(int i) {
-    	if (colorList.size() > i) {
-    		return colorList.get(i);
-    	}
+        if (colorList.size() > i) {
+            return colorList.get(i);
+        }
 
-    	RGB next = IColorsConstants.COLORS[i % IColorsConstants.COLORS.length];
-    	colorList.add(next);
-    	return next;
+        RGB next = IColorsConstants.COLORS[i % IColorsConstants.COLORS.length];
+        colorList.add(next);
+        return next;
     }
 
     /**

@@ -19,43 +19,43 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 
 public abstract class SpecfileMarkerHandler {
 
-	IDocument document;
-	IFile file;
+    IDocument document;
+    IFile file;
 
-	public SpecfileMarkerHandler(IFile file, IDocument document) {
-		this.file = file;
-		this.document = document;
-	}
+    public SpecfileMarkerHandler(IFile file, IDocument document) {
+        this.file = file;
+        this.document = document;
+    }
 
-	abstract String getMarkerID();
+    abstract String getMarkerID();
 
-	protected Integer getCharOffset(int lineNumber, int columnNumber) {
-		try {
-			return document.getLineOffset(lineNumber)
-					+ columnNumber;
-		} catch (BadLocationException e) {
-			SpecfileLog.logError(e);
-			return null;
-		}
-	}
+    protected Integer getCharOffset(int lineNumber, int columnNumber) {
+        try {
+            return document.getLineOffset(lineNumber)
+                    + columnNumber;
+        } catch (BadLocationException e) {
+            SpecfileLog.logError(e);
+            return null;
+        }
+    }
 
-	public void removeExistingMarkers() {
-		if (file == null || !file.exists()) {
-			return;
-		}
+    public void removeExistingMarkers() {
+        if (file == null || !file.exists()) {
+            return;
+        }
 
-		try {
-			file.deleteMarkers(getMarkerID(), true, IResource.DEPTH_ZERO);
-		} catch (CoreException e1) {
-			SpecfileLog.logError(e1);
-		}
-	}
+        try {
+            file.deleteMarkers(getMarkerID(), true, IResource.DEPTH_ZERO);
+        } catch (CoreException e1) {
+            SpecfileLog.logError(e1);
+        }
+    }
 
-	public void setFile(IFile file) {
-		this.file = file;
-	}
+    public void setFile(IFile file) {
+        this.file = file;
+    }
 
-	public void setDocument(IDocument document) {
-		this.document = document;
-	}
+    public void setDocument(IDocument document) {
+        this.document = document;
+    }
 }

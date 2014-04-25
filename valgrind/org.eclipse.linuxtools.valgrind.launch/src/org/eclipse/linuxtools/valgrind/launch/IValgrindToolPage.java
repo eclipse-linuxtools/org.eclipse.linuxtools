@@ -19,13 +19,13 @@ import org.osgi.framework.Version;
  */
 public interface IValgrindToolPage extends ILaunchConfigurationTab {
 
-	/**
-	 * To be called before createControl. This method is used to inform extenders
-	 * which version of Valgrind is available. The extender may then perform
-	 * tool-specific version checking. If a value of null is passed, then version
-	 * checking should not be performed.
-	 * @param ver - the version of Valgrind, or null
-	 */
-	void setValgrindVersion(Version ver);
+    /**
+     * To be called before createControl. This method is used to inform extenders
+     * which version of Valgrind is available. The extender may then perform
+     * tool-specific version checking. If a value of null is passed, then version
+     * checking should not be performed.
+     * @param ver - the version of Valgrind, or null
+     */
+    void setValgrindVersion(Version ver);
 
 }

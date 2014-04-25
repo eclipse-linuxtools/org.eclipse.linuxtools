@@ -20,56 +20,56 @@ import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 
 public class StapTreeContentProvider implements ITreeContentProvider{
 
-	private StapGraph graph;
+    private StapGraph graph;
 
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		List<StapData> empty = new ArrayList<>();
-		if (parentElement instanceof StapData) {
-			StapData parent = ((StapData) parentElement);
-			List<Integer> childrenIDs = parent.collapsedChildren;
-			for (int val : childrenIDs) {
-				if (graph.getNodeData(val) != null) {
-					empty.add(graph.getNodeData(val));
-				}
-			}
-		}
-		return empty.toArray();
-	}
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        List<StapData> empty = new ArrayList<>();
+        if (parentElement instanceof StapData) {
+            StapData parent = ((StapData) parentElement);
+            List<Integer> childrenIDs = parent.collapsedChildren;
+            for (int val : childrenIDs) {
+                if (graph.getNodeData(val) != null) {
+                    empty.add(graph.getNodeData(val));
+                }
+            }
+        }
+        return empty.toArray();
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		if (element instanceof StapData) {
-			return graph.getNodeData(((StapData) element).collapsedParent);
-		}
-		return null;
-	}
+    @Override
+    public Object getParent(Object element) {
+        if (element instanceof StapData) {
+            return graph.getNodeData(((StapData) element).collapsedParent);
+        }
+        return null;
+    }
 
-	@Override
-	public boolean hasChildren(Object element) {
-		if (element instanceof StapData) {
-			return ((StapData) element).children.size() > 0;
-		}
-		return false;
-	}
+    @Override
+    public boolean hasChildren(Object element) {
+        if (element instanceof StapData) {
+            return ((StapData) element).children.size() > 0;
+        }
+        return false;
+    }
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-		return getChildren(inputElement);
-	}
+    @Override
+    public Object[] getElements(Object inputElement) {
+        return getChildren(inputElement);
+    }
 
-	@Override
-	public void dispose() {
-		//Empty
-	}
+    @Override
+    public void dispose() {
+        //Empty
+    }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		//Empty
-	}
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        //Empty
+    }
 
-	public void setGraph(StapGraph graph) {
-		this.graph = graph;
-	}
+    public void setGraph(StapGraph graph) {
+        this.graph = graph;
+    }
 
 }

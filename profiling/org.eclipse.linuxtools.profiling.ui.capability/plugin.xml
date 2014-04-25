@@ -1,135 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-	<extension point="org.eclipse.ui.activities">
-		<category
-		    name="%category.name"
-		    id="org.eclipse.linuxtools.activities.category">
-		</category>
-		<activity
-		        name="%activity.name.profiling"
-		        description="%activity.description.profiling"
-		        id="org.eclipse.linuxtools.profiling.ui.capabilities">
-		</activity>
-		<activity
-		        name="%activity.name.general"
-		        description="%activity.description.general"
-		        id="org.eclipse.linuxtools.profiling.general.ui.capabilities">
-		</activity>
-		
-		<categoryActivityBinding
+    <extension point="org.eclipse.ui.activities">
+        <category
+            name="%category.name"
+            id="org.eclipse.linuxtools.activities.category">
+        </category>
+        <activity
+                name="%activity.name.profiling"
+                description="%activity.description.profiling"
+                id="org.eclipse.linuxtools.profiling.ui.capabilities">
+        </activity>
+        <activity
+                name="%activity.name.general"
+                description="%activity.description.general"
+                id="org.eclipse.linuxtools.profiling.general.ui.capabilities">
+        </activity>
+
+        <categoryActivityBinding
       activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
       categoryId="org.eclipse.linuxtools.activities.category"/>
-      
+
       <categoryActivityBinding
       activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
       categoryId="org.eclipse.linuxtools.activities.category"/>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.profiling\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.profiling/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.callgraph\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.callgraph/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.oprofile\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.oprofile/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.valgrind\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.valgrind/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.lttng\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.lttng/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.tmf\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.tmf/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.gcov\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.gcov/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.dataviewers\..*/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.gprof\..*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.gprof/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.dataviewers/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.graphing.*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\/dashboard.*/*">
-		</activityPatternBinding>
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.ide.*/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.changelog.*/*">
-		</activityPatternBinding>
-		
-		<activityPatternBinding
-		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
-		    pattern="org\.eclipse\.linuxtools\.rpm.*/*">
-		</activityPatternBinding>
-		
-		<defaultEnablement id="org.eclipse.linuxtools.profiling.ui.capabilities"/>
-		<defaultEnablement id="org.eclipse.linuxtools.profiling.general.ui.capabilities"/>
-		
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.profiling\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.profiling/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.callgraph\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.callgraph/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.oprofile\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.oprofile/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.valgrind\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.valgrind/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.lttng\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.lttng/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.tmf\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.tmf/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.gcov\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.gcov/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.dataviewers\..*/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.gprof\..*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.gprof/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.dataviewers/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.graphing.*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.systemtap\.ui\/dashboard.*/*">
+        </activityPatternBinding>
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.ide.*/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.changelog.*/*">
+        </activityPatternBinding>
+
+        <activityPatternBinding
+            activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+            pattern="org\.eclipse\.linuxtools\.rpm.*/*">
+        </activityPatternBinding>
+
+        <defaultEnablement id="org.eclipse.linuxtools.profiling.ui.capabilities"/>
+        <defaultEnablement id="org.eclipse.linuxtools.profiling.general.ui.capabilities"/>
+
    </extension>
 </plugin>

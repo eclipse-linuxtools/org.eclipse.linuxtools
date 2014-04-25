@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.eclipse.linuxtools.callgraph.core.parser" name="%systemtapparserextensionpoint" schema="schema/org.eclipse.linuxtools.callgraph.core.parser.exsd"/>
-   
+
    <extension
                id="org.eclipse.linuxtools.callgraph.core.systemtaptextview"
                name="%systemtaptextviewname"
@@ -13,7 +13,7 @@
             id="org.eclipse.linuxtools.callgraph.core.staptextview"
             name="%view.name"
             restorable="true"
-			icon="icons/12446.monitorOn.gif"
+            icon="icons/12446.monitorOn.gif"
             allowMultiple="true">
       </view>
    </extension>
@@ -27,6 +27,6 @@
           realtime="true">
     </parser>
  </extension>
- 
+
 
 </plugin>

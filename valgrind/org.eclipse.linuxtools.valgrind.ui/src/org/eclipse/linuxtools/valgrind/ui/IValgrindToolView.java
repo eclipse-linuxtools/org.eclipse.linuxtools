@@ -25,15 +25,15 @@ public interface IValgrindToolView extends IViewPart {
      */
     String VIEW_ID = ValgrindUIPlugin.PLUGIN_ID + ".valgrindview"; //$NON-NLS-1$
 
-	/**
-	 * Provides a mechanism to add actions to the Valgrind view's toolbar.
-	 * @return An array of actions to add to the toolbar
-	 */
-	IAction[] getToolbarActions();
+    /**
+     * Provides a mechanism to add actions to the Valgrind view's toolbar.
+     * @return An array of actions to add to the toolbar
+     */
+    IAction[] getToolbarActions();
 
-	/**
-	 * Refreshes the controls within this view.
-	 */
-	void refreshView();
+    /**
+     * Refreshes the controls within this view.
+     */
+    void refreshView();
 
 }

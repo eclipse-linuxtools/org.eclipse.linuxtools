@@ -34,85 +34,85 @@ import org.eclipse.ui.PlatformUI;
  */
 
 public class SRPMImportOperation implements IRunnableWithProgress {
-	private IProject project;
-	private File sourceRPM;
-	private URL remoteSRPM;
-	private RPMProjectLayout projectLayout;
+    private IProject project;
+    private File sourceRPM;
+    private URL remoteSRPM;
+    private RPMProjectLayout projectLayout;
 
-	private List<CoreException> rpmErrorTable;
+    private List<CoreException> rpmErrorTable;
 
-	/**
-	 * Method SRPMImportOperation.
-	 * @param project The project to import into.
-	 * @param sourceRPM The source rpm to import.
-	 * @param rpmProjectLayout The required layout of the project.
-	 */
-	public SRPMImportOperation(IProject project, File sourceRPM, RPMProjectLayout rpmProjectLayout) {
-		this.project = project;
-		this.sourceRPM = sourceRPM;
-		this.projectLayout = rpmProjectLayout;
-	}
-	
-	/**
-	 * @param project The project to import to.
-	 * @param sourceRPM The remote SRPM file.
-	 * @param rpmProjectLayout The desired project layout of the project.
-	 */
-	public SRPMImportOperation(IProject project, URL sourceRPM, RPMProjectLayout rpmProjectLayout) {
-		this.remoteSRPM = sourceRPM;
-		this.project = project;
-		this.projectLayout = rpmProjectLayout;
-	}
-	
+    /**
+     * Method SRPMImportOperation.
+     * @param project The project to import into.
+     * @param sourceRPM The source rpm to import.
+     * @param rpmProjectLayout The required layout of the project.
+     */
+    public SRPMImportOperation(IProject project, File sourceRPM, RPMProjectLayout rpmProjectLayout) {
+        this.project = project;
+        this.sourceRPM = sourceRPM;
+        this.projectLayout = rpmProjectLayout;
+    }
 
-	/**
-	 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
-	 *
-	 * Perform the import of  SRPM import. Call the build class incrementally
-	 */
-	@Override
-	public void run(IProgressMonitor progressMonitor) {
-		// Total number of work steps needed
-		int totalWork = 3;
-
-		rpmErrorTable = new ArrayList<>();
-
-		progressMonitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
-		totalWork);
-
-		// Try to create an instance of the build class. 
-		try {
-			RPMProject rpmProject = new RPMProject(project, projectLayout);
-			progressMonitor.worked(1);
-			progressMonitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
-			if (sourceRPM != null) {
-				rpmProject.importSourceRPM(sourceRPM);
-				progressMonitor.worked(2);
-			} else if (remoteSRPM != null) {
-				SubProgressMonitor submonitor = new SubProgressMonitor(progressMonitor, 1);
-				rpmProject.importSourceRPM(remoteSRPM, submonitor);
-				progressMonitor.worked(2);
-			} 
-		} catch (CoreException e) {
-			rpmErrorTable.add(e);
-		}
-		progressMonitor.worked(2);
-	}
+    /**
+     * @param project The project to import to.
+     * @param sourceRPM The remote SRPM file.
+     * @param rpmProjectLayout The desired project layout of the project.
+     */
+    public SRPMImportOperation(IProject project, URL sourceRPM, RPMProjectLayout rpmProjectLayout) {
+        this.remoteSRPM = sourceRPM;
+        this.project = project;
+        this.projectLayout = rpmProjectLayout;
+    }
 
 
-	/**
-	 * @return The result of the operation.
-	 */
-	public MultiStatus getStatus() {
-	IStatus[] errors = new IStatus[rpmErrorTable.size()];
-	int iCount = 0;
-	for (CoreException ex : rpmErrorTable) {
-		errors[iCount] = ex.getStatus();
-		iCount++;
-	}
+    /**
+     * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
+     *
+     * Perform the import of  SRPM import. Call the build class incrementally
+     */
+    @Override
+    public void run(IProgressMonitor progressMonitor) {
+        // Total number of work steps needed
+        int totalWork = 3;
 
-	return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("SRPMImportOperation.3"), //$NON-NLS-1$
-	null);
+        rpmErrorTable = new ArrayList<>();
+
+        progressMonitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
+        totalWork);
+
+        // Try to create an instance of the build class.
+        try {
+            RPMProject rpmProject = new RPMProject(project, projectLayout);
+            progressMonitor.worked(1);
+            progressMonitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
+            if (sourceRPM != null) {
+                rpmProject.importSourceRPM(sourceRPM);
+                progressMonitor.worked(2);
+            } else if (remoteSRPM != null) {
+                SubProgressMonitor submonitor = new SubProgressMonitor(progressMonitor, 1);
+                rpmProject.importSourceRPM(remoteSRPM, submonitor);
+                progressMonitor.worked(2);
+            }
+        } catch (CoreException e) {
+            rpmErrorTable.add(e);
+        }
+        progressMonitor.worked(2);
+    }
+
+
+    /**
+     * @return The result of the operation.
+     */
+    public MultiStatus getStatus() {
+    IStatus[] errors = new IStatus[rpmErrorTable.size()];
+    int iCount = 0;
+    for (CoreException ex : rpmErrorTable) {
+        errors[iCount] = ex.getStatus();
+        iCount++;
+    }
+
+    return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("SRPMImportOperation.3"), //$NON-NLS-1$
+    null);
 }
-	
+
 }

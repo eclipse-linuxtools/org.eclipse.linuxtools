@@ -62,7 +62,7 @@ public class RangeFilterWizardPage extends FilterWizardPage {
             cboColumn.add(wizard.series[i]);
         }
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //Low
         Label lblLow = new Label(cmpFilterOpts, SWT.NONE);
@@ -78,7 +78,7 @@ public class RangeFilterWizardPage extends FilterWizardPage {
         txtHigh.addModifyListener(modifyListener);
         txtHigh.addKeyListener(numberKeyListener);
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //Style
         radInside = new Button(cmpFilterOpts, SWT.RADIO);
@@ -93,7 +93,7 @@ public class RangeFilterWizardPage extends FilterWizardPage {
         chkInclusive.setText(Localization.getString("RangeFilterWizardPage.Inclusive")); //$NON-NLS-1$
         chkInclusive.addSelectionListener(selectionListener);
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         cboColumn.select(0);
         createFilter();

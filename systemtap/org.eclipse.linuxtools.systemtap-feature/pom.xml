@@ -21,7 +21,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools SystemTap IDE and Visualization Tools Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

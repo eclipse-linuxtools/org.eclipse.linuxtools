@@ -34,7 +34,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 public class PerfOpenData extends ProfileLaunchShortcut implements
-		IEditorLauncher {
+        IEditorLauncher {
 
     @Override
     public void open(IPath file) {
@@ -67,39 +67,39 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
         }
     }
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(
-				PerfPlugin.LAUNCHCONF_ID);
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(
+                PerfPlugin.LAUNCHCONF_ID);
+    }
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
-		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
-		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
-	}
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) {
+        wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+        wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
+    }
 
-	/**
-	 * Create an ILaunchConfiguration instance given the project's name.
-	 *
-	 * @param projectName
-	 * @return ILaunchConfiguration based on String projectName
-	 */
-	private ILaunchConfiguration createDefaultConfiguration(String projectName) {
-		ILaunchConfiguration config = null;
-		try {
-			ILaunchConfigurationType configType = getLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(
-					null,
-					getLaunchManager().generateLaunchConfigurationName(
-							projectName));
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
-			config = wc;
+    /**
+     * Create an ILaunchConfiguration instance given the project's name.
+     *
+     * @param projectName
+     * @return ILaunchConfiguration based on String projectName
+     */
+    private ILaunchConfiguration createDefaultConfiguration(String projectName) {
+        ILaunchConfiguration config = null;
+        try {
+            ILaunchConfigurationType configType = getLaunchConfigType();
+            ILaunchConfigurationWorkingCopy wc = configType.newInstance(
+                    null,
+                    getLaunchManager().generateLaunchConfigurationName(
+                            projectName));
+            wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+            config = wc;
 
-		} catch (CoreException e) {
-			PerfCore.logException(e);
-		}
-		return config;
-	}
+        } catch (CoreException e) {
+            PerfCore.logException(e);
+        }
+        return config;
+    }
 }

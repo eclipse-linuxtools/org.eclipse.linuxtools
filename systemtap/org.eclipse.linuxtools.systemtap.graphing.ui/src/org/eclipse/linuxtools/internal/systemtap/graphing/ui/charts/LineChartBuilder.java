@@ -27,19 +27,19 @@ import org.swtchart.LineStyle;
 
 public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder"; //$NON-NLS-1$
+    public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.charts.linechartbuilder"; //$NON-NLS-1$
 
     public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
-		super(adapter, parent, style, title);
+        super(adapter, parent, style, title);
     }
 
-	@Override
-	protected ISeries createChartISeries(int i) {
-		ILineSeries series = (ILineSeries) chart.getSeriesSet().
-			createSeries(SeriesType.LINE, adapter.getLabels()[i+1]);
-		series.setSymbolColor(COLORS[i % COLORS.length]);
-		series.setLineColor(COLORS[i % COLORS.length]);
-		series.setLineStyle(LineStyle.SOLID);
-		return series;
-	}
+    @Override
+    protected ISeries createChartISeries(int i) {
+        ILineSeries series = (ILineSeries) chart.getSeriesSet().
+            createSeries(SeriesType.LINE, adapter.getLabels()[i+1]);
+        series.setSymbolColor(COLORS[i % COLORS.length]);
+        series.setLineColor(COLORS[i % COLORS.length]);
+        series.setLineStyle(LineStyle.SOLID);
+        return series;
+    }
 }

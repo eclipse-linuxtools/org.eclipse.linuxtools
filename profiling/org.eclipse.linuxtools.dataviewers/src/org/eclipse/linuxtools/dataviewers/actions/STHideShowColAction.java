@@ -30,10 +30,10 @@ public class STHideShowColAction extends Action {
      * @param stViewer The AbstractSTViewer to create the action for.
      */
     public STHideShowColAction(AbstractSTViewer stViewer) {
-		super(STDataViewersMessages.hideshowAction_title, STDataViewersImages
-				.getImageDescriptor(STDataViewersImages.IMG_EDIT_PROPERTIES));
-		this.stViewer = stViewer;
-		setEnabled(true);
+        super(STDataViewersMessages.hideshowAction_title, STDataViewersImages
+                .getImageDescriptor(STDataViewersImages.IMG_EDIT_PROPERTIES));
+        this.stViewer = stViewer;
+        setEnabled(true);
     }
 
     @Override

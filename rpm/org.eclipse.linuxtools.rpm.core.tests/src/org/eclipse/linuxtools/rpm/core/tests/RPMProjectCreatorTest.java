@@ -27,34 +27,34 @@ import org.junit.Test;
 
 public class RPMProjectCreatorTest {
 
-	private IProject newProject;
-	@After
-	public void deleteProject() throws CoreException {
-		if (newProject != null && newProject.exists()) {
-			newProject.delete(true, new NullProgressMonitor());
-		}
-	}
+    private IProject newProject;
+    @After
+    public void deleteProject() throws CoreException {
+        if (newProject != null && newProject.exists()) {
+            newProject.delete(true, new NullProgressMonitor());
+        }
+    }
 
-	@Test
-	public void createFlat() throws CoreException {
-		RPMProjectCreator projectCreator = new RPMProjectCreator(RPMProjectLayout.FLAT);
-		newProject = projectCreator.create("flatproject", Platform.getLocation(), new NullProgressMonitor());
-		assertNotNull(newProject);
-		assertEquals(1, newProject.getDescription().getNatureIds().length);
-		assertEquals(IRPMConstants.RPM_NATURE_ID,
-				newProject.getDescription().getNatureIds()[0]);
-	}
+    @Test
+    public void createFlat() throws CoreException {
+        RPMProjectCreator projectCreator = new RPMProjectCreator(RPMProjectLayout.FLAT);
+        newProject = projectCreator.create("flatproject", Platform.getLocation(), new NullProgressMonitor());
+        assertNotNull(newProject);
+        assertEquals(1, newProject.getDescription().getNatureIds().length);
+        assertEquals(IRPMConstants.RPM_NATURE_ID,
+                newProject.getDescription().getNatureIds()[0]);
+    }
 
-	@Test
-	public void createRPMBuild() throws CoreException {
-		RPMProjectCreator projectCreator = new RPMProjectCreator();
-		newProject = projectCreator.create("rpmbuild", Platform.getLocation(), new NullProgressMonitor());
-		assertNotNull(newProject);
-		assertEquals(1, newProject.getDescription().getNatureIds().length);
-		assertEquals(IRPMConstants.RPM_NATURE_ID,
-				newProject.getDescription().getNatureIds()[0]);
-		assertTrue(newProject.exists(new Path("SOURCES")));
-		assertTrue(newProject.exists(new Path("SPECS")));
-	}
+    @Test
+    public void createRPMBuild() throws CoreException {
+        RPMProjectCreator projectCreator = new RPMProjectCreator();
+        newProject = projectCreator.create("rpmbuild", Platform.getLocation(), new NullProgressMonitor());
+        assertNotNull(newProject);
+        assertEquals(1, newProject.getDescription().getNatureIds().length);
+        assertEquals(IRPMConstants.RPM_NATURE_ID,
+                newProject.getDescription().getNatureIds()[0]);
+        assertTrue(newProject.exists(new Path("SOURCES")));
+        assertTrue(newProject.exists(new Path("SPECS")));
+    }
 
 }

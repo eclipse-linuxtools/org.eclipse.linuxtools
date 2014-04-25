@@ -14,23 +14,23 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.parser;
 import java.text.MessageFormat;
 
 public class SpecfilePatchMacro extends SpecfileMacro {
-	private int patchNumber;
+    private int patchNumber;
 
-	public SpecfilePatchMacro(int patchNumber) {
-		super();
-		this.patchNumber = patchNumber;
-	}
+    public SpecfilePatchMacro(int patchNumber) {
+        super();
+        this.patchNumber = patchNumber;
+    }
 
-	public int getPatchNumber() {
-		return patchNumber;
-	}
+    public int getPatchNumber() {
+        return patchNumber;
+    }
 
-	public void setPatchNumber(int patchNumber) {
-		this.patchNumber = patchNumber;
-	}
+    public void setPatchNumber(int patchNumber) {
+        this.patchNumber = patchNumber;
+    }
 
-	@Override
-	public String toString() {
-		return MessageFormat.format("patch #{0}", patchNumber); //$NON-NLS-1$
-	}
+    @Override
+    public String toString() {
+        return MessageFormat.format("patch #{0}", patchNumber); //$NON-NLS-1$
+    }
 }

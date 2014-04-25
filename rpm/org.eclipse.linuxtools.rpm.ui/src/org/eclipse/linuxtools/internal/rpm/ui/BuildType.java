@@ -16,20 +16,20 @@ package org.eclipse.linuxtools.internal.rpm.ui;
  */
 
 public enum BuildType {
-	/**
-	 * Default.
-	 */
-	NONE, 
-	/**
-	 * Everything - rpmbuild -ba.
-	 */
-	ALL, 
-	/**
-	 * Binary - rpmbuild -bb.
-	 */
-	BINARY, 
-	/**
-	 * Source RPM - rpmbuild -bs.
-	 */
-	SOURCE
+    /**
+     * Default.
+     */
+    NONE,
+    /**
+     * Everything - rpmbuild -ba.
+     */
+    ALL,
+    /**
+     * Binary - rpmbuild -bb.
+     */
+    BINARY,
+    /**
+     * Source RPM - rpmbuild -bs.
+     */
+    SOURCE
 }

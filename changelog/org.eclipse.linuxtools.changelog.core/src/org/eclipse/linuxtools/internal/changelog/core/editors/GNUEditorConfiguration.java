@@ -36,144 +36,144 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
  * @author klee (Kyu Lee)
  */
 public class GNUEditorConfiguration extends TextSourceViewerConfiguration implements
-		IEditorChangeLogContrib, IEditorChangeLogContrib2 {
+        IEditorChangeLogContrib, IEditorChangeLogContrib2 {
 
-	public static final String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
+    public static final String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
 
-	private GNUElementScanner scanner;
+    private GNUElementScanner scanner;
 
-	private ColorManager colorManager;
+    private ColorManager colorManager;
 
-	private TextEditor parentEditor;
+    private TextEditor parentEditor;
 
-	/**
-	 * Prepares configuration.
-	 */
-	public GNUEditorConfiguration() {
-		this.colorManager = new ColorManager();
+    /**
+     * Prepares configuration.
+     */
+    public GNUEditorConfiguration() {
+        this.colorManager = new ColorManager();
 
-	}
+    }
 
-	/**
-	 * Sets TextEditor that this configuration is going to be applied.
-	 */
-	@Override
-	public void setTextEditor(TextEditor editor) {
-		parentEditor = editor;
-	}
+    /**
+     * Sets TextEditor that this configuration is going to be applied.
+     */
+    @Override
+    public void setTextEditor(TextEditor editor) {
+        parentEditor = editor;
+    }
 
-	/**
-	 * Get configured content types.
-	 *
-	 * @return array of configured content types.
-	 */
-	@Override
-	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
-				  GNUPartitionScanner.CHANGELOG_EMAIL,
-				  GNUPartitionScanner.CHANGELOG_SRC_ENTRY};
-	}
+    /**
+     * Get configured content types.
+     *
+     * @return array of configured content types.
+     */
+    @Override
+    public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
+        return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
+                  GNUPartitionScanner.CHANGELOG_EMAIL,
+                  GNUPartitionScanner.CHANGELOG_SRC_ENTRY};
+    }
 
-	private GNUElementScanner getChangeLogFileScanner() {
-		if (scanner == null) {
-			scanner = new GNUElementScanner(colorManager);
-			scanner.setDefaultReturnToken(new Token(new TextAttribute(
-					colorManager.getColor(IChangeLogColorConstants.TEXT))));
-		}
-		return scanner;
-	}
+    private GNUElementScanner getChangeLogFileScanner() {
+        if (scanner == null) {
+            scanner = new GNUElementScanner(colorManager);
+            scanner.setDefaultReturnToken(new Token(new TextAttribute(
+                    colorManager.getColor(IChangeLogColorConstants.TEXT))));
+        }
+        return scanner;
+    }
 
-	/**
-	 * Detects hyperlinks in GNU formatted changelogs.
-	 *
-	 * @return link detector for GNU format.
-	 */
-	@Override
-	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		if (sourceViewer == null)
-			return null;
+    /**
+     * Detects hyperlinks in GNU formatted changelogs.
+     *
+     * @return link detector for GNU format.
+     */
+    @Override
+    public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
+        if (sourceViewer == null)
+            return null;
 
-		return getRegisteredHyperlinkDetectors(sourceViewer);
-	}
+        return getRegisteredHyperlinkDetectors(sourceViewer);
+    }
 
-	/*
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredDocumentPartitioning(org.eclipse.jface.text.source.ISourceViewer)
-	 */
-	@Override
-	public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
-		return CHANGELOG_PARTITIONING;
-	}
+    /*
+     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredDocumentPartitioning(org.eclipse.jface.text.source.ISourceViewer)
+     */
+    @Override
+    public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
+        return CHANGELOG_PARTITIONING;
+    }
 
-	/**
-	 * Set content formatter. For ChangeLog, it just wraps lines.
-	 */
-	@Override
-	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
+    /**
+     * Set content formatter. For ChangeLog, it just wraps lines.
+     */
+    @Override
+    public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
 
-		ContentFormatter cf = new ContentFormatter();
+        ContentFormatter cf = new ContentFormatter();
 
-		// no partitions
-		cf.enablePartitionAwareFormatting(false);
+        // no partitions
+        cf.enablePartitionAwareFormatting(false);
 
-		ChangeLogFormattingStrategy cfs = new ChangeLogFormattingStrategy();
+        ChangeLogFormattingStrategy cfs = new ChangeLogFormattingStrategy();
 
-		cf.setFormattingStrategy(cfs, IDocument.DEFAULT_CONTENT_TYPE);
-
-
-		return cf;
-	}
+        cf.setFormattingStrategy(cfs, IDocument.DEFAULT_CONTENT_TYPE);
 
 
-	/**
-	 * Highlights GNU format changelog syntaxes.
-	 *
-	 * @return reconciler for GNU format changelog.
-	 */
-	@Override
-	public IPresentationReconciler getPresentationReconciler(
-			ISourceViewer sourceViewer) {
-		PresentationReconciler reconciler = new PresentationReconciler();
+        return cf;
+    }
 
-		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getChangeLogFileScanner());
-		reconciler.setDamager(dr, GNUPartitionScanner.CHANGELOG_EMAIL);
-		reconciler.setRepairer(dr, GNUPartitionScanner.CHANGELOG_EMAIL);
 
-		dr= new GNUFileEntryDamagerRepairer(getChangeLogFileScanner());
-		reconciler.setDamager(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
-		reconciler.setRepairer(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
+    /**
+     * Highlights GNU format changelog syntaxes.
+     *
+     * @return reconciler for GNU format changelog.
+     */
+    @Override
+    public IPresentationReconciler getPresentationReconciler(
+            ISourceViewer sourceViewer) {
+        PresentationReconciler reconciler = new PresentationReconciler();
 
-		dr= new MultilineRuleDamagerRepairer(getChangeLogFileScanner());
-		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
-		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
+        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getChangeLogFileScanner());
+        reconciler.setDamager(dr, GNUPartitionScanner.CHANGELOG_EMAIL);
+        reconciler.setRepairer(dr, GNUPartitionScanner.CHANGELOG_EMAIL);
 
-		return reconciler;
-	}
+        dr= new GNUFileEntryDamagerRepairer(getChangeLogFileScanner());
+        reconciler.setDamager(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
+        reconciler.setRepairer(dr, GNUPartitionScanner.CHANGELOG_SRC_ENTRY);
 
-	/**
-	 * Perform documentation setup to set up partitioning.
-	 *
-	 * @param document to set up partitioning on.
-	 */
-	@Override
-	public void setup(IDocument document) {
-		FastPartitioner partitioner =
-			new FastPartitioner(
-				new GNUPartitionScanner(),
-				GNUPartitionScanner.CHANGELOG_PARTITION_TYPES);
-		partitioner.connect(document);
-		if (document instanceof IDocumentExtension3) {
-			IDocumentExtension3 extension3= (IDocumentExtension3) document;
-			extension3.setDocumentPartitioner(CHANGELOG_PARTITIONING, partitioner);
-		} else {
-			document.setDocumentPartitioner(partitioner);
-		}
-	}
+        dr= new MultilineRuleDamagerRepairer(getChangeLogFileScanner());
+        reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
+        reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
-		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
-		targets.put("org.eclipse.changelog.editor.target", parentEditor); //$NON-NLS-1$
-		targets.put("org.eclipse.ui.DefaultTextEditor", parentEditor); //$NON-NLS-1$
-		return targets;
-	}}
+        return reconciler;
+    }
+
+    /**
+     * Perform documentation setup to set up partitioning.
+     *
+     * @param document to set up partitioning on.
+     */
+    @Override
+    public void setup(IDocument document) {
+        FastPartitioner partitioner =
+            new FastPartitioner(
+                new GNUPartitionScanner(),
+                GNUPartitionScanner.CHANGELOG_PARTITION_TYPES);
+        partitioner.connect(document);
+        if (document instanceof IDocumentExtension3) {
+            IDocumentExtension3 extension3= (IDocumentExtension3) document;
+            extension3.setDocumentPartitioner(CHANGELOG_PARTITIONING, partitioner);
+        } else {
+            document.setDocumentPartitioner(partitioner);
+        }
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+        Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+        targets.put("org.eclipse.changelog.editor.target", parentEditor); //$NON-NLS-1$
+        targets.put("org.eclipse.ui.DefaultTextEditor", parentEditor); //$NON-NLS-1$
+        return targets;
+    }}

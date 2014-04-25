@@ -36,7 +36,7 @@
           </excludes>
           <testSuite>org.eclipse.linuxtools.cdt.libhover.devhelp.tests</testSuite>
           <testClass>org.eclipse.linuxtools.cdt.libhover.devhelp.test.AllTests</testClass>
-       	  <useUIHarness>true</useUIHarness>
+             <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
         </configuration>

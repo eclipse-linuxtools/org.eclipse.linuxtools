@@ -27,61 +27,61 @@ import org.junit.Test;
 
 public class RpmPackageProposalsListTest {
 
-	private RpmPackageProposalsList packageProposalsList;
+    private RpmPackageProposalsList packageProposalsList;
 
-	@Before
-	public void setUp() {
-		Activator.getDefault().getPreferenceStore().setValue(
-				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(
-				"/tmp/pkglist"))) {
-			out.write("setup\ntest\nrpm\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		packageProposalsList = new RpmPackageProposalsList();
-	}
+    @Before
+    public void setUp() {
+        Activator.getDefault().getPreferenceStore().setValue(
+                PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(
+                "/tmp/pkglist"))) {
+            out.write("setup\ntest\nrpm\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        packageProposalsList = new RpmPackageProposalsList();
+    }
 
-	@Test
-	public final void testGetProposals() {
-		List<String[]> proposals = packageProposalsList.getProposals("setup");
-		if (!(proposals.size() == 1)) {
-			fail("getProposals failed, setup package was retrieve as proposals!");
-		}
-	}
+    @Test
+    public final void testGetProposals() {
+        List<String[]> proposals = packageProposalsList.getProposals("setup");
+        if (!(proposals.size() == 1)) {
+            fail("getProposals failed, setup package was retrieve as proposals!");
+        }
+    }
 
-	@Test
-	public final void testGetValue() {
-		if (Utils.fileExist("/bin/rpm")) {
-			if (!packageProposalsList.getValue("rpm").startsWith(
-					"<b>Name: </b>rpm")) {
-				fail("getValue failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
-			}
-		}
-	}
+    @Test
+    public final void testGetValue() {
+        if (Utils.fileExist("/bin/rpm")) {
+            if (!packageProposalsList.getValue("rpm").startsWith(
+                    "<b>Name: </b>rpm")) {
+                fail("getValue failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
+            }
+        }
+    }
 
-	@Test
-	public final void testGetValue2() {
-		if (packageProposalsList.getValue("test").indexOf("test") == -1) {
-			fail("getValue failed, test package info doesn't contain 'test'");
-		}
-	}
+    @Test
+    public final void testGetValue2() {
+        if (packageProposalsList.getValue("test").indexOf("test") == -1) {
+            fail("getValue failed, test package info doesn't contain 'test'");
+        }
+    }
 
-	@Test
-	public final void testGetRpmInfo() {
-		if (Utils.fileExist("/bin/rpm")) {
-			if (!packageProposalsList.getRpmInfo("rpm").startsWith(
-					"<b>Name: </b>rpm")) {
-				fail("getRpmInfo failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
-			}
-		}
-	}
+    @Test
+    public final void testGetRpmInfo() {
+        if (Utils.fileExist("/bin/rpm")) {
+            if (!packageProposalsList.getRpmInfo("rpm").startsWith(
+                    "<b>Name: </b>rpm")) {
+                fail("getRpmInfo failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
+            }
+        }
+    }
 
-	@Test
-	public final void testGetRpmInfo2() {
-		if (packageProposalsList.getValue("test").indexOf("test") == -1) {
-			fail("getRpmInfo failed, test package info doesn't contain 'test'");
-		}
-	}
+    @Test
+    public final void testGetRpmInfo2() {
+        if (packageProposalsList.getValue("test").indexOf("test") == -1) {
+            fail("getRpmInfo failed, test package info doesn't contain 'test'");
+        }
+    }
 
 }

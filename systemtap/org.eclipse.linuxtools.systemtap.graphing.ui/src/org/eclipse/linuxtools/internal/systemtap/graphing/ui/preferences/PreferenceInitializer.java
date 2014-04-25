@@ -18,23 +18,23 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
-	@Override
-	public void initializeDefaultPreferences() {
-		IPreferenceStore store = GraphingUIPlugin.getDefault().getPreferenceStore();
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = GraphingUIPlugin.getDefault().getPreferenceStore();
 
-		//graphing
-		store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
+        //graphing
+        store.setDefault(GraphingPreferenceConstants.P_GRAPH_UPDATE_DELAY, 1000);
 
-		//data table
-		store.setDefault(GraphingPreferenceConstants.P_AUTO_RESIZE, true);
-		store.setDefault(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
-		store.setDefault(GraphingPreferenceConstants.P_MAX_DATA_ITEMS, 250);
+        //data table
+        store.setDefault(GraphingPreferenceConstants.P_AUTO_RESIZE, true);
+        store.setDefault(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
+        store.setDefault(GraphingPreferenceConstants.P_MAX_DATA_ITEMS, 250);
 
-		//graph
-		store.setDefault(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES, true);
-		store.setDefault(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
-		store.setDefault(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
-		store.setDefault(GraphingPreferenceConstants.P_X_SERIES_TICKS, 64);
-		store.setDefault(GraphingPreferenceConstants.P_Y_SERIES_TICKS, 64);
-	}
+        //graph
+        store.setDefault(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES, true);
+        store.setDefault(GraphingPreferenceConstants.P_SHOW_Y_GRID_LINES, true);
+        store.setDefault(GraphingPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
+        store.setDefault(GraphingPreferenceConstants.P_X_SERIES_TICKS, 64);
+        store.setDefault(GraphingPreferenceConstants.P_Y_SERIES_TICKS, 64);
+    }
 }

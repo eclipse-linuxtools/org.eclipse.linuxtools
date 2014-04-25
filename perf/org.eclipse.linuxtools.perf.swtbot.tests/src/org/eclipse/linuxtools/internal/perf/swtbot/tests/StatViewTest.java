@@ -22,33 +22,33 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotSpinner;
  * SWTBot test for StatView.
  */
 public class StatViewTest extends AbstractStyledTextViewTest {
-	private static final int STAT_RUNS = 3;
+    private static final int STAT_RUNS = 3;
 
-	@Override
-	protected void setPerfOptions(SWTWorkbenchBot bot) {
-		SWTBotCheckBox chkBox = bot.checkBox("Show Stat View");
-		assertNotNull(chkBox);
-		chkBox.select();
+    @Override
+    protected void setPerfOptions(SWTWorkbenchBot bot) {
+        SWTBotCheckBox chkBox = bot.checkBox("Show Stat View");
+        assertNotNull(chkBox);
+        chkBox.select();
 
-		SWTBotSpinner spinner = bot.spinner();
-		assertNotNull(spinner);
-		spinner.setSelection(STAT_RUNS);
+        SWTBotSpinner spinner = bot.spinner();
+        assertNotNull(spinner);
+        spinner.setSelection(STAT_RUNS);
 
-	}
+    }
 
-	@Override
-	protected void openStubView() {
-		PerfPlugin.getDefault().setStatData(new StubPerfData());
-		StatView.refreshView();
-	}
+    @Override
+    protected void openStubView() {
+        PerfPlugin.getDefault().setStatData(new StubPerfData());
+        StatView.refreshView();
+    }
 
-	@Override
-	protected String getViewId() {
-		return "Perf Statistics";
-	}
+    @Override
+    protected String getViewId() {
+        return "Perf Statistics";
+    }
 
-	@Override
-	protected String getExpectedText() {
-		return PerfPlugin.getDefault().getStatData().getPerfData();
-	}
+    @Override
+    protected String getExpectedText() {
+        return PerfPlugin.getDefault().getStatData().getPerfData();
+    }
 }

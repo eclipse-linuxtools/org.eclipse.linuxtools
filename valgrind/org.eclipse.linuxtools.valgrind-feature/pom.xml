@@ -22,7 +22,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools Valgrind Tools Integration Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

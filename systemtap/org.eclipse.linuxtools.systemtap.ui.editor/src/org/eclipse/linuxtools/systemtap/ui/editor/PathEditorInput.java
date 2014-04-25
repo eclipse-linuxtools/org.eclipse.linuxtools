@@ -21,62 +21,62 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 
 
 public class PathEditorInput extends FileStoreEditorInput implements IPathEditorInput, ILocationProvider {
-	private IPath fPath;
+    private IPath fPath;
 
-	public PathEditorInput(IPath path) {
-		super(EFS.getLocalFileSystem().getStore(path));
-		if (path == null) {
-			throw new IllegalArgumentException();
-		}
-		this.fPath = path;
-	}
+    public PathEditorInput(IPath path) {
+        super(EFS.getLocalFileSystem().getStore(path));
+        if (path == null) {
+            throw new IllegalArgumentException();
+        }
+        this.fPath = path;
+    }
 
-	@Override
-	public int hashCode() {
-		return fPath.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return fPath.hashCode();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof PathEditorInput) {
-			PathEditorInput other = (PathEditorInput) obj;
-			return fPath.equals(other.fPath);
-		} else if (obj instanceof FileStoreEditorInput) {
-			return super.equals(obj);
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof PathEditorInput) {
+            PathEditorInput other = (PathEditorInput) obj;
+            return fPath.equals(other.fPath);
+        } else if (obj instanceof FileStoreEditorInput) {
+            return super.equals(obj);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public String getName() {
-		String[] substr = fPath.segments();
-		return substr[substr.length -1];
-	}
+    @Override
+    public String getName() {
+        String[] substr = fPath.segments();
+        return substr[substr.length -1];
+    }
 
-	@Override
-	public IPath getPath() {
-		return fPath;
-	}
+    @Override
+    public IPath getPath() {
+        return fPath;
+    }
 
-	@Override
-	public IPath getPath(Object element) {
-		if(element instanceof PathEditorInput) {
-			return ((PathEditorInput)element).getPath();
-		}
-		return null;
-	}
+    @Override
+    public IPath getPath(Object element) {
+        if(element instanceof PathEditorInput) {
+            return ((PathEditorInput)element).getPath();
+        }
+        return null;
+    }
 
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (PathEditorInput.class.equals(adapter)
-				|| IPathEditorInput.class.equals(adapter)
-				|| ILocationProvider.class.equals(adapter)) {
-			return this;
-		}
-		return Platform.getAdapterManager().getAdapter(this, adapter);
-	}
+    @Override
+    public Object getAdapter(Class adapter) {
+        if (PathEditorInput.class.equals(adapter)
+                || IPathEditorInput.class.equals(adapter)
+                || ILocationProvider.class.equals(adapter)) {
+            return this;
+        }
+        return Platform.getAdapterManager().getAdapter(this, adapter);
+    }
 }

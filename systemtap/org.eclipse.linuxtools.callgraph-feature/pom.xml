@@ -21,7 +21,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools C/C++ Call Graph Visualization Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

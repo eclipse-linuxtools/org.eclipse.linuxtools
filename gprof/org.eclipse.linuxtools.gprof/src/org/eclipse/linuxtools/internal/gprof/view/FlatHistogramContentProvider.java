@@ -24,32 +24,32 @@ import org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement;
  */
 public final class FlatHistogramContentProvider extends FunctionHistogramContentProvider {
 
-	public static final FlatHistogramContentProvider sharedInstance = new FlatHistogramContentProvider();
+    public static final FlatHistogramContentProvider sharedInstance = new FlatHistogramContentProvider();
 
-	/**
-	 * Constructor
-	 */
-	private FlatHistogramContentProvider() {
-	}
+    /**
+     * Constructor
+     */
+    private FlatHistogramContentProvider() {
+    }
 
-	@Override
-	protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
-		LinkedList<? extends TreeElement> list = super.getFunctionChildrenList(root);
-		LinkedList<TreeElement> ret = new LinkedList<>();
-		for (TreeElement histTreeElem : list) {
-			LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
-			ret.addAll(partialList);
-		}
-		return ret;
-	}
+    @Override
+    protected LinkedList<? extends TreeElement> getFunctionChildrenList(HistRoot root) {
+        LinkedList<? extends TreeElement> list = super.getFunctionChildrenList(root);
+        LinkedList<TreeElement> ret = new LinkedList<>();
+        for (TreeElement histTreeElem : list) {
+            LinkedList<? extends TreeElement> partialList = histTreeElem.getChildren();
+            ret.addAll(partialList);
+        }
+        return ret;
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		Object o = super.getParent(element);
-		if (o instanceof HistFunction) {
-			o = super.getParent(o);
-		}
-		return o;
-	}
+    @Override
+    public Object getParent(Object element) {
+        Object o = super.getParent(element);
+        if (o instanceof HistFunction) {
+            o = super.getParent(o);
+        }
+        return o;
+    }
 
 }

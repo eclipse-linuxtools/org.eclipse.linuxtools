@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.structures.listeners;
 
 public interface IGobblerListener {
 
-	/**
-	 * called by streamgobbler when new data is present
-	 *
-	 */
-	void handleDataEvent(String line);
+    /**
+     * called by streamgobbler when new data is present
+     *
+     */
+    void handleDataEvent(String line);
 }

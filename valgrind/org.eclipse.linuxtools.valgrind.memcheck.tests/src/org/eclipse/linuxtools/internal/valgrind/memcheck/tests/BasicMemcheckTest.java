@@ -22,26 +22,26 @@ import org.junit.Test;
 
 public class BasicMemcheckTest extends AbstractMemcheckTest {
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testNumErrors() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNumErrors"); //$NON-NLS-1$
+    @Test
+    public void testNumErrors() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNumErrors"); //$NON-NLS-1$
 
-		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView()
-				.getMessages();
-		assertEquals(3, messages.length);
-		checkTestMessages(messages, "testNumErrors"); //$NON-NLS-1$
-	}
+        IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView()
+                .getMessages();
+        assertEquals(3, messages.length);
+        checkTestMessages(messages, "testNumErrors"); //$NON-NLS-1$
+    }
 }

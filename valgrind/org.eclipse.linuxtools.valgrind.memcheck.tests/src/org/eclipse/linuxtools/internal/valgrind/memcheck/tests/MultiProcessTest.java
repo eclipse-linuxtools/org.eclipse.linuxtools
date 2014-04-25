@@ -24,39 +24,39 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MultiProcessTest extends AbstractMemcheckTest {
-	private ICProject refProj;
+    private ICProject refProj;
 
-	@Before
-	public void prep() throws Exception {
-		refProj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        refProj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+        proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		deleteProject(refProj);
-		super.tearDown();
-	}
-	@Test
-	public void testNoExec() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNoExec"); //$NON-NLS-1$
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        deleteProject(refProj);
+        super.tearDown();
+    }
+    @Test
+    public void testNoExec() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
-		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
-		assertEquals(1, messages.length);
-		checkTestMessages(messages, "testNoExec"); //$NON-NLS-1$
-	}
-	@Test
-	public void testExec() throws Exception {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
-		config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+        IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
+        assertEquals(1, messages.length);
+        checkTestMessages(messages, "testNoExec"); //$NON-NLS-1$
+    }
+    @Test
+    public void testExec() throws Exception {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
+        config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
-		assertEquals(4, messages.length);
-		checkTestMessages(messages, "testExec"); //$NON-NLS-1$
-	}
+        IValgrindMessage[] messages = ValgrindUIPlugin.getDefault().getView().getMessages();
+        assertEquals(4, messages.length);
+        checkTestMessages(messages, "testExec"); //$NON-NLS-1$
+    }
 }

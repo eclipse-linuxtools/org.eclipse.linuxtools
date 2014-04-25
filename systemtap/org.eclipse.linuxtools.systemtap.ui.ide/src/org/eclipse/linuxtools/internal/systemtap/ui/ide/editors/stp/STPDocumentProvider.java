@@ -24,31 +24,31 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 public class STPDocumentProvider extends TextFileDocumentProvider {
 
-	@Override
-	public void connect(Object element) throws CoreException {
-		super.connect(element);
-		setupDocument(this.getDocument(element));
-	}
+    @Override
+    public void connect(Object element) throws CoreException {
+        super.connect(element);
+        setupDocument(this.getDocument(element));
+    }
 
-	protected void setupDocument(IDocument document) {
-		if (document != null) {
-			IDocumentPartitioner partitioner = new FastPartitioner(
-					new STPPartitionScanner(), STPPartitionScanner.STP_PARTITION_TYPES);
-			partitioner.connect(document);
-			IDocumentPartitioner partitioner2 = new FastPartitioner(
-					new STPProbeScanner(), STPProbeScanner.STP_PROBE_PARTITION_TYPES);
-			partitioner2.connect(document);
-			((IDocumentExtension3)document).setDocumentPartitioner(STPPartitionScanner.STP_PARTITIONING, partitioner);
-			((IDocumentExtension3)document).setDocumentPartitioner(STPProbeScanner.STP_PROBE_PARTITIONING, partitioner2);
-		}
-	}
+    protected void setupDocument(IDocument document) {
+        if (document != null) {
+            IDocumentPartitioner partitioner = new FastPartitioner(
+                    new STPPartitionScanner(), STPPartitionScanner.STP_PARTITION_TYPES);
+            partitioner.connect(document);
+            IDocumentPartitioner partitioner2 = new FastPartitioner(
+                    new STPProbeScanner(), STPProbeScanner.STP_PROBE_PARTITION_TYPES);
+            partitioner2.connect(document);
+            ((IDocumentExtension3)document).setDocumentPartitioner(STPPartitionScanner.STP_PARTITIONING, partitioner);
+            ((IDocumentExtension3)document).setDocumentPartitioner(STPProbeScanner.STP_PROBE_PARTITIONING, partitioner2);
+        }
+    }
 
-	/**
-	 * Instantiates and returns a new AnnotationModel object.
-	 */
-	@Override
-	protected IAnnotationModel createAnnotationModel(IFile file) {
-		return new AnnotationModel();
-	}
+    /**
+     * Instantiates and returns a new AnnotationModel object.
+     */
+    @Override
+    protected IAnnotationModel createAnnotationModel(IFile file) {
+        return new AnnotationModel();
+    }
 
 }

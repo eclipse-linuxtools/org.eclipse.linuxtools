@@ -35,7 +35,7 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
     }
 
     @Override
-	public String getValue(Object obj) {
+    public String getValue(Object obj) {
         return getPercentage(obj) + "";
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
      * Percentage drawer.
      */
     @Override
-	public void handleEvent(Event event) {
+    public void handleEvent(Event event) {
         Item item = (Item) event.item;
         Display display = event.widget.getDisplay();
         int index = event.index;

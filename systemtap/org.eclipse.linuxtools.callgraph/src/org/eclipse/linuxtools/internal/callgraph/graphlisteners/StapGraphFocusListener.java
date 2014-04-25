@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -16,19 +16,19 @@ import org.eclipse.swt.events.FocusEvent;
 /**
  * Set mouseDown flag to false when focus is lost (prevents the graph from
  * sticking to the mouse cursor when focus is regained)
- * 
+ *
  *
  */
 public class StapGraphFocusListener extends FocusAdapter{
-	private StapGraphMouseMoveListener listener;
+    private StapGraphMouseMoveListener listener;
 
-	public StapGraphFocusListener(StapGraphMouseMoveListener listener) {
-		this.listener = listener;
-	}
-	
-	@Override
-	public void focusLost(FocusEvent e) {			
-		listener.setStop(true);
-	}
+    public StapGraphFocusListener(StapGraphMouseMoveListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        listener.setStop(true);
+    }
 
 }

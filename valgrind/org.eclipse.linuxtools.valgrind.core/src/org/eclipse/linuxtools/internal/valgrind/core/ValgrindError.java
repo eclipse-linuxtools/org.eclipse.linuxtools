@@ -15,15 +15,15 @@ import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
 
 public class ValgrindError extends AbstractValgrindMessage {
-	protected int pid;
-	
-	public ValgrindError(IValgrindMessage message, String text, ILaunch launch, int pid) {
-		super(message, text, launch);
-		this.pid = pid;
-	}
-	
-	@Override
-	public String getText() {
-		return super.getText() + " [PID: " + pid + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    protected int pid;
+
+    public ValgrindError(IValgrindMessage message, String text, ILaunch launch, int pid) {
+        super(message, text, launch);
+        this.pid = pid;
+    }
+
+    @Override
+    public String getText() {
+        return super.getText() + " [PID: " + pid + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+    }
 }

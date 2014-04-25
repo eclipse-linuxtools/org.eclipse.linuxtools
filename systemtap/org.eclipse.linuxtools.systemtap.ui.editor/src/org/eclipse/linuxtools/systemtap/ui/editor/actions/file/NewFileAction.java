@@ -17,14 +17,14 @@ import org.eclipse.swt.SWT;
 
 public class NewFileAction extends OpenFileAction {
 
-	@Override
-	protected int dialogStyle() {
-		return SWT.SAVE;
-	}
+    @Override
+    protected int dialogStyle() {
+        return SWT.SAVE;
+    }
 
-	@Override
-	protected String dialogName() {
-		return Localization.getString("NewFileAction.NewFile"); //$NON-NLS-1$
-	}
+    @Override
+    protected String dialogName() {
+        return Localization.getString("NewFileAction.NewFile"); //$NON-NLS-1$
+    }
 
 }

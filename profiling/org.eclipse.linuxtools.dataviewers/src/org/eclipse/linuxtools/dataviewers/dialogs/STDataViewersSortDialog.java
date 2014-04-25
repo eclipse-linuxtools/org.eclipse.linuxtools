@@ -66,7 +66,7 @@ public class STDataViewersSortDialog extends TrayDialog {
      * (non-Javadoc) Method declared on Window.
      */
     @Override
-	protected void configureShell(Shell newShell) {
+    protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(STDataViewersMessages.sortDialog_title);
     }
@@ -75,7 +75,7 @@ public class STDataViewersSortDialog extends TrayDialog {
      * (non-Javadoc) Method declared on Dialog.
      */
     @Override
-	protected Control createDialogArea(Composite parent) {
+    protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
         if (sorter == null) {
             return composite;
@@ -128,7 +128,7 @@ public class STDataViewersSortDialog extends TrayDialog {
             ascendingButtons[i].setText(getAscendingText(i));
             ascendingButtons[i].addSelectionListener(new SelectionAdapter() {
                 @Override
-				public void widgetSelected(SelectionEvent e) {
+                public void widgetSelected(SelectionEvent e) {
                     markDirty();
                 }
             });
@@ -136,7 +136,7 @@ public class STDataViewersSortDialog extends TrayDialog {
             descendingButtons[i].setText(getDescendingText(i));
             descendingButtons[i].addSelectionListener(new SelectionAdapter() {
                 @Override
-				public void widgetSelected(SelectionEvent e) {
+                public void widgetSelected(SelectionEvent e) {
                     markDirty();
                 }
             });
@@ -144,7 +144,7 @@ public class STDataViewersSortDialog extends TrayDialog {
             if (i < priorityCombos.length - 1) {
                 priorityCombos[i].addSelectionListener(new SelectionAdapter() {
                     @Override
-					public void widgetSelected(SelectionEvent e) {
+                    public void widgetSelected(SelectionEvent e) {
                         List<String> allItems = new ArrayList<>(Arrays.asList(priorityCombos[index].getItems()));
                         computeSelectionItems(index, allItems);
                         markDirty();
@@ -179,7 +179,7 @@ public class STDataViewersSortDialog extends TrayDialog {
             } else {
                 priorityCombos[i].addSelectionListener(new SelectionAdapter() {
                     @Override
-					public void widgetSelected(SelectionEvent e) {
+                    public void widgetSelected(SelectionEvent e) {
                         markDirty();
                     }
                 });
@@ -242,7 +242,7 @@ public class STDataViewersSortDialog extends TrayDialog {
         setButtonSize(defaultsButton, new GridData(GridData.HORIZONTAL_ALIGN_END | GridData.FILL_HORIZONTAL));
         defaultsButton.addSelectionListener(new SelectionAdapter() {
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 restoreDefaults();
                 markDirty();
             }
@@ -295,7 +295,7 @@ public class STDataViewersSortDialog extends TrayDialog {
     }
 
     @Override
-	protected void okPressed() {
+    protected void okPressed() {
         if (isDirty()) {
             outerfor: for (int i = priorityCombos.length - 1; i >= 0; i--) {
                 Combo combo = priorityCombos[i];

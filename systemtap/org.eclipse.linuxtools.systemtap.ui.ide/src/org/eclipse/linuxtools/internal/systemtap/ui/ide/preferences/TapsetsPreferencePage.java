@@ -20,25 +20,25 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class TapsetsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public TapsetsPreferencePage() {
-		super(GRID);
-		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("TapsetsPreferencePage.AdditionalTapsetsCategory")); //$NON-NLS-1$
-	}
-	
-	/**
-	 * Creates the field editors. Field editors are abstractions of
-	 * the common GUI blocks needed to manipulate various types
-	 * of preferences. Each field editor knows how to save and
-	 * restore itself.
-	 */
-	@Override
-	public void createFieldEditors() {
-		addField(new PathEditor(IDEPreferenceConstants.P_TAPSETS,
-				Localization.getString("TapsetsPreferencePage.AdditionalTapsets"), Localization.getString("TapsetsPreferencePage.TapsetDirectory"), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    public TapsetsPreferencePage() {
+        super(GRID);
+        setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
+        setDescription(Localization.getString("TapsetsPreferencePage.AdditionalTapsetsCategory")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    /**
+     * Creates the field editors. Field editors are abstractions of
+     * the common GUI blocks needed to manipulate various types
+     * of preferences. Each field editor knows how to save and
+     * restore itself.
+     */
+    @Override
+    public void createFieldEditors() {
+        addField(new PathEditor(IDEPreferenceConstants.P_TAPSETS,
+                Localization.getString("TapsetsPreferencePage.AdditionalTapsets"), Localization.getString("TapsetsPreferencePage.TapsetDirectory"), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 }

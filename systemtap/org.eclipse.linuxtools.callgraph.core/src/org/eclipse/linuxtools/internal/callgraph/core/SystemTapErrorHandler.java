@@ -56,35 +56,35 @@ public class SystemTapErrorHandler {
         try (BufferedReader buff1 = new BufferedReader(new FileReader(file))) {
             String line;
             for (String message : errorsList) {
-				try (BufferedReader innerBuff = new BufferedReader(
-						new FileReader(file))) {
-					while ((line = innerBuff.readLine()) != null) {
-						if (m != null && m.isCanceled()) {
-							return;
-						}
-						int index = line.indexOf('=');
-						Pattern pat = Pattern.compile(line.substring(0, index),
-								Pattern.DOTALL);
-						Matcher matcher = pat.matcher(message);
+                try (BufferedReader innerBuff = new BufferedReader(
+                        new FileReader(file))) {
+                    while ((line = innerBuff.readLine()) != null) {
+                        if (m != null && m.isCanceled()) {
+                            return;
+                        }
+                        int index = line.indexOf('=');
+                        Pattern pat = Pattern.compile(line.substring(0, index),
+                                Pattern.DOTALL);
+                        Matcher matcher = pat.matcher(message);
 
-						if (matcher.matches()) {
-							if (!isErrorRecognized()) {
-								// First error
-								errorMessage
-										.append(Messages
-												.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
-								errorRecognized = true;
-							}
-							String errorFound = line.substring(index + 1);
+                        if (matcher.matches()) {
+                            if (!isErrorRecognized()) {
+                                // First error
+                                errorMessage
+                                        .append(Messages
+                                                .getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
+                                errorRecognized = true;
+                            }
+                            String errorFound = line.substring(index + 1);
 
-							if (!errorMessage.toString().contains(errorFound)) {
-								errorMessage.append(errorFound
-										+ PluginConstants.NEW_LINE);
-							}
-							break;
-						}
-					}
-				}
+                            if (!errorMessage.toString().contains(errorFound)) {
+                                errorMessage.append(errorFound
+                                        + PluginConstants.NEW_LINE);
+                            }
+                            break;
+                        }
+                    }
+                }
             }
 
             logContents.append(errors);
@@ -148,8 +148,8 @@ public class SystemTapErrorHandler {
      * time.
      */
     private void writeToLog() {
-    	IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
-    	CallgraphCorePlugin.getDefault().getLog().log(status);
+        IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
+        CallgraphCorePlugin.getDefault().getLog().log(status);
 
         logContents = new StringBuilder();
     }
@@ -166,6 +166,6 @@ public class SystemTapErrorHandler {
      * @return The error message string
      */
     public String getErrorMessage(){
-    	return errorMessage.toString();
+        return errorMessage.toString();
     }
 }

@@ -55,200 +55,200 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ReportComparisonView extends Viewer {
 
-	// Color values constants
-	private static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
-	private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
-	private static final Color GREEN = new Color(Display.getDefault(), 0, 50, 0);
-	private static final Color LIGHT_GREEN = new Color(Display.getDefault(), 0, 105, 0);
-	private static final Color ORANGE = new Color(Display.getDefault(), 150, 100, 0);
+    // Color values constants
+    private static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
+    private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
+    private static final Color GREEN = new Color(Display.getDefault(), 0, 50, 0);
+    private static final Color LIGHT_GREEN = new Color(Display.getDefault(), 0, 105, 0);
+    private static final Color ORANGE = new Color(Display.getDefault(), 150, 100, 0);
 
-	// Regex for a generic entry in a perf comparison report.
-	private static final String DIFF_ENTRY = "\\s+(\\d+(\\.\\d+)?)\\%\\s+([\\+\\-]?\\d+(\\.\\d+)?)\\%.*"; //$NON-NLS-1$
+    // Regex for a generic entry in a perf comparison report.
+    private static final String DIFF_ENTRY = "\\s+(\\d+(\\.\\d+)?)\\%\\s+([\\+\\-]?\\d+(\\.\\d+)?)\\%.*"; //$NON-NLS-1$
 
-	private Composite fComposite;
-	private ICompareInput fInput;
+    private Composite fComposite;
+    private ICompareInput fInput;
 
-	// Comparison result.
-	private StyledText result;
-	private Label reverseLabel;
-	private boolean reverse;
+    // Comparison result.
+    private StyledText result;
+    private Label reverseLabel;
+    private boolean reverse;
 
-	public ReportComparisonView (Composite parent, CompareConfiguration config) {
-		fComposite = new Composite (parent, SWT.NONE);
-		fComposite.setLayout(new GridLayout(2, false));
-		fComposite.setData(CompareUI.COMPARE_VIEWER_TITLE, Messages.ReportComparisonView_label);
+    public ReportComparisonView (Composite parent, CompareConfiguration config) {
+        fComposite = new Composite (parent, SWT.NONE);
+        fComposite.setLayout(new GridLayout(2, false));
+        fComposite.setData(CompareUI.COMPARE_VIEWER_TITLE, Messages.ReportComparisonView_label);
 
-		reverseLabel = new Label(fComposite, SWT.NONE);
-		reverseLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
-		reverseLabel.setText(Messages.StatComparisonView_reversedLabel);
-		reverseLabel.setVisible(false);
+        reverseLabel = new Label(fComposite, SWT.NONE);
+        reverseLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        reverseLabel.setText(Messages.StatComparisonView_reversedLabel);
+        reverseLabel.setVisible(false);
 
-		final Button reverse = new Button(fComposite, SWT.TOGGLE);
-		reverse.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_SYNCED));
-		reverse.setToolTipText(Messages.StatComparisonView_reverseToolTip);
-		reverse.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		reverse.addSelectionListener(new SelectionListener() {
+        final Button reverse = new Button(fComposite, SWT.TOGGLE);
+        reverse.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_SYNCED));
+        reverse.setToolTipText(Messages.StatComparisonView_reverseToolTip);
+        reverse.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        reverse.addSelectionListener(new SelectionListener() {
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				toggleReverse();
-				setInput(fInput);
-			}
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                toggleReverse();
+                setInput(fInput);
+            }
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-		});
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
 
-		result = new StyledText(fComposite, SWT.V_SCROLL | SWT.H_SCROLL);
-		result.setAlwaysShowScrollBars(false);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.horizontalSpan = 2;
-		result.setLayoutData(gd);
-		result.setEditable(false);
-	}
+        result = new StyledText(fComposite, SWT.V_SCROLL | SWT.H_SCROLL);
+        result.setAlwaysShowScrollBars(false);
+        GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gd.horizontalSpan = 2;
+        result.setLayoutData(gd);
+        result.setEditable(false);
+    }
 
-	/**
-	 * Set properties for StlyedText widget.
-	 * @param input String StyledText content.
-	 */
-	private void setStyledText(String input) {
-		result.setText(input);
-		result.setJustify(true);
-		result.setAlignment(SWT.LEFT);
+    /**
+     * Set properties for StlyedText widget.
+     * @param input String StyledText content.
+     */
+    private void setStyledText(String input) {
+        result.setText(input);
+        result.setJustify(true);
+        result.setAlignment(SWT.LEFT);
 
-		result.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
+        result.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
 
-		List<StyleRange> styles = new ArrayList<>();
-		int ptr = 0;
-		String[] lines = input.split("\n"); //$NON-NLS-1$
+        List<StyleRange> styles = new ArrayList<>();
+        int ptr = 0;
+        String[] lines = input.split("\n"); //$NON-NLS-1$
 
-		for(String line : lines){
-			if (Pattern.matches(DIFF_ENTRY, line)) {
-				Matcher m = Pattern.compile(DIFF_ENTRY).matcher(line);
-				if (m.matches() && m.group(1) != null && m.group(3) != null) {
-					try {
-						float baseline = Float.parseFloat(m.group(1).trim());
-						float delta = Float.parseFloat(m.group(3).trim());
-						if (baseline > 1 && Math.abs(delta) > 1) {
-							StyleRange curStyleRange =  new StyleRange(ptr, line.length(), BLACK, null);
-							if (delta < 0 ) {
-								curStyleRange = delta < -5 ? new StyleRange(ptr, line.length(), LIGHT_GREEN, null) :
-									new StyleRange(ptr, line.length(), GREEN, null);
-							} else {
-								curStyleRange = delta < 5 ? new StyleRange(ptr, line .length(), ORANGE, null) :
-									new StyleRange(ptr, line.length(), RED, null);
-							}
-							styles.add(curStyleRange);
-						}
-					} catch (NumberFormatException e) {
-						// set no StyleRange
-					}
-				}
-			}
-			// + 1 to skip over the '\n' at EOL that the tokenizer eats
-			ptr += line.length() + 1;
-		}
+        for(String line : lines){
+            if (Pattern.matches(DIFF_ENTRY, line)) {
+                Matcher m = Pattern.compile(DIFF_ENTRY).matcher(line);
+                if (m.matches() && m.group(1) != null && m.group(3) != null) {
+                    try {
+                        float baseline = Float.parseFloat(m.group(1).trim());
+                        float delta = Float.parseFloat(m.group(3).trim());
+                        if (baseline > 1 && Math.abs(delta) > 1) {
+                            StyleRange curStyleRange =  new StyleRange(ptr, line.length(), BLACK, null);
+                            if (delta < 0 ) {
+                                curStyleRange = delta < -5 ? new StyleRange(ptr, line.length(), LIGHT_GREEN, null) :
+                                    new StyleRange(ptr, line.length(), GREEN, null);
+                            } else {
+                                curStyleRange = delta < 5 ? new StyleRange(ptr, line .length(), ORANGE, null) :
+                                    new StyleRange(ptr, line.length(), RED, null);
+                            }
+                            styles.add(curStyleRange);
+                        }
+                    } catch (NumberFormatException e) {
+                        // set no StyleRange
+                    }
+                }
+            }
+            // + 1 to skip over the '\n' at EOL that the tokenizer eats
+            ptr += line.length() + 1;
+        }
 
-		result.setStyleRanges(styles.toArray(new StyleRange[0]));
-	}
+        result.setStyleRanges(styles.toArray(new StyleRange[0]));
+    }
 
-	@Override
-	public Control getControl() {
-		return fComposite;
-	}
+    @Override
+    public Control getControl() {
+        return fComposite;
+    }
 
-	@Override
-	public Object getInput() {
-		return fInput;
-	}
+    @Override
+    public Object getInput() {
+        return fInput;
+    }
 
-	@Override
-	public ISelection getSelection() {
-		return null;
-	}
+    @Override
+    public ISelection getSelection() {
+        return null;
+    }
 
-	@Override
-	public void refresh() {
-	}
+    @Override
+    public void refresh() {
+    }
 
-	@Override
-	public void setInput(Object input) {
-		if (input instanceof ICompareInput) {
-			fInput = (ICompareInput) input;
+    @Override
+    public void setInput(Object input) {
+        if (input instanceof ICompareInput) {
+            fInput = (ICompareInput) input;
 
-			if (fInput.getAncestor() != null ||
-					(fInput.getKind() & Differencer.DIRECTION_MASK) != 0) {
-				setStyledText(Messages.CompUnsupported);
-			} else {
-				// get corresponding files
-				IPath oldDatum;
-				IPath newDatum;
-				IProject proj = null;
+            if (fInput.getAncestor() != null ||
+                    (fInput.getKind() & Differencer.DIRECTION_MASK) != 0) {
+                setStyledText(Messages.CompUnsupported);
+            } else {
+                // get corresponding files
+                IPath oldDatum;
+                IPath newDatum;
+                IProject proj = null;
 
-				if (fInput.getLeft() instanceof ResourceNode) {
-					ResourceNode left = (ResourceNode) fInput.getLeft();
-					IResource oldData = left.getResource();
-					oldDatum = oldData.getLocation();
-					proj = oldData.getProject();
-				} else {
-					IEncodedStreamContentAccessor lStream = (IEncodedStreamContentAccessor) fInput.getLeft();
-					oldDatum = generateTempFile(lStream);
-				}
+                if (fInput.getLeft() instanceof ResourceNode) {
+                    ResourceNode left = (ResourceNode) fInput.getLeft();
+                    IResource oldData = left.getResource();
+                    oldDatum = oldData.getLocation();
+                    proj = oldData.getProject();
+                } else {
+                    IEncodedStreamContentAccessor lStream = (IEncodedStreamContentAccessor) fInput.getLeft();
+                    oldDatum = generateTempFile(lStream);
+                }
 
-				if (fInput.getRight() instanceof ResourceNode) {
-					ResourceNode right = (ResourceNode) fInput.getRight();
-					IResource newData = right.getResource();
-					newDatum = newData.getLocation();
-					proj = newData.getProject();
-				} else {
-					IEncodedStreamContentAccessor rStream = (IEncodedStreamContentAccessor) fInput.getRight();
-					newDatum = generateTempFile(rStream);
-				}
+                if (fInput.getRight() instanceof ResourceNode) {
+                    ResourceNode right = (ResourceNode) fInput.getRight();
+                    IResource newData = right.getResource();
+                    newDatum = newData.getLocation();
+                    proj = newData.getProject();
+                } else {
+                    IEncodedStreamContentAccessor rStream = (IEncodedStreamContentAccessor) fInput.getRight();
+                    newDatum = generateTempFile(rStream);
+                }
 
-				String title = MessageFormat.format(Messages.ContentDescription_0,
-						new Object[] { oldDatum.toFile().getName(), newDatum.toFile().getName() });
+                String title = MessageFormat.format(Messages.ContentDescription_0,
+                        new Object[] { oldDatum.toFile().getName(), newDatum.toFile().getName() });
 
-				// create comparison data and run comparison.
-				ReportComparisonData diffData;
-				if (reverse) {
-					diffData = new ReportComparisonData(title, oldDatum, newDatum, proj);
-				} else {
-					diffData = new ReportComparisonData(title, newDatum, oldDatum, proj);
-				}
-				diffData.parse();
+                // create comparison data and run comparison.
+                ReportComparisonData diffData;
+                if (reverse) {
+                    diffData = new ReportComparisonData(title, oldDatum, newDatum, proj);
+                } else {
+                    diffData = new ReportComparisonData(title, newDatum, oldDatum, proj);
+                }
+                diffData.parse();
 
-				setStyledText(diffData.getPerfData());
-			}
-		}
+                setStyledText(diffData.getPerfData());
+            }
+        }
 
-		fComposite.layout();
-	}
+        fComposite.layout();
+    }
 
-	@Override
-	public void setSelection(ISelection selection, boolean reveal) {
-	}
+    @Override
+    public void setSelection(ISelection selection, boolean reveal) {
+    }
 
-	private IPath generateTempFile(IEncodedStreamContentAccessor stream) {
-		try {
-			Path tmpFile = Files.createTempFile("perf-report-", ".data"); //$NON-NLS-1$ //$NON-NLS-2$
-			tmpFile.toFile().delete();
-			Files.copy(stream.getContents(), tmpFile);
-			return new org.eclipse.core.runtime.Path(tmpFile.toString());
-		} catch (IOException e) {
-			return null;
-		} catch (CoreException e) {
-			return null;
-		}
-	}
+    private IPath generateTempFile(IEncodedStreamContentAccessor stream) {
+        try {
+            Path tmpFile = Files.createTempFile("perf-report-", ".data"); //$NON-NLS-1$ //$NON-NLS-2$
+            tmpFile.toFile().delete();
+            Files.copy(stream.getContents(), tmpFile);
+            return new org.eclipse.core.runtime.Path(tmpFile.toString());
+        } catch (IOException e) {
+            return null;
+        } catch (CoreException e) {
+            return null;
+        }
+    }
 
-	private void toggleReverse () {
-		if (reverse) {
-			reverse = false;
-			reverseLabel.setVisible(false);
-		} else {
-			reverse = true;
-			reverseLabel.setVisible(true);
-		}
-	}
+    private void toggleReverse () {
+        if (reverse) {
+            reverse = false;
+            reverseLabel.setVisible(false);
+        } else {
+            reverse = true;
+            reverseLabel.setVisible(true);
+        }
+    }
 }

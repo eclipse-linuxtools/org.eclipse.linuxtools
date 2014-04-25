@@ -40,98 +40,98 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 
-	protected abstract String getType();
-	protected abstract String getPrefPageId();
+    protected abstract String getType();
+    protected abstract String getPrefPageId();
 
-	// Launch provider extension point tool information attribute
-	private static final String PROVIDER_ATT_INFO = "information"; //$NON-NLS-1$
+    // Launch provider extension point tool information attribute
+    private static final String PROVIDER_ATT_INFO = "information"; //$NON-NLS-1$
 
-	// Launch provider extension point tool description attribute
-	private static final String PROVIDER_ATT_DESC = "description"; //$NON-NLS-1$
+    // Launch provider extension point tool description attribute
+    private static final String PROVIDER_ATT_DESC = "description"; //$NON-NLS-1$
 
-	private Link fLink;
-	private Button useProjectSetting;
-	private ScopedPreferenceStore preferenceStore;
-	private Group projectSettingsGroup;
-	private Button[] radioButtons;
-	private String value;
+    private Link fLink;
+    private Button useProjectSetting;
+    private ScopedPreferenceStore preferenceStore;
+    private Group projectSettingsGroup;
+    private Button[] radioButtons;
+    private String value;
 
-	@Override
-	protected void createControls(final Composite parent) {
-		super.createControls(parent);
+    @Override
+    protected void createControls(final Composite parent) {
+        super.createControls(parent);
 
-		usercomp.setLayout(new GridLayout(2, true));
+        usercomp.setLayout(new GridLayout(2, true));
 
-		// Get the property provider (project, file, folder) and fine the project.
-		IResource resource = (IResource)page.getElement().getAdapter(IResource.class);
-		IProject project = resource.getProject();
+        // Get the property provider (project, file, folder) and fine the project.
+        IResource resource = (IResource)page.getElement().getAdapter(IResource.class);
+        IProject project = resource.getProject();
 
-		// Create the preference store to use
-		ProjectScope ps = new ProjectScope(project);
-		ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
-		scoped.setSearchContexts(new IScopeContext[] { ps, InstanceScope.INSTANCE });
-		setPreferenceStore(scoped);
+        // Create the preference store to use
+        ProjectScope ps = new ProjectScope(project);
+        ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
+        scoped.setSearchContexts(new IScopeContext[] { ps, InstanceScope.INSTANCE });
+        setPreferenceStore(scoped);
 
-		getPreferenceStore().setDefault(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), false);
+        getPreferenceStore().setDefault(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), false);
 
-		useProjectSetting = new Button(usercomp, SWT.CHECK);
-		useProjectSetting.setText(Messages.UseProjectSetting_0);
-		useProjectSetting.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-		useProjectSetting.setSelection(getPreferenceStore().getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType()));
-		useProjectSetting.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateOptionsEnable();
-			}
-		});
+        useProjectSetting = new Button(usercomp, SWT.CHECK);
+        useProjectSetting.setText(Messages.UseProjectSetting_0);
+        useProjectSetting.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+        useProjectSetting.setSelection(getPreferenceStore().getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType()));
+        useProjectSetting.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                updateOptionsEnable();
+            }
+        });
 
-		String highestProviderId = ProviderFramework.getHighestProviderId(getType());
-		if (highestProviderId != null) {
-			getPreferenceStore().setDefault(ProviderProfileConstants.PREFS_KEY + getType(), highestProviderId);
-		} else {
-			useProjectSetting.setEnabled(false);
-		}
+        String highestProviderId = ProviderFramework.getHighestProviderId(getType());
+        if (highestProviderId != null) {
+            getPreferenceStore().setDefault(ProviderProfileConstants.PREFS_KEY + getType(), highestProviderId);
+        } else {
+            useProjectSetting.setEnabled(false);
+        }
 
-		fLink= new Link(usercomp, SWT.NULL);
-		fLink.setText(Messages.PreferenceLink_0);
-		fLink.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
-		fLink.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open();
-			}
-		});
+        fLink= new Link(usercomp, SWT.NULL);
+        fLink.setText(Messages.PreferenceLink_0);
+        fLink.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
+        fLink.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open();
+            }
+        });
 
 
-		HashMap<String, String> map = ProviderFramework
-				.getProviderNamesForType(getType());
-		// 2d array containing launch provider names on the first column and
-		// corresponding id's on the second.
-		String[][] providerList = new String[map.size()][2];
-		int i = 0;
-		for (Entry<String, String> entry : map.entrySet()) {
-			String toolId = entry.getValue();
-			String toolDescription = ProviderFramework.getToolInformationFromId(toolId, PROVIDER_ATT_DESC);
-			String toolName = entry.getKey();
+        HashMap<String, String> map = ProviderFramework
+                .getProviderNamesForType(getType());
+        // 2d array containing launch provider names on the first column and
+        // corresponding id's on the second.
+        String[][] providerList = new String[map.size()][2];
+        int i = 0;
+        for (Entry<String, String> entry : map.entrySet()) {
+            String toolId = entry.getValue();
+            String toolDescription = ProviderFramework.getToolInformationFromId(toolId, PROVIDER_ATT_DESC);
+            String toolName = entry.getKey();
 
-			// Append tool description to tool name if available.
-			if (toolDescription != null && !toolDescription.isEmpty()) {
-				toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
+            // Append tool description to tool name if available.
+            if (toolDescription != null && !toolDescription.isEmpty()) {
+                toolName = toolName + " " + "[" + toolDescription + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
 
-			providerList[i][0] = toolName;
-			providerList[i][1] = toolId;
-			i++;
-		}
+            providerList[i][0] = toolName;
+            providerList[i][1] = toolId;
+            i++;
+        }
 
-		projectSettingsGroup = new Group(usercomp, SWT.NONE);
-		projectSettingsGroup.setFont(parent.getFont());
-		projectSettingsGroup.setText(Messages.ProviderPreferencesPage_1);
-		projectSettingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 8;
-		layout.numColumns = 1;
-		projectSettingsGroup.setLayout(layout);
+        projectSettingsGroup = new Group(usercomp, SWT.NONE);
+        projectSettingsGroup.setFont(parent.getFont());
+        projectSettingsGroup.setText(Messages.ProviderPreferencesPage_1);
+        projectSettingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+        GridLayout layout = new GridLayout();
+        layout.horizontalSpacing = 8;
+        layout.numColumns = 1;
+        projectSettingsGroup.setLayout(layout);
 
         radioButtons = new Button[map.size()];
         for (int j = 0; j < radioButtons.length; j++) {
@@ -139,90 +139,90 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
             radio.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 1, 1));
             radioButtons[j] = radio;
             String[] labelAndValue = providerList[j];
-			String curProviderId = labelAndValue[1];
-			// Set tool tip description text.
-			String toolInfo = ProviderFramework.getToolInformationFromId(curProviderId,
-					PROVIDER_ATT_INFO);
-			if (toolInfo != null && !toolInfo.isEmpty()) {
-				radio.setToolTipText(toolInfo);
-			}
-			radio.setText(labelAndValue[0]);
+            String curProviderId = labelAndValue[1];
+            // Set tool tip description text.
+            String toolInfo = ProviderFramework.getToolInformationFromId(curProviderId,
+                    PROVIDER_ATT_INFO);
+            if (toolInfo != null && !toolInfo.isEmpty()) {
+                radio.setToolTipText(toolInfo);
+            }
+            radio.setText(labelAndValue[0]);
             radio.setData(labelAndValue[1]);
             radio.setFont(parent.getFont());
             radio.addSelectionListener(new SelectionAdapter() {
-            	@Override
-				public void widgetSelected(SelectionEvent event) {
-            		value = (String) event.widget.getData();
-            	}
+                @Override
+                public void widgetSelected(SelectionEvent event) {
+                    value = (String) event.widget.getData();
+                }
             });
         }
         projectSettingsGroup.addDisposeListener(new DisposeListener() {
             @Override
-			public void widgetDisposed(DisposeEvent event) {
+            public void widgetDisposed(DisposeEvent event) {
                 projectSettingsGroup = null;
                 radioButtons = null;
             }
         });
-		updateOptionsEnable();
-		updateValue(getPreferenceStore().getString(ProviderProfileConstants.PREFS_KEY + getType()));
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
-	}
+        updateOptionsEnable();
+        updateValue(getPreferenceStore().getString(ProviderProfileConstants.PREFS_KEY + getType()));
+        PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
+    }
 
-	private void setButtonsEnabled(boolean value) {
+    private void setButtonsEnabled(boolean value) {
         for (int j = 0; j < radioButtons.length; j++) {
-        	radioButtons[j].setEnabled(value);
+            radioButtons[j].setEnabled(value);
         }
-	}
+    }
 
-	private void updateOptionsEnable() {
-		if (useProjectSetting.getSelection()) {
-			projectSettingsGroup.setEnabled(true);
-			setButtonsEnabled(true);
-			fLink.setVisible(false);
-		} else {
-			setButtonsEnabled(false);
-			projectSettingsGroup.setEnabled(false);
-			fLink.setVisible(true);
-		}
-	}
+    private void updateOptionsEnable() {
+        if (useProjectSetting.getSelection()) {
+            projectSettingsGroup.setEnabled(true);
+            setButtonsEnabled(true);
+            fLink.setVisible(false);
+        } else {
+            setButtonsEnabled(false);
+            projectSettingsGroup.setEnabled(false);
+            fLink.setVisible(true);
+        }
+    }
 
-	@Override
-	protected void performDefaults() {
-		if (useProjectSetting.getSelection()) {
-			updateValue(getPreferenceStore().getDefaultString(ProviderProfileConstants.PREFS_KEY + getType()));
-		}
-		updateOptionsEnable();
-	}
+    @Override
+    protected void performDefaults() {
+        if (useProjectSetting.getSelection()) {
+            updateValue(getPreferenceStore().getDefaultString(ProviderProfileConstants.PREFS_KEY + getType()));
+        }
+        updateOptionsEnable();
+    }
 
-	@Override
-	public void performOK() {
-		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
-		getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
-		try {
-			getPreferenceStore().save();
-		} catch (IOException e) {
-			// do nothing
-		}
-	}
+    @Override
+    public void performOK() {
+        getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
+        getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
+        try {
+            getPreferenceStore().save();
+        } catch (IOException e) {
+            // do nothing
+        }
+    }
 
-	private ScopedPreferenceStore getPreferenceStore() {
-		return preferenceStore;
-	}
+    private ScopedPreferenceStore getPreferenceStore() {
+        return preferenceStore;
+    }
 
-	private void setPreferenceStore(ScopedPreferenceStore store) {
-		preferenceStore = store;
-	}
+    private void setPreferenceStore(ScopedPreferenceStore store) {
+        preferenceStore = store;
+    }
 
-	@Override
-	protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
-		getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
-		getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
-		try {
-			getPreferenceStore().save();
-		} catch (IOException e) {
-			// do nothing
-		}
-	}
+    @Override
+    protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
+        getPreferenceStore().setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType(), useProjectSetting.getSelection());
+        getPreferenceStore().setValue(ProviderProfileConstants.PREFS_KEY + getType(), value);
+        try {
+            getPreferenceStore().save();
+        } catch (IOException e) {
+            // do nothing
+        }
+    }
 
     /**
      * Select the radio button that conforms to the given value.
@@ -232,8 +232,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
     private void updateValue(String selectedValue) {
         this.value = selectedValue;
         if (radioButtons == null) {
-			return;
-		}
+            return;
+        }
 
         if (this.value != null) {
             boolean found = false;
@@ -247,8 +247,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
                 radio.setSelection(selection);
             }
             if (found) {
-				return;
-			}
+                return;
+            }
         }
 
         // We weren't able to find the value. So we select the first
@@ -260,21 +260,21 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         return;
     }
 
-	@Override
-	public String getHelpContextId() {
-		return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
-	}
+    @Override
+    public String getHelpContextId() {
+        return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
+    }
 
-	// This page can be displayed for project only
-	@Override
-	public boolean canBeVisible() {
-		return page.isForProject() || page.isForPrefs();
-	}
+    // This page can be displayed for project only
+    @Override
+    public boolean canBeVisible() {
+        return page.isForProject() || page.isForPrefs();
+    }
 
-	@Override
-	protected void updateButtons() {/* Empty block */}
+    @Override
+    protected void updateButtons() {/* Empty block */}
 
-	@Override
-	protected void updateData(ICResourceDescription cfg) {/* Empty block */}
+    @Override
+    protected void updateData(ICResourceDescription cfg) {/* Empty block */}
 
 }

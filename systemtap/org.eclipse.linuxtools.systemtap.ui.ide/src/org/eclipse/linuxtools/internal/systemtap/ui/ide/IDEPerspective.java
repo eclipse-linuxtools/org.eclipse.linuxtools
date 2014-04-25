@@ -29,40 +29,40 @@ import org.eclipse.ui.console.IConsoleConstants;
  * @author Ryan Morse
  */
 public class IDEPerspective implements IPerspectiveFactory {
-	public static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"; //$NON-NLS-1$
+    public static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"; //$NON-NLS-1$
 
-	@Override
-	public void createInitialLayout(IPageLayout layout) {
-		String editorArea = layout.getEditorArea();
-		layout.setEditorAreaVisible(true);
+    @Override
+    public void createInitialLayout(IPageLayout layout) {
+        String editorArea = layout.getEditorArea();
+        layout.setEditorAreaVisible(true);
 
-		IFolderLayout browsers = layout.createFolder("browsers", IPageLayout.LEFT, 0.25f, editorArea); //$NON-NLS-1$
-		browsers.addPlaceholder(ProbeAliasBrowserView.ID + ":*"); //$NON-NLS-1$
+        IFolderLayout browsers = layout.createFolder("browsers", IPageLayout.LEFT, 0.25f, editorArea); //$NON-NLS-1$
+        browsers.addPlaceholder(ProbeAliasBrowserView.ID + ":*"); //$NON-NLS-1$
 
-		browsers.addView(ProbeAliasBrowserView.ID);
-		browsers.addView(FunctionBrowserView.ID);
-		browsers.addView(KernelBrowserView.ID);
-		browsers.addView(IPageLayout.ID_PROJECT_EXPLORER);
+        browsers.addView(ProbeAliasBrowserView.ID);
+        browsers.addView(FunctionBrowserView.ID);
+        browsers.addView(KernelBrowserView.ID);
+        browsers.addView(IPageLayout.ID_PROJECT_EXPLORER);
 
 
-		layout.getViewLayout(ProbeAliasBrowserView.ID).setCloseable(false);
-		layout.getViewLayout(FunctionBrowserView.ID).setCloseable(false);
-		layout.getViewLayout(KernelBrowserView.ID).setCloseable(false);
+        layout.getViewLayout(ProbeAliasBrowserView.ID).setCloseable(false);
+        layout.getViewLayout(FunctionBrowserView.ID).setCloseable(false);
+        layout.getViewLayout(KernelBrowserView.ID).setCloseable(false);
 
-		IFolderLayout output = layout.createFolder("output", IPageLayout.BOTTOM, 0.75f, editorArea); //$NON-NLS-1$
-		output.addPlaceholder(ErrorView.ID + ":*"); //$NON-NLS-1$
-		output.addView(ErrorView.ID);
-		output.addView(IConsoleConstants.ID_CONSOLE_VIEW);
+        IFolderLayout output = layout.createFolder("output", IPageLayout.BOTTOM, 0.75f, editorArea); //$NON-NLS-1$
+        output.addPlaceholder(ErrorView.ID + ":*"); //$NON-NLS-1$
+        output.addView(ErrorView.ID);
+        output.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 
-		layout.getViewLayout(IConsoleConstants.ID_CONSOLE_VIEW).setCloseable(false);
-		layout.getViewLayout(ErrorView.ID).setCloseable(false);
+        layout.getViewLayout(IConsoleConstants.ID_CONSOLE_VIEW).setCloseable(false);
+        layout.getViewLayout(ErrorView.ID).setCloseable(false);
 
-		layout.addShowViewShortcut(ProbeAliasBrowserView.ID);
-		layout.addShowViewShortcut(FunctionBrowserView.ID);
-		layout.addShowViewShortcut(KernelBrowserView.ID);
-		layout.addShowViewShortcut(ErrorView.ID);
-		layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
+        layout.addShowViewShortcut(ProbeAliasBrowserView.ID);
+        layout.addShowViewShortcut(FunctionBrowserView.ID);
+        layout.addShowViewShortcut(KernelBrowserView.ID);
+        layout.addShowViewShortcut(ErrorView.ID);
+        layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
 
-		layout.addPerspectiveShortcut(ID);
-	}
+        layout.addPerspectiveShortcut(ID);
+    }
 }

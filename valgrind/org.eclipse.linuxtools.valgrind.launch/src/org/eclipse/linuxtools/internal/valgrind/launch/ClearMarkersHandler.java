@@ -21,22 +21,22 @@ import org.eclipse.swt.widgets.Display;
 
 public class ClearMarkersHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		try {
-			root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
-		} catch (CoreException e) {
-			// do nothing for now
-		}
-		// Clear Valgrind view
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				ValgrindUIPlugin.getDefault().resetView();
-			}
-		});
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        try {
+            root.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
+        } catch (CoreException e) {
+            // do nothing for now
+        }
+        // Clear Valgrind view
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                ValgrindUIPlugin.getDefault().resetView();
+            }
+        });
+        return null;
+    }
 
 }

@@ -22,7 +22,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools Devhelp Libhover Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

@@ -20,26 +20,26 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class IDEPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public IDEPreferencePage() {
-		super(GRID);
-		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription("Preferences when loading the IDE perspective"); //$NON-NLS-1$
-	}
-	
-	@Override
-	public void createFieldEditors() {
-		addField(new BooleanFieldEditor(
-				IDEPreferenceConstants.P_STORED_TREE,
-				Localization.getString("IDEPreferencePage.UseStoredTapsetTree"), //$NON-NLS-1$
-				getFieldEditorParent()));
-		addField(new BooleanFieldEditor(
-				IDEPreferenceConstants.P_REMOTE_PROBES,
-				Localization.getString("IDEPreferencePage.RemoteProbes"), //$NON-NLS-1$
-				getFieldEditorParent()));
-	}
+    public IDEPreferencePage() {
+        super(GRID);
+        setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
+        setDescription("Preferences when loading the IDE perspective"); //$NON-NLS-1$
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    @Override
+    public void createFieldEditors() {
+        addField(new BooleanFieldEditor(
+                IDEPreferenceConstants.P_STORED_TREE,
+                Localization.getString("IDEPreferencePage.UseStoredTapsetTree"), //$NON-NLS-1$
+                getFieldEditorParent()));
+        addField(new BooleanFieldEditor(
+                IDEPreferenceConstants.P_REMOTE_PROBES,
+                Localization.getString("IDEPreferencePage.RemoteProbes"), //$NON-NLS-1$
+                getFieldEditorParent()));
+    }
+
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 
 }

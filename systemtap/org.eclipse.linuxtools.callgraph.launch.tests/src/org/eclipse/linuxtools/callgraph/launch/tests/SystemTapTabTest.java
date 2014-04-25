@@ -22,24 +22,24 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 public class SystemTapTabTest {
 
-	@Test
-	public void testTabs() throws CoreException{
-		Shell sh = new Shell();
-		Composite cmp = new Composite(sh, SWT.NONE);
+    @Test
+    public void testTabs() throws CoreException{
+        Shell sh = new Shell();
+        Composite cmp = new Composite(sh, SWT.NONE);
 
-		LaunchStapGraph shortCut = new LaunchStapGraph();
-		SystemTapOptionsTab stp = new SystemTapOptionsTab();
-		stp.createControl(cmp);
-		ILaunchConfiguration configuration;
-		configuration = shortCut.outsideGetLaunchConfigType().newInstance(
-				null,
-				(DebugPlugin.getDefault().getLaunchManager())
-						.generateLaunchConfigurationName("invalid"));
-		ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
-		stp.setDefaults(wc);
-		stp.performApply(wc);
-		wc.doSave();
-		stp.initializeFrom(configuration);
-		sh.open();
-	}
+        LaunchStapGraph shortCut = new LaunchStapGraph();
+        SystemTapOptionsTab stp = new SystemTapOptionsTab();
+        stp.createControl(cmp);
+        ILaunchConfiguration configuration;
+        configuration = shortCut.outsideGetLaunchConfigType().newInstance(
+                null,
+                (DebugPlugin.getDefault().getLaunchManager())
+                        .generateLaunchConfigurationName("invalid"));
+        ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
+        stp.setDefaults(wc);
+        stp.performApply(wc);
+        wc.doSave();
+        stp.initializeFrom(configuration);
+        sh.open();
+    }
 }

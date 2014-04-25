@@ -21,29 +21,29 @@ import org.junit.Test;
 
 public class SystemTapCommandTest {
 
-	/**
-	 * Tests if SystemTapCommand is properly obtaining output from the runtime
-	 * process
-	 * 
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	public void testCommand() throws IOException {
-		// Set up variables
-		String testText = "CORRECT";
-		String tempLocation = ResourcesPlugin.getWorkspace().getRoot()
-				.getLocation().toString()
-				+ "/DeleteThisScript.stp";
+    /**
+     * Tests if SystemTapCommand is properly obtaining output from the runtime
+     * process
+     *
+     * @throws FileNotFoundException
+     */
+    @Test
+    public void testCommand() throws IOException {
+        // Set up variables
+        String testText = "CORRECT";
+        String tempLocation = ResourcesPlugin.getWorkspace().getRoot()
+                .getLocation().toString()
+                + "/DeleteThisScript.stp";
 
-		// Create temporary file containing the test script
-		File temporaryScript = new File(tempLocation);
+        // Create temporary file containing the test script
+        File temporaryScript = new File(tempLocation);
 
-		try (FileOutputStream output = new FileOutputStream(temporaryScript);
-				PrintStream printer = new PrintStream(output)) {
-			printer.println("probe begin { printf(\"" + testText
-					+ "\") exit() }");
-		}
-		// Cleanup
-		temporaryScript.delete();
-	}
+        try (FileOutputStream output = new FileOutputStream(temporaryScript);
+                PrintStream printer = new PrintStream(output)) {
+            printer.println("probe begin { printf(\"" + testText
+                    + "\") exit() }");
+        }
+        // Cleanup
+        temporaryScript.delete();
+    }
 }

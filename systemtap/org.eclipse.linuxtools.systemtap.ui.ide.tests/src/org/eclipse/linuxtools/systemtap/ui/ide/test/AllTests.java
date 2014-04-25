@@ -24,8 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ StapErrorParserTest.class, TreeSettingsTest.class,
-		STPCompletionProcessorTest.class, STPToggleCommentTest.class,
-		TestCreateSystemtapScript.class, ConditionalExpressionValidatorTest.class,
-		DirectoryValidatorTest.class, STPFormattingTest.class, STPIndenterTest.class })
+        STPCompletionProcessorTest.class, STPToggleCommentTest.class,
+        TestCreateSystemtapScript.class, ConditionalExpressionValidatorTest.class,
+        DirectoryValidatorTest.class, STPFormattingTest.class, STPIndenterTest.class })
 public class AllTests {
 }

@@ -21,37 +21,37 @@ import org.junit.Before;
 
 public abstract class AScannerTest extends FileTestCase {
 
-	protected RuleBasedScanner rulesBasedScanner;
+    protected RuleBasedScanner rulesBasedScanner;
 
-	protected abstract String getContents();
+    protected abstract String getContents();
 
-	protected abstract RuleBasedScanner getScanner();
+    protected abstract RuleBasedScanner getScanner();
 
-	public SpecfileEditor editor;
+    public SpecfileEditor editor;
 
-	@Override
-	@Before
-	public void setUp() throws CoreException {
-		super.setUp();
-		newFile(getContents());
-		testProject.refresh();
-		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage(), testFile,
-				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
-		editor = (SpecfileEditor) openEditor;
-		editor.doRevertToSaved();
-		rulesBasedScanner = getScanner();
-		rulesBasedScanner.setRange(testDocument, 0, getContents().length());
-	}
+    @Override
+    @Before
+    public void setUp() throws CoreException {
+        super.setUp();
+        newFile(getContents());
+        testProject.refresh();
+        IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage(), testFile,
+                "org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+        editor = (SpecfileEditor) openEditor;
+        editor.doRevertToSaved();
+        rulesBasedScanner = getScanner();
+        rulesBasedScanner.setRange(testDocument, 0, getContents().length());
+    }
 
-	protected IToken getNextToken() {
-		return rulesBasedScanner.nextToken();
-	}
+    protected IToken getNextToken() {
+        return rulesBasedScanner.nextToken();
+    }
 
-	protected IToken getToken(int nbrOfToken) {
-		for (int i = 0; i < nbrOfToken - 1; i++) {
-			rulesBasedScanner.nextToken();
-		}
-		return rulesBasedScanner.nextToken();
-	}
+    protected IToken getToken(int nbrOfToken) {
+        for (int i = 0; i < nbrOfToken - 1; i++) {
+            rulesBasedScanner.nextToken();
+        }
+        return rulesBasedScanner.nextToken();
+    }
 }

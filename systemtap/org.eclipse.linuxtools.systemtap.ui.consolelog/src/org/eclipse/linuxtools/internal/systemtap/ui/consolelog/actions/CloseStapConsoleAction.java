@@ -21,30 +21,30 @@ import org.eclipse.ui.console.IConsole;
 
 public class CloseStapConsoleAction extends ConsoleAction implements ScriptConsoleObserver {
 
-	@Override
-	public void run() {
-		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				if(null != console){
-					ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{console});
-				}
-			}
-		});
-	}
+    @Override
+    public void run() {
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                if(null != console){
+                    ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{console});
+                }
+            }
+        });
+    }
 
-	public CloseStapConsoleAction(ScriptConsole fConsole) {
-		super(fConsole,
-				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/progress_rem.gif"), //$NON-NLS-1$
-				Localization.getString("action.closeConsole.name"), //$NON-NLS-1$
-				Localization.getString("action.closeConsole.desc")); //$NON-NLS-1$
-		setEnabled(false);
-		console.addScriptConsoleObserver(this);
-	}
+    public CloseStapConsoleAction(ScriptConsole fConsole) {
+        super(fConsole,
+                ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/progress_rem.gif"), //$NON-NLS-1$
+                Localization.getString("action.closeConsole.name"), //$NON-NLS-1$
+                Localization.getString("action.closeConsole.desc")); //$NON-NLS-1$
+        setEnabled(false);
+        console.addScriptConsoleObserver(this);
+    }
 
-	@Override
-	public void runningStateChanged(boolean started, boolean stopped) {
-		setEnabled(stopped);
-	}
+    @Override
+    public void runningStateChanged(boolean started, boolean stopped) {
+        setEnabled(stopped);
+    }
 
 }

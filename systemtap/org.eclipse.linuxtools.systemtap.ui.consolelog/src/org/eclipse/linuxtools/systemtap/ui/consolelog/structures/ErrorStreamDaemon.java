@@ -19,63 +19,63 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
  * @author Ryan Morse
  */
 public class ErrorStreamDaemon extends ConsoleStreamDaemon {
-	public ErrorStreamDaemon(ScriptConsole console, ErrorView errorWindow, IErrorParser parser) {
-		super(console);
+    public ErrorStreamDaemon(ScriptConsole console, ErrorView errorWindow, IErrorParser parser) {
+        super(console);
 
-		outputData = new StringBuilder();
-		this.parser = parser;
-		if (null != errorWindow) {
-			errorView = errorWindow;
-			errorView.clear();
-		}
-	}
+        outputData = new StringBuilder();
+        this.parser = parser;
+        if (null != errorWindow) {
+            errorView = errorWindow;
+            errorView.clear();
+        }
+    }
 
-	/**
-	 * Prints out the new output data to the console and parses it and sends it to the
-	 * ErrorView.
-	 */
-	@Override
-	protected void pushData() {
-		if(output.startsWith(Localization.getString("ErrorStreamDaemon.Password"))) { //$NON-NLS-1$
-			output = output.substring(Localization.getString("ErrorStreamDaemon.Password").length()); //$NON-NLS-1$
-		}
+    /**
+     * Prints out the new output data to the console and parses it and sends it to the
+     * ErrorView.
+     */
+    @Override
+    protected void pushData() {
+        if(output.startsWith(Localization.getString("ErrorStreamDaemon.Password"))) { //$NON-NLS-1$
+            output = output.substring(Localization.getString("ErrorStreamDaemon.Password").length()); //$NON-NLS-1$
+        }
 
-		super.pushData();
+        super.pushData();
 
-		outputData.append(output);
+        outputData.append(output);
 
-		/* Since we never know when the last set of data is comming we don't clear the
-		 * errorStream in the hope of getting a more complete error message. As a result
-		 * the parser will always return what we already had.  Clear removes anything
-		 * that was added before.
-		 */
-		if(null != errorView) {
-			String[][] errors = parser.parseOutput(outputData.toString());
+        /* Since we never know when the last set of data is comming we don't clear the
+         * errorStream in the hope of getting a more complete error message. As a result
+         * the parser will always return what we already had.  Clear removes anything
+         * that was added before.
+         */
+        if(null != errorView) {
+            String[][] errors = parser.parseOutput(outputData.toString());
 
-			if(null != errors) {
-				errorView.clear();
-				for(String[] error :errors) {
-					errorView.add(error);
-				}
-			}
-		}
-	}
+            if(null != errors) {
+                errorView.clear();
+                for(String[] error :errors) {
+                    errorView.add(error);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Disposes of all internal references in the class. No method should be called after this.
-	 */
-	@Override
-	public void dispose() {
-		if(!isDisposed()) {
-			super.dispose();
-			errorView = null;
-			outputData.delete(0, outputData.length());
-			outputData = null;
-			parser = null;
-		}
-	}
+    /**
+     * Disposes of all internal references in the class. No method should be called after this.
+     */
+    @Override
+    public void dispose() {
+        if(!isDisposed()) {
+            super.dispose();
+            errorView = null;
+            outputData.delete(0, outputData.length());
+            outputData = null;
+            parser = null;
+        }
+    }
 
-	private ErrorView errorView;
-	private StringBuilder outputData;
-	private IErrorParser parser;
+    private ErrorView errorView;
+    private StringBuilder outputData;
+    private IErrorParser parser;
 }

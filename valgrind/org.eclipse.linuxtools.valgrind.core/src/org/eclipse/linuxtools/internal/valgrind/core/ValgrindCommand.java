@@ -21,88 +21,88 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 
 public class ValgrindCommand {
-	protected static final String WHICH_CMD = "which"; //$NON-NLS-1$
-	protected static final String VALGRIND_CMD = "valgrind"; //$NON-NLS-1$
+    protected static final String WHICH_CMD = "which"; //$NON-NLS-1$
+    protected static final String VALGRIND_CMD = "valgrind"; //$NON-NLS-1$
 
-	protected Process process;
-	protected String[] args;
+    protected Process process;
+    protected String[] args;
 
-	public String getValgrindCommand() {
-		return VALGRIND_CMD;
-	}
+    public String getValgrindCommand() {
+        return VALGRIND_CMD;
+    }
 
-	public String whichVersion(IProject project) throws IOException {
-		StringBuffer out = new StringBuffer();
-		String version = ""; //$NON-NLS-1$
-		Process p = RuntimeProcessFactory.getFactory().exec(new String[] { VALGRIND_CMD, CommandLineConstants.OPT_VERSION }, project);
-		try {
-			readIntoBuffer(out, p);
-			version = out.toString().trim();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		return version;
-	}
+    public String whichVersion(IProject project) throws IOException {
+        StringBuffer out = new StringBuffer();
+        String version = ""; //$NON-NLS-1$
+        Process p = RuntimeProcessFactory.getFactory().exec(new String[] { VALGRIND_CMD, CommandLineConstants.OPT_VERSION }, project);
+        try {
+            readIntoBuffer(out, p);
+            version = out.toString().trim();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
 
-	public void execute(String[] commandArray, Object env, File wd, boolean usePty, IProject project) throws IOException {
-		args = commandArray;
-		try {
-			process = startProcess(commandArray, env, wd, usePty, project);
-		} catch (IOException e) {
-			if (process != null) {
-				process.destroy();
-			}
-			throw e;
-		}
-	}
+    public void execute(String[] commandArray, Object env, File wd, boolean usePty, IProject project) throws IOException {
+        args = commandArray;
+        try {
+            process = startProcess(commandArray, env, wd, usePty, project);
+        } catch (IOException e) {
+            if (process != null) {
+                process.destroy();
+            }
+            throw e;
+        }
+    }
 
-	public Process getProcess() {
-		return process;
-	}
+    public Process getProcess() {
+        return process;
+    }
 
-	public String getCommandLine() {
-		StringBuffer ret = new StringBuffer();
-		for (String arg : args) {
-			ret.append(arg).append(" "); //$NON-NLS-1$
-		}
-		return ret.toString().trim();
-	}
+    public String getCommandLine() {
+        StringBuffer ret = new StringBuffer();
+        for (String arg : args) {
+            ret.append(arg).append(" "); //$NON-NLS-1$
+        }
+        return ret.toString().trim();
+    }
 
-	private Process startProcess(String[] commandArray, Object env, File workDir, boolean usePty, IProject project) throws IOException {
-		if (workDir == null) {
-			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, project);
-		}
-		if (PTY.isSupported() && usePty) {
-			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY(), project);
-		} else {
-			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, project);
-		}
-	}
+    private Process startProcess(String[] commandArray, Object env, File workDir, boolean usePty, IProject project) throws IOException {
+        if (workDir == null) {
+            return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, project);
+        }
+        if (PTY.isSupported() && usePty) {
+            return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY(), project);
+        } else {
+            return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, project);
+        }
+    }
 
-	private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
-		boolean success;
-		InputStream in, err, input;
-		if (p  == null ) {
-			throw new IOException("Null Process object: unabled to read input into buffer"); //$NON-NLS-1$
-		}
-		try {
-			//We need to get the inputs before calling waitFor
-			input = p.getInputStream();
-			err =  p.getErrorStream();
-			if (success = (p.waitFor() == 0)) {
-				in = input;
-			} else {
-				in = err;
-			}
-			int ch;
-			while ((ch = in.read()) != -1) {
-				out.append((char) ch);
-			}
-			if (!success) {
-				throw new IOException(out.toString());
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
+        boolean success;
+        InputStream in, err, input;
+        if (p  == null ) {
+            throw new IOException("Null Process object: unabled to read input into buffer"); //$NON-NLS-1$
+        }
+        try {
+            //We need to get the inputs before calling waitFor
+            input = p.getInputStream();
+            err =  p.getErrorStream();
+            if (success = (p.waitFor() == 0)) {
+                in = input;
+            } else {
+                in = err;
+            }
+            int ch;
+            while ((ch = in.read()) != -1) {
+                out.append((char) ch);
+            }
+            if (!success) {
+                throw new IOException(out.toString());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

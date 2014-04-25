@@ -18,47 +18,47 @@ import org.eclipse.core.runtime.Status;
 
 public class SystemTapTextParser extends SystemTapParser{
 
-	protected String contents;
+    protected String contents;
 
-	@Override
-	public IStatus nonRealTimeParsing() {
-		contents = Helper.readFile(sourcePath);
-		System.out.println(contents);
-		return Status.OK_STATUS;
-	}
+    @Override
+    public IStatus nonRealTimeParsing() {
+        contents = Helper.readFile(sourcePath);
+        System.out.println(contents);
+        return Status.OK_STATUS;
+    }
 
-	@Override
-	protected void initialize() {
-		// Empty
-	}
+    @Override
+    protected void initialize() {
+        // Empty
+    }
 
-	@Override
-	public IStatus realTimeParsing() {
-		if (!(internalData instanceof BufferedReader)) {
-			return Status.CANCEL_STATUS;
-		}
+    @Override
+    public IStatus realTimeParsing() {
+        if (!(internalData instanceof BufferedReader)) {
+            return Status.CANCEL_STATUS;
+        }
 
-		BufferedReader buff = (BufferedReader) internalData;
-		StringBuffer text = new StringBuffer();
+        BufferedReader buff = (BufferedReader) internalData;
+        StringBuffer text = new StringBuffer();
 
-		String line;
-		try {
-			while ((line = buff.readLine()) != null) {
-				if (monitor.isCanceled()) {
-					return Status.CANCEL_STATUS;
-				}
-				text.append(line + "\n"); //$NON-NLS-1$
-			}
-			setData(text.toString());
-			if (text.length() > 0) {
-				System.out.println(text.toString());
-			}
-			view.update();
-		} catch (IOException|InterruptedException e) {
-			e.printStackTrace();
-		}
+        String line;
+        try {
+            while ((line = buff.readLine()) != null) {
+                if (monitor.isCanceled()) {
+                    return Status.CANCEL_STATUS;
+                }
+                text.append(line + "\n"); //$NON-NLS-1$
+            }
+            setData(text.toString());
+            if (text.length() > 0) {
+                System.out.println(text.toString());
+            }
+            view.update();
+        } catch (IOException|InterruptedException e) {
+            e.printStackTrace();
+        }
 
-		return Status.OK_STATUS;
-	}
+        return Status.OK_STATUS;
+    }
 
 }

@@ -7,20 +7,20 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class ValgrindLaunchConfigurationTabGroup extends
-		ProfileLaunchConfigurationTabGroup {
+        ProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindOptionsTab()
-		};
-	}	
-	
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] {
+            new ValgrindOptionsTab()
+        };
+    }
+
 }

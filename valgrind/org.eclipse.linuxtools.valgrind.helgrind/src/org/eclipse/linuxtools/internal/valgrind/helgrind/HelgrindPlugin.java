@@ -17,8 +17,8 @@ package org.eclipse.linuxtools.internal.valgrind.helgrind;
  */
 public class HelgrindPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.helgrind"; //$NON-NLS-1$
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.helgrind"; //$NON-NLS-1$
 
-	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.helgrind"; //$NON-NLS-1$
+    public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.helgrind"; //$NON-NLS-1$
 }

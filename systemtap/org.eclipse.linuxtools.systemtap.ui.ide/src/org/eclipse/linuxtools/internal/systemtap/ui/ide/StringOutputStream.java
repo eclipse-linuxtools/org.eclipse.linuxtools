@@ -14,15 +14,15 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 import java.io.OutputStream;
 
 public class StringOutputStream extends OutputStream {
-	private StringBuffer str = new StringBuffer();
+    private StringBuffer str = new StringBuffer();
 
-	@Override
-	public String toString() {
-		return str.toString();
-	}
+    @Override
+    public String toString() {
+        return str.toString();
+    }
 
-	@Override
-	public void write(int b) {
-		str.append((char)b);
-	}
+    @Override
+    public void write(int b) {
+        str.append((char)b);
+    }
 }

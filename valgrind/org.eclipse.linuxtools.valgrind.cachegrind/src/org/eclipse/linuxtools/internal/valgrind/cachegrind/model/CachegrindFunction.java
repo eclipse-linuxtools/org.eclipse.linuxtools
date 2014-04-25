@@ -24,121 +24,121 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class CachegrindFunction implements ICachegrindElement {
-	private CachegrindFile parent;
-	private String name;
-	private List<CachegrindLine> lines;
-	private long[] totals;
+    private CachegrindFile parent;
+    private String name;
+    private List<CachegrindLine> lines;
+    private long[] totals;
 
-	private IAdaptable model;
+    private IAdaptable model;
 
-	private static final String SCOPE_RESOLUTION = "::"; //$NON-NLS-1$
+    private static final String SCOPE_RESOLUTION = "::"; //$NON-NLS-1$
 
-	public CachegrindFunction(CachegrindFile parent, String name) {
-		this.parent = parent;
-		this.name = name;
-		lines = new ArrayList<>();
+    public CachegrindFunction(CachegrindFile parent, String name) {
+        this.parent = parent;
+        this.name = name;
+        lines = new ArrayList<>();
 
-		IAdaptable pModel = parent.getModel();
-		if (pModel instanceof ICElement) {
-			ICElement element = (ICElement) pModel;
-			try {
-				if (element instanceof ITranslationUnit) {
-					// Cachegrind labels parameter types for C++ methods
-					int paramIndex = name.indexOf('(');
-					if (paramIndex >= 0) {
-						name = name.substring(0, paramIndex);
-					}
+        IAdaptable pModel = parent.getModel();
+        if (pModel instanceof ICElement) {
+            ICElement element = (ICElement) pModel;
+            try {
+                if (element instanceof ITranslationUnit) {
+                    // Cachegrind labels parameter types for C++ methods
+                    int paramIndex = name.indexOf('(');
+                    if (paramIndex >= 0) {
+                        name = name.substring(0, paramIndex);
+                    }
 
-					model = findElement(name, (IParent) element);
-					if (model == null) {
-						while (name.contains(SCOPE_RESOLUTION)) {
-							String[] parts = name.split(SCOPE_RESOLUTION, 2);
-							String structureName = parts[0];
-							name = parts[1];
+                    model = findElement(name, (IParent) element);
+                    if (model == null) {
+                        while (name.contains(SCOPE_RESOLUTION)) {
+                            String[] parts = name.split(SCOPE_RESOLUTION, 2);
+                            String structureName = parts[0];
+                            name = parts[1];
 
-							List<ICElement> dom = ((IParent) element).getChildrenOfType(ICElement.C_CLASS);
-							dom.addAll(((IParent) element).getChildrenOfType(ICElement.C_STRUCT));
-							dom.addAll(((IParent) element).getChildrenOfType(ICElement.C_UNION));
-							for (int i = 0; i < dom.size(); i++) {
-								ICElement e = dom.get(i);
-								if (e instanceof IStructure && e.getElementName().equals(structureName)) {
-									element = e;
-								}
-							}
-						}
-						model = findElement(name, (IParent) element);
-					}
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+                            List<ICElement> dom = ((IParent) element).getChildrenOfType(ICElement.C_CLASS);
+                            dom.addAll(((IParent) element).getChildrenOfType(ICElement.C_STRUCT));
+                            dom.addAll(((IParent) element).getChildrenOfType(ICElement.C_UNION));
+                            for (int i = 0; i < dom.size(); i++) {
+                                ICElement e = dom.get(i);
+                                if (e instanceof IStructure && e.getElementName().equals(structureName)) {
+                                    element = e;
+                                }
+                            }
+                        }
+                        model = findElement(name, (IParent) element);
+                    }
+                }
+            } catch (CoreException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	private ICElement findElement(String name, IParent parent)
-	throws CModelException {
-		ICElement element = null;
-		List<ICElement> dom = parent.getChildrenOfType(ICElement.C_FUNCTION);
-		dom.addAll(parent.getChildrenOfType(ICElement.C_METHOD));
-		for (int i = 0; i < dom.size(); i++) {
-			ICElement func = dom.get(i);
-			if ((func instanceof IFunction || func instanceof IMethod) && func.getElementName().equals(name)) {
-				element = func;
-			}
-		}
-		return element;
-	}
+    private ICElement findElement(String name, IParent parent)
+    throws CModelException {
+        ICElement element = null;
+        List<ICElement> dom = parent.getChildrenOfType(ICElement.C_FUNCTION);
+        dom.addAll(parent.getChildrenOfType(ICElement.C_METHOD));
+        for (int i = 0; i < dom.size(); i++) {
+            ICElement func = dom.get(i);
+            if ((func instanceof IFunction || func instanceof IMethod) && func.getElementName().equals(name)) {
+                element = func;
+            }
+        }
+        return element;
+    }
 
-	public void addLine(CachegrindLine line) {
-		long[] values = line.getValues();
-		if (totals == null) {
-			totals = new long[values.length];
-		}
-		for (int i = 0; i < values.length; i++) {
-			totals[i] += values[i];
-		}
-		lines.add(line);
-	}
+    public void addLine(CachegrindLine line) {
+        long[] values = line.getValues();
+        if (totals == null) {
+            totals = new long[values.length];
+        }
+        for (int i = 0; i < values.length; i++) {
+            totals[i] += values[i];
+        }
+        lines.add(line);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public IAdaptable getModel() {
-		return model;
-	}
+    @Override
+    public IAdaptable getModel() {
+        return model;
+    }
 
-	public long[] getTotals() {
-		return totals;
-	}
+    public long[] getTotals() {
+        return totals;
+    }
 
-	public CachegrindLine[] getLines() {
-		return lines.toArray(new CachegrindLine[lines.size()]);
-	}
+    public CachegrindLine[] getLines() {
+        return lines.toArray(new CachegrindLine[lines.size()]);
+    }
 
-	@Override
-	public ICachegrindElement[] getChildren() {
-		ICachegrindElement[] children = null;
-		// if there is only a summary don't return any children
-		if (lines.get(0).getLine() > 0) {
-			children = getLines();
-		}
-		return children;
-	}
+    @Override
+    public ICachegrindElement[] getChildren() {
+        ICachegrindElement[] children = null;
+        // if there is only a summary don't return any children
+        if (lines.get(0).getLine() > 0) {
+            children = getLines();
+        }
+        return children;
+    }
 
-	@Override
-	public ICachegrindElement getParent() {
-		return parent;
-	}
-	
-	@Override
-	public int compareTo(ICachegrindElement o) {
-		int result = 0;
-		if (o instanceof CachegrindFunction) {
-			result = name.compareTo(((CachegrindFunction) o).getName());
-		}
-		return result;
-	}
+    @Override
+    public ICachegrindElement getParent() {
+        return parent;
+    }
+
+    @Override
+    public int compareTo(ICachegrindElement o) {
+        int result = 0;
+        if (o instanceof CachegrindFunction) {
+            result = name.compareTo(((CachegrindFunction) o).getName());
+        }
+        return result;
+    }
 
 }

@@ -22,34 +22,34 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 public class RpmSectionPage extends FormPage {
-	private String rpmSection;
-	private SpecfileSection section;
+    private String rpmSection;
+    private SpecfileSection section;
 
-	public RpmSectionPage(SpecfileFormEditor editor, Specfile specfile,
-			String rpmSection) {
-		super(editor, rpmSection, rpmSection);
-		this.rpmSection = rpmSection;
-		this.section = specfile.getSection(rpmSection.substring(1));
-	}
+    public RpmSectionPage(SpecfileFormEditor editor, Specfile specfile,
+            String rpmSection) {
+        super(editor, rpmSection, rpmSection);
+        this.rpmSection = rpmSection;
+        this.section = specfile.getSection(rpmSection.substring(1));
+    }
 
-	@Override
-	protected void createFormContent(IManagedForm managedForm) {
-		super.createFormContent(managedForm);
-		FormToolkit toolkit = managedForm.getToolkit();
-		ScrolledForm form = managedForm.getForm();
-		form.setText(rpmSection);
-		GridLayout layout = new GridLayout();
+    @Override
+    protected void createFormContent(IManagedForm managedForm) {
+        super.createFormContent(managedForm);
+        FormToolkit toolkit = managedForm.getToolkit();
+        ScrolledForm form = managedForm.getForm();
+        form.setText(rpmSection);
+        GridLayout layout = new GridLayout();
 
-		form.getBody().setLayout(layout);
-		layout.numColumns = 2;
-		toolkit.createLabel(form.getBody(), rpmSection);
-		final Text text = toolkit.createText(form.getBody(), section.getContents(),
-				SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
-		GridData gd = new GridData();
-		gd.grabExcessHorizontalSpace = true;
-		gd.grabExcessVerticalSpace = true;
-		gd.horizontalAlignment = SWT.FILL;
-		gd.verticalAlignment = SWT.FILL;
-		text.setLayoutData(gd);
-	}
+        form.getBody().setLayout(layout);
+        layout.numColumns = 2;
+        toolkit.createLabel(form.getBody(), rpmSection);
+        final Text text = toolkit.createText(form.getBody(), section.getContents(),
+                SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
+        GridData gd = new GridData();
+        gd.grabExcessHorizontalSpace = true;
+        gd.grabExcessVerticalSpace = true;
+        gd.horizontalAlignment = SWT.FILL;
+        gd.verticalAlignment = SWT.FILL;
+        text.setLayoutData(gd);
+    }
 }

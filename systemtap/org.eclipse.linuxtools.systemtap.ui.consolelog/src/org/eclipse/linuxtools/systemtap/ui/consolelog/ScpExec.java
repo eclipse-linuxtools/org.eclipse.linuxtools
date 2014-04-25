@@ -30,83 +30,83 @@ import com.jcraft.jsch.JSchException;
 
 public class ScpExec extends Command {
 
-	private Channel channel;
-	private RemoteScriptOptions remoteOptions;
+    private Channel channel;
+    private RemoteScriptOptions remoteOptions;
 
-	/**
-	 * @since 3.0
-	 */
-	public ScpExec(String cmds[], RemoteScriptOptions remoteOptions) {
-		super(cmds, null);
-		this.command = ""; //$NON-NLS-1$
-		for (String cmd:cmds) {
-			this.command = this.command + " " + cmd; //$NON-NLS-1$
-		}
-		this.remoteOptions = remoteOptions;
-	}
+    /**
+     * @since 3.0
+     */
+    public ScpExec(String cmds[], RemoteScriptOptions remoteOptions) {
+        super(cmds, null);
+        this.command = ""; //$NON-NLS-1$
+        for (String cmd:cmds) {
+            this.command = this.command + " " + cmd; //$NON-NLS-1$
+        }
+        this.remoteOptions = remoteOptions;
+    }
 
-	@Override
-	protected IStatus init() {
-		try {
-			channel = SystemtapProcessFactory.execRemote(
-					new String[] { command }, System.out, System.err, remoteOptions.getUserName(), remoteOptions.getHostName(), remoteOptions.getPassword());
+    @Override
+    protected IStatus init() {
+        try {
+            channel = SystemtapProcessFactory.execRemote(
+                    new String[] { command }, System.out, System.err, remoteOptions.getUserName(), remoteOptions.getHostName(), remoteOptions.getPassword());
 
-			errorGobbler = new StreamGobbler(channel.getExtInputStream());
-			inputGobbler = new StreamGobbler(channel.getInputStream());
+            errorGobbler = new StreamGobbler(channel.getExtInputStream());
+            inputGobbler = new StreamGobbler(channel.getInputStream());
 
-			this.transferListeners();
-			return Status.OK_STATUS;
-		} catch (final JSchException|IOException e) {
-			final IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.ScpExec_Error, e.getMessage(), status);
-				}
-			});
-			return status;
-		}
-	}
+            this.transferListeners();
+            return Status.OK_STATUS;
+        } catch (final JSchException|IOException e) {
+            final IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
+            Display.getDefault().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.ScpExec_Error, e.getMessage(), status);
+                }
+            });
+            return status;
+        }
+    }
 
-	@Override
-	public void run() {
-		try {
-			channel.connect();
+    @Override
+    public void run() {
+        try {
+            channel.connect();
 
-			errorGobbler.start();
-			inputGobbler.start();
+            errorGobbler.start();
+            inputGobbler.start();
 
-			while (!stopped) {
-				if (channel.isClosed() || (channel.getExitStatus() != -1)) {
-					stop();
-					break;
-				}
-			}
+            while (!stopped) {
+                if (channel.isClosed() || (channel.getExitStatus() != -1)) {
+                    stop();
+                    break;
+                }
+            }
 
-		} catch (JSchException e) {
-			ExceptionErrorDialog.openError(Messages.ScpExec_errorConnectingToServer, e);
-		}
-	}
+        } catch (JSchException e) {
+            ExceptionErrorDialog.openError(Messages.ScpExec_errorConnectingToServer, e);
+        }
+    }
 
     /* Stops the process from running and stops the <code>StreamGobblers</code> from monitoring
-	 * the dead process.
-	 */
-	@Override
-	public synchronized void stop() {
-		if(!stopped) {
-			if(null != errorGobbler) {
-				errorGobbler.stop();
-			}
-			if(null != inputGobbler) {
-				inputGobbler.stop();
-			}
-			if (channel != null) {
-				channel.disconnect();
-			}
+     * the dead process.
+     */
+    @Override
+    public synchronized void stop() {
+        if(!stopped) {
+            if(null != errorGobbler) {
+                errorGobbler.stop();
+            }
+            if(null != inputGobbler) {
+                inputGobbler.stop();
+            }
+            if (channel != null) {
+                channel.disconnect();
+            }
             stopped = true;
             notifyAll();
-		}
-	}
+        }
+    }
 
    private String command;
 

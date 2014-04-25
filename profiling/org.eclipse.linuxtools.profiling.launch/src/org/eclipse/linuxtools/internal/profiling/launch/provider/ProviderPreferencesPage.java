@@ -20,31 +20,31 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
 public class ProviderPreferencesPage extends FieldEditorPreferencePage
-		implements IWorkbenchPreferencePage {
+        implements IWorkbenchPreferencePage {
 
-	@Override
-	public void init(IWorkbench workbench) {
-		setDescription(Messages.ProviderPreferencesPage_0);
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+        setDescription(Messages.ProviderPreferencesPage_0);
+    }
 
-	@Override
-	protected void createFieldEditors() {
-		// Content for global profiling provider preferences.
-	}
+    @Override
+    protected void createFieldEditors() {
+        // Content for global profiling provider preferences.
+    }
 
-	@Override
-	protected Control createContents(Composite parent) {
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
-		return super.createContents(parent);
-	}
+    @Override
+    protected Control createContents(Composite parent) {
+        PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());
+        return super.createContents(parent);
+    }
 
-	/**
-	 * Return the help context id to use if the help button is pushed.
-	 *
-	 * @return the help context id
-	 */
-	private String getHelpContextId() {
-		return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
-	}
+    /**
+     * Return the help context id to use if the help button is pushed.
+     *
+     * @return the help context id
+     */
+    private String getHelpContextId() {
+        return ProviderProfileConstants.PLUGIN_ID + ".profiling_categories";  //$NON-NLS-1$
+    }
 
 }

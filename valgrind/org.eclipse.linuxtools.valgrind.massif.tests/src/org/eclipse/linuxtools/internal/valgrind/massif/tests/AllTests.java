@@ -15,8 +15,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ DoubleClickTest.class, ChartTests.class, TreeTest.class,
-		BasicMassifTest.class, LaunchConfigTabTest.class,
-		ExportWizardTest.class, MultiProcessTest.class,
-		ExpandCollapseTest.class, SortTest.class, ChartExportTest.class, ShortcutTest.class })
+        BasicMassifTest.class, LaunchConfigTabTest.class,
+        ExportWizardTest.class, MultiProcessTest.class,
+        ExpandCollapseTest.class, SortTest.class, ChartExportTest.class, ShortcutTest.class })
 public class AllTests {
 }

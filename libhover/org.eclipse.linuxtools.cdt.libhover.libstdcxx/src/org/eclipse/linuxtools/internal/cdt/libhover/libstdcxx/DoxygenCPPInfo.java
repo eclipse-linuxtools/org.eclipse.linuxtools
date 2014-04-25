@@ -223,7 +223,7 @@ public class DoxygenCPPInfo {
                                     } else {
                                         // We probably have a template that needs resolution
                                         String baseClassName = n2.getTextContent();
-//										System.out.println("base class name is " + baseClassName);
+//                                        System.out.println("base class name is " + baseClassName);
                                         baseClass = getClassInfo(baseClassName);
                                     }
                                     if (d != null && baseClass != null)
@@ -492,7 +492,7 @@ public class DoxygenCPPInfo {
      * Create LibHoverInfo serialized output
      *
      * @param args (args[0] = location of Doxygen xml document to parse (file or URL),
-     * 				args[1] = name of file to put serialized LibHoverInfo
+     *                 args[1] = name of file to put serialized LibHoverInfo
      */
     public static void main(String[] args) {
         URI acDoc;

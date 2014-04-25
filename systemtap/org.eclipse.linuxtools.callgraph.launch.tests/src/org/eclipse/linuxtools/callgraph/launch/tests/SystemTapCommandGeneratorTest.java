@@ -20,56 +20,56 @@ import org.junit.Test;
 
 public class SystemTapCommandGeneratorTest extends AbstractStapTest {
 
-	// HACK TO GET THE PATH TO THE TESTING PROJECT
-	File file = new File("");
-	private String location = file.getAbsolutePath() + "/";
-	SystemTapCommandGenerator stapgen = new SystemTapCommandGenerator();
+    // HACK TO GET THE PATH TO THE TESTING PROJECT
+    File file = new File("");
+    private String location = file.getAbsolutePath() + "/";
+    SystemTapCommandGenerator stapgen = new SystemTapCommandGenerator();
 
-	@Test
-	public void testExecutionWithScriptAndBinaryAndArgument() {
+    @Test
+    public void testExecutionWithScriptAndBinaryAndArgument() {
 
-		String binaryFilePath = location + "factorial";
-		String scriptPath = location + "function_count.stp";
+        String binaryFilePath = location + "factorial";
+        String scriptPath = location + "function_count.stp";
 
-		// RUN
-		String cmd = SystemTapCommandGenerator.generateCommand(scriptPath,
-				binaryFilePath, "", true, true, binaryFilePath, "",
-				PluginConstants.STAP_PATH);
+        // RUN
+        String cmd = SystemTapCommandGenerator.generateCommand(scriptPath,
+                binaryFilePath, "", true, true, binaryFilePath, "",
+                PluginConstants.STAP_PATH);
 
-		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath
-				+ " --runtime=dyninst " + binaryFilePath, cmd);
-		killStap();
-		// END
-	}
+        assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath
+                + " --runtime=dyninst " + binaryFilePath, cmd);
+        killStap();
+        // END
+    }
 
-	@Test
-	public void testScriptExecution() {
+    @Test
+    public void testScriptExecution() {
 
-		String scriptPath = location + "simple.stp";
+        String scriptPath = location + "simple.stp";
 
-		// RUN
-		String cmd = SystemTapCommandGenerator.generateCommand(scriptPath, "",
-				"", false, false, "", "", PluginConstants.STAP_PATH);
+        // RUN
+        String cmd = SystemTapCommandGenerator.generateCommand(scriptPath, "",
+                "", false, false, "", "", PluginConstants.STAP_PATH);
 
-		assertEquals("stap " + scriptPath, cmd);
-		// END
-	}
+        assertEquals("stap " + scriptPath, cmd);
+        // END
+    }
 
-	@Test
-	public void testExecutionWithScriptAndBinary() {
+    @Test
+    public void testExecutionWithScriptAndBinary() {
 
-		// RUN
-		String binaryFilePath = location + "factorial";
-		String scriptPath = location + "allsyscall.stp";
+        // RUN
+        String binaryFilePath = location + "factorial";
+        String scriptPath = location + "allsyscall.stp";
 
-		String cmd = SystemTapCommandGenerator.generateCommand(scriptPath,
-				binaryFilePath, "", true, false, "", "",
-				PluginConstants.STAP_PATH);
+        String cmd = SystemTapCommandGenerator.generateCommand(scriptPath,
+                binaryFilePath, "", true, false, "", "",
+                PluginConstants.STAP_PATH);
 
-		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, cmd);
-		// END
+        assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, cmd);
+        // END
 
-		killStap();
-	}
+        killStap();
+    }
 
 }

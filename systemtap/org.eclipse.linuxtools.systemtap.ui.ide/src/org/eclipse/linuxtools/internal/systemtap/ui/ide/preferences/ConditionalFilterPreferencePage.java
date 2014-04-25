@@ -20,19 +20,19 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 public class ConditionalFilterPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-	public ConditionalFilterPreferencePage() {
-		super(GRID);
-		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription(Localization.getString("ConditionalFilterPreferencePage.ConditiionalFilterSelector")); //$NON-NLS-1$
-	}
-	
-	@Override
-	public void createFieldEditors() {
-		addField(new ListEditor(IDEPreferenceConstants.P_CONDITIONAL_FILTERS,
-				Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
+    public ConditionalFilterPreferencePage() {
+        super(GRID);
+        setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
+        setDescription(Localization.getString("ConditionalFilterPreferencePage.ConditiionalFilterSelector")); //$NON-NLS-1$
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    @Override
+    public void createFieldEditors() {
+        addField(new ListEditor(IDEPreferenceConstants.P_CONDITIONAL_FILTERS,
+                Localization.getString("ConditionalFilterPreferencePage.ConditionalFilters"), Localization.getString("ConditionalFilterPreferencePage.NewFilter"), "if()", new ConditionalExpressionValidator(), getFieldEditorParent())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 }

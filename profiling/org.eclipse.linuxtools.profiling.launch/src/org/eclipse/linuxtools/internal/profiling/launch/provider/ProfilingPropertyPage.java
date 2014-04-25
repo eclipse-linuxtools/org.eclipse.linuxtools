@@ -14,12 +14,12 @@ import org.eclipse.cdt.ui.newui.AbstractPage;
 
 public class ProfilingPropertyPage extends AbstractPage {
 
-	@Override
-	protected boolean showsConfig() { return false;	}
-	
-	@Override
-	protected boolean isSingle() {
-		return false;
-	}
+    @Override
+    protected boolean showsConfig() { return false;    }
+
+    @Override
+    protected boolean isSingle() {
+        return false;
+    }
 
 }

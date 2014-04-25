@@ -34,38 +34,38 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.TreeExpandCollapseAction
  */
 public class FunctionBrowserAction extends BrowserViewAction {
-	private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction"; //$NON-NLS-1$
+    private static final String ID = "org.eclipse.linuxtools.systemtap.ui.ide.FunctionAction"; //$NON-NLS-1$
 
-	public FunctionBrowserAction(IWorkbenchWindow window, FunctionBrowserView browser) {
-		super(window, browser);
-		setId(ID);
-		setActionDefinitionId(ID);
-		setText(Localization.getString("FunctionBrowserAction.Insert")); //$NON-NLS-1$
-		setToolTipText(Localization
-				.getString("FunctionBrowserAction.InsertFunction")); //$NON-NLS-1$
-	}
+    public FunctionBrowserAction(IWorkbenchWindow window, FunctionBrowserView browser) {
+        super(window, browser);
+        setId(ID);
+        setActionDefinitionId(ID);
+        setText(Localization.getString("FunctionBrowserAction.Insert")); //$NON-NLS-1$
+        setToolTipText(Localization
+                .getString("FunctionBrowserAction.InsertFunction")); //$NON-NLS-1$
+    }
 
-	/**
-	 * The main action code, invoked when this action is fired. This code checks the current
-	 * selection's clickable property, and either invokes the <code>TreeExpandCollapseAction</code> if
-	 * the selection is not clickable (i.e. the selection is not a function, but a category of functions),
-	 * or it inserts text for a function call to the selected function in the active STPEditor
-	 * (creating a new editor if there is not one currently open).
-	 */
-	@Override
-	public void run() {
-		Object o = getSelectedElement();
-		if (o instanceof TreeNode) {
-			TreeNode t = (TreeNode) o;
-			if (t.isClickable()) {
-				STPEditor stpeditor = IDESessionSettings.getOrAskForActiveSTPEditor(true);
-				if (stpeditor != null) {
-					stpeditor.insertTextAtCurrent(t.toString() + "\n"); //$NON-NLS-1$
-				}
-			} else {
-				runExpandAction();
-			}
-		}
-	}
+    /**
+     * The main action code, invoked when this action is fired. This code checks the current
+     * selection's clickable property, and either invokes the <code>TreeExpandCollapseAction</code> if
+     * the selection is not clickable (i.e. the selection is not a function, but a category of functions),
+     * or it inserts text for a function call to the selected function in the active STPEditor
+     * (creating a new editor if there is not one currently open).
+     */
+    @Override
+    public void run() {
+        Object o = getSelectedElement();
+        if (o instanceof TreeNode) {
+            TreeNode t = (TreeNode) o;
+            if (t.isClickable()) {
+                STPEditor stpeditor = IDESessionSettings.getOrAskForActiveSTPEditor(true);
+                if (stpeditor != null) {
+                    stpeditor.insertTextAtCurrent(t.toString() + "\n"); //$NON-NLS-1$
+                }
+            } else {
+                runExpandAction();
+            }
+        }
+    }
 
 }

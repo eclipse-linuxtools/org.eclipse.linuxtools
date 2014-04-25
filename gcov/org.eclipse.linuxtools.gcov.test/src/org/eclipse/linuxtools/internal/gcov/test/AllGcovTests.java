@@ -5,9 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	GcovTestC.class,
-	GcovTestCPP.class,
-	GcovTestCLibrary.class
+    GcovTestC.class,
+    GcovTestCPP.class,
+    GcovTestCLibrary.class
 })
 public class AllGcovTests {
 

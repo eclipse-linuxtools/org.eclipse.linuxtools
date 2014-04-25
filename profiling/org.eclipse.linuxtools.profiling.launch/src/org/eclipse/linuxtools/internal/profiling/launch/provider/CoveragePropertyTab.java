@@ -13,18 +13,18 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider;
 
 public class CoveragePropertyTab extends AbstractProviderPropertyTab {
 
-	public CoveragePropertyTab() {
-		super();
-	}
+    public CoveragePropertyTab() {
+        super();
+    }
 
-	@Override
-	protected String getType() {
-		return "coverage"; //$NON-NLS-1$
-	}
-	
-	@Override
-	protected String getPrefPageId() {
-		return "org.eclipse.linuxtools.profiling.provider.CoveragePreferencePage"; //$NON-NLS-1$
-	}
+    @Override
+    protected String getType() {
+        return "coverage"; //$NON-NLS-1$
+    }
+
+    @Override
+    protected String getPrefPageId() {
+        return "org.eclipse.linuxtools.profiling.provider.CoveragePreferencePage"; //$NON-NLS-1$
+    }
 
 }

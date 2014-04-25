@@ -60,13 +60,13 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
     }
 
     @Override
-	protected void configureShell(Shell newShell) {
+    protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(STDataViewersMessages.hideshowDialog_title);
     }
 
     @Override
-	protected Control createDialogArea(Composite parent) {
+    protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
         GridData layoutData = new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1);
         composite.setLayoutData(layoutData);
@@ -84,12 +84,12 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         selectAllButton.setText(STDataViewersMessages.selectAll_text);
         selectAllButton.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 dirty = true;
                 checkButtonsTable.setAllChecked(true);
             }
@@ -101,12 +101,12 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         deselectAllButton.setText(STDataViewersMessages.deselectAll_text);
         deselectAllButton.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 dirty = true;
                 checkButtonsTable.setAllChecked(false);
             }
@@ -132,7 +132,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
 
     private ICheckStateListener checkStateListener = new ICheckStateListener() {
         @Override
-		public void checkStateChanged(CheckStateChangedEvent event) {
+        public void checkStateChanged(CheckStateChangedEvent event) {
             dirty = true;
         }
     };
@@ -158,7 +158,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
 
         tableViewer.setContentProvider(new IStructuredContentProvider() {
             @Override
-			public Object[] getElements(Object inputElement) {
+            public Object[] getElements(Object inputElement) {
                 if (inputElement instanceof Item[]) {
                     Item[] columns = (Item[]) inputElement;
                     int[] order = stViewer.getColumnOrder();
@@ -175,17 +175,17 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
             }
 
             @Override
-			public void dispose() {
+            public void dispose() {
             }
 
             @Override
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             }
         });
 
         tableViewer.setLabelProvider(new LabelProvider() {
             @Override
-			public String getText(Object element) {
+            public String getText(Object element) {
                 if (element instanceof Item) {
                     Item column = (Item) element;
 

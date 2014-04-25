@@ -29,35 +29,35 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
  */
 public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 
-	private Specfile specfile;
-	
-	/*
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion, boolean)
-	 */
-	@Override
-	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
-		if (specfile == null) {
-			SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
-			if (a != null) {
-				specfile = a.getSpecfile();
-			} else {
-				return null;
-			}
-		}
-		IHyperlink[] returned = super.detectHyperlinks(textViewer, region, canShowMultipleHyperlinks);
-		if (returned != null && returned.length > 0) {
-		IHyperlink hyperlink = returned[0];
-			if (hyperlink instanceof URLHyperlink) {
-				URLHyperlink urlHyperlink = (URLHyperlink) hyperlink;
-				String newURLString = UiUtils.resolveDefines(specfile, urlHyperlink.getURLString());
-				return new IHyperlink[] {new URLHyperlink(urlHyperlink.getHyperlinkRegion(), newURLString)};
-			}
-		}
-		return returned;
-	}
-	
-	public void setSpecfile(Specfile specfile) {
-		this.specfile = specfile;
-	}
+    private Specfile specfile;
+
+    /*
+     * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion, boolean)
+     */
+    @Override
+    public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
+        if (specfile == null) {
+            SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+            if (a != null) {
+                specfile = a.getSpecfile();
+            } else {
+                return null;
+            }
+        }
+        IHyperlink[] returned = super.detectHyperlinks(textViewer, region, canShowMultipleHyperlinks);
+        if (returned != null && returned.length > 0) {
+        IHyperlink hyperlink = returned[0];
+            if (hyperlink instanceof URLHyperlink) {
+                URLHyperlink urlHyperlink = (URLHyperlink) hyperlink;
+                String newURLString = UiUtils.resolveDefines(specfile, urlHyperlink.getURLString());
+                return new IHyperlink[] {new URLHyperlink(urlHyperlink.getHyperlinkRegion(), newURLString)};
+            }
+        }
+        return returned;
+    }
+
+    public void setSpecfile(Specfile specfile) {
+        this.specfile = specfile;
+    }
 
 }

@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="Linux_Tools_Project/GCov/User_Guide/User-Guide.html" label="GCov User Guide">
-	<topic href="Linux_Tools_Project/GCov/User_Guide/User-Guide.html" label="GCov Plug-in User Guide">
-		<topic href="Linux_Tools_Project/GCov/User_Guide/User-Guide.html" label="Overview"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Installation-and-Set-Up.html" label="Installation and Set-Up"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Opening-gcov-result.html" label="Opening gcov result"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Profiling-Code-Coverage.html" label="Profiling Code Coverage"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Gcov-main-view.html" label="Gcov main view"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Troubleshooting.html" label="Troubleshooting"></topic>
-		<topic href="Linux_Tools_Project/GCov/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
-	</topic>
+    <topic href="Linux_Tools_Project/GCov/User_Guide/User-Guide.html" label="GCov Plug-in User Guide">
+        <topic href="Linux_Tools_Project/GCov/User_Guide/User-Guide.html" label="Overview"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Installation-and-Set-Up.html" label="Installation and Set-Up"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Opening-gcov-result.html" label="Opening gcov result"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Profiling-Code-Coverage.html" label="Profiling Code Coverage"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Gcov-main-view.html" label="Gcov main view"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Troubleshooting.html" label="Troubleshooting"></topic>
+        <topic href="Linux_Tools_Project/GCov/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
+    </topic>
 </toc>

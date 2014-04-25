@@ -26,24 +26,24 @@ import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.Preferen
 
 public class DevHelpContentProducer implements IHelpContentProducer {
 
-	@Override
-	public InputStream getInputStream(String pluginID, String href,
-			Locale locale) {
-		// Eclipse help system adds parameters to the href but this breaks our path creation so we just strip them.
-		if (href.contains("?")) { //$NON-NLS-1$
-			href = href.substring(0, href.indexOf('?'));
-		}
-		IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
-		IPath devhelpLocation = new Path(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY)).append(href);
-		IFileSystem fs = EFS.getLocalFileSystem();
-		IFileStore localLocation = fs.getStore(devhelpLocation);
-		InputStream stream = null;
-		try {
-			stream = localLocation.openInputStream(EFS.NONE, new NullProgressMonitor());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return stream;
-	}
+    @Override
+    public InputStream getInputStream(String pluginID, String href,
+            Locale locale) {
+        // Eclipse help system adds parameters to the href but this breaks our path creation so we just strip them.
+        if (href.contains("?")) { //$NON-NLS-1$
+            href = href.substring(0, href.indexOf('?'));
+        }
+        IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
+        IPath devhelpLocation = new Path(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY)).append(href);
+        IFileSystem fs = EFS.getLocalFileSystem();
+        IFileStore localLocation = fs.getStore(devhelpLocation);
+        InputStream stream = null;
+        try {
+            stream = localLocation.openInputStream(EFS.NONE, new NullProgressMonitor());
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+        return stream;
+    }
 
 }

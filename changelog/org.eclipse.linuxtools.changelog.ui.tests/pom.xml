@@ -36,7 +36,7 @@
           </excludes>
           <testSuite>org.eclipse.linuxtools.changelog.ui.tests</testSuite>
           <testClass>org.eclipse.linuxtools.changelog.ui.tests.swtbot.AllSWTBotTests</testClass>
-       	  <useUIHarness>true</useUIHarness>
+             <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
           <product>org.eclipse.platform.ide</product>
           <surefire.timeout>1800</surefire.timeout>

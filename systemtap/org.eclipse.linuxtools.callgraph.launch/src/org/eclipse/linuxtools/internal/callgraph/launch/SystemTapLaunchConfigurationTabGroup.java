@@ -26,18 +26,18 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGrou
  */
 public class SystemTapLaunchConfigurationTabGroup extends ProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] {
-				new SystemTapOptionsTab()
-			};
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] {
+                new SystemTapOptionsTab()
+            };
+    }
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
+    @Override
+    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+        ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
 
-		tabs.addAll(Arrays.asList(getProfileTabs()));
-		setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
-	}
+        tabs.addAll(Arrays.asList(getProfileTabs()));
+        setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
+    }
 }

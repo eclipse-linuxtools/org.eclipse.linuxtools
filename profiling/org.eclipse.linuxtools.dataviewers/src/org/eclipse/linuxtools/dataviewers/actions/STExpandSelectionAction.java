@@ -45,7 +45,7 @@ public class STExpandSelectionAction extends Action {
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override
-	public void run() {
+    public void run() {
         TreeSelection selection = (TreeSelection) stViewer.getViewer().getSelection();
         if (selection != null && selection != TreeSelection.EMPTY) {
             for (Iterator<?> itSel = selection.iterator(); itSel.hasNext();) {

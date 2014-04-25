@@ -19,27 +19,27 @@ import java.util.ResourceBundle;
  */
 public final class Messages {
 
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.changelog.core.strings"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.changelog.core.strings"; //$NON-NLS-1$
 
-	private static final ResourceBundle RESOURCE_BUNDLE =
-		ResourceBundle.getBundle(BUNDLE_NAME);
+    private static final ResourceBundle RESOURCE_BUNDLE =
+        ResourceBundle.getBundle(BUNDLE_NAME);
 
-	/**
-	 * 
-	 */
-	private Messages() {
-		// It shouldn't be instantiated.
-	}
-	/**
-	 * Returns the message for the given key.
-	 * @param key The key of the message looking for.
-	 * @return The found message or "!key!" if no such key.
-	 */
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
+    /**
+     *
+     */
+    private Messages() {
+        // It shouldn't be instantiated.
+    }
+    /**
+     * Returns the message for the given key.
+     * @param key The key of the message looking for.
+     * @return The found message or "!key!" if no such key.
+     */
+    public static String getString(String key) {
+        try {
+            return RESOURCE_BUNDLE.getString(key);
+        } catch (MissingResourceException e) {
+            return '!' + key + '!';
+        }
+    }
 }

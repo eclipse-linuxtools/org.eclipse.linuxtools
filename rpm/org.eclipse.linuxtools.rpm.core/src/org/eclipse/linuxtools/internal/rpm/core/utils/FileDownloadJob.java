@@ -30,42 +30,42 @@ import org.eclipse.osgi.util.NLS;
  *
  */
 public class FileDownloadJob extends Job {
-	private File file;
-	private URLConnection content;
+    private File file;
+    private URLConnection content;
 
-	/**
-	 * Creates the download job.
-	 * @param file The file to store the remote content.
-	 * @param content The URLConnection to the remote file.
-	 */
-	public FileDownloadJob(File file, URLConnection content) {
-		super(NLS.bind(Messages.DownloadJob_0, file.getName()));
-		this.file = file;
-		this.content = content;
-	}
+    /**
+     * Creates the download job.
+     * @param file The file to store the remote content.
+     * @param content The URLConnection to the remote file.
+     */
+    public FileDownloadJob(File file, URLConnection content) {
+        super(NLS.bind(Messages.DownloadJob_0, file.getName()));
+        this.file = file;
+        this.content = content;
+    }
 
-	@Override
-	public IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()),
-				content.getContentLength());
-		try (FileOutputStream fos = new FileOutputStream(file);
-				InputStream is = new BufferedInputStream(
-						content.getInputStream())) {
-			int b;
-			while ((b = is.read()) != -1) {
-				if (monitor.isCanceled()) {
-					break;
-				}
-				fos.write(b);
-				monitor.worked(1);
-			}
-		} catch (IOException e) {
-			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(
-					new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e
-							.getMessage(), e));
-			return Status.CANCEL_STATUS;
-		}
-		monitor.done();
-		return Status.OK_STATUS;
-	}
+    @Override
+    public IStatus run(IProgressMonitor monitor) {
+        monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()),
+                content.getContentLength());
+        try (FileOutputStream fos = new FileOutputStream(file);
+                InputStream is = new BufferedInputStream(
+                        content.getInputStream())) {
+            int b;
+            while ((b = is.read()) != -1) {
+                if (monitor.isCanceled()) {
+                    break;
+                }
+                fos.write(b);
+                monitor.worked(1);
+            }
+        } catch (IOException e) {
+            Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(
+                    new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e
+                            .getMessage(), e));
+            return Status.CANCEL_STATUS;
+        }
+        monitor.done();
+        return Status.OK_STATUS;
+    }
 }

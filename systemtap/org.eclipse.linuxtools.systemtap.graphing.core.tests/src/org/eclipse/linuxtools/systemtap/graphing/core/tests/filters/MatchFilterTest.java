@@ -24,44 +24,44 @@ import org.junit.Test;
 
 public class MatchFilterTest  {
 
-	@Test
-	public void testMatchFilter() {
-		MatchFilter filter = new MatchFilter(-1, null, MatchFilter.KEEP_MATCHING);
-		assertNotNull(filter);
-	}
-	@Test
-	public void testFilter() {
-		int width = 4;
-		int height = 10;
-		int wrap = height / 3;
-		ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
+    @Test
+    public void testMatchFilter() {
+        MatchFilter filter = new MatchFilter(-1, null, MatchFilter.KEEP_MATCHING);
+        assertNotNull(filter);
+    }
+    @Test
+    public void testFilter() {
+        int width = 4;
+        int height = 10;
+        int wrap = height / 3;
+        ArrayList<Object>[] data = MockDataSet.buildArray(width, height, wrap);
 
-		assertEquals(width, data.length);
-		assertEquals(height, data[0].size());
-		MatchFilter filter = new MatchFilter(0, data[0].get(0), MatchFilter.KEEP_MATCHING);
-		List<Object>[] data2 = filter.filter(data);
+        assertEquals(width, data.length);
+        assertEquals(height, data[0].size());
+        MatchFilter filter = new MatchFilter(0, data[0].get(0), MatchFilter.KEEP_MATCHING);
+        List<Object>[] data2 = filter.filter(data);
 
-		assertEquals(width, data.length);
-		assertEquals(height, data[0].size());
-		assertEquals(width, data2.length);
-		assertEquals((int)Math.ceil(height/((double)wrap)), data2[0].size());
-		assertEquals("0", data2[0].get(0));
-		assertEquals("0", data2[0].get(1));
-		assertEquals("0", data2[0].get(2));
-		assertEquals("0", data2[0].get(3));
+        assertEquals(width, data.length);
+        assertEquals(height, data[0].size());
+        assertEquals(width, data2.length);
+        assertEquals((int)Math.ceil(height/((double)wrap)), data2[0].size());
+        assertEquals("0", data2[0].get(0));
+        assertEquals("0", data2[0].get(1));
+        assertEquals("0", data2[0].get(2));
+        assertEquals("0", data2[0].get(3));
 
-		assertEquals(data[2].get(0), data2[2].get(0));
-		assertEquals(data[2].get(3), data2[2].get(1));
-		assertEquals(data[2].get(6), data2[2].get(2));
-		assertEquals(data[2].get(9), data2[2].get(3));
+        assertEquals(data[2].get(0), data2[2].get(0));
+        assertEquals(data[2].get(3), data2[2].get(1));
+        assertEquals(data[2].get(6), data2[2].get(2));
+        assertEquals(data[2].get(9), data2[2].get(3));
 
-		filter = new MatchFilter(-1, "", MatchFilter.KEEP_MATCHING);
-		assertNull(filter.filter(data));
-	}
-	@Test
-	public void testGetID() {
-		MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
-		assertEquals(MatchFilter.ID, filter.getID());
-	}
+        filter = new MatchFilter(-1, "", MatchFilter.KEEP_MATCHING);
+        assertNull(filter.filter(data));
+    }
+    @Test
+    public void testGetID() {
+        MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
+        assertEquals(MatchFilter.ID, filter.getID());
+    }
 
 }

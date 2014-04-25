@@ -19,23 +19,23 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class SystemTapPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	/**
-	 * Get the current preferences.
-	 */
-	public SystemTapPreferencePage() {
-		super();
-		setDescription(Messages.SystemTapPreferencePageDescription);
-	}
+    /**
+     * Get the current preferences.
+     */
+    public SystemTapPreferencePage() {
+        super();
+        setDescription(Messages.SystemTapPreferencePageDescription);
+    }
 
-	/**
-	 * Sets up the field editors for optional change by the user.
-	 */
-	@Override
-	public void createFieldEditors() {
-	}
+    /**
+     * Sets up the field editors for optional change by the user.
+     */
+    @Override
+    public void createFieldEditors() {
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 
 }

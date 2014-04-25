@@ -34,7 +34,7 @@ public interface ICreaterepoConstants {
     /**
      * The file extension of RPM files.
      */
-    String RPM_FILE_EXTENSION = "rpm"; 	//$NON-NLS-1$
+    String RPM_FILE_EXTENSION = "rpm";     //$NON-NLS-1$
 
     /**
      * An empty string.

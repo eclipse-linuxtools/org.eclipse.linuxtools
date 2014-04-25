@@ -28,66 +28,66 @@ import org.osgi.framework.FrameworkUtil;
  * @since 1.1
  */
 public class RPMExportOperation extends Job {
-	private RPMProject rpmProject;
-	private BuildType exportType;
+    private RPMProject rpmProject;
+    private BuildType exportType;
 
-	/**
-	 * Creates the job for exporting rpms.
-	 *
-	 * @param rpmProject The project to use as base for the export operation.
-	 * @param exportType The export type. [SOURCE, BINARY, ALL]
-	 */
-	public RPMExportOperation(RPMProject rpmProject, String exportType) {
-		super(Messages.getString("RPMExportWizard.0")); //$NON-NLS-1$
-		this.rpmProject = rpmProject;
-		this.exportType = BuildType.valueOf(exportType);
-	}
+    /**
+     * Creates the job for exporting rpms.
+     *
+     * @param rpmProject The project to use as base for the export operation.
+     * @param exportType The export type. [SOURCE, BINARY, ALL]
+     */
+    public RPMExportOperation(RPMProject rpmProject, String exportType) {
+        super(Messages.getString("RPMExportWizard.0")); //$NON-NLS-1$
+        this.rpmProject = rpmProject;
+        this.exportType = BuildType.valueOf(exportType);
+    }
 
-	/**
-	 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
-	 *
-	 */
-	@Override
-	public IStatus run(IProgressMonitor monitor) {
-		IStatus result = null;
-		IOConsole myConsole = RpmConsole.findConsole(rpmProject.getSpecFile().getProject().getName());
-		IOConsoleOutputStream out = myConsole.newOutputStream();
-		myConsole.clearConsole();
-		myConsole.activate();
-		switch (exportType) {
-		case ALL:
-			try {
-				monitor.beginTask(Messages
-						.getString("RPMExportOperation.Executing_All_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-				result = rpmProject.buildAll(out);
-			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
-			}
-			break;
+    /**
+     * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
+     *
+     */
+    @Override
+    public IStatus run(IProgressMonitor monitor) {
+        IStatus result = null;
+        IOConsole myConsole = RpmConsole.findConsole(rpmProject.getSpecFile().getProject().getName());
+        IOConsoleOutputStream out = myConsole.newOutputStream();
+        myConsole.clearConsole();
+        myConsole.activate();
+        switch (exportType) {
+        case ALL:
+            try {
+                monitor.beginTask(Messages
+                        .getString("RPMExportOperation.Executing_All_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+                result = rpmProject.buildAll(out);
+            } catch (CoreException e) {
+                result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+                        e.getMessage(), e);
+            }
+            break;
 
-		case BINARY:
-			monitor.beginTask(Messages
-					.getString("RPMExportOperation.Executing_RPM_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-			try {
-				result = rpmProject.buildBinaryRPM(out);
-			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
-			}
-			break;
+        case BINARY:
+            monitor.beginTask(Messages
+                    .getString("RPMExportOperation.Executing_RPM_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+            try {
+                result = rpmProject.buildBinaryRPM(out);
+            } catch (CoreException e) {
+                result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+                        e.getMessage(), e);
+            }
+            break;
 
-		case SOURCE:
-			monitor.beginTask(Messages
-					.getString("RPMExportOperation.Executing_SRPM_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-			try {
-				result = rpmProject.buildSourceRPM(out);
-			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
-			}
-			break;
-		}
-		return result;
-	}
+        case SOURCE:
+            monitor.beginTask(Messages
+                    .getString("RPMExportOperation.Executing_SRPM_Export"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+            try {
+                result = rpmProject.buildSourceRPM(out);
+            } catch (CoreException e) {
+                result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+                        e.getMessage(), e);
+            }
+            break;
+        }
+        return result;
+    }
 }

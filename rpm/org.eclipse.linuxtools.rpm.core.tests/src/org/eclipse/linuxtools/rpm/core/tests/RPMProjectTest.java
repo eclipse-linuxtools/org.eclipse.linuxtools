@@ -41,186 +41,186 @@ import org.osgi.framework.FrameworkUtil;
 
 public class RPMProjectTest {
 
-	static IWorkspace workspace;
-	static IWorkspaceRoot root;
-	static NullProgressMonitor monitor;
-	String pluginRoot;
+    static IWorkspace workspace;
+    static IWorkspaceRoot root;
+    static NullProgressMonitor monitor;
+    String pluginRoot;
 
-	final String file_sep = System.getProperty("file.separator"); //$NON-NLS-1$
+    final String file_sep = System.getProperty("file.separator"); //$NON-NLS-1$
 
-	@BeforeClass
-	public static void setUp() {
-		workspace = ResourcesPlugin.getWorkspace();
-		root = workspace.getRoot();
-		monitor = new NullProgressMonitor();
-	}
+    @BeforeClass
+    public static void setUp() {
+        workspace = ResourcesPlugin.getWorkspace();
+        root = workspace.getRoot();
+        monitor = new NullProgressMonitor();
+    }
 
-	@Test
-	public void testImportHelloWorld() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testHelloWorld");
-		RPMProject rpmProject = importSrpm(testProject);
+    @Test
+    public void testImportHelloWorld() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testHelloWorld");
+        RPMProject rpmProject = importSrpm(testProject);
 
-		// Make sure the original SRPM got copied into the workspace
-		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(srpm.exists());
+        // Make sure the original SRPM got copied into the workspace
+        IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
+                .getFile(new Path("helloworld-2-2.src.rpm"));
+        assertTrue(srpm.exists());
 
-		// Make sure everything got installed properly
-		IFile spec = rpmProject.getConfiguration().getSpecsFolder()
-				.getFile(new Path("helloworld.spec"));
-		assertTrue(spec.exists());
-		IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
-				.getFile(new Path("helloworld-2.tar.bz2"));
-		assertTrue(sourceBall.exists());
+        // Make sure everything got installed properly
+        IFile spec = rpmProject.getConfiguration().getSpecsFolder()
+                .getFile(new Path("helloworld.spec"));
+        assertTrue(spec.exists());
+        IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
+                .getFile(new Path("helloworld-2.tar.bz2"));
+        assertTrue(sourceBall.exists());
 
-		// Make sure we got the spec file
-		IResource specFile = rpmProject.getSpecFile();
-		assertNotNull(specFile);
+        // Make sure we got the spec file
+        IResource specFile = rpmProject.getSpecFile();
+        assertNotNull(specFile);
 
-		// Make sure the RPM nature was added
-		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
+        // Make sure the RPM nature was added
+        assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 
-		// Clean up
-		testProject.delete(true, true, monitor);
-	}
-	
-	@Test
-	public void testImportHelloWorldFlat() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testHelloWorld");
-		testProject.create(monitor);
-		testProject.open(monitor);
+        // Clean up
+        testProject.delete(true, true, monitor);
+    }
 
-		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject,
-				RPMProjectLayout.FLAT);
+    @Test
+    public void testImportHelloWorldFlat() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testHelloWorld");
+        testProject.create(monitor);
+        testProject.open(monitor);
 
-		// Find the test SRPM and install it
-		URL url = FileLocator.find(FrameworkUtil
-				.getBundle(RPMProjectTest.class), new Path(
-				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
-						"helloworld-2-2.src.rpm"), null);
-		File foo = new File(FileLocator.toFileURL(url).getPath());
-		rpmProject.importSourceRPM(foo);
+        // Instantiate an RPMProject
+        RPMProject rpmProject = new RPMProject(testProject,
+                RPMProjectLayout.FLAT);
 
-		// Make sure the original SRPM got copied into the workspace
-		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(srpm.exists());
+        // Find the test SRPM and install it
+        URL url = FileLocator.find(FrameworkUtil
+                .getBundle(RPMProjectTest.class), new Path(
+                "resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+                        "helloworld-2-2.src.rpm"), null);
+        File foo = new File(FileLocator.toFileURL(url).getPath());
+        rpmProject.importSourceRPM(foo);
 
-		// Make sure everything got installed properly
-		IFile spec = rpmProject.getConfiguration().getSpecsFolder()
-				.getFile(new Path("helloworld.spec"));
-		assertTrue(spec.exists());
-		IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
-				.getFile(new Path("helloworld-2.tar.bz2"));
-		assertTrue(sourceBall.exists());
+        // Make sure the original SRPM got copied into the workspace
+        IFile srpm = rpmProject.getConfiguration().getSrpmsFolder()
+                .getFile(new Path("helloworld-2-2.src.rpm"));
+        assertTrue(srpm.exists());
 
-		// Make sure we got the spec file
-		IResource specFile = rpmProject.getSpecFile();
-		assertNotNull(specFile);
+        // Make sure everything got installed properly
+        IFile spec = rpmProject.getConfiguration().getSpecsFolder()
+                .getFile(new Path("helloworld.spec"));
+        assertTrue(spec.exists());
+        IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
+                .getFile(new Path("helloworld-2.tar.bz2"));
+        assertTrue(sourceBall.exists());
 
-		// Make sure the RPM nature was added
-		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
+        // Make sure we got the spec file
+        IResource specFile = rpmProject.getSpecFile();
+        assertNotNull(specFile);
 
-		// Clean up
-		testProject.delete(true, true, monitor);
-	}
+        // Make sure the RPM nature was added
+        assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
 
-	@Test
-	public void testBuildPrepHelloWorld() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testBuildPrepHelloWorld");
-		RPMProject rpmProject = importSrpm(testProject);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		rpmProject.buildPrep(bos);
-		
+        // Clean up
+        testProject.delete(true, true, monitor);
+    }
 
-		// Make sure we got everything in the build directory
-		IContainer builddir = rpmProject.getConfiguration().getBuildFolder();
-		IFolder helloworldFolder = builddir.getFolder(new Path("helloworld-2"));
-		assertTrue(helloworldFolder.exists());
+    @Test
+    public void testBuildPrepHelloWorld() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testBuildPrepHelloWorld");
+        RPMProject rpmProject = importSrpm(testProject);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        rpmProject.buildPrep(bos);
 
-		// Clean up
-		testProject.delete(true, true, monitor);
-	}
 
-	@Test
-	public void testBuildSourceRPMHelloWorld() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
-		RPMProject rpmProject = importSrpm(testProject);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		rpmProject.buildSourceRPM(bos);
+        // Make sure we got everything in the build directory
+        IContainer builddir = rpmProject.getConfiguration().getBuildFolder();
+        IFolder helloworldFolder = builddir.getFolder(new Path("helloworld-2"));
+        assertTrue(helloworldFolder.exists());
 
-		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(foo2.exists());
+        // Clean up
+        testProject.delete(true, true, monitor);
+    }
 
-		testProject.delete(true, true, null);
-	}
+    @Test
+    public void testBuildSourceRPMHelloWorld() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
+        RPMProject rpmProject = importSrpm(testProject);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        rpmProject.buildSourceRPM(bos);
 
-	@Test
-	public void testBuildBinaryRPMHelloWorld() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testBuildBinaryRPMHelloWorld1");
-		RPMProject rpmProject = importSrpm(testProject);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		rpmProject.buildBinaryRPM(bos);
+        IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+                .getFile(new Path("helloworld-2-2.src.rpm"));
+        assertTrue(foo2.exists());
 
-		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(foo2.exists());
+        testProject.delete(true, true, null);
+    }
 
-		String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
-		IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
-				.getFile(new Path("helloworld-2-2."+arch+".rpm"));
-		assertTrue(foo3.exists());
-		testProject.delete(true, true, null);
-	}
+    @Test
+    public void testBuildBinaryRPMHelloWorld() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testBuildBinaryRPMHelloWorld1");
+        RPMProject rpmProject = importSrpm(testProject);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        rpmProject.buildBinaryRPM(bos);
 
-	@Test
-	public void testBuildAllRPMHelloWorld() throws Exception {
-		// Create a project for the test
-		IProject testProject = root.getProject("testBuildAllRPMHelloWorld1");
-		RPMProject rpmProject = importSrpm(testProject);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		rpmProject.buildAll(bos);
+        IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+                .getFile(new Path("helloworld-2-2.src.rpm"));
+        assertTrue(foo2.exists());
 
-		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
-				.getFile(new Path("helloworld-2-2.src.rpm"));
-		assertTrue(foo2.exists());
+        String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
+        IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
+                .getFile(new Path("helloworld-2-2."+arch+".rpm"));
+        assertTrue(foo3.exists());
+        testProject.delete(true, true, null);
+    }
 
-		String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
-		IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
-				.getFile(new Path("helloworld-2-2."+arch+".rpm"));
-		assertTrue(foo3.exists());
-		testProject.delete(true, true, null);
-	}
+    @Test
+    public void testBuildAllRPMHelloWorld() throws Exception {
+        // Create a project for the test
+        IProject testProject = root.getProject("testBuildAllRPMHelloWorld1");
+        RPMProject rpmProject = importSrpm(testProject);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        rpmProject.buildAll(bos);
 
-	private RPMProject importSrpm(IProject testProject) throws CoreException,
-			IOException {
-		testProject.create(monitor);
-		testProject.open(monitor);
+        IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder()
+                .getFile(new Path("helloworld-2-2.src.rpm"));
+        assertTrue(foo2.exists());
 
-		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject,
-				RPMProjectLayout.RPMBUILD);
+        String arch = Utils.runCommandToString("rpm", "--eval", "%{_arch}").trim();
+        IFile foo3 = rpmProject.getConfiguration().getRpmsFolder().getFolder(new Path(arch))
+                .getFile(new Path("helloworld-2-2."+arch+".rpm"));
+        assertTrue(foo3.exists());
+        testProject.delete(true, true, null);
+    }
 
-		// Find the test SRPM and install it
-		URL url = FileLocator.find(FrameworkUtil
-				.getBundle(RPMProjectTest.class), new Path(
-				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
-						"helloworld-2-2.src.rpm"), null);
-		File foo = new File(FileLocator.toFileURL(url).getPath());
-		rpmProject.importSourceRPM(foo);
-		return rpmProject;
-	}
-	
-	@Test
-	public void testGetSourcesFolder() throws Exception {
-        
+    private RPMProject importSrpm(IProject testProject) throws CoreException,
+            IOException {
+        testProject.create(monitor);
+        testProject.open(monitor);
+
+        // Instantiate an RPMProject
+        RPMProject rpmProject = new RPMProject(testProject,
+                RPMProjectLayout.RPMBUILD);
+
+        // Find the test SRPM and install it
+        URL url = FileLocator.find(FrameworkUtil
+                .getBundle(RPMProjectTest.class), new Path(
+                "resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+                        "helloworld-2-2.src.rpm"), null);
+        File foo = new File(FileLocator.toFileURL(url).getPath());
+        rpmProject.importSourceRPM(foo);
+        return rpmProject;
+    }
+
+    @Test
+    public void testGetSourcesFolder() throws Exception {
+
         // Create a project for the test
         IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
         testProject.create(monitor);
@@ -230,7 +230,7 @@ public class RPMProjectTest {
                         RPMProjectLayout.RPMBUILD);
         IProjectConfiguration config = rpmProject.getConfiguration();
         String folder = config.getSourcesFolder().getLocation().toOSString();
-       
+
         int sourceFolder = folder.indexOf("SOURCES");
         assertTrue(sourceFolder != -1);
         testProject.delete(true, true, null);

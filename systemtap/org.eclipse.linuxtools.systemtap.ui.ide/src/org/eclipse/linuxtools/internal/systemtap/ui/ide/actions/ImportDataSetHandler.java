@@ -42,52 +42,52 @@ import org.eclipse.ui.WorkbenchException;
  */
 public class ImportDataSetHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		FileDialog dialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
-		dialog.setFilterExtensions(new String[]{Messages.DataSetFileExtension});
-		dialog.setText(Messages.ImportDataSetAction_DialogTitle);
-		String path = dialog.open();
-		if (path == null) {
-			return null;
-		}
+    @Override
+    public Object execute(ExecutionEvent event) {
+        FileDialog dialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
+        dialog.setFilterExtensions(new String[]{Messages.DataSetFileExtension});
+        dialog.setText(Messages.ImportDataSetAction_DialogTitle);
+        String path = dialog.open();
+        if (path == null) {
+            return null;
+        }
 
-		IFilteredDataSet dataset = null;
-		File file = new File(path);
-		try (InputStreamReader fr = new InputStreamReader(new FileInputStream(file), Charset.defaultCharset());
-				BufferedReader br = new BufferedReader(fr)) {
-			String id = br.readLine();
-			String[] titles = br.readLine().split(", "); //$NON-NLS-1$
+        IFilteredDataSet dataset = null;
+        File file = new File(path);
+        try (InputStreamReader fr = new InputStreamReader(new FileInputStream(file), Charset.defaultCharset());
+                BufferedReader br = new BufferedReader(fr)) {
+            String id = br.readLine();
+            String[] titles = br.readLine().split(", "); //$NON-NLS-1$
 
-			if (id == null && titles == null) {
-				throw new IOException();
-			} else if (id.equals(RowDataSet.ID)) {
-				dataset = new FilteredRowDataSet(titles);
-			} else if (id.equals(TableDataSet.ID)) {
-				dataset = new FilteredTableDataSet(titles);
-			} else {
-				throw new IOException();
-			}
-			dataset.readFromFile(file);
+            if (id == null && titles == null) {
+                throw new IOException();
+            } else if (id.equals(RowDataSet.ID)) {
+                dataset = new FilteredRowDataSet(titles);
+            } else if (id.equals(TableDataSet.ID)) {
+                dataset = new FilteredTableDataSet(titles);
+            } else {
+                throw new IOException();
+            }
+            dataset.readFromFile(file);
 
-			String title = path.substring(path.lastIndexOf('/')+1);
-			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
-			ivp.createScriptSets(path, Arrays.asList(title), Arrays.asList(dataset));
-		} catch (FileNotFoundException fnfe) {
-			ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileNotFound, fnfe);
-		} catch (IOException ioe) {
-			ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileInvalid, ioe);
-		} catch (WorkbenchException we) {
-			ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
-		}
+            String title = path.substring(path.lastIndexOf('/')+1);
+            IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+            GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
+            ivp.createScriptSets(path, Arrays.asList(title), Arrays.asList(dataset));
+        } catch (FileNotFoundException fnfe) {
+            ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileNotFound, fnfe);
+        } catch (IOException ioe) {
+            ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileInvalid, ioe);
+        } catch (WorkbenchException we) {
+            ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
-				getPerspective().getId().equals(IDEPerspective.ID);
-	}
+    @Override
+    public boolean isEnabled() {
+        return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
+                getPerspective().getId().equals(IDEPerspective.ID);
+    }
 }

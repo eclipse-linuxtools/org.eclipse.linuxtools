@@ -45,7 +45,7 @@
             class="org.eclipse.linuxtools.internal.gcov.preferences.ColorPreferencesInitializer">
       </initializer>
    </extension>
-   
+
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification

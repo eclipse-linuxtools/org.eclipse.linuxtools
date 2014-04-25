@@ -26,11 +26,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({CreaterepoProjectCreatorTest.class, CreaterepoUtilsTest.class,
-	CreaterepoProjectTest.class, CreaterepoTreeCategoryTest.class, CreaterepoTreeTest.class,
-	CreaterepoWizardTest.class, CreaterepoTest.class, CreaterepoPreferenceInitializationTest.class,
-	CreaterepoRepoFormEditorTest.class, CreaterepoImportRPMsPageTest.class, CreaterepoMetadataPageTest.class,
-	CreaterepoResourceListenerTest.class, CreaterepoCommandCreatorTest.class,
-	CreaterepoPreferencePageTest.class, CreaterepoGeneralPropertyPageTest.class, CreaterepoDeltaPropertyPageTest.class})
+    CreaterepoProjectTest.class, CreaterepoTreeCategoryTest.class, CreaterepoTreeTest.class,
+    CreaterepoWizardTest.class, CreaterepoTest.class, CreaterepoPreferenceInitializationTest.class,
+    CreaterepoRepoFormEditorTest.class, CreaterepoImportRPMsPageTest.class, CreaterepoMetadataPageTest.class,
+    CreaterepoResourceListenerTest.class, CreaterepoCommandCreatorTest.class,
+    CreaterepoPreferencePageTest.class, CreaterepoGeneralPropertyPageTest.class, CreaterepoDeltaPropertyPageTest.class})
 public class AllTests {
-	//Nothing here as annotation is important
+    //Nothing here as annotation is important
 }

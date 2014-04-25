@@ -20,35 +20,35 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.junit.Test;
 
 public class LinePositionTest extends FileTestCase {
-	@Test
-	public void testLineNumber() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n"
-				+ "Patch2: someotherfile.patch";
+    @Test
+    public void testLineNumber() {
+        String specText = "Patch3: somefilesomewhere.patch" + "\n"
+                + "Patch2: someotherfile.patch";
 
-		newFile(specText);
-		Collection<SpecfileSource> patches = specfile.getPatches();
-		for (SpecfileSource patch : patches) {
-			if (patch.getNumber() == 2)
-				assertEquals(1, patch.getLineNumber());
-			else if (patch.getNumber() == 3)
-				assertEquals(0, patch.getLineNumber());
-			else
-				fail("Found patch with number different from the expected numbers (2 or 3).");
-		}
-	}
-	@Test
-	public void testLineNumber2() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+        newFile(specText);
+        Collection<SpecfileSource> patches = specfile.getPatches();
+        for (SpecfileSource patch : patches) {
+            if (patch.getNumber() == 2)
+                assertEquals(1, patch.getLineNumber());
+            else if (patch.getNumber() == 3)
+                assertEquals(0, patch.getLineNumber());
+            else
+                fail("Found patch with number different from the expected numbers (2 or 3).");
+        }
+    }
+    @Test
+    public void testLineNumber2() {
+        String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
-		newFile(specText);
-		Collection<SpecfileSource> patches = specfile.getPatches();
-		for (SpecfileSource patch : patches) {
-			if (patch.getNumber() == 3) {
-				assertEquals(0, patch.getLineNumber());
-				assertEquals(1, patch.getLinesUsed().get(0).intValue());
-			} else
-				fail("Found patch with number different from the expected 3.");
-		}
-	}
+        newFile(specText);
+        Collection<SpecfileSource> patches = specfile.getPatches();
+        for (SpecfileSource patch : patches) {
+            if (patch.getNumber() == 3) {
+                assertEquals(0, patch.getLineNumber());
+                assertEquals(1, patch.getLinesUsed().get(0).intValue());
+            } else
+                fail("Found patch with number different from the expected 3.");
+        }
+    }
 
 }

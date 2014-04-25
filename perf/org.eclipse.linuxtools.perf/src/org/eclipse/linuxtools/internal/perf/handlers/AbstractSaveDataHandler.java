@@ -36,126 +36,126 @@ import org.eclipse.swt.widgets.Display;
  */
 public abstract class AbstractSaveDataHandler extends BaseDataManipulator implements IHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		InputDialog dialog = new InputDialog(Display.getCurrent()
-				.getActiveShell(), Messages.PerfSaveSession_title,
-				Messages.PerfSaveSession_msg, "", new IInputValidator() { //$NON-NLS-1$
+    @Override
+    public Object execute(ExecutionEvent event) {
+        InputDialog dialog = new InputDialog(Display.getCurrent()
+                .getActiveShell(), Messages.PerfSaveSession_title,
+                Messages.PerfSaveSession_msg, "", new IInputValidator() { //$NON-NLS-1$
 
-			@Override
-			public String isValid(String newText) {
-				if (newText.isEmpty()) {
-					return Messages.PerfSaveSession_invalid_filename_msg;
-				}
-				return null;
-			}
-		});
+            @Override
+            public String isValid(String newText) {
+                if (newText.isEmpty()) {
+                    return Messages.PerfSaveSession_invalid_filename_msg;
+                }
+                return null;
+            }
+        });
 
-		if (dialog.open() == Window.OK) {
-			saveData(dialog.getValue());
-		}
+        if (dialog.open() == Window.OK) {
+            saveData(dialog.getValue());
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		IPath curWorkingDirectory = getWorkingDir();
-		return curWorkingDirectory != null && !curWorkingDirectory.isEmpty()
-				&& verifyData();
-	}
+    @Override
+    public boolean isEnabled() {
+        IPath curWorkingDirectory = getWorkingDir();
+        return curWorkingDirectory != null && !curWorkingDirectory.isEmpty()
+                && verifyData();
+    }
 
-	/**
-	 * Get current working directory.
-	 * @return current working directory.
-	 */
-	protected IPath getWorkingDir() {
-		return PerfPlugin.getDefault().getWorkingDir();
-	}
+    /**
+     * Get current working directory.
+     * @return current working directory.
+     */
+    protected IPath getWorkingDir() {
+        return PerfPlugin.getDefault().getWorkingDir();
+    }
 
-	/**
-	 * New data location based on specified name, which the specified
-	 * extension will be appended to.
-	 *
-	 * @param filename
-	 * @param extension
-	 * @return
-	 */
-	public IPath getNewDataLocation(String filename, String extension) {
-		IPath newFilename  = getWorkingDir().append(filename);
-		return newFilename.addFileExtension(extension);
+    /**
+     * New data location based on specified name, which the specified
+     * extension will be appended to.
+     *
+     * @param filename
+     * @param extension
+     * @return
+     */
+    public IPath getNewDataLocation(String filename, String extension) {
+        IPath newFilename  = getWorkingDir().append(filename);
+        return newFilename.addFileExtension(extension);
 
-	}
+    }
 
-	/**
-	 * Verify that we can save the specified file.
-	 *
-	 * @param file <code>File</code> to save
-	 * @return true if we can go ahead and save the file, false otherwise
-	 */
-	public boolean canSave(IPath file) {
-		IRemoteFileProxy proxy = null;
-		URI fileURI = null;
-		try {
-			fileURI = new URI(file.toPortableString());
-			proxy = RemoteProxyManager.getInstance().getFileProxy(fileURI);
-		} catch (URISyntaxException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-		} catch (CoreException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-		}
-		IFileStore fileStore = proxy.getResource(fileURI.getPath());
-		if (fileStore.fetchInfo().exists()) {
-			String msg = MessageFormat.format(
-					Messages.PerfSaveSession_file_exists_msg,
-					new Object[] { fileStore.getName() });
-			return MessageDialog.openQuestion(Display.getCurrent()
-					.getActiveShell(),
-					Messages.PerfSaveSession_file_exists_title, msg);
-		}
-		return true;
-	}
+    /**
+     * Verify that we can save the specified file.
+     *
+     * @param file <code>File</code> to save
+     * @return true if we can go ahead and save the file, false otherwise
+     */
+    public boolean canSave(IPath file) {
+        IRemoteFileProxy proxy = null;
+        URI fileURI = null;
+        try {
+            fileURI = new URI(file.toPortableString());
+            proxy = RemoteProxyManager.getInstance().getFileProxy(fileURI);
+        } catch (URISyntaxException e) {
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+        } catch (CoreException e) {
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+        }
+        IFileStore fileStore = proxy.getResource(fileURI.getPath());
+        if (fileStore.fetchInfo().exists()) {
+            String msg = MessageFormat.format(
+                    Messages.PerfSaveSession_file_exists_msg,
+                    new Object[] { fileStore.getName() });
+            return MessageDialog.openQuestion(Display.getCurrent()
+                    .getActiveShell(),
+                    Messages.PerfSaveSession_file_exists_title, msg);
+        }
+        return true;
+    }
 
-	/**
-	 * Open error dialog informing user of saving failure.
-	 * @param filename
-	 */
-	public void openErroDialog(String title, String pattern, String arg) {
-		String errorMsg = MessageFormat.format(pattern, new Object[] { arg });
-		MessageDialog.openError(Display.getCurrent().getActiveShell(), title,
-				errorMsg);
-	}
+    /**
+     * Open error dialog informing user of saving failure.
+     * @param filename
+     */
+    public void openErroDialog(String title, String pattern, String arg) {
+        String errorMsg = MessageFormat.format(pattern, new Object[] { arg });
+        MessageDialog.openError(Display.getCurrent().getActiveShell(), title,
+                errorMsg);
+    }
 
-	/**
-	 * Save data to file with specified name and return handle
-	 *
-	 * @param filename the file name
-	 */
-	public abstract IPath saveData(String filename);
+    /**
+     * Save data to file with specified name and return handle
+     *
+     * @param filename the file name
+     */
+    public abstract IPath saveData(String filename);
 
-	/**
-	 * Verify data to save.
-	 *
-	 * @return true if data is valid
-	 */
-	public abstract boolean verifyData();
+    /**
+     * Verify data to save.
+     *
+     * @return true if data is valid
+     */
+    public abstract boolean verifyData();
 
-	@Override
-	public boolean isHandled() {
-		return isEnabled();
-	}
+    @Override
+    public boolean isHandled() {
+        return isEnabled();
+    }
 
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-	}
+    @Override
+    public void removeHandlerListener(IHandlerListener handlerListener) {
+    }
 
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
+    @Override
+    public void addHandlerListener(IHandlerListener handlerListener) {
 
-	}
+    }
 
-	@Override
-	public void dispose() {
+    @Override
+    public void dispose() {
 
-	}
+    }
 }

@@ -23,46 +23,46 @@ import org.eclipse.ui.progress.UIJob;
  *
  */
 public class StapUIJob extends UIJob {
-	private SystemTapParser parser;
-	private String viewID;
-	private SystemTapView viewer;
+    private SystemTapParser parser;
+    private String viewID;
+    private SystemTapView viewer;
 
-	public StapUIJob(String name, SystemTapParser parser, String viewID) {
-		super(name);
-		// CREATE THE SHELL
-		this.parser = parser;
-		this.viewID = viewID;
-	}
+    public StapUIJob(String name, SystemTapParser parser, String viewID) {
+        super(name);
+        // CREATE THE SHELL
+        this.parser = parser;
+        this.viewID = viewID;
+    }
 
-	@Override
-	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (parser.getSecondaryID() != null && parser.getSecondaryID().length() > 0) {
-			viewer = ViewFactory.createView(viewID, parser.getSecondaryID());
-		} else {
-			viewer = ViewFactory.createView(viewID);
-		}
-		if (!viewer.setParser(parser)) {
-			return Status.CANCEL_STATUS;
-		}
-		if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS) {
-			return Status.CANCEL_STATUS;
-		}
+    @Override
+    public IStatus runInUIThread(IProgressMonitor monitor) {
+        if (parser.getSecondaryID() != null && parser.getSecondaryID().length() > 0) {
+            viewer = ViewFactory.createView(viewID, parser.getSecondaryID());
+        } else {
+            viewer = ViewFactory.createView(viewID);
+        }
+        if (!viewer.setParser(parser)) {
+            return Status.CANCEL_STATUS;
+        }
+        if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS) {
+            return Status.CANCEL_STATUS;
+        }
 
-		if (!parser.realTime) {
-			viewer.updateMethod();
-		}
-		viewer.setSourcePath(parser.getFile());
-		viewer.setKillButtonEnabled(true);
+        if (!parser.realTime) {
+            viewer.updateMethod();
+        }
+        viewer.setSourcePath(parser.getFile());
+        viewer.setKillButtonEnabled(true);
 
-		return Status.OK_STATUS;
-	}
+        return Status.OK_STATUS;
+    }
 
-	/**
-	 * Returns the viewer object. Viewer is initialized within the run method, and
-	 * is not guaranteed to be non-null until the job has terminated.
-	 * @return
-	 */
-	public SystemTapView getViewer() {
-		return viewer;
-	}
+    /**
+     * Returns the viewer object. Viewer is initialized within the run method, and
+     * is not guaranteed to be non-null until the job has terminated.
+     * @return
+     */
+    public SystemTapView getViewer() {
+        return viewer;
+    }
 }

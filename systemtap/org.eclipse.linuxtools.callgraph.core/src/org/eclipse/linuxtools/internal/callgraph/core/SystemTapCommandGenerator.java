@@ -20,83 +20,83 @@ import java.util.ArrayList;
  */
 public class SystemTapCommandGenerator {
 
-	private static boolean needsToSendCommand;
-	private static boolean needsArguments;
-	private static String arguments;
-	private static String scriptPath;
-	private static String flags;
-	private static String binaryPath = null;
-	private static String binaryArguments;
-	private static String command;
+    private static boolean needsToSendCommand;
+    private static boolean needsArguments;
+    private static String arguments;
+    private static String scriptPath;
+    private static String flags;
+    private static String binaryPath = null;
+    private static String binaryArguments;
+    private static String command;
 
 
-	public static String generateCommand(String scrPath, String binPath, String opts, boolean needBinary, boolean needsArgs, String arg, String binArguments,
-			String cmdTarget) {
-		needsToSendCommand = needBinary;
-		needsArguments = needsArgs;
-		binaryPath = binPath;
-		scriptPath = scrPath;
-		arguments = "--runtime=dyninst " + arg; //$NON-NLS-1$
-		flags = opts;
-		binaryArguments = binArguments;
-		command = cmdTarget;
+    public static String generateCommand(String scrPath, String binPath, String opts, boolean needBinary, boolean needsArgs, String arg, String binArguments,
+            String cmdTarget) {
+        needsToSendCommand = needBinary;
+        needsArguments = needsArgs;
+        binaryPath = binPath;
+        scriptPath = scrPath;
+        arguments = "--runtime=dyninst " + arg; //$NON-NLS-1$
+        flags = opts;
+        binaryArguments = binArguments;
+        command = cmdTarget;
 
 
-		String[] script = buildScript();
+        String[] script = buildScript();
 
-		String cmd = ""; //$NON-NLS-1$
-		for (int i = 0; i < script.length-1; i++) {
-			cmd = cmd + script[i] + " "; //$NON-NLS-1$
-		}
-		cmd = cmd + script[script.length-1];
+        String cmd = ""; //$NON-NLS-1$
+        for (int i = 0; i < script.length-1; i++) {
+            cmd = cmd + script[i] + " "; //$NON-NLS-1$
+        }
+        cmd = cmd + script[script.length-1];
 
-		return cmd;
-	}
-
-
-	/**
-	 * Parses the data created from generateCommand
-	 * @return An array of strings to be joined and executed by the shell
-	 */
-	private static String[] buildScript() {
-		//TODO: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList<String> cmdList = new ArrayList<>();
-		String[] script;
-
-		if (flags.length() > 0){
-			cmdList.add(flags);
-		}
-
-		//Execute a binary
-		if (needsToSendCommand){
-			if (binaryArguments.length() < 1){
-				cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-			} else {
-				cmdList.add("-c \"" + binaryPath + " " + binaryArguments +"\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-		}
+        return cmd;
+    }
 
 
-		if (needsArguments) {
-			script = new String[cmdList.size() + 3];
-			script[script.length-2] = scriptPath;
-			script[script.length-1] = arguments;
-		} else {
-			script = new String[cmdList.size() + 2];
-			script[script.length-1] = scriptPath;
-		}
+    /**
+     * Parses the data created from generateCommand
+     * @return An array of strings to be joined and executed by the shell
+     */
+    private static String[] buildScript() {
+        //TODO: Take care of this in the next release. For now only the guru mode is sent
+        ArrayList<String> cmdList = new ArrayList<>();
+        String[] script;
 
-		script[0] = command;
+        if (flags.length() > 0){
+            cmdList.add(flags);
+        }
 
-		for(int i=0; i< cmdList.size(); i++) {
-			if (cmdList.get(i) != null) {
-				script[i +1] = cmdList.get(i);
-			} else {
-				script[i + 1] = ""; //$NON-NLS-1$
-			}
-		}
-		return script;
+        //Execute a binary
+        if (needsToSendCommand){
+            if (binaryArguments.length() < 1){
+                cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+            } else {
+                cmdList.add("-c \"" + binaryPath + " " + binaryArguments +"\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+        }
 
-	}
+
+        if (needsArguments) {
+            script = new String[cmdList.size() + 3];
+            script[script.length-2] = scriptPath;
+            script[script.length-1] = arguments;
+        } else {
+            script = new String[cmdList.size() + 2];
+            script[script.length-1] = scriptPath;
+        }
+
+        script[0] = command;
+
+        for(int i=0; i< cmdList.size(); i++) {
+            if (cmdList.get(i) != null) {
+                script[i +1] = cmdList.get(i);
+            } else {
+                script[i + 1] = ""; //$NON-NLS-1$
+            }
+        }
+        return script;
+
+    }
 
 }

@@ -19,30 +19,30 @@ import org.eclipse.core.runtime.IPath;
  */
 public class ReportComparisonData extends AbstractDataManipulator {
 
-	private IPath oldFile;
-	private IPath newFile;
+    private IPath oldFile;
+    private IPath newFile;
 
-	public ReportComparisonData(String title, IPath oldFile, IPath newFile, IProject project) {
-		super(title, newFile.removeLastSegments(1), project);
-		this.oldFile = oldFile;
-		this.newFile = newFile;
-	}
+    public ReportComparisonData(String title, IPath oldFile, IPath newFile, IProject project) {
+        super(title, newFile.removeLastSegments(1), project);
+        this.oldFile = oldFile;
+        this.newFile = newFile;
+    }
 
-	@Override
-	public void parse() {
-		performCommand(getCommand(), 1);
-	}
+    @Override
+    public void parse() {
+        performCommand(getCommand(), 1);
+    }
 
-	/**
-	 * Get perf diff command to execute.
-	 *
-	 * @return String array representing command to execute.
-	 */
-	protected String[] getCommand() {
-		return new String[] { PerfPlugin.PERF_COMMAND,
-				"diff", //$NON-NLS-1$
-				oldFile.toOSString(),
-				newFile.toOSString() };
-	}
+    /**
+     * Get perf diff command to execute.
+     *
+     * @return String array representing command to execute.
+     */
+    protected String[] getCommand() {
+        return new String[] { PerfPlugin.PERF_COMMAND,
+                "diff", //$NON-NLS-1$
+                oldFile.toOSString(),
+                newFile.toOSString() };
+    }
 
 }

@@ -32,11 +32,11 @@
             modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
-               <parameter 
+               <parameter
                      name="type"
                      value="timing"/>
-               <parameter 
-                     name="configurationId" 
+               <parameter
+                     name="configurationId"
                      value="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationType"/>
             </class>
             <contextualLaunch>
@@ -84,10 +84,10 @@
             id="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationTabGroup"
             type="org.eclipse.linuxtools.profiling.provider.TimingLaunchConfigurationType">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup">
-               <parameter 
+               <parameter
                      name="type"
                      value="timing"/>
-               <parameter 
+               <parameter
                      name="name"
                      value="Timing"/>
             </class>
@@ -112,7 +112,7 @@
             id="org.eclipse.linuxtools.profiling.provider.TimingPreferencePage"
             name="%page.name.0">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
-               <parameter 
+               <parameter
                      name="type"
                      value="timing"/>
             </class>
@@ -129,11 +129,11 @@
             modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
-               <parameter 
+               <parameter
                      name="type"
                      value="memory"/>
-               <parameter 
-                     name="configurationId" 
+               <parameter
+                     name="configurationId"
                      value="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationType"/>
             </class>
             <contextualLaunch>
@@ -181,10 +181,10 @@
             id="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationTabGroup"
             type="org.eclipse.linuxtools.profiling.provider.MemoryLaunchConfigurationType">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup">
-               <parameter 
+               <parameter
                      name="type"
                      value="memory"/>
-               <parameter 
+               <parameter
                      name="name"
                      value="Memory"/>
             </class>
@@ -209,7 +209,7 @@
             id="org.eclipse.linuxtools.profiling.provider.MemoryPreferencePage"
             name="%page.name.1">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
-               <parameter 
+               <parameter
                      name="type"
                      value="memory"/>
             </class>
@@ -226,11 +226,11 @@
             modes="linuxtools"
             path="/linuxtools/category">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut">
-               <parameter 
+               <parameter
                      name="type"
                      value="coverage"/>
-               <parameter 
-                     name="configurationId" 
+               <parameter
+                     name="configurationId"
                      value="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationType"/>
             </class>
             <contextualLaunch>
@@ -278,10 +278,10 @@
             id="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationTabGroup"
             type="org.eclipse.linuxtools.profiling.provider.CoverageLaunchConfigurationType">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderLaunchConfigurationTabGroup">
-               <parameter 
+               <parameter
                      name="type"
                      value="coverage"/>
-               <parameter 
+               <parameter
                      name="name"
                      value="Coverage"/>
             </class>
@@ -306,7 +306,7 @@
             id="org.eclipse.linuxtools.profiling.provider.CoveragePreferencePage"
             name="%page.name.2">
             <class class="org.eclipse.linuxtools.internal.profiling.launch.provider.AbstractProviderPreferencesPage">
-               <parameter 
+               <parameter
                      name="type"
                      value="coverage"/>
             </class>
@@ -522,6 +522,6 @@
          <configurationType
                id="org.eclipse.cdt.launch.applicationLaunchType">
          </configurationType>
-	</shortcut>
+    </shortcut>
    </extension>
 </plugin>

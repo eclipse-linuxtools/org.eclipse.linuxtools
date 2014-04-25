@@ -23,74 +23,74 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class Projectionist extends Job {
-	private StapGraph graph;
-	private int frameTime = 2000;
-	private boolean pause;
-	private boolean busy;
+    private StapGraph graph;
+    private int frameTime = 2000;
+    private boolean pause;
+    private boolean busy;
 
 
-	/**
-	 * @param name
-	 * @param listener    -- the keyListener instantiating this class
-	 * @param time -- Amount of time between frames
-	 */
-	public Projectionist(String name, StapGraph graph, int time) {
-		super(name);
-		this.graph = graph;
-		this.frameTime = time;
-		pause = false;
-		busy = false;
-	}
+    /**
+     * @param name
+     * @param listener    -- the keyListener instantiating this class
+     * @param time -- Amount of time between frames
+     */
+    public Projectionist(String name, StapGraph graph, int time) {
+        super(name);
+        this.graph = graph;
+        this.frameTime = time;
+        pause = false;
+        busy = false;
+    }
 
-	@Override
-	public IStatus run(IProgressMonitor monitor) {
+    @Override
+    public IStatus run(IProgressMonitor monitor) {
 
-		long snapshot = System.currentTimeMillis();
-		while (true) {
-			if (busy) {
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				continue;
-			}
+        long snapshot = System.currentTimeMillis();
+        while (true) {
+            if (busy) {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                continue;
+            }
 
-			if (pause) {
-				return Status.OK_STATUS;
-			}
+            if (pause) {
+                return Status.OK_STATUS;
+            }
 
-			if (System.currentTimeMillis() - snapshot >= frameTime) {
-				snapshot = System.currentTimeMillis();
-				busy = true;
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						graph.drawNextNode();
-						busy = false;
-					}
-				});
+            if (System.currentTimeMillis() - snapshot >= frameTime) {
+                snapshot = System.currentTimeMillis();
+                busy = true;
+                Display.getDefault().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        graph.drawNextNode();
+                        busy = false;
+                    }
+                });
 
-			} else {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			if (monitor.isCanceled()) {
-				break;
-			}
-		}
+            } else {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (monitor.isCanceled()) {
+                break;
+            }
+        }
 
-		return Status.CANCEL_STATUS;
-	}
+        return Status.CANCEL_STATUS;
+    }
 
-	/**
-	 * Projectionist will pause -- reschedule job to continue
-	 */
-	public void pause() {
-		pause = true;
-	}
+    /**
+     * Projectionist will pause -- reschedule job to continue
+     */
+    public void pause() {
+        pause = true;
+    }
 
 }

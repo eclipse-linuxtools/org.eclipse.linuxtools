@@ -31,43 +31,43 @@ import org.swtchart.Chart;
  */
 public class SaveGraphImageHandler extends AbstractHandler {
 
-	private SaveChartAction saveChartAction = new SaveChartAction();
+    private SaveChartAction saveChartAction = new SaveChartAction();
 
-	/**
-	 * This is the main method of the action.  It handles getting the active graph,
-	 * prompting the user for a location to save the image to, and then actually doing
-	 * the save.
-	 */
-	@Override
-	public Object execute(ExecutionEvent event) {
-		saveChartAction.setChart(getActiveChart());
-		saveChartAction.run();
-		return null;
-	}
+    /**
+     * This is the main method of the action.  It handles getting the active graph,
+     * prompting the user for a location to save the image to, and then actually doing
+     * the save.
+     */
+    @Override
+    public Object execute(ExecutionEvent event) {
+        saveChartAction.setChart(getActiveChart());
+        saveChartAction.run();
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return getActiveGraphEditor() != null;
-	}
+    @Override
+    public boolean isEnabled() {
+        return getActiveGraphEditor() != null;
+    }
 
-	private GraphSelectorEditor getActiveGraphEditor() {
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().
-				getActivePage().getActiveEditor();
-		return editor instanceof GraphSelectorEditor ? (GraphSelectorEditor) editor : null;
-	}
+    private GraphSelectorEditor getActiveGraphEditor() {
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+                getActivePage().getActiveEditor();
+        return editor instanceof GraphSelectorEditor ? (GraphSelectorEditor) editor : null;
+    }
 
-	private AbstractChartBuilder getActiveGraph() {
-		GraphSelectorEditor graphEditor = getActiveGraphEditor();
-		if (graphEditor == null) {
-			return null;
-		}
-		GraphDisplaySet gds = graphEditor.getActiveDisplaySet();
-		return gds == null ? null : gds.getActiveGraph();
-	}
+    private AbstractChartBuilder getActiveGraph() {
+        GraphSelectorEditor graphEditor = getActiveGraphEditor();
+        if (graphEditor == null) {
+            return null;
+        }
+        GraphDisplaySet gds = graphEditor.getActiveDisplaySet();
+        return gds == null ? null : gds.getActiveGraph();
+    }
 
-	private Chart getActiveChart() {
-		AbstractChartBuilder abs = getActiveGraph();
-		return abs == null ? null : abs.getChart();
-	}
+    private Chart getActiveChart() {
+        AbstractChartBuilder abs = getActiveGraph();
+        return abs == null ? null : abs.getChart();
+    }
 
 }

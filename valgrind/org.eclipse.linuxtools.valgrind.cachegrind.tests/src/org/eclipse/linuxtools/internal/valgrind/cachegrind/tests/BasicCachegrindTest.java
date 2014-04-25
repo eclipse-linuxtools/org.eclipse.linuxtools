@@ -25,52 +25,52 @@ import org.junit.Test;
 
 public class BasicCachegrindTest extends AbstractCachegrindTest {
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testNumPIDs() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNumPIDs"); //$NON-NLS-1$
+    @Test
+    public void testNumPIDs() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNumPIDs"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
-		assertEquals(1, view.getOutputs().length);
-	}
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
+        assertEquals(1, view.getOutputs().length);
+    }
 
-	@Test
-	public void testFileNames() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testFileNames"); //$NON-NLS-1$
+    @Test
+    public void testFileNames() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testFileNames"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		assertNotNull(file);
-		file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
-		assertNotNull(file);
-	}
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        assertNotNull(file);
+        file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
+        assertNotNull(file);
+    }
 
-	@Test
-	public void testNumFunctions() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNumFunctions"); //$NON-NLS-1$
+    @Test
+    public void testNumFunctions() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNumFunctions"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
-				.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		assertNotNull(file);
-		assertEquals(8, file.getFunctions().length);
-	}
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin
+                .getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        assertNotNull(file);
+        assertEquals(8, file.getFunctions().length);
+    }
 }

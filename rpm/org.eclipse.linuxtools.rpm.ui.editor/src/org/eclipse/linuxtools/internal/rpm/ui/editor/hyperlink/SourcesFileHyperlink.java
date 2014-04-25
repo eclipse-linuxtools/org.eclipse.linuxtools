@@ -32,71 +32,71 @@ import org.eclipse.ui.ide.IDE;
  */
 public class SourcesFileHyperlink implements IHyperlink {
 
-	private String fileName;
-	private IFile original;
-	private IRegion region;
+    private String fileName;
+    private IFile original;
+    private IRegion region;
 
-	/**
-	 * Creates hyperlink for the following file name, region and file whether
-	 * the file name is found.
-	 *
-	 * @param original The file where the reference to this file name is.
-	 * @param fileName The name of the file to open.
-	 * @param region The hyperlink region.
-	 */
-	public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
-		this.fileName = fileName;
-		this.original = original;
-		this.region = region;
-	}
+    /**
+     * Creates hyperlink for the following file name, region and file whether
+     * the file name is found.
+     *
+     * @param original The file where the reference to this file name is.
+     * @param fileName The name of the file to open.
+     * @param region The hyperlink region.
+     */
+    public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
+        this.fileName = fileName;
+        this.original = original;
+        this.region = region;
+    }
 
-	/**
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkRegion()
-	 */
-	@Override
-	public IRegion getHyperlinkRegion() {
-		return region;
-	}
+    /**
+     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkRegion()
+     */
+    @Override
+    public IRegion getHyperlinkRegion() {
+        return region;
+    }
 
-	/**
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkText()
-	 */
-	@Override
-	public String getHyperlinkText() {
-		return NLS.bind(Messages.SourcesFileHyperlink_0, fileName);
-	}
+    /**
+     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkText()
+     */
+    @Override
+    public String getHyperlinkText() {
+        return NLS.bind(Messages.SourcesFileHyperlink_0, fileName);
+    }
 
-	/**
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#getTypeLabel()
-	 */
-	@Override
-	public String getTypeLabel() {
-		return null;
-	}
+    /**
+     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getTypeLabel()
+     */
+    @Override
+    public String getTypeLabel() {
+        return null;
+    }
 
-	/**
-	 * Tries to open the given file name looking for it in the current directory
-	 * and in ../SOURCES.
-	 *
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
-	 */
-	@Override
-	public void open() {
-		IContainer container = original.getParent();
-		IResource resourceToOpen = container.findMember(fileName);
-		if (resourceToOpen == null) {
-			IResource sourcesFolder = container.getParent().findMember(
-					"SOURCES"); //$NON-NLS-1$
-			resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
-		}
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		try {
-			if (resourceToOpen.getType() == IResource.FILE) {
-				IDE.openEditor(page, (IFile) resourceToOpen);
-			}
-		} catch (PartInitException e) {
-			SpecfileLog.logError(e);
-		}
-	}
+    /**
+     * Tries to open the given file name looking for it in the current directory
+     * and in ../SOURCES.
+     *
+     * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
+     */
+    @Override
+    public void open() {
+        IContainer container = original.getParent();
+        IResource resourceToOpen = container.findMember(fileName);
+        if (resourceToOpen == null) {
+            IResource sourcesFolder = container.getParent().findMember(
+                    "SOURCES"); //$NON-NLS-1$
+            resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
+        }
+        IWorkbenchPage page = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage();
+        try {
+            if (resourceToOpen.getType() == IResource.FILE) {
+                IDE.openEditor(page, (IFile) resourceToOpen);
+            }
+        } catch (PartInitException e) {
+            SpecfileLog.logError(e);
+        }
+    }
 }

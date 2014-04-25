@@ -19,10 +19,10 @@ package org.eclipse.linuxtools.internal.valgrind.helgrind;
  *      none:   only show trace for one thread in a race (fastest)
  *   --conflict-cache-size=N   size of 'full' history cache [1000000]
  */
-public final class HelgrindCommandConstants 
+public final class HelgrindCommandConstants
 {
-	public static final String OPT_TRACK_LOCKORDERS = "--track-lockorders"; //$NON-NLS-1$
-	public static final String OPT_HISTORY_LEVEL = "--history-level"; //$NON-NLS-1$
-	public static final String OPT_CONFLICT_CACHE_SIZE = "--conflict-cache-size"; //$NON-NLS-1$
+    public static final String OPT_TRACK_LOCKORDERS = "--track-lockorders"; //$NON-NLS-1$
+    public static final String OPT_HISTORY_LEVEL = "--history-level"; //$NON-NLS-1$
+    public static final String OPT_CONFLICT_CACHE_SIZE = "--conflict-cache-size"; //$NON-NLS-1$
 
 }

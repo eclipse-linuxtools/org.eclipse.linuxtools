@@ -40,20 +40,20 @@ import org.eclipse.ui.dialogs.SelectionDialog;
  * <pre>
  * ContainerSelectionDialog dialog =
  *    new ContainerSelectionDialog(getShell(), initialSelection, allowNewContainerName(), msg);
- *	dialog.open();
- *	Object[] result = dialog.getResult();
+ *    dialog.open();
+ *    Object[] result = dialog.getResult();
  * </pre>
  * </p>
  * @noextend This class is not intended to be subclassed by clients.
  */
 public class ChangeLogContainerSelectionDialog extends SelectionDialog {
 
-	private static final String ContainerSelectionDialog_title = Messages.getString("ChangeLogContainerSelectionDialog.Title"); //$NON-NLS-1$
-	private static final String ContainerSelectionDialog_message = Messages.getString("ChangeLogContainerSelectionDialog.Message"); //$NON-NLS-1$
-	private static final String CONTAINER_SELECTION_DIALOG = "org.eclipse.ui.ide.container_selection_dialog_context"; //$NON-NLS-1$
+    private static final String ContainerSelectionDialog_title = Messages.getString("ChangeLogContainerSelectionDialog.Title"); //$NON-NLS-1$
+    private static final String ContainerSelectionDialog_message = Messages.getString("ChangeLogContainerSelectionDialog.Message"); //$NON-NLS-1$
+    private static final String CONTAINER_SELECTION_DIALOG = "org.eclipse.ui.ide.container_selection_dialog_context"; //$NON-NLS-1$
 
 
-	// the widget group;
+    // the widget group;
     ChangeLogContainerSelectionGroup group;
 
     // the root resource to populate the viewer with
@@ -87,10 +87,10 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
         this.initialSelection = initialRoot;
         this.allowNewContainerName = allowNewContainerName;
         if (message != null) {
-			setMessage(message);
-		} else {
-			setMessage(ContainerSelectionDialog_message);
-		}
+            setMessage(message);
+        } else {
+            setMessage(ContainerSelectionDialog_message);
+        }
         setShellStyle(getShellStyle() | SWT.SHEET);
     }
 
@@ -98,7 +98,7 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
      * Method declared in Window.
      */
     @Override
-	protected void configureShell(Shell shell) {
+    protected void configureShell(Shell shell) {
         super.configureShell(shell);
         PlatformUI.getWorkbench().getHelpSystem()
                 .setHelp(shell, CONTAINER_SELECTION_DIALOG);
@@ -108,7 +108,7 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
      * Method declared on Dialog.
      */
     @Override
-	protected Control createDialogArea(Composite parent) {
+    protected Control createDialogArea(Composite parent) {
         // create composite
         Composite area = (Composite) super.createDialogArea(parent);
 
@@ -133,13 +133,13 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
      * for later retrieval by the client and closes this dialog.
      */
     @Override
-	protected void okPressed() {
+    protected void okPressed() {
 
         List<IPath> chosenContainerPathList = new ArrayList<>();
         IPath returnValue = group.getContainerFullPath();
         if (returnValue != null) {
-			chosenContainerPathList.add(returnValue);
-		}
+            chosenContainerPathList.add(returnValue);
+        }
         setResult(chosenContainerPathList);
         super.okPressed();
     }

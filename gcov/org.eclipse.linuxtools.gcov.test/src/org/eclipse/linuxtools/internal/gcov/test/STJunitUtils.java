@@ -34,66 +34,66 @@ import org.osgi.framework.Bundle;
  */
 public class STJunitUtils {
 
-	/**
-	 * Utility method to compare files
-	 * @param dumpFile
-	 * @param refFile
-	 * @return
-	 */
-	public static boolean compareIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
-		String message = "Comparing ref file (" + refFile + ")and dump file ("
-				+ dumpFile + ")";
-		boolean equals = false;
-		try (LineNumberReader is1 = new LineNumberReader(new FileReader(
-				dumpFile));
-				LineNumberReader is2 = new LineNumberReader(new FileReader(
-						refFile))) {
-			do {
-				String line1 = is1.readLine();
-				String line2 = is2.readLine();
-				if (line1 == null) {
-					if (line2 == null) {
-						equals = true;
-					}
-					break;
-				} else if (line2 == null || !line1.equals(line2)) {
-					break;
-				}
-			} while (true);
+    /**
+     * Utility method to compare files
+     * @param dumpFile
+     * @param refFile
+     * @return
+     */
+    public static boolean compareIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
+        String message = "Comparing ref file (" + refFile + ")and dump file ("
+                + dumpFile + ")";
+        boolean equals = false;
+        try (LineNumberReader is1 = new LineNumberReader(new FileReader(
+                dumpFile));
+                LineNumberReader is2 = new LineNumberReader(new FileReader(
+                        refFile))) {
+            do {
+                String line1 = is1.readLine();
+                String line2 = is2.readLine();
+                if (line1 == null) {
+                    if (line2 == null) {
+                        equals = true;
+                    }
+                    break;
+                } else if (line2 == null || !line1.equals(line2)) {
+                    break;
+                }
+            } while (true);
 
-			if (!equals) {
-				assertEquals(message + ": not correspond ", true, false);
-			}
+            if (!equals) {
+                assertEquals(message + ": not correspond ", true, false);
+            }
 
-			// delete dump only for successful tests
-			if (equals && deleteDumpFileIfOk) {
-				new File(dumpFile).delete();
-			}
-		} catch (FileNotFoundException _) {
-			message += "... FAILED: One of these files may not exist";
-			assertNull(message, _);
-		} catch (Exception e) {
-			message += ": exception raised ... FAILED";
-			assertNull(message, e);
-		}
-		return equals;
-	}
+            // delete dump only for successful tests
+            if (equals && deleteDumpFileIfOk) {
+                new File(dumpFile).delete();
+            }
+        } catch (FileNotFoundException _) {
+            message += "... FAILED: One of these files may not exist";
+            assertNull(message, _);
+        } catch (Exception e) {
+            message += ": exception raised ... FAILED";
+            assertNull(message, e);
+        }
+        return equals;
+    }
 
-	/**
-	 * Gets the absolute path of a resource in the given plugin
-	 * @param pluginId
-	 * @param relativeName
-	 * @return an absolute path to a file
-	 */
-	public static String getAbsolutePath(String pluginId, String relativeName) {
-		Bundle b = Platform.getBundle(pluginId);
-		URL url = FileLocator.find(b, new Path(relativeName), null);
-		try {
-			url = FileLocator.toFileURL(url);
-		} catch (IOException e) {
-			assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
-		}
-		String filename = url.getFile();
-		return filename;
-	}
+    /**
+     * Gets the absolute path of a resource in the given plugin
+     * @param pluginId
+     * @param relativeName
+     * @return an absolute path to a file
+     */
+    public static String getAbsolutePath(String pluginId, String relativeName) {
+        Bundle b = Platform.getBundle(pluginId);
+        URL url = FileLocator.find(b, new Path(relativeName), null);
+        try {
+            url = FileLocator.toFileURL(url);
+        } catch (IOException e) {
+            assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
+        }
+        String filename = url.getFile();
+        return filename;
+    }
 }

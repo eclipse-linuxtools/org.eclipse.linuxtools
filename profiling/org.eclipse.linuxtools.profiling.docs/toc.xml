@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="Linux_Tools_Project/Profiling/User_Guide/User-Guide.html" label="Profiling Framework User Guide">
-	<topic href="Linux_Tools_Project/Profiling/User_Guide/User-Guide.html" label="Profiling Framework User Guide">
-		<topic href="Linux_Tools_Project/Profiling/User_Guide/User-Guide.html" label="Overview"></topic>
-		<topic href="Linux_Tools_Project/Profiling/User_Guide/Profiling-Categories.html" label="Profiling Categories"></topic>
-		<topic href="Linux_Tools_Project/Profiling/User_Guide/Profiling-Configurations.html" label="Profiling Configurations"></topic>
-		<topic href="Linux_Tools_Project/Profiling/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
-	</topic>
+    <topic href="Linux_Tools_Project/Profiling/User_Guide/User-Guide.html" label="Profiling Framework User Guide">
+        <topic href="Linux_Tools_Project/Profiling/User_Guide/User-Guide.html" label="Overview"></topic>
+        <topic href="Linux_Tools_Project/Profiling/User_Guide/Profiling-Categories.html" label="Profiling Categories"></topic>
+        <topic href="Linux_Tools_Project/Profiling/User_Guide/Profiling-Configurations.html" label="Profiling Configurations"></topic>
+        <topic href="Linux_Tools_Project/Profiling/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
+    </topic>
 </toc>

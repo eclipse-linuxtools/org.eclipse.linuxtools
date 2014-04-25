@@ -12,22 +12,22 @@ package org.eclipse.linuxtools.internal.perf.model;
 
 public class PMCommand extends TreeParent {
 
-	public PMCommand(String name) {
-		super(name, 100);
-		/*
-		 *  The underlying report truncates percentages in some cases
-		 *  so taking a sum will not always give 100, but we know that
-		 *  the only command that could have run is the binary we specified.
-		 */
-	}
+    public PMCommand(String name) {
+        super(name, 100);
+        /*
+         *  The underlying report truncates percentages in some cases
+         *  so taking a sum will not always give 100, but we know that
+         *  the only command that could have run is the binary we specified.
+         */
+    }
 
-	@Override
-	public String toString() {
-		String prefix = "";
-		if (getPercent() != -1) {
-			prefix = getPercent() + "%  (" + getFormattedSamples() + " samples) in ";
-		}
-		return prefix + getName();
-	}	
+    @Override
+    public String toString() {
+        String prefix = "";
+        if (getPercent() != -1) {
+            prefix = getPercent() + "%  (" + getFormattedSamples() + " samples) in ";
+        }
+        return prefix + getName();
+    }
 
 }

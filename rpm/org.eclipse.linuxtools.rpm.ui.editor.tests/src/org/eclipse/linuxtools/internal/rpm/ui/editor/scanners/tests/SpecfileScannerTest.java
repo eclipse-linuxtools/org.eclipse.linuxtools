@@ -26,108 +26,108 @@ import org.junit.Test;
 
 public class SpecfileScannerTest extends AScannerTest {
 
-	private IToken token;
+    private IToken token;
 
-	private TextAttribute ta;
+    private TextAttribute ta;
 
-	private static SpecfileScanner scanner;
+    private static SpecfileScanner scanner;
 
-	@BeforeClass
-	public static void init() {
-		scanner = new SpecfileScanner(new ColorManager());
-	}
+    @BeforeClass
+    public static void init() {
+        scanner = new SpecfileScanner(new ColorManager());
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
-	 */
-	@Override
-	protected String getContents() {
-		return "# This is a comment\nName: test\n%prep\n%{name}\n%define\n%if\nName=test";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
+     */
+    @Override
+    protected String getContents() {
+        return "# This is a comment\nName: test\n%prep\n%{name}\n%define\n%if\nName=test";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
-	 */
-	@Override
-	protected RuleBasedScanner getScanner() {
-		return scanner;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
+     */
+    @Override
+    protected RuleBasedScanner getScanner() {
+        return scanner;
+    }
 
-	@Test
-	public void testComment() {
-		token = getNextToken();
-		assertTrue(token instanceof Token);
-		assertEquals(20, rulesBasedScanner.getTokenLength());
-		assertEquals(0, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.COMMENT, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testComment() {
+        token = getNextToken();
+        assertTrue(token instanceof Token);
+        assertEquals(20, rulesBasedScanner.getTokenLength());
+        assertEquals(0, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.COMMENT, ta.getForeground().getRGB());
+    }
 
-	@Test
-	public void testTag() {
-		token = getToken(2);
-		assertTrue(token instanceof Token);
-		assertEquals(5, rulesBasedScanner.getTokenLength());
-		assertEquals(20, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.TAGS, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testTag() {
+        token = getToken(2);
+        assertTrue(token instanceof Token);
+        assertEquals(5, rulesBasedScanner.getTokenLength());
+        assertEquals(20, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.TAGS, ta.getForeground().getRGB());
+    }
 
-	@Test
-	public void testSection() {
-		token = getToken(9);
-		assertTrue(token instanceof Token);
-		assertEquals(5, rulesBasedScanner.getTokenLength());
-		assertEquals(31, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.SECTIONS, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testSection() {
+        token = getToken(9);
+        assertTrue(token instanceof Token);
+        assertEquals(5, rulesBasedScanner.getTokenLength());
+        assertEquals(31, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.SECTIONS, ta.getForeground().getRGB());
+    }
 
-	@Test
-	public void testMacro() {
-		token = getToken(11);
-		assertTrue(token instanceof Token);
-		assertEquals(7, rulesBasedScanner.getTokenLength());
-		assertEquals(37, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testMacro() {
+        token = getToken(11);
+        assertTrue(token instanceof Token);
+        assertEquals(7, rulesBasedScanner.getTokenLength());
+        assertEquals(37, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
+    }
 
-	@Test
-	public void testDefinedMacro() {
-		token = getToken(13);
-		assertTrue(token instanceof Token);
-		assertEquals(7, rulesBasedScanner.getTokenLength());
-		assertEquals(45, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testDefinedMacro() {
+        token = getToken(13);
+        assertTrue(token instanceof Token);
+        assertEquals(7, rulesBasedScanner.getTokenLength());
+        assertEquals(45, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
+    }
 
-	@Test
-	public void testKeyword() {
-		token = getToken(15);
-		assertTrue(token instanceof Token);
-		assertEquals(3, rulesBasedScanner.getTokenLength());
-		assertEquals(53, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ISpecfileColorConstants.KEYWORDS, ta.getForeground().getRGB());
-	}
+    @Test
+    public void testKeyword() {
+        token = getToken(15);
+        assertTrue(token instanceof Token);
+        assertEquals(3, rulesBasedScanner.getTokenLength());
+        assertEquals(53, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ISpecfileColorConstants.KEYWORDS, ta.getForeground().getRGB());
+    }
 
-	/**
-	 * Check that defines are correctly scanned. See bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 printscreen:
-	 * https://bugs.eclipse.org/bugs/attachment.cgi?id=63722
-	 */
-	@Test
-	public void testDefineCorreclyScanned() {
-		token = getToken(17);
-		assertTrue(token instanceof Token);
-		assertEquals(1, rulesBasedScanner.getTokenLength());
-	}
+    /**
+     * Check that defines are correctly scanned. See bug:
+     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 printscreen:
+     * https://bugs.eclipse.org/bugs/attachment.cgi?id=63722
+     */
+    @Test
+    public void testDefineCorreclyScanned() {
+        token = getToken(17);
+        assertTrue(token instanceof Token);
+        assertEquals(1, rulesBasedScanner.getTokenLength());
+    }
 
 }

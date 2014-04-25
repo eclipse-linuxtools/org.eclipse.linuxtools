@@ -52,8 +52,8 @@ import org.eclipse.ui.PlatformUI;
 public class CovManager implements Serializable {
 
     /**
-	 * 
-	 */
+     *
+     */
     private static final long serialVersionUID = 5582066617970911413L;
     // input
     private final String binaryPath;
@@ -263,9 +263,9 @@ public class CovManager implements Serializable {
             File dir = null;
             do {
                 if (postfix.isEmpty()) {
-                	postfix = f.getName();
+                    postfix = f.getName();
                 } else {
-                	postfix = f.getName() + File.separator + postfix;
+                    postfix = f.getName() + File.separator + postfix;
                 }
                 f = f.getParentFile();
                 if (f != null) {
@@ -289,7 +289,7 @@ public class CovManager implements Serializable {
             fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePath, filename }));
             String s = fg.open();
             if (s == null) {
-            	return null;
+                return null;
             } else {
                 f = new File(s).getAbsoluteFile();
                 addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());

@@ -33,178 +33,178 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
 
 public class SimpleEditor extends TextEditor {
-	public SimpleEditor() {
-		super();
-		// make sure we inherit all the text editing commands (delete line etc).
-		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.systemtap.ui.ide.context" }); //$NON-NLS-1$
-		internalInit();
-	}
+    public SimpleEditor() {
+        super();
+        // make sure we inherit all the text editing commands (delete line etc).
+        setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.systemtap.ui.ide.context" }); //$NON-NLS-1$
+        internalInit();
+    }
 
-	/**
-	 * @since 3.0
-	 */
-	protected void internalInit() {
-		configureInsertMode(SMART_INSERT, false);
-		setDocumentProvider(new SimpleDocumentProvider());
-	}
+    /**
+     * @since 3.0
+     */
+    protected void internalInit() {
+        configureInsertMode(SMART_INSERT, false);
+        setDocumentProvider(new SimpleDocumentProvider());
+    }
 
-	/**
-	 * Searches the IDocument for the specified string.
-	 *
-	 * @param search string to find, case-sensitive
-	 * @return the integer line number of the string
-	 */
-	public int find(String search) {
-		return findWithOptions(search, false);
-	}
+    /**
+     * Searches the IDocument for the specified string.
+     *
+     * @param search string to find, case-sensitive
+     * @return the integer line number of the string
+     */
+    public int find(String search) {
+        return findWithOptions(search, false);
+    }
 
-	/**
-	 * Searches the IDocument for the specified regex.
-	 * @param regex string regex to find
-	 * @return the integer line number of the string
-	 * @since 3.0
-	 */
-	public int findRegex(String regex) {
-		return findWithOptions(regex, true);
-	}
+    /**
+     * Searches the IDocument for the specified regex.
+     * @param regex string regex to find
+     * @return the integer line number of the string
+     * @since 3.0
+     */
+    public int findRegex(String regex) {
+        return findWithOptions(regex, true);
+    }
 
-	private int findWithOptions(String search, boolean regExSearch) {
-		IDocument doc = getSourceViewer().getDocument();
-		FindReplaceDocumentAdapter finder = new FindReplaceDocumentAdapter(doc);
+    private int findWithOptions(String search, boolean regExSearch) {
+        IDocument doc = getSourceViewer().getDocument();
+        FindReplaceDocumentAdapter finder = new FindReplaceDocumentAdapter(doc);
 
-		int line = 0;
+        int line = 0;
 
-		jumpToLocation(0, 0);
-		try {
-			IRegion reg = finder.find(0, search, true, !regExSearch, false, regExSearch);
-			int offset = reg.getOffset();
-			line = doc.getLineOfOffset(offset);
-		} catch (BadLocationException ble) {
-			// Pass
-		} catch (NullPointerException npe) {
-			line = -1;
-		}
+        jumpToLocation(0, 0);
+        try {
+            IRegion reg = finder.find(0, search, true, !regExSearch, false, regExSearch);
+            int offset = reg.getOffset();
+            line = doc.getLineOfOffset(offset);
+        } catch (BadLocationException ble) {
+            // Pass
+        } catch (NullPointerException npe) {
+            line = -1;
+        }
 
-		return line;
-	}
+        return line;
+    }
 
-	/**
-	 * Jumps to the location in the IDocument.
-	 * @param line The line you wish to jump to.
-	 * @param character The character you wish to jump to.
-	 */
-	public void jumpToLocation(int line, int character) {
-		IDocument doc = getSourceViewer().getDocument();
+    /**
+     * Jumps to the location in the IDocument.
+     * @param line The line you wish to jump to.
+     * @param character The character you wish to jump to.
+     */
+    public void jumpToLocation(int line, int character) {
+        IDocument doc = getSourceViewer().getDocument();
 
-		try {
-			int offset = doc.getLineOffset(line-1) + character;
-			this.getSelectionProvider().setSelection(new TextSelection(doc, offset, 0));
-		} catch (BadLocationException boe) {
-			// Pass
-		}
-	}
+        try {
+            int offset = doc.getLineOffset(line-1) + character;
+            this.getSelectionProvider().setSelection(new TextSelection(doc, offset, 0));
+        } catch (BadLocationException boe) {
+            // Pass
+        }
+    }
 
-	/**
-	 * Selects a line in the IDocument.
-	 * @param line the line you wish to select
-	 */
-	public void selectLine(int line) {
-		IDocument doc = getSourceViewer().getDocument();
+    /**
+     * Selects a line in the IDocument.
+     * @param line the line you wish to select
+     */
+    public void selectLine(int line) {
+        IDocument doc = getSourceViewer().getDocument();
 
-		try {
-			this.getSelectionProvider().setSelection(new TextSelection(doc, doc.getLineOffset(line-1), doc.getLineLength(line-1)-1));
-		} catch (BadLocationException boe) {
-			// Pass
-		}
-	}
+        try {
+            this.getSelectionProvider().setSelection(new TextSelection(doc, doc.getLineOffset(line-1), doc.getLineLength(line-1)-1));
+        } catch (BadLocationException boe) {
+            // Pass
+        }
+    }
 
-	/**
-	 * Performs a SaveAs on the IDocument.
-	 */
-	@Override
-	public void doSaveAs() {
-		File file = queryFile();
-		if (file == null) {
-			return;
-		}
+    /**
+     * Performs a SaveAs on the IDocument.
+     */
+    @Override
+    public void doSaveAs() {
+        File file = queryFile();
+        if (file == null) {
+            return;
+        }
 
-		IEditorInput inputFile = createEditorInput(file);
+        IEditorInput inputFile = createEditorInput(file);
 
-		IDocument doc = getSourceViewer().getDocument();
-		String s = doc.get();
+        IDocument doc = getSourceViewer().getDocument();
+        String s = doc.get();
 
-		try (FileOutputStream fos = new FileOutputStream(file);
-				PrintStream ps = new PrintStream(fos)){
-			ps.print(s);
-			ps.close();
-		} catch (IOException fnfe) {
-			// Pass
-		}
+        try (FileOutputStream fos = new FileOutputStream(file);
+                PrintStream ps = new PrintStream(fos)){
+            ps.print(s);
+            ps.close();
+        } catch (IOException fnfe) {
+            // Pass
+        }
 
-		setInput(inputFile);
-		setPartName(inputFile.getName());
-	}
+        setInput(inputFile);
+        setPartName(inputFile.getName());
+    }
 
-	/**
-	 * Sets up an editor input based on the specified file.
-	 * @param file the location of the file you wish to set.
-	 * @return input object created.
-	 */
-	private static IEditorInput createEditorInput(File file) {
-		IPath location= new Path(file.getAbsolutePath());
-		PathEditorInput input= new PathEditorInput(location);
-		return input;
-	}
+    /**
+     * Sets up an editor input based on the specified file.
+     * @param file the location of the file you wish to set.
+     * @return input object created.
+     */
+    private static IEditorInput createEditorInput(File file) {
+        IPath location= new Path(file.getAbsolutePath());
+        PathEditorInput input= new PathEditorInput(location);
+        return input;
+    }
 
-	/**
-	 * Inserts text into the IDocument.
-	 * @param text string to insert
-	 */
-	public void insertText(String text) {
-		IDocument doc = getSourceViewer().getDocument();
-		String s = doc.get();
-		int offset = s.length();
-		s += text;
-		doc.set(s);
-		this.setHighlightRange(offset, 0, true);
-	}
+    /**
+     * Inserts text into the IDocument.
+     * @param text string to insert
+     */
+    public void insertText(String text) {
+        IDocument doc = getSourceViewer().getDocument();
+        String s = doc.get();
+        int offset = s.length();
+        s += text;
+        doc.set(s);
+        this.setHighlightRange(offset, 0, true);
+    }
 
-	/**
-	 * Inserts text at the current location.
-	 * @param text string to insert
-	 */
-	public void insertTextAtCurrent(String text) {
-		ISelection selection = this.getSelectionProvider().getSelection();
-		IDocument doc = getSourceViewer().getDocument();
+    /**
+     * Inserts text at the current location.
+     * @param text string to insert
+     */
+    public void insertTextAtCurrent(String text) {
+        ISelection selection = this.getSelectionProvider().getSelection();
+        IDocument doc = getSourceViewer().getDocument();
 
-		if (selection instanceof ITextSelection) {
-			ITextSelection s = (ITextSelection) selection;
-			StringBuffer sb = new StringBuffer(doc.get().substring(0, s.getOffset()));
-			sb.append(text.trim());
-			sb.append(doc.get().substring(s.getOffset() + s.getLength(), doc.get().length()));
-			doc.set(sb.toString());
-			this.setHighlightRange(s.getOffset() + text.trim().length(), 0, true);
-		}
-	}
+        if (selection instanceof ITextSelection) {
+            ITextSelection s = (ITextSelection) selection;
+            StringBuffer sb = new StringBuffer(doc.get().substring(0, s.getOffset()));
+            sb.append(text.trim());
+            sb.append(doc.get().substring(s.getOffset() + s.getLength(), doc.get().length()));
+            doc.set(sb.toString());
+            this.setHighlightRange(s.getOffset() + text.trim().length(), 0, true);
+        }
+    }
 
-	private static File queryFile() {
-		FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-		dialog.setText(Localization.getString("NewFileAction.NewFile"));  //$NON-NLS-1$
-		String path= dialog.open();
-		if (path != null && path.length() > 0) {
-			return new File(path);
-		}
-		return null;
-	}
+    private static File queryFile() {
+        FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
+        dialog.setText(Localization.getString("NewFileAction.NewFile"));  //$NON-NLS-1$
+        String path= dialog.open();
+        if (path != null && path.length() > 0) {
+            return new File(path);
+        }
+        return null;
+    }
 
-	/**
-	 * Determines whether saving is allowed currently.
-	 * @return boolean value indicating whether or not saving is allowed
-	 */
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
-	}
+    /**
+     * Determines whether saving is allowed currently.
+     * @return boolean value indicating whether or not saving is allowed
+     */
+    @Override
+    public boolean isSaveAsAllowed() {
+        return true;
+    }
 
-	public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"; //$NON-NLS-1$
+    public static final String ID = "org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"; //$NON-NLS-1$
 }

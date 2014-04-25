@@ -15,27 +15,27 @@ import java.io.Serializable;
 
 public class Line implements Serializable{
 
-	/**	 */
-	private static final long serialVersionUID = 8804878976767948267L;
-	private boolean exists = false;
-	private long count = 0;
+    /**     */
+    private static final long serialVersionUID = 8804878976767948267L;
+    private boolean exists = false;
+    private long count = 0;
 
-	/*Getters & setters*/
+    /*Getters & setters*/
 
-	public boolean exists() {
-		return exists;
-	}
+    public boolean exists() {
+        return exists;
+    }
 
-	public void setExists(boolean exists) {
-		this.exists = exists;
-	}
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
 
-	public void setCount(long count) {
-		this.count = count;
-	}
+    public void setCount(long count) {
+        this.count = count;
+    }
 
-	public long getCount() {
-		return count;
-	}
+    public long getCount() {
+        return count;
+    }
 
 }

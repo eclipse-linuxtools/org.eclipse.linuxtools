@@ -21,24 +21,24 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotSpinner;
  */
 public class StatComparisonViewTest extends AbstractSWTBotTest {
 
-	@Override
-	protected void setPerfOptions(SWTWorkbenchBot bot) {
-		SWTBotCheckBox chkBox = bot.checkBox("Show Stat View");
-		assertNotNull(chkBox);
-		chkBox.select();
+    @Override
+    protected void setPerfOptions(SWTWorkbenchBot bot) {
+        SWTBotCheckBox chkBox = bot.checkBox("Show Stat View");
+        assertNotNull(chkBox);
+        chkBox.select();
 
-		SWTBotSpinner spinner = bot.spinner();
-		assertNotNull(spinner);
-		spinner.setSelection(3);
-	}
+        SWTBotSpinner spinner = bot.spinner();
+        assertNotNull(spinner);
+        spinner.setSelection(3);
+    }
 
-	@Override
-	protected void testPerfView() {
-		compareWithEachOther("perf_old.stat", "perf_new.stat");
-	}
+    @Override
+    protected void testPerfView() {
+        compareWithEachOther("perf_old.stat", "perf_new.stat");
+    }
 
-	@Override
-	protected void openStubView() {
-	}
+    @Override
+    protected void openStubView() {
+    }
 
 }

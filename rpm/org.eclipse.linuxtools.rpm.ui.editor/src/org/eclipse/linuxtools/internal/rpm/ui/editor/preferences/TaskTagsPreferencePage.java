@@ -20,60 +20,60 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
-		IWorkbenchPreferencePage {
+        IWorkbenchPreferencePage {
 
-	public TaskTagsPreferencePage() {
-		super(GRID);
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-	}
+    public TaskTagsPreferencePage() {
+        super(GRID);
+        setPreferenceStore(Activator.getDefault().getPreferenceStore());
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 
-	@Override
-	protected void createFieldEditors() {
-		addField(new TasksListEditor(PreferenceConstants.P_TASK_TAGS,
-				Messages.TaskTagsPreferencePage_0,
-				getFieldEditorParent()));
-	}
+    @Override
+    protected void createFieldEditors() {
+        addField(new TasksListEditor(PreferenceConstants.P_TASK_TAGS,
+                Messages.TaskTagsPreferencePage_0,
+                getFieldEditorParent()));
+    }
 
-	static class TasksListEditor extends ListEditor {
+    static class TasksListEditor extends ListEditor {
 
-		public TasksListEditor(String name, String labelText, Composite parent) {
-			super(name, labelText, parent);
-		}
+        public TasksListEditor(String name, String labelText, Composite parent) {
+            super(name, labelText, parent);
+        }
 
-		@Override
-		protected String createList(String[] items) {
-			StringBuilder itemsString = new StringBuilder();
-			for (String item : items) {
-				itemsString.append(item + ';');
-			}
-			return itemsString.toString();
-		}
+        @Override
+        protected String createList(String[] items) {
+            StringBuilder itemsString = new StringBuilder();
+            for (String item : items) {
+                itemsString.append(item + ';');
+            }
+            return itemsString.toString();
+        }
 
-		@Override
-		protected String getNewInputObject() {
-			String result = null;
-			// open an input dialog so that the user can enter a new task tag
-			InputDialog inputDialog = new InputDialog(getShell(),
-					Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-1$
-			int returnCode = inputDialog.open();
+        @Override
+        protected String getNewInputObject() {
+            String result = null;
+            // open an input dialog so that the user can enter a new task tag
+            InputDialog inputDialog = new InputDialog(getShell(),
+                    Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-1$
+            int returnCode = inputDialog.open();
 
-			if (returnCode == Window.OK) {
-				result = inputDialog.getValue();
-			}
+            if (returnCode == Window.OK) {
+                result = inputDialog.getValue();
+            }
 
-			return result;
+            return result;
 
-		}
+        }
 
-		@Override
-		protected String[] parseString(String stringList) {
-			return stringList.split(";"); //$NON-NLS-1$
-		}
+        @Override
+        protected String[] parseString(String stringList) {
+            return stringList.split(";"); //$NON-NLS-1$
+        }
 
-	}
+    }
 
 }

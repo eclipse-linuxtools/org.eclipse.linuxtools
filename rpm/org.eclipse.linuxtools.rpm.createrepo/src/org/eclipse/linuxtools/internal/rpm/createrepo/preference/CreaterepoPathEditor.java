@@ -20,45 +20,45 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class CreaterepoPathEditor extends PathEditor {
 
-	/**
-	 * Default Constructor.
-	 *
-	 * @param name The name of the preference to save in.
-	 * @param labelText The description label.
-	 * @param dirChooserLabelText The label shown at the bottom of the directory dialog.
-	 * @param parent The parent composite this PathEditor belongs to.
-	 */
-	public CreaterepoPathEditor(String name, String labelText, String dirChooserLabelText, Composite parent) {
-		super(name, labelText, dirChooserLabelText, parent);
-	}
+    /**
+     * Default Constructor.
+     *
+     * @param name The name of the preference to save in.
+     * @param labelText The description label.
+     * @param dirChooserLabelText The label shown at the bottom of the directory dialog.
+     * @param parent The parent composite this PathEditor belongs to.
+     */
+    public CreaterepoPathEditor(String name, String labelText, String dirChooserLabelText, Composite parent) {
+        super(name, labelText, dirChooserLabelText, parent);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.preference.PathEditor#createList(java.lang.String[])
-	 */
-	@Override
-	protected String createList(String[] items) {
-		String preferenceValue = ICreaterepoConstants.EMPTY_STRING;
-		if (items.length > 0) {
-			for (String str : items) {
-				preferenceValue = preferenceValue.concat(str + ICreaterepoConstants.DELIMITER);
-			}
-			// remove hanging delimiter
-			preferenceValue = preferenceValue.substring(0, preferenceValue.length()-1);
-		}
-		return preferenceValue;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.preference.PathEditor#createList(java.lang.String[])
+     */
+    @Override
+    protected String createList(String[] items) {
+        String preferenceValue = ICreaterepoConstants.EMPTY_STRING;
+        if (items.length > 0) {
+            for (String str : items) {
+                preferenceValue = preferenceValue.concat(str + ICreaterepoConstants.DELIMITER);
+            }
+            // remove hanging delimiter
+            preferenceValue = preferenceValue.substring(0, preferenceValue.length()-1);
+        }
+        return preferenceValue;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.preference.PathEditor#parseString(java.lang.String)
-	 */
-	@Override
-	protected String[] parseString(String stringList) {
-		if (!stringList.isEmpty()) {
-			return stringList.split(ICreaterepoConstants.DELIMITER);
-		}
-		return new String[]{};
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.preference.PathEditor#parseString(java.lang.String)
+     */
+    @Override
+    protected String[] parseString(String stringList) {
+        if (!stringList.isEmpty()) {
+            return stringList.split(ICreaterepoConstants.DELIMITER);
+        }
+        return new String[]{};
+    }
 
 }

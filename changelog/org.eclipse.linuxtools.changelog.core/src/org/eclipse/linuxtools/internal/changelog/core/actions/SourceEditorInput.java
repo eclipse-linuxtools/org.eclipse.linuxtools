@@ -17,19 +17,19 @@ import org.eclipse.core.resources.IStorage;
  */
 public class SourceEditorInput extends StorageEditorInput {
 
-	/**
-	 * @param storage that represents a source file
-	 */
-	public SourceEditorInput(IStorage storage) {
-		super(storage);
-	}
+    /**
+     * @param storage that represents a source file
+     */
+    public SourceEditorInput(IStorage storage) {
+        super(storage);
+    }
 
-	/*
-	 * @see org.eclipse.ui.IEditorInput#exists()
-	 */
-	@Override
-	public boolean exists() {
-		return false;
-	}
+    /*
+     * @see org.eclipse.ui.IEditorInput#exists()
+     */
+    @Override
+    public boolean exists() {
+        return false;
+    }
 
 }

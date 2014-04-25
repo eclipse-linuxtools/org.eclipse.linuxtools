@@ -41,118 +41,118 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
-	protected ILaunchConfiguration config;
+    protected ILaunchConfiguration config;
 
-	@Override
-	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		this.config = config;
-		IPath exePath = getExePath(config);
+    @Override
+    public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+        this.config = config;
+        IPath exePath = getExePath(config);
 
-		/*
-		 * this code written by QNX Software Systems and others and was
-		 * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
-		 */
-		//set up and launch the local c/c++ program
-		IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(getProject());
+        /*
+         * this code written by QNX Software Systems and others and was
+         * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
+         */
+        //set up and launch the local c/c++ program
+        IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(getProject());
 
-		File workDir = getWorkingDirectory(config);
-		if (workDir == null) {
-			workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		String arguments[] = getProgramArgumentsArray( config );
+        File workDir = getWorkingDirectory(config);
+        if (workDir == null) {
+            workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        String arguments[] = getProgramArgumentsArray( config );
 
-		//add a listener for termination of the launch
-		ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
-		lmgr.addLaunchListener(new LaunchTerminationWatcher(launch, exePath));
+        //add a listener for termination of the launch
+        ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
+        lmgr.addLaunchListener(new LaunchTerminationWatcher(launch, exePath));
 
-		Process process = launcher.execute(exePath, arguments, getEnvironment(config), new Path(workDir.getAbsolutePath()), monitor);
+        Process process = launcher.execute(exePath, arguments, getEnvironment(config), new Path(workDir.getAbsolutePath()), monitor);
 
-		DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
+        DebugPlugin.newProcess( launch, process, renderProcessLabel( exePath.toOSString() ) );
 
-	}
+    }
 
-	//A class used to listen for the termination of the current launch, and
-	// run some functions when it is finished.
-	class LaunchTerminationWatcher implements ILaunchesListener2 {
-		private ILaunch launch;
-		private IPath exePath;
-		public LaunchTerminationWatcher(ILaunch il, IPath exePath) {
-			launch = il;
-			this.exePath = exePath;
-		}
-		@Override
-		public void launchesTerminated(ILaunch[] launches) {
+    //A class used to listen for the termination of the current launch, and
+    // run some functions when it is finished.
+    class LaunchTerminationWatcher implements ILaunchesListener2 {
+        private ILaunch launch;
+        private IPath exePath;
+        public LaunchTerminationWatcher(ILaunch il, IPath exePath) {
+            launch = il;
+            this.exePath = exePath;
+        }
+        @Override
+        public void launchesTerminated(ILaunch[] launches) {
 
-			for (ILaunch l : launches) {
-				/**
-				 * Dump samples from the daemon,
-				 * shut down the daemon,
-				 * activate the OProfile view (open it if it isn't already),
-				 * refresh the view (which parses the data/ui model and displays it).
-				 */
-				if (l.equals(launch)) {
-					//need to run this in the ui thread otherwise get SWT Exceptions
-					// based on concurrency issues
-					Display.getDefault().syncExec(new Runnable() {
-						@Override
-						public void run() {
-							String s = exePath.toOSString();
-							CovManager cvrgeMnger = new CovManager(s, getProject());
+            for (ILaunch l : launches) {
+                /**
+                 * Dump samples from the daemon,
+                 * shut down the daemon,
+                 * activate the OProfile view (open it if it isn't already),
+                 * refresh the view (which parses the data/ui model and displays it).
+                 */
+                if (l.equals(launch)) {
+                    //need to run this in the ui thread otherwise get SWT Exceptions
+                    // based on concurrency issues
+                    Display.getDefault().syncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            String s = exePath.toOSString();
+                            CovManager cvrgeMnger = new CovManager(s, getProject());
 
-							try {
-								List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
-								if (gcdaPaths.isEmpty()) {
-									String title = GcovLaunchMessages.GcovCompilerOptions_msg;
-									String message = GcovLaunchMessages.GcovCompileAgain_msg;
-									Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-									MessageDialog.openWarning(parent, title, message);
-								}
-								CovView.displayCovResults(s, null);
-								GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
-								GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
-							} catch (InterruptedException e) {
-								// Do nothing
-							}
-						}
-					});
-				}
-			}
+                            try {
+                                List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
+                                if (gcdaPaths.isEmpty()) {
+                                    String title = GcovLaunchMessages.GcovCompilerOptions_msg;
+                                    String message = GcovLaunchMessages.GcovCompileAgain_msg;
+                                    Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                                    MessageDialog.openWarning(parent, title, message);
+                                }
+                                CovView.displayCovResults(s, null);
+                                GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
+                                GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
+                            } catch (InterruptedException e) {
+                                // Do nothing
+                            }
+                        }
+                    });
+                }
+            }
 
-		}
-		@Override
-		public void launchesAdded(ILaunch[] launches) { /* dont care */}
-		@Override
-		public void launchesChanged(ILaunch[] launches) { /* dont care */ }
-		@Override
-		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
+        }
+        @Override
+        public void launchesAdded(ILaunch[] launches) { /* dont care */}
+        @Override
+        public void launchesChanged(ILaunch[] launches) { /* dont care */ }
+        @Override
+        public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
 
-	}
+    }
 
-	@Override
-	protected String getPluginID() {
-		return GcovLaunchPlugin.PLUGIN_ID;
-	}
+    @Override
+    protected String getPluginID() {
+        return GcovLaunchPlugin.PLUGIN_ID;
+    }
 
-	/* all these functions exist to be overridden by the test class in order to allow launch testing */
+    /* all these functions exist to be overridden by the test class in order to allow launch testing */
 
-	private IProject getProject(){
-		try{
-			return CDebugUtils.verifyCProject(config).getProject();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	 /**
-	  *
-	  * Return the exe path of the binary to be profiled.
-	  * @param config
-	  * @return the exe path of the binary stored in the configuration
-	  * @throws CoreException
-	  * @since 1.1
-	  */
-	private static IPath getExePath(ILaunchConfiguration config) throws CoreException{
-		return CDebugUtils.verifyProgramPath( config );
-	}
+    private IProject getProject(){
+        try{
+            return CDebugUtils.verifyCProject(config).getProject();
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+     /**
+      *
+      * Return the exe path of the binary to be profiled.
+      * @param config
+      * @return the exe path of the binary stored in the configuration
+      * @throws CoreException
+      * @since 1.1
+      */
+    private static IPath getExePath(ILaunchConfiguration config) throws CoreException{
+        return CDebugUtils.verifyProgramPath( config );
+    }
 
 }

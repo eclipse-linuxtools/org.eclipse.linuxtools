@@ -18,8 +18,8 @@ import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyProfileLaunchConfigurationTabGroup;
 
 public class PerfLaunchConfigurationTabGroup extends RemoteProxyProfileLaunchConfigurationTabGroup  {
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] { new PerfOptionsTab(), new PerfEventsTab() };
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] { new PerfOptionsTab(), new PerfEventsTab() };
+    }
 }

@@ -40,128 +40,128 @@ import org.eclipse.ui.ide.IDE;
  */
 public class CreaterepoWizard extends Wizard implements INewWizard {
 
-	private CreaterepoNewWizardPageOne pageOne;
-	private CreaterepoNewWizardPageTwo pageTwo;
-	private IProject project;
+    private CreaterepoNewWizardPageOne pageOne;
+    private CreaterepoNewWizardPageTwo pageTwo;
+    private IProject project;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
-	 */
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		setNeedsProgressMonitor(true);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+        setNeedsProgressMonitor(true);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
-	@Override
-	public void addPages() {
-		super.addPages();
-		pageOne = new CreaterepoNewWizardPageOne(
-				Messages.CreaterepoNewWizardPageOne_wizardPageName);
-		addPage(pageOne);
-		pageTwo = new CreaterepoNewWizardPageTwo(
-				Messages.CreaterepoNewWizardPageTwo_wizardPageName);
-		addPage(pageTwo);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.wizard.Wizard#addPages()
+     */
+    @Override
+    public void addPages() {
+        super.addPages();
+        pageOne = new CreaterepoNewWizardPageOne(
+                Messages.CreaterepoNewWizardPageOne_wizardPageName);
+        addPage(pageOne);
+        pageTwo = new CreaterepoNewWizardPageTwo(
+                Messages.CreaterepoNewWizardPageTwo_wizardPageName);
+        addPage(pageTwo);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
-	 */
-	@Override
-	public boolean canFinish() {
-		return getContainer().getCurrentPage() == pageTwo && pageTwo.isPageComplete();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.wizard.Wizard#canFinish()
+     */
+    @Override
+    public boolean canFinish() {
+        return getContainer().getCurrentPage() == pageTwo && pageTwo.isPageComplete();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish() {
-		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
-			@Override
-			protected void execute(IProgressMonitor monitor) {
-				createProject(monitor);
-			}
-		};
-		try {
-			getContainer().run(false, true, op);
-		} catch (InvocationTargetException e) {
-			Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
-		} catch (InterruptedException e) {
-			Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
-		}
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+     */
+    @Override
+    public boolean performFinish() {
+        WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+            @Override
+            protected void execute(IProgressMonitor monitor) {
+                createProject(monitor);
+            }
+        };
+        try {
+            getContainer().run(false, true, op);
+        } catch (InvocationTargetException e) {
+            Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
+        } catch (InterruptedException e) {
+            Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
+        }
+        return true;
+    }
 
-	/**
-	 * Create a createrepo project that contains an empty content folder and
-	 * a quickly initialized .repo file with the mandatory options.
-	 *
-	 * @param monitor The progress monitor.
-	 */
-	protected void createProject(IProgressMonitor monitor) {
-		try {
-			String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
-					REPO_FILE_EXTENSION);
-			// create the project
-			project = CreaterepoProjectCreator.create(pageOne.getProjectName(),
-					pageOne.getLocationPath(), fileName, monitor);
-			// get a handle on the content folder
-			IFolder folder = project
-					.getFolder(ICreaterepoConstants.CONTENT_FOLDER);
-			if (!folder.exists()) {
-				folder.create(false, true, monitor);
-			}
-			// get a handle on the .repo file
-			final IFile file = project.getFile(fileName);
-			final String repoFileContents = initializeRepoContents(pageTwo.getRepositoryID(),
-					pageTwo.getRepositoryName(), pageTwo.getRepositoryURL());
-			InputStream stream = new ByteArrayInputStream(repoFileContents.getBytes());
-			if (file.exists()) {
-				file.setContents(stream, true, true, monitor);
-			} else {
-				file.create(stream, true, monitor);
-			}
-			monitor.worked(1);
-			monitor.setTaskName(Messages.CreaterepoWizard_openFileOnCreation);
-			getShell().getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					IWorkbenchPage page = PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage();
-					try {
-						IDE.openEditor(page, file, true);
-					} catch (PartInitException e) {
-						Activator.logError(
-								Messages.CreaterepoWizard_errorOpeningNewlyCreatedFile, e);
-					}
-				}
-			});
-			monitor.worked(1);
-		} catch (CoreException e) {
-			Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
-		}
-	}
+    /**
+     * Create a createrepo project that contains an empty content folder and
+     * a quickly initialized .repo file with the mandatory options.
+     *
+     * @param monitor The progress monitor.
+     */
+    protected void createProject(IProgressMonitor monitor) {
+        try {
+            String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
+                    REPO_FILE_EXTENSION);
+            // create the project
+            project = CreaterepoProjectCreator.create(pageOne.getProjectName(),
+                    pageOne.getLocationPath(), fileName, monitor);
+            // get a handle on the content folder
+            IFolder folder = project
+                    .getFolder(ICreaterepoConstants.CONTENT_FOLDER);
+            if (!folder.exists()) {
+                folder.create(false, true, monitor);
+            }
+            // get a handle on the .repo file
+            final IFile file = project.getFile(fileName);
+            final String repoFileContents = initializeRepoContents(pageTwo.getRepositoryID(),
+                    pageTwo.getRepositoryName(), pageTwo.getRepositoryURL());
+            InputStream stream = new ByteArrayInputStream(repoFileContents.getBytes());
+            if (file.exists()) {
+                file.setContents(stream, true, true, monitor);
+            } else {
+                file.create(stream, true, monitor);
+            }
+            monitor.worked(1);
+            monitor.setTaskName(Messages.CreaterepoWizard_openFileOnCreation);
+            getShell().getDisplay().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    IWorkbenchPage page = PlatformUI.getWorkbench()
+                            .getActiveWorkbenchWindow().getActivePage();
+                    try {
+                        IDE.openEditor(page, file, true);
+                    } catch (PartInitException e) {
+                        Activator.logError(
+                                Messages.CreaterepoWizard_errorOpeningNewlyCreatedFile, e);
+                    }
+                }
+            });
+            monitor.worked(1);
+        } catch (CoreException e) {
+            Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
+        }
+    }
 
-	/**
-	 * Helper method to initialize the contents of the .repo file.
-	 *
-	 * @param id The unique repository ID.
-	 * @param name A human readable string that describes the repository.
-	 * @param url A URL pointing to the repodata folder.
-	 * @return
-	 */
-	private static String initializeRepoContents(String id, String name, String url) {
-		String contents = String.format("[%s]\n", id); //$NON-NLS-1$
-		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
-		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
-		return contents;
-	}
+    /**
+     * Helper method to initialize the contents of the .repo file.
+     *
+     * @param id The unique repository ID.
+     * @param name A human readable string that describes the repository.
+     * @param url A URL pointing to the repodata folder.
+     * @return
+     */
+    private static String initializeRepoContents(String id, String name, String url) {
+        String contents = String.format("[%s]\n", id); //$NON-NLS-1$
+        contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
+        contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
+        return contents;
+    }
 
 }

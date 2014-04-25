@@ -19,48 +19,48 @@ import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 
 
 public class ChartStreamDaemon implements IGobblerListener {
-	public ChartStreamDaemon(IDataSet d, IDataSetParser p) {
-		data = d;
-		outputData = new StringBuilder(""); //$NON-NLS-1$
-		parser = p;
-		disposed = false;
-	}
+    public ChartStreamDaemon(IDataSet d, IDataSetParser p) {
+        data = d;
+        outputData = new StringBuilder(""); //$NON-NLS-1$
+        parser = p;
+        disposed = false;
+    }
 
-	/**
-	 * Takes one line from the output data and appends it to data object.
-	 */
-	private void pushData() {
-		if(null == data || null == parser)
-			return;
+    /**
+     * Takes one line from the output data and appends it to data object.
+     */
+    private void pushData() {
+        if(null == data || null == parser)
+            return;
 
-		IDataEntry e = parser.parse(outputData);
-		if(null != e)
-			data.setData(e);
-	}
+        IDataEntry e = parser.parse(outputData);
+        if(null != e)
+            data.setData(e);
+    }
 
-	@Override
-	public void handleDataEvent(String line) {
-		outputData.append(line);
-		this.pushData();
-	}
+    @Override
+    public void handleDataEvent(String line) {
+        outputData.append(line);
+        this.pushData();
+    }
 
-	public boolean isDisposed() {
-		return disposed;
-	}
+    public boolean isDisposed() {
+        return disposed;
+    }
 
-	public void dispose() {
-		if(!disposed) {
-			disposed = true;
-			data = null;
-			if(null != outputData)
-				outputData.delete(0, outputData.length());
-			outputData = null;
-			parser = null;
-		}
-	}
+    public void dispose() {
+        if(!disposed) {
+            disposed = true;
+            data = null;
+            if(null != outputData)
+                outputData.delete(0, outputData.length());
+            outputData = null;
+            parser = null;
+        }
+    }
 
-	private IDataSet data;
-	private StringBuilder outputData;
-	private IDataSetParser parser;
-	private boolean disposed;
+    private IDataSet data;
+    private StringBuilder outputData;
+    private IDataSetParser parser;
+    private boolean disposed;
 }

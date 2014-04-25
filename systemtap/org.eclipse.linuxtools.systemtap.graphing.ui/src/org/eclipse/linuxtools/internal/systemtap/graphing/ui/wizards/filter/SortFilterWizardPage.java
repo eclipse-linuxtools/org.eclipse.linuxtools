@@ -58,7 +58,7 @@ public class SortFilterWizardPage extends FilterWizardPage {
             cboColumn.add(wizard.series[i]);
         }
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //Style
         radAscending = new Button(cmpFilterOpts, SWT.RADIO);

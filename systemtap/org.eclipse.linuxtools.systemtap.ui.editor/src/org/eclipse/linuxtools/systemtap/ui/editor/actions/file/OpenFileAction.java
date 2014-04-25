@@ -38,125 +38,125 @@ import org.eclipse.ui.ide.IDE;
  */
 public class OpenFileAction extends Action implements IWorkbenchWindowActionDelegate {
 
-	private boolean successful;
-	private IAction action;
+    private boolean successful;
+    private IAction action;
 
-	/**
-	 * @since 2.0
-	 */
-	private IWorkbenchWindow window;
+    /**
+     * @since 2.0
+     */
+    private IWorkbenchWindow window;
 
-	public OpenFileAction() {
-		super();
-		setEnabled(true);
-		successful = false;
-	}
+    public OpenFileAction() {
+        super();
+        setEnabled(true);
+        successful = false;
+    }
 
-	@Override
-	public void run(IAction act) {
-		run();
-	}
+    @Override
+    public void run(IAction act) {
+        run();
+    }
 
-	/**
-	 * Queries the user for a Systemtap file to open, and opens that file's editor input.
-	 */
-	@Override
-	public void run() {
-		if (window == null) {
-			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		}
-		File file = queryFile();
-		if (file != null) {
-			runActions(file);
-		}
-	}
+    /**
+     * Queries the user for a Systemtap file to open, and opens that file's editor input.
+     */
+    @Override
+    public void run() {
+        if (window == null) {
+            window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        }
+        File file = queryFile();
+        if (file != null) {
+            runActions(file);
+        }
+    }
 
-	/**
-	 * Opens the provided file's editor input, if it is a valid Systemtap file.
-	 * @since 3.0
-	 */
-	public void run(File file) {
-		if (window == null) {
-			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		}
-		if (file != null && file.exists() && file.getName().endsWith(".stp")) { //$NON-NLS-1$
-			runActions(file);
-		}
-	}
+    /**
+     * Opens the provided file's editor input, if it is a valid Systemtap file.
+     * @since 3.0
+     */
+    public void run(File file) {
+        if (window == null) {
+            window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        }
+        if (file != null && file.exists() && file.getName().endsWith(".stp")) { //$NON-NLS-1$
+            runActions(file);
+        }
+    }
 
-	private void runActions(File file) {
-		successful = false;
-		IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
-		IWorkbenchPage page = window.getActivePage();
-		try {
-			IDE.openEditorOnFileStore(page, fileStore);
-			successful = true;
-		} catch (PartInitException e) {
-			ErrorDialog.openError(window.getShell(),
-					Localization.getString("OpenFileAction.Problem"), //$NON-NLS-1$
-					Localization.getString("OpenFileAction.ProblemMessage"), //$NON-NLS-1$
-					new Status(IStatus.ERROR, EditorPlugin.ID, e.getMessage(), e));
-		}
-	}
+    private void runActions(File file) {
+        successful = false;
+        IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
+        IWorkbenchPage page = window.getActivePage();
+        try {
+            IDE.openEditorOnFileStore(page, fileStore);
+            successful = true;
+        } catch (PartInitException e) {
+            ErrorDialog.openError(window.getShell(),
+                    Localization.getString("OpenFileAction.Problem"), //$NON-NLS-1$
+                    Localization.getString("OpenFileAction.ProblemMessage"), //$NON-NLS-1$
+                    new Status(IStatus.ERROR, EditorPlugin.ID, e.getMessage(), e));
+        }
+    }
 
-	/**
-	 * @return The style to use for the FileDialog when querying for a file.
-	 * @since 3.0
-	 */
-	protected int dialogStyle() {
-		return SWT.OPEN;
-	}
+    /**
+     * @return The style to use for the FileDialog when querying for a file.
+     * @since 3.0
+     */
+    protected int dialogStyle() {
+        return SWT.OPEN;
+    }
 
-	/**
-	 * @return The name to give to the FileDialog when querying for a file.
-	 * @since 3.0
-	 */
-	protected String dialogName() {
-		return Localization.getString("OpenFileAction.OpenFile"); //$NON-NLS-1$
-	}
+    /**
+     * @return The name to give to the FileDialog when querying for a file.
+     * @since 3.0
+     */
+    protected String dialogName() {
+        return Localization.getString("OpenFileAction.OpenFile"); //$NON-NLS-1$
+    }
 
-	/**
-	 * Request the name and location of the file to the user.
-	 * @return the File object associated to the selected file.
-	 */
-	protected File queryFile() {
-		FileDialog dialog = new FileDialog(window.getShell(), dialogStyle());
-		dialog.setFilterExtensions(new String[]{"*.stp"}); //$NON-NLS-1$
-		dialog.setText(dialogName());
-		String path = dialog.open();
-		if (path != null && path.length() > 0) {
-			return new File(path);
-		}
-		return null;
-	}
+    /**
+     * Request the name and location of the file to the user.
+     * @return the File object associated to the selected file.
+     */
+    protected File queryFile() {
+        FileDialog dialog = new FileDialog(window.getShell(), dialogStyle());
+        dialog.setFilterExtensions(new String[]{"*.stp"}); //$NON-NLS-1$
+        dialog.setText(dialogName());
+        String path = dialog.open();
+        if (path != null && path.length() > 0) {
+            return new File(path);
+        }
+        return null;
+    }
 
-	public boolean isSuccessful() {
-		return successful;
-	}
+    public boolean isSuccessful() {
+        return successful;
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void init(IWorkbenchWindow window) {
-		this.window = window;
-	}
+    /**
+     * @since 2.0
+     */
+    @Override
+    public void init(IWorkbenchWindow window) {
+        this.window = window;
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void selectionChanged(IAction act, ISelection select) {
-		action = act;
-		action.setEnabled(true);
-	}
+    /**
+     * @since 2.0
+     */
+    @Override
+    public void selectionChanged(IAction act, ISelection select) {
+        action = act;
+        action.setEnabled(true);
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void dispose() {
-		window = null;
-		action = null;
-	}
+    /**
+     * @since 2.0
+     */
+    @Override
+    public void dispose() {
+        window = null;
+        action = null;
+    }
 }

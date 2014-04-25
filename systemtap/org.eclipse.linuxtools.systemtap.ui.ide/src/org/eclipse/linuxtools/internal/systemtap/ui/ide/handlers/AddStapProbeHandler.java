@@ -25,107 +25,107 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class AddStapProbeHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ITextEditor editor;
-		try {
-			editor = (ITextEditor) HandlerUtil.getActiveEditor(event);
-		} catch (ClassCastException e) {
-			throw new ExecutionException(Messages.AddStapProbe_editorError, e);
-		}
-		IVerticalRulerInfo rulerInfo = (IVerticalRulerInfo) editor.getAdapter(IVerticalRulerInfo.class);
-		
-		Shell shell = editor.getSite().getShell();
-		shell.setCursor(shell.getDisplay().getSystemCursor(
-				SWT.CURSOR_WAIT));
-		int lineno = rulerInfo.getLineOfLastMouseButtonActivity();
-		IDocument document = editor.getDocumentProvider().getDocument(
-				editor.getEditorInput());
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        ITextEditor editor;
+        try {
+            editor = (ITextEditor) HandlerUtil.getActiveEditor(event);
+        } catch (ClassCastException e) {
+            throw new ExecutionException(Messages.AddStapProbe_editorError, e);
+        }
+        IVerticalRulerInfo rulerInfo = (IVerticalRulerInfo) editor.getAdapter(IVerticalRulerInfo.class);
 
-		String s = document.get();
-		String[] lines = s.split("\n"); //$NON-NLS-1$
-		String line = lines[lineno].trim();
-		boolean die = false;
-		if (line.isEmpty()) {//eat blank lines
-			die = true;
-		}
-		if (line.startsWith("#")) {//eat preprocessor directives //$NON-NLS-1$
-			die = true;
-		}
-		if (line.startsWith("//")) {//eat C99 comments //$NON-NLS-1$
-			die = true;
-		}
-		if (line.startsWith("/*") && !line.contains("*/") && !line.endsWith("*/")) {//try to eat single-line C comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			die = true;
-		}
+        Shell shell = editor.getSite().getShell();
+        shell.setCursor(shell.getDisplay().getSystemCursor(
+                SWT.CURSOR_WAIT));
+        int lineno = rulerInfo.getLineOfLastMouseButtonActivity();
+        IDocument document = editor.getDocumentProvider().getDocument(
+                editor.getEditorInput());
 
-		// gogo find comment segments
-		try {
-			ArrayList<Integer> commentChunks = new ArrayList<>();
-			char[] chars = s.toCharArray();
-			int needle = 1;
-			int offset = document.getLineOffset(lineno);
-			while (needle < chars.length) {
-				if (chars[needle - 1] == '/' && chars[needle] == '*') {
-					commentChunks.add(needle);
-					while (needle < chars.length) {
-						if (chars[needle - 1] == '*'
-								&& chars[needle] == '/') {
-							commentChunks.add(needle);
-							needle++;
-							break;
-						}
-						needle++;
-					}
-				}
-				needle++;
-			}
-			for (int i = 0, pair, start, end; i < commentChunks.size(); i++) {
-				if (!(commentChunks.get(i).intValue() < offset)) {
-					pair = i - i % 2;
-					start = commentChunks.get(pair).intValue();
-					end = commentChunks.get(pair + 1).intValue();
-					if (offset >= start && offset <= end) {
-						die = true;
-					}
-				}
-			}
-		} catch (BadLocationException excp) {
-			ExceptionErrorDialog.openError(Messages.AddStapProbe_unableToInsertProbe, excp);
-		}
-		if (die) {
-			MessageDialog
-					.openError(
-							PlatformUI.getWorkbench()
-									.getActiveWorkbenchWindow()
-									.getShell(),
-							Messages.CEditor_probeInsertFailed, Messages.CEditor_canNotProbeLine);
-		} else {
-			IEditorInput in = editor.getEditorInput();
-			if (in instanceof FileStoreEditorInput) {
-				FileStoreEditorInput input = (FileStoreEditorInput) in;
+        String s = document.get();
+        String[] lines = s.split("\n"); //$NON-NLS-1$
+        String line = lines[lineno].trim();
+        boolean die = false;
+        if (line.isEmpty()) {//eat blank lines
+            die = true;
+        }
+        if (line.startsWith("#")) {//eat preprocessor directives //$NON-NLS-1$
+            die = true;
+        }
+        if (line.startsWith("//")) {//eat C99 comments //$NON-NLS-1$
+            die = true;
+        }
+        if (line.startsWith("/*") && !line.contains("*/") && !line.endsWith("*/")) {//try to eat single-line C comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            die = true;
+        }
 
-				IPreferenceStore p = IDEPlugin.getDefault()
-						.getPreferenceStore();
-				String kernroot = p
-						.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
+        // gogo find comment segments
+        try {
+            ArrayList<Integer> commentChunks = new ArrayList<>();
+            char[] chars = s.toCharArray();
+            int needle = 1;
+            int offset = document.getLineOffset(lineno);
+            while (needle < chars.length) {
+                if (chars[needle - 1] == '/' && chars[needle] == '*') {
+                    commentChunks.add(needle);
+                    while (needle < chars.length) {
+                        if (chars[needle - 1] == '*'
+                                && chars[needle] == '/') {
+                            commentChunks.add(needle);
+                            needle++;
+                            break;
+                        }
+                        needle++;
+                    }
+                }
+                needle++;
+            }
+            for (int i = 0, pair, start, end; i < commentChunks.size(); i++) {
+                if (!(commentChunks.get(i).intValue() < offset)) {
+                    pair = i - i % 2;
+                    start = commentChunks.get(pair).intValue();
+                    end = commentChunks.get(pair + 1).intValue();
+                    if (offset >= start && offset <= end) {
+                        die = true;
+                    }
+                }
+            }
+        } catch (BadLocationException excp) {
+            ExceptionErrorDialog.openError(Messages.AddStapProbe_unableToInsertProbe, excp);
+        }
+        if (die) {
+            MessageDialog
+                    .openError(
+                            PlatformUI.getWorkbench()
+                                    .getActiveWorkbenchWindow()
+                                    .getShell(),
+                            Messages.CEditor_probeInsertFailed, Messages.CEditor_canNotProbeLine);
+        } else {
+            IEditorInput in = editor.getEditorInput();
+            if (in instanceof FileStoreEditorInput) {
+                FileStoreEditorInput input = (FileStoreEditorInput) in;
 
-				String filepath = input.getURI().getPath();
-				String kernrelative = filepath.substring(
-						kernroot.length() + 1, filepath.length());
-				StringBuffer sb = new StringBuffer();
+                IPreferenceStore p = IDEPlugin.getDefault()
+                        .getPreferenceStore();
+                String kernroot = p
+                        .getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
 
-				sb.append("probe kernel.statement(\"*@" + kernrelative + ":" + (lineno + 1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                String filepath = input.getURI().getPath();
+                String kernrelative = filepath.substring(
+                        kernroot.length() + 1, filepath.length());
+                StringBuffer sb = new StringBuffer();
 
-				sb.append("\n{\n\t\n}\n"); //$NON-NLS-1$
-				STPEditor activeSTPEditor = IDESessionSettings.getOrAskForActiveSTPEditor(false);
-				if (null != activeSTPEditor) {
-					activeSTPEditor.insertText(sb.toString());
-				}
-			}
-		}
-		shell.setCursor(null); // Return the cursor to normal
-		return null;
-	}
+                sb.append("probe kernel.statement(\"*@" + kernrelative + ":" + (lineno + 1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+                sb.append("\n{\n\t\n}\n"); //$NON-NLS-1$
+                STPEditor activeSTPEditor = IDESessionSettings.getOrAskForActiveSTPEditor(false);
+                if (null != activeSTPEditor) {
+                    activeSTPEditor.insertText(sb.toString());
+                }
+            }
+        }
+        shell.setCursor(null); // Return the cursor to normal
+        return null;
+    }
 
 }

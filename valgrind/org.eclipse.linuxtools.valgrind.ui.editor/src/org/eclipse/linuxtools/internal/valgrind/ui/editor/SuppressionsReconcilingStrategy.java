@@ -26,69 +26,69 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 import org.eclipse.swt.widgets.Display;
 
 public class SuppressionsReconcilingStrategy implements IReconcilingStrategy,
-		IReconcilingStrategyExtension {
-	private SuppressionsEditor editor;
-	private IDocument document;
-	private List<Position> positions;
-	private IProgressMonitor monitor;
+        IReconcilingStrategyExtension {
+    private SuppressionsEditor editor;
+    private IDocument document;
+    private List<Position> positions;
+    private IProgressMonitor monitor;
 
-	public SuppressionsReconcilingStrategy(SuppressionsEditor editor) {
-		this.editor = editor;
-		positions = new ArrayList<>();
-	}
+    public SuppressionsReconcilingStrategy(SuppressionsEditor editor) {
+        this.editor = editor;
+        positions = new ArrayList<>();
+    }
 
-	@Override
-	public void reconcile(IRegion partition) {
-		initialReconcile();
-	}
+    @Override
+    public void reconcile(IRegion partition) {
+        initialReconcile();
+    }
 
-	@Override
-	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
-		initialReconcile();
-	}
+    @Override
+    public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+        initialReconcile();
+    }
 
-	@Override
-	public void setDocument(IDocument document) {
-		this.document = document;
-	}
+    @Override
+    public void setDocument(IDocument document) {
+        this.document = document;
+    }
 
-	@Override
-	public void initialReconcile() {
-		int start = -1;
-		int end = document.getLength();
-		int worked = 0;
-		monitor.beginTask(Messages.getString("SuppressionsReconcilingStrategy.Monitor_title"), 10); //$NON-NLS-1$
-		for (int pos = 0; pos < end; pos++) {
-			try {
-				char ch = document.getChar(pos);
-				if (ch == '{') {
-					start = pos;
-				} else if (ch == '}' && start > 0) {
-					positions.add(new Position(start, pos - start + 1));
-					start = -1; // reset
-				}
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
+    @Override
+    public void initialReconcile() {
+        int start = -1;
+        int end = document.getLength();
+        int worked = 0;
+        monitor.beginTask(Messages.getString("SuppressionsReconcilingStrategy.Monitor_title"), 10); //$NON-NLS-1$
+        for (int pos = 0; pos < end; pos++) {
+            try {
+                char ch = document.getChar(pos);
+                if (ch == '{') {
+                    start = pos;
+                } else if (ch == '}' && start > 0) {
+                    positions.add(new Position(start, pos - start + 1));
+                    start = -1; // reset
+                }
+            } catch (BadLocationException e) {
+                e.printStackTrace();
+            }
 
-			if (pos * 10 / end > worked) {
-				monitor.worked(1);
-				worked++;
-			}
-		}
-		monitor.done();
+            if (pos * 10 / end > worked) {
+                monitor.worked(1);
+                worked++;
+            }
+        }
+        monitor.done();
 
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				editor.updateFoldingStructure(positions.toArray(new Position[positions.size()]));
-			}
-		});
-	}
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                editor.updateFoldingStructure(positions.toArray(new Position[positions.size()]));
+            }
+        });
+    }
 
-	@Override
-	public void setProgressMonitor(IProgressMonitor monitor) {
-		this.monitor = monitor;
-	}
+    @Override
+    public void setProgressMonitor(IProgressMonitor monitor) {
+        this.monitor = monitor;
+    }
 
 }

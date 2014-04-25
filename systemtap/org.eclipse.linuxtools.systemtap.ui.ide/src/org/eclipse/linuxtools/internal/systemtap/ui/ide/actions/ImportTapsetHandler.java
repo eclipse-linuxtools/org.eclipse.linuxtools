@@ -19,16 +19,16 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ImportTapsetHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		String pageID = "org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"; //$NON-NLS-1$
-		PreferencesUtil.createPreferenceDialogOn(HandlerUtil.getActiveShell(event), pageID, new String[]{pageID}, null).open();
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) {
+        String pageID = "org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"; //$NON-NLS-1$
+        PreferencesUtil.createPreferenceDialogOn(HandlerUtil.getActiveShell(event), pageID, new String[]{pageID}, null).open();
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

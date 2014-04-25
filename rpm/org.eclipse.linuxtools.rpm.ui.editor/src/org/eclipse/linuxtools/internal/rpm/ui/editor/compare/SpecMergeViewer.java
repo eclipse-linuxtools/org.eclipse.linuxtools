@@ -28,56 +28,56 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class SpecMergeViewer extends TextMergeViewer {
-	private ColorManager colorManager;
+    private ColorManager colorManager;
 
-	/**
-	 * Creates a new SpecMergeViewer.
-	 *
-	 * @param parent The parent control.
-	 * @param configuration The compare configuration.
-	 *
-	 * @see TextMergeViewer#TextMergeViewer(Composite, CompareConfiguration)
-	 */
-	public SpecMergeViewer(Composite parent, CompareConfiguration configuration) {
-		super(parent, configuration);
-	}
+    /**
+     * Creates a new SpecMergeViewer.
+     *
+     * @param parent The parent control.
+     * @param configuration The compare configuration.
+     *
+     * @see TextMergeViewer#TextMergeViewer(Composite, CompareConfiguration)
+     */
+    public SpecMergeViewer(Composite parent, CompareConfiguration configuration) {
+        super(parent, configuration);
+    }
 
-	@Override
-	public String getTitle() {
-		return Messages.SpecMergeViewer_0;
-	}
+    @Override
+    public String getTitle() {
+        return Messages.SpecMergeViewer_0;
+    }
 
-	@Override
-	protected IDocumentPartitioner getDocumentPartitioner() {
-		return new FastPartitioner(new SpecfilePartitionScanner(),
-				SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
-	}
+    @Override
+    protected IDocumentPartitioner getDocumentPartitioner() {
+        return new FastPartitioner(new SpecfilePartitionScanner(),
+                SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
+    }
 
-	@Override
-	protected String getDocumentPartitioning() {
-		return SpecfilePartitionScanner.SPEC_FILE_PARTITIONING;
-	}
+    @Override
+    protected String getDocumentPartitioning() {
+        return SpecfilePartitionScanner.SPEC_FILE_PARTITIONING;
+    }
 
-	@Override
-	protected void configureTextViewer(TextViewer textViewer) {
-		if (textViewer instanceof SourceViewer) {
-			this.colorManager = new ColorManager();
-			SpecfileEditor editor = new SpecfileEditor();
-			((SourceViewer) textViewer).configure(new SpecfileConfiguration(
-					colorManager, editor));
-		}
-	}
+    @Override
+    protected void configureTextViewer(TextViewer textViewer) {
+        if (textViewer instanceof SourceViewer) {
+            this.colorManager = new ColorManager();
+            SpecfileEditor editor = new SpecfileEditor();
+            ((SourceViewer) textViewer).configure(new SpecfileConfiguration(
+                    colorManager, editor));
+        }
+    }
 
-	/**
-	 * Dispose the color manager and invoke the super method.
-	 *
-	 * @see org.eclipse.compare.contentmergeviewer.TextMergeViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
-	 */
-	@Override
-	protected void handleDispose(DisposeEvent event) {
-		if (colorManager != null) {
-			colorManager.dispose();
-		}
-		super.handleDispose(event);
-	}
+    /**
+     * Dispose the color manager and invoke the super method.
+     *
+     * @see org.eclipse.compare.contentmergeviewer.TextMergeViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
+     */
+    @Override
+    protected void handleDispose(DisposeEvent event) {
+        if (colorManager != null) {
+            colorManager.dispose();
+        }
+        super.handleDispose(event);
+    }
 }

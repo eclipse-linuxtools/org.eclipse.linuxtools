@@ -14,20 +14,20 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.detectors;
 
 public class SuffixNumberDetector implements IStrictWordDetector {
 
-	@Override
-	public boolean isEndingCharacter(char c) {
-		return (c == ':');
-	}
+    @Override
+    public boolean isEndingCharacter(char c) {
+        return (c == ':');
+    }
 
-	@Override
-	public boolean isWordPart(char c) {
-		return Character.isDigit(c);
-	}
+    @Override
+    public boolean isWordPart(char c) {
+        return Character.isDigit(c);
+    }
 
-	@Override
-	public boolean isWordStart(char c) {
-		// TODO Auto-generated method stub
-		return Character.isDigit(c);
-	}
+    @Override
+    public boolean isWordStart(char c) {
+        // TODO Auto-generated method stub
+        return Character.isDigit(c);
+    }
 
 }

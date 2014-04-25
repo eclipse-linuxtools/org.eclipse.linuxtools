@@ -27,6 +27,6 @@ public class STDataViewersSettings {
     public static final String TAG_HIDE_SHOW_COLUMN_WIDTH_ = "column_width_"; //$NON-NLS-1$
     // Sorter
     public static final String TAG_SECTION_SORTER = "sorter_section"; //$NON-NLS-1$
-    public static final String TAG_SORTER_PRIORITY_ = "sort_priority_"; //$NON-NLS-1$ 
+    public static final String TAG_SORTER_PRIORITY_ = "sort_priority_"; //$NON-NLS-1$
     public static final String TAG_SORTER_DIRECTION_ = "sort_direction_"; //$NON-NLS-1$
 }

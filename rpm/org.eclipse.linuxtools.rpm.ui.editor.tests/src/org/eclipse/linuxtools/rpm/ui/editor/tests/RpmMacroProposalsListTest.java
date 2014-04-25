@@ -22,78 +22,78 @@ import org.junit.Test;
 
 public class RpmMacroProposalsListTest {
 
-	RpmMacroProposalsList macroProposalsList;
+    RpmMacroProposalsList macroProposalsList;
 
-	@Before
-	public void setUp() {
-		macroProposalsList = new RpmMacroProposalsList();
-	}
+    @Before
+    public void setUp() {
+        macroProposalsList = new RpmMacroProposalsList();
+    }
 
-	@Test
-	public final void testBuildMacroList() {
-		macroProposalsList.buildMacroList();
-		if (!macroProposalsList.findKey("%_libdir"))
-			fail("buildMacroList faild, %_libdir macro was not found!");
-	}
-	
-	/**
-	 * Configure is the most common macro that is multi-line so it tests our parsing of multiline macros.
-	 */
-	@Test
-	public final void buildMacroListMultiLineMacro() {
-		macroProposalsList.buildMacroList();
-		if (!macroProposalsList.findKey("%configure")) {
-			fail("buildMacroList faild, %configure macro was not found!");
-		}
-	}
+    @Test
+    public final void testBuildMacroList() {
+        macroProposalsList.buildMacroList();
+        if (!macroProposalsList.findKey("%_libdir"))
+            fail("buildMacroList faild, %_libdir macro was not found!");
+    }
 
-	@Test
-	public final void testGetProposals() {
-		Map<String, String> proposals = macroProposalsList
-				.getProposals("%_libdir");
-		if (proposals.size() != 1) {
-			fail("getProposals faild, %_libdir macro was retrive as proposals");
-		}
-	}
+    /**
+     * Configure is the most common macro that is multi-line so it tests our parsing of multiline macros.
+     */
+    @Test
+    public final void buildMacroListMultiLineMacro() {
+        macroProposalsList.buildMacroList();
+        if (!macroProposalsList.findKey("%configure")) {
+            fail("buildMacroList faild, %configure macro was not found!");
+        }
+    }
 
-	@Test
-	public final void testGetProposals2() {
-		Map<String, String> proposals = macroProposalsList
-				.getProposals("%_unexistingmacro");
-		if (proposals.size() != 0) {
-			fail("getProposals faild, %_unexistingmacro don't can exist");
-		}
-	}
+    @Test
+    public final void testGetProposals() {
+        Map<String, String> proposals = macroProposalsList
+                .getProposals("%_libdir");
+        if (proposals.size() != 1) {
+            fail("getProposals faild, %_libdir macro was retrive as proposals");
+        }
+    }
 
-	@Test
-	public final void testGetValue() {
-		if (macroProposalsList.getValue("_libdir").indexOf("lib") == -1) {
-			fail("getValue faild, %_libdir value don't end with '%{_lib}'");
-		}
-	}
+    @Test
+    public final void testGetProposals2() {
+        Map<String, String> proposals = macroProposalsList
+                .getProposals("%_unexistingmacro");
+        if (proposals.size() != 0) {
+            fail("getProposals faild, %_unexistingmacro don't can exist");
+        }
+    }
 
-	@Test
-	public final void testGetValue2() {
-		if (macroProposalsList.getValue("_unexistingmacro") != null) {
-			fail("getValue faild, %_libdir value don't end with '%{_lib}'");
-		}
-	}
+    @Test
+    public final void testGetValue() {
+        if (macroProposalsList.getValue("_libdir").indexOf("lib") == -1) {
+            fail("getValue faild, %_libdir value don't end with '%{_lib}'");
+        }
+    }
 
-	@Test
-	public final void testGetMacroEval() {
-		if (Utils.fileExist("/bin/rpm")) {
-			if (RpmMacroProposalsList.getMacroEval("%_libdir").indexOf("lib") == -1) {
-				fail("getMacroEval faild, eval don't end with 'lib'");
-			}
-		}
-	}
+    @Test
+    public final void testGetValue2() {
+        if (macroProposalsList.getValue("_unexistingmacro") != null) {
+            fail("getValue faild, %_libdir value don't end with '%{_lib}'");
+        }
+    }
 
-	@Test
-	public final void testGetMacroEval2() {
-		if (!RpmMacroProposalsList.getMacroEval("%_unexistingmacro").equals(
-				"%_unexistingmacro")) {
-			fail("getMacroEval faild, eval don't contain %_unexistingmacro macro name");
-		}
-	}
+    @Test
+    public final void testGetMacroEval() {
+        if (Utils.fileExist("/bin/rpm")) {
+            if (RpmMacroProposalsList.getMacroEval("%_libdir").indexOf("lib") == -1) {
+                fail("getMacroEval faild, eval don't end with 'lib'");
+            }
+        }
+    }
+
+    @Test
+    public final void testGetMacroEval2() {
+        if (!RpmMacroProposalsList.getMacroEval("%_unexistingmacro").equals(
+                "%_unexistingmacro")) {
+            fail("getMacroEval faild, eval don't contain %_unexistingmacro macro name");
+        }
+    }
 
 }

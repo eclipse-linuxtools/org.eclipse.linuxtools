@@ -26,46 +26,46 @@ import org.junit.Test;
 
 public class LoggingStreamDaemonTest {
 
-	@Before
-	public void setUp(){
-		StreamGobbler gobbler = new StreamGobbler(System.in);
-		gobbler.start();
-		daemon = new LoggingStreamDaemon();
-	}
+    @Before
+    public void setUp(){
+        StreamGobbler gobbler = new StreamGobbler(System.in);
+        gobbler.start();
+        daemon = new LoggingStreamDaemon();
+    }
 
-	@Test
-	public void testHandleDataEvent() {
-		daemon.handleDataEvent("test");
-	}
+    @Test
+    public void testHandleDataEvent() {
+        daemon.handleDataEvent("test");
+    }
 
-	@Test
-	public void testGetOutput() {
-		assertTrue(daemon.getOutput().isEmpty());
+    @Test
+    public void testGetOutput() {
+        assertTrue(daemon.getOutput().isEmpty());
 
-		daemon.handleDataEvent("test");
-		assertEquals("test", daemon.getOutput());
-	}
+        daemon.handleDataEvent("test");
+        assertEquals("test", daemon.getOutput());
+    }
 
-	@Test
-	public void testSaveLog() {
-		File f = new File("/tmp/loggingstreamdaemon.test");
-		assertTrue(daemon.saveLog(f));
-		f.delete();
+    @Test
+    public void testSaveLog() {
+        File f = new File("/tmp/loggingstreamdaemon.test");
+        assertTrue(daemon.saveLog(f));
+        f.delete();
 
-		daemon.handleDataEvent("test");
-		assertTrue(daemon.saveLog(f));
-		f.delete();
+        daemon.handleDataEvent("test");
+        assertTrue(daemon.saveLog(f));
+        f.delete();
 
-		f = new File("/root/");
-		assertFalse(daemon.saveLog(f));
-		f.delete();
-	}
+        f = new File("/root/");
+        assertFalse(daemon.saveLog(f));
+        f.delete();
+    }
 
-	@After
-	public void tearDown() {
-		daemon.dispose();
-		assertNull(daemon.getOutput());
-	}
+    @After
+    public void tearDown() {
+        daemon.dispose();
+        assertNull(daemon.getOutput());
+    }
 
-	private LoggingStreamDaemon daemon;
+    private LoggingStreamDaemon daemon;
 }

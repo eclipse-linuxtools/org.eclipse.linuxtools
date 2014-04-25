@@ -15,10 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 public class LicenseTagTest extends FileTestCase {
-	@Test
-	public void testSingleLicenseTag() {
-		String testText = "License: EPL";
-		newFile(testText);
-		assertEquals("EPL", specfile.getLicense());
-	}
+    @Test
+    public void testSingleLicenseTag() {
+        String testText = "License: EPL";
+        newFile(testText);
+        assertEquals("EPL", specfile.getLicense());
+    }
 }

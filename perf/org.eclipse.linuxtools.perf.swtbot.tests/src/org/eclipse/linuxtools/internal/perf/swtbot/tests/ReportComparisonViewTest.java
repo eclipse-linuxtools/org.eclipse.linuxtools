@@ -20,20 +20,20 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
  */
 public class ReportComparisonViewTest extends AbstractSWTBotTest {
 
-	@Override
-	protected void setPerfOptions(SWTWorkbenchBot bot) {
-		SWTBotCheckBox chkBox = bot.checkBox("Show Source Disassembly View");
-		assertNotNull(chkBox);
-		chkBox.select();
-	}
+    @Override
+    protected void setPerfOptions(SWTWorkbenchBot bot) {
+        SWTBotCheckBox chkBox = bot.checkBox("Show Source Disassembly View");
+        assertNotNull(chkBox);
+        chkBox.select();
+    }
 
-	@Override
-	protected void openStubView() {
-	}
+    @Override
+    protected void openStubView() {
+    }
 
-	@Override
-	protected void testPerfView() {
-		compareWithEachOther("perf_old.data", "perf_new.data");
-	}
+    @Override
+    protected void testPerfView() {
+        compareWithEachOther("perf_old.data", "perf_new.data");
+    }
 
 }

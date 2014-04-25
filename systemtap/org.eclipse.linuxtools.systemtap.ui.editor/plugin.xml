@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<extension
-		point="org.eclipse.ui.commands">
-		<command
-			name="%action.open.name"
-			description="%action.open.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.editor.category.file"
-			id="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"/>
-		<category
-			name="%category.file.name"
-			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtap.ui.editor.category.file"/>
-	</extension>
-	
-	<extension
-		point="org.eclipse.ui.actionSets">
-		<actionSet
-			label="%actionset.file.name"
-			visible="false"
-			id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet">
-			<action
-				label="%action.open.name"
-				id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction"
-				icon="icons/actions/file/open_wiz.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/new.ext"
-				class="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"
-				style="push"
-				state="false"/>
-		</actionSet>
-	</extension>
+    <extension
+        point="org.eclipse.ui.commands">
+        <command
+            name="%action.open.name"
+            description="%action.open.desc"
+            categoryId="org.eclipse.linuxtools.systemtap.ui.editor.category.file"
+            id="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"/>
+        <category
+            name="%category.file.name"
+            description="%category.file.desc"
+            id="org.eclipse.linuxtools.systemtap.ui.editor.category.file"/>
+    </extension>
 
-	<extension
-		point="org.eclipse.ui.perspectiveExtensions">
-		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
-		</perspectiveExtension>
-	</extension>
+    <extension
+        point="org.eclipse.ui.actionSets">
+        <actionSet
+            label="%actionset.file.name"
+            visible="false"
+            id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet">
+            <action
+                label="%action.open.name"
+                id="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction"
+                icon="icons/actions/file/open_wiz.gif"
+                toolbarPath="org.eclipse.ui.workbench.file/new.ext"
+                class="org.eclipse.linuxtools.systemtap.ui.editor.actions.file.OpenFileAction"
+                definitionId="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"
+                style="push"
+                state="false"/>
+        </actionSet>
+    </extension>
+
+    <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+        <perspectiveExtension
+            targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+            <actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
+        </perspectiveExtension>
+    </extension>
 </plugin>

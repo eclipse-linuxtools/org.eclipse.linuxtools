@@ -58,425 +58,425 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
-	private static final String TITLE_STACKS = Messages
-	.getString("MassifViewPart.Stacks"); //$NON-NLS-1$
-	private static final String TITLE_EXTRA = Messages
-	.getString("MassifViewPart.Extra_Heap"); //$NON-NLS-1$
-	private static final String TITLE_USEFUL = Messages
-	.getString("MassifViewPart.Useful_Heap"); //$NON-NLS-1$
-	private static final String TITLE_TOTAL = Messages
-	.getString("MassifViewPart.Total"); //$NON-NLS-1$
-	private static final String TITLE_TIME = Messages
-	.getString("MassifViewPart.Time"); //$NON-NLS-1$
-	private static final String TITLE_NUMBER = Messages
-	.getString("MassifViewPart.Snapshot"); //$NON-NLS-1$
-	private static final String TREE_ACTION = MassifPlugin.PLUGIN_ID
-	+ ".treeAction"; //$NON-NLS-1$
-	public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
-	+ ".chartAction"; //$NON-NLS-1$
-	public static final String PID_ACTION = MassifPlugin.PLUGIN_ID
-	+ ".pidAction"; //$NON-NLS-1$
-	public static final String SAVE_CHART_ACTION = MassifPlugin.PLUGIN_ID
-	+ ".saveChartAction"; //$NON-NLS-1$
+    private static final String TITLE_STACKS = Messages
+    .getString("MassifViewPart.Stacks"); //$NON-NLS-1$
+    private static final String TITLE_EXTRA = Messages
+    .getString("MassifViewPart.Extra_Heap"); //$NON-NLS-1$
+    private static final String TITLE_USEFUL = Messages
+    .getString("MassifViewPart.Useful_Heap"); //$NON-NLS-1$
+    private static final String TITLE_TOTAL = Messages
+    .getString("MassifViewPart.Total"); //$NON-NLS-1$
+    private static final String TITLE_TIME = Messages
+    .getString("MassifViewPart.Time"); //$NON-NLS-1$
+    private static final String TITLE_NUMBER = Messages
+    .getString("MassifViewPart.Snapshot"); //$NON-NLS-1$
+    private static final String TREE_ACTION = MassifPlugin.PLUGIN_ID
+    + ".treeAction"; //$NON-NLS-1$
+    public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
+    + ".chartAction"; //$NON-NLS-1$
+    public static final String PID_ACTION = MassifPlugin.PLUGIN_ID
+    + ".pidAction"; //$NON-NLS-1$
+    public static final String SAVE_CHART_ACTION = MassifPlugin.PLUGIN_ID
+    + ".saveChartAction"; //$NON-NLS-1$
 
-	private MassifOutput output;
-	private Integer pid;
+    private MassifOutput output;
+    private Integer pid;
 
-	private Composite top;
-	private StackLayout stackLayout;
-	private TableViewer viewer;
-	private MassifTreeViewer treeViewer;
-	private MassifHeapTreeNode[] nodes;
-	private String chartName;
+    private Composite top;
+    private StackLayout stackLayout;
+    private TableViewer viewer;
+    private MassifTreeViewer treeViewer;
+    private MassifHeapTreeNode[] nodes;
+    private String chartName;
 
-	private static final int COLUMN_SIZE = 125;
+    private static final int COLUMN_SIZE = 125;
 
-	private Action treeAction;
-	private MassifPidMenuAction pidAction;
-	private SaveChartAction saveChartAction;
+    private Action treeAction;
+    private MassifPidMenuAction pidAction;
+    private SaveChartAction saveChartAction;
 
-	private List<ChartEditorInput> chartInputs;
+    private List<ChartEditorInput> chartInputs;
 
-	@Override
-	public void createPartControl(Composite parent) {
-		chartInputs = new ArrayList<>();
+    @Override
+    public void createPartControl(Composite parent) {
+        chartInputs = new ArrayList<>();
 
-		top = new Composite(parent, SWT.NONE);
-		stackLayout = new StackLayout();
-		top.setLayout(stackLayout);
-		top.setLayoutData(new GridData(GridData.FILL_BOTH));
+        top = new Composite(parent, SWT.NONE);
+        stackLayout = new StackLayout();
+        top.setLayout(stackLayout);
+        top.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		viewer = new TableViewer(top, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-				| SWT.FULL_SELECTION);
+        viewer = new TableViewer(top, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+                | SWT.FULL_SELECTION);
 
-		Table table = viewer.getTable();
-		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+        Table table = viewer.getTable();
+        table.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 
-		String[] columnTitles = { TITLE_NUMBER, TITLE_TIME, TITLE_TOTAL,
-				TITLE_USEFUL, TITLE_EXTRA, TITLE_STACKS };
+        String[] columnTitles = { TITLE_NUMBER, TITLE_TIME, TITLE_TOTAL,
+                TITLE_USEFUL, TITLE_EXTRA, TITLE_STACKS };
 
-		for (int i = 0; i < columnTitles.length; i++) {
-			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
-			column.getColumn().setText(columnTitles[i]);
-			column.getColumn().setWidth(COLUMN_SIZE);
-			column.getColumn().setResizable(true);
-			column.getColumn().addSelectionListener(getHeaderListener());
-		}
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+        for (int i = 0; i < columnTitles.length; i++) {
+            TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
+            column.getColumn().setText(columnTitles[i]);
+            column.getColumn().setWidth(COLUMN_SIZE);
+            column.getColumn().setResizable(true);
+            column.getColumn().addSelectionListener(getHeaderListener());
+        }
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setLabelProvider(new MassifLabelProvider());
+        viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setLabelProvider(new MassifLabelProvider());
 
-		treeViewer = new MassifTreeViewer(top);
-		treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+        treeViewer = new MassifTreeViewer(top);
+        treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				MassifSnapshot snapshot = (MassifSnapshot) ((IStructuredSelection) event
-						.getSelection()).getFirstElement();
-				if (snapshot.getType() != SnapshotType.EMPTY) {
-					treeAction.setChecked(true);
-					setTopControl(treeViewer.getViewer().getControl());
-					treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
-							.getRoot()), true);
-					treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
-							AbstractTreeViewer.ALL_LEVELS);
-				}
-			}
-		});
+        viewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                MassifSnapshot snapshot = (MassifSnapshot) ((IStructuredSelection) event
+                        .getSelection()).getFirstElement();
+                if (snapshot.getType() != SnapshotType.EMPTY) {
+                    treeAction.setChecked(true);
+                    setTopControl(treeViewer.getViewer().getControl());
+                    treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
+                            .getRoot()), true);
+                    treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
+                            AbstractTreeViewer.ALL_LEVELS);
+                }
+            }
+        });
 
-		stackLayout.topControl = viewer.getControl();
-		top.layout();
-	}
+        stackLayout.topControl = viewer.getControl();
+        top.layout();
+    }
 
-	private String getUnitString(MassifSnapshot[] snapshots) {
-		String result;
-		MassifSnapshot snapshot = snapshots[0];
-		switch (snapshot.getUnit()) {
-		case BYTES:
-			result = "B"; //$NON-NLS-1$
-			break;
-		case INSTRUCTIONS:
-			result = "i"; //$NON-NLS-1$
-			break;
-		default:
-			result = "ms"; //$NON-NLS-1$
-		break;
-		}
-		return result;
-	}
+    private String getUnitString(MassifSnapshot[] snapshots) {
+        String result;
+        MassifSnapshot snapshot = snapshots[0];
+        switch (snapshot.getUnit()) {
+        case BYTES:
+            result = "B"; //$NON-NLS-1$
+            break;
+        case INSTRUCTIONS:
+            result = "i"; //$NON-NLS-1$
+            break;
+        default:
+            result = "ms"; //$NON-NLS-1$
+        break;
+        }
+        return result;
+    }
 
-	private SelectionListener getHeaderListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TableColumn column = (TableColumn) e.widget;
-				Table table = viewer.getTable();
-				if (column.equals(table.getSortColumn())) {
-					int direction = table.getSortDirection() == SWT.UP ? SWT.DOWN
-							: SWT.UP;
-					table.setSortDirection(direction);
-				} else {
-					table.setSortDirection(SWT.UP);
-				}
-				table.setSortColumn(column);
-				viewer.setComparator(new ViewerComparator() {
-					@Override
-					public int compare(Viewer viewer, Object o1, Object o2) {
-						Table table = ((TableViewer) viewer).getTable();
-						int direction = table.getSortDirection();
-						MassifSnapshot s1 = (MassifSnapshot) o1;
-						MassifSnapshot s2 = (MassifSnapshot) o2;
-						long result;
-						TableColumn column = table.getSortColumn();
-						if (column.getText().equals(TITLE_NUMBER)) {
-							result = s1.getNumber() - s2.getNumber();
-						} else if (column.getText().startsWith(TITLE_TIME)) {
-							result = s1.getTime() - s2.getTime();
-						} else if (column.getText().equals(TITLE_TOTAL)) {
-							result = s1.getTotal() - s2.getTotal();
-						} else if (column.getText().equals(TITLE_USEFUL)) {
-							result = s1.getHeapBytes() - s2.getHeapBytes();
-						} else if (column.getText().equals(TITLE_EXTRA)) {
-							result = s1.getHeapExtra() - s2.getHeapExtra();
-						} else {
-							result = s1.getStacks() - s2.getStacks();
-						}
+    private SelectionListener getHeaderListener() {
+        return new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                TableColumn column = (TableColumn) e.widget;
+                Table table = viewer.getTable();
+                if (column.equals(table.getSortColumn())) {
+                    int direction = table.getSortDirection() == SWT.UP ? SWT.DOWN
+                            : SWT.UP;
+                    table.setSortDirection(direction);
+                } else {
+                    table.setSortDirection(SWT.UP);
+                }
+                table.setSortColumn(column);
+                viewer.setComparator(new ViewerComparator() {
+                    @Override
+                    public int compare(Viewer viewer, Object o1, Object o2) {
+                        Table table = ((TableViewer) viewer).getTable();
+                        int direction = table.getSortDirection();
+                        MassifSnapshot s1 = (MassifSnapshot) o1;
+                        MassifSnapshot s2 = (MassifSnapshot) o2;
+                        long result;
+                        TableColumn column = table.getSortColumn();
+                        if (column.getText().equals(TITLE_NUMBER)) {
+                            result = s1.getNumber() - s2.getNumber();
+                        } else if (column.getText().startsWith(TITLE_TIME)) {
+                            result = s1.getTime() - s2.getTime();
+                        } else if (column.getText().equals(TITLE_TOTAL)) {
+                            result = s1.getTotal() - s2.getTotal();
+                        } else if (column.getText().equals(TITLE_USEFUL)) {
+                            result = s1.getHeapBytes() - s2.getHeapBytes();
+                        } else if (column.getText().equals(TITLE_EXTRA)) {
+                            result = s1.getHeapExtra() - s2.getHeapExtra();
+                        } else {
+                            result = s1.getStacks() - s2.getStacks();
+                        }
 
-						// ascending / descending
-						result = direction == SWT.UP ? result : -result;
+                        // ascending / descending
+                        result = direction == SWT.UP ? result : -result;
 
-						// overflow check
-						if (result > Integer.MAX_VALUE) {
-							result = Integer.MAX_VALUE;
-						} else if (result < Integer.MIN_VALUE) {
-							result = Integer.MIN_VALUE;
-						}
-						return (int) result;
-					}
-				});
-			}
-		};
-	}
+                        // overflow check
+                        if (result > Integer.MAX_VALUE) {
+                            result = Integer.MAX_VALUE;
+                        } else if (result < Integer.MIN_VALUE) {
+                            result = Integer.MIN_VALUE;
+                        }
+                        return (int) result;
+                    }
+                });
+            }
+        };
+    }
 
-	@Override
-	public IAction[] getToolbarActions() {
-		pidAction = new MassifPidMenuAction(this);
-		pidAction.setId(PID_ACTION);
+    @Override
+    public IAction[] getToolbarActions() {
+        pidAction = new MassifPidMenuAction(this);
+        pidAction.setId(PID_ACTION);
 
-		Action chartAction = new Action(
-				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
-			@Override
-			public void run() {
-				ChartEditorInput input = getChartInput(pid);
-				if (input != null) {
-					displayChart(input);
-				}
-			}
-		};
-		chartAction.setId(CHART_ACTION);
-		chartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-				MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
-		chartAction.setToolTipText(Messages
-				.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
+        Action chartAction = new Action(
+                Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
+            @Override
+            public void run() {
+                ChartEditorInput input = getChartInput(pid);
+                if (input != null) {
+                    displayChart(input);
+                }
+            }
+        };
+        chartAction.setId(CHART_ACTION);
+        chartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
+                MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
+        chartAction.setToolTipText(Messages
+                .getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
 
-		saveChartAction = new SaveChartAction();
-		saveChartAction.setId(SAVE_CHART_ACTION);
+        saveChartAction = new SaveChartAction();
+        saveChartAction.setId(SAVE_CHART_ACTION);
 
-		treeAction = new Action(
-				Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
-			@Override
-			public void run() {
-				if (isChecked()) {
-					stackLayout.topControl = treeViewer.getViewer().getControl();
-					top.layout();
-				} else {
-					stackLayout.topControl = viewer.getControl();
-					top.layout();
-				}
-			}
-		};
-		treeAction.setId(TREE_ACTION);
-		treeAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-				MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
-		treeAction.setToolTipText(Messages
-				.getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
+        treeAction = new Action(
+                Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
+            @Override
+            public void run() {
+                if (isChecked()) {
+                    stackLayout.topControl = treeViewer.getViewer().getControl();
+                    top.layout();
+                } else {
+                    stackLayout.topControl = viewer.getControl();
+                    top.layout();
+                }
+            }
+        };
+        treeAction.setId(TREE_ACTION);
+        treeAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
+                MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
+        treeAction.setToolTipText(Messages
+                .getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
 
-		return new IAction[] { pidAction, chartAction, saveChartAction, treeAction };
-	}
+        return new IAction[] { pidAction, chartAction, saveChartAction, treeAction };
+    }
 
-	private void createChart(MassifSnapshot[] snapshots) {
-		String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
-		HeapChart chart = new HeapChart(snapshots, title);
+    private void createChart(MassifSnapshot[] snapshots) {
+        String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
+        HeapChart chart = new HeapChart(snapshots, title);
 
-		String name = getInputName(title);
-		ChartEditorInput input = new ChartEditorInput(chart, this, name, pid);
-		chartInputs.add(input);
+        String name = getInputName(title);
+        ChartEditorInput input = new ChartEditorInput(chart, this, name, pid);
+        chartInputs.add(input);
 
-		// open the editor
-		displayChart(input);
-	}
+        // open the editor
+        displayChart(input);
+    }
 
-	private void displayChart(final ChartEditorInput chartInput) {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage();
-					page.openEditor(chartInput, MassifPlugin.EDITOR_ID);
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		saveChartAction.setChart(chartInput.getChart().getChartControl(), chartInput.getName());
-	}
+    private void displayChart(final ChartEditorInput chartInput) {
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    IWorkbenchPage page = PlatformUI.getWorkbench()
+                    .getActiveWorkbenchWindow().getActivePage();
+                    page.openEditor(chartInput, MassifPlugin.EDITOR_ID);
+                } catch (PartInitException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        saveChartAction.setChart(chartInput.getChart().getChartControl(), chartInput.getName());
+    }
 
-	private String getInputName(String description) {
-		String launchName;
-		try {
-			launchName = description.substring(0, description
-					.indexOf("[massif")); //$NON-NLS-1$
-		}
-		catch(IndexOutOfBoundsException e) {
-			launchName = "(No chart title)"; //$NON-NLS-1$
-		}
-		return launchName.trim();
-	}
+    private String getInputName(String description) {
+        String launchName;
+        try {
+            launchName = description.substring(0, description
+                    .indexOf("[massif")); //$NON-NLS-1$
+        }
+        catch(IndexOutOfBoundsException e) {
+            launchName = "(No chart title)"; //$NON-NLS-1$
+        }
+        return launchName.trim();
+    }
 
-	@Override
-	public void setFocus() {
-		viewer.getTable().setFocus();
-	}
+    @Override
+    public void setFocus() {
+        viewer.getTable().setFocus();
+    }
 
-	@Override
-	public void refreshView() {
-		if (output != null && pid != null) {
-			saveChartAction.setChart(null);
-			MassifSnapshot[] snapshots = output.getSnapshots(pid);
-			pidAction.setPids(output.getPids());
-			if (snapshots != null) {
-				viewer.setInput(snapshots);
+    @Override
+    public void refreshView() {
+        if (output != null && pid != null) {
+            saveChartAction.setChart(null);
+            MassifSnapshot[] snapshots = output.getSnapshots(pid);
+            pidAction.setPids(output.getPids());
+            if (snapshots != null) {
+                viewer.setInput(snapshots);
 
-				String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-				for (TableColumn column : viewer.getTable().getColumns()) {
-					if (column.getText().startsWith(TITLE_TIME)) {
-						column.setText(timeWithUnit);
-					}
-					viewer.getTable().layout(true);
-				}
-				MassifSnapshot[] detailed = getDetailed(snapshots);
-				nodes = new MassifHeapTreeNode[detailed.length];
-				for (int i = 0; i < detailed.length; i++) {
-					nodes[i] = detailed[i].getRoot();
-				}
-				treeViewer.getViewer().setInput(nodes);
+                String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                for (TableColumn column : viewer.getTable().getColumns()) {
+                    if (column.getText().startsWith(TITLE_TIME)) {
+                        column.setText(timeWithUnit);
+                    }
+                    viewer.getTable().layout(true);
+                }
+                MassifSnapshot[] detailed = getDetailed(snapshots);
+                nodes = new MassifHeapTreeNode[detailed.length];
+                for (int i = 0; i < detailed.length; i++) {
+                    nodes[i] = detailed[i].getRoot();
+                }
+                treeViewer.getViewer().setInput(nodes);
 
-				// create and display chart
-				if (snapshots.length > 0) {
-					ChartEditorInput input = getChartInput(pid);
-					if (input == null) {
-						createChart(snapshots);
-					}
-					else {
-						displayChart(input);
-					}
-				}
-			}
-		}
-	}
+                // create and display chart
+                if (snapshots.length > 0) {
+                    ChartEditorInput input = getChartInput(pid);
+                    if (input == null) {
+                        createChart(snapshots);
+                    }
+                    else {
+                        displayChart(input);
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public void dispose() {
-		// Close all chart editors to keep Valgrind output consistent throughout workbench
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (page != null) {
-			for (IEditorInput input : chartInputs) {
-				IEditorPart part = page.findEditor(input);
-				if (part != null) {
-					page.closeEditor(part, false);
-				}
-			}
-		}
-		super.dispose();
-	}
+    @Override
+    public void dispose() {
+        // Close all chart editors to keep Valgrind output consistent throughout workbench
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        if (page != null) {
+            for (IEditorInput input : chartInputs) {
+                IEditorPart part = page.findEditor(input);
+                if (part != null) {
+                    page.closeEditor(part, false);
+                }
+            }
+        }
+        super.dispose();
+    }
 
-	public void setTopControl(Control control) {
-		stackLayout.topControl = control;
-		top.layout(true);
-	}
+    public void setTopControl(Control control) {
+        stackLayout.topControl = control;
+        top.layout(true);
+    }
 
-	public void setOutput(MassifOutput output) {
-		this.output = output;
-	}
+    public void setOutput(MassifOutput output) {
+        this.output = output;
+    }
 
-	public MassifOutput getOutput() {
-		return output;
-	}
+    public MassifOutput getOutput() {
+        return output;
+    }
 
-	public void setPid(Integer pid) {
-		this.pid = pid;
-	}
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
 
-	public Integer getPid() {
-		return pid;
-	}
+    public Integer getPid() {
+        return pid;
+    }
 
-	public MassifSnapshot[] getSnapshots() {
-		return output != null && pid != null ? output.getSnapshots(pid) : null;
-	}
+    public MassifSnapshot[] getSnapshots() {
+        return output != null && pid != null ? output.getSnapshots(pid) : null;
+    }
 
-	public TableViewer getTableViewer() {
-		return viewer;
-	}
+    public TableViewer getTableViewer() {
+        return viewer;
+    }
 
-	public MassifTreeViewer getTreeViewer() {
-		return treeViewer;
-	}
+    public MassifTreeViewer getTreeViewer() {
+        return treeViewer;
+    }
 
-	private static class MassifLabelProvider extends LabelProvider implements
-	ITableLabelProvider, IFontProvider {
+    private static class MassifLabelProvider extends LabelProvider implements
+    ITableLabelProvider, IFontProvider {
 
-		@Override
-		public Image getColumnImage(Object element, int columnIndex) {
-			Image image = null;
-			if (columnIndex == 0) {
-				MassifSnapshot snapshot = (MassifSnapshot) element;
-				switch (snapshot.getType()) {
-				case EMPTY:
-					break;
-				case PEAK:
-				case DETAILED:
-					image = AbstractUIPlugin
-					.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
-							"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
-				}
-			}
-			return image;
-		}
+        @Override
+        public Image getColumnImage(Object element, int columnIndex) {
+            Image image = null;
+            if (columnIndex == 0) {
+                MassifSnapshot snapshot = (MassifSnapshot) element;
+                switch (snapshot.getType()) {
+                case EMPTY:
+                    break;
+                case PEAK:
+                case DETAILED:
+                    image = AbstractUIPlugin
+                    .imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
+                            "icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
+                }
+            }
+            return image;
+        }
 
-		@Override
-		public String getColumnText(Object element, int columnIndex) {
-			MassifSnapshot snapshot = (MassifSnapshot) element;
-			DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
-			switch (columnIndex) {
-			case 0:
-				return df.format(snapshot.getNumber());
-			case 1:
-				return df.format(snapshot.getTime());
-			case 2:
-				return df.format(snapshot.getTotal());
-			case 3:
-				return df.format(snapshot.getHeapBytes());
-			case 4:
-				return df.format(snapshot.getHeapExtra());
-			default:
-				return df.format(snapshot.getStacks());
-			}
-		}
+        @Override
+        public String getColumnText(Object element, int columnIndex) {
+            MassifSnapshot snapshot = (MassifSnapshot) element;
+            DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
+            switch (columnIndex) {
+            case 0:
+                return df.format(snapshot.getNumber());
+            case 1:
+                return df.format(snapshot.getTime());
+            case 2:
+                return df.format(snapshot.getTotal());
+            case 3:
+                return df.format(snapshot.getHeapBytes());
+            case 4:
+                return df.format(snapshot.getHeapExtra());
+            default:
+                return df.format(snapshot.getStacks());
+            }
+        }
 
-		@Override
-		public Font getFont(Object element) {
-			Font font = null;
-			MassifSnapshot snapshot = (MassifSnapshot) element;
-			switch (snapshot.getType()) {
-			case EMPTY:
-			case DETAILED:
-				break;
-			case PEAK:
-				font = JFaceResources.getFontRegistry().getBold(
-						JFaceResources.DIALOG_FONT);
-			}
-			return font;
-		}
-	}
+        @Override
+        public Font getFont(Object element) {
+            Font font = null;
+            MassifSnapshot snapshot = (MassifSnapshot) element;
+            switch (snapshot.getType()) {
+            case EMPTY:
+            case DETAILED:
+                break;
+            case PEAK:
+                font = JFaceResources.getFontRegistry().getBold(
+                        JFaceResources.DIALOG_FONT);
+            }
+            return font;
+        }
+    }
 
-	public void setChartName(String chartName) {
-		this.chartName = chartName;
-	}
+    public void setChartName(String chartName) {
+        this.chartName = chartName;
+    }
 
-	private MassifSnapshot[] getDetailed(MassifSnapshot[] snapshots) {
-		ArrayList<MassifSnapshot> list = new ArrayList<>();
-		for (MassifSnapshot snapshot : snapshots) {
-			if (snapshot.getType() != SnapshotType.EMPTY) {
-				list.add(snapshot);
-			}
-		}
-		return list.toArray(new MassifSnapshot[list.size()]);
-	}
+    private MassifSnapshot[] getDetailed(MassifSnapshot[] snapshots) {
+        ArrayList<MassifSnapshot> list = new ArrayList<>();
+        for (MassifSnapshot snapshot : snapshots) {
+            if (snapshot.getType() != SnapshotType.EMPTY) {
+                list.add(snapshot);
+            }
+        }
+        return list.toArray(new MassifSnapshot[list.size()]);
+    }
 
-	private ChartEditorInput getChartInput(Integer pid) {
-		ChartEditorInput result = null;
-		for (int i = 0; i < chartInputs.size(); i++) {
-			ChartEditorInput input = chartInputs.get(i);
-			if (input.getPid().equals(pid)) {
-				result = input;
-			}
-		}
-		return result;
-	}
+    private ChartEditorInput getChartInput(Integer pid) {
+        ChartEditorInput result = null;
+        for (int i = 0; i < chartInputs.size(); i++) {
+            ChartEditorInput input = chartInputs.get(i);
+            if (input.getPid().equals(pid)) {
+                result = input;
+            }
+        }
+        return result;
+    }
 }

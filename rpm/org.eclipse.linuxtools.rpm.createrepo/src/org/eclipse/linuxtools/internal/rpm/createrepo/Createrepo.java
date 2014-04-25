@@ -129,7 +129,7 @@ public class Createrepo {
      * can continue on executing.
      *
      * 0.9.8 = latest development release
-     * 		requires: yum version >= 3.2.23
+     *         requires: yum version >= 3.2.23
      *
      * @return True if version is supported, false otherwise.
      * @throws CoreException Occurs when failure to get version number.
@@ -160,8 +160,8 @@ public class Createrepo {
             String yumOutput = Utils.runCommandToString("yum", "--version").trim(); //$NON-NLS-1$ //$NON-NLS-2$
             // yum --version output is like:
             // x.x.x
-            //		blah...
-            //		blah...
+            //        blah...
+            //        blah...
             String[] yumTemp = yumOutput.split("\n"); //$NON-NLS-1$
             if (yumTemp.length > 0) {
                 yumVersion = yumTemp[0];

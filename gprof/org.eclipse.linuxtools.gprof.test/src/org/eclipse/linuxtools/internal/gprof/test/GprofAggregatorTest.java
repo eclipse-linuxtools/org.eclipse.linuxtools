@@ -32,51 +32,51 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class GprofAggregatorTest {
 
-	@Parameters
-	public static Collection<Object[]> data() {
-		List<Object[]> params = new ArrayList<>();
-		for (File testDir : STJunitUtils.getTestDirs()) {
-			final String dirName = testDir.getName();
-			params.add(new Object[] { dirName });
-		}
-		return params;
-	}
+    @Parameters
+    public static Collection<Object[]> data() {
+        List<Object[]> params = new ArrayList<>();
+        for (File testDir : STJunitUtils.getTestDirs()) {
+            final String dirName = testDir.getName();
+            params.add(new Object[] { dirName });
+        }
+        return params;
+    }
 
-	private String dir;
+    private String dir;
 
-	public GprofAggregatorTest(String dir) {
-		this.dir = dir;
-	}
+    public GprofAggregatorTest(String dir) {
+        this.dir = dir;
+    }
 
-	@Test
-	public void testAggregation() throws IOException, InterruptedException {
-		File directory = new File(STJunitUtils.getAbsolutePath(
-				"org.eclipse.linuxtools.gprof.test", dir));
-		File gmonPath = new File(STJunitUtils.getAbsolutePath(
-				"org.eclipse.linuxtools.gprof.test", dir + File.separator
-						+ OUTPUT_FILE));
-		File binaryPath = new File(STJunitUtils.getAbsolutePath(
-				"org.eclipse.linuxtools.gprof.test", dir + File.separator
-						+ BINARY_FILE));
+    @Test
+    public void testAggregation() throws IOException, InterruptedException {
+        File directory = new File(STJunitUtils.getAbsolutePath(
+                "org.eclipse.linuxtools.gprof.test", dir));
+        File gmonPath = new File(STJunitUtils.getAbsolutePath(
+                "org.eclipse.linuxtools.gprof.test", dir + File.separator
+                        + OUTPUT_FILE));
+        File binaryPath = new File(STJunitUtils.getAbsolutePath(
+                "org.eclipse.linuxtools.gprof.test", dir + File.separator
+                        + BINARY_FILE));
 
-		String gmon = gmonPath.toString();
-		String binary = binaryPath.toString();
+        String gmon = gmonPath.toString();
+        String binary = binaryPath.toString();
 
-		LinkedList<String> s = new LinkedList<>();
-		s.add(gmon.toString());
-		s.add(gmon.toString());
+        LinkedList<String> s = new LinkedList<>();
+        s.add(gmon.toString());
+        s.add(gmon.toString());
 
-		String gprof2use = "gprof";
-		File f = Aggregator.aggregate(gprof2use, binary, s, directory);
+        String gprof2use = "gprof";
+        File f = Aggregator.aggregate(gprof2use, binary, s, directory);
 
-		Process p = Runtime.getRuntime().exec(
-				new String[] { gprof2use, binary, f.getAbsolutePath() });
-		Process p2 = Runtime.getRuntime().exec(
-				new String[] { gprof2use, binary,
-						directory + File.separator + "gmon.sum.ref" });
+        Process p = Runtime.getRuntime().exec(
+                new String[] { gprof2use, binary, f.getAbsolutePath() });
+        Process p2 = Runtime.getRuntime().exec(
+                new String[] { gprof2use, binary,
+                        directory + File.separator + "gmon.sum.ref" });
 
-		STJunitUtils.compare(p.getInputStream(), p2.getInputStream());
-		p.waitFor();
-		p2.waitFor();
-	}
+        STJunitUtils.compare(p.getInputStream(), p2.getInputStream());
+        p.waitFor();
+        p2.waitFor();
+    }
 }

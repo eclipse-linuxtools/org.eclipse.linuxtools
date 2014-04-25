@@ -30,6 +30,6 @@
             tabgroup="org.eclipse.linuxtools.internal.valgrind.helgrind.HelgrindLaunchConfigurationTabGroup"
             type="memory">
       </provider>
-   </extension>   
+   </extension>
 
 </plugin>

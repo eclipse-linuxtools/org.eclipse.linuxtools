@@ -20,42 +20,42 @@ import org.junit.Test;
 
 public class SumAggregateTest {
 
-	@Test
-	public void testAggregate() {
-		SumAggregate aa = new SumAggregate();
-		Number num;
+    @Test
+    public void testAggregate() {
+        SumAggregate aa = new SumAggregate();
+        Number num;
 
-		num = aa.aggregate(null);
-		assertNull(num);
+        num = aa.aggregate(null);
+        assertNull(num);
 
-		num = aa.aggregate(new Number[] {});
-		assertNull(num);
+        num = aa.aggregate(new Number[] {});
+        assertNull(num);
 
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,0}));
-		assertEquals(0, num.intValue());
-		
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {-1,0,1}));
-		assertEquals(0, num.intValue());
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,0}));
+        assertEquals(0, num.intValue());
 
-		num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,1}));
-		assertEquals(1, num.intValue());
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {-1,0,1}));
+        assertEquals(0, num.intValue());
+
+        num = aa.aggregate(MockDataSet.buildIntegerArray(new int[] {0,0,1}));
+        assertEquals(1, num.intValue());
 
 
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,0}));
-		assertEquals(0.0, num.doubleValue(), 0.0);
-		
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {-1,0,1}));
-		assertEquals(0.0, num.doubleValue(), 0.0);
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,0}));
+        assertEquals(0.0, num.doubleValue(), 0.0);
 
-		num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,1,2}));
-		assertEquals(3.0, num.doubleValue(), 0.0);
-	}
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {-1,0,1}));
+        assertEquals(0.0, num.doubleValue(), 0.0);
 
-	@Test
-	public void testGetID() {
-		SumAggregate aa = new SumAggregate();
-		assertEquals(SumAggregate.ID, aa.getID());
-	}
-	
-	
+        num = aa.aggregate(MockDataSet.buildDoubleArray(new double[] {0,0,1,2}));
+        assertEquals(3.0, num.doubleValue(), 0.0);
+    }
+
+    @Test
+    public void testGetID() {
+        SumAggregate aa = new SumAggregate();
+        assertEquals(SumAggregate.ID, aa.getID());
+    }
+
+
 }

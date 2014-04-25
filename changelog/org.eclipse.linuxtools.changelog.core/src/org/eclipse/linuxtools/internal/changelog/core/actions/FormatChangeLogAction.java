@@ -21,19 +21,19 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class FormatChangeLogAction extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		ChangeLogEditor editor = (ChangeLogEditor) HandlerUtil.getActiveEditor(event);
-		if (editor == null)
-			return null;
+    @Override
+    public Object execute(ExecutionEvent event) {
+        ChangeLogEditor editor = (ChangeLogEditor) HandlerUtil.getActiveEditor(event);
+        if (editor == null)
+            return null;
 
-		SourceViewer srcViewer = (SourceViewer)editor.getMySourceViewer();
-		if (srcViewer != null) {
-			srcViewer.doOperation(ISourceViewer.FORMAT);
+        SourceViewer srcViewer = (SourceViewer)editor.getMySourceViewer();
+        if (srcViewer != null) {
+            srcViewer.doOperation(ISourceViewer.FORMAT);
 
-		}
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

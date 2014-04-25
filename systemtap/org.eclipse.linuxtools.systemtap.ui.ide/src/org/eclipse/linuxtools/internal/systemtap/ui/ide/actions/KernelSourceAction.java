@@ -35,57 +35,57 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
  * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView
  */
 public class KernelSourceAction extends BrowserViewAction {
-	public final static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.KBAction"; //$NON-NLS-1$
-	private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor"; //$NON-NLS-1$
+    public final static String ID = "org.eclipse.linuxtools.systemtap.ui.ide.KBAction"; //$NON-NLS-1$
+    private static final String CDT_EDITOR_ID = "org.eclipse.cdt.ui.editor.CEditor"; //$NON-NLS-1$
 
-	/**
-	 * The default constructor for the <code>KernelSourceAction</code>. Takes the window that it affects
-	 * and the <code>KernelBrowserView</code> that will fire the event as arguments.
-	 * @param window	The <code>IWorkbenchWindow</code> that the action operates on.
-	 * @param browser	The <code>KernelBrowserView</code> that fires this action.
-	 */
-	public KernelSourceAction(IWorkbenchWindow window, KernelBrowserView browser) {
-		super(window, browser);
-		setId(ID);
-		setActionDefinitionId(ID);
-		setText(Localization.getString("KernelSourceAction.Insert")); //$NON-NLS-1$
-		setToolTipText(Localization
-				.getString("KernelSourceAction.InsertSelectedFunction")); //$NON-NLS-1$
-	}
+    /**
+     * The default constructor for the <code>KernelSourceAction</code>. Takes the window that it affects
+     * and the <code>KernelBrowserView</code> that will fire the event as arguments.
+     * @param window    The <code>IWorkbenchWindow</code> that the action operates on.
+     * @param browser    The <code>KernelBrowserView</code> that fires this action.
+     */
+    public KernelSourceAction(IWorkbenchWindow window, KernelBrowserView browser) {
+        super(window, browser);
+        setId(ID);
+        setActionDefinitionId(ID);
+        setText(Localization.getString("KernelSourceAction.Insert")); //$NON-NLS-1$
+        setToolTipText(Localization
+                .getString("KernelSourceAction.InsertSelectedFunction")); //$NON-NLS-1$
+    }
 
-	/**
-	 * The main code body for this action. Causes one of the following to occur:
-	 * <ul>
-	 * 	<li>If the selected node is clickable, as specified in <code>TreeNode.isClickable</code>
-	 * 		the browser creates an instance of <code>CEditor</code> on the file specified in the selection
-	 * 		(<code>KernelBrowserView</code>'s tree only marks clickable on files, not folders) and
-	 * 		opens it on the current window</li>
-	 * 	<li>If the selected node is not clickable, the code runs the action specified in
-	 * 		<code>TreeExpandCollapseAction</code></li>
-	 * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor
-	 * @see TreeNode#isClickable()
-	 * @see TreeExpandCollapseAction
-	 */
-	@Override
-	public void run() {
-		IWorkbench wb = PlatformUI.getWorkbench();
-		Object o = getSelectedElement();
-		if (o instanceof TreeNode) {
-			TreeNode t = (TreeNode) o;
-			if (t.isClickable()) {
-				IFileStore fs = (IFileStore) t.getData();
-				if (fs != null) {
-					IEditorInput input = new FileStoreEditorInput(fs);
-					try {
-						wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
-					} catch (PartInitException e) {
-						ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
-					}
-				}
-			} else {
-				runExpandAction();
-			}
-		}
-	}
+    /**
+     * The main code body for this action. Causes one of the following to occur:
+     * <ul>
+     *     <li>If the selected node is clickable, as specified in <code>TreeNode.isClickable</code>
+     *         the browser creates an instance of <code>CEditor</code> on the file specified in the selection
+     *         (<code>KernelBrowserView</code>'s tree only marks clickable on files, not folders) and
+     *         opens it on the current window</li>
+     *     <li>If the selected node is not clickable, the code runs the action specified in
+     *         <code>TreeExpandCollapseAction</code></li>
+     * @see org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.c.CEditor
+     * @see TreeNode#isClickable()
+     * @see TreeExpandCollapseAction
+     */
+    @Override
+    public void run() {
+        IWorkbench wb = PlatformUI.getWorkbench();
+        Object o = getSelectedElement();
+        if (o instanceof TreeNode) {
+            TreeNode t = (TreeNode) o;
+            if (t.isClickable()) {
+                IFileStore fs = (IFileStore) t.getData();
+                if (fs != null) {
+                    IEditorInput input = new FileStoreEditorInput(fs);
+                    try {
+                        wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
+                    } catch (PartInitException e) {
+                        ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
+                    }
+                }
+            } else {
+                runExpandAction();
+            }
+        }
+    }
 
 }

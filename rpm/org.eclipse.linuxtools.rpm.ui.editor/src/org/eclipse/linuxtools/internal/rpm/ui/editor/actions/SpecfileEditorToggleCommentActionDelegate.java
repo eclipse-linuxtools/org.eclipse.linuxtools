@@ -29,75 +29,75 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		SpecfileEditor editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
-		IDocument document = (IDocument) editor.getAdapter(IDocument.class);
-		ISelection currentSelection = editor.getSpecfileSourceViewer()
-				.getSelection();
-		if (currentSelection instanceof ITextSelection) {
-			ITextSelection selection = (ITextSelection) currentSelection;
-			String selectedContent = ""; //$NON-NLS-1$
-			try {
-				int begin = document.getLineOffset(selection.getStartLine());
-				StringBuilder sb = new StringBuilder(document.get().substring(0,
-						begin));
-				String content = document.get().substring(begin,
-						selection.getOffset() + selection.getLength());
-				if (linesContentCommentChar(content)) {
-					if (selection.getStartLine() == selection.getEndLine()) {
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content;
-					} else {
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-				} else {
-					selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replaceAll( //$NON-NLS-1$
-							"\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-				sb.append(selectedContent);
-				sb.append(document.get().substring(
-						selection.getOffset() + selection.getLength(),
-						document.get().length()));
-				document.set(sb.toString());
-				editor.setHighlightRange(selection.getOffset(), selection
-						.getLength(), true);
-			} catch (BadLocationException e) {
-				SpecfileLog.logError(e);
-			}
-		}
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     */
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        SpecfileEditor editor = (SpecfileEditor) HandlerUtil.getActiveEditor(event);
+        IDocument document = (IDocument) editor.getAdapter(IDocument.class);
+        ISelection currentSelection = editor.getSpecfileSourceViewer()
+                .getSelection();
+        if (currentSelection instanceof ITextSelection) {
+            ITextSelection selection = (ITextSelection) currentSelection;
+            String selectedContent = ""; //$NON-NLS-1$
+            try {
+                int begin = document.getLineOffset(selection.getStartLine());
+                StringBuilder sb = new StringBuilder(document.get().substring(0,
+                        begin));
+                String content = document.get().substring(begin,
+                        selection.getOffset() + selection.getLength());
+                if (linesContentCommentChar(content)) {
+                    if (selection.getStartLine() == selection.getEndLine()) {
+                        selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content;
+                    } else {
+                        selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                } else {
+                    selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replaceAll( //$NON-NLS-1$
+                            "\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                sb.append(selectedContent);
+                sb.append(document.get().substring(
+                        selection.getOffset() + selection.getLength(),
+                        document.get().length()));
+                document.set(sb.toString());
+                editor.setHighlightRange(selection.getOffset(), selection
+                        .getLength(), true);
+            } catch (BadLocationException e) {
+                SpecfileLog.logError(e);
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Check if all lines are commented
-	 *
-	 * @param content
-	 *            to check
-	 * @return true if all lines begin with '#' char
-	 */
-	private boolean linesContentCommentChar(String content) {
-		LineNumberReader reader = new LineNumberReader(
-				new StringReader(content));
-		String line;
-		boolean ret = false;
-		try {
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START)) {
-					ret = false;
-				} else {
-					return true;
-				}
-			}
-		} catch (IOException e) {
-			SpecfileLog.logError(e);
-			return false;
-		}
-		return ret;
-	}
+    /**
+     * Check if all lines are commented
+     *
+     * @param content
+     *            to check
+     * @return true if all lines begin with '#' char
+     */
+    private boolean linesContentCommentChar(String content) {
+        LineNumberReader reader = new LineNumberReader(
+                new StringReader(content));
+        String line;
+        boolean ret = false;
+        try {
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START)) {
+                    ret = false;
+                } else {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            SpecfileLog.logError(e);
+            return false;
+        }
+        return ret;
+    }
 
 }

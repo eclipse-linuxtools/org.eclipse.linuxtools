@@ -38,67 +38,67 @@ import org.osgi.framework.FrameworkUtil;
 
 public class GprofShortcutTest extends AbstractTest {
 
-	protected ILaunchConfiguration config;
-	protected GprofLaunchConfigurationDelegate delegate;
-	protected ILaunch launch;
-	protected ILaunchConfigurationWorkingCopy wc;
-	private static final String ID = "org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"; //$NON-NLS-1$
-	private static final String LAUNCH_SHORT_EXTPT = "org.eclipse.debug.ui.launchShortcuts"; //$NON-NLS-1$
-	private static final String GPROF_PROVIDER_ID = "org.eclipse.linuxtools.profiling.provider.timing.gprof"; //$NON-NLS-1$
-	private static final String GPROF_CATEGORY = "timing"; //$NON-NLS-1$
+    protected ILaunchConfiguration config;
+    protected GprofLaunchConfigurationDelegate delegate;
+    protected ILaunch launch;
+    protected ILaunchConfigurationWorkingCopy wc;
+    private static final String ID = "org.eclipse.linuxtools.profiling.provider.TimingLaunchShortcut"; //$NON-NLS-1$
+    private static final String LAUNCH_SHORT_EXTPT = "org.eclipse.debug.ui.launchShortcuts"; //$NON-NLS-1$
+    private static final String GPROF_PROVIDER_ID = "org.eclipse.linuxtools.profiling.provider.timing.gprof"; //$NON-NLS-1$
+    private static final String GPROF_CATEGORY = "timing"; //$NON-NLS-1$
 
-	ProviderLaunchShortcut shortcut;
-	String launchConfigTypeId;
+    ProviderLaunchShortcut shortcut;
+    String launchConfigTypeId;
 
-	@Before
-	public void setUp() throws Exception {
-		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest2"); //$NON-NLS-1$
-		ProjectScope ps = new ProjectScope(proj.getProject());
-		ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
-		scoped.setSearchContexts(new IScopeContext[] { ps, InstanceScope.INSTANCE });
-		scoped.setValue(ProviderProfileConstants.PREFS_KEY + GPROF_CATEGORY, GPROF_PROVIDER_ID);
-		scoped.setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + GPROF_CATEGORY, true);
-		scoped.save();
+    @Before
+    public void setUp() throws Exception {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest2"); //$NON-NLS-1$
+        ProjectScope ps = new ProjectScope(proj.getProject());
+        ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, ProviderProfileConstants.PLUGIN_ID);
+        scoped.setSearchContexts(new IScopeContext[] { ps, InstanceScope.INSTANCE });
+        scoped.setValue(ProviderProfileConstants.PREFS_KEY + GPROF_CATEGORY, GPROF_PROVIDER_ID);
+        scoped.setValue(ProviderProfileConstants.USE_PROJECT_SETTINGS + GPROF_CATEGORY, true);
+        scoped.save();
 
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LAUNCH_SHORT_EXTPT);
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement cfg : configs) {
-			if (cfg.getAttribute("id").equals(ID)){ //$NON-NLS-1$
-				try {
-					shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class"); //$NON-NLS-1$
-					launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value"); //$NON-NLS-1$
-				} catch (Exception e){
-					fail (e.getMessage());
-				}
-			}
-		}
-		config = createConfiguration(proj.getProject());
-		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
- 		wc = config.getWorkingCopy();
-	}
+        IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LAUNCH_SHORT_EXTPT);
+        IConfigurationElement[] configs = extPoint.getConfigurationElements();
+        for (IConfigurationElement cfg : configs) {
+            if (cfg.getAttribute("id").equals(ID)){ //$NON-NLS-1$
+                try {
+                    shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class"); //$NON-NLS-1$
+                    launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value"); //$NON-NLS-1$
+                } catch (Exception e){
+                    fail (e.getMessage());
+                }
+            }
+        }
+        config = createConfiguration(proj.getProject());
+        launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+         wc = config.getWorkingCopy();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		deleteProject(proj);
-		wc.delete();
-		config.delete();
-	}
+    @After
+    public void tearDown() throws Exception {
+        deleteProject(proj);
+        wc.delete();
+        config.delete();
+    }
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(launchConfigTypeId);
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(launchConfigTypeId);
+    }
 
-	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-	}
+    @Override
+    protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
+    }
 
-	@Test
-	public void testShortCut() throws CModelException {
-		String id = ProviderFramework.getProviderIdToRun(wc, GPROF_CATEGORY);
-		assertTrue(id.equals(GPROF_PROVIDER_ID));
-		shortcut.launch(proj.getBinaryContainer().getBinaries()[0],
-				ILaunchManager.PROFILE_MODE);
-	}
+    @Test
+    public void testShortCut() throws CModelException {
+        String id = ProviderFramework.getProviderIdToRun(wc, GPROF_CATEGORY);
+        assertTrue(id.equals(GPROF_PROVIDER_ID));
+        shortcut.launch(proj.getBinaryContainer().getBinaries()[0],
+                ILaunchManager.PROFILE_MODE);
+    }
 
 }

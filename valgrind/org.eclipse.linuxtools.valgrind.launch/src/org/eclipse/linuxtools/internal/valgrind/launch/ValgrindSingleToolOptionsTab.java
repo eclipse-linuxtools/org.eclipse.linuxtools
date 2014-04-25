@@ -12,19 +12,19 @@ package org.eclipse.linuxtools.internal.valgrind.launch;
 
 /**
  * @since 1.2
- * 
+ *
  * Special version of ValgrindOptionsTab to force the choice of Valgrind tool to
  * just one.  This is used by the Profiling Framework to offer more
  * task-oriented choices to the end-user and not overwhelm them with all the
  * tool choices.
  */
 public class ValgrindSingleToolOptionsTab extends ValgrindOptionsTab {
-	
-	public ValgrindSingleToolOptionsTab(String toolId) {
-		super();
-		noToolCombo = true;
-		tool = toolId;
-		tools = new String[] {tool};
-	}
-	
+
+    public ValgrindSingleToolOptionsTab(String toolId) {
+        super();
+        noToolCombo = true;
+        tool = toolId;
+        tools = new String[] {tool};
+    }
+
 }

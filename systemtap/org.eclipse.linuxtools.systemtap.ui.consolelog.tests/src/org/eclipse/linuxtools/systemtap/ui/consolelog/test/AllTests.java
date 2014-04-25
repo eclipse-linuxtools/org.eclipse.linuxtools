@@ -19,6 +19,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ ConsoleStreamDaemonTest.class,
-		ErrorStreamDaemonTest.class, ScriptConsoleTest.class })
+        ErrorStreamDaemonTest.class, ScriptConsoleTest.class })
 public class AllTests {
 }

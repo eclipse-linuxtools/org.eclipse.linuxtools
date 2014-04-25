@@ -23,26 +23,26 @@ import org.eclipse.ui.dialogs.PropertyPage;
  */
 public abstract class AbstractRPMPropertyPage extends PropertyPage {
 
-	protected abstract void addFields(Composite parent);
-	
-	/**
-	 * @see PropertyPage#createContents(Composite)
-	 */
-	@Override
-	protected Control createContents(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		composite.setLayout(layout);
+    protected abstract void addFields(Composite parent);
 
-		GridData data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.verticalAlignment = GridData.FILL;
-		data.horizontalAlignment = GridData.FILL;
-		composite.setLayoutData(data);
+    /**
+     * @see PropertyPage#createContents(Composite)
+     */
+    @Override
+    protected Control createContents(Composite parent) {
+        Composite composite = new Composite(parent, SWT.NULL);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        composite.setLayout(layout);
 
-		addFields(composite);
-		return composite;
-	}
-	
+        GridData data = new GridData();
+        data.grabExcessHorizontalSpace = true;
+        data.verticalAlignment = GridData.FILL;
+        data.horizontalAlignment = GridData.FILL;
+        composite.setLayoutData(data);
+
+        addFields(composite);
+        return composite;
+    }
+
 }

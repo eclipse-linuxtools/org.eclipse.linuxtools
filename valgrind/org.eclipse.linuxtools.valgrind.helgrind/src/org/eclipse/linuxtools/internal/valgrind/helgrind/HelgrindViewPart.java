@@ -18,21 +18,21 @@ import org.eclipse.ui.part.ViewPart;
 
 public class HelgrindViewPart extends ViewPart implements IValgrindToolView {
 
-	@Override
-	public void createPartControl(Composite parent) {
-	}
+    @Override
+    public void createPartControl(Composite parent) {
+    }
 
-	@Override
-	public void setFocus() {
-	}
+    @Override
+    public void setFocus() {
+    }
 
-	@Override
-	public void refreshView() {
-	}
+    @Override
+    public void refreshView() {
+    }
 
-	@Override
-	public IAction[] getToolbarActions() {
-		return null;
-	}
-	
+    @Override
+    public IAction[] getToolbarActions() {
+        return null;
+    }
+
 }

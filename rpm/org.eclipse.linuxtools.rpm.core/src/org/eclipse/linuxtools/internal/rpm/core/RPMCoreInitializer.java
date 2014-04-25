@@ -22,17 +22,17 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  */
 public class RPMCoreInitializer extends AbstractPreferenceInitializer {
 
-	@Override
-	public void initializeDefaultPreferences() {
-		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,IRPMConstants.RPM_CORE_ID);
-		String userName = System.getProperty("user.name"); //$NON-NLS-1$
-		store.setDefault(IRPMConstants.RPM_DISPLAYED_LOG_NAME, ".logfilename_" //$NON-NLS-1$
-				+ userName);
-		store.setDefault(IRPMConstants.RPM_LOG_NAME, "rpmbuild.log"); //$NON-NLS-1$
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,IRPMConstants.RPM_CORE_ID);
+        String userName = System.getProperty("user.name"); //$NON-NLS-1$
+        store.setDefault(IRPMConstants.RPM_DISPLAYED_LOG_NAME, ".logfilename_" //$NON-NLS-1$
+                + userName);
+        store.setDefault(IRPMConstants.RPM_LOG_NAME, "rpmbuild.log"); //$NON-NLS-1$
 
-		store.setDefault(IRPMConstants.RPM_CMD, "rpm"); //$NON-NLS-1$
-		store.setDefault(IRPMConstants.RPMBUILD_CMD, "rpmbuild"); //$NON-NLS-1$
-		store.setDefault(IRPMConstants.DIFF_CMD, "diff"); //$NON-NLS-1$
-	}
+        store.setDefault(IRPMConstants.RPM_CMD, "rpm"); //$NON-NLS-1$
+        store.setDefault(IRPMConstants.RPMBUILD_CMD, "rpmbuild"); //$NON-NLS-1$
+        store.setDefault(IRPMConstants.DIFF_CMD, "diff"); //$NON-NLS-1$
+    }
 
 }

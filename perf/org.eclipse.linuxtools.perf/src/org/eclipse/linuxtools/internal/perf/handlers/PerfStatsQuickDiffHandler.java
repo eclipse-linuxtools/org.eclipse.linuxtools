@@ -37,73 +37,73 @@ import org.eclipse.ui.commands.ICommandService;
  * Command handler for quick comparison between current and previous sessions.
  */
 public class PerfStatsQuickDiffHandler implements IHandler {
-	@Override
-	public Object execute(ExecutionEvent event) {
-		// get default files
-		PerfPlugin plugin = PerfPlugin.getDefault();
-		IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
-		IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
+    @Override
+    public Object execute(ExecutionEvent event) {
+        // get default files
+        PerfPlugin plugin = PerfPlugin.getDefault();
+        IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
+        IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
 
-		IResource curStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(curStatData);
-		IResource prevStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(prevStatData);
+        IResource curStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(curStatData);
+        IResource prevStatFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(prevStatData);
 
-		// Inject our own selections into the context
-		IEvaluationContext ctx = (IEvaluationContext) event.getApplicationContext();
-		ctx.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME,
-				new StructuredSelection(new IResource [] {prevStatFile, curStatFile}));
+        // Inject our own selections into the context
+        IEvaluationContext ctx = (IEvaluationContext) event.getApplicationContext();
+        ctx.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME,
+                new StructuredSelection(new IResource [] {prevStatFile, curStatFile}));
 
-		ICommandService cmdService = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
-		Command cmd = cmdService.getCommand("org.eclipse.linuxtools.perf.CompareAction"); //$NON-NLS-1$
-		try {
-			cmd.executeWithChecks(event);
-		} catch (Exception e) {
-		}
-		return null;
-	}
+        ICommandService cmdService = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+        Command cmd = cmdService.getCommand("org.eclipse.linuxtools.perf.CompareAction"); //$NON-NLS-1$
+        try {
+            cmd.executeWithChecks(event);
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		PerfPlugin plugin = PerfPlugin.getDefault();
-		IPath workingDir = plugin.getWorkingDir();
-		URI curStatDataURI = null;
-		URI prevStatDataURI = null;
-		if (workingDir != null) {
-			IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
-			IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
-			IRemoteFileProxy proxy = null;
-			try {
-				curStatDataURI = new URI(curStatData.toPortableString());
-				prevStatDataURI = new URI(prevStatData.toPortableString());
-				proxy = RemoteProxyManager.getInstance().getFileProxy(curStatDataURI);
-			} catch (URISyntaxException e) {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-			} catch (CoreException e) {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-			}
-			IFileStore curFileStore = proxy.getResource(curStatDataURI.getPath());
-			IFileStore prevFileStore = proxy.getResource(prevStatDataURI.getPath());
-			return (curFileStore.fetchInfo().exists() && prevFileStore.fetchInfo().exists());
-		}
-		return false;
-	}
+    @Override
+    public boolean isEnabled() {
+        PerfPlugin plugin = PerfPlugin.getDefault();
+        IPath workingDir = plugin.getWorkingDir();
+        URI curStatDataURI = null;
+        URI prevStatDataURI = null;
+        if (workingDir != null) {
+            IPath curStatData = plugin.getPerfFile(PerfPlugin.PERF_DEFAULT_STAT);
+            IPath prevStatData = plugin.getPerfFile(PerfPlugin.PERF_DEAFULT_OLD_STAT);
+            IRemoteFileProxy proxy = null;
+            try {
+                curStatDataURI = new URI(curStatData.toPortableString());
+                prevStatDataURI = new URI(prevStatData.toPortableString());
+                proxy = RemoteProxyManager.getInstance().getFileProxy(curStatDataURI);
+            } catch (URISyntaxException e) {
+                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+            } catch (CoreException e) {
+                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+            }
+            IFileStore curFileStore = proxy.getResource(curStatDataURI.getPath());
+            IFileStore prevFileStore = proxy.getResource(prevStatDataURI.getPath());
+            return (curFileStore.fetchInfo().exists() && prevFileStore.fetchInfo().exists());
+        }
+        return false;
+    }
 
-	@Override
-	public boolean isHandled() {
-		return isEnabled();
-	}
+    @Override
+    public boolean isHandled() {
+        return isEnabled();
+    }
 
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void addHandlerListener(IHandlerListener handlerListener) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void removeHandlerListener(IHandlerListener handlerListener) {
+        // TODO Auto-generated method stub
+    }
 }

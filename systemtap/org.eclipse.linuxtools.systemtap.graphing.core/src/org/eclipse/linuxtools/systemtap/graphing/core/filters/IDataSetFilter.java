@@ -14,14 +14,14 @@ package org.eclipse.linuxtools.systemtap.graphing.core.filters;
 import java.util.List;
 
 public interface IDataSetFilter {
-	public List<Object>[] filter(List<Object>[] data);
-	public String getID();
-	/**
-	 * @since 2.0
-	 */
-	public String getInfo();
-	/**
-	 * @since 2.0
-	 */
-	public int getColumn();
+    public List<Object>[] filter(List<Object>[] data);
+    public String getID();
+    /**
+     * @since 2.0
+     */
+    public String getInfo();
+    /**
+     * @since 2.0
+     */
+    public int getColumn();
 }

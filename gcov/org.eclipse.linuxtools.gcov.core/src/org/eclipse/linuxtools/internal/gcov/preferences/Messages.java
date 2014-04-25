@@ -13,19 +13,19 @@ package org.eclipse.linuxtools.internal.gcov.preferences;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.gcov.preferences.messages"; //$NON-NLS-1$
-	public static String ColorPreferencePage_BackColorHighest;
-	public static String ColorPreferencePage_BackColorLowest;
-	public static String ColorPreferencePage_BackColorNotCovered;
-	public static String ColorPreferencePage_ColorizeCode;
-	public static String ColorPreferencePage_Description;
-	public static String ColorPreferencePage_Title;
-	public static String ColorPreferencePage_UseGradient;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.gcov.preferences.messages"; //$NON-NLS-1$
+    public static String ColorPreferencePage_BackColorHighest;
+    public static String ColorPreferencePage_BackColorLowest;
+    public static String ColorPreferencePage_BackColorNotCovered;
+    public static String ColorPreferencePage_ColorizeCode;
+    public static String ColorPreferencePage_Description;
+    public static String ColorPreferencePage_Title;
+    public static String ColorPreferencePage_UseGradient;
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 }

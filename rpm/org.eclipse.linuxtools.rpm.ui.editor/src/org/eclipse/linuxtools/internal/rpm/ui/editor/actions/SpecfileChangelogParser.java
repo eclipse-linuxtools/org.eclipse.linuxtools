@@ -18,14 +18,14 @@ import org.eclipse.ui.IEditorPart;
 
 public class SpecfileChangelogParser implements IParserChangeLogContrib {
 
-	@Override
-	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
-		return ""; //$NON-NLS-1$
-	}
+    @Override
+    public String parseCurrentFunction(IEditorPart editor) throws CoreException {
+        return ""; //$NON-NLS-1$
+    }
 
-	@Override
-	public String parseCurrentFunction(IEditorInput input, int offset) throws CoreException {
-		return ""; //$NON-NLS-1$
-	}
+    @Override
+    public String parseCurrentFunction(IEditorInput input, int offset) throws CoreException {
+        return ""; //$NON-NLS-1$
+    }
 
 }

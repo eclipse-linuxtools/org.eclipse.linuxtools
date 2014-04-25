@@ -84,19 +84,19 @@ public class STDataViewersExportToCSVDialog extends Dialog {
 
     private ModifyListener updatePreviewModifyListener = new ModifyListener() {
         @Override
-		public void modifyText(ModifyEvent e) {
+        public void modifyText(ModifyEvent e) {
             updatePreview();
         }
     };
 
     private SelectionListener updatePreviewSelectionListener = new SelectionListener() {
         @Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+        public void widgetDefaultSelected(SelectionEvent e) {
             widgetSelected(e);
         }
 
         @Override
-		public void widgetSelected(SelectionEvent e) {
+        public void widgetSelected(SelectionEvent e) {
             updatePreview();
         }
     };
@@ -174,7 +174,7 @@ public class STDataViewersExportToCSVDialog extends Dialog {
         browseOutputButton.setText("File System...");
         browseOutputButton.addSelectionListener(new SelectionAdapter() {
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 handleBrowse();
             }
         });
@@ -185,7 +185,7 @@ public class STDataViewersExportToCSVDialog extends Dialog {
         browseOutputInWorkspaceButton.setText("Workspace...");
         browseOutputInWorkspaceButton.addSelectionListener(new SelectionAdapter() {
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 handleBrowseWorkspace();
             }
         });
@@ -240,12 +240,12 @@ public class STDataViewersExportToCSVDialog extends Dialog {
         exportTreePrefixButton.addSelectionListener(updatePreviewSelectionListener);
         exportTreePrefixButton.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 boolean enabled = exportTreePrefixButton.getSelection();
                 enableTreePrefixText(enabled);
             }
@@ -349,12 +349,12 @@ public class STDataViewersExportToCSVDialog extends Dialog {
         restoreDefaults.setText("Restore Defaults");
         restoreDefaults.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
             @Override
-			public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e) {
                 restoreDefaults();
             }
         });

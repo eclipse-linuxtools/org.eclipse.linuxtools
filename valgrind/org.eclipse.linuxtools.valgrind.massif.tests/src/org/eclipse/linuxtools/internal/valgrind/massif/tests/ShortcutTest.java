@@ -30,67 +30,67 @@ import org.junit.Test;
 
 public class ShortcutTest extends AbstractMassifTest {
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testShortcutSelection() throws CoreException {
-		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
+    @Test
+    public void testShortcutSelection() throws CoreException {
+        ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
 
-		shortcut.launch(new StructuredSelection(proj.getProject()),
-				ILaunchManager.PROFILE_MODE);
-		ILaunchConfiguration config = shortcut.getConfig();
+        shortcut.launch(new StructuredSelection(proj.getProject()),
+                ILaunchManager.PROFILE_MODE);
+        ILaunchConfiguration config = shortcut.getConfig();
 
-		compareWithDefaults(config);
-	}
+        compareWithDefaults(config);
+    }
 
-	@Test
-	public void testShortcutEditor() throws CoreException {
-		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
+    @Test
+    public void testShortcutEditor() throws CoreException {
+        ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
 
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		IFile file = proj.getProject().getFile("test.c"); //$NON-NLS-1$
-		IEditorPart editor = IDE.openEditor(page, file);
+        IWorkbenchPage page = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage();
+        IFile file = proj.getProject().getFile("test.c"); //$NON-NLS-1$
+        IEditorPart editor = IDE.openEditor(page, file);
 
-		assertNotNull(editor);
+        assertNotNull(editor);
 
-		shortcut.launch(editor, ILaunchManager.PROFILE_MODE);
-		ILaunchConfiguration config = shortcut.getConfig();
+        shortcut.launch(editor, ILaunchManager.PROFILE_MODE);
+        ILaunchConfiguration config = shortcut.getConfig();
 
-		compareWithDefaults(config);
-	}
+        compareWithDefaults(config);
+    }
 
-	@Test
-	public void testShortcutExistingConfig() throws CoreException {
-		ILaunchConfiguration prev = createConfiguration(proj.getProject());
+    @Test
+    public void testShortcutExistingConfig() throws CoreException {
+        ILaunchConfiguration prev = createConfiguration(proj.getProject());
 
-		ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
-		shortcut.launch(new StructuredSelection(proj.getProject()),
-				ILaunchManager.PROFILE_MODE);
-		ILaunchConfiguration current = shortcut.getConfig();
+        ValgrindTestMassifLaunchShortcut shortcut = new ValgrindTestMassifLaunchShortcut();
+        shortcut.launch(new StructuredSelection(proj.getProject()),
+                ILaunchManager.PROFILE_MODE);
+        ILaunchConfiguration current = shortcut.getConfig();
 
-		assertEquals(prev, current);
-	}
+        assertEquals(prev, current);
+    }
 
-	private void compareWithDefaults(ILaunchConfiguration config)
-			throws CoreException {
-		// tests launch in foreground, this is not typical
-		ILaunchConfiguration defaults = createConfiguration(proj.getProject());
-		ILaunchConfigurationWorkingCopy wc = defaults.getWorkingCopy();
-		wc.removeAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND);
-		wc.doSave();
+    private void compareWithDefaults(ILaunchConfiguration config)
+            throws CoreException {
+        // tests launch in foreground, this is not typical
+        ILaunchConfiguration defaults = createConfiguration(proj.getProject());
+        ILaunchConfigurationWorkingCopy wc = defaults.getWorkingCopy();
+        wc.removeAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND);
+        wc.doSave();
 
-		// Compare launch config with defaults
-		assertEquals(config.getAttributes(), defaults.getAttributes());
-	}
+        // Compare launch config with defaults
+        assertEquals(config.getAttributes(), defaults.getAttributes());
+    }
 }

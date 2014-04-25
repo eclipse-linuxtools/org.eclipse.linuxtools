@@ -31,53 +31,53 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class CreaterepoRepoFormEditorTest {
 
-	private static TestCreaterepoProject testProject;
-	private static SWTWorkbenchBot bot;
-	private static SWTBotView navigator;
+    private static TestCreaterepoProject testProject;
+    private static SWTWorkbenchBot bot;
+    private static SWTBotView navigator;
 
-	/**
-	 * Initialize the test project.
-	 *
-	 * @throws CoreException
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws CoreException {
-		testProject = new TestCreaterepoProject();
-		assertTrue(testProject.getProject().exists());
-		bot = new SWTWorkbenchBot();
-		try {
-			bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
-		} catch (WidgetNotFoundException e) {
-			// cannot activate main shell, continue anyways
-		}
-		TestUtils.openResourcePerspective(bot);
-		navigator = TestUtils.enterProjectFolder(bot);
-	}
+    /**
+     * Initialize the test project.
+     *
+     * @throws CoreException
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() throws CoreException {
+        testProject = new TestCreaterepoProject();
+        assertTrue(testProject.getProject().exists());
+        bot = new SWTWorkbenchBot();
+        try {
+            bot.shell(ICreaterepoTestConstants.MAIN_SHELL).activate();
+        } catch (WidgetNotFoundException e) {
+            // cannot activate main shell, continue anyways
+        }
+        TestUtils.openResourcePerspective(bot);
+        navigator = TestUtils.enterProjectFolder(bot);
+    }
 
-	/**
-	 * Delete the project when tests are done.
-	 *
-	 * @throws CoreException
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws CoreException {
-		TestUtils.exitProjectFolder(bot, navigator);
-		testProject.dispose();
-		assertFalse(testProject.getProject().exists());
-	}
+    /**
+     * Delete the project when tests are done.
+     *
+     * @throws CoreException
+     */
+    @AfterClass
+    public static void tearDownAfterClass() throws CoreException {
+        TestUtils.exitProjectFolder(bot, navigator);
+        testProject.dispose();
+        assertFalse(testProject.getProject().exists());
+    }
 
-	/**
-	 * Test if the multi page editor is properly created. Make sure there are 3
-	 * pages (Repository, Metadata, repo file), and that all of them can be switched
-	 * to.
-	 */
-	@Test
-	public void testFormEditorCreation() {
-		SWTBotMultiPageEditor editor = TestUtils.openRepoFile(bot, navigator);
-		// activate the pages to make sure they exist and work
-		editor.activatePage(Messages.MetadataPage_title);
-		editor.activatePage(ICreaterepoTestConstants.REPO_NAME);
-		editor.activatePage(Messages.ImportRPMsPage_title);
-	}
+    /**
+     * Test if the multi page editor is properly created. Make sure there are 3
+     * pages (Repository, Metadata, repo file), and that all of them can be switched
+     * to.
+     */
+    @Test
+    public void testFormEditorCreation() {
+        SWTBotMultiPageEditor editor = TestUtils.openRepoFile(bot, navigator);
+        // activate the pages to make sure they exist and work
+        editor.activatePage(Messages.MetadataPage_title);
+        editor.activatePage(ICreaterepoTestConstants.REPO_NAME);
+        editor.activatePage(Messages.ImportRPMsPage_title);
+    }
 
 }

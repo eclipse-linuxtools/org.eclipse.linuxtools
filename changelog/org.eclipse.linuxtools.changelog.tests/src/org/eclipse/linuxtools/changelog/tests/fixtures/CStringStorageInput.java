@@ -17,46 +17,46 @@ import org.eclipse.ui.IStorageEditorInput;
  *
  */
 public class CStringStorageInput implements IStorageEditorInput {
-	
-	private IStorage storage;
 
-	public CStringStorageInput(IStorage storage) {
-		this.storage = storage;
-	}
+    private IStorage storage;
 
-	@Override
-	public boolean exists() {
-		return true;
-	}
+    public CStringStorageInput(IStorage storage) {
+        this.storage = storage;
+    }
 
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return null;
-	}
+    @Override
+    public boolean exists() {
+        return true;
+    }
 
-	@Override
-	public String getName() {
-		return storage.getName();
-	}
+    @Override
+    public ImageDescriptor getImageDescriptor() {
+        return null;
+    }
 
-	@Override
-	public IPersistableElement getPersistable() {
-		return null;
-	}
+    @Override
+    public String getName() {
+        return storage.getName();
+    }
 
-	@Override
-	public IStorage getStorage() {
-		return storage;
-	}
+    @Override
+    public IPersistableElement getPersistable() {
+        return null;
+    }
 
-	@Override
-	public String getToolTipText() {
-		return "String-based file: " + storage.getName();
-	}
+    @Override
+    public IStorage getStorage() {
+        return storage;
+    }
 
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
-		return null;
-	}
+    @Override
+    public String getToolTipText() {
+        return "String-based file: " + storage.getName();
+    }
+
+    @Override
+    public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+        return null;
+    }
 
 }

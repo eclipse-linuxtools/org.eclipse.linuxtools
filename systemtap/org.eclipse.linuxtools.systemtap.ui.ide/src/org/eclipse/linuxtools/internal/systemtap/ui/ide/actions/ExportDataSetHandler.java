@@ -26,32 +26,32 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExportDataSetHandler extends AbstractHandler {
 
-	private GraphSelectorEditor getActiveGraphEditor() {
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		return editor instanceof GraphSelectorEditor ? (GraphSelectorEditor) editor : null;
-	}
+    private GraphSelectorEditor getActiveGraphEditor() {
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        return editor instanceof GraphSelectorEditor ? (GraphSelectorEditor) editor : null;
+    }
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		GraphSelectorEditor editor = getActiveGraphEditor();
-		if (editor == null) {
-			return null;
-		}
-		FileDialog dialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-		dialog.setOverwrite(true);
-		dialog.setFilterExtensions(new String[]{Messages.DataSetFileExtension});
-		dialog.setText(MessageFormat.format(Messages.ExportDataSetAction_DialogTitle, editor.getActiveTitle()));
-		dialog.setFileName(editor.getActiveTitle().replaceAll(" ", "")); //$NON-NLS-1$ //$NON-NLS-2$
-		String path = dialog.open();
-		if (path != null) {
-			editor.getActiveDisplaySet().getDataSet().writeToFile(new File(path));
-		}
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) {
+        GraphSelectorEditor editor = getActiveGraphEditor();
+        if (editor == null) {
+            return null;
+        }
+        FileDialog dialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
+        dialog.setOverwrite(true);
+        dialog.setFilterExtensions(new String[]{Messages.DataSetFileExtension});
+        dialog.setText(MessageFormat.format(Messages.ExportDataSetAction_DialogTitle, editor.getActiveTitle()));
+        dialog.setFileName(editor.getActiveTitle().replaceAll(" ", "")); //$NON-NLS-1$ //$NON-NLS-2$
+        String path = dialog.open();
+        if (path != null) {
+            editor.getActiveDisplaySet().getDataSet().writeToFile(new File(path));
+        }
+        return null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return getActiveGraphEditor() != null;
-	}
+    @Override
+    public boolean isEnabled() {
+        return getActiveGraphEditor() != null;
+    }
 
 }

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
  *    Thavidu Ranatunga (IBM) - derived from
  *        org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchShortcut
  *******************************************************************************/
@@ -21,17 +21,17 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
 public class PerfLaunchShortcut extends ProfileLaunchShortcut {
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(PerfPlugin.LAUNCHCONF_ID);
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(PerfPlugin.LAUNCHCONF_ID);
+    }
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) {
-		//These settings make it appear smoother.
-		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
-		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
-	}
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) {
+        //These settings make it appear smoother.
+        wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+        wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
+    }
 
 }

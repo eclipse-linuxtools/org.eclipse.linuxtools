@@ -14,11 +14,11 @@ import org.eclipse.osgi.util.NLS;
 
 public class GcovLaunchMessages extends NLS {
 
-	public static String GcovCompilerOptions_msg;
-	public static String GcovCompileAgain_msg;
+    public static String GcovCompilerOptions_msg;
+    public static String GcovCompileAgain_msg;
 
-	static {
-		NLS.initializeMessages(GcovLaunchMessages.class.getName(), GcovLaunchMessages.class);
-	}
+    static {
+        NLS.initializeMessages(GcovLaunchMessages.class.getName(), GcovLaunchMessages.class);
+    }
 
 }

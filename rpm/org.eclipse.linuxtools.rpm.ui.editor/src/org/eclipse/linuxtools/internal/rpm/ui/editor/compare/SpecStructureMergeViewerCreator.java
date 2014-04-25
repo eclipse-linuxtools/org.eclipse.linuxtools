@@ -23,15 +23,15 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SpecStructureMergeViewerCreator implements IViewerCreator {
 
-	/**
-	 * @see org.eclipse.compare.IViewerCreator#createViewer(org.eclipse.swt.widgets.Composite,
-	 *      org.eclipse.compare.CompareConfiguration)
-	 */
-	@Override
-	public Viewer createViewer(Composite parent, CompareConfiguration config) {
-		StructureDiffViewer diffViewer = new StructureDiffViewer(parent, config);
-		diffViewer.setStructureCreator(new SpecStructureCreator());
-		return diffViewer;
-	}
+    /**
+     * @see org.eclipse.compare.IViewerCreator#createViewer(org.eclipse.swt.widgets.Composite,
+     *      org.eclipse.compare.CompareConfiguration)
+     */
+    @Override
+    public Viewer createViewer(Composite parent, CompareConfiguration config) {
+        StructureDiffViewer diffViewer = new StructureDiffViewer(parent, config);
+        diffViewer.setStructureCreator(new SpecStructureCreator());
+        return diffViewer;
+    }
 
 }

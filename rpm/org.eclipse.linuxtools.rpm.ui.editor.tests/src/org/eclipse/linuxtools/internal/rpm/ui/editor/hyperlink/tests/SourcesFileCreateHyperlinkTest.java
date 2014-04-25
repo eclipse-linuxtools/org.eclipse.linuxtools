@@ -19,18 +19,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SourcesFileCreateHyperlinkTest extends FileTestCase {
-	@Before
-	public void init() throws CoreException {
-		super.setUp();
-		String testText = "Patch0: test\n";
-		newFile(testText);
-	}
+    @Before
+    public void init() throws CoreException {
+        super.setUp();
+        String testText = "Patch0: test\n";
+        newFile(testText);
+    }
 
-	@Test
-	public void testCreatePatch() {
-		SourcesFileCreateHyperlink patchTest = new SourcesFileCreateHyperlink(testFile, specfile.getPatch(0).getFileName(), null);
-		assertNotNull(patchTest);
-		patchTest.open();
-		assertNotNull(testFile.getProject().findMember("test"));
-	}
+    @Test
+    public void testCreatePatch() {
+        SourcesFileCreateHyperlink patchTest = new SourcesFileCreateHyperlink(testFile, specfile.getPatch(0).getFileName(), null);
+        assertNotNull(patchTest);
+        patchTest.open();
+        assertNotNull(testFile.getProject().findMember("test"));
+    }
 }

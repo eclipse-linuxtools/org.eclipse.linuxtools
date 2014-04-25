@@ -19,27 +19,27 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  */
 public class FuncparamNodeData implements ISingleTypedNode {
 
-	private final String line;
-	private final String type;
+    private final String line;
+    private final String type;
 
-	@Override
-	public String toString() {
-		return line;
-	}
+    @Override
+    public String toString() {
+        return line;
+    }
 
-	@Override
-	public String getType() {
-		return type;
-	}
+    @Override
+    public String getType() {
+        return type;
+    }
 
-	/**
-	 * Create a new instance of function parameter information. (Note that the name of a function
-	 * or parameter is stored in a {@link TreeNode}, not here.)
-	 * @param line The <code>String</code> representation of the entire parameter.
-	 * @param type The <code>String</code> representation of only the parameter's type.
-	 */
-	public FuncparamNodeData(String line, String type) {
-		this.line = line;
-		this.type = type == null ? FunctionParser.UNKNOWN_TYPE : type; // Parameters can't be void.
-	}
+    /**
+     * Create a new instance of function parameter information. (Note that the name of a function
+     * or parameter is stored in a {@link TreeNode}, not here.)
+     * @param line The <code>String</code> representation of the entire parameter.
+     * @param type The <code>String</code> representation of only the parameter's type.
+     */
+    public FuncparamNodeData(String line, String type) {
+        this.line = line;
+        this.type = type == null ? FunctionParser.UNKNOWN_TYPE : type; // Parameters can't be void.
+    }
 }

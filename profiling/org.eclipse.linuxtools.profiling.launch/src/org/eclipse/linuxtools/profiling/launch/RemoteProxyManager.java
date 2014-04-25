@@ -28,155 +28,155 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 
 public class RemoteProxyManager implements IRemoteProxyManager {
 
-	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
-	/**
-	 * @since 2.1
-	 */
-	protected static final String LOCALSCHEME = "file"; //$NON-NLS-1$
+    private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
+    /**
+     * @since 2.1
+     */
+    protected static final String LOCALSCHEME = "file"; //$NON-NLS-1$
 
-	private static RemoteProxyManager manager;
-	private LocalFileProxy lfp;
-	/**
-	 * @since 2.1
-	 */
-	protected RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
-	private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<>();
+    private static RemoteProxyManager manager;
+    private LocalFileProxy lfp;
+    /**
+     * @since 2.1
+     */
+    protected RemoteProxyNatureMapping mapping = new RemoteProxyNatureMapping();
+    private Map<String, IRemoteProxyManager> remoteManagers = new HashMap<>();
 
-	/**
-	 * @since 2.1
-	 */
-	protected RemoteProxyManager() {
-		// do nothing
-	}
+    /**
+     * @since 2.1
+     */
+    protected RemoteProxyManager() {
+        // do nothing
+    }
 
-	public static RemoteProxyManager getInstance() {
-		if (manager == null)
-			manager = new RemoteProxyManager();
-		return manager;
-	}
+    public static RemoteProxyManager getInstance() {
+        if (manager == null)
+            manager = new RemoteProxyManager();
+        return manager;
+    }
 
-	LocalFileProxy getLocalFileProxy(URI uri) {
-		if (lfp == null)
-			lfp = new LocalFileProxy(uri);
-		return lfp;
-	}
-	/**
-	 * @since 2.1
-	 */
-	protected IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
-		IRemoteProxyManager remoteManager = remoteManagers.get(schemeId);
-		if (remoteManager == null) {
-			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, IRemoteProxyManager.EXTENSION_POINT_ID);
-			IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
-			for(int i = 0; i < infos.length; i++) {
-				IConfigurationElement configurationElement = infos[i];
-				if (configurationElement.getName().equals(IRemoteProxyManager.MANAGER_NAME)) {
-					if (configurationElement.getAttribute(IRemoteProxyManager.SCHEME_ID).equals(schemeId)) {
-						Object obj = configurationElement.createExecutableExtension(EXT_ATTR_CLASS);
-						if (obj instanceof IRemoteProxyManager) {
-							remoteManager = (IRemoteProxyManager)obj;
-							remoteManagers.put(schemeId, remoteManager);
-							break;
-						}
-					}
-				}
-			}
-		}
-		return remoteManager;
-	}
+    LocalFileProxy getLocalFileProxy(URI uri) {
+        if (lfp == null)
+            lfp = new LocalFileProxy(uri);
+        return lfp;
+    }
+    /**
+     * @since 2.1
+     */
+    protected IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
+        IRemoteProxyManager remoteManager = remoteManagers.get(schemeId);
+        if (remoteManager == null) {
+            IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, IRemoteProxyManager.EXTENSION_POINT_ID);
+            IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
+            for(int i = 0; i < infos.length; i++) {
+                IConfigurationElement configurationElement = infos[i];
+                if (configurationElement.getName().equals(IRemoteProxyManager.MANAGER_NAME)) {
+                    if (configurationElement.getAttribute(IRemoteProxyManager.SCHEME_ID).equals(schemeId)) {
+                        Object obj = configurationElement.createExecutableExtension(EXT_ATTR_CLASS);
+                        if (obj instanceof IRemoteProxyManager) {
+                            remoteManager = (IRemoteProxyManager)obj;
+                            remoteManagers.put(schemeId, remoteManager);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return remoteManager;
+    }
 
-	@Override
-	public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
-		String scheme = uri.getScheme();
-		if (scheme != null && !scheme.equals(LOCALSCHEME)){
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			if (manager != null)
-				return manager.getFileProxy(uri);
-			else
-				throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-						IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
-		}
-		return getLocalFileProxy(uri);
-	}
+    @Override
+    public IRemoteFileProxy getFileProxy(URI uri) throws CoreException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.equals(LOCALSCHEME)){
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            if (manager != null)
+                return manager.getFileProxy(uri);
+            else
+                throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
+                        IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
+        }
+        return getLocalFileProxy(uri);
+    }
 
-	@Override
-	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
-		if (project == null) {
-			return getLocalFileProxy(null);
-		}
-		String scheme = mapping.getSchemeFromNature(project);
-		if (scheme!=null) {
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			if (manager != null)
-				return manager.getFileProxy(project);
-		}
-		URI projectURI = project.getLocationURI();
-		return getFileProxy(projectURI);
-	}
+    @Override
+    public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
+        if (project == null) {
+            return getLocalFileProxy(null);
+        }
+        String scheme = mapping.getSchemeFromNature(project);
+        if (scheme!=null) {
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            if (manager != null)
+                return manager.getFileProxy(project);
+        }
+        URI projectURI = project.getLocationURI();
+        return getFileProxy(projectURI);
+    }
 
-	@Override
-	public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
-		String scheme = uri.getScheme();
-		if (scheme != null && !scheme.equals(LOCALSCHEME)){
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			if (manager != null)
-				return manager.getLauncher(uri);
-		}
-		return new LocalLauncher();
-	}
+    @Override
+    public IRemoteCommandLauncher getLauncher(URI uri) throws CoreException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.equals(LOCALSCHEME)){
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            if (manager != null)
+                return manager.getLauncher(uri);
+        }
+        return new LocalLauncher();
+    }
 
-	@Override
-	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
-		if (project == null){
-			return new LocalLauncher();
-		}
-		String scheme = mapping.getSchemeFromNature(project);
-		if (scheme!=null) {
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			return manager.getLauncher(project);
-		}
-		URI projectURI = project.getLocationURI();
-		return getLauncher(projectURI);
-	}
+    @Override
+    public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
+        if (project == null){
+            return new LocalLauncher();
+        }
+        String scheme = mapping.getSchemeFromNature(project);
+        if (scheme!=null) {
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            return manager.getLauncher(project);
+        }
+        URI projectURI = project.getLocationURI();
+        return getLauncher(projectURI);
+    }
 
-	@Override
-	public String getOS(URI uri) throws CoreException {
-		String scheme = uri.getScheme();
-		if (scheme != null && !scheme.equals(LOCALSCHEME)){
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			if (manager != null)
-				return manager.getOS(uri);
-		}
-		return Platform.getOS();
-	}
+    @Override
+    public String getOS(URI uri) throws CoreException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.equals(LOCALSCHEME)){
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            if (manager != null)
+                return manager.getOS(uri);
+        }
+        return Platform.getOS();
+    }
 
-	@Override
-	public String getOS(IProject project) throws CoreException {
-		String scheme = mapping.getSchemeFromNature(project);
-		if (scheme!=null) {
-			IRemoteProxyManager manager = getRemoteManager(scheme);
-			return manager.getOS(project);
-		}
-		URI projectURI = project.getLocationURI();
-		return getOS(projectURI);
-	}
+    @Override
+    public String getOS(IProject project) throws CoreException {
+        String scheme = mapping.getSchemeFromNature(project);
+        if (scheme!=null) {
+            IRemoteProxyManager manager = getRemoteManager(scheme);
+            return manager.getOS(project);
+        }
+        URI projectURI = project.getLocationURI();
+        return getOS(projectURI);
+    }
 
-	/**
-	 * This method gets the proper remote project location
-	 * of pure remote and sync projects. Synchronized projects
-	 * have a cached path and a remote one, and this method
-	 * returns the remote one.
-	 * @return string containing the project location
-	 * @since 2.2
-	 */
-	public String getRemoteProjectLocation(IProject project) throws CoreException {
-		if(project != null){
-			IRemoteFileProxy remoteFileProxy = null;
-			remoteFileProxy = getFileProxy(project);
-			URI workingDirURI = remoteFileProxy.getWorkingDir();
-			return workingDirURI.toString();
-		}
-		return null;
-	}
+    /**
+     * This method gets the proper remote project location
+     * of pure remote and sync projects. Synchronized projects
+     * have a cached path and a remote one, and this method
+     * returns the remote one.
+     * @return string containing the project location
+     * @since 2.2
+     */
+    public String getRemoteProjectLocation(IProject project) throws CoreException {
+        if(project != null){
+            IRemoteFileProxy remoteFileProxy = null;
+            remoteFileProxy = getFileProxy(project);
+            URI workingDirURI = remoteFileProxy.getWorkingDir();
+            return workingDirURI.toString();
+        }
+        return null;
+    }
 
 }

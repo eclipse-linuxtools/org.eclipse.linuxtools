@@ -38,12 +38,12 @@ import org.eclipse.ui.PlatformUI;
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
     public final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy"); //$NON-NLS-1$
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	private IEditorPart changelog;
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+    private IEditorPart changelog;
 
     @Override
-	public String formatDateLine(String authorName, String authorEmail) {
-    	String dateLine;
+    public String formatDateLine(String authorName, String authorEmail) {
+        String dateLine;
         Specfile specfile = getParsedSpecfile();
         SpecfileElement resolveElement = new SpecfileElement();
         resolveElement.setSpecfile(specfile);
@@ -56,19 +56,19 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
         // default format
         dateLine = MessageFormat.format("* {0} {1} <{2}> {3}{4}-{5}", formatTodaysDate(), authorName, //$NON-NLS-1$
-				authorEmail, epoch, version, release);
+                authorEmail, epoch, version, release);
 
         String format = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT);
         if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR)) {
-        	dateLine =  MessageFormat.format("* {0} {1} <{2}> - {3}{4}-{5}", formatTodaysDate(), //$NON-NLS-1$
-					authorName, authorEmail, epoch, version, release);
+            dateLine =  MessageFormat.format("* {0} {1} <{2}> - {3}{4}-{5}", formatTodaysDate(), //$NON-NLS-1$
+                    authorName, authorEmail, epoch, version, release);
 
         } else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED)) {
-        	dateLine =  MessageFormat
-					.format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
+            dateLine =  MessageFormat
+                    .format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
         }
 
-       	dateLine = UiUtils.resolveDefines(specfile, dateLine);
+           dateLine = UiUtils.resolveDefines(specfile, dateLine);
         return dateLine;
 
     }
@@ -97,11 +97,11 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         return date;
     }
 
-	@Override
-	public String mergeChangelog(String dateLine, String functionGuess,
-			String defaultContent, IEditorPart changelog,
-			String changeLogLocation, String fileLocation) {
-		if (changelog instanceof SpecfileEditor) {
+    @Override
+    public String mergeChangelog(String dateLine, String functionGuess,
+            String defaultContent, IEditorPart changelog,
+            String changeLogLocation, String fileLocation) {
+        if (changelog instanceof SpecfileEditor) {
             SpecfileEditor specEditor = (SpecfileEditor) changelog;
             IDocument doc = specEditor.getDocumentProvider().getDocument(
                     specEditor.getEditorInput());
@@ -187,13 +187,13 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     specEditor.selectAndReveal(newCursorOffset, 0);
                     specEditor.setFocus();
                 } catch (BadPositionCategoryException e) {
-        			SpecfileLog.logError(e);
+                    SpecfileLog.logError(e);
                 } catch (BadLocationException e) {
-        			SpecfileLog.logError(e);
+                    SpecfileLog.logError(e);
                 }
             }
         }
         return EMPTY_STRING;
-	}
+    }
 
 }

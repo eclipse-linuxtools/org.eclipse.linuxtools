@@ -5,7 +5,7 @@
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-   
+
     Contributors:
         Red Hat - initial API and implementation
  -->
@@ -66,7 +66,7 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-   
+
     <plugin
          id="org.eclipse.linuxtools.rpmstubby"
          download-size="0"

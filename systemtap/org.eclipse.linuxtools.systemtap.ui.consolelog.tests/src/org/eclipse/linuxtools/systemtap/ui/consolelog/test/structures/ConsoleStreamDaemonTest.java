@@ -23,39 +23,39 @@ import org.junit.Test;
 
 public class ConsoleStreamDaemonTest {
 
-	@Before
-	public void setUp() {
-		StreamGobbler gobbler = new StreamGobbler(System.in);
-		gobbler.start();
-		daemon = new ConsoleStreamDaemon(null);
-	}
-	@Test
-	public void testConsoleStreamDaemon() {
-		assertNotNull(daemon);
+    @Before
+    public void setUp() {
+        StreamGobbler gobbler = new StreamGobbler(System.in);
+        gobbler.start();
+        daemon = new ConsoleStreamDaemon(null);
+    }
+    @Test
+    public void testConsoleStreamDaemon() {
+        assertNotNull(daemon);
 
-		ConsoleStreamDaemon csd = new ConsoleStreamDaemon(null);
-		assertNotNull(csd);
-		
-		csd = new ConsoleStreamDaemon(ScriptConsole.getInstance("test"));
-		assertNotNull(csd);
-	}
-	@Test
-	public void testHandleDataEvent() {
-		daemon.handleDataEvent("");
-		assertNotNull(daemon);
-	}
-	@Test
-	public void testIsDisposed() {
-		ConsoleStreamDaemon csd = new ConsoleStreamDaemon(null);
-		assertFalse(csd.isDisposed());
-		csd.dispose();
-		assertTrue(csd.isDisposed());
-	}
-	@Test
-	public void testDispose() {
-		daemon.dispose();
-		assertNotNull(daemon);
-	}
-	
-	private ConsoleStreamDaemon daemon;
+        ConsoleStreamDaemon csd = new ConsoleStreamDaemon(null);
+        assertNotNull(csd);
+
+        csd = new ConsoleStreamDaemon(ScriptConsole.getInstance("test"));
+        assertNotNull(csd);
+    }
+    @Test
+    public void testHandleDataEvent() {
+        daemon.handleDataEvent("");
+        assertNotNull(daemon);
+    }
+    @Test
+    public void testIsDisposed() {
+        ConsoleStreamDaemon csd = new ConsoleStreamDaemon(null);
+        assertFalse(csd.isDisposed());
+        csd.dispose();
+        assertTrue(csd.isDisposed());
+    }
+    @Test
+    public void testDispose() {
+        daemon.dispose();
+        assertNotNull(daemon);
+    }
+
+    private ConsoleStreamDaemon daemon;
 }

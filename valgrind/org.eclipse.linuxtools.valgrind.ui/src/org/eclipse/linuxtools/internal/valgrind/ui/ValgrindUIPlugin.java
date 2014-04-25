@@ -28,168 +28,168 @@ import org.osgi.framework.BundleContext;
 
 public class ValgrindUIPlugin extends AbstractUIPlugin {
 
-	/**
-	 * The plug-in ID.
-	 */
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.ui"; //$NON-NLS-1$
+    /**
+     * The plug-in ID.
+     */
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.ui"; //$NON-NLS-1$
 
-	// Extension point constants
-	private static final String VIEW_EXT_ID = "valgrindToolViews"; //$NON-NLS-1$
-	protected static final String EXT_ELEMENT = "view"; //$NON-NLS-1$
-	protected static final String EXT_ATTR_ID = "definitionId"; //$NON-NLS-1$
-	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
+    // Extension point constants
+    private static final String VIEW_EXT_ID = "valgrindToolViews"; //$NON-NLS-1$
+    protected static final String EXT_ELEMENT = "view"; //$NON-NLS-1$
+    protected static final String EXT_ATTR_ID = "definitionId"; //$NON-NLS-1$
+    protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	private HashMap<String, IConfigurationElement> toolMap;
+    private HashMap<String, IConfigurationElement> toolMap;
 
-	// The shared instance
-	private static ValgrindUIPlugin plugin;
+    // The shared instance
+    private static ValgrindUIPlugin plugin;
 
-	private ValgrindViewPart view;
-	// The page containing the created Valgrind view
-	private IWorkbenchPage activePage;
+    private ValgrindViewPart view;
+    // The page containing the created Valgrind view
+    private IWorkbenchPage activePage;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static ValgrindUIPlugin getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static ValgrindUIPlugin getDefault() {
+        return plugin;
+    }
 
-	public void createView(final String contentDescription, final String toolID) {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					activePage.showView(IValgrindToolView.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
-					// Bug #366831 Need to show the view otherwise the toolbar is disposed.
-					activePage.showView(IValgrindToolView.VIEW_ID);
+    public void createView(final String contentDescription, final String toolID) {
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                    activePage.showView(IValgrindToolView.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
+                    // Bug #366831 Need to show the view otherwise the toolbar is disposed.
+                    activePage.showView(IValgrindToolView.VIEW_ID);
 
-					// create the view's tool specific controls and populate content description
-					view.createDynamicContent(contentDescription, toolID);
+                    // create the view's tool specific controls and populate content description
+                    view.createDynamicContent(contentDescription, toolID);
 
-					view.refreshView();
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+                    view.refreshView();
+                } catch (CoreException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Shows the Valgrind view in the active page and gives it focus.
-	 */
-	public void showView() {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					activePage.showView(IValgrindToolView.VIEW_ID);
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Shows the Valgrind view in the active page and gives it focus.
+     */
+    public void showView() {
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    activePage.showView(IValgrindToolView.VIEW_ID);
+                } catch (PartInitException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Refreshes the Valgrind view
-	 */
-	public void refreshView() {
-		if (view != null) {
-			Display.getDefault().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					view.refreshView();
-				}
-			});
-		}
-	}
+    /**
+     * Refreshes the Valgrind view
+     */
+    public void refreshView() {
+        if (view != null) {
+            Display.getDefault().syncExec(new Runnable() {
+                @Override
+                public void run() {
+                    view.refreshView();
+                }
+            });
+        }
+    }
 
-	/**
-	 * Empties the contents of the view and restores its original state.
-	 */
-	public void resetView() {
-		if (view != null) {
-			Display.getDefault().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						view.createDynamicContent(Messages.getString("ValgrindViewPart.No_Valgrind_output"), null); //$NON-NLS-1$
-					} catch (CoreException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		}
-	}
+    /**
+     * Empties the contents of the view and restores its original state.
+     */
+    public void resetView() {
+        if (view != null) {
+            Display.getDefault().syncExec(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        view.createDynamicContent(Messages.getString("ValgrindViewPart.No_Valgrind_output"), null); //$NON-NLS-1$
+                    } catch (CoreException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
 
-	protected void setView(ValgrindViewPart view) {
-		this.view = view;
-	}
+    protected void setView(ValgrindViewPart view) {
+        this.view = view;
+    }
 
-	/**
-	 * @return the Valgrind view
-	 */
-	public ValgrindViewPart getView() {
-		return view;
-	}
+    /**
+     * @return the Valgrind view
+     */
+    public ValgrindViewPart getView() {
+        return view;
+    }
 
-	private void initializeToolMap() {
-		toolMap = new HashMap<>();
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, VIEW_EXT_ID);
-		IConfigurationElement[] configs = extPoint.getConfigurationElements();
-		for (IConfigurationElement config : configs) {
-			if (config.getName().equals(EXT_ELEMENT)) {
-				String id = config.getAttribute(EXT_ATTR_ID);
-				if (id != null && config.getAttribute(EXT_ATTR_CLASS) != null) {
-					toolMap.put(id, config);
-				}
-			}
-		}
-	}
+    private void initializeToolMap() {
+        toolMap = new HashMap<>();
+        IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, VIEW_EXT_ID);
+        IConfigurationElement[] configs = extPoint.getConfigurationElements();
+        for (IConfigurationElement config : configs) {
+            if (config.getName().equals(EXT_ELEMENT)) {
+                String id = config.getAttribute(EXT_ATTR_ID);
+                if (id != null && config.getAttribute(EXT_ATTR_CLASS) != null) {
+                    toolMap.put(id, config);
+                }
+            }
+        }
+    }
 
-	private HashMap<String, IConfigurationElement> getToolMap() {
-		if (toolMap == null) {
-			initializeToolMap();
-		}
-		return toolMap;
-	}
+    private HashMap<String, IConfigurationElement> getToolMap() {
+        if (toolMap == null) {
+            initializeToolMap();
+        }
+        return toolMap;
+    }
 
-	public IValgrindToolView getToolView(String id) throws CoreException {
-		IValgrindToolView view = null;
-		IConfigurationElement config = getToolMap().get(id);
-		if (config != null) {
-			Object obj = config.createExecutableExtension(EXT_ATTR_CLASS);
-			if (obj instanceof IValgrindToolView) {
-				view = (IValgrindToolView) obj;
-			}
-		}
-		if (view == null) {
-			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindUIPlugin.Cannot_retrieve_view"))); //$NON-NLS-1$
-		}
-		return view;
-	}
+    public IValgrindToolView getToolView(String id) throws CoreException {
+        IValgrindToolView view = null;
+        IConfigurationElement config = getToolMap().get(id);
+        if (config != null) {
+            Object obj = config.createExecutableExtension(EXT_ATTR_CLASS);
+            if (obj instanceof IValgrindToolView) {
+                view = (IValgrindToolView) obj;
+            }
+        }
+        if (view == null) {
+            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindUIPlugin.Cannot_retrieve_view"))); //$NON-NLS-1$
+        }
+        return view;
+    }
 }

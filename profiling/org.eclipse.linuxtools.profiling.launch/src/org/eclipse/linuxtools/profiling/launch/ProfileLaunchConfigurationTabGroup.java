@@ -24,21 +24,21 @@ import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 
 public abstract class ProfileLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
-		tabs.add(new CMainTab());
-		tabs.add(new CArgumentsTab());
+    @Override
+    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+        ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
+        tabs.add(new CMainTab());
+        tabs.add(new CArgumentsTab());
 
-		tabs.addAll(Arrays.asList(getProfileTabs()));
+        tabs.addAll(Arrays.asList(getProfileTabs()));
 
-		tabs.add(new EnvironmentTab());
-		tabs.add(new SourceLookupTab());
-		tabs.add(new CommonTab());
+        tabs.add(new EnvironmentTab());
+        tabs.add(new SourceLookupTab());
+        tabs.add(new CommonTab());
 
-		setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
-	}
+        setTabs(tabs.toArray(new AbstractLaunchConfigurationTab[tabs.size()]));
+    }
 
-	public abstract AbstractLaunchConfigurationTab[] getProfileTabs();
+    public abstract AbstractLaunchConfigurationTab[] getProfileTabs();
 
 }

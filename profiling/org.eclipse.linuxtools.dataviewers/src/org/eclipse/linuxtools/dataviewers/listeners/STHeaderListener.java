@@ -30,12 +30,12 @@ public class STHeaderListener implements SelectionListener {
     }
 
     @Override
-	public void widgetDefaultSelected(SelectionEvent e) {
+    public void widgetDefaultSelected(SelectionEvent e) {
         widgetSelected(e);
     }
 
     @Override
-	public void widgetSelected(SelectionEvent e) {
+    public void widgetSelected(SelectionEvent e) {
         final Item column = (Item) e.widget;
         final ISTDataViewersField field = (ISTDataViewersField) column.getData();
         resortTable(column, field);
@@ -59,7 +59,7 @@ public class STHeaderListener implements SelectionListener {
 
         BusyIndicator.showWhile(null, new Runnable() {
             @Override
-			public void run() {
+            public void run() {
                 stViewer.getViewer().refresh();
                 stViewer.updateDirectionIndicator(column);
             }

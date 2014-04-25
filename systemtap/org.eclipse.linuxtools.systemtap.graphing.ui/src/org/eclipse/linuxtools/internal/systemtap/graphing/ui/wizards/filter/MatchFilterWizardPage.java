@@ -59,7 +59,7 @@ public class MatchFilterWizardPage extends FilterWizardPage {
             cboColumn.add(serie);
         }
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //String to compare to
         Label lblCompare = new Label(cmpFilterOpts, SWT.NONE);
@@ -67,7 +67,7 @@ public class MatchFilterWizardPage extends FilterWizardPage {
         txtCompare = new Text(cmpFilterOpts, SWT.BORDER);
         txtCompare.addModifyListener(modifyListener);
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //Style
         radKeepMatch = new Button(cmpFilterOpts, SWT.RADIO);

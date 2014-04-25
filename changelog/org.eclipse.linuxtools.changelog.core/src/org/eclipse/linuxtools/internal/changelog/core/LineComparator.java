@@ -39,75 +39,75 @@ public class LineComparator implements IRangeComparator {
      */
     private static class TrailingLineFeedDetector extends FilterInputStream {
 
-    	boolean trailingLF = false;
+        boolean trailingLF = false;
 
-		protected TrailingLineFeedDetector(InputStream in) {
-			super(in);
-		}
+        protected TrailingLineFeedDetector(InputStream in) {
+            super(in);
+        }
 
-		@Override
-		public int read() throws IOException {
-			int c = super.read();
-			trailingLF = isLineFeed(c);
-			return c;
-		}
+        @Override
+        public int read() throws IOException {
+            int c = super.read();
+            trailingLF = isLineFeed(c);
+            return c;
+        }
 
-	    /*
-	     * We don't need to override read(byte[] buffer) as the javadoc of
-	     * FilterInputStream states that it will call read(byte[] buffer, int off, int len)
-	     */
-		@Override
-		public int read(byte[] buffer, int off, int len) throws IOException {
-			int length = super.read(buffer, off, len);
-			if (length != -1) {
-				int index = off + length - 1;
-				if (index >= buffer.length)
-					index = buffer.length - 1;
-				trailingLF = isLineFeed(buffer[index]);
-			}
-			return length;
-		}
+        /*
+         * We don't need to override read(byte[] buffer) as the javadoc of
+         * FilterInputStream states that it will call read(byte[] buffer, int off, int len)
+         */
+        @Override
+        public int read(byte[] buffer, int off, int len) throws IOException {
+            int length = super.read(buffer, off, len);
+            if (length != -1) {
+                int index = off + length - 1;
+                if (index >= buffer.length)
+                    index = buffer.length - 1;
+                trailingLF = isLineFeed(buffer[index]);
+            }
+            return length;
+        }
 
-		private boolean isLineFeed(int c) {
-			return c != -1 && c == '\n';
-		}
+        private boolean isLineFeed(int c) {
+            return c != -1 && c == '\n';
+        }
 
-		public boolean hadTrailingLineFeed() {
-			return trailingLF;
-		}
+        public boolean hadTrailingLineFeed() {
+            return trailingLF;
+        }
 
     }
 
     public static LineComparator create(IStorage storage, String outputEncoding) throws CoreException {
-    	try (InputStream is = new BufferedInputStream(storage.getContents())) {
-			String encoding = getEncoding(storage, outputEncoding);
-			return new LineComparator(is, encoding);
-		} catch (IOException e) {
-			return null;
-		}
+        try (InputStream is = new BufferedInputStream(storage.getContents())) {
+            String encoding = getEncoding(storage, outputEncoding);
+            return new LineComparator(is, encoding);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
-	private static String getEncoding(IStorage storage, String outputEncoding) throws CoreException {
-		if (storage instanceof IEncodedStorage) {
-			IEncodedStorage es = (IEncodedStorage) storage;
-			String charset = es.getCharset();
-			if (charset != null)
-				return charset;
-		}
-		return outputEncoding;
-	}
+    private static String getEncoding(IStorage storage, String outputEncoding) throws CoreException {
+        if (storage instanceof IEncodedStorage) {
+            IEncodedStorage es = (IEncodedStorage) storage;
+            String charset = es.getCharset();
+            if (charset != null)
+                return charset;
+        }
+        return outputEncoding;
+    }
 
     public LineComparator(InputStream is, String encoding) throws UnsupportedEncodingException {
 
         TrailingLineFeedDetector trailingLineFeedDetector = new TrailingLineFeedDetector(is);
-		BufferedReader br = new BufferedReader(new InputStreamReader(trailingLineFeedDetector, encoding));
+        BufferedReader br = new BufferedReader(new InputStreamReader(trailingLineFeedDetector, encoding));
         String line;
         ArrayList<String> ar = new ArrayList<>();
         try {
             while ((line = br.readLine()) != null)
                 ar.add(line);
         } catch (IOException e) {
-        		// silently ignored
+                // silently ignored
         }
         try {
             is.close();
@@ -117,7 +117,7 @@ public class LineComparator implements IRangeComparator {
         // We do this because a BufferedReader doesn't distinguish the case
         // where the last line has or doesn't have a trailing line separator
         if (trailingLineFeedDetector.hadTrailingLineFeed()) {
-        	ar.add(""); //$NON-NLS-1$
+            ar.add(""); //$NON-NLS-1$
         }
         fLines = ar.toArray(new String[ar.size()]);
     }
@@ -126,7 +126,7 @@ public class LineComparator implements IRangeComparator {
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#getRangeCount()
      */
     @Override
-	public int getRangeCount() {
+    public int getRangeCount() {
         return fLines.length;
     }
 
@@ -134,7 +134,7 @@ public class LineComparator implements IRangeComparator {
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#rangesEqual(int, org.eclipse.compare.rangedifferencer.IRangeComparator, int)
      */
     @Override
-	public boolean rangesEqual(int thisIndex, IRangeComparator other,
+    public boolean rangesEqual(int thisIndex, IRangeComparator other,
             int otherIndex) {
         String s1 = fLines[thisIndex];
         String s2 = ((LineComparator) other).fLines[otherIndex];
@@ -145,7 +145,7 @@ public class LineComparator implements IRangeComparator {
      * @see org.eclipse.compare.rangedifferencer.IRangeComparator#skipRangeComparison(int, int, org.eclipse.compare.rangedifferencer.IRangeComparator)
      */
     @Override
-	public boolean skipRangeComparison(int length, int maxLength, IRangeComparator other) {
+    public boolean skipRangeComparison(int length, int maxLength, IRangeComparator other) {
         return false;
     }
 }

@@ -13,13 +13,13 @@ package org.eclipse.linuxtools.internal.gcov.model;
 
 public class CovFileTreeElement extends AbstractTreeElement {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5017234616535899796L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5017234616535899796L;
 
-	public CovFileTreeElement(TreeElement parent, 
-			String name, int totalLines, int executedLines, int instrumentedLines) {
-		super(parent, name, totalLines, executedLines, instrumentedLines);
-	}
+    public CovFileTreeElement(TreeElement parent,
+            String name, int totalLines, int executedLines, int instrumentedLines) {
+        super(parent, name, totalLines, executedLines, instrumentedLines);
+    }
 }

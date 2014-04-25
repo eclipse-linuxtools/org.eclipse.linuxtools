@@ -18,29 +18,29 @@ import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 
 public abstract class AbstractCachegrindTest extends AbstractValgrindTest {
 
-	@Override
-	protected String getToolID() {
-		return CachegrindPlugin.TOOL_ID;
-	}
+    @Override
+    protected String getToolID() {
+        return CachegrindPlugin.TOOL_ID;
+    }
 
-	protected CachegrindFile getFileByName(CachegrindOutput output, String name) {
-		CachegrindFile file = null;
-		for (CachegrindFile f : output.getFiles()) {
-			if (f.getName().equals(name)) {
-				file = f;
-			}
-		}
-		return file;
-	}
+    protected CachegrindFile getFileByName(CachegrindOutput output, String name) {
+        CachegrindFile file = null;
+        for (CachegrindFile f : output.getFiles()) {
+            if (f.getName().equals(name)) {
+                file = f;
+            }
+        }
+        return file;
+    }
 
-	protected CachegrindFunction getFunctionByName(CachegrindFile file, String name) {
-		CachegrindFunction function = null;
-		for (CachegrindFunction f : file.getFunctions()) {
-			if (f.getName().equals(name)) {
-				function = f;
-			}
-		}
-		return function;
-	}
+    protected CachegrindFunction getFunctionByName(CachegrindFile file, String name) {
+        CachegrindFunction function = null;
+        for (CachegrindFunction f : file.getFunctions()) {
+            if (f.getName().equals(name)) {
+                function = f;
+            }
+        }
+        return function;
+    }
 
 }

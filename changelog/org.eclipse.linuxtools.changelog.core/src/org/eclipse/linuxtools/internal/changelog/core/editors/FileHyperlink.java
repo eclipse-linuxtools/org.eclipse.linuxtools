@@ -25,43 +25,43 @@ import org.eclipse.ui.PlatformUI;
  */
 public class FileHyperlink implements IHyperlink {
 
-	private IFile fileLoc;
+    private IFile fileLoc;
 
-	private IRegion region;
+    private IRegion region;
 
-	public FileHyperlink(IRegion regionIn, IFile fileIn) {
-		fileLoc = fileIn;
-		region = regionIn;
-	}
+    public FileHyperlink(IRegion regionIn, IFile fileIn) {
+        fileLoc = fileIn;
+        region = regionIn;
+    }
 
-	@Override
-	public IRegion getHyperlinkRegion() {
-		return region;
-	}
+    @Override
+    public IRegion getHyperlinkRegion() {
+        return region;
+    }
 
-	@Override
-	public String getTypeLabel() {
-		return null;
-	}
+    @Override
+    public String getTypeLabel() {
+        return null;
+    }
 
-	@Override
-	public String getHyperlinkText() {
-		return null;
-	}
+    @Override
+    public String getHyperlinkText() {
+        return null;
+    }
 
-	/**
-	 * Opens the hyperlink in new editor window.
-	 */
-	@Override
-	public void open() {
-		IWorkbench ws = PlatformUI.getWorkbench();
-		try {
-			org.eclipse.ui.ide.IDE.openEditor(ws.getActiveWorkbenchWindow()
-					.getActivePage(), fileLoc, true);
-		} catch (PartInitException e) {
-			e.printStackTrace();
+    /**
+     * Opens the hyperlink in new editor window.
+     */
+    @Override
+    public void open() {
+        IWorkbench ws = PlatformUI.getWorkbench();
+        try {
+            org.eclipse.ui.ide.IDE.openEditor(ws.getActiveWorkbenchWindow()
+                    .getActivePage(), fileLoc, true);
+        } catch (PartInitException e) {
+            e.printStackTrace();
 
-		}
+        }
 
-	}
+    }
 }

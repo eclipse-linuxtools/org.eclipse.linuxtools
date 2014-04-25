@@ -11,23 +11,23 @@
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.model;
 
 public class CachegrindDescription {
-	private String name;
-	
-	public CachegrindDescription(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof CachegrindDescription && name.equals(((CachegrindDescription) obj).getName());
-	}
-	
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
-	
-	public String getName() {
-		return name;
-	}
+    private String name;
+
+    public CachegrindDescription(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof CachegrindDescription && name.equals(((CachegrindDescription) obj).getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    public String getName() {
+        return name;
+    }
 }

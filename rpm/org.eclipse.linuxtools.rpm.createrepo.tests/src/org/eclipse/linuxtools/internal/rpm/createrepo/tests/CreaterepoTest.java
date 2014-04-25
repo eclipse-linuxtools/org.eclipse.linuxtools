@@ -41,80 +41,80 @@ import org.osgi.service.prefs.BackingStoreException;
  */
 public class CreaterepoTest {
 
-	private static TestCreaterepoProject testProject;
-	private CreaterepoProject project;
-	private MessageConsole console;
+    private static TestCreaterepoProject testProject;
+    private CreaterepoProject project;
+    private MessageConsole console;
 
-	/**
-	 * Initialize the test project. Will fail immediately if it cannot find
-	 * the createrepo command.
-	 *
-	 * @throws CoreException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws CoreException, IOException, InterruptedException {
-		BufferedProcessInputStream bpis = Utils.runCommandToInputStream("which", "createrepo"); //$NON-NLS-1$ //$NON-NLS-2$
-		if (bpis.getExitValue() == 1) {
-			fail("Failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
-		}
-		testProject = new TestCreaterepoProject();
-		assertTrue(testProject.getProject().exists());
-	}
+    /**
+     * Initialize the test project. Will fail immediately if it cannot find
+     * the createrepo command.
+     *
+     * @throws CoreException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() throws CoreException, IOException, InterruptedException {
+        BufferedProcessInputStream bpis = Utils.runCommandToInputStream("which", "createrepo"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (bpis.getExitValue() == 1) {
+            fail("Failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
+        }
+        testProject = new TestCreaterepoProject();
+        assertTrue(testProject.getProject().exists());
+    }
 
-	/**
-	 * Delete the project when tests are done.
-	 *
-	 * @throws CoreException
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws CoreException {
-		testProject.dispose();
-		assertFalse(testProject.getProject().exists());
-	}
+    /**
+     * Delete the project when tests are done.
+     *
+     * @throws CoreException
+     */
+    @AfterClass
+    public static void tearDownAfterClass() throws CoreException {
+        testProject.dispose();
+        assertFalse(testProject.getProject().exists());
+    }
 
-	/**
-	 * Get the CreaterepoProject at the beginning of each test, as
-	 * well as create the console.
-	 *
-	 * @throws CoreException
-	 */
-	@Before
-	public void setUp() throws CoreException {
-		project = testProject.getCreaterepoProject();
-		assertNotNull(project);
-		console = new MessageConsole("testConsole", null, null, true); //$NON-NLS-1$
-	}
+    /**
+     * Get the CreaterepoProject at the beginning of each test, as
+     * well as create the console.
+     *
+     * @throws CoreException
+     */
+    @Before
+    public void setUp() throws CoreException {
+        project = testProject.getCreaterepoProject();
+        assertNotNull(project);
+        console = new MessageConsole("testConsole", null, null, true); //$NON-NLS-1$
+    }
 
-	/**
-	 * Clear the preferences after each test and destroy the console.
-	 *
-	 * @throws BackingStoreException
-	 */
-	@After
-	public void tearDown() throws BackingStoreException {
-		IEclipsePreferences pref = project.getEclipsePreferences();
-		pref.clear();
-		pref.flush();
-		assertEquals(0, pref.keys().length);
-		console.destroy();
-	}
+    /**
+     * Clear the preferences after each test and destroy the console.
+     *
+     * @throws BackingStoreException
+     */
+    @After
+    public void tearDown() throws BackingStoreException {
+        IEclipsePreferences pref = project.getEclipsePreferences();
+        pref.clear();
+        pref.flush();
+        assertEquals(0, pref.keys().length);
+        console.destroy();
+    }
 
-	/**
-	 * Test a simple createrepo execution taking in no extra commands.
-	 *
-	 * @throws CoreException
-	 */
-	@Test
-	public void testSimpleCreaterepoExecution() throws CoreException {
-		Createrepo command = new Createrepo();
-		IStatus status = command.execute(console.newMessageStream(),
-				project, new ArrayList<String>());
-		if (status.getCode() == IStatus.ERROR) {
-			fail("Possibly failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
-		}
-		assertEquals(IStatus.OK, status.getCode());
-	}
+    /**
+     * Test a simple createrepo execution taking in no extra commands.
+     *
+     * @throws CoreException
+     */
+    @Test
+    public void testSimpleCreaterepoExecution() throws CoreException {
+        Createrepo command = new Createrepo();
+        IStatus status = command.execute(console.newMessageStream(),
+                project, new ArrayList<String>());
+        if (status.getCode() == IStatus.ERROR) {
+            fail("Possibly failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
+        }
+        assertEquals(IStatus.OK, status.getCode());
+    }
 
 }

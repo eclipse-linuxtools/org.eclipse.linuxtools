@@ -20,11 +20,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ EpochTagTest.class, ReleaseTagTest.class,
-		NameTagTest.class, VersionTagTest.class, HeaderRecognitionTest.class,
-		LicenseTagTest.class, PatchApplicationTest.class,
-		LinePositionTest.class, RpmMacroProposalsListTest.class,
-		RpmPackageProposalsListTest.class, ActionsAllTests.class,
-		ScannersAllTests.class, ParserAllTests.class, HyperlinkAllTests.class,
-		SpecfileCompletionProcessorTest.class, LabelProviderTest.class })
+        NameTagTest.class, VersionTagTest.class, HeaderRecognitionTest.class,
+        LicenseTagTest.class, PatchApplicationTest.class,
+        LinePositionTest.class, RpmMacroProposalsListTest.class,
+        RpmPackageProposalsListTest.class, ActionsAllTests.class,
+        ScannersAllTests.class, ParserAllTests.class, HyperlinkAllTests.class,
+        SpecfileCompletionProcessorTest.class, LabelProviderTest.class })
 public class AllTests {
 }

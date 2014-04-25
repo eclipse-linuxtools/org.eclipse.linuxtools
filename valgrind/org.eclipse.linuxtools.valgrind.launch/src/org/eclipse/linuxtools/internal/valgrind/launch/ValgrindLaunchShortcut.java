@@ -19,22 +19,22 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class ValgrindLaunchShortcut extends ProfileLaunchShortcut {
 
 
-	@Override
-	protected void setDefaultProfileAttributes(
-			ILaunchConfigurationWorkingCopy wc) throws CoreException {
-		ValgrindOptionsTab tab = new ValgrindOptionsTab();
-		tab.setDefaults(wc);
-		ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
-		defaultTab.setDefaults(wc);
-	}
+    @Override
+    protected void setDefaultProfileAttributes(
+            ILaunchConfigurationWorkingCopy wc) throws CoreException {
+        ValgrindOptionsTab tab = new ValgrindOptionsTab();
+        tab.setDefaults(wc);
+        ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+        defaultTab.setDefaults(wc);
+    }
 
-	/**
-	 * Method getValgrindLaunchConfigType.
-	 * @return ILaunchConfigurationType
-	 */
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
-	}
+    /**
+     * Method getValgrindLaunchConfigType.
+     * @return ILaunchConfigurationType
+     */
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
+    }
 
 }

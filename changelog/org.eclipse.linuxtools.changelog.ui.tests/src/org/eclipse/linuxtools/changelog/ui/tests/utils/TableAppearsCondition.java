@@ -18,31 +18,31 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
  */
 public class TableAppearsCondition implements ICondition {
 
-	private SWTBot bot;
+    private SWTBot bot;
 
-	@Override
-	public boolean test() {
-		try {
-			SWTBotTable table = bot.table();
-			// table available
-			// make sure rowcount > 0
-			if (table.rowCount() > 0) {
-				return true;
-			}
-		} catch (WidgetNotFoundException e) {
-			// ignore
-		}
-		return false;
-	}
+    @Override
+    public boolean test() {
+        try {
+            SWTBotTable table = bot.table();
+            // table available
+            // make sure rowcount > 0
+            if (table.rowCount() > 0) {
+                return true;
+            }
+        } catch (WidgetNotFoundException e) {
+            // ignore
+        }
+        return false;
+    }
 
-	@Override
-	public void init(SWTBot bot) {
-		this.bot = bot;
-	}
+    @Override
+    public void init(SWTBot bot) {
+        this.bot = bot;
+    }
 
-	@Override
-	public String getFailureMessage() {
-		return null;
-	}
+    @Override
+    public String getFailureMessage() {
+        return null;
+    }
 
 }

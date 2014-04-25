@@ -18,8 +18,8 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
  */
 public class ChangeLogDocumentProvider extends TextFileDocumentProvider {
 
-	@Override
-	public IDocument getDocument(Object element) {
-		return super.getDocument(element);
-	}
+    @Override
+    public IDocument getDocument(Object element) {
+        return super.getDocument(element);
+    }
 }

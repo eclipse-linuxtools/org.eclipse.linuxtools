@@ -23,30 +23,30 @@ import org.junit.Test;
 
 public class MouseListenerTest {
 
-	@Test
-	public void test() {
-		StapGraphParser parse = new StapGraphParser();
-		parse.setSourcePath(Activator.getPluginLocation() + "eag.graph");
-		parse.testRun(new NullProgressMonitor(), true);
+    @Test
+    public void test() {
+        StapGraphParser parse = new StapGraphParser();
+        parse.setSourcePath(Activator.getPluginLocation() + "eag.graph");
+        parse.testRun(new NullProgressMonitor(), true);
 
-		CallgraphView cView = (CallgraphView) ViewFactory.createView("org.eclipse.linuxtools.callgraph.callgraphview");
+        CallgraphView cView = (CallgraphView) ViewFactory.createView("org.eclipse.linuxtools.callgraph.callgraphview");
 
-		StapUIJob j = new StapUIJob("Test Graph UI Job", parse,
-				CallGraphConstants.VIEW_ID);
-		j.runInUIThread(new NullProgressMonitor());
+        StapUIJob j = new StapUIJob("Test Graph UI Job", parse,
+                CallGraphConstants.VIEW_ID);
+        j.runInUIThread(new NullProgressMonitor());
 
-		StapGraphMouseListener mListener = cView.getGraph().getMouseListener();
+        StapGraphMouseListener mListener = cView.getGraph().getMouseListener();
 
-		StapGraph g = cView.getGraph();
-		g.setProject(parse.project);
+        StapGraph g = cView.getGraph();
+        g.setProject(parse.project);
 
-		GraphItem[] nodes = { g.getNode(g.getFirstUsefulNode()) };
-		g.setSelection(nodes);
+        GraphItem[] nodes = { g.getNode(g.getFirstUsefulNode()) };
+        g.setSelection(nodes);
 
-		mListener.mouseDownEvent(0, 0);
-		g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
-				StapGraph.CONSTANT_ANIMATION_FASTEST, g.getFirstUsefulNode());
-		mListener.mouseUp(null);
+        mListener.mouseDownEvent(0, 0);
+        g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
+                StapGraph.CONSTANT_ANIMATION_FASTEST, g.getFirstUsefulNode());
+        mListener.mouseUp(null);
 
-	}
+    }
 }

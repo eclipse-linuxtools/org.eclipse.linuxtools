@@ -58,7 +58,7 @@ public class TreeColumnViewerFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-    	ITreeContentProvider provider = (ITreeContentProvider) treeViewer.getContentProvider();
+        ITreeContentProvider provider = (ITreeContentProvider) treeViewer.getContentProvider();
         String s = field.getValue(element);
         if (s.contains(matchingText)) {
             return true;

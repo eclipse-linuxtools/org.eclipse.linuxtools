@@ -31,55 +31,55 @@ import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.junit.Test;
 
 public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest {
-	@Test
-	public void testLinkedMarkers() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testLinkedMarkers"); //$NON-NLS-1$
+    @Test
+    public void testLinkedMarkers() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testLinkedMarkers"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IValgrindMessage[] errors = view.getMessages();
+        ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+        IValgrindMessage[] errors = view.getMessages();
 
-		ArrayList<IMarker> markers = new ArrayList<>(Arrays.asList(proj
-				.getProject().findMarkers(ValgrindLaunchPlugin.MARKER_TYPE,
-						true, IResource.DEPTH_INFINITE)));
-		assertEquals(5, markers.size());
-		for (IValgrindMessage error : errors) {
-			findMarker(markers, error);
-		}
-		assertEquals(0, markers.size());
-	}
+        ArrayList<IMarker> markers = new ArrayList<>(Arrays.asList(proj
+                .getProject().findMarkers(ValgrindLaunchPlugin.MARKER_TYPE,
+                        true, IResource.DEPTH_INFINITE)));
+        assertEquals(5, markers.size());
+        for (IValgrindMessage error : errors) {
+            findMarker(markers, error);
+        }
+        assertEquals(0, markers.size());
+    }
 
-	private void findMarker(ArrayList<IMarker> markers, IValgrindMessage error)
-			throws Exception, CoreException {
-		ValgrindStackFrame frame = null;
-		IValgrindMessage[] children = error.getChildren();
-		for (int i = 0; i < children.length; i++) {
-			if (frame == null && children[i] instanceof ValgrindStackFrame
-					&& isWorkspaceFrame((ValgrindStackFrame) children[i])) {
-				frame = (ValgrindStackFrame) children[i];
-			} else if (children[i] instanceof ValgrindError) {
-				findMarker(markers, children[i]);
-			}
-		}
+    private void findMarker(ArrayList<IMarker> markers, IValgrindMessage error)
+            throws Exception, CoreException {
+        ValgrindStackFrame frame = null;
+        IValgrindMessage[] children = error.getChildren();
+        for (int i = 0; i < children.length; i++) {
+            if (frame == null && children[i] instanceof ValgrindStackFrame
+                    && isWorkspaceFrame((ValgrindStackFrame) children[i])) {
+                frame = (ValgrindStackFrame) children[i];
+            } else if (children[i] instanceof ValgrindError) {
+                findMarker(markers, children[i]);
+            }
+        }
 
-		int ix = -1;
-		for (int i = 0; i < markers.size(); i++) {
-			IMarker marker = markers.get(i);
-			if (marker.getAttribute(IMarker.MESSAGE).equals(error.getText())
-					&& marker.getResource().getName().equals(frame.getFile())
-					&& marker.getAttribute(IMarker.LINE_NUMBER).equals(
-							frame.getLine())) {
-				ix = i;
-			}
-		}
-		assertFalse(ix < 0);
-		markers.remove(ix);
-	}
+        int ix = -1;
+        for (int i = 0; i < markers.size(); i++) {
+            IMarker marker = markers.get(i);
+            if (marker.getAttribute(IMarker.MESSAGE).equals(error.getText())
+                    && marker.getResource().getName().equals(frame.getFile())
+                    && marker.getAttribute(IMarker.LINE_NUMBER).equals(
+                            frame.getLine())) {
+                ix = i;
+            }
+        }
+        assertFalse(ix < 0);
+        markers.remove(ix);
+    }
 
-	private boolean isWorkspaceFrame(ValgrindStackFrame frame) {
-		ISourceLocator locator = frame.getLaunch().getSourceLocator();
-		Object result = DebugUITools.lookupSource(frame.getFile(), locator)
-				.getSourceElement();
-		return result != null && result instanceof IResource;
-	}
+    private boolean isWorkspaceFrame(ValgrindStackFrame frame) {
+        ISourceLocator locator = frame.getLaunch().getSourceLocator();
+        Object result = DebugUITools.lookupSource(frame.getFile(), locator)
+                .getSourceElement();
+        return result != null && result instanceof IResource;
+    }
 }

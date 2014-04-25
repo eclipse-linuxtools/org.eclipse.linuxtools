@@ -16,9 +16,9 @@ import java.util.TreeMap;
 
 public class LibHoverInfo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	public HashMap<String, ClassInfo> classes = new HashMap<>();
-	public HashMap<String, TypedefInfo> typedefs = new HashMap<>();
-	public TreeMap<String, FunctionInfo> functions = new TreeMap<>();
+    private static final long serialVersionUID = 1L;
+    public HashMap<String, ClassInfo> classes = new HashMap<>();
+    public HashMap<String, TypedefInfo> typedefs = new HashMap<>();
+    public TreeMap<String, FunctionInfo> functions = new TreeMap<>();
 
 }

@@ -43,139 +43,139 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MultiProcessTest extends AbstractMassifTest {
-	private ICProject refProj;
+    private ICProject refProj;
 
-	@Before
-	public void prep() throws Exception {
-		refProj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
-		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        refProj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+        proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		deleteProject(refProj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        deleteProject(refProj);
+        super.tearDown();
+    }
 
-	@Test
-	public void testNoExec() throws CoreException, URISyntaxException,
-			IOException {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNoExec"); //$NON-NLS-1$
+    @Test
+    public void testNoExec() throws CoreException, URISyntaxException,
+            IOException {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
-				.getView().getDynamicView();
-		MassifOutput output = view.getOutput();
-		assertEquals(1, output.getPids().length);
-		MassifSnapshot[] snapshots = view.getSnapshots();
-		assertEquals(8, snapshots.length);
-		checkSnapshots(snapshots, 400, 8);
-	}
+        MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
+                .getView().getDynamicView();
+        MassifOutput output = view.getOutput();
+        assertEquals(1, output.getPids().length);
+        MassifSnapshot[] snapshots = view.getSnapshots();
+        assertEquals(8, snapshots.length);
+        checkSnapshots(snapshots, 400, 8);
+    }
 
-	@Test
-	public void testExec() throws CoreException, URISyntaxException,
-			IOException {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(
-				proj.getProject()).getWorkingCopy();
-		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+    @Test
+    public void testExec() throws CoreException, URISyntaxException,
+            IOException {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(
+                proj.getProject()).getWorkingCopy();
+        config.setAttribute(
+                LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
-				.getView().getDynamicView();
-		MassifOutput output = view.getOutput();
+        MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
+                .getView().getDynamicView();
+        MassifOutput output = view.getOutput();
 
-		Integer[] pids = output.getPids();
-		assertEquals(2, pids.length);
+        Integer[] pids = output.getPids();
+        assertEquals(2, pids.length);
 
-		// child not necessarily higher PID than parent
-		MassifSnapshot[] snapshots1 = output.getSnapshots(pids[0]);
-		assertTrue(snapshots1.length == 8 || snapshots1.length == 14);
-		MassifSnapshot[] snapshots2 = output.getSnapshots(pids[1]);
-		assertTrue(snapshots2.length == 8 || snapshots2.length == 14);
-		assertNotEquals(snapshots1.length, snapshots2.length);
+        // child not necessarily higher PID than parent
+        MassifSnapshot[] snapshots1 = output.getSnapshots(pids[0]);
+        assertTrue(snapshots1.length == 8 || snapshots1.length == 14);
+        MassifSnapshot[] snapshots2 = output.getSnapshots(pids[1]);
+        assertTrue(snapshots2.length == 8 || snapshots2.length == 14);
+        assertNotEquals(snapshots1.length, snapshots2.length);
 
-		if (snapshots1.length == 8) {
-			checkSnapshots(snapshots1, 400, 8);
-			checkSnapshots(snapshots2, 40, 16);
-		} else {
-			checkSnapshots(snapshots1, 40, 16);
-			checkSnapshots(snapshots2, 400, 8);
-		}
-	}
+        if (snapshots1.length == 8) {
+            checkSnapshots(snapshots1, 400, 8);
+            checkSnapshots(snapshots2, 40, 16);
+        } else {
+            checkSnapshots(snapshots1, 40, 16);
+            checkSnapshots(snapshots2, 400, 8);
+        }
+    }
 
-	@Test
-	public void testExecPidMenu() throws CoreException, URISyntaxException,
-			IOException {
-		ILaunchConfigurationWorkingCopy config = createConfiguration(
-				proj.getProject()).getWorkingCopy();
-		config.setAttribute(
-				LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
-		config.doSave();
-		doLaunch(config, "testExec"); //$NON-NLS-1$
+    @Test
+    public void testExecPidMenu() throws CoreException, URISyntaxException,
+            IOException {
+        ILaunchConfigurationWorkingCopy config = createConfiguration(
+                proj.getProject()).getWorkingCopy();
+        config.setAttribute(
+                LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
+        config.doSave();
+        doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		MassifViewPart dynamicView = (MassifViewPart) view.getDynamicView();
-		MassifOutput output = dynamicView.getOutput();
+        ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+        MassifViewPart dynamicView = (MassifViewPart) view.getDynamicView();
+        MassifOutput output = dynamicView.getOutput();
 
-		MassifPidMenuAction menuAction = null;
-		IToolBarManager manager = view.getViewSite().getActionBars()
-				.getToolBarManager();
-		for (IContributionItem item : manager.getItems()) {
-			if (item instanceof ActionContributionItem
-					&& ((ActionContributionItem) item).getAction() instanceof MassifPidMenuAction) {
-				menuAction = (MassifPidMenuAction) ((ActionContributionItem) item)
-						.getAction();
-			}
-		}
+        MassifPidMenuAction menuAction = null;
+        IToolBarManager manager = view.getViewSite().getActionBars()
+                .getToolBarManager();
+        for (IContributionItem item : manager.getItems()) {
+            if (item instanceof ActionContributionItem
+                    && ((ActionContributionItem) item).getAction() instanceof MassifPidMenuAction) {
+                menuAction = (MassifPidMenuAction) ((ActionContributionItem) item)
+                        .getAction();
+            }
+        }
 
-		assertNotNull(menuAction);
+        assertNotNull(menuAction);
 
-		Integer[] pids = dynamicView.getOutput().getPids();
-		Shell shell = new Shell(Display.getCurrent());
-		Menu pidMenu = menuAction.getMenu(shell);
+        Integer[] pids = dynamicView.getOutput().getPids();
+        Shell shell = new Shell(Display.getCurrent());
+        Menu pidMenu = menuAction.getMenu(shell);
 
-		assertEquals(2, pidMenu.getItemCount());
-		ActionContributionItem firstPid = (ActionContributionItem) pidMenu
-				.getItem(0).getData();
-		ActionContributionItem secondPid = (ActionContributionItem) pidMenu
-				.getItem(1).getData();
+        assertEquals(2, pidMenu.getItemCount());
+        ActionContributionItem firstPid = (ActionContributionItem) pidMenu
+                .getItem(0).getData();
+        ActionContributionItem secondPid = (ActionContributionItem) pidMenu
+                .getItem(1).getData();
 
-		// check initial state
-		assertTrue(firstPid.getAction().isChecked());
-		assertFalse(secondPid.getAction().isChecked());
-		assertArrayEquals(output.getSnapshots(pids[0]),
-				dynamicView.getSnapshots());
+        // check initial state
+        assertTrue(firstPid.getAction().isChecked());
+        assertFalse(secondPid.getAction().isChecked());
+        assertArrayEquals(output.getSnapshots(pids[0]),
+                dynamicView.getSnapshots());
 
-		// select second pid
-		selectItem(pidMenu, 1);
+        // select second pid
+        selectItem(pidMenu, 1);
 
-		assertFalse(firstPid.getAction().isChecked());
-		assertTrue(secondPid.getAction().isChecked());
-		assertArrayEquals(output.getSnapshots(pids[1]),
-				dynamicView.getSnapshots());
+        assertFalse(firstPid.getAction().isChecked());
+        assertTrue(secondPid.getAction().isChecked());
+        assertArrayEquals(output.getSnapshots(pids[1]),
+                dynamicView.getSnapshots());
 
-		// select second pid again
-		selectItem(pidMenu, 1);
+        // select second pid again
+        selectItem(pidMenu, 1);
 
-		assertFalse(firstPid.getAction().isChecked());
-		assertTrue(secondPid.getAction().isChecked());
-		assertArrayEquals(output.getSnapshots(pids[1]),
-				dynamicView.getSnapshots());
+        assertFalse(firstPid.getAction().isChecked());
+        assertTrue(secondPid.getAction().isChecked());
+        assertArrayEquals(output.getSnapshots(pids[1]),
+                dynamicView.getSnapshots());
 
-		// select first pid
-		selectItem(pidMenu, 0);
+        // select first pid
+        selectItem(pidMenu, 0);
 
-		assertTrue(firstPid.getAction().isChecked());
-		assertFalse(secondPid.getAction().isChecked());
-		assertArrayEquals(output.getSnapshots(pids[0]),
-				dynamicView.getSnapshots());
-	}
+        assertTrue(firstPid.getAction().isChecked());
+        assertFalse(secondPid.getAction().isChecked());
+        assertArrayEquals(output.getSnapshots(pids[0]),
+                dynamicView.getSnapshots());
+    }
 
-	private void selectItem(Menu pidMenu, int index) {
-		pidMenu.getItem(index).notifyListeners(SWT.Selection, null);
-	}
+    private void selectItem(Menu pidMenu, int index) {
+        pidMenu.getItem(index).notifyListeners(SWT.Selection, null);
+    }
 }

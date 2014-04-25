@@ -16,32 +16,32 @@ package org.eclipse.linuxtools.profiling.launch.ui;
  */
 public class FileSystemElement {
 
-	private String scheme;
-	private String schemeLabel;
-	private boolean isDefault;
-	private IRemoteResourceSelectorProxy selectorProxy;
+    private String scheme;
+    private String schemeLabel;
+    private boolean isDefault;
+    private IRemoteResourceSelectorProxy selectorProxy;
 
-	public FileSystemElement(String scheme, String schemeLabel, boolean isDefault, IRemoteResourceSelectorProxy selectorProxy) {
-		this.schemeLabel = schemeLabel;
-		this.scheme = scheme;
-		this.isDefault = isDefault;
-		this.selectorProxy = selectorProxy;
-	}
+    public FileSystemElement(String scheme, String schemeLabel, boolean isDefault, IRemoteResourceSelectorProxy selectorProxy) {
+        this.schemeLabel = schemeLabel;
+        this.scheme = scheme;
+        this.isDefault = isDefault;
+        this.selectorProxy = selectorProxy;
+    }
 
-	public String getSchemeLabel() {
-		return schemeLabel;
-	}
+    public String getSchemeLabel() {
+        return schemeLabel;
+    }
 
-	public String getScheme() {
-		return scheme;
-	}
+    public String getScheme() {
+        return scheme;
+    }
 
-	public boolean getIsDefault() {
-		return isDefault;
-	}
+    public boolean getIsDefault() {
+        return isDefault;
+    }
 
-	public IRemoteResourceSelectorProxy getSelectorProxy() {
-		return selectorProxy;
-	}
+    public IRemoteResourceSelectorProxy getSelectorProxy() {
+        return selectorProxy;
+    }
 
 }

@@ -27,20 +27,20 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @author Ryan Morse
  */
 public class IDECloseMonitor implements IWorkbenchListener {
-	@Override
-	public boolean preShutdown(IWorkbench workbench, boolean forced) {
-		boolean close = true;
-		if(!forced) {
-			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+    @Override
+    public boolean preShutdown(IWorkbench workbench, boolean forced) {
+        boolean close = true;
+        if(!forced) {
+            IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 
-			if(ScriptConsole.anyRunning()) {
-				String msg = MessageFormat.format(Localization.getString("IDECloseMonitor.StillRunning"),(Object[]) null); //$NON-NLS-1$
-				close = MessageDialog.openQuestion(window.getShell(), "Closing...", msg); //$NON-NLS-1$
-			}
-		}
-		return close;
-	}
+            if(ScriptConsole.anyRunning()) {
+                String msg = MessageFormat.format(Localization.getString("IDECloseMonitor.StillRunning"),(Object[]) null); //$NON-NLS-1$
+                close = MessageDialog.openQuestion(window.getShell(), "Closing...", msg); //$NON-NLS-1$
+            }
+        }
+        return close;
+    }
 
-	@Override
-	public void postShutdown(IWorkbench workbench) {}
+    @Override
+    public void postShutdown(IWorkbench workbench) {}
 }

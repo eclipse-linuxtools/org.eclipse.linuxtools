@@ -16,8 +16,8 @@ import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
 public class ValgrindInfo extends AbstractValgrindMessage {
 
-	public ValgrindInfo(IValgrindMessage parent, String text, ILaunch launch) {
-		super(parent, text, launch);
-	}
+    public ValgrindInfo(IValgrindMessage parent, String text, ILaunch launch) {
+        super(parent, text, launch);
+    }
 
 }

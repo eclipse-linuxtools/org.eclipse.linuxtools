@@ -12,8 +12,8 @@ package org.eclipse.linuxtools.internal.perf.model;
 
 public class PMEvent extends TreeParent {
 
-	public PMEvent(String name) {
-		super(name);
-	}
+    public PMEvent(String name) {
+        super(name);
+    }
 
 }

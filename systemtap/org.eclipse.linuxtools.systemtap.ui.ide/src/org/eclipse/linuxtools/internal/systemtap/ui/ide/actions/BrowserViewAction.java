@@ -22,56 +22,56 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 
 public abstract class BrowserViewAction extends Action implements ISelectionListener, IDoubleClickListener {
-	private final IWorkbenchWindow window;
-	private final BrowserView viewer;
-	private IStructuredSelection selection;
-	private TreeExpandCollapseAction expandAction;
+    private final IWorkbenchWindow window;
+    private final BrowserView viewer;
+    private IStructuredSelection selection;
+    private TreeExpandCollapseAction expandAction;
 
-	/**
-	 * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
-	 * as well as the <code>BrowserView</code> that will fire this action.
-	 * @param window	window effected by this event
-	 * @param browser	browser that fires this action
-	 */
-	public BrowserViewAction(IWorkbenchWindow window, BrowserView browser) {
-		this.window = window;
-		window.getSelectionService().addSelectionListener(this);
-		viewer = browser;
-		expandAction = new TreeExpandCollapseAction(viewer);
-	}
+    /**
+     * The Default Constructor. Takes the <code>IWorkbenchWindow</code> that it effects
+     * as well as the <code>BrowserView</code> that will fire this action.
+     * @param window    window effected by this event
+     * @param browser    browser that fires this action
+     */
+    public BrowserViewAction(IWorkbenchWindow window, BrowserView browser) {
+        this.window = window;
+        window.getSelectionService().addSelectionListener(this);
+        viewer = browser;
+        expandAction = new TreeExpandCollapseAction(viewer);
+    }
 
-	public void dispose() {
-		window.getSelectionService().removeSelectionListener(this);
-		selection = null;
-		expandAction.dispose();
-		expandAction = null;
-	}
+    public void dispose() {
+        window.getSelectionService().removeSelectionListener(this);
+        selection = null;
+        expandAction.dispose();
+        expandAction = null;
+    }
 
-	/**
-	 * Updates <code>selection</code> with the current selection whenever the user changes
-	 * the current selection.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
-		if (incoming instanceof IStructuredSelection) {
-			selection = (IStructuredSelection) incoming;
-			setEnabled(selection.size() == 1);
-		} else {
-			// Other selections, for example containing text or of other kinds.
-			setEnabled(false);
-		}
-	}
+    /**
+     * Updates <code>selection</code> with the current selection whenever the user changes
+     * the current selection.
+     */
+    @Override
+    public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
+        if (incoming instanceof IStructuredSelection) {
+            selection = (IStructuredSelection) incoming;
+            setEnabled(selection.size() == 1);
+        } else {
+            // Other selections, for example containing text or of other kinds.
+            setEnabled(false);
+        }
+    }
 
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		run();
-	}
+    @Override
+    public void doubleClick(DoubleClickEvent event) {
+        run();
+    }
 
-	protected Object getSelectedElement() {
-		return ((IStructuredSelection) viewer.getViewer().getSelection()).getFirstElement();
-	}
+    protected Object getSelectedElement() {
+        return ((IStructuredSelection) viewer.getViewer().getSelection()).getFirstElement();
+    }
 
-	protected void runExpandAction() {
-		expandAction.run();
-	}
+    protected void runExpandAction() {
+        expandAction.run();
+    }
 }

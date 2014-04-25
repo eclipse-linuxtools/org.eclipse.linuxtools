@@ -62,7 +62,7 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
             cboColumn.add(series);
         }
 
-        new Label(cmpFilterOpts, SWT.NONE);	//Spacer
+        new Label(cmpFilterOpts, SWT.NONE);    //Spacer
 
         //String to compare to
         Label lblAggregate = new Label(cmpFilterOpts, SWT.NONE);

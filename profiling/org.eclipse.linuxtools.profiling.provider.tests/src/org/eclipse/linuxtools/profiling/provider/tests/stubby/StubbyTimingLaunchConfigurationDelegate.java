@@ -19,20 +19,20 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 public class StubbyTimingLaunchConfigurationDelegate extends
-		StubbyLaunchConfigurationDelegate {
+        StubbyLaunchConfigurationDelegate {
 
-	@Override
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				IWorkbenchWindow window = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
-				MessageDialog.openConfirm(window.getShell(),
-						"Successful profile launch", //$NON-NLS-1$
-						"Successful profile launch"); //$NON-NLS-1$
-			}
-		});
-	}
+    @Override
+    public void launch(ILaunchConfiguration configuration, String mode,
+            ILaunch launch, IProgressMonitor monitor) {
+        Display.getDefault().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                IWorkbenchWindow window = PlatformUI.getWorkbench()
+                        .getActiveWorkbenchWindow();
+                MessageDialog.openConfirm(window.getShell(),
+                        "Successful profile launch", //$NON-NLS-1$
+                        "Successful profile launch"); //$NON-NLS-1$
+            }
+        });
+    }
 }

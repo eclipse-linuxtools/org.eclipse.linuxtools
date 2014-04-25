@@ -26,29 +26,29 @@ import org.hamcrest.Matcher;
  */
 public abstract class AbstractStyledTextViewTest extends AbstractSWTBotTest {
 
-	@Override
-	protected void testPerfView() {
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+    @Override
+    protected void testPerfView() {
+        SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-		Matcher<IViewReference> withPartName = withPartName(getViewId());
-		SWTBotView view = bot.view(withPartName);
-		assertNotNull(view);
+        Matcher<IViewReference> withPartName = withPartName(getViewId());
+        SWTBotView view = bot.view(withPartName);
+        assertNotNull(view);
 
-		view.setFocus();
-		SWTBotStyledText text = bot.styledText();
-		assertNotNull(text);
-		assertEquals(getExpectedText(), text.getText());
-	}
+        view.setFocus();
+        SWTBotStyledText text = bot.styledText();
+        assertNotNull(text);
+        assertEquals(getExpectedText(), text.getText());
+    }
 
-	/**
-	 * Get unique test view identifier.
-	 * @return String unique identifier of view part to test.
-	 */
-	protected abstract String getViewId();
+    /**
+     * Get unique test view identifier.
+     * @return String unique identifier of view part to test.
+     */
+    protected abstract String getViewId();
 
-	/**
-	 * Get exptected text of <code>StyledText</code> widget contained in this view.
-	 * @return String expected text of view.
-	 */
-	protected abstract String getExpectedText();
+    /**
+     * Get exptected text of <code>StyledText</code> widget contained in this view.
+     * @return String expected text of view.
+     */
+    protected abstract String getExpectedText();
 }

@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck;
 
 import org.eclipse.jface.action.IAction;
@@ -17,21 +17,21 @@ import org.eclipse.ui.part.ViewPart;
 
 public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 
-	@Override
-	public void createPartControl(Composite parent) {
-	}
+    @Override
+    public void createPartControl(Composite parent) {
+    }
 
-	@Override
-	public void setFocus() {
-	}
+    @Override
+    public void setFocus() {
+    }
 
-	@Override
-	public void refreshView() {
-	}
+    @Override
+    public void refreshView() {
+    }
 
-	@Override
-	public IAction[] getToolbarActions() {
-		return null;
-	}
-	
+    @Override
+    public IAction[] getToolbarActions() {
+        return null;
+    }
+
 }

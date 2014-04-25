@@ -18,32 +18,32 @@ package org.eclipse.linuxtools.internal.changelog.core.actions;
  */
 public class PatchRangeElement {
 
-	public int fromLine;
-	public int toLine;
-	private boolean localChange;
+    public int fromLine;
+    public int toLine;
+    private boolean localChange;
 
-	public PatchRangeElement(int from, int to, boolean localChange) {
-		this.fromLine =from;
-		this.toLine= to;
-		this.localChange = localChange;
-	}
+    public PatchRangeElement(int from, int to, boolean localChange) {
+        this.fromLine =from;
+        this.toLine= to;
+        this.localChange = localChange;
+    }
 
-	public boolean isLocalChange() {
-		return localChange;
-	}
+    public boolean isLocalChange() {
+        return localChange;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof PatchRangeElement) {
-			PatchRangeElement b = (PatchRangeElement)o;
-			return b.fromLine == fromLine && b.toLine == toLine && b.localChange == localChange;
-		}
-		else
-			return this == o;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PatchRangeElement) {
+            PatchRangeElement b = (PatchRangeElement)o;
+            return b.fromLine == fromLine && b.toLine == toLine && b.localChange == localChange;
+        }
+        else
+            return this == o;
+    }
 
-	@Override
-	public int hashCode() {
-		return fromLine + toLine + (localChange ? 47 : 83);
-	}
+    @Override
+    public int hashCode() {
+        return fromLine + toLine + (localChange ? 47 : 83);
+    }
 }

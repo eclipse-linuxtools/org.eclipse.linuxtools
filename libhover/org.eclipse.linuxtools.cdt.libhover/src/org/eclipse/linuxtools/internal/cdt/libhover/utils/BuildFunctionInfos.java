@@ -36,18 +36,18 @@ import org.xml.sax.SAXException;
 
 public class BuildFunctionInfos {
 
-	private Document document;
-	private LibHoverInfo hoverInfo = new LibHoverInfo();
+    private Document document;
+    private LibHoverInfo hoverInfo = new LibHoverInfo();
 
-	public BuildFunctionInfos(Document document) {
-		this.document = document;
-	}
+    public BuildFunctionInfos(Document document) {
+        this.document = document;
+    }
 
-	public Document getDocument() {
-		return document;
-	}
+    public Document getDocument() {
+        return document;
+    }
 
-	private FunctionInfo getFunctionInfoFromNode(String name, Node functionNode, Document document) {
+    private FunctionInfo getFunctionInfoFromNode(String name, Node functionNode, Document document) {
         FunctionInfo f = new FunctionInfo(name);
         NamedNodeMap functionNodeMap = functionNode.getAttributes();
         Node functionNodeReturntypeNode = functionNodeMap.item(0);
@@ -59,11 +59,11 @@ public class BuildFunctionInfos {
 
             String functionNodeRtValue = functionNodeReturntypeNode.getNodeValue();
             f.setReturnType(functionNodeRtValue);
-        }		// returntype
+        }        // returntype
 
         NodeList kids = functionNode.getChildNodes();
         for (int fnk = 0; fnk < kids.getLength(); fnk++) {
-        	Node kid = kids.item(fnk);
+            Node kid = kids.item(fnk);
             String kidName = kid.getNodeName();
             if (kidName.equals("prototype")) { //$NON-NLS-1$
 
@@ -84,7 +84,7 @@ public class BuildFunctionInfos {
                     }
                 }
                 f.setPrototype(prototype);
-            }	// prototype
+            }    // prototype
 
             else if (kidName.equals("headers")) { //$NON-NLS-1$
 
@@ -100,27 +100,27 @@ public class BuildFunctionInfos {
                         f.addHeader(headerNode.getNodeValue());
                     }
                 }
-            }	// headers
+            }    // headers
 
 
             else if (kidName.equals("groupsynopsis")) { //$NON-NLS-1$
 
-            	// group synopsis
+                // group synopsis
 
-            	NamedNodeMap attr = kid.getAttributes();
-            	Node idnode = attr.getNamedItem("id"); //$NON-NLS-1$
-            	String id = idnode.getNodeValue();
-				if (id != null) {
-        			Element elem2 = document.getElementById(id);
-        			if (null != elem2) {
-        				NodeList synopsisNode = elem2.getElementsByTagName("synopsis"); //$NON-NLS-1$
-        				if (null != synopsisNode && synopsisNode.getLength() > 0) {
-        					Node synopsis = synopsisNode.item(0);
-        					Node textNode = synopsis.getLastChild();
-        					f.setDescription(textNode.getNodeValue());
-        				}
-        			}
-				}
+                NamedNodeMap attr = kid.getAttributes();
+                Node idnode = attr.getNamedItem("id"); //$NON-NLS-1$
+                String id = idnode.getNodeValue();
+                if (id != null) {
+                    Element elem2 = document.getElementById(id);
+                    if (null != elem2) {
+                        NodeList synopsisNode = elem2.getElementsByTagName("synopsis"); //$NON-NLS-1$
+                        if (null != synopsisNode && synopsisNode.getLength() > 0) {
+                            Node synopsis = synopsisNode.item(0);
+                            Node textNode = synopsis.getLastChild();
+                            f.setDescription(textNode.getNodeValue());
+                        }
+                    }
+                }
             } else if (kidName.equals("synopsis")) { //$NON-NLS-1$
                 // synopsis
                 Node textNode = kid.getLastChild();
@@ -128,65 +128,65 @@ public class BuildFunctionInfos {
             }
         }
         return f;
-	}
+    }
 
-	private void buildCPPInfo(String fileName) {
-		Document document = getDocument();
-		NodeList nl = document.getElementsByTagName("construct"); //$NON-NLS-1$
-		for (int i = 0; i < nl.getLength(); ++i) {
-			Node n = nl.item(i);
-			NamedNodeMap m = n.getAttributes();
-			Node id = m.getNamedItem("id"); //$NON-NLS-1$
-			if (id != null && id.getNodeValue().startsWith("function-")) { //$NON-NLS-1$
-				String name = id.getNodeValue().substring(9);
-				NodeList nl2 = n.getChildNodes();
-				for (int j = 0; j < nl2.getLength(); ++j) {
-					Node n2 = nl2.item(j);
-					if (n2.getNodeName().equals("function")) { //$NON-NLS-1$
-						FunctionInfo f = getFunctionInfoFromNode(name, n2, document);
-						hoverInfo.functions.put(name, f);
-					}
-				}
-			}
-		}
-		try (FileOutputStream f = new FileOutputStream(fileName);
-			ObjectOutputStream out = new ObjectOutputStream(f)){
-			// Now, output the LibHoverInfo for caching later
-			out.writeObject(hoverInfo);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+    private void buildCPPInfo(String fileName) {
+        Document document = getDocument();
+        NodeList nl = document.getElementsByTagName("construct"); //$NON-NLS-1$
+        for (int i = 0; i < nl.getLength(); ++i) {
+            Node n = nl.item(i);
+            NamedNodeMap m = n.getAttributes();
+            Node id = m.getNamedItem("id"); //$NON-NLS-1$
+            if (id != null && id.getNodeValue().startsWith("function-")) { //$NON-NLS-1$
+                String name = id.getNodeValue().substring(9);
+                NodeList nl2 = n.getChildNodes();
+                for (int j = 0; j < nl2.getLength(); ++j) {
+                    Node n2 = nl2.item(j);
+                    if (n2.getNodeName().equals("function")) { //$NON-NLS-1$
+                        FunctionInfo f = getFunctionInfoFromNode(name, n2, document);
+                        hoverInfo.functions.put(name, f);
+                    }
+                }
+            }
+        }
+        try (FileOutputStream f = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(f)){
+            // Now, output the LibHoverInfo for caching later
+            out.writeObject(hoverInfo);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * @param args args[0] - URL or file name of xml document to parse
-	 *        args[1] - file name to place resultant serialized LibHoverInfo
-	 */
-	public static void main(String[] args) {
-		URI acDoc;
-		try {
-			acDoc = new URI(args[0]);
-			IPath p = URIUtil.toPath(acDoc);
-			InputStream docStream = null;
-			if (p == null) {
-				URL url = acDoc.toURL();
-				docStream = url.openStream();
-			} else {
-				docStream = new FileInputStream(p.toFile());
-			}
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setValidating(false);
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(docStream);
-			if (doc != null) {
-				BuildFunctionInfos d = new BuildFunctionInfos(doc);
-				d.buildCPPInfo(args[1]);
-			}
-			System.out.println("Built " + args[1] + " from " + args[0]); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (URISyntaxException|SAXException|ParserConfigurationException|IOException e) {
-			e.printStackTrace();
-		}
+    /**
+     * @param args args[0] - URL or file name of xml document to parse
+     *        args[1] - file name to place resultant serialized LibHoverInfo
+     */
+    public static void main(String[] args) {
+        URI acDoc;
+        try {
+            acDoc = new URI(args[0]);
+            IPath p = URIUtil.toPath(acDoc);
+            InputStream docStream = null;
+            if (p == null) {
+                URL url = acDoc.toURL();
+                docStream = url.openStream();
+            } else {
+                docStream = new FileInputStream(p.toFile());
+            }
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(docStream);
+            if (doc != null) {
+                BuildFunctionInfos d = new BuildFunctionInfos(doc);
+                d.buildCPPInfo(args[1]);
+            }
+            System.out.println("Built " + args[1] + " from " + args[0]); //$NON-NLS-1$ //$NON-NLS-2$
+        } catch (URISyntaxException|SAXException|ParserConfigurationException|IOException e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }

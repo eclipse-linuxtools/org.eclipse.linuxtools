@@ -17,26 +17,26 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Provider
 
 public class ProviderOptionsTab extends AbstractProfilingOptionsTab {
 
-	/**
-	 * ProviderOptionsTab constructor.
-	 *
-	 * @param profilingType String type of profiling this tab will be used for.
-	 * @param profilingName String name of this tab to be displayed.
-	 */
-	public ProviderOptionsTab(String profilingType, String profilingName) {
-		setProfilingType(profilingType);
-		setName(profilingName);
-	}
+    /**
+     * ProviderOptionsTab constructor.
+     *
+     * @param profilingType String type of profiling this tab will be used for.
+     * @param profilingName String name of this tab to be displayed.
+     */
+    public ProviderOptionsTab(String profilingType, String profilingName) {
+        setProfilingType(profilingType);
+        setName(profilingName);
+    }
 
-	@Override
-	protected Map<String, String> getProviders() {
-		return ProviderFramework.getProviderNamesForType(getProfilingType());
-	}
-	
-	@Override
-	protected String getDefaultProviderId() {
-		return ProviderFramework.getProviderIdToRun(null, getProfilingType());
-	}
-	
+    @Override
+    protected Map<String, String> getProviders() {
+        return ProviderFramework.getProviderNamesForType(getProfilingType());
+    }
+
+    @Override
+    protected String getDefaultProviderId() {
+        return ProviderFramework.getProviderIdToRun(null, getProfilingType());
+    }
+
 
 }

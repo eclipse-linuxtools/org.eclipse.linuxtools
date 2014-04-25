@@ -20,19 +20,19 @@ import org.eclipse.swt.widgets.Display;
 
 public class ColorManager {
 
-	private Map<RGB, Color> fColorTable = new HashMap<>(10);
+    private Map<RGB, Color> fColorTable = new HashMap<>(10);
 
-	public void dispose() {
-		for (Map.Entry<RGB, Color> entry:fColorTable.entrySet()){
-			entry.getValue().dispose();
-		}
-	}
-	public Color getColor(RGB rgb) {
-		Color color = fColorTable.get(rgb);
-		if (color == null) {
-			color = new Color(Display.getCurrent(), rgb);
-			fColorTable.put(rgb, color);
-		}
-		return color;
-	}
+    public void dispose() {
+        for (Map.Entry<RGB, Color> entry:fColorTable.entrySet()){
+            entry.getValue().dispose();
+        }
+    }
+    public Color getColor(RGB rgb) {
+        Color color = fColorTable.get(rgb);
+        if (color == null) {
+            color = new Color(Display.getCurrent(), rgb);
+            fColorTable.put(rgb, color);
+        }
+        return color;
+    }
 }

@@ -22,29 +22,29 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
  */
 public class SourceDisassemblyViewTest extends AbstractStyledTextViewTest {
 
-	@Override
-	protected void setPerfOptions(SWTWorkbenchBot bot) {
-		SWTBotCheckBox chkBox = bot.checkBox("Show Source Disassembly View");
-		assertNotNull(chkBox);
-		chkBox.select();
-	}
+    @Override
+    protected void setPerfOptions(SWTWorkbenchBot bot) {
+        SWTBotCheckBox chkBox = bot.checkBox("Show Source Disassembly View");
+        assertNotNull(chkBox);
+        chkBox.select();
+    }
 
-	@Override
-	protected void openStubView() {
-		PerfPlugin.getDefault().setSourceDisassemblyData(new StubPerfData());
-		SourceDisassemblyView.refreshView();
+    @Override
+    protected void openStubView() {
+        PerfPlugin.getDefault().setSourceDisassemblyData(new StubPerfData());
+        SourceDisassemblyView.refreshView();
 
-	}
+    }
 
-	@Override
-	protected String getViewId() {
-		// supply secondary id
-		return "Perf Source Disassembly";
+    @Override
+    protected String getViewId() {
+        // supply secondary id
+        return "Perf Source Disassembly";
 
-	}
+    }
 
-	@Override
-	protected String getExpectedText() {
-		return PerfPlugin.getDefault().getSourceDisassemblyData().getPerfData();
-	}
+    @Override
+    protected String getExpectedText() {
+        return PerfPlugin.getDefault().getSourceDisassemblyData().getPerfData();
+    }
 }

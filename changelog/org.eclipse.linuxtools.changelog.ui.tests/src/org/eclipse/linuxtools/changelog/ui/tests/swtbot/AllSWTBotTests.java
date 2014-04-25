@@ -17,14 +17,14 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-		AddChangelogEntrySWTBotTest.class,
-		PrepareChangelogSWTBotTest.class,
-		DisabledPrepareChangelogSWTBotTest.class,
-		CreateChangeLogFromHistorySWTBotTest.class,
-		FormatChangeLogSWTBotTest.class
-	}
+        AddChangelogEntrySWTBotTest.class,
+        PrepareChangelogSWTBotTest.class,
+        DisabledPrepareChangelogSWTBotTest.class,
+        CreateChangeLogFromHistorySWTBotTest.class,
+        FormatChangeLogSWTBotTest.class
+    }
 )
 
 public class AllSWTBotTests {
-	// empty
+    // empty
 }

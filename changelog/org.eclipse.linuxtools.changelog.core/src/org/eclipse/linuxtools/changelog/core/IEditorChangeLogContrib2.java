@@ -14,10 +14,10 @@ import org.eclipse.jface.text.IDocument;
 
 public interface IEditorChangeLogContrib2 {
 
-	/**
-	 * Perform documentation setup.  Use this to specify partitioning.
-	 *
-	 * @param document to set up.
-	 */
-	void setup(IDocument document);
+    /**
+     * Perform documentation setup.  Use this to specify partitioning.
+     *
+     * @param document to set up.
+     */
+    void setup(IDocument document);
 }

@@ -22,28 +22,28 @@ import org.junit.Test;
 
 public class CopierTest {
 
-	@Test
-	public void testCopy() {
-		ArrayList<String> list = new ArrayList<>();
-		@SuppressWarnings("unchecked")
-		ArrayList<Integer>[] lists = new ArrayList[3];
-		int listsSize = 3;
+    @Test
+    public void testCopy() {
+        ArrayList<String> list = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        ArrayList<Integer>[] lists = new ArrayList[3];
+        int listsSize = 3;
 
-		for(int i=0; i<listsSize; i++) {
-			list.add("" + i);
-			for(int j=0; j<5; j++){
-				lists[i] = new ArrayList<>();
-				lists[i].add(new Integer(j));
-			}
-		}
+        for(int i=0; i<listsSize; i++) {
+            list.add("" + i);
+            for(int j=0; j<5; j++){
+                lists[i] = new ArrayList<>();
+                lists[i].add(new Integer(j));
+            }
+        }
 
-		List<String> list2 = Copier.copy(list);
-		for(int i=0; i<list.size(); i++) {
-			assertEquals(list2.get(i), list.get(i));
-		}
+        List<String> list2 = Copier.copy(list);
+        for(int i=0; i<list.size(); i++) {
+            assertEquals(list2.get(i), list.get(i));
+        }
 
-		List<?>[] lists2 = Copier.copy(lists);
-		assertArrayEquals(lists, lists2);
-	}
+        List<?>[] lists2 = Copier.copy(lists);
+        assertArrayEquals(lists, lists2);
+    }
 
 }

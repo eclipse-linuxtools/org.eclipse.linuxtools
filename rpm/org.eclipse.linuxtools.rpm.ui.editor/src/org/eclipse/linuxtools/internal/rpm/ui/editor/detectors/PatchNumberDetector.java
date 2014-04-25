@@ -13,19 +13,19 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.detectors;
 
 public class PatchNumberDetector implements IStrictWordDetector {
 
-	@Override
-	public boolean isWordPart(char c) {
-		return Character.isDigit(c);
-	}
+    @Override
+    public boolean isWordPart(char c) {
+        return Character.isDigit(c);
+    }
 
-	@Override
-	public boolean isWordStart(char c) {
-		return Character.isDigit(c);
-	}
+    @Override
+    public boolean isWordStart(char c) {
+        return Character.isDigit(c);
+    }
 
-	@Override
-	public boolean isEndingCharacter(char c) {
-		return Character.isWhitespace(c);
-	}
+    @Override
+    public boolean isEndingCharacter(char c) {
+        return Character.isWhitespace(c);
+    }
 
 }

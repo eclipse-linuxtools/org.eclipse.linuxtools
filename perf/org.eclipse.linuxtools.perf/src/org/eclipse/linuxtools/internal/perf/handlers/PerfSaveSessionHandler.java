@@ -30,62 +30,62 @@ import org.eclipse.ui.PlatformUI;
  */
 public class PerfSaveSessionHandler extends AbstractSaveDataHandler {
 
-	public static final String DATA_EXT = "data"; //$NON-NLS-1$
+    public static final String DATA_EXT = "data"; //$NON-NLS-1$
 
-	@Override
-	public IPath saveData(String filename) {
-		// get paths
-		IPath newDataLoc = getNewDataLocation(filename, DATA_EXT);
-		IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
-		URI newDataLocURI = null;
-		URI defaultDataLocURI = null;
-		// get files
-		IRemoteFileProxy proxy = null;
-		try {
-			newDataLocURI = new URI(newDataLoc.toPortableString());
-			defaultDataLocURI = new URI(defaultDataLoc.toPortableString());
-			proxy = RemoteProxyManager.getInstance().getFileProxy(newDataLocURI);
-		} catch (URISyntaxException e) {
-			openErroDialog(Messages.MsgProxyError,
-					Messages.MsgProxyError,
-					newDataLoc.lastSegment());
-		} catch (CoreException e) {
-			openErroDialog(Messages.MsgProxyError,
-					Messages.MsgProxyError,
-					newDataLoc.lastSegment());
-		}
-		IFileStore newDataFileStore = proxy.getResource(newDataLocURI.getPath());
-		IFileStore defaultDataFileStore = proxy.getResource(defaultDataLocURI.getPath());
+    @Override
+    public IPath saveData(String filename) {
+        // get paths
+        IPath newDataLoc = getNewDataLocation(filename, DATA_EXT);
+        IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
+        URI newDataLocURI = null;
+        URI defaultDataLocURI = null;
+        // get files
+        IRemoteFileProxy proxy = null;
+        try {
+            newDataLocURI = new URI(newDataLoc.toPortableString());
+            defaultDataLocURI = new URI(defaultDataLoc.toPortableString());
+            proxy = RemoteProxyManager.getInstance().getFileProxy(newDataLocURI);
+        } catch (URISyntaxException e) {
+            openErroDialog(Messages.MsgProxyError,
+                    Messages.MsgProxyError,
+                    newDataLoc.lastSegment());
+        } catch (CoreException e) {
+            openErroDialog(Messages.MsgProxyError,
+                    Messages.MsgProxyError,
+                    newDataLoc.lastSegment());
+        }
+        IFileStore newDataFileStore = proxy.getResource(newDataLocURI.getPath());
+        IFileStore defaultDataFileStore = proxy.getResource(defaultDataLocURI.getPath());
 
-		if (canSave(newDataLoc)) {
-			// copy default data into new location
-			try {
-				defaultDataFileStore.copy(newDataFileStore, EFS.OVERWRITE, null);
-				PerfPlugin.getDefault().setPerfProfileData(newDataLoc);
-				try {
-					PerfProfileView view = (PerfProfileView) PlatformUI
-							.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView(PerfPlugin.VIEW_ID);
-					view.setContentDescription(newDataLoc.toOSString());
-				} catch (PartInitException e) {
-					// fail silently
-				}
-				IFileInfo info = newDataFileStore.fetchInfo();
-				info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
-				newDataFileStore.putInfo(info, EFS.SET_ATTRIBUTES, null);
-				return newDataLoc;
-			} catch (CoreException e) {
-				openErroDialog(Messages.PerfSaveSession_failure_title,
-						Messages.PerfSaveSession_failure_msg,
-						newDataLoc.lastSegment());
-			}
-		}
-		return null;
-	}
+        if (canSave(newDataLoc)) {
+            // copy default data into new location
+            try {
+                defaultDataFileStore.copy(newDataFileStore, EFS.OVERWRITE, null);
+                PerfPlugin.getDefault().setPerfProfileData(newDataLoc);
+                try {
+                    PerfProfileView view = (PerfProfileView) PlatformUI
+                            .getWorkbench().getActiveWorkbenchWindow()
+                            .getActivePage().showView(PerfPlugin.VIEW_ID);
+                    view.setContentDescription(newDataLoc.toOSString());
+                } catch (PartInitException e) {
+                    // fail silently
+                }
+                IFileInfo info = newDataFileStore.fetchInfo();
+                info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
+                newDataFileStore.putInfo(info, EFS.SET_ATTRIBUTES, null);
+                return newDataLoc;
+            } catch (CoreException e) {
+                openErroDialog(Messages.PerfSaveSession_failure_title,
+                        Messages.PerfSaveSession_failure_msg,
+                        newDataLoc.lastSegment());
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public boolean verifyData() {
-		IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
-		return defaultDataLoc != null && !defaultDataLoc.isEmpty();
-	}
+    @Override
+    public boolean verifyData() {
+        IPath defaultDataLoc = PerfPlugin.getDefault().getPerfProfileData();
+        return defaultDataLoc != null && !defaultDataLoc.isEmpty();
+    }
 }

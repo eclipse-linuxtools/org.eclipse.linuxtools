@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 import org.eclipse.core.resources.IFile;
@@ -25,85 +25,85 @@ import org.osgi.framework.BundleContext;
 
 public class MassifPlugin extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.massif"; //$NON-NLS-1$
-	public static final String EDITOR_ID = PLUGIN_ID + ".chartEditor"; //$NON-NLS-1$
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.massif"; //$NON-NLS-1$
+    public static final String EDITOR_ID = PLUGIN_ID + ".chartEditor"; //$NON-NLS-1$
 
-	// The shared instance
-	private static MassifPlugin plugin;
-	
-	// Needed for source lookup on massif output, since massif only supplies filenames
-	// and not full paths
-	private ISourceLocator locator;
+    // The shared instance
+    private static MassifPlugin plugin;
 
-	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.massif"; //$NON-NLS-1$
-	
-	/**
-	 * The constructor
-	 */
-	public MassifPlugin() {
-	}
+    // Needed for source lookup on massif output, since massif only supplies filenames
+    // and not full paths
+    private ISourceLocator locator;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+    public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.massif"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    /**
+     * The constructor
+     */
+    public MassifPlugin() {
+    }
 
-	public static FontMetrics getFontMetrics(Control control) {
-		 GC gc = new GC(control);
-		 gc.setFont(control.getFont());
-		 FontMetrics fontMetrics = gc.getFontMetrics();
-		 gc.dispose();
-		 return fontMetrics;
-	}
-	
-	public void openEditorForNode(MassifHeapTreeNode element) {
-		// do source lookup
-		if (locator instanceof ISourceLookupDirector) {
-			Object obj = ((ISourceLookupDirector) locator).getSourceElement(element.getFilename());
-			if (obj instanceof IStorage){
-				try {
-					// Most likely a remote project
-					if (obj instanceof IFile) {
-						ProfileUIUtils.openEditorAndSelect(((IFile)obj), element.getLine());
-					// Local projects
-					} else {
-						String fullFilePath = ((IStorage) obj).getFullPath().toOSString();
-						ProfileUIUtils.openEditorAndSelect(fullFilePath, element.getLine());
-					}
-				} catch (PartInitException|BadLocationException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	protected void setSourceLocator(ISourceLocator locator) {
-		this.locator = locator;
-	}
-	
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static MassifPlugin getDefault() {
-		return plugin;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
+
+    public static FontMetrics getFontMetrics(Control control) {
+         GC gc = new GC(control);
+         gc.setFont(control.getFont());
+         FontMetrics fontMetrics = gc.getFontMetrics();
+         gc.dispose();
+         return fontMetrics;
+    }
+
+    public void openEditorForNode(MassifHeapTreeNode element) {
+        // do source lookup
+        if (locator instanceof ISourceLookupDirector) {
+            Object obj = ((ISourceLookupDirector) locator).getSourceElement(element.getFilename());
+            if (obj instanceof IStorage){
+                try {
+                    // Most likely a remote project
+                    if (obj instanceof IFile) {
+                        ProfileUIUtils.openEditorAndSelect(((IFile)obj), element.getLine());
+                    // Local projects
+                    } else {
+                        String fullFilePath = ((IStorage) obj).getFullPath().toOSString();
+                        ProfileUIUtils.openEditorAndSelect(fullFilePath, element.getLine());
+                    }
+                } catch (PartInitException|BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    protected void setSourceLocator(ISourceLocator locator) {
+        this.locator = locator;
+    }
+
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static MassifPlugin getDefault() {
+        return plugin;
+    }
 
 }

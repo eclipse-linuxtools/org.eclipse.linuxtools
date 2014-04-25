@@ -16,12 +16,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
  */
 public class PreferenceConstants {
 
-	//environmentvariables
-	public static final String[][] P_ENV = new String[][] {
-		{"EnvLdLibraryPath", "LD_LIBRARY_PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
-		{"EnvPath", "PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
-		{"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"}, //$NON-NLS-1$ //$NON-NLS-2$
-		{"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"}, //$NON-NLS-1$ //$NON-NLS-2$
-	};
+    //environmentvariables
+    public static final String[][] P_ENV = new String[][] {
+        {"EnvLdLibraryPath", "LD_LIBRARY_PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
+        {"EnvPath", "PATH"}, //$NON-NLS-1$ //$NON-NLS-2$
+        {"EnvSystemtapTapset", "SYSTEMTAP_TAPSET"}, //$NON-NLS-1$ //$NON-NLS-2$
+        {"EnvSystemtapRuntime", "SYSTEMTAP_RUNTIME"}, //$NON-NLS-1$ //$NON-NLS-2$
+    };
 
 }

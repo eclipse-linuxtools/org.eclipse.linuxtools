@@ -24,28 +24,28 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
  */
 public class RemoteProxyNatureMapping {
 
-	private static final String EXTENSION_POINT_ID = "RemoteProxyNatureMapping"; //$NON-NLS-1$
-	private static final String MANAGER_NAME = "mapping"; //$NON-NLS-1$
-	private static final String NATURE_ID = "nature"; //$NON-NLS-1$
-	private static final String SCHEME_ID = "schema"; //$NON-NLS-1$
+    private static final String EXTENSION_POINT_ID = "RemoteProxyNatureMapping"; //$NON-NLS-1$
+    private static final String MANAGER_NAME = "mapping"; //$NON-NLS-1$
+    private static final String NATURE_ID = "nature"; //$NON-NLS-1$
+    private static final String SCHEME_ID = "schema"; //$NON-NLS-1$
 
-	public String getSchemeFromNature(IProject project) throws CoreException {
+    public String getSchemeFromNature(IProject project) throws CoreException {
 
-		IProjectDescription description = project.getDescription();
-		String[] natures = description.getNatureIds();
+        IProjectDescription description = project.getDescription();
+        String[] natures = description.getNatureIds();
 
-		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, EXTENSION_POINT_ID);
-		IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
-		for(int i = 0; i < infos.length; i++) {
-			IConfigurationElement configurationElement = infos[i];
-			if (configurationElement.getName().equals(MANAGER_NAME)) {
-				for (int j=0;j<natures.length;j++) {
-					if (configurationElement.getAttribute(NATURE_ID).equals(natures[j])) {
-						return configurationElement.getAttribute(SCHEME_ID);
-					}
-				}
-			}
-		}
-		return null;
-	}
+        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ProfileLaunchPlugin.PLUGIN_ID, EXTENSION_POINT_ID);
+        IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
+        for(int i = 0; i < infos.length; i++) {
+            IConfigurationElement configurationElement = infos[i];
+            if (configurationElement.getName().equals(MANAGER_NAME)) {
+                for (int j=0;j<natures.length;j++) {
+                    if (configurationElement.getAttribute(NATURE_ID).equals(natures[j])) {
+                        return configurationElement.getAttribute(SCHEME_ID);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

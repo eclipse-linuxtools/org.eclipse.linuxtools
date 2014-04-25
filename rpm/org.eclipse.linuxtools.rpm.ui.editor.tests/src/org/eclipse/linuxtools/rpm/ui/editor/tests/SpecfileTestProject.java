@@ -23,41 +23,41 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
 public class SpecfileTestProject {
-	private IProject project;
+    private IProject project;
 
-	public SpecfileTestProject() throws CoreException {
-		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		project = workspaceRoot.getProject("TestSpecfileProject");
-		if (!project.exists()) {
-			project.create(null);
-		}
-		project.open(null);
-	}
+    public SpecfileTestProject() throws CoreException {
+        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+        project = workspaceRoot.getProject("TestSpecfileProject");
+        if (!project.exists()) {
+            project.create(null);
+        }
+        project.open(null);
+    }
 
-	public void dispose() throws CoreException {
-		project.delete(true, true, null);
-		try {
-			Utils.runCommandToInputStream("rm", "-f", "/tmp/pkglist");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void dispose() throws CoreException {
+        project.delete(true, true, null);
+        try {
+            Utils.runCommandToInputStream("rm", "-f", "/tmp/pkglist");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public IFile createFile(String filename) throws CoreException {
-		IFile testSpecfile = project.getFile(filename);
-		if (!testSpecfile.exists()) {
-			testSpecfile.create(null, true, null);
-		}
-		return testSpecfile;
-	}
+    public IFile createFile(String filename) throws CoreException {
+        IFile testSpecfile = project.getFile(filename);
+        if (!testSpecfile.exists()) {
+            testSpecfile.create(null, true, null);
+        }
+        return testSpecfile;
+    }
 
-	protected IMarker[] getFailureMarkers() throws CoreException {
-		return project.findMarkers(
-				"org.eclipse.linuxtools.rpm.ui.editor.specfileerror", false,
-				IResource.DEPTH_INFINITE);
-	}
+    protected IMarker[] getFailureMarkers() throws CoreException {
+        return project.findMarkers(
+                "org.eclipse.linuxtools.rpm.ui.editor.specfileerror", false,
+                IResource.DEPTH_INFINITE);
+    }
 
-	public void refresh() throws CoreException {
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
+    public void refresh() throws CoreException {
+        project.refreshLocal(IResource.DEPTH_INFINITE, null);
+    }
 }

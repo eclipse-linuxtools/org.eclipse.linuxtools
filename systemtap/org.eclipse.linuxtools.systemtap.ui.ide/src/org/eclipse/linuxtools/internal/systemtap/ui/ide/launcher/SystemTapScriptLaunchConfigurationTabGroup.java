@@ -17,19 +17,19 @@ import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 
 public class SystemTapScriptLaunchConfigurationTabGroup extends
-		AbstractLaunchConfigurationTabGroup {
+        AbstractLaunchConfigurationTabGroup {
 
-	public SystemTapScriptLaunchConfigurationTabGroup() {
-	}
+    public SystemTapScriptLaunchConfigurationTabGroup() {
+    }
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		AbstractLaunchConfigurationTab[] tabs = new AbstractLaunchConfigurationTab[] {
-				new SystemTapScriptLaunchConfigurationTab(),
-				new SystemTapScriptOptionsTab(),
-				new SystemTapScriptGraphOptionsTab(),
-				new CommonTab() };
-		setTabs(tabs);
-	}
+    @Override
+    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+        AbstractLaunchConfigurationTab[] tabs = new AbstractLaunchConfigurationTab[] {
+                new SystemTapScriptLaunchConfigurationTab(),
+                new SystemTapScriptOptionsTab(),
+                new SystemTapScriptGraphOptionsTab(),
+                new CommonTab() };
+        setTabs(tabs);
+    }
 
 }

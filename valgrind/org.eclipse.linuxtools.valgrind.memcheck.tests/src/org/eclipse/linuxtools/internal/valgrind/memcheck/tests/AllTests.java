@@ -16,9 +16,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ BasicMemcheckTest.class, DoubleClickTest.class,
-		LaunchConfigTabTest.class, MarkerTest.class,
-		LinkedResourceDoubleClickTest.class, LinkedResourceMarkerTest.class,
-		MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class,
-		SignalTest.class, MinVersionTest.class })
+        LaunchConfigTabTest.class, MarkerTest.class,
+        LinkedResourceDoubleClickTest.class, LinkedResourceMarkerTest.class,
+        MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class,
+        SignalTest.class, MinVersionTest.class })
 public class AllTests {
 }

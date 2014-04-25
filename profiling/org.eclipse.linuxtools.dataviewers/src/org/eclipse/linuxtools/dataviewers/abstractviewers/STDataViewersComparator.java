@@ -212,12 +212,12 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
     }
 
     @Override
-	public int compare(Object o1, Object o2) {
+    public int compare(Object o1, Object o2) {
         return compare(o1, o2, 0, true);
     }
 
     @Override
-	public int compare(Viewer viewer, Object e1, Object e2) {
+    public int compare(Viewer viewer, Object e1, Object e2) {
         return compare(e1, e2, 0, true);
     }
 

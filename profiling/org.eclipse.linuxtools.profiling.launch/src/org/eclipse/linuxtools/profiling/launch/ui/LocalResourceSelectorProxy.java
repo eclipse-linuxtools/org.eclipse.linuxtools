@@ -24,37 +24,37 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class LocalResourceSelectorProxy implements IRemoteResourceSelectorProxy {
 
-	@Override
-	public URI selectFile(String scheme, String initialPath, String prompt, Shell shell) {
-		FileDialog dialog = new FileDialog(shell, SWT.SHEET);
-		dialog.setText(prompt);
-		dialog.setFilterPath(initialPath);
-		try {
-			String path = dialog.open();
-			if (path != null)
-				return new URI(path);
-			else
-				return null;
-		} catch (URISyntaxException e) {
-			return null;
-		}
-	}
+    @Override
+    public URI selectFile(String scheme, String initialPath, String prompt, Shell shell) {
+        FileDialog dialog = new FileDialog(shell, SWT.SHEET);
+        dialog.setText(prompt);
+        dialog.setFilterPath(initialPath);
+        try {
+            String path = dialog.open();
+            if (path != null)
+                return new URI(path);
+            else
+                return null;
+        } catch (URISyntaxException e) {
+            return null;
+        }
+    }
 
-	@Override
-	public URI selectDirectory(String scheme, String initialPath, String prompt, Shell shell) {
-		DirectoryDialog dialog = new DirectoryDialog(shell, SWT.SHEET);
-		dialog.setText(prompt);
-		dialog.setFilterPath(initialPath);
-		try {
-			String path = dialog.open();
-			if (path != null)
-				return new URI(path);
-			else
-				return null;
-		} catch (URISyntaxException e) {
-			return null;
-		}
+    @Override
+    public URI selectDirectory(String scheme, String initialPath, String prompt, Shell shell) {
+        DirectoryDialog dialog = new DirectoryDialog(shell, SWT.SHEET);
+        dialog.setText(prompt);
+        dialog.setFilterPath(initialPath);
+        try {
+            String path = dialog.open();
+            if (path != null)
+                return new URI(path);
+            else
+                return null;
+        } catch (URISyntaxException e) {
+            return null;
+        }
 
-	}
+    }
 
 }

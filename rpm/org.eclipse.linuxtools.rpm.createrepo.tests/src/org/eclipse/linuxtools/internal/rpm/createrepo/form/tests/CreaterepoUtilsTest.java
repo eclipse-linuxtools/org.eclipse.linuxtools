@@ -28,70 +28,70 @@ import org.junit.Test;
  */
 public class CreaterepoUtilsTest {
 
-	private static final String CONSOLE_NAME = "CreaterepoConsole"; //$NON-NLS-1$
+    private static final String CONSOLE_NAME = "CreaterepoConsole"; //$NON-NLS-1$
 
-	private static ConsolePlugin plugin;
-	private static IConsoleManager manager;
+    private static ConsolePlugin plugin;
+    private static IConsoleManager manager;
 
-	/**
-	 * Setup the console manager.
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		plugin = ConsolePlugin.getDefault();
-		manager = plugin.getConsoleManager();
-	}
+    /**
+     * Setup the console manager.
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        plugin = ConsolePlugin.getDefault();
+        manager = plugin.getConsoleManager();
+    }
 
-	/**
-	 * Find any consoles and remove them.
-	 */
-	@After
-	public void tearDown() {
-		if (manager != null) {
-			manager.removeConsoles(manager.getConsoles());
-		}
-		assertEquals(0, manager.getConsoles().length);
-	}
+    /**
+     * Find any consoles and remove them.
+     */
+    @After
+    public void tearDown() {
+        if (manager != null) {
+            manager.removeConsoles(manager.getConsoles());
+        }
+        assertEquals(0, manager.getConsoles().length);
+    }
 
-	/**
-	 * Test if findConsole method finds correct console.
-	 */
-	@Test
-	public void testFindConsoleSameObject() {
-		MessageConsole createrepoConsole = new MessageConsole(CONSOLE_NAME, null, null, true);
-		manager.addConsoles(new IConsole[] {
-				new MessageConsole("DummyConsole1", null, null, true), //$NON-NLS-1$
-				createrepoConsole,
-				new MessageConsole("DummyConsole2", null, null, true) //$NON-NLS-1$
-		});
-		assertEquals(3, manager.getConsoles().length);
-		assertEquals(createrepoConsole, CreaterepoUtils.findConsole(CONSOLE_NAME));
-	}
+    /**
+     * Test if findConsole method finds correct console.
+     */
+    @Test
+    public void testFindConsoleSameObject() {
+        MessageConsole createrepoConsole = new MessageConsole(CONSOLE_NAME, null, null, true);
+        manager.addConsoles(new IConsole[] {
+                new MessageConsole("DummyConsole1", null, null, true), //$NON-NLS-1$
+                createrepoConsole,
+                new MessageConsole("DummyConsole2", null, null, true) //$NON-NLS-1$
+        });
+        assertEquals(3, manager.getConsoles().length);
+        assertEquals(createrepoConsole, CreaterepoUtils.findConsole(CONSOLE_NAME));
+    }
 
-	/**
-	 * Test if findConsole finds correct console by name.
-	 */
-	@Test
-	public void testFindConsoleByName() {
-		MessageConsole createrepoConsole = new MessageConsole(CONSOLE_NAME, null, null, true);
-		manager.addConsoles(new IConsole[] {
-				new MessageConsole("DummyConsole1", null, null, true), //$NON-NLS-1$
-				new MessageConsole(CONSOLE_NAME, null, null, true),
-				new MessageConsole("DummyConsole2", null, null, true) //$NON-NLS-1$
-		});
-		assertEquals(3, manager.getConsoles().length);
-		assertNotEquals(createrepoConsole, CreaterepoUtils.findConsole(CONSOLE_NAME));
-		assertEquals(CONSOLE_NAME, CreaterepoUtils.findConsole(CONSOLE_NAME).getName());
-	}
+    /**
+     * Test if findConsole finds correct console by name.
+     */
+    @Test
+    public void testFindConsoleByName() {
+        MessageConsole createrepoConsole = new MessageConsole(CONSOLE_NAME, null, null, true);
+        manager.addConsoles(new IConsole[] {
+                new MessageConsole("DummyConsole1", null, null, true), //$NON-NLS-1$
+                new MessageConsole(CONSOLE_NAME, null, null, true),
+                new MessageConsole("DummyConsole2", null, null, true) //$NON-NLS-1$
+        });
+        assertEquals(3, manager.getConsoles().length);
+        assertNotEquals(createrepoConsole, CreaterepoUtils.findConsole(CONSOLE_NAME));
+        assertEquals(CONSOLE_NAME, CreaterepoUtils.findConsole(CONSOLE_NAME).getName());
+    }
 
-	/**
-	 * Test if findConsole creates a console with correct name.
-	 */
-	@Test
-	public void testCreateConsoleIfNotFound() {
-		MessageConsole console = CreaterepoUtils.findConsole(CONSOLE_NAME);
-		assertNotNull(console);
-		assertEquals(CONSOLE_NAME, console.getName());
-	}
+    /**
+     * Test if findConsole creates a console with correct name.
+     */
+    @Test
+    public void testCreateConsoleIfNotFound() {
+        MessageConsole console = CreaterepoUtils.findConsole(CONSOLE_NAME);
+        assertNotNull(console);
+        assertEquals(CONSOLE_NAME, console.getName());
+    }
 
 }

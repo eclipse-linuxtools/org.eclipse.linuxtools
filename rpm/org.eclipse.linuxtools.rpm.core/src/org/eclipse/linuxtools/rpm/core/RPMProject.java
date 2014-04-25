@@ -42,185 +42,185 @@ import org.eclipse.linuxtools.internal.rpm.core.utils.RPMBuild;
  */
 public class RPMProject {
 
-	private IProject project;
-	private IProjectConfiguration rpmConfig;
+    private IProject project;
+    private IProjectConfiguration rpmConfig;
 
-	/**
-	 * Creates the rpm project for the given IProject and layout.
-	 * 
-	 * @param project The Eclipse project this RPMProject is represented by.
-	 * @param projectLayout The layout of the rpm project
-	 * @throws CoreException Thrown only in the RPMbuild layout case if a problem with some of the folders exist.
-	 */
-	public RPMProject(IProject project, RPMProjectLayout projectLayout)
-			throws CoreException {
-		this.project = project;
-		switch (projectLayout) {
-		case FLAT:
-			rpmConfig = new FlatBuildConfiguration(this.project);
-			break;
-		case RPMBUILD:
-		default:
-			rpmConfig = new RPMBuildConfiguration(this.project);
-			break;
-		}
-	}
+    /**
+     * Creates the rpm project for the given IProject and layout.
+     *
+     * @param project The Eclipse project this RPMProject is represented by.
+     * @param projectLayout The layout of the rpm project
+     * @throws CoreException Thrown only in the RPMbuild layout case if a problem with some of the folders exist.
+     */
+    public RPMProject(IProject project, RPMProjectLayout projectLayout)
+            throws CoreException {
+        this.project = project;
+        switch (projectLayout) {
+        case FLAT:
+            rpmConfig = new FlatBuildConfiguration(this.project);
+            break;
+        case RPMBUILD:
+        default:
+            rpmConfig = new RPMBuildConfiguration(this.project);
+            break;
+        }
+    }
 
-	/**
-	 * Returns the configuration (RPMBuild, FLAT) for this project.
-	 * 
-	 * @return The project configuration.
-	 */
-	public IProjectConfiguration getConfiguration() {
-		return rpmConfig;
-	}
+    /**
+     * Returns the configuration (RPMBuild, FLAT) for this project.
+     *
+     * @return The project configuration.
+     */
+    public IProjectConfiguration getConfiguration() {
+        return rpmConfig;
+    }
 
-	/**
-	 * Returns the .spec file of this project.
-	 * 
-	 * @return The .spec file or null if one is not found.
-	 */
-	public IResource getSpecFile() {
-		IContainer specsFolder = getConfiguration().getSpecsFolder();
-		IResource file = null;
-		SpecfileVisitor specVisitor = new SpecfileVisitor();
-		
-		try {
-			specsFolder.accept(specVisitor);
-			List<IResource> installedSpecs = specVisitor.getSpecFiles();
-			if(installedSpecs.size() > 0){
-				file = installedSpecs.get(0);
-			}
-		} catch (CoreException e) {
-			// ignore, failed to find .spec file.
-		}
-		return file;
-	}
+    /**
+     * Returns the .spec file of this project.
+     *
+     * @return The .spec file or null if one is not found.
+     */
+    public IResource getSpecFile() {
+        IContainer specsFolder = getConfiguration().getSpecsFolder();
+        IResource file = null;
+        SpecfileVisitor specVisitor = new SpecfileVisitor();
 
-	/**
-	 * Import a SRPM into this RPM project using local file.
-	 * 
-	 * @param externalFile The SRPM file.
-	 * @throws CoreException If there is problem with the .src.rpm file.
-	 */
-	public void importSourceRPM(File externalFile) throws CoreException {
-		// Copy original SRPM to workspace
-		IFile srpmFile = getConfiguration().getSrpmsFolder().getFile(
-				new Path(externalFile.getName()));
-		try {
-			srpmFile.create(new FileInputStream(externalFile), false, null);
-		} catch (FileNotFoundException e) {
-			String throwMessage = Messages
-					.getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
-					rpmConfig.getSpecsFolder().getLocation().toOSString();
-			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-					throwMessage, e);
-			throw new CoreException(error);
-		}
+        try {
+            specsFolder.accept(specVisitor);
+            List<IResource> installedSpecs = specVisitor.getSpecFiles();
+            if(installedSpecs.size() > 0){
+                file = installedSpecs.get(0);
+            }
+        } catch (CoreException e) {
+            // ignore, failed to find .spec file.
+        }
+        return file;
+    }
 
-		// Install the SRPM
-		RPM rpm = new RPM(getConfiguration());
-		rpm.install(srpmFile);
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+    /**
+     * Import a SRPM into this RPM project using local file.
+     *
+     * @param externalFile The SRPM file.
+     * @throws CoreException If there is problem with the .src.rpm file.
+     */
+    public void importSourceRPM(File externalFile) throws CoreException {
+        // Copy original SRPM to workspace
+        IFile srpmFile = getConfiguration().getSrpmsFolder().getFile(
+                new Path(externalFile.getName()));
+        try {
+            srpmFile.create(new FileInputStream(externalFile), false, null);
+        } catch (FileNotFoundException e) {
+            String throwMessage = Messages
+                    .getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
+                    rpmConfig.getSpecsFolder().getLocation().toOSString();
+            IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
+                    throwMessage, e);
+            throw new CoreException(error);
+        }
 
-		// Set the project nature
-		RPMProjectNature.addRPMNature(project, null);
+        // Install the SRPM
+        RPM rpm = new RPM(getConfiguration());
+        rpm.install(srpmFile);
+        project.refreshLocal(IResource.DEPTH_INFINITE, null);
 
-	}
-	
-	/**
-	 * Import a remote SRPM into this RPM project, by downloading the file
-	 * and calling {@link RPMProject#importSourceRPM(File)}.
-	 * 
-	 * @param remoteFile URI to the remote SRPM file.
-	 * @param monitor The progress monitor.
-	 * @throws CoreException Thrown if the import failed.
-	 */
-	public void importSourceRPM(URL remoteFile, IProgressMonitor monitor) throws CoreException {
-		URLConnection content;
-		try {
-			content = remoteFile.openConnection();
-		} catch (IOException e) {
-			Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-					e.getMessage(), e);
-			throw new CoreException(status);
-		}
-		File tempFile = new File(
-				System.getProperty("java.io.tmpdir"), remoteFile.toString().substring(remoteFile.toString().lastIndexOf('/') + 1)); //$NON-NLS-1$
-		if (tempFile.exists()) {
-			tempFile.delete();
-		}
-		final FileDownloadJob downloadJob = new FileDownloadJob(tempFile,
-				content);
-		downloadJob.run(monitor);
-		importSourceRPM(tempFile);
-	}
+        // Set the project nature
+        RPMProjectNature.addRPMNature(project, null);
 
-	/**
-	 * Build both source and binary rpms.
-	 * @param outStream The stream to right command output to.
-	 * @return The result of the command.
-	 * @throws CoreException If exception occurs during building.
-	 */
-	public IStatus buildAll(OutputStream outStream) throws CoreException {
-		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		IStatus result = rpmbuild.buildAll(getSpecFile(), outStream);
+    }
 
-		getConfiguration().getBuildFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		getConfiguration().getRpmsFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		getConfiguration().getSrpmsFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		return result;
-	}
+    /**
+     * Import a remote SRPM into this RPM project, by downloading the file
+     * and calling {@link RPMProject#importSourceRPM(File)}.
+     *
+     * @param remoteFile URI to the remote SRPM file.
+     * @param monitor The progress monitor.
+     * @throws CoreException Thrown if the import failed.
+     */
+    public void importSourceRPM(URL remoteFile, IProgressMonitor monitor) throws CoreException {
+        URLConnection content;
+        try {
+            content = remoteFile.openConnection();
+        } catch (IOException e) {
+            Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
+                    e.getMessage(), e);
+            throw new CoreException(status);
+        }
+        File tempFile = new File(
+                System.getProperty("java.io.tmpdir"), remoteFile.toString().substring(remoteFile.toString().lastIndexOf('/') + 1)); //$NON-NLS-1$
+        if (tempFile.exists()) {
+            tempFile.delete();
+        }
+        final FileDownloadJob downloadJob = new FileDownloadJob(tempFile,
+                content);
+        downloadJob.run(monitor);
+        importSourceRPM(tempFile);
+    }
 
-	/**
-	 * Builds binary rpm.
-	 * @param out The stream to right command output to.
-	 * @return The result of the command.
-	 * @throws CoreException If exception occurs during building.
-	 */
-	public IStatus buildBinaryRPM(OutputStream out) throws CoreException {
-		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		IStatus result = rpmbuild.buildBinary(getSpecFile(), out);
+    /**
+     * Build both source and binary rpms.
+     * @param outStream The stream to right command output to.
+     * @return The result of the command.
+     * @throws CoreException If exception occurs during building.
+     */
+    public IStatus buildAll(OutputStream outStream) throws CoreException {
+        RPMBuild rpmbuild = new RPMBuild(getConfiguration());
+        IStatus result = rpmbuild.buildAll(getSpecFile(), outStream);
 
-		getConfiguration().getBuildFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		getConfiguration().getRpmsFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		return result;
-	}
+        getConfiguration().getBuildFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        getConfiguration().getRpmsFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        getConfiguration().getSrpmsFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        return result;
+    }
 
-	/**
-	 * Builds source rpm.
-	 * @param out The stream to right command output to.
-	 * @return The result of the command.
-	 * @throws CoreException If exception occurs during building.
-	 */
-	public IStatus buildSourceRPM(OutputStream out) throws CoreException {
-		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		IStatus result = rpmbuild.buildSource(getSpecFile(), out);
+    /**
+     * Builds binary rpm.
+     * @param out The stream to right command output to.
+     * @return The result of the command.
+     * @throws CoreException If exception occurs during building.
+     */
+    public IStatus buildBinaryRPM(OutputStream out) throws CoreException {
+        RPMBuild rpmbuild = new RPMBuild(getConfiguration());
+        IStatus result = rpmbuild.buildBinary(getSpecFile(), out);
 
-		getConfiguration().getBuildFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		getConfiguration().getSrpmsFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		return result;
-	}
+        getConfiguration().getBuildFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        getConfiguration().getRpmsFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        return result;
+    }
 
-	/**
-	 * Prepares sources for build (rpmbuild -bp).
-	 * @param out The stream to right command output to.
-	 * @return The result of the command.
-	 * @throws CoreException If exception occurs during building.
-	 */
-	public IStatus buildPrep(OutputStream out) throws CoreException {
-		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		IStatus result = rpmbuild.buildPrep(getSpecFile(), out);
-		getConfiguration().getBuildFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		return result;
-	}
+    /**
+     * Builds source rpm.
+     * @param out The stream to right command output to.
+     * @return The result of the command.
+     * @throws CoreException If exception occurs during building.
+     */
+    public IStatus buildSourceRPM(OutputStream out) throws CoreException {
+        RPMBuild rpmbuild = new RPMBuild(getConfiguration());
+        IStatus result = rpmbuild.buildSource(getSpecFile(), out);
+
+        getConfiguration().getBuildFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        getConfiguration().getSrpmsFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        return result;
+    }
+
+    /**
+     * Prepares sources for build (rpmbuild -bp).
+     * @param out The stream to right command output to.
+     * @return The result of the command.
+     * @throws CoreException If exception occurs during building.
+     */
+    public IStatus buildPrep(OutputStream out) throws CoreException {
+        RPMBuild rpmbuild = new RPMBuild(getConfiguration());
+        IStatus result = rpmbuild.buildPrep(getSpecFile(), out);
+        getConfiguration().getBuildFolder().refreshLocal(
+                IResource.DEPTH_INFINITE, null);
+        return result;
+    }
 
 }

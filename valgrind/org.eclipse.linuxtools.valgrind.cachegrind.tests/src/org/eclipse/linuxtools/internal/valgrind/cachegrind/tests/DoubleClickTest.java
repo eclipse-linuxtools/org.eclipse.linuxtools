@@ -43,104 +43,104 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DoubleClickTest extends AbstractCachegrindTest {
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
 
-	private static void doDoubleClick(TreePath path) {
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer treeViewer = view.getViewer();
+    private static void doDoubleClick(TreePath path) {
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        TreeViewer treeViewer = view.getViewer();
 
-		ICachegrindElement element = (ICachegrindElement) path.getLastSegment();
-		treeViewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
-		TreeSelection selection = new TreeSelection(path);
+        ICachegrindElement element = (ICachegrindElement) path.getLastSegment();
+        treeViewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
+        TreeSelection selection = new TreeSelection(path);
 
-		IDoubleClickListener listener = view.getDoubleClickListener();
-		listener.doubleClick(new DoubleClickEvent(treeViewer, selection));
-	}
-	@Test
-	public void testDoubleClickFile() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
+        IDoubleClickListener listener = view.getDoubleClickListener();
+        listener.doubleClick(new DoubleClickEvent(treeViewer, selection));
+    }
+    @Test
+    public void testDoubleClickFile() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		TreePath path = new TreePath(new Object[] { output, file });
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        TreePath path = new TreePath(new Object[] { output, file });
 
-		doDoubleClick(path);
+        doDoubleClick(path);
 
-		checkFile(file);
-	}
-	@Test
-	public void testDoubleClickFunction() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
+        checkFile(file);
+    }
+    @Test
+    public void testDoubleClickFunction() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
-		TreePath path = new TreePath(new Object[] { output, file, func });
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
+        TreePath path = new TreePath(new Object[] { output, file, func });
 
-		doDoubleClick(path);
+        doDoubleClick(path);
 
-		// check file in editor
-		IEditorPart editor = checkFile(file);
+        // check file in editor
+        IEditorPart editor = checkFile(file);
 
-		// check line number
-		ITextEditor textEditor = (ITextEditor) editor;
+        // check line number
+        ITextEditor textEditor = (ITextEditor) editor;
 
-		ISelection selection = textEditor.getSelectionProvider().getSelection();
-		TextSelection textSelection = (TextSelection) selection;
-		int line = textSelection.getStartLine() + 1; // zero-indexed
+        ISelection selection = textEditor.getSelectionProvider().getSelection();
+        TextSelection textSelection = (TextSelection) selection;
+        int line = textSelection.getStartLine() + 1; // zero-indexed
 
-		int expectedLine = ((IFunction) func.getModel()).getSourceRange().getStartLine();
-		assertEquals(expectedLine, line);
-	}
-	@Test
-	public void testDoubleClickLine() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
+        int expectedLine = ((IFunction) func.getModel()).getSourceRange().getStartLine();
+        assertEquals(expectedLine, line);
+    }
+    @Test
+    public void testDoubleClickLine() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
-		CachegrindLine line = func.getLines()[0];
-		TreePath path = new TreePath(new Object[] { output, file, func });
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
+        CachegrindLine line = func.getLines()[0];
+        TreePath path = new TreePath(new Object[] { output, file, func });
 
-		doDoubleClick(path);
+        doDoubleClick(path);
 
-		// check file in editor
-		IEditorPart editor = checkFile(file);
+        // check file in editor
+        IEditorPart editor = checkFile(file);
 
-		// check line number
-		ITextEditor textEditor = (ITextEditor) editor;
+        // check line number
+        ITextEditor textEditor = (ITextEditor) editor;
 
-		ISelection selection = textEditor.getSelectionProvider().getSelection();
-		TextSelection textSelection = (TextSelection) selection;
-		int actualLine = textSelection.getStartLine() + 1; // zero-indexed
+        ISelection selection = textEditor.getSelectionProvider().getSelection();
+        TextSelection textSelection = (TextSelection) selection;
+        int actualLine = textSelection.getStartLine() + 1; // zero-indexed
 
-		assertEquals(line.getLine(), actualLine);
-	}
+        assertEquals(line.getLine(), actualLine);
+    }
 
-	private IEditorPart checkFile(CachegrindFile file) {
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		IEditorInput input = editor.getEditorInput();
-		IFileEditorInput fileInput = (IFileEditorInput) input;
-		IResource expectedResource = proj.getProject().findMember(file.getName());
-		File expectedFile = expectedResource.getLocation().toFile();
-		File actualFile = fileInput.getFile().getLocation().toFile();
-		assertEquals(expectedFile, actualFile);
-		return editor;
-	}
+    private IEditorPart checkFile(CachegrindFile file) {
+        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        IEditorInput input = editor.getEditorInput();
+        IFileEditorInput fileInput = (IFileEditorInput) input;
+        IResource expectedResource = proj.getProject().findMember(file.getName());
+        File expectedFile = expectedResource.getLocation().toFile();
+        File actualFile = fileInput.getFile().getLocation().toFile();
+        assertEquals(expectedFile, actualFile);
+        return editor;
+    }
 }

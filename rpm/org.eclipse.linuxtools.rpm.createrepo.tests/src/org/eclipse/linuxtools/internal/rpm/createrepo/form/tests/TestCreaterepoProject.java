@@ -39,136 +39,136 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  */
 public class TestCreaterepoProject {
 
-	private static NullProgressMonitor monitor;
-	private IProject project;
+    private static NullProgressMonitor monitor;
+    private IProject project;
 
-	/**
-	 * Instantiating class creates project, content folder, and .repo file.
-	 *
-	 * @throws CoreException
-	 */
-	public TestCreaterepoProject() throws CoreException {
-		monitor = new NullProgressMonitor();
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
-		IProjectDescription description = ResourcesPlugin.getWorkspace()
-				.newProjectDescription(ICreaterepoTestConstants.PROJECT_NAME);
-		description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
-		if (!project.exists()) {
-			project.create(description, monitor);
-		}
-		project.open(monitor);
-		init();
-	}
+    /**
+     * Instantiating class creates project, content folder, and .repo file.
+     *
+     * @throws CoreException
+     */
+    public TestCreaterepoProject() throws CoreException {
+        monitor = new NullProgressMonitor();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
+        IProjectDescription description = ResourcesPlugin.getWorkspace()
+                .newProjectDescription(ICreaterepoTestConstants.PROJECT_NAME);
+        description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
+        if (!project.exists()) {
+            project.create(description, monitor);
+        }
+        project.open(monitor);
+        init();
+    }
 
-	/**
-	 * Create the content folder and the .repo file.
-	 *
-	 * @throws CoreException
-	 */
-	private void init() throws CoreException {
-		createFolder(ICreaterepoConstants.CONTENT_FOLDER);
-		createFile(ICreaterepoTestConstants.REPO_NAME);
-	}
+    /**
+     * Create the content folder and the .repo file.
+     *
+     * @throws CoreException
+     */
+    private void init() throws CoreException {
+        createFolder(ICreaterepoConstants.CONTENT_FOLDER);
+        createFile(ICreaterepoTestConstants.REPO_NAME);
+    }
 
-	/**
-	 * Create a folder in the project.
-	 *
-	 * @param folderName The name of the folder.
-	 * @return The folder that was created.
-	 * @throws CoreException
-	 */
-	public IFolder createFolder(String folderName) throws CoreException {
-		IFolder folder = project.getFolder(folderName);
-		if (!folder.exists()) {
-			folder.create(false, true, monitor);
-		}
-		return folder;
-	}
+    /**
+     * Create a folder in the project.
+     *
+     * @param folderName The name of the folder.
+     * @return The folder that was created.
+     * @throws CoreException
+     */
+    public IFolder createFolder(String folderName) throws CoreException {
+        IFolder folder = project.getFolder(folderName);
+        if (!folder.exists()) {
+            folder.create(false, true, monitor);
+        }
+        return folder;
+    }
 
-	/**
-	 * Create a file in the project. Initialize empty content.
-	 *
-	 * @param fileName The name of the file.
-	 * @return The file that was created.
-	 * @throws CoreException
-	 */
-	public IFile createFile(String fileName) throws CoreException {
-		IFile file = project.getFile(fileName);
-		InputStream stream = new ByteArrayInputStream(ICreaterepoConstants.EMPTY_STRING.getBytes());
-		if (!file.exists()) {
-			file.create(stream, true, monitor);
-		}
-		return file;
-	}
+    /**
+     * Create a file in the project. Initialize empty content.
+     *
+     * @param fileName The name of the file.
+     * @return The file that was created.
+     * @throws CoreException
+     */
+    public IFile createFile(String fileName) throws CoreException {
+        IFile file = project.getFile(fileName);
+        InputStream stream = new ByteArrayInputStream(ICreaterepoConstants.EMPTY_STRING.getBytes());
+        if (!file.exists()) {
+            file.create(stream, true, monitor);
+        }
+        return file;
+    }
 
-	/**
-	 * Delete the project and all its contents.
-	 *
-	 * @throws CoreException
-	 */
-	public void dispose() throws CoreException {
-		project.delete(true, true, monitor);
-	}
+    /**
+     * Delete the project and all its contents.
+     *
+     * @throws CoreException
+     */
+    public void dispose() throws CoreException {
+        project.delete(true, true, monitor);
+    }
 
-	/**
-	 * Refresh the project.
-	 *
-	 * @throws CoreException
-	 */
-	public void refresh() throws CoreException {
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
+    /**
+     * Refresh the project.
+     *
+     * @throws CoreException
+     */
+    public void refresh() throws CoreException {
+        project.refreshLocal(IResource.DEPTH_INFINITE, null);
+    }
 
-	/**
-	 * Return a new instance of a CreaterepoProject.
-	 *
-	 * @return A new CreaterepoProject.
-	 * @throws CoreException
-	 */
-	public CreaterepoProject getCreaterepoProject() throws CoreException {
-		return new CreaterepoProject(project, project.getFile(ICreaterepoTestConstants.REPO_NAME));
-	}
+    /**
+     * Return a new instance of a CreaterepoProject.
+     *
+     * @return A new CreaterepoProject.
+     * @throws CoreException
+     */
+    public CreaterepoProject getCreaterepoProject() throws CoreException {
+        return new CreaterepoProject(project, project.getFile(ICreaterepoTestConstants.REPO_NAME));
+    }
 
-	/**
-	 * Return the current project instance;
-	 *
-	 * @return The current project instance.
-	 */
-	public IProject getProject() {
-		return project;
-	}
+    /**
+     * Return the current project instance;
+     *
+     * @return The current project instance.
+     */
+    public IProject getProject() {
+        return project;
+    }
 
-	/**
-	 * Set the file contents of the repofile if it exists, or create a repofile
-	 * with the specified contents if it does not exist.
-	 *
-	 * @param id The repository ID.
-	 * @param name The human-readable description of the repository.
-	 * @param url The baseurl of the repository.
-	 * @throws CoreException
-	 */
-	public void setRepoFileContents(String id, String name, String url) throws CoreException {
-		String contents = String.format("[%s]\n", id); //$NON-NLS-1$
-		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
-		contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
-		InputStream stream = new ByteArrayInputStream(contents.getBytes());
-		IFile repoFile = project.getFile(ICreaterepoTestConstants.REPO_NAME);
-		if (repoFile.exists()) {
-			repoFile.setContents(stream, true, true, monitor);
-		} else {
-			repoFile.create(stream, true, monitor);
-		}
-	}
+    /**
+     * Set the file contents of the repofile if it exists, or create a repofile
+     * with the specified contents if it does not exist.
+     *
+     * @param id The repository ID.
+     * @param name The human-readable description of the repository.
+     * @param url The baseurl of the repository.
+     * @throws CoreException
+     */
+    public void setRepoFileContents(String id, String name, String url) throws CoreException {
+        String contents = String.format("[%s]\n", id); //$NON-NLS-1$
+        contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
+        contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
+        InputStream stream = new ByteArrayInputStream(contents.getBytes());
+        IFile repoFile = project.getFile(ICreaterepoTestConstants.REPO_NAME);
+        if (repoFile.exists()) {
+            repoFile.setContents(stream, true, true, monitor);
+        } else {
+            repoFile.create(stream, true, monitor);
+        }
+    }
 
-	/**
-	 * Restore the defaults of the workspace preferences.
-	 */
-	public void restoreDefaults() {
-		IPreferenceStore prefStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
-		for (String preference : ICreaterepoTestConstants.PREFS_ARRAY) {
-			prefStore.setToDefault(preference);
-		}
-	}
+    /**
+     * Restore the defaults of the workspace preferences.
+     */
+    public void restoreDefaults() {
+        IPreferenceStore prefStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
+        for (String preference : ICreaterepoTestConstants.PREFS_ARRAY) {
+            prefStore.setToDefault(preference);
+        }
+    }
 
 }

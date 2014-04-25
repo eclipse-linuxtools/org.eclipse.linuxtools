@@ -73,10 +73,10 @@ public class STSymbolManager {
         private long startTime;
     }
 
-	/** Map of all living instance of addr2line */
-	private final HashMap<IBinaryObject, AutoDisposeAddr2line> addr2lines = new HashMap<>();
-	/** Map of all living instance of cppfilt */
-	private final HashMap<String, AutoDisposeCPPFilt> cppfilts = new HashMap<>();
+    /** Map of all living instance of addr2line */
+    private final HashMap<IBinaryObject, AutoDisposeAddr2line> addr2lines = new HashMap<>();
+    /** Map of all living instance of cppfilt */
+    private final HashMap<String, AutoDisposeCPPFilt> cppfilts = new HashMap<>();
 
     /**
      * Constructor
@@ -107,8 +107,8 @@ public class STSymbolManager {
     }
 
     /**
-	 * @since 4.1
-	 */
+     * @since 4.1
+     */
     public synchronized void reset() {
         Iterator<Entry<IBinaryObject, AutoDisposeAddr2line>> iter = addr2lines.entrySet().iterator();
         while (iter.hasNext()) {
@@ -139,10 +139,10 @@ public class STSymbolManager {
             AutoDisposeAddr2line ada2l = entry.getValue();
             long diff = currentTime - ada2l.startTime;
             if (diff > AUTO_DISPOSE_TIMEOUT) {
-				if (ada2l.addr2line != null) {
-					ada2l.addr2line.dispose();
-					ada2l.addr2line = null;
-				}
+                if (ada2l.addr2line != null) {
+                    ada2l.addr2line.dispose();
+                    ada2l.addr2line = null;
+                }
                 iter.remove();
             }
         }

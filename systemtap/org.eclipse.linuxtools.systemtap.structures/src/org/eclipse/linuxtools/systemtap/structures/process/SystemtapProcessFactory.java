@@ -27,76 +27,76 @@ import com.jcraft.jsch.Session;
  */
 public class SystemtapProcessFactory {
 
-	/**
-	 * Runs stap with the given arguments on the given host using the given
-	 * credentials.
-	 *
-	 * @param user
-	 *            the user name to use on the remote machine.
-	 * @param host
-	 *            the host where the systemtap process will be run.
-	 * @param password
-	 *            password for authenticating with the given host.
-	 * @return a {@link Channel} connected to the remotely running process.
-	 * @throws JSchException
-	 *             thrown if there are problems connecting to the remote
-	 *             machine.
-	 */
-	public static Channel execRemote(String[] args,
-			OutputStream out, OutputStream err, String user, String host,
-			String password) throws JSchException {
-		JSch jsch = new JSch();
-		Session session = jsch.getSession(user, host, 22);
-		session.setPassword(password);
-		java.util.Properties config = new java.util.Properties();
-		config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$//$NON-NLS-2$
-		session.setConfig(config);
-		session.connect();
+    /**
+     * Runs stap with the given arguments on the given host using the given
+     * credentials.
+     *
+     * @param user
+     *            the user name to use on the remote machine.
+     * @param host
+     *            the host where the systemtap process will be run.
+     * @param password
+     *            password for authenticating with the given host.
+     * @return a {@link Channel} connected to the remotely running process.
+     * @throws JSchException
+     *             thrown if there are problems connecting to the remote
+     *             machine.
+     */
+    public static Channel execRemote(String[] args,
+            OutputStream out, OutputStream err, String user, String host,
+            String password) throws JSchException {
+        JSch jsch = new JSch();
+        Session session = jsch.getSession(user, host, 22);
+        session.setPassword(password);
+        java.util.Properties config = new java.util.Properties();
+        config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$//$NON-NLS-2$
+        session.setConfig(config);
+        session.connect();
 
-		StringBuilder command = new StringBuilder();
-		for (int i = 0; i < args.length; i++) {
-			command.append(args[i]);
-		}
+        StringBuilder command = new StringBuilder();
+        for (int i = 0; i < args.length; i++) {
+            command.append(args[i]);
+        }
 
-		Channel channel = session.openChannel("exec"); //$NON-NLS-1$
-		((ChannelExec) channel).setCommand(command.toString());
+        Channel channel = session.openChannel("exec"); //$NON-NLS-1$
+        ((ChannelExec) channel).setCommand(command.toString());
 
-		channel.setInputStream(null, true);
-		channel.setOutputStream(out, true);
-		channel.setExtOutputStream(err, true);
+        channel.setInputStream(null, true);
+        channel.setOutputStream(out, true);
+        channel.setExtOutputStream(err, true);
 
-		return channel;
-	}
+        return channel;
+    }
 
-	/**
-	 * Runs stap with the given arguments on the given host using the given
-	 * credentials and waits for the process to finish executing.
-	 *
-	 * @param user
-	 *            the user name to use on the remote machine.
-	 * @param host
-	 *            the host where the systemtap process will be run.
-	 * @param password
-	 *            password for authenticating with the given host.
-	 * @return a {@link Channel} connected to the remotely running process.
-	 * @throws JSchException
-	 *             thrown if there are problems connecting to the remote
-	 *             machine.
-	 */
-	public static Channel execRemoteAndWait(String[] args,
-			OutputStream out, OutputStream err, String user, String host,
-			String password) throws JSchException {
-		Channel channel = execRemote(args, out, err, user, host, password);
+    /**
+     * Runs stap with the given arguments on the given host using the given
+     * credentials and waits for the process to finish executing.
+     *
+     * @param user
+     *            the user name to use on the remote machine.
+     * @param host
+     *            the host where the systemtap process will be run.
+     * @param password
+     *            password for authenticating with the given host.
+     * @return a {@link Channel} connected to the remotely running process.
+     * @throws JSchException
+     *             thrown if there are problems connecting to the remote
+     *             machine.
+     */
+    public static Channel execRemoteAndWait(String[] args,
+            OutputStream out, OutputStream err, String user, String host,
+            String password) throws JSchException {
+        Channel channel = execRemote(args, out, err, user, host, password);
 
-		while (!channel.isClosed()){
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				// Thread was interrupted just return.
-				return channel;
-			}
-		}
+        while (!channel.isClosed()){
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                // Thread was interrupted just return.
+                return channel;
+            }
+        }
 
-		return channel;
-	}
+        return channel;
+    }
 }

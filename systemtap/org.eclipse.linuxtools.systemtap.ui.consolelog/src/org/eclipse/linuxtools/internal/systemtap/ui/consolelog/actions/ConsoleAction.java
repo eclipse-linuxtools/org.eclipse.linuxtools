@@ -24,16 +24,16 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
  */
 public abstract class ConsoleAction extends Action {
 
-	protected ScriptConsole console;
+    protected ScriptConsole console;
 
-	protected ConsoleAction(ScriptConsole fConsole,
-			URL imagePath,
-			String text,
-			String toolTip){
-		this.console = fConsole;
+    protected ConsoleAction(ScriptConsole fConsole,
+            URL imagePath,
+            String text,
+            String toolTip){
+        this.console = fConsole;
 
-		setImageDescriptor(ImageDescriptor.createFromURL(imagePath));
-		setToolTipText(text);
-		setText(toolTip);
-	}
+        setImageDescriptor(ImageDescriptor.createFromURL(imagePath));
+        setToolTipText(text);
+        setText(toolTip);
+    }
 }

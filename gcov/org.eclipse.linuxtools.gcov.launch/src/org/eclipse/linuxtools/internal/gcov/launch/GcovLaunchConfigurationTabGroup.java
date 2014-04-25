@@ -7,18 +7,18 @@
  *
  * Contributors:
  *    Red Hat Inc. - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class GcovLaunchConfigurationTabGroup extends
-		ProfileLaunchConfigurationTabGroup {
+        ProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[0];
-	}	
-	
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[0];
+    }
+
 }

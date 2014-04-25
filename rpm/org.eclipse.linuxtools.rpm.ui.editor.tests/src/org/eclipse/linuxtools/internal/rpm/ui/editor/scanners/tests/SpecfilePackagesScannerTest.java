@@ -36,106 +36,106 @@ import org.junit.Test;
 
 public class SpecfilePackagesScannerTest extends AScannerTest {
 
-	private IToken token;
+    private IToken token;
 
-	private TextAttribute ta;
+    private TextAttribute ta;
 
-	private static SpecfilePackagesScanner scanner;
-	private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
+    private static SpecfilePackagesScanner scanner;
+    private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
 
-	@BeforeClass
-	public static void init() {
-		Activator.getDefault().getPreferenceStore().setValue(
-				PreferenceConstants.P_RPM_LIST_FILEPATH, P_RPM_LIST_FILEPATH);
-		Activator.getDefault().getPreferenceStore().setValue(
-				PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
+    @BeforeClass
+    public static void init() {
+        Activator.getDefault().getPreferenceStore().setValue(
+                PreferenceConstants.P_RPM_LIST_FILEPATH, P_RPM_LIST_FILEPATH);
+        Activator.getDefault().getPreferenceStore().setValue(
+                PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(
-				P_RPM_LIST_FILEPATH))) {
-			out.write("setup\ntest_underscore\n");
-			out.close();
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
-		// we ensure that proposals are rebuild
-		Activator.packagesList = null;
-		scanner = new SpecfilePackagesScanner(new ColorManager());
-	}
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(
+                P_RPM_LIST_FILEPATH))) {
+            out.write("setup\ntest_underscore\n");
+            out.close();
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        // we ensure that proposals are rebuild
+        Activator.packagesList = null;
+        scanner = new SpecfilePackagesScanner(new ColorManager());
+    }
 
-	@AfterClass
-	public static void cleanUp() {
-		File file = new File(P_RPM_LIST_FILEPATH);
-		if (file.exists()) {
-			file.delete();
-		}
-	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
-	 */
-	@Override
-	protected String getContents() {
-		return "Requires: test_underscore\n%{name}\n# Requires:\n";
-	}
+    @AfterClass
+    public static void cleanUp() {
+        File file = new File(P_RPM_LIST_FILEPATH);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
+     */
+    @Override
+    protected String getContents() {
+        return "Requires: test_underscore\n%{name}\n# Requires:\n";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
-	 */
-	@Override
-	protected RuleBasedScanner getScanner() {
-		return scanner;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
+     */
+    @Override
+    protected RuleBasedScanner getScanner() {
+        return scanner;
+    }
 
-	@Test
-	public void testPackageTag() {
-		token = getNextToken();
-		assertTrue(token instanceof Token);
-		assertEquals(9, rulesBasedScanner.getTokenLength());
-		assertEquals(0, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(), ISpecfileColorConstants.TAGS);
-	}
+    @Test
+    public void testPackageTag() {
+        token = getNextToken();
+        assertTrue(token instanceof Token);
+        assertEquals(9, rulesBasedScanner.getTokenLength());
+        assertEquals(0, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals(ta.getForeground().getRGB(), ISpecfileColorConstants.TAGS);
+    }
 
-	/**
-	 * We test a package with a underscore. see bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
-	 */
-	@Test
-	public void testPackage() {
-		token = getToken(2);
-		assertTrue(token instanceof Token);
-		assertEquals(16, rulesBasedScanner.getTokenLength());
-		assertEquals(9, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals((ta.getForeground()).getRGB(),
-				ISpecfileColorConstants.PACKAGES);
-	}
+    /**
+     * We test a package with a underscore. see bug:
+     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
+     */
+    @Test
+    public void testPackage() {
+        token = getToken(2);
+        assertTrue(token instanceof Token);
+        assertEquals(16, rulesBasedScanner.getTokenLength());
+        assertEquals(9, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals((ta.getForeground()).getRGB(),
+                ISpecfileColorConstants.PACKAGES);
+    }
 
-	@Test
-	public void testMacro() {
-		token = getToken(4);
-		assertTrue(token instanceof Token);
-		assertEquals(7, rulesBasedScanner.getTokenLength());
-		assertEquals(26, rulesBasedScanner.getTokenOffset());
-		ta = (TextAttribute) token.getData();
-		assertEquals((ta.getForeground()).getRGB(),
-				ISpecfileColorConstants.MACROS);
-	}
-	/**
-	 * Check that comments are not handle with the package scanner. See bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
-	 */
-	@Test
-	public void testComment() {
-		token = getToken(6);
-		assertTrue(token instanceof Token);
-		assertEquals(1, rulesBasedScanner.getTokenLength());
-		ta = (TextAttribute) token.getData();
-		assertNull(ta);
-	}
+    @Test
+    public void testMacro() {
+        token = getToken(4);
+        assertTrue(token instanceof Token);
+        assertEquals(7, rulesBasedScanner.getTokenLength());
+        assertEquals(26, rulesBasedScanner.getTokenOffset());
+        ta = (TextAttribute) token.getData();
+        assertEquals((ta.getForeground()).getRGB(),
+                ISpecfileColorConstants.MACROS);
+    }
+    /**
+     * Check that comments are not handle with the package scanner. See bug:
+     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
+     */
+    @Test
+    public void testComment() {
+        token = getToken(6);
+        assertTrue(token instanceof Token);
+        assertEquals(1, rulesBasedScanner.getTokenLength());
+        ta = (TextAttribute) token.getData();
+        assertNull(ta);
+    }
 
 }

@@ -30,54 +30,54 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class DefinitionHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) {
-		TreeDefinitionNode t = getSelection(event);
-		if(t == null) {
-			return null;
-		}
-		String filename = t.getDefinition();
-		if (filename == null) {
-			return null;
-		}
-		File file = new File(filename);
-		OpenFileAction open = new OpenFileAction();
-		open.run(file);
-		if (open.isSuccessful() && t.getData() instanceof ISearchableNode) {
-			IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-			STPEditor editor = (STPEditor)editorPart;
-			editor.jumpToLocation(findDefinitionLine((ISearchableNode) t.getData(), editor) + 1, 0);
-		}
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) {
+        TreeDefinitionNode t = getSelection(event);
+        if(t == null) {
+            return null;
+        }
+        String filename = t.getDefinition();
+        if (filename == null) {
+            return null;
+        }
+        File file = new File(filename);
+        OpenFileAction open = new OpenFileAction();
+        open.run(file);
+        if (open.isSuccessful() && t.getData() instanceof ISearchableNode) {
+            IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+            STPEditor editor = (STPEditor)editorPart;
+            editor.jumpToLocation(findDefinitionLine((ISearchableNode) t.getData(), editor) + 1, 0);
+        }
+        return null;
+    }
 
-	private TreeDefinitionNode getSelection(ExecutionEvent event) {
-		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		if (selection instanceof StructuredSelection) {
-			Object[] selections = ((StructuredSelection) selection).toArray();
-			return (selections.length == 1 && selections[0] instanceof TreeDefinitionNode)
-					? (TreeDefinitionNode) selections[0] : null;
-		}
-		return null;
-	}
+    private TreeDefinitionNode getSelection(ExecutionEvent event) {
+        ISelection selection = HandlerUtil.getCurrentSelection(event);
+        if (selection instanceof StructuredSelection) {
+            Object[] selections = ((StructuredSelection) selection).toArray();
+            return (selections.length == 1 && selections[0] instanceof TreeDefinitionNode)
+                    ? (TreeDefinitionNode) selections[0] : null;
+        }
+        return null;
+    }
 
-	private int findDefinitionLine(ISearchableNode data, STPEditor editor) {
-		int locationIndex;
-		String contents = CommentRemover.exec(editor.getDocumentProvider().getDocument(editor.getEditorInput()).get());
-		if (data.isRegexSearch()) {
-			Pattern pattern = Pattern.compile(data.getSearchToken());
-			Matcher matcher = pattern.matcher(contents);
-			locationIndex = matcher.find() ? matcher.start() : -1;
-		} else {
-			locationIndex = contents.indexOf(data.getSearchToken());
-		}
-		if (locationIndex != -1) {
-			// Get the line of the match by counting newlines.
-			contents = contents.substring(0, locationIndex);
-			return contents.length() - contents.replaceAll("\n", "").length(); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			return 0;
-		}
-	}
+    private int findDefinitionLine(ISearchableNode data, STPEditor editor) {
+        int locationIndex;
+        String contents = CommentRemover.exec(editor.getDocumentProvider().getDocument(editor.getEditorInput()).get());
+        if (data.isRegexSearch()) {
+            Pattern pattern = Pattern.compile(data.getSearchToken());
+            Matcher matcher = pattern.matcher(contents);
+            locationIndex = matcher.find() ? matcher.start() : -1;
+        } else {
+            locationIndex = contents.indexOf(data.getSearchToken());
+        }
+        if (locationIndex != -1) {
+            // Get the line of the match by counting newlines.
+            contents = contents.substring(0, locationIndex);
+            return contents.length() - contents.replaceAll("\n", "").length(); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            return 0;
+        }
+    }
 
 }

@@ -36,76 +36,76 @@ import org.eclipse.ui.part.EditorPart;
  */
 public class RPMHandlerUtils {
 
-	/**
-	 * Utility classes should not have a public or default constructor.
-	 */
-	private RPMHandlerUtils() {}
+    /**
+     * Utility classes should not have a public or default constructor.
+     */
+    private RPMHandlerUtils() {}
 
-	/**
-	 * Extract the IResource that was selected when the event was fired.
-	 * @param event The fired execution event.
-	 * @return The resource that was selected.
-	 */
-	public static IResource getResource(ExecutionEvent event) {
-		IWorkbenchPart part = HandlerUtil.getActivePart(event);
-		if (part == null) {
-			return null;
-		}
-		if (part instanceof EditorPart) {
-			IEditorInput input = ((EditorPart) part).getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				return ((IFileEditorInput) input).getFile();
-			}
-			return null;
-		}
-		IWorkbenchSite site = part.getSite();
-		if (site == null) {
-			return null;
-		}
-		ISelectionProvider provider = site.getSelectionProvider();
-		if (provider == null) {
-			return null;
-		}
-		ISelection selection = provider.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			Object element = ((IStructuredSelection) selection)
-					.getFirstElement();
-			if (element instanceof IResource) {
-				return (IResource) element;
-			} else if (element instanceof IAdaptable) {
-				IAdaptable adaptable = (IAdaptable) element;
-				return (IResource) adaptable.getAdapter(IResource.class);
-			} else {
-				return null;
-			}
-		}
-		return null;
-	}
+    /**
+     * Extract the IResource that was selected when the event was fired.
+     * @param event The fired execution event.
+     * @return The resource that was selected.
+     */
+    public static IResource getResource(ExecutionEvent event) {
+        IWorkbenchPart part = HandlerUtil.getActivePart(event);
+        if (part == null) {
+            return null;
+        }
+        if (part instanceof EditorPart) {
+            IEditorInput input = ((EditorPart) part).getEditorInput();
+            if (input instanceof IFileEditorInput) {
+                return ((IFileEditorInput) input).getFile();
+            }
+            return null;
+        }
+        IWorkbenchSite site = part.getSite();
+        if (site == null) {
+            return null;
+        }
+        ISelectionProvider provider = site.getSelectionProvider();
+        if (provider == null) {
+            return null;
+        }
+        ISelection selection = provider.getSelection();
+        if (selection instanceof IStructuredSelection) {
+            Object element = ((IStructuredSelection) selection)
+                    .getFirstElement();
+            if (element instanceof IResource) {
+                return (IResource) element;
+            } else if (element instanceof IAdaptable) {
+                IAdaptable adaptable = (IAdaptable) element;
+                return (IResource) adaptable.getAdapter(IResource.class);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Get an RPMProject for the resource creating a new instance to an RPMProject.
-	 * @param resource The resource to check its parent project.
-	 * @return The RPMProject of the resource passed in.
-	 */
-	public static RPMProject getRPMProject(IResource resource) {
-		RPMProject rc = null;
+    /**
+     * Get an RPMProject for the resource creating a new instance to an RPMProject.
+     * @param resource The resource to check its parent project.
+     * @return The RPMProject of the resource passed in.
+     */
+    public static RPMProject getRPMProject(IResource resource) {
+        RPMProject rc = null;
 
-		try {
-			IProject parentProject = resource.getProject();
+        try {
+            IProject parentProject = resource.getProject();
 
-			// determine if project selected is an RPMProject
-			if (parentProject.hasNature(IRPMConstants.RPM_NATURE_ID)) {
-				if (parentProject.getPersistentProperty(new QualifiedName(IRPMConstants.RPM_CORE_ID, IRPMConstants.SPECS_FOLDER)) != null){
-					rc = new RPMProject(parentProject, RPMProjectLayout.RPMBUILD);
-				} else {
-					rc = new RPMProject(parentProject, RPMProjectLayout.FLAT);
-				}
-			} else {
-				rc = new RPMProject(parentProject, RPMProjectLayout.FLAT);
-			}
-		} catch (CoreException e) {
-			SpecfileLog.logError(Messages.RPMHandlerUtils_cannotCreateRPMProject, e);
-		}
-		return rc;
-	}
+            // determine if project selected is an RPMProject
+            if (parentProject.hasNature(IRPMConstants.RPM_NATURE_ID)) {
+                if (parentProject.getPersistentProperty(new QualifiedName(IRPMConstants.RPM_CORE_ID, IRPMConstants.SPECS_FOLDER)) != null){
+                    rc = new RPMProject(parentProject, RPMProjectLayout.RPMBUILD);
+                } else {
+                    rc = new RPMProject(parentProject, RPMProjectLayout.FLAT);
+                }
+            } else {
+                rc = new RPMProject(parentProject, RPMProjectLayout.FLAT);
+            }
+        } catch (CoreException e) {
+            SpecfileLog.logError(Messages.RPMHandlerUtils_cannotCreateRPMProject, e);
+        }
+        return rc;
+    }
 }

@@ -17,14 +17,14 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchShortcut;
 
 public class ValgrindTestMassifLaunchShortcut extends MassifLaunchShortcut {
 
-	private ILaunchConfiguration config;
+    private ILaunchConfiguration config;
 
-	@Override
-	public void launch(IBinary bin, String mode) {
-		config = findLaunchConfiguration(bin, mode);
-	}
-	
-	public ILaunchConfiguration getConfig() {
-		return config;
-	}
+    @Override
+    public void launch(IBinary bin, String mode) {
+        config = findLaunchConfiguration(bin, mode);
+    }
+
+    public ILaunchConfiguration getConfig() {
+        return config;
+    }
 }

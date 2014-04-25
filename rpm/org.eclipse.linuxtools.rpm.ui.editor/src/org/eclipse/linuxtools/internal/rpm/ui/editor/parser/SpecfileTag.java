@@ -17,81 +17,81 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 
 public class SpecfileTag extends SpecfileElement {
 
-	public enum TagType {
-		INT, STRING
-	}
+    public enum TagType {
+        INT, STRING
+    }
 
-	private TagType tagType;
+    private TagType tagType;
 
-	private String stringValue;
-	private int intValue;
-	private SpecfilePackage parent;
+    private String stringValue;
+    private int intValue;
+    private SpecfilePackage parent;
 
-	public SpecfileTag() {
-		// Empty constructor
-	}
+    public SpecfileTag() {
+        // Empty constructor
+    }
 
-	public SpecfileTag(String name, String value, Specfile specfile,
-			SpecfilePackage parentPackage) {
-		setName(name);
-		this.stringValue = value;
-		this.tagType = TagType.STRING;
-		super.setSpecfile(specfile);
-		this.parent = parentPackage;
-	}
+    public SpecfileTag(String name, String value, Specfile specfile,
+            SpecfilePackage parentPackage) {
+        setName(name);
+        this.stringValue = value;
+        this.tagType = TagType.STRING;
+        super.setSpecfile(specfile);
+        this.parent = parentPackage;
+    }
 
-	public SpecfileTag(String name, int value, Specfile specfile,
-			SpecfilePackage parentPackage) {
-		setName(name);
-		this.intValue = value;
-		this.tagType = TagType.INT;
-		super.setSpecfile(specfile);
-		this.parent = parentPackage;
-	}
+    public SpecfileTag(String name, int value, Specfile specfile,
+            SpecfilePackage parentPackage) {
+        setName(name);
+        this.intValue = value;
+        this.tagType = TagType.INT;
+        super.setSpecfile(specfile);
+        this.parent = parentPackage;
+    }
 
-	public String getStringValue() {
-		if (tagType == TagType.INT) {
-			return Integer.toString(intValue);
-		}
-		return resolve(stringValue);
-	}
+    public String getStringValue() {
+        if (tagType == TagType.INT) {
+            return Integer.toString(intValue);
+        }
+        return resolve(stringValue);
+    }
 
-	public void setValue(String value) {
-		this.tagType = TagType.STRING;
-		this.stringValue = value;
-	}
+    public void setValue(String value) {
+        this.tagType = TagType.STRING;
+        this.stringValue = value;
+    }
 
-	public int getIntValue() {
-		return intValue;
-	}
+    public int getIntValue() {
+        return intValue;
+    }
 
-	public void setValue(int value) {
-		this.tagType = TagType.INT;
-		this.intValue = value;
-	}
+    public void setValue(int value) {
+        this.tagType = TagType.INT;
+        this.intValue = value;
+    }
 
-	public SpecfilePackage getParent() {
-		return parent;
-	}
+    public SpecfilePackage getParent() {
+        return parent;
+    }
 
-	public void setParent(SpecfilePackage parent) {
-		this.parent = parent;
-	}
+    public void setParent(SpecfilePackage parent) {
+        this.parent = parent;
+    }
 
-	@Override
-	public String toString() {
-		if (tagType == TagType.INT) {
-			return getName() + ": " + getIntValue(); //$NON-NLS-1$
-		}
-		String tagValue = getStringValue();
-		if ((tagValue != null) && (tagValue.length() > 0)
-				&& (tagValue.indexOf('%') > 0)) {
-			return getName() + ": " + super.resolve(tagValue); //$NON-NLS-1$
-		}
-		return getName() + ": " + getStringValue(); //$NON-NLS-1$
-	}
+    @Override
+    public String toString() {
+        if (tagType == TagType.INT) {
+            return getName() + ": " + getIntValue(); //$NON-NLS-1$
+        }
+        String tagValue = getStringValue();
+        if ((tagValue != null) && (tagValue.length() > 0)
+                && (tagValue.indexOf('%') > 0)) {
+            return getName() + ": " + super.resolve(tagValue); //$NON-NLS-1$
+        }
+        return getName() + ": " + getStringValue(); //$NON-NLS-1$
+    }
 
-	public TagType getTagType() {
-		return tagType;
-	}
+    public TagType getTagType() {
+        return tagType;
+    }
 }

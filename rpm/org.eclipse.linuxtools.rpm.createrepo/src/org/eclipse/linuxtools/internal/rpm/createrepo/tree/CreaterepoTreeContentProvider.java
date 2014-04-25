@@ -18,69 +18,69 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class CreaterepoTreeContentProvider implements ITreeContentProvider {
 
-	private CreaterepoCategoryModel model;
+    private CreaterepoCategoryModel model;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-	 */
-	@Override
-	public void dispose() {/* not implemented */}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+     */
+    @Override
+    public void dispose() {/* not implemented */}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (newInput instanceof CreaterepoCategoryModel) {
-			model = (CreaterepoCategoryModel) newInput;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        if (newInput instanceof CreaterepoCategoryModel) {
+            model = (CreaterepoCategoryModel) newInput;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
-	 */
-	@Override
-	public Object[] getElements(Object inputElement) {
-		return model.getCategories().toArray();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
+     */
+    @Override
+    public Object[] getElements(Object inputElement) {
+        return model.getCategories().toArray();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-	 */
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof CreaterepoTreeCategory) {
-			CreaterepoTreeCategory category = (CreaterepoTreeCategory) parentElement;
-			return category.getTags().toArray();
-		}
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+     */
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        if (parentElement instanceof CreaterepoTreeCategory) {
+            CreaterepoTreeCategory category = (CreaterepoTreeCategory) parentElement;
+            return category.getTags().toArray();
+        }
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-	 */
-	@Override
-	public Object getParent(Object element) {
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+     */
+    @Override
+    public Object getParent(Object element) {
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-	 */
-	@Override
-	public boolean hasChildren(Object element) {
-		if (element instanceof CreaterepoTreeCategory) {
-			CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
-			// category has children if ! empty
-			return !category.getTags().isEmpty();
-		}
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+     */
+    @Override
+    public boolean hasChildren(Object element) {
+        if (element instanceof CreaterepoTreeCategory) {
+            CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
+            // category has children if ! empty
+            return !category.getTags().isEmpty();
+        }
+        return false;
+    }
 
 }

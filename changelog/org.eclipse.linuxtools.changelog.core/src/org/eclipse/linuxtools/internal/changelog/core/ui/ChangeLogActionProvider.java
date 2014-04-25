@@ -20,32 +20,32 @@ import org.eclipse.ui.navigator.ICommonActionConstants;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 
 public class ChangeLogActionProvider extends CommonActionProvider {
-	private Action exampleAction;
+    private Action exampleAction;
 
-	@Override
-	public void init(ICommonActionExtensionSite aSite) {
-		super.init(aSite);
-		exampleAction = new PrepareChangeLogAction() {
-			@Override
-			public void run() {
-				setSelection((IStructuredSelection) getContext().getSelection());
-				doRun();
-			}
+    @Override
+    public void init(ICommonActionExtensionSite aSite) {
+        super.init(aSite);
+        exampleAction = new PrepareChangeLogAction() {
+            @Override
+            public void run() {
+                setSelection((IStructuredSelection) getContext().getSelection());
+                doRun();
+            }
 
-		};
+        };
 
-	}
+    }
 
-	@Override
-	public void fillContextMenu(IMenuManager menu) {
-		super.fillContextMenu(menu);
-		menu.add(exampleAction);
-	}
+    @Override
+    public void fillContextMenu(IMenuManager menu) {
+        super.fillContextMenu(menu);
+        menu.add(exampleAction);
+    }
 
-	@Override
-	public void fillActionBars(IActionBars actionBars) {
+    @Override
+    public void fillActionBars(IActionBars actionBars) {
 
-		actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN,
-				exampleAction);
-	}
+        actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN,
+                exampleAction);
+    }
 }

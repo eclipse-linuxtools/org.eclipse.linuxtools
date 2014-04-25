@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Red Hat Inc. - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -15,13 +15,13 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindSingleToolOptions
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class MassifLaunchConfigurationTabGroup extends
-		ProfileLaunchConfigurationTabGroup {
+        ProfileLaunchConfigurationTabGroup {
 
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] {
-			new ValgrindSingleToolOptionsTab(MassifPlugin.TOOL_ID)
-		};
-	}	
-	
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] {
+            new ValgrindSingleToolOptionsTab(MassifPlugin.TOOL_ID)
+        };
+    }
+
 }

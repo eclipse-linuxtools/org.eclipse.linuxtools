@@ -40,5 +40,5 @@
             tabgroup="org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchConfigurationTabGroup"
             type="memory">
       </provider>
-   </extension>   
+   </extension>
 </plugin>

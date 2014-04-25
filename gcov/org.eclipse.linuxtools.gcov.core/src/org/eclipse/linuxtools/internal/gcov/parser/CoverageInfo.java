@@ -14,39 +14,39 @@ import java.io.Serializable;
 
 public class CoverageInfo implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6067335353999481231L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6067335353999481231L;
 
-	private int linesInstrumented = 0;
-	private int linesExecuted = 0;
-	
-	/**
-	 * Constructor
-	 */
-	public CoverageInfo() {
-		
-	}
+    private int linesInstrumented = 0;
+    private int linesExecuted = 0;
 
-	
-	/*getters & setters */
-	
-	public int getLinesInstrumented() {
-		return linesInstrumented;
-	}
+    /**
+     * Constructor
+     */
+    public CoverageInfo() {
 
-	public int getLinesExecuted() {
-		return linesExecuted;
-	}
+    }
 
-	public void incLinesInstrumented(){
-		this.linesInstrumented++;
-	}
-	
-	public void incLinesExecuted(){
-		this.linesExecuted++;
-	}
 
-	
+    /*getters & setters */
+
+    public int getLinesInstrumented() {
+        return linesInstrumented;
+    }
+
+    public int getLinesExecuted() {
+        return linesExecuted;
+    }
+
+    public void incLinesInstrumented(){
+        this.linesInstrumented++;
+    }
+
+    public void incLinesExecuted(){
+        this.linesExecuted++;
+    }
+
+
 }

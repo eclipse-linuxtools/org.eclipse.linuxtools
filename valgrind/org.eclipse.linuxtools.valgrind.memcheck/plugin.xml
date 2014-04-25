@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-	<extension
+    <extension
          point="org.eclipse.linuxtools.valgrind.launch.valgrindTools">
       <tool
             delegate="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckLaunchDelegate"
@@ -30,5 +30,5 @@
             tabgroup="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckLaunchConfigurationTabGroup"
             type="memory">
       </provider>
-   </extension>   
+   </extension>
 </plugin>

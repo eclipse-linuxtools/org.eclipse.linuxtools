@@ -15,40 +15,40 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 
 public class PerfViewContentProvider implements ITreeContentProvider {
-	
-	@Override
-	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-	}
 
-	@Override
-	public void dispose() {
-	}
+    @Override
+    public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+    }
 
-	@Override
-	public Object[] getElements(Object parent) {
-		return getChildren(parent);
-	}
+    @Override
+    public void dispose() {
+    }
 
-	@Override
-	public Object getParent(Object child) {
-		if (child instanceof TreeParent) {
-			return ((TreeParent) child).getParent();
-		}
-		return null;
-	}
+    @Override
+    public Object[] getElements(Object parent) {
+        return getChildren(parent);
+    }
 
-	@Override
-	public Object[] getChildren(Object parent) {
-		if (parent instanceof TreeParent) {
-			return ((TreeParent) parent).getChildren();
-		}
-		return new Object[0];
-	}
+    @Override
+    public Object getParent(Object child) {
+        if (child instanceof TreeParent) {
+            return ((TreeParent) child).getParent();
+        }
+        return null;
+    }
 
-	@Override
-	public boolean hasChildren(Object parent) {
-		if (parent instanceof TreeParent)
-			return ((TreeParent) parent).hasChildren();
-		return false;
-	}
+    @Override
+    public Object[] getChildren(Object parent) {
+        if (parent instanceof TreeParent) {
+            return ((TreeParent) parent).getChildren();
+        }
+        return new Object[0];
+    }
+
+    @Override
+    public boolean hasChildren(Object parent) {
+        if (parent instanceof TreeParent)
+            return ((TreeParent) parent).hasChildren();
+        return false;
+    }
 }

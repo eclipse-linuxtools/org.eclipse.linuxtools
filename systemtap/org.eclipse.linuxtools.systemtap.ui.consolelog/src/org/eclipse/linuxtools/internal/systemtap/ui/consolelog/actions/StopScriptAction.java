@@ -26,39 +26,39 @@ import org.eclipse.ui.PlatformUI;
  */
 public class StopScriptAction extends ConsoleAction implements ScriptConsoleObserver {
 
-	/**
-	 * This is the main method of the class. It handles stopping the
-	 * currently active <code>ScriptConsole</code>.
-	 */
-	@Override
-	public void run() {
-		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				if(null != console){
-					console.stop();
-				}
-			}
-		});
-	}
+    /**
+     * This is the main method of the class. It handles stopping the
+     * currently active <code>ScriptConsole</code>.
+     */
+    @Override
+    public void run() {
+        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                if(null != console){
+                    console.stop();
+                }
+            }
+        });
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	public StopScriptAction(ScriptConsole fConsole) {
-		super(fConsole,
-				ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/stop_script.gif"), //$NON-NLS-1$
-				Localization.getString("action.stopScript.name"), //$NON-NLS-1$
-				Localization.getString("action.stopScript.desc")); //$NON-NLS-1$
-		console.addScriptConsoleObserver(this);
-	}
+    /**
+     * @since 2.0
+     */
+    public StopScriptAction(ScriptConsole fConsole) {
+        super(fConsole,
+                ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/stop_script.gif"), //$NON-NLS-1$
+                Localization.getString("action.stopScript.name"), //$NON-NLS-1$
+                Localization.getString("action.stopScript.desc")); //$NON-NLS-1$
+        console.addScriptConsoleObserver(this);
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	@Override
-	public void runningStateChanged(boolean started, boolean stopped) {
-		setEnabled(!stopped);
-	}
+    /**
+     * @since 2.0
+     */
+    @Override
+    public void runningStateChanged(boolean started, boolean stopped) {
+        setEnabled(!stopped);
+    }
 
 }

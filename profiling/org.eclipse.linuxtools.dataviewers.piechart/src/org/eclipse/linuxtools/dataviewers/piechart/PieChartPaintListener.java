@@ -115,8 +115,8 @@ public class PieChartPaintListener implements PaintListener {
         int pieY = bounds.y + (bounds.height - pieWidth) / 2;
         pieCenters[chartnum] = new Point(pieX + pieWidth / 2, pieY + pieWidth / 2);
         if (sumTotal == 0) {
-			gc.drawOval(pieX, pieY, pieWidth, pieWidth);
-		} else {
+            gc.drawOval(pieX, pieY, pieWidth, pieWidth);
+        } else {
             double factor = 100 / sumTotal;
             int sweepAngle = 0;
             int incrementAngle = 0;
@@ -130,8 +130,8 @@ public class PieChartPaintListener implements PaintListener {
                 gc.setBackground(((IBarSeries) chart.getSeriesSet().getSeries()[i]).getBarColor());
 
                 if (i == (nelemSeries - 1)) {
-					sweepAngle = 360 - incrementAngle;
-				} else {
+                    sweepAngle = 360 - incrementAngle;
+                } else {
                     double angle = series[i] * factor * 3.6;
                     sweepAngle = (int) Math.round(angle);
                 }
@@ -158,8 +158,8 @@ public class PieChartPaintListener implements PaintListener {
         if (series == null || series.length == 0) {
             seriesValues = new double[0][0];
             seriesNames = new String[0];
-		    return;
-		}
+            return;
+        }
         String names[] = this.chart.getAxisSet().getXAxis(0).getCategorySeries();
         Range range = chart.getAxisSet().getXAxis(0).getRange();
         int itemRange = (int) range.upper - (int) range.lower + 1;

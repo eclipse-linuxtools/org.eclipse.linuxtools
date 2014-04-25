@@ -37,114 +37,114 @@ import org.junit.Test;
 
 public class CModelLabelsTest extends AbstractCachegrindTest {
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
-	}
+    @Before
+    public void prep() throws Exception {
+        proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
+    }
 
-	@Override
-	@After
-	public void tearDown() throws CoreException {
-		deleteProject(proj);
-		super.tearDown();
-	}
-	@Test
-	public void testFileLabelsCPP() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testFileLabelsCPP"); //$NON-NLS-1$
+    @Override
+    @After
+    public void tearDown() throws CoreException {
+        deleteProject(proj);
+        super.tearDown();
+    }
+    @Test
+    public void testFileLabelsCPP() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testFileLabelsCPP"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
 
-		assertTrue(file.getModel() instanceof ITranslationUnit);
+        assertTrue(file.getModel() instanceof ITranslationUnit);
 
-		checkLabelProvider(file);
-	}
-	@Test
-	public void testFileLabelsH() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testFileLabelsH"); //$NON-NLS-1$
+        checkLabelProvider(file);
+    }
+    @Test
+    public void testFileLabelsH() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testFileLabelsH"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.h"); //$NON-NLS-1$
 
-		assertTrue(file.getModel() instanceof ITranslationUnit);
-		assertTrue(((ITranslationUnit) file.getModel()).isHeaderUnit());
+        assertTrue(file.getModel() instanceof ITranslationUnit);
+        assertTrue(((ITranslationUnit) file.getModel()).isHeaderUnit());
 
-		checkLabelProvider(file);
-	}
-	@Test
-	public void testFunctionLabel() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testFunctionLabel"); //$NON-NLS-1$
+        checkLabelProvider(file);
+    }
+    @Test
+    public void testFunctionLabel() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testFunctionLabel"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
 
-		assertTrue(func.getModel() instanceof IFunction);
+        assertTrue(func.getModel() instanceof IFunction);
 
-		checkLabelProvider(func, file);
-	}
-	@Test
-	public void testMethodLabel() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testMethodLabel"); //$NON-NLS-1$
+        checkLabelProvider(func, file);
+    }
+    @Test
+    public void testMethodLabel() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testMethodLabel"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		CachegrindFunction func = getFunctionByName(file, "A::A()"); //$NON-NLS-1$
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindFunction func = getFunctionByName(file, "A::A()"); //$NON-NLS-1$
 
-		assertTrue(func.getModel() instanceof IMethod);
+        assertTrue(func.getModel() instanceof IMethod);
 
-		checkLabelProvider(func, file);
-	}
-	@Test
-	public void testNestedMethodLabel() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNestedMethodLabel"); //$NON-NLS-1$
+        checkLabelProvider(func, file);
+    }
+    @Test
+    public void testNestedMethodLabel() throws Exception {
+        ILaunchConfiguration config = createConfiguration(proj.getProject());
+        doLaunch(config, "testNestedMethodLabel"); //$NON-NLS-1$
 
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		CachegrindOutput output = view.getOutputs()[0];
-		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
-		CachegrindFunction func = getFunctionByName(file, "A::B::e()"); //$NON-NLS-1$
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        CachegrindOutput output = view.getOutputs()[0];
+        CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+        CachegrindFunction func = getFunctionByName(file, "A::B::e()"); //$NON-NLS-1$
 
-		assertTrue(func.getModel() instanceof IMethod);
+        assertTrue(func.getModel() instanceof IMethod);
 
-		checkLabelProvider(func, file);
-	}
+        checkLabelProvider(func, file);
+    }
 
-	private static void checkLabelProvider(CachegrindFile file) {
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer viewer = view.getViewer();
+    private static void checkLabelProvider(CachegrindFile file) {
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        TreeViewer viewer = view.getViewer();
 
-		TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file });
-		checkLabelProvider(viewer, path, file);
-	}
+        TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file });
+        checkLabelProvider(viewer, path, file);
+    }
 
-	private static void checkLabelProvider(CachegrindFunction func, CachegrindFile file) {
-		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer viewer = view.getViewer();
+    private static void checkLabelProvider(CachegrindFunction func, CachegrindFile file) {
+        CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+        TreeViewer viewer = view.getViewer();
 
-		TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file, func });
-		checkLabelProvider(viewer, path, func);
-	}
+        TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file, func });
+        checkLabelProvider(viewer, path, func);
+    }
 
-	private static void checkLabelProvider(TreeViewer viewer, TreePath path, ICachegrindElement element) {
-		// expand only the interesting item
-		viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
-		TreeSelection selection = new TreeSelection(path);
-		viewer.setSelection(selection);
-		TreeItem item = viewer.getTree().getSelection()[0];
+    private static void checkLabelProvider(TreeViewer viewer, TreePath path, ICachegrindElement element) {
+        // expand only the interesting item
+        viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
+        TreeSelection selection = new TreeSelection(path);
+        viewer.setSelection(selection);
+        TreeItem item = viewer.getTree().getSelection()[0];
 
-		// ensure the CElementLabelProvider is called correctly
-		CElementLabelProvider provider = ((CachegrindLabelProvider) viewer.getLabelProvider(0)).getCLabelProvider();
-		assertEquals(provider.getText(element.getModel()), item.getText());
-		assertEquals(provider.getImage(element.getModel()), item.getImage());
-	}
+        // ensure the CElementLabelProvider is called correctly
+        CElementLabelProvider provider = ((CachegrindLabelProvider) viewer.getLabelProvider(0)).getCLabelProvider();
+        assertEquals(provider.getText(element.getModel()), item.getText());
+        assertEquals(provider.getImage(element.getModel()), item.getImage());
+    }
 
 }

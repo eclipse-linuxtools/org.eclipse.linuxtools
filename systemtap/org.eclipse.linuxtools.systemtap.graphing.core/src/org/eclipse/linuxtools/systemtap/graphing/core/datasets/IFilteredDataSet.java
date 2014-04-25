@@ -14,8 +14,8 @@ package org.eclipse.linuxtools.systemtap.graphing.core.datasets;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;
 
 public interface IFilteredDataSet extends IDataSet {
-	void addFilter(IDataSetFilter filter);
-	IDataSetFilter[] getFilters();
-	void clearFilters();
-	boolean removeFilter(IDataSetFilter filter);
+    void addFilter(IDataSetFilter filter);
+    IDataSetFilter[] getFilters();
+    void clearFilters();
+    boolean removeFilter(IDataSetFilter filter);
 }

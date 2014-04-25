@@ -30,34 +30,34 @@ public final class CreaterepoProjectCreator {
 
     private CreaterepoProjectCreator() {}
 
-	/**
-	 * Create a createrepo project given a project name and the progress
-	 * monitor. The new project will contain an empty repodata folder.
-	 *
-	 * @param projectName The name of the project.
-	 * @param locationPath The location path of the project
-	 * @param monitor The progress monitor.
-	 * @return The newly created project.
-	 * @throws CoreException Thrown when creating a project fails.
-	 */
-	public static IProject create(String projectName, IPath locationPath,
-			String repoName, IProgressMonitor monitor) throws CoreException {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(projectName);
-		IProjectDescription description = ResourcesPlugin.getWorkspace()
-				.newProjectDescription(projectName);
-		if (!Platform.getLocation().equals(locationPath)) {
-			description.setLocation(locationPath);
-		}
-		description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
-		project.create(description, monitor);
-		project.open(monitor);
-		IFile repoFile = project.getFile(repoName);
-		InputStream stream = new ByteArrayInputStream(ICreaterepoConstants.EMPTY_STRING.getBytes());
-		if (!repoFile.exists()) {
-			repoFile.create(stream, true, monitor);
-		}
-		return project;
-	}
+    /**
+     * Create a createrepo project given a project name and the progress
+     * monitor. The new project will contain an empty repodata folder.
+     *
+     * @param projectName The name of the project.
+     * @param locationPath The location path of the project
+     * @param monitor The progress monitor.
+     * @return The newly created project.
+     * @throws CoreException Thrown when creating a project fails.
+     */
+    public static IProject create(String projectName, IPath locationPath,
+            String repoName, IProgressMonitor monitor) throws CoreException {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IProject project = root.getProject(projectName);
+        IProjectDescription description = ResourcesPlugin.getWorkspace()
+                .newProjectDescription(projectName);
+        if (!Platform.getLocation().equals(locationPath)) {
+            description.setLocation(locationPath);
+        }
+        description.setNatureIds(new String[] {CreaterepoProjectNature.CREATEREPO_NATURE_ID});
+        project.create(description, monitor);
+        project.open(monitor);
+        IFile repoFile = project.getFile(repoName);
+        InputStream stream = new ByteArrayInputStream(ICreaterepoConstants.EMPTY_STRING.getBytes());
+        if (!repoFile.exists()) {
+            repoFile.create(stream, true, monitor);
+        }
+        return project;
+    }
 
 }

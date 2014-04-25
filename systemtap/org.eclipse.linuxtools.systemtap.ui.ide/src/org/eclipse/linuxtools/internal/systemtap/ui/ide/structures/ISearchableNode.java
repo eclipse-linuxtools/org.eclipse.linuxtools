@@ -12,6 +12,6 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 public interface ISearchableNode {
-	String getSearchToken();
-	boolean isRegexSearch();
+    String getSearchToken();
+    boolean isRegexSearch();
 }

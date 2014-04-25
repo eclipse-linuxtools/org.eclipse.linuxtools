@@ -15,24 +15,24 @@ package org.eclipse.linuxtools.internal.rpm.createrepo;
  */
 public interface IRepoFileConstants {
 
-	/*
-	 * Mandatory options
-	 */
+    /*
+     * Mandatory options
+     */
 
-	/**
-	 * A unique identifier for the repository.
-	 */
-	String ID = "id"; 				//$NON-NLS-1$
+    /**
+     * A unique identifier for the repository.
+     */
+    String ID = "id";                 //$NON-NLS-1$
 
-	/**
-	 * A human-readable string describing the repository.
-	 */
-	String NAME = "name"; 			//$NON-NLS-1$
+    /**
+     * A human-readable string describing the repository.
+     */
+    String NAME = "name";             //$NON-NLS-1$
 
-	/**
-	 * The location of the repodata folder. It can point locally (file://),
-	 * remotely (http://), or via ftp (ftp://).
-	 */
-	String BASE_URL = "baseurl"; 	//$NON-NLS-1$
+    /**
+     * The location of the repodata folder. It can point locally (file://),
+     * remotely (http://), or via ftp (ftp://).
+     */
+    String BASE_URL = "baseurl";     //$NON-NLS-1$
 
 }

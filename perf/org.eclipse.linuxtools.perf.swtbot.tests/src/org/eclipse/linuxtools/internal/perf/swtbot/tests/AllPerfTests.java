@@ -15,9 +15,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	StatViewTest.class,
-	SourceDisassemblyViewTest.class,
-	StatComparisonViewTest.class,
-	ReportComparisonViewTest.class})
+    StatViewTest.class,
+    SourceDisassemblyViewTest.class,
+    StatComparisonViewTest.class,
+    ReportComparisonViewTest.class})
 public class AllPerfTests {
 }

@@ -22,25 +22,25 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * The main plugin class to be used in the desktop.
  */
 public class ChangelogPlugin extends AbstractUIPlugin {
-	
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.changelog.core"; // $NON-NLS-1$
-	
-	// The shared instance.
-	private static ChangelogPlugin plugin;
 
-	/**
-	 * The constructor.
-	 */
-	public ChangelogPlugin() {
-		// super();
-		plugin = this;
-	}
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.changelog.core"; // $NON-NLS-1$
 
-	/**
-	 * Returns the shared instance.
-	 */
-	public static ChangelogPlugin getDefault() {
-		return plugin;
-	}
+    // The shared instance.
+    private static ChangelogPlugin plugin;
+
+    /**
+     * The constructor.
+     */
+    public ChangelogPlugin() {
+        // super();
+        plugin = this;
+    }
+
+    /**
+     * Returns the shared instance.
+     */
+    public static ChangelogPlugin getDefault() {
+        return plugin;
+    }
 
 }

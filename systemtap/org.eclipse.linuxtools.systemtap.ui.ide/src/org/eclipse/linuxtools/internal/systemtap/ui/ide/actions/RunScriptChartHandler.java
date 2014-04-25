@@ -34,44 +34,44 @@ import org.eclipse.ui.WorkbenchException;
  */
 public class RunScriptChartHandler extends RunScriptHandler {
 
-	private List<IDataSetParser> parsers;
-	private List<IFilteredDataSet> dataSets;
-	private List<String> names;
-	private List<LinkedList<GraphData>> graphs;
+    private List<IDataSetParser> parsers;
+    private List<IFilteredDataSet> dataSets;
+    private List<String> names;
+    private List<LinkedList<GraphData>> graphs;
 
-	public RunScriptChartHandler(List<IDataSetParser> parsers, List<IFilteredDataSet> dataSet, List<String> names, List<LinkedList<GraphData>> graphs) {
-		super();
-		this.parsers = parsers;
-		this.dataSets = dataSet;
-		this.names = names;
-		this.graphs = graphs;
-	}
+    public RunScriptChartHandler(List<IDataSetParser> parsers, List<IFilteredDataSet> dataSet, List<String> names, List<LinkedList<GraphData>> graphs) {
+        super();
+        this.parsers = parsers;
+        this.dataSets = dataSet;
+        this.names = names;
+        this.graphs = graphs;
+    }
 
-	@Override
-	protected void scriptConsoleInitialized(ScriptConsole console){
-		int n = parsers.size();
-		for (int i = 0; i < n; i++) {
-			console.getCommand().addInputStreamListener(new ChartStreamDaemon(dataSets.get(i), parsers.get(i)));
-		}
-		try {
-			String name = console.getName();
-			String title = name.substring(name.lastIndexOf('/')+1);
+    @Override
+    protected void scriptConsoleInitialized(ScriptConsole console){
+        int n = parsers.size();
+        for (int i = 0; i < n; i++) {
+            console.getCommand().addInputStreamListener(new ChartStreamDaemon(dataSets.get(i), parsers.get(i)));
+        }
+        try {
+            String name = console.getName();
+            String title = name.substring(name.lastIndexOf('/')+1);
 
-			IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
+            IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+            GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
 
-			String scriptName = console.getName();
-			ivp.createScriptSets(scriptName, names, dataSets);
+            String scriptName = console.getName();
+            ivp.createScriptSets(scriptName, names, dataSets);
 
-			for (int i = 0; i < n; i++) {
-				for (GraphData graph : graphs.get(i)) {
-					ivp.getDisplaySet(i).addGraph(graph);
-				}
-			}
-		} catch(WorkbenchException we) {
-			ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
-		}
-		super.scriptConsoleInitialized(console);
-	}
+            for (int i = 0; i < n; i++) {
+                for (GraphData graph : graphs.get(i)) {
+                    ivp.getDisplaySet(i).addGraph(graph);
+                }
+            }
+        } catch(WorkbenchException we) {
+            ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
+        }
+        super.scriptConsoleInitialized(console);
+    }
 
 }

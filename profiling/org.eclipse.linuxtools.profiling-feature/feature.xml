@@ -66,13 +66,13 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-   
+
    <plugin
          id="org.eclipse.linuxtools.tools.launch.core"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+
     <plugin
          id="org.eclipse.linuxtools.tools.launch.ui"
          download-size="0"

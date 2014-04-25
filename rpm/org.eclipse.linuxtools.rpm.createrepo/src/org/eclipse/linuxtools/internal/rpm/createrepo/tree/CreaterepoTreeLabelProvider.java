@@ -19,32 +19,32 @@ import org.eclipse.swt.graphics.Image;
  */
 public class CreaterepoTreeLabelProvider extends LabelProvider {
 
-	private static final String CATEGORY_IMAGE = "icons/library_obj.gif"; //$NON-NLS-1$
-	private static final String TAG_IMAGE = "icons/templateprop_co.gif"; //$NON-NLS-1$
+    private static final String CATEGORY_IMAGE = "icons/library_obj.gif"; //$NON-NLS-1$
+    private static final String TAG_IMAGE = "icons/templateprop_co.gif"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-	 */
-	@Override
-	public String getText(Object element) {
-		if (element instanceof CreaterepoTreeCategory) {
-			CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
-			return category.getName();
-		}
-		return element.toString();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+     */
+    @Override
+    public String getText(Object element) {
+        if (element instanceof CreaterepoTreeCategory) {
+            CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
+            return category.getName();
+        }
+        return element.toString();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
-	 */
-	@Override
-	public Image getImage(Object element) {
-		if (element instanceof CreaterepoTreeCategory) {
-			return Activator.getImageDescriptor(CATEGORY_IMAGE).createImage();
-		}
-		return Activator.getImageDescriptor(TAG_IMAGE).createImage();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+     */
+    @Override
+    public Image getImage(Object element) {
+        if (element instanceof CreaterepoTreeCategory) {
+            return Activator.getImageDescriptor(CATEGORY_IMAGE).createImage();
+        }
+        return Activator.getImageDescriptor(TAG_IMAGE).createImage();
+    }
 
 }

@@ -21,9 +21,9 @@
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
       </launchConfigurationType>
    </extension>
-   
-   
-   
+
+
+
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
@@ -33,9 +33,9 @@
             type="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch">
       </launchConfigurationTabGroup>
    </extension>
-   
-	
-	<extension
+
+
+    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph"
@@ -106,6 +106,6 @@
           type="timing">
     </provider>
  </extension>
-   
+
 
 </plugin>

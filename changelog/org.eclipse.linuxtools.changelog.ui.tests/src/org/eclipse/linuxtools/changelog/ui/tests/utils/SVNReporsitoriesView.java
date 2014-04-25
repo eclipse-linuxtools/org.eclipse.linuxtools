@@ -17,44 +17,44 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  */
 public class SVNReporsitoriesView {
 
-	private SWTWorkbenchBot bot;
+    private SWTWorkbenchBot bot;
 
-	public SVNReporsitoriesView(SWTWorkbenchBot bot) {
-		this.bot = bot;
-	}
+    public SVNReporsitoriesView(SWTWorkbenchBot bot) {
+        this.bot = bot;
+    }
 
-	/**
-	 * Open the SVNRepositoriesView
-	 */
-	public SVNReporsitoriesView open() {
-		bot.menu("Window").menu("Show View").menu("Other...").click();
-		SWTBotShell shell = bot.shell("Show View");
-		shell.activate();
-		bot.tree().expandNode("SVN").select("SVN Repositories");
-		bot.button("OK").click();
-		return this;
-	}
+    /**
+     * Open the SVNRepositoriesView
+     */
+    public SVNReporsitoriesView open() {
+        bot.menu("Window").menu("Show View").menu("Other...").click();
+        SWTBotShell shell = bot.shell("Show View");
+        shell.activate();
+        bot.tree().expandNode("SVN").select("SVN Repositories");
+        bot.button("OK").click();
+        return this;
+    }
 
-	/**
-	 * Select repository
-	 */
-	public void discardRepository(String repo) {
-		SWTBotView svnRepoView = bot.viewByTitle("SVN Repositories");
-		svnRepoView.show();
-		svnRepoView.setFocus();
-		SWTBotTree tree = svnRepoView.bot().tree();
-		tree.select(repo);
-		clickOnDiscardRepo(tree); // discard
-	}
+    /**
+     * Select repository
+     */
+    public void discardRepository(String repo) {
+        SWTBotView svnRepoView = bot.viewByTitle("SVN Repositories");
+        svnRepoView.show();
+        svnRepoView.setFocus();
+        SWTBotTree tree = svnRepoView.bot().tree();
+        tree.select(repo);
+        clickOnDiscardRepo(tree); // discard
+    }
 
-	/**
-	 * Context menu click helper. Click on "Add to existing sources".
-	 *
-	 * @param Tree of Package Explorer view.
-	 * @throws Exception
-	 */
-	private void clickOnDiscardRepo(SWTBotTree svnReposTree) {
-		String menuItem = "Discard location";
-		ContextMenuHelper.clickContextMenu(svnReposTree, menuItem);
-	}
+    /**
+     * Context menu click helper. Click on "Add to existing sources".
+     *
+     * @param Tree of Package Explorer view.
+     * @throws Exception
+     */
+    private void clickOnDiscardRepo(SWTBotTree svnReposTree) {
+        String menuItem = "Discard location";
+        ContextMenuHelper.clickContextMenu(svnReposTree, menuItem);
+    }
 }

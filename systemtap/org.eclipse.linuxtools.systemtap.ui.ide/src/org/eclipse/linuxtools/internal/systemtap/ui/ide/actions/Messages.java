@@ -17,24 +17,24 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.messages"; //$NON-NLS-1$
-	public static String ScriptRunAction_InvalidScriptTitle;
-	public static String ScriptRunAction_InvalidScriptTMessage;
-	public static String ScriptRunAction_errorDialogTitle;
-	public static String RunScriptAction_alreadyRunningDialogTitle;
-	public static String RunScriptAction_alreadyRunningDialogMessage;
-	public static String RunScriptChartAction_couldNotSwitchToGraphicPerspective;
-	public static String DataSetFileExtension;
-	public static String ExportDataSetAction_DialogTitle;
-	public static String ImportDataSetAction_DialogTitle;
-	public static String ImportDataSetAction_FileInvalid;
-	public static String ImportDataSetAction_FileNotFound;
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.messages"; //$NON-NLS-1$
+    public static String ScriptRunAction_InvalidScriptTitle;
+    public static String ScriptRunAction_InvalidScriptTMessage;
+    public static String ScriptRunAction_errorDialogTitle;
+    public static String RunScriptAction_alreadyRunningDialogTitle;
+    public static String RunScriptAction_alreadyRunningDialogMessage;
+    public static String RunScriptChartAction_couldNotSwitchToGraphicPerspective;
+    public static String DataSetFileExtension;
+    public static String ExportDataSetAction_DialogTitle;
+    public static String ImportDataSetAction_DialogTitle;
+    public static String ImportDataSetAction_FileInvalid;
+    public static String ImportDataSetAction_FileNotFound;
 
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 }

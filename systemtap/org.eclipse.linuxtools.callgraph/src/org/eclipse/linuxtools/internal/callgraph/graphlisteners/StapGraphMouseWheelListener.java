@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
@@ -20,57 +20,57 @@ import org.eclipse.swt.events.MouseWheelListener;
  *
  */
 public class StapGraphMouseWheelListener implements MouseWheelListener {
-	private StapGraph graph;
-	
-	public StapGraphMouseWheelListener(StapGraph g) {
-		this.graph = g;
-	}
-	
+    private StapGraph graph;
 
-	@Override
-	public void mouseScrolled(MouseEvent e) {
-		if (e.stateMask != SWT.CTRL) {
-			// Scrolling
-			if (e.count > 0) {
-				AutoScrollHelper.scrollUp(graph);
-			} else {
-				AutoScrollHelper.scrollDown(graph);
-			}
-			return;
-		}
-		
-		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_LEVEL && 
-				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE) {
-			return;
-		}
+    public StapGraphMouseWheelListener(StapGraph g) {
+        this.graph = g;
+    }
 
-		if (e.count <= 0) {
-			if (graph.scale < 2){
-				graph.scale /= (10.0 / 11.0);
-			}else{				
-				graph.scale = (int)graph.scale + 1;
-			}
 
-		}else {
-			if (graph.scale <= 2){
-				graph.scale *= (10.0 / 11.0);
-			} else {
-				graph.scale = (int) graph.scale - 1;
-			}
-		}
-		
-		int currentAnimationMode = graph.getAnimationMode();
-		graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST,
-				graph.getRootVisibleNodeNumber());
-		graph.setAnimationMode(currentAnimationMode);
-		
-		int realeX = 3 * (int)(e.x / graph.scale);
-		int realeY = 3 * (int)(e.y / graph.scale);
-		int xDiff = (realeX - graph.getSize().x);
-		int yDiff = (realeY - graph.getSize().y);
-		
-		graph.scrollTo(realeX + xDiff, realeY - yDiff);
-	}
+    @Override
+    public void mouseScrolled(MouseEvent e) {
+        if (e.stateMask != SWT.CTRL) {
+            // Scrolling
+            if (e.count > 0) {
+                AutoScrollHelper.scrollUp(graph);
+            } else {
+                AutoScrollHelper.scrollDown(graph);
+            }
+            return;
+        }
+
+        if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_LEVEL &&
+                graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE) {
+            return;
+        }
+
+        if (e.count <= 0) {
+            if (graph.scale < 2){
+                graph.scale /= (10.0 / 11.0);
+            }else{
+                graph.scale = (int)graph.scale + 1;
+            }
+
+        }else {
+            if (graph.scale <= 2){
+                graph.scale *= (10.0 / 11.0);
+            } else {
+                graph.scale = (int) graph.scale - 1;
+            }
+        }
+
+        int currentAnimationMode = graph.getAnimationMode();
+        graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST,
+                graph.getRootVisibleNodeNumber());
+        graph.setAnimationMode(currentAnimationMode);
+
+        int realeX = 3 * (int)(e.x / graph.scale);
+        int realeY = 3 * (int)(e.y / graph.scale);
+        int xDiff = (realeX - graph.getSize().x);
+        int yDiff = (realeY - graph.getSize().y);
+
+        graph.scrollTo(realeX + xDiff, realeY - yDiff);
+    }
 
 }
 

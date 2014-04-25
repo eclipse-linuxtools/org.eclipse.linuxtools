@@ -21,36 +21,36 @@ import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 
 public class StapTreeDoubleClickListener implements IDoubleClickListener {
 
-	private StapGraph graph;
-	private TreeViewer viewer;
+    private StapGraph graph;
+    private TreeViewer viewer;
 
-	public StapTreeDoubleClickListener(TreeViewer t , StapGraph g) {
-		this.graph  = g;
-		this.viewer = t;
-	}
+    public StapTreeDoubleClickListener(TreeViewer t , StapGraph g) {
+        this.graph  = g;
+        this.viewer = t;
+    }
 
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		if (!(event.getSelection() instanceof IStructuredSelection)) {
-			return;
-		}
-		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-		if (selection.size() != 1) {
-			return;
-		}
+    @Override
+    public void doubleClick(DoubleClickEvent event) {
+        if (!(event.getSelection() instanceof IStructuredSelection)) {
+            return;
+        }
+        IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+        if (selection.size() != 1) {
+            return;
+        }
 
 
-		//Expand the current node in the tree viewer and on the graph
+        //Expand the current node in the tree viewer and on the graph
         for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
-        	StapData data = (StapData) iterator.next();
-        	viewer.collapseToLevel(data, 1);
-        	viewer.expandToLevel(data, 1);
-        	graph.setCollapseMode(true);
-        	graph.draw(data.id);
-        	graph.getNode(data.id).unhighlight();
+            StapData data = (StapData) iterator.next();
+            viewer.collapseToLevel(data, 1);
+            viewer.expandToLevel(data, 1);
+            graph.setCollapseMode(true);
+            graph.draw(data.id);
+            graph.getNode(data.id).unhighlight();
         }
 
         graph.setFocus();
-	}
+    }
 
 }

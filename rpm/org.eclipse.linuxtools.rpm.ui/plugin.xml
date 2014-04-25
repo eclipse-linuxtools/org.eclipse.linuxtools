@@ -5,7 +5,7 @@
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-   
+
     Contributors:
         Red Hat - initial API and implementation
  -->
@@ -20,7 +20,7 @@
       <wizard
             name="%wizard.name.1"
             icon="icons/rpm.gif"
-            class="org.eclipse.linuxtools.internal.rpm.ui.SRPMImportWizard" 
+            class="org.eclipse.linuxtools.internal.rpm.ui.SRPMImportWizard"
             category="org.eclipse.linuxtools.rpm.ui"
             id="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard">
          <description>
@@ -31,7 +31,7 @@
          </selection>
       </wizard>
    </extension>
-	<extension
+    <extension
          point="org.eclipse.ui.propertyPages">
       <page
             class="org.eclipse.linuxtools.internal.rpm.ui.propertypage.SpecFileHeaderPage"
@@ -67,7 +67,7 @@
  <extension
        point="org.eclipse.ui.newWizards">
       <wizard
-      		project="true"
+              project="true"
             category="org.eclipse.linuxtools.rpm.ui.editor"
             class="org.eclipse.linuxtools.internal.rpm.ui.RPMNewProject"
             icon="icons/rpm.gif"

@@ -24,58 +24,58 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
  * @author Ryan Morse
  */
 public class ConsoleStreamDaemon implements IGobblerListener {
-	public ConsoleStreamDaemon(ScriptConsole console) {
-		this.console = console;
-		if(null != console) {
-			ioConsole = console.newOutputStream();
-		}
-		disposed = false;
-	}
+    public ConsoleStreamDaemon(ScriptConsole console) {
+        this.console = console;
+        if(null != console) {
+            ioConsole = console.newOutputStream();
+        }
+        disposed = false;
+    }
 
-	/**
-	 * Prints out the new output data to the console
-	 */
-	protected void pushData() {
-		if(null != ioConsole) {
-			try {
-				ioConsole.write(output);
-			} catch (IOException e) {
-				ExceptionErrorDialog.openError(Messages.ConsoleStreamDaemon_errorWritingToConsole, e);
-			}
-		}
-	}
+    /**
+     * Prints out the new output data to the console
+     */
+    protected void pushData() {
+        if(null != ioConsole) {
+            try {
+                ioConsole.write(output);
+            } catch (IOException e) {
+                ExceptionErrorDialog.openError(Messages.ConsoleStreamDaemon_errorWritingToConsole, e);
+            }
+        }
+    }
 
-	/**
-	 * Captures data events and pushes the data to the console
-	 */
-	@Override
-	public void handleDataEvent(String line) {
-		output = line;
-		this.pushData();
-	}
+    /**
+     * Captures data events and pushes the data to the console
+     */
+    @Override
+    public void handleDataEvent(String line) {
+        output = line;
+        this.pushData();
+    }
 
-	/**
-	 * Checks to see if the class has been disposed already
-	 * @return boolean representing whether or not the class has been disposed
-	 */
-	public boolean isDisposed() {
-		return disposed;
-	}
+    /**
+     * Checks to see if the class has been disposed already
+     * @return boolean representing whether or not the class has been disposed
+     */
+    public boolean isDisposed() {
+        return disposed;
+    }
 
-	/**
-	 * Disposes of all internal references in the class. No method should be called after this.
-	 */
-	public void dispose() {
-		if(!disposed) {
-			disposed = true;
-			output = null;
-			console = null;
-			ioConsole = null;
-		}
-	}
+    /**
+     * Disposes of all internal references in the class. No method should be called after this.
+     */
+    public void dispose() {
+        if(!disposed) {
+            disposed = true;
+            output = null;
+            console = null;
+            ioConsole = null;
+        }
+    }
 
-	protected String output;
-	protected ScriptConsole console;
-	protected IOConsoleOutputStream ioConsole;
-	private boolean disposed;
+    protected String output;
+    protected ScriptConsole console;
+    protected IOConsoleOutputStream ioConsole;
+    private boolean disposed;
 }

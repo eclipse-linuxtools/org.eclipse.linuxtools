@@ -14,26 +14,26 @@ import org.eclipse.cdt.ui.ICHelpBook;
 
 public class HelpBook implements ICHelpBook {
 
-	private String title;
-	private int type;
-	
-	public HelpBook (String title, String typeName) {
-		this.title = title;
-		if (typeName.equals("C")) //$NON-NLS-1$
-		    type = HELP_TYPE_C;
-		else if (typeName.equals("C++")) //$NON-NLS-1$
-			type = HELP_TYPE_CPP;
-		else
-			type = HELP_TYPE_ASM;
-	}
-	@Override
-	public String getTitle () {
-		return title;
-	}
-	
-	@Override
-	public int getCHelpType () {
-		return type;
-	}
+    private String title;
+    private int type;
+
+    public HelpBook (String title, String typeName) {
+        this.title = title;
+        if (typeName.equals("C")) //$NON-NLS-1$
+            type = HELP_TYPE_C;
+        else if (typeName.equals("C++")) //$NON-NLS-1$
+            type = HELP_TYPE_CPP;
+        else
+            type = HELP_TYPE_ASM;
+    }
+    @Override
+    public String getTitle () {
+        return title;
+    }
+
+    @Override
+    public int getCHelpType () {
+        return type;
+    }
 
 }

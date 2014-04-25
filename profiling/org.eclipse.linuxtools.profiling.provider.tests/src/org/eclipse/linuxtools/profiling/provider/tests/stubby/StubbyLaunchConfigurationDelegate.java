@@ -17,14 +17,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class StubbyLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
-	@Override
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) {
-	}
+    @Override
+    public void launch(ILaunchConfiguration configuration, String mode,
+            ILaunch launch, IProgressMonitor monitor) {
+    }
 
-	@Override
-	protected String getPluginID() {
-		return null;
-	}
+    @Override
+    protected String getPluginID() {
+        return null;
+    }
 
 }

@@ -25,25 +25,25 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class RemoteEnvProxyManager extends RemoteProxyManager implements IRemoteEnvProxyManager {
 
-	@Override
-	public Map<String, String> getEnv(IProject project) throws CoreException {
-		String scheme = mapping.getSchemeFromNature(project);
-		if (scheme!=null) {
-			IRemoteEnvProxyManager manager = (IRemoteEnvProxyManager) getRemoteManager(scheme);
-			return manager.getEnv(project);
-		}
-		URI projectURI = project.getLocationURI();
-		return getEnv(projectURI);
-	}
+    @Override
+    public Map<String, String> getEnv(IProject project) throws CoreException {
+        String scheme = mapping.getSchemeFromNature(project);
+        if (scheme!=null) {
+            IRemoteEnvProxyManager manager = (IRemoteEnvProxyManager) getRemoteManager(scheme);
+            return manager.getEnv(project);
+        }
+        URI projectURI = project.getLocationURI();
+        return getEnv(projectURI);
+    }
 
-	@Override
-	public Map<String, String> getEnv(URI uri) throws CoreException {
-		String scheme = uri.getScheme();
-		if (scheme != null && !scheme.equals(LOCALSCHEME)){
-			IRemoteEnvProxyManager manager = (IRemoteEnvProxyManager) getRemoteManager(scheme);
-			return manager.getEnv(uri);
-		}
-		return System.getenv();
-	}
+    @Override
+    public Map<String, String> getEnv(URI uri) throws CoreException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.equals(LOCALSCHEME)){
+            IRemoteEnvProxyManager manager = (IRemoteEnvProxyManager) getRemoteManager(scheme);
+            return manager.getEnv(uri);
+        }
+        return System.getenv();
+    }
 
 }

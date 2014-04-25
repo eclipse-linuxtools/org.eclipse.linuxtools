@@ -22,7 +22,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools GCov Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

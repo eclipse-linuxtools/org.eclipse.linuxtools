@@ -24,25 +24,25 @@ import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.osgi.framework.Version;
 
 public class HelgrindLaunchDelegate implements IValgrindLaunchDelegate {
-	private static final String EQUALS = "="; //$NON-NLS-1$
-	private static final String NO = "no"; //$NON-NLS-1$
-	private static final String YES = "yes"; //$NON-NLS-1$
+    private static final String EQUALS = "="; //$NON-NLS-1$
+    private static final String NO = "no"; //$NON-NLS-1$
+    private static final String YES = "yes"; //$NON-NLS-1$
 
-	@Override
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) {
-	}
-	
-	@Override
-	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
-		ArrayList<String> opts = new ArrayList<>();
+    @Override
+    public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) {
+    }
 
-		opts.add(HelgrindCommandConstants.OPT_TRACK_LOCKORDERS + EQUALS + (config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_LOCKORDERS, HelgrindLaunchConstants.DEFAULT_HELGRIND_LOCKORDERS) ? YES : NO));
-		opts.add(HelgrindCommandConstants.OPT_HISTORY_LEVEL + EQUALS + config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_HISTORYLEVEL, HelgrindLaunchConstants.DEFAULT_HELGRIND_HISTORYLEVEL));
-		opts.add(HelgrindCommandConstants.OPT_CONFLICT_CACHE_SIZE + EQUALS + config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_CACHESIZE, HelgrindLaunchConstants.DEFAULT_HELGRIND_CACHESIZE));
-		return opts.toArray(new String[opts.size()]);
-	}
+    @Override
+    public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
+        ArrayList<String> opts = new ArrayList<>();
 
-	@Override
-	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) {
-	}
+        opts.add(HelgrindCommandConstants.OPT_TRACK_LOCKORDERS + EQUALS + (config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_LOCKORDERS, HelgrindLaunchConstants.DEFAULT_HELGRIND_LOCKORDERS) ? YES : NO));
+        opts.add(HelgrindCommandConstants.OPT_HISTORY_LEVEL + EQUALS + config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_HISTORYLEVEL, HelgrindLaunchConstants.DEFAULT_HELGRIND_HISTORYLEVEL));
+        opts.add(HelgrindCommandConstants.OPT_CONFLICT_CACHE_SIZE + EQUALS + config.getAttribute(HelgrindLaunchConstants.ATTR_HELGRIND_CACHESIZE, HelgrindLaunchConstants.DEFAULT_HELGRIND_CACHESIZE));
+        return opts.toArray(new String[opts.size()]);
+    }
+
+    @Override
+    public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) {
+    }
 }

@@ -19,22 +19,22 @@ import org.junit.BeforeClass;
  * Generic utilities for systemtap tests.
  */
 public class SystemtapTest {
-	public static boolean stapInstalled;
+    public static boolean stapInstalled;
 
-	@BeforeClass
-	public static void checkStapInstalled() throws IOException {
-		stapInstalled = SystemtapTest.stapInstalled();
-	}
+    @BeforeClass
+    public static void checkStapInstalled() throws IOException {
+        stapInstalled = SystemtapTest.stapInstalled();
+    }
 
-	/**
-	 * Check that stap is installed
-	 *
-	 * @return true if stap is installed, false otherwise.
-	 * @throws IOException
-	 */
-	protected static boolean stapInstalled() throws IOException {
-		Process process = RuntimeProcessFactory.getFactory().exec(
-				new String[] { "stap", "-V" }, null); //$NON-NLS-1$ //$NON-NLS-2$
-		return (process != null);
-	}
+    /**
+     * Check that stap is installed
+     *
+     * @return true if stap is installed, false otherwise.
+     * @throws IOException
+     */
+    protected static boolean stapInstalled() throws IOException {
+        Process process = RuntimeProcessFactory.getFactory().exec(
+                new String[] { "stap", "-V" }, null); //$NON-NLS-1$ //$NON-NLS-2$
+        return (process != null);
+    }
 }

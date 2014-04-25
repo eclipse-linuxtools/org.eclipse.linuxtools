@@ -14,9 +14,9 @@ import java.util.Comparator;
 
 public class PatchFileComparator implements Comparator<PatchFile> {
 
-	@Override
-	public int compare(PatchFile p1, PatchFile p2) {
-		return p1.getResource().getLocation().toOSString().compareToIgnoreCase(p2.getResource().getLocation().toOSString());
-	}
+    @Override
+    public int compare(PatchFile p1, PatchFile p2) {
+        return p1.getResource().getLocation().toOSString().compareToIgnoreCase(p2.getResource().getLocation().toOSString());
+    }
 
 }

@@ -24,47 +24,47 @@ import org.junit.Test;
  */
 public class LabelProviderTest extends FileTestCase {
 
-	private SpecfileLabelProvider labelProvider;
-	private String correctResult = "eclipse-plugin";
+    private SpecfileLabelProvider labelProvider;
+    private String correctResult = "eclipse-plugin";
 
-	@Before
-	public void initialize() {
-		labelProvider = new SpecfileLabelProvider();
-	}
+    @Before
+    public void initialize() {
+        labelProvider = new SpecfileLabelProvider();
+    }
 
-	/**
-	 * Test to see if %{?...} macros will be shown. They should not.
-	 */
-	@Test
-	public void testLabelForUnresolvedMacro() {
-		String testText = "%{?some_macro}eclipse-plugin";
-		String result = labelProvider.getText(testText);
-		assertEquals(result, correctResult);
+    /**
+     * Test to see if %{?...} macros will be shown. They should not.
+     */
+    @Test
+    public void testLabelForUnresolvedMacro() {
+        String testText = "%{?some_macro}eclipse-plugin";
+        String result = labelProvider.getText(testText);
+        assertEquals(result, correctResult);
 
-		testText = "eclipse-plugin%{?some_macro}";
-		result = labelProvider.getText(testText);
-		assertEquals(result, correctResult);
+        testText = "eclipse-plugin%{?some_macro}";
+        result = labelProvider.getText(testText);
+        assertEquals(result, correctResult);
 
-		testText = "%{?some_macro}eclipse-plugin%{?some_macro}";
-		result = labelProvider.getText(testText);
-		assertEquals(result, correctResult);
-	}
+        testText = "%{?some_macro}eclipse-plugin%{?some_macro}";
+        result = labelProvider.getText(testText);
+        assertEquals(result, correctResult);
+    }
 
-	/**
-	 * Test for incorrect labels.
-	 */
-	@Test
-	public void testLabelForIncorrectString() {
-		// for sake of test, this is just to show that the filterMacros
-		// method would not filter %{...} regular macros.
-		// It is the job of SpecfileDefine to do that.
-		String testText = "%{no_question_mark}eclipse-plugin";
-		String result = labelProvider.getText(testText);
-		assertNotEquals(result, correctResult);
+    /**
+     * Test for incorrect labels.
+     */
+    @Test
+    public void testLabelForIncorrectString() {
+        // for sake of test, this is just to show that the filterMacros
+        // method would not filter %{...} regular macros.
+        // It is the job of SpecfileDefine to do that.
+        String testText = "%{no_question_mark}eclipse-plugin";
+        String result = labelProvider.getText(testText);
+        assertNotEquals(result, correctResult);
 
-		testText = "{?no_percent_sign}eclipse-plugin";
-		result = labelProvider.getText(testText);
-		assertNotEquals(result, correctResult);
-	}
+        testText = "{?no_percent_sign}eclipse-plugin";
+        result = labelProvider.getText(testText);
+        assertNotEquals(result, correctResult);
+    }
 
 }

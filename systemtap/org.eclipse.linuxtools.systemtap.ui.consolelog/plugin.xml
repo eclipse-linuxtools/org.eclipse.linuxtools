@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<extension
-		point="org.eclipse.ui.views">
-		<view
+    <extension
+        point="org.eclipse.ui.views">
+        <view
         allowMultiple="false"
         category="org.eclipse.linuxtools.systemtap.ui"
         class="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
         icon="icons/views/error_obj.gif"
         id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
         name="%view.error.name"/>
-	</extension>
-	
-	
-	
-	<extension
-		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.PreferenceInitializer"/>
-	</extension>
-	
-	<extension
-		point="org.eclipse.ui.preferencePages">
-		<page
-			name="%preference.consoleLog.name"
-			id="org.eclipse.linuxtools.systemtap.prefs.consoleLog"
-			class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferencePage"
-			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
-	</extension>
+    </extension>
+
+
+
+    <extension
+        point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.PreferenceInitializer"/>
+    </extension>
+
+    <extension
+        point="org.eclipse.ui.preferencePages">
+        <page
+            name="%preference.consoleLog.name"
+            id="org.eclipse.linuxtools.systemtap.prefs.consoleLog"
+            class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferencePage"
+            category="org.eclipse.linuxtools.systemtap.prefs.view"/>
+    </extension>
  <extension
        point="org.eclipse.ui.console.consolePageParticipants">
     <consolePageParticipant

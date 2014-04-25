@@ -22,25 +22,25 @@ import org.junit.Test;
 
 public class CCodeFileFilterTest {
 
-	@Before
-	public void setUp(){
-		filter = new CCodeFileFilter();
-	}
+    @Before
+    public void setUp(){
+        filter = new CCodeFileFilter();
+    }
 
-	@Test
-	public void testAccept() {
-		assertFalse(filter.accept(null));
-		assertFalse(filter.accept(new File("test")));
-		assertFalse(filter.accept(new File("test.java")));
-		assertTrue(filter.accept(new File("/root/")));
-		assertTrue(filter.accept(new File("test.h")));
-		assertTrue(filter.accept(new File("test.c")));
-	}
+    @Test
+    public void testAccept() {
+        assertFalse(filter.accept(null));
+        assertFalse(filter.accept(new File("test")));
+        assertFalse(filter.accept(new File("test.java")));
+        assertTrue(filter.accept(new File("/root/")));
+        assertTrue(filter.accept(new File("test.h")));
+        assertTrue(filter.accept(new File("test.c")));
+    }
 
-	@Test
-	public void testGetDescription() {
-		filter.getDescription();
-	}
+    @Test
+    public void testGetDescription() {
+        filter.getDescription();
+    }
 
-	private CCodeFileFilter filter;
+    private CCodeFileFilter filter;
 }

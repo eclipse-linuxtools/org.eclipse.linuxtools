@@ -31,47 +31,47 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
  *
  */
 public class RPMNewProject extends Wizard implements INewWizard {
-	private NewProjectCreationPage namePage;
+    private NewProjectCreationPage namePage;
 
-	@Override
-	public boolean performFinish() {
-		try {
-			WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
-				@Override
-				protected void execute(IProgressMonitor monitor) throws CoreException {
-					createProject(monitor != null ? monitor
-							: new NullProgressMonitor());
-				}
-			};
-			getContainer().run(false, true, op);
-		} catch (InvocationTargetException x) {
-			return false;
-		} catch (InterruptedException x) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean performFinish() {
+        try {
+            WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+                @Override
+                protected void execute(IProgressMonitor monitor) throws CoreException {
+                    createProject(monitor != null ? monitor
+                            : new NullProgressMonitor());
+                }
+            };
+            getContainer().run(false, true, op);
+        } catch (InvocationTargetException x) {
+            return false;
+        } catch (InterruptedException x) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		super.addPages();
-		namePage = new NewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$
-		namePage.setTitle(Messages.getString("RPMNewProject.1")); //$NON-NLS-1$
-		namePage
-				.setDescription(Messages.getString("RPMNewProject.2")); //$NON-NLS-1$
-		namePage.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
-				"/icons/rpm.gif")); //$NON-NLS-1$
-		addPage(namePage);
-		namePage.init(selection);
-	}
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+        super.addPages();
+        namePage = new NewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$
+        namePage.setTitle(Messages.getString("RPMNewProject.1")); //$NON-NLS-1$
+        namePage
+                .setDescription(Messages.getString("RPMNewProject.2")); //$NON-NLS-1$
+        namePage.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
+                "/icons/rpm.gif")); //$NON-NLS-1$
+        addPage(namePage);
+        namePage.init(selection);
+    }
 
-	protected void createProject(IProgressMonitor monitor) throws CoreException {
-		RPMProjectCreator rpmProjectCreator = new RPMProjectCreator(namePage.getSelectedLayout());
-		IProject project = rpmProjectCreator.create(namePage.getProjectName(), namePage.getLocationPath(), monitor);
-		// Add new project to working sets, if requested
-		IWorkingSet[] workingSets = namePage.getWorkingSets();
-		if (workingSets.length > 0) {
-			PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
-		}
-	}
+    protected void createProject(IProgressMonitor monitor) throws CoreException {
+        RPMProjectCreator rpmProjectCreator = new RPMProjectCreator(namePage.getSelectedLayout());
+        IProject project = rpmProjectCreator.create(namePage.getProjectName(), namePage.getLocationPath(), monitor);
+        // Add new project to working sets, if requested
+        IWorkingSet[] workingSets = namePage.getWorkingSets();
+        if (workingSets.length > 0) {
+            PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+        }
+    }
 }

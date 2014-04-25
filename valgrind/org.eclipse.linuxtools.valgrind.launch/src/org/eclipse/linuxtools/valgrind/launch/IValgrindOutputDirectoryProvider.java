@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.IPath;
  */
 public interface IValgrindOutputDirectoryProvider {
 
-	/**
-	 * Obtains a directory to store Valgrind output files.
-	 * @return the absolute path to this directory
-	 */
-	IPath getOutputPath() throws IOException;
+    /**
+     * Obtains a directory to store Valgrind output files.
+     * @return the absolute path to this directory
+     */
+    IPath getOutputPath() throws IOException;
 
 }

@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ GprofAggregatorTest.class, GprofBinaryTest.class,
-		GprofParserTest.class, GprofLaunchTest.class, GprofShortcutTest.class,
-		GprofTest.class })
+        GprofParserTest.class, GprofLaunchTest.class, GprofShortcutTest.class,
+        GprofTest.class })
 public class AllGprofTests {
 }

@@ -26,35 +26,35 @@ import org.junit.Test;
 
 public class RPMProjectNatureTest {
 
-	static IWorkspace workspace;
-	static IWorkspaceRoot root;
-	static NullProgressMonitor monitor;
+    static IWorkspace workspace;
+    static IWorkspaceRoot root;
+    static NullProgressMonitor monitor;
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		IWorkspaceDescription desc;
-		workspace = ResourcesPlugin.getWorkspace();
-		if (workspace == null) {
-			fail("Workspace was not setup");
-		}
-		root = workspace.getRoot();
-		monitor = new NullProgressMonitor();
-		if (root == null) {
-			fail("Workspace root was not setup");
-		}
-		desc = workspace.getDescription();
-		desc.setAutoBuilding(false);
-		workspace.setDescription(desc);
-	}
+    @BeforeClass
+    public static void setUp() throws Exception {
+        IWorkspaceDescription desc;
+        workspace = ResourcesPlugin.getWorkspace();
+        if (workspace == null) {
+            fail("Workspace was not setup");
+        }
+        root = workspace.getRoot();
+        monitor = new NullProgressMonitor();
+        if (root == null) {
+            fail("Workspace root was not setup");
+        }
+        desc = workspace.getDescription();
+        desc.setAutoBuilding(false);
+        workspace.setDescription(desc);
+    }
 
-	@Test
-	public void testAddRPMProjectNature() throws Exception {
-		IProject testProject = root.getProject("testProject");
-		testProject.create(monitor);
-		testProject.open(monitor);
-		RPMProjectNature.addRPMNature(testProject, monitor);
-		assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
-		testProject.delete(true, false, monitor);
-	}
+    @Test
+    public void testAddRPMProjectNature() throws Exception {
+        IProject testProject = root.getProject("testProject");
+        testProject.create(monitor);
+        testProject.open(monitor);
+        RPMProjectNature.addRPMNature(testProject, monitor);
+        assertTrue(testProject.hasNature(IRPMConstants.RPM_NATURE_ID));
+        testProject.delete(true, false, monitor);
+    }
 
 }

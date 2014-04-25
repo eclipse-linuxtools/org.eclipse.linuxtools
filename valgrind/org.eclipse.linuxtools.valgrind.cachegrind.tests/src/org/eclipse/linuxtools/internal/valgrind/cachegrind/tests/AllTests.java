@@ -15,8 +15,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ BasicCachegrindTest.class, CModelLabelsTest.class,
-		DoubleClickTest.class, LaunchConfigTabTest.class,
-		MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class })
+        DoubleClickTest.class, LaunchConfigTabTest.class,
+        MultiProcessTest.class, ExpandCollapseTest.class, ShortcutTest.class })
 public class AllTests {
 // suite class
 }

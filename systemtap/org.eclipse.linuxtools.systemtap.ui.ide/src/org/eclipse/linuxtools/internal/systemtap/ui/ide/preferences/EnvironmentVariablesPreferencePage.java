@@ -28,132 +28,132 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class EnvironmentVariablesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	/**
-	 * Set the description of the page.
-	 */
-	public EnvironmentVariablesPreferencePage() {
-		super();
-		setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
-		setDescription(Messages.EnvironmentVariablesPreferencePage_Title);
-	}
+    /**
+     * Set the description of the page.
+     */
+    public EnvironmentVariablesPreferencePage() {
+        super();
+        setPreferenceStore(IDEPlugin.getDefault().getPreferenceStore());
+        setDescription(Messages.EnvironmentVariablesPreferencePage_Title);
+    }
 
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 
-	/**
-	 * Creates a ScrolledComposite, sets options on oit, opens string field editors for the
-	 * preferences.
-	 *
-	 * @param parent The parent of the ScrolledComposite object.
-	 *
-	 * @return The ScrolledComposite object that is created configured.
-	 */
-	@Override
-	protected Control createContents(Composite parent) {
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL );
-		Composite c = new Composite(sc, SWT.NONE);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		sc.setContent(c);
+    /**
+     * Creates a ScrolledComposite, sets options on oit, opens string field editors for the
+     * preferences.
+     *
+     * @param parent The parent of the ScrolledComposite object.
+     *
+     * @return The ScrolledComposite object that is created configured.
+     */
+    @Override
+    protected Control createContents(Composite parent) {
+        ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL );
+        Composite c = new Composite(sc, SWT.NONE);
+        sc.setExpandHorizontal(true);
+        sc.setExpandVertical(true);
+        sc.setContent(c);
 
-		envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.length];
-		for(int i=0; i<envVariables.length; i++) {
-			envVariables[i] = createStringFieldEditor(PreferenceConstants.P_ENV[i][0],
-					PreferenceConstants.P_ENV[i][1], c);
-		}
-		return sc;
-	}
+        envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.length];
+        for(int i=0; i<envVariables.length; i++) {
+            envVariables[i] = createStringFieldEditor(PreferenceConstants.P_ENV[i][0],
+                    PreferenceConstants.P_ENV[i][1], c);
+        }
+        return sc;
+    }
 
-	/**
-	 * Creates and returns a StringFieldEditor object with preferences set to it.
-	 *
-	 * @param name Name of the field.
-	 * @param lblText Label text of the field.
-	 * @param parent Composite object parent of the object.
-	 *
-	 * @return The created and configued StringFieldEditor ojbect.
-	 */
-	private StringFieldEditor createStringFieldEditor(String name, String lblText, Composite parent) {
-		StringFieldEditor sfe = new StringFieldEditor(name, lblText, parent);
-		sfe.setPage(this);
-		sfe.setPreferenceStore(getPreferenceStore());
-		sfe.load();
+    /**
+     * Creates and returns a StringFieldEditor object with preferences set to it.
+     *
+     * @param name Name of the field.
+     * @param lblText Label text of the field.
+     * @param parent Composite object parent of the object.
+     *
+     * @return The created and configued StringFieldEditor ojbect.
+     */
+    private StringFieldEditor createStringFieldEditor(String name, String lblText, Composite parent) {
+        StringFieldEditor sfe = new StringFieldEditor(name, lblText, parent);
+        sfe.setPage(this);
+        sfe.setPreferenceStore(getPreferenceStore());
+        sfe.load();
 
-		return sfe;
-	}
+        return sfe;
+    }
 
-	/**
-	 * Loads the default environment variables.
-	 */
-	@Override
-	protected void performDefaults() {
-		for (StringFieldEditor envVariable : envVariables) {
-			envVariable.loadDefault();
-		}
+    /**
+     * Loads the default environment variables.
+     */
+    @Override
+    protected void performDefaults() {
+        for (StringFieldEditor envVariable : envVariables) {
+            envVariable.loadDefault();
+        }
 
-		super.performDefaults();
-	}
+        super.performDefaults();
+    }
 
-	/**
-	 * Stores the modified environment variables.
-	 *
-	 * @return True.
-	 */
-	@Override
-	public boolean performOk() {
-		for (StringFieldEditor envVariable : envVariables) {
-			envVariable.store();
-		}
+    /**
+     * Stores the modified environment variables.
+     *
+     * @return True.
+     */
+    @Override
+    public boolean performOk() {
+        for (StringFieldEditor envVariable : envVariables) {
+            envVariable.store();
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Returns the currently stored environment variables in the form of a string array.
-	 *
-	 * @return The string array containing the current environment variables.
-	 */
-	public static String[] getEnvironmentVariables() {
-		ArrayList<String> vars = new ArrayList<>();
-		String[] envVars = null;
-		String var;
+    /**
+     * Returns the currently stored environment variables in the form of a string array.
+     *
+     * @return The string array containing the current environment variables.
+     */
+    public static String[] getEnvironmentVariables() {
+        ArrayList<String> vars = new ArrayList<>();
+        String[] envVars = null;
+        String var;
 
-		int i;
-		if(null == IDEPlugin.getDefault() || null == IDEPlugin.getDefault().getPreferenceStore()) {
-			return null;
-		}
-		IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-		for(i=0; i<PreferenceConstants.P_ENV.length; i++) {
-			var = p.getString(PreferenceConstants.P_ENV[i][0]).trim();
-			if(!var.isEmpty()) {
-				vars.add(PreferenceConstants.P_ENV[i][0] + "=" + var); //$NON-NLS-1$
-			}
-		}
+        int i;
+        if(null == IDEPlugin.getDefault() || null == IDEPlugin.getDefault().getPreferenceStore()) {
+            return null;
+        }
+        IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
+        for(i=0; i<PreferenceConstants.P_ENV.length; i++) {
+            var = p.getString(PreferenceConstants.P_ENV[i][0]).trim();
+            if(!var.isEmpty()) {
+                vars.add(PreferenceConstants.P_ENV[i][0] + "=" + var); //$NON-NLS-1$
+            }
+        }
 
-		if(vars.size() > 0) {
-			envVars = new String[vars.size()];
-			for (i = 0; i < vars.size(); i++) {
-				envVars[i] = vars.get(i);
-			}
-		}
+        if(vars.size() > 0) {
+            envVars = new String[vars.size()];
+            for (i = 0; i < vars.size(); i++) {
+                envVars[i] = vars.get(i);
+            }
+        }
 
-		return envVars;
-	}
+        return envVars;
+    }
 
-	/**
-	 * Clears the environment variables string array.
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
+    /**
+     * Clears the environment variables string array.
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
 
-		for(int i=0; i<envVariables.length; i++) {
-			envVariables[i].dispose();
-			envVariables[i] = null;
-		}
-		envVariables = null;
-	}
+        for(int i=0; i<envVariables.length; i++) {
+            envVariables[i].dispose();
+            envVariables[i] = null;
+        }
+        envVariables = null;
+    }
 
-	private static StringFieldEditor[] envVariables;
+    private static StringFieldEditor[] envVariables;
 }

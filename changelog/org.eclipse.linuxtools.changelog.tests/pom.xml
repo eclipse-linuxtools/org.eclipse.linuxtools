@@ -36,7 +36,7 @@
           </excludes>
           <testSuite>org.eclipse.linuxtools.changelog.tests</testSuite>
           <testClass>org.eclipse.linuxtools.changelog.core.tests.AllTests</testClass>
-       	  <useUIHarness>true</useUIHarness>
+             <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
           <dependencies>

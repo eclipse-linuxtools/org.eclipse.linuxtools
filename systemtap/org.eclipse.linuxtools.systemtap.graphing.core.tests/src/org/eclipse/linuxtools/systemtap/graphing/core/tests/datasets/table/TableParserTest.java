@@ -22,25 +22,25 @@ import org.junit.Test;
 
 public class TableParserTest {
 
-	@Before
-	public void setUp() {
-		parser = new TableParser(new String[] {"\\d+", "(\\D+)", "\\d+", "\\D+"}, "\n\n");
-	}
+    @Before
+    public void setUp() {
+        parser = new TableParser(new String[] {"\\d+", "(\\D+)", "\\d+", "\\D+"}, "\n\n");
+    }
 
-	@Test
-	public void testParse() {
-		assertNull(parser.parse(null));
-		assertNull(parser.parse(new StringBuilder("")));
-		assertNull(parser.parse(new StringBuilder("asdf")));
-		assertNull(parser.parse(new StringBuilder("1, ")));
-		assertNull(parser.parse(new StringBuilder("1, 3")));
+    @Test
+    public void testParse() {
+        assertNull(parser.parse(null));
+        assertNull(parser.parse(new StringBuilder("")));
+        assertNull(parser.parse(new StringBuilder("asdf")));
+        assertNull(parser.parse(new StringBuilder("1, ")));
+        assertNull(parser.parse(new StringBuilder("1, 3")));
 
-		IDataEntry entry = parser.parse(new StringBuilder("1, (2), 3, 4, 5\n\n"));
-		assertNotNull(entry);
-		assertEquals(2, entry.getColCount());
-		assertEquals(2, entry.getRowCount());
-		assertEquals("1", entry.getRow(0)[0]);
-	}
+        IDataEntry entry = parser.parse(new StringBuilder("1, (2), 3, 4, 5\n\n"));
+        assertNotNull(entry);
+        assertEquals(2, entry.getColCount());
+        assertEquals(2, entry.getRowCount());
+        assertEquals("1", entry.getRow(0)[0]);
+    }
 
-	private TableParser parser;
+    private TableParser parser;
 }
