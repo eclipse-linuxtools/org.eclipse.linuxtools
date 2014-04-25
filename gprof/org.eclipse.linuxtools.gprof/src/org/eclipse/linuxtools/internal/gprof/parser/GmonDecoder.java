@@ -108,8 +108,7 @@ public class GmonDecoder {
     	this.file = file;
     	DataInputStream beStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
     	if (program.isLittleEndian()) {
-    		LEDataInputStream leStream = new LEDataInputStream(beStream);
-    		try {
+    		try (LEDataInputStream leStream = new LEDataInputStream(beStream)) {
     			leStream.mark(1000);
     			boolean gmonType = readHeader(leStream);
     			if (gmonType)
@@ -122,22 +121,20 @@ public class GmonDecoder {
     					do {
     						this.callGraph.decodeCallGraphRecord(leStream, true);
     					} while (true);
-    				} catch (EOFException _) {
+    				} catch (EOFException e) {
     					// normal. End of file reached.
     				}
     				this.callGraph.populate(rootNode);
     				this.histo.assignSamplesSymbol();
     			}
-    		} finally {
-    			leStream.close();
     		}
     	} else {
     		try {
     			beStream.mark(1000);
     			boolean gmonType = readHeader(beStream);
-    			if (gmonType)
+    			if (gmonType) {
     				readGmonContent(beStream);
-    			else {
+    			} else {
     				beStream.reset();
     				histo.decodeOldHeader(beStream);
     				histo.decodeHistRecord(beStream);
