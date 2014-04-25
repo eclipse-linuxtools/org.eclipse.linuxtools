@@ -47,7 +47,6 @@ public class STHeaderListener implements SelectionListener {
      * @param column
      *            the column being updated
      * @param field
-     * @param monitor
      */
     private void resortTable(final Item column, final ISTDataViewersField field) {
         STDataViewersComparator sorter = stViewer.getTableSorter();
