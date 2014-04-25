@@ -232,6 +232,7 @@
 
 
   <modules>
+    <module>profiling</module>
     <module>changelog</module>
     <module>gcov</module>
     <module>gprof</module>
@@ -240,7 +241,6 @@
     <module>man</module>
     <module>oprofile</module>
     <module>perf</module>
-    <module>profiling</module>
     <module>rpm</module>
     <module>systemtap</module>
     <module>valgrind</module>
