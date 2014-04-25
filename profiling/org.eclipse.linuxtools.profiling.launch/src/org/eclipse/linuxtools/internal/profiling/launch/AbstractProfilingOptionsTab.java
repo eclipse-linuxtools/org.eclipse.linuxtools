@@ -24,7 +24,6 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
-import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -43,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @since 2.0
  */
-public abstract class AbstractProfilingOptionsTab extends ProfileLaunchConfigurationTab {
+public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigurationTab {
 
 	private String type;
 	private String name;
