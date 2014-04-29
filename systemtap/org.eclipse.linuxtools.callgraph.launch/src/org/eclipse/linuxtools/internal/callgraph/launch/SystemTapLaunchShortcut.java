@@ -47,7 +47,6 @@ import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
@@ -103,7 +102,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
  */
 public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
-    protected IEditorPart editor;
 
     private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
     private static final String MAIN_FUNC_NAME = "main"; //$NON-NLS-1$
@@ -125,7 +123,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
     protected IBinary bin;
 
     private boolean testMode = false;
-    protected String secondaryID = ""; //$NON-NLS-1$
 
     /**
      * Initialize variables. Highly recommend calling this function within the
@@ -140,7 +137,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
         generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
         needToGenerate = false;
         useColours = false;
-        secondaryID = ""; //$NON-NLS-1$
     }
 
     @Override

@@ -63,8 +63,6 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
      * Provides data for chart.
      */
     protected IAdapter adapter = null;
-    protected int xseries;
-    protected int[] yseries;
 
     protected static final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
     protected static final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);

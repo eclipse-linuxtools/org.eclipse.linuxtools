@@ -1217,8 +1217,6 @@ public class StapGraph extends Graph {
         if (nodeDataMap.get(id).children.size() == 0) {
             return true;
         }
-        nodeDataMap.get(id).hasCollapsedChildren = true;
-
         // Name, id
         HashMap<String, Integer> newNodeMap = new HashMap<>();
 
@@ -1347,7 +1345,6 @@ public class StapGraph extends Graph {
         collapsedNodesWithOnlyOneNodeInThem.clear();
         newNodeMap.clear();
 
-        nodeDataMap.get(id).hasCollapsedChildren = true;
         return true;
     }
 

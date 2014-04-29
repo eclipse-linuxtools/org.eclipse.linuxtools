@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
-import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-
-
 /**
  * A structure for containing extra information of SystemTap function parameters.
  * @since 3.0
@@ -34,7 +31,7 @@ public class FuncparamNodeData implements ISingleTypedNode {
 
     /**
      * Create a new instance of function parameter information. (Note that the name of a function
-     * or parameter is stored in a {@link TreeNode}, not here.)
+     * or parameter is stored in a {@link org.eclipse.linuxtools.systemtap.structures.TreeNode}, not here.)
      * @param line The <code>String</code> representation of the entire parameter.
      * @param type The <code>String</code> representation of only the parameter's type.
      */

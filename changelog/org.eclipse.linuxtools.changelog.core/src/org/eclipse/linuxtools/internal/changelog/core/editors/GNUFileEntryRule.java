@@ -47,9 +47,6 @@ public class GNUFileEntryRule implements IPredicateRule {
         }
     };
 
-    /** The column constraint */
-    protected int fColumn = UNDEFINED;
-
     /** Internal setting for the un-initialized column constraint */
     protected static final int UNDEFINED = -1;
 

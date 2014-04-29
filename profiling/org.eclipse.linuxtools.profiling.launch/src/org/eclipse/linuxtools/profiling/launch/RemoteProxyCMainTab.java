@@ -101,7 +101,6 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
     protected String fPreviouslyCheckedWorkingDir;
     protected boolean fPreviouslyCheckedWorkingDirIsValid;
     protected String fPreviouslyCheckedWorkingDirErrorMsg;
-    protected ResourceSelectorWidget workingDirSelector;
 
     private final boolean dontCheckProgram;
     private final boolean fSpecifyCoreFile;
@@ -227,7 +226,10 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         }
     }
 
-    /** @since 6.0 */
+    /**
+     * @param config The launch config to update from.
+     * @since 6.0
+     * */
     protected void updateCoreFromConfig(ILaunchConfiguration config) {
         if (fCoreText != null) {
             String coreName = EMPTY_STRING;
@@ -242,13 +244,6 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse
-     * .debug.core.ILaunchConfigurationWorkingCopy)
-     */
     @Override
     public void performApply(ILaunchConfigurationWorkingCopy config) {
         super.performApply(config);

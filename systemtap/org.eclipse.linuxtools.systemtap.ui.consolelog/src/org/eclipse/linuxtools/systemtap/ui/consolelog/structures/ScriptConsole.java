@@ -81,11 +81,11 @@ public class ScriptConsole extends IOConsole {
     /**
      * @since 2.0
      */
-    public static interface ScriptConsoleObserver {
+    public interface ScriptConsoleObserver {
         /**
          * @since 3.0
          */
-        public void runningStateChanged(boolean started, boolean stopped);
+        void runningStateChanged(boolean started, boolean stopped);
     }
 
     private final List<ScriptConsoleObserver> activeConsoleObservers = new LinkedList<>();

@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
-import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-
-
 /**
  * A structure for containing extra information of SystemTap functions.
  * @since 3.0
@@ -50,7 +47,7 @@ public class FunctionNodeData implements ISearchableNode, ISingleTypedNode {
 
     /**
      * Create a new instance of function node information. (Note that the name of a function
-     * or parameter is stored in a {@link TreeNode}, not here.)
+     * or parameter is stored in a {@link org.eclipse.linuxtools.systemtap.structures.TreeNode}, not here.)
      * @param line Set this to the original script text that defines this function.
      * @param type The <code>String</code> representation of the return type of the function.
      */

@@ -211,7 +211,7 @@ public class SystemTapTextView extends SystemTapView {
     public void updateMethod() {
         if (getParser().getData() instanceof String) {
             String data = (String) getParser().getData();
-            if (data.length() > 0) {
+            if (!data.isEmpty()) {
                 prettyPrintln((String) getParser().getData());
             }
         }

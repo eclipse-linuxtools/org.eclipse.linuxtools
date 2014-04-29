@@ -48,8 +48,6 @@ public class StapGraphParser extends SystemTapParser {
     public Map<String, Integer> countMap;
     public List<Integer> callOrderList;
     public Map<Integer, String> markedMap;
-    public String markedNodes;
-    public int validator;
     public Long endingTimeInNS;
     public long totalTime;
     public Map<Integer, Integer> lastFunctionMap;
@@ -65,8 +63,6 @@ public class StapGraphParser extends SystemTapParser {
     private int firstNode = -1;
 
     public long startTime = -1;
-
-    public String text;
 
     @Override
     protected void initialize() {
@@ -95,7 +91,6 @@ public class StapGraphParser extends SystemTapParser {
         serialMap.clear();
         aggregateTimeMap.clear();
         countMap.clear();
-        text = ""; //$NON-NLS-1$
         callOrderList.clear();
         shouldGetEndingTimeForID.clear();
         nameMaps.clear();

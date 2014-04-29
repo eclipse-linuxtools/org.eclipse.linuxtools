@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class StapData {
     public static final int NOT_PART_OF_COLLAPSED_NODE = -10;
-    public boolean hasCollapsedChildren, isCollapsed, marked;
+    public boolean isCollapsed, marked;
     public boolean onlyChildWithThisName; //Should show up as collapsed and uncollapsed
     public int id;
     public int timesCalled, parent, style;
@@ -54,7 +54,6 @@ public class StapData {
         this.id = currentID;
         this.name = txt;
         this.graph = graphModel;
-        this.hasCollapsedChildren = false;
         this.isCollapsed = false;
         this.onlyChildWithThisName = false;
         this.partOfCollapsedNode= NOT_PART_OF_COLLAPSED_NODE;

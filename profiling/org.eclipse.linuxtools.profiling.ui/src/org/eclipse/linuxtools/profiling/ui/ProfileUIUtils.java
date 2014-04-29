@@ -38,7 +38,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -118,11 +117,11 @@ public class ProfileUIUtils {
     /**
      * Opens the specified file in an editor (or selects an already open
      * editor) and highlights the specified line.
-     * @param result - result of performing source lookup with a ISourceLocator
+     * @param result - result of performing source lookup with a org.eclipse.debug.core.model.ISourceLocator
      * @param line - line number to select, 0 to not select a line
      * @throws PartInitException - Failed to open editor
      * @throws BadLocationException - Line number not valid in file
-     * @see DebugUITools#lookupSource(Object, ISourceLocator)
+     * @see DebugUITools#lookupSource(Object, org.eclipse.debug.core.model.ISourceLocator)
      */
     public static void openEditorAndSelect(ISourceLookupResult result, int line) throws PartInitException, BadLocationException {
         IEditorInput input = result.getEditorInput();

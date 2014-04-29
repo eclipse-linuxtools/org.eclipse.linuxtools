@@ -25,7 +25,6 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
  */
 public class ConsoleStreamDaemon implements IGobblerListener {
     public ConsoleStreamDaemon(ScriptConsole console) {
-        this.console = console;
         if(null != console) {
             ioConsole = console.newOutputStream();
         }
@@ -69,13 +68,11 @@ public class ConsoleStreamDaemon implements IGobblerListener {
         if(!disposed) {
             disposed = true;
             output = null;
-            console = null;
             ioConsole = null;
         }
     }
 
     protected String output;
-    protected ScriptConsole console;
     protected IOConsoleOutputStream ioConsole;
     private boolean disposed;
 }

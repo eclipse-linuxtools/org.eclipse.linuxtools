@@ -62,10 +62,6 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
         return defaultMargin;
     }
 
-    /**
-     * Title of X axis.
-     */
-    protected String xTitle = null;
     protected boolean xLineGrid, yLineGrid;
     /**
      * @since 3.0

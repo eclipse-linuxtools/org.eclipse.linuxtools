@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.dataviewers.piechart;
 import org.eclipse.swt.graphics.RGB;
 
 public interface IColorsConstants {
-    static final RGB[] COLORS = new RGB[] { new RGB(255, 0, 0), new RGB(0, 255, 0), new RGB(0, 0, 255),
+    final RGB[] COLORS = new RGB[] { new RGB(255, 0, 0), new RGB(0, 255, 0), new RGB(0, 0, 255),
             new RGB(255, 255, 0), new RGB(255, 0, 255), new RGB(0, 255, 255), new RGB(255, 255, 255),
             new RGB(0, 100, 205), new RGB(0, 150, 100), new RGB(205, 0, 100), new RGB(0, 0, 0), new RGB(100, 255, 255),
             new RGB(255, 100, 255)
