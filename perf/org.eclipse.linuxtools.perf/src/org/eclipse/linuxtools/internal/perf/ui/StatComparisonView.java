@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareUI;
 import org.eclipse.compare.IEncodedStreamContentAccessor;
 import org.eclipse.compare.ResourceNode;
@@ -69,7 +68,7 @@ public class StatComparisonView extends Viewer {
     private Label reverseLabel;
     private boolean reverse;
 
-    public StatComparisonView(Composite parent, CompareConfiguration config) {
+    public StatComparisonView(Composite parent) {
         fComposite = new Composite(parent, SWT.NONE);
         fComposite.setLayout(new GridLayout(2, false));
         fComposite.setData(CompareUI.COMPARE_VIEWER_TITLE, Messages.StatComparisonView_label);

@@ -46,7 +46,6 @@ public abstract class SystemTapView extends ViewPart {
     private final String NEW_LINE = Messages.getString("SystemTapView.1"); //$NON-NLS-1$
 
     public Composite masterComposite;
-    private IMenuManager help;
     private Action kill;
 
     protected String viewID;
@@ -220,7 +219,7 @@ public abstract class SystemTapView extends ViewPart {
 
     public void addHelpMenu() {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-        help = new MenuManager(Messages.getString("SystemTapView.Help")); //$NON-NLS-1$
+        IMenuManager help = new MenuManager(Messages.getString("SystemTapView.Help")); //$NON-NLS-1$
         menu.add(help);
         createHelpActions();
 

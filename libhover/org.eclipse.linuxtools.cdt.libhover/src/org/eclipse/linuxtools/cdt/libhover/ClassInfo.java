@@ -26,7 +26,7 @@ public class ClassInfo implements Serializable {
     private HashMap<String, MemberInfo> members = new HashMap<>();
     public transient Node classNode;
     private ArrayList<ClassInfo> children = null;
-    public ClassInfo(String className, String id, Node classNode) {
+    public ClassInfo(String className, Node classNode) {
         this.className = className;
         this.classNode = classNode;
     }

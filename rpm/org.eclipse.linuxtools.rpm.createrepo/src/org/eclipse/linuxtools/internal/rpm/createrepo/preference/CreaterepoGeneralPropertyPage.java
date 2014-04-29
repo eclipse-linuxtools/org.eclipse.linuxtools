@@ -43,8 +43,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
 
     private static final String linkTags = "<a>{0}</a>"; //$NON-NLS-1$
 
-    private Composite composite;
-
     private Button btnProjectSettings;
     private Link lnWorkspaceSettings;
 
@@ -80,7 +78,7 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
      */
     @Override
     protected Composite addContents(Composite parent) {
-        composite = new Composite(parent, SWT.NONE);
+        Composite composite = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(2, false);
         GridData layoutData = new GridData();
         composite.setLayout(layout);

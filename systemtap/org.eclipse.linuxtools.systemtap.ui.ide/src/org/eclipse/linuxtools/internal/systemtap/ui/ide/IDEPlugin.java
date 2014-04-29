@@ -100,8 +100,7 @@ public class IDEPlugin extends AbstractUIPlugin {
             path = ""; //$NON-NLS-1$
         }
         try {
-            URI uri = new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
-            return uri;
+            return new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
         } catch (URISyntaxException uri) {
             return null;
         }
@@ -112,13 +111,15 @@ public class IDEPlugin extends AbstractUIPlugin {
     }
 
     public static void log(Throwable e) {
-        if (e instanceof InvocationTargetException)
+        if (e instanceof InvocationTargetException) {
             e = ((InvocationTargetException) e).getTargetException();
+        }
         IStatus status = null;
-        if (e instanceof CoreException)
+        if (e instanceof CoreException) {
             status = ((CoreException) e).getStatus();
-        else
+        } else {
             status = new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, e.getMessage(), e);
+        }
         log(status);
     }
 

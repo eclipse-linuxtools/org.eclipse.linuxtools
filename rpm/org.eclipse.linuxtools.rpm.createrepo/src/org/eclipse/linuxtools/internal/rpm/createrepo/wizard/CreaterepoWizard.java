@@ -42,7 +42,6 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
 
     private CreaterepoNewWizardPageOne pageOne;
     private CreaterepoNewWizardPageTwo pageTwo;
-    private IProject project;
 
     /*
      * (non-Javadoc)
@@ -110,7 +109,7 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
             String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
                     REPO_FILE_EXTENSION);
             // create the project
-            project = CreaterepoProjectCreator.create(pageOne.getProjectName(),
+            IProject project = CreaterepoProjectCreator.create(pageOne.getProjectName(),
                     pageOne.getLocationPath(), fileName, monitor);
             // get a handle on the content folder
             IFolder folder = project

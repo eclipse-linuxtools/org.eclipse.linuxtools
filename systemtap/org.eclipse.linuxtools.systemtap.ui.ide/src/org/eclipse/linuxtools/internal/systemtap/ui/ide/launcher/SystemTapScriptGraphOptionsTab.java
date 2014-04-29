@@ -112,7 +112,6 @@ public class SystemTapScriptGraphOptionsTab extends
 
     private Combo regularExpressionCombo;
     private Button removeRegexButton;
-    private Button generateExpsButton;
 
     private Text sampleOutputText;
     private Composite textFieldsComposite;
@@ -124,7 +123,6 @@ public class SystemTapScriptGraphOptionsTab extends
      */
     private boolean textListenersEnabled = true;
 
-    private ScrolledComposite regexTextScrolledComposite;
     private Group outputParsingGroup;
     private Button runWithChartCheckButton;
 
@@ -155,7 +153,7 @@ public class SystemTapScriptGraphOptionsTab extends
      * the names of all of a regex's groups that have been deleted, so each name may be
      * restored (without having to retype it) when a group is added again.
      */
-    private Stack<String> cachedNames;
+    private Stack<String> cachedNames = new Stack<>();
 
     /**
      * A list of cachedNames stacks, containing one entry for each regular expression stored.
@@ -651,7 +649,7 @@ public class SystemTapScriptGraphOptionsTab extends
         topLayout.setLayout(new GridLayout(1, false));
         topLayout.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
-        generateExpsButton = new Button(topLayout, SWT.PUSH);
+        Button generateExpsButton = new Button(topLayout, SWT.PUSH);
         generateExpsButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         generateExpsButton.setText(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsButton);
         generateExpsButton.setToolTipText(Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTooltip);
@@ -768,7 +766,7 @@ public class SystemTapScriptGraphOptionsTab extends
         label2.setAlignment(SWT.LEFT);
         label2.setText(Messages.SystemTapScriptGraphOptionsTab_extractedValueLabel);
 
-        this.regexTextScrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
+        ScrolledComposite regexTextScrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
         GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
         data.heightHint = 200;
         regexTextScrolledComposite.setLayoutData(data);
@@ -781,7 +779,7 @@ public class SystemTapScriptGraphOptionsTab extends
         // To position the column labels properly, add a dummy column and use its children's sizes for reference.
         // This is necessary since expressionTableLabels can't share a layout with textFieldsComposite.
         textListenersEnabled = false;
-        addColumn(""); //$NON-NLS-1$
+        addColumn(null);
         data = new GridData(SWT.FILL, SWT.FILL, false, false);
         data.horizontalIndent = textFieldsComposite.getChildren()[2].getLocation().x;
         data.widthHint = textFieldsComposite.getChildren()[2].getSize().x;
@@ -872,7 +870,7 @@ public class SystemTapScriptGraphOptionsTab extends
         duplicateGraphButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GraphData gd = ((GraphData) selectedTableItem.getData()).getCopy();
+                GraphData gd = ((GraphData) selectedTableItem.getData()).clone();
 
                 TableItem item = new TableItem(graphsTable, SWT.NONE);
                 graphsData.add(gd);
@@ -1085,7 +1083,7 @@ public class SystemTapScriptGraphOptionsTab extends
      * the active stack of cached names, or a default name if one doesn't exist.
      */
     private void addColumn(String nameToAdd) {
-        // Show the "shift" buttons of the previous column, if it exists.
+        // Show the "shift" buttons of the previous column, if they exist.
         if (this.numberOfVisibleColumns > 0) {
             textFieldsComposite.getChildren()[(this.numberOfVisibleColumns - 1) * 4].setVisible(true);
             textFieldsComposite.getChildren()[(this.numberOfVisibleColumns - 1) * 4 + 1].setVisible(true);
@@ -1124,11 +1122,6 @@ public class SystemTapScriptGraphOptionsTab extends
 
         textFieldsComposite.layout();
         textFieldsComposite.pack();
-
-        // Special value: if an empty string is given, don't add button listeners.
-        if (nameToAdd == "") { //$NON-NLS-1$
-            return;
-        }
 
         // Add button listeners for shifting column names.
         buttonUp.addSelectionListener(new SelectionAdapter() {
@@ -1176,7 +1169,7 @@ public class SystemTapScriptGraphOptionsTab extends
      * @param saveNames Set to <code>true</code> if the contents of removed
      * columns are to be saved in a stack for later use.
      */
-    private void removeColumn(Boolean saveNames) {
+    private void removeColumn(boolean saveNames) {
         Control[] children = textFieldsComposite.getChildren();
         int i = this.numberOfVisibleColumns*4 - 1;
 

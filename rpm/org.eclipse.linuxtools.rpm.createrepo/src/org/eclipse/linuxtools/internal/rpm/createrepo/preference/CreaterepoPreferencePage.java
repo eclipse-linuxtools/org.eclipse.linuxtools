@@ -40,22 +40,6 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 public class CreaterepoPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
-    private Group generalGroup;
-    private BooleanFieldEditor bfeIncludeChecksum;
-    private BooleanFieldEditor bfeSQLDB;
-    private BooleanFieldEditor bfeIgnoreSymlinks;
-    private BooleanFieldEditor bfePrettyXML;
-    private IntegerFieldEditor ifeSpawns;
-
-    private Group updatesGroup;
-    private BooleanFieldEditor bfeSameFilename;
-
-    private Group changelogGroup;
-    private IntegerFieldEditor ifeChangelogLimit;
-
-    private RadioGroupFieldEditor rgfeChecksums;
-    private RadioGroupFieldEditor rgfeCompressionTypes;
-
     public CreaterepoPreferencePage() {
         super(GRID);
     }
@@ -90,40 +74,40 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         Composite parent = getFieldEditorParent();
         GridData data = new GridData();
         // general group
-        generalGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        Group generalGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
         generalGroup.setText(Messages.CreaterepoPreferencePage_generalGroupLabel);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(2, 1).applyTo(generalGroup);
 
         // generate unique metadata filenames
-        bfeIncludeChecksum = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME,
+        BooleanFieldEditor bfeIncludeChecksum = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME,
                 Messages.CreaterepoPreferencePage_booleanChecksumName, generalGroup);
         bfeIncludeChecksum.load();
         bfeIncludeChecksum.setPropertyChangeListener(this);
         addField(bfeIncludeChecksum);
 
         // generate sqlite databases
-        bfeSQLDB = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_GENERATE_DB,
+        BooleanFieldEditor bfeSQLDB = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_GENERATE_DB,
                 Messages.CreaterepoPreferencePage_booleanGenerateSQLDB, generalGroup);
         bfeSQLDB.load();
         bfeSQLDB.setPropertyChangeListener(this);
         addField(bfeSQLDB);
 
         // ignore symlinks for packages
-        bfeIgnoreSymlinks = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_IGNORE_SYMLINKS,
+        BooleanFieldEditor bfeIgnoreSymlinks = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_IGNORE_SYMLINKS,
                 Messages.CreaterepoPreferencePage_booleanIgnoreSymlinks, generalGroup);
         bfeIgnoreSymlinks.load();
         bfeIgnoreSymlinks.setPropertyChangeListener(this);
         addField(bfeIgnoreSymlinks);
 
         // output files in pretty xml format
-        bfePrettyXML = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_PRETTY_XML,
+        BooleanFieldEditor bfePrettyXML = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_PRETTY_XML,
                 Messages.CreaterepoPreferencePage_booleanPrettyXML, generalGroup);
         bfePrettyXML.load();
         bfePrettyXML.setPropertyChangeListener(this);
         addField(bfePrettyXML);
 
         // number of workers
-        ifeSpawns = new IntegerFieldEditor(CreaterepoPreferenceConstants.PREF_WORKERS,
+        IntegerFieldEditor ifeSpawns = new IntegerFieldEditor(CreaterepoPreferenceConstants.PREF_WORKERS,
                 Messages.CreaterepoPreferencePage_numWorkers, generalGroup);
         // more than 128 is alot. limiting. (createrepo warning)
         ifeSpawns.setValidRange(0, 128);
@@ -132,12 +116,12 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         updateGroupSpacing(generalGroup);
 
         // updates group
-        updatesGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        Group updatesGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
         updatesGroup.setText(Messages.CreaterepoPreferencePage_updateGroupLabel);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(2, 1).hint(10, SWT.DEFAULT).applyTo(updatesGroup);
 
         // don't generate repo metadata, if their timestamps are newer than its rpms
-        bfeSameFilename = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_CHECK_TS,
+        BooleanFieldEditor bfeSameFilename = new BooleanFieldEditor(CreaterepoPreferenceConstants.PREF_CHECK_TS,
                 Messages.CreaterepoPreferencePage_booleanCheckTS, updatesGroup);
         bfeSameFilename.load();
         bfeSameFilename.setPropertyChangeListener(this);
@@ -155,12 +139,12 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         updateGroupSpacing(updatesGroup);
 
         // changelog group
-        changelogGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        Group changelogGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
         changelogGroup.setText(Messages.CreaterepoPreferencePage_changelogGroupLabel);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(2, 1).hint(10, SWT.DEFAULT).applyTo(changelogGroup);
 
         // don't generate repo metadata, if their timestamps are newer than its rpms
-        ifeChangelogLimit = new IntegerFieldEditor(CreaterepoPreferenceConstants.PREF_CHANGELOG_LIMIT,
+        IntegerFieldEditor ifeChangelogLimit = new IntegerFieldEditor(CreaterepoPreferenceConstants.PREF_CHANGELOG_LIMIT,
                 Messages.CreaterepoPreferencePage_numChangelogLimit, changelogGroup);
         ifeChangelogLimit.setValidRange(0, Integer.MAX_VALUE);
         ifeChangelogLimit.load();
@@ -172,7 +156,7 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         checksumsContainer.setLayout(new GridLayout());
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(0, 20).grab(true, false).applyTo(checksumsContainer);
         // available checksums
-        rgfeChecksums = new RadioGroupFieldEditor(CreaterepoPreferenceConstants.PREF_CHECKSUM,
+        RadioGroupFieldEditor rgfeChecksums = new RadioGroupFieldEditor(CreaterepoPreferenceConstants.PREF_CHECKSUM,
                 Messages.CreaterepoPreferencePage_checksumGroupLabel, 1, new String[][]{
                 {ICreaterepoChecksums.SHA1, ICreaterepoChecksums.SHA1},
                 {ICreaterepoChecksums.MD5, ICreaterepoChecksums.MD5},
@@ -187,7 +171,7 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         compressContainer.setLayout(new GridLayout());
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(0, 20).grab(true, false).applyTo(compressContainer);
         // available compression types
-        rgfeCompressionTypes = new RadioGroupFieldEditor(CreaterepoPreferenceConstants.PREF_COMPRESSION_TYPE,
+        RadioGroupFieldEditor rgfeCompressionTypes = new RadioGroupFieldEditor(CreaterepoPreferenceConstants.PREF_COMPRESSION_TYPE,
                 Messages.CreaterepoPreferencePage_compressionGroupLabel, 1, new String[][]{
                 {ICreaterepoCompressionTypes.COMPAT, ICreaterepoCompressionTypes.COMPAT},
                 {ICreaterepoCompressionTypes.XZ, ICreaterepoCompressionTypes.XZ},

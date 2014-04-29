@@ -349,8 +349,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
         for (int n = offset - 1; n >= 0; n--) {
             char c = doc.getChar(n);
             if (isTokenDelimiter(c)) {
-                String word = doc.get(n + 1, offset - n - 1);
-                return word;
+                return doc.get(n + 1, offset - n - 1);
             }
         }
         return ""; //$NON-NLS-1$

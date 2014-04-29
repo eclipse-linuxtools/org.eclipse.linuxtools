@@ -38,7 +38,6 @@ public class STPEditor extends SimpleEditor {
 
     private ColorManager colorManager;
 
-    private ProjectionSupport stpProjectionSupport;
     private Annotation[] stpOldAnnotations;
     private ProjectionAnnotationModel stpAnnotationModel;
 
@@ -69,7 +68,7 @@ public class STPEditor extends SimpleEditor {
     {
         super.createPartControl(parent);
        ProjectionViewer viewer =(ProjectionViewer)getSourceViewer();
-       stpProjectionSupport = new ProjectionSupport(viewer,getAnnotationAccess(),getSharedColors());
+       ProjectionSupport stpProjectionSupport = new ProjectionSupport(viewer,getAnnotationAccess(),getSharedColors());
        stpProjectionSupport.install();
        viewer.doOperation(ProjectionViewer.TOGGLE);
        stpAnnotationModel = viewer.getProjectionAnnotationModel();

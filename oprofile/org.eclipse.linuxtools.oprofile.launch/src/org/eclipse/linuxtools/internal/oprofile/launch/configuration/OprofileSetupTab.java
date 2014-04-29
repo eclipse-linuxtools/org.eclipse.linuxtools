@@ -49,317 +49,316 @@ import org.eclipse.swt.widgets.Text;
  */
 public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
-	protected Text kernelImageFileText;
-	protected CCombo controlCombo;
+    protected Text kernelImageFileText;
+    protected CCombo controlCombo;
 
-	protected Button checkSeparateLibrary;
-	protected Button checkSeparateKernel;
+    protected Button checkSeparateLibrary;
+    protected Button checkSeparateKernel;
 
-	protected LaunchOptions options = null;
+    protected LaunchOptions options = null;
 
-	protected Spinner executionsSpinner;
+    protected Spinner executionsSpinner;
 
-	private IRemoteFileProxy proxy;
+    private IRemoteFileProxy proxy;
 
-	protected Label kernelLabel;
+    protected Label kernelLabel;
 
-	@Override
-	public String getName() {
-		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
-	}
+    @Override
+    public String getName() {
+        return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
+    }
 
-	@Override
-	public boolean isValid(ILaunchConfiguration config) {
-		boolean b = options.isValid();
-		return b;
-	}
+    @Override
+    public boolean isValid(ILaunchConfiguration config) {
+        return options.isValid();
+    }
 
-	@Override
-	public void performApply(ILaunchConfigurationWorkingCopy config) {
-		options.saveConfiguration(config);
-	}
+    @Override
+    public void performApply(ILaunchConfigurationWorkingCopy config) {
+        options.saveConfiguration(config);
+    }
 
-	@Override
-	public void initializeFrom(ILaunchConfiguration config) {
-		options.loadConfiguration(config);
-		try {
-			if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
-				controlCombo.setEnabled(false);
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		controlCombo.setText(options.getOprofileComboText());
+    @Override
+    public void initializeFrom(ILaunchConfiguration config) {
+        options.loadConfiguration(config);
+        try {
+            if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
+                controlCombo.setEnabled(false);
+            }
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+        controlCombo.setText(options.getOprofileComboText());
 
-		if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
-			checkSeparateLibrary.setEnabled(false);
-			checkSeparateKernel.setEnabled(false);
-			kernelImageFileText.setEnabled(false);
-			kernelLabel.setEnabled(false);
-		} else {
-			checkSeparateLibrary.setEnabled(true);
-			checkSeparateKernel.setEnabled(true);
-			kernelImageFileText.setEnabled(true);
-			kernelLabel.setEnabled(true);
-		}
-		kernelImageFileText.setText(options.getKernelImageFile());
-		executionsSpinner.setSelection(options.getExecutionsNumber());
+        if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
+            checkSeparateLibrary.setEnabled(false);
+            checkSeparateKernel.setEnabled(false);
+            kernelImageFileText.setEnabled(false);
+            kernelLabel.setEnabled(false);
+        } else {
+            checkSeparateLibrary.setEnabled(true);
+            checkSeparateKernel.setEnabled(true);
+            kernelImageFileText.setEnabled(true);
+            kernelLabel.setEnabled(true);
+        }
+        kernelImageFileText.setText(options.getKernelImageFile());
+        executionsSpinner.setSelection(options.getExecutionsNumber());
 
-		int separate = options.getSeparateSamples();
+        int separate = options.getSeparateSamples();
 
-		if (separate == OprofileDaemonOptions.SEPARATE_NONE) {
-			checkSeparateLibrary.setSelection(false);
-			checkSeparateKernel.setSelection(false);
-		} else {
-			//note that opcontrol will nicely ignore the trailing comma
-			if ((separate & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
-				checkSeparateLibrary.setSelection(true);
-			if ((separate & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
-				checkSeparateKernel.setSelection(true);
-		}
-	}
+        if (separate == OprofileDaemonOptions.SEPARATE_NONE) {
+            checkSeparateLibrary.setSelection(false);
+            checkSeparateKernel.setSelection(false);
+        } else {
+            //note that opcontrol will nicely ignore the trailing comma
+            if ((separate & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
+                checkSeparateLibrary.setSelection(true);
+            if ((separate & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
+                checkSeparateKernel.setSelection(true);
+        }
+    }
 
-	@Override
-	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		options = new LaunchOptions();
-		options.saveConfiguration(config);
-	}
+    @Override
+    public void setDefaults(ILaunchConfigurationWorkingCopy config) {
+        options = new LaunchOptions();
+        options.saveConfiguration(config);
+    }
 
-	@Override
-	public Image getImage() {
-		return OprofileLaunchPlugin.getImageDescriptor(OprofileLaunchPlugin.ICON_GLOBAL_TAB).createImage();
-	}
+    @Override
+    public Image getImage() {
+        return OprofileLaunchPlugin.getImageDescriptor(OprofileLaunchPlugin.ICON_GLOBAL_TAB).createImage();
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		options = new LaunchOptions();
+    @Override
+    public void createControl(Composite parent) {
+        options = new LaunchOptions();
 
-		Composite top = new Composite(parent, SWT.NONE);
-		setControl(top);
-		top.setLayout(new GridLayout());
+        Composite top = new Composite(parent, SWT.NONE);
+        setControl(top);
+        top.setLayout(new GridLayout());
 
-		GridData data;
-		GridLayout layout;
-		createVerticalSpacer(top, 1);
+        GridData data;
+        GridLayout layout;
+        createVerticalSpacer(top, 1);
 
-		// Create container for kernel image file selection
-		Composite p = new Composite(top, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		p.setLayout(layout);
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		p.setLayoutData(data);
+        // Create container for kernel image file selection
+        Composite p = new Composite(top, SWT.NONE);
+        layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        p.setLayout(layout);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        p.setLayoutData(data);
 
-		Label l2 = new Label(p, SWT.NONE);
-		l2.setText(OprofileLaunchMessages.getString("tab.global.select")); //$NON-NLS-1$
-		data = new GridData();
-		data.horizontalSpan = 2;
-		l2.setLayoutData(data);
+        Label l2 = new Label(p, SWT.NONE);
+        l2.setText(OprofileLaunchMessages.getString("tab.global.select")); //$NON-NLS-1$
+        data = new GridData();
+        data.horizontalSpan = 2;
+        l2.setLayoutData(data);
 
-		controlCombo = new CCombo(p, SWT.DROP_DOWN|SWT.READ_ONLY|SWT.BORDER);
-		controlCombo.setItems(new String[]{OprofileProject.OPERF_BINARY, OprofileProject.OPCONTROL_BINARY});
-		controlCombo.select(0);
-		controlCombo.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent mev) {
-				OprofileProject.setProfilingBinary(controlCombo.getText());
-				options.setOprofileComboText(controlCombo.getText());
-				if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
-					checkSeparateLibrary.setEnabled(false);
-					checkSeparateKernel.setEnabled(false);
-					kernelImageFileText.setEnabled(false);
-					kernelLabel.setEnabled(false);
-				} else {
-					checkSeparateLibrary.setEnabled(true);
-					checkSeparateKernel.setEnabled(true);
-					kernelImageFileText.setEnabled(true);
-					kernelLabel.setEnabled(true);
-				}
-				updateLaunchConfigurationDialog();
-			}
-		});
-		data = new GridData();
-		data.horizontalSpan = 2;
-		controlCombo.setLayoutData(data);
+        controlCombo = new CCombo(p, SWT.DROP_DOWN|SWT.READ_ONLY|SWT.BORDER);
+        controlCombo.setItems(new String[]{OprofileProject.OPERF_BINARY, OprofileProject.OPCONTROL_BINARY});
+        controlCombo.select(0);
+        controlCombo.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent mev) {
+                OprofileProject.setProfilingBinary(controlCombo.getText());
+                options.setOprofileComboText(controlCombo.getText());
+                if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
+                    checkSeparateLibrary.setEnabled(false);
+                    checkSeparateKernel.setEnabled(false);
+                    kernelImageFileText.setEnabled(false);
+                    kernelLabel.setEnabled(false);
+                } else {
+                    checkSeparateLibrary.setEnabled(true);
+                    checkSeparateKernel.setEnabled(true);
+                    kernelImageFileText.setEnabled(true);
+                    kernelLabel.setEnabled(true);
+                }
+                updateLaunchConfigurationDialog();
+            }
+        });
+        data = new GridData();
+        data.horizontalSpan = 2;
+        controlCombo.setLayoutData(data);
 
-		kernelLabel = new Label(p, SWT.NONE);
-		kernelLabel.setText(OprofileLaunchMessages.getString("tab.global.kernelImage.label.text")); //$NON-NLS-1$
-		kernelLabel.setEnabled(false);
-		data = new GridData();
-		data.horizontalSpan = 2;
-		kernelLabel.setLayoutData(data);
+        kernelLabel = new Label(p, SWT.NONE);
+        kernelLabel.setText(OprofileLaunchMessages.getString("tab.global.kernelImage.label.text")); //$NON-NLS-1$
+        kernelLabel.setEnabled(false);
+        data = new GridData();
+        data.horizontalSpan = 2;
+        kernelLabel.setLayoutData(data);
 
-		kernelImageFileText = new Text(p, SWT.SINGLE | SWT.BORDER);
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		kernelImageFileText.setLayoutData(data);
-		kernelImageFileText.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent mev) {
-				handleKernelImageFileTextModify(kernelImageFileText);
-			};
-		});
+        kernelImageFileText = new Text(p, SWT.SINGLE | SWT.BORDER);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        kernelImageFileText.setLayoutData(data);
+        kernelImageFileText.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent mev) {
+                handleKernelImageFileTextModify(kernelImageFileText);
+            };
+        });
 
-		Button button = createPushButton(p, OprofileLaunchMessages.getString("tab.global.kernelImage.browse.button.text"), null); //$NON-NLS-1$
-		final Shell shell = top.getShell();
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent sev) {
-				showFileDialog(shell);
-			}
-		});
+        Button button = createPushButton(p, OprofileLaunchMessages.getString("tab.global.kernelImage.browse.button.text"), null); //$NON-NLS-1$
+        final Shell shell = top.getShell();
+        button.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent sev) {
+                showFileDialog(shell);
+            }
+        });
 
-		createVerticalSpacer(top, 1);
+        createVerticalSpacer(top, 1);
 
-		// Create checkbox options container
-		p = new Composite(top, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		p.setLayout(layout);
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
-		p.setLayoutData(data);
+        // Create checkbox options container
+        p = new Composite(top, SWT.NONE);
+        layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        p.setLayout(layout);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 2;
+        p.setLayoutData(data);
 
-		checkSeparateLibrary = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateLibrary.text")); //$NON-NLS-1$
-		checkSeparateKernel = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateKernel.text")); //$NON-NLS-1$
+        checkSeparateLibrary = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateLibrary.text")); //$NON-NLS-1$
+        checkSeparateKernel = myCreateCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateKernel.text")); //$NON-NLS-1$
 
-		//Number of executions spinner
-		Composite executionsComposite = new Composite(top, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(2, false);
-		executionsComposite.setLayout(gridLayout);
-		Label executionsLabel = new Label(executionsComposite, SWT.LEFT);
-		executionsLabel.setText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.text")); //$NON-NLS-1$
-		executionsLabel.setToolTipText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.tooltip")); //$NON-NLS-1$
-		executionsSpinner = new Spinner(executionsComposite, SWT.BORDER);
-		executionsSpinner.setMinimum(1);
-		executionsSpinner.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				options.setExecutionsNumber(executionsSpinner.getSelection());
-				updateLaunchConfigurationDialog();
-			}
-		});
-	}
-
+        //Number of executions spinner
+        Composite executionsComposite = new Composite(top, SWT.NONE);
+        GridLayout gridLayout = new GridLayout(2, false);
+        executionsComposite.setLayout(gridLayout);
+        Label executionsLabel = new Label(executionsComposite, SWT.LEFT);
+        executionsLabel.setText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.text")); //$NON-NLS-1$
+        executionsLabel.setToolTipText(OprofileLaunchMessages.getString("tab.global.executionsNumber.label.tooltip")); //$NON-NLS-1$
+        executionsSpinner = new Spinner(executionsComposite, SWT.BORDER);
+        executionsSpinner.setMinimum(1);
+        executionsSpinner.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                options.setExecutionsNumber(executionsSpinner.getSelection());
+                updateLaunchConfigurationDialog();
+            }
+        });
+    }
 
 
-	// convenience method to create radio buttons with the given label
-	private Button myCreateCheckButton(Composite parent, String label) {
-		final Button b = new Button(parent, SWT.CHECK);
-		b.setText(label);
-		b.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent se) {
-				handleCheckSelected(b);
-			}
-		});
 
-		return b;
-	}
+    // convenience method to create radio buttons with the given label
+    private Button myCreateCheckButton(Composite parent, String label) {
+        final Button b = new Button(parent, SWT.CHECK);
+        b.setText(label);
+        b.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent se) {
+                handleCheckSelected(b);
+            }
+        });
 
-	//sets the proper separation mask for sample separation
-	private void handleCheckSelected(Button button) {
-		int oldSeparate = options.getSeparateSamples();
-		int newSeparate = oldSeparate;		//initalize
+        return b;
+    }
 
-		if (button == checkSeparateLibrary) {
-			if (button.getSelection()) {
-				newSeparate = oldSeparate | OprofileDaemonOptions.SEPARATE_LIBRARY;
-			} else {
-				newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_LIBRARY;
-			}
-		} else if (button == checkSeparateKernel) {
-			if (button.getSelection()) {
-				newSeparate = oldSeparate | OprofileDaemonOptions.SEPARATE_KERNEL;
-			} else {
-				newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_KERNEL;
-			}
-		}
+    //sets the proper separation mask for sample separation
+    private void handleCheckSelected(Button button) {
+        int oldSeparate = options.getSeparateSamples();
+        int newSeparate = oldSeparate;        //initalize
 
-		options.setSeparateSamples(newSeparate);
+        if (button == checkSeparateLibrary) {
+            if (button.getSelection()) {
+                newSeparate = oldSeparate | OprofileDaemonOptions.SEPARATE_LIBRARY;
+            } else {
+                newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_LIBRARY;
+            }
+        } else if (button == checkSeparateKernel) {
+            if (button.getSelection()) {
+                newSeparate = oldSeparate | OprofileDaemonOptions.SEPARATE_KERNEL;
+            } else {
+                newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_KERNEL;
+            }
+        }
 
-		updateLaunchConfigurationDialog();
-	}
+        options.setSeparateSamples(newSeparate);
 
-	// handles text modification events for all text boxes in this tab
-	private void handleKernelImageFileTextModify(Text text) {
-		String errorMessage = null;
-		String filename = text.getText();
+        updateLaunchConfigurationDialog();
+    }
 
-		if (filename.length() > 0) {
-			try {
-				proxy = RemoteProxyManager.getInstance().getFileProxy(getOprofileProject());
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			IFileStore fileStore = proxy.getResource(filename);
-			if (!fileStore.fetchInfo().exists() || fileStore.fetchInfo().isDirectory()){
-				String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
-				Object[] args = new Object[] { filename };
-				errorMessage = MessageFormat.format(msg, args);
-			}
+    // handles text modification events for all text boxes in this tab
+    private void handleKernelImageFileTextModify(Text text) {
+        String errorMessage = null;
+        String filename = text.getText();
 
-			//seems odd, but must set it even if it is invalid so that performApply
-			// and isValid work properly
-			options.setKernelImageFile(filename);
-		} else {
-			// no kernel image file
-			options.setKernelImageFile(""); //$NON-NLS-1$
-		}
+        if (filename.length() > 0) {
+            try {
+                proxy = RemoteProxyManager.getInstance().getFileProxy(getOprofileProject());
+            } catch (CoreException e) {
+                e.printStackTrace();
+            }
+            IFileStore fileStore = proxy.getResource(filename);
+            if (!fileStore.fetchInfo().exists() || fileStore.fetchInfo().isDirectory()){
+                String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
+                Object[] args = new Object[] { filename };
+                errorMessage = MessageFormat.format(msg, args);
+            }
 
-		// Update dialog and error message
-		setErrorMessage(errorMessage);
-		updateLaunchConfigurationDialog();
-	}
+            //seems odd, but must set it even if it is invalid so that performApply
+            // and isValid work properly
+            options.setKernelImageFile(filename);
+        } else {
+            // no kernel image file
+            options.setKernelImageFile(""); //$NON-NLS-1$
+        }
 
-	// Displays a file dialog to allow the user to select the kernel image file
-	private void showFileDialog(Shell shell) {
-		try {
-			proxy = RemoteProxyManager.getInstance().getFileProxy(getOprofileProject());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+        // Update dialog and error message
+        setErrorMessage(errorMessage);
+        updateLaunchConfigurationDialog();
+    }
 
-		FileDialog d = new FileDialog(shell, SWT.OPEN);
-		IFileStore kernel = proxy.getResource(options.getKernelImageFile());
-		if (!kernel.fetchInfo().exists()) {
-			kernel = proxy.getResource("/boot");	//$NON-NLS-1$
+    // Displays a file dialog to allow the user to select the kernel image file
+    private void showFileDialog(Shell shell) {
+        try {
+            proxy = RemoteProxyManager.getInstance().getFileProxy(getOprofileProject());
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-			if (!kernel.fetchInfo().exists()) {
-				kernel = proxy.getResource("/");	//$NON-NLS-1$
-			}
-		}
-		d.setFileName(kernel.toString());
-		d.setText(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.text")); //$NON-NLS-1$
-		String newKernel = d.open();
-		if (newKernel != null) {
-			kernel = proxy.getResource(newKernel);
-			if (!kernel.fetchInfo().exists()) {
-				MessageBox mb = new MessageBox(shell, SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-				mb.setMessage(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.error.kernelDoesNotExist.text")); 	//$NON-NLS-1$
-				switch (mb.open()) {
-				case SWT.RETRY:
-					// Ok, it's recursive, but it shouldn't matter
-					showFileDialog(shell);
-					break;
-				default:
-				case SWT.CANCEL:
-					break;
-				}
-			} else {
-				kernelImageFileText.setText(newKernel);
-			}
-		}
-	}
+        FileDialog d = new FileDialog(shell, SWT.OPEN);
+        IFileStore kernel = proxy.getResource(options.getKernelImageFile());
+        if (!kernel.fetchInfo().exists()) {
+            kernel = proxy.getResource("/boot");    //$NON-NLS-1$
 
-	/**
-	 * Get project to profile
-	 * @return IProject project to profile
-	 */
-	protected IProject getOprofileProject(){
-		return Oprofile.OprofileProject.getProject();
-	}
+            if (!kernel.fetchInfo().exists()) {
+                kernel = proxy.getResource("/");    //$NON-NLS-1$
+            }
+        }
+        d.setFileName(kernel.toString());
+        d.setText(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.text")); //$NON-NLS-1$
+        String newKernel = d.open();
+        if (newKernel != null) {
+            kernel = proxy.getResource(newKernel);
+            if (!kernel.fetchInfo().exists()) {
+                MessageBox mb = new MessageBox(shell, SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                mb.setMessage(OprofileLaunchMessages.getString("tab.global.selectKernelDialog.error.kernelDoesNotExist.text"));     //$NON-NLS-1$
+                switch (mb.open()) {
+                case SWT.RETRY:
+                    // Ok, it's recursive, but it shouldn't matter
+                    showFileDialog(shell);
+                    break;
+                default:
+                case SWT.CANCEL:
+                    break;
+                }
+            } else {
+                kernelImageFileText.setText(newKernel);
+            }
+        }
+    }
+
+    /**
+     * Get project to profile
+     * @return IProject project to profile
+     */
+    protected IProject getOprofileProject(){
+        return Oprofile.OprofileProject.getProject();
+    }
 }

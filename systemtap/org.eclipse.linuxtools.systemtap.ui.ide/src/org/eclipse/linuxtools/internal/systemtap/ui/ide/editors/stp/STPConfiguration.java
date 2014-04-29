@@ -100,8 +100,7 @@ public class STPConfiguration extends SourceViewerConfiguration {
     {
         STPReconcilingStrategy strategy = new STPReconcilingStrategy();
         strategy.setEditor(editor);
-        MonoReconciler reconciler = new MonoReconciler(strategy,false);
-        return reconciler;
+        return new MonoReconciler(strategy,false);
     }
 
     /**
@@ -116,10 +115,6 @@ public class STPConfiguration extends SourceViewerConfiguration {
         return doubleClickStrategy;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     public IPresentationReconciler getPresentationReconciler(
             ISourceViewer sourceViewer) {

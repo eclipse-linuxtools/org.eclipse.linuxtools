@@ -139,9 +139,8 @@ public class ResourceSelectorWidget {
      * Create the area for user entry.
      *
      * @param composite
-     * @param defaultEnabled
      */
-    private void createUserEntryArea(Composite composite, String uriLabelText, boolean defaultEnabled) {
+    private void createUserEntryArea(Composite composite, String uriLabelText) {
         // location label
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
@@ -208,7 +207,7 @@ public class ResourceSelectorWidget {
         gd.horizontalSpan = colSpan;
         mainComp.setLayoutData(gd);
         mainComp.setText(sectionLabelText);
-        createUserEntryArea(mainComp, uriLabelText, true);
+        createUserEntryArea(mainComp, uriLabelText);
     }
 
     public void setEnabled(boolean enabled) {

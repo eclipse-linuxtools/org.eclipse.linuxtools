@@ -72,7 +72,6 @@ import org.osgi.framework.Version;
 
 public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
 
-    private ConfigUtils configUtils;
     private static String OUTPUT_STR = "--output="; //$NON-NLS-1$
     private IPath binPath;
     private IPath workingDirPath;
@@ -87,7 +86,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
     public void launch(ILaunchConfiguration config, String mode,
             ILaunch launch, IProgressMonitor monitor) throws CoreException {
         try {
-            this.configUtils = new ConfigUtils(config);
+            ConfigUtils configUtils = new ConfigUtils(config);
             project = configUtils.getProject();
             // check if Perf exists in $PATH
             if (! PerfCore.checkPerfInPath(project))

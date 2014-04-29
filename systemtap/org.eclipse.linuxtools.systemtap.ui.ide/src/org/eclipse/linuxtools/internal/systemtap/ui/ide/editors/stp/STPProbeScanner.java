@@ -22,14 +22,14 @@ import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 public class STPProbeScanner extends RuleBasedPartitionScanner {
-    public final static String STP_STRING = "__stp_string"; //$NON-NLS-1$
-    public final static String STP_PROBE = "__stp_probe"; //$NON-NLS-1$
-    public final static String STP_CONDITIONAL = "__stp_conditional"; //$NON-NLS-1$
-    public final static String STP_COMMENT = "__stp_comment"; //$NON-NLS-1$
+    public static final String STP_STRING = "__stp_string"; //$NON-NLS-1$
+    public static final String STP_PROBE = "__stp_probe"; //$NON-NLS-1$
+    public static final String STP_CONDITIONAL = "__stp_conditional"; //$NON-NLS-1$
+    public static final String STP_COMMENT = "__stp_comment"; //$NON-NLS-1$
 
-    public final static String STP_PROBE_PARTITIONING = "__stp_probe_partitioning"; //$NON-NLS-1$
+    public static final String STP_PROBE_PARTITIONING = "__stp_probe_partitioning"; //$NON-NLS-1$
 
-    public static String[] STP_PROBE_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE,
+    public static final String[] STP_PROBE_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE,
         STP_COMMENT, STP_STRING, STP_PROBE, STP_CONDITIONAL};
 
     public STPProbeScanner() {

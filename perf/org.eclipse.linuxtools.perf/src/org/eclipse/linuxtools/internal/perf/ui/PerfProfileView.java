@@ -93,11 +93,7 @@ public class PerfProfileView extends ViewPart {
 
     private void contributeToActionBars() {
         IActionBars bars = getViewSite().getActionBars();
-        fillLocalPullDown(bars.getMenuManager());
         fillLocalToolBar(bars.getToolBarManager());
-    }
-
-    private void fillLocalPullDown(IMenuManager manager) {
     }
 
     private void fillContextMenu(IMenuManager manager) {

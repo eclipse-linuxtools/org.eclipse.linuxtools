@@ -67,10 +67,6 @@ public class OpenGCDialog extends Dialog {
     private Button openCoverageSummaryButton;
     private boolean openCoverageSummary = true;
 
-    /* buttons */
-    private Button binBrowseWorkspaceButton;
-    private Button binBrowseFileSystemButton;
-
     /* error label */
     private Label errorLabel;
 
@@ -149,7 +145,7 @@ public class OpenGCDialog extends Dialog {
         data = new GridData(GridData.HORIZONTAL_ALIGN_END);
         cbBin.setLayoutData(data);
         cbBin.setLayout(new GridLayout(2, true));
-        binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
+        Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGCDialog_bin_browser_button_text);
         binBrowseWorkspaceButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -157,7 +153,7 @@ public class OpenGCDialog extends Dialog {
                 handleBrowseWorkspace(Messages.OpenGCDialog_bin_browser_handler_text, binText);
             }
         });
-        binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
+        Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGCDialog_bin_browser_fs_button_text);
         binBrowseFileSystemButton.addSelectionListener(new SelectionAdapter() {
             @Override

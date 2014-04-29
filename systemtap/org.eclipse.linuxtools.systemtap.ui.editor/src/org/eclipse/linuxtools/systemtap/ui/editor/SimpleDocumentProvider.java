@@ -118,9 +118,6 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
         return null;
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#doSaveDocument(org.eclipse.core.runtime.IProgressMonitor, java.lang.Object, org.eclipse.jface.text.IDocument, boolean)
-     */
     @Override
     protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite) throws CoreException {
         if (element instanceof IPathEditorInput) {
@@ -134,7 +131,7 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
                 if (file.exists()) {
                     if (file.canWrite()) {
                         Writer writer= new FileWriter(file);
-                        writeDocumentContent(document, writer, monitor);
+                        writeDocumentContent(document, writer);
                     } else {
                         throw new CoreException(new Status(IStatus.ERROR, EditorPlugin.ID, IStatus.OK, "file is read-only", null)); //$NON-NLS-1$
                     }
@@ -152,26 +149,19 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
      *
      * @param document the document to save
      * @param writer the stream to save it to
-     * @param monitor a progress monitor to report progress
      * @throws IOException if writing fails
      */
-    private static void writeDocumentContent(IDocument document, Writer writer, IProgressMonitor monitor) throws IOException {
+    private static void writeDocumentContent(IDocument document, Writer writer) throws IOException {
         try (Writer out= new BufferedWriter(writer)) {
             out.write(document.get());
         }
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#getOperationRunner(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
         return null;
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isModifiable(java.lang.Object)
-     */
     @Override
     public boolean isModifiable(Object element) {
         if (element instanceof IPathEditorInput) {
@@ -182,17 +172,11 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
         return false;
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isReadOnly(java.lang.Object)
-     */
     @Override
     public boolean isReadOnly(Object element) {
         return !isModifiable(element);
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isStateValidated(java.lang.Object)
-     */
     @Override
     public boolean isStateValidated(Object element) {
         return true;

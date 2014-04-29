@@ -570,7 +570,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         });
     }
 
-    private boolean checkCopyFromExe(ILaunchConfiguration config, IProject project) {
+    private boolean checkCopyFromExe(IProject project) {
         if (!enableCopyFromExeButton.getSelection()) {
             setErrorMessage(null);
             return true;
@@ -670,7 +670,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
     }
 
 
-    private boolean checkProgram(ILaunchConfiguration config, IProject project) {
+    private boolean checkProgram(IProject project) {
         String name = fProgText.getText().trim();
         if (name.length() == 0) {
             setErrorMessage(ProxyLaunchMessages.executable_is_not_specified);
@@ -770,7 +770,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         return true;
     }
 
-    private boolean checkWorkingDir(ILaunchConfiguration config, IProject project) {
+    private boolean checkWorkingDir(IProject project) {
         String name = workingDirText.getText().trim();
         if (name.length() == 0) {
             return true;  // an empty working directory means, "use the default"
@@ -884,11 +884,9 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
     /**
      * Check to see if the Executable's location has the same scheme and host name as
      * the working directory.  If not, this is an error.
-     * @param config
-     * @param project
      * @return true if they are compatible, and false if not compatible.
      */
-    private boolean checkCompatibility(ILaunchConfiguration config, IProject project) {
+    private boolean checkCompatibility() {
         String wdName = workingDirText.getText().trim();
         String progName = fProgText.getText().trim();
         URI wdURI;
@@ -937,13 +935,6 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.debug.ui.ILaunchConfigurationTab#isValid(org.eclipse.debug
-     * .core.ILaunchConfiguration)
-     */
     @Override
     public boolean isValid(ILaunchConfiguration config) {
         IProject project;
@@ -966,16 +957,16 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
             return false;
         }
 
-        if (!checkCopyFromExe(config, project))
+        if (!checkCopyFromExe(project))
             return false;
 
-        if (!checkProgram(config, project))
+        if (!checkProgram(project))
             return false;
 
-        if (!checkWorkingDir(config, project))
+        if (!checkWorkingDir(project))
             return false;
 
-        if (!checkCompatibility(config, project))
+        if (!checkCompatibility())
             return false;
 
         if (fCoreText != null) {

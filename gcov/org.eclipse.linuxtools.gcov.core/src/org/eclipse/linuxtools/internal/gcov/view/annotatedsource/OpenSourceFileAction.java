@@ -51,9 +51,8 @@ public final class OpenSourceFileAction {
             IURIEditorInput editorInput = (IURIEditorInput) input;
             URI uri = editorInput.getURI();
             try {
-                IFileStore fs = EFS.getStore(uri);
-                return fs;
-            } catch (CoreException _) {
+                return EFS.getStore(uri);
+            } catch (CoreException e) {
                 return null;
             }
         }

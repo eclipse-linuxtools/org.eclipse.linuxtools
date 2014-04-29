@@ -456,9 +456,9 @@ public class StapGraphParser extends SystemTapParser {
                             firstNode = id;
                         }
                         int index = args[1].indexOf("=\""); //$NON-NLS-1$
-                        String name = args[1].substring(index + 2, args[1].indexOf(" ", index)); //$NON-NLS-1$
+                        String name = args[1].substring(index + 2, args[1].indexOf(' ', index));
                         double dtime = 0.0;
-                        dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%"))); //$NON-NLS-1$ //$NON-NLS-2$
+                        dtime = Double.parseDouble(args[1].substring(args[1].indexOf(' ') + 1, args[1].indexOf('%')));
                         long time = (long) (dtime*100);
 
                         nameList.add(name);

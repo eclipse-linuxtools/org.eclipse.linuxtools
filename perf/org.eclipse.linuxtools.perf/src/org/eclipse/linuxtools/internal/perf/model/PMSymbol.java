@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.model;
 
-import org.eclipse.linuxtools.internal.perf.model.PMLineRef;
 
 public class PMSymbol extends TreeParent {
     private boolean pathConflictFound = false;
@@ -20,7 +19,7 @@ public class PMSymbol extends TreeParent {
         if (tmpName.startsWith("[")) { // filer out the "[.] " //$NON-NLS-1$
             tmpName = tmpName.substring(4);
         }
-        int argloc = tmpName.indexOf("("); // and the (.... //$NON-NLS-1$
+        int argloc = tmpName.indexOf('('); // and the (....
         if (argloc != -1) {
             tmpName = tmpName.substring(0,argloc);
         }

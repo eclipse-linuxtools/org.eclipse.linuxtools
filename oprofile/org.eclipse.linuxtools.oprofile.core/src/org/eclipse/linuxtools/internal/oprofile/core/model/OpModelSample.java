@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
@@ -16,41 +16,40 @@ package org.eclipse.linuxtools.internal.oprofile.core.model;
  * Represents an OProfile sample.
  */
 public class OpModelSample {
-	private int count;
-	private int line;
-	private String file;
+    private int count;
+    private int line;
+    private String file;
 
-	public OpModelSample() {
-		count = 0;
-		line = 0;
-	}
-	
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public OpModelSample() {
+        count = 0;
+        line = 0;
+    }
 
-	public void setLine(int line) {
-		this.line = line;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-	public void setFilePath(String file) {
-		this.file = file;
-	}
+    public void setLine(int line) {
+        this.line = line;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public void setFilePath(String file) {
+        this.file = file;
+    }
 
-	public int getLine() {
-		return line;
-	}
-	public String getFilePath() {
-		return file;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	@Override
-	public String toString() {
-		String s = "Line #: " + line + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		return s;
-	}
+    public int getLine() {
+        return line;
+    }
+    public String getFilePath() {
+        return file;
+    }
+
+    @Override
+    public String toString() {
+        return "Line #: " + line + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
 }

@@ -48,7 +48,6 @@ public class GmonDecoder {
     // header
     private String cookie;
     private int gmonVersion;
-    private byte[] spare;
 
     private final IBinaryObject program;
     final boolean _32_bit_platform;
@@ -167,7 +166,7 @@ public class GmonDecoder {
         stream.readFully(_cookie);
         cookie = new String(_cookie);
         gmonVersion = stream.readInt();
-        spare = new byte[12];
+        byte[] spare = new byte[12];
         stream.readFully(spare);
         return "gmon".equals(cookie); //$NON-NLS-1$
     }

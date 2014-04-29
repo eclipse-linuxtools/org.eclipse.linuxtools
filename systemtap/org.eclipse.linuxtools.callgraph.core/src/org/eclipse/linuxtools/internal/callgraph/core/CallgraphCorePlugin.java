@@ -90,7 +90,7 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String();
+        return ""; //$NON-NLS-1$
     }
 
     /**

@@ -49,14 +49,15 @@ public class STPAutoEditStrategy extends
      *
      * @param document
      * @param offset
-     * @param partitioning
      * @return the block balance
      */
-    private static int getBlockBalance(IDocument document, int offset, String partitioning) {
-        if (offset < 1)
+    private static int getBlockBalance(IDocument document, int offset) {
+        if (offset < 1) {
             return -1;
-        if (offset >= document.getLength())
+        }
+        if (offset >= document.getLength()) {
             return 1;
+        }
 
         int begin = offset;
         int end = offset - 1;
@@ -213,7 +214,7 @@ public class STPAutoEditStrategy extends
 
                 // copy old content of line behind insertion point to new line
                 // unless we think we are inserting an anonymous type definition
-                if (c.offset == 0 || !(computeAnonymousPosition(d, c.offset - 1, fPartitioning, lineEnd) != -1)) {
+                if (c.offset == 0 || !(computeAnonymousPosition(d, c.offset - 1, lineEnd) != -1)) {
                     if (lineEnd - contentStart > 0) {
                         c.length =  lineEnd - c.offset;
                         buf.append(d.get(contentStart, lineEnd - contentStart).toCharArray());
@@ -223,12 +224,14 @@ public class STPAutoEditStrategy extends
                 buf.append(TextUtilities.getDefaultLineDelimiter(d));
                 StringBuilder reference = null;
                 int nonWS = findEndOfWhiteSpace(d, start, lineEnd);
-                if (nonWS < c.offset && d.getChar(nonWS) == '{')
+                if (nonWS < c.offset && d.getChar(nonWS) == '{') {
                     reference = new StringBuilder(d.get(start, nonWS - start));
-                else
+                } else {
                     reference = indenter.getReferenceIndentation(c.offset);
-                if (reference != null)
+                }
+                if (reference != null) {
                     buf.append(reference);
+                }
                 buf.append('}');
                 int bound= c.offset > 200 ? c.offset - 200 : STPHeuristicScanner.UNBOUND;
                 int bracePos = scanner.findOpeningPeer(c.offset - 1, bound, '{', '}');
@@ -248,15 +251,17 @@ public class STPAutoEditStrategy extends
 
                     StringBuilder reference = null;
                     int nonWS = findEndOfWhiteSpace(d, start, lineEnd);
-                    if (nonWS < c.offset && d.getChar(nonWS) == '{')
+                    if (nonWS < c.offset && d.getChar(nonWS) == '{') {
                         reference = new StringBuilder(d.get(start, nonWS - start));
-                    else
+                    } else {
                         reference = indenter.getReferenceIndentation(c.offset);
+                    }
 
                     buf.append(TextUtilities.getDefaultLineDelimiter(d));
 
-                    if (reference != null)
+                    if (reference != null) {
                         buf.append(reference);
+                    }
                 }
             }
             c.text = buf.toString();
@@ -267,8 +272,9 @@ public class STPAutoEditStrategy extends
     }
 
     private void smartIndentUponE(IDocument doc, DocumentCommand c) {
-        if (c.offset < 4 || doc.getLength() == 0)
+        if (c.offset < 4 || doc.getLength() == 0) {
             return;
+        }
 
         try {
             String content = doc.get(c.offset - 3, 3);
@@ -281,21 +287,24 @@ public class STPAutoEditStrategy extends
                 int lineOffset = doc.getLineOffset(line);
 
                 // make sure we don't have any leading comments etc.
-                if (doc.get(lineOffset, p - lineOffset).trim().length() != 0)
+                if (doc.get(lineOffset, p - lineOffset).trim().length() != 0) {
                     return;
+                }
 
                 // Line of last C code
                 int pos = scanner.findNonWhitespaceBackward(p - 1, STPHeuristicScanner.UNBOUND);
-                if (pos == -1)
+                if (pos == -1) {
                     return;
+                }
                 int lastLine = doc.getLineOfOffset(pos);
 
                 // Only shift if the last C line is further up and is a braceless block candidate
                 if (lastLine < line) {
                     STPIndenter indenter = new STPIndenter(doc, scanner, fProject);
                     int ref = indenter.findReferencePosition(p, true, MatchMode.REGULAR);
-                    if (ref == STPHeuristicScanner.NOT_FOUND)
+                    if (ref == STPHeuristicScanner.NOT_FOUND) {
                         return;
+                    }
                     int refLine = doc.getLineOfOffset(ref);
                     String indent = getIndentOfLine(doc, refLine);
 
@@ -305,7 +314,6 @@ public class STPAutoEditStrategy extends
                         c.offset = lineOffset;
                     }
                 }
-
                 return;
             }
 
@@ -318,31 +326,35 @@ public class STPAutoEditStrategy extends
                 int lineOffset = doc.getLineOffset(line);
 
                 // make sure we don't have any leading comments etc.
-                if (doc.get(lineOffset, p - lineOffset).trim().length() != 0)
+                if (doc.get(lineOffset, p - lineOffset).trim().length() != 0) {
                     return;
+                }
 
                 // Line of last C code
                 int pos = scanner.findNonWhitespaceBackward(p - 1, STPHeuristicScanner.UNBOUND);
-                if (pos == -1)
+                if (pos == -1) {
                     return;
+                }
                 int lastLine = doc.getLineOfOffset(pos);
 
                 // Only shift if the last C line is further up and is a braceless block candidate
                 if (lastLine < line) {
                     STPIndenter indenter = new STPIndenter(doc, scanner, fProject);
                     int ref = indenter.findReferencePosition(p, false, MatchMode.MATCH_CASE);
-                    if (ref == STPHeuristicScanner.NOT_FOUND)
+                    if (ref == STPHeuristicScanner.NOT_FOUND) {
                         return;
+                    }
                     int refLine = doc.getLineOfOffset(ref);
                     int nextToken = scanner.nextToken(ref, STPHeuristicScanner.UNBOUND);
                     String indent;
-                    if (nextToken == STPSymbols.TokenCASE || nextToken == STPSymbols.TokenDEFAULT)
+                    if (nextToken == STPSymbols.TokenCASE || nextToken == STPSymbols.TokenDEFAULT) {
                         indent = getIndentOfLine(doc, refLine);
-                    else // at the brace of the switch
+                    } else {// at the brace of the switch
                         indent = indenter.computeIndentation(p).toString();
+                    }
 
                     if (indent != null) {
-                        c.text = indent.toString() + "case"; //$NON-NLS-1$
+                        c.text = indent + "case"; //$NON-NLS-1$
                         c.length += c.offset - lineOffset;
                         c.offset = lineOffset;
                     }
@@ -360,11 +372,10 @@ public class STPAutoEditStrategy extends
      *
      * @param document the document being modified
      * @param offset the offset of the caret position, relative to the line start.
-     * @param partitioning the document partitioning
      * @param max the max position
      * @return an insert position relative to the line start if <code>line</code> contains a parenthesized expression that can be followed by a block, -1 otherwise
      */
-    private static int computeAnonymousPosition(IDocument document, int offset, String partitioning,  int max) {
+    private static int computeAnonymousPosition(IDocument document, int offset, int max) {
         // find the opening parenthesis for every closing parenthesis on the current line after offset
         // return the position behind the closing parenthesis if it looks like a method declaration
         // or an expression for an if, while, for, catch statement
@@ -373,8 +384,9 @@ public class STPAutoEditStrategy extends
         int pos = offset;
         int length = max;
         int scanTo = scanner.scanForward(pos, length, '}');
-        if (scanTo == -1)
+        if (scanTo == -1) {
             scanTo = length;
+        }
 
         int closingParen = findClosingParenToLeft(scanner, pos) - 1;
 
@@ -416,7 +428,7 @@ public class STPAutoEditStrategy extends
     }
 
     private boolean isClosedBrace(IDocument document, int offset) {
-        return getBlockBalance(document, offset, fPartitioning) <= 0;
+        return getBlockBalance(document, offset) <= 0;
     }
 
     private void smartIndentOnKeypress(IDocument document, DocumentCommand command) {

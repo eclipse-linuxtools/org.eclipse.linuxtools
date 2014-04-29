@@ -163,7 +163,7 @@ public class DoxygenCPPInfo {
                                 hashName = text;
                                 if (index > 0)
                                     hashName = text.substring(0, index);
-                                d = new ClassInfo(className, id.getNodeValue(), n);
+                                d = new ClassInfo(className, n);
                                 classesById.put(id.getNodeValue(), d);
                                 ClassInfo e = cppInfo.classes.get(hashName);
                                 if (e != null) { /* We are dealing with a partial specific template...add it to list  */
@@ -258,7 +258,7 @@ public class DoxygenCPPInfo {
                                                         String n4Name = n4.getNodeName();
                                                         if (n4Name.equals("type")) {  //$NON-NLS-1$
                                                             NodeList nl5 = n4.getChildNodes();
-                                                            type = new String("");  //$NON-NLS-1$
+                                                            type = "";  //$NON-NLS-1$
                                                             for (int x = 0; x < nl5.getLength(); ++x) {
                                                                 Node n5 = nl5.item(x);
                                                                 if (n5.getNodeType() == Node.TEXT_NODE)

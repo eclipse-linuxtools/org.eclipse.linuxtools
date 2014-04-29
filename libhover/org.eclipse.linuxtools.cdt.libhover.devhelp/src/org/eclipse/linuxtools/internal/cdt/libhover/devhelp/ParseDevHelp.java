@@ -110,10 +110,10 @@ public class ParseDevHelp {
                 if (protoStart) {
                     if ("P".equals(name.rawname)) { //$NON-NLS-1$
                         protoStart = false;
-                        descStart = true;;
-                         description.append("<p>"); //$NON-NLS-1$
+                        descStart = true;
+                        description.append("<p>"); //$NON-NLS-1$
                     }
-                } else    if (descStart) {
+                } else if (descStart) {
                     if ("P".equals(name.rawname)) { //$NON-NLS-1$
                         description.append("<p>"); //$NON-NLS-1$
                     } else if ("TABLE".equals(name.rawname)) { //$NON-NLS-1$

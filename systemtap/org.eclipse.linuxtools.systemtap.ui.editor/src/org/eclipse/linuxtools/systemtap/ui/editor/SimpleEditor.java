@@ -152,8 +152,7 @@ public class SimpleEditor extends TextEditor {
      */
     private static IEditorInput createEditorInput(File file) {
         IPath location= new Path(file.getAbsolutePath());
-        PathEditorInput input= new PathEditorInput(location);
-        return input;
+        return new PathEditorInput(location);
     }
 
     /**
@@ -191,7 +190,7 @@ public class SimpleEditor extends TextEditor {
         FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
         dialog.setText(Localization.getString("NewFileAction.NewFile"));  //$NON-NLS-1$
         String path= dialog.open();
-        if (path != null && path.length() > 0) {
+        if (path != null && !path.isEmpty()) {
             return new File(path);
         }
         return null;

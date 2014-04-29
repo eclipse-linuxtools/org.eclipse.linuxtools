@@ -18,18 +18,14 @@ public class GraphData {
     public String graphID;
     public String title;
 
-    /**
-     * Creates and returns a copy of this GraphData instance.
-     * @return A copy of this GraphData.
-     * @since 1.1
-     */
-    public GraphData getCopy() {
+    @Override
+    public GraphData clone() {
         GraphData gd = new GraphData();
         gd.xSeries = this.xSeries;
         gd.ySeries = this.ySeries == null ? null : this.ySeries.clone();
-        gd.key = this.key == null ? null : this.key.substring(0);
-        gd.graphID = this.graphID == null ? null : this.graphID.substring(0);
-        gd.title = this.title == null ? null : this.title.substring(0);
+        gd.key = this.key == null ? null : this.key;
+        gd.graphID = this.graphID == null ? null : this.graphID;
+        gd.title = this.title == null ? null : this.title;
         return gd;
     }
 

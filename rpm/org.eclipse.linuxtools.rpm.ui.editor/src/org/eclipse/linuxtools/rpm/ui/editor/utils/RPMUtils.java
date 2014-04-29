@@ -78,7 +78,7 @@ public class RPMUtils {
         try {
             // URL#getPath will ignore any queries after the filename
             String fileName = new URL(url).getPath();
-            int lastSegment = fileName.lastIndexOf("/") + 1; //$NON-NLS-1$
+            int lastSegment = fileName.lastIndexOf('/') + 1;
             rc = fileName.substring(lastSegment).trim();
         } catch (IndexOutOfBoundsException e) {
             SpecfileLog.logError(e);

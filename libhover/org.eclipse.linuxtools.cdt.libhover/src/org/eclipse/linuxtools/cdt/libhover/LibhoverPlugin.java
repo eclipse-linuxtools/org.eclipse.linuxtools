@@ -57,7 +57,7 @@ public class LibhoverPlugin extends AbstractUIPlugin {
                 new ISaveParticipant() {
                     @Override
                     public void saving(ISaveContext saveContext) {
-                        save(saveContext);
+                        save();
                     }
                     @Override
                     public void rollback(ISaveContext saveContext) {}
@@ -73,7 +73,7 @@ public class LibhoverPlugin extends AbstractUIPlugin {
         }
     }
 
-    private void save(ISaveContext context) {
+    private void save() {
         LibHover.saveLibraries();
     }
 

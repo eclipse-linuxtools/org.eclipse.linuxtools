@@ -19,7 +19,7 @@ public class ReportComparisonViewCreator implements IViewerCreator {
 
     @Override
     public Viewer createViewer(Composite parent, CompareConfiguration config) {
-        return new ReportComparisonView(parent, config);
+        return new ReportComparisonView(parent);
     }
 
 }

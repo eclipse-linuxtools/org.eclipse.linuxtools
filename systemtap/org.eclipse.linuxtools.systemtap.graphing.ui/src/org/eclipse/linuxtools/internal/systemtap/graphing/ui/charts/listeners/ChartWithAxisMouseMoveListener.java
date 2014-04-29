@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat - Initial API and implementation.
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
 
 import java.text.MessageFormat;
@@ -13,11 +23,10 @@ import org.swtchart.ISeries;
  * This is a specialized mouse listener for displaying the coordinates of a data point on
  * the chart that the user hovers over with the mouse. The coordinates are displayed in a
  * tooltip popup near the mouse.
- * @author aferrazz
  * @since 3.0
  */
 public class ChartWithAxisMouseMoveListener extends ToolTipChartMouseMoveListener {
-    private final double DIST_TOLERANCE = 20.0;
+    private static final double DIST_TOLERANCE = 20.0;
 
     public ChartWithAxisMouseMoveListener(Chart chart, Composite hoverArea) {
         super(chart, hoverArea);

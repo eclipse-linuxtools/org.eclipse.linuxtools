@@ -282,12 +282,13 @@ public class PerfCore {
         if (config != null) {
             try {
                 String kernelLoc = config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
-                if (kernelLoc != PerfPlugin.ATTR_Kernel_Location_default) {
+                if (!kernelLoc.equals(PerfPlugin.ATTR_Kernel_Location_default)) {
                     base.add("--vmlinux"); //$NON-NLS-1$
                     base.add(kernelLoc);
                 }
-                if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default))
+                if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default)) {
                     base.add("-m"); //$NON-NLS-1$
+                }
 
                 /*
                  * danielhb, 12/14/2011 - some systems, like ubuntu and sles, does not have
@@ -320,12 +321,13 @@ public class PerfCore {
         if (config != null) {
             try {
                 String kernelLoc = config.getAttribute(PerfPlugin.ATTR_Kernel_Location, PerfPlugin.ATTR_Kernel_Location_default);
-                if (kernelLoc != PerfPlugin.ATTR_Kernel_Location_default) {
+                if (!kernelLoc.equals(PerfPlugin.ATTR_Kernel_Location_default)) {
                     base.add("--vmlinux"); //$NON-NLS-1$
                     base.add(kernelLoc);
                 }
-                if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default))
+                if (config.getAttribute(PerfPlugin.ATTR_ModuleSymbols, PerfPlugin.ATTR_ModuleSymbols_default)) {
                     base.add("-m"); //$NON-NLS-1$
+                }
                 if (perfDataLoc != null) {
                     base.add("-i"); //$NON-NLS-1$
                     base.add(perfDataLoc);

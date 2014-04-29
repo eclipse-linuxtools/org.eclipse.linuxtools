@@ -21,11 +21,6 @@ public class PerfOptionsTab extends org.eclipse.linuxtools.internal.perf.launch.
     private Exception ex;
 
     @Override
-    public void initializeFrom(ILaunchConfiguration config) {
-        super.initializeFrom(config);
-    }
-
-    @Override
     public boolean isValid (ILaunchConfiguration config) {
         if (ex != null) {
             setErrorMessage(ex.getLocalizedMessage());

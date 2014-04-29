@@ -599,7 +599,7 @@ public class LibHover implements ICHelpProvider {
             String param = parameterTypes[i].toString();
             param = param.replaceAll("\\{.*\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
             param = param.trim();
-            int index = param.indexOf("#"); //$NON-NLS-1$
+            int index = param.indexOf('#');
             while (index >= 0) {
                 // We assume no class has more than 9 template parms.
                 int digit = param.charAt(index + 1) - '0';
@@ -608,7 +608,7 @@ public class LibHover implements ICHelpProvider {
                     param = param.replaceFirst(param.substring(index, index + 2), templateTypes.get(digit));
                 else
                     param = param.replaceFirst(param.substring(index, index + 2), templateParms[digit]);
-                index = param.indexOf("#"); //$NON-NLS-1$
+                index = param.indexOf('#');
             }
             result[i] = param;
         }

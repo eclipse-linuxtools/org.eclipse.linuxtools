@@ -226,10 +226,11 @@ public final class IndentUtil {
         // standard C code indentation
         if (indent == null) {
             StringBuilder computed= indenter.computeIndentation(offset);
-            if (computed != null)
+            if (computed != null) {
                 indent= computed.toString();
-            else
-                indent= new String();
+            } else {
+                indent= ""; //$NON-NLS-1$
+            }
         }
         return indent;
     }
@@ -245,8 +246,9 @@ public final class IndentUtil {
      * @throws BadLocationException
      */
     public static String computeCommentIndent(IDocument document, int line, STPHeuristicScanner scanner, ITypedRegion partition) throws BadLocationException {
-        if (line == 0) // impossible - the first line is never inside a comment
+        if (line == 0) { // impossible - the first line is never inside a comment
             return null;
+        }
 
         // don't make any assumptions if the line does not start with \s*\* - it might be
         // commented out code, for which we don't want to change the indent
@@ -256,8 +258,9 @@ public final class IndentUtil {
         final int lineEnd= lineStart + lineLength;
         int nonWS= scanner.findNonWhitespaceForwardInAnyPartition(lineStart, lineEnd);
         if (nonWS == STPHeuristicScanner.NOT_FOUND || document.getChar(nonWS) != '*') {
-            if (nonWS == STPHeuristicScanner.NOT_FOUND)
+            if (nonWS == STPHeuristicScanner.NOT_FOUND) {
                 return document.get(lineStart, lineLength);
+            }
             return document.get(lineStart, nonWS - lineStart);
         }
 
@@ -276,8 +279,9 @@ public final class IndentUtil {
             previousLineLength= previousLine.getLength();
             previousLineEnd= previousLineStart + previousLineLength;
             previousLineNonWS= scanner.findNonWhitespaceForwardInAnyPartition(previousLineStart, previousLineEnd);
-            if (previousLineNonWS == STPHeuristicScanner.NOT_FOUND)
+            if (previousLineNonWS == STPHeuristicScanner.NOT_FOUND) {
                 previousLineNonWS= previousLineEnd;
+            }
 
             // add the initial space
             // TODO this may be controlled by a formatter preference in the future

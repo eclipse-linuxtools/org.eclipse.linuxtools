@@ -699,8 +699,7 @@ public final class STPIndenter {
             try {
                 IRegion line= fDocument.getLineInformationOfOffset(offset);
                 int lineEnd= line.getOffset() + line.getLength();
-                int next= fScanner.nextToken(offset, lineEnd);
-                return next;
+                return fScanner.nextToken(offset, lineEnd);
             } catch (BadLocationException e) {
             }
         }
@@ -720,8 +719,7 @@ public final class STPIndenter {
                 IRegion line= fDocument.getLineInformationOfOffset(offset);
                 int lineEnd= line.getOffset() + line.getLength();
                 fScanner.nextToken(offset, lineEnd);
-                int next = fScanner.nextToken(fScanner.getPosition(), lineEnd);
-                return next;
+                return fScanner.nextToken(fScanner.getPosition(), lineEnd);
             } catch (BadLocationException e) {
             }
         }
@@ -781,15 +779,17 @@ public final class STPIndenter {
 
                 case STPSymbols.TokenCASE:
                 case STPSymbols.TokenDEFAULT:
-                    if (isFirstTokenOnLine)
+                    if (isFirstTokenOnLine) {
                         matchMode = MatchMode.MATCH_CASE;
+                    }
                     break;
 
                 case STPSymbols.TokenPUBLIC:
                 case STPSymbols.TokenPROTECTED:
                 case STPSymbols.TokenPRIVATE:
-                    if (isFirstTokenOnLine && peekSecondToken(offset) != STPSymbols.TokenIDENT)
+                    if (isFirstTokenOnLine && peekSecondToken(offset) != STPSymbols.TokenIDENT) {
                         matchMode = MatchMode.MATCH_ACCESS_SPECIFIER;
+                    }
                     break;
 
                 case STPSymbols.TokenLBRACE: // for opening-brace-on-new-line style
@@ -816,13 +816,15 @@ public final class STPIndenter {
                     break;
 
                 case STPSymbols.TokenRBRACE: // closing braces get unindented
-                    if (isFirstTokenOnLine || prevToken != STPSymbols.TokenLBRACE)
+                    if (isFirstTokenOnLine || prevToken != STPSymbols.TokenLBRACE) {
                         matchMode = MatchMode.MATCH_BRACE;
+                    }
                     break;
 
                 case STPSymbols.TokenRPAREN:
-                    if (isFirstTokenOnLine)
+                    if (isFirstTokenOnLine) {
                         matchMode = MatchMode.MATCH_PAREN;
+                    }
                     break;
                 }
             } catch (BadLocationException e) {

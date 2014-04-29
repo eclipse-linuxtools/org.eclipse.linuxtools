@@ -25,15 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-
-
 public class SelectServerDialog extends Dialog {
-    private Text hostText;
-    private Text userText;
-    private Text passwordText;
-    private Button rememberButton;
-    private Button connectButton;
-    private Button cancelButton;
     private boolean result;
 
     public SelectServerDialog(Shell parent) {
@@ -66,7 +58,7 @@ public class SelectServerDialog extends Dialog {
         GridData dataFill = new GridData();
         dataFill.grabExcessHorizontalSpace = true;
         dataFill.horizontalAlignment = SWT.FILL;
-        hostText = new Text(shell, SWT.SINGLE | SWT.BORDER);
+        final Text hostText = new Text(shell, SWT.SINGLE | SWT.BORDER);
         hostText.setLayoutData(dataFill);
         hostText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.HOST_NAME));
 
@@ -74,7 +66,7 @@ public class SelectServerDialog extends Dialog {
         userLabel.setText(Messages.SelectServerDialog_User);
         userLabel.setLayoutData(dataLeft);
 
-        userText = new Text(shell, SWT.SINGLE | SWT.BORDER);
+        final Text userText = new Text(shell, SWT.SINGLE | SWT.BORDER);
         userText.setLayoutData(dataFill);
         userText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_USER));
 
@@ -82,7 +74,7 @@ public class SelectServerDialog extends Dialog {
         passwordLabel.setText(Messages.SelectServerDialog_Password);
         passwordLabel.setLayoutData(dataLeft);
 
-        passwordText = new Text(shell, SWT.SINGLE | SWT.BORDER);
+        final Text passwordText = new Text(shell, SWT.SINGLE | SWT.BORDER);
         passwordText.setEchoChar('*');
         passwordText.setLayoutData(dataFill);
         passwordText.setText(ConsoleLogPlugin.getDefault().getPreferenceStore().getString(ConsoleLogPreferenceConstants.SCP_PASSWORD));
@@ -91,13 +83,13 @@ public class SelectServerDialog extends Dialog {
         GridData data = new GridData();
         data.horizontalAlignment = SWT.LEFT;
         data.horizontalSpan = 2;
-        rememberButton = new Button(shell, SWT.CHECK);
+        final Button rememberButton = new Button(shell, SWT.CHECK);
         rememberButton.setLayoutData(data);
         rememberButton.setText(Messages.SelectServerDialog_AlwaysConnectToHost);
 
         data = new GridData();
         data.horizontalAlignment = SWT.RIGHT;
-        cancelButton = new Button(shell, SWT.PUSH);
+        Button cancelButton = new Button(shell, SWT.PUSH);
         cancelButton.setLayoutData(data);
         cancelButton.setSize(50, 100);
         cancelButton.setText(Messages.SelectServerDialog_Cancel);
@@ -111,7 +103,7 @@ public class SelectServerDialog extends Dialog {
 
         data = new GridData();
         data.horizontalAlignment = SWT.RIGHT;
-        connectButton = new Button(shell, SWT.PUSH);
+        Button connectButton = new Button(shell, SWT.PUSH);
         connectButton.setLayoutData(data);
         connectButton.setSize(50, 100);
         connectButton.setText(Messages.SelectServerDialog_Connect);

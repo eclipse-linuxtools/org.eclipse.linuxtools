@@ -19,6 +19,6 @@ public class StatComparisonViewCreator implements IViewerCreator {
 
     @Override
     public Viewer createViewer(Composite parent, CompareConfiguration config) {
-        return new StatComparisonView(parent, config);
+        return new StatComparisonView(parent);
     }
 }

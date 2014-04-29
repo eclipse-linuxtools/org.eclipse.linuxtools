@@ -53,7 +53,6 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
     private String mode;
 
     private Shell sh;
-    private Composite fileComp;
 
     private static final int WIDTH = 670;
     private static final int HEIGHT = 630;
@@ -151,7 +150,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         imageCmp.setLayoutData(imageData);
         imageCmp.setBackgroundImage(img);
 
-        fileComp = new Composite(sh, SWT.NONE);
+        Composite fileComp = new Composite(sh, SWT.NONE);
         fileComp.setLayout(new GridLayout(2, false));
         fileComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 

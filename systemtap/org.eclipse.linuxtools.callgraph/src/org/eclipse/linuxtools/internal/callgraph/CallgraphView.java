@@ -88,9 +88,7 @@ public class CallgraphView extends SystemTapView {
     private Composite treeComp;
 
     private StapGraph g;
-    private int treeSize = 200;
-
-
+    private static final int TREE_SIZE = 200;
 
     /**
      * Initializes the view by creating composites (if necessary) and canvases
@@ -107,8 +105,7 @@ public class CallgraphView extends SystemTapView {
             Display.getDefault();
         }
 
-        treeSize = 200;
-        makeTreeComp(treeSize);
+        makeTreeComp();
         makeGraphComp();
         graphComp.setBackgroundMode(SWT.INHERIT_FORCE);
 
@@ -149,7 +146,7 @@ public class CallgraphView extends SystemTapView {
 
         //Initialize graph
         g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas, this);
-        g.setLayoutData(new GridData(masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize));
+        g.setLayoutData(new GridData(masterComposite.getBounds().width,Display.getCurrent().getBounds().height - TREE_SIZE));
 
         up.addSelectionListener(new AutoScrollSelectionListener(
                 AutoScrollSelectionListener.AUTO_SCROLL_UP, g));
@@ -359,14 +356,14 @@ public class CallgraphView extends SystemTapView {
 
 
 
-    private void makeTreeComp(int treeSize) {
+    private void makeTreeComp() {
         if (treeComp != null && !treeComp.isDisposed()) {
             treeComp.dispose();
         }
 
         treeComp = new Composite(this.masterComposite, SWT.NONE);
         GridData treegd = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
-        treegd.widthHint = treeSize;
+        treegd.widthHint = TREE_SIZE;
         treeComp.setLayout(new FillLayout());
         treeComp.setLayoutData(treegd);
     }

@@ -381,8 +381,7 @@ public class IndentHandler extends AbstractHandler {
      * @return the tab size as defined in the current formatter preferences
      */
     private int getTabSize() {
-        return getCoreFormatterOption(
-                STPDefaultCodeFormatterConstants.FORMATTER_TAB_SIZE, 4);
+        return getCoreFormatterOption(4);
     }
 
     /**
@@ -394,7 +393,7 @@ public class IndentHandler extends AbstractHandler {
      */
     private boolean indentEmptyLines() {
         return STPDefaultCodeFormatterConstants.TRUE
-                .equals(getCoreFormatterOption(STPDefaultCodeFormatterConstants.FORMATTER_INDENT_EMPTY_LINES));
+                .equals(getCoreFormatterOption());
     }
 
     /**
@@ -406,7 +405,7 @@ public class IndentHandler extends AbstractHandler {
      */
     private boolean indentInsideLineComments() {
         return STPDefaultCodeFormatterConstants.TRUE
-                .equals(getCoreFormatterOption(STPDefaultCodeFormatterConstants.FORMATTER_INDENT_INSIDE_LINE_COMMENTS));
+                .equals(getCoreFormatterOption());
     }
 
     /**
@@ -417,7 +416,7 @@ public class IndentHandler extends AbstractHandler {
      *            the key of the preference
      * @return the value of the preference
      */
-    private String getCoreFormatterOption(String key) {
+    private String getCoreFormatterOption() {
         return "false"; //$NON-NLS-1$
     }
 
@@ -425,15 +424,13 @@ public class IndentHandler extends AbstractHandler {
      * Returns the possibly project-specific core preference defined under
      * <code>key</code>, or <code>def</code> if the value is not a integer.
      *
-     * @param key
-     *            the key of the preference
      * @param def
      *            the default value
      * @return the value of the preference
      */
-    private int getCoreFormatterOption(String key, int def) {
+    private int getCoreFormatterOption(int def) {
         try {
-            return Integer.parseInt(getCoreFormatterOption(key));
+            return Integer.parseInt(getCoreFormatterOption());
         } catch (NumberFormatException e) {
             return def;
         }
