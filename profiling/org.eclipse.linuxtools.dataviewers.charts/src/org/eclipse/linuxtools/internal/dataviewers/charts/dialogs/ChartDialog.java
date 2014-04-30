@@ -93,7 +93,7 @@ public class ChartDialog extends Dialog {
     private void restoreState() {
             IDialogSettings settings = stViewer.getViewerSettings().getSection(TAG_SECTION_CHARTS_STATE);
             if (settings == null) {
-                settings = stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
+                stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
                 return;
             }
 
@@ -117,7 +117,7 @@ public class ChartDialog extends Dialog {
     private void saveState() {
             IDialogSettings settings = stViewer.getViewerSettings().getSection(TAG_SECTION_CHARTS_STATE);
             if (settings == null) {
-                settings = stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
+                stViewer.getViewerSettings().addNewSection(TAG_SECTION_CHARTS_STATE);
             }
 
             for (int i = 0; i < columnButtons.size(); i++) {
@@ -132,22 +132,12 @@ public class ChartDialog extends Dialog {
             settings.put(TAG_VERTICAL_BARS_BUTTON, vBars);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(Messages.ChartConstants_CREATE_NEW_CHART_FROM_SELECTION);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
-     */
     @Override
     protected void buttonPressed(int buttonId) {
         if (buttonId == IDialogConstants.OK_ID) {
@@ -159,11 +149,6 @@ public class ChartDialog extends Dialog {
         super.buttonPressed(buttonId);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         // create OK and Cancel buttons by default
@@ -171,11 +156,6 @@ public class ChartDialog extends Dialog {
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.dialogs.Dialog#createContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createContents(Composite parent) {
         Control c = super.createContents(parent);
@@ -183,11 +163,6 @@ public class ChartDialog extends Dialog {
         return c;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);

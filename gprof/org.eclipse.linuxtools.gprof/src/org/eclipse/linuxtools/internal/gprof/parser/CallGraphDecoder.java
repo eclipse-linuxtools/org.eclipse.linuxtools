@@ -49,10 +49,10 @@ public class CallGraphDecoder {
      * @param stream
      * @throws IOException
      */
-    public void decodeCallGraphRecord(DataInput stream, boolean BSDFormat) throws IOException {
+    public void decodeCallGraphRecord(DataInput stream, boolean bsdFormat) throws IOException {
         long from_pc = readAddress(stream);
         long self_pc = readAddress(stream);
-        int count    = BSDFormat?(int)readAddress(stream):stream.readInt();
+        int count    = bsdFormat?(int)readAddress(stream):stream.readInt();
         IBinaryObject program = decoder.getProgram();
         IAddressFactory addressFactory = program.getAddressFactory();
         IAddress parentAddress = addressFactory.createAddress(Long.toString(from_pc));
@@ -67,8 +67,7 @@ public class CallGraphDecoder {
 
 
     protected long readAddress(DataInput stream) throws IOException {
-        long ret = stream.readInt() & 0xFFFFFFFFL;
-        return ret;
+        return stream.readInt() & 0xFFFFFFFFL;
     }
 
 

@@ -67,8 +67,7 @@ public class HistogramDecoder {
     }
 
     protected long readAddress(DataInput stream) throws IOException {
-        long ret = stream.readInt() & 0xFFFFFFFFL;
-        return ret;
+        return stream.readInt() & 0xFFFFFFFFL;
     }
 
     public boolean hasValues() {
@@ -108,47 +107,47 @@ public class HistogramDecoder {
      * @throws IOException if an IO error occurs
      */
     public void decodeOldHeader(DataInput stream) throws IOException {
-        long low_pc = readAddress(stream);
-        long high_pc = readAddress(stream);
+        long lowPC = readAddress(stream);
+        long highPC = readAddress(stream);
         int ncnt = stream.readInt();
         int version = stream.readInt();
-        int header_size;
+        int headerSize;
         int profrate = 0;
         if (version == GmonDecoder.GMONVERSION)
         {
             profrate = stream.readInt();
             stream.skipBytes(GMON_HDRSIZE_BSD44);
             if (decoder._32_bit_platform) {
-              header_size = GMON_HDRSIZE_BSD44_32;
+              headerSize = GMON_HDRSIZE_BSD44_32;
             } else {
-              header_size = GMON_HDRSIZE_BSD44_64;
+              headerSize = GMON_HDRSIZE_BSD44_64;
             }
         } else {
           /* Old style BSD format.  */
             if (decoder._32_bit_platform) {
-                header_size = GMON_HDRSIZE_OLDBSD_32;
+                headerSize = GMON_HDRSIZE_OLDBSD_32;
             } else {
-                header_size = GMON_HDRSIZE_OLDBSD_64;
+                headerSize = GMON_HDRSIZE_OLDBSD_64;
             }
         }
 
-        int samp_bytes = ncnt - header_size;
-        int hist_num_bins = samp_bytes / 2;
+        int sampBytes = ncnt - headerSize;
+        int histNumBins = sampBytes / 2;
 
-        if (!isCompatible(low_pc, high_pc, profrate, hist_num_bins))
+        if (!isCompatible(lowPC, highPC, profrate, histNumBins))
         {
             // TODO exception to normalize
             throw new RuntimeException(Messages.HistogramDecoder_INCOMPATIBLE_HIST_HEADER_ERROR_MSG);
         }
 
 
-        this.lowpc     = low_pc;
-        this.highpc    = high_pc;
+        this.lowpc     = lowPC;
+        this.highpc    = highPC;
         this.profRate = profrate;
-        hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
+        hist_sample    = new int[histNumBins]; // Impl note: JVM sets all integers to 0
         dimenAbbrev   = 's';
         long temp = highpc - lowpc;
-        bucketSize = Math.round(temp/(double)hist_num_bins);
+        bucketSize = Math.round(temp/(double)histNumBins);
     }
 
 
@@ -157,16 +156,16 @@ public class HistogramDecoder {
      * @param lowpc
      * @param highpc
      * @param profrate
-     * @param sample_count
+     * @param sampleCount
      * @return whether the gmon file currently parsed is compatible with the previous one (if any).
      */
-    private boolean isCompatible(long lowpc, long highpc, int profrate, int sample_count) {
+    private boolean isCompatible(long lowpc, long highpc, int profrate, int sampleCount) {
         if (!initialized) return true;
         return (
                 (this.lowpc     == lowpc) &&
                 (this.highpc    == highpc) &&
                 (this.profRate == profrate) &&
-                (this.hist_sample.length == sample_count)
+                (this.hist_sample.length == sampleCount)
         );
     }
 

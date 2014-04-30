@@ -152,7 +152,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
                     }
                 }
 
-                PerfCore.Report(config, getEnvironment(config), workingDir, monitor, null, print);
+                PerfCore.report(config, getEnvironment(config), workingDir, monitor, null, print);
                 PerfPlugin.getDefault().getPerfProfileData().toFile().setReadOnly();
                 PerfCore.refreshView(renderProcessLabel(exePath.toOSString()));
 

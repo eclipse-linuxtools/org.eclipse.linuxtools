@@ -61,7 +61,6 @@ public class PythonEggParser {
         String line = "";
         String setupLine = "";
         List<String> vars = new ArrayList<>();
-        List<String> list = new ArrayList<>();
         int offset = 0;
         try {
             RandomAccessFile raf = new RandomAccessFile(file.getRawLocation().makeAbsolute().toFile(), "r");
@@ -104,7 +103,7 @@ public class PythonEggParser {
                 }
             }
 
-            list = prepareSetupOptions(setupLine);
+            List<String> list = prepareSetupOptions(setupLine);
 
             for (String str : vars) {
                 variables.putAll(parseLine(str));
@@ -172,12 +171,11 @@ public class PythonEggParser {
     public List<String> getValueList(String key) {
         List<String> rc = new ArrayList<>();
         Pattern pattern = Pattern.compile("^\\[(.*)\\]");
-        String[] temp = {};
 
         if (setupOptions.containsKey(key)) {
             Matcher variableMatcher = pattern.matcher(setupOptions.get(key).trim());
             if (variableMatcher.find()) {
-                temp = variableMatcher.group(1).replaceAll("('|\")", "").split(",");
+                String[] temp = variableMatcher.group(1).replaceAll("('|\")", "").split(",");
                 for (String str : temp) {
                     if (!str.isEmpty() && !str.trim().startsWith("#")) {
                         rc.add(str.trim());
@@ -197,7 +195,6 @@ public class PythonEggParser {
      */
     private static List<String> prepareSetupOptions(String setupLine) {
         List<String> rc = new ArrayList<>();
-        String[] tempList = {};
         // match the setup(...) pattern
         Pattern pattern = Pattern.compile("\\bsetup\\b(\\s+)?\\((.*)\\)");
         Matcher variableMatcher = pattern.matcher(setupLine);
@@ -206,7 +203,7 @@ public class PythonEggParser {
             setupLine = variableMatcher.group(2);
         }
 
-        tempList = setupLine.split("(?=,)");
+        String[] tempList = setupLine.split("(?=,)");
 
         for (String str : tempList) {
             if (isOptionLineKeyValuePair(str) && !str.trim().startsWith("#")) {

@@ -35,9 +35,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownComposite;
@@ -46,8 +44,6 @@ import org.eclipse.ui.part.DrillDownComposite;
  * Workbench-level composite for choosing a container.
  */
 public class ChangeLogContainerSelectionGroup extends Composite {
-    // The listener to notify of events
-    private Listener listener;
 
     // Enable user to type in new container name
     private boolean allowNewContainerName = true;
@@ -148,14 +144,6 @@ public class ChangeLogContainerSelectionGroup extends Composite {
                 containerNameField.setToolTipText(text);
             }
         }
-
-        // fire an event so the parent can update its controls
-        if (listener != null) {
-            Event changeEvent = new Event();
-            changeEvent.type = SWT.Selection;
-            changeEvent.widget = this;
-            listener.handleEvent(changeEvent);
-        }
     }
 
     /**
@@ -190,7 +178,6 @@ public class ChangeLogContainerSelectionGroup extends Composite {
             GridData gd = new GridData(GridData.FILL_HORIZONTAL);
             gd.widthHint = widthHint;
             containerNameField.setLayoutData(gd);
-            containerNameField.addListener(SWT.Modify, listener);
             containerNameField.setFont(this.getFont());
         } else {
             // filler...

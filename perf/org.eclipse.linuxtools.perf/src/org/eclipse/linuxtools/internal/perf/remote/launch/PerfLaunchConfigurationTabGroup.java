@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.perf.remote.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
+import org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyProfileLaunchConfigurationTabGroup;
 
 public class PerfLaunchConfigurationTabGroup extends RemoteProxyProfileLaunchConfigurationTabGroup  {

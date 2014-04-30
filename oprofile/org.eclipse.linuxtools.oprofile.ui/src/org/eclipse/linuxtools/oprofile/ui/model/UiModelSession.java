@@ -26,7 +26,6 @@ import org.eclipse.swt.graphics.Image;
  * @since 1.1
  */
 public class UiModelSession implements IUiModelElement {
-	private IUiModelElement parent;		//parent element
 	private OpModelSession session;		//the node in the data model
 
 	private UiModelEvent events[];
@@ -109,7 +108,7 @@ public class UiModelSession implements IUiModelElement {
 	 */
 	@Override
 	public IUiModelElement getParent() {
-		return parent;
+		return null;
 	}
 
 	/**

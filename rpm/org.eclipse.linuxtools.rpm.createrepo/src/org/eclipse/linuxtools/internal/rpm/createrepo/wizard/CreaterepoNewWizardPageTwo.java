@@ -104,11 +104,10 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
      * @return The newly created text field.
      */
     protected Text createTextFieldWithLabel(Composite parent, String labelName, String tooltip) {
-        GridData layoutData = new GridData();
         // create the label
         Label respositoryBaseURLLbl = new Label(parent, SWT.NONE);
         respositoryBaseURLLbl.setText(labelName);
-        layoutData = new GridData();
+        GridData layoutData = new GridData();
         layoutData.horizontalAlignment = GridData.BEGINNING;
         layoutData.verticalAlignment = GridData.CENTER;
         respositoryBaseURLLbl.setToolTipText(tooltip);

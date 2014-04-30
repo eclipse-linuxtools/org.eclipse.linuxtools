@@ -751,7 +751,7 @@ public class StapGraph extends Graph {
     }
 
     private void drawFromBottomToTop(int level, int height,
-            int MaxLevelPixelWidth) {
+            int maxLevelPixelWidth) {
 
         // FINISHED DRAWING THE ROOT IN THE LAST RECURSIVE CALL
         if (level == 0 || level < topLevelToDraw) {
@@ -793,7 +793,7 @@ public class StapGraph extends Graph {
                 n.setLocation(150 + (nodeMap.get(getRootVisibleNodeNumber())
                         .getLocation().x),
                         nodeMap.get(getRootVisibleNodeNumber()).getLocation().y);
-                n.setLocation(150 + (MaxLevelPixelWidth / (total + 1) * count),
+                n.setLocation(150 + (maxLevelPixelWidth / (total + 1) * count),
                         height);
 
                 if (counter <= ANIMATION_TIME) {
@@ -802,7 +802,7 @@ public class StapGraph extends Graph {
                 }
 
             } else {
-                n.setLocation(150 + (MaxLevelPixelWidth / (total + 1) * count),
+                n.setLocation(150 + (maxLevelPixelWidth / (total + 1) * count),
                         height);
             }
 
@@ -837,7 +837,7 @@ public class StapGraph extends Graph {
         // DRAW THE NEXT LEVEL UP
         drawFromBottomToTop(level - 1, height
                 - (3 * (int) (CONSTANT_VERTICAL_INCREMENT / scale)),
-                MaxLevelPixelWidth);
+                maxLevelPixelWidth);
     }
 
     /*
@@ -956,18 +956,18 @@ public class StapGraph extends Graph {
      *            - node to recenter with
      */
 
-    public void setTopLevelTo(int new_topLevelToDraw) {
-        changeLevelLimits(new_topLevelToDraw);
+    public void setTopLevelTo(int newTopLevelToDraw) {
+        changeLevelLimits(newTopLevelToDraw);
 
-        int new_bottomLevelToDraw = new_topLevelToDraw + levelBuffer;
+        int new_bottomLevelToDraw = newTopLevelToDraw + levelBuffer;
         if (new_bottomLevelToDraw > lowestLevelOfNodesAdded) {
             new_bottomLevelToDraw = lowestLevelOfNodesAdded;
         }
 
-        deleteLevelsFromTop(new_topLevelToDraw - topLevelToDraw);
+        deleteLevelsFromTop(newTopLevelToDraw - topLevelToDraw);
         deleteLevelsFromBottom(bottomLevelToDraw - new_bottomLevelToDraw);
 
-        topLevelToDraw = new_topLevelToDraw;
+        topLevelToDraw = newTopLevelToDraw;
         bottomLevelToDraw = new_bottomLevelToDraw;
     }
 

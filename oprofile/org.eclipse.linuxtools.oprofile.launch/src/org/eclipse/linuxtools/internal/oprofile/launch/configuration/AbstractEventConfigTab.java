@@ -241,7 +241,7 @@ AbstractLaunchConfigurationTab {
 
                     for (CounterSubTab counterSubTab : counterSubTabs){
                         int nr = counterSubTab.counter.getNumber();
-                        if(counterSubTab.enabledCheck.getSelection() && config.getAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(nr), 0) == 0){
+                        if(counterSubTab.enabledCheck.getSelection() && config.getAttribute(OprofileLaunchPlugin.attrNumberOfEvents(nr), 0) == 0){
                             valid = false;
                         }
                         // if target list is empty valid is false

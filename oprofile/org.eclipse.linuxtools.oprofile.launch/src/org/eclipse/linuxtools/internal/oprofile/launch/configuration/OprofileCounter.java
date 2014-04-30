@@ -147,17 +147,17 @@ public class OprofileCounter {
 	 * @param config	the launch configuration
 	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(number), _enabled);
-		config.setAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(number), daemonEvent.length);
+		config.setAttribute(OprofileLaunchPlugin.attrConterEnabled(number), _enabled);
+		config.setAttribute(OprofileLaunchPlugin.attrNumberOfEvents(number), daemonEvent.length);
 
 		for (int i = 0; i < daemonEvent.length; i++) {
 			if (daemonEvent[i].getEvent() != null) {
-				config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number, i), daemonEvent[i].getEvent().getText());
-				config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), daemonEvent[i].getEvent().getUnitMask().getMaskValue());
+				config.setAttribute(OprofileLaunchPlugin.attrConterEvent(number, i), daemonEvent[i].getEvent().getText());
+				config.setAttribute(OprofileLaunchPlugin.attrCounterUnitMask(number), daemonEvent[i].getEvent().getUnitMask().getMaskValue());
 			}
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), daemonEvent[i].getProfileKernel());
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), daemonEvent[i].getProfileUser());
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), daemonEvent[i].getResetCount());
+			config.setAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(number), daemonEvent[i].getProfileKernel());
+			config.setAttribute(OprofileLaunchPlugin.attrCounterProfileUser(number), daemonEvent[i].getProfileUser());
+			config.setAttribute(OprofileLaunchPlugin.attrCounterCount(number), daemonEvent[i].getResetCount());
 		}
 	}
 	
@@ -167,26 +167,26 @@ public class OprofileCounter {
 	 */
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
-			_enabled = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(number), false);
-			int numEvents = config.getAttribute(OprofileLaunchPlugin.ATTR_NUMBER_OF_EVENTS(number), 1);
+			_enabled = config.getAttribute(OprofileLaunchPlugin.attrConterEnabled(number), false);
+			int numEvents = config.getAttribute(OprofileLaunchPlugin.attrNumberOfEvents(number), 1);
 			daemonEvent = new OprofileDaemonEvent[numEvents];
 
 			for (int i = 0; i < numEvents; i++) {
-				String str = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(number, i), ""); //$NON-NLS-1$
-				int maskValue = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(number), OpUnitMask.SET_DEFAULT_MASK);
+				String str = config.getAttribute(OprofileLaunchPlugin.attrConterEvent(number, i), ""); //$NON-NLS-1$
+				int maskValue = config.getAttribute(OprofileLaunchPlugin.attrCounterUnitMask(number), OpUnitMask.SET_DEFAULT_MASK);
 
 				daemonEvent[i] = new OprofileDaemonEvent();
-				daemonEvent[i].setEvent(_eventFromString(str));
+				daemonEvent[i].setEvent(eventFromString(str));
 
 				if (daemonEvent[i].getEvent() == null) {
 					continue;
 				}
 
 				daemonEvent[i].getEvent().getUnitMask().setMaskValue(maskValue);
-				daemonEvent[i].setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(number), false));
-				daemonEvent[i].setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(number), false));
+				daemonEvent[i].setProfileKernel(config.getAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(number), false));
+				daemonEvent[i].setProfileUser(config.getAttribute(OprofileLaunchPlugin.attrCounterProfileUser(number), false));
 
-				daemonEvent[i].setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(number), OprofileDaemonEvent.COUNT_UNINITIALIZED));
+				daemonEvent[i].setResetCount(config.getAttribute(OprofileLaunchPlugin.attrCounterCount(number), OprofileDaemonEvent.COUNT_UNINITIALIZED));
 			}
 		} catch (CoreException ce) {
 			
@@ -282,7 +282,7 @@ public class OprofileCounter {
 	}
 
 	// Returns the event with the same label as the parameter STR
-	private OpEvent _eventFromString(String str) {
+	private OpEvent eventFromString(String str) {
 		for (int i = 0; i < eventList.length; i++) {
 			if (eventList[i].getText().equals(str))
 				return eventList[i];

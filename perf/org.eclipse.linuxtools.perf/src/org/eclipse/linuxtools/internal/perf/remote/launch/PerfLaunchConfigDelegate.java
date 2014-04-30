@@ -213,7 +213,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
                     print.println("Analysing recorded perf.data, please wait..."); //$NON-NLS-1$
                     //Possibly should pass this (the console reference) on to PerfCore.Report if theres anything we ever want to spit out to user.
                 }
-                PerfCore.Report(config, getEnvironment(config), Path.fromOSString(configWorkingDir), monitor, null, print);
+                PerfCore.report(config, getEnvironment(config), Path.fromOSString(configWorkingDir), monitor, null, print);
 
                 URI perfDataURI = null;
                 IRemoteFileProxy proxy = null;

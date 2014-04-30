@@ -14,18 +14,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.remote.launch;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class PerfOptionsTab extends org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab {
 
-    private Exception ex;
-
-    @Override
-    public boolean isValid (ILaunchConfiguration config) {
-        if (ex != null) {
-            setErrorMessage(ex.getLocalizedMessage());
-            return false;
-        }
-        return super.isValid(config);
-    }
 }

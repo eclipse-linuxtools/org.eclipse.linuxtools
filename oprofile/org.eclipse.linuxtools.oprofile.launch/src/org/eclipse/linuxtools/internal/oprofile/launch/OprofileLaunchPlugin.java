@@ -50,14 +50,14 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
     public static final String ATTR_MANUAL_PROFILE = ID_LAUNCH_PROFILE + ".MANUAL_PROFILE";		//$NON-NLS-1$
 
     // Counter Attributes \\
-    private static final String ATTR_COUNTER(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } 					//$NON-NLS-1$
-    public static final String ATTR_COUNTER_ENABLED(int nr)  { return ATTR_COUNTER(nr) + ".ENABLED"; } 					//$NON-NLS-1$
-    public static final String ATTR_COUNTER_EVENT(int nr, int ev) { return ATTR_COUNTER(nr)  + ".EVENT " + ev; } 						//$NON-NLS-1$
-    public static final String ATTR_COUNTER_PROFILE_KERNEL(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_KERNEL"; }		//$NON-NLS-1$
-    public static final String ATTR_COUNTER_PROFILE_USER(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_USER"; } 		//$NON-NLS-1$
-    public static final String ATTR_COUNTER_COUNT(int nr) { return ATTR_COUNTER(nr) + ".COUNT"; } 						//$NON-NLS-1$
-    public static final String ATTR_COUNTER_UNIT_MASK(int nr) { return  ATTR_COUNTER(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
-    public static final String ATTR_NUMBER_OF_EVENTS(int nr) { return ATTR_COUNTER(nr) + ".EVENTS"; }					//$NON-NLS-1$
+    private static final String attrCounter(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } 					//$NON-NLS-1$
+    public static final String attrConterEnabled(int nr)  { return attrCounter(nr) + ".ENABLED"; } 					//$NON-NLS-1$
+    public static final String attrConterEvent(int nr, int ev) { return attrCounter(nr)  + ".EVENT " + ev; } 						//$NON-NLS-1$
+    public static final String attrCounterProfileKernel(int nr) { return attrCounter(nr) + ".PROFILE_KERNEL"; }		//$NON-NLS-1$
+    public static final String attrCounterProfileUser(int nr) { return attrCounter(nr) + ".PROFILE_USER"; } 		//$NON-NLS-1$
+    public static final String attrCounterCount(int nr) { return attrCounter(nr) + ".COUNT"; } 						//$NON-NLS-1$
+    public static final String attrCounterUnitMask(int nr) { return  attrCounter(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
+    public static final String attrNumberOfEvents(int nr) { return attrCounter(nr) + ".EVENTS"; }					//$NON-NLS-1$
 
 
     public static final String ICON_PATH = "icons/"; //$NON-NLS-1$

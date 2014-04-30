@@ -75,12 +75,11 @@ public class OprofileViewLogReaderAction extends Action {
 class LogReader implements Runnable, IRunnableWithProgress {
     private static long lastModified = -1;
     private static String contents = null;
-    private IRemoteFileProxy proxy;
 
     @Override
     public void run() {
         try {
-            proxy = RemoteProxyManager.getInstance().getFileProxy(
+            IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(
                     Oprofile.OprofileProject.getProject());
             IFileStore fileStore = proxy.getResource(Oprofile.getLogFile());
             if (fileStore.fetchInfo().exists()) {
@@ -133,7 +132,7 @@ class LogReader implements Runnable, IRunnableWithProgress {
  */
 class OprofiledLogDialog extends MessageDialog {
     //string to contain the log file
-    String textContent = null;
+    private String textContent = null;
 
     public static final int GRID_WIDTH = 350;
     public static final int GRID_HEIGHT = 400;

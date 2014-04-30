@@ -40,9 +40,9 @@ public class GcnoRecordsParser {
     private final ArrayList<SourceFile> currentAllSrcs;
     private final HashMap<String, SourceFile> sourceMap;
 
-    public GcnoRecordsParser(HashMap<String, SourceFile> sourceMap, ArrayList<SourceFile> AllSrcs) {
+    public GcnoRecordsParser(HashMap<String, SourceFile> sourceMap, ArrayList<SourceFile> allSrcs) {
         this.sourceMap = sourceMap;
-        this.currentAllSrcs = AllSrcs;
+        this.currentAllSrcs = allSrcs;
     }
 
     private SourceFile findOrAdd(String fileName) {

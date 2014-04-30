@@ -262,18 +262,18 @@ public class GmonView extends AbstractSTDataView {
      * Display gmon results in the GProf View. NOTE: this method has to be called from within the UI thread.
      *
      * @param decoder
-     * @param secondary_id_usually_path_to_gmon_file
+     * @param id Secondary id, usually path to gmon file.
      */
-    public static GmonView displayGprofView(GmonDecoder decoder, String secondary_id_usually_path_to_gmon_file) {
+    public static GmonView displayGprofView(GmonDecoder decoder, String id) {
         GmonView gmonview = null;
         try {
             IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             IWorkbenchPage page = window.getActivePage();
-            if (secondary_id_usually_path_to_gmon_file != null) {
-                secondary_id_usually_path_to_gmon_file = secondary_id_usually_path_to_gmon_file.replace('.', '_');
-                secondary_id_usually_path_to_gmon_file = secondary_id_usually_path_to_gmon_file.replace(':', '_');
+            if (id != null) {
+                id = id.replace('.', '_');
+                id = id.replace(':', '_');
             }
-            gmonview = (GmonView) page.showView(ID, secondary_id_usually_path_to_gmon_file,
+            gmonview = (GmonView) page.showView(ID, id,
                     IWorkbenchPage.VIEW_ACTIVATE);
             if (decoder.getHistogramDecoder().getProfRate() == 0) {
                 gmonview.switchSampleTime.setToolTipText("Unable to display time, because profiling rate is null"); //$NON-NLS-1$

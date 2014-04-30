@@ -44,20 +44,12 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         super(GRID);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     @Override
     public void init(IWorkbench workbench) {
         setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
         setDescription(Messages.CreaterepoPreferencePage_description);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if (event.getProperty().equals(FieldEditor.VALUE)) {
@@ -65,14 +57,9 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-     */
     @Override
     protected void createFieldEditors() {
         Composite parent = getFieldEditorParent();
-        GridData data = new GridData();
         // general group
         Group generalGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
         generalGroup.setText(Messages.CreaterepoPreferencePage_generalGroupLabel);
@@ -130,7 +117,7 @@ public class CreaterepoPreferencePage extends FieldEditorPreferencePage implemen
         // note of caution
         Label lblCheckTs = new Label(updatesGroup, SWT.WRAP);
         lblCheckTs.setText(Messages.CreaterepoPreferencePage_checkTSNote);
-        data = new GridData();
+        GridData data = new GridData();
         data.widthHint = 130;
         data.horizontalAlignment = SWT.FILL;
         data.grabExcessHorizontalSpace = true;

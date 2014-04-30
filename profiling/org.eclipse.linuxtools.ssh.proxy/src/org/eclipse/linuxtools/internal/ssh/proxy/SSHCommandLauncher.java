@@ -28,7 +28,6 @@ import com.jcraft.jsch.JSchException;
  * @noextend This class is not intended to be subclassed by clients.
  */
 public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLauncher {
-    private String errorMessage;
     private SSHProcess fProcess;
 
     /**
@@ -92,12 +91,9 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
         return fProcess.waitAndRead(output, err, monitor);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.cdt.core.ICommandLauncher#getErrorMessage()
-     */
     @Override
     public String getErrorMessage() {
-        return errorMessage;
+        return null;
     }
 
     @Override

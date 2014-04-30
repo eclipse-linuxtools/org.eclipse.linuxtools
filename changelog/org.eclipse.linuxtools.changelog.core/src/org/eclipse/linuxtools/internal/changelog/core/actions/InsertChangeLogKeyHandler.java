@@ -37,24 +37,26 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
     private IEditorPart currentEditor;
 
     private String getEditorName() {
-        if (currentEditor != null)
+        if (currentEditor != null) {
             return returnQualifedEditor(currentEditor.getClass());
-        else
+        } else {
             return "";
+        }
 
     }
 
     private String getEntryFilePath() {
-        if (currentEditor != null)
+        if (currentEditor != null) {
             return getDocumentLocation(currentEditor, false);
-        else
+        } else {
             return "";
+        }
     }
 
-    private String returnQualifedEditor(Class<?> ClassName) {
-        return ClassName.toString().substring(
-                ClassName.getPackage().toString().length() - 1,
-                ClassName.toString().length());
+    private String returnQualifedEditor(Class<?> className) {
+        return className.toString().substring(
+                className.getPackage().toString().length() - 1,
+                className.toString().length());
     }
 
 

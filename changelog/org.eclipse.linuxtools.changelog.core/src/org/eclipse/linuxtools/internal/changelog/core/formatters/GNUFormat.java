@@ -233,16 +233,16 @@ public class GNUFormat implements IFormatterChangeLogContrib {
      * <code>offset</code> pointing to the last '\n'. This string would be
      * changed to: "(main): Removed.\n\n".
      *
-     * @param changelog_doc
+     * @param changelogDoc
      * @param offset
      * @return The new offset.
      */
-    private int removeWhitespaceOnlyLines(IDocument changelog_doc, int offset) {
+    private int removeWhitespaceOnlyLines(IDocument changelogDoc, int offset) {
         int initialOffset = offset;
         int backedUpOffset = offset;
         char charAtOffset;
         try {
-            charAtOffset = changelog_doc.get(offset, 1).charAt(0);
+            charAtOffset = changelogDoc.get(offset, 1).charAt(0);
         } catch (BadLocationException e) {
             e.printStackTrace();
             return offset;
@@ -250,7 +250,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         while( backedUpOffset > 0 && (charAtOffset == '\n' || charAtOffset == '\t' || charAtOffset == ' ') ) {
             backedUpOffset--;
             try {
-            charAtOffset = changelog_doc.get(backedUpOffset, 1).charAt(0);
+            charAtOffset = changelogDoc.get(backedUpOffset, 1).charAt(0);
             } catch (BadLocationException e) {
                 e.printStackTrace();
                 break;
@@ -259,7 +259,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         if ( (initialOffset - backedUpOffset) > 2 ) {
             try {
                 int replaceLength = (initialOffset - backedUpOffset - 2);
-                changelog_doc.replace(backedUpOffset + 2, replaceLength, "");
+                changelogDoc.replace(backedUpOffset + 2, replaceLength, "");
                 // change offset accordingly
                 offset -= replaceLength;
             } catch (BadLocationException e) {
@@ -313,17 +313,17 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         return reversePathb;
     }
 
-    private int findChangeLogPattern(IDocument changelog_doc, int startOffset) {
+    private int findChangeLogPattern(IDocument changelogDoc, int startOffset) {
         // find the "pattern" of a changelog entry. Not a specific one,
         // but one that "looks" like an entry
         int nextEntry = startOffset;
         int line_length = 0;
         String entry = ""; // $NON-NLS-1$
-        while (nextEntry < changelog_doc.getLength()) {
+        while (nextEntry < changelogDoc.getLength()) {
             try {
                 // Get the line of interest in the changelog document
-                line_length = changelog_doc.getLineOfOffset(nextEntry);
-                entry = changelog_doc.get(nextEntry, changelog_doc
+                line_length = changelogDoc.getLineOfOffset(nextEntry);
+                entry = changelogDoc.get(nextEntry, changelogDoc
                         .getLineLength(line_length));
                 // Attempt to find date pattern on line
                 if (matchDatePattern(entry)) {
@@ -331,7 +331,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
                     break;
                 }
                 // If no date matches, move to the next line
-                nextEntry += changelog_doc.getLineLength(line_length);
+                nextEntry += changelogDoc.getLineLength(line_length);
             } catch (BadLocationException e) {
                 ChangelogPlugin.getDefault().getLog().log(
                         new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
@@ -362,9 +362,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         return false;
     }
 
-    private int findChangeLogEntry(IDocument changelog_doc, String entry) {
+    private int findChangeLogEntry(IDocument changelogDoc, String entry) {
         FindReplaceDocumentAdapter findDocumentAptd = new FindReplaceDocumentAdapter(
-                changelog_doc);
+                changelogDoc);
         IRegion region = null;
         try {
             region = findDocumentAptd.find(0, entry, true, false,/*whole world */ false, true);

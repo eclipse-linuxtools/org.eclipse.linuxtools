@@ -66,10 +66,6 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
-     */
     @Override
     public String getValue(Object obj) {
         TreeElement e = (TreeElement) obj;
@@ -94,9 +90,9 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
      * @param profRate profiling frequency
      * @return time value with the best adapted time unit
      */
-    public static String getValue(double i, double prof_rate)
+    public static String getValue(double i, double profRate)
     {
-        long timeInNs = (long) (i/prof_rate);
+        long timeInNs = (long) (i/profRate);
         long ns = timeInNs%1000;
 
         long timeInUs = timeInNs/1000;

@@ -55,7 +55,6 @@ import org.eclipse.ui.PlatformUI;
 public class ReportComparisonView extends Viewer {
 
     // Color values constants
-    private static final Color BLACK = new Color(Display.getDefault(), 0, 0, 0);
     private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
     private static final Color GREEN = new Color(Display.getDefault(), 0, 50, 0);
     private static final Color LIGHT_GREEN = new Color(Display.getDefault(), 0, 105, 0);
@@ -130,7 +129,7 @@ public class ReportComparisonView extends Viewer {
                         float baseline = Float.parseFloat(m.group(1).trim());
                         float delta = Float.parseFloat(m.group(3).trim());
                         if (baseline > 1 && Math.abs(delta) > 1) {
-                            StyleRange curStyleRange =  new StyleRange(ptr, line.length(), BLACK, null);
+                            StyleRange curStyleRange;
                             if (delta < 0 ) {
                                 curStyleRange = delta < -5 ? new StyleRange(ptr, line.length(), LIGHT_GREEN, null) :
                                     new StyleRange(ptr, line.length(), GREEN, null);

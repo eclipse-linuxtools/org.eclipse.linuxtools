@@ -63,8 +63,6 @@ public class OpenGCDialog extends Dialog {
     private Text binText;
     private String binValue;
 
-    private Button openThisFileOnlyButton;
-    private Button openCoverageSummaryButton;
     private boolean openCoverageSummary = true;
 
     /* error label */
@@ -72,9 +70,6 @@ public class OpenGCDialog extends Dialog {
 
     /* validation boolean */
     private boolean binaryValid;
-
-    /* internal listener */
-    private final BinaryModifyListener binModifyListener = new BinaryModifyListener();
 
     private final String defaultValue;
     private final IPath gcFile;
@@ -139,7 +134,7 @@ public class OpenGCDialog extends Dialog {
         data = new GridData(GridData.FILL_HORIZONTAL);
         data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH;
         binText.setLayoutData(data);
-        binText.addModifyListener(binModifyListener);
+        binText.addModifyListener(new BinaryModifyListener());
 
         Composite cbBin = new Composite(c, SWT.NONE);
         data = new GridData(GridData.HORIZONTAL_ALIGN_END);
@@ -168,9 +163,9 @@ public class OpenGCDialog extends Dialog {
         GridData covModeData = new GridData(GridData.FILL_BOTH);
         covMode.setLayoutData(covModeData);
         covMode.setLayout(new GridLayout());
-        openThisFileOnlyButton = new Button(covMode, SWT.RADIO);
+        Button openThisFileOnlyButton = new Button(covMode, SWT.RADIO);
         openThisFileOnlyButton.setLayoutData(new GridData());
-        openCoverageSummaryButton = new Button(covMode, SWT.RADIO);
+        final Button openCoverageSummaryButton = new Button(covMode, SWT.RADIO);
         openCoverageSummaryButton.setLayoutData(new GridData());
         String cFile = gcFile.removeFileExtension().lastSegment() + ".c"; //$NON-NLS-1$
 
@@ -224,7 +219,7 @@ public class OpenGCDialog extends Dialog {
         } else {
             binaryValid = false;
             getButton(IDialogConstants.OK_ID).setEnabled(false);
-            if (!binValue.equals("")) { //$NON-NLS-1$
+            if (!binValue.isEmpty()) {
                 errorLabel.setText(NLS.bind(Messages.OpenGCDialog_bin_dne_error_label, binText.getText()));
             } else {
                 errorLabel.setText(Messages.OpenGCDialog_no_bin_error_label);

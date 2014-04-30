@@ -71,10 +71,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
 
     private CreaterepoProject project;
 
-    private FormToolkit toolkit;
-    private ScrolledForm form;
-
-    private Composite buttonList;
     private Tree tree;
 
     private static final String MENU_URI = "toolbar:formsToolbar"; //$NON-NLS-1$
@@ -91,10 +87,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         this.project = project;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
-     */
     @Override
     public void init(IEditorSite site, IEditorInput input) {
         super.init(site, input);
@@ -102,10 +94,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
-     */
     @Override
     public void dispose() {
         // remove the resource change listener
@@ -113,18 +101,13 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         super.dispose();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-     */
     @Override
     protected void createFormContent(IManagedForm managedForm) {
         // setting up the form page
         super.createFormContent(managedForm);
         GridLayout layout = new GridLayout();
-        GridData data = new GridData();
-        toolkit = managedForm.getToolkit();
-        form = managedForm.getForm();
+        FormToolkit toolkit = managedForm.getToolkit();
+        ScrolledForm form = managedForm.getForm();
         form.setText(Messages.ImportRPMsPage_formHeaderText);
         form.setImage(Activator.getImageDescriptor(HEADER_ICON).createImage());
         ToolBarManager toolbarManager = (ToolBarManager) form.getToolBarManager();
@@ -159,9 +142,9 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         tree = viewer.getTree();
         tree.setLayoutData(expandComposite());
 
-        buttonList = toolkit.createComposite(sectionClient);
+        Composite buttonList = toolkit.createComposite(sectionClient);
         layout = new GridLayout();
-        data = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
+        GridData data = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
         layout.marginWidth = 0; layout.marginHeight = 0;
         buttonList.setLayout(layout);
         buttonList.setLayoutData(data);
@@ -170,7 +153,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
                 toolkit).addSelectionListener(new ImportButtonListener());
         createPushButton(buttonList, Messages.ImportRPMsPage_buttonRemoveRPMs,
                 toolkit).addSelectionListener(new RemoveButtonListener());
-        createSpace();
+        new Label(buttonList, SWT.NONE).setLayoutData(new GridData(0,0));
 
         createPushButton(buttonList, Messages.ImportRPMsPage_buttonCreateRepo,
                 toolkit).addSelectionListener(new CreaterepoButtonListener());
@@ -210,15 +193,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         GridData gd = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
         button.setLayoutData(gd);
         return button;
-    }
-
-    /**
-     * Create space between composites, such as buttons within a button list.
-     *
-     * @param parent The composite to attach a space to.
-     */
-    private void createSpace() {
-        new Label(buttonList, SWT.NONE).setLayoutData(new GridData(0,0));
     }
 
     /**
@@ -273,10 +247,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
     public class ImportButtonListener extends SelectionAdapter {
         private final String[] EXTENSION_FILTERS = {"*." + ICreaterepoConstants.RPM_FILE_EXTENSION}; //$NON-NLS-1$
 
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
         @Override
         public void widgetSelected(SelectionEvent e) {
             IWorkbench workbench = PlatformUI.getWorkbench();
@@ -305,10 +275,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
      * Handle the remove button execution on the Import RPMs page.
      */
     public class RemoveButtonListener extends SelectionAdapter {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
         @Override
         public void widgetSelected(SelectionEvent e) {
             TreeItem[] selection = tree.getSelection();
@@ -345,10 +311,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
      * Handle the createrepo button execution on the Import RPMs page.
      */
     public class CreaterepoButtonListener extends SelectionAdapter {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
         @Override
         public void widgetSelected(SelectionEvent e) {
             Job executeCreaterepo = new Job(Messages.Createrepo_jobName) {
@@ -372,10 +334,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
-     */
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         // might have to place the delete/close events to RepoMetadataFormEditor to
@@ -401,10 +359,6 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
      * Class to control what to do if something happens in the workspace.
      */
     class CreaterepoDeltaVisitor implements IResourceDeltaVisitor {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
-         */
         @Override
         public boolean visit(IResourceDelta delta) {
             // exit if the project is being removed or closed

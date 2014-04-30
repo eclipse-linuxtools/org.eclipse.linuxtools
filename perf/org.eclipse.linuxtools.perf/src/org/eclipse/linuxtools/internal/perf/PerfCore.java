@@ -311,9 +311,9 @@ public class PerfCore {
         return base.toArray( new String[base.size()] );
     }
 
-    public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean OldPerfVersion) {
+    public static String[] getAnnotateString(ILaunchConfiguration config, String dso, String symbol, String perfDataLoc, boolean oldPerfVersion) {
         ArrayList<String> base = new ArrayList<>();
-        if (OldPerfVersion) {
+        if (oldPerfVersion) {
             base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         } else {
             base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -342,7 +342,7 @@ public class PerfCore {
     // Runs assuming perf.data has already been recorded, environ and workingDir can be set to null to use default
     //perfDataLoc is optional - it is used to provide a pre-existing data file instead of something recorded from
     //whatever project is being profiled. It is only used for junit tests atm.
-    public static void Report(ILaunchConfiguration config, String[] environ, IPath workingDir, IProgressMonitor monitor, String perfDataLoc, PrintStream print) {
+    public static void report(ILaunchConfiguration config, String[] environ, IPath workingDir, IProgressMonitor monitor, String perfDataLoc, PrintStream print) {
         IProject project = getProject(config);
 
         TreeParent invisibleRoot = PerfPlugin.getDefault().clearModelRoot();
@@ -394,22 +394,22 @@ public class PerfCore {
      * @param perfDataLoc location of perf data file
      * @param print print stream
      * @param invisibleRoot  root of the model
-     * @param OldPerfVersion boolean old perf version flag
+     * @param oldPerfVersion boolean old perf version flag
      * @param input input stream from perf data file report
      * @param error output stream to where all standard error is written to
      */
     public static void parseReport(ILaunchConfiguration config,
             IPath workingDir, IProgressMonitor monitor, String perfDataLoc,
             PrintStream print, TreeParent invisibleRoot,
-            boolean OldPerfVersion, BufferedReader input, BufferedReader error) {
+            boolean oldPerfVersion, BufferedReader input, BufferedReader error) {
         PerfCore.parseRemoteReport(config, workingDir, monitor, perfDataLoc, print,
-                invisibleRoot, OldPerfVersion, input, error, null);
+                invisibleRoot, oldPerfVersion, input, error, null);
     }
 
     private static void parseRemoteReport(ILaunchConfiguration config,
             IPath workingDir, IProgressMonitor monitor, String perfDataLoc,
             PrintStream print, TreeParent invisibleRoot,
-            boolean OldPerfVersion, BufferedReader input, BufferedReader error, IProject project) {
+            boolean oldPerfVersion, BufferedReader input, BufferedReader error, IProject project) {
 
         if (monitor != null && monitor.isCanceled()) {
             return;
@@ -531,10 +531,10 @@ public class PerfCore {
                             currentSym = (PMSymbol)s;
                             String[] annotateCmd;
                             if (workingDir == null) {
-                                annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, OldPerfVersion);
+                                annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, oldPerfVersion);
                             } else {
                                 String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA;
-                                annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDefaultDataLoc, OldPerfVersion);
+                                annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDefaultDataLoc, oldPerfVersion);
                             }
 
                             try {

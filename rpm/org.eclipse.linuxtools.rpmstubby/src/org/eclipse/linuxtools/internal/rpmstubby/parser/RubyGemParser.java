@@ -68,7 +68,6 @@ public class RubyGemParser {
      */
     public void parse() {
         List<String> rawSetupDefinitions = new ArrayList<>();
-        List<String> lSetupDefinitions = new ArrayList<>();
         String line = "";
         long startPos;
         long endPos;
@@ -83,7 +82,7 @@ public class RubyGemParser {
                 rawSetupDefinitions.add(line);
             }
 
-            lSetupDefinitions = prepareOptions(rawSetupDefinitions);
+            List<String> lSetupDefinitions = prepareOptions(rawSetupDefinitions);
 
             for (String str : lSetupDefinitions) {
                 parseLine(str);

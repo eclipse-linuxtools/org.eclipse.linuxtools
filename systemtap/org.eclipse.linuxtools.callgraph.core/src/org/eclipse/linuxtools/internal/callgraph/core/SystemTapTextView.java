@@ -113,9 +113,9 @@ public class SystemTapTextView extends SystemTapView {
 
                 // Create a colour based on the 3 integers (if there are any
                 // more integers, just ignore)
-                int R = new Integer(colours[0].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
-                int G = new Integer(colours[1].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
-                int B = new Integer(colours[2].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+                int R = Integer.valueOf(colours[0].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+                int G = Integer.valueOf(colours[1].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
+                int B = Integer.valueOf(colours[2].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
 
                 if (R > 255) R = 255;
                 if (G > 255) G = 255;

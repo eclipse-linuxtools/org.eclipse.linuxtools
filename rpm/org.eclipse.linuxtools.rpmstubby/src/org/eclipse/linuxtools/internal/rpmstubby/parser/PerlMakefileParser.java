@@ -186,10 +186,9 @@ public class PerlMakefileParser {
     public List<String> getValueList(String key) {
         List<String> rc = new ArrayList<>();
         String var = "";
-        String[] tmp = {};
         if (mMakefileDefinitions.containsKey(key)) {
             var = mMakefileDefinitions.get(key);
-            tmp = var.split(",");
+            String[] tmp = var.split(",");
             for (String str : tmp) {
                 str = cleanUpString(str);
                 rc.add(str);
@@ -368,11 +367,10 @@ public class PerlMakefileParser {
      */
     public static Map<String, String> extractKeyValueAssociation(String line) {
         Map<String, String> rc = new HashMap<>();
-        String[] keyValue = {};
         String key = "";
         String value = "";
         if (matchesAssociativeAssignment(line)) {
-            keyValue = line.split("=>");
+            String[] keyValue = line.split("=>");
             key = cleanUpString(keyValue[0].toLowerCase());
             value = cleanUpString(keyValue[1]);
             rc.put(key, value);

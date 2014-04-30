@@ -120,7 +120,7 @@ public class CovManager implements Serializable {
         for (String gcdaPath : covFilesPaths) {
             String gcnoPath = gcdaPath.replace(".gcda", ".gcno"); //$NON-NLS-1$ //$NON-NLS-2$
             // parse GCNO file
-            traceFile = OpenTraceFileStream(gcnoPath, ".gcno", sourcePath); //$NON-NLS-1$
+            traceFile = openTraceFileStream(gcnoPath, ".gcno", sourcePath); //$NON-NLS-1$
             if (traceFile == null) {
                 return;
             }
@@ -138,7 +138,7 @@ public class CovManager implements Serializable {
             }
 
             // parse GCDA file
-            traceFile = OpenTraceFileStream(gcdaPath, ".gcda", sourcePath); //$NON-NLS-1$
+            traceFile = openTraceFileStream(gcdaPath, ".gcda", sourcePath); //$NON-NLS-1$
             if (traceFile == null)
                 return;
             if (noRcrd.getFnctns().isEmpty()) {
@@ -250,7 +250,7 @@ public class CovManager implements Serializable {
     }
 
     // transform String path to stream
-    private DataInput OpenTraceFileStream(String filePath, String extension, Map<File, File> sourcePath)
+    private DataInput openTraceFileStream(String filePath, String extension, Map<File, File> sourcePath)
             throws FileNotFoundException {
         File f = new File(filePath).getAbsoluteFile();
         String filename = f.getName();
@@ -278,7 +278,7 @@ public class CovManager implements Serializable {
             if (dir != null) {
                 f = new File(dir, postfix);
                 if (f.isFile() && f.canRead()) {
-                    return OpenTraceFileStream(f.getAbsolutePath(), extension, sourcePath);
+                    return openTraceFileStream(f.getAbsolutePath(), extension, sourcePath);
                 }
             }
 

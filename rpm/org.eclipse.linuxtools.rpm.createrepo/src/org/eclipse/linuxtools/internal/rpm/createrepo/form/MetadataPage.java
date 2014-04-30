@@ -86,7 +86,6 @@ public class MetadataPage extends FormPage {
         // setting up the form page
         super.createFormContent(managedForm);
         GridLayout layout = new GridLayout();
-        GridData data = new GridData();
         toolkit = managedForm.getToolkit();
         form = managedForm.getForm();
         form.setText(Messages.MetadataPage_formHeaderText);
@@ -108,7 +107,7 @@ public class MetadataPage extends FormPage {
         Section revSection = toolkit.createSection(form.getBody(), Section.DESCRIPTION
                 | ExpandableComposite.TITLE_BAR);
         layout = new GridLayout();
-        data = new GridData();
+        GridData data = new GridData();
         data.verticalAlignment = GridData.FILL;
         data.horizontalAlignment = GridData.FILL;
         data.grabExcessHorizontalSpace = true;
