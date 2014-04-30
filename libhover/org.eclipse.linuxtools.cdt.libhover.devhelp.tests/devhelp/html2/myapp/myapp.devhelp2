@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="MyApp 1.0 Reference Manual" link="index.html" author="" name="myapp-1.0" version="2" language="c">
+  <chapters>
+    <sub name="My App Overview" link="myapp.html">
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="macro" name="MY_APP_MACRO" link="myapp.html#MY_APP_MACRO:CAPS"/>
+    <keyword type="function" name="myapp_init ()" link="myapp.html#myapp-init"/>
+    <keyword type="function" name="myapp_init_check ()" link="myapp.html#myapp-init-check"/>
+    <keyword type="enum" name="enum MyAppEnum" link="myapp.html#MyAppEnum"/>
+  </functions>
+</book>

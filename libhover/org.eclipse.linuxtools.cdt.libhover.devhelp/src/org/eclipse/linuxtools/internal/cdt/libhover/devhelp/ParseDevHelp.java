@@ -58,6 +58,7 @@ public class ParseDevHelp {
 
         private String func;
         private boolean begin;
+        private boolean refsect2;
         private boolean returnType;
         private boolean protoStart;
         private boolean parmStart;
@@ -77,7 +78,9 @@ public class ParseDevHelp {
             this.func = func;
             this.funcName = funcName.trim();
             if (this.funcName.endsWith("()")) { //$NON-NLS-1$
-                this.funcName = this.funcName.replaceAll("\\(\\)", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+            	// Remove () at end of function name and remove all space chars which might be
+            	// non-breaking space chars which unfortunately do not get caught by the trim() method.
+                this.funcName = this.funcName.replaceAll("\\(\\)", "").replaceAll("\\p{javaSpaceChar}",""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
         }
 
@@ -87,6 +90,8 @@ public class ParseDevHelp {
                 String fname = a.getValue("name"); //$NON-NLS-1$
                 if (func.equals(fname)) {
                     begin = true;
+                    divCounter = refsect2 ? 1 : 0;
+                    refsect2 = false;
                 }
             }
             if (begin) {
@@ -133,8 +138,19 @@ public class ParseDevHelp {
                             }
                             description.append(rowTag);
                         }
+                    } else if ("H4".equals(name.rawname)) { //$NON-NLS-1$
+                    	description.append("<br><br>"); //$NON-NLS-1$
                     }
                 }
+            } else {
+            	if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
+            		String className = a.getValue("class"); //$NON-NLS-1$
+            		if ("refsect2".equals(className)) { //$NON-NLS-1$
+            			refsect2 = true;
+            		} else {
+            			refsect2 = false;
+            		}
+            	}
             }
         }
 
@@ -143,9 +159,11 @@ public class ParseDevHelp {
             if (begin) {
                 if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
                     --divCounter;
-//                    System.out.println("divCounter is " + divCounter);
                     if (divCounter <= 0) {
                         begin = false;
+                        descStart = false;
+                        parmStart = false;
+                        protoStart = false;
                     }
                 }
                 if (descStart) {
@@ -164,6 +182,8 @@ public class ParseDevHelp {
                             }
                         }
                         rowIgnore = false;
+                    } else if ("H4".equals(name.rawname)) { //$NON-NLS-1$
+                    	description.append("</br></br>"); //$NON-NLS-1$
                     }
                 }
             }

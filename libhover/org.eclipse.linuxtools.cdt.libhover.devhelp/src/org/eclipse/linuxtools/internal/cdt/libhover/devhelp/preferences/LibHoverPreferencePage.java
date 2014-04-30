@@ -131,7 +131,8 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
                 Display.getDefault().syncExec(new Runnable() {
                     @Override
                     public void run() {
-                        generateButton.setEnabled(true);
+                    	if (generateButton != null)
+                    		generateButton.setEnabled(true);
                     }
                 });
             }
@@ -158,6 +159,7 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
             }
         });
         GridData gd = new GridData();
+
         gd.horizontalAlignment = GridData.FILL;
         int widthHint = convertHorizontalDLUsToPixels(
                 IDialogConstants.BUTTON_WIDTH);
