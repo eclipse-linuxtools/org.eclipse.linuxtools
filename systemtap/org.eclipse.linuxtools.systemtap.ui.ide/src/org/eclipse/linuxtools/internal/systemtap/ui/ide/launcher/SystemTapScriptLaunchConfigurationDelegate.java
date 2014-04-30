@@ -44,6 +44,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOpt
 public class SystemTapScriptLaunchConfigurationDelegate extends
         LaunchConfigurationDelegate {
 
+    private static String LOCALHOST = "localhost"; //$NON-NLS-1$
     static final String CONFIGURATION_TYPE = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"; //$NON-NLS-1$
 
     private IProject[] scriptProject;
@@ -108,13 +109,13 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
         // If runWithChart is true there must be at least one graph, but this isn't guaranteed
         // to be true for outdated Launch Configurations. So for safety, make sure there are graphs.
         int numGraphs = configuration.getAttribute(SystemTapScriptGraphOptionsTab.NUMBER_OF_REGEXS, 0);
-        if (runWithChart && numGraphs > 0){
+        if (runWithChart && numGraphs > 0) {
             List<IDataSetParser> parsers = SystemTapScriptGraphOptionsTab.createDatasetParsers(configuration);
             List<IFilteredDataSet> dataSets = SystemTapScriptGraphOptionsTab.createDataset(configuration);
             List<String> names = SystemTapScriptGraphOptionsTab.createDatasetNames(configuration);
             List<LinkedList<GraphData>> graphs = SystemTapScriptGraphOptionsTab.createGraphsFromConfiguration(configuration);
             action = new RunScriptChartHandler(parsers, dataSets, names, graphs);
-        }else{
+        } else {
             action = new RunScriptHandler();
         }
 
@@ -132,38 +133,38 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
         action.setPath(scriptPath);
 
         // Run locally and/or as current user.
-        boolean runAsCurrentUser = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.CURRENT_USER_ATTR, true);
-        boolean runLocal = configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.LOCAL_HOST_ATTR, true);
-
-        action.setRemoteScriptOptions(runLocal && runAsCurrentUser ? null : new RemoteScriptOptions(
+        action.setRemoteScriptOptions(
+                configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.CURRENT_USER_ATTR, true) ? null
+                        : new RemoteScriptOptions(
                         configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""), //$NON-NLS-1$
                         configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_PASS_ATTR, ""), //$NON-NLS-1$
-                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, "localhost"))); //$NON-NLS-1$
+                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.LOCAL_HOST_ATTR, true) ? LOCALHOST :
+                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, LOCALHOST)));
 
         String value = configuration.getAttribute(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
-        if (!value.isEmpty()){
+        if (!value.isEmpty()) {
             action.addComandLineOptions(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
         }
 
         // Add command line options
-        for(int i=0; i<IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS.length; i++) {
+        for (int i = 0; i < IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS.length; i++) {
             boolean flag = configuration.getAttribute(
                             IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.KEY],
                             false);
-            if (flag){
+            if (flag) {
                 action.addComandLineOptions(IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.FLAG]);
             }
         }
 
-        for(int i=0; i<IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
+        for (int i = 0; i < IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
             value = configuration.getAttribute(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.KEY],""); //$NON-NLS-1$
-            if (!value.isEmpty()){
+            if (!value.isEmpty()) {
                 action.addComandLineOptions(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.FLAG] + " " + value); //$NON-NLS-1$
             }
         }
 
         value = configuration.getAttribute(SystemTapScriptOptionsTab.MISC_COMMANDLINE_OPTIONS,""); //$NON-NLS-1$
-        if (!value.isEmpty()){
+        if (!value.isEmpty()) {
             action.addComandLineOptions(value);
         }
 

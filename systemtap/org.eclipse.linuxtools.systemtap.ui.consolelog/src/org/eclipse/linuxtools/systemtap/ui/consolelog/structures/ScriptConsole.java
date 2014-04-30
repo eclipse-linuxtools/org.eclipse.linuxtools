@@ -350,12 +350,7 @@ public class ScriptConsole extends IOConsole {
                 try {
                     cmd.start();
                 } catch (final CoreException e) {
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            ExceptionErrorDialog.openError(e.getMessage(), e);
-                        }
-                    });
+                    ExceptionErrorDialog.openError(e.getMessage(), e);
                     cmd.dispose();
                     return;
                 }
@@ -449,11 +444,10 @@ public class ScriptConsole extends IOConsole {
     public void saveStream(File file) {
         if (isRunning()) {
             if (!cmd.saveLog(file)) {
-                MessageDialog
-                        .openWarning(
-                                PlatformUI.getWorkbench()
-                                        .getActiveWorkbenchWindow().getShell(),
-                                Localization.getString("ScriptConsole.Problem"), Localization.getString("ScriptConsole.ErrorSavingLog")); //$NON-NLS-1$//$NON-NLS-2$
+                MessageDialog.openWarning(
+                        PlatformUI.getWorkbench()
+                        .getActiveWorkbenchWindow().getShell(),
+                        Localization.getString("ScriptConsole.Problem"), Localization.getString("ScriptConsole.ErrorSavingLog")); //$NON-NLS-1$//$NON-NLS-2$
 
             }
         }
@@ -505,7 +499,7 @@ public class ScriptConsole extends IOConsole {
     }
 
     private String getStopString(){
-          return "pkill -SIGINT -f stapio.*"+ getModuleName();  //$NON-NLS-1$
+        return "pkill -SIGINT -f stapio.*"+ getModuleName();  //$NON-NLS-1$
     }
     /**
      * Disposes of all internal references in the class. No method should be called after this.

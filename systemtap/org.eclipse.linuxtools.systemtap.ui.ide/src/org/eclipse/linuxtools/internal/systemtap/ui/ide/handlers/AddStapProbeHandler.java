@@ -31,6 +31,9 @@ public class AddStapProbeHandler extends AbstractHandler {
         try {
             editor = (ITextEditor) HandlerUtil.getActiveEditor(event);
         } catch (ClassCastException e) {
+            ExceptionErrorDialog.openError(
+                    Messages.AddStapProbe_unableToInsertProbe,
+                    Messages.AddStapProbe_editorError, e);
             throw new ExecutionException(Messages.AddStapProbe_editorError, e);
         }
         IVerticalRulerInfo rulerInfo = (IVerticalRulerInfo) editor.getAdapter(IVerticalRulerInfo.class);
@@ -92,10 +95,10 @@ public class AddStapProbeHandler extends AbstractHandler {
             }
         } catch (BadLocationException excp) {
             ExceptionErrorDialog.openError(Messages.AddStapProbe_unableToInsertProbe, excp);
+            return null;
         }
         if (die) {
-            MessageDialog
-                    .openError(
+            MessageDialog.openError(
                             PlatformUI.getWorkbench()
                                     .getActiveWorkbenchWindow()
                                     .getShell(),
@@ -119,7 +122,7 @@ public class AddStapProbeHandler extends AbstractHandler {
 
                 sb.append("\n{\n\t\n}\n"); //$NON-NLS-1$
                 STPEditor activeSTPEditor = IDESessionSettings.getOrAskForActiveSTPEditor(false);
-                if (null != activeSTPEditor) {
+                if (activeSTPEditor != null) {
                     activeSTPEditor.insertText(sb.toString());
                 }
             }

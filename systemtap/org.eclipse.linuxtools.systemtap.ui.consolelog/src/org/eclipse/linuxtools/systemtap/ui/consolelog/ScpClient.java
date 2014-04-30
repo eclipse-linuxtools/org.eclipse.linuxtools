@@ -34,19 +34,19 @@ public class ScpClient {
      */
     public ScpClient(RemoteScriptOptions remoteOptions) throws JSchException {
 
-      JSch jsch=new JSch();
+        JSch jsch = new JSch();
 
-      session=jsch.getSession(remoteOptions.getUserName(), remoteOptions.getHostName(), 22);
+        session = jsch.getSession(remoteOptions.userName, remoteOptions.hostName, 22);
 
-      session.setPassword(remoteOptions.getPassword());
-      java.util.Properties config = new java.util.Properties();
-                      config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$ //$NON-NLS-2$
-                      session.setConfig(config);
-      session.connect();
+        session.setPassword(remoteOptions.password);
+        java.util.Properties config = new java.util.Properties();
+        config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$ //$NON-NLS-2$
+        session.setConfig(config);
+        session.connect();
     }
 
     public void transfer(String fromFile, String toFile) throws IOException,
-            JSchException {
+    JSchException {
         String rfile = toFile;
         String lfile = fromFile;
         String command = "scp -t " + rfile; //$NON-NLS-1$

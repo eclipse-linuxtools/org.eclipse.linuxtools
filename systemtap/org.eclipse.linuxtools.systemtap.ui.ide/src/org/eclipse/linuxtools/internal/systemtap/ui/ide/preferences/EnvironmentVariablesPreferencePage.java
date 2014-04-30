@@ -28,6 +28,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class EnvironmentVariablesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+    private static StringFieldEditor[] envVariables;
+
     /**
      * Set the description of the page.
      */
@@ -58,7 +60,7 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
         sc.setContent(c);
 
         envVariables = new StringFieldEditor[PreferenceConstants.P_ENV.length];
-        for(int i=0; i<envVariables.length; i++) {
+        for (int i = 0; i < envVariables.length; i++) {
             envVariables[i] = createStringFieldEditor(PreferenceConstants.P_ENV[i][0],
                     PreferenceConstants.P_ENV[i][1], c);
         }
@@ -120,18 +122,18 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
         String var;
 
         int i;
-        if(null == IDEPlugin.getDefault() || null == IDEPlugin.getDefault().getPreferenceStore()) {
+        if (IDEPlugin.getDefault() == null || IDEPlugin.getDefault().getPreferenceStore() == null) {
             return null;
         }
         IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
-        for(i=0; i<PreferenceConstants.P_ENV.length; i++) {
+        for (i = 0; i < PreferenceConstants.P_ENV.length; i++) {
             var = p.getString(PreferenceConstants.P_ENV[i][0]).trim();
-            if(!var.isEmpty()) {
-                vars.add(PreferenceConstants.P_ENV[i][0] + "=" + var); //$NON-NLS-1$
+            if (!var.isEmpty()) {
+                vars.add(PreferenceConstants.P_ENV[i][1] + "=" + var); //$NON-NLS-1$
             }
         }
 
-        if(vars.size() > 0) {
+        if (vars.size() > 0) {
             envVars = new String[vars.size()];
             for (i = 0; i < vars.size(); i++) {
                 envVars[i] = vars.get(i);
@@ -148,12 +150,10 @@ public class EnvironmentVariablesPreferencePage extends PreferencePage implement
     public void dispose() {
         super.dispose();
 
-        for(int i=0; i<envVariables.length; i++) {
+        for (int i = 0; i < envVariables.length; i++) {
             envVariables[i].dispose();
             envVariables[i] = null;
         }
         envVariables = null;
     }
-
-    private static StringFieldEditor[] envVariables;
 }

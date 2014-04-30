@@ -203,7 +203,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @since 1.1
      */
     private Process exec(String cmd, String[] envp, IFileStore dir, IProject project)
-        throws IOException {
+            throws IOException {
         return exec(tokenizeCommand(cmd), envp, dir, project);
     }
 
@@ -237,10 +237,10 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param pty PTY for use with Eclipse Console.
      * @return The process started by exec.
      *
-     * @since 2.1
+     * @since 3.0
      */
     public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project, PTY pty)
-        throws IOException {
+            throws IOException {
 
         Process p = null;
         try {

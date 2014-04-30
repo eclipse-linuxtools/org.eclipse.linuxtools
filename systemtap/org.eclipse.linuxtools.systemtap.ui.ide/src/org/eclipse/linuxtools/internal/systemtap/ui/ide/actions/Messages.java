@@ -19,7 +19,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.messages"; //$NON-NLS-1$
     public static String ScriptRunAction_InvalidScriptTitle;
-    public static String ScriptRunAction_InvalidScriptTMessage;
+    public static String ScriptRunAction_InvalidScriptMessage;
     public static String ScriptRunAction_errorDialogTitle;
     public static String RunScriptAction_alreadyRunningDialogTitle;
     public static String RunScriptAction_alreadyRunningDialogMessage;

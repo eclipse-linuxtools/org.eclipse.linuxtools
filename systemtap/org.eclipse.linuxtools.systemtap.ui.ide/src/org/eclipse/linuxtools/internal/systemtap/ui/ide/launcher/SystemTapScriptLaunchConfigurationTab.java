@@ -62,6 +62,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
     private Text userNameText;
     private Text userPasswordText;
     private Button localHostCheckButton;
+    private Group hostSettingsGroup;
     private Text hostNameText;
     private Label userNameLabel;
     private Label userPasswordLabel;
@@ -115,7 +116,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String path = fileDialog.open();
-                if (path != null){
+                if (path != null) {
                     scriptPathText.setText(path);
                 }
             }
@@ -163,7 +164,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
                 update();
             }
 
-            private void update(){
+            private void update() {
                 boolean enable = !currentUserCheckButton.getSelection();
                 setUserGroupEnablement(enable);
                 updateLaunchConfigurationDialog();
@@ -184,10 +185,8 @@ public class SystemTapScriptLaunchConfigurationTab extends
             }
         });
 
-        setUserGroupEnablement(false);
-
         // Host settings
-        Group hostSettingsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
+        hostSettingsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
         hostSettingsGroup.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, false));
         hostSettingsGroup.setText(Messages.SystemTapScriptLaunchConfigurationTab_host);
         layout = new GridLayout();
@@ -215,7 +214,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
                 update();
             }
 
-            private void update(){
+            private void update() {
                 updateLaunchConfigurationDialog();
             }
         });
@@ -227,14 +226,17 @@ public class SystemTapScriptLaunchConfigurationTab extends
         });
     }
 
-    private void setUserGroupEnablement(boolean enable){
+    private void setUserGroupEnablement(boolean enable) {
         userNameText.setEnabled(enable);
         userNameLabel.setEnabled(enable);
         userPasswordText.setEnabled(enable);
         userPasswordLabel.setEnabled(enable);
+
+        hostSettingsGroup.setEnabled(enable);
+        localHostCheckButton.setEnabled(enable);
     }
 
-    private void setHostGroupEnablement(boolean enable){
+    private void setHostGroupEnablement(boolean enable) {
         hostNamelabel.setEnabled(enable);
         hostNameText.setEnabled(enable);
     }
@@ -275,7 +277,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
         boolean enable = !currentUserCheckButton.getSelection();
         setUserGroupEnablement(enable);
 
-        enable = !localHostCheckButton.getSelection();
+        enable &= !localHostCheckButton.getSelection();
         setHostGroupEnablement(enable);
     }
 
@@ -302,7 +304,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
         return Messages.SystemTapScriptLaunchConfigurationTab_general;
     }
 
-    private String getSelectedScriptPath(){
+    private String getSelectedScriptPath() {
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 
         String pathString = ""; //$NON-NLS-1$
@@ -312,7 +314,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
             ISelection selection = window.getSelectionService().getSelection();
 
             // Figure out the selected systemtap script
-            if (selection instanceof TreeSelection){
+            if (selection instanceof TreeSelection) {
                 Object selectedElement = ((TreeSelection)selection).getFirstElement();
                 if (selectedElement instanceof IFile)
                 {
@@ -322,7 +324,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
             }
 
             // If it is a text selection use the path from the active editor.
-            if (selection instanceof TextSelection){
+            if (selection instanceof TextSelection) {
                 IEditorPart ed = window.getActivePage().getActiveEditor();
                 if(ed.getEditorInput() instanceof PathEditorInput) {
                     pathString = ((PathEditorInput)ed.getEditorInput()).getPath().toString();

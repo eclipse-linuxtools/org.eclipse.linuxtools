@@ -55,10 +55,10 @@ public class RunScriptChartHandler extends RunScriptHandler {
         }
         try {
             String name = console.getName();
-            String title = name.substring(name.lastIndexOf('/')+1);
+            String title = name.substring(name.lastIndexOf('/') + 1);
 
             IWorkbenchPage p = PlatformUI.getWorkbench().showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-            GraphSelectorEditor ivp = (GraphSelectorEditor)p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
+            GraphSelectorEditor ivp = (GraphSelectorEditor) p.openEditor(new GraphSelectorEditorInput(title), GraphSelectorEditor.ID);
 
             String scriptName = console.getName();
             ivp.createScriptSets(scriptName, names, dataSets);
@@ -68,7 +68,7 @@ public class RunScriptChartHandler extends RunScriptHandler {
                     ivp.getDisplaySet(i).addGraph(graph);
                 }
             }
-        } catch(WorkbenchException we) {
+        } catch (WorkbenchException we) {
             ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
         }
         super.scriptConsoleInitialized(console);

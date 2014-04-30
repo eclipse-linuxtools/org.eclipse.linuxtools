@@ -204,17 +204,14 @@ public final class TapsetLibrary {
         String[] tapsets = p.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
         File f = getTapsetLocation(p);
-
-        if (!checkIsCurrentFolder(treesDate, f)) {
+        if (f == null || !checkIsCurrentFolder(treesDate, f)) {
             return false;
         }
 
-        for(int i=0; i<tapsets.length; i++) {
+        for (int i = 0; i < tapsets.length; i++) {
             f = new File(tapsets[i]);
-            if (f.lastModified() > treesDate) {
-                return false;
-            }
-            if (f.canRead() && !checkIsCurrentFolder(treesDate, f)) {
+            if (!f.exists() || f.lastModified() > treesDate
+                    || f.canRead() && !checkIsCurrentFolder(treesDate, f)) {
                 return false;
             }
         }
@@ -229,24 +226,27 @@ public final class TapsetLibrary {
     public static File getTapsetLocation(IPreferenceStore p) {
         File f;
         String path = p.getString(PreferenceConstants.P_ENV[2][0]);
-        if(path.trim().isEmpty()) {
+        if (path.trim().isEmpty()) {
             f = new File("/usr/share/systemtap/tapset"); //$NON-NLS-1$
-            if(!f.exists()) {
+            if (!f.exists()) {
                 f = new File("/usr/local/share/systemtap/tapset"); //$NON-NLS-1$
-                if(!f.exists()) {
+                if (!f.exists()) {
                     InputDialog i = new InputDialog(
                             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                             Localization.getString("TapsetBrowserView.TapsetLocation"), Localization.getString("TapsetBrowserView.WhereDefaultTapset"), "", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     i.open();
                     p.setValue(PreferenceConstants.P_ENV[2][0], i.getValue());
-                    f = new File( i.getValue() );
+                    f = new File(i.getValue());
                 }
             }
         } else {
-            f = new File( p.getString(path) );
+            f = new File(path);
         }
-        IDESessionSettings.tapsetLocation = f.getAbsolutePath();
-        return f;
+        if (f.exists()) {
+            IDESessionSettings.tapsetLocation = f.getAbsolutePath();
+            return f;
+        }
+        return null;
     }
 
     /**
@@ -259,7 +259,7 @@ public final class TapsetLibrary {
     private static boolean checkIsCurrentFolder(long time, File folder) {
         File[] fs = folder.listFiles();
 
-        for(int i=0; i<fs.length; i++) {
+        for (int i = 0; i < fs.length; i++) {
             if (fs[i].lastModified() > time) {
                 return false;
             }

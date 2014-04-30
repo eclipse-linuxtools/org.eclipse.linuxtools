@@ -857,7 +857,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
                 GraphData gd = wizard.getGraphData();
 
-                if (null != gd) {
+                if (gd != null) {
                     TableItem item = new TableItem(graphsTable, SWT.NONE);
                     graphsData.add(gd);
                     setUpGraphTableItem(item, gd, false);
@@ -870,7 +870,7 @@ public class SystemTapScriptGraphOptionsTab extends
         duplicateGraphButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                GraphData gd = ((GraphData) selectedTableItem.getData()).clone();
+                GraphData gd = ((GraphData) selectedTableItem.getData()).getCopy();
 
                 TableItem item = new TableItem(graphsTable, SWT.NONE);
                 graphsData.add(gd);
@@ -900,11 +900,11 @@ public class SystemTapScriptGraphOptionsTab extends
                 dialog.open();
 
                 GraphData gd = wizard.getGraphData();
-                if (null == gd) {
+                if (gd == null) {
                     return;
                 }
                 GraphData old_gd = (GraphData) selectedTableItem.getData();
-                if (!gd.equals(old_gd)) {
+                if (!gd.isCopyOf(old_gd)) {
                     badGraphs.remove(old_gd);
                     setUpGraphTableItem(selectedTableItem, gd, false);
                     graphsData.set(graphsTable.indexOf(selectedTableItem), gd);

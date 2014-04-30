@@ -30,8 +30,11 @@ import com.jcraft.jsch.JSchException;
 
 public class ScpExec extends Command {
 
+    public static final int INPUT_STREAM = 1;
+
     private Channel channel;
     private RemoteScriptOptions remoteOptions;
+    private String command;
 
     /**
      * @since 3.0
@@ -49,7 +52,7 @@ public class ScpExec extends Command {
     protected IStatus init() {
         try {
             channel = SystemtapProcessFactory.execRemote(
-                    new String[] { command }, System.out, System.err, remoteOptions.getUserName(), remoteOptions.getHostName(), remoteOptions.getPassword());
+                    new String[] { command }, System.out, System.err, remoteOptions.userName, remoteOptions.hostName, remoteOptions.password);
 
             errorGobbler = new StreamGobbler(channel.getExtInputStream());
             inputGobbler = new StreamGobbler(channel.getInputStream());
@@ -107,8 +110,4 @@ public class ScpExec extends Command {
             notifyAll();
         }
     }
-
-   private String command;
-
-   public static final int INPUT_STREAM = 1;
 }
